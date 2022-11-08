@@ -6,7 +6,7 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ConnectionRoutesEnum, ConnectionStatusEnum, IConnectionViewItem, StackParamList } from '../../@types'
+import { ConnectionStatusEnum, IConnectionViewItem, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton'
 import SSIConnectionsViewItem from '../../components/views/SSIConnectionsViewItem'
 import { RootState } from '../../store'
@@ -20,7 +20,7 @@ import {
   SSICredentialsViewItemContainerStyled as ItemContainer
 } from '../../styles/styledComponents'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ConnectionRoutesEnum.CONNECTIONS_OVERVIEW> {
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
   dispatchConnectionParties: () => void
   connectionParties: Array<IConnectionParty>
   authenticationEntities: Array<IAuthenticatedEntity>
@@ -52,7 +52,7 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
         }}
       >
         <ContentContainer
-          onPress={() => this.props.navigation.navigate(ConnectionRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
+          onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
         >
           <SSIConnectionsViewItem
             entityId={itemInfo.item.entityId}

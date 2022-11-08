@@ -6,7 +6,7 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { HomeRoutesEnum, ICredentialSummary, StackParamList } from '../../@types'
+import { ICredentialSummary, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { dataStoreGetVerifiableCredential } from '../../agent'
 import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton'
 import SSICredentialsViewItem from '../../components/views/SSICredentialsViewItem'
@@ -20,7 +20,7 @@ import {
   SSICredentialsViewItemContainerStyled as ItemContainer
 } from '../../styles/styledComponents'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, HomeRoutesEnum.CREDENTIALS_OVERVIEW> {
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void
   verifiableCredentials: Array<ICredentialSummary>
 }
@@ -53,7 +53,7 @@ export class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
         <ContentContainer
           onPress={() => {
             dataStoreGetVerifiableCredential({ hash: itemInfo.item.id }).then((vc: VerifiableCredential) =>
-              this.props.navigation.navigate(HomeRoutesEnum.CREDENTIAL_DETAILS, {
+              this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: vc as VerifiableCredential,
                 credential: itemInfo.item
               })

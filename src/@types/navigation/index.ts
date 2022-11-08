@@ -10,53 +10,64 @@ import {
   PopupImagesEnum
 } from '../index'
 
-// TODO create interfaces for the screens
 export type StackParamList = {
   CredentialsOverview: Record<string, never>
-  CredentialDetails: {
-    state?: CredentialIssuanceStateEnum
-    rawCredential?: VerifiableCredential
-    credential: ICredentialSummary
-  }
-  CredentialRawJson: {
-    rawCredential: VerifiableCredential
-  }
+  CredentialDetails: ICredentialDetailsProps
+  CredentialRawJson: ICredentialRawJsonProps
   ConnectionsOverview: Record<string, never>
-  // TODO fix this omit, define better interfaces
+  // TODO create interface like bellow and fix this omit, define better interfaces
   ConnectionDetails: Omit<IConnectionViewItem, 'connectionStatus'>
-  PexVerification: {
-    request: SIOP.VerifiedAuthenticationRequestWithJWT
-    sessionId: string
-  }
+  PexVerification: IPexVerificationProps
   QrReader: Record<string, never>
   Veramo: Record<string, never>
   Main: Record<string, never>
-  VerificationCode: {
-    pinLength?: number
-    onVerification: (pin: string) => Promise<void>
-    credentialName: string
-  }
-  AlertModal: {
-    message: string
-    buttons: Array<IButton>
-    showCancel?: boolean
-  }
-  PopupModal: {
-    closeButtonOnPress?: () => Promise<void>
-    image?: PopupImagesEnum
+  VerificationCode: IVerificationCodeProps
+  AlertModal: IAlertModalProps
+  PopupModal: IPopupModalProps
+}
+
+export interface ICredentialDetailsProps {
+  state?: CredentialIssuanceStateEnum
+  rawCredential?: VerifiableCredential
+  credential: ICredentialSummary
+}
+
+export interface ICredentialRawJsonProps {
+  rawCredential: VerifiableCredential
+}
+
+export interface IPexVerificationProps {
+  request: SIOP.VerifiedAuthenticationRequestWithJWT
+  sessionId: string
+}
+
+export interface IVerificationCodeProps {
+  pinLength?: number
+  onVerification: (pin: string) => Promise<void>
+  credentialName: string
+}
+
+export interface IAlertModalProps {
+  message: string
+  buttons: Array<IButton>
+  showCancel?: boolean
+}
+
+export interface IPopupModalProps {
+  closeButtonOnPress?: () => Promise<void>
+  image?: PopupImagesEnum
+  title?: string
+  titleBadge?: PopupBadgesEnum
+  details?: string
+  extraDetails?: string
+  detailsPopup?: {
+    buttonCaption: string
     title?: string
-    titleBadge?: PopupBadgesEnum
     details?: string
     extraDetails?: string
-    detailsPopup?: {
-      buttonCaption: string
-      title?: string
-      details?: string
-      extraDetails?: string
-    }
-    primaryButton?: IButton
-    secondaryButton?: IButton
   }
+  primaryButton?: IButton
+  secondaryButton?: IButton
 }
 
 export enum RootRoutesEnum {
@@ -72,19 +83,13 @@ export enum NavigationBarRoutesEnum {
   CONNECTIONS = 'ConnectionsStack'
 }
 
-export enum HomeRoutesEnum {
+export enum ScreenRoutesEnum {
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
-  CREDENTIAL_RAW_JSON = 'CredentialRawJson'
-}
-
-export enum QrRoutesEnum {
+  CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
-  PEX_VERIFICATION = 'PexVerification'
-}
-
-export enum ConnectionRoutesEnum {
+  PEX_VERIFICATION = 'PexVerification',
   CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
   CONNECTION_DETAILS = 'ConnectionDetails'
 }

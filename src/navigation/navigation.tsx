@@ -7,15 +7,7 @@ import { Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
 
 import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import {
-  ConnectionRoutesEnum,
-  HomeRoutesEnum,
-  NavigationBarRoutesEnum,
-  PlatformsEnum,
-  QrRoutesEnum,
-  RootRoutesEnum,
-  StackParamList
-} from '../@types'
+import { NavigationBarRoutesEnum, PlatformsEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../@types'
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
@@ -161,13 +153,13 @@ export const TabStackNavigator = (): JSX.Element => {
 const HomeStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={HomeRoutesEnum.CREDENTIALS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIALS_OVERVIEW}
+        name={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
@@ -180,7 +172,7 @@ const HomeStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIAL_DETAILS}
+        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
         options={({ route }) => ({
           headerTitle: translate('credential_details_title'),
@@ -190,7 +182,7 @@ const HomeStack = (): JSX.Element => {
               showBackButton={Platform.OS === PlatformsEnum.IOS}
               showMoreButton // TODO this more button can look at when an action is passed in for visibility
               moreButtonAction={async () =>
-                RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
+                RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
                 })
               }
@@ -199,7 +191,7 @@ const HomeStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIAL_RAW_JSON}
+        name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
         component={SSICredentialRawJson}
         options={{
           headerTitle: 'Raw Credential', // TODO translate
@@ -215,13 +207,13 @@ const HomeStack = (): JSX.Element => {
 const ConnectionsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ConnectionRoutesEnum.CONNECTIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={ConnectionRoutesEnum.CONNECTIONS_OVERVIEW}
+        name={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
         component={SSIConnectionsOverviewScreen}
         options={{
           headerTitle: translate('connections_overview_title'),
@@ -236,7 +228,7 @@ const ConnectionsStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={ConnectionRoutesEnum.CONNECTION_DETAILS}
+        name={ScreenRoutesEnum.CONNECTION_DETAILS}
         component={SSIConnectionDetailsScreen}
         options={{
           headerTitle: translate('connection_details_title'),
@@ -252,20 +244,20 @@ const ConnectionsStack = (): JSX.Element => {
 const QRStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={QrRoutesEnum.QR_READER}
+      initialRouteName={ScreenRoutesEnum.QR_READER}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={QrRoutesEnum.QR_READER}
+        name={ScreenRoutesEnum.QR_READER}
         component={SSIQRReader}
         options={{
           headerShown: false
         }}
       />
       <Stack.Screen
-        name={QrRoutesEnum.VERIFICATION_CODE}
+        name={ScreenRoutesEnum.VERIFICATION_CODE}
         component={SSIVerificationCodeScreen}
         options={({ route }) => ({
           headerTitle: translate('verification_code_title'),
@@ -279,7 +271,7 @@ const QRStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={ConnectionRoutesEnum.CONNECTION_DETAILS}
+        name={ScreenRoutesEnum.CONNECTION_DETAILS}
         component={SSIConnectionDetailsScreen}
         options={{
           headerTitle: translate('connection_details_title'),
@@ -293,7 +285,7 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={QrRoutesEnum.PEX_VERIFICATION}
+        name={ScreenRoutesEnum.PEX_VERIFICATION}
         component={SSIPEXVerificationScreen}
         options={{
           headerTitle: 'Verification', // TODO translation
@@ -303,7 +295,7 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIAL_DETAILS}
+        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
         options={({ route }) => ({
           headerTitle: translate('credential_details_title'),
@@ -313,7 +305,7 @@ const QRStack = (): JSX.Element => {
               showBackButton={Platform.OS === PlatformsEnum.IOS}
               showMoreButton // TODO this more button can look at when an action is passed in for visibility
               moreButtonAction={async () =>
-                RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
+                RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
                 })
               }
@@ -322,7 +314,7 @@ const QRStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIAL_RAW_JSON}
+        name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
         component={SSICredentialRawJson}
         options={{
           headerTitle: 'Raw Credential', // TODO translate
@@ -339,13 +331,13 @@ const QRStack = (): JSX.Element => {
 const NotificationsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={HomeRoutesEnum.CREDENTIALS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={HomeRoutesEnum.CREDENTIALS_OVERVIEW}
+        name={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),

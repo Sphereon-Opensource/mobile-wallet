@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { connect } from 'react-redux'
 
-import { ConnectionRoutesEnum, ConnectionStatusEnum, RootRoutesEnum, StackParamList } from '../../@types'
+import { ConnectionStatusEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
 import { translate } from '../../localization/Localization'
@@ -18,7 +18,7 @@ import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 const format = require('string-format')
 
-type Props = NativeStackScreenProps<StackParamList, ConnectionRoutesEnum.CONNECTION_DETAILS>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTION_DETAILS>
 
 interface IScreenProps extends Props {
   authenticationEntities: Array<IAuthenticatedEntity>

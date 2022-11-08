@@ -4,7 +4,7 @@ import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { QR_SCANNER_TIMEOUT } from '../../@config/constants'
-import { IQrData, QrRoutesEnum, StackParamList } from '../../@types'
+import { IQrData, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker'
 import { translate } from '../../localization/Localization'
 import { parseQr, processQr } from '../../services/qrService'
@@ -14,7 +14,7 @@ import {
 } from '../../styles/styledComponents'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
-type Props = NativeStackScreenProps<StackParamList, QrRoutesEnum.QR_READER>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>
 
 const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
   const onRead = async (readEvent: BarCodeReadEvent) => {

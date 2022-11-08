@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
-import { PopupImagesEnum, QrRoutesEnum, RootRoutesEnum, StackParamList } from '../../@types'
+import { PopupImagesEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
@@ -12,7 +12,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/styledComponents'
 
-type Props = NativeStackScreenProps<StackParamList, QrRoutesEnum.VERIFICATION_CODE>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>
 
 const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
   const { route, navigation } = props
@@ -40,7 +40,7 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
               },
               primaryButton: {
                 caption: translate('verification_code_invalid_code_ok_action'),
-                onPress: async () => navigation.navigate(QrRoutesEnum.QR_READER, {})
+                onPress: async () => navigation.navigate(ScreenRoutesEnum.QR_READER, {})
               }
             })
           }}

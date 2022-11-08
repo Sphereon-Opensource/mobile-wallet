@@ -18,7 +18,7 @@ import { Resolver } from 'did-resolver'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
-import { CustomApprovalEnum, KeyManagementSystemEnum, QrRoutesEnum, SupportedDidMethodEnum } from '../@types'
+import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
 import * as RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { scanFingerPrint } from '../utils/BiometricUtils'
@@ -86,7 +86,7 @@ const agent = createAgent<
         verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT,
         sessionId: string
       ) => {
-        RootNavigation.navigate(QrRoutesEnum.PEX_VERIFICATION, {
+        RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
           request: verifiedAuthenticationRequest,
           sessionId
         })

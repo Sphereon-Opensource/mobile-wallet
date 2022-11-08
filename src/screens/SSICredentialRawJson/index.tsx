@@ -6,7 +6,7 @@ import JSONTree from 'react-native-json-tree'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import Share from 'react-native-share'
 
-import { HomeRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
@@ -14,7 +14,7 @@ import {
   SSIButtonBottomSingleContainerStyled
 } from '../../styles/styledComponents'
 
-type Props = NativeStackScreenProps<StackParamList, HomeRoutesEnum.CREDENTIAL_RAW_JSON>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>
 
 // The screen is WIP and created for the plugfest demo
 

@@ -7,17 +7,15 @@ import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import {
-  ConnectionRoutesEnum,
   ConnectionStatusEnum,
   CredentialIssuanceStateEnum,
-  HomeRoutesEnum,
   IQrAuthentication,
   IQrData,
   IQrDataArgs,
   IQrDidSiopAuthenticationRequest,
   NavigationBarRoutesEnum,
-  QrRoutesEnum,
-  QrTypesEnum
+  QrTypesEnum,
+  ScreenRoutesEnum
 } from '../@types'
 import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
@@ -147,7 +145,7 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
     ? translate('siop_oidc4vp_authentication_request_message')
     : translate('siop_authentication_request_message')
 
-  args.navigation.navigate(ConnectionRoutesEnum.CONNECTION_DETAILS, {
+  args.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, {
     entityName: new URL(args.qrData.redirectUrl.split('?')[0]).host,
     connection: connectFrom({
       type: ConnectionTypeEnum.DIDAUTH,
@@ -183,12 +181,12 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
   if (args.qrData.pin) {
     const manifest = await new JwtVcPresentationProfileProvider().getManifest(args.qrData)
-    args.navigation.navigate(QrRoutesEnum.VERIFICATION_CODE, {
+    args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
       pinLength: args.qrData.pin.length,
       credentialName: manifest.display.card.title || '[MISSING CREDENTIAL NAME]', // TODO translate
       // TODO WAL-301 need to send a response with a pin code to complete the process.
       onVerification: async (pin: string) =>
-        await args.navigation.navigate(NavigationBarRoutesEnum.HOME, { screen: HomeRoutesEnum.CREDENTIALS_OVERVIEW })
+        await args.navigation.navigate(NavigationBarRoutesEnum.HOME, { screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW })
     })
   }
   // TODO WAL-301 need to send a response when we do not need a pin code
@@ -206,7 +204,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
       })
       .then((credentialResponse: CredentialResponse) => {
         const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
-        args.navigation.navigate(HomeRoutesEnum.CREDENTIAL_DETAILS, {
+        args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
           rawCredential: credentialResponse.credential as unknown as VerifiableCredential,
           credential: toCredentialSummary(vc),
           state: CredentialIssuanceStateEnum.OFFER
@@ -218,7 +216,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
 
   // TODO user_pin_required needs an update from the lib to be an actual boolean
   if (args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true') {
-    args.navigation.navigate(QrRoutesEnum.VERIFICATION_CODE, {
+    args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
       credentialName: Array.isArray(args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type)
         ? args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type.join(', ')
         : args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type,

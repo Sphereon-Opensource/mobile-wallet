@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 
 import {
   CredentialIssuanceStateEnum,
-  HomeRoutesEnum,
   ICredentialDetailsRow,
   NavigationBarRoutesEnum,
+  ScreenRoutesEnum,
   StackParamList
 } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
@@ -28,7 +28,7 @@ import {
 } from '../../styles/styledComponents'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, HomeRoutesEnum.CREDENTIAL_DETAILS> {
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS> {
   storeVerifiableCredential: (vc: VerifiableCredential) => Promise<void>
 }
 
@@ -54,12 +54,13 @@ export class SSICredentialDetailsScreen extends PureComponent<IScreenProps> {
           state={this.props.route.params.state}
         />
         <HorizontalContainer style={{ height: 65, marginTop: 12, width: '80%' }}>
-          {typeof this.props.route.params.credential.issuer !== 'string' && this.props.route.params.credential.issuer.image && (
-            <Image
-              style={{ width: 63, height: 63 }}
-              source={{ uri: this.props.route.params.credential.issuer.image }}
-            />
-          )}
+          {typeof this.props.route.params.credential.issuer !== 'string' &&
+            this.props.route.params.credential.issuer.image && (
+              <Image
+                style={{ width: 63, height: 63 }}
+                source={{ uri: this.props.route.params.credential.issuer.image }}
+              />
+            )}
           <SignedByContainer style={{ marginLeft: 5 }}>
             <SignedByLabelCaption>{translate('credential_details_view_signed_by')}</SignedByLabelCaption>
             <SignedByValueCaption>{this.props.route.params.credential.signedBy}</SignedByValueCaption>
@@ -82,7 +83,7 @@ export class SSICredentialDetailsScreen extends PureComponent<IScreenProps> {
               title={translate('action_decline_label')}
               onPress={() => {
                 this.props.navigation.navigate(NavigationBarRoutesEnum.HOME, {
-                  screen: HomeRoutesEnum.CREDENTIALS_OVERVIEW
+                  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
                 })
                 showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_declined_toast'))
               }}
@@ -97,7 +98,7 @@ export class SSICredentialDetailsScreen extends PureComponent<IScreenProps> {
                   .storeVerifiableCredential(this.props.route.params.rawCredential!)
                   .then(() => {
                     this.props.navigation.navigate(NavigationBarRoutesEnum.HOME, {
-                      screen: HomeRoutesEnum.CREDENTIALS_OVERVIEW
+                      screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
                     })
                     showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast'))
                   })
