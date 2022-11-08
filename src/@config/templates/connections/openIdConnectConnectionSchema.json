@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "const": "openid"
+          },
+          "config": {
+            "type": "object",
+            "properties": {
+              "clientId": {
+                "type": "string"
+              },
+              "clientSecret": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "redirectUrl": {
+                "type": "string"
+              },
+              "dangerouslyAllowInsecureHttpRequests": {
+                "type": "boolean"
+              },
+              "clientAuthMethod": {
+                "enum": ["basic", "post"]
+              },
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true,
+              "required": ["clientId", "issuer", "redirectUrl", "scopes"]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["type", "config"]
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": ["id", "connections"],
+    "description": "Schema for openid connect connections"
+  }
+}

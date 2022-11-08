@@ -1,0 +1,142 @@
+import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
+import React, { PureComponent } from 'react'
+import { LogBox } from 'react-native'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { connect } from 'react-redux'
+
+import { ConnectionRoutesEnum, ConnectionStatusEnum, RootRoutesEnum, StackParamList } from '../../@types'
+import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
+import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
+import { translate } from '../../localization/Localization'
+import { RootState } from '../../store'
+import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
+import { IAuthenticatedEntity } from '../../store/types/authenticate.types'
+import {
+  SSIButtonBottomSingleContainerStyled as ButtonContainer,
+  SSIBasicHorizontalCenterContainerStyled as Container
+} from '../../styles/styledComponents'
+import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+
+const format = require('string-format')
+
+type Props = NativeStackScreenProps<StackParamList, ConnectionRoutesEnum.CONNECTION_DETAILS>
+
+interface IScreenProps extends Props {
+  authenticationEntities: Array<IAuthenticatedEntity>
+  authenticateConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
+  disconnectConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
+}
+
+export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
+  onDisconnectClick = () => {
+    this.props
+      .disconnectConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
+      .then(() => {
+        this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
+        showToast(
+          ToastTypeEnum.TOAST_SUCCESS,
+          format(translate('disconnect_provider_success_message'), this.props.route.params.entityName)
+        )
+      })
+      .catch((error) => {
+        if (!/User cancelled flow/.test(error)) {
+          showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+        }
+      })
+  }
+
+  onConnectClick = () => {
+    this.props
+      .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
+      .then(() => {
+        this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
+        showToast(
+          ToastTypeEnum.TOAST_SUCCESS,
+          format(translate('connect_provider_success_message'), this.props.route.params.entityName)
+        )
+      })
+      .catch((error) => {
+        // TODO refactor error type behaviour
+        if (!/User cancelled flow/.test(error) && !/Pex verification manual stop/.test(error)) {
+          showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+        }
+      })
+  }
+
+  render() {
+    const connectionStatus = this.props.authenticationEntities.find(
+      (entity: IAuthenticatedEntity) => entity.entityId === this.props.route.params.entityId
+    )
+      ? ConnectionStatusEnum.CONNECTED
+      : ConnectionStatusEnum.DISCONNECTED
+
+    return (
+      <Container>
+        <SSIConnectionDetailsView
+          entityConnection={{
+            ...this.props.route.params,
+            connectionStatus
+          }}
+        />
+        <ButtonContainer>
+          {connectionStatus === ConnectionStatusEnum.DISCONNECTED ? (
+            <SSIPrimaryButton
+              title={translate('connection_details_action_connect')}
+              onPress={() => {
+                // TODO: Remove and do not pass in the onclick below
+                LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+                this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
+                  message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
+                  buttons: [
+                    {
+                      caption: translate('alert_action_confirm'),
+                      onPress: async () => await this.onConnectClick()
+                    }
+                  ]
+                })
+              }}
+              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              style={{ flex: 1, height: 42 }}
+            />
+          ) : (
+            <SSIPrimaryButton
+              title={translate('connection_details_action_disconnect')}
+              onPress={() => {
+                // TODO: Remove and do not pass in the onclick below
+                LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+                this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
+                  message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
+                  buttons: [
+                    {
+                      caption: translate('alert_action_confirm'),
+                      onPress: async () => await this.onDisconnectClick()
+                    }
+                  ]
+                })
+              }}
+              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              style={{ flex: 1, height: 42 }}
+            />
+          )}
+        </ButtonContainer>
+      </Container>
+    )
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    authenticateConnectionEntity: async (entityId: string, connection: IConnection) =>
+      dispatch(authenticateConnectionEntity(entityId, connection)),
+    disconnectConnectionEntity: async (entityId: string, connection: IConnection) =>
+      dispatch(disconnectConnectionEntity(entityId, connection))
+  }
+}
+
+const mapStateToProps = (state: RootState) => {
+  return {
+    authenticationEntities: state.authentication.entities
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SSIConnectionDetailsScreen)
