@@ -1,15 +1,14 @@
-import { IssuanceInitiationWithBaseUrl } from '@sphereon/oid4vci-client'
-import { EndpointMetadata } from '@sphereon/oid4vci-client/dist/main/lib/types'
 import {
   CredentialFormatSupport,
   CredentialMetadata,
+  EndpointMetadata,
+  IssuanceInitiationWithBaseUrl,
   OID4VCICredentialFormatTypes
-} from '@sphereon/oid4vci-client/dist/main/lib/types/OID4VCIServerMetadata'
+} from '@sphereon/oid4vci-client'
 import { CredentialFormat } from '@sphereon/ssi-types'
 import { IIdentifier, TKeyType } from '@veramo/core'
 
 import { SupportedDidMethodEnum } from '../../did'
-import { SignatureAlgorithmEnum } from '../../identity'
 
 export interface IJwtOpts {
   identifier: IIdentifier

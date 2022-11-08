@@ -1,18 +1,12 @@
 import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import {
-  ConnectionRoutesEnum,
-  ConnectionStatusEnum,
-  HomeRoutesEnum,
-  IConnectionViewItem,
-  StackParamList
-} from '../../@types'
+import { ConnectionRoutesEnum, ConnectionStatusEnum, IConnectionViewItem, StackParamList } from '../../@types'
 import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton'
 import SSIConnectionsViewItem from '../../components/views/SSIConnectionsViewItem'
 import { RootState } from '../../store'

@@ -1,7 +1,7 @@
 import { VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { Image } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { connect } from 'react-redux'
 
 import {
@@ -9,7 +9,6 @@ import {
   HomeRoutesEnum,
   ICredentialDetailsRow,
   NavigationBarRoutesEnum,
-  QrRoutesEnum,
   StackParamList
 } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
@@ -55,7 +54,7 @@ export class SSICredentialDetailsScreen extends PureComponent<IScreenProps> {
           state={this.props.route.params.state}
         />
         <HorizontalContainer style={{ height: 65, marginTop: 12, width: '80%' }}>
-          {this.props.route.params.credential.issuer.image && (
+          {typeof this.props.route.params.credential.issuer !== 'string' && this.props.route.params.credential.issuer.image && (
             <Image
               style={{ width: 63, height: 63 }}
               source={{ uri: this.props.route.params.credential.issuer.image }}

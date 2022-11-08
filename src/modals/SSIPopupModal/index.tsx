@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { RootRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
@@ -48,6 +48,7 @@ export class SSIPopupModal extends PureComponent<Props, IScreenState> {
                     showExtraDetails: false
                   })
                 }
+                // TODO fix non null assertion
                 title={detailsPopup!.title}
                 details={detailsPopup!.details}
                 extraDetails={detailsPopup!.extraDetails}

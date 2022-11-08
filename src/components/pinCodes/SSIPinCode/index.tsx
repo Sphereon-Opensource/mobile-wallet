@@ -34,8 +34,8 @@ interface IScreenState {
   retry: number
   inputRef: TextInput | null
   secureCode: boolean
-  shakeAnimation: any
-  colorShiftAnimation: any
+  shakeAnimation: any // TODO fix type
+  colorShiftAnimation: any // TODO fix type
   showErrorMessage: boolean
 }
 
@@ -118,15 +118,19 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
   setInputFocus = () => {
     const { inputRef } = this.state
 
-    inputRef!.clear()
-    inputRef!.focus()
+    if (inputRef !== null) {
+      inputRef.clear()
+      inputRef.focus()
+    }
   }
 
   hideKeyboard = async () => {
     const { inputRef } = this.state
 
-    inputRef!.focus()
-    inputRef!.blur()
+    if (inputRef !== null) {
+      inputRef.focus()
+      inputRef.blur()
+    }
   }
 
   onKeyPressInput = ({ nativeEvent: { key } }: { nativeEvent: { key: string } }) => {

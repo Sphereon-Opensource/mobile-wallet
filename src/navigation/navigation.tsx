@@ -171,7 +171,12 @@ const HomeStack = (): JSX.Element => {
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder={true} />
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBorder={true} // TODO this more button can look at when an action is passed in for visibility
+            />
+          )
         }}
       />
       <Stack.Screen
@@ -183,9 +188,9 @@ const HomeStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton
+              showMoreButton // TODO this more button can look at when an action is passed in for visibility
               moreButtonAction={async () =>
-                await RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
+                RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
                 })
               }
@@ -199,7 +204,7 @@ const HomeStack = (): JSX.Element => {
         options={{
           headerTitle: 'Raw Credential', // TODO translate
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton={false} />
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
           )
         }}
       />
@@ -224,7 +229,7 @@ const ConnectionsStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton
+              showMoreButton // TODO this more button can look at when an action is passed in for visibility
               showBorder={true}
             />
           )
@@ -279,7 +284,11 @@ const QRStack = (): JSX.Element => {
         options={{
           headerTitle: translate('connection_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton />
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showMoreButton // TODO this more button can look at when an action is passed in for visibility
+            />
           )
         }}
       />
@@ -302,9 +311,9 @@ const QRStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton
+              showMoreButton // TODO this more button can look at when an action is passed in for visibility
               moreButtonAction={async () =>
-                await RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
+                RootNavigation.navigate(HomeRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
                 })
               }

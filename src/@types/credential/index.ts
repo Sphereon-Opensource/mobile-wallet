@@ -5,8 +5,7 @@ export enum CredentialStatusEnum {
 }
 
 export enum CredentialIssuanceStateEnum {
-  OFFER = 'offer',
-  ACCEPTED = 'accepted'
+  OFFER = 'offer'
 }
 
 // TODO create proper interface for credential summary / info

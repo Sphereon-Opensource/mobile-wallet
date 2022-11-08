@@ -1,13 +1,31 @@
-import { IssuanceInitiationWithBaseUrl } from '@sphereon/oid4vci-client'
+import { CredentialResponse, IssuanceInitiationWithBaseUrl } from '@sphereon/oid4vci-client'
+import { ConnectionIdentifierEnum, ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { CredentialMapper } from '@sphereon/ssi-types/src/mapper/credential-mapper'
+import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
-import { IQrData, QrTypesEnum, SupportedDidMethodEnum } from '../@types'
+import {
+  ConnectionRoutesEnum,
+  ConnectionStatusEnum,
+  CredentialIssuanceStateEnum,
+  HomeRoutesEnum,
+  IQrAuthentication,
+  IQrData,
+  IQrDataArgs,
+  IQrDidSiopAuthenticationRequest,
+  NavigationBarRoutesEnum,
+  QrRoutesEnum,
+  QrTypesEnum
+} from '../@types'
 import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
+import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
+import { authenticate } from './authenticationService'
+import { connectFrom } from './connectionService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
 
 const debug = Debug(`${APP_ID}:qrService`)
@@ -80,4 +98,133 @@ const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
     .catch((error: Error) => {
       return Promise.reject(error)
     })
+}
+
+export const processQr = async (args: IQrDataArgs) => {
+  switch (args.qrData.type) {
+    case QrTypesEnum.AUTH:
+      switch ((args.qrData as IQrAuthentication).mode) {
+        case ConnectionTypeEnum.DIDAUTH:
+          return connectDidAuth(args)
+      }
+      break
+    case QrTypesEnum.SIOPV2:
+      return connectSiopV2(args)
+    case QrTypesEnum.OPENID_VC:
+      return connectJwtVcPresentationProfile(args)
+    case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
+      return connectOpenId4VcIssuance(args)
+  }
+}
+
+const connectDidAuth = async (args: IQrDataArgs) => {
+  const identifier = await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+  const connection = connectFrom({
+    type: ConnectionTypeEnum.DIDAUTH,
+    identifier: {
+      type: ConnectionIdentifierEnum.DID,
+      correlationId: identifier.did
+    },
+    config: {
+      identifier,
+      stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
+      redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
+      sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did
+    }
+  })
+
+  authenticate(connection)
+    .then(() => console.log('authentication success'))
+    .catch((error) => {
+      if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
+        console.error('Error', error)
+      }
+    })
+}
+
+const connectSiopV2 = async (args: IQrDataArgs) => {
+  const purpose = args.qrData.body?.accept?.includes(ConnectionTypeEnum.SIOPV2_OIDC4VP)
+    ? translate('siop_oidc4vp_authentication_request_message')
+    : translate('siop_authentication_request_message')
+
+  args.navigation.navigate(ConnectionRoutesEnum.CONNECTION_DETAILS, {
+    entityName: new URL(args.qrData.redirectUrl.split('?')[0]).host,
+    connection: connectFrom({
+      type: ConnectionTypeEnum.DIDAUTH,
+      identifier: {
+        type: ConnectionIdentifierEnum.URL,
+        correlationId: args.qrData.redirectUrl
+      },
+      config: {
+        sessionId: args.qrData.id,
+        redirectUrl: args.qrData.redirectUrl,
+        stateId: args.qrData.state,
+        identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+      },
+      metadata: [
+        {
+          label: translate('metadata_purpose_label'),
+          value: purpose
+        },
+        {
+          label: translate('metadata_rp_did_label'),
+          value: args.qrData.from
+        },
+        {
+          label: translate('metadata_connection_url_label'),
+          value: args.qrData.redirectUrl.split('?')[0]
+        }
+      ]
+    }),
+    connectionStatus: ConnectionStatusEnum.DISCONNECTED
+  })
+}
+
+const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
+  if (args.qrData.pin) {
+    const manifest = await new JwtVcPresentationProfileProvider().getManifest(args.qrData)
+    args.navigation.navigate(QrRoutesEnum.VERIFICATION_CODE, {
+      pinLength: args.qrData.pin.length,
+      credentialName: manifest.display.card.title || '[MISSING CREDENTIAL NAME]', // TODO translate
+      // TODO WAL-301 need to send a response with a pin code to complete the process.
+      onVerification: async (pin: string) =>
+        await args.navigation.navigate(NavigationBarRoutesEnum.HOME, { screen: HomeRoutesEnum.CREDENTIALS_OVERVIEW })
+    })
+  }
+  // TODO WAL-301 need to send a response when we do not need a pin code
+}
+
+const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
+  const sendResponse = async (
+    issuanceInitiation: IssuanceInitiationWithBaseUrl,
+    pin?: string
+  ): Promise<void> => // TODO we do not need return CredentialResponse
+    new OpenId4VcIssuanceProvider()
+      .getCredentialFromIssuance({
+        issuanceInitiation,
+        ...(pin && { pin })
+      })
+      .then((credentialResponse: CredentialResponse) => {
+        const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
+        args.navigation.navigate(HomeRoutesEnum.CREDENTIAL_DETAILS, {
+          rawCredential: credentialResponse.credential as unknown as VerifiableCredential,
+          credential: toCredentialSummary(vc),
+          state: CredentialIssuanceStateEnum.OFFER
+        })
+      })
+      .catch((error: Error) => {
+        return Promise.reject(error)
+      })
+
+  // TODO user_pin_required needs an update from the lib to be an actual boolean
+  if (args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true') {
+    args.navigation.navigate(QrRoutesEnum.VERIFICATION_CODE, {
+      credentialName: Array.isArray(args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type)
+        ? args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type.join(', ')
+        : args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type,
+      onVerification: async (pin: string) => await sendResponse(args.qrData.issuanceInitiation, pin)
+    })
+  } else {
+    await sendResponse(args.qrData.issuanceInitiation)
+  }
 }

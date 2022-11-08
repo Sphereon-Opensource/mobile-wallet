@@ -1,11 +1,10 @@
+import { CredentialMapper, OriginalVerifiableCredential } from '@sphereon/ssi-types'
 import React, { FC } from 'react'
 import { View } from 'react-native'
-import Share from 'react-native-share'
 import { ScrollView } from 'react-native-gesture-handler'
 import JSONTree from 'react-native-json-tree'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
-
-// import Share from 'react-native-share'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import Share from 'react-native-share'
 
 import { HomeRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
@@ -14,8 +13,6 @@ import {
   SSIBasicHorizontalCenterContainerStyled,
   SSIButtonBottomSingleContainerStyled
 } from '../../styles/styledComponents'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
-import { CredentialMapper, OriginalVerifiableCredential } from '@sphereon/ssi-types'
 
 type Props = NativeStackScreenProps<StackParamList, HomeRoutesEnum.CREDENTIAL_RAW_JSON>
 
@@ -61,10 +58,6 @@ const SSICredentialRawJson: FC<Props> = (props: Props): JSX.Element => {
                 const base64VC = Buffer.from(JSON.stringify(rawCredential, null, 2), 'binary').toString('base64')
                 const base64Data = `data:application/json;base64,${base64VC}`
                 await Share.open({ url: base64Data }).catch((error) => console.log(error))
-                /*Clipboard.setString(JSON.stringify(rawCredential))
-                showToast(ToastTypeEnum.TOAST_SUCCESS, 'Copied to Clipboard')
-                console.log(`Raw representation: ${JSON.stringify(rawCredential, null, 2)}`)
-                */
                 console.log(
                   `VC:\r\n${JSON.stringify(
                     CredentialMapper.toUniformCredential(rawCredential as OriginalVerifiableCredential),

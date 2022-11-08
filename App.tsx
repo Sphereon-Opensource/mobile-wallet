@@ -14,7 +14,8 @@ import { backgrounds } from './src/styles/colors'
 
 LogBox.ignoreLogs([
   'Require cycle:', // Ignore require cycles for the app in dev mode. They do show up in Metro!
-  'Non-serializable values were found in the navigation state' // https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
+  'Non-serializable values were found in the navigation state', // https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
+  'Unable to activate keep awake' // We should implement a keep awake mechanism. https://docs.expo.dev/versions/latest/sdk/keep-awake/
 ])
 
 export default function App() {
@@ -31,12 +32,12 @@ export default function App() {
   }
 
   useEffect(() => {
-    async function prepare() {
+    async function prepare(): Promise<void> {
       try {
         // Keep the splash screen visible while we fetch resources
         // TODO: Enable splashscreen
         // await SplashScreen.preventAutoHideAsync()
-        // Pre-load fonts, make any API calls you need to do here
+        // Preload fonts, make any API calls you need to do here
         // await Font.loadAsync(Entypo.font);
         await loadFonts()
         // Artificially delay for two seconds to simulate a slow loading
@@ -50,7 +51,7 @@ export default function App() {
       }
     }
 
-    prepare()
+    void prepare()
   }, [])
 
   const onLayoutRootView = useCallback(async () => {

@@ -79,10 +79,10 @@ show interop for OID4VCI.
 7. Click on the '…' (meatballs) button to display a raw credential
    <br>
    <img src="./docs/VC_details.jpg" width=33% height=33%>
-8. Copy the raw credential to the clipboard by clicking on the ‘copy’ button
+8. Share the raw credential by pressing on the ‘share’ button
    <br>
    <img src="./docs/raw_credential.jpg" width=33% height=33%>
-9. Share the raw credential via your preferred app.
+9. Choose your preferred app to share.
    <br>
    <img src="./docs/share_credential.jpg" width=33% height=33%>
 

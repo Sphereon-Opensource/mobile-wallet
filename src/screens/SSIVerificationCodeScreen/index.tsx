@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { View } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { PopupImagesEnum, QrRoutesEnum, RootRoutesEnum, StackParamList } from '../../@types'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
@@ -22,6 +22,7 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
       <StatusBar />
       <PinCodeContainer>
         <SSIPinCode
+          // TODO fix non null assertion
           length={route.params.pinLength!}
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}

@@ -1,6 +1,5 @@
 import { SIOP } from '@sphereon/did-auth-siop'
-import { ICredential } from '@sphereon/ssi-types'
-import { UnsignedCredential, VerifiableCredential } from '@veramo/core'
+import { VerifiableCredential } from '@veramo/core'
 
 import {
   CredentialIssuanceStateEnum,

@@ -1,7 +1,7 @@
 import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop/dist/main/types/SIOP.types'
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { HomeRoutesEnum, QrRoutesEnum, StackParamList } from '../../@types'
 import SSIBackgroundImage from '../../assets/images/connections.svg'

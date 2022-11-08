@@ -1,7 +1,7 @@
-import { VerifiableCredential } from '@veramo/core/src/types/vc-data-model'
+import { VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 

@@ -4,21 +4,14 @@ import { CredentialMapper } from '@sphereon/ssi-types'
 import { IIdentifier, VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { Button, Text, View } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { connect } from 'react-redux'
 
-import {
-  ConnectionRoutesEnum,
-  CredentialIssuanceStateEnum,
-  HomeRoutesEnum,
-  QrRoutesEnum,
-  StackParamList
-} from '../@types'
+import { CredentialIssuanceStateEnum, HomeRoutesEnum, StackParamList } from '../@types'
 import { createIdentifier, getIdentifiers } from '../services/identityService'
 import { RootState } from '../store'
 import { authenticateConnectionEntity } from '../store/actions/authentication.actions'
 import { IAuthenticatedEntity, IOpenIdAuthentication } from '../store/types/authenticate.types'
-import dateUtils from '../utils/DateUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, 'Veramo'>
