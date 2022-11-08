@@ -15,15 +15,37 @@ happen at this point!__
 
 # SSI Wallet
 
-An Open-Source wallet with support for Decentralized Identifiers and that can accept and present Verifiable Credentials. It enables
-individuals and organisations to automatically exchange and validate the required information for inter-person and
-inter-company agreements and transactions, thus shortening application and onboarding processes. By default no
-integration or connection to any external system is being made.
+An Open-Source wallet with support for Decentralized Identifiers and that receive W3C Verifiable Credentials from
+Issuers and Present them to Verifiers.
 
+The wallet is build using our [SSI-SDK](https://github.com/Sphereon-Opensource/ssi-sdk), which you can use to create
+Issuer, Verifier agents as well as mobile and web wallets.
 
 ![Intro](./docs/intro.png)
 
+The wallet supports or soon will the following features:
+
+- W3C JWT and LDP/JSON-LD credentials
+- DID methods: ion, jwk, key, web, ethr, lto, factom, accumulate, cheqd
+- Uniform rendering and representation library
+- Card/Graphical and textual views
+- Presentation Exchange
+- Credential Manifest
+- Well-known DIDs (domain linkage of DIDs)
+- Self Issued Open Id Connect V2 (SIOPv2)
+- OpenID for Verifiable Credential Issuance (OID4VCI)
+- OpenID for Verifiable Presentations (OID4VP)
+- DIDComm v2 & WACI DIDComm
+- VC API and CHAPI
+- Mnemonic seed and key derivation
+- Microsoft Entra Verified ID integration
+- Sphereon VDX Platform integration
+
 ## OpenID for Verifiable Credential Issuance Demo flow
+
+Please note that the below flow was created as part of
+the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) and is showing an older design of the
+wallet.
 
 To get a credential issued to the wallet,
 using [OpenID for Verifiable Credential Issuance (OID4VCI)](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
