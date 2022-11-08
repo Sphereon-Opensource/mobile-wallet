@@ -25,21 +25,22 @@ Issuer, Verifier agents as well as mobile and web wallets.
 
 The wallet supports or soon will the following features:
 
-- W3C JWT and LDP/JSON-LD credentials
-- DID methods: ion, jwk, key, web, ethr, lto, factom, accumulate, cheqd
+- [W3C JWT and LDP/JSON-LD](https://www.w3.org/TR/vc-data-model/) credentials
+- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr, lto, factom, accumulate, cheqd
 - Uniform rendering and representation library
 - Card/Graphical and textual views
-- Presentation Exchange
-- Credential Manifest
-- Well-known DIDs (domain linkage of DIDs)
-- Self Issued Open Id Connect V2 (SIOPv2)
-- OpenID for Verifiable Credential Issuance (OID4VCI)
-- OpenID for Verifiable Presentations (OID4VP)
-- DIDComm v2 & WACI DIDComm
-- VC API and CHAPI
-- Mnemonic seed and key derivation
-- Microsoft Entra Verified ID integration
-- Sphereon VDX Platform integration
+- [Presentation Exchange](https://github.com/Sphereon-Opensource/pex)
+- [Credential Manifest](https://identity.foundation/credential-manifest/)
+- [Well-known DIDs (domain linkage of DIDs)](https://identity.foundation/.well-known/resources/did-configuration/)
+- [Self Issued Open Id Connect V2 (SIOPv2)](https://github.com/Sphereon-Opensource/did-auth-siop)
+- [OpenID for Verifiable Credential Issuance (OID4VCI)](https://github.com/Sphereon-Opensource/OID4VCI-client)
+- [OpenID for Verifiable Presentations (OID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
+- [DIDComm messagin v2](https://identity.foundation/didcomm-messaging/spec/) & [WACI DIDComm](https://identity.foundation/waci-didcomm/)
+- [JWT VC Presentation Profile](https://identity.foundation/jwt-vc-presentation-profile/)
+- [VC API](https://w3c-ccg.github.io/vc-api/) and [CHAPI](https://chapi.io/)
+- [Mnemonic seed and key derivation with backup](https://github.com/Sphereon-Opensource/ssi-sdk/tree/develop/packages/mnemonic-seed-manager)
+- [Microsoft Entra Verified ID integration](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-verified-id)
+- [Sphereon VDX Platform integration](https://sphereon.com/sphereon-vdx-verifiable-data-exchange/)
 
 ## OpenID for Verifiable Credential Issuance Demo flow
 
@@ -50,7 +51,7 @@ wallet.
 To get a credential issued to the wallet,
 using [OpenID for Verifiable Credential Issuance (OID4VCI)](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
 the following steps can be followed.
-The below issuer systems where part of the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) to
+The below issuer systems were part of the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) to
 show interop for OID4VCI.
 
 1. Launch the wallet
