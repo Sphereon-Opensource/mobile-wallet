@@ -82,7 +82,7 @@ show interop for OID4VCI.
 8. Share the raw credential by pressing on the ‘share’ button
    <br>
    <img src="./docs/raw_credential.jpg" width=33% height=33%>
-9. Choose your preferred app to share.
+9. Choose your preferred app to share the raw credential
    <br>
    <img src="./docs/share_credential.jpg" width=33% height=33%>
 
