@@ -76,7 +76,7 @@ show interop for OID4VCI.
 6. Choose the issued credential in the list of credentials
    <br>
    <img src="./docs/VC_list.jpg" width=33% height=33%>
-7. Click on the '…' (meatballs) button to display a raw credential
+7. Press the '…' (meatballs) button to display the raw credential
    <br>
    <img src="./docs/VC_details.jpg" width=33% height=33%>
 8. Share the raw credential by pressing the ‘share’ button
