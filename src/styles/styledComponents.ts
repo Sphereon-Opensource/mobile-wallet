@@ -6,8 +6,8 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import styled, { css } from 'styled-components/native'
 
 import { IHeaderProps } from '../@types'
-import ErrorIcon from '../assets/badges/exclamationMark.svg'
 import EntityIcon from '../assets/icons/entity.svg'
+import ErrorIcon from '../components/badges/SSIExclamationMarkBadge'
 import SSIIconButton from '../components/buttons/SSIIconButton'
 
 import { alerts, backgrounds, borders, fonts, highLightGradients, highlights } from './colors'
@@ -333,7 +333,9 @@ export const SSIBackIconStyled = styled(SSIIconButton)`
   margin-left: 24px;
 `
 
-export const SSIToastErrorIconStyled = styled(ErrorIcon)`
+export const SSIToastErrorIconStyled = styled(ErrorIcon).attrs({
+  size: 13
+})`
   margin-top: 1px;
 `
 
@@ -464,6 +466,7 @@ export const SSIDetailsViewSeparatorStyled = styled.View`
   border-bottom-color: #404d7a;
 `
 
+// TODO check this margin
 export const SSIDetailsViewDetailsListStyled = styled(FlatList)`
   margin-bottom: 12px;
 `

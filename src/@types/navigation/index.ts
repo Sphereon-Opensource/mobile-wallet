@@ -27,9 +27,17 @@ export type StackParamList = {
 }
 
 export interface ICredentialDetailsProps {
-  state?: CredentialIssuanceStateEnum
-  rawCredential?: VerifiableCredential
   credential: ICredentialSummary
+  primaryAction?: IButton // TODO needs to be IButton
+  secondaryAction?: IButton // TODO needs to be IButton
+  /*
+   TODO
+   We want to keep screens simple and we want one object representing the vc to avoid mismatches.
+   What we need is a list of actions that will be used for the 'more' button.
+  */
+  rawCredential?: VerifiableCredential
+
+  state?: CredentialIssuanceStateEnum
 }
 
 export interface ICredentialRawJsonProps {

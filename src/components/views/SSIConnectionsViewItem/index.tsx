@@ -12,7 +12,7 @@ import {
   SSITextH3LightStyled as ProviderCaption
 } from '../../../styles/styledComponents'
 import DateUtils from '../../../utils/DateUtils'
-import SSIConnectionStatus from '../../labels/SSIConnectionStatus'
+import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 export interface IProps extends IConnectionViewItem {
   showTime?: boolean
@@ -27,7 +27,7 @@ const SSIConnectionsViewItem: FC<IProps> = (props: IProps): JSX.Element => {
       <ContentTopContainer>
         <ProviderCaption>{props.entityName}</ProviderCaption>
         <ConnectionStatusCaption>
-          <SSIConnectionStatus status={props.connectionStatus} />
+          <SSIStatusLabel status={props.connectionStatus} />
         </ConnectionStatusCaption>
       </ContentTopContainer>
       <ContentMiddleContainer>

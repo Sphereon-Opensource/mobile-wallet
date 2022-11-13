@@ -1,10 +1,11 @@
-import { ConnectionStatusEnum, CredentialStatusEnum } from '../@types'
+import { LabelStatus } from '../@types'
 
-type Background = 'primaryDark' | 'secondaryDark' | 'primaryLight' | 'secondaryLight'
+type Background = 'primaryDark' | 'secondaryDark' | 'primaryLight' | 'secondaryLight' | 'tabViewDark'
 
 export const backgrounds: Record<Background, string> = {
   primaryDark: '#202537',
   // TODO fix this new color #2A3046(design) vs secondary color #2C334B(design)
+  tabViewDark: '#2C334B',
   secondaryDark: '#2A3046',
   primaryLight: '#FBFBFB',
   secondaryLight: '#E3E3FF'
@@ -91,15 +92,14 @@ export const fonts: Record<Font, string> = {
   greyedOut: '#8F8F8F'
 }
 
-export const credentialStatuses: Record<CredentialStatusEnum, string> = {
-  valid: '#00E957',
+export const Statuses: Record<LabelStatus, string> = {
+  valid: '#00C249',
   expired: '#FF9900',
-  revoked: '#EE5309'
-}
-
-export const connectionStatuses: Record<ConnectionStatusEnum, string> = {
-  connected: '#00E957',
-  disconnected: '#B2BEB5'
+  revoked: '#EE5309',
+  connected: '#00C249',
+  disconnected: '#B2BEB5',
+  verified: '#00C249',
+  unverified: '#FF9900'
 }
 
 type Status = 'error'

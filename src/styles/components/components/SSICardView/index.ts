@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import SSICredentialStatus from '../../../../components/labels/SSICredentialStatus'
+import SSIStatusLabel from '../../../../components/labels/SSIStatusLabel'
 import {
   SSIFlexDirectionRowViewStyled,
   SSIRoundedContainerStyled,
@@ -68,6 +68,6 @@ export const SSICardViewCredentialSubtitleTextStyled = styled(SSITextH5LightStyl
   text-align: right;
 `
 
-export const SSICardViewSSICredentialStatusStyled = styled(SSICredentialStatus)`
+export const SSICardViewSSICredentialStatusStyled = styled(SSIStatusLabel)`
   margin-left: auto;
 `

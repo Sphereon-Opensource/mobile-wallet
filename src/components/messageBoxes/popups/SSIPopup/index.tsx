@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 
 import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../@types'
-import SSICheckMarkBadge from '../../../../assets/badges/checkMark.svg'
-import SSIExclamationMarkBadge from '../../../../assets/badges/exclamationMark.svg'
 import SSISecurityImage from '../../../../assets/images/security.svg'
+import SSICheckmarkBadge from '../../../../components/badges/SSICheckmarkBadge'
+import SSIExclamationMarkBadge from '../../../../components/badges/SSIExclamationMarkBadge'
 import { backgrounds } from '../../../../styles/colors'
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,
@@ -78,6 +78,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           </DetailsButtonContainer>
         )}
       </ContentContainer>
+      {/*// TODO we use this 2 button structure a lot, we should make a component out of it*/}
       {(primaryButton || secondaryButton) && (
         <ButtonsContainer>
           {secondaryButton && (
@@ -110,9 +111,11 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
 const getBadge = (badge: PopupBadgesEnum): JSX.Element => {
   switch (badge) {
     case PopupBadgesEnum.CHECK_MARK:
-      return <SSICheckMarkBadge />
+      // TODO move to a styling component
+      return <SSICheckmarkBadge size={12} />
     case PopupBadgesEnum.EXCLAMATION_MARK:
-      return <SSIExclamationMarkBadge />
+      // TODO move to a styling component
+      return <SSIExclamationMarkBadge size={12} />
     default:
       return <View />
   }

@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native'
+import KeepAwake from 'expo-keep-awake'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -13,9 +14,16 @@ import store from './src/store'
 import { backgrounds } from './src/styles/colors'
 
 LogBox.ignoreLogs([
-  'Require cycle:', // Ignore require cycles for the app in dev mode. They do show up in Metro!
-  'Non-serializable values were found in the navigation state', // https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
-  'Unable to activate keep awake' // We should implement a keep awake mechanism. https://docs.expo.dev/versions/latest/sdk/keep-awake/
+  // Ignore require cycles for the app in dev mode. They do show up in Metro!
+  'Require cycle:',
+  /*
+    Non-serializable values were found in the navigation state. Check:
+    This can break usage such as persisting and restoring state. This might happen if you passed non-serializable values such as function, class instances etc. in params. If you need to use components with callbacks in your options, you
+    can use 'navigation.setOptions' instead. See https://reactnavigation.org/docs/troubleshooting#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state for more details.
+   */
+  'Non-serializable values were found in the navigation state',
+  // We should implement a keep awake mechanism. https://docs.expo.dev/versions/latest/sdk/keep-awake/
+  'Unable to activate keep awake'
 ])
 
 export default function App() {
@@ -37,12 +45,16 @@ export default function App() {
         // Keep the splash screen visible while we fetch resources
         // TODO: Enable splashscreen
         // await SplashScreen.preventAutoHideAsync()
+
         // Preload fonts, make any API calls you need to do here
         // await Font.loadAsync(Entypo.font);
         await loadFonts()
+
+        await KeepAwake.deactivateKeepAwake()
+
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+        //await new Promise((resolve) => setTimeout(resolve, 2000))
       } catch (e) {
         console.warn(e)
       } finally {

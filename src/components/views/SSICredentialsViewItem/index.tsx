@@ -14,7 +14,7 @@ import {
   SSITextH3LightStyled as TitleCaption
 } from '../../../styles/styledComponents'
 import DateUtils from '../../../utils/DateUtils'
-import SSICredentialStatus from '../../labels/SSICredentialStatus'
+import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 export interface Props extends ICredentialSummary {
   // TODO should only contain info this screen needs, ICredentialSummary is to much
@@ -22,17 +22,14 @@ export interface Props extends ICredentialSummary {
 }
 
 const SSICredentialsViewItem: FC<Props> = (props: Props): JSX.Element => {
-  // default values only
   const { showTime = false } = props
-
-  console.log(props)
 
   return (
     <View>
       <ContentTopContainer>
         <TitleCaption>{props.title}</TitleCaption>
         <CredentialStatusCaption>
-          <SSICredentialStatus status={props.credentialStatus} />
+          <SSIStatusLabel status={props.credentialStatus} />
         </CredentialStatusCaption>
       </ContentTopContainer>
       <ContentMiddleContainer>
