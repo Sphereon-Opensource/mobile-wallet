@@ -119,7 +119,6 @@ const getBadge = (badge: PopupBadgesEnum): JSX.Element => {
   }
 }
 
-
 const getImage = (image: PopupImagesEnum): JSX.Element => {
   switch (image) {
     case PopupImagesEnum.SECURITY:
