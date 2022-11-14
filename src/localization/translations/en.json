@@ -53,5 +53,8 @@
     "credential_card_expires_message": "Expires:",
     "issuer_status_verified": "Verified",
     "issuer_status_unverified": "Unverified",
-    "status_missing": "Unknown"
+    "status_missing": "Unknown",
+    "credential_details_receive_subtitle": "The information about the credential you are planning to add is stated below.",
+    "credential_details_info_tab_header_label": "Verified Info",
+    "credential_details_activity_tab_header_label": "Activity"
 }

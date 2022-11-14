@@ -3,7 +3,7 @@ import { View, ViewStyle } from 'react-native'
 
 import { ConnectionStatusEnum, CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../@types'
 import { translate } from '../../../localization/Localization'
-import { Statuses } from '../../../styles/colors'
+import { statuses } from '../../../styles/colors'
 import {
   SSIStatusLabelBadgeContainer as BadgeContainer,
   SSIStatusLabelContainerStyled as Container,
@@ -20,7 +20,7 @@ export interface IProps {
 }
 
 const SSIStatusLabel: FC<IProps> = (props: IProps): JSX.Element => {
-  const { status, color = Statuses[status], style, showIcon = false } = props
+  const { status, color = statuses[status], style, showIcon = false } = props
 
   return (
     <Container style={[style, { borderColor: color }]}>

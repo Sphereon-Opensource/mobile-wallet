@@ -82,6 +82,18 @@ export const SSITextH3LightStyled = styled(SSITextH3Styled)`
   color: ${fonts.light};
 `
 
+export const SSITextH3AnimatedStyled = styled(Animated.Text)`
+  font-family: ${fontStyle.h3SemiBold.fontFamily};
+  font-size: ${fontStyle.h3SemiBold.fontSize}px;
+  font-weight: ${fontStyle.h3SemiBold.fontWeight};
+  line-height: ${fontStyle.h3SemiBold.lineHeight}px;
+  height: 19px;
+`
+
+export const SSITextH3AnimatedLightStyled = styled(SSITextH3AnimatedStyled)`
+  color: ${fonts.light};
+`
+
 export const SSITextH4Styled = styled.Text`
   font-family: ${fontStyle.h4Regular.fontFamily};
   font-size: ${fontStyle.h4Regular.fontSize}px;

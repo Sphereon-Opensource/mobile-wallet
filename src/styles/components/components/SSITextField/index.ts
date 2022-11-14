@@ -1,9 +1,6 @@
 import styled from 'styled-components/native'
 
-import {
-  SSIFlexDirectionRowViewStyled,
-  SSITextH7SemiBoldLightStyled
-} from '../../../styledComponents';
+import { SSIFlexDirectionRowViewStyled, SSITextH7SemiBoldLightStyled } from '../../../styledComponents'
 
 export const SSITextFieldContainerStyled = styled.View`
   width: 100%;

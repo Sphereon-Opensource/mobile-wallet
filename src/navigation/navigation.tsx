@@ -304,6 +304,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
               showMoreButton // TODO this more button can look at when an action is passed in for visibility
+              headerSubTitle={'The information about the credential you are planning to add is stated below.'}
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential

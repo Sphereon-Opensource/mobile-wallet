@@ -19,8 +19,8 @@ import {
 import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
-import store from '../store';
-import {storeVerifiableCredential} from '../store/actions/credential.actions'
+import store from '../store'
+import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import { showToast, ToastTypeEnum } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
@@ -195,10 +195,7 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
-  const sendResponse = async (
-    issuanceInitiation: IssuanceInitiationWithBaseUrl,
-    pin?: string
-  ): Promise<void> =>
+  const sendResponse = async (issuanceInitiation: IssuanceInitiationWithBaseUrl, pin?: string): Promise<void> =>
     new OpenId4VcIssuanceProvider()
       .getCredentialFromIssuance({
         issuanceInitiation,
@@ -216,12 +213,15 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
           credential: toCredentialSummary(vc),
           primaryAction: {
             caption: translate('action_accept_label'),
-            onPress: async () => storeCredential(rawCredential)
-              .then(() => args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
-                screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-              }))
-              .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-              .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+            onPress: async () =>
+              storeCredential(rawCredential)
+                .then(() =>
+                  args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
+                    screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+                  })
+                )
+                .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+                .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
           },
           secondaryAction: {
             caption: translate('action_decline_label'),

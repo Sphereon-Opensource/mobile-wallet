@@ -9,7 +9,7 @@ import {
   SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
   SSITextFieldHeaderContainerStyled as HeaderContainer,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer
-} from '../../../styles/components';
+} from '../../../styles/components'
 import {
   SSIFlexDirectionRowViewStyled as ContentContainer,
   SSITextH5LightStyled as HeaderLabel
@@ -26,10 +26,7 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
   const { item, index } = props
 
   return (
-    <Container
-      key={item.id}
-      style={{marginTop: index === 0 ? 16 : 10}}
-    >
+    <Container key={item.id} style={{ marginTop: index === 0 ? 16 : 10 }}>
       <HeaderContainer>
         <HeaderLabel>{item.label}</HeaderLabel>
         {item.status && (

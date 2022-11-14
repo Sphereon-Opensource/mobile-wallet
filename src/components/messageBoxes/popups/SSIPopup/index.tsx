@@ -78,7 +78,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           </DetailsButtonContainer>
         )}
       </ContentContainer>
-      {/*// TODO we use this 2 button structure a lot, we should make a component out of it*/}
+      {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
       {(primaryButton || secondaryButton) && (
         <ButtonsContainer>
           {secondaryButton && (

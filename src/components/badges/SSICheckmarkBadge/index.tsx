@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
 
+import {fonts, statuses} from '../../../styles/colors'
+
 export interface IProps {
   size?: number
   color?: string
@@ -9,7 +11,7 @@ export interface IProps {
 }
 
 const SSICheckmarkBadge: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 15, color = '#FBFBFB', backgroundColor = '#00C249' } = props // TODO move color to colors
+  const { size = 15, color = fonts.light, backgroundColor = statuses.valid } = props
 
   return (
     <View style={{ width: size, aspectRatio: 1 }}>

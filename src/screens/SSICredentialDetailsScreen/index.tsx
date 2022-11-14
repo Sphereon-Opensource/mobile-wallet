@@ -8,6 +8,7 @@ import SSIActivityView from '../../components/views/SSIActivityView'
 import SSICardView from '../../components/views/SSICardView'
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView'
 import SSITabView from '../../components/views/SSITabView'
+import { translate } from '../../localization/Localization';
 import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
@@ -25,15 +26,10 @@ enum CredentialRoutesEnum {
 }
 
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { credential, primaryAction, secondaryAction } = props.route.params
-  const issuer = typeof credential.issuer === 'string'
-      ? credential.issuer
-      : credential.issuer.name
+  const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params
+  const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.name
 
-  const InfoRoute = () => <SSICredentialDetailsView
-      credentialProperties={credential.properties}
-      issuer={issuer}
-  />
+  const InfoRoute = () => <SSICredentialDetailsView credentialProperties={credential.properties} issuer={issuer} />
 
   const ActivityRoute = () => <SSIActivityView />
 
@@ -50,11 +46,11 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         </CardContainer>
         <SSITabView
           routes={[
-            { key: CredentialRoutesEnum.INFO, title: 'Verified Info', content: InfoRoute }, // TODO translate
-            { key: CredentialRoutesEnum.ACTIVITY, title: 'Activity', content: ActivityRoute } // TODO translate
+            { key: CredentialRoutesEnum.INFO, title: translate('credential_details_info_tab_header_label'), content: InfoRoute },
+            ...(showActivity ? [{ key: CredentialRoutesEnum.ACTIVITY, title: translate('credential_details_activity_tab_header_label'), content: ActivityRoute }] : [])
           ]}
         />
-        {/*// TODO we use this 2 button structure a lot, we should make a component out of it*/}
+        {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
         {(primaryAction || secondaryAction) && (
           <ButtonContainer>
             <ButtonContainerContent>
