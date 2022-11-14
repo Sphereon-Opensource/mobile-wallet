@@ -1,9 +1,19 @@
 import React, { FC } from 'react'
-import { Text, View } from 'react-native'
 
 import { ICredentialDetailsRow } from '../../../@types'
 import SSIEditIcon from '../../../assets/icons/edit.svg'
-import { SSIFlexDirectionRowViewStyled as HorizontalContainer } from '../../../styles/styledComponents'
+import {
+  SSITextFieldContainerStyled as Container,
+  SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
+  SSITextFieldContentTextStyled as ContentText,
+  SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
+  SSITextFieldHeaderContainerStyled as HeaderContainer,
+  SSITextFieldStatusLabelContainerStyled as StatusLabelContainer
+} from '../../../styles/components';
+import {
+  SSIFlexDirectionRowViewStyled as ContentContainer,
+  SSITextH5LightStyled as HeaderLabel
+} from '../../../styles/styledComponents'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 export interface IProps {
@@ -16,37 +26,29 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
   const { item, index } = props
 
   return (
-    <View
+    <Container
       key={item.id}
-      style={{
-        width: '100%',
-        marginTop: index === 0 ? 16 : 10,
-        paddingTop: 2,
-        paddingRight: 24,
-        paddingBottom: 4
-      }}
+      style={{marginTop: index === 0 ? 16 : 10}}
     >
-      <HorizontalContainer style={{ paddingLeft: 24 }}>
-        <Text style={{ fontSize: 10, lineHeight: 15, fontWeight: '400', color: '#FBFBFB' }}>{item.label}</Text>
+      <HeaderContainer>
+        <HeaderLabel>{item.label}</HeaderLabel>
         {item.status && (
-          <View style={{ marginLeft: 5 }}>
+          <StatusLabelContainer>
             <SSIStatusLabel status={item.status} showIcon />
-          </View>
+          </StatusLabelContainer>
         )}
-      </HorizontalContainer>
-      <HorizontalContainer>
-        <View style={{ width: 24 }}>
+      </HeaderContainer>
+      <ContentContainer>
+        <ContentBadgeContainer>
           {item.isEditable && (
-            <View style={{ marginTop: 3, marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto' }}>
+            <EditBadgeContainer>
               <SSIEditIcon />
-            </View>
+            </EditBadgeContainer>
           )}
-        </View>
-        <View>
-          <Text style={{ fontSize: 12, lineHeight: 18, fontWeight: '600', color: '#FBFBFB' }}>{item.value}</Text>
-        </View>
-      </HorizontalContainer>
-    </View>
+        </ContentBadgeContainer>
+        <ContentText>{item.value}</ContentText>
+      </ContentContainer>
+    </Container>
   )
 }
 

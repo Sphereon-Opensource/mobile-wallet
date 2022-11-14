@@ -146,6 +146,18 @@ export const SSITextH6LightStyled = styled(SSITextH6Styled)`
   color: ${fonts.light};
 `
 
+export const SSITextH7SemiBoldStyled = styled.Text`
+  font-family: ${fontStyle.h7SemiBold.fontFamily};
+  font-size: ${fontStyle.h7SemiBold.fontSize}px;
+  font-weight: ${fontStyle.h7SemiBold.fontWeight};
+  line-height: ${fontStyle.h7SemiBold.lineHeight}px;
+  height: auto;
+`
+
+export const SSITextH7SemiBoldLightStyled = styled(SSITextH7SemiBoldStyled)`
+  color: ${fonts.light};
+`
+
 // CSS
 export const SSIRoundedEdgesCss = css`
   border-radius: 8px;

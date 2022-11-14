@@ -33,9 +33,9 @@ const SSIStatusLabel: FC<IProps> = (props: IProps): JSX.Element => {
 const getStatusTranslation = (status: LabelStatus): string => {
   switch (status) {
     case IssuerStatusEnum.VERIFIED:
-      return 'Verified' // TODO
+      return translate('issuer_status_verified')
     case IssuerStatusEnum.UNVERIFIED:
-      return 'Unverified' // TODO
+      return translate('issuer_status_unverified')
     case CredentialStatusEnum.VALID:
       return translate('credential_status_valid')
     case CredentialStatusEnum.EXPIRED:
@@ -47,7 +47,7 @@ const getStatusTranslation = (status: LabelStatus): string => {
     case ConnectionStatusEnum.DISCONNECTED:
       return translate('connection_status_disconnected')
     default:
-      return 'Unknown' // TODO
+      return translate('status_missing')
   }
 }
 
@@ -62,7 +62,7 @@ const getStatusBadge = (status: LabelStatus, backgroundColor?: string): JSX.Elem
     case CredentialStatusEnum.EXPIRED:
       return <SSIExclamationMarkBadge backgroundColor={backgroundColor} />
     case CredentialStatusEnum.REVOKED:
-      return <View /> // TODO
+      return <View /> // TODO we are missing this in the design
     case ConnectionStatusEnum.CONNECTED:
       return <SSICheckmarkBadge backgroundColor={backgroundColor} />
     case ConnectionStatusEnum.DISCONNECTED:

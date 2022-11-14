@@ -10,7 +10,6 @@
     "credential_status_valid": "Valid",
     "credential_status_expired": "Expired",
     "credential_status_revoked": "Revoked",
-    "credential_status_missing_status": "Unknown",
     "credential_offer_accepted_toast": "Credential successfully stored",
     "credential_offer_declined_toast": "Credential offer declined",
     "biometrics_title": "Authenticate with biometrics",
@@ -20,7 +19,6 @@
     "qr_scanner_qr_no_longer_valid_message": "QR code is no longer valid. Please try to scan a new QR code.",
     "connection_status_connected": "Connected",
     "connection_status_disconnected": "Disconnected",
-    "connection_status_missing_status": "Unknown",
     "connections_overview_title": "Connections",
     "connection_details_title": "Connection Details",
     "connection_details_view_details": "Details",
@@ -52,5 +50,8 @@
     "verification_code_invalid_code_details_title": "Extra details",
     "verification_code_invalid_code_message": "Wrong verification code. Please try again.",
     "verification_code_attempts_left_message": "Attempts left:",
-    "credential_card_expires_message": "Expires:"
+    "credential_card_expires_message": "Expires:",
+    "issuer_status_verified": "Verified",
+    "issuer_status_unverified": "Unverified",
+    "status_missing": "Unknown"
 }

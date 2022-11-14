@@ -55,15 +55,7 @@ export class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
             dataStoreGetVerifiableCredential({ hash: itemInfo.item.id }).then((vc: VerifiableCredential) =>
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: vc as VerifiableCredential,
-                credential: itemInfo.item,
-                primaryAction: {
-                  caption: 'Accept',
-                  onPress: async () => console.log('')
-                },
-                secondaryAction: {
-                  caption: 'Decline',
-                  onPress: async () => console.log('')
-                }
+                credential: itemInfo.item
               })
             )
           }}
