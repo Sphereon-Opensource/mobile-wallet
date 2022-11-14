@@ -8,7 +8,6 @@ import { URL } from 'react-native-url-polyfill'
 import { APP_ID } from '../@config/constants'
 import {
   ConnectionStatusEnum,
-  CredentialIssuanceStateEnum,
   IQrAuthentication,
   IQrData,
   IQrDataArgs,
@@ -20,6 +19,9 @@ import {
 import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
+import store from '../store';
+import {storeVerifiableCredential} from '../store/actions/credential.actions'
+import { showToast, ToastTypeEnum } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 import { authenticate } from './authenticationService'
@@ -196,7 +198,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
   const sendResponse = async (
     issuanceInitiation: IssuanceInitiationWithBaseUrl,
     pin?: string
-  ): Promise<void> => // TODO we do not need return CredentialResponse
+  ): Promise<void> =>
     new OpenId4VcIssuanceProvider()
       .getCredentialFromIssuance({
         issuanceInitiation,
@@ -204,10 +206,27 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
       })
       .then((credentialResponse: CredentialResponse) => {
         const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
+        const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
+
+        // TODO fix this type issue
+        const storeCredential = async (vc: VerifiableCredential) => await store.dispatch(storeVerifiableCredential(vc))
+
         args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-          rawCredential: credentialResponse.credential as unknown as VerifiableCredential,
+          rawCredential,
           credential: toCredentialSummary(vc),
-          state: CredentialIssuanceStateEnum.OFFER
+          primaryAction: {
+            caption: translate('action_accept_label'),
+            onPress: async () => storeCredential(rawCredential)
+              .then(() => args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
+                screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+              }))
+              .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+              .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+          },
+          secondaryAction: {
+            caption: translate('action_decline_label'),
+            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER)
+          }
         })
       })
       .catch((error: Error) => {

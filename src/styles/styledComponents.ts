@@ -375,10 +375,6 @@ export const SSIDetailsViewCaptionDetailsStyled = styled(SSITextH5LightSemiBoldS
   margin-bottom: 9px;
 `
 
-export const SSICredentialDetailsViewCaptionSignedByStyled = styled(SSITextH5LightStyled)`
-  margin-bottom: 3px;
-`
-
 export const SSIPexMessageTitleStyled = styled(SSITextH4LightStyled)`
   margin-top: 40px;
 `
@@ -438,10 +434,6 @@ export const SSIDetailsViewRoundedContainerStyled = styled(SSIRoundedContainerBa
 export const SSIDetailsLabelsContainerStyled = styled.View`
   padding-top: 16px;
   height: 170px;
-`
-//height: 250px;
-export const SSICredentialDetailsViewSignedByContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`
-  height: 29px;
 `
 
 export const SSIButtonBottomSingleContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`

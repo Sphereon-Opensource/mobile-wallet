@@ -28,10 +28,10 @@ export type StackParamList = {
 
 export interface ICredentialDetailsProps {
   credential: ICredentialSummary
-  primaryAction?: IButton // TODO needs to be IButton
-  secondaryAction?: IButton // TODO needs to be IButton
+  primaryAction?: IButton
+  secondaryAction?: IButton
   /*
-   TODO
+   TODO WAL-340
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
    What we need is a list of actions that will be used for the 'more' button.
   */
