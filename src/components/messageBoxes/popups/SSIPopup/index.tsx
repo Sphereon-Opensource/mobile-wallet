@@ -3,8 +3,6 @@ import { TouchableOpacity, View } from 'react-native'
 
 import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../@types'
 import SSISecurityImage from '../../../../assets/images/security.svg'
-import SSICheckmarkBadge from '../../../../components/badges/SSICheckmarkBadge'
-import SSIExclamationMarkBadge from '../../../../components/badges/SSIExclamationMarkBadge'
 import { backgrounds } from '../../../../styles/colors'
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,
@@ -17,6 +15,8 @@ import {
   SSIPopupExtraDetailsTextStyled as ExtraDetailsText,
   SSIPopupHeaderContainerStyled as HeaderContainer,
   SSIPopupImageContainerStyled as ImageContainer,
+  SSICheckmarkBadgeStyled as SSICheckmarkBadge,
+  SSIExclamationMarkBadgeStyled as SSIExclamationMarkBadge,
   SSIPopupTitleBadgeContainerStyled as TitleBadgeContainer,
   SSIPopupTitleContainerStyled as TitleContainer
 } from '../../../../styles/components'
@@ -111,15 +111,14 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
 const getBadge = (badge: PopupBadgesEnum): JSX.Element => {
   switch (badge) {
     case PopupBadgesEnum.CHECK_MARK:
-      // TODO move to a styling component
-      return <SSICheckmarkBadge size={12} />
+      return <SSICheckmarkBadge />
     case PopupBadgesEnum.EXCLAMATION_MARK:
-      // TODO move to a styling component
-      return <SSIExclamationMarkBadge size={12} />
+      return <SSIExclamationMarkBadge />
     default:
       return <View />
   }
 }
+
 
 const getImage = (image: PopupImagesEnum): JSX.Element => {
   switch (image) {

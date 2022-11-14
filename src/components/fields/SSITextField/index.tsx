@@ -21,7 +21,6 @@ export interface IProps {
   index?: number
 }
 
-// TODO create styling components
 const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
   const { item, index } = props
 
