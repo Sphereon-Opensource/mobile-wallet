@@ -54,7 +54,7 @@
     "issuer_status_verified": "Geverifieerd",
     "issuer_status_unverified": "Ongeverifieerd",
     "status_missing": "Onbekent",
-    "credential_details_receive_subtitle": "De informatie over de crdential die u van plan bent toe te voegen, vindt u hieronder.",
+    "credential_details_receive_subtitle": "De informatie over de credential die u van plan bent toe te voegen, vindt u hieronder.",
     "credential_details_info_tab_header_label": "Geverifieerde Info",
     "credential_details_activity_tab_header_label": "Activiteit"
 }
