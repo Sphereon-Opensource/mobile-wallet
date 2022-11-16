@@ -4,23 +4,20 @@ import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { QR_SCANNER_TIMEOUT } from '../../@config/constants'
-import { IQrData, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker'
 import { translate } from '../../localization/Localization'
-import { parseQr, processQr } from '../../services/qrService'
+import { readQr } from '../../services/qrService'
 import {
   SSIFullFlexDirectionRowViewStyled as Container,
   SSIQRCodeScannerStyled as QRScanner
 } from '../../styles/styledComponents'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>
 
 const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
   const onRead = async (readEvent: BarCodeReadEvent) => {
-    parseQr(readEvent.data)
-      .then((qrData: IQrData) => processQr({ qrData, navigation: props.navigation }))
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+    await readQr({ qrData: readEvent.data, navigation: props.navigation })
   }
 
   return (

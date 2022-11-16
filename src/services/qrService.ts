@@ -12,6 +12,7 @@ import {
   IQrData,
   IQrDataArgs,
   IQrDidSiopAuthenticationRequest,
+  IReadQrArgs,
   NavigationBarRoutesEnum,
   QrTypesEnum,
   ScreenRoutesEnum
@@ -29,6 +30,12 @@ import { connectFrom } from './connectionService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
 
 const debug = Debug(`${APP_ID}:qrService`)
+
+export const readQr = async (args: IReadQrArgs): Promise<void> => {
+  parseQr(args.qrData)
+    .then((qrData: IQrData) => processQr({ qrData, navigation: args.navigation }))
+    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+}
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
@@ -208,24 +215,28 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         // TODO fix this type issue
         const storeCredential = async (vc: VerifiableCredential) => await store.dispatch(storeVerifiableCredential(vc))
 
-        args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-          rawCredential,
-          credential: toCredentialSummary(vc),
-          primaryAction: {
-            caption: translate('action_accept_label'),
-            onPress: async () =>
-              storeCredential(rawCredential)
-                .then(() =>
-                  args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
-                    screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-                  })
-                )
-                .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
-          },
-          secondaryAction: {
-            caption: translate('action_decline_label'),
-            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER)
+        // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+          params: {
+            rawCredential,
+            credential: toCredentialSummary(vc),
+            primaryAction: {
+              caption: translate('action_accept_label'),
+              onPress: async () =>
+                storeCredential(rawCredential)
+                  .then(() =>
+                    args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
+                      screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+                    })
+                  )
+                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+            },
+            secondaryAction: {
+              caption: translate('action_decline_label'),
+              onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER)
+            }
           }
         })
       })

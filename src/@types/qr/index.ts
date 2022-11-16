@@ -26,3 +26,8 @@ export interface IQrDataArgs {
   qrData: IQrData
   navigation: NativeStackNavigationProp<any> // TODO fix any type
 }
+
+export interface IReadQrArgs {
+  qrData: string
+  navigation: NativeStackNavigationProp<any> // TODO fix any type
+}

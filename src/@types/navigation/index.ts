@@ -1,13 +1,7 @@
 import { SIOP } from '@sphereon/did-auth-siop'
 import { VerifiableCredential } from '@veramo/core'
 
-import {
-  IButton,
-  IConnectionViewItem,
-  ICredentialSummary,
-  PopupBadgesEnum,
-  PopupImagesEnum
-} from '../index'
+import { IButton, IConnectionViewItem, ICredentialSummary, PopupBadgesEnum, PopupImagesEnum } from '../index'
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>

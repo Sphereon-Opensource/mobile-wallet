@@ -8,7 +8,7 @@ import SSIActivityView from '../../components/views/SSIActivityView'
 import SSICardView from '../../components/views/SSICardView'
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView'
 import SSITabView from '../../components/views/SSITabView'
-import { translate } from '../../localization/Localization';
+import { translate } from '../../localization/Localization'
 import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
@@ -46,8 +46,20 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         </CardContainer>
         <SSITabView
           routes={[
-            { key: CredentialRoutesEnum.INFO, title: translate('credential_details_info_tab_header_label'), content: InfoRoute },
-            ...(showActivity ? [{ key: CredentialRoutesEnum.ACTIVITY, title: translate('credential_details_activity_tab_header_label'), content: ActivityRoute }] : [])
+            {
+              key: CredentialRoutesEnum.INFO,
+              title: translate('credential_details_info_tab_header_label'),
+              content: InfoRoute
+            },
+            ...(showActivity
+              ? [
+                  {
+                    key: CredentialRoutesEnum.ACTIVITY,
+                    title: translate('credential_details_activity_tab_header_label'),
+                    content: ActivityRoute
+                  }
+                ]
+              : [])
           ]}
         />
         {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
