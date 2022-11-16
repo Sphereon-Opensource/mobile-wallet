@@ -82,10 +82,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <NavigationContainer
-            ref={navigationRef}
-            //linking={deepLinkingConfig}
-        >
+        <NavigationContainer ref={navigationRef}>
           <RootStackNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
