@@ -15,11 +15,11 @@ happen at this point!__
 
 # SSI Wallet
 
-An Open-Source wallet with support for Decentralized Identifiers and that receive W3C Verifiable Credentials from
+An Open-Source wallet with support for Decentralized Identifiers and that can receive W3C Verifiable Credentials from
 Issuers and Present them to Verifiers.
 
 The wallet is build using our [SSI-SDK](https://github.com/Sphereon-Opensource/ssi-sdk), which you can use to create
-Issuer, Verifier agents as well as mobile and web wallets.
+Issuer and Verifier agents as well as mobile and web wallets.
 
 ![Intro](./docs/intro.png)
 
@@ -33,9 +33,9 @@ The wallet supports or soon will the following features:
 - [Credential Manifest](https://identity.foundation/credential-manifest/)
 - [Well-known DIDs (domain linkage of DIDs)](https://identity.foundation/.well-known/resources/did-configuration/)
 - [Self Issued Open Id Connect V2 (SIOPv2)](https://github.com/Sphereon-Opensource/did-auth-siop)
-- [OpenID for Verifiable Credential Issuance (OID4VCI)](https://github.com/Sphereon-Opensource/OID4VCI-client)
-- [OpenID for Verifiable Presentations (OID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
-- [DIDComm messagin v2](https://identity.foundation/didcomm-messaging/spec/) & [WACI DIDComm](https://identity.foundation/waci-didcomm/)
+- [OpenID for Verifiable Credential Issuance (OpenID4VCI)](https://github.com/Sphereon-Opensource/OID4VCI-client)
+- [OpenID for Verifiable Presentations (OpenID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
+- [DIDComm messaging v2](https://identity.foundation/didcomm-messaging/spec/) & [WACI DIDComm](https://identity.foundation/waci-didcomm/)
 - [JWT VC Presentation Profile](https://identity.foundation/jwt-vc-presentation-profile/)
 - [VC API](https://w3c-ccg.github.io/vc-api/) and [CHAPI](https://chapi.io/)
 - [Mnemonic seed and key derivation with backup](https://github.com/Sphereon-Opensource/ssi-sdk/tree/develop/packages/mnemonic-seed-manager)
@@ -49,10 +49,10 @@ the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) a
 wallet.
 
 To get a credential issued to the wallet,
-using [OpenID for Verifiable Credential Issuance (OID4VCI)](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
+using [OpenID for Verifiable Credential Issuance (OpenID4VCI)](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)
 the following steps can be followed.
 The below issuer systems were part of the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) to
-show interop for OID4VCI.
+show interop for OpenID4VCI.
 
 1. Launch the wallet
 2. Navigate to the QR reader at the bottom left.
