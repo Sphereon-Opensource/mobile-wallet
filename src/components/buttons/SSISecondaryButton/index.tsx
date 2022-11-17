@@ -12,7 +12,7 @@ import {
 } from '../../../styles/styledComponents'
 
 export interface Props extends PressableProps {
-  title: string
+  title: string // TODO rename to caption
   disabled?: boolean | undefined
   onPress?: () => void
   style?: ViewStyle

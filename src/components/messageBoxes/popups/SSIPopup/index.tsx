@@ -2,8 +2,6 @@ import React, { FC } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 
 import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../@types'
-import SSICheckMarkBadge from '../../../../assets/badges/checkMark.svg'
-import SSIExclamationMarkBadge from '../../../../assets/badges/exclamationMark.svg'
 import SSISecurityImage from '../../../../assets/images/security.svg'
 import { backgrounds } from '../../../../styles/colors'
 import {
@@ -17,6 +15,8 @@ import {
   SSIPopupExtraDetailsTextStyled as ExtraDetailsText,
   SSIPopupHeaderContainerStyled as HeaderContainer,
   SSIPopupImageContainerStyled as ImageContainer,
+  SSICheckmarkBadgeStyled as SSICheckmarkBadge,
+  SSIExclamationMarkBadgeStyled as SSIExclamationMarkBadge,
   SSIPopupTitleBadgeContainerStyled as TitleBadgeContainer,
   SSIPopupTitleContainerStyled as TitleContainer
 } from '../../../../styles/components'
@@ -78,6 +78,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           </DetailsButtonContainer>
         )}
       </ContentContainer>
+      {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
       {(primaryButton || secondaryButton) && (
         <ButtonsContainer>
           {secondaryButton && (
@@ -110,7 +111,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
 const getBadge = (badge: PopupBadgesEnum): JSX.Element => {
   switch (badge) {
     case PopupBadgesEnum.CHECK_MARK:
-      return <SSICheckMarkBadge />
+      return <SSICheckmarkBadge />
     case PopupBadgesEnum.EXCLAMATION_MARK:
       return <SSIExclamationMarkBadge />
     default:

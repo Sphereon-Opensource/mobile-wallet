@@ -1,9 +1,9 @@
 import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop/dist/main/types/SIOP.types'
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
-import { HomeRoutesEnum, QrRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIBackgroundImage from '../../assets/images/connections.svg'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
@@ -21,7 +21,7 @@ import {
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 const { v4: uuidv4 } = require('uuid')
-type Props = NativeStackScreenProps<StackParamList, QrRoutesEnum.PEX_VERIFICATION>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PEX_VERIFICATION>
 
 const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
   const onAccept = () => {
@@ -30,7 +30,7 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       verifiedAuthenticationRequest: props.route.params.request
     })
       .then(() => {
-        props.navigation.navigate(HomeRoutesEnum.CREDENTIALS_OVERVIEW, {})
+        props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_OVERVIEW, {})
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
       })
       .catch((error: Error) => showToast(ToastTypeEnum.TOAST_SUCCESS, error.message)) // TODO make human readable message

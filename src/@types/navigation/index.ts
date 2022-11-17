@@ -1,9 +1,7 @@
 import { SIOP } from '@sphereon/did-auth-siop'
-import { ICredential } from '@sphereon/ssi-types'
-import { UnsignedCredential, VerifiableCredential } from '@veramo/core'
+import { VerifiableCredential } from '@veramo/core'
 
 import {
-  CredentialIssuanceStateEnum,
   IButton,
   IConnectionViewItem,
   ICredentialSummary,
@@ -11,53 +9,71 @@ import {
   PopupImagesEnum
 } from '../index'
 
-// TODO create interfaces for the screens
 export type StackParamList = {
   CredentialsOverview: Record<string, never>
-  CredentialDetails: {
-    state?: CredentialIssuanceStateEnum
-    rawCredential?: VerifiableCredential
-    credential: ICredentialSummary
-  }
-  CredentialRawJson: {
-    rawCredential: VerifiableCredential
-  }
+  CredentialDetails: ICredentialDetailsProps
+  CredentialRawJson: ICredentialRawJsonProps
   ConnectionsOverview: Record<string, never>
-  // TODO fix this omit, define better interfaces
+  // TODO create interface like bellow and fix this omit, define better interfaces
   ConnectionDetails: Omit<IConnectionViewItem, 'connectionStatus'>
-  PexVerification: {
-    request: SIOP.VerifiedAuthenticationRequestWithJWT
-    sessionId: string
-  }
+  PexVerification: IPexVerificationProps
   QrReader: Record<string, never>
   Veramo: Record<string, never>
   Main: Record<string, never>
-  VerificationCode: {
-    pinLength?: number
-    onVerification: (pin: string) => Promise<void>
-    credentialName: string
-  }
-  AlertModal: {
-    message: string
-    buttons: Array<IButton>
-    showCancel?: boolean
-  }
-  PopupModal: {
-    closeButtonOnPress?: () => Promise<void>
-    image?: PopupImagesEnum
+  VerificationCode: IVerificationCodeProps
+  AlertModal: IAlertModalProps
+  PopupModal: IPopupModalProps
+}
+
+export interface ICredentialDetailsProps {
+  credential: ICredentialSummary
+  primaryAction?: IButton
+  secondaryAction?: IButton
+  showActivity?: boolean
+  /*
+   TODO WAL-340
+   We want to keep screens simple and we want one object representing the vc to avoid mismatches.
+   What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
+  */
+  rawCredential?: VerifiableCredential
+}
+
+export interface ICredentialRawJsonProps {
+  rawCredential: VerifiableCredential
+}
+
+export interface IPexVerificationProps {
+  request: SIOP.VerifiedAuthenticationRequestWithJWT
+  sessionId: string
+}
+
+export interface IVerificationCodeProps {
+  pinLength?: number
+  onVerification: (pin: string) => Promise<void>
+  credentialName: string
+}
+
+export interface IAlertModalProps {
+  message: string
+  buttons: Array<IButton>
+  showCancel?: boolean
+}
+
+export interface IPopupModalProps {
+  closeButtonOnPress?: () => Promise<void>
+  image?: PopupImagesEnum
+  title?: string
+  titleBadge?: PopupBadgesEnum
+  details?: string
+  extraDetails?: string
+  detailsPopup?: {
+    buttonCaption: string
     title?: string
-    titleBadge?: PopupBadgesEnum
     details?: string
     extraDetails?: string
-    detailsPopup?: {
-      buttonCaption: string
-      title?: string
-      details?: string
-      extraDetails?: string
-    }
-    primaryButton?: IButton
-    secondaryButton?: IButton
   }
+  primaryButton?: IButton
+  secondaryButton?: IButton
 }
 
 export enum RootRoutesEnum {
@@ -73,19 +89,13 @@ export enum NavigationBarRoutesEnum {
   CONNECTIONS = 'ConnectionsStack'
 }
 
-export enum HomeRoutesEnum {
+export enum ScreenRoutesEnum {
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
-  CREDENTIAL_RAW_JSON = 'CredentialRawJson'
-}
-
-export enum QrRoutesEnum {
+  CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
-  PEX_VERIFICATION = 'PexVerification'
-}
-
-export enum ConnectionRoutesEnum {
+  PEX_VERIFICATION = 'PexVerification',
   CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
   CONNECTION_DETAILS = 'ConnectionDetails'
 }

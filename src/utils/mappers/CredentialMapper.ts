@@ -1,18 +1,13 @@
 import { ICredential } from '@sphereon/ssi-types'
-import { VerifiableCredential } from '@veramo/core/src/types/vc-data-model'
 
 import { CredentialStatusEnum, ICredentialDetailsRow, ICredentialSummary } from '../../@types'
 
 const { v4: uuidv4 } = require('uuid')
 
-function toCredentialDetailsRow(object: Object, level: number): ICredentialDetailsRow[] {
+function toCredentialDetailsRow(object: Record<string, any>, level: number): ICredentialDetailsRow[] {
   let rows: ICredentialDetailsRow[] = []
   // console.log(`OBJECT: ${JSON.stringify(object, null, 2)}`)
   for (const [key, value] of Object.entries(object)) {
-    /* if (value === undefined) {
-      continue
-    }*/
-
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
       // console.log(`IMAGE!!!!!${key}:${value}`)

@@ -1,12 +1,18 @@
+import { LabelStatus } from '../component'
+
 export enum CredentialStatusEnum {
   VALID = 'valid',
   EXPIRED = 'expired',
   REVOKED = 'revoked'
 }
 
+export enum IssuerStatusEnum {
+  VERIFIED = 'verified',
+  UNVERIFIED = 'unverified'
+}
+
 export enum CredentialIssuanceStateEnum {
-  OFFER = 'offer',
-  ACCEPTED = 'accepted'
+  OFFER = 'offer'
 }
 
 // TODO create proper interface for credential summary / info
@@ -33,4 +39,6 @@ export interface ICredentialDetailsRow {
   id: string
   label: string
   value: any
+  isEditable?: boolean
+  status?: LabelStatus
 }

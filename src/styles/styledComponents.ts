@@ -6,8 +6,8 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 import styled, { css } from 'styled-components/native'
 
 import { IHeaderProps } from '../@types'
-import ErrorIcon from '../assets/badges/exclamationMark.svg'
 import EntityIcon from '../assets/icons/entity.svg'
+import ErrorIcon from '../components/badges/SSIExclamationMarkBadge'
 import SSIIconButton from '../components/buttons/SSIIconButton'
 
 import { alerts, backgrounds, borders, fonts, highLightGradients, highlights } from './colors'
@@ -82,6 +82,18 @@ export const SSITextH3LightStyled = styled(SSITextH3Styled)`
   color: ${fonts.light};
 `
 
+export const SSITextH3AnimatedStyled = styled(Animated.Text)`
+  font-family: ${fontStyle.h3SemiBold.fontFamily};
+  font-size: ${fontStyle.h3SemiBold.fontSize}px;
+  font-weight: ${fontStyle.h3SemiBold.fontWeight};
+  line-height: ${fontStyle.h3SemiBold.lineHeight}px;
+  height: 19px;
+`
+
+export const SSITextH3AnimatedLightStyled = styled(SSITextH3AnimatedStyled)`
+  color: ${fonts.light};
+`
+
 export const SSITextH4Styled = styled.Text`
   font-family: ${fontStyle.h4Regular.fontFamily};
   font-size: ${fontStyle.h4Regular.fontSize}px;
@@ -143,6 +155,18 @@ export const SSITextH6Styled = styled.Text`
 `
 
 export const SSITextH6LightStyled = styled(SSITextH6Styled)`
+  color: ${fonts.light};
+`
+
+export const SSITextH7SemiBoldStyled = styled.Text`
+  font-family: ${fontStyle.h7SemiBold.fontFamily};
+  font-size: ${fontStyle.h7SemiBold.fontSize}px;
+  font-weight: ${fontStyle.h7SemiBold.fontWeight};
+  line-height: ${fontStyle.h7SemiBold.lineHeight}px;
+  height: auto;
+`
+
+export const SSITextH7SemiBoldLightStyled = styled(SSITextH7SemiBoldStyled)`
   color: ${fonts.light};
 `
 
@@ -333,7 +357,9 @@ export const SSIBackIconStyled = styled(SSIIconButton)`
   margin-left: 24px;
 `
 
-export const SSIToastErrorIconStyled = styled(ErrorIcon)`
+export const SSIToastErrorIconStyled = styled(ErrorIcon).attrs({
+  size: 13
+})`
   margin-top: 1px;
 `
 
@@ -359,10 +385,6 @@ export const SSIDetailsViewDetailsValueCaptionStyled = styled(SSITextH5LightSemi
 
 export const SSIDetailsViewCaptionDetailsStyled = styled(SSITextH5LightSemiBoldStyled)`
   margin-bottom: 9px;
-`
-
-export const SSICredentialDetailsViewCaptionSignedByStyled = styled(SSITextH5LightStyled)`
-  margin-bottom: 3px;
 `
 
 export const SSIPexMessageTitleStyled = styled(SSITextH4LightStyled)`
@@ -425,10 +447,6 @@ export const SSIDetailsLabelsContainerStyled = styled.View`
   padding-top: 16px;
   height: 170px;
 `
-//height: 250px;
-export const SSICredentialDetailsViewSignedByContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`
-  height: 29px;
-`
 
 export const SSIButtonBottomSingleContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`
   ${SSIButtonBottomContainerCss};
@@ -464,6 +482,7 @@ export const SSIDetailsViewSeparatorStyled = styled.View`
   border-bottom-color: #404d7a;
 `
 
+// TODO check this margin
 export const SSIDetailsViewDetailsListStyled = styled(FlatList)`
   margin-bottom: 12px;
 `

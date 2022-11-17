@@ -1,7 +1,7 @@
 import { TextStyle } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
 
-type FontSize = 100 | 200 | 300 | 400 | 500 | 600 | 700
+type FontSize = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800
 
 export const fontSize: Record<FontSize, number> = {
   100: RFValue(9),
@@ -10,10 +10,11 @@ export const fontSize: Record<FontSize, number> = {
   400: RFValue(14),
   500: RFValue(16),
   600: RFValue(24),
-  700: RFValue(36) // TODO fix order
+  700: RFValue(36), // TODO fix order
+  800: RFValue(12) // TODO fix order
 }
 
-type LineHeight = 100 | 200 | 300 | 400 | 500 | 600 | 700
+type LineHeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800
 
 export const lineHeight: Record<LineHeight, number> = {
   100: 13.5,
@@ -22,7 +23,8 @@ export const lineHeight: Record<LineHeight, number> = {
   400: 21,
   500: 24,
   600: 34, // TODO design says 36 which makes a part of the line disappear
-  700: 54
+  700: 54,
+  800: 18 // TODO fix the order
 }
 
 type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
@@ -52,6 +54,7 @@ type FontStyle =
   | 'h5Regular'
   | 'h5SemiBold'
   | 'h6'
+  | 'h7SemiBold'
 
 export const fontStyle: Record<FontStyle, TextStyle> = {
   h0SemiBold: {
@@ -113,5 +116,12 @@ export const fontStyle: Record<FontStyle, TextStyle> = {
     fontSize: fontSize[100],
     fontWeight: fontWeight[400],
     lineHeight: lineHeight[100]
+  },
+  h7SemiBold: {
+    // TODO fix the order
+    fontFamily: 'Poppins-SemiBold', // TODO fix solution for just having Poppins as font family and using fontweight (which is now baked into the font family)
+    fontSize: fontSize[800],
+    fontWeight: fontWeight[600],
+    lineHeight: lineHeight[800]
   }
 }

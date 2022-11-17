@@ -76,13 +76,13 @@ show interop for OpenID4VCI.
 6. Choose the issued credential in the list of credentials
    <br>
    <img src="./docs/VC_list.jpg" width=33% height=33%>
-7. Click on the '…' (meatballs) button to display a raw credential
+7. Press the '…' (meatballs) button to display the raw credential
    <br>
    <img src="./docs/VC_details.jpg" width=33% height=33%>
-8. Copy the raw credential to the clipboard by clicking on the ‘copy’ button
+8. Share the raw credential by pressing the ‘share’ button
    <br>
    <img src="./docs/raw_credential.jpg" width=33% height=33%>
-9. Share the raw credential via your preferred app.
+9. Choose your preferred app to share the raw credential
    <br>
    <img src="./docs/share_credential.jpg" width=33% height=33%>
 

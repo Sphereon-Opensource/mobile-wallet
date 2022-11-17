@@ -2,6 +2,7 @@ import {
   AccessTokenClient,
   AccessTokenResponse,
   Alg,
+  CredentialMetadata,
   CredentialRequestClientBuilder,
   CredentialResponse,
   EndpointMetadata,
@@ -11,7 +12,6 @@ import {
   MetadataClient,
   ProofOfPossessionOpts
 } from '@sphereon/oid4vci-client'
-import { CredentialMetadata } from '@sphereon/oid4vci-client/dist/main/lib/types/OID4VCIServerMetadata'
 import { KeyUse } from '@sphereon/ssi-sdk-jwk-did-provider'
 import { CredentialFormat } from '@sphereon/ssi-types'
 import { DIDResolutionResult, IIdentifier } from '@veramo/core'
@@ -155,6 +155,7 @@ class OpenId4VcIssuanceProvider {
           identifier: args.jwtOpts.identifier,
           header: { ...signArgs.header, typ: 'JWT' },
           payload: signArgs.payload,
+          // TODO fix non null assertion
           options: { issuer: signArgs.payload.iss!, expiresIn: signArgs.payload.exp, canonicalize: false }
         })
     }
@@ -191,6 +192,7 @@ class OpenId4VcIssuanceProvider {
     if (id.provider.endsWith(SupportedDidMethodEnum.DID_JWK)) {
       fragment = '#0'
     } else if (id.provider.endsWith(SupportedDidMethodEnum.DID_KEY)) {
+      // TODO fix non null assertion
       fragment = didResult.didDocument?.authentication![0] as string
     } else if (didResult.didDocument?.authentication && Array.isArray(didResult.didDocument?.authentication)) {
       if (typeof didResult.didDocument?.authentication[0] === 'string') {
@@ -265,7 +267,10 @@ class OpenId4VcIssuanceProvider {
     const credentials_supported = args.metadata.oid4vci_metadata.credentials_supported
     const credentialMetadata: CredentialMetadata =
       credentials_supported[
-        Object.keys(credentials_supported).find((key) => key.toLowerCase().includes(args.credentialType.toLowerCase()))!
+        // TODO fix non null assertion
+        Object.keys(credentials_supported).find((key: string) =>
+          key.toLowerCase().includes(args.credentialType.toLowerCase())
+        )!
       ]
 
     if (!credentialMetadata) {

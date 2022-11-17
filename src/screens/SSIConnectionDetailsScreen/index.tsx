@@ -1,10 +1,9 @@
 import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
-import { LogBox } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types'
+import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 import { connect } from 'react-redux'
 
-import { ConnectionRoutesEnum, ConnectionStatusEnum, RootRoutesEnum, StackParamList } from '../../@types'
+import { ConnectionStatusEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
 import { translate } from '../../localization/Localization'
@@ -19,7 +18,7 @@ import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 const format = require('string-format')
 
-type Props = NativeStackScreenProps<StackParamList, ConnectionRoutesEnum.CONNECTION_DETAILS>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTION_DETAILS>
 
 interface IScreenProps extends Props {
   authenticationEntities: Array<IAuthenticatedEntity>
@@ -28,8 +27,9 @@ interface IScreenProps extends Props {
 }
 
 export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
-  onDisconnectClick = () => {
+  onDisconnectClick = async (): Promise<void> => {
     this.props
+      // TODO fix non null assertion
       .disconnectConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
       .then(() => {
         this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
@@ -45,8 +45,9 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
       })
   }
 
-  onConnectClick = () => {
+  onConnectClick = async (): Promise<void> => {
     this.props
+      // TODO fix non null assertion
       .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
       .then(() => {
         this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
@@ -82,38 +83,34 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
           {connectionStatus === ConnectionStatusEnum.DISCONNECTED ? (
             <SSIPrimaryButton
               title={translate('connection_details_action_connect')}
-              onPress={() => {
-                // TODO: Remove and do not pass in the onclick below
-                LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+              onPress={() =>
                 this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
                   message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
                   buttons: [
                     {
                       caption: translate('alert_action_confirm'),
-                      onPress: async () => await this.onConnectClick()
+                      onPress: this.onConnectClick
                     }
                   ]
                 })
-              }}
+              }
               // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
           ) : (
             <SSIPrimaryButton
               title={translate('connection_details_action_disconnect')}
-              onPress={() => {
-                // TODO: Remove and do not pass in the onclick below
-                LogBox.ignoreLogs(['Non-serializable values were found in the navigation state'])
+              onPress={() =>
                 this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
                   message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
                   buttons: [
                     {
                       caption: translate('alert_action_confirm'),
-                      onPress: async () => await this.onDisconnectClick()
+                      onPress: this.onDisconnectClick
                     }
                   ]
                 })
-              }}
+              }
               // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />

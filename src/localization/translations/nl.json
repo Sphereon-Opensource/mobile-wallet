@@ -10,7 +10,6 @@
     "credential_status_valid": "Geldig",
     "credential_status_expired": "Verlopen",
     "credential_status_revoked": "Ingetrokken",
-    "credential_status_missing_status": "Onbekend",
     "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
     "credential_offer_declined_toast": "Credential aanbieding geweigerd",
     "biometrics_title": "Authenticeren met biometrie",
@@ -20,7 +19,6 @@
     "qr_scanner_qr_no_longer_valid_message": "QR-code is niet meer geldig. Probeer een nieuwe QR-code te scannen.",
     "connection_status_connected": "Verbonden",
     "connection_status_disconnected": "Verbroken",
-    "connection_status_missing_status": "Onbekend",
     "connections_overview_title": "Verbindingen",
     "connection_details_title": "Verbinding Details",
     "connection_details_view_details": "Details",
@@ -52,5 +50,11 @@
     "verification_code_invalid_code_details_title": "Extra details",
     "verification_code_invalid_code_message": "Verkeerde verificatie code. Probeer het opnieuw.",
     "verification_code_attempts_left_message": "Pogingen over:",
-    "credential_card_expires_message": "Verloopt:"
+    "credential_card_expires_message": "Verloopt:",
+    "issuer_status_verified": "Geverifieerd",
+    "issuer_status_unverified": "Ongeverifieerd",
+    "status_missing": "Onbekent",
+    "credential_details_receive_subtitle": "De informatie over de credential die u van plan bent toe te voegen, vindt u hieronder.",
+    "credential_details_info_tab_header_label": "Geverifieerde Info",
+    "credential_details_activity_tab_header_label": "Activiteit"
 }

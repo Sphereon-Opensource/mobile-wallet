@@ -1,5 +1,3 @@
-import { OriginalVerifiableCredential } from '@sphereon/ssi-types'
-import { CredentialMapper } from '@sphereon/ssi-types/src/mapper/credential-mapper'
 import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 
 import { dataStoreORMGetVerifiableCredentials, dataStoreSaveVerifiableCredential } from '../agent'

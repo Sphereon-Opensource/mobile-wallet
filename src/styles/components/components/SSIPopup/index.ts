@@ -1,5 +1,7 @@
 import styled from 'styled-components/native'
 
+import SSICheckmarkBadge from '../../../../components/badges/SSICheckmarkBadge'
+import SSIExclamationMarkBadge from '../../../../components/badges/SSIExclamationMarkBadge'
 import { buttons, fonts } from '../../../colors'
 import {
   SSIFlexDirectionRowViewStyled,
@@ -69,3 +71,12 @@ export const SSIPopupButtonsContainerStyled = styled(SSIFlexDirectionRowViewStyl
   padding-left: 18px;
   padding-right: 18px;
 `
+
+export const SSICheckmarkBadgeStyled = styled(SSICheckmarkBadge).attrs({
+  size: 12
+})``
+
+export const SSIExclamationMarkBadgeStyled = styled(SSIExclamationMarkBadge).attrs({
+  size: 12
+})``
+
