@@ -10,6 +10,7 @@ import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
+import DeepLinkProvider from './src/providers/deepLinking/DeepLinkProvider';
 import store from './src/store'
 import { backgrounds } from './src/styles/colors'
 
@@ -29,32 +30,31 @@ LogBox.ignoreLogs([
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
 
-  // TODO create better implementation for this
-  StatusBar.setBarStyle('light-content', true)
-  StatusBar.setBackgroundColor(backgrounds.primaryDark)
-  StatusBar.setTranslucent(false)
-  Localization.setI18nConfig()
-
-  const loadFonts = async (): Promise<void> => {
-    await _loadFontsAsync()
-  }
-
   useEffect(() => {
     async function prepare(): Promise<void> {
       try {
+        // TODO create better implementation for this
+        StatusBar.setBarStyle('light-content', true)
+        StatusBar.setBackgroundColor(backgrounds.primaryDark)
+        StatusBar.setTranslucent(false)
+        Localization.setI18nConfig()
+
         // Keep the splash screen visible while we fetch resources
         // TODO: Enable splashscreen
         // await SplashScreen.preventAutoHideAsync()
 
         // Preload fonts, make any API calls you need to do here
         // await Font.loadAsync(Entypo.font);
-        await loadFonts()
+        await _loadFontsAsync()
 
         await KeepAwake.deactivateKeepAwake()
 
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         //await new Promise((resolve) => setTimeout(resolve, 2000))
+
+        // Add listener for deep links
+        await DeepLinkProvider.enableDeepLinking()
       } catch (e) {
         console.warn(e)
       } finally {

@@ -79,4 +79,3 @@ export const SSICheckmarkBadgeStyled = styled(SSICheckmarkBadge).attrs({
 export const SSIExclamationMarkBadgeStyled = styled(SSIExclamationMarkBadge).attrs({
   size: 12
 })``
-
