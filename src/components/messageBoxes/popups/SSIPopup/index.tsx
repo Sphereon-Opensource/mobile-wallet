@@ -3,7 +3,8 @@ import { TouchableOpacity, View } from 'react-native'
 
 import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../@types'
 import SSISecurityImage from '../../../../assets/images/security.svg'
-import { backgrounds } from '../../../../styles/colors'
+import SSIWarningImage from '../../../../assets/images/warning.svg'
+import { backgrounds, fonts } from '../../../../styles/colors'
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,
   SSIPopupCloseButtonContainerStyled as CloseButtonContainer,
@@ -27,7 +28,7 @@ import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../../buttons/SSISecondaryButton'
 
 export interface IProps {
-  closeButtonOnPress?: () => Promise<void>
+  onClose?: () => Promise<void>
   image?: PopupImagesEnum
   title?: string
   titleBadge?: PopupBadgesEnum
@@ -36,11 +37,12 @@ export interface IProps {
   detailsButton?: IButton
   primaryButton?: IButton
   secondaryButton?: IButton
+  darkMode?: boolean
 }
 
 const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   const {
-    closeButtonOnPress,
+    onClose,
     image,
     title,
     titleBadge,
@@ -48,15 +50,20 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
     extraDetails,
     detailsButton,
     primaryButton,
-    secondaryButton
+    secondaryButton,
+    darkMode = false
   } = props
 
   return (
-    <Container>
+    <Container style={{ backgroundColor: darkMode ? backgrounds.primaryDark : undefined }}>
       <HeaderContainer>
-        {closeButtonOnPress && (
+        {onClose && (
           <CloseButtonContainer>
-            <SSIIconButton icon={ButtonIconsEnum.CLOSE} onPress={closeButtonOnPress} />
+            <SSIIconButton
+              icon={ButtonIconsEnum.CLOSE}
+              iconColor={darkMode ? fonts.light : undefined}
+              onPress={onClose}
+            />
           </CloseButtonContainer>
         )}
       </HeaderContainer>
@@ -65,10 +72,12 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         {title && (
           <TitleContainer>
             {titleBadge && <TitleBadgeContainer>{getBadge(titleBadge)}</TitleBadgeContainer>}
-            <TitleCaption>{title}</TitleCaption>
+            <TitleCaption style={{ color: darkMode ? fonts.light : undefined }}>{title}</TitleCaption>
           </TitleContainer>
         )}
-        {details && <DetailsText>{parseTextToElement(details)}</DetailsText>}
+        {details && (
+          <DetailsText style={{ color: darkMode ? fonts.light : undefined }}>{parseTextToElement(details)}</DetailsText>
+        )}
         {extraDetails && <ExtraDetailsText>{parseTextToElement(extraDetails)}</ExtraDetailsText>}
         {detailsButton && (
           <DetailsButtonContainer>
@@ -123,6 +132,8 @@ const getImage = (image: PopupImagesEnum): JSX.Element => {
   switch (image) {
     case PopupImagesEnum.SECURITY:
       return <SSISecurityImage />
+    case PopupImagesEnum.WARNING:
+      return <SSIWarningImage />
     default:
       return <View />
   }

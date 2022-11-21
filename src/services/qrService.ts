@@ -8,12 +8,14 @@ import { URL } from 'react-native-url-polyfill'
 import { APP_ID } from '../@config/constants'
 import {
   ConnectionStatusEnum,
+  IErrorDetails,
   IQrAuthentication,
   IQrData,
   IQrDataArgs,
   IQrDidSiopAuthenticationRequest,
   IReadQrArgs,
   NavigationBarRoutesEnum,
+  PopupImagesEnum,
   QrTypesEnum,
   ScreenRoutesEnum
 } from '../@types'
@@ -241,7 +243,29 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         })
       })
       .catch((error: Error) => {
-        return Promise.reject(error)
+        // TODO refactor once the lib returns a proper response object
+        const errorResponse = JSON.parse(error.message.split('response:')[1].trim())
+
+        if (errorResponse?.status === 403) {
+          return Promise.reject(error)
+        }
+
+        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error)
+
+        args.navigation.navigate(ScreenRoutesEnum.ERROR, {
+          image: PopupImagesEnum.WARNING,
+          title: errorDetails.title,
+          details: errorDetails.message,
+          detailsPopup: {
+            buttonCaption: translate('action_view_extra_details'),
+            title: errorDetails.detailsTitle,
+            details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`
+          },
+          primaryButton: {
+            caption: translate('action_ok_label'),
+            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+          }
+        })
       })
 
   // TODO user_pin_required needs an update from the lib to be an actual boolean

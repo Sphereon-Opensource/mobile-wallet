@@ -4,14 +4,16 @@ import { PressableProps, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
 import { ButtonIconsEnum } from '../../../@types'
 import SSIBackIcon from '../../../assets/icons/back.svg'
-import SSICloseIcon from '../../../assets/icons/close.svg'
 import SSIMoreIcon from '../../../assets/icons/more.svg'
+import SSICloseIcon from '../../../components/icons/SSICloseIcon'
 
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum
+  onPress: () => void
   disabled?: boolean | undefined
   style?: ViewStyle
-  onPress?: () => void
+  iconSize?: number
+  iconColor?: string
 }
 
 // TODO add feedback to button
@@ -28,19 +30,19 @@ const SSIIconButton: FC<Props> = (props: Props): JSX.Element => {
         right: HIT_SLOP_DISTANCE
       }}
     >
-      {getIcon(props.icon)}
+      {getIcon(props.icon, props.iconSize, props.iconColor)}
     </TouchableOpacity>
   )
 }
 
-const getIcon = (icon: ButtonIconsEnum): JSX.Element => {
+const getIcon = (icon: ButtonIconsEnum, size?: number, color?: string): JSX.Element => {
   switch (icon) {
     case ButtonIconsEnum.BACK:
       return <SSIBackIcon />
     case ButtonIconsEnum.MORE:
       return <SSIMoreIcon />
     case ButtonIconsEnum.CLOSE:
-      return <SSICloseIcon />
+      return <SSICloseIcon size={size} color={color} />
     default:
       return <View />
   }

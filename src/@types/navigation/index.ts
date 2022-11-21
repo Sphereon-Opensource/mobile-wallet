@@ -17,6 +17,7 @@ export type StackParamList = {
   VerificationCode: IVerificationCodeProps
   AlertModal: IAlertModalProps
   PopupModal: IPopupModalProps
+  Error: IPopupModalProps
 }
 
 export interface ICredentialDetailsProps {
@@ -54,7 +55,7 @@ export interface IAlertModalProps {
 }
 
 export interface IPopupModalProps {
-  closeButtonOnPress?: () => Promise<void>
+  onClose?: () => Promise<void>
   image?: PopupImagesEnum
   title?: string
   titleBadge?: PopupBadgesEnum
@@ -91,5 +92,6 @@ export enum ScreenRoutesEnum {
   VERIFICATION_CODE = 'VerificationCode',
   PEX_VERIFICATION = 'PexVerification',
   CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
-  CONNECTION_DETAILS = 'ConnectionDetails'
+  CONNECTION_DETAILS = 'ConnectionDetails',
+  ERROR = 'Error'
 }
