@@ -11,14 +11,15 @@ import { NavigationBarRoutesEnum, PlatformsEnum, RootRoutesEnum, ScreenRoutesEnu
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
-import { SSIAlertModal } from '../modals/SSIAlertModal'
-import { SSIPopupModal } from '../modals/SSIPopupModal'
+import SSIAlertModal from '../modals/SSIAlertModal'
+import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
 import SSICredentialRawJson from '../screens/SSICredentialRawJson'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
+import SSIErrorScreen from '../screens/SSIErrorScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIQRReader from '../screens/SSIQRReader'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
@@ -166,7 +167,7 @@ const HomeStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBorder={true} // TODO this more button can look at when an action is passed in for visibility
+              showBorder // TODO this more button can look at when an action is passed in for visibility
             />
           )
         }}
@@ -200,6 +201,13 @@ const HomeStack = (): JSX.Element => {
           )
         }}
       />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+        }}
+      />
     </Stack.Navigator>
   )
 }
@@ -222,7 +230,7 @@ const ConnectionsStack = (): JSX.Element => {
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
               showMoreButton // TODO this more button can look at when an action is passed in for visibility
-              showBorder={true}
+              showBorder
             />
           )
         }}
@@ -235,6 +243,13 @@ const ConnectionsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton />
           )
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
         }}
       />
     </Stack.Navigator>
@@ -324,6 +339,13 @@ const QRStack = (): JSX.Element => {
           )
         }}
       />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+        }}
+      />
     </Stack.Navigator>
   )
 }
@@ -343,6 +365,13 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('credentials_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder={true} />
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
         }}
       />
     </Stack.Navigator>

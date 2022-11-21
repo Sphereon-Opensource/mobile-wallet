@@ -2773,13 +2773,23 @@
     cross-fetch "^3.1.5"
     typeorm "0.3.10"
 
-"@sphereon/ssi-sdk-core@0.8.1-unstable.74", "@sphereon/ssi-sdk-core@^0.8.1-unstable.74+12dae72":
+"@sphereon/ssi-sdk-core@0.8.1-unstable.74":
   version "0.8.1-unstable.74"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-core/-/ssi-sdk-core-0.8.1-unstable.74.tgz#8554aed5ec7df53f296319029ac290a29421b450"
   integrity sha512-7pY+iZVJCbPyo0c3Oi6jv7TwLPmRKZdxhNcnXepe6DF25qpoxjyJoSlAtuy54LWXFSbJqFnRN7hLRWxe58WU1A==
   dependencies:
     "@scure/base" "^1.1.1"
     "@sphereon/ssi-types" "^0.8.1-unstable.74+12dae72"
+    "@veramo/core" "4.1.1"
+    typeorm "0.3.10"
+
+"@sphereon/ssi-sdk-core@^0.8.1-unstable.74+12dae72":
+  version "0.8.1-unstable.86"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-core/-/ssi-sdk-core-0.8.1-unstable.86.tgz#0f871a18929e5917d414c27a8c08e648b839d542"
+  integrity sha512-apW1cJewNzmxo3iJk5l87vqrRAXqF7+p4TxxwRnHmQ8ffqNZFTxKc67Lft4W3jgwTH9Sn2Az61Dp9/gbqiSS+Q==
+  dependencies:
+    "@scure/base" "^1.1.1"
+    "@sphereon/ssi-types" "^0.8.1-unstable.86+55d3de7"
     "@veramo/core" "4.1.1"
     typeorm "0.3.10"
 
@@ -2858,7 +2868,7 @@
     "@veramo/core" "4.1.1"
     cross-fetch "^3.1.5"
 
-"@sphereon/ssi-types@0.8.1-next.6", "@sphereon/ssi-types@0.8.1-unstable.74", "@sphereon/ssi-types@^0.8.1-unstable.74+12dae72":
+"@sphereon/ssi-types@0.8.1-next.6", "@sphereon/ssi-types@0.8.1-unstable.74", "@sphereon/ssi-types@^0.8.1-unstable.74+12dae72", "@sphereon/ssi-types@^0.8.1-unstable.86+55d3de7":
   version "0.8.1-unstable.74"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.8.1-unstable.74.tgz#b5558a6c52aad87f7e4f8aada49676a2ece503af"
   integrity sha512-Zk5xO1rM8OBkm0qOKP+sltepGgwF5Hcvp9BSrfw7n4kHq3jIEsRyILWMRFvQiK8di+rODjocSbkqm8Gx7CjWow==

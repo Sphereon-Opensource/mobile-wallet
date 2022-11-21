@@ -1,17 +1,17 @@
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { RootRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
-import { SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer } from '../../styles/components'
 import {
-  SSIBasicModalContainerStyled as Container,
-  SSIPopupModalContentContainerStyled as ModalContentContainer
-} from '../../styles/styledComponents'
+  SSIErrorScreenContentContainerStyled as ContentContainer,
+  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer
+} from '../../styles/components'
+import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
 
-type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.POPUP_MODAL>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 
-const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
+const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
   const {
     onClose,
     image,
@@ -28,7 +28,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <ModalContentContainer>
+      <ContentContainer>
         {showExtraDetails && detailsPopup && (
           <ExtraDetailsContainer>
             <SSIPopup
@@ -36,10 +36,10 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
               title={detailsPopup.title}
               details={detailsPopup.details}
               extraDetails={detailsPopup.extraDetails}
+              darkMode
             />
           </ExtraDetailsContainer>
         )}
-
         <SSIPopup
           onClose={onClose}
           image={image}
@@ -57,10 +57,11 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
           }
           primaryButton={primaryButton}
           secondaryButton={secondaryButton}
+          darkMode
         />
-      </ModalContentContainer>
+      </ContentContainer>
     </Container>
   )
 }
 
-export default SSIPopupModal
+export default SSIErrorScreenScreen
