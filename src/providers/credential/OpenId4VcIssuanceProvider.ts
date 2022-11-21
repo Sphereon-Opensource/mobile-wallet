@@ -233,7 +233,6 @@ class OpenId4VcIssuanceProvider {
         })
         .catch((error: Error) => {
           debug(`Unable to get credential: ${error}`)
-          console.log(`Unable to get credential: ${error}`)
           return Promise.reject(error)
         })
     )
