@@ -13,7 +13,7 @@ import {
 
 type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.ALERT_MODAL>
 
-export const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
+const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
   const { message, buttons, showCancel = true } = props.route.params
 
   return (
@@ -32,3 +32,5 @@ export const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
     </Container>
   )
 }
+
+export default SSIAlertModal

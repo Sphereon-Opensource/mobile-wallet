@@ -4,17 +4,23 @@ import Debug from 'debug'
 
 import {APP_ID} from '../../@config/constants'
 import {
-    ICredentialFormatOpts,
-    IGetCredentialArgs,
-    IGetCredentialsArgs,
-    IGetIssuanceCryptoSuiteArgs,
-    IGetIssuanceInitiationFromUriArgs,
-    IGetVcIssuanceFormatArgs,
-    IIssuanceOpts,
-    QrTypesEnum,
-    SignatureAlgorithmEnum,
-    SupportedDidMethodEnum
+  ICredentialFormatOpts,
+  IErrorDetails,
+  IGetAccessTokenArgs,
+  IGetCredentialArgs,
+  IGetCredentialFromIssuanceArgs,
+  IGetIssuanceCryptoSuiteArgs,
+  IGetIssuanceInitiationFromUriArgs,
+  IGetIssuanceOptsArgs,
+  IGetMetaDataArgs,
+  IGetVcIssuanceFormatArgs,
+  IIssuanceOpts,
+  Oidc4vciErrorEnum,
+  QrTypesEnum,
+  SignatureAlgorithmEnum,
+  SupportedDidMethodEnum
 } from '../../@types'
+import { translate } from '../../localization/Localization'
 import {getFirstKeyWithRelation, getOrCreatePrimaryIdentifier} from '../../services/identityService'
 import {signJWT} from '../../services/signatureService'
 import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils'
@@ -57,6 +63,59 @@ export const jwtCryptographicSuitePreferences = [
 
 
 class OpenId4VcIssuanceProvider {
+  public static getErrorDetails = (error: Oidc4vciErrorEnum): IErrorDetails => {
+    // We want to move this over to some general error handling within the app
+    const genericError = {
+      title: translate('error_generic_title'),
+      message: translate('error_generic_message'),
+      detailsMessage: `<b>${translate('error_details_generic_message')}</b>`
+    }
+
+    switch (error) {
+      case Oidc4vciErrorEnum.INVALID_REQUEST:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_invalid_request')
+        }
+      case Oidc4vciErrorEnum.INVALID_CLIENT:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_invalid_client')
+        }
+      case Oidc4vciErrorEnum.INVALID_GRANT:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_invalid_grant')
+        }
+      case Oidc4vciErrorEnum.UNAUTHORIZED_CLIENT:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_unauthorized_client')
+        }
+      case Oidc4vciErrorEnum.UNSUPPORTED_GRANT_TYPE:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_unsupported_grant_type')
+        }
+      case Oidc4vciErrorEnum.INVALID_SCOPE:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_unsupported_invalid_scope')
+        }
+      case Oidc4vciErrorEnum.INVALID_OR_MISSING_PROOF:
+        return {
+          ...genericError,
+          detailsTitle: translate('oidc4vci_error_invalid_or_missing_proof')
+        }
+      default:
+        return {
+          ...genericError,
+          detailsTitle: translate('error_details_generic_title')
+        }
+    }
+  }
+
+
     private readonly client: OpenID4VCIClient
     private serverMetadata: EndpointMetadata | undefined;
     private credentialsSupported: CredentialsSupported | undefined;
@@ -115,6 +174,7 @@ class OpenId4VcIssuanceProvider {
         const key = await getFirstKeyWithRelation(id, 'authentication', false) || await getFirstKeyWithRelation(id, 'verificationMethod', true) as _ExtendedIKey
         const kid = key.meta.verificationMethod.id
         const alg = SignatureAlgorithmFromKey(key)
+        console.log(`Unable to get token: ${error}`)
 
         const callbacks: ProofOfPossessionCallbacks = {
             signCallback: (jwt: Jwt, kid: string) => {

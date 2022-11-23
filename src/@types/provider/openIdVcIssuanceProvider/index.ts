@@ -55,3 +55,13 @@ export interface ICredentialFormatOpts {
   credentialFormat: CredentialFormatSupport
   format: OpenID4VCICredentialFormatTypes
 }
+
+export enum Oidc4vciErrorEnum {
+  INVALID_REQUEST = 'invalid_request',
+  INVALID_CLIENT = 'invalid_client',
+  INVALID_GRANT = 'invalid_grant-vc',
+  UNAUTHORIZED_CLIENT = 'unauthorized_client',
+  UNSUPPORTED_GRANT_TYPE = 'unsupported_grant_type',
+  INVALID_SCOPE = 'invalid_scope',
+  INVALID_OR_MISSING_PROOF = 'invalid_or_missing_proof'
+}

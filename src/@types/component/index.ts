@@ -10,7 +10,8 @@ export enum ButtonIconsEnum {
 }
 
 export enum PopupImagesEnum {
-  SECURITY = 'security'
+  SECURITY = 'security',
+  WARNING = 'warning'
 }
 
 export enum PopupBadgesEnum {
