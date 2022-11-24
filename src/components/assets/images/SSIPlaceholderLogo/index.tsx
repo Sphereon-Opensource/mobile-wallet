@@ -2,13 +2,15 @@ import { FC } from 'react'
 import { View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
+import { logos } from '../../../../styles/colors';
+
 export interface IProps {
   size?: number
   color?: string
 }
 
 const SSIPlaceholderLogo: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 32, color = '#FBFBFB' } = props // TODO color
+  const { size = 32, color = logos.default } = props
 
   return (
     <View style={{ width: size, aspectRatio: 1 }}>

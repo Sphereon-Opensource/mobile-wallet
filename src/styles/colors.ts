@@ -122,3 +122,9 @@ type CredentialCard = 'default'
 export const credentialCards: Record<CredentialCard, string> = {
   default: '#5BDED2'
 }
+
+type Logo = 'default'
+
+export const logos: Record<Logo, string> = {
+  default: '#FBFBFB'
+}
