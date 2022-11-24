@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
 
-import { credentialLogos } from '../../../../styles/colors'
+import { credentialCards } from '../../../../styles/colors'
 import {
   SSICredentialLogoImageStyled as BackgroundImage,
   SSICredentialLogoContainerStyled as Container,
@@ -15,7 +15,7 @@ export interface IProps {
 }
 
 const SSICredentialLogo: FC<IProps> = (props: IProps): JSX.Element => {
-  const { image, style, backgroundColor = credentialLogos.default } = props
+  const { image, style, backgroundColor = credentialCards.default } = props
   const backgroundImage = image ? { uri: image } : {}
 
   return (

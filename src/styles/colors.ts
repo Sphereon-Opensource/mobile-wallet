@@ -116,15 +116,9 @@ export const selectionElements: Record<SelectionElement, string> = {
   primaryBorderDark: '#FBFBFB'
 }
 
-type CredentialLogo = 'default'
-
-export const credentialLogos: Record<CredentialLogo, string> = {
-  default: '#4D7CE6'
-}
-
 // TODO WAL-303 add support for randomized colors to avoid getting the same color multiple times
 type CredentialCard = 'default'
 
 export const credentialCards: Record<CredentialCard, string> = {
-  default: '#7276F7'
+  default: '#5BDED2'
 }
