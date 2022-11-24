@@ -75,3 +75,7 @@ export enum Oidc4vciErrorEnum {
   INVALID_SCOPE = 'invalid_scope',
   INVALID_OR_MISSING_PROOF = 'invalid_or_missing_proof'
 }
+
+export interface IGetSupportedCredentialsArgs {
+  metadata: EndpointMetadata
+}

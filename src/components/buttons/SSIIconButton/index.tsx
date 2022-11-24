@@ -5,7 +5,7 @@ import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
 import { ButtonIconsEnum } from '../../../@types'
 import SSIBackIcon from '../../../assets/icons/back.svg'
 import SSIMoreIcon from '../../../assets/icons/more.svg'
-import SSICloseIcon from '../../../components/icons/SSICloseIcon'
+import SSICloseIcon from '../../assets/icons/SSICloseIcon'
 
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum

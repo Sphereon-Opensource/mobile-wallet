@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
 
-import { fonts, statuses } from '../../../styles/colors'
+import { fonts, statuses } from '../../../../styles/colors'
 
 export interface IProps {
   size?: number

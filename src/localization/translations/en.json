@@ -1,5 +1,4 @@
 {
-    "credential_offer_screen_title": "Add Credential",
     "credential_details_action_share": "Share",
     "credential_details_title": "Credential Details",
     "credentials_overview_title": "Credentials",
@@ -67,5 +66,10 @@
     "oidc4vci_error_unauthorized_client": "App is not authorized",
     "oidc4vci_error_unsupported_grant_type": "Unsupported grant type specified",
     "oidc4vci_error_unsupported_invalid_scope": "Unsupported scope type specified",
-    "oidc4vci_error_invalid_or_missing_proof": "Credential has invalid or is missing proof"
+    "oidc4vci_error_invalid_or_missing_proof": "Credential has invalid or is missing proof",
+    "credential_select_type_title": "Select credentials",
+    "credential_select_type_subtitle": "The issuer {0}, supports issuing the following credentials. Select the ones that you would like to receive in your wallet.",
+    "pex_verification_title": "Verification",
+    "raw_credential_title": "Raw credential",
+    "credential_details_subtitle": "The information about the credential you are planning to add is stated below."
 }

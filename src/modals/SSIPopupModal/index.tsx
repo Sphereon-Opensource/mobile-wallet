@@ -12,17 +12,8 @@ import {
 type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.POPUP_MODAL>
 
 const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
-  const {
-    onClose,
-    image,
-    title,
-    titleBadge,
-    details,
-    extraDetails,
-    detailsPopup,
-    primaryButton,
-    secondaryButton
-  } = props.route.params
+  const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
+    props.route.params
 
   const [showExtraDetails, setShowExtraDetails] = React.useState(false)
 

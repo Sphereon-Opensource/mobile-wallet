@@ -15,9 +15,8 @@ import { IAuthenticatedEntity } from '../../store/types/authenticate.types'
 import { backgrounds } from '../../styles/colors'
 import {
   SSIBasicContainerStyled as Container,
-  SSICredentialsViewItemContentContainerStyled as ContentContainer,
-  SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer,
-  SSICredentialsViewItemContainerStyled as ItemContainer
+  SSICredentialsViewItemContentContainerStyled as ItemContainer,
+  SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer
 } from '../../styles/styledComponents'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
@@ -46,12 +45,10 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
       >
         <SSISwipeDeleteButton onPress={() => console.log('Delete connection pressed!')} />
       </HiddenItemContainer>
-      <ItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
-        }}
-      >
-        <ContentContainer
+        <ItemContainer
+          style={{
+            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
+          }}
           onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
         >
           <SSIConnectionsViewItem
@@ -60,8 +57,7 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
             connection={itemInfo.item.connection}
             connectionStatus={itemInfo.item.connectionStatus}
           />
-        </ContentContainer>
-      </ItemContainer>
+        </ItemContainer>
     </SwipeRow>
   )
 

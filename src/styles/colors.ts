@@ -108,3 +108,23 @@ type Button = 'blue'
 export const buttons: Record<Button, string> = {
   blue: '#0B81FF'
 }
+
+type SelectionElement = 'primaryDark' | 'primaryBorderDark'
+
+export const selectionElements: Record<SelectionElement, string> = {
+  primaryDark: '#0B81FF',
+  primaryBorderDark: '#FBFBFB'
+}
+
+type CredentialLogo = 'default'
+
+export const credentialLogos: Record<CredentialLogo, string> = {
+  default: '#4D7CE6'
+}
+
+// TODO WAL-303 add support for randomized colors to avoid getting the same color multiple times
+type CredentialCard = 'default'
+
+export const credentialCards: Record<CredentialCard, string> = {
+  default: '#7276F7'
+}

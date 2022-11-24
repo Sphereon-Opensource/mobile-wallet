@@ -31,6 +31,8 @@ import { authenticate } from './authenticationService'
 import { connectFrom } from './connectionService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
 
+const { v4: uuidv4 } = require('uuid')
+
 const debug = Debug(`${APP_ID}:qrService`)
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
@@ -204,8 +206,10 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
+  const openId4VcIssuanceProvider = new OpenId4VcIssuanceProvider()
+
   const sendResponse = async (issuanceInitiation: IssuanceInitiationWithBaseUrl, pin?: string): Promise<void> =>
-    new OpenId4VcIssuanceProvider()
+    openId4VcIssuanceProvider
       .getCredentialFromIssuance({
         issuanceInitiation,
         ...(pin && { pin })
@@ -268,15 +272,27 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         })
       })
 
-  // TODO user_pin_required needs an update from the lib to be an actual boolean
-  if (args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true') {
-    args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
-      credentialName: Array.isArray(args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type)
-        ? args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type.join(', ')
-        : args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type,
-      onVerification: async (pin: string) => await sendResponse(args.qrData.issuanceInitiation, pin)
+  const metadata = await openId4VcIssuanceProvider.getMetadata({ issuanceInitiation: args.qrData.issuanceInitiation })
+  openId4VcIssuanceProvider.getSupportedCredentialTypes({ metadata }).then((credentialTypes) => {
+    args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
+      issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+      credentialTypes: credentialTypes.map((credentialType: string) => ({
+        id: uuidv4(),
+        credentialType,
+        isSelected: false
+      })),
+      onAccept: async (credentialType: string) => {
+        if (args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true') {
+          args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
+            credentialName: Array.isArray(args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type)
+              ? args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type.join(', ')
+              : args.qrData.issuanceInitiation.issuanceInitiationRequest.credential_type,
+            onVerification: async (pin: string) => await sendResponse(args.qrData.issuanceInitiation, pin)
+          })
+        } else {
+          await sendResponse(args.qrData.issuanceInitiation)
+        }
+      }
     })
-  } else {
-    await sendResponse(args.qrData.issuanceInitiation)
-  }
+  })
 }

@@ -15,9 +15,8 @@ import { getVerifiableCredentials } from '../../store/actions/credential.actions
 import { backgrounds } from '../../styles/colors'
 import {
   SSIBasicContainerStyled as Container,
-  SSICredentialsViewItemContentContainerStyled as ContentContainer,
   SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer,
-  SSICredentialsViewItemContainerStyled as ItemContainer
+  SSICredentialsViewItemContentContainerStyled as ItemContainer
 } from '../../styles/styledComponents'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
@@ -49,30 +48,27 @@ export class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
         style={{
           backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
         }}
+        onPress={() =>
+          dataStoreGetVerifiableCredential({ hash: itemInfo.item.id }).then((vc: VerifiableCredential) =>
+            this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+              rawCredential: vc as VerifiableCredential,
+              credential: itemInfo.item,
+              showActivity: true
+            })
+          )
+        }
       >
-        <ContentContainer
-          onPress={() => {
-            dataStoreGetVerifiableCredential({ hash: itemInfo.item.id }).then((vc: VerifiableCredential) =>
-              this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-                rawCredential: vc as VerifiableCredential,
-                credential: itemInfo.item,
-                showActivity: true
-              })
-            )
-          }}
-        >
-          <SSICredentialsViewItem
-            // TODO fix to many properties
-            id={itemInfo.item.id}
-            title={itemInfo.item.title}
-            issuer={itemInfo.item.issuer}
-            issueDate={itemInfo.item.issueDate}
-            expirationDate={itemInfo.item.expirationDate}
-            credentialStatus={itemInfo.item.credentialStatus}
-            properties={[]}
-            signedBy={itemInfo.item.signedBy}
-          />
-        </ContentContainer>
+        <SSICredentialsViewItem
+          // TODO fix to many properties
+          id={itemInfo.item.id}
+          title={itemInfo.item.title}
+          issuer={itemInfo.item.issuer}
+          issueDate={itemInfo.item.issueDate}
+          expirationDate={itemInfo.item.expirationDate}
+          credentialStatus={itemInfo.item.credentialStatus}
+          properties={[]}
+          signedBy={itemInfo.item.signedBy}
+        />
       </ItemContainer>
     </SwipeRow>
   )

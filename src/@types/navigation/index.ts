@@ -1,7 +1,14 @@
 import { SIOP } from '@sphereon/did-auth-siop'
 import { VerifiableCredential } from '@veramo/core'
 
-import { IButton, IConnectionViewItem, ICredentialSummary, PopupBadgesEnum, PopupImagesEnum } from '../index'
+import {
+  IButton,
+  IConnectionViewItem,
+  ICredentialSummary,
+  ICredentialTypeSelection,
+  PopupBadgesEnum,
+  PopupImagesEnum
+} from '../index'
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>
@@ -18,6 +25,7 @@ export type StackParamList = {
   AlertModal: IAlertModalProps
   PopupModal: IPopupModalProps
   Error: IPopupModalProps
+  CredentialSelectType: ICredentialSelectTypeProps
 }
 
 export interface ICredentialDetailsProps {
@@ -71,6 +79,12 @@ export interface IPopupModalProps {
   secondaryButton?: IButton
 }
 
+export interface ICredentialSelectTypeProps {
+  issuer: string
+  credentialTypes: Array<ICredentialTypeSelection>
+  onAccept: (credentialTypes: Array<string>) => Promise<void>
+}
+
 export enum RootRoutesEnum {
   MAIN = 'Main',
   ALERT_MODAL = 'AlertModal',
@@ -93,5 +107,6 @@ export enum ScreenRoutesEnum {
   PEX_VERIFICATION = 'PexVerification',
   CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
   CONNECTION_DETAILS = 'ConnectionDetails',
-  ERROR = 'Error'
+  ERROR = 'Error',
+  CREDENTIAL_SELECT_TYPE = 'CredentialSelectType'
 }

@@ -42,3 +42,9 @@ export interface ICredentialDetailsRow {
   isEditable?: boolean
   status?: LabelStatus
 }
+
+export interface ICredentialTypeSelection {
+  id: string
+  credentialType: string
+  isSelected: boolean
+}

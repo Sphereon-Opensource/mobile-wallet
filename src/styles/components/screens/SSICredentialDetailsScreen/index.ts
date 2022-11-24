@@ -19,6 +19,7 @@ export const SSICredentialDetailsScreenButtonContainer = styled.View`
   margin-top: auto;
 `
 
+// justify content center
 export const SSICredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
   margin-top: auto;
   margin-bottom: auto;

@@ -1,5 +1,4 @@
 {
-    "credential_offer_screen_title": "Credential Toevoegen",
     "credential_details_action_share": "Delen",
     "credential_details_title": "Credential Details",
     "credentials_overview_title": "Credentials",
@@ -67,5 +66,10 @@
     "oidc4vci_error_unauthorized_client": "App is niet geautoriseerd",
     "oidc4vci_error_unsupported_grant_type": "Niet-ondersteund toekenningstype opgegeven",
     "oidc4vci_error_unsupported_invalid_scope": "Niet-ondersteund bereiktype opgegeven",
-    "oidc4vci_error_invalid_or_missing_proof": "Credential is ongeldig of ontbreekt bewijs"
+    "oidc4vci_error_invalid_or_missing_proof": "Credential is ongeldig of ontbreekt bewijs",
+    "credential_select_type_title": "Selecteer credentials",
+    "credential_select_type_subtitle": "De uitgever {0}, ondersteunt het uitgeven van de volgende credentials. Selecteer degene die u in uw portemonnee wilt ontvangen.",
+    "pex_verification_title": "Verificatie",
+    "raw_credential_title": "Raw credential",
+    "credential_details_subtitle": "Hieronder vindt u de informatie over de credential die u wilt toevoegen."
 }

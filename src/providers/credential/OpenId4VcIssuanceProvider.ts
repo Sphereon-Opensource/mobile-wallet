@@ -20,6 +20,7 @@ import Debug from 'debug'
 import { APP_ID } from '../../@config/constants'
 import {
   ICredentialFormatOpts,
+  ICredentialTypeSelection,
   IErrorDetails,
   IGetAccessTokenArgs,
   IGetCredentialArgs,
@@ -28,6 +29,7 @@ import {
   IGetIssuanceInitiationFromUriArgs,
   IGetIssuanceOptsArgs,
   IGetMetaDataArgs,
+  IGetSupportedCredentialsArgs,
   IGetVcIssuanceFormatArgs,
   IIssuanceOpts,
   Oidc4vciErrorEnum,
@@ -236,6 +238,11 @@ class OpenId4VcIssuanceProvider {
           return Promise.reject(error)
         })
     )
+  }
+
+  public getSupportedCredentialTypes = async (args: IGetSupportedCredentialsArgs): Promise<Array<string>> => {
+    const oid4vci_metadata = args.metadata.oid4vci_metadata
+    return oid4vci_metadata ? Object.keys(oid4vci_metadata.credentials_supported) : []
   }
 
   private determineClientId(endpoint?: string) {
