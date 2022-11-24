@@ -9,14 +9,14 @@ import {
 
 export interface IProps {
   onValueChange?: () => Promise<void>
-  defaultValue?: boolean
+  initialValue?: boolean
   // This value can be used to control the checkbox from the outside
   isChecked?: boolean
   style?: ViewStyle
 }
 
 const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
-  const [isChecked, setChecked] = React.useState(props.defaultValue || false)
+  const [isChecked, setChecked] = React.useState(props.initialValue || false)
 
   const value = props.isChecked || isChecked
 
