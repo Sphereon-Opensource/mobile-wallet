@@ -2,54 +2,29 @@ import {
   CredentialFormatSupport,
   CredentialMetadata,
   EndpointMetadata,
-  IssuanceInitiationWithBaseUrl,
-  OID4VCICredentialFormatTypes
-} from '@sphereon/oid4vci-client'
-import { CredentialFormat } from '@sphereon/ssi-types'
-import { IIdentifier, TKeyType } from '@veramo/core'
+  OpenID4VCICredentialFormatTypes
+} from '@sphereon/openid4vci-client'
+import { TKeyType } from '@veramo/core'
 
+import { ICredentialMetadata } from '../../credential'
 import { SupportedDidMethodEnum } from '../../did'
-
-export interface IJwtOpts {
-  identifier: IIdentifier
-  nonce?: string
-}
 
 export interface IGetIssuanceInitiationFromUriArgs {
   uri: string
 }
 
-export interface IGetMetaDataArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-}
-
-export interface IGetAccessTokenArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-  pin?: string
-  metadata?: EndpointMetadata
-}
-
 export interface IGetCredentialArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-  token: string
-  format: CredentialFormat | CredentialFormat[]
-  jwtOpts: IJwtOpts
-  metadata?: EndpointMetadata
-}
-
-export interface IGetCredentialFromIssuanceArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
+  credentialType: string
   pin?: string
 }
 
-export interface IGetIssuanceOptsArgs {
-  credentialType: string
-  metadata: EndpointMetadata
+export interface IGetCredentialsArgs {
+  pin?: string
 }
 
 export interface IIssuanceOpts {
   didMethod: SupportedDidMethodEnum
-  format: OID4VCICredentialFormatTypes
+  format: OpenID4VCICredentialFormatTypes
   keyType: TKeyType
 }
 
@@ -63,7 +38,7 @@ export interface IGetIssuanceCryptoSuiteArgs {
 
 export interface ICredentialFormatOpts {
   credentialFormat: CredentialFormatSupport
-  format: OID4VCICredentialFormatTypes
+  format: OpenID4VCICredentialFormatTypes
 }
 
 export enum Oidc4vciErrorEnum {
@@ -76,6 +51,8 @@ export enum Oidc4vciErrorEnum {
   INVALID_OR_MISSING_PROOF = 'invalid_or_missing_proof'
 }
 
-export interface IGetSupportedCredentialsArgs {
-  metadata: EndpointMetadata
+export interface IServerMetadataAndCryptoMatchingResponse {
+  serverMetadata: EndpointMetadata
+  issuanceOpts: Record<string, IIssuanceOpts>
+  credentialsSupported: Array<ICredentialMetadata>
 }

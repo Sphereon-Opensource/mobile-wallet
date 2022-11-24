@@ -1,8 +1,8 @@
-import React, {FC, useState} from 'react'
-import { View } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
+import React, { FC, useState } from 'react'
+import { View } from 'react-native'
 
-import {ICredentialSummary, IIssuerSummary} from '../../../@types'
+import { ICredentialSummary, IIssuerSummary } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSIFlexDirectionRowViewStyled as ContentBottomContainer,
@@ -12,7 +12,8 @@ import {
   SSICredentialsViewItemExpirationDateCaptionStyled as ExpirationDateCaption,
   SSITextH5LightStyled as IssueDateCaption,
   SSITextH4LightStyled as IssuerCaption,
-  SSITextH3LightStyled as TitleCaption, SSIFlexDirectionRowViewStyled
+  SSIFlexDirectionRowViewStyled,
+  SSITextH3LightStyled as TitleCaption
 } from '../../../styles/styledComponents'
 import DateUtils from '../../../utils/DateUtils'
 import SSICredentialStatus from '../../labels/SSICredentialStatus'
@@ -33,14 +34,13 @@ const SSISelectCredentialsTypeViewItem: FC<Props> = (props: Props): JSX.Element 
       <SSIFlexDirectionRowViewStyled>
         <View>
           <CheckBox
-              value={checked}
-              //onValueChange={(newValue) => setSelection(newValue)}
-              hideBox
+            value={checked}
+            //onValueChange={(newValue) => setSelection(newValue)}
+            hideBox
           />
         </View>
         <View>
           <ContentTopContainer>
-
             <TitleCaption>{props.title}</TitleCaption>
             {/*<CredentialStatusCaption>*/}
             {/*  <SSICredentialStatus status={props.credentialStatus} />*/}
@@ -65,7 +65,6 @@ const SSISelectCredentialsTypeViewItem: FC<Props> = (props: Props): JSX.Element 
           </ContentBottomContainer>
         </View>
       </SSIFlexDirectionRowViewStyled>
-
     </View>
   )
 }

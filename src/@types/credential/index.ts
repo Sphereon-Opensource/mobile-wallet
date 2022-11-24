@@ -1,3 +1,5 @@
+import { CredentialMetadata } from '@sphereon/openid4vci-client'
+
 import { LabelStatus } from '../component'
 
 export enum CredentialStatusEnum {
@@ -47,4 +49,8 @@ export interface ICredentialTypeSelection {
   id: string
   credentialType: string
   isSelected: boolean
+}
+
+export interface ICredentialMetadata extends CredentialMetadata {
+  credentialType: string
 }
