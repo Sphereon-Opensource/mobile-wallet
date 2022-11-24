@@ -70,6 +70,6 @@
     "credential_select_type_title": "Selecteer credentials",
     "credential_select_type_subtitle": "De uitgever {0}, ondersteunt het uitgeven van de volgende credentials. Selecteer degene die u in uw portemonnee wilt ontvangen.",
     "pex_verification_title": "Verificatie",
-    "raw_credential_title": "Raw credential",
+    "raw_credential_title": "Ruwe credential",
     "credential_details_subtitle": "Hieronder vindt u de informatie over de credential die u wilt toevoegen."
 }
