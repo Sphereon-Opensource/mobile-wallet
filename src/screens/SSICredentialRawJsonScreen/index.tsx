@@ -18,7 +18,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_
 
 // The screen is WIP and created for the plugfest demo
 
-const SSICredentialRawJson: FC<Props> = (props: Props): JSX.Element => {
+const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
   const { route } = props
 
   const theme = {
@@ -76,4 +76,4 @@ const SSICredentialRawJson: FC<Props> = (props: Props): JSX.Element => {
   )
 }
 
-export default SSICredentialRawJson
+export default SSICredentialRawJsonScreen

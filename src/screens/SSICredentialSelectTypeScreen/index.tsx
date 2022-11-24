@@ -68,6 +68,7 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
           style={{ height: 42, width: '100%' }}
           title={translate('action_accept_label')}
           onPress={onAccept}
+          disabled={!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
         />
       </ButtonContainer>
     </Container>
