@@ -3,12 +3,11 @@ import {
   CredentialMetadata,
   EndpointMetadata,
   IssuanceInitiationWithBaseUrl,
-  OID4VCICredentialFormatTypes
-} from '@sphereon/oid4vci-client'
-import { CredentialFormat } from '@sphereon/ssi-types'
-import { IIdentifier, TKeyType } from '@veramo/core'
+  OpenID4VCICredentialFormatTypes,
+} from '@sphereon/openid4vci-client'
+import {IIdentifier, TKeyType} from '@veramo/core'
 
-import { SupportedDidMethodEnum } from '../../did'
+import {SupportedDidMethodEnum} from '../../did'
 
 export interface IJwtOpts {
   identifier: IIdentifier
@@ -30,26 +29,17 @@ export interface IGetAccessTokenArgs {
 }
 
 export interface IGetCredentialArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-  token: string
-  format: CredentialFormat | CredentialFormat[]
-  jwtOpts: IJwtOpts
-  metadata?: EndpointMetadata
-}
-
-export interface IGetCredentialFromIssuanceArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
+  credentialType: string
   pin?: string
 }
 
-export interface IGetIssuanceOptsArgs {
-  credentialType: string
-  metadata: EndpointMetadata
+export interface IGetCredentialsArgs {
+  pin?: string
 }
 
 export interface IIssuanceOpts {
   didMethod: SupportedDidMethodEnum
-  format: OID4VCICredentialFormatTypes
+  format: OpenID4VCICredentialFormatTypes
   keyType: TKeyType
 }
 
@@ -63,7 +53,7 @@ export interface IGetIssuanceCryptoSuiteArgs {
 
 export interface ICredentialFormatOpts {
   credentialFormat: CredentialFormatSupport
-  format: OID4VCICredentialFormatTypes
+  format: OpenID4VCICredentialFormatTypes
 }
 
 export enum Oidc4vciErrorEnum {
