@@ -17,11 +17,12 @@ import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
-import SSICredentialRawJson from '../screens/SSICredentialRawJson'
+import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
+import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
-import SSIQRReader from '../screens/SSIQRReader'
+import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import Veramo from '../screens/Veramo'
 
@@ -193,9 +194,9 @@ const HomeStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
-        component={SSICredentialRawJson}
+        component={SSICredentialRawJsonScreen}
         options={{
-          headerTitle: 'Raw Credential', // TODO translate
+          headerTitle: translate('raw_credential_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
           )
@@ -303,7 +304,7 @@ const QRStack = (): JSX.Element => {
         name={ScreenRoutesEnum.PEX_VERIFICATION}
         component={SSIPEXVerificationScreen}
         options={{
-          headerTitle: 'Verification', // TODO translation
+          headerTitle: translate('pex_verification_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
           )
@@ -319,7 +320,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
               showMoreButton // TODO this more button can look at when an action is passed in for visibility
-              headerSubTitle={'The information about the credential you are planning to add is stated below.'}
+              headerSubTitle={translate('credential_details_subtitle')}
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
@@ -330,10 +331,24 @@ const QRStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE}
+        component={SSICredentialSelectTypeScreen}
+        options={({ route }) => ({
+          headerTitle: translate('credential_select_type_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={format(translate('credential_select_type_subtitle'), route.params.issuer)}
+            />
+          )
+        })}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
-        component={SSICredentialRawJson}
+        component={SSICredentialRawJsonScreen}
         options={{
-          headerTitle: 'Raw Credential', // TODO translate
+          headerTitle: translate('raw_credential_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
           )

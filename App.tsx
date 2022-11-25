@@ -1,5 +1,4 @@
 import { NavigationContainer } from '@react-navigation/native'
-import KeepAwake from 'expo-keep-awake'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -46,8 +45,6 @@ export default function App() {
         // Preload fonts, make any API calls you need to do here
         // await Font.loadAsync(Entypo.font);
         await _loadFontsAsync()
-
-        await KeepAwake.deactivateKeepAwake()
 
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!

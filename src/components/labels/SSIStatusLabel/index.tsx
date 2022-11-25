@@ -9,8 +9,8 @@ import {
   SSIStatusLabelContainerStyled as Container,
   SSIStatusLabelStatusCaptionStyled as StatusCaption
 } from '../../../styles/components'
-import SSICheckmarkBadge from '../../badges/SSICheckmarkBadge'
-import SSIExclamationMarkBadge from '../../badges/SSIExclamationMarkBadge'
+import SSICheckmarkBadge from '../../assets/badges/SSICheckmarkBadge'
+import SSIExclamationMarkBadge from '../../assets/badges/SSIExclamationMarkBadge'
 
 export interface IProps {
   status: LabelStatus

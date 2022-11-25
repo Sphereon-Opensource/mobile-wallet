@@ -21,7 +21,7 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@react-navigation/stack": "^6.0.7",
-    "@sphereon/openid4vci-client": "^0.3.2-unstable.1",
+    "@sphereon/openid4vci-client": "^0.3.4",
     "@sphereon/react-native-argon2": "2.0.7",
     "@sphereon/ssi-sdk-connection-manager": "0.8.1-unstable.86",
     "@sphereon/ssi-sdk-core": "0.8.1-unstable.86",

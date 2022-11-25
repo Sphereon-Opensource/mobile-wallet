@@ -10,10 +10,10 @@ import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container
 } from '../../../styles/styledComponents'
-import SSIBellIcon from '../../icons/SSIBellIcon'
-import SSIConnectionIcon from '../../icons/SSIConnectionIcon'
-import SSIHomeIcon from '../../icons/SSIHomeIcon'
-import SSIQRIcon from '../../icons/SSIQRIcon'
+import SSIBellIcon from '../../assets/icons/SSIBellIcon'
+import SSIConnectionIcon from '../../assets/icons/SSIConnectionIcon'
+import SSIHomeIcon from '../../assets/icons/SSIHomeIcon'
+import SSIQRIcon from '../../assets/icons/SSIQRIcon'
 
 interface IScreenState {
   isVisible: boolean

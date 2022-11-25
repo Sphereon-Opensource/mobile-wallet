@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components/native'
 
 import { IHeaderProps } from '../@types'
 import EntityIcon from '../assets/icons/entity.svg'
-import ErrorIcon from '../components/badges/SSIExclamationMarkBadge'
+import ErrorIcon from '../components/assets/badges/SSIExclamationMarkBadge'
 import SSIIconButton from '../components/buttons/SSIIconButton'
 
 import { alerts, backgrounds, borders, fonts, highLightGradients, highlights } from './colors'
@@ -266,10 +266,6 @@ export const SSIRippleContainerStyled = styled(Ripple).attrs({
   rippleCentered: true,
   rippleFades: false
 })``
-
-export const SSICredentialsViewItemContainerStyled = styled.View`
-  height: 96px;
-`
 
 export const SSICredentialsViewItemContentContainerStyled = styled(SSIRippleContainerStyled)`
   padding-right: 21px;

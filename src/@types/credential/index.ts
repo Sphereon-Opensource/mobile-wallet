@@ -1,3 +1,5 @@
+import { CredentialMetadata } from '@sphereon/openid4vci-client'
+
 import { LabelStatus } from '../component'
 
 export enum CredentialStatusEnum {
@@ -41,4 +43,14 @@ export interface ICredentialDetailsRow {
   value: any
   isEditable?: boolean
   status?: LabelStatus
+}
+
+export interface ICredentialTypeSelection {
+  id: string
+  credentialType: string
+  isSelected: boolean
+}
+
+export interface ICredentialMetadata extends CredentialMetadata {
+  credentialType: string
 }

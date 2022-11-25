@@ -2,30 +2,15 @@ import {
   CredentialFormatSupport,
   CredentialMetadata,
   EndpointMetadata,
-  IssuanceInitiationWithBaseUrl,
-  OpenID4VCICredentialFormatTypes,
+  OpenID4VCICredentialFormatTypes
 } from '@sphereon/openid4vci-client'
-import {IIdentifier, TKeyType} from '@veramo/core'
+import { TKeyType } from '@veramo/core'
 
-import {SupportedDidMethodEnum} from '../../did'
-
-export interface IJwtOpts {
-  identifier: IIdentifier
-  nonce?: string
-}
+import { ICredentialMetadata } from '../../credential'
+import { SupportedDidMethodEnum } from '../../did'
 
 export interface IGetIssuanceInitiationFromUriArgs {
   uri: string
-}
-
-export interface IGetMetaDataArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-}
-
-export interface IGetAccessTokenArgs {
-  issuanceInitiation: IssuanceInitiationWithBaseUrl
-  pin?: string
-  metadata?: EndpointMetadata
 }
 
 export interface IGetCredentialArgs {
@@ -64,4 +49,10 @@ export enum Oidc4vciErrorEnum {
   UNSUPPORTED_GRANT_TYPE = 'unsupported_grant_type',
   INVALID_SCOPE = 'invalid_scope',
   INVALID_OR_MISSING_PROOF = 'invalid_or_missing_proof'
+}
+
+export interface IServerMetadataAndCryptoMatchingResponse {
+  serverMetadata: EndpointMetadata
+  issuanceOpts: Record<string, IIssuanceOpts>
+  credentialsSupported: Array<ICredentialMetadata>
 }

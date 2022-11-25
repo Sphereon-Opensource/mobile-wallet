@@ -12,17 +12,8 @@ import { SSIBasicContainerStyled as Container } from '../../styles/styledCompone
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 
 const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {
-    onClose,
-    image,
-    title,
-    titleBadge,
-    details,
-    extraDetails,
-    detailsPopup,
-    primaryButton,
-    secondaryButton
-  } = props.route.params
+  const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
+    props.route.params
 
   const [showExtraDetails, setShowExtraDetails] = React.useState(false)
 

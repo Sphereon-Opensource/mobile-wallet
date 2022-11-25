@@ -15,9 +15,8 @@ import { IAuthenticatedEntity } from '../../store/types/authenticate.types'
 import { backgrounds } from '../../styles/colors'
 import {
   SSIBasicContainerStyled as Container,
-  SSICredentialsViewItemContentContainerStyled as ContentContainer,
   SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer,
-  SSICredentialsViewItemContainerStyled as ItemContainer
+  SSICredentialsViewItemContentContainerStyled as ItemContainer
 } from '../../styles/styledComponents'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
@@ -50,17 +49,14 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
         style={{
           backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
         }}
+        onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
       >
-        <ContentContainer
-          onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
-        >
-          <SSIConnectionsViewItem
-            entityId={itemInfo.item.entityId}
-            entityName={itemInfo.item.entityName}
-            connection={itemInfo.item.connection}
-            connectionStatus={itemInfo.item.connectionStatus}
-          />
-        </ContentContainer>
+        <SSIConnectionsViewItem
+          entityId={itemInfo.item.entityId}
+          entityName={itemInfo.item.entityName}
+          connection={itemInfo.item.connection}
+          connectionStatus={itemInfo.item.connectionStatus}
+        />
       </ItemContainer>
     </SwipeRow>
   )

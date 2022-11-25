@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 
-import SSICheckmarkBadge from '../../../../components/badges/SSICheckmarkBadge'
-import SSIExclamationMarkBadge from '../../../../components/badges/SSIExclamationMarkBadge'
+import SSICheckmarkBadge from '../../../../components/assets/badges/SSICheckmarkBadge'
+import SSIExclamationMarkBadge from '../../../../components/assets/badges/SSIExclamationMarkBadge'
 import { buttons, fonts } from '../../../colors'
 import {
   SSIFlexDirectionRowViewStyled,

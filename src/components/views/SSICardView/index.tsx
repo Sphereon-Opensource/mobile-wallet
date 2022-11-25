@@ -2,9 +2,8 @@ import { FC } from 'react'
 import { Image, ImageBackground, View, ViewStyle } from 'react-native'
 
 import { CredentialStatusEnum } from '../../../@types'
-import PlaceholderLogo from '../../../assets/images/cardPlaceHolderLogo.svg'
 import { translate } from '../../../localization/Localization'
-import { backgrounds } from '../../../styles/colors'
+import { backgrounds, credentialCards } from '../../../styles/colors'
 import {
   SSIAlphaContainerStyled as AlphaContainer,
   SSIBlurredContainerStyled as BlurredView,
@@ -27,6 +26,7 @@ import {
   SSITextH4LightStyled as H4Text,
   SSITextH6LightStyled as PropertyValueText
 } from '../../../styles/styledComponents'
+import SSIPlaceholderLogo from '../../assets/images/SSIPlaceholderLogo'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -68,7 +68,7 @@ const getPropertyElementsFrom = (properties: Array<IProperty>): Array<JSX.Elemen
 
 const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
   const {
-    backgroundColor = '#7276F7', // TODO WAL-303 add support for randomized colors to avoid getting the same color multiple times
+    backgroundColor = credentialCards.default,
     credentialTitle,
     credentialSubtitle,
     credentialStatus,
@@ -87,7 +87,11 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
         <AlphaContainer>
           <HeaderContainer>
             <LogoContainer>
-              {logoImage ? <Image style={{ flex: 1 }} source={logoImage} resizeMode="contain" /> : <PlaceholderLogo />}
+              {logoImage ? (
+                <Image style={{ flex: 1 }} source={logoImage} resizeMode="contain" />
+              ) : (
+                <SSIPlaceholderLogo />
+              )}
             </LogoContainer>
             {credentialTitle && (
               <TitleContainer>
