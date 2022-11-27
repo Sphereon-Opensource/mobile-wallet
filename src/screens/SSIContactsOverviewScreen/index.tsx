@@ -55,7 +55,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
         >
           <SSIContactViewItem
               id={itemInfo.item.id}
-              name={itemInfo.item.name}
+              name={itemInfo.item.alias}
               uri={itemInfo.item.uri}
               role={itemInfo.item.role}
           />
