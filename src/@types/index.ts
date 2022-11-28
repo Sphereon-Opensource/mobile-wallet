@@ -12,5 +12,3 @@ export * from './provider'
 export * from './qr'
 export * from './signature'
 export * from './style'
-
-// TODO import store
