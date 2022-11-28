@@ -11,7 +11,7 @@ import {
   SSINavigationBarContainerStyled as Container
 } from '../../../styles/styledComponents'
 import SSIBellIcon from '../../assets/icons/SSIBellIcon'
-import SSIConnectionIcon from '../../assets/icons/SSIConnectionIcon'
+import SSIContactsIcon from '../../assets/icons/SSIContactsIcon'
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon'
 import SSIQRIcon from '../../assets/icons/SSIQRIcon'
 
@@ -120,9 +120,9 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
           secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
         />
       )
-    case NavigationBarRoutesEnum.CONNECTIONS:
+    case NavigationBarRoutesEnum.CONTACTS:
       return (
-        <SSIConnectionIcon
+        <SSIContactsIcon
           primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}
           secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
         />

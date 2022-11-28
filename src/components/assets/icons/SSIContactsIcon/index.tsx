@@ -6,7 +6,7 @@ export interface IProps {
   secondaryColor: string
 }
 
-const SSIConnectionIcon: FC<IProps> = (props: IProps): JSX.Element => {
+const SSIContactsIcon: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <Svg width="21" height="19" viewBox="0 0 21 19" fill="none">
       <Path
@@ -30,4 +30,4 @@ const SSIConnectionIcon: FC<IProps> = (props: IProps): JSX.Element => {
   )
 }
 
-export default SSIConnectionIcon
+export default SSIContactsIcon

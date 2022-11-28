@@ -5,24 +5,24 @@ import { Dispatch } from 'react'
 import { AnyAction } from 'redux'
 
 import {
-  getVerifiableCredentialsFromStorage,
-  storeVerifiableCredential as storeCredential
-} from '../../services/credentialService'
-import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
-import {
   CREDENTIALS_LOADING,
   GET_CREDENTIALS_FAILED,
   GET_CREDENTIALS_SUCCESS,
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS
-} from '../types/credential.action.types'
+} from '../../@types/store/credential.action.types'
+import {
+  getVerifiableCredentialsFromStorage,
+  storeVerifiableCredential as storeCredential
+} from '../../services/credentialService'
+import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 export const getVerifiableCredentials = () => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     getVerifiableCredentialsFromStorage()
-      .then((credential: Array<UniqueVerifiableCredential>) => {
-        const credentialSummaries = credential.map((vc: UniqueVerifiableCredential) =>
+      .then((credentials: Array<UniqueVerifiableCredential>) => {
+        const credentialSummaries = credentials.map((vc: UniqueVerifiableCredential) =>
           // TODO fix mismatch in types
           toCredentialSummary(vc.verifiableCredential as ICredential, vc.hash)
         )

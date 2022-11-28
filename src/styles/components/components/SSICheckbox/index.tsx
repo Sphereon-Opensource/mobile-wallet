@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 
+import SSIPlaceholderLogo from '../../../../components/assets/images/SSIPlaceholderLogo'
 import { selectionElements } from '../../../colors'
 
 export const SSICheckboxUnselectedContainerStyled = styled.View`

@@ -8,10 +8,10 @@ import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/nati
 import { connect } from 'react-redux'
 
 import { CredentialIssuanceStateEnum, ScreenRoutesEnum, StackParamList } from '../@types'
+import { IAuthenticatedEntity, IOpenIdAuthentication } from '../@types/store/authenticate.types'
 import { createIdentifier, getIdentifiers } from '../services/identityService'
 import { RootState } from '../store'
 import { authenticateConnectionEntity } from '../store/actions/authentication.actions'
-import { IAuthenticatedEntity, IOpenIdAuthentication } from '../store/types/authenticate.types'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, 'Veramo'>

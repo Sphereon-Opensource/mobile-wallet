@@ -196,6 +196,7 @@ export const SSIButtonBottomContainerCss = css`
 // CONTAINERS (These should not contain any properties that changes the placement of the container e.g. margin. If you need specific properties, then extend the container element)
 export const SSIFlexDirectionRowViewStyled = styled.View`
   flex-direction: row;
+
 `
 
 export const SSIFlexDirectionColumnViewStyled = styled.View`

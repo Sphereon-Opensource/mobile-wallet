@@ -1,6 +1,7 @@
 export * from './authentication'
 export * from './component'
 export * from './connection'
+export * from './contact'
 export * from './credential'
 export * from './did'
 export * from './errors'
@@ -11,3 +12,5 @@ export * from './provider'
 export * from './qr'
 export * from './signature'
 export * from './style'
+
+// TODO import store
