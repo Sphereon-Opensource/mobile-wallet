@@ -1,12 +1,10 @@
 import { LabelStatus } from '../@types'
 
-type Background = 'primaryDark' | 'secondaryDark' | 'primaryLight' | 'secondaryLight' | 'tabViewDark'
+type Background = 'primaryDark' | 'secondaryDark' | 'primaryLight' | 'secondaryLight'
 
 export const backgrounds: Record<Background, string> = {
   primaryDark: '#202537',
-  // TODO fix this new color #2A3046(design) vs secondary color #2C334B(design)
-  tabViewDark: '#2C334B',
-  secondaryDark: '#2A3046',
+  secondaryDark: '#2C334B',
   primaryLight: '#FBFBFB',
   secondaryLight: '#E3E3FF'
 }

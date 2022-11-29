@@ -1,14 +1,13 @@
 import { FC } from 'react'
+import { View } from 'react-native'
 
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
   SSIContactViewItemContactRoleCaptionStyled as ContactRoleCaption,
-  SSIContactViewItemContactRoleContainerStyled as ContactRoleContainer,
   SSIContactViewItemContainerStyled as Container,
   SSIContactViewItemLogoContainerStyled as LogoContainer,
   SSIContactViewItemPlaceholderLogoStyled as PlaceholderLogo,
-  SSIContactViewItemNewStatusContainerStyled as StatusContainer,
-  SSIContactViewItemTextContainerStyled as TextContainer
+  SSIContactViewItemNewStatusContainerStyled as StatusContainer
 } from '../../../styles/components'
 import {
   SSITextH3LightStyled as ContactNameCaption,
@@ -31,15 +30,13 @@ const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
       <LogoContainer>
         <PlaceholderLogo />
       </LogoContainer>
-      <TextContainer>
+      <View>
         <ContactDetailsContainer>
           <ContactNameCaption>{name}</ContactNameCaption>
           <ContactUriCaption>{uri}</ContactUriCaption>
         </ContactDetailsContainer>
-        <ContactRoleContainer>
-          <ContactRoleCaption>{role}</ContactRoleCaption>
-        </ContactRoleContainer>
-      </TextContainer>
+        <ContactRoleCaption>{role}</ContactRoleCaption>
+      </View>
     </Container>
   )
 }

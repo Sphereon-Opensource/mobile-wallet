@@ -1,10 +1,13 @@
 import styled from 'styled-components/native'
 
-import { backgrounds } from '../../../colors'
-import { SSITextH5LightStyled, SSITextH7SemiBoldLightStyled } from '../../../styledComponents'
+import {
+  SSIBackgroundSecondaryDarkColorCss,
+  SSITextH5LightStyled,
+  SSITextH7SemiBoldLightStyled
+} from '../../../styledComponents'
 
 export const SSICredentialDetailsViewContainerStyled = styled.View`
-  background-color: ${backgrounds.tabViewDark};
+  ${SSIBackgroundSecondaryDarkColorCss};
 `
 
 export const SSICredentialDetailsViewFooterContainerStyled = styled.View`

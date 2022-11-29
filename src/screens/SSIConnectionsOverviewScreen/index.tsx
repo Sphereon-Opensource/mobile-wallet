@@ -2,63 +2,48 @@ import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-comm
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view'
+import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import { ConnectionStatusEnum, IConnectionViewItem, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
-import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton'
 import SSIConnectionsViewItem from '../../components/views/SSIConnectionsViewItem'
+import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { RootState } from '../../store'
 import { getConnectionParties } from '../../store/actions/connection.actions'
-import { backgrounds } from '../../styles/colors'
-import {
-  SSIBasicContainerStyled as Container,
-  SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer,
-  SSICredentialsViewItemContentContainerStyled as ItemContainer
-} from '../../styles/styledComponents'
+import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
-  dispatchConnectionParties: () => void
+  getConnectionParties: () => void
   connectionParties: Array<IConnectionParty>
   authenticationEntities: Array<IAuthenticatedEntity>
 }
 
-export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
+class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
   state = {
     refreshing: false
   }
 
   onRefresh = () => {
-    this.props.dispatchConnectionParties()
+    this.props.getConnectionParties()
     this.setState({ refreshing: false })
   }
 
   renderItem = (itemInfo: ListRenderItemInfo<IConnectionViewItem>): JSX.Element => (
-    // TODO fix style issue being an array when using styled component (rightOpenValue / stopRightSwipe)
-    <SwipeRow disableRightSwipe rightOpenValue={-97} stopRightSwipe={-97}>
-      <HiddenItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
-        }}
-      >
-        <SSISwipeDeleteButton onPress={() => console.log('Delete connection pressed!')} />
-      </HiddenItemContainer>
-      <ItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
-        }}
-        onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
-      >
+    <SSISwipeRowViewItem
+      listIndex={itemInfo.index}
+      viewElement={
         <SSIConnectionsViewItem
           entityId={itemInfo.item.entityId}
           entityName={itemInfo.item.entityName}
           connection={itemInfo.item.connection}
           connectionStatus={itemInfo.item.connectionStatus}
         />
-      </ItemContainer>
-    </SwipeRow>
+      }
+      onPress={async () => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
+      onDelete={async () => console.log('Delete contact pressed!')}
+    />
   )
 
   render() {
@@ -98,7 +83,7 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    dispatchConnectionParties: () => dispatch(getConnectionParties())
+    getConnectionParties: () => dispatch(getConnectionParties())
   }
 }
 

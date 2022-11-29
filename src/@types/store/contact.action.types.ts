@@ -17,8 +17,8 @@ interface IContactsLoading {
 }
 
 interface IGetContactsSuccessAction {
-  payload: Array<IContact>
   type: GET_CONTACTS_SUCCESS
+  payload: Array<IContact>
 }
 
 interface IGetContactsFailedAction {

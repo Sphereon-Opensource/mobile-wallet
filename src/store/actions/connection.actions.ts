@@ -13,7 +13,7 @@ import { getConnectionParties as getConnections } from '../../services/connectio
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
-export const getConnectionParties = () => {
+export const getConnectionParties = (): ((dispatch: Dispatch<AnyAction>) => void) => {
   debug('dispatchConnectionParties()...')
   return (dispatch: Dispatch<AnyAction>) => {
     debug(CONNECTIONS_LOADING)
