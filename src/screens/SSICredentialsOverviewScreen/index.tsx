@@ -32,7 +32,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
-      viewElement={
+      viewItem={
         <SSICredentialViewItem
           id={itemInfo.item.id}
           title={itemInfo.item.title}

@@ -9,14 +9,14 @@ import {
 import SSISwipeDeleteButton from '../../buttons/SSISwipeDeleteButton'
 
 export interface IProps {
-  viewElement: JSX.Element
+  viewItem: JSX.Element
   listIndex: number
   onPress: () => Promise<void>
   onDelete: () => Promise<void>
 }
 
 const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: ForwardedRef<unknown>): JSX.Element => {
-  const { listIndex, viewElement, onPress, onDelete } = props
+  const { listIndex, viewItem, onPress, onDelete } = props
 
   return (
     // TODO fix style issue being an array when using styled component (rightOpenValue / stopRightSwipe)
@@ -34,7 +34,7 @@ const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: Fo
         }}
         onPress={onPress}
       >
-        {viewElement}
+        {viewItem}
       </ItemContainer>
     </SwipeRow>
   )

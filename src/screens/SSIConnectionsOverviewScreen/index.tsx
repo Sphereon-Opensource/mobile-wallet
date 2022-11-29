@@ -33,7 +33,7 @@ class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
   renderItem = (itemInfo: ListRenderItemInfo<IConnectionViewItem>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
-      viewElement={
+      viewItem={
         <SSIConnectionsViewItem
           entityId={itemInfo.item.entityId}
           entityName={itemInfo.item.entityName}

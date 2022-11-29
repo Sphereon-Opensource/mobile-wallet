@@ -30,7 +30,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
   renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
-      viewElement={
+      viewItem={
         <SSIContactViewItem
           id={itemInfo.item.id}
           name={itemInfo.item.alias}
