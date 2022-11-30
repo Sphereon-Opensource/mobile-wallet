@@ -4,6 +4,7 @@ import { VerifiableCredential } from '@veramo/core'
 import {
   IButton,
   IConnectionViewItem,
+  IContact,
   ICredentialSummary,
   ICredentialTypeSelection,
   PopupBadgesEnum,
@@ -27,6 +28,7 @@ export type StackParamList = {
   Error: IPopupModalProps
   CredentialSelectType: ICredentialSelectTypeProps
   ContactsOverview: Record<string, never>
+  ContactDetails: IContactDetailsProps
 }
 
 export interface ICredentialDetailsProps {
@@ -86,6 +88,10 @@ export interface ICredentialSelectTypeProps {
   onAccept: (credentialTypes: Array<string>) => Promise<void>
 }
 
+export interface IContactDetailsProps {
+  contact: IContact
+}
+
 export enum RootRoutesEnum {
   MAIN = 'Main',
   ALERT_MODAL = 'AlertModal',
@@ -96,7 +102,6 @@ export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
   NOTIFICATIONS = 'NotificationsStack',
   HOME = 'HomeStack',
-  CONNECTIONS = 'ConnectionsStack',
   CONTACTS = 'ContactsStack'
 }
 
@@ -111,5 +116,6 @@ export enum ScreenRoutesEnum {
   CONNECTION_DETAILS = 'ConnectionDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
-  CONTACTS_OVERVIEW = 'ContactsOverview'
+  CONTACTS_OVERVIEW = 'ContactsOverview',
+  CONTACT_DETAILS = 'ContactDetails'
 }

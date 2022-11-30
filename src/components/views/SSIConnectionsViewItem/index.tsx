@@ -3,11 +3,11 @@ import { View } from 'react-native'
 
 import { IConnectionViewItem } from '../../../@types'
 import {
-  SSICredentialsViewItemStatusCaptionStyled as ConnectionStatusCaption,
+  SSICredentialViewItemStatusCaptionStyled as ConnectionStatusCaption,
   SSITextH4LightStyled as ConnectionTypeCaption,
   SSIFlexDirectionRowViewStyled as ContentBottomContainer,
-  SSICredentialsViewItemContentMiddleContainerStyled as ContentMiddleContainer,
-  SSICredentialsViewItemContentTopContainerStyled as ContentTopContainer,
+  SSICredentialViewItemContentMiddleContainerStyled as ContentMiddleContainer,
+  SSICredentialViewItemContentTopContainerStyled as ContentTopContainer,
   SSITextH5LightStyled as CreatedDateCaption,
   SSITextH3LightStyled as ProviderCaption
 } from '../../../styles/styledComponents'

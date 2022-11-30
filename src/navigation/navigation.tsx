@@ -16,6 +16,7 @@ import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
+import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
 import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
@@ -166,12 +167,7 @@ const HomeStack = (): JSX.Element => {
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              showBorder
-            />
-          )
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder />
         }}
       />
       <Stack.Screen
@@ -228,12 +224,17 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-                {...props}
-                showBackButton={Platform.OS === PlatformsEnum.IOS}
-                showMoreButton
-                showBorder
-            />
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton showBorder />
+          )
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          headerTitle: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton showBorder />
           )
         }}
       />

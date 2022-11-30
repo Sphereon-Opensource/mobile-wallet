@@ -14,7 +14,10 @@ import {
 import { IAuthentication } from '../../@types/store/authenticate.types'
 import { authenticate, disconnect } from '../../services/authenticationService'
 
-export const authenticateConnectionEntity = (entityId: string, connection: IConnection) => {
+export const authenticateConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
     return authenticate(connection, connection.type === ConnectionTypeEnum.DIDAUTH ? CustomApprovalEnum.PEX : undefined)
@@ -33,7 +36,10 @@ export const authenticateConnectionEntity = (entityId: string, connection: IConn
   }
 }
 
-export const disconnectConnectionEntity = (entityId: string, connection: IConnection) => {
+export const disconnectConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: any) => {
     dispatch({ type: DISCONNECT_LOADING })
     return disconnect(entityId, connection)

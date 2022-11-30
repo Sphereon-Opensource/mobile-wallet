@@ -72,5 +72,9 @@
     "pex_verification_title": "Verification",
     "raw_credential_title": "Raw credential",
     "credential_details_subtitle": "The information about the credential you are planning to add is stated below.",
-    "contacts_overview_title": "Contacts"
+    "contacts_overview_title": "Contacts",
+    "contact_details_title": "Contact",
+    "contact_details_info_tab_header_label": "Verified Info",
+    "contact_details_activity_tab_header_label": "Activity",
+    "contact_details_connections_tab_header_label": "Connections"
 }

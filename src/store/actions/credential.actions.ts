@@ -17,7 +17,7 @@ import {
 } from '../../services/credentialService'
 import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
-export const getVerifiableCredentials = () => {
+export const getVerifiableCredentials = (): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     getVerifiableCredentialsFromStorage()
@@ -33,7 +33,7 @@ export const getVerifiableCredentials = () => {
   }
 }
 
-export const storeVerifiableCredential = (vc: VerifiableCredential) => {
+export const storeVerifiableCredential = (vc: VerifiableCredential): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential)
