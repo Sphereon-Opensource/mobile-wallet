@@ -4,21 +4,21 @@ import { Dispatch } from 'react'
 import { AnyAction } from 'redux'
 
 import { APP_ID } from '../../@config/constants'
-import { getConnectionParties } from '../../services/connectionService'
 import {
   CONNECTIONS_LOADING,
   GET_CONNECTION_ENTITIES_FAILED,
   GET_CONNECTION_ENTITIES_SUCCESS
-} from '../types/connection.action.types'
+} from '../../@types/store/connection.action.types'
+import { getConnectionParties as getConnections } from '../../services/connectionService'
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
-export const dispatchConnectionParties = () => {
+export const getConnectionParties = () => {
   debug('dispatchConnectionParties()...')
   return (dispatch: Dispatch<AnyAction>) => {
     debug(CONNECTIONS_LOADING)
     dispatch({ type: CONNECTIONS_LOADING })
-    getConnectionParties()
+    getConnections()
       .then((entities: Array<IConnectionParty>) => {
         const payload = [...entities]
         debug(GET_CONNECTION_ENTITIES_SUCCESS)

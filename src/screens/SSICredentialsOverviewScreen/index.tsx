@@ -24,7 +24,7 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
   verifiableCredentials: Array<ICredentialSummary>
 }
 
-export class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
+class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   state = {
     refreshing: false
   }

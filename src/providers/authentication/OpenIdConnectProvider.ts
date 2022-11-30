@@ -16,7 +16,7 @@ import {
 
 import { APP_ID } from '../../@config/constants'
 import { CustomJwtPayload } from '../../@types'
-import { IOpenIdAuthentication } from '../../store/types/authenticate.types'
+import { IOpenIdAuthentication } from '../../@types/store/authenticate.types'
 
 const debug = Debug(`${APP_ID}:authentication`)
 

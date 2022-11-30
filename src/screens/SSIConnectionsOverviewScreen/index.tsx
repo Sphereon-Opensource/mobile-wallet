@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import { ConnectionStatusEnum, IConnectionViewItem, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton'
 import SSIConnectionsViewItem from '../../components/views/SSIConnectionsViewItem'
 import { RootState } from '../../store'
-import { dispatchConnectionParties } from '../../store/actions/connection.actions'
-import { IAuthenticatedEntity } from '../../store/types/authenticate.types'
+import { getConnectionParties } from '../../store/actions/connection.actions'
 import { backgrounds } from '../../styles/colors'
 import {
   SSIBasicContainerStyled as Container,
@@ -98,7 +98,7 @@ export class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    dispatchConnectionParties: () => dispatch(dispatchConnectionParties())
+    dispatchConnectionParties: () => dispatch(getConnectionParties())
   }
 }
 

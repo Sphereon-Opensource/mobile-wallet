@@ -1,5 +1,5 @@
-import { SET_USER, UserActionTypes } from '../types/user.action.types'
-import { IUserState } from '../types/user.types'
+import { SET_USER, UserActionTypes } from '../../@types/store/user.action.types'
+import { IUserState } from '../../@types/store/user.types'
 
 const initialState: IUserState = {
   name: null

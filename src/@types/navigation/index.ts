@@ -26,6 +26,7 @@ export type StackParamList = {
   PopupModal: IPopupModalProps
   Error: IPopupModalProps
   CredentialSelectType: ICredentialSelectTypeProps
+  ContactsOverview: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -95,7 +96,8 @@ export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
   NOTIFICATIONS = 'NotificationsStack',
   HOME = 'HomeStack',
-  CONNECTIONS = 'ConnectionsStack'
+  CONNECTIONS = 'ConnectionsStack',
+  CONTACTS = 'ContactsStack'
 }
 
 export enum ScreenRoutesEnum {
@@ -108,5 +110,6 @@ export enum ScreenRoutesEnum {
   CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
   CONNECTION_DETAILS = 'ConnectionDetails',
   ERROR = 'Error',
-  CREDENTIAL_SELECT_TYPE = 'CredentialSelectType'
+  CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
+  CONTACTS_OVERVIEW = 'ContactsOverview'
 }
