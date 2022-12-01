@@ -1,0 +1,41 @@
+Index: android/src/main/java/com/meedan/ShareMenuModule.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/android/src/main/java/com/meedan/ShareMenuModule.java b/android/src/main/java/com/meedan/ShareMenuModule.java
+--- a/android/src/main/java/com/meedan/ShareMenuModule.java	(revision 05e64678c8b6afbb31e81f8cfdd2c46177920f8d)
++++ b/android/src/main/java/com/meedan/ShareMenuModule.java	(date 1669890746681)
+@@ -59,10 +59,10 @@
+     data.putString(MIME_TYPE_KEY, type);
+ 
+     if (Intent.ACTION_SEND.equals(action)) {
+-      if ("text/plain".equals(type)) {
+-        data.putString(DATA_KEY, intent.getStringExtra(Intent.EXTRA_TEXT));
+-        return data;
+-      }
++//      if ("text/plain".equals(type)) {
++//        data.putString(DATA_KEY, intent.getStringExtra(Intent.EXTRA_TEXT));
++//        return data;
++//      }
+ 
+       Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+       if (fileUri != null) {
+@@ -106,7 +106,7 @@
+     }
+ 
+     Intent intent = currentActivity.getIntent();
+-    
++
+     ReadableMap shared = extractShared(intent);
+     successCallback.invoke(shared);
+     clearSharedText();
+@@ -124,7 +124,7 @@
+ 
+   public void clearSharedText() {
+     Activity mActivity = getCurrentActivity();
+-    
++
+     if(mActivity == null) { return; }
+ 
+     Intent intent = mActivity.getIntent();
