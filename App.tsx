@@ -35,8 +35,8 @@ LogBox.ignoreLogs([
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
-  // const [sharedData, setSharedData] = useState(null);
-  // const [sharedMimeType, setSharedMimeType] = useState(null);
+  const [sharedData, setSharedData] = useState(null);
+  const [sharedMimeType, setSharedMimeType] = useState(null);
 
   useCallback((item?:SharedItem) => {
     if (!item) {
