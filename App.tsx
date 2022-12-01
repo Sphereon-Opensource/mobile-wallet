@@ -2,7 +2,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import ShareMenuModule from 'react-native-share-menu';
 import { Provider } from 'react-redux'
 
 import 'react-native-gesture-handler'
@@ -11,14 +10,11 @@ import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
 import DeepLinkProvider from './src/providers/deepLinking/DeepLinkProvider';
+import SharedDataHandler from "./src/providers/sharedDataHandler/SharedDataHandler";
 import store from './src/store';
 import { backgrounds } from './src/styles/colors';
 
-type SharedItem = {
-  mimeType: string,
-  data: string,
-  extraData: any,
-};
+
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -35,21 +31,6 @@ LogBox.ignoreLogs([
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
-  const [sharedData, setSharedData] = useState(null);
-  const [sharedMimeType, setSharedMimeType] = useState(null);
-
-  useCallback((item?:SharedItem) => {
-    if (!item) {
-      return;
-    }
-
-    const { mimeType, data, extraData } = item;
-
-    setSharedData(data);
-    setSharedMimeType(mimeType);
-    // You can receive extra data from your custom Share View
-    console.log(extraData);
-  }, []);
 
   useEffect(() => {
     async function prepare(): Promise<void> {
@@ -75,19 +56,7 @@ export default function App() {
         // Add listener for deep links
         await DeepLinkProvider.enableDeepLinking()
 
-        ShareMenuModule.getSharedText((data: any) => {
-          console.log('2022-12-01' + JSON.stringify(data));
-
-          // let offlinePackageResponse = await RNFS.config({
-          //   fileCache: true,
-          //   timeout: 9999999,
-          //   background: true, // iOS only
-          // }).fetch(method, data.data, header)
-          // .progress(callback);
-
-          //console.log(`file save at ${offlinePackageResponse.path()}`);
-
-        })
+        await SharedDataHandler.enableReceivingData()
       } catch (e) {
         console.warn(e)
       } finally {
