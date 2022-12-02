@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIActivityView from '../../components/views/SSIActivityView'
+import SSIConnectionsView from '../../components/views/SSIConnectionsView'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
@@ -29,8 +30,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     {
       key: ContactTabRoutesEnum.CONNECTIONS,
       title: translate('contact_details_connections_tab_header_label'),
-      // TODO WAL-352 implement content
-      content: () => <SSIActivityView />
+      content: () => <SSIConnectionsView connections={contact.connections} />
     },
     {
       key: ContactTabRoutesEnum.ACTIVITY,
