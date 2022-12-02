@@ -51,6 +51,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
           keyExtractor={(itemInfo: IContact) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
+          closeOnRowBeginSwipe
           useFlatList
           initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews

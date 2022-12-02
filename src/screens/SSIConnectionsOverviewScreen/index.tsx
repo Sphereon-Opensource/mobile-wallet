@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import { ConnectionStatusEnum, IConnectionViewItem, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
-import SSIConnectionsViewItem from '../../components/views/SSIConnectionsViewItem'
+import SSIConnectionViewItem from '../../components/views/SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { RootState } from '../../store'
 import { getConnectionParties } from '../../store/actions/connection.actions'
@@ -34,11 +34,10 @@ class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
-        <SSIConnectionsViewItem
-          entityId={itemInfo.item.entityId}
-          entityName={itemInfo.item.entityName}
-          connection={itemInfo.item.connection}
-          connectionStatus={itemInfo.item.connectionStatus}
+        <SSIConnectionViewItem
+          name={itemInfo.item.entityName}
+          // TODO we need a connection uri which currently is not available
+          uri={itemInfo.item.connection.config.redirectUrl}
         />
       }
       onPress={async () => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
@@ -71,6 +70,7 @@ class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
           keyExtractor={(itemInfo: IConnectionViewItem) => itemInfo.connection.id}
           renderItem={this.renderItem}
           closeOnRowOpen
+          closeOnRowBeginSwipe
           useFlatList
           initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews

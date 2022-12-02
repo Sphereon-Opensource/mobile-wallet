@@ -15,7 +15,7 @@ import {
   SSIDetailsViewLabelRowViewStyled as LabelRow,
   SSIDetailsViewSeparatorStyled as Separator
 } from '../../../styles/styledComponents'
-import SSIConnectionsViewItem from '../SSIConnectionsViewItem'
+import SSIConnectionViewItem from '../SSIConnectionViewItem'
 
 export interface IProps {
   entityConnection: IConnectionViewItem
@@ -44,11 +44,10 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
 
   return (
     <Container>
-      <SSIConnectionsViewItem
-        entityId={props.entityConnection.entityId}
-        entityName={props.entityConnection.entityName}
-        connection={props.entityConnection.connection}
-        connectionStatus={props.entityConnection.connectionStatus}
+      <SSIConnectionViewItem
+        name={props.entityConnection.entityName}
+        // TODO we need a connection uri which currently is not available
+        uri={props.entityConnection.connection.config.redirectUrl}
       />
       <Separator />
       <DetailLabelsContainer>

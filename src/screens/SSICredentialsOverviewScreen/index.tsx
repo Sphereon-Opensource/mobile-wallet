@@ -65,6 +65,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
           keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
+          closeOnRowBeginSwipe
           useFlatList
           initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
