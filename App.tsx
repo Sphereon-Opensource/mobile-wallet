@@ -6,6 +6,7 @@ import ShareMenu from 'react-native-share-menu';
 import { Provider } from 'react-redux'
 
 import 'react-native-gesture-handler'
+import {SharedItem} from "./src/@types/files";
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
@@ -28,12 +29,6 @@ LogBox.ignoreLogs([
   // TODO WAL-346 We should implement a keep awake mechanism. https://docs.expo.dev/versions/latest/sdk/keep-awake/
   'Unable to activate keep awake'
 ])
-
-type SharedItem = {
-  mimeType: string,
-  data: string,
-  extraData: any,
-};
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
@@ -62,7 +57,8 @@ export default function App() {
         // Add listener for deep links
         await DeepLinkProvider.enableDeepLinking()
 
-        await SharedDataProvider.enableReceivingData()
+        await SharedDataProvider.getDataOnStartup()
+
       } catch (e) {
         console.warn(e)
       } finally {
@@ -74,39 +70,28 @@ export default function App() {
     void prepare()
   }, [])
 
-  const handleShare = useCallback((item?: SharedItem) => {
-    console.log('handleShare 2022-12-05 1632')
+  const handleShare = useCallback(async (item?: SharedItem) => {
+    console.log('handleShare 2022-12-06 1034');
     if (!item) {
-      console.log('handleShare 2022-12-05 1633')
       return;
     }
 
     const { mimeType, data, extraData } = item;
 
-    //setSharedData(data);
-    //setSharedMimeType(mimeType);
-    // You can receive extra data from your custom Share View
     console.log('extraData 2022-12-05 16 37: ' + JSON.stringify(extraData));
     console.log('mimeType 2022-12-05 16 37: ' + JSON.stringify(mimeType));
     console.log('data 2022-12-05 16 37: ' + JSON.stringify(data));
+
+    await SharedDataProvider.receiveData(item);
   }, []);
 
   useEffect(() => {
-    console.log('getInitialShare 2022-12-05 16 34');
-    ShareMenu.getInitialShare(handleShare);
-  }, []);
-
-  useEffect(() => {
-    console.log('addNewShareListener 2022-12-05 16 35');
     const listener = ShareMenu.addNewShareListener(handleShare);
 
     return () => {
-      console.log('listener.remove 2022-12-05 16 36');
       listener.remove();
     };
   }, []);
-
-
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
