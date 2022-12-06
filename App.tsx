@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import ShareMenu from 'react-native-share-menu';
 import { Provider } from 'react-redux'
 
 import 'react-native-gesture-handler'
@@ -10,10 +11,9 @@ import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
 import DeepLinkProvider from './src/providers/deepLinking/DeepLinkProvider';
-import SharedDataHandler from "./src/providers/sharedDataHandler/SharedDataHandler";
+import SharedDataProvider from "./src/providers/sharedData/SharedDataProvider";
 import store from './src/store';
 import { backgrounds } from './src/styles/colors';
-
 
 
 LogBox.ignoreLogs([
@@ -28,6 +28,12 @@ LogBox.ignoreLogs([
   // TODO WAL-346 We should implement a keep awake mechanism. https://docs.expo.dev/versions/latest/sdk/keep-awake/
   'Unable to activate keep awake'
 ])
+
+type SharedItem = {
+  mimeType: string,
+  data: string,
+  extraData: any,
+};
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
@@ -56,7 +62,7 @@ export default function App() {
         // Add listener for deep links
         await DeepLinkProvider.enableDeepLinking()
 
-        await SharedDataHandler.enableReceivingData()
+        await SharedDataProvider.enableReceivingData()
       } catch (e) {
         console.warn(e)
       } finally {
@@ -67,6 +73,40 @@ export default function App() {
 
     void prepare()
   }, [])
+
+  const handleShare = useCallback((item?: SharedItem) => {
+    console.log('handleShare 2022-12-05 1632')
+    if (!item) {
+      console.log('handleShare 2022-12-05 1633')
+      return;
+    }
+
+    const { mimeType, data, extraData } = item;
+
+    //setSharedData(data);
+    //setSharedMimeType(mimeType);
+    // You can receive extra data from your custom Share View
+    console.log('extraData 2022-12-05 16 37: ' + JSON.stringify(extraData));
+    console.log('mimeType 2022-12-05 16 37: ' + JSON.stringify(mimeType));
+    console.log('data 2022-12-05 16 37: ' + JSON.stringify(data));
+  }, []);
+
+  useEffect(() => {
+    console.log('getInitialShare 2022-12-05 16 34');
+    ShareMenu.getInitialShare(handleShare);
+  }, []);
+
+  useEffect(() => {
+    console.log('addNewShareListener 2022-12-05 16 35');
+    const listener = ShareMenu.addNewShareListener(handleShare);
+
+    return () => {
+      console.log('listener.remove 2022-12-05 16 36');
+      listener.remove();
+    };
+  }, []);
+
+
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {

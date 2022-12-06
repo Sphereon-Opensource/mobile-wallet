@@ -12,10 +12,13 @@ import {storeVerifiableCredential} from "../../store/actions/credential.actions"
 import {showToast, ToastTypeEnum} from "../../utils/ToastUtils";
 import {toCredentialSummary} from "../../utils/mappers/CredentialMapper";
 
-class SharedDataHandler {
+class SharedDataProvider {
+
 
   public static async enableReceivingData(): Promise<void> {
-    this.getData()
+
+
+    this.receiveData()
   }
 
   private static onDecline() {
@@ -36,7 +39,7 @@ class SharedDataHandler {
         .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message));
   }
 
-  private static getData() {
+  private static async receiveData() {
     console.log('2022-12-01 1626');
     await ShareMenuModule.getSharedText((data: any) => {
       console.log('2022-12-01 1627' + JSON.stringify(data));
@@ -75,4 +78,4 @@ class SharedDataHandler {
   }
 }
 
-export default SharedDataHandler
+export default SharedDataProvider
