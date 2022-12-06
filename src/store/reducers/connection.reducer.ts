@@ -4,7 +4,7 @@ import {
   GET_CONNECTION_ENTITIES_FAILED,
   GET_CONNECTION_ENTITIES_SUCCESS,
   IConnectionState
-} from '../types/connection.action.types'
+} from '../../@types/store/connection.action.types'
 
 const initialState: IConnectionState = {
   loading: false,

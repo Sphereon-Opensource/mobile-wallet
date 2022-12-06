@@ -20,7 +20,7 @@ import DateUtils from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
 
-enum CredentialRoutesEnum {
+enum CredentialTabRoutesEnum {
   INFO = 'info',
   ACTIVITY = 'activity'
 }
@@ -30,9 +30,22 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params
   const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.name
 
-  const InfoRoute = () => <SSICredentialDetailsView credentialProperties={credential.properties} issuer={issuer} />
-
-  const ActivityRoute = () => <SSIActivityView />
+  const routes = [
+    {
+      key: CredentialTabRoutesEnum.INFO,
+      title: translate('credential_details_info_tab_header_label'),
+      content: () => <SSICredentialDetailsView credentialProperties={credential.properties} issuer={issuer} />
+    },
+    ...(showActivity
+      ? [
+          {
+            key: CredentialTabRoutesEnum.ACTIVITY,
+            title: translate('credential_details_activity_tab_header_label'),
+            content: () => <SSIActivityView />
+          }
+        ]
+      : [])
+  ]
 
   return (
     <Container>
@@ -45,24 +58,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             credentialStatus={CredentialStatusEnum.VALID} // TODO status should come from the credential object
           />
         </CardContainer>
-        <SSITabView
-          routes={[
-            {
-              key: CredentialRoutesEnum.INFO,
-              title: translate('credential_details_info_tab_header_label'),
-              content: InfoRoute
-            },
-            ...(showActivity
-              ? [
-                  {
-                    key: CredentialRoutesEnum.ACTIVITY,
-                    title: translate('credential_details_activity_tab_header_label'),
-                    content: ActivityRoute
-                  }
-                ]
-              : [])
-          ]}
-        />
+        <SSITabView routes={routes} />
         {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
         {(primaryAction || secondaryAction) && (
           <ButtonContainer>

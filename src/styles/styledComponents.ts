@@ -267,7 +267,7 @@ export const SSIRippleContainerStyled = styled(Ripple).attrs({
   rippleFades: false
 })``
 
-export const SSICredentialsViewItemContentContainerStyled = styled(SSIRippleContainerStyled)`
+export const SSICredentialViewItemContentContainerStyled = styled(SSIRippleContainerStyled)`
   padding-right: 21px;
   padding-left: 24px;
   padding-top: 16px;
@@ -361,7 +361,7 @@ export const SSIToastErrorIconStyled = styled(ErrorIcon).attrs({
 
 // MISC
 // TEXT
-export const SSICredentialsViewItemExpirationDateCaptionStyled = styled(SSITextH5LightStyled)`
+export const SSICredentialViewItemExpirationDateCaptionStyled = styled(SSITextH5LightStyled)`
   margin-left: auto;
 `
 
@@ -395,11 +395,11 @@ export const SSIPexMessageStyled = styled(SSITextH4LightStyled)`
 `
 
 // CONTAINERS
-export const SSICredentialsViewItemContentTopContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
+export const SSICredentialViewItemContentTopContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   margin-bottom: 2px;
 `
 
-export const SSICredentialsViewItemContentMiddleContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
+export const SSICredentialViewItemContentMiddleContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   margin-bottom: 13px;
 `
 
@@ -421,7 +421,7 @@ export const SSIRightColumnRightAlignedContainerStyled = styled(SSIFlexDirection
 `
 
 // TODO fix style issue being an array when using styled component
-export const SSICredentialsViewItemSwipeRowContainerStyled = styled(SwipeRow).attrs({
+export const SSICredentialViewItemSwipeRowContainerStyled = styled(SwipeRow).attrs({
   rightOpenValue: -97,
   stopRightSwipe: -97
 })``
@@ -467,7 +467,7 @@ export const SSIPexBackgroundImageContainerStyled = styled(View)`
 `
 
 // OTHERS
-export const SSICredentialsViewItemStatusCaptionStyled = styled.View`
+export const SSICredentialViewItemStatusCaptionStyled = styled.View`
   margin-top: 3px;
   margin-left: auto;
 `

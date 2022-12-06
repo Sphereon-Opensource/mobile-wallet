@@ -16,7 +16,6 @@ const SSITabView: FC<IProps> = (props: IProps): JSX.Element => {
   const [routes] = React.useState(props.routes)
 
   const sceneMap = props.routes.reduce((a: Record<string, any>, v: ITabViewRoute) => ({ ...a, [v.key]: v.content }), {})
-  console.log(`sceneMap: ${JSON.stringify(sceneMap, null, 2)}`)
 
   return (
     <Container>

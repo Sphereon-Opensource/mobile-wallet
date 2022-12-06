@@ -3,7 +3,6 @@ import { Dispatch } from 'react'
 import { AnyAction } from 'redux'
 
 import { CustomApprovalEnum } from '../../@types'
-import { authenticate, disconnect } from '../../services/authenticationService'
 import {
   AUTHENTICATE_ENTITY_FAILED,
   AUTHENTICATE_ENTITY_SUCCESS,
@@ -11,10 +10,14 @@ import {
   DISCONNECT_ENTITY_FAILED,
   DISCONNECT_ENTITY_SUCCESS,
   DISCONNECT_LOADING
-} from '../types/authenticate.action.types'
-import { IAuthentication } from '../types/authenticate.types'
+} from '../../@types/store/authenticate.action.types'
+import { IAuthentication } from '../../@types/store/authenticate.types'
+import { authenticate, disconnect } from '../../services/authenticationService'
 
-export const authenticateConnectionEntity = (entityId: string, connection: IConnection) => {
+export const authenticateConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
     return authenticate(connection, connection.type === ConnectionTypeEnum.DIDAUTH ? CustomApprovalEnum.PEX : undefined)
@@ -33,7 +36,10 @@ export const authenticateConnectionEntity = (entityId: string, connection: IConn
   }
 }
 
-export const disconnectConnectionEntity = (entityId: string, connection: IConnection) => {
+export const disconnectConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: any) => {
     dispatch({ type: DISCONNECT_LOADING })
     return disconnect(entityId, connection)

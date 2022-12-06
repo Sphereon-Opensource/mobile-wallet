@@ -4,12 +4,12 @@ import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/nati
 import { connect } from 'react-redux'
 
 import { ConnectionStatusEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
 import { translate } from '../../localization/Localization'
 import { RootState } from '../../store'
 import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
-import { IAuthenticatedEntity } from '../../store/types/authenticate.types'
 import {
   SSIButtonBottomSingleContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
