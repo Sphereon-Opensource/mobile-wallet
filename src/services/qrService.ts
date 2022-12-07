@@ -24,6 +24,7 @@ import {
   ScreenRoutesEnum
 } from '../@types'
 import { translate } from '../localization/Localization'
+import * as RootNavigation from "../navigation/rootNavigation";
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
@@ -199,6 +200,7 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
   if (args.qrData.pin) {
     const manifest = await new JwtVcPresentationProfileProvider().getManifest(args.qrData)
+    console.debug('2022-12-07 1326');
     args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
       pinLength: args.qrData.pin.length,
       credentialName: manifest.display.card.title || '[MISSING CREDENTIAL NAME]', // TODO translate
@@ -282,10 +284,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
       ) {
-        args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
-          // Currently we only support receiving one credential, we are missing ui to display multiple
-          credentialName: credentials[0],
-          onVerification: async (pin: string) => await sendResponse(provider, pin)
+        console.debug('2022-12-07 1327');
+        RootNavigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.VERIFICATION_CODE,
+          params: {
+            // Currently we only support receiving one credential, we are missing ui to display multiple
+            credentialName: credentials[0],
+            onVerification: async (pin: string) => await sendResponse(provider, pin)
+          }
         })
       } else {
         await sendResponse(provider)
