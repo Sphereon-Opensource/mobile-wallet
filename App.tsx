@@ -2,17 +2,14 @@ import { NavigationContainer } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import ShareMenu from 'react-native-share-menu';
 import { Provider } from 'react-redux'
 
 import 'react-native-gesture-handler'
-import {SharedItem} from "./src/@types/files";
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
-import DeepLinkProvider from './src/providers/deepLinking/DeepLinkProvider';
-import SharedDataProvider from "./src/providers/sharedData/SharedDataProvider";
+import IntentHandler from './src/providers/intentHandler/IntentHandler';
 import store from './src/store';
 import { backgrounds } from './src/styles/colors';
 
@@ -56,10 +53,7 @@ export default function App() {
         //await new Promise((resolve) => setTimeout(resolve, 2000))
 
         // Add listener for deep links
-        await DeepLinkProvider.enableDeepLinking()
-
-        await SharedDataProvider.getDataOnStartup()
-
+        await IntentHandler.enableIntentHandler()
       } catch (e) {
         console.warn(e)
       } finally {
@@ -71,28 +65,6 @@ export default function App() {
     void prepare()
   }, [])
 
-  const handleShare = useCallback(async (item?: SharedItem) => {
-    console.log('handleShare 2022-12-06 1034');
-    if (!item) {
-      return;
-    }
-
-    const { mimeType, data, extraData } = item;
-
-    console.log('extraData 2022-12-05 16 37: ' + JSON.stringify(extraData));
-    console.log('mimeType 2022-12-05 16 37: ' + JSON.stringify(mimeType));
-    console.log('data 2022-12-05 16 37: ' + JSON.stringify(data));
-
-    await SharedDataProvider.receiveData(item);
-  }, []);
-
-  useEffect(() => {
-    const listener = ShareMenu.addNewShareListener(handleShare);
-
-    return () => {
-      listener.remove();
-    };
-  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
