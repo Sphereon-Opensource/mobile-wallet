@@ -52,7 +52,6 @@ export default function App() {
         // experience. Please remove this if you copy and paste the code!
         //await new Promise((resolve) => setTimeout(resolve, 2000))
 
-        // Add listener for deep links
         await IntentHandler.enableIntentHandler()
       } catch (e) {
         console.warn(e)
