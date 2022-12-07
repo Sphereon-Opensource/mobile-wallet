@@ -200,7 +200,6 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
   if (args.qrData.pin) {
     const manifest = await new JwtVcPresentationProfileProvider().getManifest(args.qrData)
-    console.debug('2022-12-07 1326');
     args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
       pinLength: args.qrData.pin.length,
       credentialName: manifest.display.card.title || '[MISSING CREDENTIAL NAME]', // TODO translate
@@ -284,7 +283,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
       ) {
-        console.debug('2022-12-07 1327');
         RootNavigation.navigate(NavigationBarRoutesEnum.QR, {
           screen: ScreenRoutesEnum.VERIFICATION_CODE,
           params: {
