@@ -1,18 +1,18 @@
-import {ICredential} from '@sphereon/ssi-types'
-import {ProofType, UnsignedCredential, VerifiableCredential} from '@veramo/core'
-import {Linking} from 'react-native'
+import { ICredential } from '@sphereon/ssi-types'
+import { ProofType, UnsignedCredential, VerifiableCredential } from '@veramo/core'
+import { Linking } from 'react-native'
 import * as RNFS from 'react-native-fs'
 import ShareMenuModule from 'react-native-share-menu'
 
-import {NavigationBarRoutesEnum, ScreenRoutesEnum} from '../../@types'
-import {SharedItem} from '../../@types/intents'
-import {translate} from '../../localization/Localization'
+import { NavigationBarRoutesEnum, ScreenRoutesEnum } from '../../@types'
+import { SharedItem } from '../../@types/intents'
+import { translate } from '../../localization/Localization'
 import * as RootNavigation from '../../navigation/rootNavigation'
-import {readQr} from '../../services/qrService'
+import { readQr } from '../../services/qrService'
 import store from '../../store'
-import {storeVerifiableCredential} from '../../store/actions/credential.actions'
-import {showToast, ToastTypeEnum} from '../../utils/ToastUtils'
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper'
+import { storeVerifiableCredential } from '../../store/actions/credential.actions'
+import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 class IntentHandler {
   public static enableIntentHandler = async (): Promise<void> => {
@@ -40,7 +40,7 @@ class IntentHandler {
         return
       }
 
-      IntentHandler.deepLinkListener({url})
+      IntentHandler.deepLinkListener({ url })
     })
   }
 
@@ -54,7 +54,7 @@ class IntentHandler {
   private static deepLinkListener = async (event: { url: string }): Promise<void> => {
     // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
     // TODO fix this type issue
-    await readQr({qrData: event.url, navigation: RootNavigation})
+    await readQr({ qrData: event.url, navigation: RootNavigation })
   }
 
   public static async sharedFileDataListener(item?: SharedItem): Promise<void> {
@@ -90,21 +90,21 @@ class IntentHandler {
 
   private static onDecline() {
     return async () =>
-        RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
-          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-        })
+      RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
+        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+      })
   }
 
   private static onAccept(
-      storeCredential: (vc: VerifiableCredential) => Promise<void>,
-      vc: UnsignedCredential & { proof: ProofType }
+    storeCredential: (vc: VerifiableCredential) => Promise<void>,
+    vc: UnsignedCredential & { proof: ProofType }
   ) {
     return async () =>
-        storeCredential(vc)
+      storeCredential(vc)
         .then(() =>
-            RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
-              screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-            })
+          RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
+            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+          })
         )
         .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
         .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
