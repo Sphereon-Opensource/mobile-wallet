@@ -1,5 +1,5 @@
 export interface SharedItem {
-  mimeType: string,
-  data: string,
-  extraData: any,
+  mimeType: string
+  data: string
+  extraData: any
 }
