@@ -153,6 +153,9 @@ IDE and start it (do not restart, as it might not pick up the latest environment
 
 ## Starting the SSI-Wallet
 
+Since the app is still very much in development, at this point we expect people to have Expo Go client installed on their mobile phone: 
+https://expo.dev/client
+
 The SSI-Wallet can be started by running one of the following commands.
 
 ### Android
