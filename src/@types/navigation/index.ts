@@ -1,4 +1,5 @@
 import { SIOP } from '@sphereon/did-auth-siop'
+import {BasicConnectionParty} from '@sphereon/ssi-sdk-data-store-common';
 import { VerifiableCredential } from '@veramo/core'
 
 import {
@@ -89,7 +90,7 @@ export interface ICredentialSelectTypeProps {
 }
 
 export interface IContactDetailsProps {
-  contact: IContact
+  contact: BasicConnectionParty
 }
 
 export enum RootRoutesEnum {

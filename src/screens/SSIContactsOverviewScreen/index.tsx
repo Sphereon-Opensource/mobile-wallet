@@ -1,3 +1,4 @@
+import {BasicConnectionParty} from '@sphereon/ssi-sdk-data-store-common';
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
@@ -5,7 +6,7 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { IContact, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { RootState } from '../../store'
@@ -14,7 +15,7 @@ import { SSIBasicContainerStyled as Container } from '../../styles/styledCompone
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void
-  contacts: Array<IContact>
+  contacts: Array<BasicConnectionParty>
 }
 
 class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
@@ -27,7 +28,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
     this.setState({ refreshing: false })
   }
 
-  renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => (
+  renderItem = (itemInfo: ListRenderItemInfo<BasicConnectionParty>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
@@ -48,7 +49,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: IContact) => itemInfo.id}
+          keyExtractor={(itemInfo: BasicConnectionParty) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe
