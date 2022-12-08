@@ -52,7 +52,7 @@ export default function App() {
         // experience. Please remove this if you copy and paste the code!
         //await new Promise((resolve) => setTimeout(resolve, 2000))
 
-        await IntentHandler.enableIntentHandler()
+        await IntentHandler.enable()
       } catch (e) {
         console.warn(e)
       } finally {

@@ -15,18 +15,18 @@ import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 class IntentHandler {
-  public static enableIntentHandler = async (): Promise<void> => {
+  public static enable = async (): Promise<void> => {
     console.debug('enabling intent handler')
     await IntentHandler.addListeners()
     await IntentHandler.getDataOnStartup()
   }
 
-  public static addListeners = async (): Promise<void> => {
+  private static addListeners = async (): Promise<void> => {
     Linking.addEventListener('url', IntentHandler.deepLinkListener)
     ShareMenuModule.addNewShareListener(IntentHandler.sharedFileDataListener)
   }
 
-  public static async getDataOnStartup(): Promise<void> {
+  private static async getDataOnStartup(): Promise<void> {
     console.debug('get intent data on startup')
     await IntentHandler.handleDeepLinkData()
     await IntentHandler.handleSharedFileData()
@@ -57,7 +57,7 @@ class IntentHandler {
     await readQr({ qrData: event.url, navigation: RootNavigation })
   }
 
-  public static async sharedFileDataListener(item?: SharedItem): Promise<void> {
+  private static async sharedFileDataListener(item?: SharedItem): Promise<void> {
     if (item) {
       RNFS.readFile(item.data).then((fileString: string) => {
         const vc: VerifiableCredential = JSON.parse(fileString)?.credential?.data?.verifiableCredential[0]
@@ -83,6 +83,8 @@ class IntentHandler {
             screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
             params: params
           })
+        } else {
+          showToast(ToastTypeEnum.TOAST_ERROR, translate('vc_not_found'))
         }
       })
     }
