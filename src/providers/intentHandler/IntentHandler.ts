@@ -1,9 +1,11 @@
 import { ICredential } from '@sphereon/ssi-types'
 import { ProofType, UnsignedCredential, VerifiableCredential } from '@veramo/core'
+import Debug from "debug";
 import { Linking } from 'react-native'
 import * as RNFS from 'react-native-fs'
 import ShareMenuModule from 'react-native-share-menu'
 
+import {APP_ID} from "../../@config/constants";
 import { NavigationBarRoutesEnum, ScreenRoutesEnum } from '../../@types'
 import { SharedItem } from '../../@types/intents'
 import { translate } from '../../localization/Localization'
@@ -15,8 +17,10 @@ import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 class IntentHandler {
+  private debug = Debug(`${APP_ID}:intentHandler`);
+
   public static enable = async (): Promise<void> => {
-    console.debug('enabling intent handler')
+    this.debug('enabling intent handler')
     await IntentHandler.addListeners()
     await IntentHandler.getDataOnStartup()
   }
@@ -27,13 +31,13 @@ class IntentHandler {
   }
 
   private static async getDataOnStartup(): Promise<void> {
-    console.debug('get intent data on startup')
+    this.debug('get intent data on startup')
     await IntentHandler.handleDeepLinkData()
     await IntentHandler.handleSharedFileData()
   }
 
   private static async handleDeepLinkData(): Promise<void> {
-    console.debug('handleDeepLinkData')
+    this.debug('handleDeepLinkData')
     Linking.getInitialURL().then((url: string | null) => {
       // Added expo-development-client check because of how the expo works in development
       if (url === null || url.includes('expo-development-client')) {
@@ -45,7 +49,7 @@ class IntentHandler {
   }
 
   private static async handleSharedFileData(): Promise<void> {
-    console.debug('handleSharedFileData')
+    this.debug('handleSharedFileData')
     await ShareMenuModule.getSharedText((data: any) => {
       IntentHandler.sharedFileDataListener(data)
     })
@@ -78,7 +82,7 @@ class IntentHandler {
               onPress: IntentHandler.onDecline()
             }
           }
-          console.debug('navigating to Credential Details Screen.')
+          this.debug('navigating to Credential Details Screen.')
           RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
             screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
             params: params
