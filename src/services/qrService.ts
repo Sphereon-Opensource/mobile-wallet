@@ -24,7 +24,7 @@ import {
   ScreenRoutesEnum
 } from '../@types'
 import { translate } from '../localization/Localization'
-import * as RootNavigation from "../navigation/rootNavigation";
+import * as RootNavigation from '../navigation/rootNavigation'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'

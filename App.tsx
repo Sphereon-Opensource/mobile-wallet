@@ -8,7 +8,7 @@ import 'react-native-gesture-handler'
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
-import { navigationRef } from './src/navigation/rootNavigation'
+import {navigationRef, onReadyCallback} from './src/navigation/rootNavigation'
 import IntentHandler from './src/providers/intentHandler/IntentHandler';
 import store from './src/store';
 import { backgrounds } from './src/styles/colors';
@@ -64,7 +64,6 @@ export default function App() {
     void prepare()
   }, [])
 
-
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -83,7 +82,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer ref={navigationRef} onReady={onReadyCallback}>
           <RootStackNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
