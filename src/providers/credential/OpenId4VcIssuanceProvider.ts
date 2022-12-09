@@ -233,7 +233,6 @@ class OpenId4VcIssuanceProvider {
 
   public acquireAccessToken = async ({ pin }: { pin?: string }): Promise<AccessTokenResponse> => {
     if (!this.accessTokenResponse) {
-      // TODO fix non null assertion
       const clientId = OpenId4VcIssuanceProvider.determineClientId(this.serverMetadata?.issuer)
       this.accessTokenResponse = await this.client.acquireAccessToken({ pin, clientId })
     }

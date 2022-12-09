@@ -2,10 +2,10 @@ rootProject.name = 'SSIWallet'
 include ':react-native-randombytes'
 project(':react-native-randombytes').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-randombytes/android')
 
-apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle")
+apply from: new File(["node", "--print", "require.resolve('expo/package.json')"].execute(null, rootDir).text.trim(), "../scripts/autolinking.gradle");
 useExpoModules()
 
-apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle")
+apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle");
 applyNativeModulesSettingsGradle(settings)
 
 include ':app'
@@ -13,7 +13,8 @@ includeBuild(new File(["node", "--print", "require.resolve('react-native-gradle-
 
 if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true") {
   include(":ReactAndroid")
-  project(":ReactAndroid").projectDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), "../ReactAndroid")
+  project(":ReactAndroid").projectDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), "../ReactAndroid");
 }
+
 include ':react-native-share-menu', ':app'
 project(':react-native-share-menu').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-share-menu/android')

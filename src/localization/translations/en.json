@@ -77,5 +77,5 @@
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activity",
     "contact_details_connections_tab_header_label": "Connections",
-    "vc_not_found": "Verifiable Credential is not found"
+    "intent_share_file_unable_to_receive_message": "Unable to receive Verifiable Credential"
 }
