@@ -21,34 +21,34 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
   }
 
   const renderItem = (itemInfo: ListRenderItemInfo<IConnectionViewItem>): JSX.Element => (
-      <SSISwipeRowViewItem
-          listIndex={itemInfo.index}
-          viewItem={
-            <SSIConnectionViewItem
-                name={itemInfo.item.entityName}
-                // TODO we need a connection uri which currently is not available
-                uri={itemInfo.item.connection.config.redirectUrl}
-            />
-          }
-          onPress={async () => console.log('Connection pressed!')}
-          onDelete={async () => console.log('Delete connection pressed!')}
-      />
+    <SSISwipeRowViewItem
+      listIndex={itemInfo.index}
+      viewItem={
+        <SSIConnectionViewItem
+          name={itemInfo.item.entityName}
+          // TODO we need a connection uri which currently is not available
+          uri={itemInfo.item.connection.config.redirectUrl}
+        />
+      }
+      onPress={async () => console.log('Connection pressed!')}
+      onDelete={async () => console.log('Delete connection pressed!')}
+    />
   )
 
   return (
-      <SSIConnectionsViewContainerStyled>
-        <SwipeListView
-            data={connections}
-            keyExtractor={(itemInfo: IConnectionViewItem) => itemInfo.connection.id}
-            renderItem={renderItem}
-            closeOnRowOpen
-            closeOnRowBeginSwipe
-            useFlatList
-            initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
-            removeClippedSubviews
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        />
-      </SSIConnectionsViewContainerStyled>
+    <SSIConnectionsViewContainerStyled>
+      <SwipeListView
+        data={connections}
+        keyExtractor={(itemInfo: IConnectionViewItem) => itemInfo.connection.id}
+        renderItem={renderItem}
+        closeOnRowOpen
+        closeOnRowBeginSwipe
+        useFlatList
+        initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
+        removeClippedSubviews
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
+    </SSIConnectionsViewContainerStyled>
   )
 }
 

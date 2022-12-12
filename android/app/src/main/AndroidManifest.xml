@@ -36,6 +36,13 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="openid-initiate-issuance"/>
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="text/plain" />
+        <data android:mimeType="image/*" />
+        <!-- Any other mime types you want to support -->
+      </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
   </application>

@@ -1,0 +1,15 @@
+diff --git a//node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
+index 09abd7b..890b5f1 100644
+--- a/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
++++ b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
+@@ -59,10 +59,6 @@ public class ShareMenuModule extends ReactContextBaseJavaModule implements Activ
+     data.putString(MIME_TYPE_KEY, type);
+
+     if (Intent.ACTION_SEND.equals(action)) {
+-      if ("text/plain".equals(type)) {
+-        data.putString(DATA_KEY, intent.getStringExtra(Intent.EXTRA_TEXT));
+-        return data;
+-      }
+
+       Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+       if (fileUri != null) {
