@@ -33,7 +33,8 @@ export const getVerifiableCredentials = (): ((dispatch: Dispatch<AnyAction>) => 
   }
 }
 
-export const storeVerifiableCredential = (vc: VerifiableCredential): ((dispatch: Dispatch<AnyAction>) => void) => { // TODO args
+export const storeVerifiableCredential = (vc: VerifiableCredential): ((dispatch: Dispatch<AnyAction>) => void) => {
+  // TODO args
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential)

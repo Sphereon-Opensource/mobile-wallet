@@ -39,11 +39,11 @@ interface ICreateContactFailedAction {
 }
 
 export type ContactActionTypes =
-    IContactsLoading |
-    IGetContactsSuccessAction |
-    IGetContactsFailedAction |
-    ICreateContactSuccessAction |
-    ICreateContactFailedAction
+  | IContactsLoading
+  | IGetContactsSuccessAction
+  | IGetContactsFailedAction
+  | ICreateContactSuccessAction
+  | ICreateContactFailedAction
 
 export interface ICreateContactArgs {
   name: string

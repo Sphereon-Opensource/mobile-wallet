@@ -1,5 +1,5 @@
 import { SIOP } from '@sphereon/did-auth-siop'
-import {BasicConnectionParty, IConnectionParty} from '@sphereon/ssi-sdk-data-store-common';
+import { BasicConnectionParty, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import { VerifiableCredential } from '@veramo/core'
 
 import {

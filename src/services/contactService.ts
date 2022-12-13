@@ -13,7 +13,8 @@ export const getContactsFromStorage = async (): Promise<Array<IConnectionParty>>
 
 export const createContact = async (args: ICreateContactArgs): Promise<IConnectionParty> => {
   debug(`createContact(${JSON.stringify(args)})...`)
-  return cmAddParty(args).then((contact: IConnectionParty) => {
+  return cmAddParty(args)
+    .then((contact: IConnectionParty) => {
       debug(`createContact(${JSON.stringify(args)}) succeeded`)
       return contact
     })
@@ -22,9 +23,12 @@ export const createContact = async (args: ICreateContactArgs): Promise<IConnecti
 
 export const addConnection = async (args: IAddConnectionArgs): Promise<IConnection> => {
   debug(`addConnection(${JSON.stringify(args)})...`)
-  return cmAddConnection({ partyId: args.contactId, connection: args.connection }).then((connection: IConnection) => {
-    debug(`addConnection(${JSON.stringify(connection)}) succeeded`)
-    return connection
-  })
-  .catch((error: Error) => Promise.reject(Error(`Unable to add connection to contact ${args.contactId}. Error: ${error}`)))
+  return cmAddConnection({ partyId: args.contactId, connection: args.connection })
+    .then((connection: IConnection) => {
+      debug(`addConnection(${JSON.stringify(connection)}) succeeded`)
+      return connection
+    })
+    .catch((error: Error) =>
+      Promise.reject(Error(`Unable to add connection to contact ${args.contactId}. Error: ${error}`))
+    )
 }

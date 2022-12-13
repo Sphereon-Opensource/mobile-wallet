@@ -7,7 +7,8 @@ import {
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
-  GET_CONTACTS_SUCCESS, ICreateContactArgs
+  GET_CONTACTS_SUCCESS,
+  ICreateContactArgs
 } from '../../@types/store/contact.action.types'
 import { getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
 

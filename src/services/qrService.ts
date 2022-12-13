@@ -1,10 +1,6 @@
 import { CredentialResponse } from '@sphereon/openid4vci-client'
 import { IssuanceInitiation } from '@sphereon/openid4vci-client'
-import {
-  ConnectionIdentifierEnum,
-  ConnectionTypeEnum,
-  IConnectionParty
-} from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionIdentifierEnum, ConnectionTypeEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import { CredentialMapper } from '@sphereon/ssi-types/src/mapper/credential-mapper'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -286,11 +282,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
     // TODO WAL-380 should be handled by the connection-manager
     if (!store.getState().contact.contacts.some((contact: IConnectionParty) => contact.name === url.host)) {
       // TODO fix this type issue
-      store.dispatch(createContact({
-        name: url.host,
-        alias: url.host,
-        uri: `${url.protocol}//${url.hostname}`
-      }))
+      store.dispatch(
+        createContact({
+          name: url.host,
+          alias: url.host,
+          uri: `${url.protocol}//${url.hostname}`
+        })
+      )
     }
 
     const gotoVerificationCode = async (credentials: Array<string>): Promise<void> => {

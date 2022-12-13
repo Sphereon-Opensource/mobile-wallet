@@ -8,4 +8,3 @@ export interface IContact {
   role: string
   connections: Array<IConnectionViewItem>
 }
-
