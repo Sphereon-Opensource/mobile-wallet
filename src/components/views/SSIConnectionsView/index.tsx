@@ -1,15 +1,15 @@
+import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { IConnectionViewItem } from '../../../@types'
 import { SSIConnectionsViewContainerStyled } from '../../../styles/components'
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../SSISwipeRowViewItem'
 
 export interface IProps {
-  connections: Array<IConnectionViewItem>
+  connections: Array<IConnection>
 }
 
 const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
@@ -20,14 +20,15 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
     setRefreshing(false)
   }
 
-  const renderItem = (itemInfo: ListRenderItemInfo<IConnectionViewItem>): JSX.Element => (
+  const renderItem = (itemInfo: ListRenderItemInfo<IConnection>): JSX.Element => (
       <SSISwipeRowViewItem
           listIndex={itemInfo.index}
           viewItem={
             <SSIConnectionViewItem
-                name={itemInfo.item.entityName}
+                // TODO we need a connection name
+                name={itemInfo.item.id}
                 // TODO we need a connection uri which currently is not available
-                uri={itemInfo.item.connection.config.redirectUrl}
+                uri={itemInfo.item.type}
             />
           }
           onPress={async () => console.log('Connection pressed!')}
@@ -39,7 +40,7 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
       <SSIConnectionsViewContainerStyled>
         <SwipeListView
             data={connections}
-            keyExtractor={(itemInfo: IConnectionViewItem) => itemInfo.connection.id}
+            keyExtractor={(itemInfo: IConnection) => itemInfo.id}
             renderItem={renderItem}
             closeOnRowOpen
             closeOnRowBeginSwipe

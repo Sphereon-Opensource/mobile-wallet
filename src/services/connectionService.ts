@@ -1,11 +1,11 @@
 import {
+  BasicConnectionIdentifier,
+  BasicConnectionMetadataItem,
+  BasicDidAuthConfig,
+  BasicOpenIdConfig,
   ConnectionIdentifierEnum,
   ConnectionTypeEnum,
   IBasicConnection,
-  IBasicConnectionIdentifier,
-  IBasicConnectionMetadataItem,
-  IBasicDidAuthConfig,
-  IBasicOpenIdConfig,
   IConnection,
   IConnectionParty
 } from '@sphereon/ssi-sdk-data-store-common'
@@ -45,7 +45,7 @@ export const getConnectionParties = async (): Promise<Array<IConnectionParty>> =
 
 export const addConnectionParty = async (partyName: string): Promise<IConnectionParty> => {
   debug(`addConnectionParty(${partyName})...`)
-  return cmAddParty({ name: partyName })
+  return cmAddParty({ name: partyName, alias: partyName })
     .then((party: IConnectionParty) => {
       debug(`addConnectionParty(${partyName}) succeeded`)
       return party
@@ -65,16 +65,16 @@ export const addConnectionToParty = async (partyId: string, connection: IConnect
 
 export const connectFrom = (args: {
   type: ConnectionTypeEnum
-  identifier: IBasicConnectionIdentifier
-  config: IBasicDidAuthConfig | IBasicOpenIdConfig
-  metadata?: Array<IBasicConnectionMetadataItem>
+  identifier: BasicConnectionIdentifier
+  config: BasicDidAuthConfig | BasicOpenIdConfig
+  metadata?: Array<BasicConnectionMetadataItem>
 }): IBasicConnection => {
   return {
     type: args.type,
     identifier: args.identifier,
     config: args.config,
     metadata: args.metadata
-      ? args.metadata.map((item: IBasicConnectionMetadataItem) => {
+      ? args.metadata.map((item: BasicConnectionMetadataItem) => {
           return { ...item, id: uuidv4() }
         })
       : []
@@ -90,7 +90,7 @@ const addDefaultConnections = async () => {
   const sphereon = parties.find((party: IConnectionParty) => party.name === sphereonName)
   if (!sphereon) {
     debug(`addDefaultConnections(): Sphereon connection not present. Will add...`)
-    await cmAddParty({ name: sphereonName }).then(async (party: IConnectionParty) => {
+    await cmAddParty({ name: sphereonName, alias: sphereonName }).then(async (party: IConnectionParty) => {
       if (!party) {
         return Promise.reject(`Could not add default 'sphereon' connection`)
       }
@@ -132,7 +132,7 @@ const addDefaultConnections = async () => {
   const firm24 = parties.find((party: IConnectionParty) => party.name === firm24Name)
   if (!firm24) {
     debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
-    await cmAddParty({ name: firm24Name }).then(async (party: IConnectionParty) => {
+    await cmAddParty({ name: firm24Name, alias: firm24Name }).then(async (party: IConnectionParty) => {
       if (!party) {
         return Promise.reject(`Could not add default 'firm24' connection`)
       }

@@ -17,12 +17,12 @@ import {
 export interface Props {
   id: string
   name: string
-  uri: string
-  role?: string
+  uri?: string
+  roles?: Array<string> // TODO format the roles for display
 }
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const { name, uri, role } = props
+  const { name, uri, roles } = props
 
   return (
     <Container>
@@ -35,7 +35,7 @@ const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
           <ContactNameCaption>{name}</ContactNameCaption>
           <ContactUriCaption>{uri}</ContactUriCaption>
         </ContactDetailsContainer>
-        <ContactRoleCaption>{role}</ContactRoleCaption>
+        <ContactRoleCaption>{roles}</ContactRoleCaption>
       </View>
     </Container>
   )

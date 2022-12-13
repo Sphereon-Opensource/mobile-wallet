@@ -24,7 +24,7 @@ export const createContact = (args: ICreateContactArgs): ((dispatch: Dispatch<An
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CONTACTS_LOADING })
     storeContact(args)
-      .then((contact: IConnectionParty) => dispatch({ type: CREATE_CONTACT_FAILED, contact }))
-      .catch(() => dispatch({ type: CREATE_CONTACT_SUCCESS }))
+      .then((contact: IConnectionParty) => dispatch({ type: CREATE_CONTACT_SUCCESS, payload: contact }))
+      .catch(() => dispatch({ type: CREATE_CONTACT_FAILED }))
   }
 }

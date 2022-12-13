@@ -2783,11 +2783,11 @@
   resolved "https://registry.yarnpkg.com/@sphereon/react-native-argon2/-/react-native-argon2-2.0.7.tgz#c98c56128e436893e4dad9bd4539c42ec0e47001"
   integrity sha512-FKXBV5Kic9X0VXHoOB7rHluenzV3FksVOONdliPP3uAHDuomP163wHCyHKBVgbuA3LW5r+jlmY2ROAyj8xgPIw==
 
-"@sphereon/ssi-sdk-connection-manager@file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.8.7-bram.tgz":
-  version "0.8.7-bram"
-  resolved "file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.8.7-bram.tgz#558dddf79667c23aca548a1ac1b7b7cae4ccfbd3"
+"@sphereon/ssi-sdk-connection-manager@file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.9.0-bram.tgz":
+  version "0.9.0-bram"
+  resolved "file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.9.0-bram.tgz#7dfe6dbcc6b4c703c7a6b83b3b50c33bf433e032"
   dependencies:
-    "@sphereon/ssi-sdk-data-store-common" "file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.8.0-bram.tgz"
+    "@sphereon/ssi-sdk-data-store-common" "file:../data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz"
     cross-fetch "^3.1.5"
     typeorm "0.3.10"
 
@@ -2801,22 +2801,30 @@
     "@veramo/core" "4.1.1"
     typeorm "0.3.10"
 
-"@sphereon/ssi-sdk-data-store-common@file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.8.0-bram.tgz":
-  version "0.8.0-bram"
-  uid b35cea18ee76dfffb6de0e01435849ee7b538a96
-  resolved "file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.8.0-bram.tgz#b35cea18ee76dfffb6de0e01435849ee7b538a96"
+"@sphereon/ssi-sdk-data-store-common@file:../data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz":
+  version "0.9.0-bram"
+  resolved "file:../data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz#1d46cfbadaa3a2943d177d19133470585034c7f8"
   dependencies:
     "@veramo/core" "4.1.1"
     "@veramo/utils" "4.1.1"
     debug "^4.3.4"
     typeorm "0.3.10"
 
-"@sphereon/ssi-sdk-data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.8.7-bram.tgz":
-  version "0.8.7-bram"
-  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.8.7-bram.tgz#715be5dd731ddf713b203598d3d2717ac3a55db7"
+"@sphereon/ssi-sdk-data-store-common@file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz":
+  version "0.9.0-bram"
+  resolved "file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz#1d46cfbadaa3a2943d177d19133470585034c7f8"
   dependencies:
-    "@sphereon/ssi-sdk-connection-manager" "file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.8.7-bram.tgz"
-    "@sphereon/ssi-sdk-data-store-common" "file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.8.0-bram.tgz"
+    "@veramo/core" "4.1.1"
+    "@veramo/utils" "4.1.1"
+    debug "^4.3.4"
+    typeorm "0.3.10"
+
+"@sphereon/ssi-sdk-data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.9.1-bram.tgz":
+  version "0.9.1-bram"
+  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.9.1-bram.tgz#ab2852cfdc65f545fa493b40085eef15b4326749"
+  dependencies:
+    "@sphereon/ssi-sdk-connection-manager" "file:../ssi-sdk/packages/connection-manager/sphereon-ssi-sdk-connection-manager-v0.9.0-bram.tgz"
+    "@sphereon/ssi-sdk-data-store-common" "file:../ssi-sdk/packages/data-store-common/sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz"
     "@veramo/utils" "4.1.1"
     debug "^4.3.4"
     typeorm "0.3.10"
@@ -3760,7 +3768,7 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020":
+"@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
   version "0.0.8"
   resolved "https://codeload.github.com/uport-project/EcdsaSecp256k1RecoverySignature2020/tar.gz/ab0db52de6f4e6663ef271a48009ba26e688ef9b"
   dependencies:

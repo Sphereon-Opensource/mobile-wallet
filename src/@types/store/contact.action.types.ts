@@ -48,5 +48,5 @@ export type ContactActionTypes =
 export interface ICreateContactArgs {
   name: string
   alias: string
-  uri: string
+  uri?: string
 }

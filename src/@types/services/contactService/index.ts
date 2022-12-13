@@ -3,7 +3,7 @@ import { IBasicConnection } from '@sphereon/ssi-sdk-data-store-common'
 export interface ICreateContactArgs {
   name: string
   alias: string
-  uri: string
+  uri?: string
 }
 
 export interface IAddConnectionArgs {

@@ -22,7 +22,11 @@ const rootReducer = combineReducers({
 export type RootState = ReturnType<typeof rootReducer>
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
-const actions = bindActionCreators({ getConnectionParties, getVerifiableCredentials, getContacts }, store.dispatch)
+const actions = bindActionCreators({
+  getConnectionParties,
+  getVerifiableCredentials,
+  getContacts
+}, store.dispatch)
 actions.getVerifiableCredentials()
 actions.getConnectionParties()
 actions.getContacts()

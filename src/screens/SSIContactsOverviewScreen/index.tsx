@@ -1,4 +1,4 @@
-import {BasicConnectionParty} from '@sphereon/ssi-sdk-data-store-common';
+import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
@@ -15,7 +15,7 @@ import { SSIBasicContainerStyled as Container } from '../../styles/styledCompone
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void
-  contacts: Array<BasicConnectionParty>
+  contacts: Array<IConnectionParty>
 }
 
 class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
@@ -28,7 +28,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
     this.setState({ refreshing: false })
   }
 
-  renderItem = (itemInfo: ListRenderItemInfo<BasicConnectionParty>): JSX.Element => (
+  renderItem = (itemInfo: ListRenderItemInfo<IConnectionParty>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
@@ -36,7 +36,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
           id={itemInfo.item.id}
           name={itemInfo.item.alias}
           uri={itemInfo.item.uri}
-          role={itemInfo.item.role}
+          roles={[]} // TODO should be an aggregate of the roles on identities
         />
       }
       onPress={async () => this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact: itemInfo.item })}
@@ -49,7 +49,7 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: BasicConnectionParty) => itemInfo.id}
+          keyExtractor={(itemInfo: IConnectionParty) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe

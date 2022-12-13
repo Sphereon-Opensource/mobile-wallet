@@ -1,7 +1,6 @@
 {
   "private": true,
   "scripts": {
-    "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test": "jest --coverage=true",
@@ -23,10 +22,10 @@
     "@react-navigation/stack": "^6.0.7",
     "@sphereon/openid4vci-client": "^0.3.4",
     "@sphereon/react-native-argon2": "2.0.7",
-    "@sphereon/ssi-sdk-connection-manager": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\connection-manager\\sphereon-ssi-sdk-connection-manager-v0.8.7-bram.tgz",
+    "@sphereon/ssi-sdk-connection-manager": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\connection-manager\\sphereon-ssi-sdk-connection-manager-v0.9.0-bram.tgz",
     "@sphereon/ssi-sdk-core": "0.8.1-unstable.86",
-    "@sphereon/ssi-sdk-data-store": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\data-store\\sphereon-ssi-sdk-data-store-v0.8.7-bram.tgz",
-    "@sphereon/ssi-sdk-data-store-common": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\data-store-common\\sphereon-ssi-sdk-data-store-common-v0.8.0-bram.tgz",
+    "@sphereon/ssi-sdk-data-store": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\data-store\\sphereon-ssi-sdk-data-store-v0.9.1-bram.tgz",
+    "@sphereon/ssi-sdk-data-store-common": "file://C:\\Git\\Sphereon-Opensource\\ssi-sdk\\packages\\data-store-common\\sphereon-ssi-sdk-data-store-common-v0.9.0-bram.tgz",
     "@sphereon/ssi-sdk-did-auth-siop-authenticator": "0.8.1-unstable.86",
     "@sphereon/ssi-sdk-jwk-did-provider": "0.8.1-unstable.86",
     "@sphereon/ssi-sdk-lto-did-provider": "0.8.1-unstable.86",
