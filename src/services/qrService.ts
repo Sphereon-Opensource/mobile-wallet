@@ -296,10 +296,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
         args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
       ) {
-        args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
-          // Currently we only support receiving one credential, we are missing ui to display multiple
-          credentialName: credentials[0],
-          onVerification: async (pin: string) => await sendResponse(provider, pin)
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.VERIFICATION_CODE,
+          params: {
+            // Currently we only support receiving one credential, we are missing ui to display multiple
+            credentialName: credentials[0],
+            onVerification: async (pin: string) => await sendResponse(provider, pin)
+          }
         })
       } else {
         await sendResponse(provider)

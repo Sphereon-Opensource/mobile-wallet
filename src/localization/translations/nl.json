@@ -76,5 +76,6 @@
     "contact_details_title": "Contact",
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activiteit",
-    "contact_details_connections_tab_header_label": "Connecties"
+    "contact_details_connections_tab_header_label": "Connecties",
+    "intent_share_file_unable_to_receive_message": "Kan Verifiable Credential niet ontvangen"
 }
