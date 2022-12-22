@@ -144,10 +144,6 @@ PODS:
     - RNPermissions
   - Permission-Notifications (3.6.1):
     - RNPermissions
-  - Permission-Reminders (3.6.1):
-    - RNPermissions
-  - Permission-StoreKit (3.6.1):
-    - RNPermissions
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -528,8 +524,6 @@ DEPENDENCIES:
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
   - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
-  - Permission-Reminders (from `../node_modules/react-native-permissions/ios/Reminders`)
-  - Permission-StoreKit (from `../node_modules/react-native-permissions/ios/StoreKit`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -655,10 +649,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/FaceID"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications"
-  Permission-Reminders:
-    :path: "../node_modules/react-native-permissions/ios/Reminders"
-  Permission-StoreKit:
-    :path: "../node_modules/react-native-permissions/ios/StoreKit"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -799,8 +789,6 @@ SPEC CHECKSUMS:
   Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
   Permission-FaceID: e70223280292a1a5e4b8ad943b70cd9229a7d2c3
   Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
-  Permission-Reminders: dd6692dab69ae8a4e2473860e25b6304f9bcd326
-  Permission-StoreKit: 7dcf43ad1b8cdc7ae21e547d49df9ac9b6ea7270
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 0f06b6068f530932d10e1a01a5352fad4eaacb74
   RCTTypeSafety: b0ee81f10ef1b7d977605a2b266823dabd565e65
@@ -849,6 +837,6 @@ SPEC CHECKSUMS:
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
 
-PODFILE CHECKSUM: baa39feba592e57d5eb7ec0e2938627949f617c5
+PODFILE CHECKSUM: e1b03d28573aecf908020c806f843b0d626e7de1
 
 COCOAPODS: 1.11.3
