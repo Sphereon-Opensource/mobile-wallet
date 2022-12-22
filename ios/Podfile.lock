@@ -140,11 +140,7 @@ PODS:
     - RNPermissions
   - Permission-Camera (3.6.1):
     - RNPermissions
-  - Permission-Contacts (3.6.1):
-    - RNPermissions
   - Permission-FaceID (3.6.1):
-    - RNPermissions
-  - Permission-MediaLibrary (3.6.1):
     - RNPermissions
   - Permission-Notifications (3.6.1):
     - RNPermissions
@@ -530,9 +526,7 @@ DEPENDENCIES:
   - libevent (~> 2.1.12)
   - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
-  - Permission-Contacts (from `../node_modules/react-native-permissions/ios/Contacts`)
   - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID`)
-  - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
   - Permission-Reminders (from `../node_modules/react-native-permissions/ios/Reminders`)
   - Permission-StoreKit (from `../node_modules/react-native-permissions/ios/StoreKit`)
@@ -657,12 +651,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera"
-  Permission-Contacts:
-    :path: "../node_modules/react-native-permissions/ios/Contacts"
   Permission-FaceID:
     :path: "../node_modules/react-native-permissions/ios/FaceID"
-  Permission-MediaLibrary:
-    :path: "../node_modules/react-native-permissions/ios/MediaLibrary"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications"
   Permission-Reminders:
@@ -807,9 +797,7 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   Permission-AppTrackingTransparency: 9eedbc3b5a2907b8cb2c971461754616eac1661d
   Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
-  Permission-Contacts: 2484d274171688b1ca80978b949ac771259b51f0
   Permission-FaceID: e70223280292a1a5e4b8ad943b70cd9229a7d2c3
-  Permission-MediaLibrary: a994236bae41b3597a376ff08298fb1c6d84729b
   Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   Permission-Reminders: dd6692dab69ae8a4e2473860e25b6304f9bcd326
   Permission-StoreKit: 7dcf43ad1b8cdc7ae21e547d49df9ac9b6ea7270
@@ -861,6 +849,6 @@ SPEC CHECKSUMS:
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
 
-PODFILE CHECKSUM: e7648cb37d30a73ed7665e452b1ec7fcd8f8016b
+PODFILE CHECKSUM: baa39feba592e57d5eb7ec0e2938627949f617c5
 
 COCOAPODS: 1.11.3
