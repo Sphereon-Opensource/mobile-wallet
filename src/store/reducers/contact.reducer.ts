@@ -1,6 +1,8 @@
 import {
   ContactActionTypes,
   CONTACTS_LOADING,
+  CREATE_CONTACT_FAILED,
+  CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
   IContactState
@@ -27,6 +29,19 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
       }
     }
     case GET_CONTACTS_FAILED: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+    case CREATE_CONTACT_SUCCESS: {
+      return {
+        ...state,
+        contacts: [...state.contacts, action.payload],
+        loading: false
+      }
+    }
+    case CREATE_CONTACT_FAILED: {
       return {
         ...state,
         loading: false

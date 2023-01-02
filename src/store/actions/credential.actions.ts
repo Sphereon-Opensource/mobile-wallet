@@ -34,10 +34,11 @@ export const getVerifiableCredentials = (): ((dispatch: Dispatch<AnyAction>) => 
 }
 
 export const storeVerifiableCredential = (vc: VerifiableCredential): ((dispatch: Dispatch<AnyAction>) => void) => {
+  // TODO args
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential)
-    storeCredential(mappedVc as VerifiableCredential)
+    storeCredential({ vc: mappedVc as VerifiableCredential })
       .then((hash: string) => {
         // TODO fix mismatch in types
         const payload = toCredentialSummary(mappedVc as ICredential, hash)
