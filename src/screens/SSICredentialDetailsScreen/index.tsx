@@ -1,7 +1,11 @@
 import React, { FC } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
-import { CredentialStatusEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import {
+  CredentialStatusEnum,
+  ScreenRoutesEnum,
+  StackParamList
+} from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIActivityView from '../../components/views/SSIActivityView'

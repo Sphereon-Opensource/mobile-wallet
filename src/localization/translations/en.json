@@ -77,5 +77,8 @@
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activity",
     "contact_details_connections_tab_header_label": "Connections",
-    "intent_share_file_unable_to_receive_message": "Unable to receive Verifiable Credential"
+    "intent_share_file_unable_to_receive_message": "Unable to receive the credential",
+    "credential_deleted_message": "Are you sure you want to delete the credential: {0}?",
+    "credential_deleted_success_toast": "Credential successfully deleted",
+    "credential_deleted_failed_toast": "Unable to delete the credential"
 }

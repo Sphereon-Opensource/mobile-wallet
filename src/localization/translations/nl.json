@@ -77,5 +77,8 @@
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activiteit",
     "contact_details_connections_tab_header_label": "Connecties",
-    "intent_share_file_unable_to_receive_message": "Kan Verifiable Credential niet ontvangen"
+    "intent_share_file_unable_to_receive_message": "Kan de credential niet ontvangen",
+    "credential_deleted_message": "Weet u zeker dat u de credential: {0}, wilt verwijderen?",
+    "credential_deleted_success_toast": "Credential succesvol verwijdert",
+    "credential_deleted_failed_toast": "Kan de credential niet verwijderen"
 }

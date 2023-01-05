@@ -43,7 +43,7 @@ class IntentHandler {
 
   private async getDataOnStartup(): Promise<void> {
     await this.handleDeepLinkData()
-    //await this.handleSharedFileData()
+    await this.handleSharedFileData()
   }
 
   private async handleDeepLinkData(): Promise<void> {
@@ -63,6 +63,7 @@ class IntentHandler {
       if (!data) {
         return
       }
+      // Added a timeout to let the navigationRef be mounted. This should be removed once we have a better loading check (appIsReady) that includes the navigation ref
       setTimeout(() => {
         this.sharedFileDataListener(data)
       }, 1000)
