@@ -33,6 +33,7 @@ class IntentHandler {
 
   private addListeners = async (): Promise<any> => {
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener)
+    // TODO fix this type issue
     this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener)
   }
 
