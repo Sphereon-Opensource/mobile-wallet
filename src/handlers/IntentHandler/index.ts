@@ -1,7 +1,7 @@
 import { ICredential } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
-import {EmitterSubscription, EventSubscription, Linking} from 'react-native'
+import { EmitterSubscription, EventSubscription, Linking } from 'react-native'
 import ShareMenu from 'react-native-share-menu'
 
 import { APP_ID } from '../../@config/constants'

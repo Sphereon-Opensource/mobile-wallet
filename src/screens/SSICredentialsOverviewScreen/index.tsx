@@ -12,10 +12,7 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { RootState } from '../../store'
-import {
-  deleteVerifiableCredential,
-  getVerifiableCredentials
-} from '../../store/actions/credential.actions'
+import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
 
 const format = require('string-format')

@@ -46,15 +46,15 @@ export const RootStackNavigator = (): JSX.Element => {
       <Stack.Screen
         name={RootRoutesEnum.ALERT_MODAL}
         children={({ navigation, route }) => (
-            <>
-              <SSIAlertModal navigation={navigation} route={route}/>
-              <Toast
-                  bottomOffset={toastsBottomOffset}
-                  autoHide={toastsAutoHide}
-                  visibilityTime={toastsVisibilityTime}
-                  config={toastConfig}
-              />
-            </>
+          <>
+            <SSIAlertModal navigation={navigation} route={route} />
+            <Toast
+              bottomOffset={toastsBottomOffset}
+              autoHide={toastsAutoHide}
+              visibilityTime={toastsVisibilityTime}
+              config={toastConfig}
+            />
+          </>
         )}
         options={{
           presentation: 'transparentModal'
@@ -64,7 +64,7 @@ export const RootStackNavigator = (): JSX.Element => {
         name={RootRoutesEnum.POPUP_MODAL}
         children={({ navigation, route }) => (
           <>
-            <SSIPopupModal navigation={navigation} route={route}/>
+            <SSIPopupModal navigation={navigation} route={route} />
             <Toast
               bottomOffset={toastsBottomOffset}
               autoHide={toastsAutoHide}
