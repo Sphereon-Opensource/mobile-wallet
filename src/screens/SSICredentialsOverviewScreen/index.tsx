@@ -6,7 +6,12 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ICredentialSummary, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import {
+  ICredentialSummary,
+  RootRoutesEnum,
+  ScreenRoutesEnum,
+  StackParamList
+} from '../../@types'
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
@@ -34,17 +39,20 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   }
 
   onDelete = async (credentialHash: string, credentialTitle: string): Promise<void> => {
-    this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
-      message: format(translate('credential_deleted_message'), credentialTitle),
-      buttons: [
-        {
-          caption: translate('alert_action_confirm'),
-          onPress: async () => {
-            this.props.deleteVerifiableCredential(credentialHash)
-            this.props.navigation.goBack()
-          }
+    this.props.navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+      title: translate('credential_delete_title'),
+      details: format(translate('credential_delete_message'), credentialTitle),
+      primaryButton: {
+        caption: translate('action_confirm_label'),
+        onPress: async () => {
+          this.props.deleteVerifiableCredential(credentialHash)
+          this.props.navigation.goBack()
         }
-      ]
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        onPress: async () => this.props.navigation.goBack()
+      }
     })
   }
 
