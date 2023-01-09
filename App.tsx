@@ -57,7 +57,7 @@ export default function App() {
 
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
-        await new Promise((resolve) => setTimeout(resolve, 5000))
+        //await new Promise((resolve) => setTimeout(resolve, 5000))
 
         await intentHandler.enable()
       } catch (e) {
