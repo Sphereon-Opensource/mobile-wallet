@@ -8,7 +8,7 @@ index 6a1f908..0fedcfc 100644
  };
 -const uint8ArrayRegex = /"<Uint8Array: 0x(?<hex>[0-9a-f]*)>"/gu;
 -const bigIntRegex = /"<bigint: (?<bigint>[0-9]*)n>"/gu;
-+//const uint8ArrayRegex = /"<Uint8Array: 0x(?<hex>[0-9a-f]*)>"/gu;
++//const uint8ArrayRegex = /"<Uint8Array: 0x(?<hex>[0-9a-f]*)>"/gu;  --> this regex expression does not work in RN, see WAL-294 for details
 +//const bigIntRegex = /"<bigint: (?<bigint>[0-9]*)n>"/gu;
  /**
   * An alternative to `stringify` which produces valid JavaScript for use as a
