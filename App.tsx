@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native'
+import * as SplashScreen from 'expo-splash-screen'
 import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -38,6 +39,8 @@ LogBox.ignoreLogs([
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
+  // TODO use navigationIsReady to check if we can start the IntentHandler (as this needs a navigationRef) and remove the timeout placed in handleSharedFileData
+  const [navigationIsReady, setNavigationIsReady] = useState(false)
 
   useEffect(() => {
     const intentHandler: IntentHandler = new IntentHandler()
@@ -49,17 +52,12 @@ export default function App() {
         StatusBar.setTranslucent(false)
         Localization.setI18nConfig()
 
-        // Keep the splash screen visible while we fetch resources
-        // TODO: Enable splashscreen
-        // await SplashScreen.preventAutoHideAsync()
-
         // Preload fonts, make any API calls you need to do here
-        // await Font.loadAsync(Entypo.font);
         await _loadFontsAsync()
 
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
-        //await new Promise((resolve) => setTimeout(resolve, 2000))
+        //await new Promise((resolve) => setTimeout(resolve, 5000))
 
         await intentHandler.enable()
       } catch (e) {
@@ -76,15 +74,15 @@ export default function App() {
   }, [])
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    if (appIsReady && navigationIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
       // `setAppIsReady`, then we may see a blank screen while the app is
       // loading its initial state and rendering its first pixels. So instead,
       // we hide the splash screen once we know the root view has already
       // performed layout.
-      // await SplashScreen.hideAsync()
+      await SplashScreen.hideAsync()
     }
-  }, [appIsReady])
+  }, [appIsReady, navigationIsReady])
 
   if (!appIsReady) {
     return null
@@ -93,7 +91,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <RootStackNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
