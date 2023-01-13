@@ -40,9 +40,10 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     }
   ]
 
+  // TODO contact roles should be an aggregate of the roles on the identities
   return (
     <Container>
-      <SSIContactViewItem id={contact.id} name={contact.alias} uri={contact.uri} role={contact.role} />
+      <SSIContactViewItem id={contact.id} name={contact.alias} uri={contact.uri} roles={[]} />
       <SSITabView routes={routes} />
     </Container>
   )
