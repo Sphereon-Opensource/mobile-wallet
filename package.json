@@ -33,7 +33,6 @@
     "@sphereon/ssi-sdk-lto-did-provider": "0.8.1-next.119",
     "@sphereon/ssi-sdk-vc-api-issuer": "0.8.1-next.119",
     "@sphereon/ssi-types": "0.8.1-next.119",
-    "@unimodules/core": "^7.1.2",
     "@veramo/core": "4.1.1",
     "@veramo/credential-w3c": "4.1.1",
     "@veramo/data-store": "4.1.1",
