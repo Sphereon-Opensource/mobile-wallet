@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types'
+import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { Platform } from 'react-native'
 import Toast from 'react-native-toast-message'

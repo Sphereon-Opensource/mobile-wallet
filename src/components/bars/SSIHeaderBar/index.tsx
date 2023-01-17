@@ -1,8 +1,13 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types'
+import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ButtonIconsEnum } from '../../../@types'
+import {
+  ButtonIconsEnum,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum
+} from '../../../@types'
+import * as RootNavigation from '../../../navigation/rootNavigation';
 import {
   SSIBackIconStyled as BackIcon,
   SSIHeaderBarContainerStyled as Container,
@@ -38,12 +43,16 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
-          <EntityIcon onPress={() => props.navigation.navigate({ name: 'Veramo' })} />
-          {showMoreButton && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={moreButtonAction} />}
+          <EntityIcon onPress={() => props.navigation.navigate('Veramo', {})} />
+          {showMoreButton && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={() => moreButtonAction} />}
         </RightColumn>
       </Row>
     </Container>
   )
 }
+
+RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
+  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+})
 
 export default SSIHeaderBar

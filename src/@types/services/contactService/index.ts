@@ -1,3 +1,4 @@
+import { FindPartyArgs } from '@sphereon/ssi-sdk-connection-manager'
 import { IBasicConnection } from '@sphereon/ssi-sdk-data-store-common'
 
 export interface ICreateContactArgs {
@@ -6,7 +7,11 @@ export interface ICreateContactArgs {
   uri?: string
 }
 
-export interface IAddConnectionArgs {
+export interface IAddIdentityArgs {
   contactId: string
   connection: IBasicConnection
+}
+
+export interface IGetContactsArgs {
+  filter?: FindPartyArgs
 }

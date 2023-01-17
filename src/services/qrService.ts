@@ -1,7 +1,6 @@
-import { CredentialResponse } from '@sphereon/openid4vci-client'
-import { IssuanceInitiation } from '@sphereon/openid4vci-client'
-import { ConnectionIdentifierEnum, ConnectionTypeEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
-import { CredentialMapper } from '@sphereon/ssi-types/src/mapper/credential-mapper'
+import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
+import { ConnectionIdentifierEnum, ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
@@ -34,6 +33,7 @@ import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 import { authenticate } from './authenticationService'
 import { connectFrom } from './connectionService'
+import { getContacts } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
 
 const { v4: uuidv4 } = require('uuid')
@@ -220,9 +220,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
           const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
           const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
 
-          // TODO fix this type issue
           const storeCredential = async (vc: VerifiableCredential) =>
-            await store.dispatch(storeVerifiableCredential(vc))
+              store.dispatch(storeVerifiableCredential(vc))
 
           // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
           args.navigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -277,17 +276,16 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
       })
 
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
-  provider.getServerMetadataAndPerformCryptoMatching().then((metadata: IServerMetadataAndCryptoMatchingResponse) => {
+  provider.getServerMetadataAndPerformCryptoMatching().then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
     const url = new URL(metadata.serverMetadata.issuer)
-    // TODO WAL-380 should be handled by the connection-manager
-    if (!store.getState().contact.contacts.some((contact: IConnectionParty) => contact.name === url.host)) {
-      // TODO fix this type issue
+    const contacts = await getContacts({ filter: [{ name: url.host }] })
+    if (contacts.length === 0) {
       store.dispatch(
-        createContact({
-          name: url.host,
-          alias: url.host,
-          uri: `${url.protocol}//${url.hostname}`
-        })
+          createContact({
+            name: url.host,
+            alias: url.host,
+            uri: `${url.protocol}//${url.hostname}`
+          })
       )
     }
 
@@ -328,9 +326,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
       })
     } else {
-      gotoVerificationCode(
-        credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+      await gotoVerificationCode(
+          credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
       )
     }
+  })
+  .catch((error: Error) => {
+    debug(`Unable to retrieve vc. Error: ${error}`)
+    //TODO create human readable error message
+    showToast(ToastTypeEnum.TOAST_ERROR, error.message)
   })
 }

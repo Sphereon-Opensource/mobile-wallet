@@ -1,5 +1,4 @@
-import { ICredential, OriginalVerifiableCredential } from '@sphereon/ssi-types'
-import { CredentialMapper } from '@sphereon/ssi-types/src/mapper/credential-mapper'
+import { CredentialMapper, ICredential, OriginalVerifiableCredential } from '@sphereon/ssi-types'
 import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 import { Dispatch } from 'react'
 import { AnyAction } from 'redux'
