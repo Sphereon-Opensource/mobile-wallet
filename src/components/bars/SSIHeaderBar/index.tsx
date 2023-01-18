@@ -2,12 +2,7 @@ import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import {
-  ButtonIconsEnum,
-  NavigationBarRoutesEnum,
-  ScreenRoutesEnum
-} from '../../../@types'
-import * as RootNavigation from '../../../navigation/rootNavigation';
+import { ButtonIconsEnum } from '../../../@types'
 import {
   SSIBackIconStyled as BackIcon,
   SSIHeaderBarContainerStyled as Container,
@@ -50,9 +45,5 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
     </Container>
   )
 }
-
-RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
-  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-})
 
 export default SSIHeaderBar
