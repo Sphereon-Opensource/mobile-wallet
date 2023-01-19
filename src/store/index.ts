@@ -1,5 +1,6 @@
-import { applyMiddleware, bindActionCreators, combineReducers, createStore } from 'redux'
-import thunk from 'redux-thunk'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { AnyAction, applyMiddleware, bindActionCreators, combineReducers, createStore, Store } from 'redux'
+import thunk, { ThunkDispatch } from 'redux-thunk'
 
 import connectionReducer from '../store/reducers/connection.reducer'
 import userReducer from '../store/reducers/user.reducer'
@@ -19,8 +20,16 @@ const rootReducer = combineReducers({
   contact: contactReducer
 })
 
+// https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete
 export type RootState = ReturnType<typeof rootReducer>
-const store = createStore(rootReducer, applyMiddleware(thunk))
+export type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>
+export type AppStore = Omit<Store<RootState>, "dispatch"> & {
+  dispatch: AppThunkDispatch
+}
+export const useAppDispatch = () => useDispatch<AppThunkDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+const store: AppStore = createStore(rootReducer, applyMiddleware(thunk))
 
 const actions = bindActionCreators(
   {

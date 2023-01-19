@@ -12,7 +12,9 @@ import {
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { cmAddConnection, cmAddParty, cmGetParties, cmGetParty } from '../agent'
+import { cmAddConnection, cmAddParty, cmGetParty } from '../agent'
+
+import {getContacts} from './contactService';
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
@@ -34,7 +36,7 @@ export const getConnectionParties = async (): Promise<Array<IConnectionParty>> =
   // TODO this should be refactored to some build config https://www.npmjs.com/package/react-native-build-config
   debug(`getConnectionParties()...`)
   return addDefaultConnections().then(() =>
-    cmGetParties()
+    getContacts()
       .then((parties: Array<IConnectionParty>) => {
         debug(`getConnectionParties() succeeded`)
         return parties
@@ -85,10 +87,9 @@ export const connectFrom = (args: {
 const addDefaultConnections = async () => {
   debug(`addDefaultConnections()...`)
 
-  const parties = await cmGetParties()
   const sphereonName = 'Sphereon'
-  const sphereon = parties.find((party: IConnectionParty) => party.name === sphereonName)
-  if (!sphereon) {
+  const partiesSphereon = await getContacts({ filter: [{ name: sphereonName }] })
+  if (partiesSphereon.length === 0) {
     debug(`addDefaultConnections(): Sphereon connection not present. Will add...`)
     await cmAddParty({ name: sphereonName, alias: sphereonName }).then(async (party: IConnectionParty) => {
       if (!party) {
@@ -129,8 +130,8 @@ const addDefaultConnections = async () => {
   }
 
   const firm24Name = 'Firm24'
-  const firm24 = parties.find((party: IConnectionParty) => party.name === firm24Name)
-  if (!firm24) {
+  const partiesFirm24 = await getContacts({ filter: [{ name: firm24Name }] })
+  if (partiesFirm24.length === 0) {
     debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
     await cmAddParty({ name: firm24Name, alias: firm24Name }).then(async (party: IConnectionParty) => {
       if (!party) {

@@ -81,5 +81,8 @@
     "credential_delete_title": "Delete credential",
     "credential_delete_message": "Are you sure you want to delete the credential: {0}?",
     "credential_deleted_success_toast": "Credential successfully deleted",
-    "credential_deleted_failed_toast": "Unable to delete the credential"
+    "credential_deleted_failed_toast": "Unable to delete the credential",
+    "contact_add_contact_name_label": "Contact Name",
+    "contact_add_contact_name_placeholder": "Name contact",
+    "contact_add_disclaimer": "I acknowledge this contact will be created as a result of a credential exchange initiated by me."
 }

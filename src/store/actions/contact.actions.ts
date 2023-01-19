@@ -10,7 +10,7 @@ import {
   GET_CONTACTS_SUCCESS,
   ICreateContactArgs
 } from '../../@types/store/contact.action.types'
-import { getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
+import { getContacts as getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
 
 export const getContacts = (): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {

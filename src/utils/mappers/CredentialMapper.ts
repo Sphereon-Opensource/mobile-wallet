@@ -4,7 +4,7 @@ import { CredentialStatusEnum, ICredentialDetailsRow, ICredentialSummary } from 
 
 const { v4: uuidv4 } = require('uuid')
 
-function toCredentialDetailsRow(object: Record<string, any>, level: number): ICredentialDetailsRow[] {
+function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetailsRow[] {
   let rows: ICredentialDetailsRow[] = []
   // console.log(`OBJECT: ${JSON.stringify(object, null, 2)}`)
   for (const [key, value] of Object.entries(object)) {

@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types'
+import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
@@ -16,6 +15,7 @@ import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
+import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
@@ -347,6 +347,20 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+          name={ScreenRoutesEnum.CONTACT_ADD}
+          component={SSIContactAddScreen}
+          options={{
+            headerTitle: 'New contact detected', // TODO translation
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar
+                    {...props}
+                    showBackButton={Platform.OS === PlatformsEnum.IOS}
+                    headerSubTitle={'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'} // TODO translation
+                />
+            )
+          }}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
@@ -361,7 +375,7 @@ const QRStack = (): JSX.Element => {
 const NotificationsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CONTACT_ADD}
       screenOptions={{
         animation: 'none'
       }}
@@ -397,6 +411,20 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
         }}
+      />
+      <Stack.Screen
+          name={ScreenRoutesEnum.CONTACT_ADD}
+          component={SSIContactAddScreen}
+          options={{
+            headerTitle: 'New contact detected', // TODO translation
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar
+                    {...props}
+                    showBackButton={Platform.OS === PlatformsEnum.IOS}
+                    headerSubTitle={'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'} // TODO translation
+                />
+            )
+          }}
       />
     </Stack.Navigator>
   )

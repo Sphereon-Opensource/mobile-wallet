@@ -91,7 +91,6 @@ class IntentHandler {
           return
         }
 
-        // TODO fix this type issue
         const storeCredential = async (vc: VerifiableCredential) => await store.dispatch(storeVerifiableCredential(vc))
 
         // We navigate to the QR stack as this is the stack for incoming credentials

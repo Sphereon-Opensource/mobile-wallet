@@ -48,6 +48,7 @@ type FontStyle =
   | 'h1SemiBold'
   | 'h2Regular'
   | 'h2SemiBold'
+  | 'h3Regular'
   | 'h3SemiBold'
   | 'h4Regular'
   | 'h4SemiBold'
@@ -80,6 +81,12 @@ export const fontStyle: Record<FontStyle, TextStyle> = {
     fontSize: fontSize[500],
     fontWeight: fontWeight[600],
     lineHeight: lineHeight[500]
+  },
+  h3Regular: {
+    fontFamily: 'Poppins-Regular', // TODO fix solution for just having Poppins as font family and using fontweight (which is now baked into the font family)
+    fontSize: fontSize[400],
+    fontWeight: fontWeight[400],
+    lineHeight: lineHeight[400]
   },
   h3SemiBold: {
     fontFamily: 'Poppins-SemiBold', // TODO fix solution for just having Poppins as font family and using fontweight (which is now baked into the font family)

@@ -107,6 +107,12 @@ export const buttons: Record<Button, string> = {
   blue: '#0B81FF'
 }
 
+type Input = 'placeholder'
+
+export const inputs: Record<Input, string> = {
+  placeholder: '#8D9099'
+}
+
 type SelectionElement = 'primaryDark' | 'primaryBorderDark'
 
 export const selectionElements: Record<SelectionElement, string> = {

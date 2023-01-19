@@ -29,6 +29,7 @@ export type StackParamList = {
   CredentialSelectType: ICredentialSelectTypeProps
   ContactsOverview: Record<string, never>
   ContactDetails: IContactDetailsProps
+  ContactAdd: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -117,5 +118,6 @@ export enum ScreenRoutesEnum {
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
-  CONTACT_DETAILS = 'ContactDetails'
+  CONTACT_DETAILS = 'ContactDetails',
+  CONTACT_ADD = 'ContactAdd',
 }
