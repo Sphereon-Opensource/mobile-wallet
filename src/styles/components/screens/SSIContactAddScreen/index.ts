@@ -1,12 +1,12 @@
 import styled from 'styled-components/native'
 
 import {
-  SSIBasicContainerStyled,
+  SSIBasicContainerStyled, SSIBasicHorizontalCenterContainerStyled,
   SSIFlexDirectionRowViewStyled,
   SSITextH4LightStyled
 } from '../../../styledComponents'
 
-export const SSIContactAddScreenContainerStyled = styled(SSIBasicContainerStyled)`
+export const SSIContactAddScreenContainerStyled = styled(SSIBasicHorizontalCenterContainerStyled)`
   padding-left: 24px;
   padding-right: 24px;
 `

@@ -8,7 +8,7 @@ import {
 } from '../../../styles/components'
 
 export interface IProps {
-  onValueChange?: () => Promise<void>
+  onValueChange?: (isChecked: boolean) => Promise<void>
   initialValue?: boolean
   // This value can be used to control the checkbox from the outside
   isChecked?: boolean
@@ -23,7 +23,7 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
   const onValueChange = () => {
     const { onValueChange } = props
     if (onValueChange) {
-      onValueChange().then(() => setChecked(!isChecked))
+      onValueChange(!isChecked).then(() => setChecked(!isChecked))
     } else {
       setChecked(!isChecked)
     }
