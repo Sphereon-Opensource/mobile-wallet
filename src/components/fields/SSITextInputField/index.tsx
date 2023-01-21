@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { KeyboardTypeOptions } from 'react-native'
+import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
@@ -29,6 +29,7 @@ export interface IProps {
   keyboardType?: KeyboardTypeOptions | undefined
   maxLength?: number
   onChangeText?: (input: string) => Promise<void>
+  onEndEditing?: (input: string) => Promise<void>
   placeholderValue?: string
   secureTextEntry?: boolean
   showBorder?: boolean
@@ -48,6 +49,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     keyboardType = undefined,
     maxLength,
     onChangeText,
+    onEndEditing,
     placeholderValue,
     secureTextEntry = false,
     showBorder = true
@@ -63,6 +65,13 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
       onChangeText(input)
         .then(() => setError(undefined))
         .catch((error: Error) => setError(error.message))
+    }
+  }
+
+  const onEditingEnd = async (event: NativeSyntheticEvent<TextInputEndEditingEventData>): Promise<void> => {
+    console.log(event.nativeEvent.text)
+    if (onEndEditing)  {
+      await onEndEditing(event.nativeEvent.text)
     }
   }
 
@@ -88,6 +97,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
                 maxLength={maxLength}
                 onBlur={() => setHasFocus(false)}
                 onChangeText={(input: string) => onChange(input)}
+                onEndEditing={(event: NativeSyntheticEvent<TextInputEndEditingEventData>) => onEditingEnd(event)}
                 onFocus={() => setHasFocus(true)}
                 value={value}
                 style={{ opacity: disabled ? 0.5 : 1 }}
