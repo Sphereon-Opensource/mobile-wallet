@@ -5,8 +5,8 @@ import { OpacityStyleEnum } from '../../../@types'
 import {
   SSITouchableOpacityButtonFlexRowStyled as Button,
   SSITextH2LightStyled as ButtonCaption,
-  SSIRoundedCenteredLinearGradientStyled as PrimaryButton
-} from '../../../styles/styledComponents'
+  SSIRoundedCenteredLinearGradientStyled as LinearGradient,
+} from '../../../styles/components'
 
 export interface Props extends PressableProps {
   title: string // TODO rename to caption
@@ -24,9 +24,9 @@ const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
         opacity: props.disabled ? OpacityStyleEnum.DISABLED : OpacityStyleEnum.ACTIVE
       }}
     >
-      <PrimaryButton style={{ ...props.style }}>
+      <LinearGradient style={{ ...props.style }}>
         <ButtonCaption>{props.title}</ButtonCaption>
-      </PrimaryButton>
+      </LinearGradient>
     </Button>
   )
 }

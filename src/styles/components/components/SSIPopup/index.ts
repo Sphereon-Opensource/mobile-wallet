@@ -5,10 +5,9 @@ import SSIExclamationMarkBadge from '../../../../components/assets/badges/SSIExc
 import { buttons, fonts } from '../../../colors'
 import {
   SSIFlexDirectionRowViewStyled,
-  SSIRoundedContainerBackgroundPrimaryLightStyled,
-  SSITextH4SemiBoldStyled,
-  SSITextH5Styled
-} from '../../../styledComponents'
+  SSIRoundedContainerBackgroundPrimaryLightStyled
+} from '../../containers'
+import { SSITextH4SemiBoldStyled, SSITextH5Styled } from '../../fonts'
 
 export const SSIPopupContainerStyled = styled(SSIRoundedContainerBackgroundPrimaryLightStyled)`
   width: 100%;

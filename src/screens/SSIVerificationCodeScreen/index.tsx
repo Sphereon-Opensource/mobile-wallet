@@ -1,16 +1,14 @@
 import React, { FC } from 'react'
-import { View } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
 
 import { PopupImagesEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
-import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSIPinCodeSpacerStyled as PinCodeContainer,
+  SSIVerificationCodeScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>
 
@@ -22,8 +20,7 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
       <StatusBar />
       <PinCodeContainer>
         <SSIPinCode
-          // TODO fix non null assertion
-          length={route.params.pinLength!}
+          length={route.params.pinLength}
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}
           onMaxRetriesExceeded={async () =>
@@ -48,15 +45,6 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
           navigation={navigation}
         />
       </PinCodeContainer>
-      {/* Temporary placement of a skip button as functionality for getting vc's via a qr with a pincode is not implemented */}
-      <View style={{ width: 200, marginTop: 70, height: 42 }}>
-        <SSISecondaryButton
-          onPress={async () => await route.params.onVerification('1234')}
-          title={'Skip'}
-          // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
-          style={{ flex: 1 }}
-        />
-      </View>
     </Container>
   )
 }

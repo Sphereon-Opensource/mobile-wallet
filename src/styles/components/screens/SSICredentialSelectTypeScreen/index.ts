@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import { SSIRippleContainerStyled } from '../../../styledComponents'
+import { SSIRippleContainerStyled } from '../../containers'
 
 export const SSICredentialSelectTypeScreenViewItemContainerStyled = styled(SSIRippleContainerStyled)`
   padding: 10px 24px 13.5px 24px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
-
-import { SSIFlexDirectionRowViewStyled, SSITextH5LightStyled } from '../../../styledComponents'
+import { SSIFlexDirectionRowViewStyled } from '../../containers'
+import { SSITextH5LightStyled } from '../../fonts'
 
 export const SSIStatusLabelContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   border-radius: 9px;

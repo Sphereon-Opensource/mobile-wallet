@@ -11,7 +11,7 @@ import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { RootState } from '../../store'
 import { getContacts } from '../../store/actions/contact.actions'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
+import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void

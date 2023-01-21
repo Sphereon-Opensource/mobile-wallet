@@ -6,15 +6,15 @@ import { IConnectionViewItem } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSIFlexDirectionColumnHalfViewStyled as Column,
-  SSIDetailsViewRoundedContainerStyled as Container,
-  SSIDetailsLabelsContainerStyled as DetailLabelsContainer,
-  SSIDetailsViewCaptionDetailsStyled as DetailsCaption,
+  SSIConnectionDetailsViewRoundedContainerStyled as Container,
+  SSIConnectionDetailsLabelsContainerStyled as DetailLabelsContainer,
+  SSIConnectionDetailsViewCaptionDetailsStyled as DetailsCaption,
   SSITextH5LightStyled as DetailsItemLabelCaption,
-  SSIDetailsViewDetailsValueCaptionStyled as DetailsItemValueCaption,
+  SSIConnectionDetailsViewValueCaptionStyled as DetailsItemValueCaption,
   SSIDetailsViewDetailsListStyled as DetailsList,
-  SSIDetailsViewLabelRowViewStyled as LabelRow,
-  SSIDetailsViewSeparatorStyled as Separator
-} from '../../../styles/styledComponents'
+  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
+  SSIConnectionDetailsViewSeparatorStyled as Separator
+} from '../../../styles/components'
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 
 export interface IProps {

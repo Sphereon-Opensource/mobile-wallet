@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { SceneMap, SceneRendererProps, TabView } from 'react-native-tab-view'
+import { SceneMap, TabView } from 'react-native-tab-view'
+import { SceneRendererProps } from 'react-native-tab-view/lib/typescript'
 
 import { ITabRoute, ITabViewRoute } from '../../../@types'
 import { SSITabViewContainerStyled as Container } from '../../../styles/components'

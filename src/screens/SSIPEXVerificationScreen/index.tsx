@@ -12,12 +12,12 @@ import { verifyAuthentication } from '../../services/authenticationService'
 import {
   SSIButtonBottomMultipleContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSIPexBackgroundImageContainerStyled as ImageContainer,
-  SSIPexMessageStyled as Message,
-  SSIPexMessageContainerStyled as MessagesContainer,
-  SSIPexMessageTitleStyled as MessageTitle,
-  SSIPexVerificationSpacerStyled as Spacer
-} from '../../styles/styledComponents'
+  SSIPEXVerificationScreenBackgroundImageContainerStyled as ImageContainer,
+  SSIPEXVerificationScreenMessageStyled as Message,
+  SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
+  SSIPEXVerificationScreenMessageTitleStyled as MessageTitle,
+  SSIPEXVerificationScreenSpacerStyled as Spacer
+} from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 const { v4: uuidv4 } = require('uuid')
@@ -51,14 +51,14 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
         <SSISecondaryButton
           title={translate('action_decline_label')}
           onPress={() => props.navigation.goBack()}
-          // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+          // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
           style={{ height: 42, width: 145 }}
         />
         <Spacer />
         <SSIPrimaryButton
           title={translate('action_accept_label')}
           onPress={() => onAccept()}
-          // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+          // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
           style={{ height: 42, width: 145 }}
         />
       </ButtonContainer>

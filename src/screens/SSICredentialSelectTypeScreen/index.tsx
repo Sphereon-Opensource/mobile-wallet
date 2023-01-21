@@ -10,12 +10,10 @@ import { translate } from '../../localization/Localization'
 import { backgrounds } from '../../styles/colors'
 import {
   SSICredentialSelectTypeScreenButtonContainerStyled as ButtonContainer,
-  SSICredentialSelectTypeScreenViewItemContainerStyled as ItemContainer
-} from '../../styles/components'
-import {
   SSIBasicContainerStyled as Container,
+  SSICredentialSelectTypeScreenViewItemContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE>
 

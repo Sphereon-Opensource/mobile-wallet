@@ -1,15 +1,6 @@
-import { BlurView } from '@react-native-community/blur'
+import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-export const SSIBlurredContainerStyled = styled(BlurView).attrs({
-  blurType: 'light',
-  blurAmount: 3
-})`
-  flex: 1;
-  background-color: rgba(255, 255, 255, 0.25);
-`
-
-export const SSIAlphaContainerStyled = styled.View`
-  flex: 1;
-  background-color: rgba(0, 0, 0, 0.2);
+export const SSIDetailsViewDetailsListStyled = styled(FlatList)`
+  margin-bottom: 12px;
 `

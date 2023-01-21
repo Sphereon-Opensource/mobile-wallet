@@ -5,9 +5,9 @@ import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
 import {
   SSIErrorScreenContentContainerStyled as ContentContainer,
-  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer
+  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
+  SSIBasicContainerStyled as Container
 } from '../../styles/components'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 

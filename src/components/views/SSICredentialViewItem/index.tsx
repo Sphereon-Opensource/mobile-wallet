@@ -2,8 +2,8 @@ import React, { FC } from 'react'
 
 import { ICredentialSummary } from '../../../@types'
 import { translate } from '../../../localization/Localization'
-import { SSICredentialViewItemContainerStyled as Container } from '../../../styles/components'
 import {
+  SSICredentialViewItemContainerStyled as Container,
   SSIFlexDirectionRowViewStyled as ContentBottomContainer,
   SSICredentialViewItemContentMiddleContainerStyled as ContentMiddleContainer,
   SSICredentialViewItemContentTopContainerStyled as ContentTopContainer,
@@ -12,7 +12,7 @@ import {
   SSITextH5LightStyled as IssueDateCaption,
   SSITextH4LightStyled as IssuerCaption,
   SSITextH3LightStyled as TitleCaption
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 import DateUtils from '../../../utils/DateUtils'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 

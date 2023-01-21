@@ -2,7 +2,8 @@ import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
 import { borders } from '../../../colors'
-import { SSILinearGradientStyled, SSITextH3AnimatedLightStyled } from '../../../styledComponents'
+import { SSITextH3AnimatedLightStyled } from '../../fonts'
+import { SSILinearGradientStyled } from '../../gradients'
 
 export const SSITabViewHeaderContainerStyled = styled.View`
   flex-direction: row;

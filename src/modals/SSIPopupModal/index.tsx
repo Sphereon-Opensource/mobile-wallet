@@ -7,7 +7,7 @@ import { SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer } fro
 import {
   SSIBasicModalContainerStyled as Container,
   SSIPopupModalContentContainerStyled as ModalContentContainer
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.POPUP_MODAL>
 

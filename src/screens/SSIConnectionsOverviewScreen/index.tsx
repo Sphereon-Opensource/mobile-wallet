@@ -12,7 +12,7 @@ import SSIConnectionViewItem from '../../components/views/SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { RootState } from '../../store'
 import { getConnectionParties } from '../../store/actions/connection.actions'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
+import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
   getConnectionParties: () => void

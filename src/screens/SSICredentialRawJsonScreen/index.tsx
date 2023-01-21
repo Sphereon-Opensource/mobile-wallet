@@ -12,7 +12,7 @@ import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIBasicHorizontalCenterContainerStyled,
   SSIButtonBottomSingleContainerStyled
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>
 
@@ -66,7 +66,7 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
                   )}`
                 )
               }}
-              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
           </SSIButtonBottomSingleContainerStyled>

@@ -2,12 +2,10 @@ import React, { FC } from 'react'
 
 import {
   SSIConnectionViewItemContactDetailsContainerStyled as ContactDetailsContainer,
-  SSIConnectionViewItemContainerStyled as Container
-} from '../../../styles/components'
-import {
+  SSIConnectionViewItemContainerStyled as Container,
   SSITextH3LightStyled as NameCaption,
   SSITextH4LightStyled as UriCaption
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 
 export interface IProps {
   name: string

@@ -6,11 +6,11 @@ import { ICredentialDetailsRow } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSICredentialDetailsViewContainerStyled as Container,
+  SSIDetailsViewDetailsListStyled as DetailsList,
   SSICredentialDetailsViewFooterContainerStyled as FooterContainer,
   SSICredentialDetailsViewFooterLabelValueStyled as SignedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as SignedByLabel
 } from '../../../styles/components'
-import { SSIDetailsViewDetailsListStyled as DetailsList } from '../../../styles/styledComponents'
 import SSITextField from '../../fields/SSITextField'
 
 export interface IProps {

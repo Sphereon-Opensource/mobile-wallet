@@ -1,7 +1,8 @@
 import styled from 'styled-components/native'
 
 import SSIPlaceholderLogo from '../../../../components/assets/images/SSIPlaceholderLogo'
-import { SSIFlexDirectionRowViewStyled, SSITextH5LightStyled } from '../../../styledComponents'
+import { SSIFlexDirectionRowViewStyled } from '../../containers'
+import { SSITextH5LightStyled } from '../../fonts'
 
 export const SSIContactViewItemContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   padding: 16px 24px 18px 7px;

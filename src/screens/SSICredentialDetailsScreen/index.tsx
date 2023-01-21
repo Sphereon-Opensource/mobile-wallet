@@ -13,9 +13,9 @@ import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
   SSICredentialDetailsScreenCredentialCardContainer as CardContainer,
+  SSIBasicHorizontalCenterContainerStyled as Container,
   SSICredentialDetailsScreenContentContainer as ContentContainer
 } from '../../styles/components'
-import { SSIBasicHorizontalCenterContainerStyled as Container } from '../../styles/styledComponents'
 import DateUtils from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
@@ -66,7 +66,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                 <SSISecondaryButton
                   title={secondaryAction.caption}
                   onPress={secondaryAction.onPress}
-                  // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
                     minWidth: 160.5,
@@ -78,7 +78,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                 <SSIPrimaryButton
                   title={primaryAction.caption}
                   onPress={primaryAction.onPress}
-                  // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
                     minWidth: 160.5,

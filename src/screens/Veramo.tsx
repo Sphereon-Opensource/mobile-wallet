@@ -145,8 +145,7 @@ export class Veramo extends PureComponent<IScreenProps, IScreenState> {
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: verifiableCredential as unknown as VerifiableCredential,
-                credential: toCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
-                state: CredentialIssuanceStateEnum.OFFER
+                credential: toCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential))
               })
             }}
           />

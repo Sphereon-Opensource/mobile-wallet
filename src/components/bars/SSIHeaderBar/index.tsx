@@ -1,19 +1,19 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import { NativeStackHeaderProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import React, { FC } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { ButtonIconsEnum } from '../../../@types'
 import {
-  SSIBackIconStyled as BackIcon,
+  SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarContainerStyled as Container,
   SSIHeaderBarEntityIconStyled as EntityIcon,
   SSIHeaderBarHeaderCaptionStyled as HeaderCaption,
   SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   SSIFlexDirectionColumnViewStyled as LeftColumn,
-  SSIMoreIconStyled as MoreIcon,
+  SSIHeaderBarMoreIconStyled as MoreIcon,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string

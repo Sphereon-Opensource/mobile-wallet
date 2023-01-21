@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 
 import 'react-native-gesture-handler'
 import IntentHandler from './src/handlers/IntentHandler'
+import _loadAssetsAsync from './src/hooks/useAssets';
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import { RootStackNavigator } from './src/navigation/navigation'
@@ -52,8 +53,14 @@ export default function App() {
         StatusBar.setTranslucent(false)
         Localization.setI18nConfig()
 
+        // Keep the splash screen visible while we fetch resources
+        // TODO: Enable splashscreen
+        // await SplashScreen.preventAutoHideAsync()
+
         // Preload fonts, make any API calls you need to do here
+        // await Font.loadAsync(Entypo.font);
         await _loadFontsAsync()
+        await _loadAssetsAsync()
 
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!

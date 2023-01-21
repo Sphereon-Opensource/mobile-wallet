@@ -10,8 +10,8 @@ import { translate } from '../../localization/Localization'
 import { readQr } from '../../services/qrService'
 import {
   SSIFullFlexDirectionRowViewStyled as Container,
-  SSIQRCodeScannerStyled as QRScanner
-} from '../../styles/styledComponents'
+  SSIQRReaderScreenScannerStyled as QRScanner
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>
 

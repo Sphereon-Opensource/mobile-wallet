@@ -13,7 +13,7 @@ import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { RootState } from '../../store'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
+import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
 const format = require('string-format')
 

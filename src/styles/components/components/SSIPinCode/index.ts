@@ -2,7 +2,7 @@ import { Animated } from 'react-native'
 import styled from 'styled-components/native'
 
 import { fonts, statuses } from '../../../colors'
-import { SSITextH4LightStyled } from '../../../styledComponents'
+import { SSITextH4LightStyled } from '../../fonts'
 
 export const SSIPinCodeContainerAnimatedStyled = styled(Animated.View)`
   width: 244px;

@@ -13,7 +13,7 @@ import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../
 import {
   SSIButtonBottomSingleContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 const format = require('string-format')
@@ -94,7 +94,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
                   ]
                 })
               }
-              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
           ) : (
@@ -111,7 +111,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
                   ]
                 })
               }
-              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
           )}

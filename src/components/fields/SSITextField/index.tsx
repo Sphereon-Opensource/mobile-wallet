@@ -5,15 +5,13 @@ import SSIEditIcon from '../../../assets/icons/edit.svg'
 import {
   SSITextFieldContainerStyled as Container,
   SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
+  SSIFlexDirectionRowViewStyled as ContentContainer,
   SSITextFieldContentTextStyled as ContentText,
   SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
   SSITextFieldHeaderContainerStyled as HeaderContainer,
+  SSITextH5LightStyled as HeaderLabel,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer
 } from '../../../styles/components'
-import {
-  SSIFlexDirectionRowViewStyled as ContentContainer,
-  SSITextH5LightStyled as HeaderLabel
-} from '../../../styles/styledComponents'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 export interface IProps {

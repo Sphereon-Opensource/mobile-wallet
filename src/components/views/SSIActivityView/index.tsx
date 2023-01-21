@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { SSIBasicContainerStyled as RouteContainer } from '../../../styles/styledComponents'
+import { SSIBasicContainerStyled as RouteContainer } from '../../../styles/components'
 
 // TODO implement activity view
 

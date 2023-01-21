@@ -2,15 +2,13 @@ import React, { FC } from 'react'
 import { ViewStyle } from 'react-native'
 
 import {
+  SSIFlexDirectionRowViewStyled as Container,
   SSICredentialSelectTypeViewItemContentContainerStyled as ContentContainer,
   SSICredentialSelectTypeViewItemContentTextContainerStyled as ContentTextContainer,
+  SSITextH4LightStyled as CredentialTypeCaption,
   SSICredentialSelectTypeViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
   SSICredentialSelectTypeViewItemLogoContainerStyled as LogoContainer
 } from '../../../styles/components'
-import {
-  SSIFlexDirectionRowViewStyled as Container,
-  SSITextH4LightStyled as CredentialTypeCaption
-} from '../../../styles/styledComponents'
 import SSICredentialLogo from '../../assets/logos/SSICredentialLogo'
 import SSICheckbox from '../../fields/SSICheckbox'
 
