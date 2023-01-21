@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
 // https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete
 export type RootState = ReturnType<typeof rootReducer>
 export type AppThunkDispatch = ThunkDispatch<RootState, any, AnyAction>
-export type AppStore = Omit<Store<RootState>, "dispatch"> & {
+export type AppStore = Omit<Store<RootState>, 'dispatch'> & {
   dispatch: AppThunkDispatch
 }
 export const useAppDispatch = () => useDispatch<AppThunkDispatch>()

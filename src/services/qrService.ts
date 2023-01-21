@@ -1,8 +1,5 @@
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
-import {
-  ConnectionTypeEnum,
-  CorrelationIdentifierEnum
-} from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum, CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store-common'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -223,8 +220,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
           const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
           const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
 
-          const storeCredential = async (vc: VerifiableCredential) =>
-              store.dispatch(storeVerifiableCredential(vc))
+          const storeCredential = async (vc: VerifiableCredential) => store.dispatch(storeVerifiableCredential(vc))
 
           // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
           args.navigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -279,11 +275,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
       })
 
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
-  provider.getServerMetadataAndPerformCryptoMatching().then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
-    const url = new URL(metadata.serverMetadata.issuer)
-    const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
-    if (contacts.length === 0) {
-      store.dispatch(
+  provider
+    .getServerMetadataAndPerformCryptoMatching()
+    .then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
+      const url = new URL(metadata.serverMetadata.issuer)
+      const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
+      if (contacts.length === 0) {
+        store.dispatch(
           createContact({
             name: url.host,
             alias: url.host,
@@ -293,54 +291,54 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
               correlationId: url.hostname
             }
           })
-      )
-    }
-
-    const gotoVerificationCode = async (credentials: Array<string>): Promise<void> => {
-      if (
-        args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
-        args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
-      ) {
-        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-          screen: ScreenRoutesEnum.VERIFICATION_CODE,
-          params: {
-            // Currently we only support receiving one credential, we are missing ui to display multiple
-            credentialName: credentials[0],
-            onVerification: async (pin: string) => await sendResponse(provider, pin)
-          }
-        })
-      } else {
-        await sendResponse(provider)
+        )
       }
-    }
 
-    const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
-      (credentialMetadata: ICredentialMetadata) => ({
-        id: uuidv4(),
-        credentialType: credentialMetadata.credentialType,
-        isSelected: true
-      })
-    )
+      const gotoVerificationCode = async (credentials: Array<string>): Promise<void> => {
+        if (
+          args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
+          args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
+        ) {
+          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+            screen: ScreenRoutesEnum.VERIFICATION_CODE,
+            params: {
+              // Currently we only support receiving one credential, we are missing ui to display multiple
+              credentialName: credentials[0],
+              onVerification: async (pin: string) => await sendResponse(provider, pin)
+            }
+          })
+        } else {
+          await sendResponse(provider)
+        }
+      }
 
-    if (credentialTypes.length > 1) {
-      args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-        credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+      const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
+        (credentialMetadata: ICredentialMetadata) => ({
           id: uuidv4(),
           credentialType: credentialMetadata.credentialType,
           isSelected: true
-        })),
-        onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
-      })
-    } else {
-      await gotoVerificationCode(
-          credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+        })
       )
-    }
-  })
-  .catch((error: Error) => {
-    debug(`Unable to retrieve vc. Error: ${error}`)
-    //TODO create human readable error message
-    showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-  })
+
+      if (credentialTypes.length > 1) {
+        args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
+          issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+          credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+            id: uuidv4(),
+            credentialType: credentialMetadata.credentialType,
+            isSelected: true
+          })),
+          onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
+        })
+      } else {
+        await gotoVerificationCode(
+          credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+        )
+      }
+    })
+    .catch((error: Error) => {
+      debug(`Unable to retrieve vc. Error: ${error}`)
+      //TODO create human readable error message
+      showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+    })
 }

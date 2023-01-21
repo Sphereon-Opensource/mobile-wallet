@@ -7,4 +7,3 @@ export * from './SSIOnboardingWelcomeStoreScreen'
 export * from './SSIVerificationCodeScreen'
 export * from './SSIPEXVerificationScreen'
 export * from './SSIQRReaderScreen'
-

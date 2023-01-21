@@ -2,10 +2,7 @@ import styled from 'styled-components/native'
 
 import { fonts } from '../../../colors'
 import { SSITextH5LightSemiBoldStyled } from '../../fonts'
-import {
-  SSIFlexDirectionRowViewStyled,
-  SSIRoundedContainerBackgroundSecondaryDarkStyled
-} from '../../containers'
+import { SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundSecondaryDarkStyled } from '../../containers'
 
 export const SSIConnectionDetailsViewCaptionDetailsStyled = styled(SSITextH5LightSemiBoldStyled)`
   margin-bottom: 9px;
@@ -39,4 +36,3 @@ export const SSIConnectionDetailsViewSeparatorStyled = styled.View`
   padding-bottom: 5px;
   border-bottom-color: #404d7a;
 `
-

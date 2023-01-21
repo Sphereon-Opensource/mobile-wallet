@@ -70,53 +70,65 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
 
   const onEditingEnd = async (event: NativeSyntheticEvent<TextInputEndEditingEventData>): Promise<void> => {
     console.log(event.nativeEvent.text)
-    if (onEndEditing)  {
+    if (onEndEditing) {
       await onEndEditing(event.nativeEvent.text)
     }
   }
 
   return (
-      <Container>
-          {
-            label
-                ? labelColor || error
-                    ? <LabelCaption style={{color: error ? statuses.error : labelColor, opacity: disabled ? 0.5 : 1}}>{label}</LabelCaption>
-                    : <LinearTextGradient style={{ opacity: disabled ? 0.5 : 1 }}>
-                      <LabelCaption>{label}</LabelCaption>
-                    </LinearTextGradient>
-                : null
-          }
-          <InputContainer>
-            <TextInput
-                secureTextEntry={secureTextEntry}
-                autoCapitalize={autoCapitalize}
-                autoFocus={autoFocus}
-                editable={editable && !disabled}
-                keyboardType={keyboardType}
-                placeholder={placeholderValue}
-                maxLength={maxLength}
-                onBlur={() => setHasFocus(false)}
-                onChangeText={(input: string) => onChange(input)}
-                onEndEditing={(event: NativeSyntheticEvent<TextInputEndEditingEventData>) => onEditingEnd(event)}
-                onFocus={() => setHasFocus(true)}
-                value={value}
-                style={{ opacity: disabled ? 0.5 : 1 }}
-            />
-            { secureTextEntry &&
-                // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc
-                <IconContainer style={{opacity: disabled ? 0.5 : 1}}>
-                  <SSIEyeIcon/>
-                </IconContainer>
-            }
-          </InputContainer>
-          { hasFocus && !error
-              ? <UnderlineLinearGradient/>
-              : <Underline style={{ borderBottomColor: error ? statuses.error : borderColor, borderBottomWidth: showBorder ? 1 : 0, opacity: disabled ? 0.5 : 1 }}/>
-          }
-          { helperText || error &&
-              <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>{error ? error : helperText}</LabelCaption>
-          }
-      </Container>
+    <Container>
+      {label ? (
+        labelColor || error ? (
+          <LabelCaption style={{ color: error ? statuses.error : labelColor, opacity: disabled ? 0.5 : 1 }}>
+            {label}
+          </LabelCaption>
+        ) : (
+          <LinearTextGradient style={{ opacity: disabled ? 0.5 : 1 }}>
+            <LabelCaption>{label}</LabelCaption>
+          </LinearTextGradient>
+        )
+      ) : null}
+      <InputContainer>
+        <TextInput
+          secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize}
+          autoFocus={autoFocus}
+          editable={editable && !disabled}
+          keyboardType={keyboardType}
+          placeholder={placeholderValue}
+          maxLength={maxLength}
+          onBlur={() => setHasFocus(false)}
+          onChangeText={(input: string) => onChange(input)}
+          onEndEditing={(event: NativeSyntheticEvent<TextInputEndEditingEventData>) => onEditingEnd(event)}
+          onFocus={() => setHasFocus(true)}
+          value={value}
+          style={{ opacity: disabled ? 0.5 : 1 }}
+        />
+        {secureTextEntry && (
+          // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc
+          <IconContainer style={{ opacity: disabled ? 0.5 : 1 }}>
+            <SSIEyeIcon />
+          </IconContainer>
+        )}
+      </InputContainer>
+      {hasFocus && !error ? (
+        <UnderlineLinearGradient />
+      ) : (
+        <Underline
+          style={{
+            borderBottomColor: error ? statuses.error : borderColor,
+            borderBottomWidth: showBorder ? 1 : 0,
+            opacity: disabled ? 0.5 : 1
+          }}
+        />
+      )}
+      {helperText ||
+        (error && (
+          <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
+            {error ? error : helperText}
+          </LabelCaption>
+        ))}
+    </Container>
   )
 }
 

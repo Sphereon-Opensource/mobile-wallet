@@ -5,10 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
 import { NavigationBarRoutesEnum } from '../../../@types'
-import {
-  fonts,
-  highLightGradients
-} from '../../../styles/colors'
+import { fonts, highLightGradients } from '../../../styles/colors'
 import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container

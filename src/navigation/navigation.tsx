@@ -15,7 +15,7 @@ import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
-import SSIContactAddScreen from '../screens/SSIContactAddScreen';
+import SSIContactAddScreen from '../screens/SSIContactAddScreen'
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
@@ -347,18 +347,20 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.CONTACT_ADD}
-          component={SSIContactAddScreen}
-          options={{
-            headerTitle: 'New contact detected', // TODO translation
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar
-                    {...props}
-                    showBackButton={Platform.OS === PlatformsEnum.IOS}
-                    headerSubTitle={'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'} // TODO translation
-                />
-            )
-          }}
+        name={ScreenRoutesEnum.CONTACT_ADD}
+        component={SSIContactAddScreen}
+        options={{
+          headerTitle: 'New contact detected', // TODO translation
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={
+                'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'
+              } // TODO translation
+            />
+          )
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
@@ -413,18 +415,20 @@ const NotificationsStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.CONTACT_ADD}
-          component={SSIContactAddScreen}
-          options={{
-            headerTitle: 'New contact detected', // TODO translation
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar
-                    {...props}
-                    showBackButton={Platform.OS === PlatformsEnum.IOS}
-                    headerSubTitle={'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'} // TODO translation
-                />
-            )
-          }}
+        name={ScreenRoutesEnum.CONTACT_ADD}
+        component={SSIContactAddScreen}
+        options={{
+          headerTitle: 'New contact detected', // TODO translation
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={
+                'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'
+              } // TODO translation
+            />
+          )
+        }}
       />
     </Stack.Navigator>
   )

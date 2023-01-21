@@ -119,5 +119,5 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
-  CONTACT_ADD = 'ContactAdd',
+  CONTACT_ADD = 'ContactAdd'
 }

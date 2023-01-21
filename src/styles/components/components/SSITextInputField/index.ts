@@ -25,7 +25,7 @@ export const TextInputStyled = styled(TextInput).attrs({
   font-size: ${fontStyle.h3Regular.fontSize}px;
   font-weight: ${fontStyle.h3Regular.fontWeight};
   line-height: ${fontStyle.h3Regular.lineHeight}px;
-  color: #FFFFFF;
+  color: #ffffff;
 `
 
 export const SSITextInputFieldTextInputStyled = styled(TextInputStyled)`

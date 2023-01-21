@@ -12,7 +12,7 @@ export const SSIQRCustomMarkerSideSpaceStyled = styled.View`
 export const SSIQRCustomMarkerStyled = styled.View`
   width: ${dimensions.width * 0.8}px;
   height: ${dimensions.width * 0.8}px;
-  border-color: #2a3046; 
+  border-color: #2a3046;
   border-width: 2px;
   border-radius: 12px;
 `

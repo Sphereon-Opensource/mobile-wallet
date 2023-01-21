@@ -7,7 +7,7 @@ export const SSIProgressIndicatorSegment = styled.View`
   border-radius: 3px;
   height: 4px;
   width: 34px;
-  background-color: ${backgrounds.primaryLight}
+  background-color: ${backgrounds.primaryLight};
 `
 
 export const SSIProgressIndicatorLinearGradientSegment = styled(SSILinearGradientSecondaryStyled)`

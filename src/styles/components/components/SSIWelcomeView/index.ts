@@ -27,4 +27,3 @@ export const SSIWelcomeViewButtonContainerStyled = styled.View`
   margin-bottom: 30px;
   align-items: center;
 `
-

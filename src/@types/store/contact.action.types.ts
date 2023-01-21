@@ -1,7 +1,4 @@
-import {
-  BasicPartyIdentifier,
-  IConnectionParty
-} from '@sphereon/ssi-sdk-data-store-common'
+import { BasicPartyIdentifier, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING'
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING

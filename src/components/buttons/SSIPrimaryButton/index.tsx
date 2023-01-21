@@ -5,7 +5,7 @@ import { OpacityStyleEnum } from '../../../@types'
 import {
   SSITouchableOpacityButtonFlexRowStyled as Button,
   SSITextH2LightStyled as ButtonCaption,
-  SSIRoundedCenteredLinearGradientStyled as LinearGradient,
+  SSIRoundedCenteredLinearGradientStyled as LinearGradient
 } from '../../../styles/components'
 
 export interface Props extends PressableProps {

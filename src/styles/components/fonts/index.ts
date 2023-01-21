@@ -69,7 +69,7 @@ export const SSITextH3RegularLightStyled = styled(SSITextH3RegularStyled)`
 `
 
 // TODO name semibold
-export const SSITextH3Styled = styled.Text` 
+export const SSITextH3Styled = styled.Text`
   font-family: ${fontStyle.h3SemiBold.fontFamily};
   font-size: ${fontStyle.h3SemiBold.fontSize}px;
   font-weight: ${fontStyle.h3SemiBold.fontWeight};

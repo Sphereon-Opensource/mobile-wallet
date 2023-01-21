@@ -5,7 +5,7 @@ import {
   SSIAlertToastContainerStyled as AlertToastContainer,
   SSIAlertToastIconContainerStyled as AlertToastIconContainer,
   SSIAlertToastMessageTextStyled as AlertToastMessageCaption,
-  SSIAlertToastErrorIconStyled as ErrorIcon,
+  SSIAlertToastErrorIconStyled as ErrorIcon
 } from '../../../src/styles/components'
 
 export const toastsBottomOffset = 0
