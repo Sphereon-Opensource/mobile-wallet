@@ -1,5 +1,8 @@
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
-import { ConnectionIdentifierEnum, ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import {
+  ConnectionTypeEnum,
+  CorrelationIdentifierEnum
+} from '@sphereon/ssi-sdk-data-store-common'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -139,7 +142,7 @@ const connectDidAuth = async (args: IQrDataArgs) => {
   const connection = connectFrom({
     type: ConnectionTypeEnum.DIDAUTH,
     identifier: {
-      type: ConnectionIdentifierEnum.DID,
+      type: CorrelationIdentifierEnum.DID,
       correlationId: identifier.did
     },
     config: {
@@ -169,7 +172,7 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
     connection: connectFrom({
       type: ConnectionTypeEnum.DIDAUTH,
       identifier: {
-        type: ConnectionIdentifierEnum.URL,
+        type: CorrelationIdentifierEnum.URL,
         correlationId: args.qrData.redirectUrl
       },
       config: {
@@ -278,13 +281,17 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
   provider.getServerMetadataAndPerformCryptoMatching().then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
     const url = new URL(metadata.serverMetadata.issuer)
-    const contacts = await getContacts({ filter: [{ name: url.host }] })
+    const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
     if (contacts.length === 0) {
       store.dispatch(
           createContact({
             name: url.host,
             alias: url.host,
-            uri: `${url.protocol}//${url.hostname}`
+            uri: `${url.protocol}//${url.hostname}`,
+            identifier: {
+              type: CorrelationIdentifierEnum.URL,
+              correlationId: url.hostname
+            }
           })
       )
     }
