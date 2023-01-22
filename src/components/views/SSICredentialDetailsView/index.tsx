@@ -33,8 +33,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <Container>
       <DetailsList
-        // TODO fix DetailsList
-        // has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
+        // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
         data={props.credentialProperties}
         renderItem={renderItem}
         keyExtractor={(item: ICredentialDetailsRow) => item.id}

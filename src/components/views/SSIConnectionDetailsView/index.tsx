@@ -53,7 +53,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
       <DetailLabelsContainer>
         <DetailsCaption>{translate('connection_details_view_details')}</DetailsCaption>
         <DetailsList
-          // TODO fix DetailsList
+          // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
           data={props.entityConnection.connection.metadata}
           renderItem={renderItem}
           keyExtractor={(item: IDetails) => item.id}

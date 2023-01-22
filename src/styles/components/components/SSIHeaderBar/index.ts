@@ -1,7 +1,7 @@
+import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
 import { IHeaderProps } from '../../../../@types'
-import EntityIcon from '../../../../assets/icons/entity.svg'
 import SSIIconButton from '../../../../components/buttons/SSIIconButton'
 import { borders } from '../../../colors'
 import { SSIBackgroundPrimaryDarkColorCss } from '../../css'
@@ -22,8 +22,7 @@ export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
   margin-left: 24px;
 `
 
-// TODO fix import issue
-export const SSIHeaderBarEntityIconStyled = styled(EntityIcon)`
+export const SSIHeaderBarEntityIconContainerStyled = styled(TouchableOpacity)`
   margin-left: auto;
   margin-right: 25px;
   margin-top: 7px;
