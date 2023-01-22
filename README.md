@@ -32,7 +32,7 @@ The wallet supports or soon will the following features:
 - [Presentation Exchange](https://github.com/Sphereon-Opensource/pex)
 - [Credential Manifest](https://identity.foundation/credential-manifest/)
 - [Well-known DIDs (domain linkage of DIDs)](https://identity.foundation/.well-known/resources/did-configuration/)
-- [Self Issued Open Id Connect V2 (SIOPv2)](https://github.com/Sphereon-Opensource/did-auth-siop)
+- [Self Issued Open ID Connect V2 (SIOPv2)](https://github.com/Sphereon-Opensource/did-auth-siop)
 - [OpenID for Verifiable Credential Issuance (OpenID4VCI)](https://github.com/Sphereon-Opensource/OID4VCI-client)
 - [OpenID for Verifiable Presentations (OpenID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
 - [DIDComm messaging v2](https://identity.foundation/didcomm-messaging/spec/) & [WACI DIDComm](https://identity.foundation/waci-didcomm/)
