@@ -1,8 +1,8 @@
 import { ICredential } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
-import { EmitterSubscription, EventSubscription, Linking } from 'react-native'
-import ShareMenu from 'react-native-share-menu'
+import { EmitterSubscription, Linking } from 'react-native'
+import ShareMenu, { ShareListener } from 'react-native-share-menu'
 
 import { APP_ID } from '../../@config/constants'
 import { NavigationBarRoutesEnum, ScreenRoutesEnum } from '../../@types'
@@ -20,7 +20,7 @@ const debug = Debug(`${APP_ID}:IntentHandler`)
 
 class IntentHandler {
   private deeplinkListener: EmitterSubscription
-  private shareListener: EventSubscription
+  private shareListener: ShareListener
 
   public enable = async (): Promise<void> => {
     await this.addListeners()
@@ -34,7 +34,7 @@ class IntentHandler {
   private addListeners = async (): Promise<any> => {
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener)
     //TODO fix this type issue
-    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener)
+    this.shareListener = ShareMenu.addNewShareListener(() => this.sharedFileDataListener)
   }
 
   private removeListeners = async (): Promise<void> => {
