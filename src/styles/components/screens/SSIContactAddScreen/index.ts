@@ -1,9 +1,6 @@
 import styled from 'styled-components/native'
 
-import {
-  SSIBasicHorizontalCenterContainerStyled,
-  SSIFlexDirectionRowViewStyled
-} from '../../containers'
+import { SSIBasicHorizontalCenterContainerStyled, SSIFlexDirectionRowViewStyled } from '../../containers'
 import { SSITextH4LightStyled } from '../../fonts'
 
 export const SSIContactAddScreenContainerStyled = styled(SSIBasicHorizontalCenterContainerStyled)`
