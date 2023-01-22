@@ -16,12 +16,6 @@ export const SSILinearGradientSecondaryStyled = styled(LinearGradient).attrs({
   end: { x: 0, y: 0 }
 })``
 
-export const SSILinearGradientWelcomeStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['300'].secondaryColor, highLightGradients['300'].primaryColor],
-  start: { x: 1, y: 1 },
-  end: { x: 0, y: 0 }
-})``
-
 export const SSIRoundedLinearGradient = styled(SSILinearGradientStyled)`
   ${SSIRoundedEdgesCss}
 `

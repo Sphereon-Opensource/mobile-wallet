@@ -1,8 +1,8 @@
 import styled from 'styled-components/native'
 
 import { fonts } from '../../../colors'
-import { SSITextH5LightSemiBoldStyled } from '../../fonts'
 import { SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundSecondaryDarkStyled } from '../../containers'
+import { SSITextH5LightSemiBoldStyled } from '../../fonts'
 
 export const SSIConnectionDetailsViewCaptionDetailsStyled = styled(SSITextH5LightSemiBoldStyled)`
   margin-bottom: 9px;

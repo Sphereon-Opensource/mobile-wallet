@@ -53,8 +53,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
                   ? DateUtils.toLocalDateTimeString(props.expirationDate)
                   : DateUtils.toLocalDateString(props.expirationDate)
               }`
-            : // TODO translate
-              'Never expires'}
+            : translate('credential_status_never_expires_date_label')}
         </ExpirationDateCaption>
       </ContentBottomContainer>
     </Container>

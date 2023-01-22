@@ -22,6 +22,7 @@ export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
   margin-left: 24px;
 `
 
+// TODO fix import issue
 export const SSIHeaderBarEntityIconStyled = styled(EntityIcon)`
   margin-left: auto;
   margin-right: 25px;

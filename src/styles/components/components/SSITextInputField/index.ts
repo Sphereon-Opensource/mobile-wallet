@@ -3,8 +3,8 @@ import { LinearTextGradient } from 'react-native-text-gradient'
 import styled from 'styled-components/native'
 
 import { highLightGradients } from '../../../colors'
-import { SSILinearGradientStyled } from '../../../styledComponents'
 import { fontStyle } from '../../../typography'
+import { SSILinearGradientStyled } from '../../gradients'
 
 export const SSITextInputFieldContainerStyled = styled.View`
   width: 100%;

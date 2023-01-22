@@ -14,4 +14,3 @@ export const DID_PREFIX = 'did'
 
 // regex for supporting most languages and only allows for word characters
 export const CONTACT_NAME_VALIDATION_REGEX = /^[\p{Letter}\s]{1,50}$/gu
-// /[\p{Letter}\p{Mark}]+/gu

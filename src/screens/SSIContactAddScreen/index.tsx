@@ -12,18 +12,16 @@ import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
 import { createContact } from '../../store/actions/contact.actions'
 import {
+  SSIButtonBottomMultipleContainerStyled as ButtonContainer,
   SSIContactAddScreenDisclaimerCheckboxContainerStyled as CheckboxContainer,
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
-  SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer
-} from '../../styles/components/screens/SSIContactAddScreen'
-import {
-  SSIButtonBottomMultipleContainerStyled as ButtonContainer,
-  SSIPexVerificationSpacerStyled as Spacer
-} from '../../styles/styledComponents'
+  SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
+  SSIPEXVerificationScreenSpacerStyled as Spacer // TODO
+} from '../../styles/components'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
-  createContact: () => void
+  createContact: (args: ICreateContactArgs) => void
   onCreate: () => Promise<void>
 }
 
@@ -63,7 +61,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           <SSISecondaryButton
             title={translate('action_decline_label')}
             onPress={() => this.props.navigation.goBack()}
-            // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
             style={{ height: 42, width: 145 }}
           />
           <Spacer />
@@ -71,7 +69,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
             title={translate('action_accept_label')}
             onPress={() => console.log('accept')}
             disabled={!hasConsent || contactName === undefined || contactName === '' || isInvalidContactName}
-            // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
             style={{ height: 42, width: 145 }}
           />
         </ButtonContainer>

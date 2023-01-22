@@ -1,7 +1,7 @@
 import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 

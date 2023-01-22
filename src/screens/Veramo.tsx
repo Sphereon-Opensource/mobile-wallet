@@ -4,7 +4,7 @@ import { CredentialMapper } from '@sphereon/ssi-types'
 import { IIdentifier, VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { Button, Text, View } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import { CredentialIssuanceStateEnum, ScreenRoutesEnum, StackParamList } from '../@types'

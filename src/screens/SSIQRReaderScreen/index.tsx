@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { StatusBar } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { QR_SCANNER_TIMEOUT } from '../../@config/constants'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'

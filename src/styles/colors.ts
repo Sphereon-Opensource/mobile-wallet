@@ -126,3 +126,9 @@ type Logo = 'default'
 export const logos: Record<Logo, string> = {
   default: '#FBFBFB'
 }
+
+type Input = 'placeholder'
+
+export const inputs: Record<Input, string> = {
+  placeholder: '#8D9099'
+}

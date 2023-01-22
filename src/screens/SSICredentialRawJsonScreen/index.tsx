@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import JSONTree from 'react-native-json-tree'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import Share from 'react-native-share'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'

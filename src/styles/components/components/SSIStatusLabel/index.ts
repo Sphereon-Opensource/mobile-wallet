@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+
 import { SSIFlexDirectionRowViewStyled } from '../../containers'
 import { SSITextH5LightStyled } from '../../fonts'
 

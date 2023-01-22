@@ -5,15 +5,13 @@ import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
   SSITextInputFieldContainerStyled as Container,
   SSITextInputFieldIconContainerStyled as IconContainer,
+  SSIFlexDirectionRowViewStyled as InputContainer,
+  SSITextH5Styled as LabelCaption,
   SSITextInputFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
 } from '../../../styles/components'
-import {
-  SSIFlexDirectionRowViewStyled as InputContainer,
-  SSITextH5Styled as LabelCaption
-} from '../../../styles/styledComponents'
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 
 export interface IProps {

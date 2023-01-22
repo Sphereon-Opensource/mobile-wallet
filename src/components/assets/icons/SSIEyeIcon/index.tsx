@@ -2,13 +2,15 @@ import { FC } from 'react'
 import { View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
+import { fonts } from '../../../../styles/colors'
+
 export interface IProps {
   size?: number
   color?: string
 }
 
 const SSIEyeIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 15, color = '#FBFBFB' } = props
+  const { size = 15, color = fonts.light } = props
 
   return (
     <View style={{ width: size, aspectRatio: 1 }}>

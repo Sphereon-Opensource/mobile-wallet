@@ -1,6 +1,6 @@
 import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import { ConnectionStatusEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'

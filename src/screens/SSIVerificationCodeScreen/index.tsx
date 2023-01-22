@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { PopupImagesEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'

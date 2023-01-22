@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import React from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { RootRoutesEnum, StackParamList } from '../../@types'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
