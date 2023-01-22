@@ -1,7 +1,9 @@
-import { createNavigationContainerRef, PartialState } from '@react-navigation/native'
-import { NavigationAction, StackActions } from 'react-navigation'
+import { createNavigationContainerRef, ParamListBase, PartialState } from '@react-navigation/native'
+import { NavigationAction, NavigationProp, StackActions } from 'react-navigation'
 
 import { StackParamList } from '../@types'
+
+// TODO this file is WIP
 
 export const navigationRef = createNavigationContainerRef<StackParamList>()
 
@@ -66,4 +68,26 @@ export function getState(): any {
   }
 
   return undefined
+}
+
+export function setParams<RouteName extends keyof StackParamList>(
+  params: Partial<StackParamList[RouteName]>
+): void {
+  if (navigationRef.isReady()) {
+    navigationRef.setParams(params)
+  }
+}
+
+export function setOptions(options: Partial<any>): void { //TODO ScreenOptions
+  // if (navigationRef.isReady()) {
+  //   navigationRef.setOptions(options)
+  // }
+  // TODO implementation
+  return
+}
+
+export function getParent<T = NavigationProp<ParamListBase> | undefined>(id?: NavigatorID): T {
+  if (navigationRef.isReady()) {
+    return navigationRef.getParent(id)
+  }
 }
