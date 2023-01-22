@@ -22,7 +22,6 @@ import {
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void
-  onCreate: () => Promise<void>
 }
 
 class SSIContactAddScreen extends PureComponent<IScreenProps> {

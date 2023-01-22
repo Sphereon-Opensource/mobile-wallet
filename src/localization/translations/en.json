@@ -82,6 +82,8 @@
     "credential_delete_message": "Are you sure you want to delete the credential: {0}?",
     "credential_deleted_success_toast": "Credential successfully deleted",
     "credential_deleted_failed_toast": "Unable to delete the credential",
+    "contact_add_new_contact_detected_title": "New contact detected",
+    "contact_add_new_contact_detected_subtitle": "We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.",
     "contact_add_contact_name_label": "Contact Name",
     "contact_add_contact_name_placeholder": "Name contact",
     "contact_add_contact_name_invalid_message": "Please fill in a valid contact name",

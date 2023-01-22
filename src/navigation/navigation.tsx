@@ -350,14 +350,12 @@ const QRStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CONTACT_ADD}
         component={SSIContactAddScreen}
         options={{
-          headerTitle: 'New contact detected', // TODO translation
+          headerTitle: translate('contact_add_new_contact_detected_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={
-                'We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.'
-              } // TODO translation
+              headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
             />
           )
         }}

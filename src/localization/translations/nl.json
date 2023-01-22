@@ -82,6 +82,8 @@
     "credential_delete_message": "Weet u zeker dat u de credential: {0}, wilt verwijderen?",
     "credential_deleted_success_toast": "Credential succesvol verwijdert",
     "credential_deleted_failed_toast": "Kan de credential niet verwijderen",
+    "contact_add_new_contact_detected_title": "Nieuw contact gedetecteerd",
+    "contact_add_new_contact_detected_subtitle": "We hebben gemerkt dat de andere partij in dit uitwisselingsproces van inloggegevens nog niet in uw contacten staat. U moet een naam opgeven voor deze nieuwe contactpersoon om de uitwisseling te voltooien.",
     "contact_add_contact_name_label": "Contact Naam",
     "contact_add_contact_name_placeholder": "Naam contact",
     "contact_add_contact_name_invalid_message": "Vul een geldige contact naam in",
