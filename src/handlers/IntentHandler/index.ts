@@ -2,11 +2,10 @@ import { ICredential } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
 import { EmitterSubscription, Linking } from 'react-native'
-import ShareMenu, { ShareListener } from 'react-native-share-menu'
+import ShareMenu, { ShareData, ShareListener } from 'react-native-share-menu'
 
 import { APP_ID } from '../../@config/constants'
 import { NavigationBarRoutesEnum, ScreenRoutesEnum } from '../../@types'
-import { ISharedItem } from '../../@types/intents'
 import { translate } from '../../localization/Localization'
 import * as RootNavigation from '../../navigation/rootNavigation'
 import { readFile } from '../../services/fileService'
@@ -33,8 +32,7 @@ class IntentHandler {
 
   private addListeners = async (): Promise<any> => {
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener)
-    //TODO fix this type issue
-    this.shareListener = ShareMenu.addNewShareListener(() => this.sharedFileDataListener)
+    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener)
   }
 
   private removeListeners = async (): Promise<void> => {
@@ -77,12 +75,15 @@ class IntentHandler {
     await readQr({ qrData: event.url, navigation: RootNavigation })
   }
 
-  private async sharedFileDataListener(item: ISharedItem): Promise<void> {
+  private sharedFileDataListener(item?: ShareData): void {
     if (!item) {
       return
     }
 
-    readFile({ filePath: item.data })
+    // TODO currently on supporting one file
+    const file = typeof item.data === 'string' ? item.data : item.data[0]
+
+    readFile({ filePath: file })
       .then((file: string) => {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0]
