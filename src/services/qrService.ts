@@ -26,7 +26,6 @@ import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
-import { createContact } from '../store/actions/contact.actions'
 import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import { showToast, ToastTypeEnum } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
@@ -278,26 +277,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
   provider
     .getServerMetadataAndPerformCryptoMatching()
     .then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
-      const url = new URL(metadata.serverMetadata.issuer)
-      const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
-      if (contacts.length === 0) {
-        store.dispatch(
-          createContact({
-            name: url.host,
-            alias: url.host,
-            uri: `${url.protocol}//${url.hostname}`,
-            identifier: {
-              type: CorrelationIdentifierEnum.URL,
-              correlationId: url.hostname
-            }
-          })
-        )
-      }
-
       const gotoVerificationCode = async (credentials: Array<string>): Promise<void> => {
         if (
-          args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
-          args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
+            args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
+            args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
         ) {
           args.navigation.navigate(NavigationBarRoutesEnum.QR, {
             screen: ScreenRoutesEnum.VERIFICATION_CODE,
@@ -312,28 +295,69 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
         }
       }
 
-      const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
-        (credentialMetadata: ICredentialMetadata) => ({
-          id: uuidv4(),
-          credentialType: credentialMetadata.credentialType,
-          isSelected: true
-        })
-      )
+      const processCredentialRequest = async (): Promise<void> => {
+        const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
+            (credentialMetadata: ICredentialMetadata) => ({
+              id: uuidv4(),
+              credentialType: credentialMetadata.credentialType,
+              isSelected: true
+            })
+        )
 
-      if (credentialTypes.length > 1) {
-        args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-          issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-          credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-            id: uuidv4(),
-            credentialType: credentialMetadata.credentialType,
-            isSelected: true
-          })),
-          onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
+        if (credentialTypes.length > 1) {
+          args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
+            issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+            credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+              id: uuidv4(),
+              credentialType: credentialMetadata.credentialType,
+              isSelected: true
+            })),
+            onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
+          })
+        } else {
+          await gotoVerificationCode(
+              credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+          )
+        }
+      }
+
+      const url = new URL(metadata.serverMetadata.issuer)
+      const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
+      if (contacts.length === 0) {
+        args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
+          name: url.host,
+          uri: `${url.protocol}//${url.hostname}`,
+          identifier: {
+            type: CorrelationIdentifierEnum.URL,
+            correlationId: url.hostname
+          },
+          onCreate: () => processCredentialRequest()
         })
       } else {
-        await gotoVerificationCode(
-          credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
-        )
+        await processCredentialRequest()
+        // const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
+        //     (credentialMetadata: ICredentialMetadata) => ({
+        //       id: uuidv4(),
+        //       credentialType: credentialMetadata.credentialType,
+        //       isSelected: true
+        //     })
+        // )
+        //
+        // if (credentialTypes.length > 1) {
+        //   args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
+        //     issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+        //     credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+        //       id: uuidv4(),
+        //       credentialType: credentialMetadata.credentialType,
+        //       isSelected: true
+        //     })),
+        //     onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
+        //   })
+        // } else {
+        //   await gotoVerificationCode(
+        //       credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+        //   )
+        // }
       }
     })
     .catch((error: Error) => {

@@ -22,7 +22,7 @@ export const SSITextInputFieldTextInputStyled = styled(TextInputStyled)`
 
 export const SSITextInputFieldIconContainerStyled = styled.View`
   margin-left: auto;
-  padding-left: 15px;
+  padding-left: 10px;
   justify-content: center;
 `
 

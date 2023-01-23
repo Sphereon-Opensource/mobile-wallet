@@ -1,5 +1,10 @@
 import React, { FC } from 'react'
-import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
+import {
+  KeyboardTypeOptions,
+  NativeSyntheticEvent,
+  TextInputEndEditingEventData,
+  View
+} from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
@@ -18,10 +23,10 @@ export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined
   autoFocus?: boolean
   borderColor?: string
-  defaultValue?: string
   disabled?: boolean
   editable?: boolean
   helperText?: string
+  initialValue?: string
   label?: string
   labelColor?: string
   keyboardType?: KeyboardTypeOptions | undefined
@@ -38,10 +43,10 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     autoCapitalize = undefined,
     autoFocus = false,
     borderColor = selectionElements.primaryBorderDark,
-    defaultValue,
     disabled = false,
     editable = true,
     helperText,
+    initialValue,
     label,
     labelColor,
     keyboardType = undefined,
@@ -53,7 +58,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     showBorder = true
   } = props
 
-  const [value, setValue] = React.useState(defaultValue)
+  const [value, setValue] = React.useState(initialValue)
   const [error, setError] = React.useState<string>()
   const [hasFocus, setHasFocus] = React.useState(false)
 
@@ -69,7 +74,9 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
   const onEditingEnd = async (event: NativeSyntheticEvent<TextInputEndEditingEventData>): Promise<void> => {
     console.log(event.nativeEvent.text)
     if (onEndEditing) {
-      await onEndEditing(event.nativeEvent.text)
+      onEndEditing(event.nativeEvent.text)
+        .then(() => setError(undefined))
+        .catch((error: Error) => setError(error.message))
     }
   }
 
@@ -120,12 +127,12 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           }}
         />
       )}
-      {helperText ||
-        (error && (
+      { helperText || error ? (
           <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
             {error ? error : helperText}
           </LabelCaption>
-        ))}
+        ) : <View style={{height: 15}} />
+      }
     </Container>
   )
 }

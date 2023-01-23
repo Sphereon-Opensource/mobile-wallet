@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { CONTACT_NAME_VALIDATION_REGEX } from '../../@config/constants'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
@@ -10,6 +10,7 @@ import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
+import { getContacts } from '../../services/contactService'
 import { createContact as StoreContact } from '../../store/actions/contact.actions'
 import {
   SSIButtonBottomMultipleContainerStyled as ButtonContainer,
@@ -18,6 +19,7 @@ import {
   SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
   SSIButtonSpacerStyled as Spacer,
+  SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
@@ -27,7 +29,7 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 class SSIContactAddScreen extends PureComponent<IScreenProps> {
   state = {
     contactAlias: undefined,
-    hasConsent: false,
+    hasConsent: true,
     isInvalidContactAlias: false
   }
 
@@ -42,28 +44,36 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
     this.props.createContact({
       name,
       alias: contactAlias,
-      uri: uri,
+      uri,
       identifier
     })
 
-    if (onCreate) {
-      onCreate()
-    }
+    onCreate()
   }
 
   render() {
     const { contactAlias, hasConsent, isInvalidContactAlias } = this.state
 
     return (
-      <Container>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <Container>
+        <StatusBar/>
         <SSITextInputField
           autoFocus={true}
           label={translate('contact_add_contact_name_label')}
-          onChangeText={async (input: string) => {
-            if (!CONTACT_NAME_VALIDATION_REGEX.test(input)) {
+          maxLength={50}
+          onEndEditing={async (input: string) => {
+            if (input === undefined || input.length === 0) {
               this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: true })
-              return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
+              return Promise.reject(Error(translate('contact_add_contact_name_invalid_name_message')))
             }
+
+            const contacts = await getContacts({ filter: [{ name: input }] })
+            if (contacts.length !== 0) {
+              this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: true })
+              return Promise.reject(Error(translate('contact_add_contact_name_invalid_name_message')))
+            }
+
             this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: false })
           }}
           placeholderValue={translate('contact_add_contact_name_placeholder')}
@@ -71,6 +81,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
         <DisclaimerContainer>
           <CheckboxContainer>
             <SSICheckbox
+              initialValue
               onValueChange={async (isChecked: boolean) => this.setState({ ...this.state, hasConsent: isChecked })}
             />
           </CheckboxContainer>
@@ -93,6 +104,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           />
         </ButtonContainer>
       </Container>
+        </TouchableWithoutFeedback>
     )
   }
 }
