@@ -10,14 +10,14 @@ import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
-import { createContact } from '../../store/actions/contact.actions'
+import { createContact as StoreContact } from '../../store/actions/contact.actions'
 import {
   SSIButtonBottomMultipleContainerStyled as ButtonContainer,
   SSIContactAddScreenDisclaimerCheckboxContainerStyled as CheckboxContainer,
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
-  SSIPEXVerificationScreenSpacerStyled as Spacer // TODO
+  SSIButtonSpacerStyled as Spacer,
 } from '../../styles/components'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
@@ -26,13 +26,33 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 
 class SSIContactAddScreen extends PureComponent<IScreenProps> {
   state = {
-    contactName: undefined,
+    contactAlias: undefined,
     hasConsent: false,
-    isInvalidContactName: false
+    isInvalidContactAlias: false
+  }
+
+  onCreate = async (): Promise<void> => {
+    const { name, uri, identifier, onCreate } = this.props.route.params
+    const { contactAlias } = this.state
+
+    if (!contactAlias) {
+      return
+    }
+
+    this.props.createContact({
+      name,
+      alias: contactAlias,
+      uri: uri,
+      identifier
+    })
+
+    if (onCreate) {
+      onCreate()
+    }
   }
 
   render() {
-    const { contactName, hasConsent, isInvalidContactName } = this.state
+    const { contactAlias, hasConsent, isInvalidContactAlias } = this.state
 
     return (
       <Container>
@@ -41,10 +61,10 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           label={translate('contact_add_contact_name_label')}
           onChangeText={async (input: string) => {
             if (!CONTACT_NAME_VALIDATION_REGEX.test(input)) {
-              this.setState({ ...this.state, contactName: input, isInvalidContactName: true })
+              this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: true })
               return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
             }
-            this.setState({ ...this.state, contactName: input, isInvalidContactName: false })
+            this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: false })
           }}
           placeholderValue={translate('contact_add_contact_name_placeholder')}
         />
@@ -66,8 +86,8 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           <Spacer />
           <SSIPrimaryButton
             title={translate('action_accept_label')}
-            onPress={() => console.log('accept')}
-            disabled={!hasConsent || contactName === undefined || contactName === '' || isInvalidContactName}
+            onPress={this.onCreate}
+            disabled={!hasConsent || contactAlias === undefined || contactAlias === '' || isInvalidContactAlias}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
             style={{ height: 42, width: 145 }}
           />
@@ -79,7 +99,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    createContact: (args: ICreateContactArgs) => dispatch(createContact(args))
+    createContact: (args: ICreateContactArgs) => dispatch(StoreContact(args))
   }
 }
 

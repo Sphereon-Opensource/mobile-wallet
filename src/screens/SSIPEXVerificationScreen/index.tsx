@@ -16,7 +16,7 @@ import {
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle,
-  SSIPEXVerificationScreenSpacerStyled as Spacer
+  SSIButtonSpacerStyled as Spacer
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 

@@ -94,10 +94,10 @@ export interface IContactDetailsProps {
 }
 
 export interface IContactAddProps {
-  name?: string
+  name: string
   uri?: string
   identifier: {
-    type?: CorrelationIdentifierEnum
+    type: CorrelationIdentifierEnum
     correlationId: string
   }
   onCreate: () => Promise<void>

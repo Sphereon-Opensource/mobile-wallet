@@ -1,7 +1,5 @@
 import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack'
 
-import { StackParamList } from '../navigation'
-
 export enum QrTypesEnum {
   AUTH = 'auth',
   SIOPV2 = 'siopv2',
@@ -26,10 +24,10 @@ export interface IQrDidSiopAuthenticationRequest extends IQrAuthentication {
 
 export interface IQrDataArgs {
   qrData: IQrData
-  navigation: NativeStackNavigationProp<StackParamList>
+  navigation: NativeStackNavigationProp<any> // TODO fix any
 }
 
 export interface IReadQrArgs {
   qrData: string
-  navigation: NativeStackNavigationProp<StackParamList>
+  navigation: NativeStackNavigationProp<any> // TODO fix any
 }

@@ -2,10 +2,6 @@ import styled from 'styled-components/native'
 
 import { SSITextH4LightStyled } from '../../fonts'
 
-export const SSIPEXVerificationScreenSpacerStyled = styled.View`
-  width: 5.45px;
-`
-
 export const SSIPEXVerificationScreenBackgroundImageContainerStyled = styled.View`
   margin-top: 150px;
 `

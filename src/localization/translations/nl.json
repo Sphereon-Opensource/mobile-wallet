@@ -88,5 +88,6 @@
     "contact_add_contact_name_placeholder": "Naam contact",
     "contact_add_contact_name_invalid_message": "Vul een geldige contact naam in",
     "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
-    "credential_status_never_expires_date_label": "Verloopt nooit"
+    "credential_status_never_expires_date_label": "Verloopt nooit",
+    "contact_add_success_toast": "Contact succesvol aangemaakt"
 }

@@ -11,3 +11,7 @@ export const SSIRoundedCenteredLinearGradientStyled = styled(SSIRoundedLinearGra
   align-items: center;
   justify-content: center;
 `
+
+export const SSIButtonSpacerStyled = styled.View`
+  width: 5.45px;
+`
