@@ -33,22 +33,40 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
     isInvalidContactAlias: false
   }
 
+  onValidate = async (input: string | undefined): Promise<void> => {
+    if (input === undefined || input.length === 0) {
+      this.setState({ isInvalidContactAlias: true })
+      return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
+    }
+
+    const contacts = await getContacts({ filter: [{ alias: input }] })
+    if (contacts.length !== 0) {
+      this.setState({ isInvalidContactAlias: true })
+      return Promise.reject(Error(translate('contact_add_contact_name_unavailable_message')))
+    }
+
+    this.setState({ isInvalidContactAlias: false })
+  }
+
   onCreate = async (): Promise<void> => {
     const { name, uri, identifier, onCreate } = this.props.route.params
     const { contactAlias } = this.state
 
-    if (!contactAlias) {
-      return
-    }
+    Keyboard.dismiss()
 
-    this.props.createContact({
-      name,
-      alias: contactAlias,
-      uri,
-      identifier
-    })
+    await this.onValidate(contactAlias)
+      .then(() => {
+        this.props.createContact({
+          name,
+          alias: contactAlias!,
+          uri,
+          identifier
+        })
 
-    onCreate()
+        onCreate()
+      }).catch((error: Error) => {
+        // do nothing as the state is already handled by the validate function, and we do not want to create the contact
+      })
   }
 
   render() {
@@ -62,27 +80,15 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           autoFocus={true}
           label={translate('contact_add_contact_name_label')}
           maxLength={50}
-          onEndEditing={async (input: string) => {
-            if (input === undefined || input.length === 0) {
-              this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: true })
-              return Promise.reject(Error(translate('contact_add_contact_name_invalid_name_message')))
-            }
-
-            const contacts = await getContacts({ filter: [{ name: input }] })
-            if (contacts.length !== 0) {
-              this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: true })
-              return Promise.reject(Error(translate('contact_add_contact_name_invalid_name_message')))
-            }
-
-            this.setState({ ...this.state, contactAlias: input, isInvalidContactAlias: false })
-          }}
+          onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
+          onEndEditing={this.onValidate}
           placeholderValue={translate('contact_add_contact_name_placeholder')}
         />
         <DisclaimerContainer>
           <CheckboxContainer>
             <SSICheckbox
               initialValue
-              onValueChange={async (isChecked: boolean) => this.setState({ ...this.state, hasConsent: isChecked })}
+              onValueChange={async (isChecked: boolean) => this.setState({ hasConsent: isChecked })}
             />
           </CheckboxContainer>
           <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>

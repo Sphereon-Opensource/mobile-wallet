@@ -1,5 +1,9 @@
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
-import { ConnectionTypeEnum, CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store-common'
+import {
+  ConnectionTypeEnum,
+  CorrelationIdentifierEnum,
+  IConnectionParty
+} from '@sphereon/ssi-sdk-data-store-common'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -116,7 +120,7 @@ const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
   }
 }
 
-export const processQr = async (args: IQrDataArgs) => {
+export const processQr = async (args: IQrDataArgs): Promise<void> => {
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
       switch ((args.qrData as IQrAuthentication).mode) {
@@ -133,7 +137,7 @@ export const processQr = async (args: IQrDataArgs) => {
   }
 }
 
-const connectDidAuth = async (args: IQrDataArgs) => {
+const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier = await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   const connection = connectFrom({
     type: ConnectionTypeEnum.DIDAUTH,
@@ -158,7 +162,7 @@ const connectDidAuth = async (args: IQrDataArgs) => {
     })
 }
 
-const connectSiopV2 = async (args: IQrDataArgs) => {
+const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   const purpose = args.qrData.body?.accept?.includes(ConnectionTypeEnum.SIOPV2_OIDC4VP)
     ? translate('siop_oidc4vp_authentication_request_message')
     : translate('siop_authentication_request_message')
@@ -196,7 +200,7 @@ const connectSiopV2 = async (args: IQrDataArgs) => {
   })
 }
 
-const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
+const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void> => {
   if (args.qrData.pin) {
     const manifest = await new JwtVcPresentationProfileProvider().getManifest(args.qrData)
     args.navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
@@ -210,119 +214,11 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs) => {
   // TODO WAL-301 need to send a response when we do not need a pin code
 }
 
-const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
-  const sendResponse = async (provider: OpenId4VcIssuanceProvider, pin?: string): Promise<void> =>
-    provider
-      .getCredentialsFromIssuance({ pin })
-      .then((credentialsResponse: Record<string, CredentialResponse>) => {
-        for (const credentialResponse of Object.values(credentialsResponse)) {
-          const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
-          const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
-
-          const storeCredential = async (vc: VerifiableCredential) => store.dispatch(storeVerifiableCredential(vc))
-
-          // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-            screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-            params: {
-              rawCredential,
-              credential: toCredentialSummary(vc),
-              primaryAction: {
-                caption: translate('action_accept_label'),
-                onPress: async () =>
-                  storeCredential(rawCredential)
-                    .then(() =>
-                      args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
-                        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-                      })
-                    )
-                    .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
-              },
-              secondaryAction: {
-                caption: translate('action_decline_label'),
-                onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER)
-              }
-            }
-          })
-        }
-      })
-      .catch((error: Error) => {
-        // TODO refactor once the lib returns a proper response object
-        const errorResponse = JSON.parse(error.message.split('response:')[1].trim())
-
-        if (errorResponse?.status === 403) {
-          return Promise.reject(error)
-        }
-
-        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error)
-
-        args.navigation.navigate(ScreenRoutesEnum.ERROR, {
-          image: PopupImagesEnum.WARNING,
-          title: errorDetails.title,
-          details: errorDetails.message,
-          detailsPopup: {
-            buttonCaption: translate('action_view_extra_details'),
-            title: errorDetails.detailsTitle,
-            details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`
-          },
-          primaryButton: {
-            caption: translate('action_ok_label'),
-            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
-          }
-        })
-      })
-
-  const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
-  provider
-    .getServerMetadataAndPerformCryptoMatching()
-    .then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
-      const gotoVerificationCode = async (credentials: Array<string>): Promise<void> => {
-        if (
-            args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
-            args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
-        ) {
-          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-            screen: ScreenRoutesEnum.VERIFICATION_CODE,
-            params: {
-              // Currently we only support receiving one credential, we are missing ui to display multiple
-              credentialName: credentials[0],
-              onVerification: async (pin: string) => await sendResponse(provider, pin)
-            }
-          })
-        } else {
-          await sendResponse(provider)
-        }
-      }
-
-      const processCredentialRequest = async (): Promise<void> => {
-        const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
-            (credentialMetadata: ICredentialMetadata) => ({
-              id: uuidv4(),
-              credentialType: credentialMetadata.credentialType,
-              isSelected: true
-            })
-        )
-
-        if (credentialTypes.length > 1) {
-          args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-            issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-            credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-              id: uuidv4(),
-              credentialType: credentialMetadata.credentialType,
-              isSelected: true
-            })),
-            onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
-          })
-        } else {
-          await gotoVerificationCode(
-              credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
-          )
-        }
-      }
-
-      const url = new URL(metadata.serverMetadata.issuer)
-      const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
+const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
+  const createContactOrSendResponse = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
+    const url = new URL(metadata.serverMetadata.issuer)
+    getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
+    .then((contacts: Array<IConnectionParty>) => {
       if (contacts.length === 0) {
         args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
           name: url.host,
@@ -331,35 +227,121 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
             type: CorrelationIdentifierEnum.URL,
             correlationId: url.hostname
           },
-          onCreate: () => processCredentialRequest()
+          onCreate: () => sendResponseOrSelectCredentials(metadata.credentialsSupported)
         })
       } else {
-        await processCredentialRequest()
-        // const credentialTypes: Array<ICredentialTypeSelection> = metadata.credentialsSupported.map(
-        //     (credentialMetadata: ICredentialMetadata) => ({
-        //       id: uuidv4(),
-        //       credentialType: credentialMetadata.credentialType,
-        //       isSelected: true
-        //     })
-        // )
-        //
-        // if (credentialTypes.length > 1) {
-        //   args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        //     issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-        //     credentialTypes: metadata.credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-        //       id: uuidv4(),
-        //       credentialType: credentialMetadata.credentialType,
-        //       isSelected: true
-        //     })),
-        //     onAccept: async (credentialTypes: Array<string>) => await gotoVerificationCode(credentialTypes)
-        //   })
-        // } else {
-        //   await gotoVerificationCode(
-        //       credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
-        //   )
-        // }
+        sendResponseOrSelectCredentials(metadata.credentialsSupported)
       }
     })
+  }
+
+  const sendResponseOrSelectCredentials = async (credentialsSupported: Array<ICredentialMetadata>): Promise<void> => {
+    const credentialTypes: Array<ICredentialTypeSelection> = credentialsSupported.map(
+      (credentialMetadata: ICredentialMetadata) => ({
+        id: uuidv4(),
+        credentialType: credentialMetadata.credentialType,
+        isSelected: true
+      })
+    )
+
+    if (credentialTypes.length > 1) {
+      args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
+        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+        credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+          id: uuidv4(),
+          credentialType: credentialMetadata.credentialType,
+          isSelected: true
+        })),
+        onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes)
+      })
+    } else {
+      await sendResponseOrAuthenticate(
+        credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType)
+      )
+    }
+  }
+
+  const sendResponseOrAuthenticate = async (credentials: Array<string>): Promise<void> => {
+    if (
+      args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
+      args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
+    ) {
+      args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        screen: ScreenRoutesEnum.VERIFICATION_CODE,
+        params: {
+          // Currently we only support receiving one credential, we are missing ui to display multiple
+          credentialName: credentials[0],
+          onVerification: async (pin: string) => await sendResponse(provider, pin)
+        }
+      })
+    } else {
+      await sendResponse(provider)
+    }
+  }
+
+  const sendResponse = async (provider: OpenId4VcIssuanceProvider, pin?: string): Promise<void> =>
+    provider
+    .getCredentialsFromIssuance({ pin })
+    .then((credentialsResponse: Record<string, CredentialResponse>) => {
+      for (const credentialResponse of Object.values(credentialsResponse)) {
+        const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
+        const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
+        const storeCredential = async (vc: VerifiableCredential) => store.dispatch(storeVerifiableCredential(vc))
+
+        // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+          params: {
+            rawCredential,
+            credential: toCredentialSummary(vc),
+            primaryAction: {
+              caption: translate('action_accept_label'),
+              onPress: async () =>
+                storeCredential(rawCredential)
+                .then(() =>
+                  args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
+                    screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+                  })
+                )
+                .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+                .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+            },
+            secondaryAction: {
+              caption: translate('action_decline_label'),
+              onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER)
+            }
+          }
+        })
+      }
+    })
+    .catch((error: Error) => {
+      // TODO refactor once the lib returns a proper response object
+      const errorResponse = JSON.parse(error.message.split('response:')[1].trim())
+      if (errorResponse?.status === 403) {
+        return Promise.reject(error)
+      }
+      const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error)
+
+      args.navigation.navigate(ScreenRoutesEnum.ERROR, {
+        image: PopupImagesEnum.WARNING,
+        title: errorDetails.title,
+        details: errorDetails.message,
+        detailsPopup: {
+          buttonCaption: translate('action_view_extra_details'),
+          title: errorDetails.detailsTitle,
+          details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`
+        },
+        primaryButton: {
+          caption: translate('action_ok_label'),
+          onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+        }
+      })
+    })
+
+  const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
+  provider
+    .getServerMetadataAndPerformCryptoMatching()
+    .then((metadata: IServerMetadataAndCryptoMatchingResponse) => createContactOrSendResponse(metadata))
     .catch((error: Error) => {
       debug(`Unable to retrieve vc. Error: ${error}`)
       //TODO create human readable error message

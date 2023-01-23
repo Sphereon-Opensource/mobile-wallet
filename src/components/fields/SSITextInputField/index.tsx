@@ -33,6 +33,7 @@ export interface IProps {
   maxLength?: number
   onChangeText?: (input: string) => Promise<void>
   onEndEditing?: (input: string) => Promise<void>
+  onFocus?: () => Promise<void>
   placeholderValue?: string
   secureTextEntry?: boolean
   showBorder?: boolean
@@ -53,6 +54,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     maxLength,
     onChangeText,
     onEndEditing,
+    onFocus,
     placeholderValue,
     secureTextEntry = false,
     showBorder = true
@@ -72,7 +74,6 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
   }
 
   const onEditingEnd = async (event: NativeSyntheticEvent<TextInputEndEditingEventData>): Promise<void> => {
-    console.log(event.nativeEvent.text)
     if (onEndEditing) {
       onEndEditing(event.nativeEvent.text)
         .then(() => setError(undefined))
@@ -105,7 +106,12 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           onBlur={() => setHasFocus(false)}
           onChangeText={(input: string) => onChange(input)}
           onEndEditing={(event: NativeSyntheticEvent<TextInputEndEditingEventData>) => onEditingEnd(event)}
-          onFocus={() => setHasFocus(true)}
+          onFocus={async () => {
+            setHasFocus(true)
+            if (onFocus) {
+              await onFocus()
+            }
+          }}
           value={value}
           style={{ opacity: disabled ? 0.5 : 1 }}
         />
