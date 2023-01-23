@@ -88,7 +88,8 @@ const addDefaultConnections = async () => {
   debug(`addDefaultConnections()...`)
 
   const sphereonName = 'Sphereon'
-  const partiesSphereon = await getContacts({ filter: [{ name: sphereonName }] })
+  const sphereonCorrelationId = 'sphereon.com'
+  const partiesSphereon = await getContacts({ filter: [{ identifier: { correlationId: sphereonCorrelationId } }] })
   if (partiesSphereon.length === 0) {
     debug(`addDefaultConnections(): Sphereon connection not present. Will add...`)
     const party = {
@@ -96,7 +97,7 @@ const addDefaultConnections = async () => {
       alias: sphereonName,
       identifier: {
         type: CorrelationIdentifierEnum.URL,
-        correlationId: 'sphereon.com'
+        correlationId: sphereonCorrelationId
       }
     }
 
@@ -139,7 +140,8 @@ const addDefaultConnections = async () => {
   }
 
   const firm24Name = 'Firm24'
-  const partiesFirm24 = await getContacts({ filter: [{ name: firm24Name }] })
+  const firm24CorrelationId = 'sphereon.com'
+  const partiesFirm24 = await getContacts({ filter: [{ identifier: { correlationId: firm24CorrelationId } }] })
   if (partiesFirm24.length === 0) {
     debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
     const party = {
@@ -147,7 +149,7 @@ const addDefaultConnections = async () => {
       alias: firm24Name,
       identifier: {
         type: CorrelationIdentifierEnum.URL,
-        correlationId: 'firm24.com'
+        correlationId: firm24CorrelationId
       }
     }
 
