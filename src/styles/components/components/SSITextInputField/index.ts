@@ -36,3 +36,7 @@ export const SSITextInputFieldUnderlineLinearGradientStyled = styled(SSILinearGr
   width: 100%;
   margin-bottom: 4px;
 `
+
+export const SSITextInputFieldEmptyHelperContainerStyled = styled.View`
+  height: 15px;
+`

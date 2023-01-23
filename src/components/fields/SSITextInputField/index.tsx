@@ -2,13 +2,13 @@ import React, { FC } from 'react'
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
-  TextInputEndEditingEventData,
-  View
+  TextInputEndEditingEventData
 } from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
   SSITextInputFieldContainerStyled as Container,
+  SSITextInputFieldEmptyHelperContainerStyled as EmptyHelperContainer,
   SSITextInputFieldIconContainerStyled as IconContainer,
   SSIFlexDirectionRowViewStyled as InputContainer,
   SSITextH5Styled as LabelCaption,
@@ -137,7 +137,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
             {error ? error : helperText}
           </LabelCaption>
-        ) : <View style={{height: 15}} />
+        ) : <EmptyHelperContainer/>
       }
     </Container>
   )
