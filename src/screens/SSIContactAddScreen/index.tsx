@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { EmitterSubscription, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
@@ -27,10 +27,27 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 }
 
 class SSIContactAddScreen extends PureComponent<IScreenProps> {
+  keyboardDidShowListener: EmitterSubscription
+  keyboardDidHideListener: EmitterSubscription
+
   state = {
     contactAlias: undefined,
     hasConsent: true,
-    isInvalidContactAlias: false
+    isInvalidContactAlias: false,
+    keyboardVisible: true
+  }
+
+  componentDidMount = () => {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ keyboardVisible: true })
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({ keyboardVisible: false })
   }
 
   onValidate = async (input: string | undefined): Promise<void> => {
@@ -70,7 +87,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
   }
 
   render() {
-    const { contactAlias, hasConsent, isInvalidContactAlias } = this.state
+    const { contactAlias, hasConsent, isInvalidContactAlias, keyboardVisible } = this.state
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -93,7 +110,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           </CheckboxContainer>
           <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
         </DisclaimerContainer>
-        <ButtonContainer>
+        <ButtonContainer style={{bottom: keyboardVisible ? 18 : 37}}>
           <SSISecondaryButton
             title={translate('action_decline_label')}
             onPress={() => this.props.navigation.goBack()}
