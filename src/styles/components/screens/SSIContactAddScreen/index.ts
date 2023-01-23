@@ -9,7 +9,7 @@ export const SSIContactAddScreenContainerStyled = styled(SSIBasicHorizontalCente
 `
 
 export const SSIContactAddScreenDisclaimerContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
-  margin-top: 32px;
+  margin-top: 17px;
 `
 
 export const SSIContactAddScreenDisclaimerCheckboxContainerStyled = styled.View`

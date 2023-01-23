@@ -8,14 +8,14 @@ import {
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
   SSITextInputFieldContainerStyled as Container,
-  SSITextInputFieldEmptyHelperContainerStyled as EmptyHelperContainer,
+  SSITextInputFieldHelperContainerStyled as HelperContainer,
   SSITextInputFieldIconContainerStyled as IconContainer,
   SSIFlexDirectionRowViewStyled as InputContainer,
   SSITextH5Styled as LabelCaption,
   SSITextInputFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
-  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
+  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
 } from '../../../styles/components'
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 
@@ -133,12 +133,14 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           }}
         />
       )}
-      { helperText || error ? (
+      <HelperContainer>
+        { (helperText || error) && (
           <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
             {error ? error : helperText}
           </LabelCaption>
-        ) : <EmptyHelperContainer/>
-      }
+        )
+        }
+      </HelperContainer>
     </Container>
   )
 }
