@@ -19,7 +19,8 @@ import {
   SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
   SSIButtonSpacerStyled as Spacer,
-  SSIStatusBarDarkModeStyled as StatusBar
+  SSIStatusBarDarkModeStyled as StatusBar,
+  SSIContactAddScreenTextInputContainerStyled as TextInputContainer
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
@@ -111,14 +112,16 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
           <StatusBar />
-          <SSITextInputField
-            autoFocus={true}
-            label={translate('contact_add_contact_name_label')}
-            maxLength={50}
-            onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
-            onEndEditing={this.onValidate}
-            placeholderValue={translate('contact_add_contact_name_placeholder')}
-          />
+          <TextInputContainer>
+            <SSITextInputField
+              autoFocus={true}
+              label={translate('contact_add_contact_name_label')}
+              maxLength={50}
+              onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
+              onEndEditing={this.onValidate}
+              placeholderValue={translate('contact_add_contact_name_placeholder')}
+            />
+          </TextInputContainer>
           <DisclaimerContainer>
             <CheckboxContainer>
               <SSICheckbox

@@ -8,6 +8,11 @@ export const SSIContactAddScreenContainerStyled = styled(SSIBasicHorizontalCente
   padding-right: 24px;
 `
 
+export const SSIContactAddScreenTextInputContainerStyled = styled.View`
+  width: 100%;
+  margin-top: 20px;
+`
+
 export const SSIContactAddScreenDisclaimerContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   margin-top: 17px;
 `
