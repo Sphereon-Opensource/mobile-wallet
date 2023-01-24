@@ -31,9 +31,7 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps
   ContactAdd: IContactAddProps
   Onboarding: Record<string, never>
-  OnboardingWelcomeIntro: Record<string, never>
-  OnboardingWelcomeStore: Record<string, never>
-  OnboardingWelcomeShare: Record<string, never>
+  OnboardingWelcome: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -122,9 +120,7 @@ export enum NavigationBarRoutesEnum {
 }
 
 export enum ScreenRoutesEnum {
-  ONBOARDING_WELCOME_INTRO = 'OnboardingWelcomeIntro',
-  ONBOARDING_WELCOME_STORE = 'OnboardingWelcomeStore',
-  ONBOARDING_WELCOME_SHARE = 'OnboardingWelcomeShare',
+  ONBOARDING_WELCOME = 'OnboardingWelcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',

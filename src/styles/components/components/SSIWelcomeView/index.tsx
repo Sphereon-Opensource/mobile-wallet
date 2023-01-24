@@ -1,53 +1,29 @@
-import React, { FC } from 'react'
+import styled from 'styled-components/native'
 
-import { IButton } from '../../../@types'
-import {
-  SSITextH3RegularLightStyled as BodyText,
-  SSIWelcomeViewButtonContainerStyled as ButtonContainer,
-  SSIWelcomeViewContainerStyled as Container,
-  SSIWelcomeViewContentContainerStyled as ContentContainer,
-  SSITextH2LightStyled as HeaderCaption,
-  SSIWelcomeViewProgressIndicatorContainerStyled as ProgressIndicatorContainer,
-  SSIWelcomeViewTitleTextStyled as TitleCaption,
-} from '../../../styles/components'
-import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
-import SSIProgressIndicator from '../../indicators/SSIProgressIndicator'
+import { backgrounds, borders } from '../../../colors'
+import { SSITextH1LightStyled } from '../../fonts'
 
-export interface IProps {
-  step: number
-  maxSteps: number
-  header: string
-  title: string
-  body: string
-  action: IButton
-}
+export const SSIWelcomeViewContainerStyled = styled.View`
+  border-top-width: 1px;
+  border-top-color: ${borders.dark};
+  background-color: ${backgrounds.primaryDark};
+  width: 100%;
+`
 
-const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
-  const { action, body, header, step, title, maxSteps } = props
+export const SSIWelcomeViewTitleTextStyled = styled(SSITextH1LightStyled)`
+  margin-bottom: 6px;
+`
 
-  return (
-      <Container>
-        <ProgressIndicatorContainer>
-          <SSIProgressIndicator
-              step={step}
-              maxSteps={maxSteps}
-          />
-        </ProgressIndicatorContainer>
-        <ContentContainer>
-          <HeaderCaption>{header}</HeaderCaption>
-          <TitleCaption>{title}</TitleCaption>
-          <BodyText>{body}</BodyText>
-        </ContentContainer>
-        <ButtonContainer>
-          <SSIPrimaryButton
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 300 }}
-              title={action.caption}
-              onPress={action.onPress}
-          />
-        </ButtonContainer>
-      </Container>
-  )
-}
+export const SSIWelcomeViewContentContainerStyled = styled.View`
+  margin: 0px 24px 34px 24px;
+`
 
-export default SSIWelcomeView
+export const SSIWelcomeViewProgressIndicatorContainerStyled = styled.View`
+  align-items: center;
+  padding: 14px 0px 12px 0px;
+`
+
+export const SSIWelcomeViewButtonContainerStyled = styled.View`
+  margin-bottom: 30px;
+  align-items: center;
+`
