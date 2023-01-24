@@ -166,6 +166,8 @@
     "**/@types/react": "17.0.52",
     "**/expo-random": "11.2.0",
     "react-devtools-core": "4.23.0",
+    "**/@sphereon/ssi-sdk-data-store-common": "0.8.1-next.119",
+    "**/@sphereon/ssi-sdk-connection-manager": "0.8.1-next.119",
     "**/@sphereon/ssi-types": "0.8.1-next.119"
   }
 }
