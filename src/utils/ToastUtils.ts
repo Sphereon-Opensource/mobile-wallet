@@ -9,6 +9,7 @@ export const showToast = (type: ToastTypeEnum, text1: string) => {
 }
 
 export enum ToastTypeEnum {
+  TOAST_NONE = 'ssiAlertToastNone',
   TOAST_SUCCESS = 'ssiAlertToastSuccess',
   TOAST_ERROR = 'ssiAlertToastError'
 }

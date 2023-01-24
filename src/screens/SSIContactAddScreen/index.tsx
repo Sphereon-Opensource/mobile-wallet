@@ -21,6 +21,7 @@ import {
   SSIButtonSpacerStyled as Spacer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
+import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
 interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void
@@ -105,7 +106,12 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
             <CheckboxContainer>
               <SSICheckbox
                 initialValue
-                onValueChange={async (isChecked: boolean) => this.setState({ hasConsent: isChecked })}
+                onValueChange={async (isChecked: boolean) => {
+                  this.setState({ hasConsent: isChecked })
+                  if (!isChecked) {
+                    showToast(ToastTypeEnum.TOAST_NONE, translate('contact_add_no_consent_toast'))
+                  }
+                }}
               />
             </CheckboxContainer>
             <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
