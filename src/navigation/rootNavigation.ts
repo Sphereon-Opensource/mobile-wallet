@@ -55,7 +55,6 @@ export function dispatch(action: NavigationAction | ((state: any) => NavigationA
   }
 }
 
-
 export function push(...args: any[]): void {
   if (navigationRef.isReady()) {
     navigationRef.dispatch(StackActions.push(...args))
@@ -70,15 +69,14 @@ export function getState(): any {
   return undefined
 }
 
-export function setParams<RouteName extends keyof StackParamList>(
-  params: Partial<StackParamList[RouteName]>
-): void {
+export function setParams<RouteName extends keyof StackParamList>(params: Partial<StackParamList[RouteName]>): void {
   if (navigationRef.isReady()) {
     navigationRef.setParams(params)
   }
 }
 
-export function setOptions(options: Partial<any>): void { //TODO ScreenOptions
+export function setOptions(options: Partial<any>): void {
+  //TODO ScreenOptions
   // if (navigationRef.isReady()) {
   //   navigationRef.setOptions(options)
   // }

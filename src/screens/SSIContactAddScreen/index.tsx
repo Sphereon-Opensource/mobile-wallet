@@ -29,7 +29,6 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 class SSIContactAddScreen extends PureComponent<IScreenProps> {
   keyboardDidShowListener: EmitterSubscription
   keyboardDidHideListener: EmitterSubscription
-
   state = {
     contactAlias: undefined,
     hasConsent: true,
@@ -38,8 +37,8 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
   }
 
   componentDidMount = () => {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
   }
 
   _keyboardDidShow = () => {
@@ -81,7 +80,8 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
         })
 
         onCreate()
-      }).catch((error: Error) => {
+      })
+      .catch((error: Error) => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
       })
   }
@@ -90,44 +90,45 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
     const { contactAlias, hasConsent, isInvalidContactAlias, keyboardVisible } = this.state
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <Container>
-        <StatusBar/>
-        <SSITextInputField
-          autoFocus={true}
-          label={translate('contact_add_contact_name_label')}
-          maxLength={50}
-          onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
-          onEndEditing={this.onValidate}
-          placeholderValue={translate('contact_add_contact_name_placeholder')}
-        />
-        <DisclaimerContainer>
-          <CheckboxContainer>
-            <SSICheckbox
-              initialValue
-              onValueChange={async (isChecked: boolean) => this.setState({ hasConsent: isChecked })}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Container>
+          <StatusBar />
+          <SSITextInputField
+            autoFocus={true}
+            label={translate('contact_add_contact_name_label')}
+            maxLength={50}
+            onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
+            onEndEditing={this.onValidate}
+            placeholderValue={translate('contact_add_contact_name_placeholder')}
+          />
+          <DisclaimerContainer>
+            <CheckboxContainer>
+              <SSICheckbox
+                initialValue
+                onValueChange={async (isChecked: boolean) => this.setState({ hasConsent: isChecked })}
+              />
+            </CheckboxContainer>
+            <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
+          </DisclaimerContainer>
+          {/* TODO bottom styling is general button container behavior that should be applied to the container itself */}
+          <ButtonContainer style={{ bottom: keyboardVisible ? 18 : 37 }}>
+            <SSISecondaryButton
+              title={translate('action_decline_label')}
+              onPress={() => this.props.navigation.goBack()}
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+              style={{ height: 42, width: 145 }}
             />
-          </CheckboxContainer>
-          <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
-        </DisclaimerContainer>
-        <ButtonContainer style={{bottom: keyboardVisible ? 18 : 37}}>
-          <SSISecondaryButton
-            title={translate('action_decline_label')}
-            onPress={() => this.props.navigation.goBack()}
-            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{ height: 42, width: 145 }}
-          />
-          <Spacer />
-          <SSIPrimaryButton
-            title={translate('action_accept_label')}
-            onPress={this.onCreate}
-            disabled={!hasConsent || contactAlias === undefined || contactAlias === '' || isInvalidContactAlias}
-            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{ height: 42, width: 145 }}
-          />
-        </ButtonContainer>
-      </Container>
-        </TouchableWithoutFeedback>
+            <Spacer />
+            <SSIPrimaryButton
+              title={translate('action_accept_label')}
+              onPress={this.onCreate}
+              disabled={!hasConsent || contactAlias === undefined || contactAlias === '' || isInvalidContactAlias}
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+              style={{ height: 42, width: 145 }}
+            />
+          </ButtonContainer>
+        </Container>
+      </TouchableWithoutFeedback>
     )
   }
 }

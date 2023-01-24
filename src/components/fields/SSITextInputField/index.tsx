@@ -1,9 +1,5 @@
 import React, { FC } from 'react'
-import {
-  KeyboardTypeOptions,
-  NativeSyntheticEvent,
-  TextInputEndEditingEventData
-} from 'react-native'
+import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
@@ -15,7 +11,7 @@ import {
   SSITextInputFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
-  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
+  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
 } from '../../../styles/components'
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 
@@ -134,12 +130,11 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
         />
       )}
       <HelperContainer>
-        { (helperText || error) && (
+        {(helperText || error) && (
           <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
             {error ? error : helperText}
           </LabelCaption>
-        )
-        }
+        )}
       </HelperContainer>
     </Container>
   )
