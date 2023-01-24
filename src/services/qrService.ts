@@ -211,7 +211,7 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
-  const createContactOrSendResponse = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
+  const sendResponseOrCreateContact = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
     const url = new URL(metadata.serverMetadata.issuer)
     getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] }).then(
       (contacts: Array<IConnectionParty>) => {
@@ -338,7 +338,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
   provider
     .getServerMetadataAndPerformCryptoMatching()
-    .then((metadata: IServerMetadataAndCryptoMatchingResponse) => createContactOrSendResponse(metadata))
+    .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(metadata))
     .catch((error: Error) => {
       debug(`Unable to retrieve vc. Error: ${error}`)
       //TODO create human readable error message
