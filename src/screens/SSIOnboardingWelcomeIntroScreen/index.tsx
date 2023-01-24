@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { StatusBar } from 'react-native'
+import { BackHandler, StatusBar } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
@@ -15,6 +15,24 @@ import {
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_WELCOME_INTRO>
 
 const SSIOnboardingWelcomeIntroScreen: FC<Props> = (props: Props): JSX.Element => {
+  const [step, setStep] = React.useState(1)
+
+  BackHandler.addEventListener('hardwareBackPress', function () {
+    /**
+     * When true is returned the event will not be bubbled up
+     * & no other back action will execute
+     */
+    if (step === 1) {
+      console.log(`back caught`)
+    }
+
+    /**
+     * Returning false will let the event to bubble up & let other event listeners
+     * or the system's default back action to be executed.
+     */
+    return false;
+  });
+
   return (
       <Container>
         <StatusBar translucent backgroundColor="transparent" />
