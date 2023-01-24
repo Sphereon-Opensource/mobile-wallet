@@ -27,11 +27,18 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
   createContact: (args: ICreateContactArgs) => void
 }
 
-class SSIContactAddScreen extends PureComponent<IScreenProps> {
+interface IScreenState {
+  contactAlias: string
+  hasConsent: boolean
+  isInvalidContactAlias: boolean
+  keyboardVisible: boolean
+}
+
+class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
   keyboardDidShowListener: EmitterSubscription
   keyboardDidHideListener: EmitterSubscription
   state = {
-    contactAlias: undefined,
+    contactAlias: '',
     hasConsent: true,
     isInvalidContactAlias: false,
     keyboardVisible: true
@@ -42,6 +49,11 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
   }
 
+  componentWillUnmount = () => {
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+  }
+
   _keyboardDidShow = () => {
     this.setState({ keyboardVisible: true })
   }
@@ -50,13 +62,16 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
     this.setState({ keyboardVisible: false })
   }
 
-  onValidate = async (input: string | undefined): Promise<void> => {
-    if (input === undefined || input.length === 0) {
+  onValidate = async (input: string): Promise<void> => {
+    let contactAlias: string = input
+    contactAlias = contactAlias.trim()
+
+    if (contactAlias.length === 0) {
       this.setState({ isInvalidContactAlias: true })
       return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
     }
 
-    const contacts = await getContacts({ filter: [{ alias: input }] })
+    const contacts = await getContacts({ filter: [{ alias: contactAlias }] })
     if (contacts.length !== 0) {
       this.setState({ isInvalidContactAlias: true })
       return Promise.reject(Error(translate('contact_add_contact_name_unavailable_message')))
@@ -73,12 +88,14 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
 
     await this.onValidate(contactAlias)
       .then(() => {
-        this.props.createContact({
-          name,
-          alias: contactAlias!,
-          uri,
-          identifier
-        })
+        if (contactAlias) {
+          this.props.createContact({
+            name,
+            alias: contactAlias.trim(),
+            uri,
+            identifier
+          })
+        }
 
         onCreate()
       })
@@ -142,7 +159,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
             <SSIPrimaryButton
               title={translate('action_accept_label')}
               onPress={this.onCreate}
-              disabled={!hasConsent || contactAlias === undefined || contactAlias === '' || isInvalidContactAlias}
+              disabled={!hasConsent || contactAlias.length === 0 || isInvalidContactAlias}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ height: 42, width: 145 }}
             />
