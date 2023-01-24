@@ -3,7 +3,7 @@ import { EmitterSubscription, Keyboard, TouchableWithoutFeedback } from 'react-n
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
+import { RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
@@ -120,7 +120,21 @@ class SSIContactAddScreen extends PureComponent<IScreenProps> {
           <ButtonContainer style={{ bottom: keyboardVisible ? 18 : 37 }}>
             <SSISecondaryButton
               title={translate('action_decline_label')}
-              onPress={() => this.props.navigation.goBack()}
+              onPress={() => {
+                Keyboard.dismiss()
+                this.props.navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+                  title: translate('contact_add_cancel_title'),
+                  details: translate('contact_add_cancel_message'),
+                  primaryButton: {
+                    caption: translate('action_confirm_label'),
+                    onPress: async () => this.props.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+                  },
+                  secondaryButton: {
+                    caption: translate('action_cancel_label'),
+                    onPress: async () => this.props.navigation.goBack()
+                  }
+                })
+              }}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ height: 42, width: 145 }}
             />
