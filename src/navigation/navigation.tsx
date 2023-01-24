@@ -23,6 +23,9 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
+import SSIOnboardingWelcomeIntroScreen from '../screens/SSIOnboardingWelcomeIntroScreen'
+import SSIOnboardingWelcomeShareScreen from '../screens/SSIOnboardingWelcomeShareScreen'
+import SSIOnboardingWelcomeStoreScreen from '../screens/SSIOnboardingWelcomeStoreScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
@@ -36,12 +39,13 @@ const Tab = createBottomTabNavigator()
 export const RootStackNavigator = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={RootRoutesEnum.MAIN}
+      initialRouteName={RootRoutesEnum.ONBOARDING}
       screenOptions={{
         animation: 'none',
         headerShown: false
       }}
     >
+      <Stack.Screen name={RootRoutesEnum.ONBOARDING} component={OnboardingStack} />
       <Stack.Screen name={RootRoutesEnum.MAIN} component={TabStackNavigator} />
       <Stack.Screen
         name={RootRoutesEnum.ALERT_MODAL}
@@ -410,6 +414,39 @@ const NotificationsStack = (): JSX.Element => {
         component={SSIErrorScreen}
         options={{
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+const OnboardingStack = (): JSX.Element => {
+  return (
+    <Stack.Navigator
+      initialRouteName={ScreenRoutesEnum.ONBOARDING_WELCOME_INTRO}
+      screenOptions={{
+        animation: 'none'
+      }}
+    >
+      <Stack.Screen
+        name={ScreenRoutesEnum.ONBOARDING_WELCOME_INTRO}
+        component={SSIOnboardingWelcomeIntroScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ONBOARDING_WELCOME_STORE}
+        component={SSIOnboardingWelcomeStoreScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ONBOARDING_WELCOME_SHARE}
+        component={SSIOnboardingWelcomeShareScreen}
+        options={{
+          headerShown: false
         }}
       />
     </Stack.Navigator>

@@ -68,7 +68,7 @@ export const gradients: Record<Gradient, GradientProperties> = {
   }
 }
 
-type HighLightGradient = 100 | 200
+type HighLightGradient = 100 | 200 | 300
 
 export const highLightGradients: Record<HighLightGradient, GradientProperties> = {
   100: {
@@ -78,6 +78,10 @@ export const highLightGradients: Record<HighLightGradient, GradientProperties> =
   200: {
     primaryColor: 'rgba(255,153,0,1)',
     secondaryColor: 'rgba(238,83,9,1)'
+  },
+  300: {
+    primaryColor: 'rgba(67,71,225,1)',
+    secondaryColor: 'rgba(76,22,174,1)'
   }
 }
 
