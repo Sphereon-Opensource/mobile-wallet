@@ -282,7 +282,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs) => {
   provider.getServerMetadataAndPerformCryptoMatching().then(async (metadata: IServerMetadataAndCryptoMatchingResponse) => {
     const url = new URL(metadata.serverMetadata.issuer)
     const contacts = await getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] })
-    console.log(`contacts: ${contacts.length}`)
     if (contacts.length === 0) {
       store.dispatch(
           createContact({

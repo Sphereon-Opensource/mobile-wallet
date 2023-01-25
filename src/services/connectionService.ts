@@ -140,7 +140,7 @@ const addDefaultConnections = async () => {
   }
 
   const firm24Name = 'Firm24'
-  const firm24CorrelationId = 'sphereon.com'
+  const firm24CorrelationId = 'firm24.com'
   const partiesFirm24 = await getContacts({ filter: [{ identifier: { correlationId: firm24CorrelationId } }] })
   if (partiesFirm24.length === 0) {
     debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
