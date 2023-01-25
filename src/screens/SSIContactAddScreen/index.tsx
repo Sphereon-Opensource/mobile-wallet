@@ -3,7 +3,7 @@ import { EmitterSubscription, Keyboard, TouchableWithoutFeedback } from 'react-n
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
@@ -142,7 +142,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
               title={translate('action_decline_label')}
               onPress={() => {
                 Keyboard.dismiss()
-                this.props.navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+                this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
                   title: translate('contact_add_cancel_title'),
                   details: translate('contact_add_cancel_message'),
                   primaryButton: {

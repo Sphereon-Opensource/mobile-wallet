@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { PopupImagesEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { PopupImagesEnum, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import {
@@ -24,7 +24,7 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}
           onMaxRetriesExceeded={async () =>
-            navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+            navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
               image: PopupImagesEnum.SECURITY,
               title: translate('verification_code_invalid_code_title'),
               details: translate('verification_code_invalid_code_details'),

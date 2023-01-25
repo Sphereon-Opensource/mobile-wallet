@@ -1,12 +1,20 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
+import { useSelector } from 'react-redux'
 
 import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import { NavigationBarRoutesEnum, PlatformsEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../@types'
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  PlatformsEnum,
+  ScreenRoutesEnum,
+  StackParamList,
+  SwitchRoutesEnum
+} from '../@types'
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
@@ -28,25 +36,25 @@ import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import Veramo from '../screens/Veramo'
+import { RootState } from '../store'
 
 const format = require('string-format')
 
 const Stack = createNativeStackNavigator<StackParamList>()
 const Tab = createBottomTabNavigator()
 
-export const RootStackNavigator = (): JSX.Element => {
+const MainStackNavigator = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={RootRoutesEnum.ONBOARDING}
+      initialRouteName={MainRoutesEnum.HOME}
       screenOptions={{
         animation: 'none',
         headerShown: false
       }}
     >
-      <Stack.Screen name={RootRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      <Stack.Screen name={RootRoutesEnum.MAIN} component={TabStackNavigator} />
+      <Stack.Screen name={MainRoutesEnum.HOME} component={TabStackNavigator} />
       <Stack.Screen
-        name={RootRoutesEnum.ALERT_MODAL}
+        name={MainRoutesEnum.ALERT_MODAL}
         children={({ navigation, route }) => (
           <>
             <SSIAlertModal navigation={navigation} route={route} />
@@ -63,7 +71,7 @@ export const RootStackNavigator = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={RootRoutesEnum.POPUP_MODAL}
+        name={MainRoutesEnum.POPUP_MODAL}
         children={({ navigation, route }) => (
           <>
             <SSIPopupModal navigation={navigation} route={route} />
@@ -84,7 +92,7 @@ export const RootStackNavigator = (): JSX.Element => {
   )
 }
 
-export const TabStackNavigator = (): JSX.Element => {
+const TabStackNavigator = (): JSX.Element => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -93,7 +101,7 @@ export const TabStackNavigator = (): JSX.Element => {
         unmountOnBlur: true
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
-      initialRouteName={NavigationBarRoutesEnum.HOME}
+      initialRouteName={NavigationBarRoutesEnum.CREDENTIALS}
       backBehavior="none"
     >
       <Tab.Screen
@@ -125,10 +133,10 @@ export const TabStackNavigator = (): JSX.Element => {
         )}
       />
       <Tab.Screen
-        name={NavigationBarRoutesEnum.HOME}
+        name={NavigationBarRoutesEnum.CREDENTIALS}
         children={() => (
           <>
-            <HomeStack />
+            <CredentialsStack />
             <Toast
               bottomOffset={toastsBottomOffset}
               autoHide={toastsAutoHide}
@@ -156,7 +164,7 @@ export const TabStackNavigator = (): JSX.Element => {
   )
 }
 
-const HomeStack = (): JSX.Element => {
+const CredentialsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
@@ -436,3 +444,28 @@ const OnboardingStack = (): JSX.Element => {
     </Stack.Navigator>
   )
 }
+
+/**
+ * WIP. Figuring out how to properly navigate between certain flows and making sure that the user cannot navigate back to the previous ones
+ * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
+ * https://reactnavigation.org/docs/auth-flow/
+ */
+const AppNavigator = (): JSX.Element => {
+  const userPresent = useSelector((state: RootState) => !!state.user.name)
+
+  return(
+    <Stack.Navigator
+      screenOptions={{
+        animation: 'none',
+        headerShown: false
+      }}
+    >
+      { !userPresent
+        ? <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
+        : <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
+      }
+    </Stack.Navigator>
+  )
+}
+
+export default AppNavigator

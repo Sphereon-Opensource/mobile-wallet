@@ -2,7 +2,7 @@ import { FC } from 'react'
 import React from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { RootRoutesEnum, StackParamList } from '../../@types'
+import { MainRoutesEnum, StackParamList } from '../../@types'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIAlert from '../../components/messageBoxes/alerts/SSIAlert'
 import { translate } from '../../localization/Localization'
@@ -11,7 +11,7 @@ import {
   SSIAlertModalContentContainerStyled as ModalContentContainer
 } from '../../styles/components'
 
-type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.ALERT_MODAL>
+type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.ALERT_MODAL>
 
 const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
   const { message, buttons, showCancel = true } = props.route.params

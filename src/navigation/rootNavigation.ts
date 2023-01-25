@@ -1,5 +1,11 @@
-import { createNavigationContainerRef, ParamListBase, PartialState } from '@react-navigation/native'
-import { NavigationAction, NavigationProp, StackActions } from 'react-navigation'
+import {
+  createNavigationContainerRef,
+  NavigationAction,
+  NavigationProp,
+  ParamListBase,
+  PartialState,
+  StackActions
+} from '@react-navigation/native'
 
 import { StackParamList } from '../@types'
 

@@ -5,11 +5,14 @@ import {
   StatusBar
 } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
+import { connect } from 'react-redux'
 
-import { RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
+import { IUser } from '../../@types/store/user.types'
 import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
 import SSIWelcomeView from '../../components/views/SSIWelcomeView'
 import { translate } from '../../localization/Localization'
+import { setUser } from '../../store/actions/user.actions'
 import {
   SSIOnboardingWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
   SSIOnboardingWelcomeScreenContainerStyled as Container,
@@ -17,14 +20,16 @@ import {
   SSIOnboardingWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
 } from '../../styles/components'
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_WELCOME>
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_WELCOME> {
+  setUser: (args: IUser) => void
+}
 
 interface IScreenState {
   body: string
   step: number
 }
 
-class SSIOnboardingWelcomeScreen extends PureComponent<Props, IScreenState> {
+class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenState> {
   hardwareBackPressListener: NativeEventSubscription
   state = {
     body: translate('onboarding_welcome_intro_body'),
@@ -55,7 +60,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<Props, IScreenState> {
         return true
       default:
         /**
-         * Returning false will let the event to bubble up & let other event listeners
+         * Returning false will let the event bubble up & let other event listeners
          * or the system's default back action to be executed.
          */
         return false
@@ -73,13 +78,14 @@ class SSIOnboardingWelcomeScreen extends PureComponent<Props, IScreenState> {
         this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body')})
         break
       default:
-        this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
+        // TODO WAL-407 implement user functionality
+        this.props.setUser({ name: 'dummy' })
     }
   }
 
   render() {
     const { body, step } = this.state
-    const MAX_STEPS = 3
+    const MAX_WELCOME_STEPS = 3
 
     return (
       <Container>
@@ -89,15 +95,15 @@ class SSIOnboardingWelcomeScreen extends PureComponent<Props, IScreenState> {
             <WelcomeBackground />
           </IntroBackgroundContainer>
         ) : (
-          <BackgroundContainer style={{flex: 1, alignItems: 'center'}}>
-            {/* TODO fix images not loading */}
+          <BackgroundContainer>
+            {/* TODO WAL-406 fix images not loading */}
             {/* <Image source={require('../../assets/images/test.png')} style={{ resizeMode: 'stretch', width: 290, height: 586, backgroundColor: 'red', marginTop: 80}}/>*/}
           </BackgroundContainer>
         )}
         <WelcomeViewContainer>
           <SSIWelcomeView
             step={step}
-            maxSteps={MAX_STEPS}
+            maxSteps={MAX_WELCOME_STEPS}
             body={body}
             header={translate('onboarding_welcome_header')}
             title={translate('onboarding_welcome_title')}
@@ -112,4 +118,10 @@ class SSIOnboardingWelcomeScreen extends PureComponent<Props, IScreenState> {
   }
 }
 
-export default SSIOnboardingWelcomeScreen
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUser: (args: IUser) => dispatch(setUser(args))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SSIOnboardingWelcomeScreen)

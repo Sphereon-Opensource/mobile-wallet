@@ -9,9 +9,9 @@ import 'react-native-gesture-handler'
 import IntentHandler from './src/handlers/IntentHandler'
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
-import { RootStackNavigator } from './src/navigation/navigation'
+import AppNavigator from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
-import store from './src/store';
+import store from './src/store'
 import { backgrounds } from './src/styles/colors'
 
 LogBox.ignoreLogs([
@@ -92,7 +92,7 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
-          <RootStackNavigator />
+          <AppNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
     </Provider>

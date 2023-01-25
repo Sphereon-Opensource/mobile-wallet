@@ -105,7 +105,7 @@ class IntentHandler {
               onPress: async () =>
                 storeCredential(vc)
                   .then(() =>
-                    RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
+                    RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
                       screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
                     })
                   )
@@ -115,7 +115,7 @@ class IntentHandler {
             secondaryAction: {
               caption: translate('action_decline_label'),
               onPress: async () =>
-                RootNavigation.navigate(NavigationBarRoutesEnum.HOME, {
+                RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
                   screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
                 })
             }

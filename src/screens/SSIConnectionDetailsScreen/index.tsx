@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { ConnectionStatusEnum, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ConnectionStatusEnum, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
@@ -32,7 +32,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
       // TODO fix non null assertion
       .disconnectConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
       .then(() => {
-        this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
+        this.props.navigation.navigate(MainRoutesEnum.HOME, {})
         showToast(
           ToastTypeEnum.TOAST_SUCCESS,
           format(translate('disconnect_provider_success_message'), this.props.route.params.entityName)
@@ -50,7 +50,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
       // TODO fix non null assertion
       .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
       .then(() => {
-        this.props.navigation.navigate(RootRoutesEnum.MAIN, {})
+        this.props.navigation.navigate(MainRoutesEnum.HOME, {})
         showToast(
           ToastTypeEnum.TOAST_SUCCESS,
           format(translate('connect_provider_success_message'), this.props.route.params.entityName)
@@ -84,7 +84,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
             <SSIPrimaryButton
               title={translate('connection_details_action_connect')}
               onPress={() =>
-                this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
+                this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
                   message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
                   buttons: [
                     {
@@ -101,7 +101,7 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
             <SSIPrimaryButton
               title={translate('connection_details_action_disconnect')}
               onPress={() =>
-                this.props.navigation.navigate(RootRoutesEnum.ALERT_MODAL, {
+                this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
                   message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
                   buttons: [
                     {
