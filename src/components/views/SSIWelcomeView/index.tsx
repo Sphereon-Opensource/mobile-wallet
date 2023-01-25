@@ -2,13 +2,14 @@ import React, { FC } from 'react'
 
 import { IButton } from '../../../@types'
 import {
+  SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
   SSIWelcomeViewButtonContainerStyled as ButtonContainer,
   SSIWelcomeViewContainerStyled as Container,
   SSIWelcomeViewContentContainerStyled as ContentContainer,
-  SSITextH2LightStyled as HeaderCaption,
+  SSIWelcomeViewHeaderTextStyled as HeaderCaption,
   SSIWelcomeViewProgressIndicatorContainerStyled as ProgressIndicatorContainer,
-  SSIWelcomeViewTitleTextStyled as TitleCaption,
+  SSIWelcomeViewTitleTextStyled as TitleCaption
 } from '../../../styles/components'
 import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
 import SSIProgressIndicator from '../../indicators/SSIProgressIndicator'
@@ -36,7 +37,9 @@ const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
         <ContentContainer>
           <HeaderCaption>{header}</HeaderCaption>
           <TitleCaption>{title}</TitleCaption>
-          <BodyText>{body}</BodyText>
+          <BodyContainer>
+            <BodyText>{body}</BodyText>
+          </BodyContainer>
         </ContentContainer>
         <ButtonContainer>
           <SSIPrimaryButton
