@@ -27,29 +27,26 @@ const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
   const { action, body, header, step, title, maxSteps } = props
 
   return (
-      <Container>
-        <ProgressIndicatorContainer>
-          <SSIProgressIndicator
-              step={step}
-              maxSteps={maxSteps}
-          />
-        </ProgressIndicatorContainer>
-        <ContentContainer>
-          <HeaderCaption>{header}</HeaderCaption>
-          <TitleCaption>{title}</TitleCaption>
-          <BodyContainer>
-            <BodyText>{body}</BodyText>
-          </BodyContainer>
-        </ContentContainer>
-        <ButtonContainer>
-          <SSIPrimaryButton
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 300 }}
-              title={action.caption}
-              onPress={action.onPress}
-          />
-        </ButtonContainer>
-      </Container>
+    <Container>
+      <ProgressIndicatorContainer>
+        <SSIProgressIndicator step={step} maxSteps={maxSteps} />
+      </ProgressIndicatorContainer>
+      <ContentContainer>
+        <HeaderCaption>{header}</HeaderCaption>
+        <TitleCaption>{title}</TitleCaption>
+        <BodyContainer>
+          <BodyText>{body}</BodyText>
+        </BodyContainer>
+      </ContentContainer>
+      <ButtonContainer>
+        <SSIPrimaryButton
+          // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+          style={{ height: 42, width: 300 }}
+          title={action.caption}
+          onPress={action.onPress}
+        />
+      </ButtonContainer>
+    </Container>
   )
 }
 

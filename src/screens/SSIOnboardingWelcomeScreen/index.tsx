@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react'
-import {
-  BackHandler,
-  NativeEventSubscription,
-  StatusBar
-} from 'react-native'
+import { BackHandler, NativeEventSubscription, StatusBar } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
@@ -53,10 +49,10 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
      */
     switch (step) {
       case 2:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body')})
+        this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body') })
         return true
       case 3:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body')})
+        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body') })
         return true
       default:
         /**
@@ -72,10 +68,10 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
 
     switch (step) {
       case 1:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body')})
+        this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body') })
         break
       case 2:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body')})
+        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body') })
         break
       default:
         // TODO WAL-407 implement user functionality
@@ -90,7 +86,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
     return (
       <Container>
         <StatusBar translucent backgroundColor="transparent" />
-        { step === 1 ? (
+        {step === 1 ? (
           <IntroBackgroundContainer>
             <WelcomeBackground />
           </IntroBackgroundContainer>

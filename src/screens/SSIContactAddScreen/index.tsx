@@ -117,7 +117,9 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
               autoFocus={true}
               label={translate('contact_add_contact_name_label')}
               maxLength={50}
-              onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
+              onChangeText={async (input: string) =>
+                this.setState({ contactAlias: input, isInvalidContactAlias: false })
+              }
               onEndEditing={this.onValidate}
               placeholderValue={translate('contact_add_contact_name_placeholder')}
             />

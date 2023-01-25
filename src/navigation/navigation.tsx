@@ -453,17 +453,18 @@ const OnboardingStack = (): JSX.Element => {
 const AppNavigator = (): JSX.Element => {
   const userPresent = useSelector((state: RootState) => !!state.user.name)
 
-  return(
+  return (
     <Stack.Navigator
       screenOptions={{
         animation: 'none',
         headerShown: false
       }}
     >
-      { !userPresent
-        ? <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-        : <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
-      }
+      {!userPresent ? (
+        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
+      ) : (
+        <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
+      )}
     </Stack.Navigator>
   )
 }

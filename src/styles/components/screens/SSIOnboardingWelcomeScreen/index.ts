@@ -14,7 +14,7 @@ export const SSIOnboardingWelcomeScreenWelcomeViewContainerStyled = styled.View`
 
 export const SSIOnboardingWelcomeScreenIntroBackgroundContainerStyled = styled.View`
   background-color: ${backgrounds.primaryDark};
-  position: absolute; 
+  position: absolute;
   z-index: -1;
   width: 500px;
   height: 915px;

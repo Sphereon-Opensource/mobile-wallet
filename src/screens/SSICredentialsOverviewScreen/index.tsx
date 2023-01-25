@@ -13,10 +13,7 @@ import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { RootState } from '../../store'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
-import {
-  SSIBasicContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
+import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar } from '../../styles/components'
 
 const format = require('string-format')
 
@@ -85,7 +82,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   render() {
     return (
       <Container>
-        <StatusBar/>
+        <StatusBar />
         <SwipeListView
           data={this.props.verifiableCredentials}
           keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.id}
