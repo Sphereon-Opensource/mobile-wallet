@@ -37,6 +37,7 @@ import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
+import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen';
 
 const format = require('string-format')
 
@@ -440,6 +441,13 @@ const OnboardingStack = (): JSX.Element => {
         options={{
           headerShown: false
         }}
+      />
+      <Stack.Screen
+          name={ScreenRoutesEnum.PERSONAL_DATA}
+          component={SSIPersonalDataScreen}
+          options={{
+            headerShown: false
+          }}
       />
     </Stack.Navigator>
   )

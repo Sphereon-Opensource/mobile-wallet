@@ -33,6 +33,7 @@ export type StackParamList = {
   Onboarding: Record<string, never>
   OnboardingWelcome: Record<string, never>
   Main: Record<string, never>
+  PersonalData: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -126,6 +127,7 @@ export enum NavigationBarRoutesEnum {
 
 export enum ScreenRoutesEnum {
   ONBOARDING_WELCOME = 'OnboardingWelcome',
+  PERSONAL_DATA = 'PersonalData',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
