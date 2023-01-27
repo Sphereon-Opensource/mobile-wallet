@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import {
   ConnectionTypeEnum,
   IBasicConnection,
@@ -59,12 +59,12 @@ export const verifyAuthentication = (
   connectionType: ConnectionTypeEnum,
   args: {
     sessionId: string
-    verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT
+    verifiedAuthorizationRequest: VerifiedAuthorizationRequest
   }
 ) => {
   switch (connectionType) {
     case ConnectionTypeEnum.DIDAUTH:
-      return new DidAuthSiopProvider().verifyAuthentication(args.sessionId, args.verifiedAuthenticationRequest)
+      return new DidAuthSiopProvider().verifyAuthentication(args.sessionId, args.verifiedAuthorizationRequest)
     default:
       return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`))
   }

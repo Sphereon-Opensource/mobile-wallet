@@ -37,6 +37,7 @@ import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
+import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 
 const format = require('string-format')
 
@@ -189,7 +190,6 @@ const CredentialsStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton // TODO this more button can look at when an action is passed in for visibility
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
@@ -234,7 +234,7 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton showBorder />
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} showBorder />
           )
         }}
       />
@@ -244,7 +244,7 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton showBorder />
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} showBorder />
           )
         }}
       />
@@ -297,7 +297,7 @@ const QRStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton // TODO this more button can look at when an action is passed in for visibility
+              moreButtonAction={async () => console.log('more pressed')}
             />
           )
         }}
@@ -321,7 +321,6 @@ const QRStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton // TODO this more button can look at when an action is passed in for visibility
               headerSubTitle={translate('credential_details_subtitle')}
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
@@ -399,7 +398,7 @@ const NotificationsStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showMoreButton // TODO this more button can look at when an action is passed in for visibility
+              moreButtonAction={async () => console.log('more pressed')}
               showBorder
             />
           )
@@ -411,7 +410,7 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('connection_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} showMoreButton />
+            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} />
           )
         }}
       />
@@ -438,6 +437,28 @@ const OnboardingStack = (): JSX.Element => {
         name={ScreenRoutesEnum.ONBOARDING_WELCOME}
         component={SSIOnboardingWelcomeScreen}
         options={{
+          headerShown: false
+        }}
+      />
+      <Stack.Screen
+          name={ScreenRoutesEnum.TERMS_OF_SERVICE}
+          component={SSITermsOfServiceScreen}
+          options={{
+            headerTitle: 'Terms of service',
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar
+                    {...props}
+                    showBackButton={Platform.OS === PlatformsEnum.IOS}
+                    headerSubTitle={'This document was last updated on January 5, 2023.'}
+                />
+            )
+          }}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.POPUP_MODAL}
+        component={SSIPopupModal}
+        options={{
+          presentation: 'transparentModal',
           headerShown: false
         }}
       />

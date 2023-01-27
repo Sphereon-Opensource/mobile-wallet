@@ -65,7 +65,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     }
   }
 
-  failureAnimation = () => {
+  failureAnimation = (): void => {
     const { colorShiftAnimation, shakeAnimation } = this.state
 
     const values = [10, -7.5, 5, -2.5, 0]
@@ -91,7 +91,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     })
   }
 
-  submit = (value: string) => {
+  submit = (value: string): void => {
     const { retry, maxRetries } = this.state
 
     this.props.onVerification(value).catch(async () => {
@@ -115,7 +115,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     })
   }
 
-  setInputFocus = () => {
+  setInputFocus = (): void => {
     const { inputRef } = this.state
 
     if (inputRef !== null) {
@@ -124,7 +124,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     }
   }
 
-  hideKeyboard = async () => {
+  hideKeyboard = async (): Promise<void> => {
     const { inputRef } = this.state
 
     if (inputRef !== null) {
@@ -133,7 +133,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     }
   }
 
-  onKeyPressInput = ({ nativeEvent: { key } }: { nativeEvent: { key: string } }) => {
+  onKeyPressInput = async ({ nativeEvent: { key } }: { nativeEvent: { key: string } }): Promise<void> => {
     const { length, pin } = this.state
 
     switch (key) {
@@ -160,6 +160,19 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
         }
       }
     }
+  }
+
+  onSubmitEditing = async (event: { nativeEvent: { text: string } }): Promise<void> => {
+    if (event.nativeEvent.text.length >= length) {
+      this.submit(event.nativeEvent.text)
+    } else {
+      this.failureAnimation()
+      this.setInputFocus()
+    }
+  }
+
+  onRef = async (input: TextInput | null): Promise<void> => {
+    this.setState({ inputRef: input })
   }
 
   render() {
@@ -202,11 +215,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
             </View>
           )}
           <TextInput
-            ref={(input) => {
-              this.setState({
-                inputRef: input
-              })
-            }}
+            ref={this.onRef}
             style={{ display: 'none' }}
             accessible
             accessibilityLabel={accessibilityLabel}
@@ -218,14 +227,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
             maxLength={length}
             onKeyPress={this.onKeyPressInput}
             value={pin}
-            onSubmitEditing={(event: { nativeEvent: { text: string } }) => {
-              if (event.nativeEvent.text.length >= length) {
-                this.submit(event.nativeEvent.text)
-              } else {
-                this.failureAnimation()
-                this.setInputFocus()
-              }
-            }}
+            onSubmitEditing={this.onSubmitEditing}
           />
         </Container>
       </TouchableOpacity>

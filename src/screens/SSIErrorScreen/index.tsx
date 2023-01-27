@@ -14,8 +14,15 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
   const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
     props.route.params
-
   const [showExtraDetails, setShowExtraDetails] = React.useState(false)
+
+  const onShowDetails = async (): Promise<void> => {
+    setShowExtraDetails(true)
+  }
+
+  const onCloseDetails = async (): Promise<void> => {
+    setShowExtraDetails(true)
+  }
 
   return (
     <Container>
@@ -23,7 +30,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
         {showExtraDetails && detailsPopup && (
           <ExtraDetailsContainer>
             <SSIPopup
-              onClose={async () => setShowExtraDetails(false)}
+              onClose={onCloseDetails}
               title={detailsPopup.title}
               details={detailsPopup.details}
               extraDetails={detailsPopup.extraDetails}
@@ -42,7 +49,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
             detailsPopup
               ? {
                   caption: detailsPopup.buttonCaption,
-                  onPress: async () => setShowExtraDetails(true)
+                  onPress: onShowDetails
                 }
               : undefined
           }

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
+import { ColorValue, ViewStyle } from 'react-native'
 
 import { credentialCards } from '../../../../styles/colors'
 import {
@@ -9,7 +9,7 @@ import {
 } from '../../../../styles/components'
 
 export interface IProps {
-  backgroundColor?: string
+  backgroundColor?: ColorValue
   image?: string // TODO WAL-302 Support passing in storage location
   style?: ViewStyle
 }

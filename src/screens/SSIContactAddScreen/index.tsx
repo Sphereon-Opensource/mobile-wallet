@@ -1,24 +1,20 @@
 import React, { PureComponent } from 'react'
-import { EmitterSubscription, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
+import { MAX_CONTACT_ALIAS_LENGTH } from '../../@config/constants'
 import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
-import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
+import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
 import { getContacts } from '../../services/contactService'
 import { createContact as StoreContact } from '../../store/actions/contact.actions'
 import {
-  SSIButtonBottomMultipleContainerStyled as ButtonContainer,
-  SSIContactAddScreenDisclaimerCheckboxContainerStyled as CheckboxContainer,
   SSIContactAddScreenContainerStyled as Container,
-  SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
-  SSIButtonSpacerStyled as Spacer,
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer
 } from '../../styles/components'
@@ -32,35 +28,13 @@ interface IScreenState {
   contactAlias: string
   hasConsent: boolean
   isInvalidContactAlias: boolean
-  keyboardVisible: boolean
 }
 
 class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
-  keyboardDidShowListener: EmitterSubscription
-  keyboardDidHideListener: EmitterSubscription
   state = {
     contactAlias: '',
     hasConsent: true,
     isInvalidContactAlias: false,
-    keyboardVisible: true
-  }
-
-  componentDidMount = () => {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
-  }
-
-  componentWillUnmount = () => {
-    this.keyboardDidShowListener.remove()
-    this.keyboardDidHideListener.remove()
-  }
-
-  _keyboardDidShow = () => {
-    this.setState({ keyboardVisible: true })
-  }
-
-  _keyboardDidHide = () => {
-    this.setState({ keyboardVisible: false })
   }
 
   onValidate = async (input: string): Promise<void> => {
@@ -105,8 +79,36 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
       })
   }
 
+  onChangeText = async (input: string): Promise<void> => {
+    this.setState({ contactAlias: input, isInvalidContactAlias: false })
+  }
+
+  onValueChange = async (isChecked: boolean): Promise<void> => {
+    this.setState({ hasConsent: isChecked })
+    if (!isChecked) {
+      showToast(ToastTypeEnum.TOAST, translate('contact_add_no_consent_toast'))
+    }
+  }
+
+  onDecline = async (): Promise<void> => {
+    Keyboard.dismiss()
+    this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+      title: translate('contact_add_cancel_title'),
+      details: translate('contact_add_cancel_message'),
+      primaryButton: {
+        caption: translate('action_confirm_label'),
+        onPress: async () => this.props.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        // TODO fix navigation WAL-405
+        onPress: async () => this.props.navigation.goBack()
+      }
+    })
+  }
+
   render() {
-    const { contactAlias, hasConsent, isInvalidContactAlias, keyboardVisible } = this.state
+    const { contactAlias, hasConsent, isInvalidContactAlias } = this.state
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -116,60 +118,30 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
             <SSITextInputField
               autoFocus={true}
               label={translate('contact_add_contact_name_label')}
-              maxLength={50}
-              onChangeText={async (input: string) =>
-                this.setState({ contactAlias: input, isInvalidContactAlias: false })
-              }
+              maxLength={MAX_CONTACT_ALIAS_LENGTH}
+              onChangeText={this.onChangeText}
               onEndEditing={this.onValidate}
               placeholderValue={translate('contact_add_contact_name_placeholder')}
             />
           </TextInputContainer>
           <DisclaimerContainer>
-            <CheckboxContainer>
-              <SSICheckbox
-                initialValue
-                onValueChange={async (isChecked: boolean) => {
-                  this.setState({ hasConsent: isChecked })
-                  if (!isChecked) {
-                    showToast(ToastTypeEnum.TOAST, translate('contact_add_no_consent_toast'))
-                  }
-                }}
-              />
-            </CheckboxContainer>
-            <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
+            <SSICheckbox
+              initialValue
+              label={translate('contact_add_disclaimer')}
+              onValueChange={this.onValueChange}
+            />
           </DisclaimerContainer>
-          {/* TODO bottom styling is general button container behavior that should be applied to the container itself */}
-          <ButtonContainer style={{ bottom: keyboardVisible ? 18 : 37 }}>
-            <SSISecondaryButton
-              title={translate('action_decline_label')}
-              onPress={() => {
-                Keyboard.dismiss()
-                this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
-                  title: translate('contact_add_cancel_title'),
-                  details: translate('contact_add_cancel_message'),
-                  primaryButton: {
-                    caption: translate('action_confirm_label'),
-                    onPress: async () => this.props.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
-                  },
-                  secondaryButton: {
-                    caption: translate('action_cancel_label'),
-                    // TODO fix navigation WAL-405
-                    onPress: async () => this.props.navigation.goBack()
-                  }
-                })
-              }}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 145 }}
-            />
-            <Spacer />
-            <SSIPrimaryButton
-              title={translate('action_accept_label')}
-              onPress={this.onCreate}
-              disabled={!hasConsent || contactAlias.length === 0 || isInvalidContactAlias}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 145 }}
-            />
-          </ButtonContainer>
+          <SSIButtonsContainer
+            secondaryButton={{
+              caption: translate('action_decline_label'),
+              onPress: this.onDecline
+            }}
+            primaryButton={{
+              caption: translate('action_accept_label'),
+              disabled: !hasConsent || contactAlias.length === 0 || isInvalidContactAlias,
+              onPress: this.onCreate
+            }}
+          />
         </Container>
       </TouchableWithoutFeedback>
     )

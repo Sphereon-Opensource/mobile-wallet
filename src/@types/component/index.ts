@@ -26,6 +26,7 @@ export interface IHeaderProps {
 export interface IButton {
   caption: string
   onPress: () => Promise<void>
+  disabled?: boolean
 }
 
 export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum | ConnectionStatusEnum

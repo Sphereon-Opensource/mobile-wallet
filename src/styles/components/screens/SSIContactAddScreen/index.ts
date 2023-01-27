@@ -1,7 +1,6 @@
 import styled from 'styled-components/native'
 
-import { SSIBasicHorizontalCenterContainerStyled, SSIFlexDirectionRowViewStyled } from '../../containers'
-import { SSITextH4LightStyled } from '../../fonts'
+import { SSIBasicHorizontalCenterContainerStyled } from '../../containers'
 
 export const SSIContactAddScreenContainerStyled = styled(SSIBasicHorizontalCenterContainerStyled)`
   padding-left: 24px;
@@ -13,14 +12,6 @@ export const SSIContactAddScreenTextInputContainerStyled = styled.View`
   margin-top: 10px;
 `
 
-export const SSIContactAddScreenDisclaimerContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
+export const SSIContactAddScreenDisclaimerContainerStyled = styled.View`
   margin-top: 17px;
-`
-
-export const SSIContactAddScreenDisclaimerCheckboxContainerStyled = styled.View`
-  margin-right: 10px;
-`
-
-export const SSIContactAddScreenDisclaimerCaptionStyled = styled(SSITextH4LightStyled)`
-  flex: 1;
 `

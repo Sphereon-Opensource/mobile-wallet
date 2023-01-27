@@ -14,8 +14,15 @@ type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.POPUP_MODAL>
 const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
   const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
     props.route.params
-
   const [showExtraDetails, setShowExtraDetails] = React.useState(false)
+
+  const onShowExtraDetails = async (): Promise<void> => {
+    setShowExtraDetails(true)
+  }
+
+  const onCloseExtraDetails = async (): Promise<void> => {
+    setShowExtraDetails(false)
+  }
 
   return (
     <Container>
@@ -23,7 +30,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
         {showExtraDetails && detailsPopup && (
           <ExtraDetailsContainer>
             <SSIPopup
-              onClose={async () => setShowExtraDetails(false)}
+              onClose={onCloseExtraDetails}
               title={detailsPopup.title}
               details={detailsPopup.details}
               extraDetails={detailsPopup.extraDetails}
@@ -42,7 +49,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
             detailsPopup
               ? {
                   caption: detailsPopup.buttonCaption,
-                  onPress: async () => setShowExtraDetails(true)
+                  onPress: onShowExtraDetails
                 }
               : undefined
           }

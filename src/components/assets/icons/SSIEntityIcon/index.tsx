@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
-import { View } from 'react-native'
+import { ColorValue, View } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
 
 import { fonts } from '../../../../styles/colors'
 
 export interface IProps {
   size?: number
-  color?: string
-  backgroundColor?: string
+  color?: ColorValue
+  backgroundColor?: ColorValue
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {

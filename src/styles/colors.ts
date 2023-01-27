@@ -131,8 +131,9 @@ export const logos: Record<Logo, string> = {
   default: '#FBFBFB'
 }
 
-type Input = 'placeholder'
+type Input = 'placeholder' | 'disabled' // TODO check other disabled colors and use correct one
 
 export const inputs: Record<Input, string> = {
-  placeholder: '#8D9099'
+  placeholder: '#8D9099',
+  disabled: '#8D9099'
 }

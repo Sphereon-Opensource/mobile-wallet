@@ -28,6 +28,14 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
     this.setState({ refreshing: false })
   }
 
+  onDelete = async (): Promise<void> => {
+    console.log('Delete contact pressed!')
+  }
+
+  onItemPress = async (contact: IConnectionParty): Promise<void> => {
+    this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact })
+  }
+
   renderItem = (itemInfo: ListRenderItemInfo<IConnectionParty>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
@@ -39,8 +47,8 @@ class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
           roles={[]} // TODO should be an aggregate of the roles on identities
         />
       }
-      onPress={async () => this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact: itemInfo.item })}
-      onDelete={async () => console.log('Delete contact pressed!')}
+      onPress={() => this.onItemPress(itemInfo.item)}
+      onDelete={this.onDelete}
     />
   )
 

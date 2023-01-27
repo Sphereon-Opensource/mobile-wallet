@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { JwtPayload } from 'jwt-decode'
 
 export interface CustomJwtPayload extends JwtPayload {
@@ -12,7 +12,7 @@ export interface CustomJwtPayload extends JwtPayload {
 
 export type CustomApproval =
   | string
-  | ((verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT) => Promise<void>)
+  | ((verifiedAuthorizationRequest: VerifiedAuthorizationRequest) => Promise<void>)
 
 export enum CustomApprovalEnum {
   PEX = 'pex',

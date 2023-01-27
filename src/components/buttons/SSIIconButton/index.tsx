@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { PressableProps, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { ColorValue, PressableProps, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
 import { ButtonIconsEnum } from '../../../@types'
@@ -9,11 +9,11 @@ import SSICloseIcon from '../../assets/icons/SSICloseIcon'
 
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum
-  onPress: () => void
+  onPress: () => Promise<void>
   disabled?: boolean | undefined
   style?: ViewStyle
   iconSize?: number
-  iconColor?: string
+  iconColor?: ColorValue
 }
 
 // TODO add feedback to button
@@ -35,7 +35,7 @@ const SSIIconButton: FC<Props> = (props: Props): JSX.Element => {
   )
 }
 
-const getIcon = (icon: ButtonIconsEnum, size?: number, color?: string): JSX.Element => {
+const getIcon = (icon: ButtonIconsEnum, size?: number, color?: ColorValue): JSX.Element => {
   switch (icon) {
     case ButtonIconsEnum.BACK:
       return <SSIBackIcon />

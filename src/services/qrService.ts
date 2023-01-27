@@ -204,7 +204,7 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
       credentialName: manifest.display.card.title || '[MISSING CREDENTIAL NAME]', // TODO translate
       // TODO WAL-301 need to send a response with a pin code to complete the process.
       onVerification: async (pin: string) =>
-        await args.navigation.navigate(NavigationBarRoutesEnum.HOME, { screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW })
+        await args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, { screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW })
     })
   }
   // TODO WAL-301 need to send a response when we do not need a pin code
@@ -296,7 +296,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 onPress: async () =>
                   storeCredential(rawCredential)
                     .then(() =>
-                      args.navigation.navigate(NavigationBarRoutesEnum.HOME, {
+                      args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
                         screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
                       })
                     )

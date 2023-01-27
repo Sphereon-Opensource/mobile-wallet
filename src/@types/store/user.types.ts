@@ -3,5 +3,5 @@ export interface IUser {
 }
 
 export interface IUserState {
-  name: string | null
+  name: string | undefined
 }

@@ -2,7 +2,7 @@ import { SET_USER, UserActionTypes } from '../../@types/store/user.action.types'
 import { IUserState } from '../../@types/store/user.types'
 
 const initialState: IUserState = {
-  name: null
+  name: undefined
 }
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {

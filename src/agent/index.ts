@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
 import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
@@ -83,11 +83,11 @@ const agent = createAgent<
     }),
     new DidAuthSiopOpAuthenticator({
       [CustomApprovalEnum.PEX]: async (
-        verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT,
+        verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string
       ) => {
         RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
-          request: verifiedAuthenticationRequest,
+          request: VerifiedAuthorizationRequest,
           sessionId
         })
         return Promise.reject(Error('Pex verification manual stop'))

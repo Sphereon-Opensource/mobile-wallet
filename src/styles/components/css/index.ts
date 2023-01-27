@@ -19,7 +19,6 @@ export const SSIBackgroundPrimaryLightColorCss = css`
 `
 
 export const SSIButtonBottomContainerCss = css`
-  bottom: 37px;
   position: absolute;
   align-items: center;
 `

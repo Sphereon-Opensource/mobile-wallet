@@ -20,29 +20,36 @@ interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string
   showBorder?: boolean
   showBackButton?: boolean
-  showMoreButton?: boolean
   moreButtonAction?: () => Promise<void>
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
-  const { showBorder = false, showBackButton = false, showMoreButton = false, moreButtonAction } = props
+  const { showBorder = false, showBackButton = false, moreButtonAction } = props
+
+  const onBack = async (): Promise<void> => {
+    props.navigation.goBack()
+  }
+
+  const onEntity = async (): Promise<void> => {
+    props.navigation.navigate('Veramo', {})
+  }
 
   return (
     <Container style={{ marginTop: useSafeAreaInsets().top }} showBorder={showBorder}>
       <Row>
         <LeftColumn>
-          {showBackButton && <BackIcon icon={ButtonIconsEnum.BACK} onPress={() => props.navigation.goBack()} />}
+          {showBackButton && <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />}
           <HeaderCaption style={{ marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14 }}>
             {props.options.headerTitle}
           </HeaderCaption>
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
-          <EntityIconContainer onPress={() => props.navigation.navigate('Veramo', {})}>
+          <EntityIconContainer onPress={onEntity}>
             <SSIEntityIcon />
           </EntityIconContainer>
-          {showMoreButton && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={() => moreButtonAction} />}
+          {moreButtonAction && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={moreButtonAction} />}
         </RightColumn>
       </Row>
     </Container>
