@@ -87,7 +87,7 @@ const agent = createAgent<
         sessionId: string
       ) => {
         RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
-          request: VerifiedAuthorizationRequest,
+          request: verifiedAuthorizationRequest,
           sessionId
         })
         return Promise.reject(Error('Pex verification manual stop'))

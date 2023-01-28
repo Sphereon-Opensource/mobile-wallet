@@ -31,13 +31,13 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
-import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
+import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
+import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
-import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 
 const format = require('string-format')
 
