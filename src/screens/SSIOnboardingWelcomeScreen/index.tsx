@@ -88,16 +88,20 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
     return (
       <Container>
         <StatusBar translucent backgroundColor="transparent" />
-        {step === 1 ? (
+         {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
           <IntroBackgroundContainer>
             <WelcomeBackground />
           </IntroBackgroundContainer>
-        ) : (
-          <BackgroundContainer>
-            {/* TODO WAL-406 fix images not loading */}
-            {/* <Image source={require('../../assets/images/test.png')} style={{ resizeMode: 'stretch', width: 290, height: 586, backgroundColor: 'red', marginTop: 80}}/>*/}
-          </BackgroundContainer>
-        )}
+        {/*{step === 1 ? (*/}
+        {/*  <IntroBackgroundContainer>*/}
+        {/*    <WelcomeBackground />*/}
+        {/*  </IntroBackgroundContainer>*/}
+        {/*) : (*/}
+        {/*  <BackgroundContainer>*/}
+        {/*     TODO WAL-406 fix images not loading */}
+        {/*     <Image source={require('../../assets/images/test.png')} style={{ resizeMode: 'stretch', width: 290, height: 586, backgroundColor: 'red', marginTop: 80}}/>*/}
+        {/*  </BackgroundContainer>*/}
+        {/*)}*/}
         <WelcomeViewContainer>
           <SSIWelcomeView
             step={step}
