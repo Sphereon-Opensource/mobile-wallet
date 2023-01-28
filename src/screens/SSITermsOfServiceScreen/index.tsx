@@ -7,7 +7,7 @@ import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITabView from '../../components/views/SSITabView'
-import SSITermsView from '../../components/views/SSITermsView'
+import SSITermsOfServiceView from '../../components/views/SSITermsOfServiceView'
 import { translate } from '../../localization/Localization'
 import { setUser } from '../../store/actions/user.actions'
 import {
@@ -39,7 +39,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       key: TermsTabRoutesEnum.TERMS,
       title: translate('terms_of_service_terms_tab_header_label'),
       content: () => (
-        <SSITermsView
+        <SSITermsOfServiceView
           content={translate('terms_and_conditions_agreement_message')}
           onScrollBottom={onScrollBottomTerms}
         />
@@ -49,7 +49,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       key: TermsTabRoutesEnum.PRIVACY,
       title: translate('terms_of_service_privacy_tab_header_label'),
       content: () => (
-        <SSITermsView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy} />
+        <SSITermsOfServiceView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy} />
       )
     }
   ]

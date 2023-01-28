@@ -32,6 +32,6 @@ export const SSIWelcomeViewProgressIndicatorContainerStyled = styled.View`
 `
 
 export const SSIWelcomeViewButtonContainerStyled = styled.View`
-  margin-bottom: 30px;
+  margin-bottom: 36px;
   align-items: center;
 `

@@ -1,23 +1,20 @@
 import styled from 'styled-components/native'
 
+import { borders } from '../../../colors'
+
 export const SSITermsOfServiceScreenTabViewContainerStyled = styled.View`
   flex: 1;
   margin-top: 17px;
 `
 
-// TODO color / height
 export const SSITermsOfServiceScreenBottomContainerStyled = styled.View`
-  height: 162px;
   margin-top: auto;
   border-top-width: 1px;
-  border-top-color: #404d7a;
+  border-top-color: ${borders.dark};
 `
 
-// TODO combine margin
 export const SSITermsOfServiceScreenCheckboxesContainerStyled = styled.View`
-  margin-right: 24px;
-  margin-left: 24px;
-  margin-top: 16px;
+  margin: 16px 24px 16px 24px;
 `
 
 export const SSITermsOfServiceScreenCheckboxContainerStyled = styled.View`

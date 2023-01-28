@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { ColorValue, View } from 'react-native'
 import Svg, { Circle, Path } from 'react-native-svg'
 
-import { fonts } from '../../../../styles/colors'
+import { entities, fonts } from '../../../../styles/colors'
 
 export interface IProps {
   size?: number
@@ -11,7 +11,7 @@ export interface IProps {
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 34, color = fonts.light, backgroundColor = '#EE5309' } = props // TODO backgroundColor
+  const { size = 34, color = fonts.light, backgroundColor = entities['100'] } = props
 
   return (
     <View style={{ width: size, aspectRatio: 1 }}>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { EmitterSubscription, Keyboard } from 'react-native'
+import { EmitterSubscription, Keyboard, View } from 'react-native'
 
 import { IButton } from '../../../@types'
 import {
@@ -23,7 +23,7 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
   keyboardDidShowListener: EmitterSubscription
   keyboardDidHideListener: EmitterSubscription
   state = {
-    keyboardVisible: true
+    keyboardVisible: false
   }
 
   componentDidMount = () => {
@@ -48,10 +48,9 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
     const { primaryButton, secondaryButton } = this.props
     const { keyboardVisible } = this.state
 
-    // TODO style={{bottom: 30}}  style={{bottom: 30}}
     return (
-      <CenterContainer style={{ marginBottom: keyboardVisible ? 18 : 36 }}>
-        <ButtonContainer>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
           {secondaryButton && (
             <SSISecondaryButton
               title={secondaryButton.caption}
@@ -72,7 +71,7 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
             />
           )}
         </ButtonContainer>
-      </CenterContainer>
+      </View>
     )
   }
 }

@@ -21,6 +21,7 @@ import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
 import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
 import * as RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
+import { signPresentation } from '../services/signatureService'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 
 export const didResolver = new Resolver({
@@ -81,7 +82,9 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator({
+    new DidAuthSiopOpAuthenticator(
+      signPresentation,
+      {
       [CustomApprovalEnum.PEX]: async (
         verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string
