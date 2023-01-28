@@ -22,6 +22,7 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 
 interface IScreenState {
   body: string
+  buttonCaption: string
   step: number
 }
 
@@ -29,6 +30,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
   hardwareBackPressListener: NativeEventSubscription
   state = {
     body: translate('onboarding_welcome_intro_body'),
+    buttonCaption: translate('action_next_label'),
     step: 1
   }
 
@@ -52,7 +54,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
         this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body') })
         return true
       case 3:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body') })
+        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body'), buttonCaption: translate('action_next_label') })
         return true
       default:
         /**
@@ -71,7 +73,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
         this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body') })
         break
       case 2:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body') })
+        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body'), buttonCaption: translate('action_go_label') })
         break
       default:
         // TODO WAL-407 implement user functionality
@@ -80,7 +82,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
   }
 
   render() {
-    const { body, step } = this.state
+    const { body, buttonCaption, step } = this.state
     const MAX_WELCOME_STEPS = 3
 
     return (
@@ -104,7 +106,7 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
             header={translate('onboarding_welcome_header')}
             title={translate('onboarding_welcome_title')}
             action={{
-              caption: translate('next_action_confirm'),
+              caption: buttonCaption,
               onPress: this.onNext
             }}
           />

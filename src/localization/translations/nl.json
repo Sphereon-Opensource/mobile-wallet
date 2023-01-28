@@ -97,7 +97,8 @@
     "onboarding_welcome_header": "Welkom",
     "onboarding_welcome_title": "Sphereon Wallet",
     "onboarding_welcome_intro_body": "Hiermee kunt u accreditaties, inloggegevens, badges en identiteitskenmerken ontvangen en delen.\n\nDeze zijn digitaal ondertekend en geattesteerd door externe uitgevende organisaties.",
-    "next_action_confirm": "Volgende",
+    "action_next_label": "Volgende",
+    "action_go_label": "Gaan!",
     "onboarding_welcome_store_body": "Slaat credentials van derden in versleutelde vorm rechtstreeks op uw apparaat op. Alleen u heeft toegang tot uw gegevens.\n\nHet communiceert niet met Sphereon-servers, tenzij u zich bijvoorbeeld aanmeldt voor back-ups of zakelijke functies.",
     "onboarding_welcome_share_body": "Hiermee kunt u credentials presenteren aan externe verifierende partijen.\n\nAlleen de informatie waarmee u instemt, wordt gedeeld. Er wordt geen informatie automatisch gedeeld. Je bent altijd de baas."
 }

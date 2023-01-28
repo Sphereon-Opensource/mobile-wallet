@@ -97,7 +97,8 @@
     "onboarding_welcome_header": "Welcome",
     "onboarding_welcome_title": "Sphereon Wallet",
     "onboarding_welcome_intro_body": "Allows you to receive and share accreditations, credentials, badges and identity attributes.\n\nThese are digitally signed and attested by 3rd party issuing organizations.",
-    "next_action_confirm": "Next",
+    "action_next_label": "Next",
+    "action_go_label": "Go!",
     "onboarding_welcome_store_body": "Stores credentials issued by 3rd parties in an encrypted form and directly on your device. Only you will have access to your data.\n\nIt does not interact with any Sphereon servers unless you opt in for backups or enterprise features for instance.",
     "onboarding_welcome_share_body": "Allows you to present credentials to 3rd party verifiers.\n\nOnly the information you consent to will ever be shared. No automatic disclosure happens. You will always be in control."
 }
