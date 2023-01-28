@@ -38,12 +38,12 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
     {
       key: TermsTabRoutesEnum.TERMS,
       title: translate('terms_of_service_terms_tab_header_label'),
-      content: () => <SSITermsView content={translate('terms_and_conditions_agreement_message')} onScrollBottom={async () => setHasReadTerms(true)}/>
+      content: () => <SSITermsView content={translate('terms_and_conditions_agreement_message')} onScrollBottom={onScrollBottomTerms}/>
     },
     {
       key: TermsTabRoutesEnum.PRIVACY,
       title: translate('terms_of_service_privacy_tab_header_label'),
-      content: () => <SSITermsView content={translate('privacy_policy_agreement_message')} onScrollBottom={async () => setHasReadPrivacy(true)}/>
+      content: () => <SSITermsView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy}/>
     }
   ]
 
@@ -69,6 +69,22 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
     })
   }
 
+  const onScrollBottomTerms = async (): Promise<void> => {
+    setHasReadTerms(true)
+  }
+
+  const onScrollBottomPrivacy = async (): Promise<void> => {
+    setHasReadPrivacy(true)
+  }
+
+  const onAcceptTerms = async (isChecked: boolean): Promise<void> => {
+    setHasAcceptedTerms(isChecked)
+  }
+
+  const onAcceptPrivacy = async (isChecked: boolean): Promise<void> => {
+    setHasAcceptedPrivacy(isChecked)
+  }
+
   return (
       <Container>
         <StatusBar />
@@ -79,14 +95,14 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
           <CheckboxesContainer>
             <CheckboxContainer>
               <SSICheckbox
-                onValueChange={async (isChecked: boolean) => setHasAcceptedTerms(isChecked)}
+                onValueChange={onAcceptTerms}
                 label={translate('terms_of_service_consent_terms_message')}
                 disabled={!hasReadTerms}
               />
             </CheckboxContainer>
             <CheckboxContainer>
               <SSICheckbox
-                onValueChange={async (isChecked: boolean) => setHasAcceptedPrivacy(isChecked)}
+                onValueChange={onAcceptPrivacy}
                 label={translate('terms_of_service_consent_privacy_message')}
                 disabled={!hasReadPrivacy}
               />

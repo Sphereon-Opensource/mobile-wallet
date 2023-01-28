@@ -31,7 +31,7 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps
   ContactAdd: IContactAddProps
   Onboarding: Record<string, never>
-  OnboardingWelcome: Record<string, never>
+  Welcome: Record<string, never>
   Main: Record<string, never>
   TermsOfService: Record<string, never>
 }
@@ -126,7 +126,7 @@ export enum NavigationBarRoutesEnum {
 }
 
 export enum ScreenRoutesEnum {
-  ONBOARDING_WELCOME = 'OnboardingWelcome',
+  WELCOME = 'Welcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',

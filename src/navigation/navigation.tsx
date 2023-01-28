@@ -31,7 +31,7 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
-import SSIOnboardingWelcomeScreen from '../screens/SSIOnboardingWelcomeScreen'
+import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
@@ -428,14 +428,14 @@ const NotificationsStack = (): JSX.Element => {
 const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.ONBOARDING_WELCOME}
+      initialRouteName={ScreenRoutesEnum.WELCOME}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={ScreenRoutesEnum.ONBOARDING_WELCOME}
-        component={SSIOnboardingWelcomeScreen}
+        name={ScreenRoutesEnum.WELCOME}
+        component={SSIWelcomeScreen}
         options={{
           headerShown: false
         }}

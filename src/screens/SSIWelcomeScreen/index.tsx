@@ -1,31 +1,26 @@
 import React, { PureComponent } from 'react'
 import { BackHandler, NativeEventSubscription, StatusBar } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { connect } from 'react-redux'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
-import { IUser } from '../../@types/store/user.types'
 import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
 import SSIWelcomeView from '../../components/views/SSIWelcomeView'
 import { translate } from '../../localization/Localization'
-import { setUser } from '../../store/actions/user.actions'
 import {
-  SSIOnboardingWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
-  SSIOnboardingWelcomeScreenContainerStyled as Container,
-  SSIOnboardingWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
-  SSIOnboardingWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
+  SSIWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
+  SSIWelcomeScreenContainerStyled as Container,
+  SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
+  SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
 } from '../../styles/components'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_WELCOME> {
-  setUser: (args: IUser) => void
-}
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
 
 interface IScreenState {
   body: string
   step: number
 }
 
-class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenState> {
+class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
   hardwareBackPressListener: NativeEventSubscription
   state = {
     body: translate('onboarding_welcome_intro_body'),
@@ -75,8 +70,6 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
         break
       default:
         this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {})
-        // TODO WAL-407 implement user functionality
-        //this.props.setUser({ name: 'dummy' })
     }
   }
 
@@ -119,10 +112,4 @@ class SSIOnboardingWelcomeScreen extends PureComponent<IScreenProps, IScreenStat
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setUser: (args: IUser) => dispatch(setUser(args))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(SSIOnboardingWelcomeScreen)
+export default SSIWelcomeScreen
