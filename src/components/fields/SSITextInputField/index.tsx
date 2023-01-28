@@ -1,10 +1,5 @@
 import React, { FC } from 'react'
-import {
-  ColorValue,
-  KeyboardTypeOptions,
-  NativeSyntheticEvent,
-  TextInputEndEditingEventData
-} from 'react-native'
+import { ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {

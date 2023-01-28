@@ -13,7 +13,7 @@ import {
   SSIPEXVerificationScreenBackgroundImageContainerStyled as ImageContainer,
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
-  SSIPEXVerificationScreenMessageTitleStyled as MessageTitle,
+  SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 

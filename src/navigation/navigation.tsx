@@ -37,7 +37,7 @@ import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
-import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
+import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 
 const format = require('string-format')
 
@@ -234,7 +234,12 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} showBorder />
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              moreButtonAction={async () => console.log('more pressed')}
+              showBorder
+            />
           )
         }}
       />
@@ -244,7 +249,12 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} showBorder />
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              moreButtonAction={async () => console.log('more pressed')}
+              showBorder
+            />
           )
         }}
       />
@@ -410,7 +420,11 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('connection_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} moreButtonAction={async () => console.log('more pressed')} />
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              moreButtonAction={async () => console.log('more pressed')}
+            />
           )
         }}
       />
@@ -441,18 +455,18 @@ const OnboardingStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.TERMS_OF_SERVICE}
-          component={SSITermsOfServiceScreen}
-          options={{
-            headerTitle: 'Terms of service',
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar
-                    {...props}
-                    showBackButton={Platform.OS === PlatformsEnum.IOS}
-                    headerSubTitle={'This document was last updated on January 5, 2023.'}
-                />
-            )
-          }}
+        name={ScreenRoutesEnum.TERMS_OF_SERVICE}
+        component={SSITermsOfServiceScreen}
+        options={{
+          headerTitle: 'Terms of service',
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={'This document was last updated on January 5, 2023.'}
+            />
+          )
+        }}
       />
       <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}

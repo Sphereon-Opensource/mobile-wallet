@@ -14,8 +14,7 @@ const SSITermsView: FC<IProps> = (props: IProps): JSX.Element => {
 
   const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }: NativeScrollEvent) => {
     const paddingToBottom = 18 // TODO refactor magic number
-    return layoutMeasurement.height + contentOffset.y >=
-        contentSize.height - paddingToBottom
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom
   }
 
   const onScroll = async ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -27,14 +26,11 @@ const SSITermsView: FC<IProps> = (props: IProps): JSX.Element => {
   }
 
   return (
-      <RouteContainer style={{ backgroundColor: '#202537' }}>
-        <ScrollView
-            style={{ marginLeft: 24, marginRight: 24, marginTop: 16 }}
-            onScroll={onScroll}
-        >
-          <Text style={{color: 'white', marginBottom: 18}}>{content}</Text>
-        </ScrollView>
-      </RouteContainer>
+    <RouteContainer style={{ backgroundColor: '#202537' }}>
+      <ScrollView style={{ marginLeft: 24, marginRight: 24, marginTop: 16 }} onScroll={onScroll}>
+        <Text style={{ color: 'white', marginBottom: 18 }}>{content}</Text>
+      </ScrollView>
+    </RouteContainer>
   )
 }
 

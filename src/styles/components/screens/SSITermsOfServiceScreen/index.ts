@@ -10,7 +10,7 @@ export const SSITermsOfServiceScreenBottomContainerStyled = styled.View`
   height: 162px;
   margin-top: auto;
   border-top-width: 1px;
-  border-top-color: #404D7A;
+  border-top-color: #404d7a;
 `
 
 // TODO combine margin

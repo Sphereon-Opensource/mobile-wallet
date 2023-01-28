@@ -32,18 +32,25 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const [hasReadPrivacy, setHasReadPrivacy] = useState(false)
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const routes = [
     {
       key: TermsTabRoutesEnum.TERMS,
       title: translate('terms_of_service_terms_tab_header_label'),
-      content: () => <SSITermsView content={translate('terms_and_conditions_agreement_message')} onScrollBottom={onScrollBottomTerms}/>
+      content: () => (
+        <SSITermsView
+          content={translate('terms_and_conditions_agreement_message')}
+          onScrollBottom={onScrollBottomTerms}
+        />
+      )
     },
     {
       key: TermsTabRoutesEnum.PRIVACY,
       title: translate('terms_of_service_privacy_tab_header_label'),
-      content: () => <SSITermsView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy}/>
+      content: () => (
+        <SSITermsView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy} />
+      )
     }
   ]
 
@@ -51,7 +58,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
    * As we update the state for the checkboxes, the other elements of this screen will also rerender. In this case the ScrollView will reset it`s position.
    * useMemo will make sure it will not rerender if the state of the parent gets updated
    */
-  const memoTabView = useMemo(() => <SSITabView routes={routes} />, []);
+  const memoTabView = useMemo(() => <SSITabView routes={routes} />, [])
 
   const onAccept = async (): Promise<void> => {
     // TODO WAL-407 implement user functionality
@@ -86,41 +93,39 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   }
 
   return (
-      <Container>
-        <StatusBar />
-        <TabViewContainer>
-          {memoTabView}
-        </TabViewContainer>
-        <BottomContainer>
-          <CheckboxesContainer>
-            <CheckboxContainer>
-              <SSICheckbox
-                onValueChange={onAcceptTerms}
-                label={translate('terms_of_service_consent_terms_message')}
-                disabled={!hasReadTerms}
-              />
-            </CheckboxContainer>
-            <CheckboxContainer>
-              <SSICheckbox
-                onValueChange={onAcceptPrivacy}
-                label={translate('terms_of_service_consent_privacy_message')}
-                disabled={!hasReadPrivacy}
-              />
-            </CheckboxContainer>
-          </CheckboxesContainer>
-          <SSIButtonsContainer
-            secondaryButton={{
-              caption: translate('action_decline_label'),
-              onPress: onDecline
-            }}
-            primaryButton={{
-              caption: translate('action_accept_label'),
-              disabled: !hasAcceptedTerms || !hasAcceptedPrivacy,
-              onPress: onAccept
-            }}
-          />
-        </BottomContainer>
-      </Container>
+    <Container>
+      <StatusBar />
+      <TabViewContainer>{memoTabView}</TabViewContainer>
+      <BottomContainer>
+        <CheckboxesContainer>
+          <CheckboxContainer>
+            <SSICheckbox
+              onValueChange={onAcceptTerms}
+              label={translate('terms_of_service_consent_terms_message')}
+              disabled={!hasReadTerms}
+            />
+          </CheckboxContainer>
+          <CheckboxContainer>
+            <SSICheckbox
+              onValueChange={onAcceptPrivacy}
+              label={translate('terms_of_service_consent_privacy_message')}
+              disabled={!hasReadPrivacy}
+            />
+          </CheckboxContainer>
+        </CheckboxesContainer>
+        <SSIButtonsContainer
+          secondaryButton={{
+            caption: translate('action_decline_label'),
+            onPress: onDecline
+          }}
+          primaryButton={{
+            caption: translate('action_accept_label'),
+            disabled: !hasAcceptedTerms || !hasAcceptedPrivacy,
+            onPress: onAccept
+          }}
+        />
+      </BottomContainer>
+    </Container>
   )
 }
 

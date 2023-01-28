@@ -10,9 +10,7 @@ export interface CustomJwtPayload extends JwtPayload {
   scope: any // TODO fix type
 }
 
-export type CustomApproval =
-  | string
-  | ((verifiedAuthorizationRequest: VerifiedAuthorizationRequest) => Promise<void>)
+export type CustomApproval = string | ((verifiedAuthorizationRequest: VerifiedAuthorizationRequest) => Promise<void>)
 
 export enum CustomApprovalEnum {
   PEX = 'pex',

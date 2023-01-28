@@ -34,7 +34,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
   state = {
     contactAlias: '',
     hasConsent: true,
-    isInvalidContactAlias: false,
+    isInvalidContactAlias: false
   }
 
   onValidate = async (input: string): Promise<void> => {
@@ -125,11 +125,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
             />
           </TextInputContainer>
           <DisclaimerContainer>
-            <SSICheckbox
-              initialValue
-              label={translate('contact_add_disclaimer')}
-              onValueChange={this.onValueChange}
-            />
+            <SSICheckbox initialValue label={translate('contact_add_disclaimer')} onValueChange={this.onValueChange} />
           </DisclaimerContainer>
           <SSIButtonsContainer
             secondaryButton={{

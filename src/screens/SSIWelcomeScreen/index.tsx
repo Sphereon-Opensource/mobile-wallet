@@ -80,10 +80,10 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
     return (
       <Container>
         <StatusBar translucent backgroundColor="transparent" />
-         {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
-          <IntroBackgroundContainer>
-            <WelcomeBackground />
-          </IntroBackgroundContainer>
+        {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
+        <IntroBackgroundContainer>
+          <WelcomeBackground />
+        </IntroBackgroundContainer>
         {/*{step === 1 ? (*/}
         {/*  <IntroBackgroundContainer>*/}
         {/*    <WelcomeBackground />*/}

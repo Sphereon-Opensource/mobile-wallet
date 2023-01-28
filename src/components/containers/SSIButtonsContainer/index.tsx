@@ -52,7 +52,7 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
     return (
       <CenterContainer style={{ marginBottom: keyboardVisible ? 18 : 36 }}>
         <ButtonContainer>
-          { secondaryButton && (
+          {secondaryButton && (
             <SSISecondaryButton
               title={secondaryButton.caption}
               onPress={secondaryButton.onPress}
@@ -62,7 +62,7 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
             />
           )}
           <Spacer />
-          { primaryButton && (
+          {primaryButton && (
             <SSIPrimaryButton
               title={primaryButton.caption}
               onPress={primaryButton.onPress}
