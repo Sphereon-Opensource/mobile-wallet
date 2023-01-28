@@ -23,7 +23,7 @@ interface IScreenProps {
   onMaxRetriesExceeded: () => Promise<void>
   onVerification: (pin: string) => Promise<void>
   // TODO Get a better solution to get the navigation in the pin code component. Or a solution to reset the state of a screen
-  // TODO Reason is that it is nicer to reset the pincode to an empty state when navigating back. Which it does not do by default
+  // TODO Reason is that it is nicer to reset the pin code to an empty state when navigating back. Which it does not do by default
   navigation?: NativeStackNavigationProp<any, any>
 }
 

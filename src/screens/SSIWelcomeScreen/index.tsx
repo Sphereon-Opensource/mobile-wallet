@@ -7,7 +7,7 @@ import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
 import SSIWelcomeView from '../../components/views/SSIWelcomeView'
 import { translate } from '../../localization/Localization'
 import {
-  SSIWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
+  // SSIWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
   SSIWelcomeScreenContainerStyled as Container,
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer

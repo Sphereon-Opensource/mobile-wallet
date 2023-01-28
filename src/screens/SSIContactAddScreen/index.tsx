@@ -74,7 +74,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
 
         onCreate()
       })
-      .catch((error: Error) => {
+      .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
       })
   }

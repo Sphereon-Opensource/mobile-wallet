@@ -20,8 +20,8 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_
 const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => {
   const [credentialTypes, setCredentialTypes] = React.useState(props.route.params.credentialTypes)
 
-  const onAccept = () => {
-    props.route.params.onAccept(
+  const onAccept = async (): Promise<void> => {
+    await props.route.params.onAccept(
       credentialTypes
         .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
         .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType)

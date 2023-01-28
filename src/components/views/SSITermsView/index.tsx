@@ -25,7 +25,7 @@ const SSITermsView: FC<IProps> = (props: IProps): JSX.Element => {
     }
   }
 
-  return (
+  return ( // TODO move color
     <RouteContainer style={{ backgroundColor: '#202537' }}>
       <ScrollView style={{ marginLeft: 24, marginRight: 24, marginTop: 16 }} onScroll={onScroll}>
         <Text style={{ color: 'white', marginBottom: 18 }}>{content}</Text>
