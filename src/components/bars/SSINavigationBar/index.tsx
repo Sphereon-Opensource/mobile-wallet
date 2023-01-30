@@ -113,7 +113,7 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
           secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
         />
       )
-    case NavigationBarRoutesEnum.HOME:
+    case NavigationBarRoutesEnum.CREDENTIALS:
       return (
         <SSIHomeIcon
           primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}

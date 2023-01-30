@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { RootRoutesEnum, StackParamList } from '../../@types'
+import { MainRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
 import {
   SSIBasicModalContainerStyled as Container,
@@ -9,7 +9,7 @@ import {
   SSIPopupModalContentContainerStyled as ModalContentContainer
 } from '../../styles/components'
 
-type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.POPUP_MODAL>
+type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.POPUP_MODAL>
 
 const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
   const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =

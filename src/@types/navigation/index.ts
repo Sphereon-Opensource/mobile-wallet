@@ -21,7 +21,7 @@ export type StackParamList = {
   PexVerification: IPexVerificationProps
   QrReader: Record<string, never>
   Veramo: Record<string, never>
-  Main: Record<string, never>
+  Home: Record<string, never>
   VerificationCode: IVerificationCodeProps
   AlertModal: IAlertModalProps
   PopupModal: IPopupModalProps
@@ -30,6 +30,9 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>
   ContactDetails: IContactDetailsProps
   ContactAdd: IContactAddProps
+  Onboarding: Record<string, never>
+  OnboardingWelcome: Record<string, never>
+  Main: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -103,8 +106,13 @@ export interface IContactAddProps {
   onCreate: () => Promise<void>
 }
 
-export enum RootRoutesEnum {
-  MAIN = 'Main',
+export enum SwitchRoutesEnum {
+  ONBOARDING = 'Onboarding',
+  MAIN = 'Main'
+}
+
+export enum MainRoutesEnum {
+  HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal'
 }
@@ -112,11 +120,12 @@ export enum RootRoutesEnum {
 export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
   NOTIFICATIONS = 'NotificationsStack',
-  HOME = 'HomeStack',
+  CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack'
 }
 
 export enum ScreenRoutesEnum {
+  ONBOARDING_WELCOME = 'OnboardingWelcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',

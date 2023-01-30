@@ -6,14 +6,14 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ICredentialSummary, RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ICredentialSummary, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { RootState } from '../../store'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
-import { SSIBasicContainerStyled as Container } from '../../styles/components'
+import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar } from '../../styles/components'
 
 const format = require('string-format')
 
@@ -34,7 +34,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   }
 
   onDelete = async (credentialHash: string, credentialTitle: string): Promise<void> => {
-    this.props.navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+    this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_delete_title'),
       details: format(translate('credential_delete_message'), credentialTitle),
       primaryButton: {
@@ -82,6 +82,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
   render() {
     return (
       <Container>
+        <StatusBar />
         <SwipeListView
           data={this.props.verifiableCredentials}
           keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.id}
