@@ -33,7 +33,7 @@ class IntentHandler {
 
   private addListeners = async (): Promise<any> => {
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener)
-    // TODO fix this type issue
+    //TODO fix this type issue
     this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener)
   }
 
@@ -91,7 +91,6 @@ class IntentHandler {
           return
         }
 
-        // TODO fix this type issue
         const storeCredential = async (vc: VerifiableCredential) => await store.dispatch(storeVerifiableCredential(vc))
 
         // We navigate to the QR stack as this is the stack for incoming credentials

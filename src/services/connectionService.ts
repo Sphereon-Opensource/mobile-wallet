@@ -2,9 +2,9 @@ import {
   BasicConnectionIdentifier,
   BasicConnectionMetadataItem,
   BasicDidAuthConfig,
-  BasicOpenIdConfig,
-  ConnectionIdentifierEnum,
+  BasicOpenIdConfig, BasicPartyIdentifier,
   ConnectionTypeEnum,
+  CorrelationIdentifierEnum,
   IBasicConnection,
   IConnection,
   IConnectionParty
@@ -12,7 +12,9 @@ import {
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { cmAddConnection, cmAddParty, cmGetParties, cmGetParty } from '../agent'
+import { cmAddConnection, cmAddParty, cmGetParty } from '../agent'
+
+import {getContacts} from './contactService';
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
@@ -34,7 +36,7 @@ export const getConnectionParties = async (): Promise<Array<IConnectionParty>> =
   // TODO this should be refactored to some build config https://www.npmjs.com/package/react-native-build-config
   debug(`getConnectionParties()...`)
   return addDefaultConnections().then(() =>
-    cmGetParties()
+    getContacts()
       .then((parties: Array<IConnectionParty>) => {
         debug(`getConnectionParties() succeeded`)
         return parties
@@ -43,9 +45,9 @@ export const getConnectionParties = async (): Promise<Array<IConnectionParty>> =
   )
 }
 
-export const addConnectionParty = async (partyName: string): Promise<IConnectionParty> => {
+export const addConnectionParty = async (partyName: string, identifier: BasicPartyIdentifier): Promise<IConnectionParty> => {
   debug(`addConnectionParty(${partyName})...`)
-  return cmAddParty({ name: partyName, alias: partyName })
+  return cmAddParty({ name: partyName, alias: partyName, identifier: identifier })
     .then((party: IConnectionParty) => {
       debug(`addConnectionParty(${partyName}) succeeded`)
       return party
@@ -85,12 +87,21 @@ export const connectFrom = (args: {
 const addDefaultConnections = async () => {
   debug(`addDefaultConnections()...`)
 
-  const parties = await cmGetParties()
   const sphereonName = 'Sphereon'
-  const sphereon = parties.find((party: IConnectionParty) => party.name === sphereonName)
-  if (!sphereon) {
+  const sphereonCorrelationId = 'sphereon.com'
+  const partiesSphereon = await getContacts({ filter: [{ identifier: { correlationId: sphereonCorrelationId } }] })
+  if (partiesSphereon.length === 0) {
     debug(`addDefaultConnections(): Sphereon connection not present. Will add...`)
-    await cmAddParty({ name: sphereonName, alias: sphereonName }).then(async (party: IConnectionParty) => {
+    const party = {
+      name: sphereonName,
+      alias: sphereonName,
+      identifier: {
+        type: CorrelationIdentifierEnum.URL,
+        correlationId: sphereonCorrelationId
+      }
+    }
+
+    await cmAddParty(party).then(async (party: IConnectionParty) => {
       if (!party) {
         return Promise.reject(`Could not add default 'sphereon' connection`)
       }
@@ -98,7 +109,7 @@ const addDefaultConnections = async () => {
       const connection = {
         type: ConnectionTypeEnum.OPENID,
         identifier: {
-          type: ConnectionIdentifierEnum.URL,
+          type: CorrelationIdentifierEnum.URL,
           correlationId: 'https://auth-test.sphereon.com/auth/realms/ssi-wallet'
         },
         config: {
@@ -129,10 +140,20 @@ const addDefaultConnections = async () => {
   }
 
   const firm24Name = 'Firm24'
-  const firm24 = parties.find((party: IConnectionParty) => party.name === firm24Name)
-  if (!firm24) {
+  const firm24CorrelationId = 'firm24.com'
+  const partiesFirm24 = await getContacts({ filter: [{ identifier: { correlationId: firm24CorrelationId } }] })
+  if (partiesFirm24.length === 0) {
     debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
-    await cmAddParty({ name: firm24Name, alias: firm24Name }).then(async (party: IConnectionParty) => {
+    const party = {
+      name: firm24Name,
+      alias: firm24Name,
+      identifier: {
+        type: CorrelationIdentifierEnum.URL,
+        correlationId: firm24CorrelationId
+      }
+    }
+
+    await cmAddParty(party).then(async (party: IConnectionParty) => {
       if (!party) {
         return Promise.reject(`Could not add default 'firm24' connection`)
       }
@@ -140,7 +161,7 @@ const addDefaultConnections = async () => {
       const connection = {
         type: ConnectionTypeEnum.OPENID,
         identifier: {
-          type: ConnectionIdentifierEnum.URL,
+          type: CorrelationIdentifierEnum.URL,
           correlationId: 'https://shr.docarama.com/api/oidc/'
         },
         config: {

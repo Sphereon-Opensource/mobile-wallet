@@ -5,7 +5,7 @@ export const QR_SCANNER_TIMEOUT = {
   reactivate: 5000
 } /* Sets the reactivation timeout for the qr code scanner. */
 
-// TODO we want this as an env var, but i read that just creating an .env does not work for expo. Need to be figured out
+// TODO we want this as an env var, but i read that just creating an .env does not work for expo. Needs to be figured out
 export const SPHEREON_UNIRESOLVER_RESOLVE_URL = 'https://uniresolver.test.sphereon.io/1.0/identifiers'
 export const DIF_UNIRESOLVER_RESOLVE_URL = 'https://dev.uniresolver.io/1.0/identifiers'
 
