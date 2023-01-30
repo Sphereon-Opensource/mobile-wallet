@@ -27,14 +27,12 @@ interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRout
 interface IScreenState {
   contactAlias: string
   hasConsent: boolean
-  isInvalidContactAlias: boolean
 }
 
 class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
   state = {
     contactAlias: '',
-    hasConsent: true,
-    isInvalidContactAlias: false
+    hasConsent: true
   }
 
   onValidate = async (input: string): Promise<void> => {
@@ -42,17 +40,15 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
     contactAlias = contactAlias.trim()
 
     if (contactAlias.length === 0) {
-      this.setState({ isInvalidContactAlias: true })
-      return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
+      this.setState({ contactAlias: '' })
+      return Promise.reject(Error(translate('contact_name_invalid_message')))
     }
 
     const contacts = await getContacts({ filter: [{ alias: contactAlias }] })
     if (contacts.length !== 0) {
-      this.setState({ isInvalidContactAlias: true })
-      return Promise.reject(Error(translate('contact_add_contact_name_unavailable_message')))
+      this.setState({ contactAlias: '' })
+      return Promise.reject(Error(translate('contact_name_unavailable_message')))
     }
-
-    this.setState({ isInvalidContactAlias: false })
   }
 
   onCreate = async (): Promise<void> => {
@@ -80,13 +76,13 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
   }
 
   onChangeText = async (input: string): Promise<void> => {
-    this.setState({ contactAlias: input, isInvalidContactAlias: false })
+    this.setState({ contactAlias: input })
   }
 
   onValueChange = async (isChecked: boolean): Promise<void> => {
     this.setState({ hasConsent: isChecked })
     if (!isChecked) {
-      showToast(ToastTypeEnum.TOAST, translate('contact_add_no_consent_toast'))
+      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_add_no_consent_toast'))
     }
   }
 
@@ -108,7 +104,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
   }
 
   render() {
-    const { contactAlias, hasConsent, isInvalidContactAlias } = this.state
+    const { contactAlias, hasConsent } = this.state
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -117,11 +113,11 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
           <TextInputContainer>
             <SSITextInputField
               autoFocus={true}
-              label={translate('contact_add_contact_name_label')}
+              label={translate('contact_name_label')}
               maxLength={MAX_CONTACT_ALIAS_LENGTH}
               onChangeText={this.onChangeText}
               onEndEditing={this.onValidate}
-              placeholderValue={translate('contact_add_contact_name_placeholder')}
+              placeholderValue={translate('contact_name_placeholder')}
             />
           </TextInputContainer>
           <DisclaimerContainer>
@@ -134,7 +130,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
             }}
             primaryButton={{
               caption: translate('action_accept_label'),
-              disabled: !hasConsent || contactAlias.length === 0 || isInvalidContactAlias,
+              disabled: !hasConsent || contactAlias.length === 0,
               onPress: this.onCreate
             }}
           />

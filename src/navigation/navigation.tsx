@@ -38,6 +38,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
+import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
 
 const format = require('string-format')
 
@@ -458,12 +459,26 @@ const OnboardingStack = (): JSX.Element => {
         name={ScreenRoutesEnum.TERMS_OF_SERVICE}
         component={SSITermsOfServiceScreen}
         options={{
-          headerTitle: 'Terms of service',
+          headerTitle: translate('terms_of_service_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={'This document was last updated on January 5, 2023.'}
+              headerSubTitle={translate('terms_of_service_subtitle')}
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.PERSONAL_DATA}
+        component={SSIPersonalDataScreen}
+        options={{
+          headerTitle: translate('personal_data_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('personal_data_subtitle')}
             />
           )
         }}

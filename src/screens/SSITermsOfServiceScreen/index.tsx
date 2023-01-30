@@ -1,7 +1,6 @@
 import React, { FC, useMemo, useState } from 'react'
 import { BackHandler } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { useDispatch } from 'react-redux'
 
 import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
@@ -9,7 +8,6 @@ import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITabView from '../../components/views/SSITabView'
 import SSITermsOfServiceView from '../../components/views/SSITermsOfServiceView'
 import { translate } from '../../localization/Localization'
-import { setUser } from '../../store/actions/user.actions'
 import {
   SSITermsOfServiceScreenBottomContainerStyled as BottomContainer,
   SSITermsOfServiceScreenCheckboxContainerStyled as CheckboxContainer,
@@ -31,8 +29,6 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false)
   const [hasReadPrivacy, setHasReadPrivacy] = useState(false)
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false)
-
-  const dispatch = useDispatch()
 
   const routes = [
     {
@@ -64,8 +60,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const memoTabView = useMemo(() => <SSITabView routes={routes} />, [])
 
   const onAccept = async (): Promise<void> => {
-    // TODO WAL-407 implement user functionality
-    dispatch(setUser({ name: 'dummy' }))
+    props.navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {})
   }
 
   const onDecline = async (): Promise<void> => {

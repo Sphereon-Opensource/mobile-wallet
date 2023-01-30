@@ -13,3 +13,4 @@ export const APP_ID = 'sphereon:ssi-wallet'
 export const DID_PREFIX = 'did'
 
 export const MAX_CONTACT_ALIAS_LENGTH = 50
+export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
