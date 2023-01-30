@@ -5,7 +5,7 @@ import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
 import { fonts, selectionElements } from '../../../styles/colors'
 import {
   SSIFlexDirectionRowViewStyled as Container,
-  SSITextH4LightStyled as LabelCaption,
+  SSICheckboxLabelContainerStyled as LabelCaption,
   SSICheckboxSelectedContainerStyled as SelectedContainer,
   SSICheckboxUnselectedContainerStyled as UnselectedContainer
 } from '../../../styles/components'

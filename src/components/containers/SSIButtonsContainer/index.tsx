@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react'
-import { EmitterSubscription, Keyboard, View } from 'react-native'
+import { EmitterSubscription, Keyboard } from 'react-native'
 
 import { IButton } from '../../../@types'
 import {
-  SSIButtonBottomMultipleContainerStyled as ButtonContainer,
-  SSIBasicHorizontalCenterContainerStyled as CenterContainer,
+  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIButtonsContainerSpacerStyled as Spacer
 } from '../../../styles/components'
 import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
@@ -43,13 +42,11 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
   _keyboardDidHide = () => {
     this.setState({ keyboardVisible: false })
   }
-
   render() {
     const { primaryButton, secondaryButton } = this.props
     const { keyboardVisible } = this.state
 
     return (
-      <View style={{ width: '100%', alignItems: 'center' }}>
         <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
           {secondaryButton && (
             <SSISecondaryButton
@@ -71,7 +68,6 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
             />
           )}
         </ButtonContainer>
-      </View>
     )
   }
 }

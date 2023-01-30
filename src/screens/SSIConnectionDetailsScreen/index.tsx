@@ -11,7 +11,7 @@ import { translate } from '../../localization/Localization'
 import { RootState } from '../../store'
 import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
 import {
-  SSIButtonBottomSingleContainerStyled as ButtonContainer,
+  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
@@ -109,14 +109,14 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
               title={translate('connection_details_action_connect')}
               onPress={this.onConnect}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ flex: 1, height: 42 }}
+              style={{ height: 42, width: 300 }}
             />
           ) : (
             <SSIPrimaryButton
               title={translate('connection_details_action_disconnect')}
               onPress={this.onDisconnect}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ flex: 1, height: 42 }}
+              style={{ height: 42, width: 300 }}
             />
           )}
         </ButtonContainer>
