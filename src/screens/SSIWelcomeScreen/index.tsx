@@ -17,6 +17,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
 
 interface IScreenState {
   body: string
+  buttonCaption: string
   step: number
 }
 
@@ -24,6 +25,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
   hardwareBackPressListener: NativeEventSubscription
   state = {
     body: translate('onboarding_welcome_intro_body'),
+    buttonCaption: translate('action_next_label'),
     step: 1
   }
 
@@ -47,7 +49,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
         this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body') })
         return true
       case 3:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body') })
+        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body'), buttonCaption: translate('action_next_label') })
         return true
       default:
         /**
@@ -66,7 +68,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
         this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body') })
         break
       case 2:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body') })
+        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body'), buttonCaption: translate('action_go_label') })
         break
       default:
         this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {})
@@ -74,7 +76,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
   }
 
   render() {
-    const { body, step } = this.state
+    const { body, buttonCaption, step } = this.state
     const MAX_WELCOME_STEPS = 3
 
     return (
@@ -102,7 +104,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
             header={translate('onboarding_welcome_header')}
             title={translate('onboarding_welcome_title')}
             action={{
-              caption: translate('next_action_confirm'),
+              caption: buttonCaption,
               onPress: this.onNext
             }}
           />

@@ -1,5 +1,6 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
+import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
 import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
 import { DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
