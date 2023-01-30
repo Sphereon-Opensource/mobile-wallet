@@ -49,7 +49,11 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
         this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body') })
         return true
       case 3:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_store_body'), buttonCaption: translate('action_next_label') })
+        this.setState({
+          step: step - 1,
+          body: translate('onboarding_welcome_store_body'),
+          buttonCaption: translate('action_next_label')
+        })
         return true
       default:
         /**
@@ -68,7 +72,11 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
         this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body') })
         break
       case 2:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_share_body'), buttonCaption: translate('action_go_label') })
+        this.setState({
+          step: step + 1,
+          body: translate('onboarding_welcome_share_body'),
+          buttonCaption: translate('action_go_label')
+        })
         break
       default:
         this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {})
