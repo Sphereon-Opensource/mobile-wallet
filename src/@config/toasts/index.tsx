@@ -13,11 +13,6 @@ export const toastsAutoHide = true
 export const toastsVisibilityTime = 4000
 
 export const toastConfig = {
-  ssiAlertToast: (params: ToastConfigParams<unknown>) => (
-    <AlertToastContainer>
-      <AlertToastMessageCaption>{params.text1}</AlertToastMessageCaption>
-    </AlertToastContainer>
-  ),
   ssiAlertToastSuccess: (params: ToastConfigParams<unknown>) => (
     <AlertToastContainer>
       <AlertToastMessageCaption>{params.text1}</AlertToastMessageCaption>

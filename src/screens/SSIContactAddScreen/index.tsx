@@ -131,7 +131,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
                 onValueChange={async (isChecked: boolean) => {
                   this.setState({ hasConsent: isChecked })
                   if (!isChecked) {
-                    showToast(ToastTypeEnum.TOAST, translate('contact_add_no_consent_toast'))
+                    showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_no_consent_toast'))
                   }
                 }}
               />
