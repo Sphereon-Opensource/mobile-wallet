@@ -7,7 +7,7 @@ import {
   SSIPinCodeSegmentUnderlineLinearGradientStyled as LinearGradientUnderline,
   SSIPinCodeSegmentTextStyled as SegmentText,
   SSIPinCodeSegmentTextContainerStyled as TextContainer
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 
 export interface IProps {
   value: string

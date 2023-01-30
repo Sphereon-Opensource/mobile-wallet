@@ -24,10 +24,10 @@ export interface IQrDidSiopAuthenticationRequest extends IQrAuthentication {
 
 export interface IQrDataArgs {
   qrData: IQrData
-  navigation: NativeStackNavigationProp<any> // TODO fix any type
+  navigation: NativeStackNavigationProp<any> // TODO fix any
 }
 
 export interface IReadQrArgs {
   qrData: string
-  navigation: NativeStackNavigationProp<any> // TODO fix any type
+  navigation: NativeStackNavigationProp<any> // TODO fix any
 }

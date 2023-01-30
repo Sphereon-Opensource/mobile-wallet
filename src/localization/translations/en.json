@@ -81,5 +81,17 @@
     "credential_delete_title": "Delete credential",
     "credential_delete_message": "Are you sure you want to delete the credential: {0}?",
     "credential_deleted_success_toast": "Credential successfully deleted",
-    "credential_deleted_failed_toast": "Unable to delete the credential"
+    "credential_deleted_failed_toast": "Unable to delete the credential",
+    "contact_add_new_contact_detected_title": "New contact detected",
+    "contact_add_new_contact_detected_subtitle": "We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.",
+    "contact_add_contact_name_label": "Contact Name",
+    "contact_add_contact_name_placeholder": "Name contact",
+    "contact_add_contact_name_invalid_message": "Please fill in a valid contact name",
+    "contact_add_contact_name_unavailable_message": "This name already exist, please fill in an unique contact name",
+    "contact_add_disclaimer": "I acknowledge this contact will be created as a result of a credential exchange initiated by me.",
+    "credential_status_never_expires_date_label": "Never expires",
+    "contact_add_success_toast": "Contact successfully created",
+    "contact_add_no_consent_toast": "Without acknowledgement you will not continue the credential exchange process, and have to use the Decline button.",
+    "contact_add_cancel_title": "Are you sure you want to decline?",
+    "contact_add_cancel_message": "Adding a contact is mandatory when encountering a new party in a credential exchange process. Please be aware that the whole credential exchange process will be aborted if you confirm."
 }

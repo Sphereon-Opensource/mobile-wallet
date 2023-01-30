@@ -4,10 +4,10 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
 import {
+  SSIBasicContainerStyled as Container,
   SSIErrorScreenContentContainerStyled as ContentContainer,
   SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer
 } from '../../styles/components'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 

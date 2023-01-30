@@ -5,8 +5,8 @@ import {
   SSIAlertToastContainerStyled as AlertToastContainer,
   SSIAlertToastIconContainerStyled as AlertToastIconContainer,
   SSIAlertToastMessageTextStyled as AlertToastMessageCaption,
-  SSIToastErrorIconStyled as ErrorIcon
-} from '../../styles/styledComponents'
+  SSIAlertToastErrorIconStyled as ErrorIcon
+} from '../../../src/styles/components'
 
 export const toastsBottomOffset = 0
 export const toastsAutoHide = true

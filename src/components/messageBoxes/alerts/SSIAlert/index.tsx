@@ -8,7 +8,7 @@ import {
   SSIAlertContainerStyled as Container,
   SSIAlertMessageContainerStyled as MessageContainer,
   SSIAlertMessageTextStyled as MessageText
-} from '../../../../styles/styledComponents'
+} from '../../../../styles/components'
 
 export interface IProps {
   message: string

@@ -7,9 +7,9 @@ import {
   SSIRoundedContainerBackgroundSecondaryDarkStyled as Background,
   SSITouchableOpacityButtonFlexRowStyled as Button,
   SSITextH2SecondaryButtonStyled as ButtonCaption,
-  SSIRoundedCenteredLinearGradientSecondaryButtonStyled as RoundedLinearGradient,
-  SSIRoundedCenteredSecondaryButtonStyled as SecondaryButton
-} from '../../../styles/styledComponents'
+  SSISecondaryButtonContainerStyled as ButtonContainer,
+  SSIRoundedCenteredLinearGradientSecondaryButtonStyled as LinearGradient
+} from '../../../styles/components'
 
 export interface Props extends PressableProps {
   title: string // TODO rename to caption
@@ -31,13 +31,13 @@ const SSISecondaryButton: FC<Props> = (props: Props): JSX.Element => {
           opacity: disabled ? OpacityStyleEnum.DISABLED : OpacityStyleEnum.ACTIVE
         }}
       >
-        <RoundedLinearGradient style={{ ...props.style }}>
-          <SecondaryButton
+        <LinearGradient style={{ ...props.style }}>
+          <ButtonContainer
             style={{ backgroundColor: style?.backgroundColor ? style?.backgroundColor : backgrounds.primaryDark }}
           >
             <ButtonCaption>{props.title}</ButtonCaption>
-          </SecondaryButton>
-        </RoundedLinearGradient>
+          </ButtonContainer>
+        </LinearGradient>
       </Button>
     </Background>
   )

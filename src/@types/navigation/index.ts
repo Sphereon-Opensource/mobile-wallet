@@ -1,5 +1,5 @@
 import { SIOP } from '@sphereon/did-auth-siop'
-import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import { VerifiableCredential } from '@veramo/core'
 
 import {
@@ -29,6 +29,7 @@ export type StackParamList = {
   CredentialSelectType: ICredentialSelectTypeProps
   ContactsOverview: Record<string, never>
   ContactDetails: IContactDetailsProps
+  ContactAdd: IContactAddProps
 }
 
 export interface ICredentialDetailsProps {
@@ -92,6 +93,16 @@ export interface IContactDetailsProps {
   contact: IConnectionParty
 }
 
+export interface IContactAddProps {
+  name: string
+  uri?: string
+  identifier: {
+    type: CorrelationIdentifierEnum
+    correlationId: string
+  }
+  onCreate: () => Promise<void>
+}
+
 export enum RootRoutesEnum {
   MAIN = 'Main',
   ALERT_MODAL = 'AlertModal',
@@ -117,5 +128,6 @@ export enum ScreenRoutesEnum {
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
-  CONTACT_DETAILS = 'ContactDetails'
+  CONTACT_DETAILS = 'ContactDetails',
+  CONTACT_ADD = 'ContactAdd'
 }

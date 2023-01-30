@@ -1,7 +1,7 @@
 import { VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { RootState } from '../../store'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
-import { SSIBasicContainerStyled as Container } from '../../styles/styledComponents'
+import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
 const format = require('string-format')
 

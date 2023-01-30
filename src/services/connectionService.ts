@@ -2,7 +2,8 @@ import {
   BasicConnectionIdentifier,
   BasicConnectionMetadataItem,
   BasicDidAuthConfig,
-  BasicOpenIdConfig, BasicPartyIdentifier,
+  BasicOpenIdConfig,
+  BasicPartyIdentifier,
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
   IBasicConnection,
@@ -14,7 +15,7 @@ import Debug from 'debug'
 import { APP_ID } from '../@config/constants'
 import { cmAddConnection, cmAddParty, cmGetParty } from '../agent'
 
-import {getContacts} from './contactService';
+import { getContacts } from './contactService'
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
@@ -45,7 +46,10 @@ export const getConnectionParties = async (): Promise<Array<IConnectionParty>> =
   )
 }
 
-export const addConnectionParty = async (partyName: string, identifier: BasicPartyIdentifier): Promise<IConnectionParty> => {
+export const addConnectionParty = async (
+  partyName: string,
+  identifier: BasicPartyIdentifier
+): Promise<IConnectionParty> => {
   debug(`addConnectionParty(${partyName})...`)
   return cmAddParty({ name: partyName, alias: partyName, identifier: identifier })
     .then((party: IConnectionParty) => {

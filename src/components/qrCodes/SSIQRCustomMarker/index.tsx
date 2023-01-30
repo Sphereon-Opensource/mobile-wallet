@@ -1,15 +1,15 @@
 import React, { FC } from 'react'
 
 import {
-  SSIQRReaderBottomContainerStyled as BottomContainer,
+  SSIQRCustomMarkerBottomContainerStyled as BottomContainer,
   SSIFullFlexDirectionRowViewStyled as Container,
-  SSIQRReaderContentContainer as ContentContainer,
-  SSIQRReaderMarkerStyled as Marker,
-  SSIQRReaderSideSpaceStyled as SideSpace,
+  SSIQRCustomMarkerContentContainer as ContentContainer,
+  SSIQRCustomMarkerStyled as Marker,
+  SSIQRCustomMarkerSideSpaceStyled as SideSpace,
   SSITextH4LightStyled as SubTitle,
   SSITextH1LightStyled as Title,
-  SSIQRReaderTopContainerStyled as TopContainer
-} from '../../../styles/styledComponents'
+  SSIQRCustomMarkerTopContainerStyled as TopContainer
+} from '../../../styles/components'
 
 export interface IProps {
   title: string

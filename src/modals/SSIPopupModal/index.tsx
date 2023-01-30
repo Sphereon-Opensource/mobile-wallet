@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { RootRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
-import { SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer } from '../../styles/components'
 import {
   SSIBasicModalContainerStyled as Container,
+  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
   SSIPopupModalContentContainerStyled as ModalContentContainer
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, RootRoutesEnum.POPUP_MODAL>
 

@@ -13,19 +13,17 @@ import {
   SSICardViewSSICredentialStatusStyled as CredentialStatus,
   SSICardViewCredentialSubtitleTextStyled as CredentialSubtitleText,
   SSICardViewCredentialTitleTextStyled as CredentialTitleText,
+  SSITextH5LightStyled as ExpirationDateText,
   SSICardViewFooterContainerStyled as FooterContainer,
   SSICardViewFooterContentContainerStyled as FooterContentContainer,
+  SSITextH4LightStyled as H4Text,
   SSICardViewHeaderContainerStyled as HeaderContainer,
   SSICardViewContentIssueNameContainerStyled as IssueNameContainer,
   SSICardViewHeaderLogoContainerStyled as LogoContainer,
   SSICardViewContentPropertiesContainerStyled as PropertiesContainer,
+  SSITextH6LightStyled as PropertyValueText,
   SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
-import {
-  SSITextH5LightStyled as ExpirationDateText,
-  SSITextH4LightStyled as H4Text,
-  SSITextH6LightStyled as PropertyValueText
-} from '../../../styles/styledComponents'
 import SSIPlaceholderLogo from '../../assets/images/SSIPlaceholderLogo'
 
 const { v4: uuidv4 } = require('uuid')

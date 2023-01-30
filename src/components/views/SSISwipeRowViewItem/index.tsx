@@ -3,9 +3,9 @@ import { SwipeRow } from 'react-native-swipe-list-view'
 
 import { backgrounds } from '../../../styles/colors'
 import {
-  SSICredentialsOverviewScreenHiddenItemContainerStyled as HiddenItemContainer,
+  SSISwipeRowViewItemHiddenItemContainerStyled as HiddenItemContainer,
   SSIRippleContainerStyled as ItemContainer
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 import SSISwipeDeleteButton from '../../buttons/SSISwipeDeleteButton'
 
 export interface IProps {

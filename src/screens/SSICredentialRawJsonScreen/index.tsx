@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import JSONTree from 'react-native-json-tree'
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import Share from 'react-native-share'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
@@ -12,7 +12,7 @@ import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIBasicHorizontalCenterContainerStyled,
   SSIButtonBottomSingleContainerStyled
-} from '../../styles/styledComponents'
+} from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>
 
@@ -66,7 +66,7 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
                   )}`
                 )
               }}
-              // TODO move styling to styledComponents (currently there is an issue where this styling prop is not being set correctly)
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
           </SSIButtonBottomSingleContainerStyled>

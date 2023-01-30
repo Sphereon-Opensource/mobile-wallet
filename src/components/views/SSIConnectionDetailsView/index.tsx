@@ -6,15 +6,15 @@ import { IConnectionViewItem } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSIFlexDirectionColumnHalfViewStyled as Column,
-  SSIDetailsViewRoundedContainerStyled as Container,
-  SSIDetailsLabelsContainerStyled as DetailLabelsContainer,
-  SSIDetailsViewCaptionDetailsStyled as DetailsCaption,
+  SSIConnectionDetailsViewRoundedContainerStyled as Container,
+  SSIConnectionDetailsLabelsContainerStyled as DetailLabelsContainer,
+  SSIConnectionDetailsViewCaptionDetailsStyled as DetailsCaption,
   SSITextH5LightStyled as DetailsItemLabelCaption,
-  SSIDetailsViewDetailsValueCaptionStyled as DetailsItemValueCaption,
+  SSIConnectionDetailsViewValueCaptionStyled as DetailsItemValueCaption,
   SSIDetailsViewDetailsListStyled as DetailsList,
-  SSIDetailsViewLabelRowViewStyled as LabelRow,
-  SSIDetailsViewSeparatorStyled as Separator
-} from '../../../styles/styledComponents'
+  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
+  SSIConnectionDetailsViewSeparatorStyled as Separator
+} from '../../../styles/components'
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 
 export interface IProps {
@@ -53,7 +53,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
       <DetailLabelsContainer>
         <DetailsCaption>{translate('connection_details_view_details')}</DetailsCaption>
         <DetailsList
-          // TODO fix DetailsList
+          // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
           data={props.entityConnection.connection.metadata}
           renderItem={renderItem}
           keyExtractor={(item: IDetails) => item.id}

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import { SSIFlexDirectionRowViewStyled } from '../../../styledComponents'
+import { SSIFlexDirectionRowViewStyled } from '../../containers'
 
 export const SSICredentialDetailsScreenContentContainer = styled.View`
   width: 100%;

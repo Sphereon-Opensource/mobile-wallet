@@ -17,24 +17,24 @@ index e12c9bb..d45ae8c
  apply plugin: 'com.android.library'
  apply plugin: 'kotlin-android'
 -apply plugin: 'maven'
- 
+
  group = 'org.unimodules'
  version = '7.1.2'
 @@ -20,10 +19,6 @@ buildscript {
    }
  }
- 
+
 -//Upload android library to maven with javadoc and android sources
 -configurations {
 -  deployerJars
 -}
- 
+
  //Creating sources with comments
  task androidSourcesJar(type: Jar) {
 @@ -36,15 +31,6 @@ artifacts {
    archives androidSourcesJar
  }
- 
+
 -uploadArchives {
 -  repositories {
 -    mavenDeployer {
@@ -46,7 +46,7 @@ index e12c9bb..d45ae8c
 -
  android {
    compileSdkVersion safeExtGet("compileSdkVersion", 30)
- 
+
 diff --git a/node_modules/@unimodules/core/android/proguard-rules.pro b/node_modules/@unimodules/core/android/proguard-rules.pro
 old mode 100644
 new mode 100755

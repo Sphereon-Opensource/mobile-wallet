@@ -6,11 +6,11 @@ import { ICredentialDetailsRow } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSICredentialDetailsViewContainerStyled as Container,
+  SSIDetailsViewDetailsListStyled as DetailsList,
   SSICredentialDetailsViewFooterContainerStyled as FooterContainer,
   SSICredentialDetailsViewFooterLabelValueStyled as SignedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as SignedByLabel
 } from '../../../styles/components'
-import { SSIDetailsViewDetailsListStyled as DetailsList } from '../../../styles/styledComponents'
 import SSITextField from '../../fields/SSITextField'
 
 export interface IProps {
@@ -33,8 +33,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <Container>
       <DetailsList
-        // TODO fix DetailsList
-        // has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
+        // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
         data={props.credentialProperties}
         renderItem={renderItem}
         keyExtractor={(item: ICredentialDetailsRow) => item.id}

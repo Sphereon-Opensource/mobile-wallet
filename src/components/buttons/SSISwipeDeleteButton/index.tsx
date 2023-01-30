@@ -6,7 +6,7 @@ import { translate } from '../../../localization/Localization'
 import {
   SSISwipeDeleteButtonCaptionStyled as ButtonCaption,
   SSISwipeDeleteButtonLinearGradientStyled as LinearGradient
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 
 export interface IProps {
   onPress?: () => void

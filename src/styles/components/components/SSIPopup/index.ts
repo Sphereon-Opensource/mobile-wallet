@@ -3,12 +3,8 @@ import styled from 'styled-components/native'
 import SSICheckmarkBadge from '../../../../components/assets/badges/SSICheckmarkBadge'
 import SSIExclamationMarkBadge from '../../../../components/assets/badges/SSIExclamationMarkBadge'
 import { buttons, fonts } from '../../../colors'
-import {
-  SSIFlexDirectionRowViewStyled,
-  SSIRoundedContainerBackgroundPrimaryLightStyled,
-  SSITextH4SemiBoldStyled,
-  SSITextH5Styled
-} from '../../../styledComponents'
+import { SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundPrimaryLightStyled } from '../../containers'
+import { SSITextH4SemiBoldStyled, SSITextH5Styled } from '../../fonts'
 
 export const SSIPopupContainerStyled = styled(SSIRoundedContainerBackgroundPrimaryLightStyled)`
   width: 100%;

@@ -3,16 +3,14 @@ import { View } from 'react-native'
 
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
+  SSITextH3LightStyled as ContactNameCaption,
   SSIContactViewItemContactRoleCaptionStyled as ContactRoleCaption,
+  SSITextH4LightStyled as ContactUriCaption,
   SSIContactViewItemContainerStyled as Container,
   SSIContactViewItemLogoContainerStyled as LogoContainer,
   SSIContactViewItemPlaceholderLogoStyled as PlaceholderLogo,
   SSIContactViewItemNewStatusContainerStyled as StatusContainer
 } from '../../../styles/components'
-import {
-  SSITextH3LightStyled as ContactNameCaption,
-  SSITextH4LightStyled as ContactUriCaption
-} from '../../../styles/styledComponents'
 
 export interface Props {
   id: string

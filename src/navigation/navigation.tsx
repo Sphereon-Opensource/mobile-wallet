@@ -15,6 +15,7 @@ import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
+import SSIContactAddScreen from '../screens/SSIContactAddScreen'
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
@@ -342,6 +343,20 @@ const QRStack = (): JSX.Element => {
           headerTitle: translate('raw_credential_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
+          )
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ADD}
+        component={SSIContactAddScreen}
+        options={{
+          headerTitle: translate('contact_add_new_contact_detected_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
+            />
           )
         }}
       />

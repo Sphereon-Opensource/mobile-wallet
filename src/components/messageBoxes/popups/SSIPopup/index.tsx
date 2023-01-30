@@ -21,7 +21,7 @@ import {
   SSIPopupTitleBadgeContainerStyled as TitleBadgeContainer,
   SSIPopupTitleContainerStyled as TitleContainer
 } from '../../../../styles/components'
-import { SSITextH2SemiBoldStyled as TitleCaption } from '../../../../styles/styledComponents'
+import { SSITextH2SemiBoldStyled as TitleCaption } from '../../../../styles/components'
 import { parseTextToElement } from '../../../../utils/TextUtils'
 import SSIIconButton from '../../../buttons/SSIIconButton'
 import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton'

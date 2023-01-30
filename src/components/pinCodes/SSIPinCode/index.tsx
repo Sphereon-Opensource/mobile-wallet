@@ -6,10 +6,10 @@ import { translate } from '../../../localization/Localization'
 import { backgrounds, statuses } from '../../../styles/colors'
 import {
   SSIPinCodeAttemptsLeftTextStyled as AttemptsLeftText,
+  SSIFlexDirectionColumnViewStyled as Container,
   SSIPinCodeErrorMessageTextStyled as ErrorMessageText,
   SSIPinCodeContainerAnimatedStyled as SegmentsContainer
 } from '../../../styles/components'
-import { SSIFlexDirectionColumnViewStyled as Container } from '../../../styles/styledComponents'
 import SSIPinCodeSegment from '../SSIPinCodeSegment'
 
 const { v4: uuidv4 } = require('uuid')

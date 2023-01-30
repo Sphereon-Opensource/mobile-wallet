@@ -1,0 +1,183 @@
+import React, { PureComponent } from 'react'
+import { EmitterSubscription, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { NativeStackScreenProps } from 'react-native-screens/native-stack'
+import { connect } from 'react-redux'
+
+import { RootRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ICreateContactArgs } from '../../@types/store/contact.action.types'
+import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
+import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
+import SSICheckbox from '../../components/fields/SSICheckbox'
+import SSITextInputField from '../../components/fields/SSITextInputField'
+import { translate } from '../../localization/Localization'
+import { getContacts } from '../../services/contactService'
+import { createContact as StoreContact } from '../../store/actions/contact.actions'
+import {
+  SSIButtonBottomMultipleContainerStyled as ButtonContainer,
+  SSIContactAddScreenDisclaimerCheckboxContainerStyled as CheckboxContainer,
+  SSIContactAddScreenContainerStyled as Container,
+  SSIContactAddScreenDisclaimerCaptionStyled as DisclaimerCaption,
+  SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
+  SSIButtonSpacerStyled as Spacer,
+  SSIStatusBarDarkModeStyled as StatusBar,
+  SSIContactAddScreenTextInputContainerStyled as TextInputContainer
+} from '../../styles/components'
+import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
+  createContact: (args: ICreateContactArgs) => void
+}
+
+interface IScreenState {
+  contactAlias: string
+  hasConsent: boolean
+  isInvalidContactAlias: boolean
+  keyboardVisible: boolean
+}
+
+class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
+  keyboardDidShowListener: EmitterSubscription
+  keyboardDidHideListener: EmitterSubscription
+  state = {
+    contactAlias: '',
+    hasConsent: true,
+    isInvalidContactAlias: false,
+    keyboardVisible: true
+  }
+
+  componentDidMount = () => {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
+  }
+
+  componentWillUnmount = () => {
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({ keyboardVisible: true })
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({ keyboardVisible: false })
+  }
+
+  onValidate = async (input: string): Promise<void> => {
+    let contactAlias: string = input
+    contactAlias = contactAlias.trim()
+
+    if (contactAlias.length === 0) {
+      this.setState({ isInvalidContactAlias: true })
+      return Promise.reject(Error(translate('contact_add_contact_name_invalid_message')))
+    }
+
+    const contacts = await getContacts({ filter: [{ alias: contactAlias }] })
+    if (contacts.length !== 0) {
+      this.setState({ isInvalidContactAlias: true })
+      return Promise.reject(Error(translate('contact_add_contact_name_unavailable_message')))
+    }
+
+    this.setState({ isInvalidContactAlias: false })
+  }
+
+  onCreate = async (): Promise<void> => {
+    const { name, uri, identifier, onCreate } = this.props.route.params
+    const { contactAlias } = this.state
+
+    Keyboard.dismiss()
+
+    await this.onValidate(contactAlias)
+      .then(() => {
+        if (contactAlias) {
+          this.props.createContact({
+            name,
+            alias: contactAlias.trim(),
+            uri,
+            identifier
+          })
+        }
+
+        onCreate()
+      })
+      .catch((error: Error) => {
+        // do nothing as the state is already handled by the validate function, and we do not want to create the contact
+      })
+  }
+
+  render() {
+    const { contactAlias, hasConsent, isInvalidContactAlias, keyboardVisible } = this.state
+
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Container>
+          <StatusBar />
+          <TextInputContainer>
+            <SSITextInputField
+              autoFocus={true}
+              label={translate('contact_add_contact_name_label')}
+              maxLength={50}
+              onChangeText={async (input: string) => this.setState({ contactAlias: input, isInvalidContactAlias: false })}
+              onEndEditing={this.onValidate}
+              placeholderValue={translate('contact_add_contact_name_placeholder')}
+            />
+          </TextInputContainer>
+          <DisclaimerContainer>
+            <CheckboxContainer>
+              <SSICheckbox
+                initialValue
+                onValueChange={async (isChecked: boolean) => {
+                  this.setState({ hasConsent: isChecked })
+                  if (!isChecked) {
+                    showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_no_consent_toast'))
+                  }
+                }}
+              />
+            </CheckboxContainer>
+            <DisclaimerCaption>{translate('contact_add_disclaimer')}</DisclaimerCaption>
+          </DisclaimerContainer>
+          {/* TODO bottom styling is general button container behavior that should be applied to the container itself */}
+          <ButtonContainer style={{ bottom: keyboardVisible ? 18 : 37 }}>
+            <SSISecondaryButton
+              title={translate('action_decline_label')}
+              onPress={() => {
+                Keyboard.dismiss()
+                this.props.navigation.navigate(RootRoutesEnum.POPUP_MODAL, {
+                  title: translate('contact_add_cancel_title'),
+                  details: translate('contact_add_cancel_message'),
+                  primaryButton: {
+                    caption: translate('action_confirm_label'),
+                    onPress: async () => this.props.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+                  },
+                  secondaryButton: {
+                    caption: translate('action_cancel_label'),
+                    // TODO fix navigation WAL-405
+                    onPress: async () => this.props.navigation.goBack()
+                  }
+                })
+              }}
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+              style={{ height: 42, width: 145 }}
+            />
+            <Spacer />
+            <SSIPrimaryButton
+              title={translate('action_accept_label')}
+              onPress={this.onCreate}
+              disabled={!hasConsent || contactAlias.length === 0 || isInvalidContactAlias}
+              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+              style={{ height: 42, width: 145 }}
+            />
+          </ButtonContainer>
+        </Container>
+      </TouchableWithoutFeedback>
+    )
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    createContact: (args: ICreateContactArgs) => dispatch(StoreContact(args))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SSIContactAddScreen)

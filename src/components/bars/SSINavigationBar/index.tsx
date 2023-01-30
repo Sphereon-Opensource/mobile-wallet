@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
 import React, { PureComponent } from 'react'
-import { EmitterSubscription, Keyboard, View } from 'react-native' //EmitterSubscription,
+import { EmitterSubscription, Keyboard, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
@@ -9,7 +9,7 @@ import { fonts, highLightGradients } from '../../../styles/colors'
 import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container
-} from '../../../styles/styledComponents'
+} from '../../../styles/components'
 import SSIBellIcon from '../../assets/icons/SSIBellIcon'
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon'
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon'

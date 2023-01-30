@@ -1,12 +1,8 @@
 import styled from 'styled-components/native'
 
 import SSIStatusLabel from '../../../../components/labels/SSIStatusLabel'
-import {
-  SSIFlexDirectionRowViewStyled,
-  SSIRoundedContainerStyled,
-  SSITextH4SemiBoldLightStyled,
-  SSITextH5LightStyled
-} from '../../../styledComponents'
+import { SSIFlexDirectionRowViewStyled, SSIRoundedContainerStyled } from '../../containers'
+import { SSITextH4SemiBoldLightStyled, SSITextH5LightStyled } from '../../fonts'
 
 export const SSICardViewContainerStyled = styled(SSIRoundedContainerStyled)`
   width: 327px;
