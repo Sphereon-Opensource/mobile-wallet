@@ -109,5 +109,7 @@
     "terms_of_service_consent_privacy_message": "I have read and accept the Privacy policy.",
     "terms_of_service_decline_title": "You have declined the Terms of service",
     "terms_of_service_decline_message": "You declined, meaning the onboarding of the wallet hasn't been finished. Either remove the Sphereon Wallet from your device, or start from the beginning when opening the wallet.",
-    "terms_of_service_decline_action_caption": "Exit app"
+    "terms_of_service_decline_action_caption": "Exit app",
+    "terms_of_service_title": "Terms of service",
+    "terms_of_service_subtitle": "This document was last updated on January 5, 2023."
 }

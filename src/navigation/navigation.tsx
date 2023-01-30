@@ -458,12 +458,12 @@ const OnboardingStack = (): JSX.Element => {
         name={ScreenRoutesEnum.TERMS_OF_SERVICE}
         component={SSITermsOfServiceScreen}
         options={{
-          headerTitle: 'Terms of service',
+          headerTitle: translate('terms_of_service_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={'This document was last updated on January 5, 2023.'}
+              headerSubTitle={translate('terms_of_service_subtitle')}
             />
           )
         }}
