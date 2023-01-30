@@ -82,9 +82,7 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator(
-      signPresentation,
-      {
+    new DidAuthSiopOpAuthenticator(signPresentation, {
       [CustomApprovalEnum.PEX]: async (
         verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string

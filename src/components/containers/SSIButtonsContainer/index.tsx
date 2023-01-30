@@ -47,27 +47,27 @@ class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
     const { keyboardVisible } = this.state
 
     return (
-        <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
-          {secondaryButton && (
-            <SSISecondaryButton
-              title={secondaryButton.caption}
-              onPress={secondaryButton.onPress}
-              disabled={secondaryButton.disabled}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 145 }}
-            />
-          )}
-          <Spacer />
-          {primaryButton && (
-            <SSIPrimaryButton
-              title={primaryButton.caption}
-              onPress={primaryButton.onPress}
-              disabled={primaryButton.disabled}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 145 }}
-            />
-          )}
-        </ButtonContainer>
+      <ButtonContainer style={{ marginBottom: keyboardVisible ? 18 : 36 }}>
+        {secondaryButton && (
+          <SSISecondaryButton
+            title={secondaryButton.caption}
+            onPress={secondaryButton.onPress}
+            disabled={secondaryButton.disabled}
+            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+            style={{ height: 42, width: 145 }}
+          />
+        )}
+        <Spacer />
+        {primaryButton && (
+          <SSIPrimaryButton
+            title={primaryButton.caption}
+            onPress={primaryButton.onPress}
+            disabled={primaryButton.disabled}
+            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+            style={{ height: 42, width: 145 }}
+          />
+        )}
+      </ButtonContainer>
     )
   }
 }

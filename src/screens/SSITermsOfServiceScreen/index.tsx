@@ -49,7 +49,10 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       key: TermsTabRoutesEnum.PRIVACY,
       title: translate('terms_of_service_privacy_tab_header_label'),
       content: () => (
-        <SSITermsOfServiceView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy} />
+        <SSITermsOfServiceView
+          content={translate('privacy_policy_agreement_message')}
+          onScrollBottom={onScrollBottomPrivacy}
+        />
       )
     }
   ]
