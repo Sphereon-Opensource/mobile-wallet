@@ -3,7 +3,7 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { MAX_CONTACT_ALIAS_LENGTH } from '../../@config/constants'
+import { CONTACT_ALIAS_MAX_LENGTH } from '../../@config/constants'
 import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
@@ -59,16 +59,13 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
 
     await this.onValidate(contactAlias)
       .then(() => {
-        if (contactAlias) {
           this.props.createContact({
             name,
             alias: contactAlias.trim(),
             uri,
             identifier
           })
-        }
-
-        onCreate()
+          onCreate()
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
@@ -114,7 +111,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
             <SSITextInputField
               autoFocus={true}
               label={translate('contact_name_label')}
-              maxLength={MAX_CONTACT_ALIAS_LENGTH}
+              maxLength={CONTACT_ALIAS_MAX_LENGTH}
               onChangeText={this.onChangeText}
               onEndEditing={this.onValidate}
               placeholderValue={translate('contact_name_placeholder')}

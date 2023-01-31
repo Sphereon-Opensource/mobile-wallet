@@ -11,11 +11,6 @@ export type CREATE_CONTACT_SUCCESS = typeof CREATE_CONTACT_SUCCESS
 export const CREATE_CONTACT_FAILED = '[CONTACT] STORE_CONTACT_FAILED'
 export type CREATE_CONTACT_FAILED = typeof CREATE_CONTACT_FAILED
 
-export interface IContactState {
-  loading: boolean
-  contacts: Array<IConnectionParty>
-}
-
 interface IContactsLoading {
   type: CONTACTS_LOADING
 }

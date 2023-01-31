@@ -4,7 +4,7 @@ export interface IOnboardingState {
   emailAddress: string | undefined
 }
 
-export interface ISetPersonalDataActionPayload {
+export interface ISetPersonalDataActionArgs {
   firstName: string
   lastName: string
   emailAddress: string

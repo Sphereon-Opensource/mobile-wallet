@@ -1,109 +1,145 @@
-import React, { FC, useState } from 'react'
+import React, { PureComponent } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { EMAIL_ADDRESS_VALIDATION_REGEX } from '../../@config/constants'
+import {
+  EMAIL_ADDRESS_VALIDATION_REGEX,
+  EMAIL_ADDRESS_MAX_LENGTH,
+  FIRST_NAME_MAX_LENGTH,
+  LAST_NAME_MAX_LENGTH
+} from '../../@config/constants'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ISetPersonalDataActionArgs } from '../../@types/store/onboarding.types'
+import { IUser } from '../../@types/store/user.types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
+import { setPersonalData } from '../../store/actions/onboarding.actions'
+import { setUser } from '../../store/actions/user.actions'
 import {
   SSIPersonalDataScreenContainerStyled as Container,
-  SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
-  SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer
+  SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
+  SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer
 } from '../../styles/components'
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>
+interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA> {
+  setPersonalData: (args: ISetPersonalDataActionArgs) => void
+  setUser: (args: IUser) => void
+}
 
-const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [emailAddress, setEmailAddress] = useState('')
+interface IScreenState {
+  firstName: string
+  lastName: string
+  emailAddress: string
+}
 
-  const dispatch = useDispatch()
-
-  const onFirstNameChange = async (input: string): Promise<void> => {
-    setFirstName(input)
+class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
+  state = {
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
   }
 
-  const onFirstNameValidation = async (input: string): Promise<void> => {
-    if (firstName.length === 0) {
+  onFirstNameChange = async (input: string): Promise<void> => {
+    this.setState({ firstName: input })
+  }
+
+  onFirstNameValidation = async (input: string): Promise<void> => {
+    if (input.length === 0) {
       return Promise.reject(Error(translate('first_name_invalid_message')))
     }
   }
 
-  const onLastNameChange = async (input: string): Promise<void> => {
-    setLastName(input)
+  onLastNameChange = async (input: string): Promise<void> => {
+    this.setState({ lastName: input })
   }
 
-  const onLastNameValidation = async (input: string): Promise<void> => {
-    if (lastName.length === 0) {
+  onLastNameValidation = async (input: string): Promise<void> => {
+    if (input.length === 0) {
       return Promise.reject(Error(translate('last_name_invalid_message')))
     }
   }
 
-  const onEmailAddressChange = async (input: string): Promise<void> => {
-    setEmailAddress(input.toLowerCase())
+  onEmailAddressChange = async (input: string): Promise<void> => {
+    this.setState({ emailAddress: input.toLowerCase() })
   }
 
-  const onEmailAddressValidation = async (input: string): Promise<void> => {
+  onEmailAddressValidation = async (input: string): Promise<void> => {
     if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(input)) {
-      setEmailAddress('')
+      this.setState({ emailAddress: '' })
       return Promise.reject(Error(translate('email_address_invalid_message')))
     }
   }
 
-  const onNext = async (): Promise<void> => {
-    console.log('pressed')
+  onNext = async (): Promise<void> => {
+    const { firstName, lastName, emailAddress } = this.state
+
+    this.props.setPersonalData({
+      firstName,
+      lastName,
+      emailAddress
+    })
+
     // TODO WAL-407 implement user functionality
-    //dispatch(setUser({ name: 'dummy' }))
+    this.props.setUser({ name: 'dummy' })
   }
 
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <Container>
-        <TextInputsContainer>
-          <TextInputContainer>
+  render() {
+    const { firstName, lastName, emailAddress } = this.state
+
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Container>
+          <TextInputsContainer>
+            <TextInputContainer>
+              <SSITextInputField
+                autoComplete={'name-given'}
+                autoFocus={true}
+                label={translate('first_name_label')}
+                maxLength={FIRST_NAME_MAX_LENGTH}
+                onChangeText={this.onFirstNameChange}
+                onEndEditing={this.onFirstNameValidation}
+                placeholderValue={translate('first_name_placeholder')}
+              />
+            </TextInputContainer>
+            <TextInputContainer>
+              <SSITextInputField
+                autoComplete={'name-family'}
+                label={translate('last_name_label')}
+                maxLength={LAST_NAME_MAX_LENGTH}
+                onChangeText={this.onLastNameChange}
+                onEndEditing={this.onLastNameValidation}
+                placeholderValue={translate('last_name_placeholder')}
+              />
+            </TextInputContainer>
             <SSITextInputField
-              autoComplete={'name-given'}
-              autoFocus={true}
-              label={translate('first_name_label')}
-              // maxLength={MAX_CONTACT_ALIAS_LENGTH}
-              onChangeText={onFirstNameChange}
-              onEndEditing={onFirstNameValidation}
-              placeholderValue={translate('first_name_placeholder')}
+              label={translate('email_address_label')}
+              maxLength={EMAIL_ADDRESS_MAX_LENGTH}
+              autoComplete={'email'}
+              onChangeText={this.onEmailAddressChange}
+              onEndEditing={this.onEmailAddressValidation}
+              placeholderValue={translate('email_address_placeholder')}
             />
-          </TextInputContainer>
-          <TextInputContainer>
-            <SSITextInputField
-              autoComplete={'name-family'}
-              label={translate('last_name_label')}
-              // maxLength={MAX_CONTACT_ALIAS_LENGTH}
-              onChangeText={onLastNameChange}
-              onEndEditing={onLastNameValidation}
-              placeholderValue={translate('last_name_placeholder')}
-            />
-          </TextInputContainer>
-          <SSITextInputField
-            label={translate('email_address_label')}
-            // maxLength={MAX_CONTACT_ALIAS_LENGTH}
-            autoComplete={'email'}
-            onChangeText={onEmailAddressChange}
-            onEndEditing={onEmailAddressValidation}
-            placeholderValue={translate('email_address_placeholder')}
+          </TextInputsContainer>
+          <SSIButtonsContainer
+            primaryButton={{
+              caption: translate('action_next_label'),
+              disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
+              onPress: this.onNext
+            }}
           />
-        </TextInputsContainer>
-        <SSIButtonsContainer
-          primaryButton={{
-            caption: translate('action_next_label'),
-            disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
-            onPress: onNext
-          }}
-        />
-      </Container>
-    </TouchableWithoutFeedback>
-  )
+        </Container>
+      </TouchableWithoutFeedback>
+    )
+  }
 }
 
-export default SSIPersonalDataScreen
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setPersonalData: (args: ISetPersonalDataActionArgs) => dispatch(setPersonalData(args)),
+    setUser: (args: IUser) => dispatch(setUser(args))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SSIPersonalDataScreen)
