@@ -11,7 +11,7 @@ import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIBasicHorizontalCenterContainerStyled,
-  SSIButtonBottomSingleContainerStyled
+  SSIButtonBottomContainerStyled
 } from '../../styles/components'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>
@@ -51,7 +51,7 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
       </ScrollView>
       <View style={{ backgroundColor: '#202537', height: 100, marginTop: 'auto', width: '100%' }}>
         <SSIBasicHorizontalCenterContainerStyled>
-          <SSIButtonBottomSingleContainerStyled>
+          <SSIButtonBottomContainerStyled>
             <SSIPrimaryButton
               title={'Share'} // TODO translation
               onPress={async () => {
@@ -69,7 +69,7 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
               style={{ flex: 1, height: 42 }}
             />
-          </SSIButtonBottomSingleContainerStyled>
+          </SSIButtonBottomContainerStyled>
         </SSIBasicHorizontalCenterContainerStyled>
       </View>
     </Container>

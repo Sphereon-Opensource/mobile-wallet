@@ -1,12 +1,12 @@
 import { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { ColorValue, View, ViewStyle } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 import { logos } from '../../../../styles/colors'
 
 export interface IProps {
   size?: number
-  color?: string
+  color?: ColorValue
   style?: ViewStyle
 }
 

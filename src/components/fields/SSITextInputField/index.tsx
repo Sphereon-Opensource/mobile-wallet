@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
+import { ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
 
 import { inputs, selectionElements, statuses } from '../../../styles/colors'
 import {
@@ -18,13 +18,13 @@ import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined
   autoFocus?: boolean
-  borderColor?: string
+  borderColor?: ColorValue
   disabled?: boolean
   editable?: boolean
   helperText?: string
   initialValue?: string
   label?: string
-  labelColor?: string
+  labelColor?: ColorValue
   keyboardType?: KeyboardTypeOptions | undefined
   maxLength?: number
   onChangeText?: (input: string) => Promise<void>
@@ -77,6 +77,17 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     }
   }
 
+  const onBlur = async (): Promise<void> => {
+    setHasFocus(false)
+  }
+
+  const _onFocus = async (): Promise<void> => {
+    setHasFocus(true)
+    if (onFocus) {
+      await onFocus()
+    }
+  }
+
   return (
     <Container>
       {label ? (
@@ -99,15 +110,10 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           keyboardType={keyboardType}
           placeholder={placeholderValue}
           maxLength={maxLength}
-          onBlur={() => setHasFocus(false)}
-          onChangeText={(input: string) => onChange(input)}
-          onEndEditing={(event: NativeSyntheticEvent<TextInputEndEditingEventData>) => onEditingEnd(event)}
-          onFocus={async () => {
-            setHasFocus(true)
-            if (onFocus) {
-              await onFocus()
-            }
-          }}
+          onBlur={onBlur}
+          onChangeText={onChange}
+          onEndEditing={onEditingEnd}
+          onFocus={_onFocus}
           value={value}
           style={{ opacity: disabled ? 0.5 : 1 }}
         />

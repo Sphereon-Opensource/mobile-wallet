@@ -1,12 +1,12 @@
 import { FC } from 'react'
-import { View } from 'react-native'
+import { ColorValue, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 import { fonts } from '../../../../styles/colors'
 
 export interface IProps {
   size?: number
-  color?: string
+  color?: ColorValue
 }
 
 const SSICloseIcon: FC<IProps> = (props: IProps): JSX.Element => {

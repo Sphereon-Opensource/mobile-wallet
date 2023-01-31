@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Image, ImageBackground, View, ViewStyle } from 'react-native'
+import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-native'
 
 import { CredentialStatusEnum } from '../../../@types'
 import { translate } from '../../../localization/Localization'
@@ -29,7 +29,7 @@ import SSIPlaceholderLogo from '../../assets/images/SSIPlaceholderLogo'
 const { v4: uuidv4 } = require('uuid')
 
 export interface IProps {
-  backgroundColor?: string
+  backgroundColor?: ColorValue
   backgroundImage?: string // TODO WAL-302 Support passing in storage location
   logoImage?: string // TODO WAL-302 Support passing in storage location
   credentialTitle: string

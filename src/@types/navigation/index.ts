@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import { VerifiableCredential } from '@veramo/core'
 
@@ -31,8 +31,9 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps
   ContactAdd: IContactAddProps
   Onboarding: Record<string, never>
-  OnboardingWelcome: Record<string, never>
+  Welcome: Record<string, never>
   Main: Record<string, never>
+  TermsOfService: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -53,7 +54,7 @@ export interface ICredentialRawJsonProps {
 }
 
 export interface IPexVerificationProps {
-  request: SIOP.VerifiedAuthenticationRequestWithJWT
+  request: VerifiedAuthorizationRequest
   sessionId: string
 }
 
@@ -125,7 +126,7 @@ export enum NavigationBarRoutesEnum {
 }
 
 export enum ScreenRoutesEnum {
-  ONBOARDING_WELCOME = 'OnboardingWelcome',
+  WELCOME = 'Welcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
@@ -138,5 +139,6 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
-  CONTACT_ADD = 'ContactAdd'
+  CONTACT_ADD = 'ContactAdd',
+  TERMS_OF_SERVICE = 'TermsOfService'
 }

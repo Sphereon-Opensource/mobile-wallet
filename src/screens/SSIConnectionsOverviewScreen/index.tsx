@@ -30,6 +30,14 @@ class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
     this.setState({ refreshing: false })
   }
 
+  onDelete = async (): Promise<void> => {
+    console.log('Delete connection pressed!')
+  }
+
+  onItemPress = async (connection: IConnectionViewItem): Promise<void> => {
+    this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, connection)
+  }
+
   renderItem = (itemInfo: ListRenderItemInfo<IConnectionViewItem>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
@@ -40,8 +48,8 @@ class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
           uri={itemInfo.item.connection.config.redirectUrl}
         />
       }
-      onPress={async () => this.props.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, itemInfo.item)}
-      onDelete={async () => console.log('Delete contact pressed!')}
+      onPress={() => this.onItemPress(itemInfo.item)}
+      onDelete={this.onDelete}
     />
   )
 

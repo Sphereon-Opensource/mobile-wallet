@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { IDidAuthConfig } from '@sphereon/ssi-sdk-data-store-common'
 import { IAuthRequestDetails, IResponse, OpSession } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
 import { IVerifiableCredential } from '@sphereon/ssi-types'
@@ -44,13 +44,13 @@ class DidAuthSiopProvider {
 
   public verifyAuthentication = async (
     sessionId: string,
-    verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT
+    verifiedAuthorizationRequest: VerifiedAuthorizationRequest
   ): Promise<IResponse> => {
     return getVerifiableCredentialsFromStorage()
       .then((verifiableCredentials: Array<UniqueVerifiableCredential>) =>
         getSiopAuthenticationRequestDetails({
           sessionId,
-          verifiedAuthenticationRequest,
+          verifiedAuthorizationRequest,
           // TODO fix mismatching dep versions
           verifiableCredentials: verifiableCredentials.map((vc) => <IVerifiableCredential>vc.verifiableCredential)
         })
@@ -62,7 +62,7 @@ class DidAuthSiopProvider {
 
         return sendSiopAuthenticationResponse({
           sessionId,
-          verifiedAuthenticationRequest,
+          verifiedAuthorizationRequest,
           verifiablePresentationResponse: verification.vpResponseOpts
         })
       })

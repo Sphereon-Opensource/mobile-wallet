@@ -16,8 +16,16 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
   const { connections } = props
   const [refreshing, setRefreshing] = React.useState(false)
 
-  const onRefresh = () => {
+  const onRefresh = async (): Promise<void> => {
     setRefreshing(false)
+  }
+
+  const onDelete = async (): Promise<void> => {
+    console.log('Delete connection pressed!')
+  }
+
+  const onItemPress = async (connection: IConnection): Promise<void> => {
+    console.log('Connection pressed!')
   }
 
   const renderItem = (itemInfo: ListRenderItemInfo<IConnection>): JSX.Element => (
@@ -31,8 +39,8 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
           uri={itemInfo.item.type}
         />
       }
-      onPress={async () => console.log('Connection pressed!')}
-      onDelete={async () => console.log('Delete connection pressed!')}
+      onPress={() => onItemPress(itemInfo.item)}
+      onDelete={onDelete}
     />
   )
 

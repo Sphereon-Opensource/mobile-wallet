@@ -4,15 +4,15 @@ import { backgrounds } from '../../../colors'
 import { SSIBasicContainerStyled } from '../../containers'
 import { SSILinearGradientWelcomeStyled } from '../../gradients'
 
-export const SSIOnboardingWelcomeScreenContainerStyled = styled(SSIBasicContainerStyled)`
+export const SSIWelcomeScreenContainerStyled = styled(SSIBasicContainerStyled)`
   overflow: hidden;
 `
 
-export const SSIOnboardingWelcomeScreenWelcomeViewContainerStyled = styled.View`
+export const SSIWelcomeScreenWelcomeViewContainerStyled = styled.View`
   margin-top: auto;
 `
 
-export const SSIOnboardingWelcomeScreenIntroBackgroundContainerStyled = styled.View`
+export const SSIWelcomeScreenIntroBackgroundContainerStyled = styled.View`
   background-color: ${backgrounds.primaryDark};
   position: absolute;
   z-index: -1;
@@ -24,7 +24,7 @@ export const SSIOnboardingWelcomeScreenIntroBackgroundContainerStyled = styled.V
   margin-top: -457.5px;
 `
 
-export const SSIOnboardingWelcomeScreenBackgroundContainerStyled = styled(SSILinearGradientWelcomeStyled)`
+export const SSIWelcomeScreenBackgroundContainerStyled = styled(SSILinearGradientWelcomeStyled)`
   flex: 1;
   align-items: center;
 `

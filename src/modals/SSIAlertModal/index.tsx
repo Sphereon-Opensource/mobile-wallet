@@ -16,6 +16,10 @@ type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.ALERT_MODAL>
 const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
   const { message, buttons, showCancel = true } = props.route.params
 
+  const onCancel = async (): Promise<void> => {
+    props.navigation.goBack()
+  }
+
   return (
     <Container>
       <ModalContentContainer>
@@ -23,7 +27,7 @@ const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
         {showCancel ? (
           <SSISecondaryButton
             title={translate('action_cancel_label')}
-            onPress={() => props.navigation.goBack()}
+            onPress={onCancel}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
             style={{ height: 42, flex: 1 }}
           />

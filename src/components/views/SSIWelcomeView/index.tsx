@@ -4,7 +4,7 @@ import { IButton } from '../../../@types'
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
-  SSIWelcomeViewButtonContainerStyled as ButtonContainer,
+  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIWelcomeViewContainerStyled as Container,
   SSIWelcomeViewContentContainerStyled as ContentContainer,
   SSIWelcomeViewHeaderTextStyled as HeaderCaption,

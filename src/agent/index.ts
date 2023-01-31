@@ -1,4 +1,4 @@
-import { SIOP } from '@sphereon/did-auth-siop'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
 import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
@@ -22,6 +22,7 @@ import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
 import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
 import * as RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
+import { signPresentation } from '../services/signatureService'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 
 export const didResolver = new Resolver({
@@ -82,16 +83,13 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator(
-      // TODO implement proper PresentationSignCallBack
-      async (args: PresentationSignCallBackParams) => 'dummy_value',
-      {
+    new DidAuthSiopOpAuthenticator(signPresentation, {
       [CustomApprovalEnum.PEX]: async (
-        verifiedAuthenticationRequest: SIOP.VerifiedAuthenticationRequestWithJWT,
+        verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string
       ) => {
         RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
-          request: verifiedAuthenticationRequest,
+          request: verifiedAuthorizationRequest,
           sessionId
         })
         return Promise.reject(Error('Pex verification manual stop'))

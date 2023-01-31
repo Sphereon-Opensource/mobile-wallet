@@ -1,3 +1,5 @@
+import { PresentationSignCallBackParams } from '@sphereon/pex'
+import { W3CVerifiablePresentation } from '@sphereon/ssi-types'
 import { IIdentifier } from '@veramo/core'
 import { createJWT, Signer } from 'did-jwt'
 
@@ -32,4 +34,9 @@ const getSigner = (identifier: IIdentifier): Signer => {
       data: input
     })
   }
+}
+
+// TODO WAL-414 implement presentation signing
+export const signPresentation = async (args: PresentationSignCallBackParams): Promise<W3CVerifiablePresentation> => {
+  return ''
 }

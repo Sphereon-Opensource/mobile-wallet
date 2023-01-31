@@ -16,7 +16,7 @@ import {
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>
 
 const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
-  const onRead = async (readEvent: BarCodeReadEvent) => {
+  const onRead = async (readEvent: BarCodeReadEvent): Promise<void> => {
     await readQr({ qrData: readEvent.data, navigation: props.navigation })
   }
 

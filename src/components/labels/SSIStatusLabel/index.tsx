@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { ColorValue, View, ViewStyle } from 'react-native'
 
 import { ConnectionStatusEnum, CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../@types'
 import { translate } from '../../../localization/Localization'
@@ -15,7 +15,7 @@ import SSIExclamationMarkBadge from '../../assets/badges/SSIExclamationMarkBadge
 export interface IProps {
   status: LabelStatus
   showIcon?: boolean
-  color?: string
+  color?: ColorValue
   style?: ViewStyle
 }
 
@@ -51,7 +51,7 @@ const getStatusTranslation = (status: LabelStatus): string => {
   }
 }
 
-const getStatusBadge = (status: LabelStatus, backgroundColor?: string): JSX.Element => {
+const getStatusBadge = (status: LabelStatus, backgroundColor?: ColorValue): JSX.Element => {
   switch (status) {
     case IssuerStatusEnum.VERIFIED:
       return <SSICheckmarkBadge backgroundColor={backgroundColor} />

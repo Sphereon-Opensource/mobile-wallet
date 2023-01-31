@@ -51,6 +51,16 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
     })
   }
 
+  onItemPress = async (credential: ICredentialSummary): Promise<void> => {
+    getVerifiableCredential({ hash: credential.id }).then((vc: VerifiableCredential) =>
+      this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+        rawCredential: vc as VerifiableCredential,
+        credential,
+        showActivity: true
+      })
+    )
+  }
+
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
@@ -66,15 +76,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
           signedBy={itemInfo.item.signedBy}
         />
       }
-      onPress={async () =>
-        getVerifiableCredential({ hash: itemInfo.item.id }).then((vc: VerifiableCredential) =>
-          this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-            rawCredential: vc as VerifiableCredential,
-            credential: itemInfo.item,
-            showActivity: true
-          })
-        )
-      }
+      onPress={() => this.onItemPress(itemInfo.item)}
       onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
     />
   )

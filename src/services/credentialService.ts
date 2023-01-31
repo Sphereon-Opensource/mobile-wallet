@@ -4,7 +4,7 @@ import {
   IDeleteVerifiableCredentialArgs,
   IGetVerifiableCredentialArgs,
   IStoreVerifiableCredentialArgs
-} from '../@types/services'
+} from '../@types'
 import {
   dataStoreDeleteVerifiableCredential,
   dataStoreGetVerifiableCredential,

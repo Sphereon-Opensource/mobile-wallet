@@ -28,7 +28,7 @@ const SSICredentialSelectTypeViewItem: FC<Props> = (props: Props): JSX.Element =
       <LogoContainer>
         <SSICredentialLogo image={image} />
         <LogoCheckboxContainer>
-          <SSICheckbox isChecked={props.isSelected} style={{ backgroundColor: style?.backgroundColor }} />
+          <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
         </LogoCheckboxContainer>
       </LogoContainer>
       <ContentContainer>

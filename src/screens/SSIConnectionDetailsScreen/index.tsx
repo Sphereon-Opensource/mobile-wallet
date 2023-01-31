@@ -11,7 +11,7 @@ import { translate } from '../../localization/Localization'
 import { RootState } from '../../store'
 import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
 import {
-  SSIButtonBottomSingleContainerStyled as ButtonContainer,
+  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
@@ -27,7 +27,7 @@ interface IScreenProps extends Props {
 }
 
 export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
-  onDisconnectClick = async (): Promise<void> => {
+  onDisconnectConfirm = async (): Promise<void> => {
     this.props
       // TODO fix non null assertion
       .disconnectConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
@@ -45,7 +45,19 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
       })
   }
 
-  onConnectClick = async (): Promise<void> => {
+  onDisconnect = async (): Promise<void> => {
+    this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
+      message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
+      buttons: [
+        {
+          caption: translate('action_confirm_label'),
+          onPress: this.onDisconnectConfirm
+        }
+      ]
+    })
+  }
+
+  onConnectConfirm = async (): Promise<void> => {
     this.props
       // TODO fix non null assertion
       .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
@@ -62,6 +74,18 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
           showToast(ToastTypeEnum.TOAST_ERROR, error.message)
         }
       })
+  }
+
+  onConnect = async (): Promise<void> => {
+    this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
+      message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
+      buttons: [
+        {
+          caption: translate('action_confirm_label'),
+          onPress: this.onConnectConfirm
+        }
+      ]
+    })
   }
 
   render() {
@@ -83,36 +107,16 @@ export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
           {connectionStatus === ConnectionStatusEnum.DISCONNECTED ? (
             <SSIPrimaryButton
               title={translate('connection_details_action_connect')}
-              onPress={() =>
-                this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
-                  message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
-                  buttons: [
-                    {
-                      caption: translate('action_confirm_label'),
-                      onPress: this.onConnectClick
-                    }
-                  ]
-                })
-              }
+              onPress={this.onConnect}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ flex: 1, height: 42 }}
+              style={{ height: 42, width: 300 }}
             />
           ) : (
             <SSIPrimaryButton
               title={translate('connection_details_action_disconnect')}
-              onPress={() =>
-                this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
-                  message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
-                  buttons: [
-                    {
-                      caption: translate('action_confirm_label'),
-                      onPress: this.onDisconnectClick
-                    }
-                  ]
-                })
-              }
+              onPress={this.onDisconnect}
               // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ flex: 1, height: 42 }}
+              style={{ height: 42, width: 300 }}
             />
           )}
         </ButtonContainer>

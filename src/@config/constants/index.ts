@@ -11,3 +11,5 @@ export const DIF_UNIRESOLVER_RESOLVE_URL = 'https://dev.uniresolver.io/1.0/ident
 
 export const APP_ID = 'sphereon:ssi-wallet'
 export const DID_PREFIX = 'did'
+
+export const MAX_CONTACT_ALIAS_LENGTH = 50

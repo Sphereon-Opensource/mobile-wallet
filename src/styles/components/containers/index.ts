@@ -74,15 +74,9 @@ export const SSIRippleContainerStyled = styled(Ripple).attrs({
   rippleFades: false
 })``
 
-export const SSIButtonBottomMultipleContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
+// TODO we should be able to merge these 2 justify-content: center;
+export const SSIButtonBottomContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   ${SSIButtonBottomContainerCss};
-  width: 80%;
-  justify-content: center;
-`
-
-export const SSIButtonBottomSingleContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`
-  ${SSIButtonBottomContainerCss};
-  width: 80%;
 `
 
 export const SSIRightColumnRightAlignedContainerStyled = styled(SSIFlexDirectionColumnViewStyled)`

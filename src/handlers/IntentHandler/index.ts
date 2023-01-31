@@ -30,7 +30,7 @@ class IntentHandler {
     await this.removeListeners()
   }
 
-  private addListeners = async (): Promise<any> => {
+  private addListeners = async (): Promise<void> => {
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener)
     this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener)
   }
@@ -57,7 +57,7 @@ class IntentHandler {
   }
 
   private async handleSharedFileData(): Promise<void> {
-    await ShareMenu.getSharedText((data: any) => {
+    await ShareMenu.getSharedText((data?: ShareData) => {
       debug(`Receiving shared data: ${JSON.stringify(data, null, 2)}`)
       if (!data) {
         return
