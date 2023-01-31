@@ -75,14 +75,23 @@ class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
   onNext = async (): Promise<void> => {
     const { firstName, lastName, emailAddress } = this.state
 
-    this.props.setPersonalData({
-      firstName,
-      lastName,
-      emailAddress
-    })
+    Keyboard.dismiss()
 
-    // TODO WAL-407 implement user functionality
-    this.props.setUser({ name: 'dummy' })
+    // only validating email address here as the other fields do not have any special validation
+    this.onEmailAddressValidation(emailAddress)
+      .then(() => {
+        this.props.setPersonalData({
+          firstName,
+          lastName,
+          emailAddress
+        })
+
+        // TODO WAL-407 implement user functionality
+        this.props.setUser({ name: 'dummy' })
+      })
+      .catch(() => {
+        // do nothing as the state is already handled by the validate function, and we do not want to create the contact
+      })
   }
 
   render() {

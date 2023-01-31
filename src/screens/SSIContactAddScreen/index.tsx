@@ -57,7 +57,7 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
 
     Keyboard.dismiss()
 
-    await this.onValidate(contactAlias)
+    this.onValidate(contactAlias)
       .then(() => {
           this.props.createContact({
             name,
