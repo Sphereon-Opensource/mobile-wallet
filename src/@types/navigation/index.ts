@@ -128,6 +128,7 @@ export enum NavigationBarRoutesEnum {
 
 export enum ScreenRoutesEnum {
   WELCOME = 'Welcome',
+  PERSONAL_DATA = 'PersonalData',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
