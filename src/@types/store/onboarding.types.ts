@@ -9,5 +9,3 @@ export interface ISetPersonalDataActionArgs {
   lastName: string
   emailAddress: string
 }
-
-

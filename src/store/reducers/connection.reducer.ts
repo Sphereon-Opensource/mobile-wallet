@@ -2,7 +2,7 @@ import {
   ConnectionActionTypes,
   CONNECTIONS_LOADING,
   GET_CONNECTION_ENTITIES_FAILED,
-  GET_CONNECTION_ENTITIES_SUCCESS,
+  GET_CONNECTION_ENTITIES_SUCCESS
 } from '../../@types/store/connection.action.types'
 import { IConnectionState } from '../../@types/store/connection.types'
 

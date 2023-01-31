@@ -59,13 +59,13 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
 
     this.onValidate(contactAlias)
       .then(() => {
-          this.props.createContact({
-            name,
-            alias: contactAlias.trim(),
-            uri,
-            identifier
-          })
-          onCreate()
+        this.props.createContact({
+          name,
+          alias: contactAlias.trim(),
+          uri,
+          identifier
+        })
+        onCreate()
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact

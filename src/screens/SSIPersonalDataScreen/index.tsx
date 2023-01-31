@@ -4,8 +4,8 @@ import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import {
-  EMAIL_ADDRESS_VALIDATION_REGEX,
   EMAIL_ADDRESS_MAX_LENGTH,
+  EMAIL_ADDRESS_VALIDATION_REGEX,
   FIRST_NAME_MAX_LENGTH,
   LAST_NAME_MAX_LENGTH
 } from '../../@config/constants'
@@ -38,7 +38,7 @@ class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
   state = {
     firstName: '',
     lastName: '',
-    emailAddress: '',
+    emailAddress: ''
   }
 
   onFirstNameChange = async (input: string): Promise<void> => {
