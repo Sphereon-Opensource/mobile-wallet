@@ -10,6 +10,7 @@ import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
 import {
   SSIPersonalDataScreenContainerStyled as Container,
+  SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer
 } from '../../styles/components'
 
@@ -53,7 +54,7 @@ const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
     }
   }
 
-  const onContinue = async (): Promise<void> => {
+  const onNext = async (): Promise<void> => {
     console.log('pressed')
     // TODO WAL-407 implement user functionality
     //dispatch(setUser({ name: 'dummy' }))
@@ -62,35 +63,42 @@ const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <Container>
-        <TextInputContainer>
-          <SSITextInputField
-            autoFocus={true}
-            label={translate('first_name_label')}
-            // maxLength={MAX_CONTACT_ALIAS_LENGTH}
-            onChangeText={onFirstNameChange}
-            onEndEditing={onFirstNameValidation}
-            placeholderValue={translate('first_name_placeholder')}
-          />
-          <SSITextInputField
-            label={translate('last_name_label')}
-            // maxLength={MAX_CONTACT_ALIAS_LENGTH}
-            onChangeText={onLastNameChange}
-            onEndEditing={onLastNameValidation}
-            placeholderValue={translate('last_name_placeholder')}
-          />
+        <TextInputsContainer>
+          <TextInputContainer>
+            <SSITextInputField
+              autoComplete={'name-given'}
+              autoFocus={true}
+              label={translate('first_name_label')}
+              // maxLength={MAX_CONTACT_ALIAS_LENGTH}
+              onChangeText={onFirstNameChange}
+              onEndEditing={onFirstNameValidation}
+              placeholderValue={translate('first_name_placeholder')}
+            />
+          </TextInputContainer>
+          <TextInputContainer>
+            <SSITextInputField
+              autoComplete={'name-family'}
+              label={translate('last_name_label')}
+              // maxLength={MAX_CONTACT_ALIAS_LENGTH}
+              onChangeText={onLastNameChange}
+              onEndEditing={onLastNameValidation}
+              placeholderValue={translate('last_name_placeholder')}
+            />
+          </TextInputContainer>
           <SSITextInputField
             label={translate('email_address_label')}
             // maxLength={MAX_CONTACT_ALIAS_LENGTH}
+            autoComplete={'email'}
             onChangeText={onEmailAddressChange}
             onEndEditing={onEmailAddressValidation}
             placeholderValue={translate('email_address_placeholder')}
           />
-        </TextInputContainer>
+        </TextInputsContainer>
         <SSIButtonsContainer
           primaryButton={{
-            caption: 'Continue',
+            caption: translate('action_next_label'),
             disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
-            onPress: onContinue
+            onPress: onNext
           }}
         />
       </Container>

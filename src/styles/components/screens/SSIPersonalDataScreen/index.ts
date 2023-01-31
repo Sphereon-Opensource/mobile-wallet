@@ -7,7 +7,11 @@ export const SSIPersonalDataScreenContainerStyled = styled(SSIBasicHorizontalCen
   padding-right: 24px;
 `
 
-export const SSIPersonalDataScreenTextInputContainerStyled = styled.View`
+export const SSIPersonalDataScreenTextInputsContainerStyled = styled.View`
   width: 100%;
   margin-top: 10px;
+`
+
+export const SSIPersonalDataScreenTextInputContainerStyled = styled.View`
+  margin-bottom: 18px;
 `
