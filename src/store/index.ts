@@ -11,13 +11,15 @@ import { getVerifiableCredentials } from './actions/credential.actions'
 import authenticationReducer from './reducers/authentication.reducer'
 import contactReducer from './reducers/contact.reducer'
 import credentialReducer from './reducers/credential.reducer'
+import onboardingReducer from './reducers/onboarding.reducer'
 
 const rootReducer = combineReducers({
   user: userReducer,
   connection: connectionReducer,
   authentication: authenticationReducer,
   credential: credentialReducer,
-  contact: contactReducer
+  contact: contactReducer,
+  onboarding: onboardingReducer
 })
 
 // https://stackoverflow.com/questions/70143816/argument-of-type-asyncthunkactionany-void-is-not-assignable-to-paramete

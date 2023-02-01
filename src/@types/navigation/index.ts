@@ -34,6 +34,7 @@ export type StackParamList = {
   Welcome: Record<string, never>
   Main: Record<string, never>
   TermsOfService: Record<string, never>
+  PersonalData: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -140,5 +141,6 @@ export enum ScreenRoutesEnum {
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
-  TERMS_OF_SERVICE = 'TermsOfService'
+  TERMS_OF_SERVICE = 'TermsOfService',
+  PERSONAL_DATA = 'PersonalData'
 }

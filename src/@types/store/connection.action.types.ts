@@ -7,12 +7,6 @@ export type GET_CONNECTION_ENTITIES_SUCCESS = typeof GET_CONNECTION_ENTITIES_SUC
 export const GET_CONNECTION_ENTITIES_FAILED = '[CONNECTION] GET_CONNECTION_ENTITIES_FAILED'
 export type GET_CONNECTION_ENTITIES_FAILED = typeof GET_CONNECTION_ENTITIES_FAILED
 
-export interface IConnectionState {
-  loading: boolean
-  parties: Array<IConnectionParty>
-  error: Error | null
-}
-
 interface IConnectionsLoading {
   type: CONNECTIONS_LOADING
 }

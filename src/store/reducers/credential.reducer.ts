@@ -6,10 +6,10 @@ import {
   DELETE_CREDENTIAL_SUCCESS,
   GET_CREDENTIALS_FAILED,
   GET_CREDENTIALS_SUCCESS,
-  ICredentialState,
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS
 } from '../../@types/store/credential.action.types'
+import { ICredentialState } from '../../@types/store/credential.types'
 
 const initialState: ICredentialState = {
   loading: false,

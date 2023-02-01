@@ -15,11 +15,6 @@ export type DELETE_CREDENTIAL_SUCCESS = typeof DELETE_CREDENTIAL_SUCCESS
 export const DELETE_CREDENTIAL_FAILED = '[CREDENTIAL] DELETE_CREDENTIAL_FAILED'
 export type DELETE_CREDENTIAL_FAILED = typeof DELETE_CREDENTIAL_FAILED
 
-export interface ICredentialState {
-  loading: boolean
-  verifiableCredentials: Array<ICredentialSummary>
-}
-
 interface ICredentialsLoading {
   type: CREDENTIALS_LOADING
 }
