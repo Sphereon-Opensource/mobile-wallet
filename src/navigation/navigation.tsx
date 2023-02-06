@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React from 'react'
-import { Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
 import { useSelector } from 'react-redux'
 
@@ -10,7 +9,6 @@ import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime }
 import {
   MainRoutesEnum,
   NavigationBarRoutesEnum,
-  PlatformsEnum,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum
@@ -22,7 +20,6 @@ import SSIAlertModal from '../modals/SSIAlertModal'
 import SSIPopupModal from '../modals/SSIPopupModal'
 import * as RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
-import SSIConnectionsOverviewScreen from '../screens/SSIConnectionsOverviewScreen'
 import SSIContactAddScreen from '../screens/SSIContactAddScreen'
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
@@ -31,15 +28,16 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
+import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
+import SSIPinCodeScreen from '../screens/SSIPinCodeScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
-import SSIPinCodeScreen from '../screens/SSIPinCodeScreen'
 
 const format = require('string-format')
 
@@ -411,41 +409,24 @@ const QRStack = (): JSX.Element => {
   )
 }
 
-// TODO need a temp screen here else navigating to this stack will give errors
 const NotificationsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
       screenOptions={{
         animation: 'none'
       }}
     >
       <Stack.Screen
-        name={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
-        component={SSIConnectionsOverviewScreen}
+        name={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
+        component={SSINotificationsOverviewScreen}
         options={{
-          headerTitle: translate('connections_overview_title'),
+          headerTitle: translate('notifications_overview_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               showBackButton={false}
-              moreButtonAction={async () => console.log('more pressed')}
               showBorder
-            />
-          )
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONNECTION_DETAILS}
-        component={SSIConnectionDetailsScreen}
-        options={{
-          headerTitle: translate('connection_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              moreButtonAction={async () => console.log('more pressed')}
             />
           )
         }}

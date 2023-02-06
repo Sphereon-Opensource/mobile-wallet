@@ -36,6 +36,7 @@ export type StackParamList = {
   TermsOfService: Record<string, never>
   PersonalData: Record<string, never>
   PinCode: IPinCodeProps
+  NotificationsOverview: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -148,5 +149,6 @@ export enum ScreenRoutesEnum {
   CONTACT_ADD = 'ContactAdd',
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
-  PIN_CODE = 'PinCode'
+  PIN_CODE = 'PinCode',
+  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
 }

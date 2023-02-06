@@ -129,5 +129,8 @@
     "pin_code_accessibility_label": "Pincode",
     "pin_code_accessibility_hint": "Vul je pincode in",
     "pin_code_invalid_code_message": "Deze pincode komt niet overeen. Probeer het opnieuw.",
-    "pin_code_attempts_left_message": "Pogingen over:"
+    "pin_code_attempts_left_message": "Pogingen over:",
+    "notifications_overview_title": "Notificaties",
+    "notifications_overview_empty_state_title": "Nog geen notificaties",
+    "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch."
 }

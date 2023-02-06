@@ -24,7 +24,7 @@ import {
   SSITextH6LightStyled as PropertyValueText,
   SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
-import SSIPlaceholderLogo from '../../assets/images/SSIPlaceholderLogo'
+import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
 
 const { v4: uuidv4 } = require('uuid')
 
