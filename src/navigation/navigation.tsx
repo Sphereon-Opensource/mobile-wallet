@@ -493,6 +493,7 @@ const OnboardingStack = (): JSX.Element => {
         name={ScreenRoutesEnum.PIN_CODE}
         component={SSIPinCodeScreen}
         options={({ route }) => ({
+          // unmountOnBlur resets the stack back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
           header: (props: NativeStackHeaderProps) => (
