@@ -14,11 +14,11 @@ export interface Props {
   secondaryButton?: IButton
 }
 
-interface IScreenState {
+interface IState {
   keyboardVisible: boolean
 }
 
-class SSIButtonsContainer extends PureComponent<Props, IScreenState> {
+class SSIButtonsContainer extends PureComponent<Props, IState> {
   keyboardDidShowListener: EmitterSubscription
   keyboardDidHideListener: EmitterSubscription
   state = {

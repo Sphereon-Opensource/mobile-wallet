@@ -15,11 +15,11 @@ import SSIContactsIcon from '../../assets/icons/SSIContactsIcon'
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon'
 import SSIQRIcon from '../../assets/icons/SSIQRIcon'
 
-interface IScreenState {
+interface IState {
   isVisible: boolean
 }
 
-export class SSINavigationBar extends PureComponent<BottomTabBarProps, IScreenState> {
+export class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
   private keyboardDidShowListener: EmitterSubscription
   private keyboardDidHideListener: EmitterSubscription
 

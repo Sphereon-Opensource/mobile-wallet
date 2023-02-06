@@ -20,23 +20,23 @@ import {
 } from '../../styles/components'
 import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void
 }
 
-interface IScreenState {
+interface IState {
   contactAlias: string
   hasConsent: boolean
 }
 
-class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
+class SSIContactAddScreen extends PureComponent<IProps, IState> {
   state = {
     contactAlias: '',
     hasConsent: true
   }
 
-  onValidate = async (input: string): Promise<void> => {
-    let contactAlias: string = input
+  onValidate = async (value: string): Promise<void> => {
+    let contactAlias: string = value
     contactAlias = contactAlias.trim()
 
     if (contactAlias.length === 0) {
@@ -72,8 +72,8 @@ class SSIContactAddScreen extends PureComponent<IScreenProps, IScreenState> {
       })
   }
 
-  onChangeText = async (input: string): Promise<void> => {
-    this.setState({ contactAlias: input })
+  onChangeText = async (value: string): Promise<void> => {
+    this.setState({ contactAlias: value })
   }
 
   onValueChange = async (isChecked: boolean): Promise<void> => {

@@ -17,13 +17,13 @@ import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as Sta
 
 const format = require('string-format')
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void
   deleteVerifiableCredential: (credentialHash: string) => void
   verifiableCredentials: Array<ICredentialSummary>
 }
 
-class SSICredentialsOverviewScreen extends PureComponent<IScreenProps> {
+class SSICredentialsOverviewScreen extends PureComponent<IProps> {
   state = {
     refreshing: false
   }

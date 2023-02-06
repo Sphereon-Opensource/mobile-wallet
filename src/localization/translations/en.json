@@ -46,7 +46,6 @@
     "verification_code_invalid_code_details": "That wasn't the code we’re seeking. Try again by requesting a new link or scanning the QR code again.",
     "verification_code_invalid_code_details_title": "Extra details",
     "verification_code_invalid_code_message": "Wrong verification code. Please try again.",
-    "verification_code_attempts_left_message": "Attempts left:",
     "credential_card_expires_message": "Expires:",
     "issuer_status_verified": "Verified",
     "issuer_status_unverified": "Unverified",
@@ -122,5 +121,13 @@
     "last_name_invalid_message": "Please fill in a valid last name",
     "email_address_label": "Email address",
     "email_address_placeholder": "Email address",
-    "email_address_invalid_message": "Please fill in a valid email address"
+    "email_address_invalid_message": "Please fill in a valid email address",
+    "pin_code_choose_pin_code_title": "Choose your pin code",
+    "pin_code_choose_pin_code_subtitle": "Choose a pin code to help keep your wallet safe and secure.",
+    "pin_code_confirm_pin_code_title": "Confirm your pin code",
+    "pin_code_confirm_pin_code_subtitle": "Enter your pin code to confirm the first one.",
+    "pin_code_accessibility_label": "Pin code",
+    "pin_code_accessibility_hint": "Enter your pin code",
+    "pin_code_invalid_code_message": "This pin code does not match. Please try again.",
+    "pin_code_code_attempts_left_message": "Attempts left:"
 }

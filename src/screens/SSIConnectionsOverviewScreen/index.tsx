@@ -14,13 +14,13 @@ import { RootState } from '../../store'
 import { getConnectionParties } from '../../store/actions/connection.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
   getConnectionParties: () => void
   connectionParties: Array<IConnectionParty>
   authenticationEntities: Array<IAuthenticatedEntity>
 }
 
-class SSIConnectionsOverviewScreen extends PureComponent<IScreenProps> {
+class SSIConnectionsOverviewScreen extends PureComponent<IProps> {
   state = {
     refreshing: false
   }

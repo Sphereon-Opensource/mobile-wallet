@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
+import { VERIFICATION_CODE_MAX_RETRIES } from '../../@config/constants'
 import { MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
@@ -38,11 +39,13 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
       <StatusBar />
       <PinCodeContainer>
         <SSIPinCode
+          maxRetries={VERIFICATION_CODE_MAX_RETRIES}
           length={route.params.pinLength}
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}
           onMaxRetriesExceeded={onMaxRetriesExceeded}
           onVerification={route.params.onVerification}
+          errorMessage={translate('verification_code_invalid_code_message')}
           navigation={navigation}
         />
       </PinCodeContainer>

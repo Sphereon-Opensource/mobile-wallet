@@ -16,13 +16,13 @@ import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, 'Veramo'>
 
-interface IScreenProps extends Props {
+interface IProps extends Props {
   authenticateEntity: (entityId: string, connection: IConnection) => void
   connectionParties: Array<IConnectionParty>
   authenticationEntities: Array<IAuthenticatedEntity>
 }
 
-interface IScreenState {
+interface IState {
   identifiers: Array<Identifier>
 }
 
@@ -30,7 +30,7 @@ interface Identifier {
   did: string
 }
 
-export class Veramo extends PureComponent<IScreenProps, IScreenState> {
+export class Veramo extends PureComponent<IProps, IState> {
   state = {
     identifiers: []
   }

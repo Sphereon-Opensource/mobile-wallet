@@ -21,6 +21,8 @@ import expo.modules.ReactNativeHostWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import com.reactlibrary.securekeystore.RNSecureKeyStorePackage;
+
 public class MainApplication extends Application implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,

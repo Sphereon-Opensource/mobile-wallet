@@ -13,12 +13,12 @@ import { RootState } from '../../store'
 import { getContacts } from '../../store/actions/contact.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void
   contacts: Array<IConnectionParty>
 }
 
-class SSIContactsOverviewScreen extends PureComponent<IScreenProps> {
+class SSIContactsOverviewScreen extends PureComponent<IProps> {
   state = {
     refreshing: false
   }

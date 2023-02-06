@@ -15,26 +15,18 @@ import {
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
 
-interface IScreenState {
+interface IState {
   body: string
   buttonCaption: string
   step: number
 }
 
-class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
+class SSIWelcomeScreen extends PureComponent<Props, IState> {
   hardwareBackPressListener: NativeEventSubscription
   state = {
     body: translate('onboarding_welcome_intro_body'),
     buttonCaption: translate('action_next_label'),
     step: 1
-  }
-
-  componentDidMount = (): void => {
-    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack)
-  }
-
-  componentWillUnmount = (): void => {
-    this.hardwareBackPressListener.remove()
   }
 
   _onBack = (): boolean => {
@@ -62,6 +54,14 @@ class SSIWelcomeScreen extends PureComponent<Props, IScreenState> {
          */
         return false
     }
+  }
+
+  componentDidMount = (): void => {
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack)
+  }
+
+  componentWillUnmount = (): void => {
+    this.hardwareBackPressListener.remove()
   }
 
   onNext = async (): Promise<void> => {

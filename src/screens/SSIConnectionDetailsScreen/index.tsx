@@ -20,13 +20,13 @@ const format = require('string-format')
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTION_DETAILS>
 
-interface IScreenProps extends Props {
+interface IProps extends Props {
   authenticationEntities: Array<IAuthenticatedEntity>
   authenticateConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
   disconnectConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
 }
 
-export class SSIConnectionDetailsScreen extends PureComponent<IScreenProps> {
+export class SSIConnectionDetailsScreen extends PureComponent<IProps> {
   onDisconnectConfirm = async (): Promise<void> => {
     this.props
       // TODO fix non null assertion

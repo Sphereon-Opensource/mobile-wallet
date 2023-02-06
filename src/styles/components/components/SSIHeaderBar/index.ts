@@ -16,6 +16,7 @@ export const SSIHeaderBarContainerStyled = styled.View`
 export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
   margin-left: 24px;
   margin-bottom: 14px;
+  margin-right: 24px;
 `
 
 export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`

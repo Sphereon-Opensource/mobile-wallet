@@ -11,62 +11,59 @@ import {
 } from '../../@config/constants'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import { ISetPersonalDataActionArgs } from '../../@types/store/onboarding.types'
-import { IUser } from '../../@types/store/user.types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
 import { setPersonalData } from '../../store/actions/onboarding.actions'
-import { setUser } from '../../store/actions/user.actions'
 import {
   SSIPersonalDataScreenContainerStyled as Container,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer
 } from '../../styles/components'
 
-interface IScreenProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA> {
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA> {
   setPersonalData: (args: ISetPersonalDataActionArgs) => void
-  setUser: (args: IUser) => void
 }
 
-interface IScreenState {
+interface IState {
   firstName: string
   lastName: string
   emailAddress: string
 }
 
-class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
+class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
   state = {
     firstName: '',
     lastName: '',
     emailAddress: ''
   }
 
-  onFirstNameChange = async (input: string): Promise<void> => {
-    this.setState({ firstName: input })
+  onFirstNameChange = async (value: string): Promise<void> => {
+    this.setState({ firstName: value })
   }
 
-  onFirstNameValidation = async (input: string): Promise<void> => {
-    if (input.length === 0) {
+  onFirstNameValidation = async (value: string): Promise<void> => {
+    if (value.length === 0) {
       return Promise.reject(Error(translate('first_name_invalid_message')))
     }
   }
 
-  onLastNameChange = async (input: string): Promise<void> => {
-    this.setState({ lastName: input })
+  onLastNameChange = async (value: string): Promise<void> => {
+    this.setState({ lastName: value })
   }
 
-  onLastNameValidation = async (input: string): Promise<void> => {
-    if (input.length === 0) {
+  onLastNameValidation = async (value: string): Promise<void> => {
+    if (value.length === 0) {
       return Promise.reject(Error(translate('last_name_invalid_message')))
     }
   }
 
-  onEmailAddressChange = async (input: string): Promise<void> => {
-    this.setState({ emailAddress: input.toLowerCase() })
+  onEmailAddressChange = async (value: string): Promise<void> => {
+    this.setState({ emailAddress: value.toLowerCase() })
   }
 
-  onEmailAddressValidation = async (input: string): Promise<void> => {
-    if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(input)) {
+  onEmailAddressValidation = async (value: string): Promise<void> => {
+    if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(value)) {
       this.setState({ emailAddress: '' })
       return Promise.reject(Error(translate('email_address_invalid_message')))
     }
@@ -86,8 +83,9 @@ class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
           emailAddress
         })
 
-        // TODO WAL-407 implement user functionality
-        this.props.setUser({ name: 'dummy' })
+        this.props.navigation.navigate(ScreenRoutesEnum.PIN_CODE, {
+          headerSubTitle: translate('pin_code_choose_pin_code_subtitle')
+        })
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
@@ -146,8 +144,7 @@ class SSIPersonalDataScreen extends PureComponent<IScreenProps, IScreenState> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setPersonalData: (args: ISetPersonalDataActionArgs) => dispatch(setPersonalData(args)),
-    setUser: (args: IUser) => dispatch(setUser(args))
+    setPersonalData: (args: ISetPersonalDataActionArgs) => dispatch(setPersonalData(args))
   }
 }
 
