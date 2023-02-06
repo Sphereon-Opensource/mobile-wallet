@@ -78,8 +78,7 @@ class SSIPinCodeScreen extends PureComponent<IProps, IState> {
       }
 
       // TODO WAL-407 implement
-      storePin({ value })
-        .then(() => this.props.setUser({ name: 'dummy' }))
+      storePin({ value }).then(() => this.props.setUser({ name: 'dummy' }))
     } else {
       // TODO fix type issue
       navigation.setOptions({ headerTitle: translate('pin_code_confirm_pin_code_title') })
@@ -94,7 +93,7 @@ class SSIPinCodeScreen extends PureComponent<IProps, IState> {
     return (
       <Container>
         <StatusBar />
-        <View style={{marginTop: isConfirmPin ? 127 : 110}}>
+        <View style={{ marginTop: isConfirmPin ? 127 : 110 }}>
           <SSIPinCode
             // TODO fix this borderline hacking solution for resetting a components state
             // Setting a new key will force the component to mount a new one, resetting the state of the component

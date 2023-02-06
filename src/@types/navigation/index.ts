@@ -148,5 +148,5 @@ export enum ScreenRoutesEnum {
   CONTACT_ADD = 'ContactAdd',
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
-  PIN_CODE = 'PinCode',
+  PIN_CODE = 'PinCode'
 }

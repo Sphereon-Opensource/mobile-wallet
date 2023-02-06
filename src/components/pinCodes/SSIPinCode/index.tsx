@@ -1,10 +1,5 @@
 import { PureComponent } from 'react'
-import {
-  Animated,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { Animated, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { ONLY_ALLOW_NUMBERS_REGEX } from '../../../@config/constants'
 import { translate } from '../../../localization/Localization'
@@ -200,7 +195,7 @@ export class SSIPinCode extends PureComponent<IProps, IState> {
     const segments = []
     for (let i = 0; i < length; i++) {
       segments.push(
-        <View key={uuidv4()} style={{marginRight: i === (length - 1) ? 0 : 12}}>
+        <View key={uuidv4()} style={{ marginRight: i === length - 1 ? 0 : 12 }}>
           <SSIPinCodeSegment
             value={secureCode ? (pin.length === i + 1 ? pin.charAt(i) : i >= pin.length ? '' : '*') : pin.charAt(i)}
             isCurrent={pin.length === i}
@@ -215,9 +210,7 @@ export class SSIPinCode extends PureComponent<IProps, IState> {
       <TouchableOpacity activeOpacity={1} onPress={this.setInputFocus}>
         <Container>
           <SegmentsContainer style={{ left: shakeAnimation }}>{segments}</SegmentsContainer>
-          {errorMessage && showErrorMessage && (
-            <ErrorMessageText>{errorMessage}</ErrorMessageText>
-          )}
+          {errorMessage && showErrorMessage && <ErrorMessageText>{errorMessage}</ErrorMessageText>}
           {maxRetries && retry > 0 && (
             <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${
               maxRetries - retry

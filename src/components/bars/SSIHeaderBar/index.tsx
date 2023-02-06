@@ -47,11 +47,11 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
-          {showEntityIcon &&
+          {showEntityIcon && (
             <EntityIconContainer onLongPress={onEntity}>
               <SSIEntityIcon />
             </EntityIconContainer>
-          }
+          )}
           {moreButtonAction && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={moreButtonAction} />}
         </RightColumn>
       </Row>
