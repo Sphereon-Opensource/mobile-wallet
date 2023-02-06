@@ -1,12 +1,17 @@
 import { PureComponent } from 'react'
-import { Animated, TextInput, TouchableOpacity, View } from 'react-native'
-import { NativeStackNavigationProp } from 'react-native-screens/native-stack'
+import {
+  Animated,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native'
 
+import { ONLY_ALLOW_NUMBERS_REGEX } from '../../../@config/constants'
 import { translate } from '../../../localization/Localization'
 import { backgrounds, statuses } from '../../../styles/colors'
 import {
   SSIPinCodeAttemptsLeftTextStyled as AttemptsLeftText,
-  SSIFlexDirectionColumnViewStyled as Container,
+  SSIPinCodeContainerStyled as Container,
   SSIPinCodeErrorMessageTextStyled as ErrorMessageText,
   SSIPinCodeContainerAnimatedStyled as SegmentsContainer
 } from '../../../styles/components'
@@ -14,22 +19,20 @@ import SSIPinCodeSegment from '../SSIPinCodeSegment'
 
 const { v4: uuidv4 } = require('uuid')
 
-interface IScreenProps {
+interface IProps {
   length?: number
   maxRetries?: number
   secureCode?: boolean
   accessibilityLabel?: string
   accessibilityHint?: string
-  onMaxRetriesExceeded: () => Promise<void>
-  onVerification: (pin: string) => Promise<void>
-  // TODO Get a better solution to get the navigation in the pin code component. Or a solution to reset the state of a screen
-  // TODO Reason is that it is nicer to reset the pin code to an empty state when navigating back. Which it does not do by default
-  navigation?: NativeStackNavigationProp<any, any>
+  errorMessage?: string
+  onMaxRetriesExceeded?: () => Promise<void>
+  onVerification: (value: string) => Promise<void>
 }
 
-interface IScreenState {
+interface IState {
   length: number
-  maxRetries: number
+  maxRetries: number | undefined
   pin: string
   retry: number
   inputRef: TextInput | null
@@ -39,23 +42,14 @@ interface IScreenState {
   showErrorMessage: boolean
 }
 
-export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
-  constructor(props: IScreenProps) {
+export class SSIPinCode extends PureComponent<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
-
-    if (props.navigation) {
-      props.navigation.addListener('focus', () => {
-        this.setState({
-          retry: 0,
-          pin: ''
-        })
-      })
-    }
 
     this.state = {
       inputRef: null,
       length: props.length || 4,
-      maxRetries: props.maxRetries || 3,
+      maxRetries: props.maxRetries,
       pin: '',
       retry: 0,
       secureCode: props.secureCode || true,
@@ -92,27 +86,37 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
   }
 
   submit = (value: string): void => {
+    const { onVerification } = this.props
+
+    onVerification(value)
+      .then(() => {
+        this.setState({ retry: 0, pin: '' })
+      })
+      .catch(this.onVerificationFailed)
+  }
+
+  onVerificationFailed = async (): Promise<void> => {
+    const { onMaxRetriesExceeded } = this.props
     const { retry, maxRetries } = this.state
 
-    this.props.onVerification(value).catch(async () => {
-      const retries = retry + 1
-      if (retries >= maxRetries) {
-        this.hideKeyboard().then(() => {
-          this.setState({
-            retry: 0,
-            pin: ''
-          })
-          this.props.onMaxRetriesExceeded()
-        })
-      } else {
-        this.failureAnimation()
-        this.setState({
-          retry: retries,
-          pin: '',
-          showErrorMessage: true
-        })
-      }
-    })
+    if (!maxRetries) {
+      this.setState({ pin: '', showErrorMessage: true })
+      this.failureAnimation()
+      return
+    }
+
+    const retries = retry + 1
+    if (retries >= maxRetries) {
+      this.hideKeyboard().then(() => {
+        this.setState({ retry: 0, pin: '' })
+        if (onMaxRetriesExceeded) {
+          onMaxRetriesExceeded()
+        }
+      })
+    } else {
+      this.failureAnimation()
+      this.setState({ retry: retries, pin: '', showErrorMessage: true })
+    }
   }
 
   setInputFocus = (): void => {
@@ -146,7 +150,11 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
         return
       default: {
         if (pin.length < length) {
-          const value = pin.concat(key).replace(/[^0-9]/g, '')
+          if (!ONLY_ALLOW_NUMBERS_REGEX.test(key)) {
+            return
+          }
+
+          const value = pin.concat(key)
 
           this.setState({
             pin: value,
@@ -163,6 +171,8 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
   }
 
   onSubmitEditing = async (event: { nativeEvent: { text: string } }): Promise<void> => {
+    const { length } = this.state
+
     if (event.nativeEvent.text.length >= length) {
       this.submit(event.nativeEvent.text)
     } else {
@@ -176,7 +186,7 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
   }
 
   render() {
-    const { accessibilityLabel, accessibilityHint } = this.props
+    const { accessibilityLabel, accessibilityHint, errorMessage } = this.props
     const { pin, length, shakeAnimation, colorShiftAnimation, secureCode, maxRetries, retry, showErrorMessage } =
       this.state
 
@@ -190,12 +200,13 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
     const segments = []
     for (let i = 0; i < length; i++) {
       segments.push(
-        <SSIPinCodeSegment
-          key={uuidv4()}
-          value={secureCode ? (pin.length === i + 1 ? pin.charAt(i) : i >= pin.length ? '' : '*') : pin.charAt(i)}
-          isCurrent={pin.length === i}
-          style={colorShiftAnimationStyle}
-        />
+        <View key={uuidv4()} style={{marginRight: i === (length - 1) ? 0 : 12}}>
+          <SSIPinCodeSegment
+            value={secureCode ? (pin.length === i + 1 ? pin.charAt(i) : i >= pin.length ? '' : '*') : pin.charAt(i)}
+            isCurrent={pin.length === i}
+            style={colorShiftAnimationStyle}
+          />
+        </View>
       )
     }
 
@@ -204,15 +215,13 @@ export class SSIPinCode extends PureComponent<IScreenProps, IScreenState> {
       <TouchableOpacity activeOpacity={1} onPress={this.setInputFocus}>
         <Container>
           <SegmentsContainer style={{ left: shakeAnimation }}>{segments}</SegmentsContainer>
-          {retry > 0 && (
-            <View>
-              {showErrorMessage && (
-                <ErrorMessageText>{translate('verification_code_invalid_code_message')}</ErrorMessageText>
-              )}
-              <AttemptsLeftText>{`${translate('verification_code_attempts_left_message')} ${
-                maxRetries - retry
-              }`}</AttemptsLeftText>
-            </View>
+          {errorMessage && showErrorMessage && (
+            <ErrorMessageText>{errorMessage}</ErrorMessageText>
+          )}
+          {maxRetries && retry > 0 && (
+            <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${
+              maxRetries - retry
+            }`}</AttemptsLeftText>
           )}
           <TextInput
             ref={this.onRef}

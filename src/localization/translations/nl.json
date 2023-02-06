@@ -46,7 +46,6 @@
     "verification_code_invalid_code_details": "Dat was niet de code die we zoeken. Probeer het opnieuw door een nieuwe link aan te vragen of de QR-code opnieuw te scannen.",
     "verification_code_invalid_code_details_title": "Extra details",
     "verification_code_invalid_code_message": "Verkeerde verificatie code. Probeer het opnieuw.",
-    "verification_code_attempts_left_message": "Pogingen over:",
     "credential_card_expires_message": "Verloopt:",
     "issuer_status_verified": "Geverifieerd",
     "issuer_status_unverified": "Ongeverifieerd",
@@ -122,5 +121,13 @@
     "last_name_invalid_message": "Vul een geldige achternaam in",
     "email_address_label": "E-mailadres",
     "email_address_placeholder": "E-mailadres",
-    "email_address_invalid_message": "Vul een geldig e-mailadres in"
+    "email_address_invalid_message": "Vul een geldig e-mailadres in",
+    "pin_code_choose_pin_code_title": "Kies je pincode",
+    "pin_code_choose_pin_code_subtitle": "Kies een pincode om uw wallet veilig te houden.",
+    "pin_code_confirm_pin_code_title": "Bevestig uw pincode",
+    "pin_code_confirm_pin_code_subtitle": "Voer uw pincode in om de eerste te bevestigen.",
+    "pin_code_accessibility_label": "Pincode",
+    "pin_code_accessibility_hint": "Vul je pincode in",
+    "pin_code_invalid_code_message": "Deze pincode komt niet overeen. Probeer het opnieuw.",
+    "pin_code_attempts_left_message": "Pogingen over:"
 }

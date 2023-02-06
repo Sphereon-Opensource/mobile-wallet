@@ -66,8 +66,8 @@ export interface IProps {
   labelColor?: ColorValue
   keyboardType?: KeyboardTypeOptions | undefined
   maxLength?: number
-  onChangeText?: (input: string) => Promise<void>
-  onEndEditing?: (input: string) => Promise<void>
+  onChangeText?: (value: string) => Promise<void>
+  onEndEditing?: (value: string) => Promise<void>
   onFocus?: () => Promise<void>
   placeholderValue?: string
   secureTextEntry?: boolean
@@ -100,10 +100,10 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
   const [error, setError] = React.useState<string>()
   const [hasFocus, setHasFocus] = React.useState(false)
 
-  const onChange = async (input: string): Promise<void> => {
-    setValue(input)
+  const onChange = async (value: string): Promise<void> => {
+    setValue(value)
     if (onChangeText) {
-      onChangeText(input)
+      onChangeText(value)
         .then(() => setError(undefined))
         .catch((error: Error) => setError(error.message))
     }

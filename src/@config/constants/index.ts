@@ -17,4 +17,8 @@ export const FIRST_NAME_MAX_LENGTH = 50
 export const LAST_NAME_MAX_LENGTH = 50
 export const EMAIL_ADDRESS_MAX_LENGTH = 50
 
+export const VERIFICATION_CODE_MAX_RETRIES = 3
+export const PIN_CODE_LENGTH = 6
+
 export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+export const ONLY_ALLOW_NUMBERS_REGEX = /^\d+$/

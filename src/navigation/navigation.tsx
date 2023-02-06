@@ -32,13 +32,14 @@ import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScr
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
+import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import { RootState } from '../store'
-import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
+import SSIPinCodeScreen from '../screens/SSIPinCodeScreen'
 
 const format = require('string-format')
 
@@ -179,7 +180,11 @@ const CredentialsStack = (): JSX.Element => {
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar
+              {...props}
+              showBorder
+              showBackButton={false}
+          />
         }}
       />
       <Stack.Screen
@@ -190,7 +195,8 @@ const CredentialsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                   rawCredential: route.params.rawCredential
@@ -206,7 +212,11 @@ const CredentialsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('raw_credential_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
+            <SSIHeaderBar
+                {...props}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            />
           )
         }}
       />
@@ -237,7 +247,7 @@ const ContactsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showBackButton={false}
               moreButtonAction={async () => console.log('more pressed')}
               showBorder
             />
@@ -252,7 +262,8 @@ const ContactsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               moreButtonAction={async () => console.log('more pressed')}
               showBorder
             />
@@ -293,7 +304,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={format(translate('verification_code_subtitle'), route.params.credentialName)}
             />
           )
@@ -307,7 +319,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               moreButtonAction={async () => console.log('more pressed')}
             />
           )
@@ -319,7 +332,11 @@ const QRStack = (): JSX.Element => {
         options={{
           headerTitle: translate('pex_verification_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
+            <SSIHeaderBar
+                {...props}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            />
           )
         }}
       />
@@ -331,7 +348,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
               moreButtonAction={async () =>
                 RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
@@ -350,7 +368,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={format(translate('credential_select_type_subtitle'), route.params.issuer)}
             />
           )
@@ -362,7 +381,11 @@ const QRStack = (): JSX.Element => {
         options={{
           headerTitle: translate('raw_credential_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={Platform.OS === PlatformsEnum.IOS} />
+            <SSIHeaderBar
+                {...props}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            />
           )
         }}
       />
@@ -374,7 +397,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
             />
           )
@@ -408,7 +432,7 @@ const NotificationsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showBackButton={false}
               moreButtonAction={async () => console.log('more pressed')}
               showBorder
             />
@@ -423,7 +447,8 @@ const NotificationsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
               moreButtonAction={async () => console.log('more pressed')}
             />
           )
@@ -463,7 +488,9 @@ const OnboardingStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showEntityIcon={false}
               headerSubTitle={translate('terms_of_service_subtitle')}
             />
           )
@@ -477,11 +504,30 @@ const OnboardingStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              showBackButton={Platform.OS === PlatformsEnum.IOS}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showEntityIcon={false}
               headerSubTitle={translate('personal_data_subtitle')}
             />
           )
         }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.PIN_CODE}
+        component={SSIPinCodeScreen}
+        options={({ route }) => ({
+          unmountOnBlur: true,
+          headerTitle: translate('pin_code_choose_pin_code_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+                // TODO rethink back button visibility for Android
+                //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showEntityIcon={false}
+              headerSubTitle={route.params.headerSubTitle}
+            />
+          )
+        })}
       />
       <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}

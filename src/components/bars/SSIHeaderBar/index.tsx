@@ -21,11 +21,12 @@ interface Props extends NativeStackHeaderProps {
   showBorder?: boolean
   showBackButton?: boolean
   moreButtonAction?: () => Promise<void>
+  showEntityIcon?: boolean
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
-  const { showBorder = false, showBackButton = false, moreButtonAction } = props
+  const { showBorder = false, showBackButton = true, moreButtonAction, showEntityIcon = true } = props
 
   const onBack = async (): Promise<void> => {
     props.navigation.goBack()
@@ -46,9 +47,11 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
-          <EntityIconContainer onPress={onEntity}>
-            <SSIEntityIcon />
-          </EntityIconContainer>
+          {showEntityIcon &&
+            <EntityIconContainer onLongPress={onEntity}>
+              <SSIEntityIcon />
+            </EntityIconContainer>
+          }
           {moreButtonAction && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={moreButtonAction} />}
         </RightColumn>
       </Row>

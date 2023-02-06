@@ -35,6 +35,7 @@ export type StackParamList = {
   Main: Record<string, never>
   TermsOfService: Record<string, never>
   PersonalData: Record<string, never>
+  PinCode: IPinCodeProps
 }
 
 export interface ICredentialDetailsProps {
@@ -108,6 +109,10 @@ export interface IContactAddProps {
   onCreate: () => Promise<void>
 }
 
+export interface IPinCodeProps {
+  headerSubTitle: string
+}
+
 export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
   MAIN = 'Main'
@@ -142,5 +147,6 @@ export enum ScreenRoutesEnum {
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
   TERMS_OF_SERVICE = 'TermsOfService',
-  PERSONAL_DATA = 'PersonalData'
+  PERSONAL_DATA = 'PersonalData',
+  PIN_CODE = 'PinCode',
 }
