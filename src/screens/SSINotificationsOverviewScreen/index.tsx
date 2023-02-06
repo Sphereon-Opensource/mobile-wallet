@@ -17,15 +17,15 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIO
 const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
     // This currently now only shows the empty state.
-      <Container>
-        <EmptyStateContainer>
-          <EmptyStateImageContainer>
-            <SSINotificationsImage />
-          </EmptyStateImageContainer>
-          <TitleText>{translate('notifications_overview_empty_state_title')}</TitleText>
-          <SubTitleText>{translate('notifications_overview_empty_state_subtitle')}</SubTitleText>
-        </EmptyStateContainer>
-      </Container>
+    <Container>
+      <EmptyStateContainer>
+        <EmptyStateImageContainer>
+          <SSINotificationsImage />
+        </EmptyStateImageContainer>
+        <TitleText>{translate('notifications_overview_empty_state_title')}</TitleText>
+        <SubTitleText>{translate('notifications_overview_empty_state_subtitle')}</SubTitleText>
+      </EmptyStateContainer>
+    </Container>
   )
 }
 

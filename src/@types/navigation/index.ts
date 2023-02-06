@@ -150,5 +150,5 @@ export enum ScreenRoutesEnum {
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE = 'PinCode',
-  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
+  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview'
 }

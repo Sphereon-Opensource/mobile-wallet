@@ -6,13 +6,7 @@ import Toast from 'react-native-toast-message'
 import { useSelector } from 'react-redux'
 
 import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import {
-  MainRoutesEnum,
-  NavigationBarRoutesEnum,
-  ScreenRoutesEnum,
-  StackParamList,
-  SwitchRoutesEnum
-} from '../@types'
+import { MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum } from '../@types'
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
@@ -28,7 +22,7 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
-import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
+import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
 import SSIPinCodeScreen from '../screens/SSIPinCodeScreen'
@@ -422,13 +416,7 @@ const NotificationsStack = (): JSX.Element => {
         component={SSINotificationsOverviewScreen}
         options={{
           headerTitle: translate('notifications_overview_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              showBackButton={false}
-              showBorder
-            />
-          )
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />
         }}
       />
       <Stack.Screen
@@ -493,7 +481,7 @@ const OnboardingStack = (): JSX.Element => {
         name={ScreenRoutesEnum.PIN_CODE}
         component={SSIPinCodeScreen}
         options={({ route }) => ({
-          // unmountOnBlur resets the stack back to initial state
+          // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
           header: (props: NativeStackHeaderProps) => (
