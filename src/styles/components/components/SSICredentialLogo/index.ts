@@ -1,7 +1,7 @@
 import { ImageBackground } from 'react-native'
 import styled from 'styled-components/native'
 
-import SSIPlaceholderLogo from '../../../../components/assets/images/SSIPlaceholderLogo'
+import SSIPlaceholderLogo from '../../../../components/assets/logos/SSIPlaceholderLogo'
 
 export const SSICredentialLogoContainerStyled = styled.View`
   width: 75px;

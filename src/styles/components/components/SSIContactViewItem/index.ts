@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 
-import SSIPlaceholderLogo from '../../../../components/assets/images/SSIPlaceholderLogo'
+import SSIPlaceholderLogo from '../../../../components/assets/logos/SSIPlaceholderLogo'
 import { SSIFlexDirectionRowViewStyled } from '../../containers'
 import { SSITextH5LightStyled } from '../../fonts'
 
