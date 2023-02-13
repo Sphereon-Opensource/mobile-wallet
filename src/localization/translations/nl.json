@@ -2,7 +2,7 @@
     "credential_details_action_share": "Delen",
     "credential_details_title": "Credential Details",
     "credentials_overview_title": "Credentials",
-    "credential_details_view_signed_by": "Ondertekent Door",
+    "credential_details_view_issued_by": "Uitgegeven door",
     "credential_details_view_details": "Details",
     "credentials_view_item_expires_on": "Vervalt op",
     "swipe_delete_button_caption": "Verwijderen",
