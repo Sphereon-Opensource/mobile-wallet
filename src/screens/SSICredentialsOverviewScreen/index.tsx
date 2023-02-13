@@ -56,7 +56,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps> {
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: vc as VerifiableCredential,
         credential,
-        showActivity: true
+        showActivity: false
       })
     )
   }
