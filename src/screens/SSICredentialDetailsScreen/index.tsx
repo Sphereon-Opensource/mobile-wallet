@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { CredentialStatusEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIActivityView from '../../components/views/SSIActivityView'
@@ -54,7 +54,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             credentialTitle={credential.title}
             issuerName={issuer}
             expirationDate={DateUtils.toLocalDateString(credential.expirationDate)}
-            credentialStatus={CredentialStatusEnum.VALID} // TODO status should come from the credential object
+            credentialStatus={DateUtils.getCredentialStatus(credential.expirationDate)}
           />
         </CardContainer>
         <SSITabView routes={routes} />

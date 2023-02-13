@@ -3,14 +3,14 @@ import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-nativ
 
 import { CredentialStatusEnum } from '../../../@types'
 import { translate } from '../../../localization/Localization'
-import { backgrounds, credentialCards } from '../../../styles/colors'
+import { credentialCards } from '../../../styles/colors'
 import {
   SSIAlphaContainerStyled as AlphaContainer,
   SSIBlurredContainerStyled as BlurredView,
   SSICardViewContainerStyled as Container,
   SSICardViewContentMainContainerStyled as ContentMainContainer,
   SSICardViewContentSubContainerStyled as ContentSubContainer,
-  SSICardViewSSICredentialStatusStyled as CredentialStatus,
+  SSICredentialViewItemStatusCaptionStyled as CredentialStatusCaption,
   SSICardViewCredentialSubtitleTextStyled as CredentialSubtitleText,
   SSICardViewCredentialTitleTextStyled as CredentialTitleText,
   SSITextH5LightStyled as ExpirationDateText,
@@ -21,10 +21,10 @@ import {
   SSICardViewContentIssueNameContainerStyled as IssueNameContainer,
   SSICardViewHeaderLogoContainerStyled as LogoContainer,
   SSICardViewContentPropertiesContainerStyled as PropertiesContainer,
-  SSITextH6LightStyled as PropertyValueText,
-  SSICardViewHeaderTitleContainerStyled as TitleContainer
+  SSITextH6LightStyled as PropertyValueText, SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
+import SSIStatusLabel from "../../labels/SSIStatusLabel";
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -116,7 +116,9 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
                     'credential_card_expires_message'
                   )} ${expirationDate}`}</ExpirationDateText>
                 )}
-                {credentialStatus && <CredentialStatus status={credentialStatus} color={backgrounds.primaryLight} />}
+                {credentialStatus && <CredentialStatusCaption>
+                  <SSIStatusLabel status={credentialStatus} />
+                </CredentialStatusCaption>}
               </FooterContentContainer>
             </BlurredView>
           </FooterContainer>

@@ -1,3 +1,4 @@
+import {CredentialStatusEnum} from "../@types";
 import Localization from '../localization/Localization'
 
 class DateUtils {
@@ -24,6 +25,13 @@ class DateUtils {
       DateUtils.DATE_FORMAT_OPTIONS
     )
   }
+
+  static getCredentialStatus(expirationDate: number): CredentialStatusEnum {
+    return !expirationDate || expirationDate >= new Date().valueOf() / 1000
+        ? CredentialStatusEnum.VALID
+        : CredentialStatusEnum.EXPIRED;
+  }
+
 }
 
 export default DateUtils

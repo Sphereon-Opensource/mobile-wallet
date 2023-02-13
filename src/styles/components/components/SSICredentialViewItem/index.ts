@@ -21,5 +21,6 @@ export const SSICredentialViewItemContentMiddleContainerStyled = styled(SSIFlexD
 
 export const SSICredentialViewItemStatusCaptionStyled = styled.View`
   margin-top: 3px;
+  margin-bottom: -3px;
   margin-left: auto;
 `
