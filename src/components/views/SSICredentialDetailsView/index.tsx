@@ -8,8 +8,8 @@ import {
   SSICredentialDetailsViewContainerStyled as Container,
   SSIDetailsViewDetailsListStyled as DetailsList,
   SSICredentialDetailsViewFooterContainerStyled as FooterContainer,
-  SSICredentialDetailsViewFooterLabelValueStyled as SignedBy,
-  SSICredentialDetailsViewFooterLabelCaptionStyled as SignedByLabel
+  SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
+  SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel
 } from '../../../styles/components'
 import SSITextField from '../../fields/SSITextField'
 
@@ -25,8 +25,8 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
 
   const renderFooter = () => (
     <FooterContainer>
-      <SignedByLabel>{translate('credential_details_view_signed_by')}</SignedByLabel>
-      <SignedBy>{props.issuer}</SignedBy>
+      <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
+      <IssuedBy>{props.issuer}</IssuedBy>
     </FooterContainer>
   )
 
