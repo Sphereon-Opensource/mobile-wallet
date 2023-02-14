@@ -3,14 +3,14 @@ import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-nativ
 
 import { CredentialStatusEnum } from '../../../@types'
 import { translate } from '../../../localization/Localization'
-import { credentialCards } from '../../../styles/colors'
+import { backgrounds, credentialCards } from '../../../styles/colors'
 import {
   SSIAlphaContainerStyled as AlphaContainer,
   SSIBlurredContainerStyled as BlurredView,
   SSICardViewContainerStyled as Container,
   SSICardViewContentMainContainerStyled as ContentMainContainer,
   SSICardViewContentSubContainerStyled as ContentSubContainer,
-  SSICredentialViewItemStatusCaptionStyled as CredentialStatusCaption,
+  SSICardViewSSICredentialStatusStyled as CredentialStatus,
   SSICardViewCredentialSubtitleTextStyled as CredentialSubtitleText,
   SSICardViewCredentialTitleTextStyled as CredentialTitleText,
   SSITextH5LightStyled as ExpirationDateText,
@@ -25,7 +25,6 @@ import {
   SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
-import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -117,11 +116,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
                     'credential_card_expires_message'
                   )} ${expirationDate}`}</ExpirationDateText>
                 )}
-                {credentialStatus && (
-                  <CredentialStatusCaption>
-                    <SSIStatusLabel status={credentialStatus} />
-                  </CredentialStatusCaption>
-                )}
+                {credentialStatus && <CredentialStatus status={credentialStatus} color={backgrounds.primaryLight} />}
               </FooterContentContainer>
             </BlurredView>
           </FooterContainer>
