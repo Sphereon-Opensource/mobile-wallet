@@ -21,10 +21,11 @@ import {
   SSICardViewContentIssueNameContainerStyled as IssueNameContainer,
   SSICardViewHeaderLogoContainerStyled as LogoContainer,
   SSICardViewContentPropertiesContainerStyled as PropertiesContainer,
-  SSITextH6LightStyled as PropertyValueText, SSICardViewHeaderTitleContainerStyled as TitleContainer
+  SSITextH6LightStyled as PropertyValueText,
+  SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
-import SSIStatusLabel from "../../labels/SSIStatusLabel";
+import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -116,9 +117,11 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
                     'credential_card_expires_message'
                   )} ${expirationDate}`}</ExpirationDateText>
                 )}
-                {credentialStatus && <CredentialStatusCaption>
-                  <SSIStatusLabel status={credentialStatus} />
-                </CredentialStatusCaption>}
+                {credentialStatus && (
+                  <CredentialStatusCaption>
+                    <SSIStatusLabel status={credentialStatus} />
+                  </CredentialStatusCaption>
+                )}
               </FooterContentContainer>
             </BlurredView>
           </FooterContainer>

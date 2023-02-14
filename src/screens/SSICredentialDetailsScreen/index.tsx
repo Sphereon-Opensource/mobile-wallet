@@ -16,7 +16,7 @@ import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSICredentialDetailsScreenContentContainer as ContentContainer
 } from '../../styles/components'
-import CredentialUtils from "../../utils/CredentialUtils";
+import CredentialUtils from '../../utils/CredentialUtils'
 import DateUtils from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>

@@ -1,7 +1,7 @@
 import { ICredential } from '@sphereon/ssi-types'
 
 import { ICredentialDetailsRow, ICredentialSummary } from '../../@types'
-import CredentialUtils from "../CredentialUtils";
+import CredentialUtils from '../CredentialUtils'
 
 const { v4: uuidv4 } = require('uuid')
 
