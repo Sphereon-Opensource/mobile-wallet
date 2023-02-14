@@ -5,18 +5,15 @@ import { CredentialStatusEnum, ICredentialSummary } from '../@types'
 
 import DateUtils from './DateUtils'
 
-class CredentialUtils {
-  public static getCredentialStatus(credential: ICredential | ICredentialSummary): CredentialStatusEnum {
+export const getCredentialStatus = (credential: ICredential | ICredentialSummary) : CredentialStatusEnum => {
     return (
-      this.isRevoked(credential?.credentialStatus) ||
-      this.isExpired(credential?.expirationDate) ||
+      isRevoked(credential?.credentialStatus) ||
+      isExpired(credential?.expirationDate) ||
       CredentialStatusEnum.VALID
     )
   }
 
-  public static isRevoked(
-    credentialStatus: CredentialStatusEnum | ICredentialStatus | undefined
-  ): CredentialStatusEnum | undefined {
+export const isRevoked = (credentialStatus: CredentialStatusEnum | ICredentialStatus | undefined) : CredentialStatusEnum | undefined => {
     if (credentialStatus === CredentialStatusEnum.REVOKED) {
       return CredentialStatusEnum.REVOKED
     }
@@ -30,7 +27,7 @@ class CredentialUtils {
     // }
   }
 
-  public static isExpired(expirationDate: string | number | undefined): CredentialStatusEnum | undefined {
+export const isExpired = (expirationDate: string | number | undefined) : CredentialStatusEnum | undefined => {
     let expirationDateNum = 0
     if (expirationDate) {
       if (typeof expirationDate === 'string') {
@@ -43,7 +40,4 @@ class CredentialUtils {
     if (expirationDate && expirationDateNum < new Date().valueOf() / 1000) {
       return CredentialStatusEnum.EXPIRED
     }
-  }
 }
-
-export default CredentialUtils
