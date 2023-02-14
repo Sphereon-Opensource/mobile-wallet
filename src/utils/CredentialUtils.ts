@@ -3,7 +3,7 @@ import { ICredentialStatus } from '@sphereon/ssi-types/src/types/vc'
 
 import { CredentialStatusEnum, ICredentialSummary } from '../@types'
 
-import DateUtils from "./DateUtils";
+import DateUtils from './DateUtils'
 
 class CredentialUtils {
   public static getCredentialStatus(credential: ICredential | ICredentialSummary): CredentialStatusEnum {
