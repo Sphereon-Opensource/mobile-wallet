@@ -59,7 +59,6 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
   const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / 1000
 
   const credentialStatus = getCredentialStatus(verifiableCredential)
-  //TODO add revoked status support
 
   const title = verifiableCredential.name
     ? verifiableCredential.name
