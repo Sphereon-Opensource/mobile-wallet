@@ -5,7 +5,6 @@ import {
   BasicOpenIdConfig,
   BasicPartyIdentifier,
   ConnectionTypeEnum,
-  CorrelationIdentifierEnum,
   IBasicConnection,
   IConnection,
   IConnectionParty
@@ -36,14 +35,12 @@ export const getConnectionParty = async (partyId: string): Promise<IConnectionPa
 export const getConnectionParties = async (): Promise<Array<IConnectionParty>> => {
   // TODO this should be refactored to some build config https://www.npmjs.com/package/react-native-build-config
   debug(`getConnectionParties()...`)
-  return addDefaultConnections().then(() =>
-    getContacts()
-      .then((parties: Array<IConnectionParty>) => {
-        debug(`getConnectionParties() succeeded`)
-        return parties
-      })
-      .catch((error: Error) => Promise.reject(Error(`Unable to retrieve connection parties. Error: ${error}`)))
-  )
+  return getContacts()
+    .then((parties: Array<IConnectionParty>) => {
+      debug(`getConnectionParties() succeeded`)
+      return parties
+    })
+    .catch((error: Error) => Promise.reject(Error(`Unable to retrieve connection parties. Error: ${error}`)))
 }
 
 export const addConnectionParty = async (
@@ -85,113 +82,4 @@ export const connectFrom = (args: {
         })
       : []
   }
-}
-
-// TODO this should be refactored to some build config https://www.npmjs.com/package/react-native-build-config
-const addDefaultConnections = async () => {
-  debug(`addDefaultConnections()...`)
-
-  const sphereonName = 'Sphereon'
-  const sphereonCorrelationId = 'sphereon.com'
-  const partiesSphereon = await getContacts({ filter: [{ identifier: { correlationId: sphereonCorrelationId } }] })
-  if (partiesSphereon.length === 0) {
-    debug(`addDefaultConnections(): Sphereon connection not present. Will add...`)
-    const party = {
-      name: sphereonName,
-      alias: sphereonName,
-      identifier: {
-        type: CorrelationIdentifierEnum.URL,
-        correlationId: sphereonCorrelationId
-      }
-    }
-
-    await cmAddParty(party).then(async (party: IConnectionParty) => {
-      if (!party) {
-        return Promise.reject(`Could not add default 'sphereon' connection`)
-      }
-
-      const connection = {
-        type: ConnectionTypeEnum.OPENID,
-        identifier: {
-          type: CorrelationIdentifierEnum.URL,
-          correlationId: 'https://auth-test.sphereon.com/auth/realms/ssi-wallet'
-        },
-        config: {
-          clientId: 'ssi-wallet',
-          clientSecret: '45de05ae-fefb-49a9-962d-46905df7ed65',
-          issuer: 'https://auth-test.sphereon.com/auth/realms/ssi-wallet',
-          serviceConfiguration: {
-            authorizationEndpoint: 'https://auth-test.sphereon.com/auth/realms/ssi-wallet/protocol/openid-connect/auth',
-            tokenEndpoint: 'https://auth-test.sphereon.com/auth/realms/ssi-wallet/protocol/openid-connect/token'
-          },
-          redirectUrl: 'com.sphereon.ssi.wallet:/callback',
-          dangerouslyAllowInsecureHttpRequests: true,
-          clientAuthMethod: 'post' as const,
-          scopes: ['openid']
-        },
-        metadata: [
-          {
-            label: 'Connection URL',
-            value: 'https://auth-test.sphereon.com'
-          }
-        ]
-      }
-      const sphereonTestConnection = await cmAddConnection({ partyId: party.id, connection })
-      debug(
-        `Sphereon connection received id ${sphereonTestConnection.id} at ${sphereonTestConnection.createdAt}, config ${sphereonTestConnection.config}`
-      )
-    })
-  }
-
-  const firm24Name = 'Firm24'
-  const firm24CorrelationId = 'firm24.com'
-  const partiesFirm24 = await getContacts({ filter: [{ identifier: { correlationId: firm24CorrelationId } }] })
-  if (partiesFirm24.length === 0) {
-    debug(`addDefaultConnections(): Firm24 connection not present. Will add...`)
-    const party = {
-      name: firm24Name,
-      alias: firm24Name,
-      identifier: {
-        type: CorrelationIdentifierEnum.URL,
-        correlationId: firm24CorrelationId
-      }
-    }
-
-    await cmAddParty(party).then(async (party: IConnectionParty) => {
-      if (!party) {
-        return Promise.reject(`Could not add default 'firm24' connection`)
-      }
-
-      const connection = {
-        type: ConnectionTypeEnum.OPENID,
-        identifier: {
-          type: CorrelationIdentifierEnum.URL,
-          correlationId: 'https://shr.docarama.com/api/oidc/'
-        },
-        config: {
-          clientId: 'sphereon',
-          clientSecret: '261b1e80-7e30-42c9-afde-6403f9f4ec19',
-          // TODO we can either pass in an issuer or serviceConfiguration
-          issuer: 'https://shr.docarama.com/api/oidc/', // TODO should also only have serviceConfiguration
-          serviceConfiguration: {
-            authorizationEndpoint: 'https://shr.docarama.com/api/oidc/auth',
-            tokenEndpoint: 'https://shr.docarama.com/api/oidc/token'
-          },
-          redirectUrl: 'com.sphereon.ssi.wallet:/callback',
-          dangerouslyAllowInsecureHttpRequests: true,
-          clientAuthMethod: 'post' as const,
-          scopes: ['openid', 'organizations', 'session']
-        },
-        metadata: [
-          {
-            label: 'Connection URL',
-            value: 'https://shr.docarama.com'
-          }
-        ]
-      }
-      const firm24Connection = await cmAddConnection({ partyId: party.id, connection })
-      debug(`Firm24 connection received id ${firm24Connection.id}`)
-    })
-  }
-  debug(`addDefaultConnections(): done`)
 }
