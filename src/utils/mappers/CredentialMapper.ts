@@ -1,7 +1,7 @@
 import { ICredential } from '@sphereon/ssi-types'
 
 import { ICredentialDetailsRow, ICredentialSummary } from '../../@types'
-import DateUtils from "../DateUtils";
+import CredentialUtils from "../CredentialUtils";
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -58,7 +58,7 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
     : 0
   const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / 1000
 
-  const credentialStatus = DateUtils.getCredentialStatus(expirationDate)
+  const credentialStatus = CredentialUtils.getCredentialStatus(verifiableCredential)
   //TODO add revoked status support
 
   const title = verifiableCredential.name

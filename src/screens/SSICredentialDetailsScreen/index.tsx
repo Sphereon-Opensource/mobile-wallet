@@ -16,6 +16,7 @@ import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSICredentialDetailsScreenContentContainer as ContentContainer
 } from '../../styles/components'
+import CredentialUtils from "../../utils/CredentialUtils";
 import DateUtils from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
@@ -54,7 +55,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             credentialTitle={credential.title}
             issuerName={issuer}
             expirationDate={DateUtils.toLocalDateString(credential.expirationDate)}
-            credentialStatus={DateUtils.getCredentialStatus(credential.expirationDate)}
+            credentialStatus={CredentialUtils.getCredentialStatus(credential)}
           />
         </CardContainer>
         <SSITabView routes={routes} />
