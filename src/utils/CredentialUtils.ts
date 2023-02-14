@@ -3,6 +3,8 @@ import { ICredentialStatus } from '@sphereon/ssi-types/src/types/vc'
 
 import { CredentialStatusEnum, ICredentialSummary } from '../@types'
 
+import DateUtils from "./DateUtils";
+
 class CredentialUtils {
   public static getCredentialStatus(credential: ICredential | ICredentialSummary): CredentialStatusEnum {
     return (
@@ -32,7 +34,7 @@ class CredentialUtils {
     let expirationDateNum = 0
     if (expirationDate) {
       if (typeof expirationDate === 'string') {
-        expirationDateNum = new Date(expirationDate).valueOf() / 1000
+        expirationDateNum = new Date(expirationDate).valueOf() / DateUtils.EPOCH_MILLISECONDS
       } else {
         expirationDateNum = expirationDate
       }
