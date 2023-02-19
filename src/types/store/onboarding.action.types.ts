@@ -11,7 +11,7 @@ interface IOnboardingLoading {
   type: ONBOARDING_LOADING
 }
 
-interface ISetPersonalDataAction {
+interface ISetPersonalDataSuccessAction {
   type: SET_PERSONAL_DATA_SUCCESS
   payload: ISetPersonalDataActionArgs
 }
@@ -20,4 +20,4 @@ interface IClearOnboardingAction {
   type: CLEAR_ONBOARDING
 }
 
-export type OnboardingActionTypes = IOnboardingLoading | ISetPersonalDataAction | IClearOnboardingAction
+export type OnboardingActionTypes = IOnboardingLoading | ISetPersonalDataSuccessAction | IClearOnboardingAction
