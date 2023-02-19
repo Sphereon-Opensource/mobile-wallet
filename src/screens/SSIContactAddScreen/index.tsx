@@ -1,10 +1,10 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import { CONTACT_ALIAS_MAX_LENGTH } from '../../@config/constants'
-import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
+import { MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../@types'
 import { ICreateContactArgs } from '../../@types/store/contact.action.types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSICheckbox from '../../components/fields/SSICheckbox'
@@ -18,7 +18,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer
 } from '../../styles/components'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import { showToast } from '../../utils/ToastUtils'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void
@@ -30,7 +30,7 @@ interface IState {
 }
 
 class SSIContactAddScreen extends PureComponent<IProps, IState> {
-  state = {
+  state: IState = {
     contactAlias: '',
     hasConsent: true
   }

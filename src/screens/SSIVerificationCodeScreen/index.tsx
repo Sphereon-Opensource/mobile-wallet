@@ -1,9 +1,9 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { VERIFICATION_CODE_MAX_RETRIES } from '../../@config/constants'
 import { MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
-import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
+import SSIPinCode from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
@@ -46,7 +46,6 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
           onMaxRetriesExceeded={onMaxRetriesExceeded}
           onVerification={route.params.onVerification}
           errorMessage={translate('verification_code_invalid_code_message')}
-          navigation={navigation}
         />
       </PinCodeContainer>
     </Container>

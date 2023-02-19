@@ -1,7 +1,6 @@
-export interface IUser {
-  name: string
-}
+import { IUser } from '../user'
 
 export interface IUserState {
-  name: string | undefined
+  loading: boolean
+  user?: IUser
 }

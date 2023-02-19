@@ -1,4 +1,4 @@
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/lib/typescript/src/types'
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import React, { PureComponent } from 'react'
 import { EmitterSubscription, Keyboard, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -16,22 +16,19 @@ import SSIHomeIcon from '../../assets/icons/SSIHomeIcon'
 import SSIQRIcon from '../../assets/icons/SSIQRIcon'
 
 interface IState {
-  isVisible: boolean
+  keyboardVisible: boolean
 }
 
-export class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
+class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
   private keyboardDidShowListener: EmitterSubscription
   private keyboardDidHideListener: EmitterSubscription
+  state: IState = {
+    keyboardVisible: true
+  }
 
-  constructor(props: BottomTabBarProps) {
-    super(props)
-
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardWillShow.bind(this))
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardWillHide.bind(this))
-
-    this.state = {
-      isVisible: true
-    }
+  componentDidMount = () => {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
   }
 
   componentWillUnmount() {
@@ -39,20 +36,16 @@ export class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
     this.keyboardDidHideListener.remove()
   }
 
-  keyboardWillShow = () => {
-    this.setState({
-      isVisible: false
-    })
+  _keyboardDidShow = () => {
+    this.setState({ keyboardVisible: true })
   }
 
-  keyboardWillHide = () => {
-    this.setState({
-      isVisible: true
-    })
+  _keyboardDidHide = () => {
+    this.setState({ keyboardVisible: false })
   }
 
   render() {
-    return this.state.isVisible ? (
+    return !this.state.keyboardVisible ? (
       <SafeAreaView edges={['bottom']}>
         <Container>
           {this.props.state.routes.map((route, index) => {

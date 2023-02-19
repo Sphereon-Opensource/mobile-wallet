@@ -2429,7 +2429,7 @@
     tslib "^2.4.1"
     webcrypto-core "^1.7.4"
 
-"@react-native-async-storage/async-storage@^1.13.4":
+"@react-native-async-storage/async-storage@^1.13.4", "@react-native-async-storage/async-storage@^1.17.11":
   version "1.17.11"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.11.tgz#7ec329c1b9f610e344602e806b04d7c928a2341d"
   integrity sha512-bzs45n5HNcDq6mxXnSsOHysZWn1SbbebNxldBXCQs8dSvF8Aor9KCdpm+TpnnGweK3R6diqsT8lFhX77VX0NFw==
@@ -2644,12 +2644,12 @@
     color "^4.2.3"
     warn-once "^0.1.0"
 
-"@react-navigation/core@^6.4.4":
-  version "6.4.4"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.4.4.tgz#270ef88d3c3a225f9a58bbe89eb8a8bc96af44a9"
-  integrity sha512-skdTzr6sOceEusEDG+e58zaSpgy1Yz7eZGFtmkmdYAFkZDy5nkIY/0nYuXP0waUYarNXg6lNEVkF995/kZXHZg==
+"@react-navigation/core@^6.4.6":
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-6.4.6.tgz#b0738667dec5927b01c4c496c2f4c73ef8a5e4dd"
+  integrity sha512-6zaAgUT5k4vhJlddUk2l52RZyMkMelHdrRv1cL57ALi2RZzERdgmbiMKhJerxFLn9S8E3PUe8vwxHzjHOZKG4w==
   dependencies:
-    "@react-navigation/routers" "^6.1.5"
+    "@react-navigation/routers" "^6.1.6"
     escape-string-regexp "^4.0.0"
     nanoid "^3.1.23"
     query-string "^7.1.3"
@@ -2661,6 +2661,11 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.10.tgz#7f4281eddef5ff424169413daaab9a66b27c4949"
   integrity sha512-JFaoZG9S+Zz291CvAMeGw8kNl/g2AaY9Pbo+VcYO+JM6UF/E5Obq9ga2ydxDrn3an7wzdl6flA/4lWhqG82Vqw==
 
+"@react-navigation/elements@^1.3.15":
+  version "1.3.15"
+  resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.15.tgz#b8aebf101080057508b98cb5da4173c72c095db0"
+  integrity sha512-CR4CEYJVY0OLyeLQi9N3Z2o4K47gXctvFxfZizDuW1xFtCJbA0eGvpjSLXEWHoY0hFjrlC6KinpdepGHVxhYIg==
+
 "@react-navigation/native-stack@^6.1.0":
   version "6.9.5"
   resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-6.9.5.tgz#805adf6699524519ff4bf50ac960a923da1bc223"
@@ -2670,30 +2675,40 @@
     warn-once "^0.1.0"
 
 "@react-navigation/native@^6.0.2":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.1.0.tgz#ea0c79b6b0f67397305fec54eb4dbc3dd3eb087b"
-  integrity sha512-CdjOmbE4c/UczczqeP7ZrFXJcjnXOCwY1PDNjX51Ph1b2tHXpQ41/089k3R49dc5i2sFLk6jKaryFU2dcLr8jw==
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-6.1.4.tgz#49666596c9df16e22284f35f482d05d6b5d47d60"
+  integrity sha512-8IGpMFvD21XINpSf9gyU19yv4O+NyF9FQAxEzwbJSef19W5XEJKXPN/0RINc43Tt+YnQyFGQ2+qJM1uoB9pKcA==
   dependencies:
-    "@react-navigation/core" "^6.4.4"
+    "@react-navigation/core" "^6.4.6"
     escape-string-regexp "^4.0.0"
     fast-deep-equal "^3.1.3"
     nanoid "^3.1.23"
 
-"@react-navigation/routers@^6.1.5":
-  version "6.1.5"
-  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-6.1.5.tgz#b3e06bc09346ad94206bcc71c46538d5b6dc4883"
-  integrity sha512-JzMRiRRu8J0yUMC7BV8wOVzevjkHnIPONbpCTL/vH5yceTm+dSH/U3esIObgk8wYYbov+jYlVhwUQNGRb2to6g==
+"@react-navigation/routers@^6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-6.1.6.tgz#f57f2a73855d329255aa225fdad75ae8e7700c6d"
+  integrity sha512-Z5DeCW3pUvMafbU9Cjy1qJYC2Bvl8iy3+PfsB0DsAwQ6zZ3WAXW5FTMX4Gb9H+Jg6qHWGbMFFwlYpS3UJ3tlVQ==
   dependencies:
     nanoid "^3.1.23"
 
 "@react-navigation/stack@^6.0.7":
-  version "6.3.8"
-  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.3.8.tgz#bc36beb4fba1c47a45e01c9dcc501be0f6f10d54"
-  integrity sha512-tnSmI5wmRLA293tPo43niCOOcWsWFB1XPGeUBVsz/lJnQZIHUUx0h42t53fU22DHGXee7PiZ78Lvr1Q0m/JZJQ==
+  version "6.3.14"
+  resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.3.14.tgz#de282d8bc5616bfb12fa4c89f18792193563fb7a"
+  integrity sha512-a1ivkESWsZYimUQHr3TA2Nu2g3FALEyJqQ8bJxXkEcBp+5cglOakhfKbbCuNV2knC/9zjUmP9N0Q3Jh3fK9nfw==
   dependencies:
-    "@react-navigation/elements" "^1.3.10"
+    "@react-navigation/elements" "^1.3.15"
     color "^4.2.3"
     warn-once "^0.1.0"
+
+"@reduxjs/toolkit@^1.9.2":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.9.2.tgz#4cd153491118038e2eebcb63b2264e42a8a2d74c"
+  integrity sha512-5ZAZ7hwAKWSii5T6NTPmgIBUqyVdlDs+6JjThz6J6dmHLDm6zCzv2OjHIFAi3Vvs1qjmXU0bm6eBojukYXjVMQ==
+  dependencies:
+    immer "^9.0.16"
+    redux "^4.2.0"
+    redux-thunk "^2.4.2"
+    reselect "^4.1.7"
 
 "@scure/base@^1.1.1":
   version "1.1.1"
@@ -3666,6 +3681,13 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
+
+"@types/redux-logger@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.9.tgz#9193b3d51bb6ab98d25514ba7764e4f98a64d3ec"
+  integrity sha512-cwYhVbYNgH01aepeMwhd0ABX6fhVB2rcQ9m80u8Fl50ZODhsZ8RhQArnLTkE7/Zrfq4Sz/taNoF7DQy9pCZSKg==
+  dependencies:
+    redux "^4.0.0"
 
 "@types/redux@^3.6.0":
   version "3.6.0"
@@ -5863,6 +5885,11 @@ decode-uri-component@^0.2.0, decode-uri-component@^0.2.2:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
   integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
+deep-diff@^0.3.5:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
+  integrity sha512-yVn6RZmHiGnxRKR9sJb3iVV2XTF1Ghh2DiWRZ3dMnGc43yUdWWF/kX6lQyk3+P84iprfWKU/8zFTrlkvtFm1ug==
+
 deep-equal@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.1.1.tgz#b5c98c942ceffaf7cb051e24e1434a25a2e6076a"
@@ -7912,6 +7939,11 @@ image-size@^0.6.0:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.6.3.tgz#e7e5c65bb534bd7cdcedd6cb5166272a85f75fb2"
   integrity sha512-47xSUiQioGaB96nqtp5/q55m0aBQSQdyIloMOc/x+QVTDZLNmXE892IIDrJ0hM1A5vcNUDD5tDffkSP5lCaIIA==
+
+immer@^9.0.16:
+  version "9.0.19"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.19.tgz#67fb97310555690b5f9cd8380d38fc0aabb6b38b"
+  integrity sha512-eY+Y0qcsB4TZKwgQzLaE/lqYMlKhv5J9dyd2RhhtGhNo2njPXDqU9XPfcNfa3MIDsdtZt5KlkIsirlo4dHsWdQ==
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -11786,7 +11818,14 @@ recast@^0.20.4:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
-redux-thunk@^2.3.0:
+redux-logger@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/redux-logger/-/redux-logger-3.0.6.tgz#f7555966f3098f3c88604c449cf0baf5778274bf"
+  integrity sha512-JoCIok7bg/XpqA1JqCqXFypuqBbQzGQySrhFzewB7ThcnysTO30l4VCst86AuB9T9tuT03MAA56Jw2PNhRSNCg==
+  dependencies:
+    deep-diff "^0.3.5"
+
+redux-thunk@^2.3.0, redux-thunk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.4.2.tgz#b9d05d11994b99f7a91ea223e8b04cf0afa5ef3b"
   integrity sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==
@@ -11795,6 +11834,13 @@ redux@*, redux@^4.0.0, redux@^4.1.1:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.0.tgz#46f10d6e29b6666df758780437651eeb2b969f13"
   integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+
+redux@^4.2.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.1.tgz#c08f4306826c49b5e9dc901dee0452ea8fce6197"
+  integrity sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==
   dependencies:
     "@babel/runtime" "^7.9.2"
 
@@ -11922,7 +11968,7 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==
 
-reselect@^4.0.0:
+reselect@^4.0.0, reselect@^4.1.7:
   version "4.1.7"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.7.tgz#56480d9ff3d3188970ee2b76527bd94a95567a42"
   integrity sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==

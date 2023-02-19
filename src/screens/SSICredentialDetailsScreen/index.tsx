@@ -1,5 +1,5 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
@@ -14,10 +14,11 @@ import {
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
   SSICredentialDetailsScreenCredentialCardContainer as CardContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSICredentialDetailsScreenContentContainer as ContentContainer
+  SSICredentialDetailsScreenContentContainer as ContentContainer,
+  SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
-import DateUtils from '../../utils/DateUtils'
+import { toLocalDateString } from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
 
@@ -49,12 +50,13 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
+      <StatusBar />
       <ContentContainer>
         <CardContainer>
           <SSICardView
             credentialTitle={credential.title}
             issuerName={issuer}
-            expirationDate={DateUtils.toLocalDateString(credential.expirationDate)}
+            expirationDate={toLocalDateString(credential.expirationDate)}
             credentialStatus={getCredentialStatus(credential)}
           />
         </CardContainer>

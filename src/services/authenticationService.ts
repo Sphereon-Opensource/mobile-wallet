@@ -30,6 +30,7 @@ export const authenticate = async (
 }
 
 export const disconnect = async (entityId: string, connection: IBasicConnection): Promise<void> => {
+  // TODO disconnect should be an redux action with a connection id. Which then updates the authentication
   const connectionEntity = store
     .getState()
     .authentication.entities.find((entity: IAuthenticatedEntity) => entity.entityId === entityId)

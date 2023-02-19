@@ -1,22 +1,21 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { BackHandler, NativeEventSubscription, View } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import { PIN_CODE_LENGTH } from '../../@config/constants'
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
-import { IUser } from '../../@types/store/user.types'
-import { SSIPinCode } from '../../components/pinCodes/SSIPinCode'
+import SSIPinCode from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import { storePin } from '../../services/storageService'
-import { setUser } from '../../store/actions/user.actions'
+import { finalizeOnboarding } from '../../store/actions/onboarding.actions'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 
-interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE> {
-  setUser: (args: IUser) => void
+interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET> {
+  finalizeOnboarding: () => void
 }
 
 enum StateKeyEnum {
@@ -29,9 +28,9 @@ interface IState {
   isConfirmPin: boolean
 }
 
-class SSIPinCodeScreen extends PureComponent<IProps, IState> {
+class SSIPinCodeSetScreen extends PureComponent<IProps, IState> {
   hardwareBackPressListener: NativeEventSubscription
-  state = {
+  state: IState = {
     pin: '',
     isConfirmPin: false
   }
@@ -78,7 +77,7 @@ class SSIPinCodeScreen extends PureComponent<IProps, IState> {
       }
 
       // TODO WAL-407 implement
-      storePin({ value }).then(() => this.props.setUser({ name: 'dummy' }))
+      storePin({ value }).then(() => this.props.finalizeOnboarding())
     } else {
       // TODO fix type issue
       navigation.setOptions({ headerTitle: translate('pin_code_confirm_pin_code_title') })
@@ -112,8 +111,8 @@ class SSIPinCodeScreen extends PureComponent<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setUser: (args: IUser) => dispatch(setUser(args))
+    finalizeOnboarding: () => dispatch(finalizeOnboarding())
   }
 }
 
-export default connect(null, mapDispatchToProps)(SSIPinCodeScreen)
+export default connect(null, mapDispatchToProps)(SSIPinCodeSetScreen)

@@ -13,7 +13,7 @@ import {
   SSITextH4LightStyled as IssuerCaption,
   SSITextH3LightStyled as TitleCaption
 } from '../../../styles/components'
-import DateUtils from '../../../utils/DateUtils'
+import { toLocalDateString, toLocalDateTimeString } from '../../../utils/DateUtils'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 // TODO fix to many properties
@@ -44,14 +44,14 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
       </ContentMiddleContainer>
       <ContentBottomContainer>
         <IssueDateCaption>
-          {showTime ? DateUtils.toLocalDateTimeString(props.issueDate) : DateUtils.toLocalDateString(props.issueDate)}
+          {showTime ? toLocalDateTimeString(props.issueDate) : toLocalDateString(props.issueDate)}
         </IssueDateCaption>
         <ExpirationDateCaption>
           {props.expirationDate
             ? `${translate('credentials_view_item_expires_on')} ${
                 showTime
-                  ? DateUtils.toLocalDateTimeString(props.expirationDate)
-                  : DateUtils.toLocalDateString(props.expirationDate)
+                  ? toLocalDateTimeString(props.expirationDate)
+                  : toLocalDateString(props.expirationDate)
               }`
             : translate('credential_status_never_expires_date_label')}
         </ExpirationDateCaption>

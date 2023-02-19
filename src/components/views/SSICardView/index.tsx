@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-native'
 
 import { CredentialStatusEnum } from '../../../@types'

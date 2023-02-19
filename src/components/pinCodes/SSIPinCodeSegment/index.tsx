@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { View, ViewStyle } from 'react-native'
 
 import { backgrounds } from '../../../styles/colors'

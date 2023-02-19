@@ -1,11 +1,26 @@
 import { ISetPersonalDataActionArgs } from './onboarding.types'
 
-export const SET_PERSONAL_DATA = '[ONBOARDING] SET_PERSONAL_DATA'
-export type SET_PERSONAL_DATA = typeof SET_PERSONAL_DATA
+export const ONBOARDING_LOADING = '[ONBOARDING] ONBOARDING_LOADING'
+export type ONBOARDING_LOADING = typeof ONBOARDING_LOADING
+export const SET_PERSONAL_DATA_SUCCESS = '[ONBOARDING] SET_PERSONAL_DATA_SUCCESS'
+export type SET_PERSONAL_DATA_SUCCESS = typeof SET_PERSONAL_DATA_SUCCESS
+export const CLEAR_ONBOARDING = '[ONBOARDING] CLEAR_ONBOARDING'
+export type CLEAR_ONBOARDING = typeof CLEAR_ONBOARDING
+
+interface IOnboardingLoading {
+  type: ONBOARDING_LOADING
+}
 
 interface ISetPersonalDataAction {
-  type: SET_PERSONAL_DATA
+  type: SET_PERSONAL_DATA_SUCCESS
   payload: ISetPersonalDataActionArgs
 }
 
-export type OnboardingActionTypes = ISetPersonalDataAction
+interface IClearOnboardingAction {
+  type: CLEAR_ONBOARDING
+}
+
+export type OnboardingActionTypes =
+  IOnboardingLoading
+  | ISetPersonalDataAction
+  | IClearOnboardingAction

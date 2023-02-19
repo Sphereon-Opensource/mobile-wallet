@@ -1,8 +1,7 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { IDidAuthConfig } from '@sphereon/ssi-sdk-data-store-common'
 import { IAuthRequestDetails, IResponse, OpSession } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
-import { IVerifiableCredential } from '@sphereon/ssi-types'
-import { IIdentifier, UniqueVerifiableCredential } from '@veramo/core'
+import { IIdentifier } from '@veramo/core'
 import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
@@ -10,11 +9,10 @@ import { CustomApproval } from '../../@types'
 import {
   authenticateWithSiop,
   getSessionForSiop,
-  getSiopAuthenticationRequestDetails,
+  getSiopAuthorizationRequestDetails,
   registerSessionForSiop,
-  sendSiopAuthenticationResponse
+  sendSiopAuthorizationResponse
 } from '../../agent'
-import { getVerifiableCredentialsFromStorage } from '../../services/credentialService'
 
 const debug = Debug(`${APP_ID}:authentication`)
 
@@ -46,21 +44,13 @@ class DidAuthSiopProvider {
     sessionId: string,
     verifiedAuthorizationRequest: VerifiedAuthorizationRequest
   ): Promise<IResponse> => {
-    return getVerifiableCredentialsFromStorage()
-      .then((verifiableCredentials: Array<UniqueVerifiableCredential>) =>
-        getSiopAuthenticationRequestDetails({
-          sessionId,
-          verifiedAuthorizationRequest,
-          // TODO fix mismatching dep versions
-          verifiableCredentials: verifiableCredentials.map((vc) => <IVerifiableCredential>vc.verifiableCredential)
-        })
-      )
+    return getSiopAuthorizationRequestDetails({ sessionId, verifiedAuthorizationRequest })
       .then((verification: IAuthRequestDetails) => {
         if (verification.vpResponseOpts.length <= 0) {
           return Promise.reject(Error('No valid credentials supplied'))
         }
 
-        return sendSiopAuthenticationResponse({
+        return sendSiopAuthorizationResponse({
           sessionId,
           verifiedAuthorizationRequest,
           verifiablePresentationResponse: verification.vpResponseOpts

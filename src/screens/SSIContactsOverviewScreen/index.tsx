@@ -1,15 +1,14 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
+import { RootState, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
-import { RootState } from '../../store'
 import { getContacts } from '../../store/actions/contact.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/components'
 
@@ -18,8 +17,12 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
   contacts: Array<IConnectionParty>
 }
 
-class SSIContactsOverviewScreen extends PureComponent<IProps> {
-  state = {
+interface IState {
+  refreshing: boolean
+}
+
+class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
+  state: IState = {
     refreshing: false
   }
 

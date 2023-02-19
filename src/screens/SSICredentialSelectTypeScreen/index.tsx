@@ -1,6 +1,6 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 import { FlatList, ListRenderItemInfo } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import { ICredentialTypeSelection, ScreenRoutesEnum, StackParamList } from '../../@types'

@@ -1,5 +1,5 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIActivityView from '../../components/views/SSIActivityView'

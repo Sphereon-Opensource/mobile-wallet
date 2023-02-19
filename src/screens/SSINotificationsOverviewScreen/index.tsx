@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import React, { FC } from 'react'
 
 import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage'

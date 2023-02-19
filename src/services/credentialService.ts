@@ -12,8 +12,6 @@ import {
   dataStoreSaveVerifiableCredential
 } from '../agent'
 
-// We want to extend this service with calls to the Veramo agent as the agent does all the work
-
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueVerifiableCredential>> => {
   return dataStoreORMGetVerifiableCredentials()
 }

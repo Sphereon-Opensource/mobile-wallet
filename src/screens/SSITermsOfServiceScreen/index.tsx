@@ -1,6 +1,6 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, useMemo, useState } from 'react'
 import { BackHandler } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'

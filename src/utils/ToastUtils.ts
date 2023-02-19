@@ -1,14 +1,11 @@
 import Toast from 'react-native-toast-message'
 
-export const showToast = (type: ToastTypeEnum, text1: string) => {
+import { ToastTypeEnum } from '../@types'
+
+export const showToast = (type: ToastTypeEnum, message: string) => {
   Toast.show({
     position: 'bottom',
     type,
-    text1
+    text1: message
   })
-}
-
-export enum ToastTypeEnum {
-  TOAST_SUCCESS = 'ssiAlertToastSuccess',
-  TOAST_ERROR = 'ssiAlertToastError'
 }

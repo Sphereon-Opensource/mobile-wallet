@@ -5,14 +5,14 @@ import { EmitterSubscription, Linking } from 'react-native'
 import ShareMenu, { ShareData, ShareListener } from 'react-native-share-menu'
 
 import { APP_ID } from '../../@config/constants'
-import { NavigationBarRoutesEnum, ScreenRoutesEnum } from '../../@types'
+import { NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum } from '../../@types'
 import { translate } from '../../localization/Localization'
-import * as RootNavigation from '../../navigation/rootNavigation'
+import RootNavigation from '../../navigation/rootNavigation'
 import { readFile } from '../../services/fileService'
 import { readQr } from '../../services/qrService'
 import store from '../../store'
 import { storeVerifiableCredential } from '../../store/actions/credential.actions'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import { showToast } from '../../utils/ToastUtils'
 import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 const debug = Debug(`${APP_ID}:IntentHandler`)
@@ -92,6 +92,7 @@ class IntentHandler {
           return
         }
 
+        // TODO fix the store not having the correct action types (should include ThunkAction)
         const storeCredential = async (vc: VerifiableCredential) => await store.dispatch(storeVerifiableCredential(vc))
 
         // We navigate to the QR stack as this is the stack for incoming credentials

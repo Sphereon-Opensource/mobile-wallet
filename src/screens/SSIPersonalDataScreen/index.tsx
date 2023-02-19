@@ -1,6 +1,6 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
 import {
@@ -32,7 +32,7 @@ interface IState {
 }
 
 class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
-  state = {
+  state: IState = {
     firstName: '',
     lastName: '',
     emailAddress: ''
@@ -83,7 +83,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
           emailAddress
         })
 
-        this.props.navigation.navigate(ScreenRoutesEnum.PIN_CODE, {
+        this.props.navigation.navigate(ScreenRoutesEnum.PIN_CODE_SET, {
           headerSubTitle: translate('pin_code_choose_pin_code_subtitle')
         })
       })

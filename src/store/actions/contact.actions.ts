@@ -1,7 +1,8 @@
 import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
-import { Dispatch } from 'react'
-import { AnyAction } from 'redux'
+import { Action } from 'redux'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
+import { RootState, ToastTypeEnum } from '../../@types'
 import {
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
@@ -12,10 +13,10 @@ import {
 } from '../../@types/store/contact.action.types'
 import { translate } from '../../localization/Localization'
 import { getContacts as getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import { showToast } from '../../utils/ToastUtils'
 
-export const getContacts = (): ((dispatch: Dispatch<AnyAction>) => void) => {
-  return (dispatch: Dispatch<AnyAction>) => {
+export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CONTACTS_LOADING })
     getContactsFromStorage()
       .then((contacts: Array<IConnectionParty>) => dispatch({ type: GET_CONTACTS_SUCCESS, payload: contacts }))
@@ -23,8 +24,8 @@ export const getContacts = (): ((dispatch: Dispatch<AnyAction>) => void) => {
   }
 }
 
-export const createContact = (args: ICreateContactArgs): ((dispatch: Dispatch<AnyAction>) => void) => {
-  return (dispatch: Dispatch<AnyAction>) => {
+export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CONTACTS_LOADING })
     storeContact(args)
       .then((contact: IConnectionParty) => {
