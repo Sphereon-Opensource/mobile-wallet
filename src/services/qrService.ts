@@ -287,7 +287,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
           const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
           // TODO fix the store not having the correct action types (should include ThunkAction)
-          const storeCredential = async (vc: VerifiableCredential) => store.dispatch(storeVerifiableCredential(vc))
+          const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc))
 
           // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
           args.navigation.navigate(NavigationBarRoutesEnum.QR, {
