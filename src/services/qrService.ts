@@ -317,7 +317,9 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       })
       .catch((error: Error) => {
         // TODO refactor once the lib returns a proper response object
-        const errorResponse = error.message.includes('response:') ? JSON.parse(error.message.split('response:')[1].trim()) : error.message
+        const errorResponse = error.message.includes('response:')
+          ? JSON.parse(error.message.split('response:')[1].trim())
+          : error.message
         if (errorResponse?.status === 403) {
           return Promise.reject(error)
         }

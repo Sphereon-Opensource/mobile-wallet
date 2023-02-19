@@ -20,7 +20,4 @@ interface IClearOnboardingAction {
   type: CLEAR_ONBOARDING
 }
 
-export type OnboardingActionTypes =
-  IOnboardingLoading
-  | ISetPersonalDataAction
-  | IClearOnboardingAction
+export type OnboardingActionTypes = IOnboardingLoading | ISetPersonalDataAction | IClearOnboardingAction

@@ -44,8 +44,8 @@ class DidAuthSiopProvider {
     sessionId: string,
     verifiedAuthorizationRequest: VerifiedAuthorizationRequest
   ): Promise<IResponse> => {
-    return getSiopAuthorizationRequestDetails({ sessionId, verifiedAuthorizationRequest })
-      .then((verification: IAuthRequestDetails) => {
+    return getSiopAuthorizationRequestDetails({ sessionId, verifiedAuthorizationRequest }).then(
+      (verification: IAuthRequestDetails) => {
         if (verification.vpResponseOpts.length <= 0) {
           return Promise.reject(Error('No valid credentials supplied'))
         }
@@ -55,7 +55,8 @@ class DidAuthSiopProvider {
           verifiedAuthorizationRequest,
           verifiablePresentationResponse: verification.vpResponseOpts
         })
-      })
+      }
+    )
   }
 
   public revokeToken = async (config: IDidAuthConfig, token: string): Promise<void> => {

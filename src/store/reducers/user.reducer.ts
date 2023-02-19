@@ -1,9 +1,4 @@
-import {
-  GET_USER_FAILED,
-  GET_USER_SUCCESS,
-  UserActionTypes,
-  USERS_LOADING
-} from '../../@types/store/user.action.types'
+import { GET_USER_FAILED, GET_USER_SUCCESS, UserActionTypes, USERS_LOADING } from '../../@types/store/user.action.types'
 import { IUserState } from '../../@types/store/user.types'
 
 const initialState: IUserState = {

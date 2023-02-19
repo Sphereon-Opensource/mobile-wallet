@@ -2,11 +2,7 @@ import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { IUser, RootState } from '../../@types'
-import {
-  GET_USER_FAILED,
-  GET_USER_SUCCESS,
-  USERS_LOADING
-} from '../../@types/store/user.action.types'
+import { GET_USER_FAILED, GET_USER_SUCCESS, USERS_LOADING } from '../../@types/store/user.action.types'
 import { createUser as addUserToStorage, getUser as getUserFromStorage } from '../../services/userService'
 
 export const createUser = (args: Omit<IUser, 'id'>): ThunkAction<Promise<void>, RootState, unknown, Action> => {
@@ -19,7 +15,7 @@ export const createUser = (args: Omit<IUser, 'id'>): ThunkAction<Promise<void>, 
         // This will change in the future where we want to create a user before navigating
         dispatch({ type: GET_USER_SUCCESS, payload: user })
       })
-    .catch(() => dispatch({ type: GET_USER_FAILED }))
+      .catch(() => dispatch({ type: GET_USER_FAILED }))
   }
 }
 

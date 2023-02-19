@@ -37,7 +37,9 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
   }
 }
 
-export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const storeVerifiableCredential = (
+  vc: VerifiableCredential
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential)
@@ -50,9 +52,9 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
   }
 }
 
-
-
-export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const deleteVerifiableCredential = (
+  credentialHash: string
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     deleteCredential({ hash: credentialHash })

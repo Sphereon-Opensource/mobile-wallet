@@ -13,10 +13,7 @@ export const toLocalDateTimeString = (date: number): string =>
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric'
-})
+  })
 
 export const toLocalDateString = (date: number): string =>
-  new Date(date * EPOCH_MILLISECONDS).toLocaleDateString(
-    Localization.getLocale(),
-    DATE_FORMAT_OPTIONS
-  )
+  new Date(date * EPOCH_MILLISECONDS).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS)

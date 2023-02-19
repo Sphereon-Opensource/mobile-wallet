@@ -22,6 +22,7 @@ export const createUser = async (args: Omit<IUser, 'id'>): Promise<IUser> => {
 
 export const getUser = async (): Promise<IUser> => {
   debug(`getUser...`)
-  return getUserFromStorage()
-    .catch((error: Error) => Promise.reject(Error(`Unable to retrieve user from storage. Error: ${error.message}`)))
+  return getUserFromStorage().catch((error: Error) =>
+    Promise.reject(Error(`Unable to retrieve user from storage. Error: ${error.message}`))
+  )
 }

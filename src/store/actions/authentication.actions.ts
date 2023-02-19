@@ -14,7 +14,10 @@ import {
 import { IAuthentication } from '../../@types/store/authenticate.types'
 import { authenticate, disconnect } from '../../services/authenticationService'
 
-export const authenticateConnectionEntity = (entityId: string, connection: IConnection): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const authenticateConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
     return authenticate(connection, connection.type === ConnectionTypeEnum.DIDAUTH ? CustomApprovalEnum.PEX : undefined)
@@ -33,7 +36,10 @@ export const authenticateConnectionEntity = (entityId: string, connection: IConn
   }
 }
 
-export const disconnectConnectionEntity = (entityId: string, connection: IConnection): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const disconnectConnectionEntity = (
+  entityId: string,
+  connection: IConnection
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: DISCONNECT_LOADING })
     return disconnect(entityId, connection)

@@ -6,13 +6,7 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import {
-  ICredentialSummary,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList
-} from '../../@types'
+import { ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
@@ -110,7 +104,8 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => { // TODO ThunkDispatch<any, unknown, Action>
+const mapDispatchToProps = (dispatch: any) => {
+  // TODO ThunkDispatch<any, unknown, Action>
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
     deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash))

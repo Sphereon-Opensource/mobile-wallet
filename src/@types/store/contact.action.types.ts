@@ -34,7 +34,7 @@ interface ICreateContactFailedAction {
 }
 
 export type ContactActionTypes =
-  IContactsLoading
+  | IContactsLoading
   | IGetContactsSuccessAction
   | IGetContactsFailedAction
   | ICreateContactSuccessAction
