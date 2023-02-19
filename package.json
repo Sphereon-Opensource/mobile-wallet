@@ -8,7 +8,7 @@
     "ios": "expo run:ios",
     "test": "jest --coverage=true",
     "test:lint": "eslint . --ext .ts,.tsx",
-    "test:prettier": "prettier \"src/**/*.(ts|tsx)\" --list-different",
+    "test:prettier": "prettier \"src/**/*.(ts|tsx)\" --check",
     "test:unit": "jest --coverage=false",
     "fix:lint": "eslint . --ext .ts,.tsx --fix",
     "fix:prettier": "prettier \"src/**/*.(ts|tsx)\" --write",
