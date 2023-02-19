@@ -12,7 +12,7 @@ import { IUserState } from '../../@types/store/user.types'
 const initialState: IUserState = {
   loading: false,
   users: new Map<string, IUser>(),
-  activeUser: undefined,
+  activeUser: undefined
 }
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {

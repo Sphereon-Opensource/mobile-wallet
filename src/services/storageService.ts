@@ -27,7 +27,7 @@ export const getPin = async (): Promise<string> => {
 
 export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`)
-  const users_value = await AsyncStorage.getItem(STORAGE_USERS_KEY);
+  const users_value = await AsyncStorage.getItem(STORAGE_USERS_KEY)
   if (users_value === null) {
     const users = new Map<string, IUser>()
     users.set(user.id, user)

@@ -34,4 +34,9 @@ interface IGetUsersActionFailedAction {
   type: GET_USERS_FAILED
 }
 
-export type UserActionTypes = IUsersLoading | IGetUsersActionFailedAction | IGetUsersActionSuccessAction | ICreateUserActionSuccessAction | ICreateUserActionFailedAction
+export type UserActionTypes =
+  | IUsersLoading
+  | IGetUsersActionFailedAction
+  | IGetUsersActionSuccessAction
+  | ICreateUserActionSuccessAction
+  | ICreateUserActionFailedAction
