@@ -5,7 +5,7 @@ import { StackParamList } from '../@types'
 
 export const navigationRef = createNavigationContainerRef<StackParamList>()
 
-// TODO fix missing type
+// TODO fix missing type / refactor to correct version of @react-navigation
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const RootNavigation: NavigationHelpersCommon<StackParamList, NavigationState> = {

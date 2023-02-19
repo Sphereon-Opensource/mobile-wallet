@@ -518,7 +518,7 @@ const OnboardingStack = (): JSX.Element => {
  * https://reactnavigation.org/docs/auth-flow/
  */
 const AppNavigator = (): JSX.Element => {
-  const user = useSelector((state: RootState) => !!state.user.user)
+  const userState = useSelector((state: RootState) => state.user)
 
   return (
     <Stack.Navigator
@@ -527,7 +527,7 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false
       }}
     >
-      {!user ? (
+      {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

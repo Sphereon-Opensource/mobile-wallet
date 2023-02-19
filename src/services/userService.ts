@@ -3,7 +3,7 @@ import Debug from 'debug'
 import { APP_ID } from '../@config/constants'
 import { IUser } from '../@types'
 
-import { getUser as getUserFromStorage, storeUser } from './storageService'
+import { getUsers as getUsersFromStorage, storeUser } from './storageService'
 
 const debug = Debug(`${APP_ID}:userService`)
 
@@ -20,9 +20,9 @@ export const createUser = async (args: Omit<IUser, 'id'>): Promise<IUser> => {
     .catch((error: Error) => Promise.reject(Error(`Unable to create user. Error: ${error}`)))
 }
 
-export const getUser = async (): Promise<IUser> => {
-  debug(`getUser...`)
-  return getUserFromStorage().catch((error: Error) =>
-    Promise.reject(Error(`Unable to retrieve user from storage. Error: ${error.message}`))
+export const getUsers = async (): Promise<Map<string, IUser>> => {
+  debug(`getUsers...`)
+  return getUsersFromStorage().catch((error: Error) =>
+    Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`))
   )
 }

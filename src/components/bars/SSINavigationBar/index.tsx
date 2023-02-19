@@ -23,7 +23,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
   private keyboardDidShowListener: EmitterSubscription
   private keyboardDidHideListener: EmitterSubscription
   state: IState = {
-    keyboardVisible: true
+    keyboardVisible: false
   }
 
   componentDidMount = () => {

@@ -8,7 +8,7 @@ import { IStorePinArgs, IStoreUserArgs, IUser } from '../@types'
 const debug = Debug(`${APP_ID}:storageService`)
 
 const STORAGE_PIN_KEY = 'pin'
-const STORAGE_USER_KEY = 'user'
+const STORAGE_USERS_KEY = 'users'
 
 export const storePin = async ({
   value,
@@ -27,17 +27,29 @@ export const getPin = async (): Promise<string> => {
 
 export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`)
-  return AsyncStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user))
+  const users_value = await AsyncStorage.getItem(STORAGE_USERS_KEY);
+  if (users_value === null) {
+    const users = new Map<string, IUser>()
+    users.set(user.id, user)
+
+    return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(users))
+  }
+
+  const users: Map<string, IUser> = JSON.parse(users_value)
+  users.set(user.id, user)
+
+  return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(users))
 }
 
-export const getUser = async (): Promise<IUser> => {
-  debug(`getUser...`)
-  return AsyncStorage.getItem(STORAGE_USER_KEY)
+export const getUsers = async (): Promise<Map<string, IUser>> => {
+  debug(`getUsers...`)
+  return AsyncStorage.getItem(STORAGE_USERS_KEY)
     .then((result: string | null) => {
       if (!result) {
-        return Promise.reject(new Error(`Value not found for key: ${STORAGE_USER_KEY}`))
+        return Promise.reject(new Error(`Value not found for key: ${STORAGE_USERS_KEY}`))
       }
+
       return JSON.parse(result)
     })
-    .catch(() => Promise.reject(new Error(`Value not found for key: ${STORAGE_USER_KEY}`)))
+    .catch(() => Promise.reject(new Error(`Value not found for key: ${STORAGE_USERS_KEY}`)))
 }

@@ -3,4 +3,6 @@ export interface IUser {
   firstName: string
   lastName: string
   emailAddress: string
+
+  // TODO i think we need to add a contact list (id's) here
 }

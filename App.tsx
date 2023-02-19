@@ -16,7 +16,7 @@ import store from './src/store'
 import { getConnectionParties } from './src/store/actions/connection.actions'
 import { getContacts } from './src/store/actions/contact.actions'
 import { getVerifiableCredentials } from './src/store/actions/credential.actions'
-import { getUser } from './src/store/actions/user.actions'
+import { getUsers } from './src/store/actions/user.actions'
 import { backgrounds } from './src/styles/colors'
 
 LogBox.ignoreLogs([
@@ -71,11 +71,11 @@ export default function App() {
             getConnectionParties,
             getVerifiableCredentials,
             getContacts,
-            getUser
+            getUsers
           },
           store.dispatch
         )
-        await actions.getUser()
+        await actions.getUsers()
         await actions.getVerifiableCredentials()
         await actions.getConnectionParties()
         await actions.getContacts()
