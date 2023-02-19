@@ -93,7 +93,8 @@ class IntentHandler {
         }
 
         // TODO fix the store not having the correct action types (should include ThunkAction)
-        const storeCredential = async (vc: VerifiableCredential) => await store.dispatch<any>(storeVerifiableCredential(vc))
+        const storeCredential = async (vc: VerifiableCredential) =>
+          await store.dispatch<any>(storeVerifiableCredential(vc))
 
         // We navigate to the QR stack as this is the stack for incoming credentials
         RootNavigation.navigate(NavigationBarRoutesEnum.QR, {

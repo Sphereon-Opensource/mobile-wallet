@@ -6,11 +6,7 @@ import {
   dataStoreORMGetVerifiableCredentials,
   dataStoreSaveVerifiableCredential
 } from '../agent'
-import {
-  IDeleteVerifiableCredentialArgs,
-  IGetVerifiableCredentialArgs,
-  IStoreVerifiableCredentialArgs
-} from '../types'
+import { IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs } from '../types'
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueVerifiableCredential>> => {
   return dataStoreORMGetVerifiableCredentials()
