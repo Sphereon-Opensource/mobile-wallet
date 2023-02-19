@@ -9,8 +9,6 @@ import {
   FIRST_NAME_MAX_LENGTH,
   LAST_NAME_MAX_LENGTH
 } from '../../@config/constants'
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
-import { ISetPersonalDataActionArgs } from '../../@types/store/onboarding.types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSITextInputField from '../../components/fields/SSITextInputField'
 import { translate } from '../../localization/Localization'
@@ -20,6 +18,8 @@ import {
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
+import { ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA> {
   setPersonalData: (args: ISetPersonalDataActionArgs) => void

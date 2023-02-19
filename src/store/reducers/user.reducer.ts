@@ -1,4 +1,4 @@
-import { IUser } from '../../@types'
+import { IUser } from '../../types'
 import {
   CREATE_USER_FAILED,
   CREATE_USER_SUCCESS,
@@ -6,8 +6,8 @@ import {
   GET_USERS_SUCCESS,
   UserActionTypes,
   USERS_LOADING
-} from '../../@types/store/user.action.types'
-import { IUserState } from '../../@types/store/user.types'
+} from '../../types/store/user.action.types'
+import { IUserState } from '../../types/store/user.types'
 
 const initialState: IUserState = {
   loading: false,

@@ -1,4 +1,4 @@
-import { LabelStatus } from '../@types'
+import { LabelStatus } from '../types'
 
 type Background = 'primaryDark' | 'secondaryDark' | 'primaryLight' | 'secondaryLight'
 

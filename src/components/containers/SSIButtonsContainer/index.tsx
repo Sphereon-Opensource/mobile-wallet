@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 import { EmitterSubscription, Keyboard } from 'react-native'
 
-import { IButton } from '../../../@types'
 import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIButtonsContainerSpacerStyled as Spacer
 } from '../../../styles/components'
+import { IButton } from '../../../types'
 import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../buttons/SSISecondaryButton'
 

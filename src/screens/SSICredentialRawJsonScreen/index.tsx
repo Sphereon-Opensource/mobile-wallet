@@ -6,13 +6,13 @@ import { ScrollView } from 'react-native-gesture-handler'
 import JSONTree from 'react-native-json-tree'
 import Share from 'react-native-share'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIBasicHorizontalCenterContainerStyled,
   SSIButtonBottomContainerStyled
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>
 

@@ -4,13 +4,13 @@ import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { APP_ID } from '../../@config/constants'
-import { RootState } from '../../@types'
+import { getConnectionParties as getConnections } from '../../services/connectionService'
+import { RootState } from '../../types'
 import {
   CONNECTIONS_LOADING,
   GET_CONNECTION_ENTITIES_FAILED,
   GET_CONNECTION_ENTITIES_SUCCESS
-} from '../../@types/store/connection.action.types'
-import { getConnectionParties as getConnections } from '../../services/connectionService'
+} from '../../types/store/connection.action.types'
 
 const debug = Debug(`${APP_ID}:connectionService`)
 

@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 
-import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../@types'
 import SSISecurityImage from '../../../../assets/images/security.svg'
 import SSIWarningImage from '../../../../assets/images/warning.svg'
 import { backgrounds, fonts } from '../../../../styles/colors'
@@ -22,6 +21,7 @@ import {
   SSIPopupTitleContainerStyled as TitleContainer
 } from '../../../../styles/components'
 import { SSITextH2SemiBoldStyled as TitleCaption } from '../../../../styles/components'
+import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../types'
 import { parseTextToElement } from '../../../../utils/TextUtils'
 import SSIIconButton from '../../../buttons/SSIIconButton'
 import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton'

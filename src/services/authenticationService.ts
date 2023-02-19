@@ -6,11 +6,11 @@ import {
   IOpenIdConfig
 } from '@sphereon/ssi-sdk-data-store-common'
 
-import { CustomApproval } from '../@types'
-import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../@types/store/authenticate.types'
 import DidAuthSiopProvider from '../providers/authentication/DidAuthSiopProvider'
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider'
 import store from '../store'
+import { CustomApproval } from '../types'
+import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../types/store/authenticate.types'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 
 export const authenticate = async (

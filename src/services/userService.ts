@@ -1,7 +1,7 @@
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { IUser } from '../@types'
+import { IUser } from '../types'
 
 import { getUsers as getUsersFromStorage, storeUser } from './storageService'
 

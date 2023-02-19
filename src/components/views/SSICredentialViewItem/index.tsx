@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 
-import { ICredentialSummary } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSICredentialViewItemContainerStyled as Container,
@@ -13,6 +12,7 @@ import {
   SSITextH4LightStyled as IssuerCaption,
   SSITextH3LightStyled as TitleCaption
 } from '../../../styles/components'
+import { ICredentialSummary } from '../../../types'
 import { toLocalDateString, toLocalDateTimeString } from '../../../utils/DateUtils'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 

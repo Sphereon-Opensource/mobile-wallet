@@ -1,8 +1,8 @@
 import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-import { IHeaderProps } from '../../../../@types'
 import SSIIconButton from '../../../../components/buttons/SSIIconButton'
+import { IHeaderProps } from '../../../../types'
 import { borders } from '../../../colors'
 import { SSIBackgroundPrimaryDarkColorCss } from '../../css'
 import { SSITextH1LightStyled, SSITextH4LightStyled } from '../../fonts'

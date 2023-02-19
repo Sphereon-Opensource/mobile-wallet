@@ -3,8 +3,8 @@ import {
   ONBOARDING_LOADING,
   OnboardingActionTypes,
   SET_PERSONAL_DATA_SUCCESS
-} from '../../@types/store/onboarding.action.types'
-import { IOnboardingState } from '../../@types/store/onboarding.types'
+} from '../../types/store/onboarding.action.types'
+import { IOnboardingState } from '../../types/store/onboarding.types'
 
 const initialState: IOnboardingState = {
   loading: false,

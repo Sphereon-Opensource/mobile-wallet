@@ -18,10 +18,10 @@ import { Resolver } from 'did-resolver'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
-import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
 import RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { signPresentation } from '../services/signatureService'
+import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../types'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 
 export const didResolver = new Resolver({

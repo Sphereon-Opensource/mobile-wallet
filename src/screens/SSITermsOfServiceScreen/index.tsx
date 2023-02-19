@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC, useMemo, useState } from 'react'
 import { BackHandler } from 'react-native'
 
-import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSICheckbox from '../../components/fields/SSICheckbox'
 import SSITabView from '../../components/views/SSITabView'
@@ -16,6 +15,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer
 } from '../../styles/components'
+import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>
 

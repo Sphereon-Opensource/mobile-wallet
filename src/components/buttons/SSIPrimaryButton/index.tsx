@@ -1,12 +1,12 @@
 import React, { FC } from 'react'
 import { PressableProps, ViewStyle } from 'react-native'
 
-import { OpacityStyleEnum } from '../../../@types'
 import {
   SSITouchableOpacityButtonFlexRowStyled as Button,
   SSITextH2LightStyled as ButtonCaption,
   SSIRoundedCenteredLinearGradientStyled as LinearGradient
 } from '../../../styles/components'
+import { OpacityStyleEnum } from '../../../types'
 
 export interface Props extends PressableProps {
   title: string // TODO rename to caption

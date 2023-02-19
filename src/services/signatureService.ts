@@ -3,8 +3,8 @@ import { W3CVerifiablePresentation } from '@sphereon/ssi-types'
 import { IIdentifier } from '@veramo/core'
 import { createJWT, Signer } from 'did-jwt'
 
-import { ISignJwtArgs } from '../@types'
 import { keyManagerSign } from '../agent'
+import { ISignJwtArgs } from '../types'
 import { SignatureAlgorithmFromKey } from '../utils/KeyUtils'
 
 export const signJWT = async (args: ISignJwtArgs): Promise<string> => {

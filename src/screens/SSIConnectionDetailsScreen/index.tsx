@@ -3,15 +3,6 @@ import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 
-import {
-  ConnectionStatusEnum,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  ToastTypeEnum
-} from '../../@types'
-import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
 import { translate } from '../../localization/Localization'
@@ -20,6 +11,15 @@ import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
 } from '../../styles/components'
+import {
+  ConnectionStatusEnum,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types'
+import { IAuthenticatedEntity } from '../../types/store/authenticate.types'
 import { showToast } from '../../utils/ToastUtils'
 
 const format = require('string-format')

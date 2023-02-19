@@ -2,8 +2,8 @@ import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-comm
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs } from '../@types'
 import { cmAddConnection, cmAddParty, cmGetParties } from '../agent'
+import { IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs } from '../types'
 
 const debug = Debug(`${APP_ID}:contactService`)
 

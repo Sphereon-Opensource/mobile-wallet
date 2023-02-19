@@ -5,14 +5,6 @@ import Toast from 'react-native-toast-message'
 import { useSelector } from 'react-redux'
 
 import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import {
-  MainRoutesEnum,
-  NavigationBarRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  SwitchRoutesEnum
-} from '../@types'
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
@@ -37,6 +29,14 @@ import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  SwitchRoutesEnum
+} from '../types'
 
 const format = require('string-format')
 

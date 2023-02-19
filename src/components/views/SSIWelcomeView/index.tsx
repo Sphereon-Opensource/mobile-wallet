@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 
-import { IButton } from '../../../@types'
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
@@ -11,6 +10,7 @@ import {
   SSIWelcomeViewProgressIndicatorContainerStyled as ProgressIndicatorContainer,
   SSIWelcomeViewTitleTextStyled as TitleCaption
 } from '../../../styles/components'
+import { IButton } from '../../../types'
 import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
 import SSIProgressIndicator from '../../indicators/SSIProgressIndicator'
 

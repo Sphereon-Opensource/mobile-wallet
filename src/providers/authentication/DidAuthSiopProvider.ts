@@ -5,7 +5,6 @@ import { IIdentifier } from '@veramo/core'
 import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
-import { CustomApproval } from '../../@types'
 import {
   authenticateWithSiop,
   getSessionForSiop,
@@ -13,6 +12,7 @@ import {
   registerSessionForSiop,
   sendSiopAuthorizationResponse
 } from '../../agent'
+import { CustomApproval } from '../../types'
 
 const debug = Debug(`${APP_ID}:authentication`)
 

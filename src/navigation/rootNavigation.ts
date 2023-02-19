@@ -1,7 +1,7 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import type { NavigationAction, NavigationState, PartialState } from '@react-navigation/routers'
 
-import { StackParamList } from '../@types'
+import { StackParamList } from '../types'
 
 export const navigationRef = createNavigationContainerRef<StackParamList>()
 

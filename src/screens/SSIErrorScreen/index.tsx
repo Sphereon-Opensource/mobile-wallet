@@ -1,13 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
 import {
   SSIBasicContainerStyled as Container,
   SSIErrorScreenContentContainerStyled as ContentContainer,
   SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
 

@@ -1,9 +1,9 @@
 import { Action, CombinedState } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { RootState } from '../../@types'
-import { CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS } from '../../@types/store/onboarding.action.types'
-import { ISetPersonalDataActionArgs } from '../../@types/store/onboarding.types'
+import { RootState } from '../../types'
+import { CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS } from '../../types/store/onboarding.action.types'
+import { ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
 
 import { createUser } from './user.actions'
 

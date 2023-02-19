@@ -4,7 +4,6 @@ import { BackHandler, NativeEventSubscription, View } from 'react-native'
 import { connect } from 'react-redux'
 
 import { PIN_CODE_LENGTH } from '../../@config/constants'
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPinCode from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import { storePin } from '../../services/storageService'
@@ -13,6 +12,7 @@ import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET> {
   finalizeOnboarding: () => void

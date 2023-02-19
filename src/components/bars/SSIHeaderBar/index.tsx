@@ -2,7 +2,6 @@ import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { ButtonIconsEnum } from '../../../@types'
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarContainerStyled as Container,
@@ -14,6 +13,7 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row
 } from '../../../styles/components'
+import { ButtonIconsEnum } from '../../../types'
 import SSIEntityIcon from '../../assets/icons/SSIEntityIcon'
 
 interface Props extends NativeStackHeaderProps {

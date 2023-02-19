@@ -6,6 +6,11 @@ import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
+import { translate } from '../localization/Localization'
+import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
+import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
+import store from '../store'
+import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
   ConnectionStatusEnum,
   ICredentialMetadata,
@@ -22,12 +27,7 @@ import {
   QrTypesEnum,
   ScreenRoutesEnum,
   ToastTypeEnum
-} from '../@types'
-import { translate } from '../localization/Localization'
-import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
-import store from '../store'
-import { storeVerifiableCredential } from '../store/actions/credential.actions'
+} from '../types'
 import { showToast } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 

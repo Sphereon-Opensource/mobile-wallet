@@ -3,7 +3,7 @@ import Debug from 'debug'
 import RNSecureKeyStore, { ACCESSIBLE } from 'react-native-secure-key-store'
 
 import { APP_ID } from '../@config/constants'
-import { IStorePinArgs, IStoreUserArgs, IUser } from '../@types'
+import { IStorePinArgs, IStoreUserArgs, IUser } from '../types'
 
 const debug = Debug(`${APP_ID}:storageService`)
 

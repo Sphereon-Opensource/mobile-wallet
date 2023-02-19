@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { ListRenderItemInfo } from 'react-native'
 
 import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { ICredentialDetailsRow } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSICredentialDetailsViewContainerStyled as Container,
@@ -11,6 +10,7 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel
 } from '../../../styles/components'
+import { ICredentialDetailsRow } from '../../../types'
 import SSITextField from '../../fields/SSITextField'
 
 export interface IProps {

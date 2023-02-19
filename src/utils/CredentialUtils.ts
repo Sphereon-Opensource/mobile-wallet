@@ -1,6 +1,6 @@
 import { ICredential } from '@sphereon/ssi-types'
 
-import { CredentialStatusEnum, ICredentialSummary } from '../@types'
+import { CredentialStatusEnum, ICredentialSummary } from '../types'
 
 import { EPOCH_MILLISECONDS } from './DateUtils'
 

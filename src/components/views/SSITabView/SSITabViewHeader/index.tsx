@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
 import { Animated } from 'react-native'
 
-import { ITabRoute } from '../../../../@types'
 import {
   SSITabViewHeaderContainerStyled as Container,
   SSITabViewHeaderTabHeaderStyled as Header,
   SSITabViewHeaderTabHeaderCaptionStyled as HeaderCaption,
   SSITabViewHeaderTabIndicatorStyled as HeaderIndicator
 } from '../../../../styles/components'
+import { ITabRoute } from '../../../../types'
 
 const { v4: uuidv4 } = require('uuid')
 

@@ -3,7 +3,13 @@ import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { RootState, ToastTypeEnum } from '../../@types'
+import { translate } from '../../localization/Localization'
+import {
+  deleteVerifiableCredential as deleteCredential,
+  getVerifiableCredentialsFromStorage,
+  storeVerifiableCredential as storeCredential
+} from '../../services/credentialService'
+import { RootState, ToastTypeEnum } from '../../types'
 import {
   CREDENTIALS_LOADING,
   DELETE_CREDENTIAL_FAILED,
@@ -12,13 +18,7 @@ import {
   GET_CREDENTIALS_SUCCESS,
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS
-} from '../../@types/store/credential.action.types'
-import { translate } from '../../localization/Localization'
-import {
-  deleteVerifiableCredential as deleteCredential,
-  getVerifiableCredentialsFromStorage,
-  storeVerifiableCredential as storeCredential
-} from '../../services/credentialService'
+} from '../../types/store/credential.action.types'
 import { showToast } from '../../utils/ToastUtils'
 import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 

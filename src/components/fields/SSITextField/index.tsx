@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 
-import { ICredentialDetailsRow } from '../../../@types'
 import SSIEditIcon from '../../../assets/icons/edit.svg'
 import {
   SSITextFieldContainerStyled as Container,
@@ -12,6 +11,7 @@ import {
   SSITextH5LightStyled as HeaderLabel,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer
 } from '../../../styles/components'
+import { ICredentialDetailsRow } from '../../../types'
 import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 export interface IProps {

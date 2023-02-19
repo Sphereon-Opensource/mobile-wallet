@@ -3,7 +3,6 @@ import React, { FC } from 'react'
 import { FlatList, ListRenderItemInfo } from 'react-native'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ICredentialTypeSelection, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSICredentialSelectTypeViewItem from '../../components/views/SSICredentialSelectTypeViewItem'
 import { translate } from '../../localization/Localization'
@@ -14,6 +13,7 @@ import {
   SSICredentialSelectTypeScreenViewItemContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
+import { ICredentialTypeSelection, ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE>
 

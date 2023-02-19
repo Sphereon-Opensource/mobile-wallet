@@ -6,13 +6,13 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
 import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar } from '../../styles/components'
+import { ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
 
 const format = require('string-format')
 

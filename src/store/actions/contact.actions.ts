@@ -2,7 +2,9 @@ import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { RootState, ToastTypeEnum } from '../../@types'
+import { translate } from '../../localization/Localization'
+import { getContacts as getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
+import { RootState, ToastTypeEnum } from '../../types'
 import {
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
@@ -10,9 +12,7 @@ import {
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
   ICreateContactArgs
-} from '../../@types/store/contact.action.types'
-import { translate } from '../../localization/Localization'
-import { getContacts as getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
+} from '../../types/store/contact.action.types'
 import { showToast } from '../../utils/ToastUtils'
 
 export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {

@@ -1,6 +1,6 @@
 import Toast from 'react-native-toast-message'
 
-import { ToastTypeEnum } from '../@types'
+import { ToastTypeEnum } from '../types'
 
 export const showToast = (type: ToastTypeEnum, message: string) => {
   Toast.show({

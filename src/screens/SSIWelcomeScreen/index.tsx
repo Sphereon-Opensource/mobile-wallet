@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { BackHandler, NativeEventSubscription, StatusBar } from 'react-native'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
 import SSIWelcomeView from '../../components/views/SSIWelcomeView'
 import { translate } from '../../localization/Localization'
@@ -12,6 +11,7 @@ import {
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
 

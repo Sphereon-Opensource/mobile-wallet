@@ -2,7 +2,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
 import { VERIFICATION_CODE_MAX_RETRIES } from '../../@config/constants'
-import { MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPinCode from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import {
@@ -10,6 +9,7 @@ import {
   SSIVerificationCodeScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
+import { MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>
 

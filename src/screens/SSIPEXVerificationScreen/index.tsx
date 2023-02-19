@@ -3,7 +3,6 @@ import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop'
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
 
-import { ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../@types'
 import SSIBackgroundImage from '../../assets/images/connections.svg'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
@@ -15,6 +14,7 @@ import {
   SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
 import { showToast } from '../../utils/ToastUtils'
 
 const { v4: uuidv4 } = require('uuid')

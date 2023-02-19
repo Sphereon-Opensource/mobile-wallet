@@ -6,12 +6,12 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ConnectionStatusEnum, IConnectionViewItem, RootState, ScreenRoutesEnum, StackParamList } from '../../@types'
-import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIConnectionViewItem from '../../components/views/SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { getConnectionParties } from '../../store/actions/connection.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/components'
+import { ConnectionStatusEnum, IConnectionViewItem, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
+import { IAuthenticatedEntity } from '../../types/store/authenticate.types'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
   getConnectionParties: () => void

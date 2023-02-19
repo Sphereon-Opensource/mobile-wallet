@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { ColorValue, View, ViewStyle } from 'react-native'
 
-import { ConnectionStatusEnum, CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import { statuses } from '../../../styles/colors'
 import {
@@ -9,6 +8,7 @@ import {
   SSIStatusLabelContainerStyled as Container,
   SSIStatusLabelStatusCaptionStyled as StatusCaption
 } from '../../../styles/components'
+import { ConnectionStatusEnum, CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../types'
 import SSICheckmarkBadge from '../../assets/badges/SSICheckmarkBadge'
 import SSIExclamationMarkBadge from '../../assets/badges/SSIExclamationMarkBadge'
 

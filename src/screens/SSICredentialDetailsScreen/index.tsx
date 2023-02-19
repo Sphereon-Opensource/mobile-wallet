@@ -1,7 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIActivityView from '../../components/views/SSIActivityView'
@@ -17,6 +16,7 @@ import {
   SSICredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
 import { toLocalDateString } from '../../utils/DateUtils'
 

@@ -6,10 +6,10 @@ import React, { PureComponent } from 'react'
 import { Button, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 
-import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from '../@types'
-import { IAuthenticatedEntity, IOpenIdAuthentication } from '../@types/store/authenticate.types'
 import { createIdentifier, getIdentifiers } from '../services/identityService'
 import { authenticateConnectionEntity } from '../store/actions/authentication.actions'
+import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from '../types'
+import { IAuthenticatedEntity, IOpenIdAuthentication } from '../types/store/authenticate.types'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, 'Veramo'>
