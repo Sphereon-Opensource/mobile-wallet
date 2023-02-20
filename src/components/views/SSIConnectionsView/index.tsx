@@ -24,7 +24,7 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
     console.log('Delete connection pressed!')
   }
 
-  const onItemPress = async (yaconnection: IConnection): Promise<void> => {
+  const onItemPress = async (connection: IConnection): Promise<void> => {
     console.log('Connection pressed!')
   }
 
