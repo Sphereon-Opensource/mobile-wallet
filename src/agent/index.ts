@@ -1,6 +1,5 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
-import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
 import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
 import { DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
@@ -19,10 +18,10 @@ import { Resolver } from 'did-resolver'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
-import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
-import * as RootNavigation from '../navigation/rootNavigation'
+import RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { signPresentation } from '../services/signatureService'
+import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../types'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 
 export const didResolver = new Resolver({
@@ -114,8 +113,8 @@ export const cmAddConnection = agent.cmAddConnection
 export const didManagerGet = agent.didManagerGet
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential
-export const getSiopAuthenticationRequestDetails = agent.getSiopAuthenticationRequestDetails
-export const sendSiopAuthenticationResponse = agent.sendSiopAuthenticationResponse
+export const getSiopAuthorizationRequestDetails = agent.getSiopAuthorizationRequestDetails
+export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential

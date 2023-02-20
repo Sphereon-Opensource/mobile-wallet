@@ -1,4 +1,4 @@
-import { ICredentialSummary } from '../../@types'
+import { ICredentialSummary } from '../../types'
 import {
   CredentialActionTypes,
   CREDENTIALS_LOADING,
@@ -8,8 +8,8 @@ import {
   GET_CREDENTIALS_SUCCESS,
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS
-} from '../../@types/store/credential.action.types'
-import { ICredentialState } from '../../@types/store/credential.types'
+} from '../../types/store/credential.action.types'
+import { ICredentialState } from '../../types/store/credential.types'
 
 const initialState: ICredentialState = {
   loading: false,

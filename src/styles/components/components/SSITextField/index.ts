@@ -5,9 +5,7 @@ import { SSITextH7SemiBoldLightStyled } from '../../fonts'
 
 export const SSITextFieldContainerStyled = styled.View`
   width: 100%;
-  padding-top: 2px;
-  padding-right: 24px;
-  padding-bottom: 4px;
+  padding: 2px 24px 4px 0px;
 `
 
 export const SSITextFieldHeaderContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
@@ -19,10 +17,7 @@ export const SSITextFieldStatusLabelContainerStyled = styled.View`
 `
 
 export const SSITextFieldEditBadgeContainerStyled = styled.View`
-  margin-top: 3px;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 3px auto auto auto;
 `
 
 export const SSITextFieldContentBadgeContainerStyled = styled.View`

@@ -6,6 +6,11 @@ import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
+import { translate } from '../localization/Localization'
+import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
+import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
+import store from '../store'
+import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
   ConnectionStatusEnum,
   ICredentialMetadata,
@@ -20,14 +25,10 @@ import {
   NavigationBarRoutesEnum,
   PopupImagesEnum,
   QrTypesEnum,
-  ScreenRoutesEnum
-} from '../@types'
-import { translate } from '../localization/Localization'
-import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
-import store from '../store'
-import { storeVerifiableCredential } from '../store/actions/credential.actions'
-import { showToast, ToastTypeEnum } from '../utils/ToastUtils'
+  ScreenRoutesEnum,
+  ToastTypeEnum
+} from '../types'
+import { showToast } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 import { authenticate } from './authenticationService'
@@ -285,7 +286,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         for (const credentialResponse of Object.values(credentialsResponse)) {
           const vc = CredentialMapper.toUniformCredential(credentialResponse.credential)
           const rawCredential = credentialResponse.credential as unknown as VerifiableCredential
-          const storeCredential = async (vc: VerifiableCredential) => store.dispatch(storeVerifiableCredential(vc))
+          // TODO fix the store not having the correct action types (should include ThunkAction)
+          const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc))
 
           // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
           args.navigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -315,7 +317,9 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       })
       .catch((error: Error) => {
         // TODO refactor once the lib returns a proper response object
-        const errorResponse = JSON.parse(error.message.split('response:')[1].trim())
+        const errorResponse = error.message.includes('response:')
+          ? JSON.parse(error.message.split('response:')[1].trim())
+          : error.message
         if (errorResponse?.status === 403) {
           return Promise.reject(error)
         }

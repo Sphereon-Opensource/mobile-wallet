@@ -1,29 +1,19 @@
 import Localization from '../localization/Localization'
 
-class DateUtils {
-  static EPOCH_MILLISECONDS = 1000
-  // TODO fix formatting being ignored while installing the app as APK on my(bram) device (certain locale settings)
-  static DATE_FORMAT_OPTIONS = {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric'
-  } as const
+export const EPOCH_MILLISECONDS = 1000
+export const DATE_FORMAT_OPTIONS = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric'
+} as const
 
-  static toLocalDateTimeString = (date: number): string => {
-    return new Date(date * DateUtils.EPOCH_MILLISECONDS).toLocaleString(Localization.getLocale(), {
-      ...DateUtils.DATE_FORMAT_OPTIONS,
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
-    })
-  }
+export const toLocalDateTimeString = (date: number): string =>
+  new Date(date * EPOCH_MILLISECONDS).toLocaleString(Localization.getLocale(), {
+    ...DATE_FORMAT_OPTIONS,
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  })
 
-  static toLocalDateString = (date: number): string => {
-    return new Date(date * DateUtils.EPOCH_MILLISECONDS).toLocaleDateString(
-      Localization.getLocale(),
-      DateUtils.DATE_FORMAT_OPTIONS
-    )
-  }
-}
-
-export default DateUtils
+export const toLocalDateString = (date: number): string =>
+  new Date(date * EPOCH_MILLISECONDS).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS)

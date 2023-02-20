@@ -1,8 +1,6 @@
-import { FC } from 'react'
-import React from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import React, { FC } from 'react'
 
-import { MainRoutesEnum, StackParamList } from '../../@types'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIAlert from '../../components/messageBoxes/alerts/SSIAlert'
 import { translate } from '../../localization/Localization'
@@ -10,6 +8,7 @@ import {
   SSIBasicModalContainerStyled as Container,
   SSIAlertModalContentContainerStyled as ModalContentContainer
 } from '../../styles/components'
+import { MainRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.ALERT_MODAL>
 

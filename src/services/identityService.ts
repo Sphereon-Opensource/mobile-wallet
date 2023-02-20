@@ -13,8 +13,8 @@ import elliptic from 'elliptic'
 import * as u8a from 'uint8arrays'
 
 import { DID_PREFIX } from '../@config/constants'
-import { ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum } from '../@types'
 import agent, { didManagerCreate, didManagerFind, didManagerGet } from '../agent'
+import { ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum } from '../types'
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement

@@ -1,17 +1,15 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
-import { IVerifiableCredential } from '@sphereon/ssi-types'
-import { CredentialMapper } from '@sphereon/ssi-types'
+import { CredentialMapper, IVerifiableCredential } from '@sphereon/ssi-types'
 import { IIdentifier, VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { Button, Text, View } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { CredentialIssuanceStateEnum, ScreenRoutesEnum, StackParamList } from '../@types'
-import { IAuthenticatedEntity, IOpenIdAuthentication } from '../@types/store/authenticate.types'
 import { createIdentifier, getIdentifiers } from '../services/identityService'
-import { RootState } from '../store'
 import { authenticateConnectionEntity } from '../store/actions/authentication.actions'
+import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from '../types'
+import { IAuthenticatedEntity, IOpenIdAuthentication } from '../types/store/authenticate.types'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, 'Veramo'>
@@ -30,8 +28,8 @@ interface Identifier {
   did: string
 }
 
-export class Veramo extends PureComponent<IProps, IState> {
-  state = {
+class Veramo extends PureComponent<IProps, IState> {
+  state: IState = {
     identifiers: []
   }
 

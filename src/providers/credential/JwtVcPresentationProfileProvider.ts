@@ -4,8 +4,8 @@ import jwt_decode from 'jwt-decode'
 import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../../@config/constants'
-import { QrTypesEnum } from '../../@types'
 import { translate } from '../../localization/Localization'
+import { QrTypesEnum } from '../../types'
 
 const debug = Debug(`${APP_ID}:jwt`)
 

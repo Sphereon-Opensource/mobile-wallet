@@ -1,4 +1,4 @@
-import { ICredentialSummary } from '../index'
+import { ICredentialSummary } from '../credential'
 
 export const CREDENTIALS_LOADING = '[CREDENTIAL] CREDENTIALS_LOADING'
 export type CREDENTIALS_LOADING = typeof CREDENTIALS_LOADING

@@ -1,18 +1,12 @@
 import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 
 import {
-  IDeleteVerifiableCredentialArgs,
-  IGetVerifiableCredentialArgs,
-  IStoreVerifiableCredentialArgs
-} from '../@types'
-import {
   dataStoreDeleteVerifiableCredential,
   dataStoreGetVerifiableCredential,
   dataStoreORMGetVerifiableCredentials,
   dataStoreSaveVerifiableCredential
 } from '../agent'
-
-// We want to extend this service with calls to the Veramo agent as the agent does all the work
+import { IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs } from '../types'
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueVerifiableCredential>> => {
   return dataStoreORMGetVerifiableCredentials()

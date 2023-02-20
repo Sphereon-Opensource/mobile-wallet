@@ -1,19 +1,18 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { VerifiableCredential } from '@veramo/core'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ICredentialSummary, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
 import { translate } from '../../localization/Localization'
 import { getVerifiableCredential } from '../../services/credentialService'
-import { RootState } from '../../store'
 import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
 import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar } from '../../styles/components'
+import { ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
 
 const format = require('string-format')
 
@@ -23,8 +22,12 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
   verifiableCredentials: Array<ICredentialSummary>
 }
 
-class SSICredentialsOverviewScreen extends PureComponent<IProps> {
-  state = {
+interface IState {
+  refreshing: boolean
+}
+
+class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
+  state: IState = {
     refreshing: false
   }
 
@@ -102,6 +105,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps> {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
+  // TODO ThunkDispatch<any, unknown, Action>
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
     deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash))

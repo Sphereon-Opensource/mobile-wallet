@@ -1,10 +1,9 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 import { StatusBar } from 'react-native'
 import { BarCodeReadEvent, RNCamera } from 'react-native-camera'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
 import { QR_SCANNER_TIMEOUT } from '../../@config/constants'
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker'
 import { translate } from '../../localization/Localization'
 import { readQr } from '../../services/qrService'
@@ -12,6 +11,7 @@ import {
   SSIFullFlexDirectionRowViewStyled as Container,
   SSIQRReaderScreenScannerStyled as QRScanner
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>
 

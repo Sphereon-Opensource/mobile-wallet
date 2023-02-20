@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 import { EmitterSubscription, Keyboard } from 'react-native'
 
-import { IButton } from '../../../@types'
 import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIButtonsContainerSpacerStyled as Spacer
 } from '../../../styles/components'
+import { IButton } from '../../../types'
 import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../buttons/SSISecondaryButton'
 
@@ -21,7 +21,7 @@ interface IState {
 class SSIButtonsContainer extends PureComponent<Props, IState> {
   keyboardDidShowListener: EmitterSubscription
   keyboardDidHideListener: EmitterSubscription
-  state = {
+  state: IState = {
     keyboardVisible: false
   }
 
@@ -42,6 +42,7 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
   _keyboardDidHide = () => {
     this.setState({ keyboardVisible: false })
   }
+
   render() {
     const { primaryButton, secondaryButton } = this.props
     const { keyboardVisible } = this.state

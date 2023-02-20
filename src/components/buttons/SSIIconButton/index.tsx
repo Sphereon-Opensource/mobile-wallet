@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 import { ColorValue, PressableProps, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
-import { ButtonIconsEnum } from '../../../@types'
 import SSIBackIcon from '../../../assets/icons/back.svg'
 import SSIMoreIcon from '../../../assets/icons/more.svg'
+import { ButtonIconsEnum } from '../../../types'
 import SSICloseIcon from '../../assets/icons/SSICloseIcon'
 
 export interface Props extends PressableProps {

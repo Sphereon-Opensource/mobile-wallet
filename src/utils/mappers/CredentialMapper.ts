@@ -1,17 +1,16 @@
 import { ICredential } from '@sphereon/ssi-types'
 
-import { ICredentialDetailsRow, ICredentialSummary } from '../../@types'
+import { ICredentialDetailsRow, ICredentialSummary } from '../../types'
 import { getCredentialStatus } from '../CredentialUtils'
+import { EPOCH_MILLISECONDS } from '../DateUtils'
 
 const { v4: uuidv4 } = require('uuid')
 
 function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetailsRow[] {
   let rows: ICredentialDetailsRow[] = []
-  // console.log(`OBJECT: ${JSON.stringify(object, null, 2)}`)
   for (const [key, value] of Object.entries(object)) {
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
-      // console.log(`IMAGE!!!!!${key}:${value}`)
       rows.push({
         id: uuidv4(),
         label: 'image',
@@ -33,7 +32,6 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
         label: key,
         value: undefined
       })
-      // console.log(`NON STRING:${key}`)
       rows = rows.concat(toCredentialDetailsRow(value))
     } else {
       console.log(`==>${key}:${value}`)
@@ -54,9 +52,9 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
 
 export function toCredentialSummary(verifiableCredential: ICredential, hash?: string): ICredentialSummary {
   const expirationDate = verifiableCredential.expirationDate
-    ? new Date(verifiableCredential.expirationDate).valueOf() / 1000
+    ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS
     : 0
-  const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / 1000
+  const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS
 
   const credentialStatus = getCredentialStatus(verifiableCredential)
 

@@ -1,8 +1,7 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { BackHandler, NativeEventSubscription, StatusBar } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
 import SSIWelcomeView from '../../components/views/SSIWelcomeView'
 import { translate } from '../../localization/Localization'
@@ -12,6 +11,7 @@ import {
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
 
@@ -23,7 +23,7 @@ interface IState {
 
 class SSIWelcomeScreen extends PureComponent<Props, IState> {
   hardwareBackPressListener: NativeEventSubscription
-  state = {
+  state: IState = {
     body: translate('onboarding_welcome_intro_body'),
     buttonCaption: translate('action_next_label'),
     step: 1

@@ -1,18 +1,16 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React from 'react'
 import Toast from 'react-native-toast-message'
 import { useSelector } from 'react-redux'
 
 import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import { MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum } from '../@types'
 import SSIHeaderBar from '../components/bars/SSIHeaderBar'
 import SSINavigationBar from '../components/bars/SSINavigationBar'
 import { translate } from '../localization/Localization'
 import SSIAlertModal from '../modals/SSIAlertModal'
 import SSIPopupModal from '../modals/SSIPopupModal'
-import * as RootNavigation from '../navigation/rootNavigation'
+import RootNavigation from '../navigation/rootNavigation'
 import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
 import SSIContactAddScreen from '../screens/SSIContactAddScreen'
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
@@ -25,13 +23,20 @@ import SSIErrorScreen from '../screens/SSIErrorScreen'
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
-import SSIPinCodeScreen from '../screens/SSIPinCodeScreen'
+import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
-import { RootState } from '../store'
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  SwitchRoutesEnum
+} from '../types'
 
 const format = require('string-format')
 
@@ -478,8 +483,8 @@ const OnboardingStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.PIN_CODE}
-        component={SSIPinCodeScreen}
+        name={ScreenRoutesEnum.PIN_CODE_SET}
+        component={SSIPinCodeSetScreen}
         options={({ route }) => ({
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
@@ -513,7 +518,7 @@ const OnboardingStack = (): JSX.Element => {
  * https://reactnavigation.org/docs/auth-flow/
  */
 const AppNavigator = (): JSX.Element => {
-  const userPresent = useSelector((state: RootState) => !!state.user.name)
+  const userState = useSelector((state: RootState) => state.user)
 
   return (
     <Stack.Navigator
@@ -522,7 +527,7 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false
       }}
     >
-      {!userPresent ? (
+      {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

@@ -1,7 +1,6 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-native'
 
-import { CredentialStatusEnum } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import { backgrounds, credentialCards } from '../../../styles/colors'
 import {
@@ -24,6 +23,7 @@ import {
   SSITextH6LightStyled as PropertyValueText,
   SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
+import { CredentialStatusEnum } from '../../../types'
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
 
 const { v4: uuidv4 } = require('uuid')

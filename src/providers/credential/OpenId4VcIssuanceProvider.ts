@@ -13,6 +13,9 @@ import { _ExtendedIKey } from '@veramo/utils'
 import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
+import { translate } from '../../localization/Localization'
+import { getFirstKeyWithRelation, getOrCreatePrimaryIdentifier } from '../../services/identityService'
+import { signJWT } from '../../services/signatureService'
 import {
   ICredentialFormatOpts,
   ICredentialMetadata,
@@ -28,10 +31,7 @@ import {
   QrTypesEnum,
   SignatureAlgorithmEnum,
   SupportedDidMethodEnum
-} from '../../@types'
-import { translate } from '../../localization/Localization'
-import { getFirstKeyWithRelation, getOrCreatePrimaryIdentifier } from '../../services/identityService'
-import { signJWT } from '../../services/signatureService'
+} from '../../types'
 import { KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey } from '../../utils/KeyUtils'
 
 const { v4: uuidv4 } = require('uuid')

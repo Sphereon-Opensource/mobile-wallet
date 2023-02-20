@@ -1,11 +1,29 @@
-import { Dispatch } from 'react'
-import { AnyAction } from 'redux'
+import { Action, CombinedState } from 'redux'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { SET_PERSONAL_DATA } from '../../@types/store/onboarding.action.types'
-import { ISetPersonalDataActionArgs } from '../../@types/store/onboarding.types'
+import { RootState } from '../../types'
+import { CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS } from '../../types/store/onboarding.action.types'
+import { ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
 
-export const setPersonalData = (payload: ISetPersonalDataActionArgs): ((dispatch: Dispatch<AnyAction>) => void) => {
-  return (dispatch: Dispatch<AnyAction>) => {
-    dispatch({ type: SET_PERSONAL_DATA, payload })
+import { createUser } from './user.actions'
+
+export const setPersonalData = (
+  args: ISetPersonalDataActionArgs
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({ type: SET_PERSONAL_DATA_SUCCESS, payload: args })
+  }
+}
+
+export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    const onboardingState = getState().onboarding
+    const user = {
+      firstName: onboardingState.firstName,
+      lastName: onboardingState.lastName,
+      emailAddress: onboardingState.emailAddress
+    }
+
+    dispatch(createUser(user)).then(() => dispatch({ type: CLEAR_ONBOARDING }))
   }
 }
