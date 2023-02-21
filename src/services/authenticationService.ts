@@ -62,6 +62,7 @@ export const verifyAuthentication = (
     verifiedAuthorizationRequest: VerifiedAuthorizationRequest
   }
 ) => {
+  console.log(`verified auth request: ${JSON.stringify(args.verifiedAuthorizationRequest)}`)
   switch (connectionType) {
     case ConnectionTypeEnum.DIDAUTH:
       return new DidAuthSiopProvider().verifyAuthentication(args.sessionId, args.verifiedAuthorizationRequest)

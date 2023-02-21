@@ -24,6 +24,8 @@ import * as RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { signPresentation } from '../services/signatureService'
 import { scanFingerPrint } from '../utils/BiometricUtils'
+import {DataSource} from "typeorm";
+import {OrPromise} from "@veramo/utils";
 
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
@@ -61,7 +63,7 @@ export const didProviders = {
   })
 }
 
-const dbConnection = getDbConnection(DB_CONNECTION_NAME)
+const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME)
 
 const agent = createAgent<
   IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager
@@ -114,8 +116,8 @@ export const cmAddConnection = agent.cmAddConnection
 export const didManagerGet = agent.didManagerGet
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential
-export const getSiopAuthenticationRequestDetails = agent.getSiopAuthenticationRequestDetails
-export const sendSiopAuthenticationResponse = agent.sendSiopAuthenticationResponse
+export const getSiopAuthorizationRequestDetails = agent.getSiopAuthorizationRequestDetails
+export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential

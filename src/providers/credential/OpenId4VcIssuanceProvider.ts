@@ -1,38 +1,39 @@
-import {
-  AccessTokenResponse,
-  AuthzFlowType,
-  CredentialResponse,
-  EndpointMetadata,
-  Jwt,
-  OpenID4VCIClient,
-  ProofOfPossessionCallbacks
-} from '@sphereon/openid4vci-client'
-import { KeyUse } from '@sphereon/ssi-sdk-jwk-did-provider'
-import { CredentialFormat } from '@sphereon/ssi-types'
-import { _ExtendedIKey } from '@veramo/utils'
+import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider'
+import {CredentialFormat} from '@sphereon/ssi-types'
 import Debug from 'debug'
 
-import { APP_ID } from '../../@config/constants'
+import {APP_ID} from '../../@config/constants'
 import {
-  ICredentialFormatOpts,
-  ICredentialMetadata,
-  IErrorDetails,
-  IGetCredentialArgs,
-  IGetCredentialsArgs,
-  IGetIssuanceCryptoSuiteArgs,
-  IGetIssuanceInitiationFromUriArgs,
-  IGetVcIssuanceFormatArgs,
-  IIssuanceOpts,
-  IServerMetadataAndCryptoMatchingResponse,
-  Oidc4vciErrorEnum,
-  QrTypesEnum,
-  SignatureAlgorithmEnum,
-  SupportedDidMethodEnum
+    ICredentialFormatOpts,
+    ICredentialMetadata,
+    IErrorDetails,
+    IGetCredentialArgs,
+    IGetCredentialsArgs,
+    IGetIssuanceCryptoSuiteArgs,
+    IGetIssuanceInitiationFromUriArgs,
+    IGetVcIssuanceFormatArgs,
+    IIssuanceOpts,
+    IServerMetadataAndCryptoMatchingResponse,
+    Oidc4vciErrorEnum,
+    QrTypesEnum,
+    SignatureAlgorithmEnum,
+    SupportedDidMethodEnum
 } from '../../@types'
-import { translate } from '../../localization/Localization'
-import { getFirstKeyWithRelation, getOrCreatePrimaryIdentifier } from '../../services/identityService'
-import { signJWT } from '../../services/signatureService'
-import { KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey } from '../../utils/KeyUtils'
+import {translate} from '../../localization/Localization'
+import {getFirstKeyWithRelation, getOrCreatePrimaryIdentifier} from '../../services/identityService'
+import {signJWT} from '../../services/signatureService'
+import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils'
+import {
+    AccessTokenResponse,
+    AuthzFlowType,
+    CredentialResponse,
+    EndpointMetadata,
+    Jwt,
+    OpenID4VCIClient,
+    ProofOfPossessionCallbacks
+} from '@sphereon/openid4vci-client';
+import {_ExtendedIKey} from '@veramo/utils';
+
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -57,58 +58,59 @@ export const jwtCryptographicSuitePreferences = [
   SignatureAlgorithmEnum.EdDSA
 ]
 
-class OpenId4VcIssuanceProvider {
-  public static getErrorDetails = (error: Oidc4vciErrorEnum): IErrorDetails => {
-    // We want to move this over to some general error handling within the app
-    const genericError = {
-      title: translate('error_generic_title'),
-      message: translate('error_generic_message'),
-      detailsMessage: `<b>${translate('error_details_generic_message')}</b>`
-    }
 
-    switch (error) {
-      case Oidc4vciErrorEnum.INVALID_REQUEST:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_invalid_request')
+class OpenId4VcIssuanceProvider {
+    public static getErrorDetails = (error: Oidc4vciErrorEnum): IErrorDetails => {
+        // We want to move this over to some general error handling within the app
+        const genericError = {
+            title: translate('error_generic_title'),
+            message: translate('error_generic_message'),
+            detailsMessage: `<b>${translate('error_details_generic_message')}</b>`
         }
-      case Oidc4vciErrorEnum.INVALID_CLIENT:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_invalid_client')
-        }
-      case Oidc4vciErrorEnum.INVALID_GRANT:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_invalid_grant')
-        }
-      case Oidc4vciErrorEnum.UNAUTHORIZED_CLIENT:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_unauthorized_client')
-        }
-      case Oidc4vciErrorEnum.UNSUPPORTED_GRANT_TYPE:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_unsupported_grant_type')
-        }
-      case Oidc4vciErrorEnum.INVALID_SCOPE:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_unsupported_invalid_scope')
-        }
-      case Oidc4vciErrorEnum.INVALID_OR_MISSING_PROOF:
-        return {
-          ...genericError,
-          detailsTitle: translate('oidc4vci_error_invalid_or_missing_proof')
-        }
-      default:
-        return {
-          ...genericError,
-          detailsTitle: translate('error_details_generic_title')
+
+        switch (error) {
+            case Oidc4vciErrorEnum.INVALID_REQUEST:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_invalid_request')
+                }
+            case Oidc4vciErrorEnum.INVALID_CLIENT:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_invalid_client')
+                }
+            case Oidc4vciErrorEnum.INVALID_GRANT:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_invalid_grant')
+                }
+            case Oidc4vciErrorEnum.UNAUTHORIZED_CLIENT:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_unauthorized_client')
+                }
+            case Oidc4vciErrorEnum.UNSUPPORTED_GRANT_TYPE:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_unsupported_grant_type')
+                }
+            case Oidc4vciErrorEnum.INVALID_SCOPE:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_unsupported_invalid_scope')
+                }
+            case Oidc4vciErrorEnum.INVALID_OR_MISSING_PROOF:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('oidc4vci_error_invalid_or_missing_proof')
+                }
+            default:
+                return {
+                    ...genericError,
+                    detailsTitle: translate('error_details_generic_title')
+                }
         }
     }
-  }
   private readonly client: OpenID4VCIClient
   private serverMetadata: EndpointMetadata | undefined
   private credentialsSupported: Array<ICredentialMetadata> | undefined
@@ -173,19 +175,19 @@ class OpenId4VcIssuanceProvider {
     const kid = key.meta.verificationMethod.id
     const alg = SignatureAlgorithmFromKey(key)
 
-    const callbacks: ProofOfPossessionCallbacks = {
-      signCallback: (jwt: Jwt, kid: string) => {
+        const callbacks: ProofOfPossessionCallbacks = {
+            signCallback: (jwt: Jwt, kid: string) => {
         console.log(`header: ${JSON.stringify({ ...jwt.header, typ: 'JWT', kid })}`)
         console.log(`payload: ${JSON.stringify({ ...jwt.payload })}`)
-        return signJWT({
-          identifier: id,
-          header: { ...jwt.header, typ: 'JWT', kid },
-          payload: { ...jwt.payload },
-          // TODO fix non null assertion
-          options: { issuer: jwt.payload!.iss!, expiresIn: jwt.payload!.exp, canonicalize: false }
-        })
-      }
-    }
+                return signJWT({
+                    identifier: id,
+                    header: {...jwt.header, typ: 'JWT', kid},
+                    payload: {...jwt.payload},
+                    // TODO fix non null assertion
+                    options: {issuer: jwt.payload!.iss!, expiresIn: jwt.payload!.exp, canonicalize: false}
+                })
+            }
+        }
 
     try {
       // We need to make sure we have acquired the access token

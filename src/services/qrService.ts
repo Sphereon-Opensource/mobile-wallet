@@ -42,13 +42,17 @@ const debug = Debug(`${APP_ID}:qrService`)
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({ qrData, navigation: args.navigation }))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+    .catch((error: Error) => {
+      console.log(error)
+      showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+    })
 }
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const parsedJson = JSON.parse(qrData)
     if (parsedJson && typeof parsedJson === 'object') {
+      console.log(parsedJson)
       return parsedJson
     }
   } catch (error: unknown) {
@@ -58,10 +62,12 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const param = new URL(qrData).searchParams.get('oob')
     if (param) {
-      return {
+      const iQr = {
         ...JSON.parse(Buffer.from(param, 'base64').toString('utf8')),
         redirectUrl: qrData
       }
+      console.log(JSON.stringify(iQr))
+      return iQr
     }
   } catch (error: unknown) {
     debug(`Unable to parse QR value as URL. Error: ${error}`)
@@ -69,7 +75,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
 
   if (qrData.startsWith(QrTypesEnum.OPENID_VC)) {
     try {
-      return parseOpenIdVc(qrData)
+      return parseOpenID4VC(qrData)
     } catch (error: unknown) {
       debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
     }
@@ -77,7 +83,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
 
   if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
     try {
-      return parseOpenId4VcIssuance(qrData)
+      return parseOpenID4VCI(qrData)
     } catch (error: unknown) {
       debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`)
     }
@@ -86,7 +92,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
   return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')))
 }
 
-const parseOpenIdVc = (qrData: string): Promise<IQrData> => {
+const parseOpenID4VC = (qrData: string): Promise<IQrData> => {
   const jwtVcPresentationProfileProvider = new JwtVcPresentationProfileProvider()
   return (
     jwtVcPresentationProfileProvider
@@ -103,7 +109,7 @@ const parseOpenIdVc = (qrData: string): Promise<IQrData> => {
   )
 }
 
-const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
+const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
   try {
     return Promise.resolve({
       type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
@@ -117,6 +123,7 @@ const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
 }
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
+  console.log(`processQR: ${JSON.stringify(args.qrData)}`)
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
       switch ((args.qrData as IQrAuthentication).mode) {
