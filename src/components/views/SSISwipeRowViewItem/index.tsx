@@ -20,7 +20,7 @@ const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: Fo
 
   return (
     // TODO fix style issue being an array when using styled component (rightOpenValue / stopRightSwipe)
-    <SwipeRow disableRightSwipe rightOpenValue={-97} stopRightSwipe={-97}>
+    <SwipeRow disableRightSwipe disableLeftSwipe rightOpenValue={-97} stopRightSwipe={-97}>
       <HiddenItemContainer
         style={{
           backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark
