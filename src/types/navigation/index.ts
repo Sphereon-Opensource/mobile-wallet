@@ -98,6 +98,7 @@ export interface ICredentialSelectTypeProps {
 
 export interface IContactDetailsProps {
   contact: IConnectionParty
+  showActivity: boolean
 }
 
 export interface IContactAddProps {

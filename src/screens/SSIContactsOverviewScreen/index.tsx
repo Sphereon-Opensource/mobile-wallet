@@ -36,7 +36,8 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   }
 
   onItemPress = async (contact: IConnectionParty): Promise<void> => {
-    this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact })
+    const showActivity = false;
+    this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact, showActivity })
   }
 
   renderItem = (itemInfo: ListRenderItemInfo<IConnectionParty>): JSX.Element => (
