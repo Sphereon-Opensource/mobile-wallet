@@ -1,4 +1,5 @@
-import { VerifiableCredential } from '@veramo/core'
+import ProofPurpose from '@sphereon/ssi-sdk-vc-handler-ld-local'
+import { CredentialPayload, VerifiableCredential } from '@veramo/core'
 
 export interface IStoreVerifiableCredentialArgs {
   vc: VerifiableCredential
@@ -10,4 +11,10 @@ export interface IGetVerifiableCredentialArgs {
 
 export interface IDeleteVerifiableCredentialArgs {
   hash: string
+}
+
+export interface ICreateVerifiableCredentialArgs {
+  credential: CredentialPayload
+  keyRef?: string
+  purpose?: typeof ProofPurpose
 }

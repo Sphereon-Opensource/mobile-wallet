@@ -5,6 +5,14 @@ import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
 import { DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
 import { getDidJwkResolver, JwkDIDProvider } from '@sphereon/ssi-sdk-jwk-did-provider'
 import { IDidConnectionMode, LtoDidProvider } from '@sphereon/ssi-sdk-lto-did-provider'
+import {
+  CredentialHandlerLDLocal,
+  ICredentialHandlerLDLocal,
+  SphereonBbsBlsSignature2020,
+  SphereonEd25519Signature2018,
+  SphereonEd25519Signature2020,
+  SphereonJsonWebSignature2020
+} from '@sphereon/ssi-sdk-vc-handler-ld-local'
 import { createAgent, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver } from '@veramo/core'
 import { DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore } from '@veramo/data-store'
 import { DIDManager } from '@veramo/did-manager'
@@ -17,6 +25,7 @@ import { KeyManagementSystem, SecretBox } from '@veramo/kms-local'
 import { Resolver } from 'did-resolver'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
+import { LdContexts } from '../@config/credentials'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
 import RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
@@ -61,9 +70,10 @@ export const didProviders = {
 }
 
 const dbConnection = getDbConnection(DB_CONNECTION_NAME)
+const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY))
 
 const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager
+  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager & ICredentialHandlerLDLocal
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -71,7 +81,7 @@ const agent = createAgent<
     new KeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        local: new KeyManagementSystem(new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY)))
+        local: new KeyManagementSystem(privateKeyStore)
       }
     }),
     new DIDManager({
@@ -97,6 +107,16 @@ const agent = createAgent<
     }),
     new ConnectionManager({
       store: new ConnectionStore(dbConnection)
+    }),
+    new CredentialHandlerLDLocal({
+      contextMaps: [LdContexts],
+      suites: [
+        new SphereonEd25519Signature2018(),
+        new SphereonEd25519Signature2020(),
+        new SphereonBbsBlsSignature2020(),
+        new SphereonJsonWebSignature2020()
+      ],
+      keyStore: privateKeyStore
     })
   ]
 })
@@ -118,4 +138,5 @@ export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential
+export const createVerifiableCredentialLDLocal = agent.createVerifiableCredentialLDLocal
 export default agent
