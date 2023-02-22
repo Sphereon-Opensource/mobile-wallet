@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-native'
 
-
 import { translate } from '../../../localization/Localization'
 import { backgrounds, credentialCards } from '../../../styles/colors'
 import {
@@ -116,7 +115,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
                 <ExpirationDateText>
                   {expirationDate
                     ? `${translate('credential_card_expires_message')} ${toLocalDateString(expirationDate)}`
-                    : translate('credential_status_never_expires')}
+                    : translate('credential_status_never_expires_date_label')}
                 </ExpirationDateText>
                 {credentialStatus && <CredentialStatus status={credentialStatus} color={backgrounds.primaryLight} />}
               </FooterContentContainer>

@@ -51,7 +51,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
             ? `${translate('credentials_view_item_expires_on')} ${
                 showTime ? toLocalDateTimeString(props.expirationDate) : toLocalDateString(props.expirationDate)
               }`
-            : translate('credential_status_never_expires')}
+            : translate('credential_status_never_expires_date_label')}
         </ExpirationDateCaption>
       </ContentBottomContainer>
     </Container>
