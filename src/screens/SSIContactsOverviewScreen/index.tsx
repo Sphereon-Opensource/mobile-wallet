@@ -31,9 +31,9 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({ refreshing: false })
   }
 
-  onDelete = async (): Promise<void> => {
+  /*onDelete = async (): Promise<void> => {
     console.log('Delete contact pressed!')
-  }
+  }*/
 
   onItemPress = async (contact: IConnectionParty): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact })
@@ -51,7 +51,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
         />
       }
       onPress={() => this.onItemPress(itemInfo.item)}
-      onDelete={this.onDelete}
+      /*onDelete={this.onDelete}*/ // TODO fo WAL-410 this line has to be uncommented.
     />
   )
 
