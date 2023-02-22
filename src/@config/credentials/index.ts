@@ -1,4 +1,4 @@
-// TODO import from the context fir. import gave some issues with jsonld
+// TODO import from the context dir. currently import gave some issues with jsonld
 
 export const LdContexts = new Map([
   ['https://www.w3.org/2018/credentials/v1', {
@@ -352,29 +352,6 @@ export const LdContexts = new Map([
       "service": {"@id": "didv:service", "@type": "@id", "@container": "@set"},
       "serviceEndpoint": {"@id": "didv:serviceEndpoint", "@type": "@id"},
       "verificationMethod": {"@id": "sec:verificationMethod", "@type": "@id"}
-    }
-  }],
-  ['https://veramo.io/contexts/socialmedia/v1', {
-    "@context": {
-      "@version": 1.1,
-      "@protected": true,
-      "VerifableSocialMediaPosting": "https://veramo.io/contexts/socialmedia#VerifableSocialMediaPosting"
-    }
-  }],
-  ['https://veramo.io/contexts/kyc/v1', {
-    "@context": {
-      "@version": 1.1,
-      "@protected": true,
-      "VerifiableKyc": "https://veramo.io/contexts/kyc#VerifiableKyc",
-      "name": "https://schema.org/name"
-    }
-  }],
-  ['https://veramo.io/contexts/profile/v1', {
-    "@context": {
-      "@version": 1.1,
-      "@protected": true,
-      "Profile": "https://veramo.io/contexts/profile#Profile",
-      "name": "https://schema.org/name"
     }
   }],
   ['https://ns.did.ai/transmute/v1', {
@@ -1324,8 +1301,14 @@ export const LdContexts = new Map([
       "@version": 1.1,
       "@protected": true,
       "swi": "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#",
+      "schema": "https://schema.org/",
+      "SphereonWalletIdentityCredential" : "swi:SphereonWalletIdentityCredential",
+      "issueDate": {
+        "@id": "swi:issueDate",
+        "@type": "xsd:dateTime"
+      },
       "SphereonWalletIdentity": {
-        "@id": "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#SphereonWalletIdentity",
+        "@id": "swi:SphereonWalletIdentity",
         "@context": {
           "@version": 1.1,
           "@protected": true,
@@ -1333,7 +1316,10 @@ export const LdContexts = new Map([
           "type": "@type",
           "firstName": "swi:firstName",
           "lastName": "swi:lastName",
-          "emailAddress": "swi:emailAddress"
+          "emailAddress": {
+            "@id": "swi:emailAddress",
+            "@type": "schema:email"
+          }
         }
       }
     }

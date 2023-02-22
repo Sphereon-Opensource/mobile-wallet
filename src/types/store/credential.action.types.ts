@@ -72,9 +72,3 @@ export type CredentialActionTypes =
   | IDeleteCredentialsFailedAction
   | ICreateCredentialsSuccessAction
   | ICreateCredentialsFailedAction
-
-export interface ICreateVerifiableCredentialArgs {
-  credential: CredentialPayload
-  keyRef?: string
-  purpose?: typeof ProofPurpose
-}

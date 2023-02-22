@@ -8,12 +8,14 @@ import { IDidConnectionMode, LtoDidProvider } from '@sphereon/ssi-sdk-lto-did-pr
 import {
   CredentialHandlerLDLocal,
   ICredentialHandlerLDLocal,
+  MethodNames,
   SphereonBbsBlsSignature2020,
   SphereonEd25519Signature2018,
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020
 } from '@sphereon/ssi-sdk-vc-handler-ld-local'
 import { createAgent, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver } from '@veramo/core'
+import { CredentialPlugin, ICredentialIssuer } from '@veramo/credential-w3c'
 import { DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore } from '@veramo/data-store'
 import { DIDManager } from '@veramo/did-manager'
 import { EthrDIDProvider } from '@veramo/did-provider-ethr'
@@ -73,7 +75,7 @@ const dbConnection = getDbConnection(DB_CONNECTION_NAME)
 const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY))
 
 const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager & ICredentialHandlerLDLocal
+  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager & ICredentialIssuer & ICredentialHandlerLDLocal
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -108,6 +110,7 @@ const agent = createAgent<
     new ConnectionManager({
       store: new ConnectionStore(dbConnection)
     }),
+    new CredentialPlugin(),
     new CredentialHandlerLDLocal({
       contextMaps: [LdContexts],
       suites: [
@@ -116,6 +119,10 @@ const agent = createAgent<
         new SphereonBbsBlsSignature2020(),
         new SphereonJsonWebSignature2020()
       ],
+      bindingOverrides: new Map([
+        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal]
+      ]),
       keyStore: privateKeyStore
     })
   ]
@@ -138,5 +145,5 @@ export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential
-export const createVerifiableCredentialLDLocal = agent.createVerifiableCredentialLDLocal
+export const createVerifiableCredential = agent.createVerifiableCredential
 export default agent

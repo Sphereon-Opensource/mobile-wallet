@@ -1,15 +1,17 @@
-import { VerifiableCredentialSP } from '@sphereon/ssi-sdk-core'
-import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
+import {
+  ICreateVerifiableCredentialArgs,
+  UniqueVerifiableCredential,
+  VerifiableCredential
+} from '@veramo/core'
 
 import {
-  createVerifiableCredentialLDLocal,
   dataStoreDeleteVerifiableCredential,
   dataStoreGetVerifiableCredential,
   dataStoreORMGetVerifiableCredentials,
-  dataStoreSaveVerifiableCredential
+  dataStoreSaveVerifiableCredential,
+  createVerifiableCredential as issueVerifiableCredential
 } from '../agent'
 import {
-  ICreateVerifiableCredentialArgs,
   IDeleteVerifiableCredentialArgs,
   IGetVerifiableCredentialArgs,
   IStoreVerifiableCredentialArgs
@@ -31,6 +33,6 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
   return dataStoreDeleteVerifiableCredential({ hash: args.hash })
 }
 
-export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredentialSP> => {
-  return createVerifiableCredentialLDLocal(args)
+export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredential> => {
+  return issueVerifiableCredential(args)
 }

@@ -3,8 +3,14 @@
     "@version": 1.1,
     "@protected": true,
     "swi": "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#",
+    "schema": "https://schema.org/",
+    "SphereonWalletIdentityCredential" : "swi:SphereonWalletIdentityCredential",
+    "issueDate": {
+      "@id": "swi:issueDate",
+      "@type": "xsd:dateTime"
+    },
     "SphereonWalletIdentity": {
-      "@id": "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#SphereonWalletIdentity",
+      "@id": "swi:SphereonWalletIdentity",
       "@context": {
         "@version": 1.1,
         "@protected": true,
@@ -12,7 +18,10 @@
         "type": "@type",
         "firstName": "swi:firstName",
         "lastName": "swi:lastName",
-        "emailAddress": "swi:emailAddress"
+        "emailAddress": {
+          "@id": "swi:emailAddress",
+          "@type": "schema:email"
+        }
       }
     }
   }

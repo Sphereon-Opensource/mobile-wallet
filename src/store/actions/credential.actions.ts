@@ -1,6 +1,9 @@
-import { VerifiableCredentialSP } from '@sphereon/ssi-sdk-core'
 import { CredentialMapper, ICredential, OriginalVerifiableCredential } from '@sphereon/ssi-types'
-import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
+import {
+  ICreateVerifiableCredentialArgs,
+  UniqueVerifiableCredential,
+  VerifiableCredential
+} from '@veramo/core'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
@@ -20,7 +23,6 @@ import {
   DELETE_CREDENTIAL_SUCCESS,
   GET_CREDENTIALS_FAILED,
   GET_CREDENTIALS_SUCCESS,
-  ICreateVerifiableCredentialArgs,
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS
 } from '../../types/store/credential.action.types'
@@ -83,15 +85,16 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     createCredential(args)
-      // TODO fix mismatch in types
-      .then((vc: VerifiableCredentialSP) => {
+      .then((vc: VerifiableCredential) => {
         storeCredential({ vc })
         .then((hash: string) => {
           // TODO fix mismatch in types
           dispatch({ type: CREATE_CREDENTIAL_SUCCESS, payload: toCredentialSummary(vc as ICredential, hash) })
         })
-        .catch(() => dispatch({ type: CREATE_CREDENTIAL_FAILED }))
-      }) // TODO id should be hash
-      .catch((error: Error) => dispatch({ type: CREATE_CREDENTIAL_FAILED }))
+      })
+      .catch((error: Error) => {
+        console.log(error.message)
+        dispatch({ type: CREATE_CREDENTIAL_FAILED })
+      })
   }
 }
