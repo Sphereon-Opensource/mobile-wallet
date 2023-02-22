@@ -18,7 +18,7 @@ enum ContactTabRoutesEnum {
 }
 
 const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { contact, showActivity = false } = props.route.params
+  const { contact } = props.route.params
 
   const routes = [
     {
@@ -32,12 +32,12 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       title: translate('contact_details_connections_tab_header_label'),
       content: () => <SSIConnectionsView connections={contact.connections} />
     },
-    ...(showActivity? [{
+    {
       key: ContactTabRoutesEnum.ACTIVITY,
       title: translate('contact_details_activity_tab_header_label'),
       // TODO WAL-358 implement content
       content: () => <SSIActivityView />
-    }]: [])
+    }
   ]
 
   // TODO contact roles should be an aggregate of the roles on the identities
