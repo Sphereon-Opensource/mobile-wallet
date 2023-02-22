@@ -5,7 +5,8 @@ import { LabelStatus } from '../component'
 export enum CredentialStatusEnum {
   VALID = 'valid',
   EXPIRED = 'expired',
-  REVOKED = 'revoked'
+  REVOKED = 'revoked',
+  NEVER_EXPIRES = 'never_expires'
 }
 
 export enum IssuerStatusEnum {

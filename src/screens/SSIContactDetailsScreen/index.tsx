@@ -26,7 +26,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       title: translate('contact_details_info_tab_header_label'),
       // TODO WAL-350 implement content
       content: () => <SSIActivityView />
-    }/*,
+    } /*,
     {
       key: ContactTabRoutesEnum.CONNECTIONS,
       title: translate('contact_details_connections_tab_header_label'),

@@ -42,6 +42,8 @@ const getStatusTranslation = (status: LabelStatus): string => {
       return translate('credential_status_expired')
     case CredentialStatusEnum.REVOKED:
       return translate('credential_status_revoked')
+    case CredentialStatusEnum.NEVER_EXPIRES:
+      return translate('credential_status_never_expires')
     case ConnectionStatusEnum.CONNECTED:
       return translate('connection_status_connected')
     case ConnectionStatusEnum.DISCONNECTED:
