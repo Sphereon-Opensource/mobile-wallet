@@ -7,8 +7,6 @@ import { EPOCH_MILLISECONDS } from './DateUtils'
 export const getCredentialStatus = (credential: ICredential | ICredentialSummary): CredentialStatusEnum => {
   if (isRevoked()) {
     return CredentialStatusEnum.REVOKED
-  } else if (!credential.expirationDate) {
-    return CredentialStatusEnum.NEVER_EXPIRES
   } else if (isExpired(credential.expirationDate)) {
     return CredentialStatusEnum.EXPIRED
   }
