@@ -12,7 +12,7 @@ export interface IProps {
   viewItem: JSX.Element
   listIndex: number
   onPress: () => Promise<void>
-  onDelete?: () => Promise<void>
+  onDelete?: () => Promise<void> // In WAL-410 remove disableLeftSwipe attribute from the following line.
 }
 
 const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: ForwardedRef<unknown>): JSX.Element => {
