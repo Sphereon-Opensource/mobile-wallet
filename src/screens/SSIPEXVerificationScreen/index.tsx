@@ -31,7 +31,10 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
         props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_OVERVIEW, {})
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
       })
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_SUCCESS, error.message)) // TODO make human readable message
+      .catch((error: Error) => {
+          console.error(error)
+          showToast(ToastTypeEnum.TOAST_SUCCESS, error.message)
+      }) // TODO make human readable message
   }
 
   const onDecline = async (): Promise<void> => {
@@ -46,7 +49,7 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       <MessageTitle>{translate('pex_message_title')}</MessageTitle>
       <MessagesContainer>
         {props.route.params.request.presentationDefinitions?.map((definition: PresentationDefinitionWithLocation) => (
-          <Message key={uuidv4()}>{definition.definition.purpose}</Message>
+          <Message key={uuidv4()}>{definition.definition.purpose ?? Array.isArray(definition.definition?.input_descriptors) ? definition.definition.input_descriptors[0].purpose : 'Definition did not provide a purpose. Please make sure you trust the Relying Party'}</Message>
         ))}
       </MessagesContainer>
       <SSIButtonsContainer

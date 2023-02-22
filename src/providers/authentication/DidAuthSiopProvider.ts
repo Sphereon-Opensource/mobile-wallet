@@ -53,14 +53,14 @@ class DidAuthSiopProvider {
             /*   // TODO fix mismatching dep versions
                verifiableCredentials: verifiableCredentials.map((vc) => <IVerifiableCredential>vc.verifiableCredential)*/
         }).then((verification: IAuthRequestDetails) => {
-            if (verification.vpResponseOpts.length <= 0) {
+            if (!verification.verifiablePresentationMatches || verification.verifiablePresentationMatches.length <= 0) {
                 return Promise.reject(Error('No valid credentials supplied'))
             }
 
             return sendSiopAuthorizationResponse({
                 sessionId,
                 verifiedAuthorizationRequest,
-                verifiablePresentationResponse: verification.vpResponseOpts
+                verifiablePresentationResponse: verification.verifiablePresentationMatches.map(match => match.presentation)
             })
         })
     }
