@@ -1,9 +1,5 @@
 import { CredentialMapper, ICredential, OriginalVerifiableCredential } from '@sphereon/ssi-types'
-import {
-  ICreateVerifiableCredentialArgs,
-  UniqueVerifiableCredential,
-  VerifiableCredential
-} from '@veramo/core'
+import { ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
@@ -81,13 +77,14 @@ export const deleteVerifiableCredential = (
   }
 }
 
-export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const createVerifiableCredential = (
+  args: ICreateVerifiableCredentialArgs
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CREDENTIALS_LOADING })
     createCredential(args)
       .then((vc: VerifiableCredential) => {
-        storeCredential({ vc })
-        .then((hash: string) => {
+        storeCredential({ vc }).then((hash: string) => {
           // TODO fix mismatch in types
           dispatch({ type: CREATE_CREDENTIAL_SUCCESS, payload: toCredentialSummary(vc as ICredential, hash) })
         })
