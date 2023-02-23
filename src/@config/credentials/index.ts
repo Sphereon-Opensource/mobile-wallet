@@ -1302,25 +1302,14 @@ export const LdContexts = new Map([
       "@protected": true,
       "swi": "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#",
       "schema": "https://schema.org/",
-      "SphereonWalletIdentityCredential" : "swi:SphereonWalletIdentityCredential",
-      "issueDate": {
-        "@id": "swi:issueDate",
-        "@type": "xsd:dateTime"
-      },
-      "SphereonWalletIdentity": {
-        "@id": "swi:SphereonWalletIdentity",
-        "@context": {
-          "@version": 1.1,
-          "@protected": true,
-          "id": "@id",
-          "type": "@type",
-          "firstName": "swi:firstName",
-          "lastName": "swi:lastName",
-          "emailAddress": {
-            "@id": "swi:emailAddress",
-            "@type": "schema:email"
-          }
-        }
+      "SphereonWalletIdentityCredential": "swi:SphereonWalletIdentityCredential",
+      "id": "@id",
+      "type": "@type",
+      "firstName": "swi:firstName",
+      "lastName": "swi:lastName",
+      "emailAddress": {
+        "@id": "swi:emailAddress",
+        "@type": "schema:email"
       }
     }
   }]
