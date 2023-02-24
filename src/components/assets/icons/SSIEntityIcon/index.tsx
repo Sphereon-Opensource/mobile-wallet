@@ -9,13 +9,13 @@ import { getGeneralInitialsOfUserName } from '../../../../utils/UserUtils'
 
 export interface IProps {
   size?: number
-  fontColour?: ColorValue
+  fontColor?: ColorValue
   backgroundColor?: ColorValue
   initialsOfUserName?: string
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 34, fontColour = fonts.light, backgroundColor = entities['100'], initialsOfUserName = '?' } = props
+  const { size = 34, fontColor = fonts.light, backgroundColor = entities['100'], initialsOfUserName = '?' } = props
 
   return (
     <View style={{ width: size, aspectRatio: 1 }}>
@@ -23,7 +23,7 @@ const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
         size={size}
         rounded
         title={initialsOfUserName}
-        titleStyle={{ color: fontColour }}
+        titleStyle={{ color: fontColor }}
         icon={{ name: 'rowing' }}
         containerStyle={{ backgroundColor: backgroundColor }}
       />
