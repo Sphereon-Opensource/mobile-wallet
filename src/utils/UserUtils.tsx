@@ -1,4 +1,4 @@
-import {FIRST_ALPHABET_REGEX, SPLITTING_WORDS_REGEX} from '../@config/constants'
+import { FIRST_ALPHABET_REGEX, SPLITTING_WORDS_REGEX } from '../@config/constants'
 
 /**
  * This is a helper function to help the wallet user see prefilled initials.
@@ -11,7 +11,7 @@ import {FIRST_ALPHABET_REGEX, SPLITTING_WORDS_REGEX} from '../@config/constants'
 export const getGeneralInitialsOfUserName = (namePart1?: string, namePart2?: string): string => {
   let initials = ''
   initials += getPartialInitials(namePart1)
-  initials += getFirstAlphabetOfLastWord(namePart2);
+  initials += getFirstAlphabetOfLastWord(namePart2)
   if (initials.length < 1) {
     initials = '?'
   }
@@ -44,12 +44,12 @@ export const getPartialInitials = (namePart?: string): string => {
  */
 function getFirstAlphabetOfLastWord(namePart?: string): string {
   if (namePart) {
-    const words = namePart.split(SPLITTING_WORDS_REGEX);
-    const lastWord = words[words.length - 1];
-    const match = lastWord.match(FIRST_ALPHABET_REGEX);
+    const words = namePart.split(SPLITTING_WORDS_REGEX)
+    const lastWord = words[words.length - 1]
+    const match = lastWord.match(FIRST_ALPHABET_REGEX)
     if (match) {
-      return match[0];
+      return match[0]
     }
   }
-  return "";
+  return ''
 }
