@@ -1,4 +1,7 @@
-import { ICredentialSummary } from '../index'
+import ProofPurpose from '@sphereon/ssi-sdk-vc-handler-ld-local'
+import { CredentialPayload } from '@veramo/core'
+
+import { ICredentialSummary } from '../credential'
 
 export const CREDENTIALS_LOADING = '[CREDENTIAL] CREDENTIALS_LOADING'
 export type CREDENTIALS_LOADING = typeof CREDENTIALS_LOADING
@@ -14,6 +17,10 @@ export const DELETE_CREDENTIAL_SUCCESS = '[CREDENTIAL] DELETE_CREDENTIAL_SUCCESS
 export type DELETE_CREDENTIAL_SUCCESS = typeof DELETE_CREDENTIAL_SUCCESS
 export const DELETE_CREDENTIAL_FAILED = '[CREDENTIAL] DELETE_CREDENTIAL_FAILED'
 export type DELETE_CREDENTIAL_FAILED = typeof DELETE_CREDENTIAL_FAILED
+export const CREATE_CREDENTIAL_SUCCESS = '[CREDENTIAL] CREATE_CREDENTIAL_SUCCESS'
+export type CREATE_CREDENTIAL_SUCCESS = typeof CREATE_CREDENTIAL_SUCCESS
+export const CREATE_CREDENTIAL_FAILED = '[CREDENTIAL] CREATE_CREDENTIAL_FAILED'
+export type CREATE_CREDENTIAL_FAILED = typeof CREATE_CREDENTIAL_FAILED
 
 interface ICredentialsLoading {
   type: CREDENTIALS_LOADING
@@ -46,6 +53,15 @@ interface IDeleteCredentialsFailedAction {
   type: DELETE_CREDENTIAL_FAILED
 }
 
+interface ICreateCredentialsSuccessAction {
+  payload: ICredentialSummary
+  type: CREATE_CREDENTIAL_SUCCESS
+}
+
+interface ICreateCredentialsFailedAction {
+  type: CREATE_CREDENTIAL_FAILED
+}
+
 export type CredentialActionTypes =
   | ICredentialsLoading
   | IGetCredentialsSuccessAction
@@ -54,3 +70,5 @@ export type CredentialActionTypes =
   | IStoreCredentialsFailedAction
   | IDeleteCredentialsSuccessAction
   | IDeleteCredentialsFailedAction
+  | ICreateCredentialsSuccessAction
+  | ICreateCredentialsFailedAction

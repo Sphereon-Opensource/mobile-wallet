@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import { ListRenderItemInfo } from 'react-native'
 
 import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { IConnectionViewItem } from '../../../@types'
 import { translate } from '../../../localization/Localization'
 import {
   SSIFlexDirectionColumnHalfViewStyled as Column,
@@ -15,6 +14,7 @@ import {
   SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
   SSIConnectionDetailsViewSeparatorStyled as Separator
 } from '../../../styles/components'
+import { IConnectionViewItem } from '../../../types'
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 
 export interface IProps {

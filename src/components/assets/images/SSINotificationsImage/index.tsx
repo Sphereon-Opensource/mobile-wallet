@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { View, ViewStyle } from 'react-native'
 import Svg, { ClipPath, Defs, G, Path, Rect } from 'react-native-svg'
 

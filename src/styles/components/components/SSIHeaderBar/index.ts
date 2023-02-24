@@ -1,8 +1,8 @@
 import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 
-import { IHeaderProps } from '../../../../@types'
 import SSIIconButton from '../../../../components/buttons/SSIIconButton'
+import { IHeaderProps } from '../../../../types'
 import { borders } from '../../../colors'
 import { SSIBackgroundPrimaryDarkColorCss } from '../../css'
 import { SSITextH1LightStyled, SSITextH4LightStyled } from '../../fonts'
@@ -14,9 +14,7 @@ export const SSIHeaderBarContainerStyled = styled.View`
 `
 
 export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
-  margin-left: 24px;
-  margin-bottom: 14px;
-  margin-right: 24px;
+  margin: 0px 24px 14px 24px;
 `
 
 export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
@@ -24,19 +22,13 @@ export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
 `
 
 export const SSIHeaderBarEntityIconContainerStyled = styled(TouchableOpacity)`
-  margin-left: auto;
-  margin-right: 25px;
-  margin-top: 7px;
+  margin: 7px 25px 0px auto;
 `
 
 export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
-  margin-right: 25px;
-  margin-top: 35px;
-  margin-left: auto;
-  margin-bottom: 14px;
+  margin: 35px 25px 14px auto;
 `
 
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
-  margin-top: 18px;
-  margin-left: 24px;
+  margin: 18px 0px 0px 24px;
 `

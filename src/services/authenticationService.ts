@@ -3,6 +3,8 @@ import {IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication} from '../@
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider'
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider'
 import store from '../store'
+import { CustomApproval } from '../types'
+import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../types/store/authenticate.types'
 import {scanFingerPrint} from '../utils/BiometricUtils'
 
 export const authenticate = async (
@@ -21,6 +23,7 @@ export const authenticate = async (
 }
 
 export const disconnect = async (entityId: string, connection: IBasicConnection): Promise<void> => {
+  // TODO disconnect should be an redux action with a connection id. Which then updates the authentication
   const connectionEntity = store
     .getState()
     .authentication.entities.find((entity: IAuthenticatedEntity) => entity.entityId === entityId)

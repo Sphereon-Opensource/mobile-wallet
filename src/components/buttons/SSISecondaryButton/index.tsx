@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { PressableProps, ViewStyle } from 'react-native'
 
-import { OpacityStyleEnum } from '../../../@types'
 import { backgrounds } from '../../../styles/colors'
 import {
   SSIRoundedContainerBackgroundSecondaryDarkStyled as Background,
@@ -10,6 +9,7 @@ import {
   SSISecondaryButtonContainerStyled as ButtonContainer,
   SSIRoundedCenteredLinearGradientSecondaryButtonStyled as LinearGradient
 } from '../../../styles/components'
+import { OpacityStyleEnum } from '../../../types'
 
 export interface Props extends PressableProps {
   title: string // TODO rename to caption

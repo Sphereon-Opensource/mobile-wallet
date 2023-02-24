@@ -1,28 +1,28 @@
 import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import Debug from 'debug'
-import { Dispatch } from 'react'
-import { AnyAction } from 'redux'
+import { Action } from 'redux'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { APP_ID } from '../../@config/constants'
+import { getConnectionParties as getConnections } from '../../services/connectionService'
+import { RootState } from '../../types'
 import {
   CONNECTIONS_LOADING,
   GET_CONNECTION_ENTITIES_FAILED,
   GET_CONNECTION_ENTITIES_SUCCESS
-} from '../../@types/store/connection.action.types'
-import { getConnectionParties as getConnections } from '../../services/connectionService'
+} from '../../types/store/connection.action.types'
 
 const debug = Debug(`${APP_ID}:connectionService`)
 
-export const getConnectionParties = (): ((dispatch: Dispatch<AnyAction>) => void) => {
+export const getConnectionParties = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   debug('dispatchConnectionParties()...')
-  return (dispatch: Dispatch<AnyAction>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     debug(CONNECTIONS_LOADING)
     dispatch({ type: CONNECTIONS_LOADING })
     getConnections()
       .then((entities: Array<IConnectionParty>) => {
-        const payload = [...entities]
         debug(GET_CONNECTION_ENTITIES_SUCCESS)
-        dispatch({ type: GET_CONNECTION_ENTITIES_SUCCESS, payload })
+        dispatch({ type: GET_CONNECTION_ENTITIES_SUCCESS, payload: entities })
       })
       .catch((reason) => {
         debug(`GET_CONNECTION_ENTITIES_FAILED, ${reason}`)

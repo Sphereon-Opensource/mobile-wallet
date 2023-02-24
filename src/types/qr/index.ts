@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 export enum QrTypesEnum {
   AUTH = 'auth',

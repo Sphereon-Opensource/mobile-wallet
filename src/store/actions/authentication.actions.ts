@@ -1,8 +1,9 @@
 import { ConnectionTypeEnum, IConnection } from '@sphereon/ssi-sdk-data-store-common'
-import { Dispatch } from 'react'
-import { AnyAction } from 'redux'
+import { Action } from 'redux'
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
-import { CustomApprovalEnum } from '../../@types'
+import { authenticate, disconnect } from '../../services/authenticationService'
+import { CustomApprovalEnum, RootState } from '../../types'
 import {
   AUTHENTICATE_ENTITY_FAILED,
   AUTHENTICATE_ENTITY_SUCCESS,
@@ -10,15 +11,14 @@ import {
   DISCONNECT_ENTITY_FAILED,
   DISCONNECT_ENTITY_SUCCESS,
   DISCONNECT_LOADING
-} from '../../@types/store/authenticate.action.types'
-import { IAuthentication } from '../../@types/store/authenticate.types'
-import { authenticate, disconnect } from '../../services/authenticationService'
+} from '../../types/store/authenticate.action.types'
+import { IAuthentication } from '../../types/store/authenticate.types'
 
 export const authenticateConnectionEntity = (
   entityId: string,
   connection: IConnection
-): ((dispatch: Dispatch<AnyAction>) => void) => {
-  return (dispatch: Dispatch<AnyAction>) => {
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
     return authenticate(connection)
       .then((authentication: IAuthentication) => {
@@ -39,8 +39,8 @@ export const authenticateConnectionEntity = (
 export const disconnectConnectionEntity = (
   entityId: string,
   connection: IConnection
-): ((dispatch: Dispatch<AnyAction>) => void) => {
-  return (dispatch: any) => {
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: DISCONNECT_LOADING })
     return disconnect(entityId, connection)
       .then(() => {

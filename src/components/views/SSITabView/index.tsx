@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { SceneMap, SceneRendererProps, TabView } from 'react-native-tab-view'
 
-import { ITabRoute, ITabViewRoute } from '../../../@types'
 import { SSITabViewContainerStyled as Container } from '../../../styles/components'
+import { ITabRoute, ITabViewRoute } from '../../../types'
 
 import SSITabViewHeader from './SSITabViewHeader'
 

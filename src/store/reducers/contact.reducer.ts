@@ -5,8 +5,8 @@ import {
   CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS
-} from '../../@types/store/contact.action.types'
-import { IContactState } from '../../@types/store/contact.types'
+} from '../../types/store/contact.action.types'
+import { IContactState } from '../../types/store/contact.types'
 
 const initialState: IContactState = {
   loading: false,

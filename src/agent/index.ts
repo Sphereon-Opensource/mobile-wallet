@@ -1,12 +1,21 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
-import { PresentationSignCallBackParams } from '@sphereon/pex'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
 import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
 import { DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
 import { getDidJwkResolver, JwkDIDProvider } from '@sphereon/ssi-sdk-jwk-did-provider'
 import { IDidConnectionMode, LtoDidProvider } from '@sphereon/ssi-sdk-lto-did-provider'
+import {
+  CredentialHandlerLDLocal,
+  ICredentialHandlerLDLocal,
+  MethodNames,
+  SphereonBbsBlsSignature2020,
+  SphereonEd25519Signature2018,
+  SphereonEd25519Signature2020,
+  SphereonJsonWebSignature2020
+} from '@sphereon/ssi-sdk-vc-handler-ld-local'
 import { createAgent, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver } from '@veramo/core'
+import { CredentialPlugin, ICredentialIssuer } from '@veramo/credential-w3c'
 import { DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore } from '@veramo/data-store'
 import { DIDManager } from '@veramo/did-manager'
 import { EthrDIDProvider } from '@veramo/did-provider-ethr'
@@ -18,11 +27,12 @@ import { KeyManagementSystem, SecretBox } from '@veramo/kms-local'
 import { Resolver } from 'did-resolver'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
+import { LdContexts } from '../@config/credentials'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
-import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../@types'
-import * as RootNavigation from '../navigation/rootNavigation'
+import RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { signPresentation } from '../services/signatureService'
+import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../types'
 import { scanFingerPrint } from '../utils/BiometricUtils'
 import { DataSource } from 'typeorm'
 import { OrPromise } from '@veramo/utils'
@@ -64,9 +74,18 @@ export const didProviders = {
 }
 
 const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME)
+const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY))
 
 const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager
+  IDIDManager &
+    IKeyManager &
+    IDataStore &
+    IDataStoreORM &
+    IResolver &
+    IDidAuthSiopOpAuthenticator &
+    IConnectionManager &
+    ICredentialIssuer &
+    ICredentialHandlerLDLocal
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -74,7 +93,7 @@ const agent = createAgent<
     new KeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        local: new KeyManagementSystem(new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY)))
+        local: new KeyManagementSystem(privateKeyStore)
       }
     }),
     new DIDManager({
@@ -100,6 +119,21 @@ const agent = createAgent<
     }*/),
     new ConnectionManager({
       store: new ConnectionStore(dbConnection)
+    }),
+    new CredentialPlugin(),
+    new CredentialHandlerLDLocal({
+      contextMaps: [LdContexts],
+      suites: [
+        new SphereonEd25519Signature2018(),
+        new SphereonEd25519Signature2020(),
+        new SphereonBbsBlsSignature2020(),
+        new SphereonJsonWebSignature2020()
+      ],
+      bindingOverrides: new Map([
+        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal]
+      ]),
+      keyStore: privateKeyStore
     })
   ]
 })
@@ -116,4 +150,5 @@ export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCr
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential
+export const createVerifiableCredential = agent.createVerifiableCredential
 export default agent

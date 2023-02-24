@@ -1,4 +1,4 @@
-import { PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { Animated, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { ONLY_ALLOW_NUMBERS_REGEX } from '../../../@config/constants'
@@ -37,21 +37,17 @@ interface IState {
   showErrorMessage: boolean
 }
 
-export class SSIPinCode extends PureComponent<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      inputRef: null,
-      length: props.length || 4,
-      maxRetries: props.maxRetries,
-      pin: '',
-      retry: 0,
-      secureCode: props.secureCode || true,
-      shakeAnimation: new Animated.Value(0),
-      colorShiftAnimation: new Animated.Value(0),
-      showErrorMessage: false
-    }
+class SSIPinCode extends PureComponent<IProps, IState> {
+  state: IState = {
+    inputRef: null,
+    length: this.props.length || 4,
+    maxRetries: this.props.maxRetries,
+    pin: '',
+    retry: 0,
+    secureCode: this.props.secureCode || true,
+    shakeAnimation: new Animated.Value(0),
+    colorShiftAnimation: new Animated.Value(0),
+    showErrorMessage: false
   }
 
   failureAnimation = (): void => {
@@ -236,3 +232,5 @@ export class SSIPinCode extends PureComponent<IProps, IState> {
     )
   }
 }
+
+export default SSIPinCode

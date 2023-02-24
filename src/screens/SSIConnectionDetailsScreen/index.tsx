@@ -1,20 +1,26 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { connect } from 'react-redux'
 
-import { ConnectionStatusEnum, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../@types'
-import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
 import { translate } from '../../localization/Localization'
-import { RootState } from '../../store'
 import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
 import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container
 } from '../../styles/components'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import {
+  ConnectionStatusEnum,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types'
+import { IAuthenticatedEntity } from '../../types/store/authenticate.types'
+import { showToast } from '../../utils/ToastUtils'
 
 const format = require('string-format')
 
@@ -26,7 +32,7 @@ interface IProps extends Props {
   disconnectConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
 }
 
-export class SSIConnectionDetailsScreen extends PureComponent<IProps> {
+class SSIConnectionDetailsScreen extends PureComponent<IProps> {
   onDisconnectConfirm = async (): Promise<void> => {
     this.props
       // TODO fix non null assertion

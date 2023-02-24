@@ -4,14 +4,19 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
-
 import 'react-native-gesture-handler'
+import { bindActionCreators } from 'redux'
+
 import IntentHandler from './src/handlers/IntentHandler'
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import AppNavigator from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
 import store from './src/store'
+import { getConnectionParties } from './src/store/actions/connection.actions'
+import { getContacts } from './src/store/actions/contact.actions'
+import { getVerifiableCredentials } from './src/store/actions/credential.actions'
+import { getUsers } from './src/store/actions/user.actions'
 import { backgrounds } from './src/styles/colors'
 
 LogBox.ignoreLogs([
@@ -44,6 +49,7 @@ export default function App() {
 
   useEffect(() => {
     const intentHandler: IntentHandler = new IntentHandler()
+    // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
         // TODO create better implementation for this
@@ -58,6 +64,21 @@ export default function App() {
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         //await new Promise((resolve) => setTimeout(resolve, 5000))
+
+        // Load the redux store
+        const actions = bindActionCreators(
+          {
+            getConnectionParties,
+            getVerifiableCredentials,
+            getContacts,
+            getUsers
+          },
+          store.dispatch
+        )
+        await actions.getUsers()
+        await actions.getVerifiableCredentials()
+        await actions.getConnectionParties()
+        await actions.getContacts()
 
         await intentHandler.enable()
       } catch (e) {

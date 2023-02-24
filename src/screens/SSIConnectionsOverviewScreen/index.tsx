@@ -1,18 +1,17 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 import { SwipeListView } from 'react-native-swipe-list-view'
 import { connect } from 'react-redux'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import { ConnectionStatusEnum, IConnectionViewItem, ScreenRoutesEnum, StackParamList } from '../../@types'
-import { IAuthenticatedEntity } from '../../@types/store/authenticate.types'
 import SSIConnectionViewItem from '../../components/views/SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
-import { RootState } from '../../store'
 import { getConnectionParties } from '../../store/actions/connection.actions'
 import { SSIBasicContainerStyled as Container } from '../../styles/components'
+import { ConnectionStatusEnum, IConnectionViewItem, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
+import { IAuthenticatedEntity } from '../../types/store/authenticate.types'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTIONS_OVERVIEW> {
   getConnectionParties: () => void
@@ -20,8 +19,12 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
   authenticationEntities: Array<IAuthenticatedEntity>
 }
 
-class SSIConnectionsOverviewScreen extends PureComponent<IProps> {
-  state = {
+interface IState {
+  refreshing: boolean
+}
+
+class SSIConnectionsOverviewScreen extends PureComponent<IProps, IState> {
+  state: IState = {
     refreshing: false
   }
 

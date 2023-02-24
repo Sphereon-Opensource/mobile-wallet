@@ -1,9 +1,8 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop'
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIBackgroundImage from '../../assets/images/connections.svg'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
@@ -14,7 +13,8 @@ import {
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
-import { showToast, ToastTypeEnum } from '../../utils/ToastUtils'
+import { ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
+import { showToast } from '../../utils/ToastUtils'
 import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 
 const { v4: uuidv4 } = require('uuid')

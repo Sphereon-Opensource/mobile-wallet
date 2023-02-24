@@ -1,7 +1,6 @@
-import { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import React, { FC } from 'react'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage'
 import { translate } from '../../localization/Localization'
 import {
@@ -11,6 +10,7 @@ import {
   SSITextH4LightStyled as SubTitleText,
   SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText
 } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW>
 

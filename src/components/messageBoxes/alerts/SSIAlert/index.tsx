@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 
-import { IButton } from '../../../../@types'
 import {
   SSIAlertButtonStyled as Button,
   SSITextH2DarkStyled as ButtonCaption,
@@ -9,6 +8,7 @@ import {
   SSIAlertMessageContainerStyled as MessageContainer,
   SSIAlertMessageTextStyled as MessageText
 } from '../../../../styles/components'
+import { IButton } from '../../../../types'
 
 export interface IProps {
   message: string

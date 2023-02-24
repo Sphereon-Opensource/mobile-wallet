@@ -1,7 +1,8 @@
 export interface IOnboardingState {
-  firstName: string | undefined
-  lastName: string | undefined
-  emailAddress: string | undefined
+  loading: boolean
+  firstName?: string
+  lastName?: string
+  emailAddress?: string
 }
 
 export interface ISetPersonalDataActionArgs {

@@ -1,13 +1,13 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
-import { NativeStackScreenProps } from 'react-native-screens/native-stack'
 
-import { ScreenRoutesEnum, StackParamList } from '../../@types'
 import SSIActivityView from '../../components/views/SSIActivityView'
 import SSIConnectionsView from '../../components/views/SSIConnectionsView'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
 import { SSIBasicContainerSecondaryStyled as Container } from '../../styles/components'
+import { ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>
 

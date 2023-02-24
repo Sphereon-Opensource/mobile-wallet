@@ -6,8 +6,8 @@ import {
   DISCONNECT_ENTITY_FAILED,
   DISCONNECT_ENTITY_SUCCESS,
   DISCONNECT_LOADING
-} from '../../@types/store/authenticate.action.types'
-import { IAuthenticatedEntity, IAuthenticationState } from '../../@types/store/authenticate.types'
+} from '../../types/store/authenticate.action.types'
+import { IAuthenticatedEntity, IAuthenticationState } from '../../types/store/authenticate.types'
 
 const initialState: IAuthenticationState = {
   loading: false,
