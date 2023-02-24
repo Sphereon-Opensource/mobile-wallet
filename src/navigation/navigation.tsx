@@ -20,6 +20,7 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
+import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
@@ -512,8 +513,34 @@ const OnboardingStack = (): JSX.Element => {
   )
 }
 
+const AuthenticationStack = (): JSX.Element => {
+  return (
+      <Stack.Navigator
+          initialRouteName={ScreenRoutesEnum.LOCK}
+          screenOptions={{
+            animation: 'none'
+          }}
+      >
+        <Stack.Screen
+            name={ScreenRoutesEnum.LOCK}
+            component={SSILockScreen}
+            options={{
+              headerTitle: translate('lock_title'),
+              header: (props: NativeStackHeaderProps) => (
+                  <SSIHeaderBar
+                      {...props}
+                      showBackButton={false}
+                      showEntityIcon={false}
+                      headerSubTitle={translate('lock_subtitle')}
+                  />
+              )
+            }}
+        />
+      </Stack.Navigator>
+  )
+}
+
 /**
- * WIP. Figuring out how to properly navigate between certain flows and making sure that the user cannot navigate back to the previous ones
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
  */
@@ -527,11 +554,12 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false
       }}
     >
-      {userState.users.size === 0 ? (
-        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : (
-        <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
-      )}
+      { userState.users.size === 0
+          ? <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
+           : !userState.activeUser
+              ? <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
+              : <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
+      }
     </Stack.Navigator>
   )
 }
