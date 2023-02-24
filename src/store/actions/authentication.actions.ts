@@ -20,7 +20,7 @@ export const authenticateConnectionEntity = (
 ): ((dispatch: Dispatch<AnyAction>) => void) => {
   return (dispatch: Dispatch<AnyAction>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
-    return authenticate(connection, connection.type === ConnectionTypeEnum.DIDAUTH ? CustomApprovalEnum.PEX : undefined)
+    return authenticate(connection)
       .then((authentication: IAuthentication) => {
         const payload = {
           entityId,

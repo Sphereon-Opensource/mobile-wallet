@@ -24,8 +24,8 @@ import * as RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
 import { signPresentation } from '../services/signatureService'
 import { scanFingerPrint } from '../utils/BiometricUtils'
-import {DataSource} from "typeorm";
-import {OrPromise} from "@veramo/utils";
+import { DataSource } from 'typeorm'
+import { OrPromise } from '@veramo/utils'
 
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
@@ -85,7 +85,7 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator(signPresentation, {
+    new DidAuthSiopOpAuthenticator(/*undefined, {
       [CustomApprovalEnum.PEX]: async (
         verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string
@@ -97,7 +97,7 @@ const agent = createAgent<
         return Promise.reject(Error('Pex verification manual stop'))
       },
       [CustomApprovalEnum.FINGERPRINT]: async () => scanFingerPrint()
-    }),
+    }*/),
     new ConnectionManager({
       store: new ConnectionStore(dbConnection)
     })
@@ -106,9 +106,6 @@ const agent = createAgent<
 
 export const didManagerCreate = agent.didManagerCreate
 export const didManagerFind = agent.didManagerFind
-export const registerSessionForSiop = agent.registerSessionForSiop
-export const getSessionForSiop = agent.getSessionForSiop
-export const authenticateWithSiop = agent.authenticateWithSiop
 export const cmGetParty = agent.cmGetParty
 export const cmGetParties = agent.cmGetParties
 export const cmAddParty = agent.cmAddParty
@@ -116,8 +113,6 @@ export const cmAddConnection = agent.cmAddConnection
 export const didManagerGet = agent.didManagerGet
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential
-export const getSiopAuthorizationRequestDetails = agent.getSiopAuthorizationRequestDetails
-export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential

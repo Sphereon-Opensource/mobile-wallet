@@ -1,28 +1,19 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import {
-  ConnectionTypeEnum,
-  IBasicConnection,
-  IDidAuthConfig,
-  IOpenIdConfig
-} from '@sphereon/ssi-sdk-data-store-common'
-
-import { CustomApproval } from '../@types'
-import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../@types/store/authenticate.types'
-import DidAuthSiopProvider from '../providers/authentication/DidAuthSiopProvider'
+import {ConnectionTypeEnum, IBasicConnection, IDidAuthConfig, IOpenIdConfig} from '@sphereon/ssi-sdk-data-store-common'
+import {IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication} from '../@types/store/authenticate.types'
+import {siopGetRequest} from '../providers/authentication/SIOPv2Provider'
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider'
 import store from '../store'
-import { scanFingerPrint } from '../utils/BiometricUtils'
+import {scanFingerPrint} from '../utils/BiometricUtils'
 
 export const authenticate = async (
   connection: IBasicConnection,
-  customApproval?: CustomApproval
 ): Promise<IAuthentication> => {
   return scanFingerPrint().then(() => {
     switch (connection.type) {
       case ConnectionTypeEnum.OPENID:
         return new OpenIdConnectProvider().authenticate(connection.config as IOpenIdConfig)
-      case ConnectionTypeEnum.DIDAUTH:
-        return new DidAuthSiopProvider().authenticate(connection.config as IDidAuthConfig, customApproval)
+      case ConnectionTypeEnum.SIOPV2_OIDC4VP:
+        return siopGetRequest(connection.config as IDidAuthConfig)
       default:
         return Promise.reject(Error(`No supported authentication provider for type: ${connection.type}`))
     }
@@ -44,29 +35,15 @@ export const disconnect = async (entityId: string, connection: IBasicConnection)
         (connectionEntity.authentication as IOpenIdAuthentication).accessToken
       )
     }
-    // TODO can we disconnect such connections? do we have a token somewhere we can revoke?
-    // case ConnectionTypeEnum.DIDAUTH: {
-    //   const token = (connectionEntity.authentication as Response).token
-    //   return new DidAuthSiopProvider().revokeToken(connection.config as IDidAuthConfig, token)
-    // }
+
+    case ConnectionTypeEnum.DIDAUTH:
+    case ConnectionTypeEnum.SIOPV2_OIDC4VP: {
+      // fixme: We really should not modify the state in this way
+      const index = store.getState().authentication.entities.indexOf(connectionEntity)
+      index !== -1 && store.getState().authentication.entities.splice(index, 1)
+      return
+    }
     default:
       return Promise.reject(Error(`No supported authentication provider for type: ${connection.type}`))
-  }
-}
-
-// TODO refactor to support other cases
-export const verifyAuthentication = (
-  connectionType: ConnectionTypeEnum,
-  args: {
-    sessionId: string
-    verifiedAuthorizationRequest: VerifiedAuthorizationRequest
-  }
-) => {
-  console.log(`verified auth request: ${JSON.stringify(args.verifiedAuthorizationRequest)}`)
-  switch (connectionType) {
-    case ConnectionTypeEnum.DIDAUTH:
-      return new DidAuthSiopProvider().verifyAuthentication(args.sessionId, args.verifiedAuthorizationRequest)
-    default:
-      return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`))
   }
 }
