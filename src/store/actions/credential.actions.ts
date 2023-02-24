@@ -1,16 +1,19 @@
 import { CredentialMapper, ICredential, OriginalVerifiableCredential } from '@sphereon/ssi-types'
-import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
+import { ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { translate } from '../../localization/Localization'
 import {
+  createVerifiableCredential as createCredential,
   deleteVerifiableCredential as deleteCredential,
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential
 } from '../../services/credentialService'
 import { RootState, ToastTypeEnum } from '../../types'
 import {
+  CREATE_CREDENTIAL_FAILED,
+  CREATE_CREDENTIAL_SUCCESS,
   CREDENTIALS_LOADING,
   DELETE_CREDENTIAL_FAILED,
   DELETE_CREDENTIAL_SUCCESS,
@@ -70,6 +73,25 @@ export const deleteVerifiableCredential = (
       .catch(() => {
         dispatch({ type: DELETE_CREDENTIAL_FAILED })
         showToast(ToastTypeEnum.TOAST_ERROR, translate('credential_deleted_failed_toast'))
+      })
+  }
+}
+
+export const createVerifiableCredential = (
+  args: ICreateVerifiableCredentialArgs
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({ type: CREDENTIALS_LOADING })
+    createCredential(args)
+      .then((vc: VerifiableCredential) => {
+        storeCredential({ vc }).then((hash: string) => {
+          // TODO fix mismatch in types
+          dispatch({ type: CREATE_CREDENTIAL_SUCCESS, payload: toCredentialSummary(vc as ICredential, hash) })
+        })
+      })
+      .catch((error: Error) => {
+        console.log(error.message)
+        dispatch({ type: CREATE_CREDENTIAL_FAILED })
       })
   }
 }

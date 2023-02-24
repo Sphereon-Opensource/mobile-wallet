@@ -1,5 +1,7 @@
 import { ICredentialSummary } from '../../types'
 import {
+  CREATE_CREDENTIAL_FAILED,
+  CREATE_CREDENTIAL_SUCCESS,
   CredentialActionTypes,
   CREDENTIALS_LOADING,
   DELETE_CREDENTIAL_FAILED,
@@ -58,6 +60,19 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
       }
     }
     case DELETE_CREDENTIAL_FAILED: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+    case CREATE_CREDENTIAL_SUCCESS: {
+      return {
+        ...state,
+        verifiableCredentials: [...state.verifiableCredentials, action.payload],
+        loading: false
+      }
+    }
+    case CREATE_CREDENTIAL_FAILED: {
       return {
         ...state,
         loading: false

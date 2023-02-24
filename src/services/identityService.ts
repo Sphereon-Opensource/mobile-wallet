@@ -28,7 +28,7 @@ export const createIdentifier = async (): Promise<IIdentifier> => {
 
 export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise<IIdentifier> => {
   const identifiers = (await didManagerFind(args?.method ? { provider: `${DID_PREFIX}:${args?.method}` } : {})).filter(
-    (identifier) =>
+    (identifier: IIdentifier) =>
       args?.createOpts?.options?.type === undefined ||
       identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type)
   )
@@ -38,7 +38,7 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
   )
 
   // Currently we only support one identifier
-  const identifier =
+  const identifier: IIdentifier =
     !identifiers || identifiers.length == 0
       ? await didManagerCreate({
           kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,

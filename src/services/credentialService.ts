@@ -1,10 +1,11 @@
-import { UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
+import { ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential } from '@veramo/core'
 
 import {
   dataStoreDeleteVerifiableCredential,
   dataStoreGetVerifiableCredential,
   dataStoreORMGetVerifiableCredentials,
-  dataStoreSaveVerifiableCredential
+  dataStoreSaveVerifiableCredential,
+  createVerifiableCredential as issueVerifiableCredential
 } from '../agent'
 import { IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs } from '../types'
 
@@ -22,4 +23,10 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
 
 export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredentialArgs): Promise<boolean> => {
   return dataStoreDeleteVerifiableCredential({ hash: args.hash })
+}
+
+export const createVerifiableCredential = async (
+  args: ICreateVerifiableCredentialArgs
+): Promise<VerifiableCredential> => {
+  return issueVerifiableCredential(args)
 }
