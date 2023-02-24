@@ -109,7 +109,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - ExpoRandom (12.2.0):
     - ExpoModulesCore
-  - EXSplashScreen (0.15.1):
+  - EXSplashScreen (0.17.5):
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (2.2.1)
@@ -398,6 +398,8 @@ PODS:
     - RCTTypeSafety
     - React
     - ReactCommon/turbomodule/core
+  - react-native-secure-key-store (2.0.10):
+    - React-Core
   - react-native-sqlite-storage (6.0.1):
     - React-Core
   - React-perflogger (0.68.5)
@@ -487,6 +489,8 @@ PODS:
     - React
   - RNSVG (12.3.0):
     - React-Core
+  - RNTextGradientView (0.1.7):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -549,6 +553,7 @@ DEPENDENCIES:
   - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-secure-key-store (from `../node_modules/react-native-secure-key-store`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -572,6 +577,7 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNTextGradientView (from `../node_modules/react-native-text-gradient`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -695,6 +701,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-secure-key-store:
+    :path: "../node_modules/react-native-secure-key-store"
   react-native-sqlite-storage:
     :path: "../node_modules/react-native-sqlite-storage"
   React-perflogger:
@@ -741,6 +749,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share-menu"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNTextGradientView:
+    :path: "../node_modules/react-native-text-gradient"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -774,7 +784,7 @@ SPEC CHECKSUMS:
   ExpoLocalization: 8f619bb6eec64575cd5220bfabbd7b4e2d6f33f8
   ExpoModulesCore: e4278a668e8c13c0269ed8b8a4200989deea2973
   ExpoRandom: 14df0976aa363a71a730ceb7655250f3047c0e42
-  EXSplashScreen: 34f460788db8d682883871708dddbfac72095bb7
+  EXSplashScreen: 3e989924f61a8dd07ee4ea584c6ba14be9b51949
   EXStructuredHeaders: 5d86829469399370a9fc7cb1e4391b09de87681d
   EXUpdates: f8d0170faaf3032912284693ef07f4d57288e14e
   EXUpdatesInterface: 0b101ace1dbfa0f64260a5df31c71d03c66cca54
@@ -812,6 +822,7 @@ SPEC CHECKSUMS:
   react-native-pure-jwt: 94a3662655c6d677acb7b16048ed69b88b93073d
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: f98b0b16d1546d208fc293b4661e3f81a895afd9
+  react-native-secure-key-store: 910e6df6bc33cb790aba6ee24bc7818df1fe5898
   react-native-sqlite-storage: f6d515e1c446d1e6d026aa5352908a25d4de3261
   React-perflogger: 0458a87ea9a7342079e7a31b0d32b3734fb8415f
   React-RCTActionSheet: 22538001ea2926dea001111dd2846c13a0730bc9
@@ -835,8 +846,9 @@ SPEC CHECKSUMS:
   RNShare: 36aa3e6958373a0ad1c95a1c960adef589da3794
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  RNTextGradientView: 3eb4744303f801546fad35ac47a53cc82257cb25
   Yoga: c4d61225a466f250c35c1ee78d2d0b3d41fe661c
 
-PODFILE CHECKSUM: e1b03d28573aecf908020c806f843b0d626e7de1
+PODFILE CHECKSUM: 11031a68bf347c5cd18b8acbf50c993947685c40
 
 COCOAPODS: 1.11.3
