@@ -16,7 +16,7 @@ export const getGeneralInitialsOfUserName = (namePart1?: string, namePart2?: str
     initials = '?'
   }
 
-  return initials
+  return initials.toUpperCase()
 }
 
 /**
