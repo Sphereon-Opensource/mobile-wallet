@@ -1,0 +1,319 @@
+diff --git a/node_modules/@unimodules/core/.eslintrc.js b/node_modules/@unimodules/core/.eslintrc.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/CHANGELOG.md b/node_modules/@unimodules/core/CHANGELOG.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/README.md b/node_modules/@unimodules/core/README.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/build.gradle b/node_modules/@unimodules/core/android/build.gradle
+old mode 100644
+new mode 100755
+index e12c9bb..d45ae8c
+--- a/node_modules/@unimodules/core/android/build.gradle
++++ b/node_modules/@unimodules/core/android/build.gradle
+@@ -1,6 +1,5 @@
+ apply plugin: 'com.android.library'
+ apply plugin: 'kotlin-android'
+-apply plugin: 'maven'
+
+ group = 'org.unimodules'
+ version = '7.1.2'
+@@ -20,10 +19,6 @@ buildscript {
+   }
+ }
+
+-//Upload android library to maven with javadoc and android sources
+-configurations {
+-  deployerJars
+-}
+
+ //Creating sources with comments
+ task androidSourcesJar(type: Jar) {
+@@ -36,15 +31,6 @@ artifacts {
+   archives androidSourcesJar
+ }
+
+-uploadArchives {
+-  repositories {
+-    mavenDeployer {
+-      configuration = configurations.deployerJars
+-      repository(url: mavenLocal().url)
+-    }
+-  }
+-}
+-
+ android {
+   compileSdkVersion safeExtGet("compileSdkVersion", 30)
+
+diff --git a/node_modules/@unimodules/core/android/proguard-rules.pro b/node_modules/@unimodules/core/android/proguard-rules.pro
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/AndroidManifest.xml b/node_modules/@unimodules/core/android/src/main/AndroidManifest.xml
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ArgumentsHelper.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ArgumentsHelper.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/BasePackage.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/BasePackage.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ExportedModule.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ExportedModule.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/MapHelper.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/MapHelper.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistry.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistry.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistryDelegate.kt b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistryDelegate.kt
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistryProvider.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ModuleRegistryProvider.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/Promise.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/Promise.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ViewManager.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/ViewManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/arguments/MapArguments.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/arguments/MapArguments.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/arguments/ReadableArguments.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/arguments/ReadableArguments.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CodedException.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CodedException.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CodedRuntimeException.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CodedRuntimeException.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CurrentActivityNotFoundException.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/CurrentActivityNotFoundException.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/InvalidArgumentException.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/InvalidArgumentException.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/ModuleNotFoundException.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/errors/ModuleNotFoundException.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ActivityEventListener.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ActivityEventListener.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ActivityProvider.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ActivityProvider.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Arguments.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Arguments.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/CodedThrowable.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/CodedThrowable.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Consumer.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Consumer.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/DoNotStrip.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/DoNotStrip.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ExpoMethod.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ExpoMethod.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ExpoProp.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/ExpoProp.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Function.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Function.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/InternalModule.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/InternalModule.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/JavaScriptContextProvider.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/JavaScriptContextProvider.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/LifecycleEventListener.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/LifecycleEventListener.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Package.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/Package.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/RegistryLifecycleListener.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/RegistryLifecycleListener.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/RuntimeEnvironmentInterface.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/RuntimeEnvironmentInterface.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/SingletonModule.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/SingletonModule.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/EventEmitter.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/EventEmitter.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/KeepAwakeManager.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/KeepAwakeManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/UIManager.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/interfaces/services/UIManager.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/utilities/FileUtilities.java b/node_modules/@unimodules/core/android/src/main/java/org/unimodules/core/utilities/FileUtilities.java
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/AdapterProxy.d.ts b/node_modules/@unimodules/core/build/AdapterProxy.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/AdapterProxy.js b/node_modules/@unimodules/core/build/AdapterProxy.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/AdapterProxy.js.map b/node_modules/@unimodules/core/build/AdapterProxy.js.map
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/deprecate.d.ts b/node_modules/@unimodules/core/build/deprecate.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/deprecate.js b/node_modules/@unimodules/core/build/deprecate.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/deprecate.js.map b/node_modules/@unimodules/core/build/deprecate.js.map
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/index.d.ts b/node_modules/@unimodules/core/build/index.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/index.js b/node_modules/@unimodules/core/build/index.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/build/index.js.map b/node_modules/@unimodules/core/build/index.js.map
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.podspec b/node_modules/@unimodules/core/ios/UMCore.podspec
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.xcframework/Info.plist b/node_modules/@unimodules/core/ios/UMCore.xcframework/Info.plist
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64/UMCore.framework/Info.plist b/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64/UMCore.framework/Info.plist
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64/UMCore.framework/UMCore b/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64/UMCore.framework/UMCore
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64_x86_64-simulator/UMCore.framework/Info.plist b/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64_x86_64-simulator/UMCore.framework/Info.plist
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64_x86_64-simulator/UMCore.framework/UMCore b/node_modules/@unimodules/core/ios/UMCore.xcframework/ios-arm64_x86_64-simulator/UMCore.framework/UMCore
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMAppLifecycleListener.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMAppLifecycleListener.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMAppLifecycleService.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMAppLifecycleService.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMEventEmitter.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMEventEmitter.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMEventEmitterService.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMEventEmitterService.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMInternalModule.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMInternalModule.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMJavaScriptContextProvider.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMJavaScriptContextProvider.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMKernelService.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMKernelService.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMLogHandler.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMLogHandler.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMModuleRegistryConsumer.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMModuleRegistryConsumer.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMUIManager.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMUIManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Protocols/UMUtilitiesInterface.h b/node_modules/@unimodules/core/ios/UMCore/Protocols/UMUtilitiesInterface.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Services/UMLogManager.h b/node_modules/@unimodules/core/ios/UMCore/Services/UMLogManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/Services/UMLogManager.m b/node_modules/@unimodules/core/ios/UMCore/Services/UMLogManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMAppDelegateWrapper.h b/node_modules/@unimodules/core/ios/UMCore/UMAppDelegateWrapper.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMAppDelegateWrapper.m b/node_modules/@unimodules/core/ios/UMCore/UMAppDelegateWrapper.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMDefines.h b/node_modules/@unimodules/core/ios/UMCore/UMDefines.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMErrorCodes.h b/node_modules/@unimodules/core/ios/UMCore/UMErrorCodes.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMErrorCodes.m b/node_modules/@unimodules/core/ios/UMCore/UMErrorCodes.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMExportedModule.h b/node_modules/@unimodules/core/ios/UMCore/UMExportedModule.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMExportedModule.m b/node_modules/@unimodules/core/ios/UMCore/UMExportedModule.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistry.h b/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistry.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistry.m b/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistry.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistryDelegate.h b/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistry/UMModuleRegistryDelegate.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistryProvider/UMModuleRegistryProvider.h b/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistryProvider/UMModuleRegistryProvider.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistryProvider/UMModuleRegistryProvider.m b/node_modules/@unimodules/core/ios/UMCore/UMModuleRegistryProvider/UMModuleRegistryProvider.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMSingletonModule.h b/node_modules/@unimodules/core/ios/UMCore/UMSingletonModule.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMSingletonModule.m b/node_modules/@unimodules/core/ios/UMCore/UMSingletonModule.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMUtilities.h b/node_modules/@unimodules/core/ios/UMCore/UMUtilities.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMUtilities.m b/node_modules/@unimodules/core/ios/UMCore/UMUtilities.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMViewManager.h b/node_modules/@unimodules/core/ios/UMCore/UMViewManager.h
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/ios/UMCore/UMViewManager.m b/node_modules/@unimodules/core/ios/UMCore/UMViewManager.m
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/src/AdapterProxy.ts b/node_modules/@unimodules/core/src/AdapterProxy.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/src/deprecate.ts b/node_modules/@unimodules/core/src/deprecate.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/src/index.ts b/node_modules/@unimodules/core/src/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/tsconfig.json b/node_modules/@unimodules/core/tsconfig.json
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/unimodule.json b/node_modules/@unimodules/core/unimodule.json
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@unimodules/core/unimodules-core.gradle b/node_modules/@unimodules/core/unimodules-core.gradle
+old mode 100644
+new mode 100755

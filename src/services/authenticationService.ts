@@ -1,15 +1,16 @@
-import {ConnectionTypeEnum, IBasicConnection, IDidAuthConfig, IOpenIdConfig} from '@sphereon/ssi-sdk-data-store-common'
-import {IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication} from '../@types/store/authenticate.types'
-import {siopGetRequest} from '../providers/authentication/SIOPv2Provider'
+import {
+  ConnectionTypeEnum,
+  IBasicConnection,
+  IDidAuthConfig,
+  IOpenIdConfig
+} from '@sphereon/ssi-sdk-data-store-common'
+import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../types/store/authenticate.types'
+import { siopGetRequest } from '../providers/authentication/SIOPv2Provider'
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider'
 import store from '../store'
-import { CustomApproval } from '../types'
-import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../types/store/authenticate.types'
-import {scanFingerPrint} from '../utils/BiometricUtils'
+import { scanFingerPrint } from '../utils/BiometricUtils'
 
-export const authenticate = async (
-  connection: IBasicConnection,
-): Promise<IAuthentication> => {
+export const authenticate = async (connection: IBasicConnection): Promise<IAuthentication> => {
   return scanFingerPrint().then(() => {
     switch (connection.type) {
       case ConnectionTypeEnum.OPENID:

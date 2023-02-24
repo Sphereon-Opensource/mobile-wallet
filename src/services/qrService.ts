@@ -1,11 +1,11 @@
-import {CredentialResponse, IssuanceInitiation} from '@sphereon/openid4vci-client'
-import {ConnectionTypeEnum, CorrelationIdentifierEnum, IConnectionParty} from '@sphereon/ssi-sdk-data-store-common'
-import {CredentialMapper} from '@sphereon/ssi-types'
-import {VerifiableCredential} from '@veramo/core'
+import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
+import { ConnectionTypeEnum, CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { CredentialMapper } from '@sphereon/ssi-types'
+import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
-import {URL} from 'react-native-url-polyfill'
+import { URL } from 'react-native-url-polyfill'
 
-import {APP_ID} from '../@config/constants'
+import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
@@ -28,13 +28,13 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum
 } from '../types'
-import {showToast} from '../utils/ToastUtils'
-import {toCredentialSummary} from '../utils/mappers/CredentialMapper'
+import { showToast } from '../utils/ToastUtils'
+import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
-import {authenticate} from './authenticationService'
-import {connectFrom} from './connectionService'
-import {getContacts} from './contactService'
-import {getOrCreatePrimaryIdentifier} from './identityService'
+import { authenticate } from './authenticationService'
+import { connectFrom } from './connectionService'
+import { getContacts } from './contactService'
+import { getOrCreatePrimaryIdentifier } from './identityService'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -144,7 +144,7 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
     case QrTypesEnum.SIOPV2:
     case QrTypesEnum.OPENID_VC:
       return connectSiopV2(args)
-      // return connectJwtVcPresentationProfile(args)
+    // return connectJwtVcPresentationProfile(args)
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
       return connectOpenId4VcIssuance(args)
   }
