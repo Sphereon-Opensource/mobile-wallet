@@ -18,7 +18,6 @@ import {
 } from '../../styles/components'
 import { ScreenRoutesEnum, StackParamList } from '../../types'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
-import { toLocalDateString } from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
 
@@ -56,7 +55,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           <SSICardView
             credentialTitle={credential.title}
             issuerName={issuer}
-            expirationDate={toLocalDateString(credential.expirationDate)}
+            expirationDate={credential.expirationDate}
             credentialStatus={getCredentialStatus(credential)}
           />
         </CardContainer>
