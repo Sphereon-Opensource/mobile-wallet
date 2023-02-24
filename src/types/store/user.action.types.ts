@@ -10,6 +10,10 @@ export const GET_USERS_SUCCESS = '[USER] GET_USERS_SUCCESS'
 export type GET_USERS_SUCCESS = typeof GET_USERS_SUCCESS
 export const GET_USERS_FAILED = '[USER] GET_USERS_FAILED'
 export type GET_USERS_FAILED = typeof GET_USERS_FAILED
+export const SET_ACTIVE_USER_SUCCESS = '[USER] SET_ACTIVE_USER_SUCCESS'
+export type SET_ACTIVE_USER_SUCCESS = typeof SET_ACTIVE_USER_SUCCESS
+export const SET_ACTIVE_USER_FAILED = '[USER] SET_ACTIVE_USER_FAILED'
+export type SET_ACTIVE_USER_FAILED = typeof SET_ACTIVE_USER_FAILED
 
 interface IUsersLoading {
   type: USERS_LOADING
@@ -33,9 +37,20 @@ interface IGetUsersActionFailedAction {
   type: GET_USERS_FAILED
 }
 
+interface ISetActiveUserActionSuccessAction {
+  type: SET_ACTIVE_USER_SUCCESS
+  payload: IUser
+}
+
+interface ISetActiveUserActionFailedAction {
+  type: SET_ACTIVE_USER_FAILED
+}
+
 export type UserActionTypes =
   | IUsersLoading
   | IGetUsersActionFailedAction
   | IGetUsersActionSuccessAction
   | ICreateUserActionSuccessAction
   | ICreateUserActionFailedAction
+  | ISetActiveUserActionSuccessAction
+  | ISetActiveUserActionFailedAction

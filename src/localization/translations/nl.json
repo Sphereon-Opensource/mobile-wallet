@@ -132,5 +132,7 @@
     "pin_code_attempts_left_message": "Pogingen over:",
     "notifications_overview_title": "Notificaties",
     "notifications_overview_empty_state_title": "Geen notificaties",
-    "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch."
+    "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch.",
+    "lock_title": "Log in\nde Sphereon Wallet",
+    "lock_subtitle": "Vul je pincode in."
 }

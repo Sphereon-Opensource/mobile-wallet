@@ -114,7 +114,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const { inputRef } = this.state
 
     if (inputRef !== null) {
-      inputRef.clear()
+      inputRef.blur()
       inputRef.focus()
     }
   }

@@ -37,6 +37,8 @@ export type StackParamList = {
   PersonalData: Record<string, never>
   PinCodeSet: IPinCodeSetProps
   NotificationsOverview: Record<string, never>
+  Lock: Record<string, never>
+  Authentication: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -116,6 +118,7 @@ export interface IPinCodeSetProps {
 
 export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
+  AUTHENTICATION = 'Authentication',
   MAIN = 'Main'
 }
 
@@ -150,5 +153,6 @@ export enum ScreenRoutesEnum {
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
-  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview'
+  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
+  LOCK = 'Lock'
 }

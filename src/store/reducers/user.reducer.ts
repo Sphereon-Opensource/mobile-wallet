@@ -4,6 +4,8 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
+  SET_ACTIVE_USER_FAILED,
+  SET_ACTIVE_USER_SUCCESS,
   UserActionTypes,
   USERS_LOADING
 } from '../../types/store/user.action.types'
@@ -44,6 +46,19 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       }
     }
     case GET_USERS_FAILED: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+    case SET_ACTIVE_USER_SUCCESS: {
+      return {
+        ...state,
+        activeUser: action.payload,
+        loading: false
+      }
+    }
+    case SET_ACTIVE_USER_FAILED: {
       return {
         ...state,
         loading: false

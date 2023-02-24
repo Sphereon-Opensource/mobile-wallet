@@ -8,6 +8,8 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
+  SET_ACTIVE_USER_FAILED,
+  SET_ACTIVE_USER_SUCCESS,
   USERS_LOADING
 } from '../../types/store/user.action.types'
 
@@ -26,5 +28,21 @@ export const getUsers = (): ThunkAction<Promise<void>, RootState, unknown, Actio
     getUsersFromStorage()
       .then((users: Map<string, IUser>) => dispatch({ type: GET_USERS_SUCCESS, payload: users }))
       .catch(() => dispatch({ type: GET_USERS_FAILED }))
+  }
+}
+
+export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({ type: USERS_LOADING })
+    getUsersFromStorage()
+      .then((users: Map<string, IUser>) => {
+        const user = users.get(userId)
+        if (user) {
+          dispatch({ type: SET_ACTIVE_USER_SUCCESS, payload: user })
+        } else {
+          dispatch({ type: SET_ACTIVE_USER_FAILED })
+        }
+      })
+      .catch(() => dispatch({ type: SET_ACTIVE_USER_FAILED }))
   }
 }
