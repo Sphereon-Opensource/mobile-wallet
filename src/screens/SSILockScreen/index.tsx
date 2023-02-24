@@ -24,7 +24,7 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
 class SSILockScreen extends PureComponent<IProps> {
   onVerification = async (value: string): Promise<void> => {
     // We are currently only supporting a single user right now
-    if (value !== await getPin()) {
+    if (value !== (await getPin())) {
       return Promise.reject('Invalid pin code')
     }
 
@@ -34,18 +34,18 @@ class SSILockScreen extends PureComponent<IProps> {
 
   render() {
     return (
-        <Container>
-          <StatusBar/>
-          <View style={{marginTop: 130}}>
-            <SSIPinCode
-                length={PIN_CODE_LENGTH}
-                accessibilityLabel={translate('pin_code_accessibility_label')}
-                accessibilityHint={translate('pin_code_accessibility_hint')}
-                errorMessage={translate('pin_code_invalid_code_message')}
-                onVerification={this.onVerification}
-            />
-          </View>
-        </Container>
+      <Container>
+        <StatusBar />
+        <View style={{ marginTop: 130 }}>
+          <SSIPinCode
+            length={PIN_CODE_LENGTH}
+            accessibilityLabel={translate('pin_code_accessibility_label')}
+            accessibilityHint={translate('pin_code_accessibility_hint')}
+            errorMessage={translate('pin_code_invalid_code_message')}
+            onVerification={this.onVerification}
+          />
+        </View>
+      </Container>
     )
   }
 }
