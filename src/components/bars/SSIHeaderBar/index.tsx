@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
+  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   SSIHeaderBarContainerStyled as Container,
   SSIHeaderBarEntityIconContainerStyled as EntityIconContainer,
   SSIHeaderBarHeaderCaptionStyled as HeaderCaption,
@@ -65,7 +66,11 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
       <Container style={{ marginTop: useSafeAreaInsets().top }} showBorder={showBorder}>
         <Row>
           <LeftColumn>
-            {showBackButton && <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />}
+            {showBackButton &&
+              <BackIconContainer>
+                <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
+              </BackIconContainer>
+            }
             <HeaderCaption
               style={{ marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14 }}
             >
