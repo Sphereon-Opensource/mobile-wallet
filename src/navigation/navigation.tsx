@@ -32,7 +32,6 @@ import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import {
   MainRoutesEnum,
-  MoreMenuIconsEnum,
   NavigationBarRoutesEnum,
   RootState,
   ScreenRoutesEnum,

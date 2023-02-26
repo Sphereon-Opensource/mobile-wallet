@@ -43,19 +43,7 @@ LogBox.ignoreLogs([
     https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir/69649068#69649068
     The above seems very likely as the last update on react-native-share-menu was on May 12 2022
   */
-  'new NativeEventEmitter',
-
-  /*
-    TODO WAL-???
-    This is some issue with the splashscreen in combination with the app not being active (example, phone screen has been turned off)
-  */
-  'Current activity not found',
-  /*
-    TODO WAL-???
-    This warning comes from resetting the key on the PinCode component to make it reset it's internal state. We should investigate a better solution
-  */
-  'Can\'t perform a React state update on an unmounted component',
-  'Cannot read property \'readFile\' of undefined'
+  'new NativeEventEmitter'
 ])
 
 export default function App() {
@@ -125,7 +113,6 @@ export default function App() {
     return null
   }
 
-  // TODO maybe add a TouchableWithoutFeedback here that does stuff
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
