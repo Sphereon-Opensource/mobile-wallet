@@ -73,7 +73,14 @@ const dbConnection = getDbConnection(DB_CONNECTION_NAME)
 const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY))
 
 const agent = createAgent<
-  IDIDManager & IKeyManager & IDataStore & IDataStoreORM & IResolver & IDidAuthSiopOpAuthenticator & IConnectionManager & ICredentialHandlerLDLocal
+  IDIDManager &
+    IKeyManager &
+    IDataStore &
+    IDataStoreORM &
+    IResolver &
+    IDidAuthSiopOpAuthenticator &
+    IConnectionManager &
+    ICredentialHandlerLDLocal
 >({
   plugins: [
     new DataStore(dbConnection),

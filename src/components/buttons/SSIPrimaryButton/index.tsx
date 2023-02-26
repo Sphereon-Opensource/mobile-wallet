@@ -16,16 +16,18 @@ export interface Props extends PressableProps {
 }
 
 const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
+  const { onPress, disabled, style, title } = props
+
   return (
     <Button
-      onPress={props.onPress}
-      disabled={props.disabled}
+      onPress={onPress}
+      disabled={disabled}
       style={{
-        opacity: props.disabled ? OpacityStyleEnum.DISABLED : OpacityStyleEnum.ACTIVE
+        ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
       }}
     >
-      <LinearGradient style={{ ...props.style }}>
-        <ButtonCaption>{props.title}</ButtonCaption>
+      <LinearGradient style={{ ...style }}>
+        <ButtonCaption>{title}</ButtonCaption>
       </LinearGradient>
     </Button>
   )

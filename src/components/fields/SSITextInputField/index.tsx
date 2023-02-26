@@ -14,6 +14,7 @@ import {
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
 } from '../../../styles/components'
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
+import { OpacityStyleEnum } from '../../../types'
 
 export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined
@@ -132,11 +133,16 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     <Container>
       {label ? (
         labelColor || error ? (
-          <LabelCaption style={{ color: error ? statuses.error : labelColor, opacity: disabled ? 0.5 : 1 }}>
+          <LabelCaption
+            style={{
+              color: error ? statuses.error : labelColor,
+              ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
+            }}
+          >
             {label}
           </LabelCaption>
         ) : (
-          <LinearTextGradient style={{ opacity: disabled ? 0.5 : 1 }}>
+          <LinearTextGradient style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
             <LabelCaption>{label}</LabelCaption>
           </LinearTextGradient>
         )
@@ -156,11 +162,11 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           onEndEditing={onEditingEnd}
           onFocus={_onFocus}
           value={value}
-          style={{ opacity: disabled ? 0.5 : 1 }}
+          style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}
         />
         {secureTextEntry && (
           // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc
-          <IconContainer style={{ opacity: disabled ? 0.5 : 1 }}>
+          <IconContainer style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
             <SSIEyeIcon />
           </IconContainer>
         )}
@@ -170,15 +176,19 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
       ) : (
         <Underline
           style={{
-            borderBottomColor: error ? statuses.error : borderColor,
-            borderBottomWidth: showBorder ? 1 : 0,
-            opacity: disabled ? 0.5 : 1
+            ...(showBorder && { borderBottomWidth: 1, borderBottomColor: error ? statuses.error : borderColor }),
+            ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
           }}
         />
       )}
       <HelperContainer>
         {(helperText || error) && (
-          <LabelCaption style={{ color: error ? statuses.error : inputs.placeholder, opacity: disabled ? 0.5 : 1 }}>
+          <LabelCaption
+            style={{
+              color: error ? statuses.error : inputs.placeholder,
+              ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
+            }}
+          >
             {error ? error : helperText}
           </LabelCaption>
         )}

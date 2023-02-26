@@ -29,34 +29,33 @@ export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`)
 
   AsyncStorage.getItem(STORAGE_USERS_KEY)
-  .then((result: string | null) => {
-    if (!result) {
-      debug(`storeUser(${JSON.stringify(user)}) no users found`)
-      const users = new Map<string, IUser>()
+    .then((result: string | null) => {
+      if (!result) {
+        debug(`storeUser(${JSON.stringify(user)}) no users found`)
+        const users = new Map<string, IUser>()
+        users.set(user.id, user)
+
+        return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)))
+      }
+
+      debug(`storeUser(${JSON.stringify(user)}) users found`)
+      const users: Map<string, IUser> = new Map<string, IUser>()
+      JSON.parse(result).forEach(([key, value]: [string, IUser]) => {
+        users.set(key, value)
+      })
+
+      if (users.get(user.id)) {
+        return Promise.reject('User already exists')
+      }
+
       users.set(user.id, user)
 
-      return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)))
-    }
-
-    debug(`storeUser(${JSON.stringify(user)}) users found`)
-    const users: Map<string, IUser> = new Map<string, IUser>();
-    JSON.parse(result).forEach(([key, value]: [string, IUser]) => {
-      users.set(key, value);
+      debug(`storeUser(${JSON.stringify(user)}) storing user`)
+      AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)))
     })
-
-    if (users.get(user.id)) {
-      return Promise.reject('User already exists')
-    }
-
-    users.set(user.id, user)
-
-    debug(`storeUser(${JSON.stringify(user)}) storing user`)
-    AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)))
-  })
-  .catch((error: Error) =>
-    Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`))
-  )
-
+    .catch((error: Error) =>
+      Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`))
+    )
 
   // const result: string | null = await AsyncStorage.getItem(STORAGE_USERS_KEY)
   //   .catch((error: Error) =>
@@ -99,12 +98,14 @@ export const getUsers = async (): Promise<Map<string, IUser>> => {
       }
 
       debug(`getUsers() users found`)
-      const users: Map<string, IUser> = new Map<string, IUser>();
+      const users: Map<string, IUser> = new Map<string, IUser>()
       JSON.parse(result).forEach(([key, value]: [string, IUser]) => {
-        users.set(key, value);
+        users.set(key, value)
       })
 
       return users
     })
-    .catch((error: Error) => Promise.reject(new Error(`Unable to retrieve value for key: ${STORAGE_USERS_KEY}. ${error.message}`)))
+    .catch((error: Error) =>
+      Promise.reject(new Error(`Unable to retrieve value for key: ${STORAGE_USERS_KEY}. ${error.message}`))
+    )
 }

@@ -23,6 +23,10 @@ LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
   'Require cycle:',
   /*
+    This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
+  */
+  'AsyncStorage has been extracted from react-native',
+  /*
     TODO WAL-342
     Non-serializable values were found in the navigation state. Check:
     This can break usage such as persisting and restoring state. This might happen if you passed non-serializable values such as function, class instances etc. in params. If you need to use components with callbacks in your options, you
@@ -39,7 +43,19 @@ LogBox.ignoreLogs([
     https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir/69649068#69649068
     The above seems very likely as the last update on react-native-share-menu was on May 12 2022
   */
-  'new NativeEventEmitter'
+  'new NativeEventEmitter',
+
+  /*
+    TODO WAL-???
+    This is some issue with the splashscreen in combination with the app not being active (example, phone screen has been turned off)
+  */
+  'Current activity not found',
+  /*
+    TODO WAL-???
+    This warning comes from resetting the key on the PinCode component to make it reset it's internal state. We should investigate a better solution
+  */
+  'Can\'t perform a React state update on an unmounted component',
+  'Cannot read property \'readFile\' of undefined'
 ])
 
 export default function App() {
@@ -109,6 +125,7 @@ export default function App() {
     return null
   }
 
+  // TODO maybe add a TouchableWithoutFeedback here that does stuff
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>

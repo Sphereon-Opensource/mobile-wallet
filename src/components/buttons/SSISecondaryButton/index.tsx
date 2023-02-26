@@ -28,7 +28,7 @@ const SSISecondaryButton: FC<Props> = (props: Props): JSX.Element => {
         disabled={disabled}
         activeOpacity={0.5}
         style={{
-          opacity: disabled ? OpacityStyleEnum.DISABLED : OpacityStyleEnum.ACTIVE
+          ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
         }}
       >
         <LinearGradient style={{ ...props.style }}>

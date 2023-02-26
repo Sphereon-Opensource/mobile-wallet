@@ -50,16 +50,13 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
         dispatch(
           createVerifiableCredential({
             credential: {
-              "@context": [
-                "https://www.w3.org/2018/credentials/v1",
-                "https://www.w3.org/2018/credentials/examples/v1",
-                "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld"
+              '@context': [
+                'https://www.w3.org/2018/credentials/v1',
+                'https://www.w3.org/2018/credentials/examples/v1',
+                'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld'
               ],
               id: uuidv4(),
-              type: [
-                "VerifiableCredential",
-                "SphereonWalletIdentity"
-              ],
+              type: ['VerifiableCredential', 'SphereonWalletIdentity'],
               issuer: identifier.did,
               issuanceDate: new Date(),
               credentialSubject: {

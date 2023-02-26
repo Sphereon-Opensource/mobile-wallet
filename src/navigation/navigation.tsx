@@ -20,7 +20,7 @@ import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen'
-import SSILockScreen from '../screens/SSILockScreen';
+import SSILockScreen from '../screens/SSILockScreen'
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen'
 import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
@@ -32,6 +32,7 @@ import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
 import Veramo from '../screens/Veramo'
 import {
   MainRoutesEnum,
+  MoreMenuIconsEnum,
   NavigationBarRoutesEnum,
   RootState,
   ScreenRoutesEnum,
@@ -191,11 +192,15 @@ const CredentialsStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              moreButtonAction={async () =>
-                RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                  rawCredential: route.params.rawCredential
-                })
-              }
+              moreActions={[
+                {
+                  caption: translate('show_raw_credential_button_caption'),
+                  onPress: async () =>
+                    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
+                      rawCredential: route.params.rawCredential
+                    })
+                }
+              ]}
             />
           )
         })}
@@ -238,14 +243,7 @@ const ContactsStack = (): JSX.Element => {
         component={SSIContactsOverviewScreen}
         options={{
           headerTitle: translate('contacts_overview_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              showBackButton={false}
-              moreButtonAction={async () => console.log('more pressed')}
-              showBorder
-            />
-          )
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />
         }}
       />
       <Stack.Screen
@@ -258,7 +256,6 @@ const ContactsStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              moreButtonAction={async () => console.log('more pressed')}
               showBorder
             />
           )
@@ -315,7 +312,6 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              moreButtonAction={async () => console.log('more pressed')}
             />
           )
         }}
@@ -345,11 +341,15 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
-              moreButtonAction={async () =>
-                RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                  rawCredential: route.params.rawCredential
-                })
-              }
+              moreActions={[
+                {
+                  caption: translate('show_raw_credential_button_caption'),
+                  onPress: async () =>
+                    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
+                      rawCredential: route.params.rawCredential
+                    })
+                }
+              ]}
             />
           )
         })}
@@ -515,28 +515,28 @@ const OnboardingStack = (): JSX.Element => {
 
 const AuthenticationStack = (): JSX.Element => {
   return (
-      <Stack.Navigator
-          initialRouteName={ScreenRoutesEnum.LOCK}
-          screenOptions={{
-            animation: 'none'
-          }}
-      >
-        <Stack.Screen
-            name={ScreenRoutesEnum.LOCK}
-            component={SSILockScreen}
-            options={{
-              headerTitle: translate('lock_title'),
-              header: (props: NativeStackHeaderProps) => (
-                  <SSIHeaderBar
-                      {...props}
-                      showBackButton={false}
-                      showEntityIcon={false}
-                      headerSubTitle={translate('lock_subtitle')}
-                  />
-              )
-            }}
-        />
-      </Stack.Navigator>
+    <Stack.Navigator
+      initialRouteName={ScreenRoutesEnum.LOCK}
+      screenOptions={{
+        animation: 'none'
+      }}
+    >
+      <Stack.Screen
+        name={ScreenRoutesEnum.LOCK}
+        component={SSILockScreen}
+        options={{
+          headerTitle: translate('lock_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={false}
+              showEntityIcon={false}
+              headerSubTitle={translate('lock_subtitle')}
+            />
+          )
+        }}
+      />
+    </Stack.Navigator>
   )
 }
 
@@ -554,12 +554,13 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false
       }}
     >
-      { userState.users.size === 0
-          ? <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-           : !userState.activeUser
-              ? <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
-              : <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
-      }
+      {userState.users.size === 0 ? (
+        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
+      ) : !userState.activeUser ? (
+        <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
+      ) : (
+        <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
+      )}
     </Stack.Navigator>
   )
 }

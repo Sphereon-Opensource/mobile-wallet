@@ -31,6 +31,8 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
   return dataStoreDeleteVerifiableCredential({ hash: args.hash })
 }
 
-export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredentialSP> => {
+export const createVerifiableCredential = async (
+  args: ICreateVerifiableCredentialArgs
+): Promise<VerifiableCredentialSP> => {
   return createVerifiableCredentialLDLocal(args)
 }
