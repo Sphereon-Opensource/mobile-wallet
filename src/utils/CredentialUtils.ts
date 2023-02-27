@@ -15,7 +15,6 @@ export const getCredentialStatus = (credential: ICredential | ICredentialSummary
 }
 
 /**
- * @param credentialStatus a status value or reference to the status information. For example the CredentialStatusEnum has the value. ICredentialStatus can have the reference to the status which can be checked by fetching this status from a server.
  * @return
  *  true means the credential is revoked.
  *  false means the credential is not revoked.
@@ -32,7 +31,7 @@ export const isRevoked = (): boolean => {
 }
 
 /**
- * @param expirationDate The number of milliseconds between 1 January 1970 00:00:00 UTC and the given date or a formatted date required by Date(...)
+ * @param value The number of milliseconds between 1 January 1970 00:00:00 UTC and the given date or a formatted date required by Date(...)
  * @return
  *  true means the credential is expired.
  *  false means the credential is not expired.

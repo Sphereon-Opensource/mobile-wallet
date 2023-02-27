@@ -80,9 +80,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const { onVerification } = this.props
 
     onVerification(value)
-      .then(() => {
-        this.setState({ retry: 0, pin: '' })
-      })
+      .then(() => this.setState({ retry: 0, pin: '' }))
       .catch(this.onVerificationFailed)
   }
 
@@ -114,7 +112,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const { inputRef } = this.state
 
     if (inputRef !== null) {
-      inputRef.clear()
+      inputRef.blur()
       inputRef.focus()
     }
   }

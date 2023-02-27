@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 
-import SSISecurityImage from '../../../../assets/images/security.svg'
-import SSIWarningImage from '../../../../assets/images/warning.svg'
+import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage'
+import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage'
 import { backgrounds, fonts } from '../../../../styles/colors'
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,

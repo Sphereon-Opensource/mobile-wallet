@@ -49,7 +49,7 @@ class IntentHandler {
     Linking.getInitialURL().then((url: string | null) => {
       debug(`Receiving deeplink data: ${url}`)
       // Added expo-development-client check because of how the expo works in development
-      if (url === null || url.includes('expo-development-client')) {
+      if (!url || url.includes('expo-development-client')) {
         return
       }
       this.deepLinkListener({ url })

@@ -29,6 +29,10 @@ export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
   margin: 35px 25px 14px auto;
 `
 
+export const SSIHeaderBarBackIconContainerStyled = styled.View`
+  width: 50px;
+`
+
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin: 18px 0px 0px 24px;
 `

@@ -9,6 +9,7 @@ import {
   SSICheckboxSelectedContainerStyled as SelectedContainer,
   SSICheckboxUnselectedContainerStyled as UnselectedContainer
 } from '../../../styles/components'
+import { OpacityStyleEnum } from '../../../types'
 
 export interface IProps {
   onValueChange?: (isChecked: boolean) => Promise<void>
@@ -58,11 +59,24 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
     >
       <Container>
         <UnselectedContainer
-          style={{ backgroundColor, marginRight: label ? 10 : 0, borderColor, opacity: disabled ? 0.5 : 1 }}
+          style={{
+            backgroundColor,
+            ...(label && { marginRight: 10 }),
+            borderColor,
+            ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
+          }}
         >
-          {value && <SelectedContainer style={{ backgroundColor: selectedColor, opacity: disabled ? 0.5 : 1 }} />}
+          {value && (
+            <SelectedContainer
+              style={{ backgroundColor: selectedColor, ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}
+            />
+          )}
         </UnselectedContainer>
-        {label && <LabelCaption style={{ color: labelColor, opacity: disabled ? 0.5 : 1 }}>{label}</LabelCaption>}
+        {label && (
+          <LabelCaption style={{ color: labelColor, ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
+            {label}
+          </LabelCaption>
+        )}
       </Container>
     </TouchableOpacity>
   )

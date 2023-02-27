@@ -339,7 +339,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const errorResponse = error.message.includes('response:')
           ? JSON.parse(error.message.split('response:')[1].trim())
           : error.message
-        if (errorResponse?.status === 403) {
+        if (error.message.includes('403') || errorResponse.status === 403) {
           return Promise.reject(error)
         }
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error)

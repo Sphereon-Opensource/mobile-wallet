@@ -24,6 +24,10 @@ LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
   'Require cycle:',
   /*
+    This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
+  */
+  'AsyncStorage has been extracted from react-native',
+  /*
     TODO WAL-342
     Non-serializable values were found in the navigation state. Check:
     This can break usage such as persisting and restoring state. This might happen if you passed non-serializable values such as function, class instances etc. in params. If you need to use components with callbacks in your options, you

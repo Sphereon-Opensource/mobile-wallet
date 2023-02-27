@@ -3,7 +3,7 @@ import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop'
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
 import React, { FC } from 'react'
 
-import SSIBackgroundImage from '../../assets/images/connections.svg'
+import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
 import {
@@ -45,7 +45,7 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <ImageContainer>
-        <SSIBackgroundImage />
+        <SSIConnectionsImage />
       </ImageContainer>
       <MessageTitle>{translate('pex_message_title')}</MessageTitle>
       <MessagesContainer>

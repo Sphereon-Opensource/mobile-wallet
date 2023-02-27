@@ -1,6 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
+import { TouchableWithoutFeedback } from 'react-native'
 
+import { headerEmitter } from '../../components/bars/SSIHeaderBar'
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
 import SSIActivityView from '../../components/views/SSIActivityView'
@@ -16,9 +18,8 @@ import {
   SSICredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+import { HeaderEventEnum, ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
-import { toLocalDateString } from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
 
@@ -31,7 +32,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params
   const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.name
 
-  const routes = [
+  const routes: Array<ITabViewRoute> = [
     {
       key: CredentialTabRoutesEnum.INFO,
       title: translate('credential_details_info_tab_header_label'),
@@ -48,52 +49,58 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       : [])
   ]
 
+  const onPress = async (): Promise<void> => {
+    headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE)
+  }
+
   return (
-    <Container>
-      <StatusBar />
-      <ContentContainer>
-        <CardContainer>
-          <SSICardView
-            credentialTitle={credential.title}
-            issuerName={issuer}
-            expirationDate={toLocalDateString(credential.expirationDate)}
-            credentialStatus={getCredentialStatus(credential)}
-          />
-        </CardContainer>
-        <SSITabView routes={routes} />
-        {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
-        {(primaryAction || secondaryAction) && (
-          <ButtonContainer>
-            <ButtonContainerContent>
-              {secondaryAction && (
-                <SSISecondaryButton
-                  title={secondaryAction.caption}
-                  onPress={secondaryAction.onPress}
-                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-                  style={{
-                    height: 42,
-                    minWidth: 160.5,
-                    width: primaryAction ? undefined : '100%'
-                  }}
-                />
-              )}
-              {primaryAction && (
-                <SSIPrimaryButton
-                  title={primaryAction.caption}
-                  onPress={primaryAction.onPress}
-                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-                  style={{
-                    height: 42,
-                    minWidth: 160.5,
-                    width: secondaryAction ? undefined : '100%'
-                  }}
-                />
-              )}
-            </ButtonContainerContent>
-          </ButtonContainer>
-        )}
-      </ContentContainer>
-    </Container>
+    <TouchableWithoutFeedback onPress={onPress} accessible={false}>
+      <Container>
+        <StatusBar />
+        <ContentContainer>
+          <CardContainer>
+            <SSICardView
+              credentialTitle={credential.title}
+              issuerName={issuer}
+              expirationDate={credential.expirationDate}
+              credentialStatus={getCredentialStatus(credential)}
+            />
+          </CardContainer>
+          <SSITabView routes={routes} />
+          {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
+          {(primaryAction || secondaryAction) && (
+            <ButtonContainer>
+              <ButtonContainerContent>
+                {secondaryAction && (
+                  <SSISecondaryButton
+                    title={secondaryAction.caption}
+                    onPress={secondaryAction.onPress}
+                    // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+                    style={{
+                      height: 42,
+                      minWidth: 160.5,
+                      width: primaryAction ? undefined : '100%'
+                    }}
+                  />
+                )}
+                {primaryAction && (
+                  <SSIPrimaryButton
+                    title={primaryAction.caption}
+                    onPress={primaryAction.onPress}
+                    // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+                    style={{
+                      height: 42,
+                      minWidth: 160.5,
+                      width: secondaryAction ? undefined : '100%'
+                    }}
+                  />
+                )}
+              </ButtonContainerContent>
+            </ButtonContainer>
+          )}
+        </ContentContainer>
+      </Container>
+    </TouchableWithoutFeedback>
   )
 }
 
