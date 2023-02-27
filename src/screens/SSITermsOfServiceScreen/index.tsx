@@ -15,7 +15,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer
 } from '../../styles/components'
-import { MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../types'
+import { ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>
 
@@ -30,7 +30,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const [hasReadPrivacy, setHasReadPrivacy] = useState(false)
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false)
 
-  const routes = [
+  const routes: Array<ITabViewRoute> = [
     {
       key: TermsTabRoutesEnum.TERMS,
       title: translate('terms_of_service_terms_tab_header_label'),

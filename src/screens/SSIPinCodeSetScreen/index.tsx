@@ -1,22 +1,18 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { PureComponent } from 'react'
 import { BackHandler, NativeEventSubscription, View } from 'react-native'
-import { connect } from 'react-redux'
 
 import { PIN_CODE_LENGTH } from '../../@config/constants'
 import SSIPinCode from '../../components/pinCodes/SSIPinCode'
 import { translate } from '../../localization/Localization'
 import { storePin } from '../../services/storageService'
-import { finalizeOnboarding } from '../../store/actions/onboarding.actions'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import { ScreenRoutesEnum, StackParamList } from '../../types'
 
-interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET> {
-  finalizeOnboarding: () => void
-}
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>
 
 enum StateKeyEnum {
   CHOOSE_PIN = 'choose_pin',
@@ -28,7 +24,7 @@ interface IState {
   isConfirmPin: boolean
 }
 
-class SSIPinCodeSetScreen extends PureComponent<IProps, IState> {
+class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
   hardwareBackPressListener: NativeEventSubscription
   state: IState = {
     pin: '',
@@ -76,8 +72,7 @@ class SSIPinCodeSetScreen extends PureComponent<IProps, IState> {
         return Promise.reject(Error('Invalid code'))
       }
 
-      // TODO WAL-407 implement
-      storePin({ value }).then(() => this.props.finalizeOnboarding())
+      storePin({ value }).then(() => navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {}))
     } else {
       // TODO fix type issue
       navigation.setOptions({ headerTitle: translate('pin_code_confirm_pin_code_title') })
@@ -109,10 +104,4 @@ class SSIPinCodeSetScreen extends PureComponent<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    finalizeOnboarding: () => dispatch(finalizeOnboarding())
-  }
-}
-
-export default connect(null, mapDispatchToProps)(SSIPinCodeSetScreen)
+export default SSIPinCodeSetScreen
