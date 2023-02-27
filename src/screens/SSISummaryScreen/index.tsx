@@ -5,16 +5,10 @@ import { connect } from 'react-redux'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView'
 import SSITabView from '../../components/views/SSITabView'
-import { translate } from '../../localization/Localization';
+import { translate } from '../../localization/Localization'
 import { finalizeOnboarding } from '../../store/actions/onboarding.actions'
 import { SSIBasicHorizontalCenterContainerStyled as Container } from '../../styles/components'
-import {
-  ICredentialDetailsRow,
-  ITabViewRoute,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList
-} from '../../types'
+import { ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
 import { IOnboardingState } from '../../types/store/onboarding.types'
 
 const { v4: uuidv4 } = require('uuid')
@@ -61,20 +55,20 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
         key: SummaryTabRoutesEnum.INFO,
         title: translate('onboard_summary_info_tab_header_label'),
         // TODO replace refactored SSICredentialDetailsView to general component
-        content: () => <SSICredentialDetailsView credentialProperties={this.getProperties()}/>
+        content: () => <SSICredentialDetailsView credentialProperties={this.getProperties()} />
       }
     ]
 
     return (
-        <Container>
-          <SSITabView routes={routes} />
-          <SSIButtonsContainer
-              primaryButton={{
-                caption: translate('onboard_summary_button_caption'),
-                onPress: this.onAccept
-              }}
-          />
-        </Container>
+      <Container>
+        <SSITabView routes={routes} />
+        <SSIButtonsContainer
+          primaryButton={{
+            caption: translate('onboard_summary_button_caption'),
+            onPress: this.onAccept
+          }}
+        />
+      </Container>
     )
   }
 }

@@ -26,15 +26,13 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   )
 
   const renderFooter = () => (
-
-
     <FooterContainer>
-      { props.issuer &&
-          <>
-            <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
-            <IssuedBy>{props.issuer}</IssuedBy>
-          </>
-      }
+      {props.issuer && (
+        <>
+          <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
+          <IssuedBy>{props.issuer}</IssuedBy>
+        </>
+      )}
     </FooterContainer>
   )
 

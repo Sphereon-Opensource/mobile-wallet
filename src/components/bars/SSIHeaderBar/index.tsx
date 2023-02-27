@@ -66,11 +66,11 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
       <Container style={{ marginTop: useSafeAreaInsets().top }} showBorder={showBorder}>
         <Row>
           <LeftColumn>
-            {showBackButton &&
+            {showBackButton && (
               <BackIconContainer>
                 <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
               </BackIconContainer>
-            }
+            )}
             <HeaderCaption
               style={{ marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14 }}
             >

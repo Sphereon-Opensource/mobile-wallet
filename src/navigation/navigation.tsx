@@ -26,7 +26,7 @@ import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
 import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen'
 import SSIQRReader from '../screens/SSIQRReaderScreen'
-import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
+import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen'
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
@@ -502,20 +502,20 @@ const OnboardingStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
-          component={SSIOnboardingSummaryScreen}
-          options={{
-            headerTitle: translate('onboard_summary_title'),
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar
-                    {...props}
-                    // TODO rethink back button visibility for Android
-                    //showBackButton={Platform.OS === PlatformsEnum.IOS}
-                    showEntityIcon={false}
-                    headerSubTitle={translate('onboard_summary_subtitle')}
-                />
-            )
-          }}
+        name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
+        component={SSIOnboardingSummaryScreen}
+        options={{
+          headerTitle: translate('onboard_summary_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showEntityIcon={false}
+              headerSubTitle={translate('onboard_summary_subtitle')}
+            />
+          )
+        }}
       />
       <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}
