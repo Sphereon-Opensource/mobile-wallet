@@ -1,6 +1,5 @@
-import { Avatar } from '@rneui/themed'
 import React, { FC } from 'react'
-import { ColorValue, View } from 'react-native'
+import {ColorValue, Text, View} from 'react-native'
 import { connect } from 'react-redux'
 
 import { entities, fonts } from '../../../../styles/colors'
@@ -10,23 +9,23 @@ import { getGeneralInitialsOfUserName } from '../../../../utils/UserUtils'
 export interface IProps {
   size?: number
   fontColor?: ColorValue
-  backgroundColor?: ColorValue
+  bgColor?: ColorValue
   initialsOfUserName?: string
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 34, fontColor = fonts.light, backgroundColor = entities['100'], initialsOfUserName = '?' } = props
+  const { size = 34, fontColor = fonts.light, bgColor = entities['100'], initialsOfUserName = '?' } = props
 
   return (
-    <View style={{ width: size, aspectRatio: 1 }}>
-      <Avatar
-        size={size}
-        rounded
-        title={initialsOfUserName}
-        titleStyle={{ color: fontColor }}
-        icon={{ name: 'rowing' }}
-        containerStyle={{ backgroundColor: backgroundColor }}
-      />
+    <View style={{
+      alignItems: 'center',
+      aspectRatio: 1,
+      backgroundColor: bgColor,
+      borderRadius: 17,
+      marginTop: 10,
+      width: size
+    }}>
+      <Text  style={{color: fontColor}}>{initialsOfUserName}</Text>
     </View>
   )
 }

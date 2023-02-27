@@ -2808,23 +2808,6 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.7"
 
-"@rneui/base@^4.0.0-rc.7":
-  version "4.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@rneui/base/-/base-4.0.0-rc.7.tgz#d24666d0e195e5a9da41cea0573464a73acc7989"
-  integrity sha512-dffzoYek3Qp+7wJzC42QjI/Fu1HOUNxFIR88t1laDrBV5QZQB55f+Vu5zLbC80/bh1b8fYtl63HTIWpORuA3Eg==
-  dependencies:
-    "@types/react-native-vector-icons" "^6.4.10"
-    color "^3.2.1"
-    deepmerge "^4.2.2"
-    hoist-non-react-statics "^3.3.2"
-    react-native-ratings "^8.1.0"
-    react-native-size-matters "^0.4.0"
-
-"@rneui/themed@^4.0.0-rc.7":
-  version "4.0.0-rc.7"
-  resolved "https://registry.yarnpkg.com/@rneui/themed/-/themed-4.0.0-rc.7.tgz#5a016b853ee2e62bfd3183d39fc03b35864012f6"
-  integrity sha512-nRF95gFTv/8JEx01L8q9p9VWKE5M/luPWPKYsWHKUQ5PHqwveQId/V5+ba9yiXsYIl9VbJJ1nLlqfHVP00u/3Q==
-
 "@scure/base@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.1.1.tgz#ebb651ee52ff84f420097055f4bf46cfba403938"
@@ -4079,25 +4062,10 @@
   resolved "https://registry.yarnpkg.com/@types/react-native-share-menu/-/react-native-share-menu-5.0.2.tgz#c9c8854a3d091cdb046df22dafe4a92332b322f3"
   integrity sha512-Qa9DGfL6Bvng2DXgCK0fFzdi9SJMGfs06MLSkCfSXBCGKlFLzSHCsXztvXlCCChn3dQArFHyz/uRUN3Sbt6LtQ==
 
-"@types/react-native-vector-icons@^6.4.10":
-  version "6.4.13"
-  resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.13.tgz#28b34d15094e040718beefb67cb3eff0c4994cb6"
-  integrity sha512-1PqFoKuXTSzMHwGMAr+REdYJBQAbe9xrww3ecZR0FsHcD1K+vGS/rxuAriL4rsI6+p69sZQjDzpEVAbDQcjSwA==
-  dependencies:
-    "@types/react" "*"
-    "@types/react-native" "^0.70"
-
 "@types/react-native@*":
   version "0.71.3"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.71.3.tgz#537f669ed6b38b5ae47444bd9d253c4cff23bed7"
   integrity sha512-0Uqw1YZ0qbVla0MMWFTANFm6W8KYWNvGQmYfucdecbXivLMcQ2v4PovuYFKr7bE6Bc5nDCUEaga962Y8gcDF7A==
-  dependencies:
-    "@types/react" "*"
-
-"@types/react-native@^0.70":
-  version "0.70.11"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.11.tgz#50c3d81e1351aac0562c3341c9bd57885651a2fe"
-  integrity sha512-FobPtzoNPNHugBKMfzs4Li0Q9ei4tgU8SI1M5Ayg7+t5/+noCm2sknI8uwij22wMkcHcefv8RFx4q28nNVJtCQ==
   dependencies:
     "@types/react" "*"
 
@@ -13213,13 +13181,6 @@ react-native-randombytes@^3.0.0:
     buffer "^4.9.1"
     sjcl "^1.0.3"
 
-react-native-ratings@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-8.1.0.tgz#3fa9ad29128dc3a88e59518ba151e61c59dd0647"
-  integrity sha512-+QOJ4G3NjVkI1D+tk4EGx1dCvVfbD2nQdkrj9cXrcAoEiwmbep4z4bZbCKmWMpQ5h2dqbxABU8/eBnbDmvAc3g==
-  dependencies:
-    lodash "^4.17.15"
-
 react-native-responsive-fontsize@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/react-native-responsive-fontsize/-/react-native-responsive-fontsize-0.5.1.tgz#c39fa2212ecced2bac879211a7b25106534f72d2"
@@ -13268,11 +13229,6 @@ react-native-share@^8.0.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-8.2.0.tgz#6ad15ca3bedca5b7d0ec2b65c78a167d712f1fc8"
   integrity sha512-0RHeU/yntMzFsPmdSTJH7W7Y3+Fsw7qR3ufBMxodHJKzK8tBv5ZTEst8XMjTzrBUpamMaj23HCBYl9eYqntxpA==
-
-react-native-size-matters@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
-  integrity sha512-8/C0htHrFWeUm9N8JegmadovUfgTWkGBkDPZ1N3YkXtDWb+98Ya2gThiKcu445r8c7YhcrBfnHz/mYsXIusaOQ==
 
 react-native-sqlite-storage@^6.0.1:
   version "6.0.1"
