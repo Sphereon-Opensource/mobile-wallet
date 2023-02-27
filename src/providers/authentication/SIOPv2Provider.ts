@@ -5,7 +5,7 @@ import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
 import { ScreenRoutesEnum } from '../../types'
-import agent from '../../agent'
+import agent, {didMethodsSupported} from '../../agent'
 import { FindCredentialsArgs, IIdentifier } from '@veramo/core'
 import { VerifiableCredentialsWithDefinition } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/src/types/IDidAuthSiopOpAuthenticator'
 import { OID4VP } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'
@@ -52,7 +52,9 @@ export const siopRegisterSession = async ({
   return agent.siopRegisterOPSession({
     sessionId,
     op: {
-      checkLinkedDomains: CheckLinkedDomain.NEVER // fixme: check whether it works and enable
+      checkLinkedDomains: CheckLinkedDomain.NEVER, // fixme: check whether it works and enable
+      supportedDIDMethods: didMethodsSupported,
+
     },
     requestJwtOrUri
   })
@@ -69,9 +71,10 @@ export const siopSelectCredentials = async (
 // todo: We would need to include the wallet user before this method!
 export const siopCreateVerifiablePresentations = async (
   oid4vp: OID4VP,
-  selectedCredentials: VerifiableCredentialsWithDefinition[]
+  selectedCredentials: VerifiableCredentialsWithDefinition[],
+  identifier: IIdentifier
 ): Promise<VerifiablePresentationWithDefinition[]> => {
-  return await oid4vp.createVerifiablePresentations(selectedCredentials)
+  return await oid4vp.createVerifiablePresentations(selectedCredentials, {identifierOpts: {identifier}})
 }
 
 export const siopSendAuthorizationResponse = async (
@@ -83,7 +86,7 @@ export const siopSendAuthorizationResponse = async (
   if (connectionType !== ConnectionTypeEnum.SIOPV2_OIDC4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`))
   }
-  const session = await agent.siopGetOPSession({ sessionId: args.sessionId })
+  const session = await agent.siopGetOPSession({ sessionId: args.sessionId,  })
   const identifiers = await session.getSupportedIdentifiers()
   if (!identifiers || identifiers.length === 0) {
     throw Error(`No DID methods found in agent that are supported by the relying party`)
@@ -95,7 +98,7 @@ export const siopSendAuthorizationResponse = async (
   if (await session.isOID4VP()) {
     const oid4vp = await session.getOID4VP()
     const credsAndDefs = await siopSelectCredentials(oid4vp)
-    presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credsAndDefs)
+    presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credsAndDefs, identifier)
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created')
     }

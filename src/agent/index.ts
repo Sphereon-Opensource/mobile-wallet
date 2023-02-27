@@ -48,6 +48,8 @@ export const didResolver = new Resolver({
   ...getDidJwkResolver()
 })
 
+export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''))
+
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ETHR}`]: new EthrDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,

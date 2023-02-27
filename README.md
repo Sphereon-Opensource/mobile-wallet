@@ -105,7 +105,7 @@ There are several other utility scripts that help with development.
 
 SSI Wallet uses Expo SDK v45 and React-Native v0.68.5.
 
-* Node v14.x.x
+* Node v16.x.x
 * Expo CLI v6.0.1 or above
 * Yarn
 
@@ -113,11 +113,9 @@ SSI Wallet uses Expo SDK v45 and React-Native v0.68.5.
 
 ### Node
 
-Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 14.x.x
-which is required for RN 0.68.2 to work.
-
-* <b>WARNING</b>: Do not use Node 16.x.x, which is compatible with React-Native 0.68.2. Reason is that certain Veramo
-  feature do not work with Node 16.x.x.
+Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 16.x.x
+which is required for RN 0.68.5 to work. The app is not guaranteed to work with higher Node versions and it will
+certainly not work with lower Node versions.
 
 Use <code>nvm list available</code>  to list the available versions of Node.
 
@@ -127,8 +125,8 @@ command prompt or powershell as administrator!
 Example:
 
 ```shell
-nvm install 14.20.0
-nvm use 14.20.0
+nvm install 16.19.0
+nvm use 16.19.0
 ```
 
 You can use the following command to check the node version.
@@ -153,7 +151,8 @@ IDE and start it (do not restart, as it might not pick up the latest environment
 
 ## Starting the SSI-Wallet
 
-Since the app is still very much in development, at this point we expect people to have Expo Go client installed on their mobile phone: 
+Since the app is still very much in development, at this point we expect people to have Expo Go client installed on
+their mobile phone:
 https://expo.dev/client
 
 The SSI-Wallet can be started by running one of the following commands.

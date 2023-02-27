@@ -13,7 +13,7 @@ import {
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
+import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types'
 import { showToast } from '../../utils/ToastUtils'
 import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 
@@ -27,7 +27,9 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       sessionId: props.route.params.sessionId
     })
       .then(() => {
-        props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_OVERVIEW, {})
+        props.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+        })
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
       })
       .catch((error: Error) => {
