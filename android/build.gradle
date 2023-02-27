@@ -1,10 +1,8 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     ext {
-        buildToolsVersion = '31.0.0'
+        buildToolsVersion = findProperty('android.buildToolsVersion') ?: '31.0.0'
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '23')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '31')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '31')
@@ -26,32 +24,24 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.0.4')
+        classpath('com.android.tools.build:gradle:7.2.2')
         classpath('com.facebook.react:react-native-gradle-plugin')
-        classpath('de.undercouch:gradle-download-task:4.1.2')
+        classpath('de.undercouch:gradle-download-task:5.0.1')
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
-allprojects {
-    repositories {
-        // https://github.com/facebook/react-native/issues/35210
-        exclusiveContent {
-               // We get React Native's Android binaries exclusively through npm,
-               // from a local Maven repo inside node_modules/react-native/.
-               // (The use of exclusiveContent prevents looking elsewhere like Maven Central
-               // and potentially getting a wrong version.)
-               filter {
-                   includeGroup "com.facebook.react"
-               }
-               forRepository {
-                   maven {
-                       url "$rootDir/../node_modules/react-native/android"
-                   }
-               }
-        }
+def REACT_NATIVE_VERSION = new File(['node', '--print', "JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
 
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+        }
+    }
+
+    repositories {
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -63,6 +53,7 @@ allprojects {
         }
 
         google()
+        jcenter()
         mavenCentral {
             // We don't want to fetch react-native from Maven Central as there are
             // older versions over there.
@@ -70,7 +61,7 @@ allprojects {
                 excludeGroup 'com.facebook.react'
             }
         }
-        jcenter()
+
         maven { url 'https://www.jitpack.io' }
     }
 
