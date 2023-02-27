@@ -20,7 +20,6 @@ import {
 } from '../../styles/components'
 import { HeaderEventEnum, ScreenRoutesEnum, StackParamList } from '../../types'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
-import { toLocalDateString } from '../../utils/DateUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
 

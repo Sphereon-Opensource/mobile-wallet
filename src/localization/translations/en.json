@@ -131,7 +131,7 @@
     "pin_code_invalid_code_message": "This pin code does not match. Please try again.",
     "pin_code_code_attempts_left_message": "Attempts left:",
     "notifications_overview_title": "Notifications",
-    "notifications_overview_empty_state_title": "No notifications yet",
+    "notifications_overview_empty_state_title": "No notifications",
     "notifications_overview_empty_state_subtitle": "At the moment you don’t have any notifications.\nThe notifications will automatically appear here.",
     "lock_title": "Login to\nthe Sphereon Wallet",
     "lock_subtitle": "Enter your pin code.",

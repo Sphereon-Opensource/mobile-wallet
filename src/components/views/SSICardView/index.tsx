@@ -24,6 +24,7 @@ import {
   SSICardViewHeaderTitleContainerStyled as TitleContainer
 } from '../../../styles/components'
 import { CredentialStatusEnum } from '../../../types'
+import { toLocalDateString } from '../../../utils/DateUtils'
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
 
 const { v4: uuidv4 } = require('uuid')
@@ -36,7 +37,7 @@ export interface IProps {
   credentialSubtitle?: string
   credentialStatus?: CredentialStatusEnum
   issuerName?: string
-  expirationDate?: string
+  expirationDate?: number
   properties?: Array<IProperty>
   style?: ViewStyle
 }
@@ -109,11 +110,11 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
           <FooterContainer>
             <BlurredView>
               <FooterContentContainer>
-                {expirationDate && (
-                  <ExpirationDateText>{`${translate(
-                    'credential_card_expires_message'
-                  )} ${expirationDate}`}</ExpirationDateText>
-                )}
+                <ExpirationDateText>
+                  {expirationDate
+                    ? `${translate('credential_card_expires_message')} ${toLocalDateString(expirationDate)}`
+                    : translate('credential_status_never_expires_date_label')}
+                </ExpirationDateText>
                 {credentialStatus && <CredentialStatus status={credentialStatus} color={backgrounds.primaryLight} />}
               </FooterContentContainer>
             </BlurredView>

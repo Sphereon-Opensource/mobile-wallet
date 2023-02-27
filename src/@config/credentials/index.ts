@@ -1,4 +1,4 @@
-// TODO import from the context dir. import gave some issues with jsonld
+// TODO import from the context dir. currently import gave some issues with jsonld
 
 export const LdContexts = new Map([
   [
@@ -360,38 +360,6 @@ export const LdContexts = new Map([
         service: { '@id': 'didv:service', '@type': '@id', '@container': '@set' },
         serviceEndpoint: { '@id': 'didv:serviceEndpoint', '@type': '@id' },
         verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-      }
-    }
-  ],
-  [
-    'https://veramo.io/contexts/socialmedia/v1',
-    {
-      '@context': {
-        '@version': 1.1,
-        '@protected': true,
-        VerifableSocialMediaPosting: 'https://veramo.io/contexts/socialmedia#VerifableSocialMediaPosting'
-      }
-    }
-  ],
-  [
-    'https://veramo.io/contexts/kyc/v1',
-    {
-      '@context': {
-        '@version': 1.1,
-        '@protected': true,
-        VerifiableKyc: 'https://veramo.io/contexts/kyc#VerifiableKyc',
-        name: 'https://schema.org/name'
-      }
-    }
-  ],
-  [
-    'https://veramo.io/contexts/profile/v1',
-    {
-      '@context': {
-        '@version': 1.1,
-        '@protected': true,
-        Profile: 'https://veramo.io/contexts/profile#Profile',
-        name: 'https://schema.org/name'
       }
     }
   ],
@@ -1378,18 +1346,15 @@ export const LdContexts = new Map([
         '@version': 1.1,
         '@protected': true,
         swi: 'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#',
-        SphereonWalletIdentity: {
-          '@id':
-            'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1#SphereonWalletIdentity',
-          '@context': {
-            '@version': 1.1,
-            '@protected': true,
-            id: '@id',
-            type: '@type',
-            firstName: 'swi:firstName',
-            lastName: 'swi:lastName',
-            emailAddress: 'swi:emailAddress'
-          }
+        schema: 'https://schema.org/',
+        SphereonWalletIdentityCredential: 'swi:SphereonWalletIdentityCredential',
+        id: '@id',
+        type: '@type',
+        firstName: 'swi:firstName',
+        lastName: 'swi:lastName',
+        emailAddress: {
+          '@id': 'swi:emailAddress',
+          '@type': 'schema:email'
         }
       }
     }
