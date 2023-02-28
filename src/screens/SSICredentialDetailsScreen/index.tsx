@@ -18,7 +18,7 @@ import {
   SSICredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
-import { HeaderEventEnum, ScreenRoutesEnum, StackParamList } from '../../types'
+import { HeaderEventEnum, ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
 import { getCredentialStatus } from '../../utils/CredentialUtils'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>
@@ -32,7 +32,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params
   const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.name
 
-  const routes = [
+  const routes: Array<ITabViewRoute> = [
     {
       key: CredentialTabRoutesEnum.INFO,
       title: translate('credential_details_info_tab_header_label'),
@@ -62,7 +62,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             <SSICardView
               credentialTitle={credential.title}
               issuerName={issuer}
-              expirationDate={toLocalDateString(credential.expirationDate)}
+              expirationDate={credential.expirationDate}
               credentialStatus={getCredentialStatus(credential)}
             />
           </CardContainer>

@@ -7,7 +7,7 @@ import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
 import { SSIBasicContainerSecondaryStyled as Container } from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+import { ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>
 
@@ -20,7 +20,7 @@ enum ContactTabRoutesEnum {
 const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const { contact } = props.route.params
 
-  const routes = [
+  const routes: Array<ITabViewRoute> = [
     {
       key: ContactTabRoutesEnum.INFO,
       title: translate('contact_details_info_tab_header_label'),

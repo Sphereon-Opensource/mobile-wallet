@@ -39,6 +39,7 @@ export type StackParamList = {
   NotificationsOverview: Record<string, never>
   Lock: Record<string, never>
   Authentication: Record<string, never>
+  OnboardingSummary: Record<string, never>
 }
 
 export interface ICredentialDetailsProps {
@@ -154,5 +155,6 @@ export enum ScreenRoutesEnum {
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
-  LOCK = 'Lock'
+  LOCK = 'Lock',
+  ONBOARDING_SUMMARY = 'OnboardingSummary'
 }

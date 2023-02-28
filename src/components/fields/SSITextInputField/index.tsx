@@ -13,8 +13,8 @@ import {
   SSITextInputFieldUnderlineStyled as Underline,
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
 } from '../../../styles/components'
-import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 import { OpacityStyleEnum } from '../../../types'
+import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
 
 export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined

@@ -15,8 +15,10 @@ import SSITextField from '../../fields/SSITextField'
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>
-  issuer: string
+  issuer?: string
 }
+
+// TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => (
@@ -25,8 +27,12 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
 
   const renderFooter = () => (
     <FooterContainer>
-      <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
-      <IssuedBy>{props.issuer}</IssuedBy>
+      {props.issuer && (
+        <>
+          <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
+          <IssuedBy>{props.issuer}</IssuedBy>
+        </>
+      )}
     </FooterContainer>
   )
 
