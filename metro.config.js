@@ -1,10 +1,10 @@
-// const {getDefaultConfig} = require('metro-config')
-const {makeMetroConfig} = require('@rnx-kit/metro-config')
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks')
-const {assetExts, sourceExts} = require("metro-config/src/defaults/defaults");
+const {getDefaultConfig} = require('metro-config')
 
-module.exports = makeMetroConfig({
-    projectRoot: __dirname,
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts }
+  } = await getDefaultConfig()
+  return {
     transformer: {
         getTransformOptions: async () => ({
             transform: {
@@ -15,7 +15,6 @@ module.exports = makeMetroConfig({
         babelTransformerPath: require.resolve('react-native-svg-transformer')
     },
     resolver: {
-        resolveRequest: MetroSymlinksResolver(),
         assetExts: assetExts.filter((ext) => ext !== 'svg'),
         sourceExts: [...sourceExts, 'svg', 'cjs'],
         extraNodeModules: {
@@ -23,4 +22,5 @@ module.exports = makeMetroConfig({
             crypto: require.resolve('react-native-crypto')
         }
     }
-})
+  }
+})()

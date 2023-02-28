@@ -5,6 +5,7 @@ apply plugin: "com.facebook.react"
 import com.android.build.OutputFile
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
+
 def expoDebuggableVariants = ['debug']
 // Override `debuggableVariants` for expo-updates debugging
 if (System.getenv('EX_UPDATES_NATIVE_DEBUG') == "1") {
@@ -13,15 +14,7 @@ if (System.getenv('EX_UPDATES_NATIVE_DEBUG') == "1") {
     }
 }
 
-/*def reactNativeRoot = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath()
 
-project.ext.react = [
-        entryFile            : ["node", "-e", "require('expo/scripts/resolveAppEntry')", projectRoot, "android"].execute(null, rootDir).text.trim(),
-        enableHermes         : (findProperty('expo.jsEngine') ?: "jsc") == "hermes",
-        hermesCommand        : new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc",
-        cliPath              : "${reactNativeRoot}/cli.js",
-        composeSourceMapsPath: "${reactNativeRoot}/scripts/compose-source-maps.js",
-]*/
 
 
 /**
@@ -123,18 +116,17 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.sphereon.ssi.wallet"
+    namespace 'com.sphereon.ssi.wallet'
     defaultConfig {
         applicationId 'com.sphereon.ssi.wallet'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 1
         versionName "0.1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'com.sphereon.ssi.wallet'
         ]
-        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     }
 
     splits {
@@ -205,8 +197,8 @@ android {
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
-//     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:react-native:+")
+    implementation("com.facebook.react:react-android:+")
+//    implementation("com.facebook.react:react-native:+")
 
     implementation project(':react-native-secure-key-store')
 
@@ -218,21 +210,21 @@ dependencies {
 
     // If your app supports Android versions before Ice Cream Sandwich (API level 14)
     if (isGifEnabled || isWebpEnabled) {
-        implementation "com.facebook.fresco:fresco:${frescoVersion}"
-        implementation "com.facebook.fresco:imagepipeline-okhttp3:${frescoVersion}"
+        implementation("com.facebook.fresco:fresco:${frescoVersion}")
+        implementation("com.facebook.fresco:imagepipeline-okhttp3:${frescoVersion}")
     }
 
     if (isGifEnabled) {
         // For animated gif support
-        implementation "com.facebook.fresco:animated-gif:${frescoVersion}"
+        implementation("com.facebook.fresco:animated-gif:${frescoVersion}")
     }
 
     if (isWebpEnabled) {
         // For webp support
-        implementation "com.facebook.fresco:webpsupport:${frescoVersion}"
+        implementation("com.facebook.fresco:webpsupport:${frescoVersion}")
         if (isWebpAnimatedEnabled) {
             // Animated webp support
-            implementation "com.facebook.fresco:animated-webp:${frescoVersion}"
+            implementation("com.facebook.fresco:animated-webp:${frescoVersion}")
         }
     }
 
