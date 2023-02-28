@@ -22,10 +22,11 @@ export const highlights: Record<Highlight, string> = {
   dark: '#3B425E'
 }
 
-type Border = 'dark'
+type Border = 'dark' | 'light'
 
 export const borders: Record<Border, string> = {
-  dark: '#404D7A'
+  dark: '#404D7A',
+  light: '#E3E3E3'
 }
 
 type Entity = 100 | 200 | 300 | 400 | 500

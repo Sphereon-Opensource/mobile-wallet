@@ -1,4 +1,5 @@
 import { ComponentType } from 'react'
+import { ColorValue } from 'react-native'
 
 import { ConnectionStatusEnum } from '../connection'
 import { CredentialStatusEnum, IssuerStatusEnum } from '../credential'
@@ -7,6 +8,11 @@ export enum ButtonIconsEnum {
   BACK = 'back',
   MORE = 'more',
   CLOSE = 'close'
+}
+
+export enum MoreMenuIconsEnum {
+  ADD = 'add',
+  DELETE = 'delete'
 }
 
 export enum PopupImagesEnum {
@@ -27,6 +33,11 @@ export interface IButton {
   caption: string
   onPress: () => Promise<void>
   disabled?: boolean
+}
+
+export interface IMoreMenuButton extends IButton {
+  icon?: MoreMenuIconsEnum
+  fontColor?: ColorValue
 }
 
 export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum | ConnectionStatusEnum

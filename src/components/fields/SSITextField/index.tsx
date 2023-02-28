@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import SSIEditIcon from '../../../assets/icons/edit.svg'
+import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon'
 import {
   SSITextFieldContainerStyled as Container,
   SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,

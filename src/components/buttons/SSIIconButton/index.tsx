@@ -2,8 +2,8 @@ import React, { FC } from 'react'
 import { ColorValue, PressableProps, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
-import SSIBackIcon from '../../../assets/icons/back.svg'
-import SSIMoreIcon from '../../../assets/icons/more.svg'
+import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon'
+import SSIMoreIcon from '../../../components/assets/icons/SSIMoreIcon'
 import { ButtonIconsEnum } from '../../../types'
 import SSICloseIcon from '../../assets/icons/SSICloseIcon'
 

@@ -48,7 +48,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
     return !this.state.keyboardVisible ? (
       <SafeAreaView edges={['bottom']}>
         <Container>
-          {this.props.state.routes.map((route, index) => {
+          {this.props.state.routes.map((route, index: number) => {
             const { options } = this.props.descriptors[route.key]
             const isFocused = this.props.state.index === index
 

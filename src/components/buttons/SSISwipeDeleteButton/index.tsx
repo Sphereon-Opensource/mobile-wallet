@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Pressable } from 'react-native'
 
-import DeleteIcon from '../../../assets/icons/delete.svg'
+import SSIDeleteIcon from '../../../components/assets/icons/SSIDeleteIcon'
 import { translate } from '../../../localization/Localization'
 import {
   SSISwipeDeleteButtonCaptionStyled as ButtonCaption,
@@ -16,7 +16,7 @@ const SSISwipeDeleteButton: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <Pressable onPress={props.onPress}>
       <LinearGradient>
-        <DeleteIcon />
+        <SSIDeleteIcon />
         <ButtonCaption>{translate('swipe_delete_button_caption')}</ButtonCaption>
       </LinearGradient>
     </Pressable>

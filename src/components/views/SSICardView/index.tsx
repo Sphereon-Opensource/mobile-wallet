@@ -48,15 +48,13 @@ export interface IProperty {
 }
 
 const getPropertyElementsFrom = (properties: Array<IProperty>): Array<JSX.Element> => {
-  const propertyMargin = 10
-  const propertyMaxWidth = 140
   // We currently only support two properties on the card, this might change in the future
   return properties.slice(0, 2).map((property: IProperty, index: number) => (
     <View
       key={uuidv4()}
       style={{
-        width: properties.length > 1 ? propertyMaxWidth : undefined,
-        marginLeft: index > 0 ? propertyMargin : 0
+        ...(properties.length > 1 && { width: 140 }),
+        ...(index > 0 && { marginLeft: 10 })
       }}
     >
       <H4Text>{property.name}</H4Text>
