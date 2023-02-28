@@ -135,5 +135,5 @@
     "notifications_overview_empty_state_subtitle": "At the moment you don’t have any notifications.\nThe notifications will automatically appear here.",
     "lock_title": "Login to\nthe Sphereon Wallet",
     "lock_subtitle": "Enter your pin code.",
-    "show_raw_credential_button_caption": "Show raw credential"
+    "show_raw_credential_button_caption": "Raw credential"
 }
