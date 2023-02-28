@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { ListRenderItemInfo } from 'react-native'
+import { ListRenderItemInfo, View } from 'react-native'
 
 import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
 import { translate } from '../../../localization/Localization'
@@ -10,7 +10,8 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel
 } from '../../../styles/components'
-import { ICredentialDetailsRow } from '../../../types'
+import { HeaderEventEnum, ICredentialDetailsRow } from '../../../types'
+import { headerEmitter } from '../../bars/SSIHeaderBar'
 import SSITextField from '../../fields/SSITextField'
 
 export interface IProps {
@@ -38,15 +39,21 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
 
   return (
     <Container>
-      <DetailsList
-        // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
-        data={props.credentialProperties}
-        renderItem={renderItem}
-        keyExtractor={(item: ICredentialDetailsRow) => item.id}
-        initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
-        removeClippedSubviews
-        ListFooterComponent={renderFooter}
-      />
+      <View onStartShouldSetResponder={() => {
+        // Adding this onStartShouldSetResponder will fix the issue of the onPress event being stopped by a TouchableWithoutFeedback where this view might be placed in
+        headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE)
+        return true
+      }}>
+        <DetailsList
+          // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
+          data={props.credentialProperties}
+          renderItem={renderItem}
+          keyExtractor={(item: ICredentialDetailsRow) => item.id}
+          initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
+          removeClippedSubviews
+          ListFooterComponent={renderFooter}
+        />
+      </View>
     </Container>
   )
 }

@@ -1,14 +1,15 @@
 import { ICredential } from '@sphereon/ssi-types'
 
 import { ICredentialDetailsRow, ICredentialSummary } from '../../types'
-import { getCredentialStatus } from '../CredentialUtils'
+import { getCredentialStatus, translateDid, translateDidToName } from '../CredentialUtils'
 import { EPOCH_MILLISECONDS } from '../DateUtils'
 
 const { v4: uuidv4 } = require('uuid')
 
 function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetailsRow[] {
   let rows: ICredentialDetailsRow[] = []
-  for (const [key, value] of Object.entries(object)) {
+  // eslint-disable-next-line prefer-const
+  for (let [key, value] of Object.entries(object)) {
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
       rows.push({
@@ -39,6 +40,12 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
       if (key === 'id' && value.startsWith('did:')) {
         label = 'subject'
       }
+
+      if (value.startsWith('did:')) {
+        console.log(`did: ${value}`)
+        value = translateDidToName(value)
+      }
+
       rows.push({
         id: uuidv4(),
         label, // TODO Human readable mapping
@@ -78,7 +85,7 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
 
   const name =
     typeof verifiableCredential.issuer === 'string'
-      ? verifiableCredential.issuer
+      ? translateDidToName(verifiableCredential.issuer)
       : verifiableCredential.issuer?.name
       ? verifiableCredential.issuer?.name
       : verifiableCredential.issuer?.id

@@ -3,6 +3,11 @@ import { ICredential } from '@sphereon/ssi-types'
 import { CredentialStatusEnum, ICredentialSummary } from '../types'
 
 import { EPOCH_MILLISECONDS } from './DateUtils'
+import store from '../store'
+import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import {
+  CorrelationIdentifierEnum
+} from '@sphereon/ssi-sdk-data-store-common/src/types/connections'
 
 export const getCredentialStatus = (credential: ICredential | ICredentialSummary): CredentialStatusEnum => {
   if (isRevoked()) {
@@ -43,4 +48,15 @@ export const isExpired = (value?: string | number): boolean => {
   const expirationDate = typeof value === 'string' ? new Date(value).valueOf() / EPOCH_MILLISECONDS : value
 
   return expirationDate < Date.now()
+}
+
+export const translateDidToName = (did: string): string => {
+  const contacts = store.getState().contact.contacts
+  const contact = contacts.find((contact: IConnectionParty) => contact.identifier.correlationId === did)
+
+  if (!contact) {
+    return did
+  }
+
+  return contact.name
 }
