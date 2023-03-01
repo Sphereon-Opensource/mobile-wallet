@@ -135,7 +135,7 @@
     "notifications_overview_empty_state_subtitle": "At the moment you don’t have any notifications.\nThe notifications will automatically appear here.",
     "lock_title": "Login to\nthe Sphereon Wallet",
     "lock_subtitle": "Enter your pin code.",
-    "show_raw_credential_button_caption": "Show raw credential",
+    "show_raw_credential_button_caption": "Raw credential",
     "onboard_summary_title": "Your entered details",
     "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
     "onboard_summary_info_tab_header_label": "Your information",
