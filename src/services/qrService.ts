@@ -74,22 +74,20 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
     debug(`Unable to parse QR value as URL. Error: ${error}`)
   }
 
-  if (qrData.startsWith(QrTypesEnum.OPENID_VC) || qrData.startsWith(QrTypesEnum.OPENID)) {
-    try {
-      return parseSIOPv2(qrData)
-    } catch (error: unknown) {
-      debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
-    }
-  }
-
   if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
     try {
       return parseOpenID4VCI(qrData)
     } catch (error: unknown) {
       debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`)
     }
+  } else if (qrData.startsWith(QrTypesEnum.OPENID_VC) || qrData.startsWith(QrTypesEnum.OPENID)) {
+    try {
+      return parseSIOPv2(qrData)
+    } catch (error: unknown) {
+      debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
+    }
   }
-
+  
   return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')))
 }
 
