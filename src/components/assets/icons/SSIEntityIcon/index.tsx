@@ -1,17 +1,20 @@
 import React, { FC } from 'react'
-import { ColorValue, Text } from 'react-native'
+import { ColorValue } from 'react-native'
 import { connect } from 'react-redux'
 
 import { entities, fonts } from '../../../../styles/colors'
-import { SSIEntityIconStyled as Avatar } from '../../../../styles/components'
+import {
+  SSIEntityIconStyled as Avatar,
+  SSITextH2LightStyled as AvatarText
+} from '../../../../styles/components'
 import { RootState } from '../../../../types'
-import { getGeneralInitialsOfUserName } from '../../../../utils/UserUtils'
+import { getDefaultUserNameInitials } from '../../../../utils/UserUtils'
 
 export interface IProps {
   size?: number
   fontColor?: ColorValue
   bgColor?: ColorValue
-  initialsOfUserName?: string
+  initialsOfUserName: string
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
@@ -20,19 +23,18 @@ const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <Avatar
       style={{
-        marginTop: 5,
         backgroundColor: bgColor,
         width: size
       }}
     >
-      <Text style={{ color: fontColor }}>{initialsOfUserName}</Text>
+      <AvatarText style={{ color: fontColor }}>{initialsOfUserName}</AvatarText>
     </Avatar>
   )
 }
 
 const mapStateToProps = (state: RootState) => {
   return {
-    initialsOfUserName: getGeneralInitialsOfUserName(state.user.activeUser?.firstName, state.user.activeUser?.lastName)
+    initialsOfUserName: getDefaultUserNameInitials(state.user.activeUser?.firstName, state.user.activeUser?.lastName)
   }
 }
 

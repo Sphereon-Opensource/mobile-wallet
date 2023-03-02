@@ -8,7 +8,7 @@ import { FIRST_ALPHABET_REGEX, SPLITTING_WORDS_REGEX } from '../@config/constant
  *
  * @return the initials selected by default
  */
-export const getGeneralInitialsOfUserName = (namePart1?: string, namePart2?: string): string => {
+export const getDefaultUserNameInitials = (namePart1?: string, namePart2?: string): string => {
   let initials = ''
   initials += getPartialInitials(namePart1)
   initials += getFirstAlphabetOfLastWord(namePart2)
