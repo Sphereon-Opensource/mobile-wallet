@@ -6,6 +6,7 @@ import { entities, fonts } from '../../../../styles/colors'
 import { RootState } from '../../../../types'
 import { getGeneralInitialsOfUserName } from '../../../../utils/UserUtils'
 
+
 export interface IProps {
   size?: number
   fontColor?: ColorValue
@@ -19,10 +20,10 @@ const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <View style={{
       alignItems: 'center',
+      justifyContent: 'center',
       aspectRatio: 1,
-      backgroundColor: bgColor,
       borderRadius: 17,
-      marginTop: 10,
+      backgroundColor: bgColor,
       width: size
     }}>
       <Text  style={{color: fontColor}}>{initialsOfUserName}</Text>
