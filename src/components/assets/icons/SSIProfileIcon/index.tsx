@@ -17,7 +17,7 @@ export interface IProps {
   activeUser: IUser
 }
 
-const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
+const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
   const { size = 34, fontColor = fonts.light, backgroundColor = entities['100'] } = props
 
   return (
@@ -38,4 +38,4 @@ const mapStateToProps = (state: RootState) => {
   }
 }
 
-export default connect(mapStateToProps, null)(SSIEntityIcon)
+export default connect(mapStateToProps, null)(SSIProfileIcon)

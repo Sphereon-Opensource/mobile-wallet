@@ -16,7 +16,7 @@ import {
   SSIFlexDirectionRowViewStyled as Row
 } from '../../../styles/components'
 import { ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton } from '../../../types'
-import SSIEntityIcon from '../../assets/icons/SSIProfileIcon'
+import SSIProfileIcon from '../../assets/icons/SSIProfileIcon'
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList'
 
 interface Props extends NativeStackHeaderProps {
@@ -81,7 +81,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           <RightColumn>
             {showEntityIcon && (
               <EntityIconContainer onLongPress={onEntity}>
-                <SSIEntityIcon />
+                <SSIProfileIcon />
               </EntityIconContainer>
             )}
             {moreActions.length > 0 && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />}
