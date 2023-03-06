@@ -1,7 +1,6 @@
 import styled from 'styled-components/native'
 
 export const SSIEntityIconStyled = styled.View`
- margin-top: 5px;
  align-items: center;
  justify-content: center;
  aspect-ratio: 1;

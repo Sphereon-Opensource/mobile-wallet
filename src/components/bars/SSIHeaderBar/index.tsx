@@ -16,7 +16,7 @@ import {
   SSIFlexDirectionRowViewStyled as Row
 } from '../../../styles/components'
 import { ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton } from '../../../types'
-import SSIEntityIcon from '../../assets/icons/SSIEntityIcon'
+import SSIEntityIcon from '../../assets/icons/SSIProfileIcon'
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList'
 
 interface Props extends NativeStackHeaderProps {

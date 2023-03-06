@@ -9517,8 +9517,6 @@ isomorphic-webcrypto@^2.3.8:
     str2buf "^1.3.0"
     webcrypto-shim "^0.1.4"
   optionalDependencies:
-    "@unimodules/core" "*"
-    "@unimodules/react-native-adapter" "*"
     expo-random "*"
     react-native-securerandom "^0.1.1"
 

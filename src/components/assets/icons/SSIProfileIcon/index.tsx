@@ -4,37 +4,37 @@ import { connect } from 'react-redux'
 
 import { entities, fonts } from '../../../../styles/colors'
 import {
-  SSIEntityIconStyled as Avatar,
-  SSITextH2LightStyled as AvatarText
+  SSIEntityIconStyled as SSIProfileIconBackground,
+  SSITextH2LightStyled as SSIProfileIconText
 } from '../../../../styles/components'
-import { RootState } from '../../../../types'
+import {IUser, RootState} from '../../../../types'
 import { getDefaultUserNameInitials } from '../../../../utils/UserUtils'
 
 export interface IProps {
   size?: number
   fontColor?: ColorValue
-  bgColor?: ColorValue
-  initialsOfUserName: string
+  backgroundColor?: ColorValue
+  activeUser: IUser
 }
 
 const SSIEntityIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 34, fontColor = fonts.light, bgColor = entities['100'], initialsOfUserName = '?' } = props
+  const { size = 34, fontColor = fonts.light, backgroundColor = entities['100'] } = props
 
   return (
-    <Avatar
+    <SSIProfileIconBackground
       style={{
-        backgroundColor: bgColor,
+        backgroundColor: backgroundColor,
         width: size
       }}
     >
-      <AvatarText style={{ color: fontColor }}>{initialsOfUserName}</AvatarText>
-    </Avatar>
+      <SSIProfileIconText style={{ color: fontColor }}>{getDefaultUserNameInitials(props.activeUser?.firstName, props.activeUser?.lastName)}</SSIProfileIconText>
+    </SSIProfileIconBackground>
   )
 }
 
 const mapStateToProps = (state: RootState) => {
   return {
-    initialsOfUserName: getDefaultUserNameInitials(state.user.activeUser?.firstName, state.user.activeUser?.lastName)
+    activeUser: state.user.activeUser
   }
 }
 
