@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { entities, fonts } from '../../../../styles/colors'
 import {
   SSIEntityIconStyled as ProfileIconBackground,
-  SSITextH2LightStyled as ProfileIconText
+  SSITextH4LightStyled as ProfileIconText
 } from '../../../../styles/components'
 import {IUser, RootState} from '../../../../types'
 import { getInitials } from '../../../../utils/UserUtils'
@@ -26,7 +26,7 @@ const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
 
       }}
     >
-      <ProfileIconText style={{ color: fontColor }}>{getInitials(`${props.activeUser?.firstName}${props.activeUser?.lastName}`)}</ProfileIconText>
+      <ProfileIconText style={{ color: fontColor }}>{getInitials(`${props.activeUser?.firstName} ${props.activeUser?.lastName}`)}</ProfileIconText>
     </ProfileIconBackground>
   )
 }
