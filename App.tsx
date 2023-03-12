@@ -1,5 +1,5 @@
 // import crypto from '@sphereon/isomorphic-webcrypto'
-import crypto from 'crypto';
+import crypto from '@sphereon/isomorphic-webcrypto';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import * as SplashScreen from 'expo-splash-screen'
@@ -68,9 +68,8 @@ export default function App() {
         // Preload fonts, make any API calls you need to do here
         await _loadFontsAsync()
 
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        //await new Promise((resolve) => setTimeout(resolve, 5000))
+        // Needed for isomorphic-webcrypto. Must be removed if react-native-crypto is used instead
+        await crypto.ensureSecure()
 
         // Load the redux store
         const actions = bindActionCreators(

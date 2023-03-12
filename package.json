@@ -15,7 +15,7 @@
     "fix:lint": "eslint . --ext .ts,.tsx --fix",
     "fix:prettier": "prettier \"src/**/*.(ts|tsx)\" --write",
     "build:android": "eas build -p android --profile preview",
-    "postinstall": "rn-nodeify --install crypto,os,fs,path,assert,buffer,process,stream,vm --hack && patch-package"
+    "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package"
   },
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
@@ -43,7 +43,7 @@
     "@sphereon/ssi-sdk-vc-api-issuer": "0.9.1-next.15",
     "@sphereon/ssi-sdk-vc-handler-ld-local": "0.9.1-next.15",
     "@sphereon/ssi-types": "0.9.1-next.15",
-    "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.1",
+    "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.3",
     "msrcrypto": "^1.5.8",
     "@transmute/lds-ecdsa-secp256k1-recovery2020": "^0.0.7",
     "@veramo/core": "4.2.0",
@@ -103,7 +103,6 @@
     "react-native-permissions": "^3.7.3",
     "react-native-pure-jwt": "^3.0.1",
     "react-native-qrcode-scanner": "^1.5.5",
-    "react-native-crypto": "^2.1.0",
     "react-native-randombytes": "^3.6.1",
     "react-native-responsive-fontsize": "^0.5.1",
     "react-native-safe-area-context": "4.5.0",
@@ -175,7 +174,7 @@
     "preset": "react-native"
   },
   "react-native": {
-    "crypto": "react-native-crypto",
+    "crypto": "@sphereon/isomorphic-webcrypto",
     "_stream_transform": "readable-stream/transform",
     "_stream_readable": "readable-stream/readable",
     "_stream_writable": "readable-stream/writable",
@@ -188,7 +187,7 @@
     "os": "react-native-os"
   },
   "browser": {
-    "crypto": "react-native-crypto",
+    "crypto": "@sphereon/isomorphic-webcrypto",
     "_stream_transform": "readable-stream/transform",
     "_stream_readable": "readable-stream/readable",
     "_stream_writable": "readable-stream/writable",
@@ -238,6 +237,7 @@
     "@veramo/selective-disclosure": "4.2.0",
     "@veramo/url-handler": "4.2.0",
     "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
+    "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto"
   }
 }

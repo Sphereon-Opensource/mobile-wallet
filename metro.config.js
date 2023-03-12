@@ -21,7 +21,7 @@ module.exports = (async () => {
         sourceExts: [...sourceExts, 'svg', 'cjs'],
         extraNodeModules: {
             // stream: require.resolve('readable-stream'),
-            crypto: require.resolve('react-native-crypto')
+            crypto: require.resolve('@sphereon/isomorphic-webcrypto')
         }
     }
   }
