@@ -1,10 +1,10 @@
-const {getDefaultConfig} = require('metro-config')
+const {getDefaultConfig} = require('expo/metro-config')
 const MetroSymlinksResolver = require("@rnx-kit/metro-resolver-symlinks")
 
 module.exports = (async () => {
   const {
     resolver: { sourceExts, assetExts }
-  } = await getDefaultConfig()
+  } = await getDefaultConfig(__dirname)
   return {
     transformer: {
         getTransformOptions: async () => ({
@@ -18,9 +18,9 @@ module.exports = (async () => {
     resolver: {
         resolveRequest: MetroSymlinksResolver(),
         assetExts: assetExts.filter((ext) => ext !== 'svg'),
-        sourceExts: [...sourceExts, 'svg', 'cjs'],
+        sourceExts: [...sourceExts, 'svg', 'cjs', 'json'],
         extraNodeModules: {
-            // stream: require.resolve('readable-stream'),
+            stream: require.resolve('readable-stream'),
             crypto: require.resolve('@sphereon/isomorphic-webcrypto')
         }
     }

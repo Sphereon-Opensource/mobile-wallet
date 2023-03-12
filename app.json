@@ -10,7 +10,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "jsEngine": "hermes",
+    "jsEngine": "jsc",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sphereon.ssi.wallet"

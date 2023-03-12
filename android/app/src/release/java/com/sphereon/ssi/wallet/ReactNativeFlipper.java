@@ -5,6 +5,7 @@
  * directory of this source tree.
  */
 package com.sphereon.ssi.wallet;
+
 import android.content.Context;
 import com.facebook.react.ReactInstanceManager;
 /**
