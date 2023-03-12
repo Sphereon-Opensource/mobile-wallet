@@ -87,7 +87,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
       debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
     }
   }
-  
+
   return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')))
 }
 

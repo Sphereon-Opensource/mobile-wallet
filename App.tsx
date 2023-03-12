@@ -1,3 +1,5 @@
+// import crypto from '@sphereon/isomorphic-webcrypto'
+import crypto from 'crypto';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import * as SplashScreen from 'expo-splash-screen'
