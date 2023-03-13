@@ -10,7 +10,7 @@ import {
 
 export const toastsBottomOffset = 0
 export const toastsAutoHide = true
-export const toastsVisibilityTime = 4000
+export const toastsVisibilityTime = 6000
 
 export const toastConfig = {
   ssiAlertToastSuccess: (params: ToastConfigParams<unknown>) => (
