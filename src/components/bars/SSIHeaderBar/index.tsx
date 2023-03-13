@@ -7,11 +7,11 @@ import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   SSIHeaderBarContainerStyled as Container,
-  SSIHeaderBarEntityIconContainerStyled as EntityIconContainer,
   SSIHeaderBarHeaderCaptionStyled as HeaderCaption,
   SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   SSIFlexDirectionColumnViewStyled as LeftColumn,
   SSIHeaderBarMoreIconStyled as MoreIcon,
+  SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row
 } from '../../../styles/components'
@@ -24,7 +24,7 @@ interface Props extends NativeStackHeaderProps {
   showBorder?: boolean
   showBackButton?: boolean
   moreActions?: Array<IMoreMenuButton>
-  showEntityIcon?: boolean
+  showProfileIcon?: boolean
 }
 
 const { MyModule } = NativeModules
@@ -32,7 +32,7 @@ export const headerEmitter = new NativeEventEmitter(MyModule)
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
-  const { showBorder = false, showBackButton = true, showEntityIcon = true, moreActions = [] } = props
+  const { showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = [] } = props
   const [showMoreMenu, setShowMoreMenu] = React.useState(false)
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
     props.navigation.goBack()
   }
 
-  const onEntity = async (): Promise<void> => {
+  const onProfile = async (): Promise<void> => {
     props.navigation.navigate('Veramo', {})
   }
 
@@ -79,10 +79,10 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
             {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
           </LeftColumn>
           <RightColumn>
-            {showEntityIcon && (
-              <EntityIconContainer onLongPress={onEntity}>
+            {showProfileIcon && (
+              <ProfileIconContainer onLongPress={onProfile}>
                 <SSIProfileIcon />
-              </EntityIconContainer>
+              </ProfileIconContainer>
             )}
             {moreActions.length > 0 && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />}
             {showMoreMenu && (

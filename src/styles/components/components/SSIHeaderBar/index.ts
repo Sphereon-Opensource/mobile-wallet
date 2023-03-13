@@ -21,7 +21,7 @@ export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
   margin-left: 24px;
 `
 
-export const SSIHeaderBarEntityIconContainerStyled = styled(TouchableOpacity)`
+export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`
   margin: 7px 25px 0px auto;
 `
 

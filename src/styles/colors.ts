@@ -29,9 +29,9 @@ export const borders: Record<Border, string> = {
   light: '#E3E3E3'
 }
 
-type Entity = 100 | 200 | 300 | 400 | 500
+type Profile = 100 | 200 | 300 | 400 | 500
 
-export const entities: Record<Entity, string> = {
+export const profiles: Record<Profile, string> = {
   100: '#EE5209',
   200: '#FF9900',
   300: '#5BDED3',

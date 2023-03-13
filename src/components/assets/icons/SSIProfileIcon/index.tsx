@@ -1,34 +1,33 @@
 import React, { FC } from 'react'
 import { ColorValue } from 'react-native'
+import { useSelector } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { entities, fonts } from '../../../../styles/colors'
+import { fonts, profiles } from '../../../../styles/colors'
 import {
-  SSIEntityIconStyled as ProfileIconBackground,
-  SSITextH4LightStyled as ProfileIconText
+  SSIProfileIconContainerStyled as Container,
+  SSITextH2LightStyled as ProfileIconText
 } from '../../../../styles/components'
-import { IUser, RootState } from '../../../../types'
+import { RootState } from '../../../../types'
 import { getInitials } from '../../../../utils/UserUtils'
 
 export interface IProps {
   fontColor?: ColorValue
   backgroundColor?: ColorValue
-  activeUser: IUser
 }
 
 const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { fontColor = fonts.light, backgroundColor = entities['100'] } = props
+  const { fontColor = fonts.light, backgroundColor = profiles['100'] } = props
+  const { activeUser } = useSelector(mapStateToProps)
 
   return (
-    <ProfileIconBackground
-      style={{
-        backgroundColor: backgroundColor
-      }}
+    <Container
+      style={{ backgroundColor }}
     >
       <ProfileIconText style={{ color: fontColor }}>
-        {getInitials(`${props.activeUser?.firstName} ${props.activeUser?.lastName}`)}
+        {getInitials(`${activeUser?.firstName} ${activeUser?.lastName}`)}
       </ProfileIconText>
-    </ProfileIconBackground>
+    </Container>
   )
 }
 
