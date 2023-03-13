@@ -22,5 +22,3 @@ export const PIN_CODE_LENGTH = 6
 
 export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 export const ONLY_ALLOW_NUMBERS_REGEX = /^\d+$/
-export const FIRST_ALPHABET_REGEX = /[a-zA-Z]/
-export const SPLITTING_WORDS_REGEX = /[^a-zA-Z]+/

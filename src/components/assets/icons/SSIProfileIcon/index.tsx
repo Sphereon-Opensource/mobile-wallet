@@ -7,7 +7,7 @@ import {
   SSIEntityIconStyled as ProfileIconBackground,
   SSITextH4LightStyled as ProfileIconText
 } from '../../../../styles/components'
-import {IUser, RootState} from '../../../../types'
+import { IUser, RootState } from '../../../../types'
 import { getInitials } from '../../../../utils/UserUtils'
 
 export interface IProps {
@@ -22,11 +22,12 @@ const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
   return (
     <ProfileIconBackground
       style={{
-        backgroundColor: backgroundColor,
-
+        backgroundColor: backgroundColor
       }}
     >
-      <ProfileIconText style={{ color: fontColor }}>{getInitials(`${props.activeUser?.firstName} ${props.activeUser?.lastName}`)}</ProfileIconText>
+      <ProfileIconText style={{ color: fontColor }}>
+        {getInitials(`${props.activeUser?.firstName} ${props.activeUser?.lastName}`)}
+      </ProfileIconText>
     </ProfileIconBackground>
   )
 }

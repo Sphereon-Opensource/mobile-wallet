@@ -1,7 +1,26 @@
-
 export const getInitials = (fullName: string): string => {
-  const nameArray = fullName.trim().split(" ");
-  const firstInitial = nameArray[0][0];
-  const lastInitial = nameArray[nameArray.length - 1][0]; // get the first letter of the last name
-  return `${firstInitial}${lastInitial}`; // combine the two initials into a string and return it
+  if (fullName && fullName.length > 0) {
+    const namePartsArray = fullName.trim().split(' ')
+
+    let firstInitial = ''
+    let lastInitial = ''
+
+    if (namePartsArray.length > 0) {
+      const firstName = namePartsArray[0]
+      if (firstName.length > 0) {
+        firstInitial = firstName[0]
+      }
+
+      if (namePartsArray.length > 1) {
+        const lastPart = namePartsArray[namePartsArray.length - 1]
+        if (lastPart.length > 0) {
+          lastInitial = lastPart[0]
+        }
+      }
+    }
+    const initials = `${firstInitial}${lastInitial}`
+    return initials.toUpperCase()
+  }
+
+  return '?'
 }
