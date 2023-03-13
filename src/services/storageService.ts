@@ -28,9 +28,9 @@ export const getPin = async (): Promise<string> => {
 export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`)
 
-  AsyncStorage.getItem(STORAGE_USERS_KEY)
+  await AsyncStorage.getItem(STORAGE_USERS_KEY)
     .then((result: string | null) => {
-      if (!result) {
+      if (!result || result === "{}") {
         debug(`storeUser(${JSON.stringify(user)}) no users found`)
         const users = new Map<string, IUser>()
         users.set(user.id, user)
@@ -60,9 +60,9 @@ export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
 
 export const getUsers = async (): Promise<Map<string, IUser>> => {
   debug(`getUsers...`)
-  return AsyncStorage.getItem(STORAGE_USERS_KEY)
+  return await AsyncStorage.getItem(STORAGE_USERS_KEY)
     .then((result: string | null) => {
-      if (!result) {
+      if (!result || result === "{}") {
         debug(`getUsers() no users found`)
         return new Map<string, IUser>()
       }

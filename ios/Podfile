@@ -5,7 +5,7 @@ require File.join(File.dirname(`node --print "require.resolve('@react-native-com
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
-platform :ios, podfile_properties['ios.deploymentTarget'] || '12.0'
+platform :ios, podfile_properties['ios.deploymentTarget'] || '13.0'
 install! 'cocoapods',
   :deterministic_uuids => false
 
@@ -25,8 +25,13 @@ target 'SphereonWallet' do
     :path => config[:reactNativePath],
     :hermes_enabled => flags[:hermes_enabled] || podfile_properties['expo.jsEngine'] == 'hermes',
     :fabric_enabled => flags[:fabric_enabled],
+    # Enables Flipper.
+    #
+    # Note that if you have use_frameworks! enabled, Flipper will not work and
+    # you should disable the next line.
+    :flipper_configuration => flipper_config,
     # An absolute path to your application root.
-    :app_path => "#{Dir.pwd}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   permissions_path = '../node_modules/react-native-permissions/ios'
@@ -52,19 +57,34 @@ target 'SphereonWallet' do
 #    pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit"
     pod 'CatCrypto', :git => 'https://github.com/Sphereon-Opensource/CatCrypto'
 
-  # Uncomment to opt-in to using Flipper
-  # Note that if you have use_frameworks! enabled, Flipper will not work
-  #
-  # if !ENV['CI']
-  #   use_flipper!()
-  # end
+ 
 
   post_install do |installer|
-    react_native_post_install(installer)
+    react_native_post_install(
+          installer,
+          # Set `mac_catalyst_enabled` to `true` in order to apply patches
+          # necessary for Mac Catalyst builds
+          :mac_catalyst_enabled => false
+    )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 
   post_integrate do |installer|
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
     begin
       expo_patch_react_imports!(installer)
     rescue => e

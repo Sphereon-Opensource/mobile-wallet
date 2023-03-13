@@ -20,7 +20,7 @@ export const authenticateConnectionEntity = (
 ): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: AUTHENTICATE_LOADING })
-    return authenticate(connection, connection.type === ConnectionTypeEnum.DIDAUTH ? CustomApprovalEnum.PEX : undefined)
+    return authenticate(connection)
       .then((authentication: IAuthentication) => {
         const payload = {
           entityId,

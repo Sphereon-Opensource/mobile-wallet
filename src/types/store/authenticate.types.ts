@@ -1,4 +1,5 @@
 import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 
 export interface IAuthenticatedEntity {
   entityId: string
@@ -6,7 +7,7 @@ export interface IAuthenticatedEntity {
   authentication: IAuthentication
 }
 
-export type IAuthentication = IOpenIdAuthentication | Response
+export type IAuthentication = IOpenIdAuthentication | VerifiedAuthorizationRequest
 
 export interface IOpenIdAuthentication {
   accessToken: string

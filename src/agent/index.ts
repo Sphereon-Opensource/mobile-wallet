@@ -1,4 +1,3 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { getUniResolver } from '@sphereon/did-uni-client'
 import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
 import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
@@ -29,11 +28,10 @@ import { Resolver } from 'did-resolver'
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
 import { LdContexts } from '../@config/credentials'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
-import RootNavigation from '../navigation/rootNavigation'
 import { getDbConnection } from '../services/databaseService'
-import { signPresentation } from '../services/signatureService'
-import { CustomApprovalEnum, KeyManagementSystemEnum, ScreenRoutesEnum, SupportedDidMethodEnum } from '../types'
-import { scanFingerPrint } from '../utils/BiometricUtils'
+import { KeyManagementSystemEnum, SupportedDidMethodEnum } from '../types'
+import { DataSource } from 'typeorm'
+import { OrPromise } from '@veramo/utils'
 
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
@@ -49,6 +47,8 @@ export const didResolver = new Resolver({
   ...getDidIonResolver(),
   ...getDidJwkResolver()
 })
+
+export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''))
 
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ETHR}`]: new EthrDIDProvider({
@@ -71,7 +71,7 @@ export const didProviders = {
   })
 }
 
-const dbConnection = getDbConnection(DB_CONNECTION_NAME)
+const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME)
 const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY))
 
 const agent = createAgent<
@@ -102,7 +102,7 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator(signPresentation, {
+    new DidAuthSiopOpAuthenticator(/*undefined, {
       [CustomApprovalEnum.PEX]: async (
         verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
         sessionId: string
@@ -114,7 +114,7 @@ const agent = createAgent<
         return Promise.reject(Error('Pex verification manual stop'))
       },
       [CustomApprovalEnum.FINGERPRINT]: async () => scanFingerPrint()
-    }),
+    }*/),
     new ConnectionManager({
       store: new ConnectionStore(dbConnection)
     }),
@@ -138,9 +138,6 @@ const agent = createAgent<
 
 export const didManagerCreate = agent.didManagerCreate
 export const didManagerFind = agent.didManagerFind
-export const registerSessionForSiop = agent.registerSessionForSiop
-export const getSessionForSiop = agent.getSessionForSiop
-export const authenticateWithSiop = agent.authenticateWithSiop
 export const cmGetParty = agent.cmGetParty
 export const cmGetParties = agent.cmGetParties
 export const cmAddParty = agent.cmAddParty
@@ -148,8 +145,6 @@ export const cmAddConnection = agent.cmAddConnection
 export const didManagerGet = agent.didManagerGet
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential
-export const getSiopAuthorizationRequestDetails = agent.getSiopAuthorizationRequestDetails
-export const sendSiopAuthorizationResponse = agent.sendSiopAuthorizationResponse
 export const keyManagerSign = agent.keyManagerSign
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential

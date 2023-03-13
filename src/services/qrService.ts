@@ -43,13 +43,17 @@ const debug = Debug(`${APP_ID}:qrService`)
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({ qrData, navigation: args.navigation }))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
+    .catch((error: Error) => {
+      console.log(error)
+      showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+    })
 }
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const parsedJson = JSON.parse(qrData)
     if (parsedJson && typeof parsedJson === 'object') {
+      console.log(parsedJson)
       return parsedJson
     }
   } catch (error: unknown) {
@@ -59,36 +63,45 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const param = new URL(qrData).searchParams.get('oob')
     if (param) {
-      return {
+      const iQr = {
         ...JSON.parse(Buffer.from(param, 'base64').toString('utf8')),
         redirectUrl: qrData
       }
+      console.log(JSON.stringify(iQr))
+      return iQr
     }
   } catch (error: unknown) {
     debug(`Unable to parse QR value as URL. Error: ${error}`)
   }
 
-  if (qrData.startsWith(QrTypesEnum.OPENID_VC)) {
-    try {
-      return parseOpenIdVc(qrData)
-    } catch (error: unknown) {
-      debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
-    }
-  }
-
   if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
     try {
-      return parseOpenId4VcIssuance(qrData)
+      return parseOpenID4VCI(qrData)
     } catch (error: unknown) {
       debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`)
+    }
+  } else if (qrData.startsWith(QrTypesEnum.OPENID_VC) || qrData.startsWith(QrTypesEnum.OPENID)) {
+    try {
+      return parseSIOPv2(qrData)
+    } catch (error: unknown) {
+      debug(`Unable to parse QR value as openid-vc. Error: ${error}`)
     }
   }
 
   return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')))
 }
 
-const parseOpenIdVc = (qrData: string): Promise<IQrData> => {
-  const jwtVcPresentationProfileProvider = new JwtVcPresentationProfileProvider()
+const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
+  try {
+    return Promise.resolve({
+      type: QrTypesEnum.OPENID_VC,
+      uri: qrData
+    })
+  } catch (error) {
+    console.log(error)
+    return Promise.reject(error)
+  }
+  /*const jwtVcPresentationProfileProvider = new JwtVcPresentationProfileProvider()
   return (
     jwtVcPresentationProfileProvider
       .getUrl(qrData)
@@ -101,10 +114,10 @@ const parseOpenIdVc = (qrData: string): Promise<IQrData> => {
       .catch((error: Error) => {
         return Promise.reject(error)
       })
-  )
+  )*/
 }
 
-const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
+const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
   try {
     return Promise.resolve({
       type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
@@ -118,6 +131,7 @@ const parseOpenId4VcIssuance = (qrData: string): Promise<IQrData> => {
 }
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
+  console.log(`processQR: ${JSON.stringify(args.qrData)}`)
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
       switch ((args.qrData as IQrAuthentication).mode) {
@@ -126,9 +140,9 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
       }
       break
     case QrTypesEnum.SIOPV2:
-      return connectSiopV2(args)
     case QrTypesEnum.OPENID_VC:
-      return connectJwtVcPresentationProfile(args)
+      return connectSiopV2(args)
+    // return connectJwtVcPresentationProfile(args)
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
       return connectOpenId4VcIssuance(args)
   }
@@ -160,21 +174,24 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 }
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  const purpose = args.qrData.body?.accept?.includes(ConnectionTypeEnum.SIOPV2_OIDC4VP)
+  /*const purpose = args.qrData.body?.accept?.includes(ConnectionTypeEnum.SIOPV2_OIDC4VP)
     ? translate('siop_oidc4vp_authentication_request_message')
     : translate('siop_authentication_request_message')
+*/
+  const purpose = translate('siop_oidc4vp_authentication_request_message')
 
   args.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, {
-    entityName: new URL(args.qrData.redirectUrl.split('?')[0]).host,
+    entityName: new URL(args.qrData.uri.split('?')[0]).host, // fixme: do this on the request_uri value
     connection: connectFrom({
-      type: ConnectionTypeEnum.DIDAUTH,
+      type: ConnectionTypeEnum.SIOPV2_OIDC4VP,
       identifier: {
         type: CorrelationIdentifierEnum.URL,
-        correlationId: args.qrData.redirectUrl
+        correlationId: args.qrData.uri
       },
       config: {
+        // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
         sessionId: args.qrData.id,
-        redirectUrl: args.qrData.redirectUrl,
+        redirectUrl: args.qrData.uri,
         stateId: args.qrData.state,
         identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
       },
@@ -189,7 +206,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         },
         {
           label: translate('metadata_connection_url_label'),
-          value: args.qrData.redirectUrl.split('?')[0]
+          value: args.qrData.uri.split('?')[0]
         }
       ]
     }),

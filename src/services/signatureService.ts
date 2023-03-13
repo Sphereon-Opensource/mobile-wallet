@@ -35,8 +35,3 @@ const getSigner = (identifier: IIdentifier): Signer => {
     })
   }
 }
-
-// TODO WAL-414 implement presentation signing
-export const signPresentation = async (args: PresentationSignCallBackParams): Promise<W3CVerifiablePresentation> => {
-  return ''
-}

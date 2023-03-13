@@ -36,8 +36,8 @@ class IntentHandler {
   }
 
   private removeListeners = async (): Promise<void> => {
-    this.deeplinkListener.remove()
-    this.shareListener.remove()
+    this.deeplinkListener?.remove()
+    this.shareListener?.remove()
   }
 
   private async getDataOnStartup(): Promise<void> {

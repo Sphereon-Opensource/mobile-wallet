@@ -6,16 +6,16 @@ import React, { FC } from 'react'
 import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
-import { verifyAuthentication } from '../../services/authenticationService'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIPEXVerificationScreenBackgroundImageContainerStyled as ImageContainer,
-  SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
+  SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
+import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types'
 import { showToast } from '../../utils/ToastUtils'
+import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -23,15 +23,19 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PEX_VERIFIC
 
 const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
   const onAccept = async (): Promise<void> => {
-    verifyAuthentication(ConnectionTypeEnum.DIDAUTH, {
-      sessionId: props.route.params.sessionId,
-      verifiedAuthorizationRequest: props.route.params.request
+    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPV2_OIDC4VP, {
+      sessionId: props.route.params.sessionId
     })
       .then(() => {
-        props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_OVERVIEW, {})
+        props.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+        })
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
       })
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_SUCCESS, error.message)) // TODO make human readable message
+      .catch((error: Error) => {
+        console.error(error)
+        showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+      }) // TODO make human readable message
   }
 
   const onDecline = async (): Promise<void> => {
@@ -45,8 +49,13 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       </ImageContainer>
       <MessageTitle>{translate('pex_message_title')}</MessageTitle>
       <MessagesContainer>
-        {props.route.params.request.presentationDefinitions?.map((definition: PresentationDefinitionWithLocation) => (
-          <Message key={uuidv4()}>{definition.definition.purpose}</Message>
+        {props.route.params.request.presentationDefinitions?.map((pdl: PresentationDefinitionWithLocation) => (
+          <Message key={uuidv4()}>
+            {pdl.definition.purpose ??
+              (Array.isArray(pdl.definition?.input_descriptors)
+                ? pdl.definition.input_descriptors[0].purpose
+                : 'Definition did not provide a purpose. Please make sure you trust the Relying Party')}
+          </Message>
         ))}
       </MessagesContainer>
       <SSIButtonsContainer
