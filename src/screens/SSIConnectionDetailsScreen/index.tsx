@@ -9,7 +9,8 @@ import { translate } from '../../localization/Localization'
 import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
 import {
   SSIButtonBottomContainerStyled as ButtonContainer,
-  SSIBasicHorizontalCenterContainerStyled as Container
+  SSIBasicHorizontalCenterContainerStyled as Container,
+  SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import {
   ConnectionStatusEnum,
@@ -69,10 +70,11 @@ class SSIConnectionDetailsScreen extends PureComponent<IProps> {
       .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
       .then(() => {
         this.props.navigation.navigate(MainRoutesEnum.HOME, {})
-        showToast(
-          ToastTypeEnum.TOAST_SUCCESS,
-          format(translate('connect_provider_success_message'), this.props.route.params.entityName)
-        )
+		// disableing for demo purpose
+        // showToast(
+        //   ToastTypeEnum.TOAST_SUCCESS,
+        //   format(translate('connect_provider_success_message'), this.props.route.params.entityName)
+        // )
       })
       .catch((error) => {
         // TODO refactor error type behaviour
@@ -103,6 +105,7 @@ class SSIConnectionDetailsScreen extends PureComponent<IProps> {
 
     return (
       <Container>
+        <StatusBar/>
         <SSIConnectionDetailsView
           entityConnection={{
             ...this.props.route.params,

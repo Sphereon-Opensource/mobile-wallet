@@ -42,14 +42,15 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
     )
   }
 
+  // disableing for demo purpose
   return (
     <Container>
-      <SSIConnectionViewItem
-        name={props.entityConnection.entityName}
-        // TODO we need a connection uri which currently is not available
-        uri={props.entityConnection.connection.config.redirectUrl}
-      />
-      <Separator />
+      {/*<SSIConnectionViewItem*/}
+      {/*  name={props.entityConnection.entityName}*/}
+      {/*  // TODO we need a connection uri which currently is not available*/}
+      {/*  uri={props.entityConnection.connection.config.redirectUrl}*/}
+      {/*/>*/}
+      {/*<Separator />*/}
       <DetailLabelsContainer>
         <DetailsCaption>{translate('connection_details_view_details')}</DetailsCaption>
         <DetailsList

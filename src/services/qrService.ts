@@ -206,7 +206,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         },
         {
           label: translate('metadata_connection_url_label'),
-          value: args.qrData.uri.split('?')[0]
+          value: decodeURIComponent(args.qrData.uri.split('?request_uri=')[1])
         }
       ]
     }),
