@@ -22,12 +22,13 @@ export const authenticateConnectionEntity = (
     dispatch({ type: AUTHENTICATE_LOADING })
     return authenticate(connection)
       .then((authentication: IAuthentication) => {
-        const payload = {
-          entityId,
-          connectionType: connection.type,
-          authentication
-        }
-        dispatch({ type: AUTHENTICATE_ENTITY_SUCCESS, payload })
+		// disableing for demo purpose
+        // const payload = {
+        //   entityId,
+        //   connectionType: connection.type,
+        //   authentication
+        // }
+        // dispatch({ type: AUTHENTICATE_ENTITY_SUCCESS, payload })
       })
       .catch((error: unknown) => {
         dispatch({ type: AUTHENTICATE_ENTITY_FAILED })

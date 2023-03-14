@@ -1,6 +1,5 @@
-// import crypto from '@sphereon/isomorphic-webcrypto'
-import crypto from '@sphereon/isomorphic-webcrypto';
-import * as React from 'react';
+import crypto from '@sphereon/isomorphic-webcrypto'
+import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import * as SplashScreen from 'expo-splash-screen'
 import { useCallback, useEffect, useState } from 'react'
@@ -63,8 +62,8 @@ export default function App() {
         StatusBar.setBarStyle('light-content', true)
         StatusBar.setBackgroundColor(backgrounds.primaryDark)
         StatusBar.setTranslucent(false)
-        Localization.setI18nConfig()
 
+        Localization.setI18nConfig()
         // Preload fonts, make any API calls you need to do here
         await _loadFontsAsync()
 

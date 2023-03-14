@@ -26,7 +26,7 @@ export const SSIConnectionDetailsViewRoundedContainerStyled = styled(SSIRoundedC
 
 export const SSIConnectionDetailsLabelsContainerStyled = styled.View`
   padding-top: 16px;
-  height: 170px;
+  height: 270px;
 `
 
 export const SSIConnectionDetailsViewSeparatorStyled = styled.View`

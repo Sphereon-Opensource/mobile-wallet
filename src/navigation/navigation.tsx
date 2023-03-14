@@ -461,7 +461,7 @@ const OnboardingStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showEntityIcon={false}
+              showProfileIcon={false}
               headerSubTitle={translate('terms_of_service_subtitle')}
             />
           )
@@ -477,7 +477,7 @@ const OnboardingStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showEntityIcon={false}
+              showProfileIcon={false}
               headerSubTitle={translate('personal_data_subtitle')}
             />
           )
@@ -495,7 +495,7 @@ const OnboardingStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showEntityIcon={false}
+              showProfileIcon={false}
               headerSubTitle={route.params.headerSubTitle}
             />
           )
@@ -511,7 +511,7 @@ const OnboardingStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showEntityIcon={false}
+              showProfileIcon={false}
               headerSubTitle={translate('onboard_summary_subtitle')}
             />
           )
@@ -546,7 +546,7 @@ const AuthenticationStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               showBackButton={false}
-              showEntityIcon={false}
+              showProfileIcon={false}
               headerSubTitle={translate('lock_subtitle')}
             />
           )
