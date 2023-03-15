@@ -1,5 +1,5 @@
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
-import { ConnectionTypeEnum, CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum, CorrelationIdentifierEnum, IContact } from '@sphereon/ssi-sdk-data-store'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -234,7 +234,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
     const url = new URL(metadata.serverMetadata.issuer)
     getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] }).then(
-      (contacts: Array<IConnectionParty>) => {
+      (contacts: Array<IContact>) => {
         if (contacts.length === 0) {
           args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
             name: url.host,

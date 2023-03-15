@@ -1,4 +1,4 @@
-import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
+import { IConnection } from '@sphereon/ssi-sdk-data-store'
 import React, { FC } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'

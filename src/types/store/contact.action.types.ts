@@ -1,4 +1,4 @@
-import { BasicPartyIdentifier, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { IBasicIdentity, IContact } from '@sphereon/ssi-sdk-data-store'
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING'
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING
@@ -17,7 +17,7 @@ interface IContactsLoading {
 
 interface IGetContactsSuccessAction {
   type: GET_CONTACTS_SUCCESS
-  payload: Array<IConnectionParty>
+  payload: Array<IContact>
 }
 
 interface IGetContactsFailedAction {
@@ -25,7 +25,7 @@ interface IGetContactsFailedAction {
 }
 
 interface ICreateContactSuccessAction {
-  payload: IConnectionParty
+  payload: IContact
   type: CREATE_CONTACT_SUCCESS
 }
 
@@ -44,5 +44,5 @@ export interface ICreateContactArgs {
   name: string
   alias: string
   uri?: string
-  identifier: BasicPartyIdentifier
+  identities: Array<IBasicIdentity>
 }

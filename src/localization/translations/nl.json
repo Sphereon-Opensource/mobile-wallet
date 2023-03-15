@@ -18,7 +18,6 @@
     "qr_scanner_qr_no_longer_valid_message": "QR-code is niet meer geldig. Probeer een nieuwe QR-code te scannen.",
     "connection_status_connected": "Verbonden",
     "connection_status_disconnected": "Verbroken",
-    "connections_overview_title": "Verbindingen",
     "connection_details_title": "Verbinding Details",
     "connection_details_view_details": "Details",
     "connection_details_action_connect": "Verbinden",

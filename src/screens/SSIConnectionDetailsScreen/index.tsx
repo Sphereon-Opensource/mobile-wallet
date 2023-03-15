@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
+import { IConnection } from '@sphereon/ssi-sdk-data-store'
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 

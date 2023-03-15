@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop'
-import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store'
 import React, { FC } from 'react'
 
 import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage'

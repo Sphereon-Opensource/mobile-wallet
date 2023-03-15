@@ -1,6 +1,6 @@
 import { getUniResolver } from '@sphereon/did-uni-client'
-import { ConnectionManager, IConnectionManager } from '@sphereon/ssi-sdk-connection-manager'
-import { ConnectionStore } from '@sphereon/ssi-sdk-data-store'
+import { ContactManager, IContactManager } from '@sphereon/ssi-sdk-contact-manager'
+import { ContactStore } from '@sphereon/ssi-sdk-data-store'
 import { DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
 import { getDidJwkResolver, JwkDIDProvider } from '@sphereon/ssi-sdk-jwk-did-provider'
 import { IDidConnectionMode, LtoDidProvider } from '@sphereon/ssi-sdk-lto-did-provider'
@@ -81,7 +81,7 @@ const agent = createAgent<
     IDataStoreORM &
     IResolver &
     IDidAuthSiopOpAuthenticator &
-    IConnectionManager &
+    IContactManager &
     ICredentialIssuer &
     ICredentialHandlerLDLocal
 >({
@@ -115,8 +115,8 @@ const agent = createAgent<
       },
       [CustomApprovalEnum.FINGERPRINT]: async () => scanFingerPrint()
     }*/),
-    new ConnectionManager({
-      store: new ConnectionStore(dbConnection)
+    new ContactManager({
+      store: new ContactStore(dbConnection)
     }),
     new CredentialPlugin(),
     new CredentialHandlerLDLocal({
@@ -138,10 +138,10 @@ const agent = createAgent<
 
 export const didManagerCreate = agent.didManagerCreate
 export const didManagerFind = agent.didManagerFind
-export const cmGetParty = agent.cmGetParty
-export const cmGetParties = agent.cmGetParties
-export const cmAddParty = agent.cmAddParty
-export const cmAddConnection = agent.cmAddConnection
+export const cmGetContact = agent.cmGetContact
+export const cmGetContacts = agent.cmGetContacts
+export const cmAddContact = agent.cmAddContact
+export const cmAddIdentity = agent.cmAddIdentity
 export const didManagerGet = agent.didManagerGet
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential

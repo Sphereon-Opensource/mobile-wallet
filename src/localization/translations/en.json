@@ -18,7 +18,6 @@
     "qr_scanner_qr_no_longer_valid_message": "QR code is no longer valid. Please try to scan a new QR code.",
     "connection_status_connected": "Connected",
     "connection_status_disconnected": "Disconnected",
-    "connections_overview_title": "Connections",
     "connection_details_title": "Connection Details",
     "connection_details_view_details": "Details",
     "connection_details_action_connect": "Connect",

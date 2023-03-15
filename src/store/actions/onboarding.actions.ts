@@ -1,4 +1,4 @@
-import { BasicPartyIdentifier, CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { BasicCorrelationIdentifier, CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store'
 import { IIdentifier } from '@veramo/core'
 import { Action, CombinedState } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
@@ -14,9 +14,7 @@ import { createUser } from './user.actions'
 
 const { v4: uuidv4 } = require('uuid')
 
-export const setPersonalData = (
-  args: ISetPersonalDataActionArgs
-): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const setPersonalData = (args: ISetPersonalDataActionArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: SET_PERSONAL_DATA_SUCCESS, payload: args })
   }
@@ -35,16 +33,23 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
       dispatch({ type: CLEAR_ONBOARDING })
       getOrCreatePrimaryIdentifier({ method: SupportedDidMethodEnum.DID_KEY }).then((identifier: IIdentifier) => {
         const contactName = `${user.firstName} ${user.lastName}`
-        const contactIdentifier: BasicPartyIdentifier = {
-          correlationId: identifier.did,
-          type: CorrelationIdentifierEnum.DID
-        }
+        const correlationId = identifier.did
+        // const contactIdentifier: BasicPartyIdentifier = {
+        //   correlationId: identifier.did,
+        //   type: CorrelationIdentifierEnum.DID
+        // }
         dispatch(
           createContact({
             name: contactName,
             alias: contactName,
             uri: user.emailAddress,
-            identifier: contactIdentifier
+            identities: [{
+              alias: correlationId,
+              identifier: {
+                correlationId,
+                type: CorrelationIdentifierEnum.DID
+              }
+            }]
           })
         )
         dispatch(

@@ -1,4 +1,4 @@
-import { ConnectionTypeEnum, IConnection } from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum, IConnection } from '@sphereon/ssi-sdk-data-store'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 

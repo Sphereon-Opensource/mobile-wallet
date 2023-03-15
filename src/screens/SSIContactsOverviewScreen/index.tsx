@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { IContact } from '@sphereon/ssi-sdk-data-store'
 import React, { PureComponent } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
@@ -14,7 +14,7 @@ import { RootState, ScreenRoutesEnum, StackParamList } from '../../types'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void
-  contacts: Array<IConnectionParty>
+  contacts: Array<IContact>
 }
 
 interface IState {
@@ -38,11 +38,11 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
    * }
    */
 
-  onItemPress = async (contact: IConnectionParty): Promise<void> => {
+  onItemPress = async (contact: IContact): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, { contact })
   }
 
-  renderItem = (itemInfo: ListRenderItemInfo<IConnectionParty>): JSX.Element => (
+  renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
@@ -63,7 +63,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: IConnectionParty) => itemInfo.id}
+          keyExtractor={(itemInfo: IContact) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe

@@ -1,5 +1,5 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import { CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { CorrelationIdentifierEnum, IContact } from '@sphereon/ssi-sdk-data-store'
 import { VerifiableCredential } from '@veramo/core'
 
 import {
@@ -100,7 +100,7 @@ export interface ICredentialSelectTypeProps {
 }
 
 export interface IContactDetailsProps {
-  contact: IConnectionParty
+  contact: IContact
 }
 
 export interface IContactAddProps {
@@ -144,7 +144,6 @@ export enum ScreenRoutesEnum {
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
   PEX_VERIFICATION = 'PexVerification',
-  CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
   CONNECTION_DETAILS = 'ConnectionDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',

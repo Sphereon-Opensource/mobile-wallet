@@ -1,4 +1,4 @@
-import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store'
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 
 export interface IAuthenticatedEntity {

@@ -233,7 +233,7 @@ const CredentialsStack = (): JSX.Element => {
 const ContactsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CONTACTS_OVERVIEW}
       screenOptions={{
         animation: 'none'
       }}

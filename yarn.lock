@@ -3111,12 +3111,11 @@
   resolved "https://registry.yarnpkg.com/@sphereon/react-native-argon2/-/react-native-argon2-2.0.9.tgz#88d68d079a65ecc01501718c35a30f0a58558d21"
   integrity sha512-mXcp3meaKbv5TpEPxItZ1ZuRqkdNf8vjx3EM+GqNVQ8QQF9pbD3jw6wQfuFRPc+8kN+m9GEiVVbd9I0m50OPBg==
 
-"@sphereon/ssi-sdk-connection-manager@0.9.1-next.15", "@sphereon/ssi-sdk-connection-manager@^0.9.1-next.15+d2b89c2":
-  version "0.9.1-next.15"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-connection-manager/-/ssi-sdk-connection-manager-0.9.1-next.15.tgz#5f3aafe91f480edf33dbb5f365e80787a1f3ab1d"
-  integrity sha512-lKVlrub1LiqfA+hbekMSQmJ0Bfjf1v4w9ncoo9IfSLisEYpdF3U94bp6ykXhtoy5jS/L/v55xvARgVnw4O1pgQ==
+"@sphereon/ssi-sdk-contact-manager@file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.17.0-bram.tgz":
+  version "0.17.0-bram"
+  resolved "file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.17.0-bram.tgz#3cb8ddf13c8061477d36b13649cecc6242839fe7"
   dependencies:
-    "@sphereon/ssi-sdk-data-store-common" "^0.9.1-next.15+d2b89c2"
+    "@sphereon/ssi-sdk-data-store" "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.17.0-bram.tgz"
     cross-fetch "^3.1.5"
     typeorm "^0.3.12"
 
@@ -3129,23 +3128,11 @@
     "@sphereon/ssi-types" "^0.9.1-next.15+d2b89c2"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk-data-store-common@0.9.1-next.15", "@sphereon/ssi-sdk-data-store-common@^0.9.1-next.15+d2b89c2":
-  version "0.9.1-next.15"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store-common/-/ssi-sdk-data-store-common-0.9.1-next.15.tgz#f6112e4d132a9a92ff76560dda6569320738858b"
-  integrity sha512-fKy0lX6JTKU+x030CSnYlXy0U8eIrmc73uFt9jenWPq60aQNcZCRtJ40GqQ08V4VgZYswf1YYBQjDIwK872G0A==
+"@sphereon/ssi-sdk-data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.17.0-bram.tgz":
+  version "0.17.0-bram"
+  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.17.0-bram.tgz#04b2dbff75a7bdf27de1846ded12873d607f3d3e"
   dependencies:
     "@veramo/core" "4.2.0"
-    "@veramo/utils" "4.2.0"
-    debug "^4.3.4"
-    typeorm "^0.3.12"
-
-"@sphereon/ssi-sdk-data-store@0.9.1-next.15":
-  version "0.9.1-next.15"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-next.15.tgz#d90421ee9390806fd410aed826e410c4178c23d3"
-  integrity sha512-MuWh7ZWssIHcMCZkDtxWMIo45TQC070FJNw1Dvf1dRXU8x7/mcTb7YHO/cdO+808f+10Xihxl/Go2mcd+gFi5A==
-  dependencies:
-    "@sphereon/ssi-sdk-connection-manager" "^0.9.1-next.15+d2b89c2"
-    "@sphereon/ssi-sdk-data-store-common" "^0.9.1-next.15+d2b89c2"
     "@veramo/utils" "4.2.0"
     debug "^4.3.4"
     typeorm "^0.3.12"
@@ -4392,7 +4379,7 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020":
+"@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
   version "0.0.8"
   resolved "https://codeload.github.com/uport-project/EcdsaSecp256k1RecoverySignature2020/tar.gz/ab0db52de6f4e6663ef271a48009ba26e688ef9b"
   dependencies:

@@ -1,21 +1,21 @@
-import { IConnection, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { IConnection, IContact } from '@sphereon/ssi-sdk-data-store'
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { cmAddConnection, cmAddParty, cmGetParties } from '../agent'
+import { cmAddIdentity, cmAddContact, cmGetContacts } from '../agent'
 import { IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs } from '../types'
 
 const debug = Debug(`${APP_ID}:contactService`)
 
-export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IConnectionParty>> => {
+export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IContact>> => {
   debug(`getContacts(${JSON.stringify(args)})...`)
-  return cmGetParties(args)
+  return cmGetContacts(args)
 }
 
-export const createContact = async (args: ICreateContactArgs): Promise<IConnectionParty> => {
+export const createContact = async (args: ICreateContactArgs): Promise<IContact> => {
   debug(`createContact(${JSON.stringify(args)})...`)
-  return cmAddParty(args)
-    .then((contact: IConnectionParty) => {
+  return cmAddContact(args)
+    .then((contact: IContact) => {
       debug(`createContact(${JSON.stringify(args)}) succeeded`)
       return contact
     })
@@ -24,7 +24,7 @@ export const createContact = async (args: ICreateContactArgs): Promise<IConnecti
 
 export const addIdentity = async (args: IAddIdentityArgs): Promise<IConnection> => {
   debug(`addIdentity(${JSON.stringify(args)})...`)
-  return cmAddConnection({ partyId: args.contactId, connection: args.connection })
+  return cmAddIdentity({ contactId: args.contactId, identity: args.identity })
     .then((connection: IConnection) => {
       debug(`addIdentity(${JSON.stringify(connection)}) succeeded`)
       return connection

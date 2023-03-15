@@ -1,22 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { IConnection, IConnectionParty } from "@sphereon/ssi-sdk-data-store-common";
-import { CredentialMapper, IVerifiableCredential } from "@sphereon/ssi-types";
-import { IIdentifier, VerifiableCredential } from "@veramo/core";
-import React, { PureComponent } from "react";
-import { Button, Text, View } from "react-native";
-import { connect } from "react-redux";
+import { IConnection, IContact } from "@sphereon/ssi-sdk-data-store";
+import { CredentialMapper, IVerifiableCredential } from "@sphereon/ssi-types"
+import { IIdentifier, VerifiableCredential } from "@veramo/core"
+import React, { PureComponent } from "react"
+import { Button, Text, View } from "react-native"
+import { connect } from "react-redux"
 
-import { createIdentifier, getIdentifiers } from "../services/identityService";
-import { authenticateConnectionEntity } from "../store/actions/authentication.actions";
-import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from "../types";
-import { IAuthenticatedEntity, IOpenIdAuthentication } from "../types/store/authenticate.types";
-import { toCredentialSummary } from "../utils/mappers/CredentialMapper";
+import { createIdentifier, getIdentifiers } from "../services/identityService"
+import { authenticateConnectionEntity } from "../store/actions/authentication.actions"
+import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from "../types"
+import { IAuthenticatedEntity, IOpenIdAuthentication } from "../types/store/authenticate.types"
+import { toCredentialSummary } from "../utils/mappers/CredentialMapper"
 
 type Props = NativeStackScreenProps<StackParamList, "Veramo">
 
 interface IProps extends Props {
   authenticateEntity: (entityId: string, connection: IConnection) => void;
-  connectionParties: Array<IConnectionParty>;
+  connectionParties: Array<IContact>;
   authenticationEntities: Array<IAuthenticatedEntity>;
 }
 

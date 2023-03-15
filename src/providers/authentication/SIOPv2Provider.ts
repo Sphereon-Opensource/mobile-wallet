@@ -1,5 +1,5 @@
 import { CheckLinkedDomain, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import { ConnectionTypeEnum, IDidAuthConfig } from '@sphereon/ssi-sdk-data-store-common'
+import { ConnectionTypeEnum, IDidAuthConfig } from '@sphereon/ssi-sdk-data-store'
 import { OpSession, VerifiablePresentationWithDefinition } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
 import Debug from 'debug'
 

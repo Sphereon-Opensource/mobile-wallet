@@ -1,4 +1,4 @@
-import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
+import { IConnection } from '@sphereon/ssi-sdk-data-store'
 
 export enum ConnectionStatusEnum {
   CONNECTED = 'connected',

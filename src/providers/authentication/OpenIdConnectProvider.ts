@@ -1,4 +1,4 @@
-import { IOpenIdConfig } from '@sphereon/ssi-sdk-data-store-common'
+import { IOpenIdConfig } from '@sphereon/ssi-sdk-data-store'
 import Debug from 'debug'
 import jwt_decode from 'jwt-decode'
 import {

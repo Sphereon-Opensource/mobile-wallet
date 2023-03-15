@@ -15,7 +15,6 @@ import Localization from './src/localization/Localization'
 import AppNavigator from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
 import store from './src/store'
-import { getConnectionParties } from './src/store/actions/connection.actions'
 import { getContacts } from './src/store/actions/contact.actions'
 import { getVerifiableCredentials } from './src/store/actions/credential.actions'
 import { getUsers } from './src/store/actions/user.actions'
@@ -73,7 +72,6 @@ export default function App() {
         // Load the redux store
         const actions = bindActionCreators(
           {
-            getConnectionParties,
             getVerifiableCredentials,
             getContacts,
             getUsers
@@ -82,7 +80,6 @@ export default function App() {
         )
         await actions.getUsers()
         await actions.getVerifiableCredentials()
-        await actions.getConnectionParties()
         await actions.getContacts()
 
         await intentHandler.enable()

@@ -1,4 +1,4 @@
-import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import { IContact } from '@sphereon/ssi-sdk-data-store'
 import { Action } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
@@ -19,7 +19,7 @@ export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Ac
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CONTACTS_LOADING })
     getContactsFromStorage()
-      .then((contacts: Array<IConnectionParty>) => dispatch({ type: GET_CONTACTS_SUCCESS, payload: contacts }))
+      .then((contacts: Array<IContact>) => dispatch({ type: GET_CONTACTS_SUCCESS, payload: contacts }))
       .catch(() => dispatch({ type: GET_CONTACTS_FAILED }))
   }
 }
@@ -28,7 +28,7 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({ type: CONTACTS_LOADING })
     storeContact(args)
-      .then((contact: IConnectionParty) => {
+      .then((contact: IContact) => {
         dispatch({ type: CREATE_CONTACT_SUCCESS, payload: contact })
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'))
       })

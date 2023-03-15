@@ -3,7 +3,7 @@ import {
   IBasicConnection,
   IDidAuthConfig,
   IOpenIdConfig
-} from '@sphereon/ssi-sdk-data-store-common'
+} from '@sphereon/ssi-sdk-data-store'
 import { IAuthenticatedEntity, IAuthentication, IOpenIdAuthentication } from '../types/store/authenticate.types'
 import { siopGetRequest } from '../providers/authentication/SIOPv2Provider'
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider'
