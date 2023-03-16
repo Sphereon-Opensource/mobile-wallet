@@ -13,7 +13,7 @@ const { v4: uuidv4 } = require('uuid')
 
 export interface IProps {
   navigationState: { index: number; routes: Array<ITabRoute> }
-  position: Animated.AnimatedInterpolation
+  position: Animated.AnimatedInterpolation<number>
   onIndexChange: (index: number) => void
 }
 
