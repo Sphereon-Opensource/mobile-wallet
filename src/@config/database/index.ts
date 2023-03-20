@@ -1,4 +1,4 @@
-import { DataStoreConnectionEntities, DataStoreMigrations } from "@sphereon/ssi-sdk-data-store"
+import { DataStoreContactEntities, DataStoreMigrations } from "@sphereon/ssi-sdk-data-store"
 import { Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations } from "@veramo/data-store"
 import { ExpoConnectionOptions } from "typeorm/driver/expo/ExpoConnectionOptions"
 import * as driver from "expo-sqlite"
@@ -10,7 +10,7 @@ const sqliteConfig: ExpoConnectionOptions = {
   type: 'expo',
   database: 'sphereon-wallet.sqlite',
   driver,
-  entities: [...VeramoDataStoreEntities, ...DataStoreConnectionEntities],
+  entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code

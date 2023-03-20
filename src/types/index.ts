@@ -1,7 +1,5 @@
 export * from './authentication'
 export * from './component'
-export * from './connection'
-export * from './contact'
 export * from './credential'
 export * from './did'
 export * from './error'

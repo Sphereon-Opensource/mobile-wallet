@@ -15,8 +15,7 @@ import {
 } from 'react-native-app-auth'
 
 import { APP_ID } from '../../@config/constants'
-import { CustomJwtPayload } from '../../types'
-import { IOpenIdAuthentication } from '../../types/store/authenticate.types'
+import { CustomJwtPayload, IOpenIdAuthentication } from '../../types'
 
 const debug = Debug(`${APP_ID}:authentication`)
 

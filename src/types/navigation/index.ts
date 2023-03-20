@@ -1,10 +1,9 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import { CorrelationIdentifierEnum, IContact } from '@sphereon/ssi-sdk-data-store'
+import { IContact, IIdentity } from '@sphereon/ssi-sdk-data-store'
 import { VerifiableCredential } from '@veramo/core'
 
 import {
   IButton,
-  IConnectionViewItem,
   ICredentialSummary,
   ICredentialTypeSelection,
   PopupBadgesEnum,
@@ -16,8 +15,7 @@ export type StackParamList = {
   CredentialDetails: ICredentialDetailsProps
   CredentialRawJson: ICredentialRawJsonProps
   ConnectionsOverview: Record<string, never>
-  // TODO create interface like bellow and fix this omit, define better interfaces
-  ConnectionDetails: Omit<IConnectionViewItem, 'connectionStatus'>
+  IdentityDetails: IIdentityDetailsProps
   PexVerification: IPexVerificationProps
   QrReader: Record<string, never>
   Veramo: Record<string, never>
@@ -40,6 +38,10 @@ export type StackParamList = {
   Lock: Record<string, never>
   Authentication: Record<string, never>
   OnboardingSummary: Record<string, never>
+}
+
+export interface IIdentityDetailsProps {
+  identity: IIdentity
 }
 
 export interface ICredentialDetailsProps {
@@ -106,10 +108,6 @@ export interface IContactDetailsProps {
 export interface IContactAddProps {
   name: string
   uri?: string
-  identifier: {
-    type: CorrelationIdentifierEnum
-    correlationId: string
-  }
   onCreate: () => Promise<void>
 }
 
@@ -144,7 +142,7 @@ export enum ScreenRoutesEnum {
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
   PEX_VERIFICATION = 'PexVerification',
-  CONNECTION_DETAILS = 'ConnectionDetails',
+  IDENTITY_DETAILS = 'IdentityDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',

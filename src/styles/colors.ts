@@ -99,8 +99,6 @@ export const statuses: Record<LabelStatus | 'error', string> = {
   valid: '#00C249',
   expired: '#FF9900',
   revoked: '#EE5309',
-  connected: '#00C249',
-  disconnected: '#B2BEB5',
   verified: '#00C249',
   unverified: '#FF9900',
   error: '#D74500'

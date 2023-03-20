@@ -1,7 +1,6 @@
 import { ComponentType } from 'react'
 import { ColorValue } from 'react-native'
 
-import { ConnectionStatusEnum } from '../connection'
 import { CredentialStatusEnum, IssuerStatusEnum } from '../credential'
 
 export enum ButtonIconsEnum {
@@ -40,7 +39,7 @@ export interface IMoreMenuButton extends IButton {
   fontColor?: ColorValue
 }
 
-export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum | ConnectionStatusEnum
+export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum
 
 export interface ITabRoute {
   key: string

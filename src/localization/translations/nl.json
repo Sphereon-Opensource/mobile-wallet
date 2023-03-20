@@ -74,7 +74,7 @@
     "contact_details_title": "Contact",
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activiteit",
-    "contact_details_connections_tab_header_label": "Connecties",
+    "contact_details_identities_tab_header_label": "Identiteiten",
     "intent_share_file_unable_to_receive_message": "Kan de credential niet ontvangen",
     "credential_delete_title": "Verwijder credential",
     "credential_delete_message": "Weet u zeker dat u de credential: {0}, wilt verwijderen?",

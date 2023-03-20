@@ -1,4 +1,4 @@
-import { BasicCorrelationIdentifier, CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store'
+import { CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store'
 import { IIdentifier } from '@veramo/core'
 import { Action, CombinedState } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
@@ -30,14 +30,9 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
     }
 
     dispatch(createUser(user)).then(() => {
-      dispatch({ type: CLEAR_ONBOARDING })
       getOrCreatePrimaryIdentifier({ method: SupportedDidMethodEnum.DID_KEY }).then((identifier: IIdentifier) => {
         const contactName = `${user.firstName} ${user.lastName}`
         const correlationId = identifier.did
-        // const contactIdentifier: BasicPartyIdentifier = {
-        //   correlationId: identifier.did,
-        //   type: CorrelationIdentifierEnum.DID
-        // }
         dispatch(
           createContact({
             name: contactName,
@@ -73,6 +68,7 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
             proofFormat: 'lds'
           })
         )
+        dispatch({ type: CLEAR_ONBOARDING })
       })
     })
   }

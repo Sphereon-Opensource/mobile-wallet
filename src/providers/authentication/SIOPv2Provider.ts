@@ -83,7 +83,7 @@ export const siopSendAuthorizationResponse = async (
     sessionId: string
   }
 ) => {
-  if (connectionType !== ConnectionTypeEnum.SIOPV2_OIDC4VP) {
+  if (connectionType !== ConnectionTypeEnum.SIOPv2_OpenID4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`))
   }
   const session = await agent.siopGetOPSession({ sessionId: args.sessionId,  })

@@ -1,5 +1,3 @@
-import { PresentationSignCallBackParams } from '@sphereon/pex'
-import { W3CVerifiablePresentation } from '@sphereon/ssi-types'
 import { IIdentifier } from '@veramo/core'
 import { createJWT, Signer } from 'did-jwt'
 

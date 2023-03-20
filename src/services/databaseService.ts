@@ -33,5 +33,6 @@ export const getDbConnection = async (dbName: string): Promise<DataSource> => {
     await dataSource.runMigrations()
     debug(`${dataSource.migrations.length} migration(s) from code were inspected and applied`)
   }
+
   return dataSource
 }

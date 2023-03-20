@@ -74,7 +74,7 @@
     "contact_details_title": "Contact",
     "contact_details_info_tab_header_label": "Info",
     "contact_details_activity_tab_header_label": "Activity",
-    "contact_details_connections_tab_header_label": "Connections",
+    "contact_details_identities_tab_header_label": "Identities",
     "intent_share_file_unable_to_receive_message": "Unable to receive the credential",
     "credential_delete_title": "Delete credential",
     "credential_delete_message": "Are you sure you want to delete the credential: {0}?",

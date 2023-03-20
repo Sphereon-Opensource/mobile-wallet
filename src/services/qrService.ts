@@ -7,12 +7,10 @@ import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
-import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
 import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
-  ConnectionStatusEnum,
   ICredentialMetadata,
   ICredentialTypeSelection,
   IErrorDetails,
@@ -32,9 +30,10 @@ import { showToast } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 import { authenticate } from './authenticationService'
-import { connectFrom } from './connectionService'
-import { getContacts } from './contactService'
+import { getContacts, identityFrom } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
+import JwtVcPresentationProfileProvider
+  from '../providers/credential/JwtVcPresentationProfileProvider'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -43,17 +42,13 @@ const debug = Debug(`${APP_ID}:qrService`)
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({ qrData, navigation: args.navigation }))
-    .catch((error: Error) => {
-      console.log(error)
-      showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-    })
+    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
 }
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const parsedJson = JSON.parse(qrData)
     if (parsedJson && typeof parsedJson === 'object') {
-      console.log(parsedJson)
       return parsedJson
     }
   } catch (error: unknown) {
@@ -67,7 +62,6 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
         ...JSON.parse(Buffer.from(param, 'base64').toString('utf8')),
         redirectUrl: qrData
       }
-      console.log(JSON.stringify(iQr))
       return iQr
     }
   } catch (error: unknown) {
@@ -97,24 +91,9 @@ const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
       type: QrTypesEnum.OPENID_VC,
       uri: qrData
     })
-  } catch (error) {
-    console.log(error)
+  } catch (error: unknown) {
     return Promise.reject(error)
   }
-  /*const jwtVcPresentationProfileProvider = new JwtVcPresentationProfileProvider()
-  return (
-    jwtVcPresentationProfileProvider
-      .getUrl(qrData)
-      .then((url: string) => jwtVcPresentationProfileProvider.getRequest(url))
-      // TODO (any) typings when process is clear
-      .then((request: any) => ({
-        type: QrTypesEnum.OPENID_VC,
-        ...request
-      }))
-      .catch((error: Error) => {
-        return Promise.reject(error)
-      })
-  )*/
 }
 
 const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
@@ -124,25 +103,22 @@ const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
       issuanceInitiation: IssuanceInitiation.fromURI(qrData),
       uri: qrData
     })
-  } catch (error) {
-    console.log(error)
+  } catch (error: unknown) {
     return Promise.reject(error)
   }
 }
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
-  console.log(`processQR: ${JSON.stringify(args.qrData)}`)
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
       switch ((args.qrData as IQrAuthentication).mode) {
-        case ConnectionTypeEnum.DIDAUTH:
+        case ConnectionTypeEnum.SIOPv2:
           return connectDidAuth(args)
       }
       break
     case QrTypesEnum.SIOPV2:
     case QrTypesEnum.OPENID_VC:
       return connectSiopV2(args)
-    // return connectJwtVcPresentationProfile(args)
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
       return connectOpenId4VcIssuance(args)
   }
@@ -150,21 +126,24 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
 
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier = await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
-  const connection = connectFrom({
-    type: ConnectionTypeEnum.DIDAUTH,
+  const identity = identityFrom({ // TODO identity ipv connection
+    alias: new URL(args.qrData.uri.split('?')[0]).host,
     identifier: {
       type: CorrelationIdentifierEnum.DID,
       correlationId: identifier.did
     },
-    config: {
-      identifier,
-      stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
-      redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
-      sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did
+    connection: {
+      type: ConnectionTypeEnum.SIOPv2,
+      config: {
+        identifier,
+        stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
+        redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
+        sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did
+      }
     }
   })
 
-  authenticate(connection)
+  authenticate(identity)
     .then(() => console.log('authentication success'))
     .catch((error) => {
       if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
@@ -174,31 +153,27 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 }
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  /*const purpose = args.qrData.body?.accept?.includes(ConnectionTypeEnum.SIOPV2_OIDC4VP)
-    ? translate('siop_oidc4vp_authentication_request_message')
-    : translate('siop_authentication_request_message')
-*/
-  const purpose = translate('siop_oidc4vp_authentication_request_message')
-
-  args.navigation.navigate(ScreenRoutesEnum.CONNECTION_DETAILS, {
-    entityName: new URL(args.qrData.uri.split('?')[0]).host, // fixme: do this on the request_uri value
-    connection: connectFrom({
-      type: ConnectionTypeEnum.SIOPV2_OIDC4VP,
+  args.navigation.navigate(ScreenRoutesEnum.IDENTITY_DETAILS, {
+    identity: identityFrom({
+      alias: new URL(args.qrData.uri.split('?')[0]).host, // fixme: do this on the request_uri value
       identifier: {
         type: CorrelationIdentifierEnum.URL,
         correlationId: args.qrData.uri
       },
-      config: {
-        // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
-        sessionId: args.qrData.id,
-        redirectUrl: args.qrData.uri,
-        stateId: args.qrData.state,
-        identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+      connection: {
+        type: ConnectionTypeEnum.SIOPv2_OpenID4VP,
+        config: {
+          // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
+          sessionId: args.qrData.id,
+          redirectUrl: args.qrData.uri,
+          stateId: args.qrData.state,
+          identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+        },
       },
       metadata: [
         {
           label: translate('metadata_purpose_label'),
-          value: purpose
+          value: translate('siop_oidc4vp_authentication_request_message')
         },
         {
           label: translate('metadata_rp_did_label'),
@@ -209,8 +184,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           value: decodeURIComponent(args.qrData.uri.split('?request_uri=')[1])
         }
       ]
-    }),
-    connectionStatus: ConnectionStatusEnum.DISCONNECTED
+    })
   })
 }
 
@@ -230,10 +204,17 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
   // TODO WAL-301 need to send a response when we do not need a pin code
 }
 
+
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
     const url = new URL(metadata.serverMetadata.issuer)
-    getContacts({ filter: [{ identifier: { correlationId: url.hostname } }] }).then(
+    getContacts({ filter: [{
+      identities: {
+        identifier: {
+          correlationId: url.hostname
+        }
+      }
+    }]}).then(
       (contacts: Array<IContact>) => {
         if (contacts.length === 0) {
           args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {

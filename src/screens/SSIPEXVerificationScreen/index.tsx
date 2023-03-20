@@ -13,7 +13,7 @@ import {
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
-import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types'
+import { NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
 import { showToast } from '../../utils/ToastUtils'
 import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 
@@ -22,24 +22,23 @@ const { v4: uuidv4 } = require('uuid')
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PEX_VERIFICATION>
 
 const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
+  const { navigation } = props
+  const { request, sessionId }  = props.route.params
+
   const onAccept = async (): Promise<void> => {
-    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPV2_OIDC4VP, {
-      sessionId: props.route.params.sessionId
-    })
+    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, { sessionId })
       .then(() => {
-        props.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
+        navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
         })
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
       })
-      .catch((error: Error) => {
-        console.error(error)
-        showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-      }) // TODO make human readable message
+      // TODO make human-readable message
+      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
   }
 
   const onDecline = async (): Promise<void> => {
-    props.navigation.goBack()
+    navigation.goBack()
   }
 
   return (
@@ -49,7 +48,7 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       </ImageContainer>
       <MessageTitle>{translate('pex_message_title')}</MessageTitle>
       <MessagesContainer>
-        {props.route.params.request.presentationDefinitions?.map((pdl: PresentationDefinitionWithLocation) => (
+        {request.presentationDefinitions?.map((pdl: PresentationDefinitionWithLocation) => (
           <Message key={uuidv4()}>
             {pdl.definition.purpose ??
               (Array.isArray(pdl.definition?.input_descriptors)

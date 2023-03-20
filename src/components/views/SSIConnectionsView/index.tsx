@@ -1,19 +1,19 @@
-import { IConnection } from '@sphereon/ssi-sdk-data-store'
+import { IIdentity } from '@sphereon/ssi-sdk-data-store'
 import React, { FC } from 'react'
 import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { SSIConnectionsViewContainerStyled } from '../../../styles/components'
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../SSISwipeRowViewItem'
+import { SSIConnectionsViewContainerStyled as Container } from '../../../styles/components' // TODO styling
 
 export interface IProps {
-  connections: Array<IConnection>
+  identities: Array<IIdentity>
 }
 
-const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const { connections } = props
+const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
+  const { identities } = props
   const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = async (): Promise<void> => {
@@ -21,22 +21,22 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
   }
 
   const onDelete = async (): Promise<void> => {
-    console.log('Delete connection pressed!')
+    console.log('Delete identity pressed!')
   }
 
-  const onItemPress = async (connection: IConnection): Promise<void> => {
-    console.log('Connection pressed!')
+  const onItemPress = async (identity: IIdentity): Promise<void> => {
+    console.log('Identity pressed!')
   }
 
-  const renderItem = (itemInfo: ListRenderItemInfo<IConnection>): JSX.Element => (
+  const renderItem = (itemInfo: ListRenderItemInfo<IIdentity>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
         <SSIConnectionViewItem
           // TODO we need a connection name
-          name={itemInfo.item.id}
+          name={itemInfo.item.alias}
           // TODO we need a connection uri which currently is not available
-          uri={itemInfo.item.type}
+          uri={'N/A'}
         />
       }
       onPress={() => onItemPress(itemInfo.item)}
@@ -45,10 +45,10 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
   )
 
   return (
-    <SSIConnectionsViewContainerStyled>
+    <Container>
       <SwipeListView
-        data={connections}
-        keyExtractor={(itemInfo: IConnection) => itemInfo.id}
+        data={identities}
+        keyExtractor={(itemInfo: IIdentity) => itemInfo.id}
         renderItem={renderItem}
         closeOnRowOpen
         closeOnRowBeginSwipe
@@ -57,8 +57,8 @@ const SSIConnectionsView: FC<IProps> = (props: IProps): JSX.Element => {
         removeClippedSubviews
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
-    </SSIConnectionsViewContainerStyled>
+    </Container>
   )
 }
 
-export default SSIConnectionsView
+export default SSIIdentitiesView

@@ -2,18 +2,18 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
 import SSIActivityView from '../../components/views/SSIActivityView'
-/*import SSIConnectionsView from '../../components/views/SSIConnectionsView'*/
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
 import { SSIBasicContainerSecondaryStyled as Container } from '../../styles/components'
 import { ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
+import SSIIdentitiesView from '../../components/views/SSIConnectionsView'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>
 
 enum ContactTabRoutesEnum {
   INFO = 'info',
-  CONNECTIONS = 'connections',
+  IDENTITIES = 'identities',
   ACTIVITY = 'activity'
 }
 
@@ -26,18 +26,18 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       title: translate('contact_details_info_tab_header_label'),
       // TODO WAL-350 implement content
       content: () => <SSIActivityView />
-    } /*,
-    {
-      key: ContactTabRoutesEnum.CONNECTIONS,
-      title: translate('contact_details_connections_tab_header_label'),
-      content: () => <SSIConnectionsView connections={contact.connections} />
     },
     {
-      key: ContactTabRoutesEnum.ACTIVITY,
-      title: translate('contact_details_activity_tab_header_label'),
-      // TODO WAL-358 implement content
-      content: () => <SSIActivityView />
-    }*/
+      key: ContactTabRoutesEnum.IDENTITIES,
+      title: translate('contact_details_identities_tab_header_label'),
+      content: () => <SSIIdentitiesView identities={contact.identities} />
+    },
+    // {
+    //   key: ContactTabRoutesEnum.ACTIVITY,
+    //   title: translate('contact_details_activity_tab_header_label'),
+    //   // TODO WAL-358 implement content
+    //   content: () => <SSIActivityView />
+    // }
   ]
 
   // TODO contact roles should be an aggregate of the roles on the identities

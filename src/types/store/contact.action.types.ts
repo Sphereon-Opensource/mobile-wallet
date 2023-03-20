@@ -44,5 +44,5 @@ export interface ICreateContactArgs {
   name: string
   alias: string
   uri?: string
-  identities: Array<IBasicIdentity>
+  identities?: Array<IBasicIdentity>
 }

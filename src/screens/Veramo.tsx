@@ -1,5 +1,5 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { IConnection, IContact } from "@sphereon/ssi-sdk-data-store";
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { IContact } from "@sphereon/ssi-sdk-data-store";
 import { CredentialMapper, IVerifiableCredential } from "@sphereon/ssi-types"
 import { IIdentifier, VerifiableCredential } from "@veramo/core"
 import React, { PureComponent } from "react"
@@ -7,26 +7,20 @@ import { Button, Text, View } from "react-native"
 import { connect } from "react-redux"
 
 import { createIdentifier, getIdentifiers } from "../services/identityService"
-import { authenticateConnectionEntity } from "../store/actions/authentication.actions"
 import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from "../types"
-import { IAuthenticatedEntity, IOpenIdAuthentication } from "../types/store/authenticate.types"
 import { toCredentialSummary } from "../utils/mappers/CredentialMapper"
 
-type Props = NativeStackScreenProps<StackParamList, "Veramo">
+interface IProps extends NativeStackScreenProps<StackParamList, "Veramo"> {
+  contacts: Array<IContact>;
+}
 
-interface IProps extends Props {
-  authenticateEntity: (entityId: string, connection: IConnection) => void;
-  connectionParties: Array<IContact>;
-  authenticationEntities: Array<IAuthenticatedEntity>;
+interface Identifier {
+  did: string;
 }
 
 interface IState {
   identifiers: Array<Identifier>;
   error?: any;
-}
-
-interface Identifier {
-  did: string;
 }
 
 class Veramo extends PureComponent<IProps, IState> {
@@ -82,28 +76,9 @@ class Veramo extends PureComponent<IProps, IState> {
         <Button title="Create Identifier" onPress={() => this.createIdentifier()} />
         <View style={{ marginTop: 10 }}>
           <Button
-            title="Print connection entities"
-            onPress={() => console.log(JSON.stringify(this.props.connectionParties))}
+            title="Print contacts"
+            onPress={() => console.log(JSON.stringify(this.props.contacts))}
           />
-        </View>
-        <View style={{ marginTop: 10 }}>
-          {this.props.authenticationEntities[0] ? (
-            <Text>{`Authenticated user: ${
-              (this.props.authenticationEntities[0].authentication as IOpenIdAuthentication).user.firstName
-            } ${(this.props.authenticationEntities[0].authentication as IOpenIdAuthentication).user.lastName}`}</Text>
-          ) : (
-            <Button
-              title="Establish connection with Firm24"
-              onPress={() => {
-                if (this.props.connectionParties[0].id) {
-                  this.props.authenticateEntity(
-                    this.props.connectionParties[0].id,
-                    this.props.connectionParties[0].connections[0]
-                  );
-                }
-              }}
-            />
-          )}
         </View>
         <View style={{ marginTop: 10 }}>
           <Button
@@ -167,18 +142,10 @@ class Veramo extends PureComponent<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    authenticateEntity: (entityId: string, connection: IConnection) =>
-      dispatch(authenticateConnectionEntity(entityId, connection))
-  };
-};
-
 const mapStateToProps = (state: RootState) => {
   return {
-    connectionParties: state.connection.parties,
-    authenticationEntities: state.authentication.entities
+    contacts: state.contact.contacts
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Veramo);
+export default connect(mapStateToProps, null)(Veramo);

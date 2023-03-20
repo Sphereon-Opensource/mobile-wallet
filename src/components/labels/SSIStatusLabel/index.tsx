@@ -8,7 +8,7 @@ import {
   SSIStatusLabelContainerStyled as Container,
   SSIStatusLabelStatusCaptionStyled as StatusCaption
 } from '../../../styles/components'
-import { ConnectionStatusEnum, CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../types'
+import { CredentialStatusEnum, IssuerStatusEnum, LabelStatus } from '../../../types'
 import SSICheckmarkBadge from '../../assets/badges/SSICheckmarkBadge'
 import SSIExclamationMarkBadge from '../../assets/badges/SSIExclamationMarkBadge'
 
@@ -42,10 +42,6 @@ const getStatusTranslation = (status: LabelStatus): string => {
       return translate('credential_status_expired')
     case CredentialStatusEnum.REVOKED:
       return translate('credential_status_revoked')
-    case ConnectionStatusEnum.CONNECTED:
-      return translate('connection_status_connected')
-    case ConnectionStatusEnum.DISCONNECTED:
-      return translate('connection_status_disconnected')
     default:
       return translate('status_missing')
   }
@@ -63,10 +59,6 @@ const getStatusBadge = (status: LabelStatus, backgroundColor?: ColorValue): JSX.
       return <SSIExclamationMarkBadge backgroundColor={backgroundColor} />
     case CredentialStatusEnum.REVOKED:
       return <View /> // TODO we are missing this in the design
-    case ConnectionStatusEnum.CONNECTED:
-      return <SSICheckmarkBadge backgroundColor={backgroundColor} />
-    case ConnectionStatusEnum.DISCONNECTED:
-      return <SSIExclamationMarkBadge backgroundColor={backgroundColor} />
     default:
       return <View />
   }

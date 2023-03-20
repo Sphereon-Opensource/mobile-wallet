@@ -16,3 +16,22 @@ export enum CustomApprovalEnum {
   PEX = 'pex',
   FINGERPRINT = 'fingerprint'
 }
+
+export type IAuthentication = IOpenIdAuthentication | VerifiedAuthorizationRequest
+
+export interface IOpenIdAuthentication {
+  accessToken: string
+  refreshToken: string
+  idToken: string
+  user: IOpenIdAuthenticatedUser
+}
+
+export interface IOpenIdAuthenticatedUser {
+  id?: string
+  name: string
+  firstName: string
+  lastName: string
+  email: string
+  roles: Array<string>
+  scope: Array<string>
+}

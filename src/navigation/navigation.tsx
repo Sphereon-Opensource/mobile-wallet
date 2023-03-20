@@ -303,7 +303,7 @@ const QRStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.CONNECTION_DETAILS}
+        name={ScreenRoutesEnum.IDENTITY_DETAILS}
         component={SSIConnectionDetailsScreen}
         options={{
           headerTitle: translate('connection_details_title'),

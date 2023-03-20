@@ -11,25 +11,18 @@ import {
   SSITextH5LightStyled as DetailsItemLabelCaption,
   SSIConnectionDetailsViewValueCaptionStyled as DetailsItemValueCaption,
   SSIDetailsViewDetailsListStyled as DetailsList,
-  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
-  SSIConnectionDetailsViewSeparatorStyled as Separator
+  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow
 } from '../../../styles/components'
-import { IConnectionViewItem } from '../../../types'
-import SSIConnectionViewItem from '../SSIConnectionViewItem'
+import { IIdentity, IMetadataItem } from '@sphereon/ssi-sdk-data-store'
 
 export interface IProps {
-  entityConnection: IConnectionViewItem
+  identity: IIdentity
 }
 
-// TODO interface should be replaced by proper interface for connection details
-export interface IDetails {
-  id: string
-  label: string
-  value: string
-}
+const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => { // TODO rename to identity?
+  const { identity } = props
 
-const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<IDetails>) => {
+  const renderItem = (itemInfo: ListRenderItemInfo<IMetadataItem>) => {
     return (
       <LabelRow>
         <Column>
@@ -42,7 +35,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
     )
   }
 
-  // disableing for demo purpose
+  // disabling for demo purpose
   return (
     <Container>
       {/*<SSIConnectionViewItem*/}
@@ -55,9 +48,9 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
         <DetailsCaption>{translate('connection_details_view_details')}</DetailsCaption>
         <DetailsList
           // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
-          data={props.entityConnection.connection.metadata}
+          data={identity.metadata}
           renderItem={renderItem}
-          keyExtractor={(item: IDetails) => item.id}
+          keyExtractor={(item: IMetadataItem) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
         />

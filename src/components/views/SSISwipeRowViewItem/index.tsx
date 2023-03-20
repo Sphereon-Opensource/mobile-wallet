@@ -21,6 +21,7 @@ const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: Fo
   return (
     // TODO fix style issue being an array when using styled component (rightOpenValue / stopRightSwipe)
     // In WAL-410 remove disableLeftSwipe attribute from the following line.
+    // https://github.com/jemise111/react-native-swipe-list-view/issues/614
     <SwipeRow disableRightSwipe disableLeftSwipe={!props.onDelete} rightOpenValue={-97} stopRightSwipe={-97}>
       <HiddenItemContainer
         style={{

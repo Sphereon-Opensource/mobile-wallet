@@ -7,6 +7,7 @@ export interface ICreateContactArgs {
   name: string
   alias: string
   uri?: string
+  identities?: Array<IBasicIdentity>
 }
 
 export interface IAddIdentityArgs {
