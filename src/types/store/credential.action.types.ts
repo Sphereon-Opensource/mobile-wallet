@@ -1,6 +1,3 @@
-import ProofPurpose from '@sphereon/ssi-sdk-vc-handler-ld-local'
-import { CredentialPayload } from '@veramo/core'
-
 import { ICredentialSummary } from '../credential'
 
 export const CREDENTIALS_LOADING = '[CREDENTIAL] CREDENTIALS_LOADING'

@@ -4,9 +4,9 @@ import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
+import { SSIConnectionsViewContainerStyled as Container } from '../../../styles/components' // TODO styling
 import SSIConnectionViewItem from '../SSIConnectionViewItem'
 import SSISwipeRowViewItem from '../SSISwipeRowViewItem'
-import { SSIConnectionsViewContainerStyled as Container } from '../../../styles/components' // TODO styling
 
 export interface IProps {
   identities: Array<IIdentity>

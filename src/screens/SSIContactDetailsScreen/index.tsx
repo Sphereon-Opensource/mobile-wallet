@@ -2,12 +2,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
 import SSIActivityView from '../../components/views/SSIActivityView'
+import SSIIdentitiesView from '../../components/views/SSIConnectionsView'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
 import { SSIBasicContainerSecondaryStyled as Container } from '../../styles/components'
 import { ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
-import SSIIdentitiesView from '../../components/views/SSIConnectionsView'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>
 

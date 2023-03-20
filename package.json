@@ -75,7 +75,7 @@
     "expo-linear-gradient": "~12.1.2",
     "expo-localization": "~14.1.1",
     "expo-modules-autolinking": "~1.1.0",
-    "expo-modules-core": "^1.2.3",
+    "expo-modules-core": "~1.2.5",
     "expo-random": "~13.1.1",
     "expo-splash-screen": "~0.18.1",
     "expo-sqlite": "^11.1.1",

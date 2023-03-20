@@ -1,5 +1,15 @@
+import {
+  AccessTokenResponse,
+  AuthzFlowType,
+  CredentialResponse,
+  EndpointMetadata,
+  Jwt,
+  OpenID4VCIClient,
+  ProofOfPossessionCallbacks
+} from '@sphereon/openid4vci-client'
 import { KeyUse } from '@sphereon/ssi-sdk-jwk-did-provider'
 import { CredentialFormat } from '@sphereon/ssi-types'
+import { _ExtendedIKey } from '@veramo/utils'
 import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
@@ -23,16 +33,6 @@ import {
   SupportedDidMethodEnum
 } from '../../types'
 import { KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey } from '../../utils/KeyUtils'
-import {
-  AccessTokenResponse,
-  AuthzFlowType,
-  CredentialResponse,
-  EndpointMetadata,
-  Jwt,
-  OpenID4VCIClient,
-  ProofOfPossessionCallbacks
-} from '@sphereon/openid4vci-client'
-import { _ExtendedIKey } from '@veramo/utils'
 
 const { v4: uuidv4 } = require('uuid')
 

@@ -1,16 +1,16 @@
 import { CheckLinkedDomain, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { ConnectionTypeEnum, IDidAuthConfig } from '@sphereon/ssi-sdk-data-store'
 import { OpSession, VerifiablePresentationWithDefinition } from '@sphereon/ssi-sdk-did-auth-siop-authenticator'
+import { OID4VP } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'
+import { getKey } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions'
+import { VerifiableCredentialsWithDefinition } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/src/types/IDidAuthSiopOpAuthenticator'
+import { FindCredentialsArgs, IIdentifier } from '@veramo/core'
 import Debug from 'debug'
 
 import { APP_ID } from '../../@config/constants'
-import { ScreenRoutesEnum } from '../../types'
 import agent, {didMethodsSupported} from '../../agent'
-import { FindCredentialsArgs, IIdentifier } from '@veramo/core'
-import { VerifiableCredentialsWithDefinition } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/src/types/IDidAuthSiopOpAuthenticator'
-import { OID4VP } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'
-import { getKey } from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions'
 import RootNavigation from '../../navigation/rootNavigation'
+import { ScreenRoutesEnum } from '../../types'
 
 const debug = Debug(`${APP_ID}:authentication`)
 

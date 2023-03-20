@@ -1,3 +1,4 @@
+import { IIdentity, IMetadataItem } from '@sphereon/ssi-sdk-data-store'
 import React, { FC } from 'react'
 import { ListRenderItemInfo } from 'react-native'
 
@@ -13,7 +14,6 @@ import {
   SSIDetailsViewDetailsListStyled as DetailsList,
   SSIConnectionDetailsViewLabelRowViewStyled as LabelRow
 } from '../../../styles/components'
-import { IIdentity, IMetadataItem } from '@sphereon/ssi-sdk-data-store'
 
 export interface IProps {
   identity: IIdentity

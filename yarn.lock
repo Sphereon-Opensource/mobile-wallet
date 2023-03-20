@@ -8000,10 +8000,18 @@ expo-modules-autolinking@1.1.2, expo-modules-autolinking@~1.1.0:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
 
-expo-modules-core@1.2.4, expo-modules-core@^1.2.3:
+expo-modules-core@1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-1.2.4.tgz#06c0e92b952ae2d3b3329dbeadb6da4f01965d63"
   integrity sha512-AV0NCTy9O8xQqpKgX6gvsDzV1ogpCzYpGxqM85Vw1xHsOF51s7Avu7NdNjBPUZOVuDderUXAvd97dWrtefSKcA==
+  dependencies:
+    compare-versions "^3.4.0"
+    invariant "^2.2.4"
+
+expo-modules-core@~1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-1.2.5.tgz#3f9166f4c32c68ab8ef3e120c70ce9890b711650"
+  integrity sha512-5pXNlLHNKLayOusAFMbqr27gjgymHuKuWl/Dtbw2MjoyJY1MZCGD2nIJxd1TTcfnyxNxLg6OQmgkyqoBUFqBuw==
   dependencies:
     compare-versions "^3.4.0"
     invariant "^2.2.4"

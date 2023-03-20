@@ -6,16 +6,16 @@ import React, { FC } from 'react'
 import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
+import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIPEXVerificationScreenBackgroundImageContainerStyled as ImageContainer,
-  SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
   SSIPEXVerificationScreenMessageStyled as Message,
+  SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
   SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
 } from '../../styles/components'
 import { NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
 import { showToast } from '../../utils/ToastUtils'
-import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
 
 const { v4: uuidv4 } = require('uuid')
 

@@ -23,15 +23,15 @@ import { getDidKeyResolver, KeyDIDProvider } from '@veramo/did-provider-key'
 import { DIDResolverPlugin } from '@veramo/did-resolver'
 import { KeyManager } from '@veramo/key-manager'
 import { KeyManagementSystem, SecretBox } from '@veramo/kms-local'
+import { OrPromise } from '@veramo/utils'
 import { Resolver } from 'did-resolver'
+import { DataSource } from 'typeorm'
 
 import { DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL } from '../@config/constants'
 import { LdContexts } from '../@config/credentials'
 import { DB_CONNECTION_NAME, DB_ENCRYPTION_KEY } from '../@config/database'
 import { getDbConnection } from '../services/databaseService'
 import { KeyManagementSystemEnum, SupportedDidMethodEnum } from '../types'
-import { DataSource } from 'typeorm'
-import { OrPromise } from '@veramo/utils'
 
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
