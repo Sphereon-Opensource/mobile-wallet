@@ -3,6 +3,8 @@ import {ICredential} from '@sphereon/ssi-types';
 import {CredentialStatusEnum, ICredentialSummary} from '../types';
 
 import {EPOCH_MILLISECONDS} from './DateUtils';
+import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
+import store from '../store';
 
 export const getCredentialStatus = (credential: ICredential | ICredentialSummary): CredentialStatusEnum => {
   if (isRevoked()) {
@@ -44,3 +46,19 @@ export const isExpired = (value?: string | number): boolean => {
 
   return expirationDate < Date.now();
 };
+
+export const translateDidToName = (did: string): string => {
+  console.log(`did!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!: ${did}`)
+
+  const contacts = store.getState().contact.contacts
+
+  console.log(`CONTACTS: ${JSON.stringify(contacts)}`)
+
+  const contact = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === did))
+
+  if (!contact) {
+    return did
+  }
+
+  return contact.name
+}
