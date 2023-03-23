@@ -1,4 +1,4 @@
-import { TKeyType } from '@veramo/core'
+import { IIdentifier, TKeyType } from '@veramo/core'
 
 import { SupportedDidMethodEnum } from '../did'
 
@@ -14,6 +14,15 @@ export enum SignatureAlgorithmEnum {
   EdDSA = 'EdDSA',
   ES256 = 'ES256',
   ES256K = 'ES256K'
+}
+
+export interface IAddIdentifierArgs {
+  did: string
+}
+
+export interface ICreateIdentifierArgs {
+  method: SupportedDidMethodEnum
+  createOpts?: ICreateIdentifierOpts
 }
 
 export interface ICreateOrGetIdentifierArgs {

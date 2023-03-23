@@ -1,5 +1,5 @@
 import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import { IContact, IIdentity } from '@sphereon/ssi-sdk-data-store'
+import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store'
 import { VerifiableCredential } from '@veramo/core'
 
 import {
@@ -108,6 +108,7 @@ export interface IContactDetailsProps {
 export interface IContactAddProps {
   name: string
   uri?: string
+  identities?: Array<IBasicIdentity>
   onCreate: () => Promise<void>
 }
 

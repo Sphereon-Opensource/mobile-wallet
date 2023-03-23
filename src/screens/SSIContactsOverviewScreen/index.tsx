@@ -47,10 +47,9 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       listIndex={itemInfo.index}
       viewItem={
         <SSIContactViewItem
-          id={itemInfo.item.id}
           name={itemInfo.item.alias}
           uri={itemInfo.item.uri}
-          roles={[]} // TODO should be an aggregate of the roles on identities
+          roles={itemInfo.item.roles}
         />
       }
       onPress={() => this.onItemPress(itemInfo.item)}

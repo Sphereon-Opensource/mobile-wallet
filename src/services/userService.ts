@@ -1,7 +1,7 @@
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
-import { IUser } from '../types'
+import { BasicUser, BasicUserIdentifier, IUser } from '../types'
 
 import { getUsers as getUsersFromStorage, storeUser } from './storageService'
 
@@ -9,9 +9,18 @@ const debug = Debug(`${APP_ID}:userService`)
 
 const { v4: uuidv4 } = require('uuid')
 
-export const createUser = async (args: Omit<IUser, 'id'>): Promise<IUser> => {
+export const createUser = async (args: BasicUser): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`)
-  const user: IUser = { ...args, id: uuidv4() }
+  const user: IUser = {
+    ...args,
+    id: uuidv4(),
+    identifiers: args.identifiers
+      ? args.identifiers.map((identifier: BasicUserIdentifier) => ({ ...identifier, createdAt: new Date(), lastUpdatedAt: new Date() }))
+      : [],
+    createdAt: new Date(),
+    lastUpdatedAt: new Date()
+  }
+
   return storeUser({ user })
     .then(() => {
       debug(`createUser(${JSON.stringify(args)}) succeeded`)
@@ -25,4 +34,19 @@ export const getUsers = async (): Promise<Map<string, IUser>> => {
   return getUsersFromStorage().catch((error: Error) =>
     Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`))
   )
+}
+
+export const updateUser = async (args: IUser): Promise<IUser> => {
+  debug(`updateUser(${JSON.stringify(args)})...`)
+  const user: IUser = {
+    ...args,
+    lastUpdatedAt: new Date()
+  }
+
+  return storeUser({ user })
+    .then(() => {
+      debug(`updateUser(${JSON.stringify(args)}) succeeded`)
+      return user
+    })
+    .catch((error: Error) => Promise.reject(Error(`Unable to update user. Error: ${error}`)))
 }

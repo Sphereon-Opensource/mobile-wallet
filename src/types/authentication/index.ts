@@ -1,4 +1,3 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { JwtPayload } from 'jwt-decode'
 
 export interface CustomJwtPayload extends JwtPayload {
@@ -9,15 +8,6 @@ export interface CustomJwtPayload extends JwtPayload {
   realm_access: any // TODO fix type
   scope: any // TODO fix type
 }
-
-export type CustomApproval = string | ((verifiedAuthorizationRequest: VerifiedAuthorizationRequest) => Promise<void>)
-
-export enum CustomApprovalEnum {
-  PEX = 'pex',
-  FINGERPRINT = 'fingerprint'
-}
-
-export type IAuthentication = IOpenIdAuthentication | VerifiedAuthorizationRequest
 
 export interface IOpenIdAuthentication {
   accessToken: string

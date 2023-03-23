@@ -163,13 +163,13 @@ class OpenId4VcIssuanceProvider {
     if (!credIssuanceOpt) {
       return Promise.reject(Error(`Cannot get credential issuance options for credential type ${credentialType}`))
     }
-    const id = await getOrCreatePrimaryIdentifier({
+    const identifier = await getOrCreatePrimaryIdentifier({
       method: credIssuanceOpt.didMethod,
       createOpts: { options: { type: credIssuanceOpt.keyType, use: KeyUse.Signature } }
     })
     const key =
-      (await getFirstKeyWithRelation(id, 'authentication', false)) ||
-      ((await getFirstKeyWithRelation(id, 'verificationMethod', true)) as _ExtendedIKey)
+      (await getFirstKeyWithRelation(identifier, 'authentication', false)) ||
+      ((await getFirstKeyWithRelation(identifier, 'verificationMethod', true)) as _ExtendedIKey)
     const kid = key.meta.verificationMethod.id
     const alg = SignatureAlgorithmFromKey(key)
 
@@ -178,7 +178,7 @@ class OpenId4VcIssuanceProvider {
         console.log(`header: ${JSON.stringify({ ...jwt.header, typ: 'JWT', kid })}`)
         console.log(`payload: ${JSON.stringify({ ...jwt.payload })}`)
         return signJWT({
-          identifier: id,
+          identifier,
           header: { ...jwt.header, typ: 'JWT', kid },
           payload: { ...jwt.payload },
           // TODO fix non null assertion

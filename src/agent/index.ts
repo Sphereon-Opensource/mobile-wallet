@@ -102,19 +102,7 @@ const agent = createAgent<
     new DIDResolverPlugin({
       resolver: didResolver
     }),
-    new DidAuthSiopOpAuthenticator(/*undefined, {
-      [CustomApprovalEnum.PEX]: async (
-        verifiedAuthorizationRequest: VerifiedAuthorizationRequest,
-        sessionId: string
-      ) => {
-        RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
-          request: verifiedAuthorizationRequest,
-          sessionId
-        })
-        return Promise.reject(Error('Pex verification manual stop'))
-      },
-      [CustomApprovalEnum.FINGERPRINT]: async () => scanFingerPrint()
-    }*/),
+    new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection)
     }),
@@ -138,7 +126,6 @@ const agent = createAgent<
 
 export const didManagerCreate = agent.didManagerCreate
 export const didManagerFind = agent.didManagerFind
-export const cmGetContact = agent.cmGetContact
 export const cmGetContacts = agent.cmGetContacts
 export const cmAddContact = agent.cmAddContact
 export const cmAddIdentity = agent.cmAddIdentity

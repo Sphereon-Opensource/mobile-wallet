@@ -1,14 +1,13 @@
-import { CorrelationIdentifierEnum } from '@sphereon/ssi-sdk-data-store'
 import { IIdentifier } from '@veramo/core'
 import { Action, CombinedState } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-
 import { getOrCreatePrimaryIdentifier } from '../../services/identityService'
 import { RootState, SupportedDidMethodEnum } from '../../types'
-import { CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS } from '../../types/store/onboarding.action.types'
+import {
+  CLEAR_ONBOARDING,
+  SET_PERSONAL_DATA_SUCCESS
+} from '../../types/store/onboarding.action.types'
 import { ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
-
-import { createContact } from './contact.actions'
 import { createVerifiableCredential } from './credential.actions'
 import { createUser } from './user.actions'
 
@@ -22,33 +21,16 @@ export const setPersonalData = (args: ISetPersonalDataActionArgs): ThunkAction<P
 
 export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
-    const onboardingState = getState().onboarding
-    const user = {
-      firstName: onboardingState.firstName,
-      lastName: onboardingState.lastName,
-      emailAddress: onboardingState.emailAddress
-    }
-
-    dispatch(createUser(user)).then(() => {
-      getOrCreatePrimaryIdentifier({ method: SupportedDidMethodEnum.DID_KEY }).then((identifier: IIdentifier) => {
-        const contactName = `${user.firstName} ${user.lastName}`
-        const correlationId = identifier.did
-        dispatch(
-          createContact({
-            name: contactName,
-            alias: contactName,
-            uri: user.emailAddress,
-            identities: [{
-              alias: correlationId,
-              identifier: {
-                correlationId,
-                type: CorrelationIdentifierEnum.DID
-              }
-            }]
-          })
-        )
-        dispatch(
-          createVerifiableCredential({
+    getOrCreatePrimaryIdentifier({ method: SupportedDidMethodEnum.DID_KEY }).then((identifier: IIdentifier) => {
+      const onboardingState = getState().onboarding
+      const user = {
+        firstName: onboardingState.firstName,
+        lastName: onboardingState.lastName,
+        emailAddress: onboardingState.emailAddress,
+        identifiers: [{ did: identifier.did }]
+      }
+      dispatch(createUser(user)).then(() => {
+        dispatch(createVerifiableCredential({
             credential: {
               '@context': [
                 'https://www.w3.org/2018/credentials/v1',
@@ -66,8 +48,7 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
               }
             },
             proofFormat: 'lds'
-          })
-        )
+        }))
         dispatch({ type: CLEAR_ONBOARDING })
       })
     })

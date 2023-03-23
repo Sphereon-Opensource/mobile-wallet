@@ -52,7 +52,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   }
 
   onCreate = async (): Promise<void> => {
-    const { name, uri, onCreate } = this.props.route.params
+    const { identities, name, uri, onCreate } = this.props.route.params
     const { contactAlias } = this.state
 
     Keyboard.dismiss()
@@ -63,6 +63,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
           name,
           alias: contactAlias.trim(),
           uri,
+          identities
         })
         onCreate()
       })

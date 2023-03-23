@@ -13,10 +13,14 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import { IUser, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
+import { getContacts } from '../../store/actions/contact.actions'
+import { getVerifiableCredentials } from '../../store/actions/credential.actions'
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
   users: Map<string, IUser>
   setActiveUser: (userId: string) => void
+  getContacts: () => void
+  getVerifiableCredentials: () => void
 }
 
 // This screen should be extended to do pin code or biometrics authentication
@@ -29,7 +33,11 @@ class SSILockScreen extends PureComponent<IProps> {
     }
 
     const user: IUser = this.props.users.values().next().value
-    this.props.setActiveUser(user.id)
+
+    // TODO we need some sort of login action that retrieves everything for the user
+    await this.props.setActiveUser(user.id)
+    await this.props.getContacts()
+    await this.props.getVerifiableCredentials()
   }
 
   render() {
@@ -58,7 +66,9 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setActiveUser: (userId: string) => dispatch(setActiveUser(userId))
+    setActiveUser: (userId: string) => dispatch(setActiveUser(userId)),
+    getContacts: () => dispatch(getContacts()),
+    getVerifiableCredentials: () => dispatch(getVerifiableCredentials())
   }
 }
 

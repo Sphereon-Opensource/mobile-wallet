@@ -14,16 +14,39 @@ import * as u8a from 'uint8arrays'
 
 import { DID_PREFIX } from '../@config/constants'
 import agent, { didManagerCreate, didManagerFind, didManagerGet } from '../agent'
-import { ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum } from '../types'
+import {
+  ICreateIdentifierArgs,
+  ICreateOrGetIdentifierArgs,
+  IdentifierAliasEnum,
+  KeyManagementSystemEnum
+} from '../types'
+import store from '../store'
+import { addIdentifier } from '../store/actions/user.actions'
+import { getContacts } from '../store/actions/contact.actions'
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement
   return didManagerFind()
 }
 
-export const createIdentifier = async (): Promise<IIdentifier> => {
-  // TODO fully implement
-  return didManagerCreate()
+export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<IIdentifier> => {
+  const identifier = await didManagerCreate({
+    kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
+    ...(args?.method && { provider: `${DID_PREFIX}:${args?.method}` }),
+    alias:
+      args?.createOpts?.alias ||
+      `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}`,
+    options: args?.createOpts?.options
+  })
+
+  if (store.getState().user.users.size > 0) {
+    console.log(`ADDING NEW IDENTIFIER`)
+    await store.dispatch<any>(addIdentifier({ did: identifier.did })).then(() =>
+      store.dispatch<any>(getContacts())
+    )
+  }
+
+  return identifier
 }
 
 export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise<IIdentifier> => {
@@ -40,14 +63,7 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
   // Currently we only support one identifier
   const identifier: IIdentifier =
     !identifiers || identifiers.length == 0
-      ? await didManagerCreate({
-          kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
-          ...(args?.method && { provider: `${DID_PREFIX}:${args?.method}` }),
-          alias:
-            args?.createOpts?.alias ||
-            `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}`,
-          options: args?.createOpts?.options
-        })
+      ? await createIdentifier(args)
       : identifiers[0]
 
   return didManagerGet({ did: identifier.did })

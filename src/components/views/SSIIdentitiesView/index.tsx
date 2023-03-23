@@ -4,8 +4,8 @@ import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { SSIConnectionsViewContainerStyled as Container } from '../../../styles/components' // TODO styling
-import SSIConnectionViewItem from '../SSIConnectionViewItem'
+import { SSIIdentitiesViewContainerStyled as Container } from '../../../styles/components'
+import SSIIdentityViewItem from '../SSIIdentityViewItem'
 import SSISwipeRowViewItem from '../SSISwipeRowViewItem'
 
 export interface IProps {
@@ -32,11 +32,9 @@ const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
       viewItem={
-        <SSIConnectionViewItem
-          // TODO we need a connection name
+        <SSIIdentityViewItem
           name={itemInfo.item.alias}
-          // TODO we need a connection uri which currently is not available
-          uri={'N/A'}
+          roles={itemInfo.item.roles}
         />
       }
       onPress={() => onItemPress(itemInfo.item)}

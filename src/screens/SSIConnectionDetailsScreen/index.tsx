@@ -13,37 +13,40 @@ import {
 import {
   MainRoutesEnum,
   ScreenRoutesEnum,
-  StackParamList
+  StackParamList, ToastTypeEnum
 } from '../../types'
+import { showToast } from '../../utils/ToastUtils'
+import { authenticate } from '../../services/authenticationService'
 
 const format = require('string-format')
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.IDENTITY_DETAILS>
 
 class SSIConnectionDetailsScreen extends PureComponent<Props> { // TODO screen can be a FC
-  // onConnectConfirm = async (): Promise<void> => {
-  //   this.props
-  //     // TODO fix non null assertion
-  //     .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
-  //     .then(() => this.props.navigation.navigate(MainRoutesEnum.HOME, {})
-  //     )
-  //     .catch((error: Error) => { // TODO does this still work?
-  //       // TODO refactor error type behaviour
-  //       if (!/User cancelled flow/.test(error.message) && !/Pex verification manual stop/.test(error.message)) {
-  //         showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-  //       }
-  //     })
-  // }
+  onConnectConfirm = async (): Promise<void> => {
+    const { identity } = this.props.route.params
+
+    if (!identity.connection) {
+      showToast(ToastTypeEnum.TOAST_ERROR, 'identity must contain a connection') // TODO
+      return
+    }
+
+    authenticate(identity.connection)
+      .catch((error: Error) => {
+        showToast(ToastTypeEnum.TOAST_ERROR, error.message)
+      })
+  }
 
   onConnect = async (): Promise<void> => {
     const { identity } = this.props.route.params
+    const { navigation } = this.props
 
-    this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
+    navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
       message: format(translate('connect_provider_confirm_message'), identity.alias),
       buttons: [
         {
           caption: translate('action_confirm_label'),
-          onPress: async () => console.log('todo')//this.onConnectConfirm
+          onPress: this.onConnectConfirm
         }
       ]
     })

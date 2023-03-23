@@ -14,6 +14,10 @@ export const SET_ACTIVE_USER_SUCCESS = '[USER] SET_ACTIVE_USER_SUCCESS'
 export type SET_ACTIVE_USER_SUCCESS = typeof SET_ACTIVE_USER_SUCCESS
 export const SET_ACTIVE_USER_FAILED = '[USER] SET_ACTIVE_USER_FAILED'
 export type SET_ACTIVE_USER_FAILED = typeof SET_ACTIVE_USER_FAILED
+export const UPDATE_USER_SUCCESS = '[USER] UPDATE_USER_SUCCESS'
+export type UPDATE_USER_SUCCESS = typeof UPDATE_USER_SUCCESS
+export const UPDATE_USER_FAILED = '[USER] UPDATE_USER_FAILED'
+export type UPDATE_USER_FAILED = typeof UPDATE_USER_FAILED
 
 interface IUsersLoading {
   type: USERS_LOADING
@@ -46,6 +50,15 @@ interface ISetActiveUserActionFailedAction {
   type: SET_ACTIVE_USER_FAILED
 }
 
+interface IUpdateUserActionSuccessAction {
+  type: UPDATE_USER_SUCCESS
+  payload: IUser
+}
+
+interface IUpdateUserActionFailedAction {
+  type: UPDATE_USER_FAILED
+}
+
 export type UserActionTypes =
   | IUsersLoading
   | IGetUsersActionFailedAction
@@ -54,3 +67,5 @@ export type UserActionTypes =
   | ICreateUserActionFailedAction
   | ISetActiveUserActionSuccessAction
   | ISetActiveUserActionFailedAction
+  | IUpdateUserActionSuccessAction
+  | IUpdateUserActionFailedAction

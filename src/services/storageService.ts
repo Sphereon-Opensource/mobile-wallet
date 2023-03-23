@@ -44,10 +44,6 @@ export const storeUser = async ({ user }: IStoreUserArgs): Promise<void> => {
         users.set(key, value)
       })
 
-      if (users.get(user.id)) {
-        return Promise.reject('User already exists')
-      }
-
       users.set(user.id, user)
 
       debug(`storeUser(${JSON.stringify(user)}) storing user`)

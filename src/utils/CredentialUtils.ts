@@ -40,7 +40,7 @@ export const isExpired = (value?: string | number): boolean => {
   if (!value) {
     return false
   }
-  const expirationDate = typeof value === 'string' ? new Date(value).valueOf() / EPOCH_MILLISECONDS : value
+  const expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value
 
   return expirationDate < Date.now()
 }

@@ -25,7 +25,7 @@ export const SSIContactViewItemContactDetailsContainerStyled = styled.View`
   margin-bottom: 6px;
 `
 
-export const SSIContactViewItemContactRoleCaptionStyled = styled(SSITextH5LightStyled)`
+export const SSIContactViewItemContactUriCaptionStyled = styled(SSITextH5LightStyled)`
   opacity: 0.8;
 `
 

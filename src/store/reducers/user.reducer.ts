@@ -6,6 +6,8 @@ import {
   GET_USERS_SUCCESS,
   SET_ACTIVE_USER_FAILED,
   SET_ACTIVE_USER_SUCCESS,
+  UPDATE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
   UserActionTypes,
   USERS_LOADING
 } from '../../types/store/user.action.types'
@@ -59,6 +61,20 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       }
     }
     case SET_ACTIVE_USER_FAILED: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        users: state.users.set(action.payload.id, action.payload),
+        activeUser: action.payload,
+        loading: false
+      }
+    }
+    case UPDATE_USER_FAILED: {
       return {
         ...state,
         loading: false

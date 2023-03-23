@@ -1,7 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native'
 import crypto from '@sphereon/isomorphic-webcrypto'
-import * as SplashScreen from 'expo-splash-screen'
 import * as React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import * as SplashScreen from 'expo-splash-screen'
 import { useCallback, useEffect, useState } from 'react'
 import { LogBox, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -15,8 +15,6 @@ import Localization from './src/localization/Localization'
 import AppNavigator from './src/navigation/navigation'
 import { navigationRef } from './src/navigation/rootNavigation'
 import store from './src/store'
-import { getContacts } from './src/store/actions/contact.actions'
-import { getVerifiableCredentials } from './src/store/actions/credential.actions'
 import { getUsers } from './src/store/actions/user.actions'
 import { backgrounds } from './src/styles/colors'
 
@@ -71,16 +69,10 @@ export default function App() {
 
         // Load the redux store
         const actions = bindActionCreators(
-          {
-            getVerifiableCredentials,
-            getContacts,
-            getUsers
-          },
+          { getUsers },
           store.dispatch
         )
         await actions.getUsers()
-        await actions.getVerifiableCredentials()
-        await actions.getContacts()
 
         await intentHandler.enable()
       } catch (e) {

@@ -1,5 +1,10 @@
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
-import { ConnectionTypeEnum, CorrelationIdentifierEnum, IContact } from '@sphereon/ssi-sdk-data-store'
+import {
+  ConnectionTypeEnum,
+  CorrelationIdentifierEnum,
+  IContact,
+  IdentityRoleEnum
+} from '@sphereon/ssi-sdk-data-store'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
@@ -7,8 +12,7 @@ import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
-import JwtVcPresentationProfileProvider
-  from '../providers/credential/JwtVcPresentationProfileProvider'
+import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
 import { storeVerifiableCredential } from '../store/actions/credential.actions'
@@ -58,11 +62,10 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
   try {
     const param = new URL(qrData).searchParams.get('oob')
     if (param) {
-      const iQr = {
+      return {
         ...JSON.parse(Buffer.from(param, 'base64').toString('utf8')),
         redirectUrl: qrData
       }
-      return iQr
     }
   } catch (error: unknown) {
     debug(`Unable to parse QR value as URL. Error: ${error}`)
@@ -126,24 +129,17 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
 
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier = await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
-  const identity = identityFrom({ // TODO identity ipv connection
-    alias: new URL(args.qrData.uri.split('?')[0]).host,
-    identifier: {
-      type: CorrelationIdentifierEnum.DID,
-      correlationId: identifier.did
-    },
-    connection: {
-      type: ConnectionTypeEnum.SIOPv2,
-      config: {
-        identifier,
-        stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
-        redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
-        sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did
-      }
+  const connection = {
+    type: ConnectionTypeEnum.SIOPv2,
+    config: {
+      identifier,
+      stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
+      redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
+      sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did
     }
-  })
+  }
 
-  authenticate(identity)
+  authenticate(connection)
     .then(() => console.log('authentication success'))
     .catch((error) => {
       if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
@@ -153,9 +149,12 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 }
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
+  const url = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1])
+  const identifier = await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   args.navigation.navigate(ScreenRoutesEnum.IDENTITY_DETAILS, {
     identity: identityFrom({
-      alias: new URL(args.qrData.uri.split('?')[0]).host, // fixme: do this on the request_uri value
+      alias: url,
+      roles: [IdentityRoleEnum.VERIFIER],
       identifier: {
         type: CorrelationIdentifierEnum.URL,
         correlationId: args.qrData.uri
@@ -167,7 +166,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           sessionId: args.qrData.id,
           redirectUrl: args.qrData.uri,
           stateId: args.qrData.state,
-          identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+          identifier
         },
       },
       metadata: [
@@ -181,7 +180,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         },
         {
           label: translate('metadata_connection_url_label'),
-          value: decodeURIComponent(args.qrData.uri.split('?request_uri=')[1])
+          value: url
         }
       ]
     })
@@ -214,16 +213,34 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           correlationId: url.hostname
         }
       }
-    }]}).then(
-      (contacts: Array<IContact>) => {
+    }]}).then((contacts: Array<IContact>) => {
+      console.log(`contacts: ${JSON.stringify(contacts.length)}`)
+
         if (contacts.length === 0) {
           args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
             name: url.host,
             uri: `${url.protocol}//${url.hostname}`,
-            identifier: {
-              type: CorrelationIdentifierEnum.URL,
-              correlationId: url.hostname
-            },
+            identities: [{
+              alias: url.hostname,
+              roles: [IdentityRoleEnum.ISSUER],
+              identifier: {
+                type: CorrelationIdentifierEnum.URL,
+                correlationId: url.hostname
+              },
+              // TODO WAL-476 add support for correct connection
+              connection: {
+                type: ConnectionTypeEnum.OPENID_CONNECT,
+                config: {
+                  clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
+                  clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+                  scopes: ['auth'],
+                  issuer: 'https://example.com/app-test',
+                  redirectUrl: 'app:/callback',
+                  dangerouslyAllowInsecureHttpRequests: true,
+                  clientAuthMethod: 'post' as const,
+                },
+              },
+            }],
             onCreate: () => sendResponseOrSelectCredentials(metadata.credentialsSupported)
           })
         } else {

@@ -4,13 +4,18 @@ import {
   IBasicConnection,
   IBasicIdentity,
   IContact,
+  IdentityRoleEnum,
   IIdentity
 } from '@sphereon/ssi-sdk-data-store'
 import Debug from 'debug'
 
 import { APP_ID } from '../@config/constants'
 import { cmAddContact, cmAddIdentity, cmGetContacts } from '../agent'
-import { IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs } from '../types'
+import {
+  IAddIdentityArgs,
+  ICreateContactArgs,
+  IGetContactsArgs
+} from '../types'
 
 const { v4: uuidv4 } = require('uuid')
 
@@ -18,7 +23,7 @@ const debug = Debug(`${APP_ID}:contactService`)
 
 export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IContact>> => {
   debug(`getContacts(${JSON.stringify(args)})...`)
-  return cmGetContacts(args)
+  return await cmGetContacts(args)
 }
 
 export const createContact = async (args: ICreateContactArgs): Promise<IContact> => {
@@ -45,18 +50,20 @@ export const addIdentity = async (args: IAddIdentityArgs): Promise<IIdentity> =>
 
 export const identityFrom = (args: {
   alias: string
+  roles: Array<IdentityRoleEnum>,
   identifier: BasicCorrelationIdentifier
   connection?: IBasicConnection
   metadata?: Array<BasicMetadataItem>
 }): IBasicIdentity => {
   return {
-    alias: args.identifier.correlationId,
+    alias: args.alias,
+    roles: args.roles,
     identifier: args.identifier,
     connection: args.connection,
     metadata: args.metadata
-      ? args.metadata.map((item: BasicMetadataItem) => {
-        return { ...item, id: uuidv4() }
-      })
+      ? args.metadata.map((item: BasicMetadataItem) => (
+        { ...item, id: uuidv4() }
+      ))
       : []
   }
 }

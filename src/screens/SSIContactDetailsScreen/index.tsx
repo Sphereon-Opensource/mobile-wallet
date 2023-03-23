@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { FC } from 'react'
 
 import SSIActivityView from '../../components/views/SSIActivityView'
-import SSIIdentitiesView from '../../components/views/SSIConnectionsView'
+import SSIIdentitiesView from '../../components/views/SSIIdentitiesView'
 import SSIContactViewItem from '../../components/views/SSIContactViewItem'
 import SSITabView from '../../components/views/SSITabView'
 import { translate } from '../../localization/Localization'
@@ -40,10 +40,9 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     // }
   ]
 
-  // TODO contact roles should be an aggregate of the roles on the identities
   return (
     <Container>
-      <SSIContactViewItem id={contact.id} name={contact.alias} uri={contact.uri} roles={[]} />
+      <SSIContactViewItem name={contact.alias} uri={contact.uri} roles={contact.roles} />
       <SSITabView routes={routes} />
     </Container>
   )
