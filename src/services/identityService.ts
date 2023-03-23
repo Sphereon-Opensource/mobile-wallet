@@ -37,7 +37,6 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<II
       setTimeout(() => {
         store.dispatch<any>(getContacts())
       }, 1000);
-
     });
   }
 

@@ -43,7 +43,7 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
 const getUserContact = async (): Promise<IContact> => {
   const userState = store.getState().user;
   // TODO supporting only one user at the moment
-  const user: IUser = userState.users.values().next().value
+  const user: IUser = userState.activeUser!
 
   const userFullName = `${user.firstName} ${user.lastName}`;
 

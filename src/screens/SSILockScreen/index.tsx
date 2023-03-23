@@ -32,9 +32,12 @@ class SSILockScreen extends PureComponent<IProps> {
     const user: IUser = this.props.users.values().next().value;
 
     // TODO we need some sort of login action that retrieves everything for the user
-    await this.props.setActiveUser(user.id);
-    await this.props.getContacts();
-    await this.props.getVerifiableCredentials();
+    await this.props.setActiveUser(user.id)
+    setTimeout(async () => {
+      await this.props.getContacts();
+      await this.props.getVerifiableCredentials();
+    }, 1000);
+
   };
 
   render() {
