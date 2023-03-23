@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
@@ -8,23 +8,23 @@ import {
   SSIWelcomeViewContentContainerStyled as ContentContainer,
   SSIWelcomeViewHeaderTextStyled as HeaderCaption,
   SSIWelcomeViewProgressIndicatorContainerStyled as ProgressIndicatorContainer,
-  SSIWelcomeViewTitleTextStyled as TitleCaption
-} from '../../../styles/components'
-import { IButton } from '../../../types'
-import SSIPrimaryButton from '../../buttons/SSIPrimaryButton'
-import SSIProgressIndicator from '../../indicators/SSIProgressIndicator'
+  SSIWelcomeViewTitleTextStyled as TitleCaption,
+} from '../../../styles/components';
+import {IButton} from '../../../types';
+import SSIPrimaryButton from '../../buttons/SSIPrimaryButton';
+import SSIProgressIndicator from '../../indicators/SSIProgressIndicator';
 
 export interface IProps {
-  step: number
-  maxSteps: number
-  header: string
-  title: string
-  body: string
-  action: IButton
+  step: number;
+  maxSteps: number;
+  header: string;
+  title: string;
+  body: string;
+  action: IButton;
 }
 
 const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
-  const { action, body, header, step, title, maxSteps } = props
+  const {action, body, header, step, title, maxSteps} = props;
 
   return (
     <Container>
@@ -41,13 +41,13 @@ const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
       <ButtonContainer>
         <SSIPrimaryButton
           // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-          style={{ height: 42, width: 300 }}
+          style={{height: 42, width: 300}}
           title={action.caption}
           onPress={action.onPress}
         />
       </ButtonContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIWelcomeView
+export default SSIWelcomeView;

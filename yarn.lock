@@ -3123,21 +3123,11 @@
   resolved "https://registry.yarnpkg.com/@sphereon/react-native-argon2/-/react-native-argon2-2.0.9.tgz#88d68d079a65ecc01501718c35a30f0a58558d21"
   integrity sha512-mXcp3meaKbv5TpEPxItZ1ZuRqkdNf8vjx3EM+GqNVQ8QQF9pbD3jw6wQfuFRPc+8kN+m9GEiVVbd9I0m50OPBg==
 
-"@sphereon/ssi-sdk-connection-manager@^0.9.1-unstable.34+0a44ee7":
-  version "0.9.1-unstable.34"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-connection-manager/-/ssi-sdk-connection-manager-0.9.1-unstable.34.tgz#4fc66b970af7fe66e3823050c19565541b2c778e"
-  integrity sha512-Cqmy8k6Bxr0nBTUaNjD/lituvikVzhwWC7oYrR0QPC9XfHcwhZPKL0tbE3/MDmPsKyO5w2fbZklD/mwdE+G8rg==
+"@sphereon/ssi-sdk-contact-manager@file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.21.0-bram.tgz":
+  version "0.21.0-bram"
+  resolved "file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.21.0-bram.tgz#e1e1c645c4f0f981397804a8c5f0aceab39e8897"
   dependencies:
-    "@sphereon/ssi-sdk-data-store-common" "^0.9.1-unstable.34+0a44ee7"
-    cross-fetch "^3.1.5"
-    typeorm "^0.3.12"
-
-"@sphereon/ssi-sdk-contact-manager@0.9.1-next.56":
-  version "0.9.1-next.56"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-contact-manager/-/ssi-sdk-contact-manager-0.9.1-next.56.tgz#7366eaf1cad6d05349561920f9cdfcfc5a9dbe41"
-  integrity sha512-vI/OqAdlOIlNrxUfC3eyBIDzl5BKaNtbjpiIG6vS3wM3lDk2xq3P3hkkOOQ8WSZmfCzTELRqmaN2nRLi7eBLBw==
-  dependencies:
-    "@sphereon/ssi-sdk-data-store" "^0.9.1-next.56+22d9f1a"
+    "@sphereon/ssi-sdk-data-store" "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz"
     cross-fetch "^3.1.5"
     typeorm "^0.3.12"
 
@@ -3150,35 +3140,13 @@
     "@sphereon/ssi-types" "^0.9.1-next.56+22d9f1a"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk-data-store-common@^0.9.1-unstable.34+0a44ee7":
-  version "0.9.1-unstable.34"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store-common/-/ssi-sdk-data-store-common-0.9.1-unstable.34.tgz#d3454b8d0ea04b88b9b7641a27a27f6826ed37ec"
-  integrity sha512-WBMGML97Nt9ZAMWWNLOItiy/6gITTVXom5eww5rnKfll6LU/3PbjdEJeXsBaiPAf77sEWJP4AntKwn2PAlMjcA==
-  dependencies:
-    "@veramo/core" "4.2.0"
-    "@veramo/utils" "4.2.0"
-    debug "^4.3.4"
-    typeorm "^0.3.12"
-
-"@sphereon/ssi-sdk-data-store@0.9.1-next.56":
-  version "0.9.1-next.56"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-next.56.tgz#32acc48a6ced67892516d94db6271dc4df6f6e04"
-  integrity sha512-emx5yGWzT+tU/Cn1DfxmhnPzpKrNeRu886HvmgrNEVOJwR5kXtGiWJSMlxVY0hsKBrwq0BNxig8Trauqyc2CNg==
+"@sphereon/ssi-sdk-data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz":
+  version "0.21.0-bram"
+  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz#1f9ffbd2752d4f50d1620892bfc363fc0f36f706"
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
     class-validator "^0.14.0"
-    debug "^4.3.4"
-    typeorm "^0.3.12"
-
-"@sphereon/ssi-sdk-data-store@^0.9.1-next.56+22d9f1a":
-  version "0.9.1-unstable.34"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-unstable.34.tgz#1db59db6f3648d4078ced68e08dae0ab139483fe"
-  integrity sha512-OpxAXxHCrxXgiPffK3iEX99ONQwmX234WwQjV4C9a8RqFutQ1b+69/jAS5Dqd/LWGHP5z4LpC6Ya5OjBsZHFsw==
-  dependencies:
-    "@sphereon/ssi-sdk-connection-manager" "^0.9.1-unstable.34+0a44ee7"
-    "@sphereon/ssi-sdk-data-store-common" "^0.9.1-unstable.34+0a44ee7"
-    "@veramo/utils" "4.2.0"
     debug "^4.3.4"
     typeorm "^0.3.12"
 

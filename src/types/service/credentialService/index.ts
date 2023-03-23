@@ -1,13 +1,13 @@
-import { VerifiableCredential } from '@veramo/core'
+import {VerifiableCredential} from '@veramo/core';
 
 export interface IStoreVerifiableCredentialArgs {
-  vc: VerifiableCredential
+  vc: VerifiableCredential;
 }
 
 export interface IGetVerifiableCredentialArgs {
-  hash: string
+  hash: string;
 }
 
 export interface IDeleteVerifiableCredentialArgs {
-  hash: string
+  hash: string;
 }

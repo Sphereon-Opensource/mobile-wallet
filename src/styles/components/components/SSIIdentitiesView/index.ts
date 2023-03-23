@@ -1,7 +1,7 @@
-import styled from 'styled-components/native'
+import styled from 'styled-components/native';
 
-import { SSIBackgroundSecondaryDarkColorCss } from '../../css'
+import {SSIBackgroundSecondaryDarkColorCss} from '../../css';
 
 export const SSIIdentitiesViewContainerStyled = styled.View`
   ${SSIBackgroundSecondaryDarkColorCss};
-`
+`;

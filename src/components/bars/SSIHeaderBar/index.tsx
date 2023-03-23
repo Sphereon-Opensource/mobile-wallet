@@ -1,7 +1,7 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { FC, useEffect } from 'react'
-import { NativeEventEmitter, NativeModules, TouchableWithoutFeedback, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import React, {FC, useEffect} from 'react';
+import {NativeEventEmitter, NativeModules, TouchableWithoutFeedback, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
@@ -13,57 +13,57 @@ import {
   SSIHeaderBarMoreIconStyled as MoreIcon,
   SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
-  SSIFlexDirectionRowViewStyled as Row
-} from '../../../styles/components'
-import { ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton } from '../../../types'
-import SSIProfileIcon from '../../assets/icons/SSIProfileIcon'
-import SSIDropDownList from '../../dropDownLists/SSIDropDownList'
+  SSIFlexDirectionRowViewStyled as Row,
+} from '../../../styles/components';
+import {ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton} from '../../../types';
+import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
+import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 
 interface Props extends NativeStackHeaderProps {
-  headerSubTitle?: string
-  showBorder?: boolean
-  showBackButton?: boolean
-  moreActions?: Array<IMoreMenuButton>
-  showProfileIcon?: boolean
+  headerSubTitle?: string;
+  showBorder?: boolean;
+  showBackButton?: boolean;
+  moreActions?: Array<IMoreMenuButton>;
+  showProfileIcon?: boolean;
 }
 
-const { MyModule } = NativeModules
-export const headerEmitter = new NativeEventEmitter(MyModule)
+const {MyModule} = NativeModules;
+export const headerEmitter = new NativeEventEmitter(MyModule);
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
-  const { showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = [] } = props
-  const [showMoreMenu, setShowMoreMenu] = React.useState(false)
+  const {showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = []} = props;
+  const [showMoreMenu, setShowMoreMenu] = React.useState(false);
 
   useEffect(() => {
     const subscription = headerEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
-      setShowMoreMenu(false)
-    })
+      setShowMoreMenu(false);
+    });
 
     return () => {
-      subscription.remove()
-    }
-  }, [])
+      subscription.remove();
+    };
+  }, []);
 
   const onBack = async (): Promise<void> => {
-    props.navigation.goBack()
-  }
+    props.navigation.goBack();
+  };
 
   const onProfile = async (): Promise<void> => {
-    props.navigation.navigate('Veramo', {})
-  }
+    props.navigation.navigate('Veramo', {});
+  };
 
   const onMore = async (): Promise<void> => {
-    setShowMoreMenu(!showMoreMenu)
-  }
+    setShowMoreMenu(!showMoreMenu);
+  };
 
   const onPress = async (): Promise<void> => {
-    setShowMoreMenu(false)
-  }
+    setShowMoreMenu(false);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onPress} accessible={false}>
-      <Container style={{ marginTop: useSafeAreaInsets().top }} showBorder={showBorder}>
+      <Container style={{marginTop: useSafeAreaInsets().top}} showBorder={showBorder}>
         <Row>
           <LeftColumn>
             {showBackButton && (
@@ -71,9 +71,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
                 <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
               </BackIconContainer>
             )}
-            <HeaderCaption
-              style={{ marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14 }}
-            >
+            <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14}}>
               {props.options.headerTitle}
             </HeaderCaption>
             {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
@@ -86,7 +84,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
             )}
             {moreActions.length > 0 && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />}
             {showMoreMenu && (
-              <View style={{ position: 'absolute', width: 250, right: 10, top: 92 }}>
+              <View style={{position: 'absolute', width: 250, right: 10, top: 92}}>
                 <SSIDropDownList buttons={moreActions} />
               </View>
             )}
@@ -94,7 +92,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
         </Row>
       </Container>
     </TouchableWithoutFeedback>
-  )
-}
+  );
+};
 
-export default SSIHeaderBar
+export default SSIHeaderBar;

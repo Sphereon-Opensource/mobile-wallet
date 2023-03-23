@@ -4,5 +4,5 @@ export enum SupportedDidMethodEnum {
   DID_LTO = 'lto',
   DID_ION = 'ion',
   DID_FACTOM = 'factom',
-  DID_JWK = 'jwk'
+  DID_JWK = 'jwk',
 }

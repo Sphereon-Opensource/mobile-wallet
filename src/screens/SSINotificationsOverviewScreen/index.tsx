@@ -1,18 +1,18 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
 
-import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage'
-import { translate } from '../../localization/Localization'
+import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage';
+import {translate} from '../../localization/Localization';
 import {
   SSIBasicContainerStyled as Container,
   SSINotificationsOverviewScreenEmptyStateContainerStyled as EmptyStateContainer,
   SSINotificationsOverviewScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
   SSITextH4LightStyled as SubTitleText,
-  SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText
-} from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+  SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText,
+} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW>;
 
 const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
@@ -26,7 +26,7 @@ const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element =>
         <SubTitleText>{translate('notifications_overview_empty_state_subtitle')}</SubTitleText>
       </EmptyStateContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSINotificationsOverviewScreen
+export default SSINotificationsOverviewScreen;

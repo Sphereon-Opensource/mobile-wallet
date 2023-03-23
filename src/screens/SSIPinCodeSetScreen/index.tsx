@@ -1,39 +1,36 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { PureComponent } from 'react'
-import { BackHandler, NativeEventSubscription, View } from 'react-native'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {PureComponent} from 'react';
+import {BackHandler, NativeEventSubscription, View} from 'react-native';
 
-import { PIN_CODE_LENGTH } from '../../@config/constants'
-import SSIPinCode from '../../components/pinCodes/SSIPinCode'
-import { translate } from '../../localization/Localization'
-import { storePin } from '../../services/storageService'
-import {
-  SSIBasicHorizontalCenterContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+import {PIN_CODE_LENGTH} from '../../@config/constants';
+import SSIPinCode from '../../components/pinCodes/SSIPinCode';
+import {translate} from '../../localization/Localization';
+import {storePin} from '../../services/storageService';
+import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
 
 enum StateKeyEnum {
   CHOOSE_PIN = 'choose_pin',
-  CONFIRM_PIN = 'confirm_pin'
+  CONFIRM_PIN = 'confirm_pin',
 }
 
 interface IState {
-  pin: string
-  isConfirmPin: boolean
+  pin: string;
+  isConfirmPin: boolean;
 }
 
 class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
-  hardwareBackPressListener: NativeEventSubscription
+  hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     pin: '',
-    isConfirmPin: false
-  }
+    isConfirmPin: false,
+  };
 
   _onBack = (): boolean => {
-    const { navigation } = this.props
-    const { isConfirmPin } = this.state
+    const {navigation} = this.props;
+    const {isConfirmPin} = this.state;
 
     if (isConfirmPin) {
       /**
@@ -41,53 +38,53 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
        * & no other back action will execute
        */
       // TODO fix type issue
-      navigation.setOptions({ headerTitle: translate('pin_code_choose_pin_code_title') })
-      navigation.setParams({ headerSubTitle: translate('pin_code_choose_pin_code_subtitle') })
-      this.setState({ pin: '', isConfirmPin: false })
+      navigation.setOptions({headerTitle: translate('pin_code_choose_pin_code_title')});
+      navigation.setParams({headerSubTitle: translate('pin_code_choose_pin_code_subtitle')});
+      this.setState({pin: '', isConfirmPin: false});
 
-      return true
+      return true;
     }
 
     /**
      * Returning false will let the event bubble up & let other event listeners
      * or the system's default back action to be executed.
      */
-    return false
-  }
+    return false;
+  };
 
   componentDidMount = (): void => {
-    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack)
-  }
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack);
+  };
 
   componentWillUnmount = (): void => {
-    this.hardwareBackPressListener.remove()
-  }
+    this.hardwareBackPressListener.remove();
+  };
 
   onVerification = async (value: string): Promise<void> => {
-    const { navigation } = this.props
-    const { isConfirmPin, pin } = this.state
+    const {navigation} = this.props;
+    const {isConfirmPin, pin} = this.state;
 
     if (isConfirmPin) {
       if (value !== pin) {
-        return Promise.reject(Error('Invalid code'))
+        return Promise.reject(Error('Invalid code'));
       }
 
-      storePin({ value }).then(() => navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {}))
+      storePin({value}).then(() => navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {}));
     } else {
       // TODO fix type issue
-      navigation.setOptions({ headerTitle: translate('pin_code_confirm_pin_code_title') })
-      navigation.setParams({ headerSubTitle: translate('pin_code_confirm_pin_code_subtitle') })
-      this.setState({ pin: value, isConfirmPin: true })
+      navigation.setOptions({headerTitle: translate('pin_code_confirm_pin_code_title')});
+      navigation.setParams({headerSubTitle: translate('pin_code_confirm_pin_code_subtitle')});
+      this.setState({pin: value, isConfirmPin: true});
     }
-  }
+  };
 
   render() {
-    const { isConfirmPin } = this.state
+    const {isConfirmPin} = this.state;
 
     return (
       <Container>
         <StatusBar />
-        <View style={{ marginTop: isConfirmPin ? 127 : 110 }}>
+        <View style={{marginTop: isConfirmPin ? 127 : 110}}>
           <SSIPinCode
             // TODO fix this borderline hacking solution for resetting a components state
             // Setting a new key will force the component to mount a new one, resetting the state of the component
@@ -100,8 +97,8 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
           />
         </View>
       </Container>
-    )
+    );
   }
 }
 
-export default SSIPinCodeSetScreen
+export default SSIPinCodeSetScreen;

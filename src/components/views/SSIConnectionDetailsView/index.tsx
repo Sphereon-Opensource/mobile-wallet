@@ -1,9 +1,9 @@
-import { IIdentity, IMetadataItem } from '@sphereon/ssi-sdk-data-store'
-import React, { FC } from 'react'
-import { ListRenderItemInfo } from 'react-native'
+import {IIdentity, IMetadataItem} from '@sphereon/ssi-sdk-data-store';
+import React, {FC} from 'react';
+import {ListRenderItemInfo} from 'react-native';
 
-import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { translate } from '../../../localization/Localization'
+import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {translate} from '../../../localization/Localization';
 import {
   SSIFlexDirectionColumnHalfViewStyled as Column,
   SSIConnectionDetailsViewRoundedContainerStyled as Container,
@@ -12,15 +12,16 @@ import {
   SSITextH5LightStyled as DetailsItemLabelCaption,
   SSIConnectionDetailsViewValueCaptionStyled as DetailsItemValueCaption,
   SSIDetailsViewDetailsListStyled as DetailsList,
-  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow
-} from '../../../styles/components'
+  SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
+} from '../../../styles/components';
 
 export interface IProps {
-  identity: IIdentity
+  identity: IIdentity;
 }
 
-const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => { // TODO rename to identity?
-  const { identity } = props
+const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
+  // TODO rename to identity?
+  const {identity} = props;
 
   const renderItem = (itemInfo: ListRenderItemInfo<IMetadataItem>) => {
     return (
@@ -32,8 +33,8 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => { /
           <DetailsItemValueCaption>{itemInfo.item.value}</DetailsItemValueCaption>
         </Column>
       </LabelRow>
-    )
-  }
+    );
+  };
 
   // disabling for demo purpose
   return (
@@ -56,7 +57,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => { /
         />
       </DetailLabelsContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIConnectionDetailsView
+export default SSIConnectionDetailsView;

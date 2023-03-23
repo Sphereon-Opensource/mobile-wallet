@@ -1,28 +1,27 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
 
-import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
+import SSIPopup from '../../components/messageBoxes/popups/SSIPopup';
 import {
   SSIBasicModalContainerStyled as Container,
   SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
-  SSIPopupModalContentContainerStyled as ModalContentContainer
-} from '../../styles/components'
-import { MainRoutesEnum, StackParamList } from '../../types'
+  SSIPopupModalContentContainerStyled as ModalContentContainer,
+} from '../../styles/components';
+import {MainRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.POPUP_MODAL>
+type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.POPUP_MODAL>;
 
 const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
-  const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
-    props.route.params
-  const [showExtraDetails, setShowExtraDetails] = React.useState(false)
+  const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
+  const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
   const onShowExtraDetails = async (): Promise<void> => {
-    setShowExtraDetails(true)
-  }
+    setShowExtraDetails(true);
+  };
 
   const onCloseExtraDetails = async (): Promise<void> => {
-    setShowExtraDetails(false)
-  }
+    setShowExtraDetails(false);
+  };
 
   return (
     <Container>
@@ -49,7 +48,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
             detailsPopup
               ? {
                   caption: detailsPopup.buttonCaption,
-                  onPress: onShowExtraDetails
+                  onPress: onShowExtraDetails,
                 }
               : undefined
           }
@@ -58,7 +57,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
         />
       </ModalContentContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIPopupModal
+export default SSIPopupModal;

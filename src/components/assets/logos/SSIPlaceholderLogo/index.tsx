@@ -1,20 +1,20 @@
-import React, { FC } from 'react'
-import { ColorValue, View, ViewStyle } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
+import React, {FC} from 'react';
+import {ColorValue, View, ViewStyle} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
 
-import { logos } from '../../../../styles/colors'
+import {logos} from '../../../../styles/colors';
 
 export interface IProps {
-  size?: number
-  color?: ColorValue
-  style?: ViewStyle
+  size?: number;
+  color?: ColorValue;
+  style?: ViewStyle;
 }
 
 const SSIPlaceholderLogo: FC<IProps> = (props: IProps): JSX.Element => {
-  const { color = logos.default, size = 32, style } = props
+  const {color = logos.default, size = 32, style} = props;
 
   return (
-    <View style={[style, { width: size, aspectRatio: 1 }]}>
+    <View style={[style, {width: size, aspectRatio: 1}]}>
       <Svg width="100%" height="100%" viewBox="0 0 32 32" fill="none">
         <Path
           d="M15.9997 31.9999C11.7563 31.9999 7.68645 30.3141 4.68603 27.3136C1.68548 24.313 0 20.2435 0 15.9999C0 11.7563 1.68548 7.68669 4.68603 4.68627C7.68657 1.68572 11.7561 0 15.9997 0C20.2433 0 24.3129 1.68572 27.3133 4.68627C30.3139 7.68657 31.9994 11.7563 31.9994 15.9999C31.9947 20.2419 30.3075 24.3089 27.3079 27.3082C24.3083 30.3077 20.2415 31.9949 15.9997 31.9999ZM15.9997 0.914927V0.914691C11.9987 0.914691 8.16186 2.50412 5.33238 5.33317C2.50339 8.1624 0.9139 11.9997 0.9139 16.0005C0.9139 20.0015 2.50333 23.8383 5.33238 26.6678C8.16137 29.4968 11.9983 31.0863 15.9997 31.0863C20.0011 31.0863 23.8375 29.4968 26.667 26.6678C29.496 23.8388 31.0855 20.0018 31.0855 16.0005C31.081 12.0009 29.4901 8.16627 26.662 5.33861C23.834 2.51059 19.9997 0.919705 16.0002 0.915174L15.9997 0.914927Z"
@@ -42,7 +42,7 @@ const SSIPlaceholderLogo: FC<IProps> = (props: IProps): JSX.Element => {
         />
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSIPlaceholderLogo
+export default SSIPlaceholderLogo;

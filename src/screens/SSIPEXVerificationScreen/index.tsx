@@ -1,45 +1,45 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { PresentationDefinitionWithLocation } from '@sphereon/did-auth-siop'
-import { ConnectionTypeEnum } from '@sphereon/ssi-sdk-data-store'
-import React, { FC } from 'react'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
+import {ConnectionTypeEnum} from '@sphereon/ssi-sdk-data-store';
+import React, {FC} from 'react';
 
-import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage'
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
-import { translate } from '../../localization/Localization'
-import { siopSendAuthorizationResponse } from '../../providers/authentication/SIOPv2Provider'
+import SSIConnectionsImage from '../../components/assets/images/SSIConnectionsImage';
+import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
+import {translate} from '../../localization/Localization';
+import {siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIPEXVerificationScreenBackgroundImageContainerStyled as ImageContainer,
   SSIPEXVerificationScreenMessageStyled as Message,
   SSIPEXVerificationScreenMessageContainerStyled as MessagesContainer,
-  SSIPEXVerificationScreenMessageTitleStyled as MessageTitle
-} from '../../styles/components'
-import { NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum } from '../../types'
-import { showToast } from '../../utils/ToastUtils'
+  SSIPEXVerificationScreenMessageTitleStyled as MessageTitle,
+} from '../../styles/components';
+import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {showToast} from '../../utils/ToastUtils';
 
-const { v4: uuidv4 } = require('uuid')
+const {v4: uuidv4} = require('uuid');
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PEX_VERIFICATION>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PEX_VERIFICATION>;
 
 const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { navigation } = props
-  const { request, sessionId }  = props.route.params
+  const {navigation} = props;
+  const {request, sessionId} = props.route.params;
 
   const onAccept = async (): Promise<void> => {
-    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, { sessionId })
+    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {sessionId})
       .then(() => {
         navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-        })
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'))
+          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+        });
+        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('authentication_successful_message'));
       })
       // TODO make human-readable message
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message))
-  }
+      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message));
+  };
 
   const onDecline = async (): Promise<void> => {
-    navigation.goBack()
-  }
+    navigation.goBack();
+  };
 
   return (
     <Container>
@@ -60,15 +60,15 @@ const SSIPEXVerificationScreen: FC<Props> = (props: Props): JSX.Element => {
       <SSIButtonsContainer
         secondaryButton={{
           caption: translate('action_decline_label'),
-          onPress: onDecline
+          onPress: onDecline,
         }}
         primaryButton={{
           caption: translate('action_accept_label'),
-          onPress: onAccept
+          onPress: onAccept,
         }}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default SSIPEXVerificationScreen
+export default SSIPEXVerificationScreen;

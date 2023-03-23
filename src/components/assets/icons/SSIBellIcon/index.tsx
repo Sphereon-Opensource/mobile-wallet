@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg'
+import React, {FC} from 'react';
+import Svg, {Defs, LinearGradient, Path, Stop} from 'react-native-svg';
 
 export interface IProps {
-  primaryColor: string
-  secondaryColor: string
+  primaryColor: string;
+  secondaryColor: string;
 }
 
 const SSIBellIcon: FC<IProps> = (props: IProps): JSX.Element => {
@@ -14,20 +14,13 @@ const SSIBellIcon: FC<IProps> = (props: IProps): JSX.Element => {
         fill="url(#paint0_linear_250:3488)"
       />
       <Defs>
-        <LinearGradient
-          id="paint0_linear_250:3488"
-          x1="0"
-          y1="0"
-          x2="20.5397"
-          y2="16.6274"
-          gradientUnits="userSpaceOnUse"
-        >
+        <LinearGradient id="paint0_linear_250:3488" x1="0" y1="0" x2="20.5397" y2="16.6274" gradientUnits="userSpaceOnUse">
           <Stop stopColor={props.primaryColor} />
           <Stop offset="1" stopColor={props.secondaryColor} />
         </LinearGradient>
       </Defs>
     </Svg>
-  )
-}
+  );
+};
 
-export default SSIBellIcon
+export default SSIBellIcon;

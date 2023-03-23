@@ -1,46 +1,41 @@
-import { IIdentity } from '@sphereon/ssi-sdk-data-store'
-import React, { FC } from 'react'
-import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view'
+import {IIdentity} from '@sphereon/ssi-sdk-data-store';
+import React, {FC} from 'react';
+import {ListRenderItemInfo, RefreshControl} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
-import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { SSIIdentitiesViewContainerStyled as Container } from '../../../styles/components'
-import SSIIdentityViewItem from '../SSIIdentityViewItem'
-import SSISwipeRowViewItem from '../SSISwipeRowViewItem'
+import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {SSIIdentitiesViewContainerStyled as Container} from '../../../styles/components';
+import SSIIdentityViewItem from '../SSIIdentityViewItem';
+import SSISwipeRowViewItem from '../SSISwipeRowViewItem';
 
 export interface IProps {
-  identities: Array<IIdentity>
+  identities: Array<IIdentity>;
 }
 
 const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
-  const { identities } = props
-  const [refreshing, setRefreshing] = React.useState(false)
+  const {identities} = props;
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = async (): Promise<void> => {
-    setRefreshing(false)
-  }
+    setRefreshing(false);
+  };
 
   const onDelete = async (): Promise<void> => {
-    console.log('Delete identity pressed!')
-  }
+    console.log('Delete identity pressed!');
+  };
 
   const onItemPress = async (identity: IIdentity): Promise<void> => {
-    console.log('Identity pressed!')
-  }
+    console.log('Identity pressed!');
+  };
 
   const renderItem = (itemInfo: ListRenderItemInfo<IIdentity>): JSX.Element => (
     <SSISwipeRowViewItem
       listIndex={itemInfo.index}
-      viewItem={
-        <SSIIdentityViewItem
-          name={itemInfo.item.alias}
-          roles={itemInfo.item.roles}
-        />
-      }
+      viewItem={<SSIIdentityViewItem name={itemInfo.item.alias} roles={itemInfo.item.roles} />}
       onPress={() => onItemPress(itemInfo.item)}
       onDelete={onDelete}
     />
-  )
+  );
 
   return (
     <Container>
@@ -56,7 +51,7 @@ const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default SSIIdentitiesView
+export default SSIIdentitiesView;

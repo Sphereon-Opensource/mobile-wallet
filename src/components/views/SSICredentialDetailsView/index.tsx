@@ -1,29 +1,27 @@
-import React, { FC } from 'react'
-import { ListRenderItemInfo } from 'react-native'
+import React, {FC} from 'react';
+import {ListRenderItemInfo} from 'react-native';
 
-import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { translate } from '../../../localization/Localization'
+import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {translate} from '../../../localization/Localization';
 import {
   SSICredentialDetailsViewContainerStyled as Container,
   SSIDetailsViewDetailsListStyled as DetailsList,
   SSICredentialDetailsViewFooterContainerStyled as FooterContainer,
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
-  SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel
-} from '../../../styles/components'
-import { ICredentialDetailsRow } from '../../../types'
-import SSITextField from '../../fields/SSITextField'
+  SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
+} from '../../../styles/components';
+import {ICredentialDetailsRow} from '../../../types';
+import SSITextField from '../../fields/SSITextField';
 
 export interface IProps {
-  credentialProperties: Array<ICredentialDetailsRow>
-  issuer?: string
+  credentialProperties: Array<ICredentialDetailsRow>;
+  issuer?: string;
 }
 
 // TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => (
-    <SSITextField item={itemInfo.item} index={itemInfo.index} />
-  )
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => <SSITextField item={itemInfo.item} index={itemInfo.index} />;
 
   const renderFooter = () => (
     <FooterContainer>
@@ -34,7 +32,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
         </>
       )}
     </FooterContainer>
-  )
+  );
 
   return (
     <Container>
@@ -48,7 +46,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
         ListFooterComponent={renderFooter}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default SSICredentialDetailsView
+export default SSICredentialDetailsView;

@@ -1,40 +1,40 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { VerifiableCredential } from '@veramo/core'
-import React, { PureComponent } from 'react'
-import { ListRenderItemInfo, RefreshControl } from 'react-native'
-import { SwipeListView } from 'react-native-swipe-list-view'
-import { connect } from 'react-redux'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {VerifiableCredential} from '@veramo/core';
+import React, {PureComponent} from 'react';
+import {ListRenderItemInfo, RefreshControl} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import {connect} from 'react-redux';
 
-import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
-import SSICredentialViewItem from '../../components/views/SSICredentialViewItem'
-import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem'
-import { translate } from '../../localization/Localization'
-import { getVerifiableCredential } from '../../services/credentialService'
-import { deleteVerifiableCredential, getVerifiableCredentials } from '../../store/actions/credential.actions'
-import { SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar } from '../../styles/components'
-import { ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList } from '../../types'
+import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
+import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
+import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
+import {translate} from '../../localization/Localization';
+import {getVerifiableCredential} from '../../services/credentialService';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
+import {ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 
-const format = require('string-format')
+const format = require('string-format');
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
-  getVerifiableCredentials: () => void
-  deleteVerifiableCredential: (credentialHash: string) => void
-  verifiableCredentials: Array<ICredentialSummary>
+  getVerifiableCredentials: () => void;
+  deleteVerifiableCredential: (credentialHash: string) => void;
+  verifiableCredentials: Array<ICredentialSummary>;
 }
 
 interface IState {
-  refreshing: boolean
+  refreshing: boolean;
 }
 
 class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   state: IState = {
-    refreshing: false
-  }
+    refreshing: false,
+  };
 
   onRefresh = async (): Promise<void> => {
-    this.props.getVerifiableCredentials()
-    this.setState({ refreshing: false })
-  }
+    this.props.getVerifiableCredentials();
+    this.setState({refreshing: false});
+  };
 
   onDelete = async (credentialHash: string, credentialTitle: string): Promise<void> => {
     this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
@@ -43,26 +43,26 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => {
-          this.props.deleteVerifiableCredential(credentialHash)
-          this.props.navigation.goBack()
-        }
+          this.props.deleteVerifiableCredential(credentialHash);
+          this.props.navigation.goBack();
+        },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => this.props.navigation.goBack()
-      }
-    })
-  }
+        onPress: async () => this.props.navigation.goBack(),
+      },
+    });
+  };
 
   onItemPress = async (credential: ICredentialSummary): Promise<void> => {
-    getVerifiableCredential({ hash: credential.id }).then((vc: VerifiableCredential) =>
+    getVerifiableCredential({hash: credential.id}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: vc as VerifiableCredential,
         credential,
-        showActivity: false
-      })
-    )
-  }
+        showActivity: false,
+      }),
+    );
+  };
 
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => (
     <SSISwipeRowViewItem
@@ -82,7 +82,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       onPress={() => this.onItemPress(itemInfo.item)}
       onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
     />
-  )
+  );
 
   render() {
     return (
@@ -100,7 +100,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
           refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
         />
       </Container>
-    )
+    );
   }
 }
 
@@ -108,14 +108,14 @@ const mapDispatchToProps = (dispatch: any) => {
   // TODO ThunkDispatch<any, unknown, Action>
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
-    deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash))
-  }
-}
+    deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash)),
+  };
+};
 
 const mapStateToProps = (state: RootState) => {
   return {
-    verifiableCredentials: state.credential.verifiableCredentials
-  }
-}
+    verifiableCredentials: state.credential.verifiableCredentials,
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SSICredentialsOverviewScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SSICredentialsOverviewScreen);

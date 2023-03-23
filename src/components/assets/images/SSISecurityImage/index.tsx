@@ -1,18 +1,18 @@
-import React, { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
-import Svg, { ClipPath, Defs, G, Path, Rect } from 'react-native-svg'
+import React, {FC} from 'react';
+import {View, ViewStyle} from 'react-native';
+import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg';
 
 export interface IProps {
-  height?: number
-  width?: number
-  style?: ViewStyle
+  height?: number;
+  width?: number;
+  style?: ViewStyle;
 }
 
 const SSISecurityImage: FC<IProps> = (props: IProps): JSX.Element => {
-  const { style, height = 162, width = 233 } = props
+  const {style, height = 162, width = 233} = props;
 
   return (
-    <View style={[style, { height, width }]}>
+    <View style={[style, {height, width}]}>
       <Svg width="100%" height="100%" viewBox="0 0 233 162" fill="none">
         <G clip-path="url(#clip0_2986_20748)">
           <Path
@@ -120,10 +120,7 @@ const SSISecurityImage: FC<IProps> = (props: IProps): JSX.Element => {
             d="M50.6914 29.9184C54.5539 29.9184 57.685 26.7894 57.685 22.9296C57.685 19.0698 54.5539 15.9408 50.6914 15.9408C46.829 15.9408 43.6979 19.0698 43.6979 22.9296C43.6979 26.7894 46.829 29.9184 50.6914 29.9184Z"
             fill="#FFB8B8"
           />
-          <Path
-            d="M59.058 22.0478C52.1338 22.7255 46.8576 21.5938 43.4855 18.3716V15.7767H58.4704L59.058 22.0478Z"
-            fill="black"
-          />
+          <Path d="M59.058 22.0478C52.1338 22.7255 46.8576 21.5938 43.4855 18.3716V15.7767H58.4704L59.058 22.0478Z" fill="black" />
         </G>
         <Defs>
           <ClipPath id="clip0_2986_20748">
@@ -132,7 +129,7 @@ const SSISecurityImage: FC<IProps> = (props: IProps): JSX.Element => {
         </Defs>
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSISecurityImage
+export default SSISecurityImage;

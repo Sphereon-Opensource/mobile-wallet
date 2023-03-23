@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
+import React, {FC} from 'react';
+import {ViewStyle} from 'react-native';
 
 import {
   SSIFlexDirectionRowViewStyled as Container,
@@ -7,21 +7,21 @@ import {
   SSICredentialSelectTypeViewItemContentTextContainerStyled as ContentTextContainer,
   SSITextH4LightStyled as CredentialTypeCaption,
   SSICredentialSelectTypeViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
-  SSICredentialSelectTypeViewItemLogoContainerStyled as LogoContainer
-} from '../../../styles/components'
-import SSICredentialLogo from '../../assets/logos/SSICredentialLogo'
-import SSICheckbox from '../../fields/SSICheckbox'
+  SSICredentialSelectTypeViewItemLogoContainerStyled as LogoContainer,
+} from '../../../styles/components';
+import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
+import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
-  id: string
-  title: string
-  isSelected: boolean
-  image?: string // TODO WAL-302 Support passing in storage location
-  style?: ViewStyle
+  id: string;
+  title: string;
+  isSelected: boolean;
+  image?: string; // TODO WAL-302 Support passing in storage location
+  style?: ViewStyle;
 }
 
 const SSICredentialSelectTypeViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const { image, style, title } = props
+  const {image, style, title} = props;
 
   return (
     <Container>
@@ -37,7 +37,7 @@ const SSICredentialSelectTypeViewItem: FC<Props> = (props: Props): JSX.Element =
         </ContentTextContainer>
       </ContentContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSICredentialSelectTypeViewItem
+export default SSICredentialSelectTypeViewItem;

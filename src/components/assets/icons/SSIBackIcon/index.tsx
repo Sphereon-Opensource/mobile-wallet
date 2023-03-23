@@ -1,20 +1,20 @@
-import React, { FC } from 'react'
-import { ColorValue, View } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
+import React, {FC} from 'react';
+import {ColorValue, View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
 
-import { fonts } from '../../../../styles/colors'
+import {fonts} from '../../../../styles/colors';
 
 export interface IProps {
-  width?: number
-  height?: number
-  color?: ColorValue
+  width?: number;
+  height?: number;
+  color?: ColorValue;
 }
 
 const SSIBackIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { width = 10, height = 19, color = fonts.light } = props
+  const {width = 10, height = 19, color = fonts.light} = props;
 
   return (
-    <View style={{ width, height }}>
+    <View style={{width, height}}>
       <Svg width="100%" height="100%" viewBox="0 0 10 19" fill="none">
         <Path
           d="M0.00139137 9.29184C0.00995381 9.436 0.0666855 9.5731 0.162486 9.68116L7.89504 18.2729C7.95055 18.3391 8.01879 18.3934 8.09571 18.4327C8.17264 18.4719 8.25667 18.4954 8.34282 18.5015C8.42897 18.5077 8.51548 18.4964 8.59721 18.4685C8.67893 18.4406 8.7542 18.3965 8.81856 18.3389C8.88291 18.2813 8.93504 18.2113 8.97182 18.1332C9.00861 18.055 9.0293 17.9703 9.03269 17.884C9.03608 17.7977 9.0221 17.7116 8.99156 17.6308C8.96101 17.55 8.91455 17.4762 8.85491 17.4137L1.51167 9.25157L8.85491 1.08943C8.91455 1.02695 8.96101 0.95313 8.99155 0.872342C9.0221 0.791554 9.0361 0.705451 9.03271 0.619148C9.02932 0.532845 9.00861 0.448105 8.97182 0.369961C8.93504 0.291818 8.88291 0.221866 8.81856 0.164263C8.7542 0.10666 8.67893 0.0625803 8.59721 0.0346436C8.51548 0.00670688 8.42897 -0.00451693 8.34282 0.00163914C8.25667 0.00779521 8.17264 0.0312055 8.09571 0.070479C8.01879 0.109753 7.95055 0.164088 7.89504 0.230256L0.162486 8.82198C0.105887 8.88575 0.0625138 8.96012 0.034861 9.04077C0.00720827 9.12142 -0.00417405 9.20676 0.00139137 9.29184V9.29184Z"
@@ -22,7 +22,7 @@ const SSIBackIcon: FC<IProps> = (props: IProps): JSX.Element => {
         />
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSIBackIcon
+export default SSIBackIcon;

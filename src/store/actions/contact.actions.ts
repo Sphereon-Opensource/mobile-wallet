@@ -1,56 +1,59 @@
-import { CorrelationIdentifierEnum, IContact, IdentityRoleEnum } from '@sphereon/ssi-sdk-data-store'
-import { Action } from 'redux'
-import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { v4 as uuidv4 } from 'uuid'
+import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
+import {Action} from 'redux';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {v4 as uuidv4} from 'uuid';
 
-import { translate } from '../../localization/Localization'
-import { getContacts as getContactsFromStorage, createContact as storeContact } from '../../services/contactService'
-import { IUserIdentifier, RootState, ToastTypeEnum } from '../../types'
+import {translate} from '../../localization/Localization';
+import {getContacts as getContactsFromStorage, createContact as storeContact} from '../../services/contactService';
+import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
-  ICreateContactArgs
-} from '../../types/store/contact.action.types'
-import { showToast } from '../../utils/ToastUtils'
-import store from '../index'
+  ICreateContactArgs,
+} from '../../types/store/contact.action.types';
+import {showToast} from '../../utils/ToastUtils';
+import store from '../index';
 
 export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-    dispatch({ type: CONTACTS_LOADING })
+    dispatch({type: CONTACTS_LOADING});
     getUserContact().then((userContact: IContact) => {
       getContactsFromStorage()
-      .then(async (contacts: Array<IContact>) => dispatch({ type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact] }))
-      .catch(() => dispatch({ type: GET_CONTACTS_FAILED }))
-    })
-  }
-}
+        .then(async (contacts: Array<IContact>) => dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
+        .catch(() => dispatch({type: GET_CONTACTS_FAILED}));
+    });
+  };
+};
 
 export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-    dispatch({ type: CONTACTS_LOADING })
+    dispatch({type: CONTACTS_LOADING});
     storeContact(args)
       .then((contact: IContact) => {
-        dispatch({ type: CREATE_CONTACT_SUCCESS, payload: contact })
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'))
+        dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'));
       })
-      .catch(() => dispatch({ type: CREATE_CONTACT_FAILED }))
-  }
-}
+      .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
+  };
+};
 
 const getUserContact = async (): Promise<IContact> => {
-  const userState = store.getState().user
-  const userFullName = `${userState.activeUser?.firstName} ${userState.activeUser?.lastName}`
+  const userState = store.getState().user;
+  // TODO supporting only one user at the moment
+  const user: IUser = userState.users.values().next().value
+
+  const userFullName = `${user.firstName} ${user.lastName}`;
 
   return {
-    id: userState.activeUser!.id,
+    id: user.id,
     name: userFullName,
     alias: userFullName,
-    uri: userState.activeUser?.emailAddress,
+    uri: user.emailAddress,
     roles: [IdentityRoleEnum.ISSUER],
-    identities: userState.activeUser!.identifiers.map((identifier: IUserIdentifier) => ({
+    identities: user.identifiers.map((identifier: IUserIdentifier) => ({
       id: uuidv4(),
       alias: identifier.did,
       roles: [IdentityRoleEnum.ISSUER],
@@ -62,7 +65,7 @@ const getUserContact = async (): Promise<IContact> => {
       createdAt: identifier.createdAt,
       lastUpdatedAt: identifier.lastUpdatedAt,
     })),
-    createdAt: userState.activeUser!.createdAt,
-    lastUpdatedAt: userState.activeUser!.lastUpdatedAt,
-  }
-}
+    createdAt: user.createdAt,
+    lastUpdatedAt: user.lastUpdatedAt,
+  };
+};

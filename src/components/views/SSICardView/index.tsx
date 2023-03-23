@@ -1,8 +1,8 @@
-import React, { FC } from 'react'
-import { ColorValue, Image, ImageBackground, View, ViewStyle } from 'react-native'
+import React, {FC} from 'react';
+import {ColorValue, Image, ImageBackground, View, ViewStyle} from 'react-native';
 
-import { translate } from '../../../localization/Localization'
-import { backgrounds, credentialCards } from '../../../styles/colors'
+import {translate} from '../../../localization/Localization';
+import {backgrounds, credentialCards} from '../../../styles/colors';
 import {
   SSIAlphaContainerStyled as AlphaContainer,
   SSIBlurredContainerStyled as BlurredView,
@@ -21,30 +21,30 @@ import {
   SSICardViewHeaderLogoContainerStyled as LogoContainer,
   SSICardViewContentPropertiesContainerStyled as PropertiesContainer,
   SSITextH6LightStyled as PropertyValueText,
-  SSICardViewHeaderTitleContainerStyled as TitleContainer
-} from '../../../styles/components'
-import { CredentialStatusEnum } from '../../../types'
-import { toLocalDateString } from '../../../utils/DateUtils'
-import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo'
+  SSICardViewHeaderTitleContainerStyled as TitleContainer,
+} from '../../../styles/components';
+import {CredentialStatusEnum} from '../../../types';
+import {toLocalDateString} from '../../../utils/DateUtils';
+import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo';
 
-const { v4: uuidv4 } = require('uuid')
+const {v4: uuidv4} = require('uuid');
 
 export interface IProps {
-  backgroundColor?: ColorValue
-  backgroundImage?: string // TODO WAL-302 Support passing in storage location
-  logoImage?: string // TODO WAL-302 Support passing in storage location
-  credentialTitle: string
-  credentialSubtitle?: string
-  credentialStatus?: CredentialStatusEnum
-  issuerName?: string
-  expirationDate?: number
-  properties?: Array<IProperty>
-  style?: ViewStyle
+  backgroundColor?: ColorValue;
+  backgroundImage?: string; // TODO WAL-302 Support passing in storage location
+  logoImage?: string; // TODO WAL-302 Support passing in storage location
+  credentialTitle: string;
+  credentialSubtitle?: string;
+  credentialStatus?: CredentialStatusEnum;
+  issuerName?: string;
+  expirationDate?: number;
+  properties?: Array<IProperty>;
+  style?: ViewStyle;
 }
 
 export interface IProperty {
-  name: string
-  value: string
+  name: string;
+  value: string;
 }
 
 const getPropertyElementsFrom = (properties: Array<IProperty>): Array<JSX.Element> => {
@@ -53,15 +53,14 @@ const getPropertyElementsFrom = (properties: Array<IProperty>): Array<JSX.Elemen
     <View
       key={uuidv4()}
       style={{
-        ...(properties.length > 1 && { width: 140 }),
-        ...(index > 0 && { marginLeft: 10 })
-      }}
-    >
+        ...(properties.length > 1 && {width: 140}),
+        ...(index > 0 && {marginLeft: 10}),
+      }}>
       <H4Text>{property.name}</H4Text>
       <PropertyValueText>{property.value}</PropertyValueText>
     </View>
-  ))
-}
+  ));
+};
 
 const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
   const {
@@ -72,25 +71,21 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
     issuerName,
     expirationDate,
     properties,
-    style
-  } = props
+    style,
+  } = props;
 
   // The uri is a transparent pixel in case there is not background image
-  const backgroundImage = props.backgroundImage ? { uri: props.backgroundImage } : { uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="}
-  const logoImage = props.logoImage ? { uri: props.logoImage } : null
+  const backgroundImage = props.backgroundImage
+    ? {uri: props.backgroundImage}
+    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='};
+  const logoImage = props.logoImage ? {uri: props.logoImage} : null;
 
   return (
-    <Container style={[style, { backgroundColor }]}>
-      <ImageBackground style={{ flex: 1 }} source={backgroundImage} resizeMode="cover">
+    <Container style={[style, {backgroundColor}]}>
+      <ImageBackground style={{flex: 1}} source={backgroundImage} resizeMode="cover">
         <AlphaContainer>
           <HeaderContainer>
-            <LogoContainer>
-              {logoImage ? (
-                <Image style={{ flex: 1 }} source={logoImage} resizeMode="contain" />
-              ) : (
-                <SSIPlaceholderLogo />
-              )}
-            </LogoContainer>
+            <LogoContainer>{logoImage ? <Image style={{flex: 1}} source={logoImage} resizeMode="contain" /> : <SSIPlaceholderLogo />}</LogoContainer>
             {credentialTitle && (
               <TitleContainer>
                 <CredentialTitleText>{credentialTitle}</CredentialTitleText>
@@ -123,7 +118,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
         </AlphaContainer>
       </ImageBackground>
     </Container>
-  )
-}
+  );
+};
 
-export default SSICardView
+export default SSICardView;
