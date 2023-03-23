@@ -1,19 +1,26 @@
-import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
+import {
+  CorrelationIdentifierEnum,
+  IContact,
+  IdentityRoleEnum,
+  IIdentity
+} from '@sphereon/ssi-sdk-data-store'
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
 
 import {translate} from '../../localization/Localization';
-import {getContacts as getContactsFromStorage, createContact as storeContact} from '../../services/contactService';
+import {getContacts as getContactsFromStorage, createContact as storeContact, addIdentity as identityAdd} from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
+  ADD_IDENTITY_FAILED,
+  ADD_IDENTITY_SUCCESS,
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
-  GET_CONTACTS_SUCCESS,
-  ICreateContactArgs,
-} from '../../types/store/contact.action.types';
+  GET_CONTACTS_SUCCESS, IAddIdentityArgs,
+  ICreateContactArgs
+} from '../../types/store/contact.action.types'
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 
@@ -37,6 +44,15 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
         showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'));
       })
       .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
+  };
+};
+
+export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: CONTACTS_LOADING});
+    identityAdd(args)
+    .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: { contactId: args.contactId, identity }}))
+    .catch(() => dispatch({type: ADD_IDENTITY_FAILED}));
   };
 };
 

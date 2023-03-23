@@ -1,4 +1,4 @@
-import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
+import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store'
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING;
@@ -10,6 +10,10 @@ export const CREATE_CONTACT_SUCCESS = '[CONTACT] CREATE_CONTACT_SUCCESS';
 export type CREATE_CONTACT_SUCCESS = typeof CREATE_CONTACT_SUCCESS;
 export const CREATE_CONTACT_FAILED = '[CONTACT] STORE_CONTACT_FAILED';
 export type CREATE_CONTACT_FAILED = typeof CREATE_CONTACT_FAILED;
+export const ADD_IDENTITY_SUCCESS = '[CONTACT] ADD_IDENTITY_SUCCESS';
+export type ADD_IDENTITY_SUCCESS = typeof ADD_IDENTITY_SUCCESS;
+export const ADD_IDENTITY_FAILED = '[CONTACT] ADD_IDENTITY_FAILED';
+export type ADD_IDENTITY_FAILED = typeof ADD_IDENTITY_FAILED;
 
 interface IContactsLoading {
   type: CONTACTS_LOADING;
@@ -25,12 +29,21 @@ interface IGetContactsFailedAction {
 }
 
 interface ICreateContactSuccessAction {
-  payload: IContact;
   type: CREATE_CONTACT_SUCCESS;
+  payload: IContact;
 }
 
 interface ICreateContactFailedAction {
   type: CREATE_CONTACT_FAILED;
+}
+
+interface IAddIdentitySuccessAction {
+  type: ADD_IDENTITY_SUCCESS;
+  payload: IAddIdentitySuccessActionPayload;
+}
+
+interface IAddIdentityFailedAction {
+  type: ADD_IDENTITY_FAILED;
 }
 
 export type ContactActionTypes =
@@ -38,11 +51,23 @@ export type ContactActionTypes =
   | IGetContactsSuccessAction
   | IGetContactsFailedAction
   | ICreateContactSuccessAction
-  | ICreateContactFailedAction;
+  | ICreateContactFailedAction
+  | IAddIdentitySuccessAction
+  | IAddIdentityFailedAction
 
 export interface ICreateContactArgs {
   name: string;
   alias: string;
   uri?: string;
   identities?: Array<IBasicIdentity>;
+}
+
+export interface IAddIdentityArgs {
+  contactId: string;
+  identity: IBasicIdentity;
+}
+
+export interface IAddIdentitySuccessActionPayload  {
+  contactId: string
+  identity: IIdentity
 }
