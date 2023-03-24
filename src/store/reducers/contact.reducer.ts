@@ -51,11 +51,9 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
       };
     }
     case ADD_IDENTITY_SUCCESS: {
-      // const contact =  state.contacts.find((contact: IContact) => contact.id === action.payload.contactId)
-      // contact!.identities = [...contact!.identities, action.payload.identity]
       return {
         ...state,
-        contacts: state.contacts.map((contact: IContact) => (contact.id === action.payload.contactId ? { ...contact, identities: [...contact!.identities, action.payload.identity] } : contact)),//state.contacts.map((contact: IContact) => arr2.find(o => o.id === obj.id) || obj)//[...state.contacts, action.payload],
+        contacts: state.contacts.map((contact: IContact) => (contact.id === action.payload.contactId ? { ...contact, identities: [...contact!.identities, action.payload.identity] } : contact)),
         loading: false,
       };
     }

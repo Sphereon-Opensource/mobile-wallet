@@ -18,7 +18,8 @@ import {
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
-  GET_CONTACTS_SUCCESS, IAddIdentityArgs,
+  GET_CONTACTS_SUCCESS,
+  IAddIdentityArgs,
   ICreateContactArgs
 } from '../../types/store/contact.action.types'
 import {showToast} from '../../utils/ToastUtils';

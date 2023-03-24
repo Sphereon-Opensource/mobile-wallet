@@ -79,10 +79,6 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
           ? translateDidToName(verifiableCredential.issuer)
           : translateDidToName(verifiableCredential.issuer?.id)
 
-          // verifiableCredential.issuer?.name
-          //     ? verifiableCredential.issuer?.name
-          //     : verifiableCredential.issuer?.id
-
   console.log(`Signed by: ${signedBy}`)
   console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`)
   const properties = toCredentialDetailsRow(verifiableCredential.credentialSubject)
@@ -91,9 +87,7 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
       typeof verifiableCredential.issuer === 'string'
           ? translateDidToName(verifiableCredential.issuer)
           : translateDidToName(verifiableCredential.issuer?.id)
-          // verifiableCredential.issuer?.name
-          //     ? translateDidToName(verifiableCredential.issuer?.name)
-          //     : translateDidToName(verifiableCredential.issuer?.id)
+
   return {
     id: hash ? hash : verifiableCredential.id ? verifiableCredential.id : 'todo',
     title,
