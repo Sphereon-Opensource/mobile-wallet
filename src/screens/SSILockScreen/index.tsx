@@ -32,7 +32,7 @@ class SSILockScreen extends PureComponent<IProps> {
 
     setTimeout(async () => {
       this.props.getVerifiableCredentials();
-    }, 1000);
+    }, 2000);
   }
 
   onVerification = async (value: string): Promise<void> => {
