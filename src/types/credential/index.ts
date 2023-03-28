@@ -21,17 +21,17 @@ export enum CredentialIssuanceStateEnum {
 export interface ICredentialSummary {
   id: string; // TODO this is the hash of the vc. maybe call this hash to avoid confusion
   title: string;
-  issuer: IIssuerSummary | string;
+  issuer: IIssuerSummary;
   credentialStatus: CredentialStatusEnum;
   issueDate: number;
   expirationDate: number;
   properties: ICredentialDetailsRow[];
-  signedBy: string;
 }
 
 // TODO create proper interface for credential summary / info
 export interface IIssuerSummary {
   name: string;
+  alias: string
   image?: string;
   url?: string;
 }

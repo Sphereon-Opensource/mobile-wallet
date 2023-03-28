@@ -29,8 +29,8 @@ enum CredentialTabRoutesEnum {
 }
 
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {credential, primaryAction, secondaryAction, showActivity = false} = props.route.params;
-  const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.name;
+  const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params;
+  const issuer = credential.issuer.alias;
 
   const routes: Array<ITabViewRoute> = [
     {

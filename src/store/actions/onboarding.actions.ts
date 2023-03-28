@@ -1,4 +1,4 @@
-import {IIdentifier} from '@veramo/core';
+import { IIdentifier, VerifiableCredential } from '@veramo/core'
 import {Action, CombinedState} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
@@ -7,6 +7,10 @@ import {CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS} from '../../types/store/onb
 import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
 import {createVerifiableCredential} from './credential.actions';
 import {createUser} from './user.actions';
+import {
+  createVerifiableCredential as createCredential,
+  storeVerifiableCredential as storeCredential
+} from '../../services/credentialService'
 
 const {v4: uuidv4} = require('uuid');
 
@@ -27,27 +31,26 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
         identifiers: [{did: identifier.did}],
       };
       dispatch(createUser(user)).then(() => {
-        dispatch(
-          createVerifiableCredential({
-            credential: {
-              '@context': [
-                'https://www.w3.org/2018/credentials/v1',
-                'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-              ],
-              id: `urn:uuid:${uuidv4()}`,
-              type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
-              issuer: identifier.did,
-              issuanceDate: new Date(),
-              credentialSubject: {
-                id: identifier.did,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailAddress: user.emailAddress,
-              },
+        createCredential({
+          credential: {
+            '@context': [
+              'https://www.w3.org/2018/credentials/v1',
+              'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
+            ],
+            id: `urn:uuid:${uuidv4()}`,
+            type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
+            issuer: identifier.did,
+            issuanceDate: new Date(),
+            credentialSubject: {
+              id: identifier.did,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              emailAddress: user.emailAddress,
             },
-            proofFormat: 'lds',
-          }),
-        );
+          },
+          proofFormat: 'lds',
+        })
+        .then((vc: VerifiableCredential) => storeCredential({vc}))
         dispatch({type: CLEAR_ONBOARDING});
       });
     });

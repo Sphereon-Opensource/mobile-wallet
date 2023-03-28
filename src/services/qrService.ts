@@ -4,7 +4,7 @@ import {
   CorrelationIdentifierEnum,
   IBasicIdentity,
   IContact,
-  IdentityRoleEnum
+  IdentityRoleEnum, IIdentity
 } from '@sphereon/ssi-sdk-data-store'
 import { CredentialMapper } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
@@ -314,45 +314,54 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             }]
           })
           if (contacts.length > 0) {
+            const correlationId = (vc.issuer as IIssuer).id
             const identity: IBasicIdentity = {
-              alias: (vc.issuer as IIssuer).id,
+              alias: correlationId,
               roles: [IdentityRoleEnum.ISSUER],
               identifier: {
                 type: CorrelationIdentifierEnum.DID,
-                correlationId: (vc.issuer as IIssuer).id
+                correlationId: correlationId
               }
             }
-            store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
+            const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
+            if (!hasIdentity) {
+              // await setTimeout(async () => {
+                store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
+              // }, 1000);
+            }
           }
 
           const rawCredential = credentialResponse.credential as unknown as VerifiableCredential;
           // TODO fix the store not having the correct action types (should include ThunkAction)
           const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
 
-          // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-            screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-            params: {
-              rawCredential,
-              credential: toCredentialSummary(vc),
-              primaryAction: {
-                caption: translate('action_accept_label'),
-                onPress: async () =>
-                  storeCredential(rawCredential)
-                    .then(() =>
-                      args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                      }),
-                    )
-                    .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
-              },
-              secondaryAction: {
-                caption: translate('action_decline_label'),
-                onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
-              },
-            },
-          });
+          await setTimeout(async () => {
+            // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+            args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+                screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+                params: {
+                  rawCredential,
+                  credential: toCredentialSummary(vc),
+                  primaryAction: {
+                    caption: translate('action_accept_label'),
+                    onPress: async () =>
+                      storeCredential(rawCredential)
+                      .then(() =>
+                        args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                        }),
+                      )
+                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+                      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+                  },
+                  secondaryAction: {
+                    caption: translate('action_decline_label'),
+                    onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
+                  },
+                },
+              }
+            );
+          }, 1000);
         }
       })
       .catch((error: Error) => {

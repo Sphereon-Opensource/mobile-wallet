@@ -129,6 +129,7 @@ export const didManagerFind = agent.didManagerFind;
 export const cmGetContacts = agent.cmGetContacts;
 export const cmAddContact = agent.cmAddContact;
 export const cmAddIdentity = agent.cmAddIdentity;
+export const cmGetIdentities = agent.cmGetIdentities;
 export const didManagerGet = agent.didManagerGet;
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials;
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential;

@@ -74,33 +74,33 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
           : typeof verifiableCredential.type === 'string'
               ? verifiableCredential.type
               : verifiableCredential.type.filter((value) => value !== 'VerifiableCredential')[0]
-  const signedBy =
-      typeof verifiableCredential.issuer === 'string'
-          ? translateDidToName(verifiableCredential.issuer)
-          : translateDidToName(verifiableCredential.issuer?.id)
-
-  console.log(`Signed by: ${signedBy}`)
   console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`)
   const properties = toCredentialDetailsRow(verifiableCredential.credentialSubject)
 
   const name =
-      typeof verifiableCredential.issuer === 'string'
-          ? translateDidToName(verifiableCredential.issuer)
-          : translateDidToName(verifiableCredential.issuer?.id)
+    typeof verifiableCredential.issuer === 'string'
+      ? verifiableCredential.issuer
+      : verifiableCredential.issuer?.name
+        ? verifiableCredential.issuer?.name
+        : verifiableCredential.issuer?.id;
+
+  const issuerAlias =
+    typeof verifiableCredential.issuer === 'string'
+      ? translateDidToName(verifiableCredential.issuer)
+      : translateDidToName(verifiableCredential.issuer?.id)
 
   return {
     id: hash ? hash : verifiableCredential.id ? verifiableCredential.id : 'todo',
     title,
     issuer: {
       name: name.length > 50 ? `${name.substring(0, 50)}...` : name,
-
+      alias: issuerAlias,
       image: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.image : undefined,
       url: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined
     },
     credentialStatus,
     issueDate,
     expirationDate,
-    properties,
-    signedBy
+    properties
   }
 }

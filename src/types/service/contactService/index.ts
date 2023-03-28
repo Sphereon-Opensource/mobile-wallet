@@ -1,4 +1,4 @@
-import {FindContactArgs, IBasicIdentity} from '@sphereon/ssi-sdk-data-store';
+import {FindContactArgs, FindIdentityArgs, IBasicIdentity} from '@sphereon/ssi-sdk-data-store';
 
 export interface ICreateContactArgs {
   name: string;
@@ -14,4 +14,8 @@ export interface IAddIdentityArgs {
 
 export interface IGetContactsArgs {
   filter?: FindContactArgs;
+}
+
+export interface IGetIdentitiesArgs {
+  filter?: FindIdentityArgs;
 }
