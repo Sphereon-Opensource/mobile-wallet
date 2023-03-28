@@ -93,8 +93,8 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
     id: hash ? hash : verifiableCredential.id ? verifiableCredential.id : 'todo',
     title,
     issuer: {
-      name: name.length > 50 ? `${name.substring(0, 50)}...` : name,
-      alias: issuerAlias,
+      name,
+      alias: issuerAlias.length > 50 ? `${issuerAlias.substring(0, 50)}...` : issuerAlias,
       image: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.image : undefined,
       url: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined
     },
