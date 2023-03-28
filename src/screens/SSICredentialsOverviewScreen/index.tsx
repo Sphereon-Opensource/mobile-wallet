@@ -78,41 +78,39 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     );
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => (
-    this.props.activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === itemInfo.item.issuer.name)
-    ? <ItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-        }}
-        onPress={() => this.onItemPress(itemInfo.item)}
-      >
-        <SSICredentialViewItem
-          id={itemInfo.item.id}
-          title={itemInfo.item.title}
-          issuer={itemInfo.item.issuer}
-          issueDate={itemInfo.item.issueDate}
-          expirationDate={itemInfo.item.expirationDate}
-          credentialStatus={itemInfo.item.credentialStatus}
-          properties={[]}
-        />
-      </ItemContainer>
-    : <SSISwipeRowViewItem
-        listIndex={itemInfo.index}
-        viewItem={
-          <SSICredentialViewItem
-            id={itemInfo.item.id}
-            title={itemInfo.item.title}
-            issuer={itemInfo.item.issuer}
-            issueDate={itemInfo.item.issueDate}
-            expirationDate={itemInfo.item.expirationDate}
-            credentialStatus={itemInfo.item.credentialStatus}
-            properties={[]}
-          />
-        }
-        onPress={() => this.onItemPress(itemInfo.item)}
-        onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
+  renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
+    const credentialItem = (
+      <SSICredentialViewItem
+        id={itemInfo.item.id}
+        title={itemInfo.item.title}
+        issuer={itemInfo.item.issuer}
+        issueDate={itemInfo.item.issueDate}
+        expirationDate={itemInfo.item.expirationDate}
+        credentialStatus={itemInfo.item.credentialStatus}
+        properties={[]}
       />
-  );
+    );
+
+    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === itemInfo.item.issuer.name)
+      ? (
+        <ItemContainer
+          style={{
+            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+          }}
+          onPress={() => this.onItemPress(itemInfo.item)}
+        >
+          {credentialItem}
+        </ItemContainer>
+      )
+      : (
+        <SSISwipeRowViewItem
+          listIndex={itemInfo.index}
+          viewItem={credentialItem}
+          onPress={() => this.onItemPress(itemInfo.item)}
+          onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
+        />
+      );
+  };
 
   render() {
     return (
