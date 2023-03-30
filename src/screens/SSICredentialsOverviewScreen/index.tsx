@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {VerifiableCredential} from '@veramo/core';
 import React, {PureComponent} from 'react';
-import {ListRenderItemInfo, RefreshControl} from 'react-native';
+import { ListRenderItemInfo, RefreshControl } from 'react-native'
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
@@ -11,15 +11,21 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
+import {
+  SSIBasicContainerStyled as Container,
+  SSIRippleContainerStyled as ItemContainer,
+  SSIStatusBarDarkModeStyled as StatusBar
+} from '../../styles/components'
 import {
   ICredentialSummary,
   IUser,
+  IUserIdentifier,
   MainRoutesEnum,
   RootState,
   ScreenRoutesEnum,
   StackParamList
 } from '../../types'
+import { backgrounds } from '../../styles/colors'
 
 const format = require('string-format');
 
@@ -72,24 +78,42 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     );
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => (
-    <SSISwipeRowViewItem
-      listIndex={itemInfo.index}
-      viewItem={
-        <SSICredentialViewItem
-          id={itemInfo.item.id}
-          title={itemInfo.item.title}
-          issuer={itemInfo.item.issuer}
-          issueDate={itemInfo.item.issueDate}
-          expirationDate={itemInfo.item.expirationDate}
-          credentialStatus={itemInfo.item.credentialStatus}
-          properties={[]}
+  renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
+    const credentialItem = (
+      <SSICredentialViewItem
+        id={itemInfo.item.id}
+        title={itemInfo.item.title}
+        issuer={itemInfo.item.issuer}
+        issueDate={itemInfo.item.issueDate}
+        expirationDate={itemInfo.item.expirationDate}
+        credentialStatus={itemInfo.item.credentialStatus}
+        properties={[]}
+      />
+    );
+
+    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) =>
+        itemInfo.item.issuer.name === identifier.did &&
+        itemInfo.item.title === 'SphereonWalletIdentityCredential'
+    )
+      ? (
+        <ItemContainer
+          style={{
+            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+          }}
+          onPress={() => this.onItemPress(itemInfo.item)}
+        >
+          {credentialItem}
+        </ItemContainer>
+      )
+      : (
+        <SSISwipeRowViewItem
+          listIndex={itemInfo.index}
+          viewItem={credentialItem}
+          onPress={() => this.onItemPress(itemInfo.item)}
+          onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
         />
-      }
-      onPress={() => this.onItemPress(itemInfo.item)}
-      onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
-    />
-  );
+      );
+  };
 
   render() {
     return (
