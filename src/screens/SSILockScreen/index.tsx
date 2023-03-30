@@ -7,17 +7,13 @@ import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
 import {getPin} from '../../services/storageService';
-import {getContacts} from '../../store/actions/contact.actions';
-import {getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {setActiveUser} from '../../store/actions/user.actions';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
-  users: Map<string, IUser>;
-  setActiveUser: (userId: string) => void;
-  getContacts: () => void;
-  getVerifiableCredentials: () => void;
+  users: Map<string, IUser>
+  setActiveUser: (userId: string) => void
 }
 
 // This screen should be extended to do pin code or biometrics authentication
@@ -26,13 +22,6 @@ class SSILockScreen extends PureComponent<IProps> {
   onLogin = async (): Promise<void> => {
     const user: IUser = this.props.users.values().next().value;
     await this.props.setActiveUser(user.id)
-    setTimeout(async () => {
-      this.props.getContacts();
-    }, 1000);
-
-    setTimeout(async () => {
-      this.props.getVerifiableCredentials();
-    }, 1000);
   }
 
   onVerification = async (value: string): Promise<void> => {
@@ -70,9 +59,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setActiveUser: (userId: string) => dispatch(setActiveUser(userId)),
-    getContacts: () => dispatch(getContacts()),
-    getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
+    setActiveUser: (userId: string) => dispatch(setActiveUser(userId))
   };
 };
 

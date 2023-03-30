@@ -512,6 +512,7 @@ const AuthenticationStack = (): JSX.Element => {
  */
 const AppNavigator = (): JSX.Element => {
   const userState = useSelector((state: RootState) => state.user);
+  const onboardingState = useSelector((state: RootState) => state.onboarding);
 
   return (
     <Stack.Navigator
@@ -521,7 +522,7 @@ const AppNavigator = (): JSX.Element => {
       }}>
       {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : !userState.activeUser ? (
+      ) : !userState.activeUser && !onboardingState.firstName ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
