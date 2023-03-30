@@ -12,7 +12,14 @@ import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
-import {ICredentialSummary, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {
+  ICredentialSummary,
+  IUser,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList
+} from '../../types'
 
 const format = require('string-format');
 
@@ -20,6 +27,7 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
   verifiableCredentials: Array<ICredentialSummary>;
+  activeUser: IUser;
 }
 
 interface IState {
@@ -76,7 +84,6 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
           expirationDate={itemInfo.item.expirationDate}
           credentialStatus={itemInfo.item.credentialStatus}
           properties={[]}
-          signedBy={itemInfo.item.signedBy}
         />
       }
       onPress={() => this.onItemPress(itemInfo.item)}
@@ -115,6 +122,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const mapStateToProps = (state: RootState) => {
   return {
     verifiableCredentials: state.credential.verifiableCredentials,
+    activeUser: state.user.activeUser!
   };
 };
 

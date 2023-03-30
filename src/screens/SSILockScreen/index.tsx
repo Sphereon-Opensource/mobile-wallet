@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react'
 import {View} from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux'
 
 import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
@@ -23,21 +23,25 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
 // This screen should be extended to do pin code or biometrics authentication
 
 class SSILockScreen extends PureComponent<IProps> {
+  onLogin = async (): Promise<void> => {
+    const user: IUser = this.props.users.values().next().value;
+    await this.props.setActiveUser(user.id)
+    setTimeout(async () => {
+      this.props.getContacts();
+    }, 1000);
+
+    setTimeout(async () => {
+      this.props.getVerifiableCredentials();
+    }, 2000);
+  }
+
   onVerification = async (value: string): Promise<void> => {
     // We are currently only supporting a single user right now
-    if (value !== (await getPin())) {
+    if (value !== await getPin()) {
       return Promise.reject('Invalid pin code');
     }
 
-    const user: IUser = this.props.users.values().next().value;
-
-    // TODO we need some sort of login action that retrieves everything for the user
-    await this.props.setActiveUser(user.id)
-    setTimeout(async () => {
-      await this.props.getContacts();
-      await this.props.getVerifiableCredentials();
-    }, 1000);
-
+    await this.onLogin()
   };
 
   render() {

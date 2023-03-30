@@ -10,8 +10,8 @@ import {
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {cmAddContact, cmAddIdentity, cmGetContacts} from '../agent';
-import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs} from '../types';
+import {cmAddContact, cmAddIdentity, cmGetContacts, cmGetIdentities} from '../agent';
+import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IGetIdentitiesArgs} from '../types';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -40,6 +40,11 @@ export const addIdentity = async (args: IAddIdentityArgs): Promise<IIdentity> =>
       return identity;
     })
     .catch((error: Error) => Promise.reject(Error(`Unable to add identity to contact ${args.contactId}. Error: ${error}`)));
+};
+
+export const getIdentities = async (args?: IGetIdentitiesArgs): Promise<Array<IIdentity>> => {
+  debug(`getIdentities(${JSON.stringify(args)})...`);
+  return await cmGetIdentities(args);
 };
 
 export const identityFrom = (args: {

@@ -101,7 +101,6 @@ class Veramo extends PureComponent<IProps, IState> {
                     value: 'Newco. B.V.',
                   },
                 ],
-                signedBy: 'Firm 24',
                 state: CredentialIssuanceStateEnum.OFFER,
                 issuanceDate: '2021-12-11T16:32:08.845Z',
                 credentialSubject: {
