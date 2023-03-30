@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
-import { SSIBasicContainerStyled as RouteContainer } from '../../../styles/components'
+import {SSIBasicContainerStyled as RouteContainer} from '../../../styles/components';
 
 // TODO implement activity view
 
@@ -8,7 +8,7 @@ import { SSIBasicContainerStyled as RouteContainer } from '../../../styles/compo
 export interface IProps {}
 
 const SSIActivityView: FC<IProps> = (props: IProps): JSX.Element => {
-  return <RouteContainer style={{ backgroundColor: '#2C334B' }} />
-}
+  return <RouteContainer style={{backgroundColor: '#2C334B'}} />;
+};
 
-export default SSIActivityView
+export default SSIActivityView;

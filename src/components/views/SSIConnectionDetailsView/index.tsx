@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
-import { ListRenderItemInfo } from 'react-native'
+import {IIdentity, IMetadataItem} from '@sphereon/ssi-sdk-data-store';
+import React, {FC} from 'react';
+import {ListRenderItemInfo} from 'react-native';
 
-import { DETAILS_INITIAL_NUMBER_TO_RENDER } from '../../../@config/constants'
-import { translate } from '../../../localization/Localization'
+import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {translate} from '../../../localization/Localization';
 import {
   SSIFlexDirectionColumnHalfViewStyled as Column,
   SSIConnectionDetailsViewRoundedContainerStyled as Container,
@@ -12,24 +13,17 @@ import {
   SSIConnectionDetailsViewValueCaptionStyled as DetailsItemValueCaption,
   SSIDetailsViewDetailsListStyled as DetailsList,
   SSIConnectionDetailsViewLabelRowViewStyled as LabelRow,
-  SSIConnectionDetailsViewSeparatorStyled as Separator
-} from '../../../styles/components'
-import { IConnectionViewItem } from '../../../types'
-import SSIConnectionViewItem from '../SSIConnectionViewItem'
+} from '../../../styles/components';
 
 export interface IProps {
-  entityConnection: IConnectionViewItem
-}
-
-// TODO interface should be replaced by proper interface for connection details
-export interface IDetails {
-  id: string
-  label: string
-  value: string
+  identity: IIdentity;
 }
 
 const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<IDetails>) => {
+  // TODO rename to identity?
+  const {identity} = props;
+
+  const renderItem = (itemInfo: ListRenderItemInfo<IMetadataItem>) => {
     return (
       <LabelRow>
         <Column>
@@ -39,10 +33,10 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           <DetailsItemValueCaption>{itemInfo.item.value}</DetailsItemValueCaption>
         </Column>
       </LabelRow>
-    )
-  }
+    );
+  };
 
-  // disableing for demo purpose
+  // disabling for demo purpose
   return (
     <Container>
       {/*<SSIConnectionViewItem*/}
@@ -55,15 +49,15 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
         <DetailsCaption>{translate('connection_details_view_details')}</DetailsCaption>
         <DetailsList
           // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
-          data={props.entityConnection.connection.metadata}
+          data={identity.metadata}
           renderItem={renderItem}
-          keyExtractor={(item: IDetails) => item.id}
+          keyExtractor={(item: IMetadataItem) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
         />
       </DetailLabelsContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIConnectionDetailsView
+export default SSIConnectionDetailsView;

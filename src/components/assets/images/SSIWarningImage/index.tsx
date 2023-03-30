@@ -1,18 +1,18 @@
-import React, { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
-import Svg, { ClipPath, Defs, G, Path, Rect } from 'react-native-svg'
+import React, {FC} from 'react';
+import {View, ViewStyle} from 'react-native';
+import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg';
 
 export interface IProps {
-  height?: number
-  width?: number
-  style?: ViewStyle
+  height?: number;
+  width?: number;
+  style?: ViewStyle;
 }
 
 const SSIWarningImage: FC<IProps> = (props: IProps): JSX.Element => {
-  const { style, height = 162, width = 233 } = props
+  const {style, height = 162, width = 233} = props;
 
   return (
-    <View style={[style, { height, width }]}>
+    <View style={[style, {height, width}]}>
       <Svg width="100%" height="100%" viewBox="0 0 233 162" fill="none">
         <G clip-path="url(#clip0_7923_5726)">
           <Path
@@ -97,7 +97,7 @@ const SSIWarningImage: FC<IProps> = (props: IProps): JSX.Element => {
         </Defs>
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSIWarningImage
+export default SSIWarningImage;

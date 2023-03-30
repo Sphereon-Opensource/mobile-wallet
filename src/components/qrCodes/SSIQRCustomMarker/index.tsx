@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
 import {
   SSIQRCustomMarkerBottomContainerStyled as BottomContainer,
@@ -8,12 +8,12 @@ import {
   SSIQRCustomMarkerSideSpaceStyled as SideSpace,
   SSITextH4LightStyled as SubTitle,
   SSITextH1LightStyled as Title,
-  SSIQRCustomMarkerTopContainerStyled as TopContainer
-} from '../../../styles/components'
+  SSIQRCustomMarkerTopContainerStyled as TopContainer,
+} from '../../../styles/components';
 
 export interface IProps {
-  title: string
-  subtitle: string
+  title: string;
+  subtitle: string;
 }
 
 const SSIQRCustomMarker: FC<IProps> = (props: IProps): JSX.Element => {
@@ -30,7 +30,7 @@ const SSIQRCustomMarker: FC<IProps> = (props: IProps): JSX.Element => {
       </ContentContainer>
       <SideSpace />
     </Container>
-  )
-}
+  );
+};
 
-export default SSIQRCustomMarker
+export default SSIQRCustomMarker;

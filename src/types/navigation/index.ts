@@ -1,139 +1,132 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
-import { CorrelationIdentifierEnum, IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
-import { VerifiableCredential } from '@veramo/core'
+import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
+import {VerifiableCredential} from '@veramo/core';
 
-import {
-  IButton,
-  IConnectionViewItem,
-  ICredentialSummary,
-  ICredentialTypeSelection,
-  PopupBadgesEnum,
-  PopupImagesEnum
-} from '../index'
+import {IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
 
 export type StackParamList = {
-  CredentialsOverview: Record<string, never>
-  CredentialDetails: ICredentialDetailsProps
-  CredentialRawJson: ICredentialRawJsonProps
-  ConnectionsOverview: Record<string, never>
-  // TODO create interface like bellow and fix this omit, define better interfaces
-  ConnectionDetails: Omit<IConnectionViewItem, 'connectionStatus'>
-  PexVerification: IPexVerificationProps
-  QrReader: Record<string, never>
-  Veramo: Record<string, never>
-  Home: Record<string, never>
-  VerificationCode: IVerificationCodeProps
-  AlertModal: IAlertModalProps
-  PopupModal: IPopupModalProps
-  Error: IPopupModalProps
-  CredentialSelectType: ICredentialSelectTypeProps
-  ContactsOverview: Record<string, never>
-  ContactDetails: IContactDetailsProps
-  ContactAdd: IContactAddProps
-  Onboarding: Record<string, never>
-  Welcome: Record<string, never>
-  Main: Record<string, never>
-  TermsOfService: Record<string, never>
-  PersonalData: Record<string, never>
-  PinCodeSet: IPinCodeSetProps
-  NotificationsOverview: Record<string, never>
-  Lock: Record<string, never>
-  Authentication: Record<string, never>
-  OnboardingSummary: Record<string, never>
+  CredentialsOverview: Record<string, never>;
+  CredentialDetails: ICredentialDetailsProps;
+  CredentialRawJson: ICredentialRawJsonProps;
+  ConnectionsOverview: Record<string, never>;
+  IdentityDetails: IIdentityDetailsProps;
+  PexVerification: IPexVerificationProps;
+  QrReader: Record<string, never>;
+  Veramo: Record<string, never>;
+  Home: Record<string, never>;
+  VerificationCode: IVerificationCodeProps;
+  AlertModal: IAlertModalProps;
+  PopupModal: IPopupModalProps;
+  Error: IPopupModalProps;
+  CredentialSelectType: ICredentialSelectTypeProps;
+  ContactsOverview: Record<string, never>;
+  ContactDetails: IContactDetailsProps;
+  ContactAdd: IContactAddProps;
+  Onboarding: Record<string, never>;
+  Welcome: Record<string, never>;
+  Main: Record<string, never>;
+  TermsOfService: Record<string, never>;
+  PersonalData: Record<string, never>;
+  PinCodeSet: IPinCodeSetProps;
+  NotificationsOverview: Record<string, never>;
+  Lock: Record<string, never>;
+  Authentication: Record<string, never>;
+  OnboardingSummary: Record<string, never>;
+};
+
+export interface IIdentityDetailsProps {
+  identity: IIdentity;
 }
 
 export interface ICredentialDetailsProps {
-  credential: ICredentialSummary
-  primaryAction?: IButton
-  secondaryAction?: IButton
-  showActivity?: boolean
+  credential: ICredentialSummary;
+  primaryAction?: IButton;
+  secondaryAction?: IButton;
+  showActivity?: boolean;
   /*
    TODO WAL-340
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
-  rawCredential?: VerifiableCredential
+  rawCredential?: VerifiableCredential;
 }
 
 export interface ICredentialRawJsonProps {
-  rawCredential: VerifiableCredential
+  rawCredential: VerifiableCredential;
 }
 
 export interface IPexVerificationProps {
-  request: VerifiedAuthorizationRequest
-  sessionId: string
+  request: VerifiedAuthorizationRequest;
+  sessionId: string;
 }
 
 export interface IVerificationCodeProps {
-  pinLength?: number
-  onVerification: (pin: string) => Promise<void>
-  credentialName: string
+  pinLength?: number;
+  onVerification: (pin: string) => Promise<void>;
+  credentialName: string;
 }
 
 export interface IAlertModalProps {
-  message: string
-  buttons: Array<IButton>
-  showCancel?: boolean
+  message: string;
+  buttons: Array<IButton>;
+  showCancel?: boolean;
 }
 
 export interface IPopupModalProps {
-  onClose?: () => Promise<void>
-  image?: PopupImagesEnum
-  title?: string
-  titleBadge?: PopupBadgesEnum
-  details?: string
-  extraDetails?: string
+  onClose?: () => Promise<void>;
+  image?: PopupImagesEnum;
+  title?: string;
+  titleBadge?: PopupBadgesEnum;
+  details?: string;
+  extraDetails?: string;
   detailsPopup?: {
-    buttonCaption: string
-    title?: string
-    details?: string
-    extraDetails?: string
-  }
-  primaryButton?: IButton
-  secondaryButton?: IButton
+    buttonCaption: string;
+    title?: string;
+    details?: string;
+    extraDetails?: string;
+  };
+  primaryButton?: IButton;
+  secondaryButton?: IButton;
 }
 
 export interface ICredentialSelectTypeProps {
-  issuer: string
-  credentialTypes: Array<ICredentialTypeSelection>
-  onAccept: (credentialTypes: Array<string>) => Promise<void>
+  issuer: string;
+  credentialTypes: Array<ICredentialTypeSelection>;
+  onAccept: (credentialTypes: Array<string>) => Promise<void>;
 }
 
 export interface IContactDetailsProps {
-  contact: IConnectionParty
+  contact: IContact;
 }
 
 export interface IContactAddProps {
-  name: string
-  uri?: string
-  identifier: {
-    type: CorrelationIdentifierEnum
-    correlationId: string
-  }
-  onCreate: () => Promise<void>
+  name: string;
+  uri?: string;
+  identities?: Array<IBasicIdentity>;
+  onCreate: () => Promise<void>;
 }
 
 export interface IPinCodeSetProps {
-  headerSubTitle: string
+  headerSubTitle: string;
 }
 
 export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
   AUTHENTICATION = 'Authentication',
-  MAIN = 'Main'
+  MAIN = 'Main',
 }
 
 export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
-  POPUP_MODAL = 'PopupModal'
+  POPUP_MODAL = 'PopupModal',
 }
 
 export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
   NOTIFICATIONS = 'NotificationsStack',
   CREDENTIALS = 'CredentialsStack',
-  CONTACTS = 'ContactsStack'
+  CONTACTS = 'ContactsStack',
 }
 
 export enum ScreenRoutesEnum {
@@ -144,8 +137,7 @@ export enum ScreenRoutesEnum {
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
   PEX_VERIFICATION = 'PexVerification',
-  CONNECTIONS_OVERVIEW = 'ConnectionsOverview',
-  CONNECTION_DETAILS = 'ConnectionDetails',
+  IDENTITY_DETAILS = 'IdentityDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
@@ -156,5 +148,5 @@ export enum ScreenRoutesEnum {
   PIN_CODE_SET = 'PinCodeSet',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
-  ONBOARDING_SUMMARY = 'OnboardingSummary'
+  ONBOARDING_SUMMARY = 'OnboardingSummary',
 }

@@ -1,52 +1,51 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
 
-import SSIActivityView from '../../components/views/SSIActivityView'
-/*import SSIConnectionsView from '../../components/views/SSIConnectionsView'*/
-import SSIContactViewItem from '../../components/views/SSIContactViewItem'
-import SSITabView from '../../components/views/SSITabView'
-import { translate } from '../../localization/Localization'
-import { SSIBasicContainerSecondaryStyled as Container } from '../../styles/components'
-import { ITabViewRoute, ScreenRoutesEnum, StackParamList } from '../../types'
+import SSIActivityView from '../../components/views/SSIActivityView';
+import SSIIdentitiesView from '../../components/views/SSIIdentitiesView';
+import SSIContactViewItem from '../../components/views/SSIContactViewItem';
+import SSITabView from '../../components/views/SSITabView';
+import {translate} from '../../localization/Localization';
+import {SSIBasicContainerSecondaryStyled as Container} from '../../styles/components';
+import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>;
 
 enum ContactTabRoutesEnum {
   INFO = 'info',
-  CONNECTIONS = 'connections',
-  ACTIVITY = 'activity'
+  IDENTITIES = 'identities',
+  ACTIVITY = 'activity',
 }
 
 const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { contact } = props.route.params
+  const {contact} = props.route.params;
 
   const routes: Array<ITabViewRoute> = [
     {
       key: ContactTabRoutesEnum.INFO,
       title: translate('contact_details_info_tab_header_label'),
       // TODO WAL-350 implement content
-      content: () => <SSIActivityView />
-    } /*,
-    {
-      key: ContactTabRoutesEnum.CONNECTIONS,
-      title: translate('contact_details_connections_tab_header_label'),
-      content: () => <SSIConnectionsView connections={contact.connections} />
+      content: () => <SSIActivityView />,
     },
     {
-      key: ContactTabRoutesEnum.ACTIVITY,
-      title: translate('contact_details_activity_tab_header_label'),
-      // TODO WAL-358 implement content
-      content: () => <SSIActivityView />
-    }*/
-  ]
+      key: ContactTabRoutesEnum.IDENTITIES,
+      title: translate('contact_details_identities_tab_header_label'),
+      content: () => <SSIIdentitiesView identities={contact.identities} />,
+    },
+    // {
+    //   key: ContactTabRoutesEnum.ACTIVITY,
+    //   title: translate('contact_details_activity_tab_header_label'),
+    //   // TODO WAL-358 implement content
+    //   content: () => <SSIActivityView />
+    // }
+  ];
 
-  // TODO contact roles should be an aggregate of the roles on the identities
   return (
     <Container>
-      <SSIContactViewItem id={contact.id} name={contact.alias} uri={contact.uri} roles={[]} />
+      <SSIContactViewItem name={contact.alias} uri={contact.uri} roles={contact.roles} />
       <SSITabView routes={routes} />
     </Container>
-  )
-}
+  );
+};
 
-export default SSIContactDetailsScreen
+export default SSIContactDetailsScreen;

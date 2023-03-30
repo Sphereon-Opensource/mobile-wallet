@@ -1,52 +1,51 @@
-import { ComponentType } from 'react'
-import { ColorValue } from 'react-native'
+import {ComponentType} from 'react';
+import {ColorValue} from 'react-native';
 
-import { ConnectionStatusEnum } from '../connection'
-import { CredentialStatusEnum, IssuerStatusEnum } from '../credential'
+import {CredentialStatusEnum, IssuerStatusEnum} from '../credential';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
   MORE = 'more',
-  CLOSE = 'close'
+  CLOSE = 'close',
 }
 
 export enum MoreMenuIconsEnum {
   ADD = 'add',
-  DELETE = 'delete'
+  DELETE = 'delete',
 }
 
 export enum PopupImagesEnum {
   SECURITY = 'security',
-  WARNING = 'warning'
+  WARNING = 'warning',
 }
 
 export enum PopupBadgesEnum {
   CHECK_MARK = 'checkMark',
-  EXCLAMATION_MARK = 'exclamationMark'
+  EXCLAMATION_MARK = 'exclamationMark',
 }
 
 export interface IHeaderProps {
-  showBorder: boolean
+  showBorder: boolean;
 }
 
 export interface IButton {
-  caption: string
-  onPress: () => Promise<void>
-  disabled?: boolean
+  caption: string;
+  onPress: () => Promise<void>;
+  disabled?: boolean;
 }
 
 export interface IMoreMenuButton extends IButton {
-  icon?: MoreMenuIconsEnum
-  fontColor?: ColorValue
+  icon?: MoreMenuIconsEnum;
+  fontColor?: ColorValue;
 }
 
-export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum | ConnectionStatusEnum
+export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum;
 
 export interface ITabRoute {
-  key: string
-  title: string
+  key: string;
+  title: string;
 }
 
 export interface ITabViewRoute extends ITabRoute {
-  content: ComponentType<unknown>
+  content: ComponentType<unknown>;
 }

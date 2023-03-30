@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
-import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon'
+import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
 import {
   SSITextFieldContainerStyled as Container,
   SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
@@ -9,21 +9,21 @@ import {
   SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
   SSITextFieldHeaderContainerStyled as HeaderContainer,
   SSITextH5LightStyled as HeaderLabel,
-  SSITextFieldStatusLabelContainerStyled as StatusLabelContainer
-} from '../../../styles/components'
-import { ICredentialDetailsRow } from '../../../types'
-import SSIStatusLabel from '../../labels/SSIStatusLabel'
+  SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
+} from '../../../styles/components';
+import {ICredentialDetailsRow} from '../../../types';
+import SSIStatusLabel from '../../labels/SSIStatusLabel';
 
 export interface IProps {
-  item: ICredentialDetailsRow
-  index?: number
+  item: ICredentialDetailsRow;
+  index?: number;
 }
 
 const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
-  const { item, index } = props
+  const {item, index} = props;
 
   return (
-    <Container key={item.id} style={{ marginTop: index === 0 ? 16 : 10 }}>
+    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10}}>
       <HeaderContainer>
         <HeaderLabel>{item.label}</HeaderLabel>
         {item.status && (
@@ -43,7 +43,7 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
         <ContentText>{item.value}</ContentText>
       </ContentContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSITextField
+export default SSITextField;

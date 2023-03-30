@@ -36,18 +36,18 @@ export const LdContexts = new Map([
 
                 cred: 'https://www.w3.org/2018/credentials#',
 
-                JsonSchemaValidator2018: 'cred:JsonSchemaValidator2018'
-              }
+                JsonSchemaValidator2018: 'cred:JsonSchemaValidator2018',
+              },
             },
-            credentialStatus: { '@id': 'cred:credentialStatus', '@type': '@id' },
-            credentialSubject: { '@id': 'cred:credentialSubject', '@type': '@id' },
-            evidence: { '@id': 'cred:evidence', '@type': '@id' },
-            expirationDate: { '@id': 'cred:expirationDate', '@type': 'xsd:dateTime' },
-            holder: { '@id': 'cred:holder', '@type': '@id' },
-            issued: { '@id': 'cred:issued', '@type': 'xsd:dateTime' },
-            issuer: { '@id': 'cred:issuer', '@type': '@id' },
-            issuanceDate: { '@id': 'cred:issuanceDate', '@type': 'xsd:dateTime' },
-            proof: { '@id': 'sec:proof', '@type': '@id', '@container': '@graph' },
+            credentialStatus: {'@id': 'cred:credentialStatus', '@type': '@id'},
+            credentialSubject: {'@id': 'cred:credentialSubject', '@type': '@id'},
+            evidence: {'@id': 'cred:evidence', '@type': '@id'},
+            expirationDate: {'@id': 'cred:expirationDate', '@type': 'xsd:dateTime'},
+            holder: {'@id': 'cred:holder', '@type': '@id'},
+            issued: {'@id': 'cred:issued', '@type': 'xsd:dateTime'},
+            issuer: {'@id': 'cred:issuer', '@type': '@id'},
+            issuanceDate: {'@id': 'cred:issuanceDate', '@type': 'xsd:dateTime'},
+            proof: {'@id': 'sec:proof', '@type': '@id', '@container': '@graph'},
             refreshService: {
               '@id': 'cred:refreshService',
               '@type': '@id',
@@ -60,13 +60,13 @@ export const LdContexts = new Map([
 
                 cred: 'https://www.w3.org/2018/credentials#',
 
-                ManualRefreshService2018: 'cred:ManualRefreshService2018'
-              }
+                ManualRefreshService2018: 'cred:ManualRefreshService2018',
+              },
             },
-            termsOfUse: { '@id': 'cred:termsOfUse', '@type': '@id' },
-            validFrom: { '@id': 'cred:validFrom', '@type': 'xsd:dateTime' },
-            validUntil: { '@id': 'cred:validUntil', '@type': 'xsd:dateTime' }
-          }
+            termsOfUse: {'@id': 'cred:termsOfUse', '@type': '@id'},
+            validFrom: {'@id': 'cred:validFrom', '@type': 'xsd:dateTime'},
+            validUntil: {'@id': 'cred:validUntil', '@type': 'xsd:dateTime'},
+          },
         },
 
         VerifiablePresentation: {
@@ -81,10 +81,10 @@ export const LdContexts = new Map([
             cred: 'https://www.w3.org/2018/credentials#',
             sec: 'https://w3id.org/security#',
 
-            holder: { '@id': 'cred:holder', '@type': '@id' },
-            proof: { '@id': 'sec:proof', '@type': '@id', '@container': '@graph' },
-            verifiableCredential: { '@id': 'cred:verifiableCredential', '@type': '@id', '@container': '@graph' }
-          }
+            holder: {'@id': 'cred:holder', '@type': '@id'},
+            proof: {'@id': 'sec:proof', '@type': '@id', '@container': '@graph'},
+            verifiableCredential: {'@id': 'cred:verifiableCredential', '@type': '@id', '@container': '@graph'},
+          },
         },
 
         EcdsaSecp256k1Signature2019: {
@@ -100,9 +100,9 @@ export const LdContexts = new Map([
             xsd: 'http://www.w3.org/2001/XMLSchema#',
 
             challenge: 'sec:challenge',
-            created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime' },
+            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
             domain: 'sec:domain',
-            expires: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
+            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
             jws: 'sec:jws',
             nonce: 'sec:nonce',
             proofPurpose: {
@@ -117,13 +117,13 @@ export const LdContexts = new Map([
 
                 sec: 'https://w3id.org/security#',
 
-                assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-                authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' }
-              }
+                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+              },
             },
             proofValue: 'sec:proofValue',
-            verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-          }
+            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+          },
         },
 
         EcdsaSecp256r1Signature2019: {
@@ -139,9 +139,9 @@ export const LdContexts = new Map([
             xsd: 'http://www.w3.org/2001/XMLSchema#',
 
             challenge: 'sec:challenge',
-            created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime' },
+            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
             domain: 'sec:domain',
-            expires: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
+            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
             jws: 'sec:jws',
             nonce: 'sec:nonce',
             proofPurpose: {
@@ -156,13 +156,13 @@ export const LdContexts = new Map([
 
                 sec: 'https://w3id.org/security#',
 
-                assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-                authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' }
-              }
+                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+              },
             },
             proofValue: 'sec:proofValue',
-            verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-          }
+            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+          },
         },
 
         Ed25519Signature2018: {
@@ -178,9 +178,9 @@ export const LdContexts = new Map([
             xsd: 'http://www.w3.org/2001/XMLSchema#',
 
             challenge: 'sec:challenge',
-            created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime' },
+            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
             domain: 'sec:domain',
-            expires: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
+            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
             jws: 'sec:jws',
             nonce: 'sec:nonce',
             proofPurpose: {
@@ -195,13 +195,13 @@ export const LdContexts = new Map([
 
                 sec: 'https://w3id.org/security#',
 
-                assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-                authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' }
-              }
+                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+              },
             },
             proofValue: 'sec:proofValue',
-            verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-          }
+            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+          },
         },
 
         RsaSignature2018: {
@@ -211,9 +211,9 @@ export const LdContexts = new Map([
             '@protected': true,
 
             challenge: 'sec:challenge',
-            created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime' },
+            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
             domain: 'sec:domain',
-            expires: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
+            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
             jws: 'sec:jws',
             nonce: 'sec:nonce',
             proofPurpose: {
@@ -228,18 +228,18 @@ export const LdContexts = new Map([
 
                 sec: 'https://w3id.org/security#',
 
-                assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-                authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' }
-              }
+                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+              },
             },
             proofValue: 'sec:proofValue',
-            verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-          }
+            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+          },
         },
 
-        proof: { '@id': 'https://w3id.org/security#proof', '@type': '@id', '@container': '@graph' }
-      }
-    }
+        proof: {'@id': 'https://w3id.org/security#proof', '@type': '@id', '@container': '@graph'},
+      },
+    },
   ],
   [
     'https://www.w3.org/ns/did/v1',
@@ -251,36 +251,36 @@ export const LdContexts = new Map([
 
         alsoKnownAs: {
           '@id': 'https://www.w3.org/ns/activitystreams#alsoKnownAs',
-          '@type': '@id'
+          '@type': '@id',
         },
         assertionMethod: {
           '@id': 'https://w3id.org/security#assertionMethod',
           '@type': '@id',
-          '@container': '@set'
+          '@container': '@set',
         },
         authentication: {
           '@id': 'https://w3id.org/security#authenticationMethod',
           '@type': '@id',
-          '@container': '@set'
+          '@container': '@set',
         },
         capabilityDelegation: {
           '@id': 'https://w3id.org/security#capabilityDelegationMethod',
           '@type': '@id',
-          '@container': '@set'
+          '@container': '@set',
         },
         capabilityInvocation: {
           '@id': 'https://w3id.org/security#capabilityInvocationMethod',
           '@type': '@id',
-          '@container': '@set'
+          '@container': '@set',
         },
         controller: {
           '@id': 'https://w3id.org/security#controller',
-          '@type': '@id'
+          '@type': '@id',
         },
         keyAgreement: {
           '@id': 'https://w3id.org/security#keyAgreementMethod',
           '@type': '@id',
-          '@container': '@set'
+          '@container': '@set',
         },
         service: {
           '@id': 'https://www.w3.org/ns/did#service',
@@ -291,16 +291,16 @@ export const LdContexts = new Map([
             type: '@type',
             serviceEndpoint: {
               '@id': 'https://www.w3.org/ns/did#serviceEndpoint',
-              '@type': '@id'
-            }
-          }
+              '@type': '@id',
+            },
+          },
         },
         verificationMethod: {
           '@id': 'https://w3id.org/security#verificationMethod',
-          '@type': '@id'
-        }
-      }
-    }
+          '@type': '@id',
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/did/v0.11',
@@ -327,48 +327,48 @@ export const LdContexts = new Map([
         ServiceEndpointProxyService: 'didv:ServiceEndpointProxyService',
 
         allowedAction: 'sec:allowedAction',
-        assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-        authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' },
-        capability: { '@id': 'sec:capability', '@type': '@id' },
+        assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+        authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+        capability: {'@id': 'sec:capability', '@type': '@id'},
         capabilityAction: 'sec:capabilityAction',
-        capabilityChain: { '@id': 'sec:capabilityChain', '@type': '@id', '@container': '@list' },
-        capabilityDelegation: { '@id': 'sec:capabilityDelegationMethod', '@type': '@id', '@container': '@set' },
-        capabilityInvocation: { '@id': 'sec:capabilityInvocationMethod', '@type': '@id', '@container': '@set' },
-        capabilityStatusList: { '@id': 'sec:capabilityStatusList', '@type': '@id' },
+        capabilityChain: {'@id': 'sec:capabilityChain', '@type': '@id', '@container': '@list'},
+        capabilityDelegation: {'@id': 'sec:capabilityDelegationMethod', '@type': '@id', '@container': '@set'},
+        capabilityInvocation: {'@id': 'sec:capabilityInvocationMethod', '@type': '@id', '@container': '@set'},
+        capabilityStatusList: {'@id': 'sec:capabilityStatusList', '@type': '@id'},
         canonicalizationAlgorithm: 'sec:canonicalizationAlgorithm',
-        caveat: { '@id': 'sec:caveat', '@type': '@id', '@container': '@set' },
+        caveat: {'@id': 'sec:caveat', '@type': '@id', '@container': '@set'},
         challenge: 'sec:challenge',
-        controller: { '@id': 'sec:controller', '@type': '@id' },
-        created: { '@id': 'dc:created', '@type': 'xsd:dateTime' },
-        creator: { '@id': 'dc:creator', '@type': '@id' },
-        delegator: { '@id': 'sec:delegator', '@type': '@id' },
+        controller: {'@id': 'sec:controller', '@type': '@id'},
+        created: {'@id': 'dc:created', '@type': 'xsd:dateTime'},
+        creator: {'@id': 'dc:creator', '@type': '@id'},
+        delegator: {'@id': 'sec:delegator', '@type': '@id'},
         domain: 'sec:domain',
-        expirationDate: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
-        invocationTarget: { '@id': 'sec:invocationTarget', '@type': '@id' },
-        invoker: { '@id': 'sec:invoker', '@type': '@id' },
+        expirationDate: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
+        invocationTarget: {'@id': 'sec:invocationTarget', '@type': '@id'},
+        invoker: {'@id': 'sec:invoker', '@type': '@id'},
         jws: 'sec:jws',
-        keyAgreement: { '@id': 'sec:keyAgreementMethod', '@type': '@id', '@container': '@set' },
+        keyAgreement: {'@id': 'sec:keyAgreementMethod', '@type': '@id', '@container': '@set'},
         nonce: 'sec:nonce',
-        owner: { '@id': 'sec:owner', '@type': '@id' },
-        proof: { '@id': 'sec:proof', '@type': '@id', '@container': '@graph' },
-        proofPurpose: { '@id': 'sec:proofPurpose', '@type': '@vocab' },
+        owner: {'@id': 'sec:owner', '@type': '@id'},
+        proof: {'@id': 'sec:proof', '@type': '@id', '@container': '@graph'},
+        proofPurpose: {'@id': 'sec:proofPurpose', '@type': '@vocab'},
         proofValue: 'sec:proofValue',
-        publicKey: { '@id': 'sec:publicKey', '@type': '@id', '@container': '@set' },
+        publicKey: {'@id': 'sec:publicKey', '@type': '@id', '@container': '@set'},
         publicKeyBase58: 'sec:publicKeyBase58',
         publicKeyPem: 'sec:publicKeyPem',
-        revoked: { '@id': 'sec:revoked', '@type': 'xsd:dateTime' },
-        service: { '@id': 'didv:service', '@type': '@id', '@container': '@set' },
-        serviceEndpoint: { '@id': 'didv:serviceEndpoint', '@type': '@id' },
-        verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-      }
-    }
+        revoked: {'@id': 'sec:revoked', '@type': 'xsd:dateTime'},
+        service: {'@id': 'didv:service', '@type': '@id', '@container': '@set'},
+        serviceEndpoint: {'@id': 'didv:serviceEndpoint', '@type': '@id'},
+        verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+      },
+    },
   ],
   [
     'https://ns.did.ai/transmute/v1',
     {
       '@context': [
         {
-          '@version': 1.1
+          '@version': 1.1,
         },
         'https://www.w3.org/ns/did/v1',
         {
@@ -378,14 +378,14 @@ export const LdContexts = new Map([
 
           publicKeyJwk: {
             '@id': 'https://w3id.org/security#publicKeyJwk',
-            '@type': '@json'
+            '@type': '@json',
           },
           publicKeyBase58: {
-            '@id': 'https://w3id.org/security#publicKeyBase58'
-          }
-        }
-      ]
-    }
+            '@id': 'https://w3id.org/security#publicKeyBase58',
+          },
+        },
+      ],
+    },
   ],
   [
     'https://identity.foundation/EcdsaSecp256k1RecoverySignature2020/lds-ecdsa-secp256k1-recovery2020-0.0.jsonld',
@@ -409,9 +409,9 @@ export const LdContexts = new Map([
             xsd: 'http://www.w3.org/2001/XMLSchema#',
 
             challenge: 'sec:challenge',
-            created: { '@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime' },
+            created: {'@id': 'http://purl.org/dc/terms/created', '@type': 'xsd:dateTime'},
             domain: 'sec:domain',
-            expires: { '@id': 'sec:expiration', '@type': 'xsd:dateTime' },
+            expires: {'@id': 'sec:expiration', '@type': 'xsd:dateTime'},
             jws: 'sec:jws',
             nonce: 'sec:nonce',
             proofPurpose: {
@@ -426,29 +426,29 @@ export const LdContexts = new Map([
 
                 sec: 'https://w3id.org/security#',
 
-                assertionMethod: { '@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set' },
-                authentication: { '@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set' }
-              }
+                assertionMethod: {'@id': 'sec:assertionMethod', '@type': '@id', '@container': '@set'},
+                authentication: {'@id': 'sec:authenticationMethod', '@type': '@id', '@container': '@set'},
+              },
             },
             proofValue: 'sec:proofValue',
-            verificationMethod: { '@id': 'sec:verificationMethod', '@type': '@id' }
-          }
+            verificationMethod: {'@id': 'sec:verificationMethod', '@type': '@id'},
+          },
         },
 
         EcdsaSecp256k1RecoveryMethod2020: 'esrs2020:EcdsaSecp256k1RecoveryMethod2020',
         publicKeyJwk: {
           '@id': 'esrs2020:publicKeyJwk',
-          '@type': '@json'
+          '@type': '@json',
         },
         privateKeyJwk: {
           '@id': 'esrs2020:privateKeyJwk',
-          '@type': '@json'
+          '@type': '@json',
         },
         publicKeyHex: 'esrs2020:publicKeyHex',
         privateKeyHex: 'esrs2020:privateKeyHex',
-        ethereumAddress: 'esrs2020:ethereumAddress'
-      }
-    }
+        ethereumAddress: 'esrs2020:ethereumAddress',
+      },
+    },
   ],
   [
     'https://w3id.org/security/suites/ed25519-2018/v1',
@@ -460,7 +460,7 @@ export const LdContexts = new Map([
         proof: {
           '@id': 'https://w3id.org/security#proof',
           '@type': '@id',
-          '@container': '@graph'
+          '@container': '@graph',
         },
         Ed25519VerificationKey2018: {
           '@id': 'https://w3id.org/security#Ed25519VerificationKey2018',
@@ -470,16 +470,16 @@ export const LdContexts = new Map([
             type: '@type',
             controller: {
               '@id': 'https://w3id.org/security#controller',
-              '@type': '@id'
+              '@type': '@id',
             },
             revoked: {
               '@id': 'https://w3id.org/security#revoked',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             publicKeyBase58: {
-              '@id': 'https://w3id.org/security#publicKeyBase58'
-            }
-          }
+              '@id': 'https://w3id.org/security#publicKeyBase58',
+            },
+          },
         },
         Ed25519Signature2018: {
           '@id': 'https://w3id.org/security#Ed25519Signature2018',
@@ -490,12 +490,12 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             expires: {
               '@id': 'https://w3id.org/security#expiration',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             nonce: 'https://w3id.org/security#nonce',
             proofPurpose: {
@@ -508,41 +508,41 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityInvocation: {
                   '@id': 'https://w3id.org/security#capabilityInvocationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityDelegation: {
                   '@id': 'https://w3id.org/security#capabilityDelegationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 keyAgreement: {
                   '@id': 'https://w3id.org/security#keyAgreementMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             jws: {
-              '@id': 'https://w3id.org/security#jws'
+              '@id': 'https://w3id.org/security#jws',
             },
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
-        }
-      }
-    }
+              '@type': '@id',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/security/suites/ed25519-2020/v1',
@@ -554,7 +554,7 @@ export const LdContexts = new Map([
         proof: {
           '@id': 'https://w3id.org/security#proof',
           '@type': '@id',
-          '@container': '@graph'
+          '@container': '@graph',
         },
         Ed25519VerificationKey2020: {
           '@id': 'https://w3id.org/security#Ed25519VerificationKey2020',
@@ -564,17 +564,17 @@ export const LdContexts = new Map([
             type: '@type',
             controller: {
               '@id': 'https://w3id.org/security#controller',
-              '@type': '@id'
+              '@type': '@id',
             },
             revoked: {
               '@id': 'https://w3id.org/security#revoked',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             publicKeyMultibase: {
               '@id': 'https://w3id.org/security#publicKeyMultibase',
-              '@type': 'https://w3id.org/security#multibase'
-            }
-          }
+              '@type': 'https://w3id.org/security#multibase',
+            },
+          },
         },
         Ed25519Signature2020: {
           '@id': 'https://w3id.org/security#Ed25519Signature2020',
@@ -585,12 +585,12 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             expires: {
               '@id': 'https://w3id.org/security#expiration',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             nonce: 'https://w3id.org/security#nonce',
             proofPurpose: {
@@ -603,42 +603,42 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityInvocation: {
                   '@id': 'https://w3id.org/security#capabilityInvocationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityDelegation: {
                   '@id': 'https://w3id.org/security#capabilityDelegationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 keyAgreement: {
                   '@id': 'https://w3id.org/security#keyAgreementMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             proofValue: {
               '@id': 'https://w3id.org/security#proofValue',
-              '@type': 'https://w3id.org/security#multibase'
+              '@type': 'https://w3id.org/security#multibase',
             },
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
-        }
-      }
-    }
+              '@type': '@id',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/security/suites/x25519-2019/v1',
@@ -655,19 +655,19 @@ export const LdContexts = new Map([
             type: '@type',
             controller: {
               '@id': 'https://w3id.org/security#controller',
-              '@type': '@id'
+              '@type': '@id',
             },
             revoked: {
               '@id': 'https://w3id.org/security#revoked',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             publicKeyBase58: {
-              '@id': 'https://w3id.org/security#publicKeyBase58'
-            }
-          }
-        }
-      }
-    }
+              '@id': 'https://w3id.org/security#publicKeyBase58',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/security/suites/jws-2020/v1',
@@ -675,7 +675,7 @@ export const LdContexts = new Map([
       '@context': {
         privateKeyJwk: {
           '@id': 'https://w3id.org/security#privateKeyJwk',
-          '@type': '@json'
+          '@type': '@json',
         },
         JsonWebKey2020: {
           '@id': 'https://w3id.org/security#JsonWebKey2020',
@@ -685,9 +685,9 @@ export const LdContexts = new Map([
             type: '@type',
             publicKeyJwk: {
               '@id': 'https://w3id.org/security#publicKeyJwk',
-              '@type': '@json'
-            }
-          }
+              '@type': '@json',
+            },
+          },
         },
         JsonWebSignature2020: {
           '@id': 'https://w3id.org/security#JsonWebSignature2020',
@@ -700,12 +700,12 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             expires: {
               '@id': 'https://w3id.org/security#expiration',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             jws: 'https://w3id.org/security#jws',
             nonce: 'https://w3id.org/security#nonce',
@@ -721,38 +721,38 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityInvocation: {
                   '@id': 'https://w3id.org/security#capabilityInvocationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityDelegation: {
                   '@id': 'https://w3id.org/security#capabilityDelegationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 keyAgreement: {
                   '@id': 'https://w3id.org/security#keyAgreementMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
-        }
-      }
-    }
+              '@type': '@id',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3c.github.io/vc-jws-2020/contexts/v1/',
@@ -760,7 +760,7 @@ export const LdContexts = new Map([
       '@context': {
         privateKeyJwk: {
           '@id': 'https://w3id.org/security#privateKeyJwk',
-          '@type': '@json'
+          '@type': '@json',
         },
         JsonWebKey2020: {
           '@id': 'https://w3id.org/security#JsonWebKey2020',
@@ -770,9 +770,9 @@ export const LdContexts = new Map([
             type: '@type',
             publicKeyJwk: {
               '@id': 'https://w3id.org/security#publicKeyJwk',
-              '@type': '@json'
-            }
-          }
+              '@type': '@json',
+            },
+          },
         },
         JsonWebSignature2020: {
           '@id': 'https://w3id.org/security#JsonWebSignature2020',
@@ -785,12 +785,12 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             expires: {
               '@id': 'https://w3id.org/security#expiration',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             jws: 'https://w3id.org/security#jws',
             nonce: 'https://w3id.org/security#nonce',
@@ -806,38 +806,38 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityInvocation: {
                   '@id': 'https://w3id.org/security#capabilityInvocationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 capabilityDelegation: {
                   '@id': 'https://w3id.org/security#capabilityDelegationMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 keyAgreement: {
                   '@id': 'https://w3id.org/security#keyAgreementMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
-        }
-      }
-    }
+              '@type': '@id',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/vc-revocation-list-2020/v1',
@@ -854,8 +854,8 @@ export const LdContexts = new Map([
             type: '@type',
 
             description: 'http://schema.org/description',
-            name: 'http://schema.org/name'
-          }
+            name: 'http://schema.org/name',
+          },
         },
 
         RevocationList2020: {
@@ -866,8 +866,8 @@ export const LdContexts = new Map([
             id: '@id',
             type: '@type',
 
-            encodedList: 'https://w3id.org/vc-revocation-list-2020#encodedList'
-          }
+            encodedList: 'https://w3id.org/vc-revocation-list-2020#encodedList',
+          },
         },
 
         RevocationList2020Status: {
@@ -880,13 +880,13 @@ export const LdContexts = new Map([
 
             revocationListCredential: {
               '@id': 'https://w3id.org/vc-revocation-list-2020#revocationListCredential',
-              '@type': '@id'
+              '@type': '@id',
             },
-            revocationListIndex: 'https://w3id.org/vc-revocation-list-2020#revocationListIndex'
-          }
-        }
-      }
-    }
+            revocationListIndex: 'https://w3id.org/vc-revocation-list-2020#revocationListIndex',
+          },
+        },
+      },
+    },
   ],
   [
     'https://w3id.org/security/bbs/v1',
@@ -905,7 +905,7 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             proofValue: 'https://w3id.org/security#proofValue',
@@ -921,20 +921,20 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
+              '@type': '@id',
+            },
+          },
         },
         BbsBlsSignatureProof2020: {
           '@id': 'https://w3id.org/security#BbsBlsSignatureProof2020',
@@ -947,7 +947,7 @@ export const LdContexts = new Map([
             challenge: 'https://w3id.org/security#challenge',
             created: {
               '@id': 'http://purl.org/dc/terms/created',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             domain: 'https://w3id.org/security#domain',
             nonce: 'https://w3id.org/security#nonce',
@@ -963,21 +963,21 @@ export const LdContexts = new Map([
                 assertionMethod: {
                   '@id': 'https://w3id.org/security#assertionMethod',
                   '@type': '@id',
-                  '@container': '@set'
+                  '@container': '@set',
                 },
                 authentication: {
                   '@id': 'https://w3id.org/security#authenticationMethod',
                   '@type': '@id',
-                  '@container': '@set'
-                }
-              }
+                  '@container': '@set',
+                },
+              },
             },
             proofValue: 'https://w3id.org/security#proofValue',
             verificationMethod: {
               '@id': 'https://w3id.org/security#verificationMethod',
-              '@type': '@id'
-            }
-          }
+              '@type': '@id',
+            },
+          },
         },
         Bls12381G1Key2020: {
           '@id': 'https://w3id.org/security#Bls12381G1Key2020',
@@ -987,16 +987,16 @@ export const LdContexts = new Map([
             type: '@type',
             controller: {
               '@id': 'https://w3id.org/security#controller',
-              '@type': '@id'
+              '@type': '@id',
             },
             revoked: {
               '@id': 'https://w3id.org/security#revoked',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             publicKeyBase58: {
-              '@id': 'https://w3id.org/security#publicKeyBase58'
-            }
-          }
+              '@id': 'https://w3id.org/security#publicKeyBase58',
+            },
+          },
         },
         Bls12381G2Key2020: {
           '@id': 'https://w3id.org/security#Bls12381G2Key2020',
@@ -1006,26 +1006,26 @@ export const LdContexts = new Map([
             type: '@type',
             controller: {
               '@id': 'https://w3id.org/security#controller',
-              '@type': '@id'
+              '@type': '@id',
             },
             revoked: {
               '@id': 'https://w3id.org/security#revoked',
-              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime'
+              '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
             },
             publicKeyBase58: {
-              '@id': 'https://w3id.org/security#publicKeyBase58'
-            }
-          }
-        }
-      }
-    }
+              '@id': 'https://w3id.org/security#publicKeyBase58',
+            },
+          },
+        },
+      },
+    },
   ],
   [
     'https://www.w3.org/2018/credentials/examples/v1',
     {
       '@context': [
         {
-          '@version': 1.1
+          '@version': 1.1,
         },
         'https://www.w3.org/ns/odrl.jsonld',
         {
@@ -1057,28 +1057,28 @@ export const LdContexts = new Map([
           primaryProof: 'ex:primaryProof',
           nonRevocationProof: 'ex:nonRevocationProof',
 
-          alumniOf: { '@id': 'schema:alumniOf', '@type': 'rdf:HTML' },
-          child: { '@id': 'ex:child', '@type': '@id' },
+          alumniOf: {'@id': 'schema:alumniOf', '@type': 'rdf:HTML'},
+          child: {'@id': 'ex:child', '@type': '@id'},
           degree: 'ex:degree',
           degreeType: 'ex:degreeType',
           degreeSchool: 'ex:degreeSchool',
           college: 'ex:college',
-          name: { '@id': 'schema:name', '@type': 'rdf:HTML' },
+          name: {'@id': 'schema:name', '@type': 'rdf:HTML'},
           givenName: 'schema:givenName',
           familyName: 'schema:familyName',
-          parent: { '@id': 'ex:parent', '@type': '@id' },
+          parent: {'@id': 'ex:parent', '@type': '@id'},
           referenceId: 'ex:referenceId',
           documentPresence: 'ex:documentPresence',
           evidenceDocument: 'ex:evidenceDocument',
           spouse: 'schema:spouse',
           subjectPresence: 'ex:subjectPresence',
-          verifier: { '@id': 'ex:verifier', '@type': '@id' },
+          verifier: {'@id': 'ex:verifier', '@type': '@id'},
           currentStatus: 'ex:currentStatus',
           statusReason: 'ex:statusReason',
-          prescription: 'ex:prescription'
-        }
-      ]
-    }
+          prescription: 'ex:prescription',
+        },
+      ],
+    },
   ],
   [
     'https://www.w3.org/ns/odrl.jsonld',
@@ -1101,12 +1101,12 @@ export const LdContexts = new Map([
 
         Policy: 'odrl:Policy',
         Rule: 'odrl:Rule',
-        profile: { '@type': '@id', '@id': 'odrl:profile' },
+        profile: {'@type': '@id', '@id': 'odrl:profile'},
 
-        inheritFrom: { '@type': '@id', '@id': 'odrl:inheritFrom' },
+        inheritFrom: {'@type': '@id', '@id': 'odrl:inheritFrom'},
 
         ConflictTerm: 'odrl:ConflictTerm',
-        conflict: { '@type': '@vocab', '@id': 'odrl:conflict' },
+        conflict: {'@type': '@vocab', '@id': 'odrl:conflict'},
         perm: 'odrl:perm',
         prohibit: 'odrl:prohibit',
         invalid: 'odrl:invalid',
@@ -1121,49 +1121,49 @@ export const LdContexts = new Map([
 
         Asset: 'odrl:Asset',
         AssetCollection: 'odrl:AssetCollection',
-        relation: { '@type': '@id', '@id': 'odrl:relation' },
-        hasPolicy: { '@type': '@id', '@id': 'odrl:hasPolicy' },
+        relation: {'@type': '@id', '@id': 'odrl:relation'},
+        hasPolicy: {'@type': '@id', '@id': 'odrl:hasPolicy'},
 
-        target: { '@type': '@id', '@id': 'odrl:target' },
-        output: { '@type': '@id', '@id': 'odrl:output' },
+        target: {'@type': '@id', '@id': 'odrl:target'},
+        output: {'@type': '@id', '@id': 'odrl:output'},
 
-        partOf: { '@type': '@id', '@id': 'odrl:partOf' },
-        source: { '@type': '@id', '@id': 'odrl:source' },
+        partOf: {'@type': '@id', '@id': 'odrl:partOf'},
+        source: {'@type': '@id', '@id': 'odrl:source'},
 
         Party: 'odrl:Party',
         PartyCollection: 'odrl:PartyCollection',
-        function: { '@type': '@vocab', '@id': 'odrl:function' },
+        function: {'@type': '@vocab', '@id': 'odrl:function'},
         PartyScope: 'odrl:PartyScope',
 
-        assignee: { '@type': '@id', '@id': 'odrl:assignee' },
-        assigner: { '@type': '@id', '@id': 'odrl:assigner' },
-        assigneeOf: { '@type': '@id', '@id': 'odrl:assigneeOf' },
-        assignerOf: { '@type': '@id', '@id': 'odrl:assignerOf' },
-        attributedParty: { '@type': '@id', '@id': 'odrl:attributedParty' },
-        attributingParty: { '@type': '@id', '@id': 'odrl:attributingParty' },
-        compensatedParty: { '@type': '@id', '@id': 'odrl:compensatedParty' },
-        compensatingParty: { '@type': '@id', '@id': 'odrl:compensatingParty' },
-        consentingParty: { '@type': '@id', '@id': 'odrl:consentingParty' },
-        consentedParty: { '@type': '@id', '@id': 'odrl:consentedParty' },
-        informedParty: { '@type': '@id', '@id': 'odrl:informedParty' },
-        informingParty: { '@type': '@id', '@id': 'odrl:informingParty' },
-        trackingParty: { '@type': '@id', '@id': 'odrl:trackingParty' },
-        trackedParty: { '@type': '@id', '@id': 'odrl:trackedParty' },
-        contractingParty: { '@type': '@id', '@id': 'odrl:contractingParty' },
-        contractedParty: { '@type': '@id', '@id': 'odrl:contractedParty' },
+        assignee: {'@type': '@id', '@id': 'odrl:assignee'},
+        assigner: {'@type': '@id', '@id': 'odrl:assigner'},
+        assigneeOf: {'@type': '@id', '@id': 'odrl:assigneeOf'},
+        assignerOf: {'@type': '@id', '@id': 'odrl:assignerOf'},
+        attributedParty: {'@type': '@id', '@id': 'odrl:attributedParty'},
+        attributingParty: {'@type': '@id', '@id': 'odrl:attributingParty'},
+        compensatedParty: {'@type': '@id', '@id': 'odrl:compensatedParty'},
+        compensatingParty: {'@type': '@id', '@id': 'odrl:compensatingParty'},
+        consentingParty: {'@type': '@id', '@id': 'odrl:consentingParty'},
+        consentedParty: {'@type': '@id', '@id': 'odrl:consentedParty'},
+        informedParty: {'@type': '@id', '@id': 'odrl:informedParty'},
+        informingParty: {'@type': '@id', '@id': 'odrl:informingParty'},
+        trackingParty: {'@type': '@id', '@id': 'odrl:trackingParty'},
+        trackedParty: {'@type': '@id', '@id': 'odrl:trackedParty'},
+        contractingParty: {'@type': '@id', '@id': 'odrl:contractingParty'},
+        contractedParty: {'@type': '@id', '@id': 'odrl:contractedParty'},
 
         Action: 'odrl:Action',
-        action: { '@type': '@vocab', '@id': 'odrl:action' },
-        includedIn: { '@type': '@id', '@id': 'odrl:includedIn' },
-        implies: { '@type': '@id', '@id': 'odrl:implies' },
+        action: {'@type': '@vocab', '@id': 'odrl:action'},
+        includedIn: {'@type': '@id', '@id': 'odrl:includedIn'},
+        implies: {'@type': '@id', '@id': 'odrl:implies'},
 
         Permission: 'odrl:Permission',
-        permission: { '@type': '@id', '@id': 'odrl:permission' },
+        permission: {'@type': '@id', '@id': 'odrl:permission'},
 
         Prohibition: 'odrl:Prohibition',
-        prohibition: { '@type': '@id', '@id': 'odrl:prohibition' },
+        prohibition: {'@type': '@id', '@id': 'odrl:prohibition'},
 
-        obligation: { '@type': '@id', '@id': 'odrl:obligation' },
+        obligation: {'@type': '@id', '@id': 'odrl:obligation'},
 
         use: 'odrl:use',
         grantUse: 'odrl:grantUse',
@@ -1196,9 +1196,9 @@ export const LdContexts = new Map([
         translate: 'odrl:translate',
 
         Duty: 'odrl:Duty',
-        duty: { '@type': '@id', '@id': 'odrl:duty' },
-        consequence: { '@type': '@id', '@id': 'odrl:consequence' },
-        remedy: { '@type': '@id', '@id': 'odrl:remedy' },
+        duty: {'@type': '@id', '@id': 'odrl:duty'},
+        consequence: {'@type': '@id', '@id': 'odrl:consequence'},
+        remedy: {'@type': '@id', '@id': 'odrl:remedy'},
 
         acceptTracking: 'odrl:acceptTracking',
         attribute: 'odrl:attribute',
@@ -1215,17 +1215,17 @@ export const LdContexts = new Map([
 
         Constraint: 'odrl:Constraint',
         LogicalConstraint: 'odrl:LogicalConstraint',
-        constraint: { '@type': '@id', '@id': 'odrl:constraint' },
-        refinement: { '@type': '@id', '@id': 'odrl:refinement' },
+        constraint: {'@type': '@id', '@id': 'odrl:constraint'},
+        refinement: {'@type': '@id', '@id': 'odrl:refinement'},
         Operator: 'odrl:Operator',
-        operator: { '@type': '@vocab', '@id': 'odrl:operator' },
+        operator: {'@type': '@vocab', '@id': 'odrl:operator'},
         RightOperand: 'odrl:RightOperand',
         rightOperand: 'odrl:rightOperand',
-        rightOperandReference: { '@type': 'xsd:anyURI', '@id': 'odrl:rightOperandReference' },
+        rightOperandReference: {'@type': 'xsd:anyURI', '@id': 'odrl:rightOperandReference'},
         LeftOperand: 'odrl:LeftOperand',
-        leftOperand: { '@type': '@vocab', '@id': 'odrl:leftOperand' },
+        leftOperand: {'@type': '@vocab', '@id': 'odrl:leftOperand'},
         unit: 'odrl:unit',
-        dataType: { '@type': 'xsd:anyType', '@id': 'odrl:datatype' },
+        dataType: {'@type': 'xsd:anyType', '@id': 'odrl:datatype'},
         status: 'odrl:status',
 
         absolutePosition: 'odrl:absolutePosition',
@@ -1278,9 +1278,9 @@ export const LdContexts = new Map([
         and: 'odrl:and',
         andSequence: 'odrl:andSequence',
 
-        policyUsage: 'odrl:policyUsage'
-      }
-    }
+        policyUsage: 'odrl:policyUsage',
+      },
+    },
   ],
   [
     'https://w3id.org/citizenship/v1',
@@ -1292,7 +1292,7 @@ export const LdContexts = new Map([
         name: 'http://schema.org/name',
         description: 'http://schema.org/description',
         identifier: 'http://schema.org/identifier',
-        image: { '@id': 'http://schema.org/image', '@type': '@id' },
+        image: {'@id': 'http://schema.org/image', '@type': '@id'},
 
         PermanentResidentCard: {
           '@id': 'https://w3id.org/citizenship#PermanentResidentCard',
@@ -1306,8 +1306,8 @@ export const LdContexts = new Map([
             description: 'http://schema.org/description',
             name: 'http://schema.org/name',
             identifier: 'http://schema.org/identifier',
-            image: { '@id': 'http://schema.org/image', '@type': '@id' }
-          }
+            image: {'@id': 'http://schema.org/image', '@type': '@id'},
+          },
         },
 
         PermanentResident: {
@@ -1324,20 +1324,20 @@ export const LdContexts = new Map([
             xsd: 'http://www.w3.org/2001/XMLSchema#',
 
             birthCountry: 'ctzn:birthCountry',
-            birthDate: { '@id': 'schema:birthDate', '@type': 'xsd:dateTime' },
+            birthDate: {'@id': 'schema:birthDate', '@type': 'xsd:dateTime'},
             commuterClassification: 'ctzn:commuterClassification',
             familyName: 'schema:familyName',
             gender: 'schema:gender',
             givenName: 'schema:givenName',
             lprCategory: 'ctzn:lprCategory',
             lprNumber: 'ctzn:lprNumber',
-            residentSince: { '@id': 'ctzn:residentSince', '@type': 'xsd:dateTime' }
-          }
+            residentSince: {'@id': 'ctzn:residentSince', '@type': 'xsd:dateTime'},
+          },
         },
 
-        Person: 'http://schema.org/Person'
-      }
-    }
+        Person: 'http://schema.org/Person',
+      },
+    },
   ],
   [
     'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
@@ -1354,9 +1354,9 @@ export const LdContexts = new Map([
         lastName: 'swi:lastName',
         emailAddress: {
           '@id': 'swi:emailAddress',
-          '@type': 'schema:email'
-        }
-      }
-    }
-  ]
-])
+          '@type': 'schema:email',
+        },
+      },
+    },
+  ],
+]);

@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg'
+import React, {FC} from 'react';
+import Svg, {Defs, LinearGradient, Path, Stop} from 'react-native-svg';
 
 export interface IProps {
-  primaryColor: string
-  secondaryColor: string
+  primaryColor: string;
+  secondaryColor: string;
 }
 
 const SSIQRIcon: FC<IProps> = (props: IProps): JSX.Element => {
@@ -20,7 +20,7 @@ const SSIQRIcon: FC<IProps> = (props: IProps): JSX.Element => {
         </LinearGradient>
       </Defs>
     </Svg>
-  )
-}
+  );
+};
 
-export default SSIQRIcon
+export default SSIQRIcon;

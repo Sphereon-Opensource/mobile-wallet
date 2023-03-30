@@ -1,4 +1,4 @@
-import styled from 'styled-components/native'
+import styled from 'styled-components/native';
 
 export const SSIAlertModalContentContainerStyled = styled.View`
   margin-top: auto;
@@ -6,4 +6,4 @@ export const SSIAlertModalContentContainerStyled = styled.View`
   padding-left: 6px;
   padding-right: 6px;
   width: 100%;
-`
+`;

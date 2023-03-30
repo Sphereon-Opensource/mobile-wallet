@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import React, {FC} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 
-import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage'
-import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage'
-import { backgrounds, fonts } from '../../../../styles/colors'
+import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage';
+import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage';
+import {backgrounds, fonts} from '../../../../styles/colors';
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,
   SSIPopupCloseButtonContainerStyled as CloseButtonContainer,
@@ -18,52 +18,37 @@ import {
   SSICheckmarkBadgeStyled as SSICheckmarkBadge,
   SSIExclamationMarkBadgeStyled as SSIExclamationMarkBadge,
   SSIPopupTitleBadgeContainerStyled as TitleBadgeContainer,
-  SSIPopupTitleContainerStyled as TitleContainer
-} from '../../../../styles/components'
-import { SSITextH2SemiBoldStyled as TitleCaption } from '../../../../styles/components'
-import { ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum } from '../../../../types'
-import { parseTextToElement } from '../../../../utils/TextUtils'
-import SSIIconButton from '../../../buttons/SSIIconButton'
-import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton'
-import SSISecondaryButton from '../../../buttons/SSISecondaryButton'
+  SSIPopupTitleContainerStyled as TitleContainer,
+} from '../../../../styles/components';
+import {SSITextH2SemiBoldStyled as TitleCaption} from '../../../../styles/components';
+import {ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum} from '../../../../types';
+import {parseTextToElement} from '../../../../utils/TextUtils';
+import SSIIconButton from '../../../buttons/SSIIconButton';
+import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton';
+import SSISecondaryButton from '../../../buttons/SSISecondaryButton';
 
 export interface IProps {
-  onClose?: () => Promise<void>
-  image?: PopupImagesEnum
-  title?: string
-  titleBadge?: PopupBadgesEnum
-  details?: string
-  extraDetails?: string
-  detailsButton?: IButton
-  primaryButton?: IButton
-  secondaryButton?: IButton
-  darkMode?: boolean
+  onClose?: () => Promise<void>;
+  image?: PopupImagesEnum;
+  title?: string;
+  titleBadge?: PopupBadgesEnum;
+  details?: string;
+  extraDetails?: string;
+  detailsButton?: IButton;
+  primaryButton?: IButton;
+  secondaryButton?: IButton;
+  darkMode?: boolean;
 }
 
 const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
-  const {
-    onClose,
-    image,
-    title,
-    titleBadge,
-    details,
-    extraDetails,
-    detailsButton,
-    primaryButton,
-    secondaryButton,
-    darkMode = false
-  } = props
+  const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false} = props;
 
   return (
-    <Container style={{ backgroundColor: darkMode ? backgrounds.primaryDark : backgrounds.primaryLight }}>
+    <Container style={{backgroundColor: darkMode ? backgrounds.primaryDark : backgrounds.primaryLight}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>
-            <SSIIconButton
-              icon={ButtonIconsEnum.CLOSE}
-              iconColor={darkMode ? fonts.light : undefined}
-              onPress={onClose}
-            />
+            <SSIIconButton icon={ButtonIconsEnum.CLOSE} iconColor={darkMode ? fonts.light : undefined} onPress={onClose} />
           </CloseButtonContainer>
         )}
       </HeaderContainer>
@@ -72,12 +57,10 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         {title && (
           <TitleContainer>
             {titleBadge && <TitleBadgeContainer>{getBadge(titleBadge)}</TitleBadgeContainer>}
-            <TitleCaption style={{ color: darkMode ? fonts.light : undefined }}>{title}</TitleCaption>
+            <TitleCaption style={{color: darkMode ? fonts.light : undefined}}>{title}</TitleCaption>
           </TitleContainer>
         )}
-        {details && (
-          <DetailsText style={{ color: darkMode ? fonts.light : undefined }}>{parseTextToElement(details)}</DetailsText>
-        )}
+        {details && <DetailsText style={{color: darkMode ? fonts.light : undefined}}>{parseTextToElement(details)}</DetailsText>}
         {extraDetails && <ExtraDetailsText>{parseTextToElement(extraDetails)}</ExtraDetailsText>}
         {detailsButton && (
           <DetailsButtonContainer>
@@ -97,7 +80,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
                 minWidth: 160,
                 backgroundColor: backgrounds.primaryLight,
                 // Scales the button based on presence of other button
-                width: primaryButton ? undefined : '100%'
+                width: primaryButton ? undefined : '100%',
               }}
               title={secondaryButton.caption}
               onPress={secondaryButton.onPress}
@@ -106,7 +89,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           {primaryButton && (
             <SSIPrimaryButton
               // Scales the button based on presence of other button
-              style={{ height: 42, minWidth: 160, width: secondaryButton ? undefined : '100%' }}
+              style={{height: 42, minWidth: 160, width: secondaryButton ? undefined : '100%'}}
               title={primaryButton.caption}
               onPress={primaryButton.onPress}
             />
@@ -114,29 +97,29 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         </ButtonsContainer>
       )}
     </Container>
-  )
-}
+  );
+};
 
 const getBadge = (badge: PopupBadgesEnum): JSX.Element => {
   switch (badge) {
     case PopupBadgesEnum.CHECK_MARK:
-      return <SSICheckmarkBadge />
+      return <SSICheckmarkBadge />;
     case PopupBadgesEnum.EXCLAMATION_MARK:
-      return <SSIExclamationMarkBadge />
+      return <SSIExclamationMarkBadge />;
     default:
-      return <View />
+      return <View />;
   }
-}
+};
 
 const getImage = (image: PopupImagesEnum): JSX.Element => {
   switch (image) {
     case PopupImagesEnum.SECURITY:
-      return <SSISecurityImage />
+      return <SSISecurityImage />;
     case PopupImagesEnum.WARNING:
-      return <SSIWarningImage />
+      return <SSIWarningImage />;
     default:
-      return <View />
+      return <View />;
   }
-}
+};
 
-export default SSIPopup
+export default SSIPopup;

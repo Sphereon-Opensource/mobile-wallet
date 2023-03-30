@@ -1,36 +1,36 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { PureComponent } from 'react'
-import { BackHandler, NativeEventSubscription, StatusBar } from 'react-native'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {PureComponent} from 'react';
+import {BackHandler, NativeEventSubscription, StatusBar} from 'react-native';
 
-import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg'
-import SSIWelcomeView from '../../components/views/SSIWelcomeView'
-import { translate } from '../../localization/Localization'
+import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg';
+import SSIWelcomeView from '../../components/views/SSIWelcomeView';
+import {translate} from '../../localization/Localization';
 import {
   // SSIWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
   SSIWelcomeScreenContainerStyled as Container,
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
-  SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer
-} from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+  SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer,
+} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
 
 interface IState {
-  body: string
-  buttonCaption: string
-  step: number
+  body: string;
+  buttonCaption: string;
+  step: number;
 }
 
 class SSIWelcomeScreen extends PureComponent<Props, IState> {
-  hardwareBackPressListener: NativeEventSubscription
+  hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     body: translate('onboarding_welcome_intro_body'),
     buttonCaption: translate('action_next_label'),
-    step: 1
-  }
+    step: 1,
+  };
 
   _onBack = (): boolean => {
-    const { step } = this.state
+    const {step} = this.state;
 
     /**
      * When true is returned the event will not be bubbled up
@@ -38,54 +38,54 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
      */
     switch (step) {
       case 2:
-        this.setState({ step: step - 1, body: translate('onboarding_welcome_intro_body') })
-        return true
+        this.setState({step: step - 1, body: translate('onboarding_welcome_intro_body')});
+        return true;
       case 3:
         this.setState({
           step: step - 1,
           body: translate('onboarding_welcome_store_body'),
-          buttonCaption: translate('action_next_label')
-        })
-        return true
+          buttonCaption: translate('action_next_label'),
+        });
+        return true;
       default:
         /**
          * Returning false will let the event bubble up & let other event listeners
          * or the system's default back action to be executed.
          */
-        return false
+        return false;
     }
-  }
+  };
 
   componentDidMount = (): void => {
-    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack)
-  }
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack);
+  };
 
   componentWillUnmount = (): void => {
-    this.hardwareBackPressListener.remove()
-  }
+    this.hardwareBackPressListener.remove();
+  };
 
   onNext = async (): Promise<void> => {
-    const { step } = this.state
+    const {step} = this.state;
 
     switch (step) {
       case 1:
-        this.setState({ step: step + 1, body: translate('onboarding_welcome_store_body') })
-        break
+        this.setState({step: step + 1, body: translate('onboarding_welcome_store_body')});
+        break;
       case 2:
         this.setState({
           step: step + 1,
           body: translate('onboarding_welcome_share_body'),
-          buttonCaption: translate('action_go_label')
-        })
-        break
+          buttonCaption: translate('action_go_label'),
+        });
+        break;
       default:
-        this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {})
+        this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {});
     }
-  }
+  };
 
   render() {
-    const { body, buttonCaption, step } = this.state
-    const MAX_WELCOME_STEPS = 3
+    const {body, buttonCaption, step} = this.state;
+    const MAX_WELCOME_STEPS = 3;
 
     return (
       <Container>
@@ -113,13 +113,13 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
             title={translate('onboarding_welcome_title')}
             action={{
               caption: buttonCaption,
-              onPress: this.onNext
+              onPress: this.onNext,
             }}
           />
         </WelcomeViewContainer>
       </Container>
-    )
+    );
   }
 }
 
-export default SSIWelcomeScreen
+export default SSIWelcomeScreen;

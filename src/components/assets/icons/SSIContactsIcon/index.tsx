@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg'
+import React, {FC} from 'react';
+import Svg, {Defs, LinearGradient, Path, Stop} from 'react-native-svg';
 
 export interface IProps {
-  primaryColor: string
-  secondaryColor: string
+  primaryColor: string;
+  secondaryColor: string;
 }
 
 const SSIContactsIcon: FC<IProps> = (props: IProps): JSX.Element => {
@@ -14,20 +14,13 @@ const SSIContactsIcon: FC<IProps> = (props: IProps): JSX.Element => {
         fill="url(#paint0_linear_3126_10891)"
       />
       <Defs>
-        <LinearGradient
-          id="paint0_linear_3126_10891"
-          x1="0.0722656"
-          y1="0.0175781"
-          x2="19.0118"
-          y2="19.9894"
-          gradientUnits="userSpaceOnUse"
-        >
+        <LinearGradient id="paint0_linear_3126_10891" x1="0.0722656" y1="0.0175781" x2="19.0118" y2="19.9894" gradientUnits="userSpaceOnUse">
           <Stop stopColor={props.primaryColor} />
           <Stop offset="1" stopColor={props.secondaryColor} />
         </LinearGradient>
       </Defs>
     </Svg>
-  )
-}
+  );
+};
 
-export default SSIContactsIcon
+export default SSIContactsIcon;

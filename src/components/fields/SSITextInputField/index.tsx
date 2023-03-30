@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
-import { ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData } from 'react-native'
+import React, {FC} from 'react';
+import {ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData} from 'react-native';
 
-import { inputs, selectionElements, statuses } from '../../../styles/colors'
+import {inputs, selectionElements, statuses} from '../../../styles/colors';
 import {
   SSITextInputFieldContainerStyled as Container,
   SSITextInputFieldHelperContainerStyled as HelperContainer,
@@ -11,14 +11,14 @@ import {
   SSITextInputFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
-  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient
-} from '../../../styles/components'
-import { OpacityStyleEnum } from '../../../types'
-import SSIEyeIcon from '../../assets/icons/SSIEyeIcon'
+  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
+} from '../../../styles/components';
+import {OpacityStyleEnum} from '../../../types';
+import SSIEyeIcon from '../../assets/icons/SSIEyeIcon';
 
 export interface IProps {
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined
-  autoFocus?: boolean
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
+  autoFocus?: boolean;
   autoComplete?:
     | 'birthdate-day'
     | 'birthdate-full'
@@ -57,22 +57,22 @@ export interface IProps {
     | 'username'
     | 'username-new'
     | 'off'
-    | undefined
-  borderColor?: ColorValue
-  disabled?: boolean
-  editable?: boolean
-  helperText?: string
-  initialValue?: string
-  label?: string
-  labelColor?: ColorValue
-  keyboardType?: KeyboardTypeOptions | undefined
-  maxLength?: number
-  onChangeText?: (value: string) => Promise<void>
-  onEndEditing?: (value: string) => Promise<void>
-  onFocus?: () => Promise<void>
-  placeholderValue?: string
-  secureTextEntry?: boolean
-  showBorder?: boolean
+    | undefined;
+  borderColor?: ColorValue;
+  disabled?: boolean;
+  editable?: boolean;
+  helperText?: string;
+  initialValue?: string;
+  label?: string;
+  labelColor?: ColorValue;
+  keyboardType?: KeyboardTypeOptions | undefined;
+  maxLength?: number;
+  onChangeText?: (value: string) => Promise<void>;
+  onEndEditing?: (value: string) => Promise<void>;
+  onFocus?: () => Promise<void>;
+  placeholderValue?: string;
+  secureTextEntry?: boolean;
+  showBorder?: boolean;
 }
 
 const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
@@ -94,40 +94,40 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     onFocus,
     placeholderValue,
     secureTextEntry = false,
-    showBorder = true
-  } = props
+    showBorder = true,
+  } = props;
 
-  const [value, setValue] = React.useState(initialValue)
-  const [error, setError] = React.useState<string>()
-  const [hasFocus, setHasFocus] = React.useState(false)
+  const [value, setValue] = React.useState(initialValue);
+  const [error, setError] = React.useState<string>();
+  const [hasFocus, setHasFocus] = React.useState(false);
 
   const onChange = async (value: string): Promise<void> => {
-    setValue(value)
+    setValue(value);
     if (onChangeText) {
       onChangeText(value)
         .then(() => setError(undefined))
-        .catch((error: Error) => setError(error.message))
+        .catch((error: Error) => setError(error.message));
     }
-  }
+  };
 
   const onEditingEnd = async (event: NativeSyntheticEvent<TextInputEndEditingEventData>): Promise<void> => {
     if (onEndEditing) {
       onEndEditing(event.nativeEvent.text)
         .then(() => setError(undefined))
-        .catch((error: Error) => setError(error.message))
+        .catch((error: Error) => setError(error.message));
     }
-  }
+  };
 
   const onBlur = async (): Promise<void> => {
-    setHasFocus(false)
-  }
+    setHasFocus(false);
+  };
 
   const _onFocus = async (): Promise<void> => {
-    setHasFocus(true)
+    setHasFocus(true);
     if (onFocus) {
-      await onFocus()
+      await onFocus();
     }
-  }
+  };
 
   return (
     <Container>
@@ -136,13 +136,12 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           <LabelCaption
             style={{
               color: error ? statuses.error : labelColor,
-              ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
-            }}
-          >
+              ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
+            }}>
             {label}
           </LabelCaption>
         ) : (
-          <LinearTextGradient style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
+          <LinearTextGradient style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>
             <LabelCaption>{label}</LabelCaption>
           </LinearTextGradient>
         )
@@ -162,11 +161,11 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           onEndEditing={onEditingEnd}
           onFocus={_onFocus}
           value={value}
-          style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}
+          style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}
         />
         {secureTextEntry && (
           // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc
-          <IconContainer style={{ ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
+          <IconContainer style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>
             <SSIEyeIcon />
           </IconContainer>
         )}
@@ -176,8 +175,8 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
       ) : (
         <Underline
           style={{
-            ...(showBorder && { borderBottomWidth: 1, borderBottomColor: error ? statuses.error : borderColor }),
-            ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
+            ...(showBorder && {borderBottomWidth: 1, borderBottomColor: error ? statuses.error : borderColor}),
+            ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
           }}
         />
       )}
@@ -186,15 +185,14 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           <LabelCaption
             style={{
               color: error ? statuses.error : inputs.placeholder,
-              ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
-            }}
-          >
+              ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
+            }}>
             {error ? error : helperText}
           </LabelCaption>
         )}
       </HelperContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSITextInputField
+export default SSITextInputField;

@@ -1,20 +1,20 @@
-import React, { FC } from 'react'
-import { ColorValue, View } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
+import React, {FC} from 'react';
+import {ColorValue, View} from 'react-native';
+import Svg, {Path} from 'react-native-svg';
 
-import { fonts } from '../../../../styles/colors'
+import {fonts} from '../../../../styles/colors';
 
 export interface IProps {
-  width?: number
-  height?: number
-  color?: ColorValue
+  width?: number;
+  height?: number;
+  color?: ColorValue;
 }
 
 const SSIEditIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const { width = 13, height = 12, color = fonts.dark } = props
+  const {width = 13, height = 12, color = fonts.dark} = props;
 
   return (
-    <View style={{ width, height }}>
+    <View style={{width, height}}>
       <Svg width="100%" height="100%" viewBox="0 0 13 12" fill="none">
         <Path
           d="M1.77973 11.9686L3.99925 11.4125C4.18046 11.3675 4.346 11.2736 4.47786 11.1413L11.854 3.75143C12.2676 3.33702 12.5 2.77489 12.5 2.1888C12.5 1.60271 12.2677 1.04058 11.854 0.626068C11.4339 0.224291 10.8752 0 10.2943 0C9.7133 0 9.15469 0.224291 8.73453 0.626068L1.35586 8.0149C1.22402 8.14699 1.13041 8.31253 1.08509 8.49378L0.530641 10.7174C0.454077 11.025 0.522758 11.3509 0.716973 11.6013C0.911287 11.8515 1.20955 11.9986 1.52595 12C1.61148 12.0001 1.69671 11.9896 1.77969 11.9688L1.77973 11.9686ZM8.37893 2.22924L10.2518 4.1056L4.10692 10.2619L2.23403 8.38494L8.37893 2.22924ZM10.2936 0.860594C10.6449 0.860594 10.9817 1.00038 11.2301 1.24915C11.4784 1.49803 11.6179 1.83544 11.6179 2.18738C11.6179 2.53922 11.4784 2.87673 11.2301 3.12551L10.8769 3.47933L9.00286 1.60415L9.35601 1.25034C9.60383 0.99989 9.94162 0.859508 10.2936 0.860594ZM1.38702 10.9336L1.81496 9.21824L3.27763 10.6842L1.56359 11.1105C1.51324 11.1245 1.45944 11.1095 1.42347 11.0716C1.38771 11.0354 1.37381 10.9829 1.38702 10.9336Z"
@@ -22,7 +22,7 @@ const SSIEditIcon: FC<IProps> = (props: IProps): JSX.Element => {
         />
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSIEditIcon
+export default SSIEditIcon;

@@ -1,152 +1,71 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { IConnection } from '@sphereon/ssi-sdk-data-store-common'
-import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
-import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView'
-import { translate } from '../../localization/Localization'
-import { authenticateConnectionEntity, disconnectConnectionEntity } from '../../store/actions/authentication.actions'
+import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
+import SSIConnectionDetailsView from '../../components/views/SSIConnectionDetailsView';
+import {translate} from '../../localization/Localization';
 import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
-import {
-  ConnectionStatusEnum,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  ToastTypeEnum
-} from '../../types'
-import { IAuthenticatedEntity } from '../../types/store/authenticate.types'
-import { showToast } from '../../utils/ToastUtils'
+  SSIStatusBarDarkModeStyled as StatusBar,
+} from '../../styles/components';
+import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {showToast} from '../../utils/ToastUtils';
+import {authenticate} from '../../services/authenticationService';
 
-const format = require('string-format')
+const format = require('string-format');
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONNECTION_DETAILS>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.IDENTITY_DETAILS>;
 
-interface IProps extends Props {
-  authenticationEntities: Array<IAuthenticatedEntity>
-  authenticateConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
-  disconnectConnectionEntity: (entityId: string, connection: IConnection) => Promise<void>
-}
-
-class SSIConnectionDetailsScreen extends PureComponent<IProps> {
-  onDisconnectConfirm = async (): Promise<void> => {
-    this.props
-      // TODO fix non null assertion
-      .disconnectConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
-      .then(() => {
-        this.props.navigation.navigate(MainRoutesEnum.HOME, {})
-        showToast(
-          ToastTypeEnum.TOAST_SUCCESS,
-          format(translate('disconnect_provider_success_message'), this.props.route.params.entityName)
-        )
-      })
-      .catch((error) => {
-        if (!/User cancelled flow/.test(error)) {
-          showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-        }
-      })
-  }
-
-  onDisconnect = async (): Promise<void> => {
-    this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
-      message: format(translate('disconnect_provider_confirm_message'), this.props.route.params.entityName),
-      buttons: [
-        {
-          caption: translate('action_confirm_label'),
-          onPress: this.onDisconnectConfirm
-        }
-      ]
-    })
-  }
-
+class SSIConnectionDetailsScreen extends PureComponent<Props> {
+  // TODO screen can be a FC
   onConnectConfirm = async (): Promise<void> => {
-    this.props
-      // TODO fix non null assertion
-      .authenticateConnectionEntity(this.props.route.params.entityId!, this.props.route.params.connection)
-      .then(() => {
-        this.props.navigation.navigate(MainRoutesEnum.HOME, {})
-		// disableing for demo purpose
-        // showToast(
-        //   ToastTypeEnum.TOAST_SUCCESS,
-        //   format(translate('connect_provider_success_message'), this.props.route.params.entityName)
-        // )
-      })
-      .catch((error) => {
-        // TODO refactor error type behaviour
-        if (!/User cancelled flow/.test(error) && !/Pex verification manual stop/.test(error)) {
-          showToast(ToastTypeEnum.TOAST_ERROR, error.message)
-        }
-      })
-  }
+    const {identity} = this.props.route.params;
+
+    if (!identity.connection) {
+      showToast(ToastTypeEnum.TOAST_ERROR, 'identity must contain a connection'); // TODO
+      return;
+    }
+
+    authenticate(identity.connection).catch((error: Error) => {
+      showToast(ToastTypeEnum.TOAST_ERROR, error.message);
+    });
+  };
 
   onConnect = async (): Promise<void> => {
-    this.props.navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
-      message: format(translate('connect_provider_confirm_message'), this.props.route.params.entityName),
+    const {identity} = this.props.route.params;
+    const {navigation} = this.props;
+
+    navigation.navigate(MainRoutesEnum.ALERT_MODAL, {
+      message: format(translate('connect_provider_confirm_message'), identity.alias),
       buttons: [
         {
           caption: translate('action_confirm_label'),
-          onPress: this.onConnectConfirm
-        }
-      ]
-    })
-  }
+          onPress: this.onConnectConfirm,
+        },
+      ],
+    });
+  };
 
   render() {
-    const connectionStatus = this.props.authenticationEntities.find(
-      (entity: IAuthenticatedEntity) => entity.entityId === this.props.route.params.entityId
-    )
-      ? ConnectionStatusEnum.CONNECTED
-      : ConnectionStatusEnum.DISCONNECTED
+    const {identity} = this.props.route.params;
 
     return (
       <Container>
-        <StatusBar/>
-        <SSIConnectionDetailsView
-          entityConnection={{
-            ...this.props.route.params,
-            connectionStatus
-          }}
-        />
+        <StatusBar />
+        <SSIConnectionDetailsView identity={identity} />
         <ButtonContainer>
-          {connectionStatus === ConnectionStatusEnum.DISCONNECTED ? (
-            <SSIPrimaryButton
-              title={translate('connection_details_action_connect')}
-              onPress={this.onConnect}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 300 }}
-            />
-          ) : (
-            <SSIPrimaryButton
-              title={translate('connection_details_action_disconnect')}
-              onPress={this.onDisconnect}
-              // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-              style={{ height: 42, width: 300 }}
-            />
-          )}
+          <SSIPrimaryButton
+            title={translate('connection_details_action_connect')}
+            onPress={this.onConnect}
+            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
+            style={{height: 42, width: 300}}
+          />
         </ButtonContainer>
       </Container>
-    )
+    );
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    authenticateConnectionEntity: async (entityId: string, connection: IConnection) =>
-      dispatch(authenticateConnectionEntity(entityId, connection)),
-    disconnectConnectionEntity: async (entityId: string, connection: IConnection) =>
-      dispatch(disconnectConnectionEntity(entityId, connection))
-  }
-}
-
-const mapStateToProps = (state: RootState) => {
-  return {
-    authenticationEntities: state.authentication.entities
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SSIConnectionDetailsScreen)
+export default connect(null, null)(SSIConnectionDetailsScreen);

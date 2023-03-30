@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
 import {
   SSIAlertButtonStyled as Button,
@@ -6,13 +6,13 @@ import {
   SSIAlertButtonContainerStyled as ButtonContainer,
   SSIAlertContainerStyled as Container,
   SSIAlertMessageContainerStyled as MessageContainer,
-  SSIAlertMessageTextStyled as MessageText
-} from '../../../../styles/components'
-import { IButton } from '../../../../types'
+  SSIAlertMessageTextStyled as MessageText,
+} from '../../../../styles/components';
+import {IButton} from '../../../../types';
 
 export interface IProps {
-  message: string
-  buttons: Array<IButton>
+  message: string;
+  buttons: Array<IButton>;
 }
 
 const SSIAlert: FC<IProps> = (props: IProps): JSX.Element => {
@@ -31,7 +31,7 @@ const SSIAlert: FC<IProps> = (props: IProps): JSX.Element => {
         </ButtonContainer>
       )}
     </Container>
-  )
-}
+  );
+};
 
-export default SSIAlert
+export default SSIAlert;

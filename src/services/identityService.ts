@@ -1,4 +1,4 @@
-import { DIDDocument, DIDDocumentSection, IAgentContext, IIdentifier, IKey, IResolver } from '@veramo/core'
+import {DIDDocument, DIDDocumentSection, IAgentContext, IIdentifier, IKey, IResolver} from '@veramo/core';
 import {
   _ExtendedIKey,
   _ExtendedVerificationMethod,
@@ -6,68 +6,72 @@ import {
   extractPublicKeyHex,
   isDefined,
   mapIdentifierKeysToDoc,
-  resolveDidOrThrow
-} from '@veramo/utils'
-import { VerificationMethod } from 'did-resolver'
-import elliptic from 'elliptic'
-import * as u8a from 'uint8arrays'
+  resolveDidOrThrow,
+} from '@veramo/utils';
+import {VerificationMethod} from 'did-resolver';
+import elliptic from 'elliptic';
+import * as u8a from 'uint8arrays';
 
-import { DID_PREFIX } from '../@config/constants'
-import agent, { didManagerCreate, didManagerFind, didManagerGet } from '../agent'
-import { ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum } from '../types'
+import {DID_PREFIX} from '../@config/constants';
+import agent, {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
+import store from '../store';
+import {getContacts} from '../store/actions/contact.actions';
+import {addIdentifier} from '../store/actions/user.actions';
+import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum} from '../types';
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement
-  return didManagerFind()
-}
+  return didManagerFind();
+};
 
-export const createIdentifier = async (): Promise<IIdentifier> => {
-  // TODO fully implement
-  return didManagerCreate()
-}
+export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<IIdentifier> => {
+  const identifier = await didManagerCreate({
+    kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
+    ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
+    alias: args?.createOpts?.alias || `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}`,
+    options: args?.createOpts?.options,
+  });
+
+  if (store.getState().user.users.size > 0) {
+    await store.dispatch<any>(addIdentifier({did: identifier.did})).then(() => {
+      setTimeout(() => {
+        store.dispatch<any>(getContacts())
+      }, 1000);
+    });
+  }
+
+  return identifier;
+};
 
 export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise<IIdentifier> => {
-  const identifiers = (await didManagerFind(args?.method ? { provider: `${DID_PREFIX}:${args?.method}` } : {})).filter(
+  const identifiers = (await didManagerFind(args?.method ? {provider: `${DID_PREFIX}:${args?.method}`} : {})).filter(
     (identifier: IIdentifier) =>
-      args?.createOpts?.options?.type === undefined ||
-      identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type)
-  )
+      args?.createOpts?.options?.type === undefined || identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type),
+  );
 
-  console.log(
-    `Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`
-  )
+  console.log(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
 
   // Currently we only support one identifier
-  const identifier: IIdentifier =
-    !identifiers || identifiers.length == 0
-      ? await didManagerCreate({
-          kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
-          ...(args?.method && { provider: `${DID_PREFIX}:${args?.method}` }),
-          alias:
-            args?.createOpts?.alias ||
-            `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}`,
-          options: args?.createOpts?.options
-        })
-      : identifiers[0]
+  const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
-  return didManagerGet({ did: identifier.did })
-}
+  return didManagerGet({did: identifier.did});
+};
 
 export const getFirstKeyWithRelation = async (
   identifier: IIdentifier,
   vmRelationship?: DIDDocumentSection,
-  errorOnNotFound?: boolean
+  errorOnNotFound?: boolean,
 ): Promise<_ExtendedIKey | undefined> => {
-  const section = vmRelationship || 'verificationMethod' // search all VMs in case no relationship is provided
-  const matchedKeys = await mapIdentifierKeysToDocWithJwkSupport(identifier, section, { agent })
+  const section = vmRelationship || 'verificationMethod'; // search all VMs in case no relationship is provided
+  const matchedKeys = await mapIdentifierKeysToDocWithJwkSupport(identifier, section, {agent});
   if (Array.isArray(matchedKeys) && matchedKeys.length > 0) {
-    return matchedKeys[0]
+    return matchedKeys[0];
   }
   if (errorOnNotFound === true) {
-    throw new Error(`Could not find key with relationship ${section} in DID document for ${identifier.did}`)
+    throw new Error(`Could not find key with relationship ${section} in DID document for ${identifier.did}`);
   }
-  return undefined
-}
+  return undefined;
+};
 
 //TODO: Move to ssi-sdk/core and create PR upstream
 /**
@@ -83,11 +87,11 @@ export const getFirstKeyWithRelation = async (
 export async function dereferenceDidKeysWithJwkSupport(
   didDocument: DIDDocument,
   section: DIDDocumentSection = 'keyAgreement',
-  context: IAgentContext<IResolver>
+  context: IAgentContext<IResolver>,
 ): Promise<_NormalizedVerificationMethod[]> {
-  const convert = section === 'keyAgreement'
+  const convert = section === 'keyAgreement';
   if (section === 'service') {
-    return []
+    return [];
   }
   return (
     await Promise.all(
@@ -97,27 +101,27 @@ export async function dereferenceDidKeysWithJwkSupport(
             return (await context.agent.getDIDComponentById({
               didDocument,
               didUrl: key,
-              section
-            })) as _ExtendedVerificationMethod
+              section,
+            })) as _ExtendedVerificationMethod;
           } catch (e) {
-            return null
+            return null;
           }
         } else {
-          return key as _ExtendedVerificationMethod
+          return key as _ExtendedVerificationMethod;
         }
-      })
+      }),
     )
   )
     .filter(isDefined)
-    .map((key) => {
-      const hexKey = extractPublicKeyHexWithJwkSupport(key, convert)
-      const { publicKeyHex, publicKeyBase58, publicKeyBase64, publicKeyJwk, ...keyProps } = key
-      const newKey = { ...keyProps, publicKeyHex: hexKey }
+    .map(key => {
+      const hexKey = extractPublicKeyHexWithJwkSupport(key, convert);
+      const {publicKeyHex, publicKeyBase58, publicKeyBase64, publicKeyJwk, ...keyProps} = key;
+      const newKey = {...keyProps, publicKeyHex: hexKey};
       if (convert && 'Ed25519VerificationKey2018' === newKey.type) {
-        newKey.type = 'X25519KeyAgreementKey2019'
+        newKey.type = 'X25519KeyAgreementKey2019';
       }
-      return newKey
-    })
+      return newKey;
+    });
 }
 
 /**
@@ -131,18 +135,18 @@ export async function dereferenceDidKeysWithJwkSupport(
  */
 export function extractPublicKeyHexWithJwkSupport(pk: _ExtendedVerificationMethod, convert = false): string {
   if (pk.publicKeyJwk && pk.publicKeyJwk.kty === 'EC') {
-    const secp256 = new elliptic.ec(pk.publicKeyJwk.crv === 'secp256k1' ? 'secp256k1' : 'p256')
-    const prefix = pk.publicKeyJwk.crv === 'secp256k1' ? '04' : '03'
-    const x = u8a.fromString(pk.publicKeyJwk.x!, 'base64url')
-    const y = u8a.fromString(pk.publicKeyJwk.y!, 'base64url')
-    const hex = `${prefix}${u8a.toString(x, 'base16')}${u8a.toString(y, 'base16')}`
+    const secp256 = new elliptic.ec(pk.publicKeyJwk.crv === 'secp256k1' ? 'secp256k1' : 'p256');
+    const prefix = pk.publicKeyJwk.crv === 'secp256k1' ? '04' : '03';
+    const x = u8a.fromString(pk.publicKeyJwk.x!, 'base64url');
+    const y = u8a.fromString(pk.publicKeyJwk.y!, 'base64url');
+    const hex = `${prefix}${u8a.toString(x, 'base16')}${u8a.toString(y, 'base16')}`;
     // We return directly as we don't want to convert the result back into Uint8Array and then convert again to hex as the elliptic lib already returns hex strings
-    return secp256.keyFromPublic(hex, 'hex').getPublic(true, 'hex')
+    return secp256.keyFromPublic(hex, 'hex').getPublic(true, 'hex');
   } else if (pk.publicKeyJwk && pk.publicKeyJwk.crv === 'Ed25519') {
-    return u8a.toString(u8a.fromString(pk.publicKeyJwk.x!, 'base64url'), 'base16')
+    return u8a.toString(u8a.fromString(pk.publicKeyJwk.x!, 'base64url'), 'base16');
   } else {
     // delegate the other types to the original Veramo function
-    return extractPublicKeyHex(pk, convert)
+    return extractPublicKeyHex(pk, convert);
   }
 }
 
@@ -165,29 +169,29 @@ export function extractPublicKeyHexWithJwkSupport(pk: _ExtendedVerificationMetho
 export async function mapIdentifierKeysToDocWithJwkSupport(
   identifier: IIdentifier,
   section: DIDDocumentSection = 'keyAgreement',
-  context: IAgentContext<IResolver>
+  context: IAgentContext<IResolver>,
 ): Promise<_ExtendedIKey[]> {
-  const keys = await mapIdentifierKeysToDoc(identifier, section, context)
-  const didDocument = await resolveDidOrThrow(identifier.did, context)
+  const keys = await mapIdentifierKeysToDoc(identifier, section, context);
+  const didDocument = await resolveDidOrThrow(identifier.did, context);
   // dereference all key agreement keys from DID document and normalize
-  const documentKeys: VerificationMethod[] = await dereferenceDidKeysWithJwkSupport(didDocument, section, context)
+  const documentKeys: VerificationMethod[] = await dereferenceDidKeysWithJwkSupport(didDocument, section, context);
 
-  const localKeys = identifier.keys.filter(isDefined)
+  const localKeys = identifier.keys.filter(isDefined);
   // finally map the didDocument keys to the identifier keys by comparing `publicKeyHex`
   const extendedKeys: _ExtendedIKey[] = documentKeys
-    .map((verificationMethod) => {
+    .map(verificationMethod => {
       if (verificationMethod.type !== 'JsonWebKey2020') {
-        return null
+        return null;
       }
-      const localKey = localKeys.find((localKey) => localKey.publicKeyHex === verificationMethod.publicKeyHex)
+      const localKey = localKeys.find(localKey => localKey.publicKeyHex === verificationMethod.publicKeyHex);
       if (localKey) {
-        const { meta, ...localProps } = localKey
-        return { ...localProps, meta: { ...meta, verificationMethod } }
+        const {meta, ...localProps} = localKey;
+        return {...localProps, meta: {...meta, verificationMethod}};
       } else {
-        return null
+        return null;
       }
     })
-    .filter(isDefined)
+    .filter(isDefined);
 
-  return keys.concat(extendedKeys)
+  return keys.concat(extendedKeys);
 }

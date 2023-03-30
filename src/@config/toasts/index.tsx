@@ -1,16 +1,16 @@
-import React from 'react'
-import { ToastConfigParams } from 'react-native-toast-message'
+import React from 'react';
+import {ToastConfigParams} from 'react-native-toast-message';
 
 import {
   SSIAlertToastContainerStyled as AlertToastContainer,
   SSIAlertToastIconContainerStyled as AlertToastIconContainer,
   SSIAlertToastMessageTextStyled as AlertToastMessageCaption,
-  SSIAlertToastErrorIconStyled as ErrorIcon
-} from '../../../src/styles/components'
+  SSIAlertToastErrorIconStyled as ErrorIcon,
+} from '../../../src/styles/components';
 
-export const toastsBottomOffset = 0
-export const toastsAutoHide = true
-export const toastsVisibilityTime = 6000
+export const toastsBottomOffset = 0;
+export const toastsAutoHide = true;
+export const toastsVisibilityTime = 6000;
 
 export const toastConfig = {
   ssiAlertToastSuccess: (params: ToastConfigParams<unknown>) => (
@@ -25,5 +25,5 @@ export const toastConfig = {
       </AlertToastIconContainer>
       <AlertToastMessageCaption>{params.text1}</AlertToastMessageCaption>
     </AlertToastContainer>
-  )
-}
+  ),
+};

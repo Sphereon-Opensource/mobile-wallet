@@ -1,49 +1,42 @@
-import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createNativeStackNavigator, NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React from 'react'
-import Toast from 'react-native-toast-message'
-import { useSelector } from 'react-redux'
+import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
+import React from 'react';
+import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 
-import { toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime } from '../@config/toasts'
-import SSIHeaderBar from '../components/bars/SSIHeaderBar'
-import SSINavigationBar from '../components/bars/SSINavigationBar'
-import { translate } from '../localization/Localization'
-import SSIAlertModal from '../modals/SSIAlertModal'
-import SSIPopupModal from '../modals/SSIPopupModal'
-import RootNavigation from '../navigation/rootNavigation'
-import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen'
-import SSIContactAddScreen from '../screens/SSIContactAddScreen'
-import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen'
-import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen'
-import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen'
-import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen'
-import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen'
-import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen'
-import SSIErrorScreen from '../screens/SSIErrorScreen'
-import SSILockScreen from '../screens/SSILockScreen'
-import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen'
-import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen'
-import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen'
-import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen'
-import SSIQRReader from '../screens/SSIQRReaderScreen'
-import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen'
-import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen'
-import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen'
-import SSIWelcomeScreen from '../screens/SSIWelcomeScreen'
-import Veramo from '../screens/Veramo'
-import {
-  MainRoutesEnum,
-  NavigationBarRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  SwitchRoutesEnum
-} from '../types'
+import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
+import SSIHeaderBar from '../components/bars/SSIHeaderBar';
+import SSINavigationBar from '../components/bars/SSINavigationBar';
+import {translate} from '../localization/Localization';
+import SSIAlertModal from '../modals/SSIAlertModal';
+import SSIPopupModal from '../modals/SSIPopupModal';
+import RootNavigation from '../navigation/rootNavigation';
+import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen';
+import SSIContactAddScreen from '../screens/SSIContactAddScreen';
+import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
+import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
+import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen';
+import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen';
+import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen';
+import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen';
+import SSIErrorScreen from '../screens/SSIErrorScreen';
+import SSILockScreen from '../screens/SSILockScreen';
+import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
+import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen';
+import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen';
+import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen';
+import SSIQRReader from '../screens/SSIQRReaderScreen';
+import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
+import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
+import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
+import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
+import Veramo from '../screens/Veramo';
+import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 
-const format = require('string-format')
+const format = require('string-format');
 
-const Stack = createNativeStackNavigator<StackParamList>()
-const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator<StackParamList>();
+const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = (): JSX.Element => {
   return (
@@ -51,48 +44,37 @@ const MainStackNavigator = (): JSX.Element => {
       initialRouteName={MainRoutesEnum.HOME}
       screenOptions={{
         animation: 'none',
-        headerShown: false
-      }}
-    >
+        headerShown: false,
+      }}>
       <Stack.Screen name={MainRoutesEnum.HOME} component={TabStackNavigator} />
       <Stack.Screen
         name={MainRoutesEnum.ALERT_MODAL}
-        children={({ navigation, route }) => (
+        children={({navigation, route}) => (
           <>
             <SSIAlertModal navigation={navigation} route={route} />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
         options={{
-          presentation: 'transparentModal'
+          presentation: 'transparentModal',
         }}
       />
       <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}
-        children={({ navigation, route }) => (
+        children={({navigation, route}) => (
           <>
             <SSIPopupModal navigation={navigation} route={route} />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
         options={{
-          presentation: 'transparentModal'
+          presentation: 'transparentModal',
         }}
       />
       <Stack.Screen name="Veramo" component={Veramo} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const TabStackNavigator = (): JSX.Element => {
   return (
@@ -100,23 +82,17 @@ const TabStackNavigator = (): JSX.Element => {
       screenOptions={{
         headerShown: false,
         // unmountOnBlur resets the stack back to initial state
-        unmountOnBlur: true
+        unmountOnBlur: true,
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={NavigationBarRoutesEnum.CREDENTIALS}
-      backBehavior="none"
-    >
+      backBehavior="none">
       <Tab.Screen
         name={NavigationBarRoutesEnum.QR}
         children={() => (
           <>
             <QRStack />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -125,12 +101,7 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <NotificationsStack />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -139,12 +110,7 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <CredentialsStack />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -153,39 +119,33 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <ContactsStack />
-            <Toast
-              bottomOffset={toastsBottomOffset}
-              autoHide={toastsAutoHide}
-              visibilityTime={toastsVisibilityTime}
-              config={toastConfig}
-            />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
 const CredentialsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
         component={SSICredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder showBackButton={false} />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder showBackButton={false} />,
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerTitle: translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
@@ -197,12 +157,12 @@ const CredentialsStack = (): JSX.Element => {
                   caption: translate('show_raw_credential_button_caption'),
                   onPress: async () =>
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                      rawCredential: route.params.rawCredential
-                    })
-                }
+                      rawCredential: route.params.rawCredential,
+                    }),
+                },
               ]}
             />
-          )
+          ),
         })}
       />
       <Stack.Screen
@@ -216,34 +176,33 @@ const CredentialsStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const ContactsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.CONNECTIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.CONTACTS_OVERVIEW}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACTS_OVERVIEW}
         component={SSIContactsOverviewScreen}
         options={{
           headerTitle: translate('contacts_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
         }}
       />
       <Stack.Screen
@@ -258,39 +217,38 @@ const ContactsStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showBorder
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const QRStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.QR_READER}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.QR_READER}
         component={SSIQRReader}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.VERIFICATION_CODE}
         component={SSIVerificationCodeScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerTitle: translate('verification_code_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
@@ -299,11 +257,11 @@ const QRStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={format(translate('verification_code_subtitle'), route.params.credentialName)}
             />
-          )
+          ),
         })}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.CONNECTION_DETAILS}
+        name={ScreenRoutesEnum.IDENTITY_DETAILS}
         component={SSIConnectionDetailsScreen}
         options={{
           headerTitle: translate('connection_details_title'),
@@ -313,7 +271,7 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
@@ -327,13 +285,13 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerTitle: translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
@@ -346,18 +304,18 @@ const QRStack = (): JSX.Element => {
                   caption: translate('show_raw_credential_button_caption'),
                   onPress: async () =>
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                      rawCredential: route.params.rawCredential
-                    })
-                }
+                      rawCredential: route.params.rawCredential,
+                    }),
+                },
               ]}
             />
-          )
+          ),
         })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE}
         component={SSICredentialSelectTypeScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           headerTitle: translate('credential_select_type_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
@@ -366,7 +324,7 @@ const QRStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={format(translate('credential_select_type_subtitle'), route.params.issuer)}
             />
-          )
+          ),
         })}
       />
       <Stack.Screen
@@ -380,7 +338,7 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
@@ -395,60 +353,58 @@ const QRStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const NotificationsStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
         component={SSINotificationsOverviewScreen}
         options={{
           headerTitle: translate('notifications_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.WELCOME}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.WELCOME}
         component={SSIWelcomeScreen}
         options={{
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -464,7 +420,7 @@ const OnboardingStack = (): JSX.Element => {
               showProfileIcon={false}
               headerSubTitle={translate('terms_of_service_subtitle')}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
@@ -480,13 +436,13 @@ const OnboardingStack = (): JSX.Element => {
               showProfileIcon={false}
               headerSubTitle={translate('personal_data_subtitle')}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.PIN_CODE_SET}
         component={SSIPinCodeSetScreen}
-        options={({ route }) => ({
+        options={({route}) => ({
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
@@ -498,7 +454,7 @@ const OnboardingStack = (): JSX.Element => {
               showProfileIcon={false}
               headerSubTitle={route.params.headerSubTitle}
             />
-          )
+          ),
         })}
       />
       <Stack.Screen
@@ -514,7 +470,7 @@ const OnboardingStack = (): JSX.Element => {
               showProfileIcon={false}
               headerSubTitle={translate('onboard_summary_subtitle')}
             />
-          )
+          ),
         }}
       />
       <Stack.Screen
@@ -522,54 +478,47 @@ const OnboardingStack = (): JSX.Element => {
         component={SSIPopupModal}
         options={{
           presentation: 'transparentModal',
-          headerShown: false
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const AuthenticationStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       initialRouteName={ScreenRoutesEnum.LOCK}
       screenOptions={{
-        animation: 'none'
-      }}
-    >
+        animation: 'none',
+      }}>
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
         options={{
           headerTitle: translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              showBackButton={false}
-              showProfileIcon={false}
-              headerSubTitle={translate('lock_subtitle')}
-            />
-          )
+            <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
+          ),
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
  */
 const AppNavigator = (): JSX.Element => {
-  const userState = useSelector((state: RootState) => state.user)
+  const userState = useSelector((state: RootState) => state.user);
 
   return (
     <Stack.Navigator
       screenOptions={{
         animation: 'none',
-        headerShown: false
-      }}
-    >
+        headerShown: false,
+      }}>
       {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
       ) : !userState.activeUser ? (
@@ -578,7 +527,7 @@ const AppNavigator = (): JSX.Element => {
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       )}
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default AppNavigator
+export default AppNavigator;

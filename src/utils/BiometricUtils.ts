@@ -1,16 +1,16 @@
-import FingerprintScanner from 'react-native-fingerprint-scanner'
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 
-import { translate } from '../localization/Localization'
+import {translate} from '../localization/Localization';
 
 export const scanFingerPrint = async () => {
   return FingerprintScanner.authenticate({
-    title: translate('biometrics_title')
+    title: translate('biometrics_title'),
   })
     .then(() => {
-      FingerprintScanner.release()
+      FingerprintScanner.release();
     })
     .catch((error: Error) => {
-      FingerprintScanner.release()
-      return Promise.reject(error)
-    })
-}
+      FingerprintScanner.release();
+      return Promise.reject(error);
+    });
+};

@@ -1,20 +1,20 @@
-import React, { FC } from 'react'
-import { ColorValue, View } from 'react-native'
-import Svg, { Circle, Path } from 'react-native-svg'
+import React, {FC} from 'react';
+import {ColorValue, View} from 'react-native';
+import Svg, {Circle, Path} from 'react-native-svg';
 
-import { fonts, statuses } from '../../../../styles/colors'
+import {fonts, statuses} from '../../../../styles/colors';
 
 export interface IProps {
-  size?: number
-  color?: ColorValue
-  backgroundColor?: ColorValue
+  size?: number;
+  color?: ColorValue;
+  backgroundColor?: ColorValue;
 }
 
 const SSICheckmarkBadge: FC<IProps> = (props: IProps): JSX.Element => {
-  const { size = 15, color = fonts.light, backgroundColor = statuses.valid } = props
+  const {size = 15, color = fonts.light, backgroundColor = statuses.valid} = props;
 
   return (
-    <View style={{ width: size, aspectRatio: 1 }}>
+    <View style={{width: size, aspectRatio: 1}}>
       <Svg width="100%" height="100%" viewBox="0 0 15 15" fill="none">
         <Circle cx="7.5" cy="7.5" r="7.5" fill={backgroundColor} />
         <Path
@@ -23,7 +23,7 @@ const SSICheckmarkBadge: FC<IProps> = (props: IProps): JSX.Element => {
         />
       </Svg>
     </View>
-  )
-}
+  );
+};
 
-export default SSICheckmarkBadge
+export default SSICheckmarkBadge;

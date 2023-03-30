@@ -1,6 +1,6 @@
-import { IOpenIdConfig } from '@sphereon/ssi-sdk-data-store-common'
-import Debug from 'debug'
-import jwt_decode from 'jwt-decode'
+import {IOpenIdConfig} from '@sphereon/ssi-sdk-data-store';
+import Debug from 'debug';
+import jwt_decode from 'jwt-decode';
 import {
   AuthConfiguration,
   authorize,
@@ -11,27 +11,26 @@ import {
   RegistrationConfiguration,
   RegistrationResponse,
   revoke,
-  prefetchConfiguration as rnaa_prefetchConfiguration
-} from 'react-native-app-auth'
+  prefetchConfiguration as rnaa_prefetchConfiguration,
+} from 'react-native-app-auth';
 
-import { APP_ID } from '../../@config/constants'
-import { CustomJwtPayload } from '../../types'
-import { IOpenIdAuthentication } from '../../types/store/authenticate.types'
+import {APP_ID} from '../../@config/constants';
+import {CustomJwtPayload, IOpenIdAuthentication} from '../../types';
 
-const debug = Debug(`${APP_ID}:authentication`)
+const debug = Debug(`${APP_ID}:authentication`);
 
 class OpenIdConnectProvider {
   public authenticate = async (config: IOpenIdConfig): Promise<IOpenIdAuthentication> => {
     const authConfig = {
       ...config,
       additionalParameters: {
-        prompt: 'login' as const
-      }
-    }
+        prompt: 'login' as const,
+      },
+    };
 
     return authorize(authConfig)
       .then(async (authResult: AuthorizeResult) => {
-        const decoded_token = this.decodeToken(authResult)
+        const decoded_token = this.decodeToken(authResult);
         const authenticatedUser = {
           id: decoded_token.sub,
           name: decoded_token.name,
@@ -39,54 +38,54 @@ class OpenIdConnectProvider {
           lastName: decoded_token.family_name,
           email: decoded_token.email,
           roles: decoded_token.realm_access?.roles,
-          scope: decoded_token.scope
-        }
+          scope: decoded_token.scope,
+        };
 
         return {
           accessToken: authResult.accessToken,
           refreshToken: authResult.refreshToken,
           idToken: authResult.idToken,
-          user: authenticatedUser
-        }
+          user: authenticatedUser,
+        };
       })
-      .catch((error) => {
-        debug(`Authorization failed for clientId: ${config.clientId} with error: ${error}`)
-        return Promise.reject(error)
-      })
-  }
+      .catch(error => {
+        debug(`Authorization failed for clientId: ${config.clientId} with error: ${error}`);
+        return Promise.reject(error);
+      });
+  };
 
   private decodeToken = (authResult: AuthorizeResult): CustomJwtPayload => {
-    const options = { header: false }
+    const options = {header: false};
     try {
-      return jwt_decode<CustomJwtPayload>(authResult.accessToken, options)
+      return jwt_decode<CustomJwtPayload>(authResult.accessToken, options);
     } catch (error: unknown) {
-      return jwt_decode<CustomJwtPayload>(authResult.idToken, options)
+      return jwt_decode<CustomJwtPayload>(authResult.idToken, options);
     }
-  }
+  };
 
   public prefetchConfiguration = async (config: AuthConfiguration): Promise<void> => {
     // TODO fully implement
-    return rnaa_prefetchConfiguration(config)
-  }
+    return rnaa_prefetchConfiguration(config);
+  };
 
   public registerConfiguration = async (config: RegistrationConfiguration): Promise<RegistrationResponse> => {
     // TODO fully implement
-    return register(config)
-  }
+    return register(config);
+  };
 
   public refreshToken = async (config: AuthConfiguration, refreshToken: string): Promise<RefreshResult> => {
     // TODO fully implement
     return refresh(config, {
-      refreshToken
-    })
-  }
+      refreshToken,
+    });
+  };
 
   public revokeToken = async (config: AuthConfiguration, token: string): Promise<void> => {
     // TODO fully implement
     return revoke(config, {
-      tokenToRevoke: token
-    })
-  }
+      tokenToRevoke: token,
+    });
+  };
 }
 
-export default OpenIdConnectProvider
+export default OpenIdConnectProvider;

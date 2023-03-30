@@ -1,2 +1,2 @@
-export * from './SSIAlertModal'
-export * from './SSIPopupModal'
+export * from './SSIAlertModal';
+export * from './SSIPopupModal';

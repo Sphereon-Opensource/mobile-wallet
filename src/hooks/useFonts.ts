@@ -1,4 +1,4 @@
-import * as Font from 'expo-font'
+import * as Font from 'expo-font';
 
 const _loadFontsAsync = async () => {
   await Font.loadAsync({
@@ -19,8 +19,8 @@ const _loadFontsAsync = async () => {
     'Poppins-SemiBold': require('../../src/assets/fonts/Poppins-SemiBold.ttf'),
     'Poppins-SemiBoldItalic': require('../../src/assets/fonts/Poppins-SemiBoldItalic.ttf'),
     'Poppins-Thin': require('../../src/assets/fonts/Poppins-Thin.ttf'),
-    'Poppins-ThinItalic': require('../../src/assets/fonts/Poppins-ThinItalic.ttf')
-  })
-}
+    'Poppins-ThinItalic': require('../../src/assets/fonts/Poppins-ThinItalic.ttf'),
+  });
+};
 
-export default _loadFontsAsync
+export default _loadFontsAsync;

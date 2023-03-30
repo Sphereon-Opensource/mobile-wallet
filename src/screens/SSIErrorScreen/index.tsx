@@ -1,28 +1,27 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
 
-import SSIPopup from '../../components/messageBoxes/popups/SSIPopup'
+import SSIPopup from '../../components/messageBoxes/popups/SSIPopup';
 import {
   SSIBasicContainerStyled as Container,
   SSIErrorScreenContentContainerStyled as ContentContainer,
-  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer
-} from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+  SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
+} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>;
 
 const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton } =
-    props.route.params
-  const [showExtraDetails, setShowExtraDetails] = React.useState(false)
+  const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
+  const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
   const onShowDetails = async (): Promise<void> => {
-    setShowExtraDetails(true)
-  }
+    setShowExtraDetails(true);
+  };
 
   const onCloseDetails = async (): Promise<void> => {
-    setShowExtraDetails(true)
-  }
+    setShowExtraDetails(true);
+  };
 
   return (
     <Container>
@@ -49,7 +48,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
             detailsPopup
               ? {
                   caption: detailsPopup.buttonCaption,
-                  onPress: onShowDetails
+                  onPress: onShowDetails,
                 }
               : undefined
           }
@@ -59,7 +58,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
         />
       </ContentContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIErrorScreenScreen
+export default SSIErrorScreenScreen;

@@ -1,27 +1,27 @@
-import React, { FC } from 'react'
-import { ColorValue, TouchableOpacity } from 'react-native'
+import React, {FC} from 'react';
+import {ColorValue, TouchableOpacity} from 'react-native';
 
-import { HIT_SLOP_DISTANCE } from '../../../@config/constants'
-import { fonts, selectionElements } from '../../../styles/colors'
+import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
+import {fonts, selectionElements} from '../../../styles/colors';
 import {
   SSIFlexDirectionRowViewStyled as Container,
   SSICheckboxLabelContainerStyled as LabelCaption,
   SSICheckboxSelectedContainerStyled as SelectedContainer,
-  SSICheckboxUnselectedContainerStyled as UnselectedContainer
-} from '../../../styles/components'
-import { OpacityStyleEnum } from '../../../types'
+  SSICheckboxUnselectedContainerStyled as UnselectedContainer,
+} from '../../../styles/components';
+import {OpacityStyleEnum} from '../../../types';
 
 export interface IProps {
-  onValueChange?: (isChecked: boolean) => Promise<void>
-  initialValue?: boolean
+  onValueChange?: (isChecked: boolean) => Promise<void>;
+  initialValue?: boolean;
   // This value can be used to control the checkbox from the outside
-  isChecked?: boolean
-  label?: string
-  disabled?: boolean
-  backgroundColor?: ColorValue
-  borderColor?: ColorValue
-  selectedColor?: ColorValue
-  labelColor?: ColorValue
+  isChecked?: boolean;
+  label?: string;
+  disabled?: boolean;
+  backgroundColor?: ColorValue;
+  borderColor?: ColorValue;
+  selectedColor?: ColorValue;
+  labelColor?: ColorValue;
 }
 
 const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
@@ -32,19 +32,19 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
     initialValue,
     label,
     selectedColor = selectionElements.primaryDark,
-    labelColor = fonts.light
-  } = props
-  const [isChecked, setChecked] = React.useState(initialValue || false)
-  const value = props.isChecked || isChecked
+    labelColor = fonts.light,
+  } = props;
+  const [isChecked, setChecked] = React.useState(initialValue || false);
+  const value = props.isChecked || isChecked;
 
   const onValueChange = () => {
-    const { onValueChange } = props
+    const {onValueChange} = props;
     if (onValueChange) {
-      onValueChange(!isChecked).then(() => setChecked(!isChecked))
+      onValueChange(!isChecked).then(() => setChecked(!isChecked));
     } else {
-      setChecked(!isChecked)
+      setChecked(!isChecked);
     }
-  }
+  };
 
   return (
     <TouchableOpacity
@@ -54,32 +54,22 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
         top: HIT_SLOP_DISTANCE,
         bottom: HIT_SLOP_DISTANCE,
         left: HIT_SLOP_DISTANCE,
-        right: HIT_SLOP_DISTANCE
-      }}
-    >
+        right: HIT_SLOP_DISTANCE,
+      }}>
       <Container>
         <UnselectedContainer
           style={{
             backgroundColor,
-            ...(label && { marginRight: 10 }),
+            ...(label && {marginRight: 10}),
             borderColor,
-            ...(disabled && { opacity: OpacityStyleEnum.DISABLED })
-          }}
-        >
-          {value && (
-            <SelectedContainer
-              style={{ backgroundColor: selectedColor, ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}
-            />
-          )}
+            ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
+          }}>
+          {value && <SelectedContainer style={{backgroundColor: selectedColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}} />}
         </UnselectedContainer>
-        {label && (
-          <LabelCaption style={{ color: labelColor, ...(disabled && { opacity: OpacityStyleEnum.DISABLED }) }}>
-            {label}
-          </LabelCaption>
-        )}
+        {label && <LabelCaption style={{color: labelColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>{label}</LabelCaption>}
       </Container>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default SSICheckbox
+export default SSICheckbox;

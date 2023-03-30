@@ -1,18 +1,17 @@
-import { FindPartyArgs } from '@sphereon/ssi-sdk-connection-manager'
-import { BasicPartyIdentifier, IBasicConnection } from '@sphereon/ssi-sdk-data-store-common'
+import {FindContactArgs, IBasicIdentity} from '@sphereon/ssi-sdk-data-store';
 
 export interface ICreateContactArgs {
-  name: string
-  alias: string
-  identifier: BasicPartyIdentifier
-  uri?: string
+  name: string;
+  alias: string;
+  uri?: string;
+  identities?: Array<IBasicIdentity>;
 }
 
 export interface IAddIdentityArgs {
-  contactId: string
-  connection: IBasicConnection
+  contactId: string;
+  identity: IBasicIdentity;
 }
 
 export interface IGetContactsArgs {
-  filter?: FindPartyArgs
+  filter?: FindContactArgs;
 }

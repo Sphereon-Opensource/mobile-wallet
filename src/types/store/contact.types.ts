@@ -1,6 +1,6 @@
-import { IConnectionParty } from '@sphereon/ssi-sdk-data-store-common'
+import {IContact} from '@sphereon/ssi-sdk-data-store';
 
 export interface IContactState {
-  loading: boolean
-  contacts: Array<IConnectionParty>
+  loading: boolean;
+  contacts: Array<IContact>;
 }

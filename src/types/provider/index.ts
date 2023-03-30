@@ -1,1 +1,1 @@
-export * from './openIdVcIssuanceProvider'
+export * from './openIdVcIssuanceProvider';

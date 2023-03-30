@@ -1,26 +1,26 @@
-import React, { FC } from 'react'
-import { View } from 'react-native'
+import {IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
+import React, {FC} from 'react';
+import {View} from 'react-native';
 
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
   SSITextH3LightStyled as ContactNameCaption,
-  SSIContactViewItemContactRoleCaptionStyled as ContactRoleCaption,
-  SSITextH4LightStyled as ContactUriCaption,
+  SSITextH4LightStyled as ContactRolesCaption,
+  SSIContactViewItemContactUriCaptionStyled as ContactUriCaption,
   SSIContactViewItemContainerStyled as Container,
   SSIContactViewItemLogoContainerStyled as LogoContainer,
   SSIContactViewItemPlaceholderLogoStyled as PlaceholderLogo,
-  SSIContactViewItemNewStatusContainerStyled as StatusContainer
-} from '../../../styles/components'
+  SSIContactViewItemNewStatusContainerStyled as StatusContainer,
+} from '../../../styles/components';
 
 export interface Props {
-  id: string
-  name: string
-  uri?: string
-  roles?: Array<string> // TODO format the roles for display
+  name: string;
+  uri?: string;
+  roles: Array<IdentityRoleEnum>;
 }
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const { name, uri, roles } = props
+  const {name, uri, roles} = props;
 
   return (
     <Container>
@@ -31,12 +31,12 @@ const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
       <View>
         <ContactDetailsContainer>
           <ContactNameCaption>{name}</ContactNameCaption>
-          <ContactUriCaption>{uri}</ContactUriCaption>
+          <ContactRolesCaption>{roles.join(', ')}</ContactRolesCaption>
         </ContactDetailsContainer>
-        <ContactRoleCaption>{roles}</ContactRoleCaption>
+        <ContactUriCaption>{uri}</ContactUriCaption>
       </View>
     </Container>
-  )
-}
+  );
+};
 
-export default SSIContactViewItem
+export default SSIContactViewItem;
