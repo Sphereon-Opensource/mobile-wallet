@@ -12,6 +12,8 @@ export const GET_USERS_FAILED = '[USER] GET_USERS_FAILED';
 export type GET_USERS_FAILED = typeof GET_USERS_FAILED;
 export const SET_ACTIVE_USER_SUCCESS = '[USER] SET_ACTIVE_USER_SUCCESS';
 export type SET_ACTIVE_USER_SUCCESS = typeof SET_ACTIVE_USER_SUCCESS;
+export const REMOVE_ACTIVE_USER_SUCCESS = '[USER] REMOVE_ACTIVE_USER_SUCCESS';
+export type REMOVE_ACTIVE_USER_SUCCESS = typeof REMOVE_ACTIVE_USER_SUCCESS;
 export const SET_ACTIVE_USER_FAILED = '[USER] SET_ACTIVE_USER_FAILED';
 export type SET_ACTIVE_USER_FAILED = typeof SET_ACTIVE_USER_FAILED;
 export const UPDATE_USER_SUCCESS = '[USER] UPDATE_USER_SUCCESS';
@@ -46,6 +48,11 @@ interface ISetActiveUserActionSuccessAction {
   payload: IUser;
 }
 
+interface IRemoveActiveUserActionSuccessAction {
+  type: REMOVE_ACTIVE_USER_SUCCESS;
+  payload: IUser;
+}
+
 interface ISetActiveUserActionFailedAction {
   type: SET_ACTIVE_USER_FAILED;
 }
@@ -66,6 +73,7 @@ export type UserActionTypes =
   | ICreateUserActionSuccessAction
   | ICreateUserActionFailedAction
   | ISetActiveUserActionSuccessAction
+  | IRemoveActiveUserActionSuccessAction
   | ISetActiveUserActionFailedAction
   | IUpdateUserActionSuccessAction
   | IUpdateUserActionFailedAction;

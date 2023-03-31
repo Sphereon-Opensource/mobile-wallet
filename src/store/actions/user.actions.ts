@@ -8,11 +8,12 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
+  REMOVE_ACTIVE_USER_SUCCESS,
   SET_ACTIVE_USER_FAILED,
   SET_ACTIVE_USER_SUCCESS,
-  USERS_LOADING,
-  UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
+  USERS_LOADING,
 } from '../../types/store/user.action.types';
 import {IUserState} from '../../types/store/user.types';
 
@@ -68,5 +69,12 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
         }
       })
       .catch(() => dispatch({type: SET_ACTIVE_USER_FAILED}));
+  };
+};
+
+export const removeActiveUser = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: USERS_LOADING});
+    dispatch({type: REMOVE_ACTIVE_USER_SUCCESS, payload: null});
   };
 };

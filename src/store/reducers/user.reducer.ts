@@ -4,6 +4,7 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
+  REMOVE_ACTIVE_USER_SUCCESS,
   SET_ACTIVE_USER_FAILED,
   SET_ACTIVE_USER_SUCCESS,
   UPDATE_USER_FAILED,
@@ -54,6 +55,13 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       };
     }
     case SET_ACTIVE_USER_SUCCESS: {
+      return {
+        ...state,
+        activeUser: action.payload,
+        loading: false,
+      };
+    }
+    case REMOVE_ACTIVE_USER_SUCCESS: {
       return {
         ...state,
         activeUser: action.payload,
