@@ -75,14 +75,12 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
           dispatch({type: SET_ACTIVE_USER_SUCCESS, payload: user});
           let userState: IUserState = getState().user;
           while (!userState.activeUser) {
-            console.log('waiting user')
             await new Promise((resolve) => setTimeout(resolve, 50));
             userState = getState().user;
           }
           await dispatch(getContacts())
           let contactState: IContactState = getState().contact;
           while (contactState.contacts.length === 0) {
-            console.log('waiting contacts')
             await new Promise((resolve) => setTimeout(resolve, 50));
             contactState = getState().contact;
           }
