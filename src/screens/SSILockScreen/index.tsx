@@ -9,13 +9,13 @@ import {translate} from '../../localization/Localization';
 import {getPin} from '../../services/storageService';
 import {getContacts} from '../../store/actions/contact.actions';
 import {getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {setActiveUser} from '../../store/actions/user.actions';
+import {login} from '../../store/actions/user.actions';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
   users: Map<string, IUser>;
-  setActiveUser: (userId: string) => void;
+  login: (userId: string) => void;
   getContacts: () => void;
   getVerifiableCredentials: () => void;
 }
@@ -25,7 +25,7 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
 class SSILockScreen extends PureComponent<IProps> {
   onLogin = async (): Promise<void> => {
     const user: IUser = this.props.users.values().next().value;
-    await this.props.setActiveUser(user.id)
+    await this.props.login(user.id)
     setTimeout(async () => {
       this.props.getContacts();
     }, 1000);
@@ -70,7 +70,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setActiveUser: (userId: string) => dispatch(setActiveUser(userId)),
+    login: (userId: string) => dispatch(login(userId)),
     getContacts: () => dispatch(getContacts()),
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
   };

@@ -8,9 +8,9 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
-  REMOVE_ACTIVE_USER_SUCCESS,
-  SET_ACTIVE_USER_FAILED,
-  SET_ACTIVE_USER_SUCCESS,
+  LOGOUT_SUCCESS,
+  LOGIN_FAILED,
+  LOGIN_SUCCESS,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   USERS_LOADING,
@@ -56,25 +56,25 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
   };
 };
 
-export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const login = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
     getUsersFromStorage()
       .then((users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
-          dispatch({type: SET_ACTIVE_USER_SUCCESS, payload: user});
+          dispatch({type: LOGIN_SUCCESS, payload: user});
         } else {
-          dispatch({type: SET_ACTIVE_USER_FAILED});
+          dispatch({type: LOGIN_FAILED});
         }
       })
-      .catch(() => dispatch({type: SET_ACTIVE_USER_FAILED}));
+      .catch(() => dispatch({type: LOGIN_FAILED}));
   };
 };
 
 export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    dispatch({type: REMOVE_ACTIVE_USER_SUCCESS, payload: null});
+    dispatch({type: LOGOUT_SUCCESS});
   };
 };
