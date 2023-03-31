@@ -1,0 +1,1393 @@
+diff --git a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts
+index d705d9e..2480ebf 100644
+--- a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts
++++ b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts
+@@ -1,5 +1,4 @@
+-import { BaseEntity } from 'typeorm';
+-import { KeyType } from "./key";
++import { Key } from './key';
+ /**
+  * This represents the private key data of keys that were stored by {@link @veramo/data-store#KeyStore} before Veramo
+  * 3.0. During database migration this key material is moved to a different table and accessible by
+@@ -7,9 +6,8 @@ import { KeyType } from "./key";
+  *
+  * @beta This API may change without a BREAKING CHANGE notice.
+  */
+-export declare class PreMigrationKey extends BaseEntity {
++export declare class PreMigrationKey extends Key {
+     kid: string;
+-    type: KeyType;
+     privateKeyHex?: string;
+ }
+ //# sourceMappingURL=PreMigrationEntities.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts.map b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts.map
+index ff2e0c5..56a35cf 100644
+--- a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts.map
++++ b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"PreMigrationEntities.d.ts","sourceRoot":"","sources":["../../src/entities/PreMigrationEntities.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAiC,MAAM,SAAS,CAAA;AACnE,OAAO,EAAE,OAAO,EAAE,MAAM,OAAO,CAAC;AAEhC;;;;;;GAMG;AACH,qBACa,eAAgB,SAAQ,UAAU;IAG7C,GAAG,EAAE,MAAM,CAAA;IAIX,IAAI,EAAE,OAAO,CAAA;IAGb,aAAa,CAAC,EAAE,MAAM,CAAA;CACvB"}
+\ No newline at end of file
++{"version":3,"file":"PreMigrationEntities.d.ts","sourceRoot":"","sources":["../../src/entities/PreMigrationEntities.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,GAAG,EAAE,MAAM,OAAO,CAAA;AAE3B;;;;;;GAMG;AACH,qBACa,eAAgB,SAAQ,GAAG;IAKtC,GAAG,EAAE,MAAM,CAAA;IAGX,aAAa,CAAC,EAAE,MAAM,CAAA;CACvB"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js
+index 776af1b..cd95257 100644
+--- a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js
++++ b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js
+@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.PreMigrationKey = void 0;
+ const typeorm_1 = require("typeorm");
++const key_1 = require("./key");
+ /**
+  * This represents the private key data of keys that were stored by {@link @veramo/data-store#KeyStore} before Veramo
+  * 3.0. During database migration this key material is moved to a different table and accessible by
+@@ -18,7 +19,7 @@ const typeorm_1 = require("typeorm");
+  *
+  * @beta This API may change without a BREAKING CHANGE notice.
+  */
+-let PreMigrationKey = class PreMigrationKey extends typeorm_1.BaseEntity {
++let PreMigrationKey = class PreMigrationKey extends key_1.Key {
+ };
+ __decorate([
+     (0, typeorm_1.PrimaryColumn)()
+@@ -26,12 +27,6 @@ __decorate([
+     ,
+     __metadata("design:type", String)
+ ], PreMigrationKey.prototype, "kid", void 0);
+-__decorate([
+-    (0, typeorm_1.Column)()
+-    //@ts-ignore
+-    ,
+-    __metadata("design:type", String)
+-], PreMigrationKey.prototype, "type", void 0);
+ __decorate([
+     (0, typeorm_1.Column)({ nullable: true }),
+     __metadata("design:type", String)
+diff --git a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js.map b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js.map
+index cae682a..e3286a2 100644
+--- a/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js.map
++++ b/node_modules/@veramo/data-store/build/entities/PreMigrationEntities.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"PreMigrationEntities.js","sourceRoot":"","sources":["../../src/entities/PreMigrationEntities.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAmE;AAGnE;;;;;;GAMG;AAEI,IAAM,eAAe,GAArB,MAAM,eAAgB,SAAQ,oBAAU;CAW9C,CAAA;AAVC;IAAC,IAAA,uBAAa,GAAE;IACd,YAAY;;;4CACH;AAEX;IAAC,IAAA,gBAAM,GAAE;IACP,YAAY;;;6CACD;AAEb;IAAC,IAAA,gBAAM,EAAC,EAAE,QAAQ,EAAE,IAAI,EAAE,CAAC;;sDACL;AAVX,eAAe;IAD3B,IAAA,gBAAM,EAAC,KAAK,CAAC;GACD,eAAe,CAW3B;AAXY,0CAAe"}
+\ No newline at end of file
++{"version":3,"file":"PreMigrationEntities.js","sourceRoot":"","sources":["../../src/entities/PreMigrationEntities.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAuD;AACvD,+BAA2B;AAE3B;;;;;;GAMG;AAEI,IAAM,eAAe,GAArB,MAAM,eAAgB,SAAQ,SAAG;CASvC,CAAA;AANC;IAAC,IAAA,uBAAa,GAAE;IACd,YAAY;;;4CACH;AAEX;IAAC,IAAA,gBAAM,EAAC,EAAE,QAAQ,EAAE,IAAI,EAAE,CAAC;;sDACL;AARX,eAAe;IAD3B,IAAA,gBAAM,EAAC,KAAK,CAAG;GACH,eAAe,CAS3B;AATY,0CAAe"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/index.d.ts b/node_modules/@veramo/data-store/build/index.d.ts
+index 1898552..9f60534 100644
+--- a/node_modules/@veramo/data-store/build/index.d.ts
++++ b/node_modules/@veramo/data-store/build/index.d.ts
+@@ -30,7 +30,7 @@ import { PreMigrationKey } from './entities/PreMigrationEntities';
+  *
+  * @public
+  */
+-export declare const Entities: (typeof Key | typeof Identifier | typeof Service | typeof Claim | typeof Credential | typeof Presentation | typeof Message | typeof PrivateKey | typeof PreMigrationKey)[];
++export declare const Entities: (typeof Key | typeof Identifier | typeof Message | typeof Claim | typeof Credential | typeof Presentation | typeof Service | typeof PrivateKey)[];
+ export { KeyType, Key, Identifier, Message, Claim, Credential, Presentation, MetaData, Service, PrivateKey, PreMigrationKey, };
+ export { migrations } from './migrations';
+ export { IDataStore, IDataStoreORM } from '@veramo/core';
+diff --git a/node_modules/@veramo/data-store/build/index.d.ts.map b/node_modules/@veramo/data-store/build/index.d.ts.map
+index 1ccb522..6dc688f 100644
+--- a/node_modules/@veramo/data-store/build/index.d.ts.map
++++ b/node_modules/@veramo/data-store/build/index.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":"AAAA;;;;;;;;;GASG;AAEH,OAAO,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAA;AACjD,OAAO,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAA;AACjD,OAAO,EAAE,eAAe,EAAE,MAAM,gCAAgC,CAAA;AAChE,OAAO,EAAE,SAAS,EAAE,MAAM,cAAc,CAAA;AACxC,OAAO,EAAE,YAAY,EAAE,MAAM,kBAAkB,CAAA;AAC/C,OAAO,EAAE,0BAA0B,EAAE,MAAM,0BAA0B,CAAA;AACrE,OAAO,EAAE,GAAG,EAAE,OAAO,EAAE,MAAM,gBAAgB,CAAA;AAC7C,OAAO,EAAE,UAAU,EAAE,MAAM,uBAAuB,CAAA;AAClD,OAAO,EAAE,KAAK,EAAE,MAAM,kBAAkB,CAAA;AACxC,OAAO,EAAE,UAAU,EAAE,MAAM,uBAAuB,CAAA;AAClD,OAAO,EAAE,YAAY,EAAE,MAAM,yBAAyB,CAAA;AACtD,OAAO,EAAE,OAAO,EAAE,MAAM,oBAAoB,CAAA;AAC5C,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,oBAAoB,CAAA;AACtD,OAAO,EAAE,UAAU,EAAE,MAAM,wBAAwB,CAAA;AACnD,OAAO,EAAE,eAAe,EAAE,MAAM,iCAAiC,CAAA;AAEjE;;;;;;GAMG;AACH,eAAO,MAAM,QAAQ,4KAUpB,CAAA;AACD,OAAO,EACL,OAAO,EACP,GAAG,EACH,UAAU,EACV,OAAO,EACP,KAAK,EACL,UAAU,EACV,YAAY,EACZ,QAAQ,EACR,OAAO,EACP,UAAU,EACV,eAAe,GAChB,CAAA;AACD,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAA;AAGzC,OAAO,EAAE,UAAU,EAAE,aAAa,EAAE,MAAM,cAAc,CAAA"}
+\ No newline at end of file
++{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":"AAAA;;;;;;;;;GASG;AAEH,OAAO,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAA;AACjD,OAAO,EAAE,QAAQ,EAAE,MAAM,wBAAwB,CAAA;AACjD,OAAO,EAAE,eAAe,EAAE,MAAM,gCAAgC,CAAA;AAChE,OAAO,EAAE,SAAS,EAAE,MAAM,cAAc,CAAA;AACxC,OAAO,EAAE,YAAY,EAAE,MAAM,kBAAkB,CAAA;AAC/C,OAAO,EAAE,0BAA0B,EAAE,MAAM,0BAA0B,CAAA;AACrE,OAAO,EAAE,GAAG,EAAE,OAAO,EAAE,MAAM,gBAAgB,CAAA;AAC7C,OAAO,EAAE,UAAU,EAAE,MAAM,uBAAuB,CAAA;AAClD,OAAO,EAAE,KAAK,EAAE,MAAM,kBAAkB,CAAA;AACxC,OAAO,EAAE,UAAU,EAAE,MAAM,uBAAuB,CAAA;AAClD,OAAO,EAAE,YAAY,EAAE,MAAM,yBAAyB,CAAA;AACtD,OAAO,EAAE,OAAO,EAAE,MAAM,oBAAoB,CAAA;AAC5C,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,oBAAoB,CAAA;AACtD,OAAO,EAAE,UAAU,EAAE,MAAM,wBAAwB,CAAA;AACnD,OAAO,EAAE,eAAe,EAAE,MAAM,iCAAiC,CAAA;AAEjE;;;;;;GAMG;AACH,eAAO,MAAM,QAAQ,mJAUpB,CAAA;AACD,OAAO,EACL,OAAO,EACP,GAAG,EACH,UAAU,EACV,OAAO,EACP,KAAK,EACL,UAAU,EACV,YAAY,EACZ,QAAQ,EACR,OAAO,EACP,UAAU,EACV,eAAe,GAChB,CAAA;AACD,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAA;AAGzC,OAAO,EAAE,UAAU,EAAE,aAAa,EAAE,MAAM,cAAc,CAAA"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts
+index 1deccac..01ae8ad 100644
+--- a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts
++++ b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts
+@@ -5,6 +5,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
+  * @public
+  */
+ export declare class CreateDatabase1447159020001 implements MigrationInterface {
++    name: string;
+     up(queryRunner: QueryRunner): Promise<void>;
+     down(queryRunner: QueryRunner): Promise<void>;
+ }
+diff --git a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts.map b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts.map
+index 4f85255..9da3b76 100644
+--- a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts.map
++++ b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"1.createDatabase.d.ts","sourceRoot":"","sources":["../../src/migrations/1.createDatabase.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAS,MAAM,SAAS,CAAA;AAIhE;;;;GAIG;AACH,qBAAa,2BAA4B,YAAW,kBAAkB;IAC9D,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IAsW3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAGpD"}
+\ No newline at end of file
++{"version":3,"file":"1.createDatabase.d.ts","sourceRoot":"","sources":["../../src/migrations/1.createDatabase.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAS,MAAM,SAAS,CAAA;AAMhE;;;;GAIG;AACH,qBAAa,2BAA4B,YAAW,kBAAkB;IAEpE,IAAI,SAAgC;IAE9B,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IA+V3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAGpD"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js
+index 2e00c2b..4c946b3 100644
+--- a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js
++++ b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js
+@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.CreateDatabase1447159020001 = void 0;
+ const typeorm_1 = require("typeorm");
+ const debug_1 = __importDefault(require("debug"));
++const migration_functions_js_1 = require("./migration-functions.js");
+ const debug = (0, debug_1.default)('veramo:data-store:initial-migration');
+ /**
+  * Create the database layout for Veramo 3.0
+@@ -22,19 +23,17 @@ const debug = (0, debug_1.default)('veramo:data-store:initial-migration');
+  * @public
+  */
+ class CreateDatabase1447159020001 {
++    constructor() {
++        this.name = 'CreateDatabase1447159020001'; // Used in case this class gets minified, which would change the classname
++    }
+     up(queryRunner) {
+         return __awaiter(this, void 0, void 0, function* () {
+-            function getTableName(givenName) {
+-                var _a;
+-                return (((_a = queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)) === null || _a === void 0 ? void 0 : _a.tableName) ||
+-                    givenName);
+-            }
+             const dateTimeType = queryRunner.connection.driver.mappedDataTypes.createDate;
+             debug(`creating identifier table`);
+             // "CREATE TABLE \"identifier\" (\"did\" varchar PRIMARY KEY NOT NULL, \"provider\" varchar, \"alias\" varchar, \"saveDate\" datetime NOT NULL DEFAULT (datetime('now')), \"updateDate\" datetime NOT NULL DEFAULT (datetime('now')), \"controllerKeyId\" varchar)",
+             // "CREATE UNIQUE INDEX \"IDX_6098cca69c838d91e55ef32fe1\" ON \"identifier\" (\"alias\", \"provider\")",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('identifier'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                 columns: [
+                     { name: 'did', type: 'varchar', isPrimary: true },
+                     { name: 'provider', type: 'varchar', isNullable: true },
+@@ -53,7 +52,7 @@ class CreateDatabase1447159020001 {
+             debug(`creating key table`);
+             // "CREATE TABLE \"key\" (\"kid\" varchar PRIMARY KEY NOT NULL, \"kms\" varchar NOT NULL, \"type\" varchar NOT NULL, \"publicKeyHex\" varchar NOT NULL, \"privateKeyHex\" varchar NOT NULL, \"meta\" text, \"identifierDid\" varchar, CONSTRAINT \"FK_3f40a9459b53adf1729dbd3b787\" FOREIGN KEY (\"identifierDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('key'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'key'),
+                 columns: [
+                     { name: 'kid', type: 'varchar', isPrimary: true },
+                     { name: 'kms', type: 'varchar' },
+@@ -67,14 +66,14 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['identifierDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                     },
+                 ],
+             }), true);
+             debug(`creating service table`);
+             // "CREATE TABLE \"service\" (\"id\" varchar PRIMARY KEY NOT NULL, \"type\" varchar NOT NULL, \"serviceEndpoint\" varchar NOT NULL, \"description\" varchar, \"identifierDid\" varchar, CONSTRAINT \"FK_e16e0280d906951809f95dd09f1\" FOREIGN KEY (\"identifierDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('service'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'service'),
+                 columns: [
+                     { name: 'id', type: 'varchar', isPrimary: true },
+                     { name: 'type', type: 'varchar' },
+@@ -86,7 +85,7 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['identifierDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -94,7 +93,7 @@ class CreateDatabase1447159020001 {
+             debug(`creating credentials table`);
+             // "CREATE TABLE \"credential\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"raw\" text NOT NULL, \"id\" varchar, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"type\" text NOT NULL, \"issuerDid\" varchar, \"subjectDid\" varchar, CONSTRAINT \"FK_123d0977e0976565ee0932c0b9e\" FOREIGN KEY (\"issuerDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_b790831f44e2fa7f9661a017b0a\" FOREIGN KEY (\"subjectDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('credential'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'credential'),
+                 columns: [
+                     { name: 'hash', type: 'varchar', isPrimary: true },
+                     { name: 'raw', type: 'text' },
+@@ -110,20 +109,20 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['issuerDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['subjectDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                     },
+                 ],
+             }), true);
+             debug(`creating claims table`);
+             // "CREATE TABLE \"claim\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"credentialType\" text NOT NULL, \"type\" varchar NOT NULL, \"value\" text, \"isObj\" boolean NOT NULL, \"issuerDid\" varchar, \"subjectDid\" varchar, \"credentialHash\" varchar, CONSTRAINT \"FK_d972c73d0f875c0d14c35b33baa\" FOREIGN KEY (\"issuerDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_f411679379d373424100a1c73f4\" FOREIGN KEY (\"subjectDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_3d494b79143de3d0e793883e351\" FOREIGN KEY (\"credentialHash\") REFERENCES \"credential\" (\"hash\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('claim'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'claim'),
+                 columns: [
+                     { name: 'hash', type: 'varchar', isPrimary: true },
+                     { name: 'issuanceDate', type: dateTimeType },
+@@ -141,18 +140,18 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['issuerDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['subjectDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                     },
+                     {
+                         columnNames: ['credentialHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('credential'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'credential'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -160,7 +159,7 @@ class CreateDatabase1447159020001 {
+             debug(`creating presentations table`);
+             // "CREATE TABLE \"presentation\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"raw\" text NOT NULL, \"id\" varchar, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"type\" text NOT NULL, \"holderDid\" varchar, CONSTRAINT \"FK_a5e418449d9f527776a3bd0ca61\" FOREIGN KEY (\"holderDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('presentation'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation'),
+                 columns: [
+                     { name: 'hash', type: 'varchar', isPrimary: true },
+                     { name: 'raw', type: 'text' },
+@@ -175,7 +174,7 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['holderDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -183,7 +182,7 @@ class CreateDatabase1447159020001 {
+             debug(`creating message table`);
+             // "CREATE TABLE \"message\" (\"id\" varchar PRIMARY KEY NOT NULL, \"saveDate\" datetime NOT NULL DEFAULT (datetime('now')), \"updateDate\" datetime NOT NULL DEFAULT (datetime('now')), \"createdAt\" datetime, \"expiresAt\" datetime, \"threadId\" varchar, \"type\" varchar NOT NULL, \"raw\" varchar, \"data\" text, \"replyTo\" text, \"replyUrl\" varchar, \"metaData\" text, \"fromDid\" varchar, \"toDid\" varchar, CONSTRAINT \"FK_63bf73143b285c727bd046e6710\" FOREIGN KEY (\"fromDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_1a666b2c29bb2b68d91259f55df\" FOREIGN KEY (\"toDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('message'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'message'),
+                 columns: [
+                     { name: 'id', type: 'varchar', isPrimary: true },
+                     { name: 'saveDate', type: dateTimeType },
+@@ -204,12 +203,12 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['fromDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                     },
+                     {
+                         columnNames: ['toDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                     },
+                 ],
+             }), true);
+@@ -218,7 +217,7 @@ class CreateDatabase1447159020001 {
+             // "CREATE INDEX \"IDX_05b1eda0f6f5400cb173ebbc08\" ON \"presentation_verifier_identifier\" (\"presentationHash\")",
+             // "CREATE INDEX \"IDX_3a460e48557bad5564504ddad9\" ON \"presentation_verifier_identifier\" (\"identifierDid\")",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('presentation_verifier_identifier'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation_verifier_identifier'),
+                 columns: [
+                     { name: 'presentationHash', type: 'varchar', isPrimary: true },
+                     { name: 'identifierDid', type: 'varchar', isPrimary: true },
+@@ -232,13 +231,13 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['presentationHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('presentation'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['identifierDid'],
+                         referencedColumnNames: ['did'],
+-                        referencedTableName: getTableName('identifier'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'identifier'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -248,7 +247,7 @@ class CreateDatabase1447159020001 {
+             // "CREATE INDEX \"IDX_d796bcde5e182136266b2a6b72\" ON \"presentation_credentials_credential\" (\"presentationHash\")",
+             // "CREATE INDEX \"IDX_ef88f92988763fee884c37db63\" ON \"presentation_credentials_credential\" (\"credentialHash\")",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('presentation_credentials_credential'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation_credentials_credential'),
+                 columns: [
+                     { name: 'presentationHash', type: 'varchar', isPrimary: true },
+                     { name: 'credentialHash', type: 'varchar', isPrimary: true },
+@@ -262,13 +261,13 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['presentationHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('presentation'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['credentialHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('credential'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'credential'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -278,7 +277,7 @@ class CreateDatabase1447159020001 {
+             // "CREATE INDEX \"IDX_7e7094f2cd6e5ec93914ac5138\" ON \"message_presentations_presentation\" (\"messageId\")",
+             // "CREATE INDEX \"IDX_a13b5cf828c669e61faf489c18\" ON \"message_presentations_presentation\" (\"presentationHash\")",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('message_presentations_presentation'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'message_presentations_presentation'),
+                 columns: [
+                     { name: 'messageId', type: 'varchar', isPrimary: true },
+                     { name: 'presentationHash', type: 'varchar', isPrimary: true },
+@@ -292,13 +291,13 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['messageId'],
+                         referencedColumnNames: ['id'],
+-                        referencedTableName: getTableName('message'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'message'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['presentationHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('presentation'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'presentation'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+@@ -308,7 +307,7 @@ class CreateDatabase1447159020001 {
+             // "CREATE INDEX \"IDX_1c111357e73db91a08525914b5\" ON \"message_credentials_credential\" (\"messageId\")",
+             // "CREATE INDEX \"IDX_8ae8195a94b667b185d2c023e3\" ON \"message_credentials_credential\" (\"credentialHash\")",
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('message_credentials_credential'),
++                name: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'message_credentials_credential'),
+                 columns: [
+                     { name: 'messageId', type: 'varchar', isPrimary: true },
+                     { name: 'credentialHash', type: 'varchar', isPrimary: true },
+@@ -322,13 +321,13 @@ class CreateDatabase1447159020001 {
+                     {
+                         columnNames: ['messageId'],
+                         referencedColumnNames: ['id'],
+-                        referencedTableName: getTableName('message'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'message'),
+                         onDelete: 'cascade',
+                     },
+                     {
+                         columnNames: ['credentialHash'],
+                         referencedColumnNames: ['hash'],
+-                        referencedTableName: getTableName('credential'),
++                        referencedTableName: (0, migration_functions_js_1.migrationGetTableName)(queryRunner, 'credential'),
+                         onDelete: 'cascade',
+                     },
+                 ],
+diff --git a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js.map b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js.map
+index c1ac2e0..dcd46d4 100644
+--- a/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js.map
++++ b/node_modules/@veramo/data-store/build/migrations/1.createDatabase.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"1.createDatabase.js","sourceRoot":"","sources":["../../src/migrations/1.createDatabase.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"1.createDatabase.js","sourceRoot":"","sources":["../../src/migrations/1.createDatabase.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts
+index f3c9d8c..3ab0fba 100644
+--- a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts
++++ b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts
+@@ -5,6 +5,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
+  * @public
+  */
+ export declare class SimplifyRelations1447159020002 implements MigrationInterface {
++    name: string;
+     up(queryRunner: QueryRunner): Promise<void>;
+     down(queryRunner: QueryRunner): Promise<void>;
+ }
+diff --git a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts.map b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts.map
+index 5335b40..4d3e087 100644
+--- a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts.map
++++ b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"2.simplifyRelations.d.ts","sourceRoot":"","sources":["../../src/migrations/2.simplifyRelations.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAe,MAAM,SAAS,CAAA;AAGtE;;;;GAIG;AACH,qBAAa,8BAA+B,YAAW,kBAAkB;IACjE,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IAmB3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAGpD"}
+\ No newline at end of file
++{"version":3,"file":"2.simplifyRelations.d.ts","sourceRoot":"","sources":["../../src/migrations/2.simplifyRelations.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAe,MAAM,SAAS,CAAA;AAItE;;;;GAIG;AACH,qBAAa,8BAA+B,YAAW,kBAAkB;IAEvE,IAAI,SAAmC;IAEjC,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IAc3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAGpD"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js
+index ddfdc62..f19a5aa 100644
+--- a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js
++++ b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js
+@@ -11,21 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.SimplifyRelations1447159020002 = void 0;
+ const typeorm_1 = require("typeorm");
++const migration_functions_1 = require("./migration-functions");
+ /**
+  * Fix inconsistencies between Entity data and column data.
+  *
+  * @public
+  */
+ class SimplifyRelations1447159020002 {
++    constructor() {
++        this.name = 'SimplifyRelations1447159020002'; // Used in case this class gets minified, which would change the classname
++    }
+     up(queryRunner) {
+         return __awaiter(this, void 0, void 0, function* () {
+-            function getTableName(givenName) {
+-                var _a;
+-                return (((_a = queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)) === null || _a === void 0 ? void 0 : _a.tableName) ||
+-                    givenName);
+-            }
+-            yield queryRunner.changeColumn(getTableName('key'), 'identifierDid', new typeorm_1.TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }));
+-            yield queryRunner.changeColumn(getTableName('service'), 'identifierDid', new typeorm_1.TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }));
++            yield queryRunner.changeColumn((0, migration_functions_1.migrationGetExistingTableByName)(queryRunner, 'PreMigrationKey', true), 'identifierDid', new typeorm_1.TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }));
++            yield queryRunner.changeColumn((0, migration_functions_1.migrationGetExistingTableByName)(queryRunner, 'service'), 'identifierDid', new typeorm_1.TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }));
+         });
+     }
+     down(queryRunner) {
+diff --git a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js.map b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js.map
+index e5a1ade..d867088 100644
+--- a/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js.map
++++ b/node_modules/@veramo/data-store/build/migrations/2.simplifyRelations.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"2.simplifyRelations.js","sourceRoot":"","sources":["../../src/migrations/2.simplifyRelations.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAsE;AAGtE;;;;GAIG;AACH,MAAa,8BAA8B;IACnC,EAAE,CAAC,WAAwB;;YAC/B,SAAS,YAAY,CAAC,SAAiB;;gBACrC,OAAO,CACL,CAAA,MAAA,WAAW,CAAC,UAAU,CAAC,eAAe,CAAC,IAAI,CAAC,CAAC,IAAI,EAAE,EAAE,CAAC,IAAI,CAAC,cAAc,KAAK,SAAS,CAAC,0CAAE,SAAS;oBACnG,SAAS,CACV,CAAA;YACH,CAAC;YACD,MAAM,WAAW,CAAC,YAAY,CAC5B,YAAY,CAAC,KAAK,CAAC,EACnB,eAAe,EACf,IAAI,qBAAW,CAAC,EAAE,IAAI,EAAE,eAAe,EAAE,IAAI,EAAE,SAAS,EAAE,UAAU,EAAE,IAAI,EAAE,CAAC,CAC9E,CAAA;YACD,MAAM,WAAW,CAAC,YAAY,CAC5B,YAAY,CAAC,SAAS,CAAC,EACvB,eAAe,EACf,IAAI,qBAAW,CAAC,EAAE,IAAI,EAAE,eAAe,EAAE,IAAI,EAAE,SAAS,EAAE,UAAU,EAAE,IAAI,EAAE,CAAC,CAC9E,CAAA;QACH,CAAC;KAAA;IAEK,IAAI,CAAC,WAAwB;;YACjC,MAAM,IAAI,KAAK,CAAC,uDAAuD,CAAC,CAAA;QAC1E,CAAC;KAAA;CACF;AAvBD,wEAuBC"}
+\ No newline at end of file
++{"version":3,"file":"2.simplifyRelations.js","sourceRoot":"","sources":["../../src/migrations/2.simplifyRelations.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAsE;AACtE,+DAAuE;AAGvE;;;;GAIG;AACH,MAAa,8BAA8B;IAA3C;QAEE,SAAI,GAAG,gCAAgC,CAAA,CAAC,0EAA0E;IAmBpH,CAAC;IAjBO,EAAE,CAAC,WAAwB;;YAC/B,MAAM,WAAW,CAAC,YAAY,CAC5B,IAAA,qDAA+B,EAAC,WAAW,EAAE,iBAAiB,EAAE,IAAI,CAAC,EACrE,eAAe,EACf,IAAI,qBAAW,CAAC,EAAE,IAAI,EAAE,eAAe,EAAE,IAAI,EAAE,SAAS,EAAE,UAAU,EAAE,IAAI,EAAE,CAAC,CAC9E,CAAA;YACD,MAAM,WAAW,CAAC,YAAY,CAC5B,IAAA,qDAA+B,EAAC,WAAW,EAAE,SAAS,CAAC,EACvD,eAAe,EACf,IAAI,qBAAW,CAAC,EAAE,IAAI,EAAE,eAAe,EAAE,IAAI,EAAE,SAAS,EAAE,UAAU,EAAE,IAAI,EAAE,CAAC,CAC9E,CAAA;QAEH,CAAC;KAAA;IAEK,IAAI,CAAC,WAAwB;;YACjC,MAAM,IAAI,KAAK,CAAC,uDAAuD,CAAC,CAAA;QAC1E,CAAC;KAAA;CACF;AArBD,wEAqBC"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts
+index 215500f..4c7cbbd 100644
+--- a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts
++++ b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts
+@@ -5,6 +5,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
+  * @public
+  */
+ export declare class CreatePrivateKeyStorage1629293428674 implements MigrationInterface {
++    name: string;
+     up(queryRunner: QueryRunner): Promise<void>;
+     down(queryRunner: QueryRunner): Promise<void>;
+ }
+diff --git a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts.map b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts.map
+index 0189646..aa293aa 100644
+--- a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts.map
++++ b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"3.createPrivateKeyStorage.d.ts","sourceRoot":"","sources":["../../src/migrations/3.createPrivateKeyStorage.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAsB,MAAM,SAAS,CAAA;AAM7E;;;;GAIG;AACH,qBAAa,oCAAqC,YAAW,kBAAkB;IACvE,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IAsD3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAmCpD"}
+\ No newline at end of file
++{"version":3,"file":"3.createPrivateKeyStorage.d.ts","sourceRoot":"","sources":["../../src/migrations/3.createPrivateKeyStorage.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAsB,MAAM,SAAS,CAAA;AAQ7E;;;;GAIG;AACH,qBAAa,oCAAqC,YAAW,kBAAkB;IAE7E,IAAI,SAAyC;IAEvC,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IAiD3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CA8BpD"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js
+index 22f8e5e..459ada8 100644
+--- a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js
++++ b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js
+@@ -17,6 +17,7 @@ const typeorm_1 = require("typeorm");
+ const __1 = require("..");
+ const PreMigrationEntities_1 = require("../entities/PreMigrationEntities");
+ const debug_1 = __importDefault(require("debug"));
++const migration_functions_1 = require("./migration-functions");
+ const debug = (0, debug_1.default)('veramo:data-store:migrate-private-keys');
+ /**
+  * Migration of existing private keys from Veramo 2.x to Veramo 3.x
+@@ -24,17 +25,15 @@ const debug = (0, debug_1.default)('veramo:data-store:migrate-private-keys');
+  * @public
+  */
+ class CreatePrivateKeyStorage1629293428674 {
++    constructor() {
++        this.name = 'CreatePrivateKeyStorage1629293428674'; // Used in case this class gets minified, which would change the classname
++    }
+     up(queryRunner) {
+         return __awaiter(this, void 0, void 0, function* () {
+-            function getTableName(givenName) {
+-                var _a;
+-                return (((_a = queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)) === null || _a === void 0 ? void 0 : _a.tableName) ||
+-                    givenName);
+-            }
+             // 1.create new table
+             debug(`creating new private-key table`);
+             yield queryRunner.createTable(new typeorm_1.Table({
+-                name: getTableName('private-key'),
++                name: (0, migration_functions_1.migrationGetTableName)(queryRunner, 'private-key'),
+                 columns: [
+                     {
+                         name: 'alias',
+@@ -65,23 +64,18 @@ class CreatePrivateKeyStorage1629293428674 {
+             yield queryRunner.manager
+                 .createQueryBuilder()
+                 .insert()
+-                .into(getTableName('private-key'))
++                .into((0, migration_functions_1.migrationGetTableName)(queryRunner, 'private-key'))
+                 .values(privKeys)
+                 .execute();
+             // 3. drop old column
+             debug(`dropping privKeyHex column from old key table`);
+-            yield queryRunner.dropColumn(getTableName('key'), 'privateKeyHex');
++            yield queryRunner.dropColumn((0, migration_functions_1.migrationGetExistingTableByName)(queryRunner, 'PreMigrationKey', true), 'privateKeyHex');
+             //4. done
+             debug(`migrated ${privKeys.length} keys to private key storage`);
+         });
+     }
+     down(queryRunner) {
+         return __awaiter(this, void 0, void 0, function* () {
+-            function getTableName(givenName) {
+-                var _a;
+-                return (((_a = queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)) === null || _a === void 0 ? void 0 : _a.tableName) ||
+-                    givenName);
+-            }
+             // 1. add old column back
+             debug(`adding back privateKeyHex column to key table`);
+             yield queryRunner.addColumn('key', new typeorm_1.TableColumn({
+@@ -103,7 +97,7 @@ class CreatePrivateKeyStorage1629293428674 {
+             }
+             debug(`dropping private-key table`);
+             // 3. drop the new private key table
+-            yield queryRunner.dropTable(getTableName('private-key'));
++            yield queryRunner.dropTable((0, migration_functions_1.migrationGetExistingTableByName)(queryRunner, 'private-key'));
+             // 4. done
+             debug(`rolled back ${keys.length} keys`);
+         });
+diff --git a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js.map b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js.map
+index 3698f89..5b04347 100644
+--- a/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js.map
++++ b/node_modules/@veramo/data-store/build/migrations/3.createPrivateKeyStorage.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"3.createPrivateKeyStorage.js","sourceRoot":"","sources":["../../src/migrations/3.createPrivateKeyStorage.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"3.createPrivateKeyStorage.js","sourceRoot":"","sources":["../../src/migrations/3.createPrivateKeyStorage.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts
+index 64f2d17..38ae3b1 100644
+--- a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts
++++ b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts
+@@ -5,7 +5,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
+  * @public
+  */
+ export declare class AllowNullIssuanceDateForPresentations1637237492913 implements MigrationInterface {
+-    private getTableName;
++    name: string;
+     up(queryRunner: QueryRunner): Promise<void>;
+     down(queryRunner: QueryRunner): Promise<void>;
+ }
+diff --git a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts.map b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts.map
+index 41d7f45..5d5ccd9 100644
+--- a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts.map
++++ b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"4.allowNullVPIssuanceDate.d.ts","sourceRoot":"","sources":["../../src/migrations/4.allowNullVPIssuanceDate.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAE,MAAM,SAAS,CAAA;AAMzD;;;;GAIG;AACH,qBAAa,kDAAmD,YAAW,kBAAkB;IAC3F,OAAO,CAAC,YAAY;IAOd,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IA4B3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAmCpD"}
+\ No newline at end of file
++{"version":3,"file":"4.allowNullVPIssuanceDate.d.ts","sourceRoot":"","sources":["../../src/migrations/4.allowNullVPIssuanceDate.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,kBAAkB,EAAE,WAAW,EAAE,MAAM,SAAS,CAAA;AAOzD;;;;GAIG;AACH,qBAAa,kDAAmD,YAAW,kBAAkB;IAE3F,IAAI,SAAuD;IAErD,EAAE,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;IA2B3C,IAAI,CAAC,WAAW,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC;CAoCpD"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js
+index 38139e2..fceb74d 100644
+--- a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js
++++ b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js
+@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.AllowNullIssuanceDateForPresentations1637237492913 = void 0;
+ const __1 = require("..");
+ const debug_1 = __importDefault(require("debug"));
++const migration_functions_js_1 = require("./migration-functions.js");
+ const debug = (0, debug_1.default)('veramo:data-store:migrate-presentation-issuance-date');
+ /**
+  * Reduce issuanceDate constraint of Presentations.
+@@ -22,10 +23,8 @@ const debug = (0, debug_1.default)('veramo:data-store:migrate-presentation-issua
+  * @public
+  */
+ class AllowNullIssuanceDateForPresentations1637237492913 {
+-    getTableName(givenName, queryRunner) {
+-        var _a;
+-        return (((_a = queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)) === null || _a === void 0 ? void 0 : _a.tableName) ||
+-            givenName);
++    constructor() {
++        this.name = 'AllowNullIssuanceDateForPresentations1637237492913'; // Used in case this class gets minified, which would change the classname
+     }
+     up(queryRunner) {
+         return __awaiter(this, void 0, void 0, function* () {
+@@ -36,9 +35,8 @@ class AllowNullIssuanceDateForPresentations1637237492913 {
+                 yield queryRunner.query('PRAGMA foreign_keys=off');
+                 yield queryRunner.startTransaction();
+             }
+-            const tableName = this.getTableName('presentation', queryRunner);
+             // update issuanceDate column
+-            let table = yield queryRunner.getTable(tableName);
++            const table = (0, migration_functions_js_1.migrationGetExistingTableByName)(queryRunner, 'presentation');
+             const oldColumn = table === null || table === void 0 ? void 0 : table.findColumnByName('issuanceDate');
+             const newColumn = oldColumn.clone();
+             newColumn.isNullable = true;
+@@ -63,8 +61,8 @@ class AllowNullIssuanceDateForPresentations1637237492913 {
+                 yield queryRunner.query('PRAGMA foreign_keys=off');
+                 yield queryRunner.startTransaction();
+             }
+-            const tableName = this.getTableName('presentation', queryRunner);
+-            debug(`DOWN update NULL 'issuanceDate' with FAKE data for '${tableName}' table`);
++            const table = (0, migration_functions_js_1.migrationGetExistingTableByName)(queryRunner, 'presentation');
++            debug(`DOWN update NULL 'issuanceDate' with FAKE data for '${table.name}' table`);
+             yield queryRunner.manager
+                 .createQueryBuilder()
+                 .update(__1.Presentation)
+@@ -72,7 +70,6 @@ class AllowNullIssuanceDateForPresentations1637237492913 {
+                 .where('issuanceDate is NULL')
+                 .execute();
+             // update issuanceDate column
+-            let table = yield queryRunner.getTable(tableName);
+             const oldColumn = table === null || table === void 0 ? void 0 : table.findColumnByName('issuanceDate');
+             const newColumn = oldColumn.clone();
+             newColumn.isNullable = false;
+diff --git a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js.map b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js.map
+index 5add787..95a5f18 100644
+--- a/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js.map
++++ b/node_modules/@veramo/data-store/build/migrations/4.allowNullVPIssuanceDate.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"4.allowNullVPIssuanceDate.js","sourceRoot":"","sources":["../../src/migrations/4.allowNullVPIssuanceDate.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"4.allowNullVPIssuanceDate.js","sourceRoot":"","sources":["../../src/migrations/4.allowNullVPIssuanceDate.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/index.d.ts b/node_modules/@veramo/data-store/build/migrations/index.d.ts
+index 9e9252d..4a0cea8 100644
+--- a/node_modules/@veramo/data-store/build/migrations/index.d.ts
++++ b/node_modules/@veramo/data-store/build/migrations/index.d.ts
+@@ -1,4 +1,10 @@
+-import { CreateDatabase1447159020001 } from './1.createDatabase';
++import { AllowNullIssuanceDateForPresentations1637237492913 } from './4.allowNullVPIssuanceDate';
++/**
++ * Allow others to use shared migration functions if they extend Veramo
++ *
++ * @public
++ */
++export * from './migration-functions.js';
+ /**
+  * The migrations array that SHOULD be used when initializing a TypeORM database connection.
+  *
+@@ -6,5 +12,5 @@ import { CreateDatabase1447159020001 } from './1.createDatabase';
+  *
+  * @public
+  */
+-export declare const migrations: (typeof CreateDatabase1447159020001)[];
++export declare const migrations: (typeof AllowNullIssuanceDateForPresentations1637237492913)[];
+ //# sourceMappingURL=index.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/index.d.ts.map b/node_modules/@veramo/data-store/build/migrations/index.d.ts.map
+index 03c52e6..65023bd 100644
+--- a/node_modules/@veramo/data-store/build/migrations/index.d.ts.map
++++ b/node_modules/@veramo/data-store/build/migrations/index.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/migrations/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,2BAA2B,EAAE,MAAM,oBAAoB,CAAA;AAKhE;;;;;;GAMG;AACH,eAAO,MAAM,UAAU,wCAKtB,CAAA"}
+\ No newline at end of file
++{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../src/migrations/index.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,kDAAkD,EAAE,MAAM,6BAA6B,CAAA;AAGhG;;;;GAIG;AACH,cAAc,0BAA0B,CAAA;AAExC;;;;;;GAMG;AAEH,eAAO,MAAM,UAAU,+DAKtB,CAAA"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/index.js b/node_modules/@veramo/data-store/build/migrations/index.js
+index 48958e9..642e873 100644
+--- a/node_modules/@veramo/data-store/build/migrations/index.js
++++ b/node_modules/@veramo/data-store/build/migrations/index.js
+@@ -1,10 +1,30 @@
+ "use strict";
++var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
++    if (k2 === undefined) k2 = k;
++    var desc = Object.getOwnPropertyDescriptor(m, k);
++    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
++      desc = { enumerable: true, get: function() { return m[k]; } };
++    }
++    Object.defineProperty(o, k2, desc);
++}) : (function(o, m, k, k2) {
++    if (k2 === undefined) k2 = k;
++    o[k2] = m[k];
++}));
++var __exportStar = (this && this.__exportStar) || function(m, exports) {
++    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
++};
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.migrations = void 0;
+ const _1_createDatabase_1 = require("./1.createDatabase");
+ const _2_simplifyRelations_1 = require("./2.simplifyRelations");
+ const _3_createPrivateKeyStorage_1 = require("./3.createPrivateKeyStorage");
+ const _4_allowNullVPIssuanceDate_1 = require("./4.allowNullVPIssuanceDate");
++/**
++ * Allow others to use shared migration functions if they extend Veramo
++ *
++ * @public
++ */
++__exportStar(require("./migration-functions.js"), exports);
+ /**
+  * The migrations array that SHOULD be used when initializing a TypeORM database connection.
+  *
+diff --git a/node_modules/@veramo/data-store/build/migrations/index.js.map b/node_modules/@veramo/data-store/build/migrations/index.js.map
+index 0f94f8c..b9599a4 100644
+--- a/node_modules/@veramo/data-store/build/migrations/index.js.map
++++ b/node_modules/@veramo/data-store/build/migrations/index.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/migrations/index.ts"],"names":[],"mappings":";;;AAAA,0DAAgE;AAChE,gEAAsE;AACtE,4EAAkF;AAClF,4EAAgG;AAEhG;;;;;;GAMG;AACU,QAAA,UAAU,GAAG;IACxB,+CAA2B;IAC3B,qDAA8B;IAC9B,iEAAoC;IACpC,+EAAkD;CACnD,CAAA"}
+\ No newline at end of file
++{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/migrations/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;AAAA,0DAAgE;AAChE,gEAAsE;AACtE,4EAAkF;AAClF,4EAAgG;AAGhG;;;;GAIG;AACH,2DAAwC;AAExC;;;;;;GAMG;AAEU,QAAA,UAAU,GAAG;IACxB,+CAA2B;IAC3B,qDAA8B;IAC9B,iEAAoC;IACpC,+EAAkD;CACnD,CAAA"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts b/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts
+new file mode 100644
+index 0000000..4b7527c
+--- /dev/null
++++ b/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts
+@@ -0,0 +1,20 @@
++import { QueryRunner, Table } from 'typeorm';
++/**
++ * Get an existing table by name. Checks against givenTableName first, and tableName next. Throws an error if not found
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++export declare function migrationGetExistingTableByName(queryRunner: QueryRunner, givenName: string, strictClassName?: boolean): Table;
++/**
++ * Get a table name. Checks against givenTableName first, and tableName next from existing tables. Then returns the name. If not found returns the givenName argument
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++export declare function migrationGetTableName(queryRunner: QueryRunner, givenName: string, strictClassName?: boolean): string;
++//# sourceMappingURL=migration-functions.d.ts.map
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts.map b/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts.map
+new file mode 100644
+index 0000000..d1e5501
+--- /dev/null
++++ b/node_modules/@veramo/data-store/build/migrations/migration-functions.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"migration-functions.d.ts","sourceRoot":"","sources":["../../src/migrations/migration-functions.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,KAAK,EAAE,MAAM,SAAS,CAAA;AAE5C;;;;;;;GAOG;AACH,wBAAgB,+BAA+B,CAAC,WAAW,EAAE,WAAW,EAAE,SAAS,EAAE,MAAM,EAAE,eAAe,CAAC,EAAE,OAAO,GAAG,KAAK,CAM7H;AAoBD;;;;;;;GAOG;AACH,wBAAgB,qBAAqB,CAAC,WAAW,EAAE,WAAW,EAAE,SAAS,EAAE,MAAM,EAAE,eAAe,CAAC,EAAE,OAAO,GAAG,MAAM,CAGpH"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/migration-functions.js b/node_modules/@veramo/data-store/build/migrations/migration-functions.js
+new file mode 100644
+index 0000000..204bd49
+--- /dev/null
++++ b/node_modules/@veramo/data-store/build/migrations/migration-functions.js
+@@ -0,0 +1,50 @@
++"use strict";
++Object.defineProperty(exports, "__esModule", { value: true });
++exports.migrationGetTableName = exports.migrationGetExistingTableByName = void 0;
++const typeorm_1 = require("typeorm");
++/**
++ * Get an existing table by name. Checks against givenTableName first, and tableName next. Throws an error if not found
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++function migrationGetExistingTableByName(queryRunner, givenName, strictClassName) {
++    const table = migrationGetTableByNameImpl(queryRunner, givenName, strictClassName);
++    if (!table) {
++        throw Error(`Could not find table with name ${givenName}`);
++    }
++    return table;
++}
++exports.migrationGetExistingTableByName = migrationGetExistingTableByName;
++/**
++ * Get an existing table by name. Checks against givenTableName first, and tableName next. Returns undefined if not found
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @private
++ */
++function migrationGetTableByNameImpl(queryRunner, givenName, strictClassName) {
++    let entityMetadata = queryRunner.connection.entityMetadatas.find((meta) => !!strictClassName ? meta.name === givenName : meta.givenTableName === givenName);
++    if (!entityMetadata && !strictClassName) {
++        // We are doing this separately as we don't want the above filter to use an or expression potentially matching first on tableName instead of givenTableName
++        entityMetadata = queryRunner.connection.entityMetadatas.find((meta) => meta.tableName === givenName);
++    }
++    return entityMetadata ? typeorm_1.Table.create(entityMetadata, queryRunner.connection.driver) : undefined;
++}
++/**
++ * Get a table name. Checks against givenTableName first, and tableName next from existing tables. Then returns the name. If not found returns the givenName argument
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++function migrationGetTableName(queryRunner, givenName, strictClassName) {
++    const table = migrationGetTableByNameImpl(queryRunner, givenName, strictClassName);
++    return !!table ? table.name : givenName;
++}
++exports.migrationGetTableName = migrationGetTableName;
++//# sourceMappingURL=migration-functions.js.map
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/migrations/migration-functions.js.map b/node_modules/@veramo/data-store/build/migrations/migration-functions.js.map
+new file mode 100644
+index 0000000..4a76b8c
+--- /dev/null
++++ b/node_modules/@veramo/data-store/build/migrations/migration-functions.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"migration-functions.js","sourceRoot":"","sources":["../../src/migrations/migration-functions.ts"],"names":[],"mappings":";;;AAAA,qCAA4C;AAE5C;;;;;;;GAOG;AACH,SAAgB,+BAA+B,CAAC,WAAwB,EAAE,SAAiB,EAAE,eAAyB;IACpH,MAAM,KAAK,GAAG,2BAA2B,CAAC,WAAW,EAAE,SAAS,EAAE,eAAe,CAAC,CAAA;IAClF,IAAI,CAAC,KAAK,EAAE;QACV,MAAM,KAAK,CAAC,kCAAkC,SAAS,EAAE,CAAC,CAAA;KAC3D;IACD,OAAO,KAAK,CAAA;AACd,CAAC;AAND,0EAMC;AAED;;;;;;;GAOG;AACH,SAAS,2BAA2B,CAAC,WAAwB,EAAE,SAAiB,EAAE,eAAyB;IACzG,IAAI,cAAc,GAAG,WAAW,CAAC,UAAU,CAAC,eAAe,CAAC,IAAI,CAAC,CAAC,IAAI,EAAE,EAAE,CAAC,CAAC,CAAC,eAAe,CAAC,CAAC,CAAC,IAAI,CAAC,IAAI,KAAK,SAAS,CAAC,CAAC,CAAC,IAAI,CAAC,cAAc,KAAK,SAAS,CAAC,CAAA;IAC3J,IAAI,CAAC,cAAc,IAAI,CAAC,eAAe,EAAE;QACvC,2JAA2J;QAC3J,cAAc,GAAG,WAAW,CAAC,UAAU,CAAC,eAAe,CAAC,IAAI,CAAC,CAAC,IAAI,EAAE,EAAE,CAAC,IAAI,CAAC,SAAS,KAAK,SAAS,CAAC,CAAA;KACrG;IAED,OAAO,cAAc,CAAC,CAAC,CAAC,eAAK,CAAC,MAAM,CAAC,cAAc,EAAE,WAAW,CAAC,UAAU,CAAC,MAAM,CAAC,CAAC,CAAC,CAAC,SAAS,CAAA;AACjG,CAAC;AAED;;;;;;;GAOG;AACH,SAAgB,qBAAqB,CAAC,WAAwB,EAAE,SAAiB,EAAE,eAAyB;IAC1G,MAAM,KAAK,GAAG,2BAA2B,CAAC,WAAW,EAAE,SAAS,EAAE,eAAe,CAAC,CAAA;IAClF,OAAO,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,KAAK,CAAC,IAAI,CAAC,CAAC,CAAC,SAAS,CAAA;AACzC,CAAC;AAHD,sDAGC"}
+\ No newline at end of file
+diff --git a/node_modules/@veramo/data-store/build/tsdoc-metadata.json b/node_modules/@veramo/data-store/build/tsdoc-metadata.json
+index 8cdde31..b76bafe 100644
+--- a/node_modules/@veramo/data-store/build/tsdoc-metadata.json
++++ b/node_modules/@veramo/data-store/build/tsdoc-metadata.json
+@@ -5,7 +5,7 @@
+   "toolPackages": [
+     {
+       "packageName": "@microsoft/api-extractor",
+-      "packageVersion": "7.33.6"
++      "packageVersion": "7.33.8"
+     }
+   ]
+ }
+diff --git a/node_modules/@veramo/data-store/src/entities/PreMigrationEntities.ts b/node_modules/@veramo/data-store/src/entities/PreMigrationEntities.ts
+index 322991a..e46dcad 100644
+--- a/node_modules/@veramo/data-store/src/entities/PreMigrationEntities.ts
++++ b/node_modules/@veramo/data-store/src/entities/PreMigrationEntities.ts
+@@ -1,5 +1,5 @@
+-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm'
+-import { KeyType } from "./key";
++import { Column, Entity, PrimaryColumn } from 'typeorm'
++import { Key } from './key'
+ 
+ /**
+  * This represents the private key data of keys that were stored by {@link @veramo/data-store#KeyStore} before Veramo
+@@ -8,16 +8,14 @@ import { KeyType } from "./key";
+  *
+  * @beta This API may change without a BREAKING CHANGE notice.
+  */
+-@Entity('key')
+-export class PreMigrationKey extends BaseEntity {
++@Entity('key', )
++export class PreMigrationKey extends Key {
++  // Key contains all the other columns present needed for successful migrations
++
+   @PrimaryColumn()
+     //@ts-ignore
+   kid: string
+ 
+-  @Column()
+-    //@ts-ignore
+-  type: KeyType
+-
+   @Column({ nullable: true })
+   privateKeyHex?: string
+ }
+diff --git a/node_modules/@veramo/data-store/src/migrations/1.createDatabase.ts b/node_modules/@veramo/data-store/src/migrations/1.createDatabase.ts
+index b9c76c0..68410fc 100644
+--- a/node_modules/@veramo/data-store/src/migrations/1.createDatabase.ts
++++ b/node_modules/@veramo/data-store/src/migrations/1.createDatabase.ts
+@@ -1,5 +1,7 @@
+ import { MigrationInterface, QueryRunner, Table } from 'typeorm'
+ import Debug from 'debug'
++import { migrationGetTableName } from './migration-functions.js'
++
+ const debug = Debug('veramo:data-store:initial-migration')
+ 
+ /**
+@@ -8,14 +10,10 @@ const debug = Debug('veramo:data-store:initial-migration')
+  * @public
+  */
+ export class CreateDatabase1447159020001 implements MigrationInterface {
+-  async up(queryRunner: QueryRunner): Promise<void> {
+-    function getTableName(givenName: string): string {
+-      return (
+-        queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)?.tableName ||
+-        givenName
+-      )
+-    }
+ 
++  name = 'CreateDatabase1447159020001' // Used in case this class gets minified, which would change the classname
++
++  async up(queryRunner: QueryRunner): Promise<void> {
+     const dateTimeType: string = queryRunner.connection.driver.mappedDataTypes.createDate as string
+ 
+     debug(`creating identifier table`)
+@@ -23,7 +21,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE UNIQUE INDEX \"IDX_6098cca69c838d91e55ef32fe1\" ON \"identifier\" (\"alias\", \"provider\")",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('identifier'),
++        name: migrationGetTableName(queryRunner,'identifier'),
+         columns: [
+           { name: 'did', type: 'varchar', isPrimary: true },
+           { name: 'provider', type: 'varchar', isNullable: true },
+@@ -46,7 +44,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"key\" (\"kid\" varchar PRIMARY KEY NOT NULL, \"kms\" varchar NOT NULL, \"type\" varchar NOT NULL, \"publicKeyHex\" varchar NOT NULL, \"privateKeyHex\" varchar NOT NULL, \"meta\" text, \"identifierDid\" varchar, CONSTRAINT \"FK_3f40a9459b53adf1729dbd3b787\" FOREIGN KEY (\"identifierDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('key'),
++        name: migrationGetTableName(queryRunner,'key'),
+         columns: [
+           { name: 'kid', type: 'varchar', isPrimary: true },
+           { name: 'kms', type: 'varchar' },
+@@ -60,7 +58,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['identifierDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+           },
+         ],
+       }),
+@@ -71,7 +69,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"service\" (\"id\" varchar PRIMARY KEY NOT NULL, \"type\" varchar NOT NULL, \"serviceEndpoint\" varchar NOT NULL, \"description\" varchar, \"identifierDid\" varchar, CONSTRAINT \"FK_e16e0280d906951809f95dd09f1\" FOREIGN KEY (\"identifierDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('service'),
++        name: migrationGetTableName(queryRunner, 'service'),
+         columns: [
+           { name: 'id', type: 'varchar', isPrimary: true },
+           { name: 'type', type: 'varchar' },
+@@ -83,7 +81,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['identifierDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -95,7 +93,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"credential\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"raw\" text NOT NULL, \"id\" varchar, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"type\" text NOT NULL, \"issuerDid\" varchar, \"subjectDid\" varchar, CONSTRAINT \"FK_123d0977e0976565ee0932c0b9e\" FOREIGN KEY (\"issuerDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_b790831f44e2fa7f9661a017b0a\" FOREIGN KEY (\"subjectDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('credential'),
++        name: migrationGetTableName(queryRunner, 'credential'),
+         columns: [
+           { name: 'hash', type: 'varchar', isPrimary: true },
+           { name: 'raw', type: 'text' },
+@@ -111,13 +109,13 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['issuerDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['subjectDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+           },
+         ],
+       }),
+@@ -128,7 +126,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"claim\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"credentialType\" text NOT NULL, \"type\" varchar NOT NULL, \"value\" text, \"isObj\" boolean NOT NULL, \"issuerDid\" varchar, \"subjectDid\" varchar, \"credentialHash\" varchar, CONSTRAINT \"FK_d972c73d0f875c0d14c35b33baa\" FOREIGN KEY (\"issuerDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_f411679379d373424100a1c73f4\" FOREIGN KEY (\"subjectDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_3d494b79143de3d0e793883e351\" FOREIGN KEY (\"credentialHash\") REFERENCES \"credential\" (\"hash\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('claim'),
++        name: migrationGetTableName(queryRunner, 'claim'),
+         columns: [
+           { name: 'hash', type: 'varchar', isPrimary: true },
+           { name: 'issuanceDate', type: dateTimeType },
+@@ -146,18 +144,18 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['issuerDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['subjectDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+           },
+           {
+             columnNames: ['credentialHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('credential'),
++            referencedTableName: migrationGetTableName(queryRunner, 'credential'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -169,7 +167,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"presentation\" (\"hash\" varchar PRIMARY KEY NOT NULL, \"raw\" text NOT NULL, \"id\" varchar, \"issuanceDate\" datetime NOT NULL, \"expirationDate\" datetime, \"context\" text NOT NULL, \"type\" text NOT NULL, \"holderDid\" varchar, CONSTRAINT \"FK_a5e418449d9f527776a3bd0ca61\" FOREIGN KEY (\"holderDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('presentation'),
++        name: migrationGetTableName(queryRunner, 'presentation'),
+         columns: [
+           { name: 'hash', type: 'varchar', isPrimary: true },
+           { name: 'raw', type: 'text' },
+@@ -184,7 +182,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['holderDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -196,7 +194,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE TABLE \"message\" (\"id\" varchar PRIMARY KEY NOT NULL, \"saveDate\" datetime NOT NULL DEFAULT (datetime('now')), \"updateDate\" datetime NOT NULL DEFAULT (datetime('now')), \"createdAt\" datetime, \"expiresAt\" datetime, \"threadId\" varchar, \"type\" varchar NOT NULL, \"raw\" varchar, \"data\" text, \"replyTo\" text, \"replyUrl\" varchar, \"metaData\" text, \"fromDid\" varchar, \"toDid\" varchar, CONSTRAINT \"FK_63bf73143b285c727bd046e6710\" FOREIGN KEY (\"fromDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT \"FK_1a666b2c29bb2b68d91259f55df\" FOREIGN KEY (\"toDid\") REFERENCES \"identifier\" (\"did\") ON DELETE NO ACTION ON UPDATE NO ACTION)",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('message'),
++        name: migrationGetTableName(queryRunner, 'message'),
+         columns: [
+           { name: 'id', type: 'varchar', isPrimary: true },
+           { name: 'saveDate', type: dateTimeType },
+@@ -217,12 +215,12 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['fromDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+           },
+           {
+             columnNames: ['toDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+           },
+         ],
+       }),
+@@ -235,7 +233,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE INDEX \"IDX_3a460e48557bad5564504ddad9\" ON \"presentation_verifier_identifier\" (\"identifierDid\")",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('presentation_verifier_identifier'),
++        name: migrationGetTableName(queryRunner, 'presentation_verifier_identifier'),
+         columns: [
+           { name: 'presentationHash', type: 'varchar', isPrimary: true },
+           { name: 'identifierDid', type: 'varchar', isPrimary: true },
+@@ -249,13 +247,13 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['presentationHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('presentation'),
++            referencedTableName: migrationGetTableName(queryRunner, 'presentation'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['identifierDid'],
+             referencedColumnNames: ['did'],
+-            referencedTableName: getTableName('identifier'),
++            referencedTableName: migrationGetTableName(queryRunner, 'identifier'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -269,7 +267,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE INDEX \"IDX_ef88f92988763fee884c37db63\" ON \"presentation_credentials_credential\" (\"credentialHash\")",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('presentation_credentials_credential'),
++        name: migrationGetTableName(queryRunner, 'presentation_credentials_credential'),
+         columns: [
+           { name: 'presentationHash', type: 'varchar', isPrimary: true },
+           { name: 'credentialHash', type: 'varchar', isPrimary: true },
+@@ -283,13 +281,13 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['presentationHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('presentation'),
++            referencedTableName: migrationGetTableName(queryRunner, 'presentation'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['credentialHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('credential'),
++            referencedTableName: migrationGetTableName(queryRunner, 'credential'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -303,7 +301,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE INDEX \"IDX_a13b5cf828c669e61faf489c18\" ON \"message_presentations_presentation\" (\"presentationHash\")",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('message_presentations_presentation'),
++        name: migrationGetTableName(queryRunner, 'message_presentations_presentation'),
+         columns: [
+           { name: 'messageId', type: 'varchar', isPrimary: true },
+           { name: 'presentationHash', type: 'varchar', isPrimary: true },
+@@ -317,13 +315,13 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['messageId'],
+             referencedColumnNames: ['id'],
+-            referencedTableName: getTableName('message'),
++            referencedTableName: migrationGetTableName(queryRunner, 'message'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['presentationHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('presentation'),
++            referencedTableName: migrationGetTableName(queryRunner, 'presentation'),
+             onDelete: 'cascade',
+           },
+         ],
+@@ -337,7 +335,7 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+     // "CREATE INDEX \"IDX_8ae8195a94b667b185d2c023e3\" ON \"message_credentials_credential\" (\"credentialHash\")",
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('message_credentials_credential'),
++        name: migrationGetTableName(queryRunner, 'message_credentials_credential'),
+         columns: [
+           { name: 'messageId', type: 'varchar', isPrimary: true },
+           { name: 'credentialHash', type: 'varchar', isPrimary: true },
+@@ -351,13 +349,13 @@ export class CreateDatabase1447159020001 implements MigrationInterface {
+           {
+             columnNames: ['messageId'],
+             referencedColumnNames: ['id'],
+-            referencedTableName: getTableName('message'),
++            referencedTableName: migrationGetTableName(queryRunner, 'message'),
+             onDelete: 'cascade',
+           },
+           {
+             columnNames: ['credentialHash'],
+             referencedColumnNames: ['hash'],
+-            referencedTableName: getTableName('credential'),
++            referencedTableName: migrationGetTableName(queryRunner, 'credential'),
+             onDelete: 'cascade',
+           },
+         ],
+diff --git a/node_modules/@veramo/data-store/src/migrations/2.simplifyRelations.ts b/node_modules/@veramo/data-store/src/migrations/2.simplifyRelations.ts
+index 9e353fb..6de7724 100644
+--- a/node_modules/@veramo/data-store/src/migrations/2.simplifyRelations.ts
++++ b/node_modules/@veramo/data-store/src/migrations/2.simplifyRelations.ts
+@@ -1,5 +1,6 @@
+ import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
+-import Debug from 'debug'
++import { migrationGetExistingTableByName } from './migration-functions'
++import { PreMigrationKey } from '../entities/PreMigrationEntities'
+ 
+ /**
+  * Fix inconsistencies between Entity data and column data.
+@@ -7,23 +8,21 @@ import Debug from 'debug'
+  * @public
+  */
+ export class SimplifyRelations1447159020002 implements MigrationInterface {
++
++  name = 'SimplifyRelations1447159020002' // Used in case this class gets minified, which would change the classname
++
+   async up(queryRunner: QueryRunner): Promise<void> {
+-    function getTableName(givenName: string): string {
+-      return (
+-        queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)?.tableName ||
+-        givenName
+-      )
+-    }
+     await queryRunner.changeColumn(
+-      getTableName('key'),
++      migrationGetExistingTableByName(queryRunner, 'PreMigrationKey', true),
+       'identifierDid',
+       new TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }),
+     )
+     await queryRunner.changeColumn(
+-      getTableName('service'),
++      migrationGetExistingTableByName(queryRunner, 'service'),
+       'identifierDid',
+       new TableColumn({ name: 'identifierDid', type: 'varchar', isNullable: true }),
+     )
++
+   }
+ 
+   async down(queryRunner: QueryRunner): Promise<void> {
+diff --git a/node_modules/@veramo/data-store/src/migrations/3.createPrivateKeyStorage.ts b/node_modules/@veramo/data-store/src/migrations/3.createPrivateKeyStorage.ts
+index db55600..1a3e9c0 100644
+--- a/node_modules/@veramo/data-store/src/migrations/3.createPrivateKeyStorage.ts
++++ b/node_modules/@veramo/data-store/src/migrations/3.createPrivateKeyStorage.ts
+@@ -2,6 +2,8 @@ import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm'
+ import { PrivateKey } from '..'
+ import { PreMigrationKey } from '../entities/PreMigrationEntities'
+ import Debug from 'debug'
++import { migrationGetExistingTableByName, migrationGetTableName } from './migration-functions'
++
+ const debug = Debug('veramo:data-store:migrate-private-keys')
+ 
+ /**
+@@ -10,18 +12,15 @@ const debug = Debug('veramo:data-store:migrate-private-keys')
+  * @public
+  */
+ export class CreatePrivateKeyStorage1629293428674 implements MigrationInterface {
++
++  name = 'CreatePrivateKeyStorage1629293428674' // Used in case this class gets minified, which would change the classname
++
+   async up(queryRunner: QueryRunner): Promise<void> {
+-    function getTableName(givenName: string): string {
+-      return (
+-        queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)?.tableName ||
+-        givenName
+-      )
+-    }
+     // 1.create new table
+     debug(`creating new private-key table`)
+     await queryRunner.createTable(
+       new Table({
+-        name: getTableName('private-key'),
++        name: migrationGetTableName(queryRunner, 'private-key'),
+         columns: [
+           {
+             name: 'alias',
+@@ -54,23 +53,19 @@ export class CreatePrivateKeyStorage1629293428674 implements MigrationInterface
+     await queryRunner.manager
+       .createQueryBuilder()
+       .insert()
+-      .into(getTableName('private-key'))
++      .into(migrationGetTableName(queryRunner, 'private-key'))
+       .values(privKeys)
+       .execute()
+     // 3. drop old column
+     debug(`dropping privKeyHex column from old key table`)
+-    await queryRunner.dropColumn(getTableName('key'), 'privateKeyHex')
++    await queryRunner.dropColumn(migrationGetExistingTableByName(queryRunner, 'PreMigrationKey', true), 'privateKeyHex')
+     //4. done
+     debug(`migrated ${privKeys.length} keys to private key storage`)
++
+   }
+ 
+   async down(queryRunner: QueryRunner): Promise<void> {
+-    function getTableName(givenName: string): string {
+-      return (
+-        queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)?.tableName ||
+-        givenName
+-      )
+-    }
++
+     // 1. add old column back
+     debug(`adding back privateKeyHex column to key table`)
+     await queryRunner.addColumn(
+@@ -95,7 +90,7 @@ export class CreatePrivateKeyStorage1629293428674 implements MigrationInterface
+     }
+     debug(`dropping private-key table`)
+     // 3. drop the new private key table
+-    await queryRunner.dropTable(getTableName('private-key'))
++    await queryRunner.dropTable(migrationGetExistingTableByName(queryRunner, 'private-key'))
+     // 4. done
+     debug(`rolled back ${keys.length} keys`)
+   }
+diff --git a/node_modules/@veramo/data-store/src/migrations/4.allowNullVPIssuanceDate.ts b/node_modules/@veramo/data-store/src/migrations/4.allowNullVPIssuanceDate.ts
+index bfe1343..4955fea 100644
+--- a/node_modules/@veramo/data-store/src/migrations/4.allowNullVPIssuanceDate.ts
++++ b/node_modules/@veramo/data-store/src/migrations/4.allowNullVPIssuanceDate.ts
+@@ -1,6 +1,7 @@
+ import { MigrationInterface, QueryRunner } from 'typeorm'
+ import { Presentation } from '..'
+ import Debug from 'debug'
++import { migrationGetExistingTableByName } from './migration-functions.js'
+ 
+ const debug = Debug('veramo:data-store:migrate-presentation-issuance-date')
+ 
+@@ -10,12 +11,8 @@ const debug = Debug('veramo:data-store:migrate-presentation-issuance-date')
+  * @public
+  */
+ export class AllowNullIssuanceDateForPresentations1637237492913 implements MigrationInterface {
+-  private getTableName(givenName: string, queryRunner: QueryRunner): string {
+-    return (
+-      queryRunner.connection.entityMetadatas.find((meta) => meta.givenTableName === givenName)?.tableName ||
+-      givenName
+-    )
+-  }
++
++  name = 'AllowNullIssuanceDateForPresentations1637237492913' // Used in case this class gets minified, which would change the classname
+ 
+   async up(queryRunner: QueryRunner): Promise<void> {
+     if (queryRunner.connection.driver.options.type === 'sqlite') {
+@@ -26,9 +23,8 @@ export class AllowNullIssuanceDateForPresentations1637237492913 implements Migra
+       await queryRunner.startTransaction()
+     }
+ 
+-    const tableName = this.getTableName('presentation', queryRunner)
+     // update issuanceDate column
+-    let table = await queryRunner.getTable(tableName)
++    const table = migrationGetExistingTableByName(queryRunner, 'presentation')
+     const oldColumn = table?.findColumnByName('issuanceDate')!
+     const newColumn = oldColumn.clone()
+     newColumn.isNullable = true
+@@ -53,8 +49,9 @@ export class AllowNullIssuanceDateForPresentations1637237492913 implements Migra
+       await queryRunner.query('PRAGMA foreign_keys=off')
+       await queryRunner.startTransaction()
+     }
+-    const tableName = this.getTableName('presentation', queryRunner)
+-    debug(`DOWN update NULL 'issuanceDate' with FAKE data for '${tableName}' table`)
++
++    const table = migrationGetExistingTableByName(queryRunner, 'presentation')
++    debug(`DOWN update NULL 'issuanceDate' with FAKE data for '${table.name}' table`)
+     await queryRunner.manager
+       .createQueryBuilder()
+       .update(Presentation)
+@@ -62,7 +59,7 @@ export class AllowNullIssuanceDateForPresentations1637237492913 implements Migra
+       .where('issuanceDate is NULL')
+       .execute()
+     // update issuanceDate column
+-    let table = await queryRunner.getTable(tableName)
++
+     const oldColumn = table?.findColumnByName('issuanceDate')!
+     const newColumn = oldColumn.clone()
+     newColumn.isNullable = false
+diff --git a/node_modules/@veramo/data-store/src/migrations/index.ts b/node_modules/@veramo/data-store/src/migrations/index.ts
+index 7196abc..06df143 100644
+--- a/node_modules/@veramo/data-store/src/migrations/index.ts
++++ b/node_modules/@veramo/data-store/src/migrations/index.ts
+@@ -3,6 +3,14 @@ import { SimplifyRelations1447159020002 } from './2.simplifyRelations'
+ import { CreatePrivateKeyStorage1629293428674 } from './3.createPrivateKeyStorage'
+ import { AllowNullIssuanceDateForPresentations1637237492913 } from './4.allowNullVPIssuanceDate'
+ 
++
++/**
++ * Allow others to use shared migration functions if they extend Veramo
++ *
++ * @public
++ */
++export * from './migration-functions.js'
++
+ /**
+  * The migrations array that SHOULD be used when initializing a TypeORM database connection.
+  *
+@@ -10,6 +18,7 @@ import { AllowNullIssuanceDateForPresentations1637237492913 } from './4.allowNul
+  *
+  * @public
+  */
++
+ export const migrations = [
+   CreateDatabase1447159020001,
+   SimplifyRelations1447159020002,
+diff --git a/node_modules/@veramo/data-store/src/migrations/migration-functions.ts b/node_modules/@veramo/data-store/src/migrations/migration-functions.ts
+new file mode 100644
+index 0000000..dae4f09
+--- /dev/null
++++ b/node_modules/@veramo/data-store/src/migrations/migration-functions.ts
+@@ -0,0 +1,48 @@
++import { QueryRunner, Table } from 'typeorm'
++
++/**
++ * Get an existing table by name. Checks against givenTableName first, and tableName next. Throws an error if not found
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++export function migrationGetExistingTableByName(queryRunner: QueryRunner, givenName: string, strictClassName?: boolean): Table {
++  const table = migrationGetTableByNameImpl(queryRunner, givenName, strictClassName)
++  if (!table) {
++    throw Error(`Could not find table with name ${givenName}`)
++  }
++  return table
++}
++
++/**
++ * Get an existing table by name. Checks against givenTableName first, and tableName next. Returns undefined if not found
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @private
++ */
++function migrationGetTableByNameImpl(queryRunner: QueryRunner, givenName: string, strictClassName?: boolean): Table | undefined {
++  let entityMetadata = queryRunner.connection.entityMetadatas.find((meta) => !!strictClassName ? meta.name === givenName : meta.givenTableName === givenName)
++  if (!entityMetadata && !strictClassName) {
++    // We are doing this separately as we don't want the above filter to use an or expression potentially matching first on tableName instead of givenTableName
++    entityMetadata = queryRunner.connection.entityMetadatas.find((meta) => meta.tableName === givenName)
++  }
++
++  return entityMetadata ? Table.create(entityMetadata, queryRunner.connection.driver) : undefined
++}
++
++/**
++ * Get a table name. Checks against givenTableName first, and tableName next from existing tables. Then returns the name. If not found returns the givenName argument
++ *
++ * @param queryRunner The query runner object to use for querying
++ * @param givenName The given name of the table to search for
++ *
++ * @public
++ */
++export function migrationGetTableName(queryRunner: QueryRunner, givenName: string, strictClassName?: boolean): string {
++  const table = migrationGetTableByNameImpl(queryRunner, givenName, strictClassName)
++  return !!table ? table.name : givenName
++}
