@@ -72,7 +72,7 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
   };
 };
 
-export const removeActiveUser = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
     dispatch({type: REMOVE_ACTIVE_USER_SUCCESS, payload: null});

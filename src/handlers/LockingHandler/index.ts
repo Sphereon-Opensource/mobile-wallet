@@ -7,7 +7,7 @@ import {AppState} from 'react-native';
 import {NativeEventSubscription} from 'react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter';
 
 import store from '../../store';
-import {removeActiveUser} from '../../store/actions/user.actions';
+import {logout} from '../../store/actions/user.actions';
 
 class LockingHandler {
   private lockingEventListener: NativeEventSubscription;
@@ -16,8 +16,7 @@ class LockingHandler {
     const handleAppStateChange = async (nextAppState: string): Promise<void> => {
       if (nextAppState === 'background' || nextAppState === 'active') {
         debug('Locking application...');
-        console.log('Locking application...');
-        await store.dispatch<any>(removeActiveUser());
+        await store.dispatch<any>(logout());
       }
     };
 

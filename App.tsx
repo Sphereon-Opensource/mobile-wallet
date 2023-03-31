@@ -89,7 +89,6 @@ export default function App() {
     void prepare()
 
     return async (): Promise<void> => {
-      console.log('Closing application...')
       await intentHandler.disable()
       await lockingHandler.disableLocking()
     };
