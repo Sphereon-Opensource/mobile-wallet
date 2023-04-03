@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
-import {getContacts} from '../../store/actions/contact.actions';
+import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {translate} from "../../localization/Localization";
@@ -18,6 +18,7 @@ const format = require('string-format');
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
   contacts: Array<IContact>;
+  deleteContact: (contactId: string) => void;
 }
 
 interface IState {
@@ -61,7 +62,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       listIndex={itemInfo.index}
       viewItem={<SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />}
       onPress={() => this.onItemPress(itemInfo.item)}
-      onDelete={this.onDelete(itemInfo.item)}
+      onDelete={() => this.onDelete(itemInfo.item)}
     />
   );
 
