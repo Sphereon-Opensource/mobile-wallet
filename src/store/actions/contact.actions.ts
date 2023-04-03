@@ -9,7 +9,12 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
 
 import {translate} from '../../localization/Localization';
-import {getContacts as getContactsFromStorage, createContact as storeContact, addIdentity as identityAdd} from '../../services/contactService';
+import {
+  getContacts as getContactsFromStorage,
+  createContact as storeContact,
+  addIdentity as identityAdd,
+  removeContact
+} from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
   ADD_IDENTITY_FAILED,
@@ -17,6 +22,8 @@ import {
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
+  DELETE_CONTACT_FAILED,
+  DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
   IAddIdentityArgs,
@@ -54,6 +61,26 @@ export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, 
     identityAdd(args)
     .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: { contactId: args.contactId, identity }}))
     .catch(() => dispatch({type: ADD_IDENTITY_FAILED}));
+  };
+};
+
+export const deleteContact = (contactId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: CONTACTS_LOADING});
+    removeContact({contactId})
+    .then((isDeleted: boolean) => {
+      if (isDeleted) {
+        dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_deleted_success_toast'));
+      } else {
+        dispatch({type: DELETE_CONTACT_FAILED});
+        showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
+      }
+    })
+    .catch(() => {
+      dispatch({type: DELETE_CONTACT_FAILED});
+      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
+    });
   };
 };
 

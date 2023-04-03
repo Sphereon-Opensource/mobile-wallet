@@ -10,7 +10,10 @@ import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
-import {RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {translate} from "../../localization/Localization";
+
+const format = require('string-format');
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
@@ -31,12 +34,23 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  /**
-   * TODO for WAL-410 this line has to be uncommented.
-   * onDelete = async (): Promise<void> => {
-   *  console.log('Delete contact pressed!')
-   * }
-   */
+  onDelete = async (contact: IContact): Promise<void> => {
+    this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+      title: translate('contact_delete_title'),
+      details: format(translate('contact_delete_message'), contact.alias),
+      primaryButton: {
+        caption: translate('action_confirm_label'),
+        onPress: async () => {
+          this.props.deleteContact(contact.id);
+          this.props.navigation.goBack();
+        },
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        onPress: async () => this.props.navigation.goBack(),
+      },
+    });
+  }
 
   onItemPress = async (contact: IContact): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact});
@@ -47,7 +61,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       listIndex={itemInfo.index}
       viewItem={<SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />}
       onPress={() => this.onItemPress(itemInfo.item)}
-      /*onDelete={this.onDelete}*/ // TODO for WAL-410 this line has to be uncommented.
+      onDelete={this.onDelete(itemInfo.item)}
     />
   );
 
@@ -73,6 +87,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     getContacts: () => dispatch(getContacts()),
+    deleteContact: (contactId: string) => dispatch(deleteContact(contactId)),
   };
 };
 

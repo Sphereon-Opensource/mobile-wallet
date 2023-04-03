@@ -3123,11 +3123,12 @@
   resolved "https://registry.yarnpkg.com/@sphereon/react-native-argon2/-/react-native-argon2-2.0.9.tgz#88d68d079a65ecc01501718c35a30f0a58558d21"
   integrity sha512-mXcp3meaKbv5TpEPxItZ1ZuRqkdNf8vjx3EM+GqNVQ8QQF9pbD3jw6wQfuFRPc+8kN+m9GEiVVbd9I0m50OPBg==
 
-"@sphereon/ssi-sdk-contact-manager@file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.21.0-bram.tgz":
-  version "0.21.0-bram"
-  resolved "file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk-contact-manager-v0.21.0-bram.tgz#e1e1c645c4f0f981397804a8c5f0aceab39e8897"
+"@sphereon/ssi-sdk-contact-manager@0.9.1-next.56":
+  version "0.9.1-next.56"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-contact-manager/-/ssi-sdk-contact-manager-0.9.1-next.56.tgz#7366eaf1cad6d05349561920f9cdfcfc5a9dbe41"
+  integrity sha512-vI/OqAdlOIlNrxUfC3eyBIDzl5BKaNtbjpiIG6vS3wM3lDk2xq3P3hkkOOQ8WSZmfCzTELRqmaN2nRLi7eBLBw==
   dependencies:
-    "@sphereon/ssi-sdk-data-store" "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz"
+    "@sphereon/ssi-sdk-data-store" "^0.9.1-next.56+22d9f1a"
     cross-fetch "^3.1.5"
     typeorm "^0.3.12"
 
@@ -3140,9 +3141,21 @@
     "@sphereon/ssi-types" "^0.9.1-next.56+22d9f1a"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk-data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz":
-  version "0.21.0-bram"
-  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk-data-store-v0.21.0-bram.tgz#1f9ffbd2752d4f50d1620892bfc363fc0f36f706"
+"@sphereon/ssi-sdk-data-store@0.9.1-next.56":
+  version "0.9.1-next.56"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-next.56.tgz#32acc48a6ced67892516d94db6271dc4df6f6e04"
+  integrity sha512-emx5yGWzT+tU/Cn1DfxmhnPzpKrNeRu886HvmgrNEVOJwR5kXtGiWJSMlxVY0hsKBrwq0BNxig8Trauqyc2CNg==
+  dependencies:
+    "@veramo/core" "4.2.0"
+    "@veramo/utils" "4.2.0"
+    class-validator "^0.14.0"
+    debug "^4.3.4"
+    typeorm "^0.3.12"
+
+"@sphereon/ssi-sdk-data-store@^0.9.1-next.56+22d9f1a":
+  version "0.9.1-unstable.88"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-unstable.88.tgz#1759d7a83f2e598255963a1698ec18cc4146853d"
+  integrity sha512-MpsB6NEykjSe0XC5SeMIjZBJmAz5G2fm62aHLWrXHZdPtYKmcLqMJkK/kj5yNGslRqwTSKoKbmkmaWasin5RvA==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
