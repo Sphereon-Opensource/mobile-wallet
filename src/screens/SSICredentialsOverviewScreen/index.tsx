@@ -91,7 +91,10 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       />
     );
 
-    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === itemInfo.item.issuer.name)
+    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) =>
+        itemInfo.item.issuer.name === identifier.did &&
+        itemInfo.item.title === 'SphereonWalletIdentityCredential'
+    )
       ? (
         <ItemContainer
           style={{
