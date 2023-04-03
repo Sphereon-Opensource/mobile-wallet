@@ -72,21 +72,23 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
+          const maxWaitTime = 5000
           dispatch({type: SET_ACTIVE_USER_SUCCESS, payload: user});
+          let startTime = Date.now();
           let userState: IUserState = getState().user;
-          while (!userState.activeUser) {
+          while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {
             await new Promise((resolve) => setTimeout(resolve, 50));
             userState = getState().user;
           }
           await dispatch(getContacts())
+          startTime = Date.now();
           let contactState: IContactState = getState().contact;
           // this will work because we generate a contact from the user so there is always 1 present
-          while (contactState.contacts.length === 0) {
+          while (contactState.contacts.length === 0 && Date.now() - startTime < maxWaitTime) {
             await new Promise((resolve) => setTimeout(resolve, 50));
             contactState = getState().contact;
           }
           await dispatch(getVerifiableCredentials())
-
         } else {
           dispatch({type: SET_ACTIVE_USER_FAILED});
         }
