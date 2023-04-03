@@ -3,6 +3,7 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 import {getUsers as getUsersFromStorage, updateUser, createUser as userCreate} from '../../services/userService';
 import {BasicUser, IAddIdentifierArgs, IUser, RootState} from '../../types';
+import {IContactState} from '../../types/store/contact.types';
 import {
   CREATE_USER_FAILED,
   CREATE_USER_SUCCESS,
@@ -10,18 +11,27 @@ import {
   GET_USERS_SUCCESS,
   SET_ACTIVE_USER_FAILED,
   SET_ACTIVE_USER_SUCCESS,
-  USERS_LOADING,
-  UPDATE_USER_SUCCESS,
   UPDATE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
+  USERS_LOADING,
 } from '../../types/store/user.action.types';
 import {IUserState} from '../../types/store/user.types';
 
-export const createUser = (args: BasicUser): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+import {getContacts} from './contact.actions';
+import {getVerifiableCredentials} from './credential.actions';
+
+export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    userCreate(args)
-      .then((user: IUser) => dispatch({type: CREATE_USER_SUCCESS, payload: user}))
-      .catch(() => dispatch({type: CREATE_USER_FAILED}));
+    return userCreate(args)
+      .then((user: IUser) => {
+        dispatch({type: CREATE_USER_SUCCESS, payload: user})
+        return user
+      })
+      .catch((error: Error) => {
+        dispatch({type: CREATE_USER_FAILED})
+        return Promise.reject(error)
+      });
   };
 };
 
@@ -56,13 +66,29 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
 };
 
 export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: USERS_LOADING});
-    getUsersFromStorage()
-      .then((users: Map<string, IUser>) => {
+    await getUsersFromStorage()
+      .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
+          const maxWaitTime = 5000
           dispatch({type: SET_ACTIVE_USER_SUCCESS, payload: user});
+          let startTime = Date.now();
+          let userState: IUserState = getState().user;
+          while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            userState = getState().user;
+          }
+          await dispatch(getContacts())
+          startTime = Date.now();
+          let contactState: IContactState = getState().contact;
+          // this will work because we generate a contact from the user so there is always 1 present
+          while (contactState.contacts.length === 0 && Date.now() - startTime < maxWaitTime) {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            contactState = getState().contact;
+          }
+          await dispatch(getVerifiableCredentials())
         } else {
           dispatch({type: SET_ACTIVE_USER_FAILED});
         }
@@ -70,3 +96,4 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
       .catch(() => dispatch({type: SET_ACTIVE_USER_FAILED}));
   };
 };
+
