@@ -80,6 +80,7 @@ export const setActiveUser = (userId: string): ThunkAction<Promise<void>, RootSt
           }
           await dispatch(getContacts())
           let contactState: IContactState = getState().contact;
+          // this will work because we generate a contact from the user so there is always 1 present
           while (contactState.contacts.length === 0) {
             await new Promise((resolve) => setTimeout(resolve, 50));
             contactState = getState().contact;
