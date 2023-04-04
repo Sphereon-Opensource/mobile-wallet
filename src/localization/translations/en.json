@@ -87,6 +87,7 @@
     "contact_delete_message": "Are you sure you want to delete the contact: {0}?",
     "contact_deleted_success_toast": "Contact successfully deleted",
     "contact_deleted_failed_toast": "Unable to delete the contact",
+    "user_contact_can_not_be_deleted": "User's own contact can not be deleted",
     "credential_status_never_expires_date_label": "Never expires",
     "contact_add_success_toast": "Contact successfully created",
     "contact_add_no_consent_toast": "Without acknowledgement you will not continue the credential exchange process, and have to use the Decline button.",
