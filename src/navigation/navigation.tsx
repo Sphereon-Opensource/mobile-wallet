@@ -358,7 +358,7 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.CREDENTIALS_REQUIRED_OVERVIEW}
+        name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
         component={SSICredentialsRequiredScreen}
         options={({route}) => ({
           headerTitle: translate('credentials_required_title'),

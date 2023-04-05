@@ -25,7 +25,7 @@ import {
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
 import { translate } from '../../localization/Localization'
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED_OVERVIEW>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const { presentationDefinition } = props.route.params

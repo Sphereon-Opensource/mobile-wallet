@@ -32,10 +32,10 @@ export type StackParamList = {
   Lock: Record<string, never>;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
-  CredentialsRequiredOverview: ICredentialsRequiredOverviewProps
+  CredentialsRequired: ICredentialsRequiredProps
 };
 
-export interface ICredentialsRequiredOverviewProps {
+export interface ICredentialsRequiredProps {
   verifier: string
   presentationDefinition: PresentationDefinitionV1
 }
@@ -155,5 +155,5 @@ export enum ScreenRoutesEnum {
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
-  CREDENTIALS_REQUIRED_OVERVIEW = 'CredentialsRequiredOverview',
+  CREDENTIALS_REQUIRED = 'CredentialsRequired',
 }
