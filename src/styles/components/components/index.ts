@@ -33,3 +33,4 @@ export * from './SSITermsOfServiceView';
 export * from './SSIDropDownList';
 export * from './SSIDropDownListItem';
 export * from './SSIProfileIcon';
+export * from './SSICredentialRequiredViewItem';

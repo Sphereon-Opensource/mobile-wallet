@@ -3,12 +3,13 @@ import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store'
 import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {InputDescriptorV2, PresentationDefinitionV1} from '@sphereon/pex-models'
+import { PresentationDefinitionV2 } from '@sphereon/pex-models/model/presentationDefinitionV2'
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
   CredentialRawJson: ICredentialRawJsonProps;
-  ConnectionsOverview: Record<string, never>;
   IdentityDetails: IIdentityDetailsProps;
   PexVerification: IPexVerificationProps;
   QrReader: Record<string, never>;
@@ -32,7 +33,13 @@ export type StackParamList = {
   Lock: Record<string, never>;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
+  CredentialsRequiredOverview: ICredentialsRequiredOverviewProps
 };
+
+export interface ICredentialsRequiredOverviewProps {
+  verifier: string
+  presentationDefinition: PresentationDefinitionV1 // TODO correct object
+}
 
 export interface IIdentityDetailsProps {
   identity: IIdentity;
@@ -149,4 +156,5 @@ export enum ScreenRoutesEnum {
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
+  CREDENTIALS_REQUIRED_OVERVIEW = 'CredentialsRequiredOverview',
 }

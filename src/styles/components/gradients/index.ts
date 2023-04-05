@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 
 import {highLightGradients} from '../../colors';
 import {SSIRoundedEdgesCss} from '../css';
+import { LinearTextGradient } from 'react-native-text-gradient'
 
 export const SSILinearGradientStyled = styled(LinearGradient).attrs({
   colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
@@ -25,3 +26,10 @@ export const SSILinearGradientWelcomeStyled = styled(LinearGradient).attrs({
 export const SSIRoundedLinearGradient = styled(SSILinearGradientStyled)`
   ${SSIRoundedEdgesCss}
 `;
+
+export const SSITextFieldLinearTextGradientStyled = styled(LinearTextGradient).attrs({
+  locations: [0, 1],
+  colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
+  start: {x: 1, y: 1},
+  end: {x: 0, y: 0},
+})``;

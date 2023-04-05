@@ -134,5 +134,10 @@
     "onboard_summary_title": "Uw ingevulde gegevens",
     "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
     "onboard_summary_info_tab_header_label": "Uw gegevens",
-    "onboard_summary_button_caption": "Voltooi en ga naar mijn wallet"
+    "onboard_summary_button_caption": "Voltooi en ga naar mijn wallet",
+    "credentials_required_title": "Vereiste credentials",
+    "credentials_required_subtitle": "De verifiërende partij: {0} wil graag de volgende informatie van u ontvangen ter verificatie.",
+    "credentials_required_selected_label": "geselecteerd",
+    "credentials_required_available_label": "beschikbaar",
+    "credentials_required_credential_select_label": "Selecteer een credential"
 }
