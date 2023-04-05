@@ -68,27 +68,20 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
 
-    getUserContact().then((contact: IContact) => {
-      if(contactId !== contact.id) {
-        removeContact({contactId: contactId})
-        .then((isDeleted: boolean) => {
-          if (isDeleted) {
-            dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
-            showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_deleted_success_toast'));
-          } else {
-            dispatch({type: DELETE_CONTACT_FAILED});
-            showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
-          }
-        })
-        .catch(() => {
-          dispatch({type: DELETE_CONTACT_FAILED});
-          showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
-        });
+    removeContact({contactId: contactId})
+    .then((isDeleted: boolean) => {
+      if (isDeleted) {
+        dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_deleted_success_toast'));
       } else {
         dispatch({type: DELETE_CONTACT_FAILED});
-        showToast(ToastTypeEnum.TOAST_ERROR, translate('user_contact_can_not_be_deleted'));
+        showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
       }
     })
+    .catch(() => {
+      dispatch({type: DELETE_CONTACT_FAILED});
+      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
+    });
   };
 };
 
