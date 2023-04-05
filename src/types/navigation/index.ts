@@ -3,8 +3,7 @@ import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store'
 import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
-import {InputDescriptorV2, PresentationDefinitionV1} from '@sphereon/pex-models'
-import { PresentationDefinitionV2 } from '@sphereon/pex-models/model/presentationDefinitionV2'
+import {PresentationDefinitionV1} from '@sphereon/pex-models'
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -38,7 +37,7 @@ export type StackParamList = {
 
 export interface ICredentialsRequiredOverviewProps {
   verifier: string
-  presentationDefinition: PresentationDefinitionV1 // TODO correct object
+  presentationDefinition: PresentationDefinitionV1
 }
 
 export interface IIdentityDetailsProps {
