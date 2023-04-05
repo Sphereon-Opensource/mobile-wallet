@@ -17,10 +17,8 @@ class LockingHandler {
   public enableLocking = async (): Promise<void> => {
     const handleAppStateChange = async (nextAppState: string): Promise<void> => {
 
-      console.log("something: " + RootNavigation.getCurrentRoute());
-
       if (nextAppState === 'background' || nextAppState === 'active') {
-        if (ScreenRoutesEnum.QR_READER !== RootNavigation.getCurrentRoute()) {
+        if (this.isLockingRequiredForScreen()) {
           debug('Locking application...');
           await store.dispatch<any>(logout());
         }
@@ -29,6 +27,10 @@ class LockingHandler {
 
     AppState.addEventListener('change', handleAppStateChange);
   };
+
+  private isLockingRequiredForScreen() {
+    return ScreenRoutesEnum.QR_READER !== RootNavigation.getCurrentRoute();
+  }
 
   public disableLocking = async (): Promise<void> => {
     await this.lockingEventListener?.remove();
