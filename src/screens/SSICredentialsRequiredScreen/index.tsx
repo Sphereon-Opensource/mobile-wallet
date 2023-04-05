@@ -9,7 +9,7 @@ import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem'
 import {
   SSIBasicContainerStyled as Container,
-  SSICredentialsRequiredOverviewScreenButtonContainerStyled as ButtonContainer,
+  SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import { ScreenRoutesEnum, StackParamList } from '../../types'
@@ -27,7 +27,7 @@ import { translate } from '../../localization/Localization'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED_OVERVIEW>;
 
-const SSICredentialsRequiredOverviewScreen: FC<Props> = (props: Props): JSX.Element => {
+const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const { presentationDefinition } = props.route.params
   const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<VerifiableCredential>>())
   const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<VerifiableCredential>>())
@@ -108,4 +108,4 @@ const SSICredentialsRequiredOverviewScreen: FC<Props> = (props: Props): JSX.Elem
   )
 }
 
-export default SSICredentialsRequiredOverviewScreen
+export default SSICredentialsRequiredScreen

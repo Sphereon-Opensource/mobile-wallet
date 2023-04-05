@@ -32,7 +32,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
-import SSICredentialsRequiredOverviewScreen from '../screens/SSICredentialsRequiredOverviewScreen'
+import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 
 const format = require('string-format');
 
@@ -359,7 +359,7 @@ const QRStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED_OVERVIEW}
-        component={SSICredentialsRequiredOverviewScreen}
+        component={SSICredentialsRequiredScreen}
         options={({route}) => ({
           headerTitle: translate('credentials_required_title'),
           header: (props: NativeStackHeaderProps) => (

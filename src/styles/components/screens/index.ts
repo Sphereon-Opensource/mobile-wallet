@@ -9,4 +9,4 @@ export * from './SSIWelcomeScreen';
 export * from './SSITermsOfServiceScreen';
 export * from './SSIPersonalDataScreen';
 export * from './SSINotificationsOverviewScreen';
-export * from './SSICredentialsRequiredOverviewScreen';
+export * from './SSICredentialsRequiredScreen';
