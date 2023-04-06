@@ -11,7 +11,7 @@ import { IUser, RootState, SupportedDidMethodEnum } from '../../types'
 import {CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS} from '../../types/store/onboarding.action.types';
 import { IOnboardingState, ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
 
-import {createUser, setActiveUser} from './user.actions'
+import {createUser, login} from './user.actions'
 
 const {v4: uuidv4} = require('uuid');
 
@@ -52,7 +52,7 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
           proofFormat: 'lds',
         })
         .then((vc: VerifiableCredential) => storeCredential({ vc }))
-        .then(async () => dispatch(setActiveUser(user.id)).then(() => dispatch({ type: CLEAR_ONBOARDING })))
+        .then(async () => dispatch(login(user.id)).then(() => dispatch({ type: CLEAR_ONBOARDING })))
       });
     });
   };
