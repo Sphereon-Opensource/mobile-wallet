@@ -10,8 +10,9 @@ import {
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {cmAddContact, cmAddIdentity, cmGetContacts, cmGetIdentities} from '../agent';
+import {cmAddContact, cmAddIdentity, cmGetContacts, cmGetIdentities, cmRemoveContact} from '../agent';
 import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IGetIdentitiesArgs} from '../types';
+import {IRemoveContactArgs} from "@sphereon/ssi-sdk-contact-manager";
 
 const {v4: uuidv4} = require('uuid');
 
@@ -30,6 +31,16 @@ export const createContact = async (args: ICreateContactArgs): Promise<IContact>
       return contact;
     })
     .catch((error: Error) => Promise.reject(Error(`Unable to create contact. Error: ${error}`)));
+};
+
+export const removeContact = async (args: IRemoveContactArgs): Promise<boolean> => {
+  debug(`removeContact(${JSON.stringify(args)})...`);
+  return cmRemoveContact(args)
+  .then((isDeleted: boolean) => {
+    debug(`removeContact(${JSON.stringify(args)}) succeeded`);
+    return isDeleted;
+  })
+  .catch((error: Error) => Promise.reject(Error(`Unable to remove contact. Error: ${error}`)));
 };
 
 export const addIdentity = async (args: IAddIdentityArgs): Promise<IIdentity> => {
