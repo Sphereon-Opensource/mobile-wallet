@@ -3118,6 +3118,20 @@
     nanoid "^3.3.4"
     string.prototype.matchall "^4.0.8"
 
+"@sphereon/pex@^2.0.0-unstable.13":
+  version "2.0.0-unstable.13"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.0-unstable.13.tgz#27e6315b4758ff0bf8c198ba45d5c95f2d6495b1"
+  integrity sha512-ZJPQK4xqL9urfYRUSZMHp/jb0j4VmrR89WG7gbKJb9St6KLL1Ew/jxARP6+vrMeo5lvLH5KkX/Wq4POK15vDyw==
+  dependencies:
+    "@sphereon/pex-models" "^1.2.2"
+    "@sphereon/ssi-types" "^0.9.0"
+    ajv "^8.12.0"
+    ajv-formats "^2.1.1"
+    jsonpath "^1.1.1"
+    jwt-decode "^3.1.2"
+    nanoid "^3.3.4"
+    string.prototype.matchall "^4.0.8"
+
 "@sphereon/react-native-argon2@2.0.9":
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@sphereon/react-native-argon2/-/react-native-argon2-2.0.9.tgz#88d68d079a65ecc01501718c35a30f0a58558d21"

@@ -38,6 +38,8 @@
     "@sphereon/bls-kms-local": "0.10.2",
     "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.4",
     "@sphereon/openid4vci-client": "^0.3.6",
+    "@sphereon/pex": "^2.0.0-unstable.13",
+    "@sphereon/pex-models": "^1.2.2",
     "@sphereon/react-native-argon2": "2.0.9",
     "@sphereon/ssi-sdk-contact-manager": "0.9.1-next.100",
     "@sphereon/ssi-sdk-core": "0.9.1-next.100",

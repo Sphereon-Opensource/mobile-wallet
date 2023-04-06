@@ -136,3 +136,9 @@ export const inputs: Record<Input, string> = {
   placeholder: '#8D9099',
   disabled: '#8D9099',
 };
+
+type Icon = 'noMatch';
+
+export const icons: Record<Icon, string> = {
+  noMatch: '#5D6990',
+};

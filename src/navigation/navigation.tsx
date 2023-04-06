@@ -32,6 +32,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
+import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 
 const format = require('string-format');
 
@@ -355,6 +356,21 @@ const QRStack = (): JSX.Element => {
             />
           ),
         }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
+        component={SSICredentialsRequiredScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_required_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={format(translate('credentials_required_subtitle'), route.params.verifier)}
+            />
+          ),
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
