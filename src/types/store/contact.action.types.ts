@@ -49,7 +49,6 @@ interface IDeleteContactSuccessAction {
 
 interface IDeleteContactFailedAction {
   type: DELETE_CONTACT_FAILED;
-  payload: string;
 }
 
 interface IAddIdentitySuccessAction {
