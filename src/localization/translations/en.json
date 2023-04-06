@@ -136,7 +136,7 @@
     "onboard_summary_info_tab_header_label": "Your information",
     "onboard_summary_button_caption": "Finalize and go to my wallet",
     "credentials_required_title": "Required credentials",
-    "credentials_required_subtitle": "The verifying party: {0} would like to receive the following information from you for verification.",
+    "credentials_required_subtitle": "{0} would like to receive the following information from you for verification.",
     "credentials_required_selected_label": "selected",
     "credentials_required_available_label": "available",
     "credentials_required_credential_select_label": "Select a credential"
