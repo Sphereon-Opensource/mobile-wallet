@@ -32,6 +32,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
+import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 
 const format = require('string-format');
 
@@ -357,6 +358,21 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
+        component={SSICredentialsRequiredScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_required_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={format(translate('credentials_required_subtitle'), route.params.verifier)}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
@@ -512,6 +528,7 @@ const AuthenticationStack = (): JSX.Element => {
  */
 const AppNavigator = (): JSX.Element => {
   const userState = useSelector((state: RootState) => state.user);
+  const onboardingState = useSelector((state: RootState) => state.onboarding);
 
   return (
     <Stack.Navigator
@@ -521,7 +538,7 @@ const AppNavigator = (): JSX.Element => {
       }}>
       {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : !userState.activeUser ? (
+      ) : !userState.activeUser && !onboardingState.firstName ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

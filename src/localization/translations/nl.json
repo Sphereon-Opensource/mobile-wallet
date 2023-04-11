@@ -83,6 +83,10 @@
     "contact_name_invalid_message": "Vul een geldige contact naam in",
     "contact_name_unavailable_message": "Deze naam bestaat al, vul een unieke contactnaam in",
     "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
+    "contact_delete_title": "Verwijder contact",
+    "contact_delete_message": "Weet u zeker dat u het contact wilt verwijderen: {0}?",
+    "contact_deleted_success_toast": "Contact successfully deleted",
+    "contact_deleted_failed_toast": "Contact succesvol verwijderd",
     "credential_status_never_expires_date_label": "Verloopt nooit",
     "contact_add_success_toast": "Contact succesvol aangemaakt",
     "contact_add_no_consent_toast": "Zonder bevestiging gaat u niet door met het uitwisselen van gegevens en moet u de knop Weigeren gebruiken.",
@@ -134,5 +138,10 @@
     "onboard_summary_title": "Uw ingevulde gegevens",
     "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
     "onboard_summary_info_tab_header_label": "Uw gegevens",
-    "onboard_summary_button_caption": "Voltooi en ga naar mijn wallet"
+    "onboard_summary_button_caption": "Voltooi en ga naar mijn wallet",
+    "credentials_required_title": "Vereiste credentials",
+    "credentials_required_subtitle": "{0} wil graag de volgende informatie van u ontvangen ter verificatie.",
+    "credentials_required_selected_label": "geselecteerd",
+    "credentials_required_available_label": "beschikbaar",
+    "credentials_required_credential_select_label": "Selecteer een credential"
 }

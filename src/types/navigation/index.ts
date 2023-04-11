@@ -1,14 +1,14 @@
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
-import {VerifiableCredential} from '@veramo/core';
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
+import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pex-models'
+import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store';
+import { VerifiableCredential } from '@veramo/core';
 
-import {IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import { IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum } from '../index';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
   CredentialRawJson: ICredentialRawJsonProps;
-  ConnectionsOverview: Record<string, never>;
   IdentityDetails: IIdentityDetailsProps;
   PexVerification: IPexVerificationProps;
   QrReader: Record<string, never>;
@@ -32,7 +32,13 @@ export type StackParamList = {
   Lock: Record<string, never>;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
+  CredentialsRequired: ICredentialsRequiredProps
 };
+
+export interface ICredentialsRequiredProps {
+  verifier: string
+  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2
+}
 
 export interface IIdentityDetailsProps {
   identity: IIdentity;
@@ -149,4 +155,5 @@ export enum ScreenRoutesEnum {
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
+  CREDENTIALS_REQUIRED = 'CredentialsRequired',
 }

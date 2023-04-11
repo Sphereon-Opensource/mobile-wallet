@@ -83,6 +83,10 @@
     "contact_name_invalid_message": "Please fill in a valid contact name",
     "contact_name_unavailable_message": "This name already exist, please fill in an unique contact name",
     "contact_add_disclaimer": "I acknowledge this contact will be created as a result of a credential exchange initiated by me.",
+    "contact_delete_title": "Delete contact",
+    "contact_delete_message": "Are you sure you want to delete the contact: {0}?",
+    "contact_deleted_success_toast": "Contact successfully deleted",
+    "contact_deleted_failed_toast": "Unable to delete the contact",
     "credential_status_never_expires_date_label": "Never expires",
     "contact_add_success_toast": "Contact successfully created",
     "contact_add_no_consent_toast": "Without acknowledgement you will not continue the credential exchange process, and have to use the Decline button.",
@@ -134,5 +138,10 @@
     "onboard_summary_title": "Your entered details",
     "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
     "onboard_summary_info_tab_header_label": "Your information",
-    "onboard_summary_button_caption": "Finalize and go to my wallet"
+    "onboard_summary_button_caption": "Finalize and go to my wallet",
+    "credentials_required_title": "Required credentials",
+    "credentials_required_subtitle": "{0} would like to receive the following information from you for verification.",
+    "credentials_required_selected_label": "selected",
+    "credentials_required_available_label": "available",
+    "credentials_required_credential_select_label": "Select a credential"
 }

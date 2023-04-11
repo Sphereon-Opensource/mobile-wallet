@@ -4,8 +4,9 @@ import {
   CREATE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
-  SET_ACTIVE_USER_FAILED,
-  SET_ACTIVE_USER_SUCCESS,
+  LOGOUT_SUCCESS,
+  LOGIN_FAILED,
+  LOGIN_SUCCESS,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   UserActionTypes,
@@ -53,14 +54,21 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
         loading: false,
       };
     }
-    case SET_ACTIVE_USER_SUCCESS: {
+    case LOGIN_SUCCESS: {
       return {
         ...state,
         activeUser: action.payload,
         loading: false,
       };
     }
-    case SET_ACTIVE_USER_FAILED: {
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        activeUser: undefined,
+        loading: false,
+      };
+    }
+    case LOGIN_FAILED: {
       return {
         ...state,
         loading: false,

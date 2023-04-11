@@ -8,7 +8,7 @@ import {
   SSITextInputFieldIconContainerStyled as IconContainer,
   SSIFlexDirectionRowViewStyled as InputContainer,
   SSITextH5Styled as LabelCaption,
-  SSITextInputFieldLinearTextGradientStyled as LinearTextGradient,
+  SSITextFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,

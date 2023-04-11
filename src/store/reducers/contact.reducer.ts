@@ -5,6 +5,8 @@ import {
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
   CREATE_CONTACT_SUCCESS,
+  DELETE_CONTACT_FAILED,
+  DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS
 } from '../../types/store/contact.action.types'
@@ -45,6 +47,19 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
       };
     }
     case CREATE_CONTACT_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case DELETE_CONTACT_SUCCESS: {
+      return {
+        ...state,
+        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload),
+        loading: false,
+      };
+    }
+    case DELETE_CONTACT_FAILED: {
       return {
         ...state,
         loading: false,
