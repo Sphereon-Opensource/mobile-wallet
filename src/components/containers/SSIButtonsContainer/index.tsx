@@ -52,7 +52,7 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
             onPress={secondaryButton.onPress}
             disabled={secondaryButton.disabled}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{height: 42, minWidth: 145, width: primaryButton ? undefined : 300}}
+            style={{height: 42, minWidth: 130, width: primaryButton ? undefined : 300}}
           />
         )}
         <Spacer />
@@ -62,7 +62,7 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
             onPress={primaryButton.onPress}
             disabled={primaryButton.disabled}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{height: 42, minWidth: 145, width: secondaryButton ? undefined : 300}}
+            style={{height: 42, minWidth: 130, width: secondaryButton ? undefined : 300}}
           />
         )}
       </ButtonContainer>
