@@ -27,7 +27,7 @@ interface Props extends NativeStackHeaderProps {
   showProfileIcon?: boolean;
 }
 
-const {MyModule} = NativeModules; // FIXME on iOS MyModule is not defined, I also don't see a .h / .m file with MyModule in it. The functionality related to closing the ... menu is not working on iOS atm
+const {MyModule} = NativeModules; // FIXME WAL-513 - on iOS MyModule is not defined, I also don't see a .h / .m file with MyModule in it. The functionality related to closing the ... menu is not working on iOS atm
 export const headerEmitter = MyModule ? new NativeEventEmitter(MyModule) : undefined;
 
 // TODO fix that there is a slight flash of elements moving when navigating
