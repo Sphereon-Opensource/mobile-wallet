@@ -12,6 +12,7 @@ import {
   SSIPersonalDataScreenContainerStyled as Container,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
+  SSIFullWidthScrollViewContainer as SSIScrollView
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
@@ -93,6 +94,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
+          <SSIScrollView contentContainerStyle={{flexGrow: 1}}>
           <TextInputsContainer>
             <TextInputContainer>
               <SSITextInputField
@@ -131,6 +133,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
               onPress: this.onNext,
             }}
           />
+          </SSIScrollView>
         </Container>
       </TouchableWithoutFeedback>
     );
