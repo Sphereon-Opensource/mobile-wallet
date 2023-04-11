@@ -50,7 +50,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   ];
 
   const onPress = async (): Promise<void> => {
-    headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+    headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
   };
 
   return (

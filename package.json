@@ -20,7 +20,9 @@
     "fix:doctor": "expo-cli doctor --fix-dependencies",
     "build:android:local": "eas build -p android --profile preview --local",
     "build:android:remote": "eas build -p android --profile preview",
-    "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package"
+    "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package",
+    "start": "expo start --dev-client",
+    "android": "expo run:android"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13",
@@ -125,7 +127,6 @@
     "react-native-text-gradient": "^0.1.7",
     "react-native-toast-message": "^2.1.1",
     "react-native-url-polyfill": "^1.3.0",
-    "react-native-web": "~0.18.11",
     "react-redux": "^7.2.4",
     "readable-stream": "^3.6.2",
     "redux": "^4.1.1",

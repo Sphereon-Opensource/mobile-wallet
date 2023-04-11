@@ -26,7 +26,7 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
   const {disabled, caption, icon, showBorder = false, fontColor = fonts.dark} = props;
 
   const onPress = async () => {
-    headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+    headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
     await props.onPress();
   };
 
