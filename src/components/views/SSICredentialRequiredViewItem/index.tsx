@@ -1,22 +1,22 @@
+import { IVerifiableCredential } from '@sphereon/ssi-types'
+import { VerifiableCredential } from '@veramo/core'
 import React, { FC, ForwardedRef } from 'react'
 import { View } from 'react-native'
 
+import { translate } from '../../../localization/Localization'
 import { backgrounds, icons, statuses } from '../../../styles/colors'
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
+  SSICredentialRequiredViewItemSelectedCredentialSCaptionStyled as CredentialSelectedCaption,
   SSITextH4Styled as CredentialSubtitleCaption,
   SSICredentialRequiredViewItemCredentialTitleCaptionStyled as CredentialTitleCaption,
   SSICredentialRequiredViewItemIconContainerStyled as IconContainer,
   SSITextFieldLinearTextGradientStyled as LinearGradientTextContainer,
   SSICredentialRequiredViewItemMatchInfoCaptionStyled as MatchInfoCaption,
   SSICredentialRequiredViewItemMatchInfoContainerStyled as MatchInfoContainer,
-  SSICredentialRequiredViewItemSelectedCredentialSCaptionStyled as CredentialSelectedCaption,
 } from '../../../styles/components'
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon'
-import { translate } from '../../../localization/Localization'
-import { IVerifiableCredential } from '@sphereon/ssi-types'
-import { VerifiableCredential } from '@veramo/core'
 
 export interface Props {
   id: string
@@ -53,8 +53,8 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
           <View>
             <CredentialTitleCaption>{title}</CredentialTitleCaption>
             { selected.length > 0
-              // TODO currently only supporting one selected credential
-              ? <CredentialSelectedCaption>{(selected[0] as IVerifiableCredential).type}</CredentialSelectedCaption>
+              // TODO currently only supporting one selected credential, Also fix the naming
+              ? <CredentialSelectedCaption>{(selected[0] as IVerifiableCredential).type[1]}</CredentialSelectedCaption>
               : <LinearGradientTextContainer>
                   <CredentialSubtitleCaption>{translate('credentials_required_credential_select_label')}</CredentialSubtitleCaption>
                 </LinearGradientTextContainer>

@@ -20,7 +20,9 @@ const SSICredentialLogo: FC<IProps> = (props: IProps): JSX.Element => {
 
   return (
     <Container style={[style, {backgroundColor}]}>
-      <BackgroundImage source={backgroundImage}>{!image && <PlaceholderImage />}</BackgroundImage>
+      <BackgroundImage source={backgroundImage}>
+        {!image && <PlaceholderImage />}
+      </BackgroundImage>
     </Container>
   );
 };

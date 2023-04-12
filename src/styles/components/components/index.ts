@@ -34,3 +34,4 @@ export * from './SSIDropDownList';
 export * from './SSIDropDownListItem';
 export * from './SSIProfileIcon';
 export * from './SSICredentialRequiredViewItem';
+export * from './SSICredentialSelectViewItem';
