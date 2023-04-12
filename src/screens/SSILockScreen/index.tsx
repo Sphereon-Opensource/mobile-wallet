@@ -7,13 +7,13 @@ import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
 import {getPin} from '../../services/storageService';
-import {setActiveUser} from '../../store/actions/user.actions';
+import {login} from '../../store/actions/user.actions';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
-  users: Map<string, IUser>
-  setActiveUser: (userId: string) => void
+  users: Map<string, IUser>;
+  login: (userId: string) => void;
 }
 
 // This screen should be extended to do pin code or biometrics authentication
@@ -21,7 +21,7 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
 class SSILockScreen extends PureComponent<IProps> {
   onLogin = async (): Promise<void> => {
     const user: IUser = this.props.users.values().next().value;
-    await this.props.setActiveUser(user.id)
+    await this.props.login(user.id)
   }
 
   onVerification = async (value: string): Promise<void> => {
@@ -59,7 +59,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    setActiveUser: (userId: string) => dispatch(setActiveUser(userId))
+    login: (userId: string) => dispatch(login(userId)),
   };
 };
 
