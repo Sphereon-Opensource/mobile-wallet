@@ -15,6 +15,7 @@ import {
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
+  SSIFullHeightScrollViewContainer as SSIScrollView
 } from '../../styles/components';
 import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {ICreateContactArgs} from '../../types/store/contact.action.types';
@@ -106,6 +107,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
+          <SSIScrollView>
           <StatusBar />
           <TextInputContainer>
             <SSITextInputField
@@ -131,6 +133,8 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
               onPress: this.onCreate,
             }}
           />
+          </SSIScrollView>
+
         </Container>
       </TouchableWithoutFeedback>
     );
