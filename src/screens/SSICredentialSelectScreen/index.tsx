@@ -5,6 +5,7 @@ import { SwipeListView } from 'react-native-swipe-list-view'
 
 import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from '../../@config/constants'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer'
+import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem'
 import { translate } from '../../localization/Localization'
 import { backgrounds } from '../../styles/colors'
 import {
@@ -18,7 +19,6 @@ import {
   ScreenRoutesEnum,
   StackParamList
 } from '../../types'
-import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_SELECT>;
 
@@ -27,9 +27,13 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
   const [credentialSelection, setCredentialSelection] = React.useState(props.route.params.credentialSelection);
 
   const onLongPress = async (itemInfo: ListRenderItemInfo<ICredentialSelection>): Promise<void> => {
-    const index = credentialSelection.findIndex((credentialSelection: ICredentialSelection) => credentialSelection.id == itemInfo.item.id);
-    credentialSelection[index].isSelected = !itemInfo.item.isSelected
-    setCredentialSelection([...credentialSelection])
+    const selection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
+      credentialSelection.isSelected = credentialSelection.id == itemInfo.item.id
+        ? credentialSelection.isSelected = !itemInfo.item.isSelected
+        : credentialSelection.isSelected = false
+      return credentialSelection
+    })
+    setCredentialSelection(selection)
   }
 
   const onItemPress = async (credentialSelection: ICredentialSelection): Promise<void> => {
