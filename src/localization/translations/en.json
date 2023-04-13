@@ -143,5 +143,8 @@
     "credentials_required_subtitle": "{0} would like to receive the following information from you for verification.",
     "credentials_required_selected_label": "selected",
     "credentials_required_available_label": "available",
-    "credentials_required_credential_select_label": "Select a credential"
+    "credentials_required_credential_select_label": "Select a credential",
+    "action_add_label": "Add",
+    "credentials_select_title": "Select credentials",
+    "credentials_select_subtitle": "You have more than one credential that can satisfy this request."
 }

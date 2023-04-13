@@ -73,7 +73,7 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
           ? 'unknown'
           : typeof verifiableCredential.type === 'string'
               ? verifiableCredential.type
-              : verifiableCredential.type.filter((value) => value !== 'VerifiableCredential')[0]
+              : verifiableCredential.type.filter((value: string) => value !== 'VerifiableCredential')[0]
   console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`)
   const properties = toCredentialDetailsRow(verifiableCredential.credentialSubject)
 

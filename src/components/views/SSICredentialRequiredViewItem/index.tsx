@@ -53,8 +53,8 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
           <View>
             <CredentialTitleCaption>{title}</CredentialTitleCaption>
             { selected.length > 0
-              // TODO currently only supporting one selected credential
-              ? <CredentialSelectedCaption>{(selected[0] as IVerifiableCredential).type}</CredentialSelectedCaption>
+              // TODO currently only supporting one selected credential, Also fix the naming
+              ? <CredentialSelectedCaption>{(selected[0] as IVerifiableCredential).type[1]}</CredentialSelectedCaption>
               : <LinearGradientTextContainer>
                   <CredentialSubtitleCaption>{translate('credentials_required_credential_select_label')}</CredentialSubtitleCaption>
                 </LinearGradientTextContainer>

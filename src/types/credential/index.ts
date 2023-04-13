@@ -1,6 +1,7 @@
 import {CredentialMetadata} from '@sphereon/openid4vci-client';
 
 import {LabelStatus} from '../component';
+import { VerifiableCredential } from '@veramo/core'
 
 export enum CredentialStatusEnum {
   VALID = 'valid',
@@ -53,4 +54,11 @@ export interface ICredentialTypeSelection {
 
 export interface ICredentialMetadata extends CredentialMetadata {
   credentialType: string;
+}
+
+export interface ICredentialSelection {
+  id: string
+  credential: ICredentialSummary
+  rawCredential: VerifiableCredential
+  isSelected: boolean;
 }

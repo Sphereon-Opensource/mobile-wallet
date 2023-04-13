@@ -3,7 +3,14 @@ import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pe
 import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store';
 import { VerifiableCredential } from '@veramo/core';
 
-import { IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum } from '../index';
+import {
+  IButton,
+  ICredentialSelection,
+  ICredentialSummary,
+  ICredentialTypeSelection,
+  PopupBadgesEnum,
+  PopupImagesEnum
+} from '../index';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -33,7 +40,13 @@ export type StackParamList = {
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps
+  CredentialsSelect: ICredentialsSelectProps
 };
+
+export interface ICredentialsSelectProps {
+  credentialSelection: Array<ICredentialSelection>
+  onSelect: (vcs: Array<string>) => Promise<void>
+}
 
 export interface ICredentialsRequiredProps {
   verifier: string
@@ -156,4 +169,5 @@ export enum ScreenRoutesEnum {
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
+  CREDENTIALS_SELECT = 'CredentialsSelect',
 }
