@@ -34,6 +34,7 @@ import Veramo from '../screens/Veramo';
 import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
+import SSIAuthenticateScreen from "../screens/SSIAuthenticateScreen";
 
 const format = require('string-format');
 
@@ -395,6 +396,16 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
+      <Stack.Screen
+          name={ScreenRoutesEnum.AUTHENTICATE_WITH_PIN_CODE}
+          component={SSIAuthenticateScreen}
+          options={{
+            headerTitle: translate('authenticate_screen_title'),
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('authenticate_screen_subtitle')} />
+            ),
+          }}
+      />
     </Stack.Navigator>
   );
 };
@@ -534,6 +545,7 @@ const AuthenticationStack = (): JSX.Element => {
           ),
         }}
       />
+
     </Stack.Navigator>
   );
 };

@@ -170,4 +170,5 @@ export enum ScreenRoutesEnum {
   ONBOARDING_SUMMARY = 'OnboardingSummary',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  AUTHENTICATE_WITH_PIN_CODE = 'AuthenticateWithPINCode'
 }
