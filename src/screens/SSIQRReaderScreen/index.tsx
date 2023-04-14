@@ -24,6 +24,7 @@ const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
         onRead={onRead}
         reactivate
         reactivateTimeout={QR_SCANNER_TIMEOUT.reactivate}
+        containerStyle={{backgroundColor: 'black'}}
         showMarker
         customMarker={<SSIQRCustomMarker title={translate('qr_scanner_marker_title')} subtitle={translate('qr_scanner_marker_subtitle')} />}
         cameraProps={{
