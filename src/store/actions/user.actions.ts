@@ -11,7 +11,7 @@ import {
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
-  LOGOUT_SUCCESS,
+  LOGOUT_SUCCESS, PIN_VERIFICATION_REQUIRED,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   USERS_LOADING,
@@ -20,6 +20,7 @@ import {IUserState} from '../../types/store/user.types';
 
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
+import store from "../index";
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
@@ -105,3 +106,10 @@ export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action>
   };
 };
 
+export const onLogin = async (): Promise<void> => {
+  store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
+}
+
+export const onRequiredPINVerification = async (isRequired: boolean): Promise<void> => {
+  store.dispatch({type: PIN_VERIFICATION_REQUIRED, payload: isRequired})
+}

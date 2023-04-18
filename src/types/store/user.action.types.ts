@@ -20,6 +20,9 @@ export const UPDATE_USER_SUCCESS = '[USER] UPDATE_USER_SUCCESS';
 export type UPDATE_USER_SUCCESS = typeof UPDATE_USER_SUCCESS;
 export const UPDATE_USER_FAILED = '[USER] UPDATE_USER_FAILED';
 export type UPDATE_USER_FAILED = typeof UPDATE_USER_FAILED;
+export const PIN_VERIFICATION_REQUIRED = '[USER] PIN_VERIFICATION_REQUIRED';
+export type PIN_VERIFICATION_REQUIRED = typeof PIN_VERIFICATION_REQUIRED;
+
 
 interface IUsersLoading {
   type: USERS_LOADING;
@@ -65,6 +68,11 @@ interface IUpdateUserActionFailedAction {
   type: UPDATE_USER_FAILED;
 }
 
+interface IPINVerificationRequiredAction {
+  type: PIN_VERIFICATION_REQUIRED;
+  payload: boolean;
+}
+
 export type UserActionTypes =
   | IUsersLoading
   | IGetUsersActionFailedAction
@@ -75,4 +83,5 @@ export type UserActionTypes =
   | ILoginActionFailedAction
   | ILogoutActionSuccessAction
   | IUpdateUserActionSuccessAction
-  | IUpdateUserActionFailedAction;
+  | IUpdateUserActionFailedAction
+  | IPINVerificationRequiredAction;
