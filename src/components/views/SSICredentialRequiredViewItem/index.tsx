@@ -8,13 +8,16 @@ import { backgrounds, icons, statuses } from '../../../styles/colors'
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
-  SSICredentialRequiredViewItemSelectedCredentialSCaptionStyled as CredentialSelectedCaption,
+  SSICredentialRequiredViewItemSelectedCredentialsCaptionStyled as CredentialSelectedCaption,
   SSITextH4Styled as CredentialSubtitleCaption,
   SSICredentialRequiredViewItemCredentialTitleCaptionStyled as CredentialTitleCaption,
   SSICredentialRequiredViewItemIconContainerStyled as IconContainer,
   SSITextFieldLinearTextGradientStyled as LinearGradientTextContainer,
   SSICredentialRequiredViewItemMatchInfoCaptionStyled as MatchInfoCaption,
   SSICredentialRequiredViewItemMatchInfoContainerStyled as MatchInfoContainer,
+  SSITextH5LightStyled as NoneAvailableSubCaption,
+  SSICredentialRequiredViewItemNoneAvailableCaptionStyled as NoneAvailableCaption,
+  SSICredentialRequiredViewNoneAvailableContainerStyled as NoneAvailableContainer
 } from '../../../styles/components'
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon'
 
@@ -22,10 +25,10 @@ export interface Props {
   id: string
   title: string
   selected: Array<VerifiableCredential>
-  available: Array<VerifiableCredential>
+  available?: Array<VerifiableCredential>
   isMatching: boolean
   listIndex: number
-  onPress: () => Promise<void>
+  onPress?: () => Promise<void>
 }
 
 const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props, ref?: ForwardedRef<unknown>): JSX.Element => {
@@ -55,21 +58,30 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
             { selected.length > 0
               // TODO currently only supporting one selected credential, Also fix the naming
               ? <CredentialSelectedCaption>{(selected[0] as IVerifiableCredential).type[1]}</CredentialSelectedCaption>
-              : <LinearGradientTextContainer>
-                  <CredentialSubtitleCaption>{translate('credentials_required_credential_select_label')}</CredentialSubtitleCaption>
-                </LinearGradientTextContainer>
+              : available && available.length === 0
+                    ? <NoneAvailableCaption>{translate('credentials_required_no_available_label')}</NoneAvailableCaption>
+                    : <LinearGradientTextContainer>
+                        <CredentialSubtitleCaption>{translate('credentials_required_credential_select_label')}</CredentialSubtitleCaption>
+                      </LinearGradientTextContainer>
             }
           </View>
           <MatchInfoContainer>
             <MatchInfoCaption style={{...(isMatching && {color: statuses.valid})}}>
               { selected.length > 0
                 ? `${selected.length} ${translate('credentials_required_selected_label')}`
-                : `${available.length} ${translate('credentials_required_available_label')}`
+                : available
+                      ? `${available.length} ${translate('credentials_required_available_label')}`
+                      : translate('credentials_required_checking_label')
               }
             </MatchInfoCaption>
           </MatchInfoContainer>
         </ContentContainer>
       </ContentContainer>
+      { available && available.length === 0 &&
+          <NoneAvailableContainer>
+            <NoneAvailableSubCaption>{translate('credentials_required_no_available_additional_label')}</NoneAvailableSubCaption>
+          </NoneAvailableContainer>
+      }
     </Container>
   );
 });
