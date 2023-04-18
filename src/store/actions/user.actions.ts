@@ -106,10 +106,10 @@ export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action>
   };
 };
 
-export const onLogin = async (): Promise<void> => {
+export const onLogin = () => {
   store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
 }
 
-export const onRequiredPINVerification = async (isRequired: boolean): Promise<void> => {
+export const onRequiredPINVerification = (isRequired: boolean) => {
   store.dispatch({type: PIN_VERIFICATION_REQUIRED, payload: isRequired})
 }

@@ -130,7 +130,7 @@ export interface IPinCodeSetProps {
 }
 
 export interface ILockProps {
-  onVerificationSuccess: (userId: string) => Promise<void>
+  onVerificationSuccess: () => void
 }
 
 export enum SwitchRoutesEnum {

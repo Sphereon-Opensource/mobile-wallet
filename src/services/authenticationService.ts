@@ -25,15 +25,12 @@ export const authenticate = async (connection: IBasicConnection): Promise<void> 
 
 const navigateToPinCodeForVerification = (): Promise<void> => {
   return new Promise((resolve): void => {
-    const uponVerificationSuccess = async (): Promise<void> => {
-      await onRequiredPINVerification(false)
+    const onVerificationSuccess = async (): Promise<void> => {
+      onRequiredPINVerification(false)
       resolve();
-      RootNavigation.goBack();
     }
     RootNavigation.navigate(ScreenRoutesEnum.LOCK, {
-      param : {
-        onVerificationSuccess: uponVerificationSuccess
-      }
+      onVerificationSuccess
     })
   })
 }

@@ -14,7 +14,7 @@ import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
   users: Map<string, IUser>;
   login: (userId: string) => void;
-  onVerificationSuccess: (userId: string) => Promise<void>;
+  onVerificationSuccess: () => Promise<void>;
 }
 
 // This screen should be extended to do pin code or biometrics authentication
@@ -25,8 +25,8 @@ class SSILockScreen extends PureComponent<IProps> {
     if (value !== await getPin()) {
       return Promise.reject('Invalid pin code');
     }
-
-   await this.props.route.params.onVerificationSuccess(this.props.users.values().next().value.id);
+    this.props.navigation.goBack();
+    await this.props.route.params.onVerificationSuccess();
   };
 
   render() {
