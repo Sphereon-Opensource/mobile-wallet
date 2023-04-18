@@ -7,7 +7,6 @@ import {
   LOGIN_FAILED,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
-  PIN_VERIFICATION_REQUIRED,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   UserActionTypes,
@@ -19,7 +18,6 @@ const initialState: IUserState = {
   loading: false,
   users: new Map<string, IUser>(),
   activeUser: undefined,
-  isPINVerificationRequired: false
 };
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {
@@ -87,13 +85,6 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
     case UPDATE_USER_FAILED: {
       return {
         ...state,
-        loading: false,
-      };
-    }
-    case PIN_VERIFICATION_REQUIRED: {
-      return {
-        ...state,
-        isPINVerificationRequired: action.payload,
         loading: false,
       };
     }

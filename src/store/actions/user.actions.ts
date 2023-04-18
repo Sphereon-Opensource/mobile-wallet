@@ -11,7 +11,7 @@ import {
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
-  LOGOUT_SUCCESS, PIN_VERIFICATION_REQUIRED,
+  LOGOUT_SUCCESS,
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   USERS_LOADING,
@@ -108,8 +108,4 @@ export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action>
 
 export const onLogin = () => {
   store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
-}
-
-export const onRequiredPINVerification = (isRequired: boolean) => {
-  store.dispatch({type: PIN_VERIFICATION_REQUIRED, payload: isRequired})
 }

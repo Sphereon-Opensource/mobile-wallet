@@ -25,7 +25,6 @@ class SSILockScreen extends PureComponent<IProps> {
     if (value !== await getPin()) {
       return Promise.reject('Invalid pin code');
     }
-    this.props.navigation.goBack();
     await this.props.route.params.onVerificationSuccess();
   };
 

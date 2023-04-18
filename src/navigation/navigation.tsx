@@ -396,6 +396,17 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
         }}
       />
+      <Stack.Screen
+          name={ScreenRoutesEnum.LOCK}
+          component={SSILockScreen}
+          initialParams={{ onVerificationSuccess: onLogin}}
+          options={{
+            headerTitle: translate('lock_title'),
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
+            ),
+          }}
+      />
     </Stack.Navigator>
   );
 };
@@ -556,7 +567,7 @@ const AppNavigator = (): JSX.Element => {
       }}>
       {userState.users.size === 0 ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : userState.isPINVerificationRequired || (!userState.activeUser && !onboardingState.firstName) ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
+      ) : !userState.activeUser && !onboardingState.firstName ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

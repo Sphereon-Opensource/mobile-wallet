@@ -4,10 +4,8 @@ import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProv
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
 import RootNavigation from "../navigation/rootNavigation";
 import {ScreenRoutesEnum} from "../types";
-import {onRequiredPINVerification} from "../store/actions/user.actions";
 
 export const authenticate = async (connection: IBasicConnection): Promise<void> => {
-  await onRequiredPINVerification(true)
 
   return navigateToPinCodeForVerification().then(() => {
     switch (connection?.type) {
@@ -26,7 +24,6 @@ export const authenticate = async (connection: IBasicConnection): Promise<void> 
 const navigateToPinCodeForVerification = (): Promise<void> => {
   return new Promise((resolve): void => {
     const onVerificationSuccess = async (): Promise<void> => {
-      onRequiredPINVerification(false)
       resolve();
     }
     RootNavigation.navigate(ScreenRoutesEnum.LOCK, {
