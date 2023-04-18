@@ -4,6 +4,7 @@ import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProv
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
 import RootNavigation from "../navigation/rootNavigation";
 import {ScreenRoutesEnum} from "../types";
+import {translate} from "../localization/Localization";
 
 export const authenticate = async (connection: IBasicConnection): Promise<void> => {
 
@@ -27,7 +28,9 @@ const navigateToPinCodeForVerification = (): Promise<void> => {
       resolve();
     }
     RootNavigation.navigate(ScreenRoutesEnum.LOCK, {
-      onVerificationSuccess
+      onVerificationSuccess,
+      headerTitle: translate('authenticate_screen_title'),
+      headerSubTitle: translate('authenticate_screen_subtitle')
     })
   })
 }

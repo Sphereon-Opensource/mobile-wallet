@@ -397,15 +397,20 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.LOCK}
-          component={SSILockScreen}
-          initialParams={{ onVerificationSuccess: onLogin}}
-          options={{
-            headerTitle: translate('lock_title'),
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
-            ),
-          }}
+        name={ScreenRoutesEnum.LOCK}
+        component={SSILockScreen}
+        initialParams={{onVerificationSuccess: onLogin}}
+        options={({route}) => ({
+          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('lock_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              showBackButton={true}
+              showProfileIcon={true}
+              headerSubTitle={route.params.headerSubTitle ? route.params.headerSubTitle : translate('lock_subtitle')}
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );
@@ -539,13 +544,17 @@ const AuthenticationStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
-        initialParams={{ onVerificationSuccess: onLogin}}
-        options={{
-          headerTitle: translate('lock_title'),
+        initialParams={{onVerificationSuccess: onLogin}}
+        options={({route}) => ({
+          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
+            <SSIHeaderBar
+              {...props}
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={route.params.headerSubTitle ? route.params.headerSubTitle : translate('lock_subtitle')}
+            />
           ),
-        }}
+        })}
       />
     </Stack.Navigator>
   );
