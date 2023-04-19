@@ -21,9 +21,11 @@ export const authenticate = async (connection: IBasicConnection): Promise<void> 
   })
 }
 
-const enterPinCode = new Promise<void>((resolve): void => {
-  const onVerificationSuccess = async (): Promise<void> => {
-    resolve();
-  }
-  RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
-})
+const enterPinCode = (): Promise<void> => {
+  return new Promise((resolve): void => {
+    const onVerificationSuccess = async (): Promise<void> => {
+      resolve();
+    }
+    RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
+  })
+}

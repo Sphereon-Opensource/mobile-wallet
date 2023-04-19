@@ -403,8 +403,6 @@ const QRStack = (): JSX.Element => {
           headerTitle: translate('authentication_pin_code_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props}
-              showBackButton={true}
-              showProfileIcon={true}
               headerSubTitle={translate('authentication_pin_code_subtitle')} />
           ),
         }}
