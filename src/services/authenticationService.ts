@@ -7,7 +7,7 @@ import {ScreenRoutesEnum} from "../types";
 
 export const authenticate = async (connection: IBasicConnection): Promise<void> => {
 
-  return navigateToPinCodeForVerification().then(() => {
+  return enterPinCode().then(() => {
     switch (connection?.type) {
       case ConnectionTypeEnum.OPENID_CONNECT:
         new OpenIdConnectProvider().authenticate(connection.config as IOpenIdConfig);
@@ -21,11 +21,9 @@ export const authenticate = async (connection: IBasicConnection): Promise<void> 
   })
 }
 
-const navigateToPinCodeForVerification = (): Promise<void> => {
-  return new Promise((resolve): void => {
-    const onVerificationSuccess = async (): Promise<void> => {
-      resolve();
-    }
-    RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
-  })
-}
+const enterPinCode = new Promise<void>((resolve): void => {
+  const onVerificationSuccess = async (): Promise<void> => {
+    resolve();
+  }
+  RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
+})
