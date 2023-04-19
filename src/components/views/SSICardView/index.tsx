@@ -77,7 +77,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
   // The uri is a transparent pixel in case there is not background image
   const backgroundImage = props.backgroundImage
     ? {uri: props.backgroundImage}
-    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='} // TODO which image is this?
+    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='}
   const logoImage = props.logoImage ? {uri: props.logoImage} : null;
 
   return (
