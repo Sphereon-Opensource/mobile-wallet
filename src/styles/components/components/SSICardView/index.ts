@@ -14,13 +14,16 @@ export const SSICardViewHeaderContainerStyled = styled(SSIFlexDirectionRowViewSt
   margin-top: 16px;
 `;
 
+// TODO we need a width for the image to actually show something
+//  width: 100%
 export const SSICardViewHeaderLogoContainerStyled = styled.View`
   margin-left: 9px;
-  width: 100%;
+  margin-right: 12px;
   max-width: 64px;
 `;
 
 export const SSICardViewHeaderTitleContainerStyled = styled.View`
+  flex: 1;
   margin: 0px 13px 0px auto;
 `;
 
@@ -57,6 +60,7 @@ export const SSICardViewFooterContainerStyled = styled.View`
 `;
 
 export const SSICardViewCredentialTitleTextStyled = styled(SSITextH4SemiBoldLightStyled)`
+  flex: 1;
   text-align: right;
 `;
 
