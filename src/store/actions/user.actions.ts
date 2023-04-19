@@ -20,7 +20,6 @@ import {IUserState} from '../../types/store/user.types';
 
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
-import store from "../index";
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
@@ -105,7 +104,3 @@ export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action>
     dispatch({type: LOGOUT_SUCCESS});
   };
 };
-
-export const onLogin = () => {
-  store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
-}

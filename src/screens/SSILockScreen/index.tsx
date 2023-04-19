@@ -14,7 +14,6 @@ import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK> {
   users: Map<string, IUser>;
   login: (userId: string) => void;
-  onVerificationSuccess: () => Promise<void>;
 }
 
 // This screen should be extended to do pin code or biometrics authentication

@@ -34,7 +34,7 @@ import Veramo from '../screens/Veramo';
 import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
-import {onLogin} from '../store/actions/user.actions';
+import {onLogin} from "../services/userService";
 
 const format = require('string-format');
 
@@ -399,18 +399,15 @@ const QRStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
-        initialParams={{onVerificationSuccess: onLogin}}
-        options={({route}) => ({
-          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('lock_title'),
+        options={{
+          headerTitle: translate('authentication_pin_code_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
+            <SSIHeaderBar {...props}
               showBackButton={true}
               showProfileIcon={true}
-              headerSubTitle={route.params.headerSubTitle ? route.params.headerSubTitle : translate('lock_subtitle')}
-            />
+              headerSubTitle={translate('authentication_pin_code_subtitle')} />
           ),
-        })}
+        }}
       />
     </Stack.Navigator>
   );
@@ -545,16 +542,12 @@ const AuthenticationStack = (): JSX.Element => {
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
         initialParams={{onVerificationSuccess: onLogin}}
-        options={({route}) => ({
-          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('lock_title'),
+        options={{
+          headerTitle: translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={route.params.headerSubTitle ? route.params.headerSubTitle : translate('lock_subtitle')}
-            />
+            <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
           ),
-        })}
+        }}
       />
     </Stack.Navigator>
   );
