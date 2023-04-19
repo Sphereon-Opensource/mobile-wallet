@@ -2,10 +2,12 @@ import {ConnectionTypeEnum, IBasicConnection, IDidAuthConfig, IOpenIdConfig} fro
 
 import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider';
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
-import {scanFingerPrint} from '../utils/BiometricUtils';
+import RootNavigation from "../navigation/rootNavigation";
+import {ScreenRoutesEnum} from "../types";
 
 export const authenticate = async (connection: IBasicConnection): Promise<void> => {
-  return scanFingerPrint().then(() => {
+
+  return enterPinCode().then(() => {
     switch (connection?.type) {
       case ConnectionTypeEnum.OPENID_CONNECT:
         new OpenIdConnectProvider().authenticate(connection.config as IOpenIdConfig);
@@ -16,5 +18,14 @@ export const authenticate = async (connection: IBasicConnection): Promise<void> 
       default:
         return Promise.reject(Error(`No supported authentication provider for type: ${connection?.type}`));
     }
-  });
-};
+  })
+}
+
+const enterPinCode = (): Promise<void> => {
+  return new Promise((resolve): void => {
+    const onVerificationSuccess = async (): Promise<void> => {
+      resolve();
+    }
+    RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
+  })
+}

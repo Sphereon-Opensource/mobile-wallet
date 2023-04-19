@@ -12,6 +12,8 @@
     "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
     "credential_offer_declined_toast": "Credential aanbieding geweigerd",
     "biometrics_title": "Authenticeren met biometrie",
+    "authentication_pin_code_title": "Vul je pincode in",
+    "authentication_pin_code_subtitle": "Voer ter bevestiging uw pincode in",
     "qr_scanner_marker_title": "Scan QR code",
     "qr_scanner_marker_subtitle": "Plaats de QR-code in het gezichtsveld van de camera",
     "qr_scanner_qr_not_supported_message": "QR-code wordt niet ondersteund. Probeer een andere QR-code te scannen om door te gaan.",

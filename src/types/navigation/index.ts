@@ -36,7 +36,7 @@ export type StackParamList = {
   PersonalData: Record<string, never>;
   PinCodeSet: IPinCodeSetProps;
   NotificationsOverview: Record<string, never>;
-  Lock: Record<string, never>;
+  Lock: ILockProps;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps
@@ -127,6 +127,10 @@ export interface IContactAddProps {
 
 export interface IPinCodeSetProps {
   headerSubTitle: string;
+}
+
+export interface ILockProps {
+  onVerificationSuccess: () => void
 }
 
 export enum SwitchRoutesEnum {

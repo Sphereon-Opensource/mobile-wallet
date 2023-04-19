@@ -17,20 +17,14 @@ interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum
 }
 
 // This screen should be extended to do pin code or biometrics authentication
-
 class SSILockScreen extends PureComponent<IProps> {
-  onLogin = async (): Promise<void> => {
-    const user: IUser = this.props.users.values().next().value;
-    await this.props.login(user.id)
-  }
 
   onVerification = async (value: string): Promise<void> => {
     // We are currently only supporting a single user right now
     if (value !== await getPin()) {
       return Promise.reject('Invalid pin code');
     }
-
-    await this.onLogin()
+    await this.props.route.params.onVerificationSuccess();
   };
 
   render() {
