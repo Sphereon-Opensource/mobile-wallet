@@ -146,5 +146,8 @@
     "credentials_required_credential_select_label": "Select a credential",
     "action_add_label": "Add",
     "credentials_select_title": "Select credentials",
-    "credentials_select_subtitle": "You have more than one credential that can satisfy this request."
+    "credentials_select_subtitle": "You have more than one credential that can satisfy this request.",
+    "credentials_required_checking_label": "...checking",
+    "credentials_required_no_available_label": "There is no suitable credential",
+    "credentials_required_no_available_additional_label": "You don’t have a credential to share with the verifier. Please contact an issuer to issue a new credential."
 }

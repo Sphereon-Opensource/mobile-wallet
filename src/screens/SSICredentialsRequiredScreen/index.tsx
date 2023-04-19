@@ -92,11 +92,15 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   // TODO add support for multiple versions of pex, currently using V1
   const renderItem = (itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>): JSX.Element => {
+    const onPress = !availableCredentials.has(itemInfo.item.id) || availableCredentials.get(itemInfo.item.id)!.length === 0
+      ? undefined
+      : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!)
+
     return (
       <SSICredentialRequiredViewItem
         id={itemInfo.item.id}
         title={itemInfo.item.name || itemInfo.item.id}
-        available={availableCredentials.has(itemInfo.item.id) ? availableCredentials.get(itemInfo.item.id)! : []}
+        available={availableCredentials.has(itemInfo.item.id) ? availableCredentials.get(itemInfo.item.id)! : undefined}
         selected={selectedCredentials.has(itemInfo.item.id) ? selectedCredentials.get(itemInfo.item.id)! : []}
         isMatching={selectedCredentials.has(itemInfo.item.id)
           ? pex.evaluateCredentials(
@@ -108,7 +112,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           : false
         }
         listIndex={itemInfo.index}
-        onPress={() => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!)}
+        onPress={onPress}
       />
     )
   }

@@ -2,6 +2,7 @@ import styled from 'styled-components/native'
 
 import { SSIRippleContainerStyled } from '../../containers'
 import { SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5LightStyled } from '../../fonts'
+import { statuses } from '../../../colors'
 
 export const SSICredentialRequiredViewItemContainerStyled = styled(SSIRippleContainerStyled)`
   padding: 16px 22px 18px 24px;
@@ -25,6 +26,15 @@ export const SSICredentialRequiredViewItemMatchInfoCaptionStyled = styled(SSITex
   margin: 2px 0 0 auto;
 `;
 
-export const SSICredentialRequiredViewItemSelectedCredentialSCaptionStyled = styled(SSITextH4LightStyled)`
+export const SSICredentialRequiredViewItemSelectedCredentialsCaptionStyled = styled(SSITextH4LightStyled)`
   opacity: 0.8;
+`;
+
+export const SSICredentialRequiredViewItemNoneAvailableCaptionStyled = styled(SSITextH4LightStyled)`
+  color: ${statuses.error} 
+`;
+
+export const SSICredentialRequiredViewNoneAvailableContainerStyled = styled.View`
+  margin-left: 28px;
+  margin-top: 6px;
 `;
