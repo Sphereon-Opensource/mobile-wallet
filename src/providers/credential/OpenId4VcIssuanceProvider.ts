@@ -1,12 +1,12 @@
+import { OpenID4VCIClient } from '@sphereon/openid4vci-client';
 import {
   AccessTokenResponse,
   AuthzFlowType,
   CredentialResponse,
   EndpointMetadata,
   Jwt,
-  OpenID4VCIClient,
   ProofOfPossessionCallbacks,
-} from '@sphereon/openid4vci-client';
+} from '@sphereon/openid4vci-common';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
@@ -121,8 +121,8 @@ class OpenId4VcIssuanceProvider {
       return Promise.reject(Error('Invalid Uri'));
     }
     return new OpenId4VcIssuanceProvider(
-      await OpenID4VCIClient.initiateFromURI({
-        issuanceInitiationURI: uri,
+      await OpenID4VCIClient.fromURI({
+        uri,
         flowType: AuthzFlowType.PRE_AUTHORIZED_CODE_FLOW,
       }),
     );
@@ -131,7 +131,7 @@ class OpenId4VcIssuanceProvider {
   public getCredentialsFromIssuance = async ({pin}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
     await this.getServerMetadataAndPerformCryptoMatching();
     const credentialResponses: Record<string, CredentialResponse> = {};
-    const initTypes = this.client.getCredentialTypesFromInitiation();
+    const initTypes = this.client.getCredentialTypes();
     for (const credentialType of Object.keys(await this.getIssuanceOpts())) {
       if (!initTypes.includes(credentialType)) {
         continue;
@@ -140,6 +140,7 @@ class OpenId4VcIssuanceProvider {
         credentialType,
         pin,
       });
+      console.log(`credentialResponses: ${JSON.stringify(credentialResponses)}`)
     }
     if (Object.keys(credentialResponses).length === 0) {
       return Promise.reject(Error('Could not get credentials from issuance and match them on supported types.'));
@@ -150,7 +151,7 @@ class OpenId4VcIssuanceProvider {
 
   public getCredential = async ({credentialType, pin}: IGetCredentialArgs): Promise<CredentialResponse> => {
     const {issuanceOpts} = await this.getServerMetadataAndPerformCryptoMatching();
-
+    console.log(`in OpenId4VcIssuanceProvider.getCredential issuanceOpts: ${JSON.stringify(issuanceOpts)}`)
     const credIssuanceOpt = issuanceOpts[credentialType];
     if (!credIssuanceOpt) {
       return Promise.reject(Error(`Cannot get credential issuance options for credential type ${credentialType}`));
@@ -166,7 +167,7 @@ class OpenId4VcIssuanceProvider {
     const alg = SignatureAlgorithmFromKey(key);
 
     const callbacks: ProofOfPossessionCallbacks = {
-      signCallback: (jwt: Jwt, kid: string) => {
+      signCallback: (jwt: Jwt, kid?: string) => {
         console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
         console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
@@ -225,6 +226,7 @@ class OpenId4VcIssuanceProvider {
     if (!this.accessTokenResponse) {
       const clientId = OpenId4VcIssuanceProvider.determineClientId(this.serverMetadata?.issuer);
       this.accessTokenResponse = await this.client.acquireAccessToken({pin, clientId});
+      console.log(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`)
     }
     return this.accessTokenResponse;
   };
@@ -239,7 +241,7 @@ class OpenId4VcIssuanceProvider {
     }
 
     for (const credentialMetadata of this.credentialsSupported) {
-      if (!this.serverMetadata?.openid4vci_metadata || !credentialMetadata) {
+      if (!this.serverMetadata?.issuerMetadata || !credentialMetadata) {
         issuanceOpts[credentialMetadata.credentialType] = this.defaultIssuanceOpts(credentialMetadata.credentialType);
         continue;
       }

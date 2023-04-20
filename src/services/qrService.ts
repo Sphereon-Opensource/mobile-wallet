@@ -1,4 +1,5 @@
-import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
+import { CredentialOffer } from '@sphereon/openid4vci-client'
+import { CredentialResponse } from '@sphereon/openid4vci-common'
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -6,7 +7,7 @@ import {
   IContact,
   IdentityRoleEnum, IIdentity
 } from '@sphereon/ssi-sdk-data-store'
-import { CredentialMapper } from '@sphereon/ssi-types'
+import { CredentialMapper, IIssuer } from '@sphereon/ssi-types'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
@@ -17,6 +18,7 @@ import JwtVcPresentationProfileProvider
   from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
+import { addIdentity } from '../store/actions/contact.actions'
 import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
   ICredentialMetadata,
@@ -40,8 +42,6 @@ import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 import { authenticate } from './authenticationService'
 import { getContacts, identityFrom } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
-import { addIdentity } from '../store/actions/contact.actions'
-import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
 
 const {v4: uuidv4} = require('uuid');
 
@@ -107,7 +107,7 @@ const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
   try {
     return Promise.resolve({
       type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
-      issuanceInitiation: IssuanceInitiation.fromURI(qrData),
+      issuanceInitiation: CredentialOffer.fromURI(qrData),
       uri: qrData,
     });
   } catch (error: unknown) {
@@ -265,7 +265,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
     if (credentialTypes.length > 1) {
       args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+        issuer: args.qrData.issuanceInitiation.request.issuer,
         credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
           id: uuidv4(),
           credentialType: credentialMetadata.credentialType,
@@ -280,8 +280,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
   const sendResponseOrAuthenticate = async (credentials: Array<string>): Promise<void> => {
     if (
-      args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
-      args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
+      args.qrData.issuanceInitiation.request.user_pin_required === 'true' ||
+      args.qrData.issuanceInitiation.request.user_pin_required === true
     ) {
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
         screen: ScreenRoutesEnum.VERIFICATION_CODE,
