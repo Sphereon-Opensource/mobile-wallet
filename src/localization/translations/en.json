@@ -31,6 +31,7 @@
     "metadata_connection_url_label": "Connection URL",
     "action_decline_label": "Decline",
     "action_accept_label": "Accept",
+    "action_select_label": "Select",
     "pex_message_title": "Credentials required",
     "authentication_successful_message": "Authenticated successfully",
     "verification_code_title": "Enter your\nverification code",

@@ -31,6 +31,7 @@
     "metadata_connection_url_label": "Connectie URL",
     "action_decline_label": "weigeren",
     "action_accept_label": "accepteren",
+    "action_select_label": "Selecteer",
     "pex_message_title": "Credentials vereist",
     "authentication_successful_message": "Succesvol geauthenticeerd",
     "verification_code_title": "Voer uw\nverificatie code in",
