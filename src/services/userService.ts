@@ -1,15 +1,11 @@
-import Debug from 'debug';
+import Debug from 'debug'
+import { APP_ID } from '../@config/constants'
+import { BasicUser, BasicUserIdentifier, IUser } from '../types'
+import { getUsers as getUsersFromStorage, storeUser } from './storageService'
 
-import {APP_ID} from '../@config/constants';
-import {BasicUser, BasicUserIdentifier, IUser} from '../types';
+const debug = Debug(`${APP_ID}:userService`)
 
-import {getUsers as getUsersFromStorage, storeUser} from './storageService';
-import store from "../store";
-import {login} from "../store/actions/user.actions";
-
-const debug = Debug(`${APP_ID}:userService`);
-
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require('uuid')
 
 export const createUser = async (args: BasicUser): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`);
@@ -50,8 +46,3 @@ export const updateUser = async (args: IUser): Promise<IUser> => {
     })
     .catch((error: Error) => Promise.reject(Error(`Unable to update user. Error: ${error}`)));
 };
-
-
-export const onLogin = () => {
-  store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
-}

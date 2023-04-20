@@ -1,6 +1,5 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
 import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pex-models'
-import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store';
+import { IBasicIdentity, IContact } from '@sphereon/ssi-sdk-data-store';
 import { VerifiableCredential } from '@veramo/core';
 
 import {
@@ -16,8 +15,6 @@ export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
   CredentialRawJson: ICredentialRawJsonProps;
-  IdentityDetails: IIdentityDetailsProps;
-  PexVerification: IPexVerificationProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
@@ -51,10 +48,7 @@ export interface ICredentialsSelectProps {
 export interface ICredentialsRequiredProps {
   verifier: string
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2
-}
-
-export interface IIdentityDetailsProps {
-  identity: IIdentity;
+  onSend: (credentials: Array<VerifiableCredential>) => Promise<void>
 }
 
 export interface ICredentialDetailsProps {
@@ -72,11 +66,6 @@ export interface ICredentialDetailsProps {
 
 export interface ICredentialRawJsonProps {
   rawCredential: VerifiableCredential;
-}
-
-export interface IPexVerificationProps {
-  request: VerifiedAuthorizationRequest;
-  sessionId: string;
 }
 
 export interface IVerificationCodeProps {
@@ -130,7 +119,7 @@ export interface IPinCodeSetProps {
 }
 
 export interface ILockProps {
-  onVerificationSuccess: () => void
+  onAuthenticate: () => Promise<void>
 }
 
 export enum SwitchRoutesEnum {
@@ -159,8 +148,6 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
-  PEX_VERIFICATION = 'PexVerification',
-  IDENTITY_DETAILS = 'IdentityDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',

@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { PEX, SelectResults } from '@sphereon/pex'
+import { Status } from '@sphereon/pex/dist/main/lib/ConstraintUtils'
 import { InputDescriptorV1, InputDescriptorV2 } from '@sphereon/pex-models'
 import {
   ICredential,
@@ -25,8 +26,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar
 } from '../../styles/components'
 import { ScreenRoutesEnum, StackParamList } from '../../types'
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
-import { Status } from '@sphereon/pex/dist/main/lib/ConstraintUtils'
+import { toCredentialSummary } from '../../utils/mappers/CredentialMapper'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -66,6 +66,31 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     props.navigation.goBack()
   }
 
+  const onSend = async () => {
+    const { onSend } = props.route.params
+    const credentials = getSelectedCredentials()
+
+    await onSend(credentials)
+  }
+
+  const getSelectedCredentials = (): Array<VerifiableCredential> => {
+    const credentials: Array<Array<VerifiableCredential>> = [];
+    for (const vcs of selectedCredentials.values()) {
+      credentials.push(vcs);
+    }
+
+    return credentials.flat()
+  }
+
+  const isMatchingPresentationDefinition = (): boolean => {
+    const credentials: Array<Array<VerifiableCredential>> = [];
+    for (const vcs of selectedCredentials.values()) {
+      credentials.push(vcs);
+    }
+
+    return pex.evaluateCredentials(presentationDefinition, getSelectedCredentials() as Array<OriginalVerifiableCredential>).areRequiredCredentialsPresent === Status.INFO
+  }
+
   const onItemPress = async (inputDescriptorId: string, credentials: Array<VerifiableCredential>) => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
       credentialSelection: credentials.map((vc: VerifiableCredential) => {
@@ -81,11 +106,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       onSelect: async (vcs: Array<string>) => {
         const selectVcs = availableCredentials.get(inputDescriptorId)!.filter((vc: VerifiableCredential) => vcs.includes(vc.id!))
         selectedCredentials.set(inputDescriptorId, selectVcs)
-        const map = new Map<string, Array<VerifiableCredential>>();
+        const newSelection = new Map<string, Array<VerifiableCredential>>();
         for (const [key, value] of selectedCredentials) {
-          map.set(key, value);
+          newSelection.set(key, value);
         }
-        setSelectedCredentials(map)
+        setSelectedCredentials(newSelection)
       }
     })
   }
@@ -137,9 +162,9 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
             onPress: onDecline,
           }}
           primaryButton={{
-            caption: translate('action_accept_label'),
-            disabled: true,  // TODO implementation
-            onPress: async () => console.log('accept pressed'),
+            caption: translate('action_send_label'),
+            disabled: !isMatchingPresentationDefinition(),
+            onPress: onSend
           }}
         />
       </ButtonContainer>

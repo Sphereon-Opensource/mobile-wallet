@@ -1,31 +1,19 @@
-import {ConnectionTypeEnum, IBasicConnection, IDidAuthConfig, IOpenIdConfig} from '@sphereon/ssi-sdk-data-store';
+import RootNavigation from '../navigation/rootNavigation'
+import { ScreenRoutesEnum } from '../types'
+import store from '../store'
+import { login as loginAction } from '../store/actions/user.actions'
 
-import OpenIdConnectProvider from '../providers/authentication/OpenIdConnectProvider';
-import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
-import RootNavigation from "../navigation/rootNavigation";
-import {ScreenRoutesEnum} from "../types";
-
-export const authenticate = async (connection: IBasicConnection): Promise<void> => {
-
-  return enterPinCode().then(() => {
-    switch (connection?.type) {
-      case ConnectionTypeEnum.OPENID_CONNECT:
-        new OpenIdConnectProvider().authenticate(connection.config as IOpenIdConfig);
-        break;
-      case ConnectionTypeEnum.SIOPv2_OpenID4VP:
-        siopGetRequest(connection.config as IDidAuthConfig);
-        break;
-      default:
-        return Promise.reject(Error(`No supported authentication provider for type: ${connection?.type}`));
-    }
-  })
+export const authenticate = async (onAuthenticate: () => Promise<void>): Promise<void> => {
+  // TODO extend this function to look for the preference (biometrics or pin code). If no preference is present, use pin code
+  await enterPinCode(onAuthenticate)
 }
 
-const enterPinCode = (): Promise<void> => {
-  return new Promise((resolve): void => {
-    const onVerificationSuccess = async (): Promise<void> => {
-      resolve();
-    }
-    RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onVerificationSuccess})
-  })
+const enterPinCode = async (onAuthenticate: () => Promise<void>): Promise<void> => {
+  RootNavigation.navigate(ScreenRoutesEnum.LOCK, { onAuthenticate })
+}
+
+export const login = async (): Promise<void> => {
+  // TODO currently only supporting 1 user
+  const userId: string = store.getState().user.users.values().next().value.id
+  store.dispatch<any>(loginAction(userId))
 }
