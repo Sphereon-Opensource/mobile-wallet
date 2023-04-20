@@ -1,7 +1,7 @@
 import { ICredential } from '@sphereon/ssi-types'
 
 import { ICredentialDetailsRow, ICredentialSummary } from '../../types'
-import { getCredentialStatus, translateDidToName } from '../CredentialUtils'
+import { getCredentialStatus, translateCorrelationIdToName } from '../CredentialUtils'
 import { EPOCH_MILLISECONDS } from '../DateUtils'
 
 const { v4: uuidv4 } = require('uuid')
@@ -43,7 +43,7 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
 
       if (value.startsWith('did:')) {
         console.log(`did: ${value}`)
-        value = translateDidToName(value)
+        value = translateCorrelationIdToName(value)
       }
 
       rows.push({
@@ -86,8 +86,8 @@ export function toCredentialSummary(verifiableCredential: ICredential, hash?: st
 
   const issuerAlias =
     typeof verifiableCredential.issuer === 'string'
-      ? translateDidToName(verifiableCredential.issuer)
-      : translateDidToName(verifiableCredential.issuer?.id)
+      ? translateCorrelationIdToName(verifiableCredential.issuer)
+      : translateCorrelationIdToName(verifiableCredential.issuer?.id)
 
   return {
     id: hash ? hash : verifiableCredential.id ? verifiableCredential.id : 'todo',

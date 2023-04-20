@@ -49,6 +49,8 @@ import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 import { authenticate } from './authenticationService'
 import { getContacts } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { translateCorrelationIdToName } from '../utils/CredentialUtils'
 
 const { v4: uuidv4 } = require('uuid')
 const format = require('string-format')
@@ -56,8 +58,8 @@ const debug = Debug(`${APP_ID}:qrService`)
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
-    .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
+  .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
+  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
 };
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
@@ -160,12 +162,12 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   }
 
   authenticate(connect)
-    .then(() => console.log('authentication success'))
-    .catch(error => {
-      if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
-        console.error('Error', error);
-      }
-    });
+  .then(() => console.log('authentication success'))
+  .catch(error => {
+    if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
+      console.error('Error', error);
+    }
+  });
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
@@ -173,12 +175,12 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   const sessionId = uuidv4() // TODO why is args.qrData.id undefined?
   const verifier = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]) // TODO WAL-525 implement contact name
   const request: VerifiedAuthorizationRequest = await siopGetRequest({
-      id: uuidv4(),
-      // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
-      sessionId,
-      redirectUrl: args.qrData.uri,
-      stateId: args.qrData.state,
-      identifier
+    id: uuidv4(),
+    // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
+    sessionId,
+    redirectUrl: args.qrData.uri,
+    stateId: args.qrData.state,
+    identifier
   });
 
   if (!request.presentationDefinitions || request.presentationDefinitions.length === 0) {
@@ -275,18 +277,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
-          onCreate: () => onCreateSuccess(metadata),
+          onCreate: () => sendResponseOrSelectCredentials(metadata.credentialsSupported),
         });
       } else {
         sendResponseOrSelectCredentials(metadata.credentialsSupported);
       }
     });
   };
-
-  const onCreateSuccess = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
-    args.navigation.goBack();
-    await sendResponseOrSelectCredentials(metadata.credentialsSupported);
-  }
 
   const sendResponseOrSelectCredentials = async (credentialsSupported: Array<ICredentialMetadata>): Promise<void> => {
     const credentialTypes: Array<ICredentialTypeSelection> = credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
@@ -296,14 +293,20 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }));
 
     if (credentialTypes.length > 1) {
-      args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-        credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-          id: uuidv4(),
-          credentialType: credentialMetadata.credentialType,
-        })),
-        onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
-      });
+      await setTimeout(async () => {
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
+          params: {
+            issuer:  translateCorrelationIdToName(new URL(args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer).hostname),
+            credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+              id: uuidv4(),
+              credentialType: credentialMetadata.credentialType,
+            })),
+            onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+          },
+        });
+        removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE)
+      }, 1000);
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
     }
@@ -322,6 +325,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           onVerification: async (pin: string) => await sendResponse(provider, pin),
         },
       });
+      removeAddContactFromStack(args.navigation, ScreenRoutesEnum.VERIFICATION_CODE)
     } else {
       await sendResponse(provider);
     }
@@ -329,103 +333,114 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
   const sendResponse = async (provider: OpenId4VcIssuanceProvider, pin?: string): Promise<void> =>
     provider
-      .getCredentialsFromIssuance({pin})
-      .then(async (credentialsResponse: Record<string, CredentialResponse>) => {
-        const metadata = await provider.getServerMetadataAndPerformCryptoMatching()
-        for (const credentialResponse of Object.values(credentialsResponse)) {
-          const vc = CredentialMapper.toUniformCredential(credentialResponse.credential);
+    .getCredentialsFromIssuance({pin})
+    .then(async (credentialsResponse: Record<string, CredentialResponse>) => {
+      const metadata = await provider.getServerMetadataAndPerformCryptoMatching()
+      for (const credentialResponse of Object.values(credentialsResponse)) {
+        const vc = CredentialMapper.toUniformCredential(credentialResponse.credential);
 
-          const contacts = await getContacts({
-            filter: [{
-              identities: {
-                identifier: {
-                  correlationId: new URL(metadata.serverMetadata.issuer).hostname,
-                }
-              }
-            }]
-          })
-          if (contacts.length > 0) {
-            const correlationId = (vc.issuer as IIssuer).id
-            const identity: IBasicIdentity = {
-              alias: correlationId,
-              roles: [IdentityRoleEnum.ISSUER],
+        const contacts = await getContacts({
+          filter: [{
+            identities: {
               identifier: {
-                type: CorrelationIdentifierEnum.DID,
-                correlationId: correlationId
+                correlationId: new URL(metadata.serverMetadata.issuer).hostname,
               }
             }
-            const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
-            if (!hasIdentity) {
-              // await setTimeout(async () => {
-                store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
-              // }, 1000);
+          }]
+        })
+        if (contacts.length > 0) {
+          const correlationId = (vc.issuer as IIssuer).id
+          const identity: IBasicIdentity = {
+            alias: correlationId,
+            roles: [IdentityRoleEnum.ISSUER],
+            identifier: {
+              type: CorrelationIdentifierEnum.DID,
+              correlationId: correlationId
             }
           }
+          const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
+          if (!hasIdentity) {
+            // await setTimeout(async () => {
+            store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
+            // }, 1000);
+          }
+        }
 
-          const rawCredential = credentialResponse.credential as unknown as VerifiableCredential;
-          // TODO fix the store not having the correct action types (should include ThunkAction)
-          const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
+        const rawCredential = credentialResponse.credential as unknown as VerifiableCredential;
+        // TODO fix the store not having the correct action types (should include ThunkAction)
+        const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
 
-          await setTimeout(async () => {
-            // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-            args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-                screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-                params: {
-                  rawCredential,
-                  credential: toCredentialSummary(vc),
-                  primaryAction: {
-                    caption: translate('action_accept_label'),
-                    onPress: async () =>
-                      storeCredential(rawCredential)
-                      .then(() =>
-                        args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                        }),
-                      )
-                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_offer_accepted_toast'), showBadge: false }))
-                      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message })),
-                  },
-                  secondaryAction: {
-                    caption: translate('action_decline_label'),
-                    onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
-                  },
+        await setTimeout(async () => {
+          // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+              screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+              params: {
+                rawCredential,
+                credential: toCredentialSummary(vc),
+                primaryAction: {
+                  caption: translate('action_accept_label'),
+                  onPress: async () =>
+                    storeCredential(rawCredential)
+                    .then(() =>
+                      args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                      }),
+                    )
+                    .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_offer_accepted_toast'), showBadge: false }))
+                    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message })),
                 },
-              }
-            );
-          }, 1000);
-        }
-      })
-      .catch((error: Error) => {
-        // TODO refactor once the lib returns a proper response object
-        const errorResponse = error.message.includes('response:') ? JSON.parse(error.message.split('response:')[1].trim()) : error.message;
-        if (error.message.includes('403') || errorResponse.status === 403) {
-          return Promise.reject(error);
-        }
-        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error);
+                secondaryAction: {
+                  caption: translate('action_decline_label'),
+                  onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
+                },
+              },
+            }
+          );
+          removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
+        }, 1000);
+      }
+    })
+    .catch((error: Error) => {
+      // TODO refactor once the lib returns a proper response object
+      const errorResponse = error.message.includes('response:') ? JSON.parse(error.message.split('response:')[1].trim()) : error.message;
+      if (error.message.includes('403') || errorResponse.status === 403) {
+        return Promise.reject(error);
+      }
+      const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error);
 
-        args.navigation.navigate(ScreenRoutesEnum.ERROR, {
-          image: PopupImagesEnum.WARNING,
-          title: errorDetails.title,
-          details: errorDetails.message,
-          detailsPopup: {
-            buttonCaption: translate('action_view_extra_details'),
-            title: errorDetails.detailsTitle,
-            details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`,
-          },
-          primaryButton: {
-            caption: translate('action_ok_label'),
-            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
-          },
-        });
+      args.navigation.navigate(ScreenRoutesEnum.ERROR, {
+        image: PopupImagesEnum.WARNING,
+        title: errorDetails.title,
+        details: errorDetails.message,
+        detailsPopup: {
+          buttonCaption: translate('action_view_extra_details'),
+          title: errorDetails.detailsTitle,
+          details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`,
+        },
+        primaryButton: {
+          caption: translate('action_ok_label'),
+          onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+        },
       });
+    });
 
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({uri: args.qrData.uri});
   provider
-    .getServerMetadataAndPerformCryptoMatching()
-    .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(metadata))
-    .catch((error: Error) => {
-      debug(`Unable to retrieve vc. Error: ${error}`);
-      //TODO create human readable error message
-      showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message });
-    });
+  .getServerMetadataAndPerformCryptoMatching()
+  .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(metadata))
+  .catch((error: Error) => {
+    debug(`Unable to retrieve vc. Error: ${error}`);
+    //TODO create human readable error message
+    showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message });
+  });
 };
+
+// This function will reset the stack to a state where the add contact screen has been removed
+// Currently doing this as navigating back from a step after adding the contact, will get the flow stuck as the contact already exists
+// TODO WAL-540 remove this function and add edit contact capabilities
+const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, route: ScreenRoutesEnum) => {
+  navigation.reset({
+    index: 0,
+    routes: [{name: ScreenRoutesEnum.QR_READER}, {name: route}]
+  });
+}
