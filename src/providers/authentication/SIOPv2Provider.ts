@@ -88,7 +88,6 @@ export const siopSendAuthorizationResponse = async (
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
         ? args.verifiableCredentialsWithDefinition
         : await siopSelectCredentials(oid4vp)
-    // const credsAndDefs = await siopSelectCredentials(oid4vp);
     presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credentialsAndDefinitions, identifier);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
