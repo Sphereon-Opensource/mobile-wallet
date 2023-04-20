@@ -1,22 +1,31 @@
+import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
 import {
   ConnectionTypeEnum,
-  CorrelationIdentifierEnum,
+  CorrelationIdentifierEnum, IBasicConnection,
   IBasicIdentity,
   IContact,
-  IdentityRoleEnum, IIdentity
+  IdentityRoleEnum, IDidAuthConfig,
+  IIdentity
 } from '@sphereon/ssi-sdk-data-store'
-import { CredentialMapper } from '@sphereon/ssi-types'
+import {CredentialMapper, W3CVerifiableCredential} from '@sphereon/ssi-types'
+import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
 import { VerifiableCredential } from '@veramo/core'
 import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
+import RootNavigation from '../navigation/rootNavigation'
+import {
+  siopGetRequest,
+  siopSendAuthorizationResponse
+} from '../providers/authentication/SIOPv2Provider'
 import JwtVcPresentationProfileProvider
   from '../providers/credential/JwtVcPresentationProfileProvider'
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
 import store from '../store'
+import { addIdentity } from '../store/actions/contact.actions'
 import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
   ICredentialMetadata,
@@ -38,19 +47,17 @@ import { showToast } from '../utils/ToastUtils'
 import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 
 import { authenticate } from './authenticationService'
-import { getContacts, identityFrom } from './contactService'
+import { getContacts } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
-import { addIdentity } from '../store/actions/contact.actions'
-import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
 
-const {v4: uuidv4} = require('uuid');
-
-const debug = Debug(`${APP_ID}:qrService`);
+const { v4: uuidv4 } = require('uuid')
+const format = require('string-format')
+const debug = Debug(`${APP_ID}:qrService`)
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message));
+    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
 };
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
@@ -133,7 +140,8 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
 
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
-  const connection = {
+  const verifier = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]) // TODO WAL-525 implement contact name
+  const connection: IBasicConnection = {
     type: ConnectionTypeEnum.SIOPv2,
     config: {
       identifier,
@@ -143,7 +151,15 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
     },
   };
 
-  authenticate(connection)
+  const connect = async (): Promise<void> => {
+    const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest({ ...connection.config, id: uuidv4} as IDidAuthConfig)
+    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+      verifier,
+      presentationDefinition: verifiedAuthorizationRequest.presentationDefinitions![0].definition
+    });
+  }
+
+  authenticate(connect)
     .then(() => console.log('authentication success'))
     .catch(error => {
       if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
@@ -153,41 +169,52 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  const url = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
   const identifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
-  args.navigation.navigate(ScreenRoutesEnum.IDENTITY_DETAILS, {
-    identity: identityFrom({
-      alias: url,
-      roles: [IdentityRoleEnum.VERIFIER],
-      identifier: {
-        type: CorrelationIdentifierEnum.URL,
-        correlationId: args.qrData.uri,
-      },
-      connection: {
-        type: ConnectionTypeEnum.SIOPv2_OpenID4VP,
-        config: {
-          // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
-          sessionId: args.qrData.id,
-          redirectUrl: args.qrData.uri,
-          stateId: args.qrData.state,
-          identifier,
-        },
-      },
-      metadata: [
-        {
-          label: translate('metadata_purpose_label'),
-          value: translate('siop_oidc4vp_authentication_request_message'),
-        },
-        {
-          label: translate('metadata_rp_did_label'),
-          value: args.qrData.from,
-        },
-        {
-          label: translate('metadata_connection_url_label'),
-          value: url,
-        },
-      ],
-    }),
+  const sessionId = uuidv4() // TODO why is args.qrData.id undefined?
+  const verifier = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]) // TODO WAL-525 implement contact name
+  const request: VerifiedAuthorizationRequest = await siopGetRequest({
+      id: uuidv4(),
+      // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
+      sessionId,
+      redirectUrl: args.qrData.uri,
+      stateId: args.qrData.state,
+      identifier
+  });
+
+  if (!request.presentationDefinitions || request.presentationDefinitions.length === 0) {
+    return Promise.reject(Error('No presentation definitions present'))
+  }
+
+  if (request.presentationDefinitions.length > 1) {
+    return Promise.reject(Error('Multiple presentation definitions present'))
+  }
+
+  const onSend = async (credentials: Array<VerifiableCredential>): Promise<void> => {
+    siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
+      sessionId,
+      verifiableCredentialsWithDefinition: [{
+        definition: request.presentationDefinitions![0],
+        credentials: credentials as Array<W3CVerifiableCredential>
+      }]
+    })
+    .then(() => {
+      RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+      });
+      showToast(ToastTypeEnum.TOAST_SUCCESS, {
+        title: translate('credentials_share_success_toast_title'),
+        message: format(translate('credentials_share_success_toast_message'), verifier)
+      });
+    })
+    // TODO make human-readable message
+    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
+  };
+
+  RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+    verifier,
+    // TODO currently only supporting 1 presentation definition
+    presentationDefinition: request.presentationDefinitions[0].definition,
+    onSend: async (credentials: Array<VerifiableCredential>) => authenticate(() => onSend(credentials))
   });
 };
 
@@ -274,7 +301,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
           id: uuidv4(),
           credentialType: credentialMetadata.credentialType,
-          isSelected: true,
         })),
         onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
       });
@@ -356,8 +382,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                           screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                         }),
                       )
-                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_offer_accepted_toast'), showBadge: false }))
+                      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message })),
                   },
                   secondaryAction: {
                     caption: translate('action_decline_label'),
@@ -400,6 +426,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     .catch((error: Error) => {
       debug(`Unable to retrieve vc. Error: ${error}`);
       //TODO create human readable error message
-      showToast(ToastTypeEnum.TOAST_ERROR, error.message);
+      showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message });
     });
 };
