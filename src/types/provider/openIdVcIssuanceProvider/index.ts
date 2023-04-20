@@ -1,4 +1,9 @@
-import {CredentialFormatSupport, CredentialMetadata, EndpointMetadata, OpenID4VCICredentialFormatTypes} from '@sphereon/openid4vci-client';
+import {
+  CredentialFormatSupport,
+  CredentialMetadata,
+  EndpointMetadata,
+  OpenID4VCICredentialFormatTypes
+} from '@sphereon/openid4vci-common';
 import {TKeyType} from '@veramo/core';
 
 import {ICredentialMetadata} from '../../credential';

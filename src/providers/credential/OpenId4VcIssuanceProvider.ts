@@ -140,7 +140,6 @@ class OpenId4VcIssuanceProvider {
         credentialType,
         pin,
       });
-      console.log(`credentialResponses: ${JSON.stringify(credentialResponses)}`)
     }
     if (Object.keys(credentialResponses).length === 0) {
       return Promise.reject(Error('Could not get credentials from issuance and match them on supported types.'));
@@ -151,7 +150,6 @@ class OpenId4VcIssuanceProvider {
 
   public getCredential = async ({credentialType, pin}: IGetCredentialArgs): Promise<CredentialResponse> => {
     const {issuanceOpts} = await this.getServerMetadataAndPerformCryptoMatching();
-    console.log(`in OpenId4VcIssuanceProvider.getCredential issuanceOpts: ${JSON.stringify(issuanceOpts)}`)
     const credIssuanceOpt = issuanceOpts[credentialType];
     if (!credIssuanceOpt) {
       return Promise.reject(Error(`Cannot get credential issuance options for credential type ${credentialType}`));
@@ -168,8 +166,8 @@ class OpenId4VcIssuanceProvider {
 
     const callbacks: ProofOfPossessionCallbacks = {
       signCallback: (jwt: Jwt, kid?: string) => {
-        console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
-        console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
+        debug(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
+        debug(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
           identifier,
           header: {...jwt.header, typ: 'JWT', kid},
@@ -184,7 +182,7 @@ class OpenId4VcIssuanceProvider {
       // We need to make sure we have acquired the access token
       await this.acquireAccessToken({pin});
 
-      console.log(`cred type: ${credentialType}, format: ${credIssuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
+      debug(`cred type: ${credentialType}, format: ${credIssuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
       return this.client.acquireCredentials({
         credentialType,
         proofCallbacks: callbacks,
