@@ -248,18 +248,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
-          onCreate: () => onCreateSuccess(metadata),
+          onCreate: () => sendResponseOrSelectCredentials(metadata.credentialsSupported),
         });
       } else {
         sendResponseOrSelectCredentials(metadata.credentialsSupported);
       }
     });
   };
-
-  const onCreateSuccess = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
-    args.navigation.goBack();
-    await sendResponseOrSelectCredentials(metadata.credentialsSupported);
-  }
 
   const sendResponseOrSelectCredentials = async (credentialsSupported: Array<ICredentialMetadata>): Promise<void> => {
     const credentialTypes: Array<ICredentialTypeSelection> = credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
@@ -269,15 +264,22 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }));
 
     if (credentialTypes.length > 1) {
-      args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-        credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-          id: uuidv4(),
-          credentialType: credentialMetadata.credentialType,
-          isSelected: true,
-        })),
-        onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
-      });
+      args.navigation.reset({
+        index: 0,
+        routes: [
+          { name: ScreenRoutesEnum.QR_READER },
+          { name: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
+            params: {
+              issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
+              credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+                id: uuidv4(),
+                credentialType: credentialMetadata.credentialType,
+                isSelected: true,
+              })),
+              onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+            }
+          }
+        ]});
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
     }
@@ -288,13 +290,19 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
       args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
     ) {
-      args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-        screen: ScreenRoutesEnum.VERIFICATION_CODE,
-        params: {
-          // Currently we only support receiving one credential, we are missing ui to display multiple
-          credentialName: credentials[0],
-          onVerification: async (pin: string) => await sendResponse(provider, pin),
-        },
+      args.navigation.reset({
+        index: 0,
+        routes: [
+          { name: ScreenRoutesEnum.QR_READER },
+          {
+            name: ScreenRoutesEnum.VERIFICATION_CODE,
+            params: {
+              // Currently we only support receiving one credential, we are missing ui to display multiple
+              credentialName: credentials[0],
+              onVerification: async (pin: string) => await sendResponse(provider, pin),
+            }
+          }
+        ]
       });
     } else {
       await sendResponse(provider);
@@ -342,30 +350,36 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
           await setTimeout(async () => {
             // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-            args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-                screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-                params: {
-                  rawCredential,
-                  credential: toCredentialSummary(vc),
-                  primaryAction: {
-                    caption: translate('action_accept_label'),
-                    onPress: async () =>
-                      storeCredential(rawCredential)
-                      .then(() =>
-                        args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                          screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                        }),
-                      )
-                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+
+            args.navigation.reset({
+              index: 0,
+              routes: [
+                { name: ScreenRoutesEnum.QR_READER },
+                {
+                  name: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+                  params: {
+                    rawCredential,
+                    credential: toCredentialSummary(vc),
+                    primaryAction: {
+                      caption: translate('action_accept_label'),
+                      onPress: async () =>
+                        storeCredential(rawCredential)
+                        .then(() =>
+                          args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                          }),
+                        )
+                        .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
+                        .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+                    },
+                    secondaryAction: {
+                      caption: translate('action_decline_label'),
+                      onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
+                    },
                   },
-                  secondaryAction: {
-                    caption: translate('action_decline_label'),
-                    onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
-                  },
-                },
-              }
-            );
+                }
+              ]
+            });
           }, 1000);
         }
       })
