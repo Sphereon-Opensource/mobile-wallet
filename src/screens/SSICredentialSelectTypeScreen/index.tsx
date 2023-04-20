@@ -39,7 +39,6 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
-
     return (
         <ItemContainer
             style={{
