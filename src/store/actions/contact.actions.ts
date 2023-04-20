@@ -49,7 +49,7 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
     storeContact(args)
       .then((contact: IContact) => {
         dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'));
+        showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('contact_add_success_toast'), showBadge: false });
       })
       .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
   };
@@ -72,15 +72,15 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
     .then((isDeleted: boolean) => {
       if (isDeleted) {
         dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_deleted_success_toast'));
+        showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('contact_deleted_success_toast'), showBadge: false });
       } else {
         dispatch({type: DELETE_CONTACT_FAILED});
-        showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
+        showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('contact_deleted_failed_toast') });
       }
     })
     .catch(() => {
       dispatch({type: DELETE_CONTACT_FAILED});
-      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
+      showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('contact_deleted_failed_toast') });
     });
   };
 };

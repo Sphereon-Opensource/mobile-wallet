@@ -104,4 +104,3 @@ export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action>
     dispatch({type: LOGOUT_SUCCESS});
   };
 };
-

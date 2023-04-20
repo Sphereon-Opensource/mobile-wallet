@@ -1,15 +1,17 @@
 import React, { FC } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
 
 import {
   SSIFlexDirectionRowViewStyled as Container,
-  SSICredentialSelectTypeViewItemContentContainerStyled as ContentContainer,
-  SSICredentialSelectTypeViewItemContentTextContainerStyled as ContentTextContainer,
+  SSICredentialSelectViewItemContentContainerStyled as ContentContainer,
+  SSICredentialSelectViewItemContentTextContainerStyled as ContentTextContainer,
   SSITextH3LightStyled as CredentialTypeCaption,
   SSITextH4LightStyled as IssuerCaption,
-  SSICredentialSelectTypeViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
-  SSICredentialSelectTypeViewItemLogoContainerStyled as LogoContainer,
-} from '../../../styles/components';
+  SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
+  SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
+  SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
+  SSICredentialSelectViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
+} from '../../../styles/components'
 import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
@@ -29,14 +31,14 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <LogoContainer>
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <View style={{height: 60, width: 80, justifyContent: 'center'}}>
+        <LogoOuterContainer>
+          <LogoCheckboxContainer>
             <SSICredentialLogo image={image}/>
-            <LogoCheckboxContainer>
+            <CheckboxContainer>
               <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
-            </LogoCheckboxContainer>
-          </View>
-        </View>
+            </CheckboxContainer>
+          </LogoCheckboxContainer>
+        </LogoOuterContainer>
       </LogoContainer>
       <ContentContainer>
         <ContentTextContainer>

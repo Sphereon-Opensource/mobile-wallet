@@ -88,7 +88,7 @@ class IntentHandler {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0];
         if (!vc) {
-          showToast(ToastTypeEnum.TOAST_ERROR, translate('intent_share_file_unable_to_receive_message'));
+          showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('intent_share_file_unable_to_receive_message') });
           return;
         }
 
@@ -110,8 +110,8 @@ class IntentHandler {
                       screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                     }),
                   )
-                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_offer_accepted_toast'), showBadge: false }))
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message })),
             },
             secondaryAction: {
               caption: translate('action_decline_label'),
@@ -123,7 +123,7 @@ class IntentHandler {
           },
         });
       })
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message));
+      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
   }
 }
 
