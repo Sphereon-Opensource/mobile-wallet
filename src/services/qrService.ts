@@ -264,6 +264,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }));
 
     if (credentialTypes.length > 1) {
+      //WAL-540 change here
       args.navigation.reset({
         index: 0,
         routes: [
@@ -290,6 +291,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === 'true' ||
       args.qrData.issuanceInitiation.issuanceInitiationRequest.user_pin_required === true
     ) {
+      //WAL-540 change here
       args.navigation.reset({
         index: 0,
         routes: [
@@ -351,6 +353,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           await setTimeout(async () => {
             // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
 
+            //WAL-540 change here
             args.navigation.reset({
               index: 0,
               routes: [
