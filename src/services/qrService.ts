@@ -438,9 +438,9 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 // This function will reset the stack to a state where the add contact screen has been removed
 // Currently doing this as navigating back from a step after adding the contact, will get the flow stuck as the contact already exists
 // TODO WAL-540 remove this function and add edit contact capabilities
-const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, route: ScreenRoutesEnum) => {
+const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, currentRoute: ScreenRoutesEnum) => {
   navigation.reset({
     index: 0,
-    routes: [{name: ScreenRoutesEnum.QR_READER}, {name: route}]
+    routes: [{name: ScreenRoutesEnum.QR_READER}, {name: currentRoute}]
   });
 }
