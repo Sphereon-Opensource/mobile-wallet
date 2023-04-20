@@ -248,13 +248,18 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
-          onCreate: () => sendResponseOrSelectCredentials(metadata.credentialsSupported),
+          onCreate: () => onCreateSuccess(metadata),
         });
       } else {
         sendResponseOrSelectCredentials(metadata.credentialsSupported);
       }
     });
   };
+
+  const onCreateSuccess = async (metadata: IServerMetadataAndCryptoMatchingResponse): Promise<void> => {
+    args.navigation.goBack();
+    await sendResponseOrSelectCredentials(metadata.credentialsSupported);
+  }
 
   const sendResponseOrSelectCredentials = async (credentialsSupported: Array<ICredentialMetadata>): Promise<void> => {
     const credentialTypes: Array<ICredentialTypeSelection> = credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
