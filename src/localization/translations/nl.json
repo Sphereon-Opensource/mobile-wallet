@@ -148,5 +148,6 @@
     "credentials_required_no_available_additional_label": "Je hebt geen credential om te delen met de verificateur. Neem contact op met een uitgever om een nieuwe credential uit te geven.",
     "action_send_label": "Stuur",
     "credentials_share_success_toast_title": "Succesvol gedeeld",
-    "credentials_share_success_toast_message": "Je hebt je geselecteerde credentials met succes gepresenteerd aan {0}."
+    "credentials_share_success_toast_message": "Je hebt je geselecteerde credentials met succes gepresenteerd aan {0}.",
+    "action_select_label": "Selecteer",
 }

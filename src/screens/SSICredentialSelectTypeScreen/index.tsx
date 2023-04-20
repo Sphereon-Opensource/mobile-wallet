@@ -31,11 +31,11 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
     setCredentialTypes([...selection]);
   };
 
-  const onAccept = async (): Promise<void> => {
+  const onSelect = async (): Promise<void> => {
     let selectedTypesOfCredentials = credentialTypes
       .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
       .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType);
-    await props.route.params.onAccept(selectedTypesOfCredentials);
+    await props.route.params.onSelect(selectedTypesOfCredentials);
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
@@ -68,8 +68,8 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
       <ButtonContainer>
         <SSIPrimaryButton
           style={{height: 42, width: '100%'}}
-          title={translate('action_accept_label')}
-          onPress={onAccept}
+          title={translate('action_select_label')}
+          onPress={onSelect}
           disabled={!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
         />
       </ButtonContainer>

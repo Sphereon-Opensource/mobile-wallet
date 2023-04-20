@@ -100,7 +100,7 @@ export interface IPopupModalProps {
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
-  onAccept: (credentialTypes: Array<string>) => Promise<void>;
+  onSelect: (credentialTypes: Array<string>) => Promise<void>;
 }
 
 export interface IContactDetailsProps {
