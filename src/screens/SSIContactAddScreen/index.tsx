@@ -80,7 +80,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   onValueChange = async (isChecked: boolean): Promise<void> => {
     this.setState({hasConsent: isChecked});
     if (!isChecked) {
-      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_add_no_consent_toast'));
+      showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('contact_add_no_consent_toast') });
     }
   };
 

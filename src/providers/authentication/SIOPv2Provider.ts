@@ -9,8 +9,6 @@ import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {didMethodsSupported} from '../../agent';
-import RootNavigation from '../../navigation/rootNavigation';
-import {ScreenRoutesEnum} from '../../types';
 
 const debug = Debug(`${APP_ID}:authentication`);
 
@@ -31,10 +29,6 @@ export const siopGetRequest = async (
 
   // }
 
-  RootNavigation.navigate(ScreenRoutesEnum.PEX_VERIFICATION, {
-    request: verifiedAuthorizationRequest,
-    sessionId: session.id,
-  });
   return verifiedAuthorizationRequest;
 };
 
@@ -74,6 +68,7 @@ export const siopSendAuthorizationResponse = async (
   connectionType: ConnectionTypeEnum,
   args: {
     sessionId: string;
+    verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[]
   },
 ) => {
   if (connectionType !== ConnectionTypeEnum.SIOPv2_OpenID4VP) {
@@ -90,8 +85,10 @@ export const siopSendAuthorizationResponse = async (
   let identifier: IIdentifier = identifiers[0];
   if (await session.isOID4VP()) {
     const oid4vp = await session.getOID4VP();
-    const credsAndDefs = await siopSelectCredentials(oid4vp);
-    presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credsAndDefs, identifier);
+    const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
+        ? args.verifiableCredentialsWithDefinition
+        : await siopSelectCredentials(oid4vp)
+    presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credentialsAndDefinitions, identifier);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     }
