@@ -37,7 +37,8 @@
     "@reduxjs/toolkit": "^1.9.3",
     "@sphereon/bls-kms-local": "0.10.2",
     "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.4",
-    "@sphereon/openid4vci-client": "^0.3.6",
+    "@sphereon/openid4vci-client": "0.4.1-next.192",
+    "@sphereon/openid4vci-common": "0.4.1-next.192",
     "@sphereon/pex": "^2.0.0-unstable.13",
     "@sphereon/pex-models": "^1.2.2",
     "@sphereon/react-native-argon2": "2.0.9",
@@ -241,6 +242,7 @@
     "@veramo/url-handler": "4.2.0",
     "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
-    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto"
+    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
+    "**/typeorm": "0.3.12"
   }
 }
