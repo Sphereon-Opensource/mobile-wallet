@@ -16,7 +16,7 @@ import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
-import RootNavigation from '../navigation/rootNavigation'
+import RootNavigation, { navigationRef } from '../navigation/rootNavigation'
 import {
   siopGetRequest,
   siopSendAuthorizationResponse
@@ -294,7 +294,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
     if (credentialTypes.length > 1) {
       await setTimeout(async () => {
-        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        await args.navigation.navigate(NavigationBarRoutesEnum.QR, {
           screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
           params: {
             issuer:  translateCorrelationIdToName(new URL(args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer).hostname),
@@ -302,7 +302,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               id: uuidv4(),
               credentialType: credentialMetadata.credentialType,
             })),
-            onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+            onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
           },
         });
         removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE)
@@ -360,9 +360,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             }
             const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
             if (!hasIdentity) {
-              // await setTimeout(async () => {
                 store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
-              // }, 1000);
             }
           }
 
@@ -396,7 +394,26 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 },
               }
             );
-            removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
+
+            const navigationState = navigationRef.current.getRootState();
+            const { routes, index } = navigationState;
+
+            console.log('   ')
+            console.log(index)
+            console.log('   ')
+            if (index > 0) {
+              console.log('Previous screens:');
+              for (let i = 0; i < index; i++) {
+                console.log(`Screen ${i + 1}: ${routes[i].name}`);
+              }
+            } else {
+              console.log('There are no previous screens in the stack.');
+            }
+
+            console.log(' ')
+            console.log(JSON.stringify(RootNavigation.getState().routes.filter(route => route.state === undefined)))
+            console.log(' ')
+            //removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
           }, 1000);
         }
       })
@@ -437,7 +454,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
 // This function will reset the stack to a state where the add contact screen has been removed
 // Currently doing this as navigating back from a step after adding the contact, will get the flow stuck as the contact already exists
-// This will only keep working as long as the add contact screen is the only screen between the qr reader and the current screen
+// This will only keep working as long as the add contact and or pin code screen are the only screen between the qr reader and the current screen
+// (with a bonus that the pin code screen is present for any of the 3 steps, it will also be filtered)
 // TODO WAL-540 remove this function and add edit contact capabilities
 const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, currentRoute: ScreenRoutesEnum) => {
   navigation.reset({
