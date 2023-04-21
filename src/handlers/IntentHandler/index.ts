@@ -76,7 +76,7 @@ class IntentHandler {
   };
 
   private sharedFileDataListener(item?: ShareData): void {
-    if (!item) {
+    if (!item || !item.data) {
       return;
     }
 
