@@ -24,44 +24,55 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS
 
 const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
   const { onSelect } = props.route.params
-  const [credentialSelection, setCredentialSelection] = React.useState(props.route.params.credentialSelection);
+  const [credentialSelection, setCredentialSelection] = React.useState(props.route.params.credentialSelection)
 
-  const onLongPress = async (itemInfo: ListRenderItemInfo<ICredentialSelection>): Promise<void> => {
-    const selection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
-      credentialSelection.isSelected = credentialSelection.id == itemInfo.item.id
-        ? credentialSelection.isSelected = !itemInfo.item.isSelected
+  const setSelection = async (selection: ICredentialSelection): Promise<void> => {
+    const newSelection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
+      credentialSelection.isSelected = credentialSelection.id == selection.id
+        ? credentialSelection.isSelected = !selection.isSelected
         : credentialSelection.isSelected = false
       return credentialSelection
     })
-    setCredentialSelection(selection)
+    setCredentialSelection(newSelection)
   }
 
-  const onItemPress = async (credentialSelection: ICredentialSelection): Promise<void> => {
+  const onLongPress = async (itemInfo: ListRenderItemInfo<ICredentialSelection>): Promise<void> => {
+    await setSelection(itemInfo.item)
+  }
+
+  const onSelectPress = async (selection: ICredentialSelection): Promise<void> => {
+    await setSelection(selection)
+    props.navigation.goBack()
+  }
+
+  const onItemPress = async (selection: ICredentialSelection): Promise<void> => {
       props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: credentialSelection.rawCredential,
-        credential: credentialSelection.credential,
+        rawCredential: selection.rawCredential,
+        credential: selection.credential,
         showActivity: false,
+        primaryAction: {
+          caption: translate('action_select_label'),
+          onPress: () => onSelectPress(selection)
+        }
       })
-  };
-
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => {
-    return ( // todo remove wrapper
-        <ItemContainer
-            style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-            onPress={() => onItemPress(itemInfo.item)}
-            onLongPress={() => onLongPress(itemInfo)}
-        >
-          <SSICredentialSelectViewItem
-              id={itemInfo.item.id}
-              title={itemInfo.item.credential.title}
-              issuer={itemInfo.item.credential.issuer.alias}
-              isSelected={itemInfo.item.isSelected}
-              style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-              onLogoPress={() => onLongPress(itemInfo)} // TODO not working
-          />
-        </ItemContainer>
-    )
   }
+
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => (
+    <ItemContainer
+      style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+      onPress={() => onItemPress(itemInfo.item)}
+      onLongPress={() => onLongPress(itemInfo)}
+    >
+      <SSICredentialSelectViewItem
+        id={itemInfo.item.id}
+        title={itemInfo.item.credential.title}
+        issuer={itemInfo.item.credential.issuer.alias}
+        isSelected={itemInfo.item.isSelected}
+        style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+        onLogoPress={() => onLongPress(itemInfo)} // TODO not working
+      />
+    </ItemContainer>
+  )
 
   return (
       <Container>
