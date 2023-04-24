@@ -4,11 +4,11 @@ export enum ToastTypeEnum {
 }
 
 export interface IToastConfigParams {
-  title?: string
-  message?: string
-  showBadge?: boolean
+  title?: string;
+  message?: string;
+  showBadge?: boolean;
 }
 
 export interface IToastCustomProps {
-  showBadge?: boolean
+  showBadge?: boolean;
 }

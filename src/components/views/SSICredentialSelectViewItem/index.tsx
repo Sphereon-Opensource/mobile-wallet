@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
+import React, {FC} from 'react';
+import {ViewStyle} from 'react-native';
 
 import {
   SSIFlexDirectionRowViewStyled as Container,
@@ -11,18 +11,19 @@ import {
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
   SSICredentialSelectViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
-} from '../../../styles/components'
+} from '../../../styles/components';
 import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
-  id: string
-  title: string
-  issuer?: string
-  isSelected: boolean
-  image?: string // TODO WAL-302 Support passing in storage location
-  style?: ViewStyle
-  onLogoPress: () => Promise<void> // TODO fix event issue
+  hash: string;
+  id?: string;
+  title: string;
+  issuer?: string;
+  isSelected: boolean;
+  image?: string; // TODO WAL-302 Support passing in storage location
+  style?: ViewStyle;
+  onLogoPress: () => Promise<void>; // TODO fix event issue
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
@@ -33,7 +34,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
       <LogoContainer>
         <LogoOuterContainer>
           <LogoCheckboxContainer>
-            <SSICredentialLogo image={image}/>
+            <SSICredentialLogo image={image} />
             <CheckboxContainer>
               <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
             </CheckboxContainer>
@@ -43,9 +44,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
       <ContentContainer>
         <ContentTextContainer>
           <CredentialTypeCaption>{title}</CredentialTypeCaption>
-          { issuer &&
-              <IssuerCaption>{issuer}</IssuerCaption>
-          }
+          {issuer && <IssuerCaption>{issuer}</IssuerCaption>}
         </ContentTextContainer>
       </ContentContainer>
     </Container>

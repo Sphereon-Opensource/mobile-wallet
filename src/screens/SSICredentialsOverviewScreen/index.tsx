@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {VerifiableCredential} from '@veramo/core';
 import React, {PureComponent} from 'react';
-import { ListRenderItemInfo, RefreshControl } from 'react-native'
+import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
@@ -14,18 +14,12 @@ import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/
 import {
   SSIBasicContainerStyled as Container,
   SSIRippleContainerStyled as ItemContainer,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
-import {
-  ICredentialSummary,
-  IUser,
-  IUserIdentifier,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList
-} from '../../types'
-import { backgrounds } from '../../styles/colors'
+  SSIStatusBarDarkModeStyled as StatusBar,
+} from '../../styles/components';
+import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {backgrounds} from '../../styles/colors';
+import {CredentialMapper, ICredential} from '@sphereon/ssi-types';
+import {W3CVerifiableCredential} from '@sphereon/ssi-types/src/types/vc';
 
 const format = require('string-format');
 
@@ -69,9 +63,9 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   onItemPress = async (credential: ICredentialSummary): Promise<void> => {
-    getVerifiableCredential({hash: credential.id}).then((vc: VerifiableCredential) =>
+    getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: vc as VerifiableCredential,
+        rawCredential: CredentialMapper.toWrappedVerifiableCredential(vc as W3CVerifiableCredential).original,
         credential,
         showActivity: false,
       }),
@@ -81,6 +75,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
     const credentialItem = (
       <SSICredentialViewItem
+        hash={itemInfo.item.hash}
         id={itemInfo.item.id}
         title={itemInfo.item.title}
         issuer={itemInfo.item.issuer}
@@ -91,28 +86,24 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       />
     );
 
-    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) =>
-        itemInfo.item.issuer.name === identifier.did &&
-        itemInfo.item.title === 'SphereonWalletIdentityCredential'
-    )
-      ? (
-        <ItemContainer
-          style={{
-            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-          }}
-          onPress={() => this.onItemPress(itemInfo.item)}
-        >
-          {credentialItem}
-        </ItemContainer>
-      )
-      : (
-        <SSISwipeRowViewItem
-          listIndex={itemInfo.index}
-          viewItem={credentialItem}
-          onPress={() => this.onItemPress(itemInfo.item)}
-          onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
-        />
-      );
+    return this.props.activeUser.identifiers.some(
+      (identifier: IUserIdentifier) => itemInfo.item.issuer.name === identifier.did && itemInfo.item.title === 'SphereonWalletIdentityCredential',
+    ) ? (
+      <ItemContainer
+        style={{
+          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+        }}
+        onPress={() => this.onItemPress(itemInfo.item)}>
+        {credentialItem}
+      </ItemContainer>
+    ) : (
+      <SSISwipeRowViewItem
+        listIndex={itemInfo.index}
+        viewItem={credentialItem}
+        onPress={() => this.onItemPress(itemInfo.item)}
+        onDelete={() => this.onDelete(itemInfo.item.hash, itemInfo.item.title)}
+      />
+    );
   };
 
   render() {
@@ -121,7 +112,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
         <StatusBar />
         <SwipeListView
           data={this.props.verifiableCredentials}
-          keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.id}
+          keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.hash}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe
@@ -146,7 +137,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const mapStateToProps = (state: RootState) => {
   return {
     verifiableCredentials: state.credential.verifiableCredentials,
-    activeUser: state.user.activeUser!
+    activeUser: state.user.activeUser!,
   };
 };
 

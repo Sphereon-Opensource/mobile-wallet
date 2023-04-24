@@ -1,32 +1,26 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
-import { TouchableWithoutFeedback } from 'react-native'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
+import {TouchableWithoutFeedback} from 'react-native';
 
-import { headerEmitter } from '../../components/bars/SSIHeaderBar'
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton'
-import SSISecondaryButton from '../../components/buttons/SSISecondaryButton'
-import SSIActivityView from '../../components/views/SSIActivityView'
-import SSICardView from '../../components/views/SSICardView'
-import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView'
-import SSITabView from '../../components/views/SSITabView'
-import { translate } from '../../localization/Localization'
+import {headerEmitter} from '../../components/bars/SSIHeaderBar';
+import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
+import SSISecondaryButton from '../../components/buttons/SSISecondaryButton';
+import SSIActivityView from '../../components/views/SSIActivityView';
+import SSICardView from '../../components/views/SSICardView';
+import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
+import SSITabView from '../../components/views/SSITabView';
+import {translate} from '../../localization/Localization';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
   SSICredentialDetailsScreenContentContainer as ContentContainer,
   SSICredentialDetailsScreenCredentialCardContainer as CardContainer,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
-import {
-  HeaderEventEnum,
-  ITabViewRoute,
-  ScreenRoutesEnum,
-  StackParamList,
-  ToastTypeEnum
-} from '../../types'
-import { getCredentialStatus } from '../../utils/CredentialUtils'
-import SSIToast from '../../components/messageBoxes/toasts/SSIToast'
+  SSIStatusBarDarkModeStyled as StatusBar,
+} from '../../styles/components';
+import {HeaderEventEnum, ITabViewRoute, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {getCredentialStatus} from '../../utils/CredentialUtils';
+import SSIToast from '../../components/messageBoxes/toasts/SSIToast';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -36,7 +30,7 @@ enum CredentialTabRoutesEnum {
 }
 
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { credential, primaryAction, secondaryAction, showActivity = false } = props.route.params;
+  const {credential, primaryAction, secondaryAction, showActivity = false} = props.route.params;
   const issuer = credential.issuer.alias;
 
   const routes: Array<ITabViewRoute> = [

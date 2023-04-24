@@ -36,7 +36,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   const [showMoreMenu, setShowMoreMenu] = React.useState(false);
 
   useEffect(() => {
-    if(headerEmitter) {
+    if (headerEmitter) {
       const subscription = headerEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
         setShowMoreMenu(false);
       });

@@ -22,11 +22,10 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
 
   let onPress = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>) => {
     const selection = credentialTypes.map((credentialType: ICredentialTypeSelection) => {
-      credentialType.isSelected = credentialType.id == itemInfo.item.id
-          ? credentialType.isSelected = !itemInfo.item.isSelected
-          : credentialType.isSelected = false
-      return credentialType
-    })
+      credentialType.isSelected =
+        credentialType.id == itemInfo.item.id ? (credentialType.isSelected = !itemInfo.item.isSelected) : (credentialType.isSelected = false);
+      return credentialType;
+    });
     // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
     setCredentialTypes([...selection]);
   };
@@ -40,18 +39,18 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
     return (
-        <ItemContainer
-            style={{
-              backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-            }}
-            onPress={() => onPress(itemInfo)}>
-          <SSICredentialSelectTypeViewItem
-              id={itemInfo.item.id}
-              title={itemInfo.item.credentialType}
-              isSelected={itemInfo.item.isSelected}
-              style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-          />
-        </ItemContainer>
+      <ItemContainer
+        style={{
+          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+        }}
+        onPress={() => onPress(itemInfo)}>
+        <SSICredentialSelectTypeViewItem
+          id={itemInfo.item.id}
+          title={itemInfo.item.credentialType}
+          isSelected={itemInfo.item.isSelected}
+          style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+        />
+      </ItemContainer>
     );
   };
 

@@ -97,7 +97,7 @@ export const SSIAlphaContainerStyled = styled.View`
 `;
 
 export const SSIFullHeightScrollViewContainer = styled.ScrollView.attrs({
-  contentContainerStyle: { flexGrow: 1 }
+  contentContainerStyle: {flexGrow: 1},
 })`
   flex: 1;
   width: 100%;

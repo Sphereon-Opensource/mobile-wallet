@@ -1,15 +1,10 @@
-import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pex-models'
-import { IBasicIdentity, IContact } from '@sphereon/ssi-sdk-data-store';
-import { VerifiableCredential } from '@veramo/core';
+import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
+import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 
-import {
-  IButton,
-  ICredentialSelection,
-  ICredentialSummary,
-  ICredentialTypeSelection,
-  PopupBadgesEnum,
-  PopupImagesEnum
-} from '../index';
+import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {WrappedVerifiableCredential} from '@sphereon/ssi-types/src/types/vc';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -36,19 +31,19 @@ export type StackParamList = {
   Lock: ILockProps;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
-  CredentialsRequired: ICredentialsRequiredProps
-  CredentialsSelect: ICredentialsSelectProps
+  CredentialsRequired: ICredentialsRequiredProps;
+  CredentialsSelect: ICredentialsSelectProps;
 };
 
 export interface ICredentialsSelectProps {
-  credentialSelection: Array<ICredentialSelection>
-  onSelect: (vcs: Array<string>) => Promise<void>
+  credentialSelection: Array<ICredentialSelection>;
+  onSelect: (vcs: Array<string>) => Promise<void>;
 }
 
 export interface ICredentialsRequiredProps {
-  verifier: string
-  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2
-  onSend: (credentials: Array<VerifiableCredential>) => Promise<void>
+  verifier: string;
+  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
+  onSend: (credentials: Array<UniqueVerifiableCredential>) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {
@@ -61,7 +56,7 @@ export interface ICredentialDetailsProps {
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
-  rawCredential?: VerifiableCredential;
+  rawCredential?: OriginalVerifiableCredential;
 }
 
 export interface ICredentialRawJsonProps {
@@ -119,7 +114,7 @@ export interface IPinCodeSetProps {
 }
 
 export interface ILockProps {
-  onAuthenticate: () => Promise<void>
+  onAuthenticate: () => Promise<void>;
 }
 
 export enum SwitchRoutesEnum {

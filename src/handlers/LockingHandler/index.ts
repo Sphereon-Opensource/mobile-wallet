@@ -9,14 +9,13 @@ import RootNavigation from '../../navigation/rootNavigation';
 
 import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
-import {ScreenRoutesEnum} from "../../types";
+import {ScreenRoutesEnum} from '../../types';
 
 class LockingHandler {
   private lockingEventListener: NativeEventSubscription;
 
   public enableLocking = async (): Promise<void> => {
     const handleAppStateChange = async (nextAppState: string): Promise<void> => {
-
       if (nextAppState === 'background' || nextAppState === 'active') {
         if (this.isLockingRequiredForScreen()) {
           debug('Locking application...');
