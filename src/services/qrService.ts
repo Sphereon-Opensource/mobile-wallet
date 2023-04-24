@@ -394,26 +394,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 },
               }
             );
-
-            const navigationState = navigationRef.current.getRootState();
-            const { routes, index } = navigationState;
-
-            console.log('   ')
-            console.log(index)
-            console.log('   ')
-            if (index > 0) {
-              console.log('Previous screens:');
-              for (let i = 0; i < index; i++) {
-                console.log(`Screen ${i + 1}: ${routes[i].name}`);
-              }
-            } else {
-              console.log('There are no previous screens in the stack.');
-            }
-
-            console.log(' ')
-            console.log(JSON.stringify(RootNavigation.getState().routes.filter(route => route.state === undefined)))
-            console.log(' ')
-            //removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
+            removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
           }, 1000);
         }
       })
