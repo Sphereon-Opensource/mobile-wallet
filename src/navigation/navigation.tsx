@@ -68,6 +68,7 @@ const MainStackNavigator = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        // TODO WAL-541 fix navigation hierarchy
         name={MainRoutesEnum.POPUP_MODAL}
         children={({navigation, route}) => (
           <>
