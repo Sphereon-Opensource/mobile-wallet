@@ -13,9 +13,9 @@ happen at this point!__
 
 ---
 
-# SSI Wallet
+# Sphereon Wallet
 
-An Open-Source wallet with support for Decentralized Identifiers and that can receive W3C Verifiable Credentials from
+An Open-Source SSI wallet with support for Decentralized Identifiers that can receive W3C Verifiable Credentials from
 Issuers and Present them to Verifiers.
 
 The wallet is build using our [SSI-SDK](https://github.com/Sphereon-Opensource/ssi-sdk), which you can use to create
@@ -42,7 +42,7 @@ The wallet supports or soon will the following features:
 - [Microsoft Entra Verified ID integration](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-verified-id)
 - [Sphereon VDX Platform integration](https://sphereon.com/sphereon-vdx-verifiable-data-exchange/)
 
-## OpenID for Verifiable Credential Issuance Demo flow
+## OpenID for Verifiable Credential Issuance (OID4VCI) Demo flow
 
 Please note that the below flow was created as part of
 the [JFF/W3C-EDU plugfest 2](https://w3c-ccg.github.io/vc-ed/plugfest-2-2022/) and is showing an older design of the
@@ -103,18 +103,16 @@ There are several other utility scripts that help with development.
 
 ## Requirements
 
-SSI Wallet uses Expo SDK v45 and React-Native v0.68.5.
+SSI Wallet uses Expo SDK v48 and React-Native v0.71.
 
 * Node v16.x.x
 * Expo CLI v6.0.1 or above
 * Yarn
 
-<b>NOTE</b>: Do not use Node v16 or above. Certain SSI-SDK features do not work with Node v16.x.x.
-
 ### Node
 
 Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 16.x.x
-which is required for RN 0.68.5 to work. The app is not guaranteed to work with higher Node versions and it will
+which is required for RN 0.71 to work. The app is not guaranteed to work with higher Node versions and it will
 certainly not work with lower Node versions.
 
 Use <code>nvm list available</code>  to list the available versions of Node.
@@ -151,10 +149,6 @@ IDE and start it (do not restart, as it might not pick up the latest environment
 
 ## Starting the SSI-Wallet
 
-Since the app is still very much in development, at this point we expect people to have Expo Go client installed on
-their mobile phone:
-https://expo.dev/client
-
 The SSI-Wallet can be started by running one of the following commands.
 
 ### Android
@@ -162,24 +156,29 @@ The SSI-Wallet can be started by running one of the following commands.
 ```shell
 expo android:start
 ```
-
-### iOS
-
-```shell
-expo ios:start
-```
-
-It will take some time for the app to start. In some circumstances you might not get directly to the app. If that is the
-case lookup whether the SSI-Wallet application can be found in you apps. If so start it from there. You should see the
-bundler starting.
-
-You will end up in the dev-client. This is the developer tool which helps in debugging and other development settings.
-Depending on you setup the dev-client will find you phone. If not you can scan the provided QR code available in the
-expo terminal screen. If that does not work you can always manually enter the IP address of your computer in the form
-of http://development-machine-ip:8081.
+For Android you need to make sure that your wallet is connect using a USB cable and that developer options are enabled. If you do not connect the phone using USB it will start the Android emulator instead
 
 By default, it uses port 8081.
 
 * Ensure your phone and your development computer are on the same (Wi-Fi) network.
+* Ensure you phone is connected via USB
 * Ensure the firewall on you computer allows incoming traffic on port 8081.
 
+
+### iOS
+You will have to use Xcode directly fow now. We will work on getting the below command working.
+
+```shell
+expo ios:start  // Please note this command currently doesn't work
+```
+
+Run the below commands on the command line to update all dependencies.
+````shell
+yarn install
+cd ios
+pod install
+````
+In XCode select the `Product -> Run` option from the menu. (If you want to create a archive for instance for TestFlight, you can choose `Product -> Archive`).
+It will take some time for the app to start. In some circumstances you might not get directly to the app. If that is the
+case lookup whether the Sphereon Wallet application can be found in you apps. If so start it from there. You should see the
+bundler starting.

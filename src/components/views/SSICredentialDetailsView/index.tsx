@@ -25,7 +25,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) =>
     <View
       onStartShouldSetResponder={() => {
-        headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+        headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
         return true
       }}
     >
@@ -35,7 +35,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderFooter = () => (
     <FooterContainer
       onStartShouldSetResponder={() => {
-        headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+        headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
         return true
       }}
     >
