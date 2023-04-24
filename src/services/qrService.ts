@@ -49,6 +49,8 @@ import { toCredentialSummary } from '../utils/mappers/CredentialMapper'
 import { authenticate } from './authenticationService'
 import { getContacts } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { translateCorrelationIdToName } from '../utils/CredentialUtils'
 
 const { v4: uuidv4 } = require('uuid')
 const format = require('string-format')
@@ -291,14 +293,20 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }));
 
     if (credentialTypes.length > 1) {
-      args.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-        issuer: args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer,
-        credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
-          id: uuidv4(),
-          credentialType: credentialMetadata.credentialType,
-        })),
-        onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
-      });
+      await setTimeout(async () => {
+        await args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
+          params: {
+            issuer:  translateCorrelationIdToName(new URL(args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer).hostname),
+            credentialTypes: credentialsSupported.map((credentialMetadata: ICredentialMetadata) => ({
+              id: uuidv4(),
+              credentialType: credentialMetadata.credentialType,
+            })),
+            onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+          },
+        });
+        removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE)
+      }, 1000);
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
     }
@@ -317,6 +325,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           onVerification: async (pin: string) => await sendResponse(provider, pin),
         },
       });
+      removeAddContactFromStack(args.navigation, ScreenRoutesEnum.VERIFICATION_CODE)
     } else {
       await sendResponse(provider);
     }
@@ -351,9 +360,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             }
             const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
             if (!hasIdentity) {
-              // await setTimeout(async () => {
                 store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
-              // }, 1000);
             }
           }
 
@@ -387,6 +394,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 },
               }
             );
+            removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS)
           }, 1000);
         }
       })
@@ -424,3 +432,15 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message });
     });
 };
+
+// This function will reset the stack to a state where the add contact screen has been removed
+// Currently doing this as navigating back from a step after adding the contact, will get the flow stuck as the contact already exists
+// This will only keep working as long as the add contact and or pin code screen are the only screen between the qr reader and the current screen
+// (with a bonus that the pin code screen is present for any of the 3 steps, it will also be filtered)
+// TODO WAL-540 remove this function and add edit contact capabilities
+const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, currentRoute: ScreenRoutesEnum) => {
+  navigation.reset({
+    index: 0,
+    routes: [{name: ScreenRoutesEnum.QR_READER}, {name: currentRoute}]
+  });
+}
