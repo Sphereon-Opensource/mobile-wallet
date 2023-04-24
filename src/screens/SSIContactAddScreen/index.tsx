@@ -95,8 +95,8 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        // TODO fix navigation WAL-405
-        onPress: async () => this.props.navigation.goBack(),
+        // TODO WAL-541 fix navigation hierarchy
+        onPress: async () => this.props.navigation.navigate(MainRoutesEnum.HOME, {})
       },
     });
   };
