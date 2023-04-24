@@ -10,7 +10,7 @@ import {
 } from '@sphereon/ssi-sdk-data-store'
 import {CredentialMapper, W3CVerifiableCredential} from '@sphereon/ssi-types'
 import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
-import { VerifiableCredential } from '@veramo/core'
+import {IIdentifier, VerifiableCredential} from '@veramo/core'
 import Debug from 'debug'
 import { URL } from 'react-native-url-polyfill'
 
@@ -171,7 +171,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   const identifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   const sessionId = uuidv4() // TODO why is args.qrData.id undefined?
-  const verifier = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]) // TODO WAL-525 implement contact name
+  const url = new URL(decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim()))
   const request: VerifiedAuthorizationRequest = await siopGetRequest({
       id: uuidv4(),
       // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
@@ -203,19 +203,83 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       });
       showToast(ToastTypeEnum.TOAST_SUCCESS, {
         title: translate('credentials_share_success_toast_title'),
-        message: format(translate('credentials_share_success_toast_message'), verifier)
+        message: format(translate('credentials_share_success_toast_message'), url.hostname)
       });
     })
     // TODO make human-readable message
     .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
   };
 
-  RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
-    verifier,
-    // TODO currently only supporting 1 presentation definition
-    presentationDefinition: request.presentationDefinitions[0].definition,
-    onSend: async (credentials: Array<VerifiableCredential>) => authenticate(() => onSend(credentials))
-  });
+  const selectRequiredCredentials = async () => {
+    await setTimeout(async () => {
+      RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+        verifier: url.hostname,
+        // TODO currently only supporting 1 presentation definition
+        presentationDefinition: request.presentationDefinitions![0].definition,
+        onSend: async (credentials: Array<VerifiableCredential>) => authenticate(() => onSend(credentials))
+      })
+    }, 1000);
+  }
+
+  const sendResponseOrCreateContact = async () => {
+    getContacts({
+      filter: [
+        {
+          identities: {
+            identifier: {
+              correlationId: url.hostname,
+            },
+          },
+        },
+      ],
+    }).then((contacts: Array<IContact>) => {
+      if (contacts.length === 0) {
+        args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
+          name: url.host,
+          uri: `${url.protocol}//${url.hostname}`,
+          identities: [
+            {
+              alias: url.hostname,
+              roles: [IdentityRoleEnum.VERIFIER],
+              identifier: {
+                type: CorrelationIdentifierEnum.URL,
+                correlationId: url.hostname,
+              },
+              connection: {
+                type: ConnectionTypeEnum.SIOPv2,
+                config: {
+                  sessionId,
+                  redirectUrl: args.qrData.uri,
+                  stateId: args.qrData.state,
+                  identifier
+                }
+              }
+            },
+            {
+              alias: request.payload.client_id,
+              roles: [IdentityRoleEnum.VERIFIER],
+              identifier: {
+                type: CorrelationIdentifierEnum.DID,
+                correlationId: request.payload.client_id
+              }
+            }
+          ],
+          onCreate: selectRequiredCredentials
+        })
+      } else {
+        selectRequiredCredentials()
+      }
+  })
+  }
+
+  await sendResponseOrCreateContact()
+
+  // RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+  //   verifier,
+  //   // TODO currently only supporting 1 presentation definition
+  //   presentationDefinition: request.presentationDefinitions![0].definition,
+  //   onSend: async (credentials: Array<VerifiableCredential>) => authenticate(() => onSend(credentials))
+  // });
 };
 
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void> => {
@@ -297,7 +361,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           id: uuidv4(),
           credentialType: credentialMetadata.credentialType,
         })),
-        onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+        onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
       });
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
@@ -351,9 +415,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             }
             const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
             if (!hasIdentity) {
-              // await setTimeout(async () => {
                 store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
-              // }, 1000);
             }
           }
 
