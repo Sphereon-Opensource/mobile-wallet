@@ -16,7 +16,7 @@ import { URL } from 'react-native-url-polyfill'
 
 import { APP_ID } from '../@config/constants'
 import { translate } from '../localization/Localization'
-import RootNavigation, { navigationRef } from '../navigation/rootNavigation'
+import RootNavigation from '../navigation/rootNavigation'
 import {
   siopGetRequest,
   siopSendAuthorizationResponse
