@@ -9,12 +9,12 @@ export const SSIQRCustomMarkerSideSpaceStyled = styled.View`
 `;
 
 // TODO move color to color file
+// TODO https://sphereon.atlassian.net/browse/WAL-542 (for making qr code marker rounded)
 export const SSIQRCustomMarkerStyled = styled.View`
   width: ${dimensions.width * 0.8}px;
   height: ${dimensions.width * 0.8}px;
   border-color: #2a3046;
   border-width: 2px;
-  border-radius: 12px;
 `;
 
 export const SSIQRCustomMarkerBottomContainerStyled = styled.View`
