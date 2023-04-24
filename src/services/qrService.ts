@@ -297,7 +297,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           id: uuidv4(),
           credentialType: credentialMetadata.credentialType,
         })),
-        onAccept: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+        onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
       });
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
