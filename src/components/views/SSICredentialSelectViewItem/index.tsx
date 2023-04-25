@@ -1,16 +1,16 @@
 import React, { FC } from 'react'
-import { ViewStyle } from 'react-native'
+import { TouchableOpacity, ViewStyle } from 'react-native'
 
 import {
+  SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
   SSIFlexDirectionRowViewStyled as Container,
   SSICredentialSelectViewItemContentContainerStyled as ContentContainer,
   SSICredentialSelectViewItemContentTextContainerStyled as ContentTextContainer,
   SSITextH3LightStyled as CredentialTypeCaption,
   SSITextH4LightStyled as IssuerCaption,
-  SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
+  SSICredentialSelectViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
-  SSICredentialSelectViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
 } from '../../../styles/components'
 import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
@@ -33,7 +33,9 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
       <LogoContainer>
         <LogoOuterContainer>
           <LogoCheckboxContainer>
-            <SSICredentialLogo image={image}/>
+            <TouchableOpacity>
+              <SSICredentialLogo image={image}/>
+            </TouchableOpacity>
             <CheckboxContainer>
               <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
             </CheckboxContainer>
