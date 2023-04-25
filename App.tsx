@@ -1,9 +1,9 @@
-import crypto from '@sphereon/isomorphic-webcrypto'
-import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import crypto from '@sphereon/isomorphic-webcrypto'
 import * as SplashScreen from 'expo-splash-screen'
+import * as React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-import { LogBox, StatusBar } from 'react-native'
+import { LogBox, Platform, StatusBar } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import 'react-native-gesture-handler'
@@ -59,8 +59,10 @@ export default function App() {
       try {
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true)
-        StatusBar.setBackgroundColor(backgrounds.primaryDark)
-        StatusBar.setTranslucent(false)
+        if (Platform.OS === 'android') {
+          StatusBar.setBackgroundColor(backgrounds.primaryDark)
+          StatusBar.setTranslucent(false)
+        }
 
         Localization.setI18nConfig()
         // Preload fonts, make any API calls you need to do here
