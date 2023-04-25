@@ -3155,10 +3155,10 @@
     "@sphereon/ssi-types" "^0.9.1-next.103+61d5c12"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk-data-store@0.9.1-next.103":
-  version "0.9.1-next.103"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-next.103.tgz#833119a7e5a7fde29db613a3ce2c287bacc22a4b"
-  integrity sha512-Yb8Re+IG2TnIKpsVaZ66AOTdthC9fRZnmbmrn2f0M5UYnxDCsWxclk5ie1B+zjus8ex7PdKoifweZMv7sjXhnw==
+"@sphereon/ssi-sdk-data-store@0.9.1-unstable.104":
+  version "0.9.1-unstable.104"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-data-store/-/ssi-sdk-data-store-0.9.1-unstable.104.tgz#9f1317238b94c3195353d82574f5b9850da2fb18"
+  integrity sha512-5YvFO6iFuy4aCgazquOXY+yihdWk3bv0sfTRq5Z4mE9zwKm2Biy4H9H9yvysflzMSpSGoKiguRQGk3w6P+nb6w==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
