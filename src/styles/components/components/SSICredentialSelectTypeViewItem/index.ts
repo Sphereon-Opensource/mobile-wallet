@@ -6,8 +6,8 @@ export const SSICredentialSelectTypeViewItemLogoContainerStyled = styled.View`
 
 export const SSICredentialSelectTypeViewItemLogoCheckboxContainerStyled = styled.View`
   position: absolute;
-  bottom: -3px;
-  right: -3px;
+  bottom: -5px;
+  right: -5px;
 `;
 
 export const SSICredentialSelectTypeViewItemContentContainerStyled = styled.View`
