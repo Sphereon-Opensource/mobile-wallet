@@ -11,9 +11,9 @@ import {v4 as uuidv4} from 'uuid';
 import {translate} from '../../localization/Localization';
 import {
   getContacts as getContactsFromStorage,
-  createContact as storeContact,
   addIdentity as identityAdd,
-  removeContact
+  removeContact,
+  createContact as storeContact
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
@@ -97,11 +97,12 @@ const getUserContact = async (): Promise<IContact> => {
     name: userFullName,
     alias: userFullName,
     uri: user.emailAddress,
-    roles: [IdentityRoleEnum.ISSUER],
+    //todo: (WAL-545) handle this based on the identities available in the wallet
+    roles: [IdentityRoleEnum.HOLDER],
     identities: user.identifiers.map((identifier: IUserIdentifier) => ({
       id: uuidv4(),
       alias: identifier.did,
-      roles: [IdentityRoleEnum.ISSUER],
+      roles: [IdentityRoleEnum.HOLDER],
       identifier: {
         id: uuidv4(),
         type: CorrelationIdentifierEnum.DID,
