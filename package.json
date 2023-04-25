@@ -45,7 +45,7 @@
     "@sphereon/react-native-argon2": "2.0.9",
     "@sphereon/ssi-sdk-contact-manager": "0.9.1-next.103",
     "@sphereon/ssi-sdk-core": "0.9.1-next.103",
-    "@sphereon/ssi-sdk-data-store": "0.9.1-unstable.104",
+    "@sphereon/ssi-sdk-data-store": "0.9.1-next.107",
     "@sphereon/ssi-sdk-did-auth-siop-authenticator": "0.9.1-next.103",
     "@sphereon/ssi-sdk-did-utils": "0.9.1-next.103",
     "@sphereon/ssi-sdk-jwk-did-provider": "0.9.1-next.103",
