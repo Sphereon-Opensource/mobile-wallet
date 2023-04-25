@@ -178,7 +178,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   const url = new URL(decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim()))
   const config = {
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
-    sessionId: uuidv4(), // TODO why is args.qrData.id undefined?
+    sessionId: uuidv4(),
     redirectUrl: args.qrData.uri,
     stateId: args.qrData.state,
     identifier: await getOrCreatePrimaryIdentifier() // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
