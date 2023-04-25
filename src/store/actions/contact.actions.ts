@@ -97,7 +97,7 @@ const getUserContact = async (): Promise<IContact> => {
     name: userFullName,
     alias: userFullName,
     uri: user.emailAddress,
-    //todo: handle this based on the identities available in the wallet
+    //todo: (WAL-545) handle this based on the identities available in the wallet
     roles: [IdentityRoleEnum.HOLDER],
     identities: user.identifiers.map((identifier: IUserIdentifier) => ({
       id: uuidv4(),
