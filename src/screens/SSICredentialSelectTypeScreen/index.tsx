@@ -20,33 +20,40 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_
 const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => {
   const [credentialTypes, setCredentialTypes] = React.useState(props.route.params.credentialTypes);
 
-  const onAccept = async (): Promise<void> => {
-    await props.route.params.onAccept(
-      credentialTypes
-        .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
-        .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType),
-    );
+  let onPress = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>) => {
+    const selection = credentialTypes.map((credentialType: ICredentialTypeSelection) => {
+      credentialType.isSelected = credentialType.id == itemInfo.item.id
+          ? credentialType.isSelected = !itemInfo.item.isSelected
+          : credentialType.isSelected = false
+      return credentialType
+    })
+    // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
+    setCredentialTypes([...selection]);
   };
 
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => (
-    <ItemContainer
-      style={{
-        backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-      }}
-      onPress={() => {
-        const index = credentialTypes.findIndex((credentialType: ICredentialTypeSelection) => credentialType.id == itemInfo.item.id);
-        credentialTypes[index].isSelected = !itemInfo.item.isSelected;
-        // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
-        setCredentialTypes([...credentialTypes]);
-      }}>
-      <SSICredentialSelectTypeViewItem
-        id={itemInfo.item.id}
-        title={itemInfo.item.credentialType}
-        isSelected={itemInfo.item.isSelected}
-        style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-      />
-    </ItemContainer>
-  );
+  const onSelect = async (): Promise<void> => {
+    let selectedTypesOfCredentials = credentialTypes
+      .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
+      .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType);
+    await props.route.params.onSelect(selectedTypesOfCredentials);
+  };
+
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
+    return (
+        <ItemContainer
+            style={{
+              backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+            }}
+            onPress={() => onPress(itemInfo)}>
+          <SSICredentialSelectTypeViewItem
+              id={itemInfo.item.id}
+              title={itemInfo.item.credentialType}
+              isSelected={itemInfo.item.isSelected}
+              style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+          />
+        </ItemContainer>
+    );
+  };
 
   return (
     <Container>
@@ -61,8 +68,8 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
       <ButtonContainer>
         <SSIPrimaryButton
           style={{height: 42, width: '100%'}}
-          title={translate('action_accept_label')}
-          onPress={onAccept}
+          title={translate('action_select_label')}
+          onPress={onSelect}
           disabled={!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
         />
       </ButtonContainer>

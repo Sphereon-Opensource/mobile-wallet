@@ -1,16 +1,17 @@
 import { IIdentifier, VerifiableCredential } from '@veramo/core'
 import {Action, CombinedState} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
-import {RootState, SupportedDidMethodEnum} from '../../types';
-import {CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS} from '../../types/store/onboarding.action.types';
-import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
-import {createVerifiableCredential} from './credential.actions';
-import {createUser} from './user.actions';
+
 import {
   createVerifiableCredential as createCredential,
   storeVerifiableCredential as storeCredential
 } from '../../services/credentialService'
+import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
+import { IUser, RootState, SupportedDidMethodEnum } from '../../types'
+import {CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS} from '../../types/store/onboarding.action.types';
+import { IOnboardingState, ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
+
+import {createUser, login} from './user.actions'
 
 const {v4: uuidv4} = require('uuid');
 
@@ -23,14 +24,14 @@ export const setPersonalData = (args: ISetPersonalDataActionArgs): ThunkAction<P
 export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     getOrCreatePrimaryIdentifier({method: SupportedDidMethodEnum.DID_KEY}).then((identifier: IIdentifier) => {
-      const onboardingState = getState().onboarding;
+      const onboardingState: IOnboardingState = getState().onboarding;
       const user = {
-        firstName: onboardingState.firstName,
-        lastName: onboardingState.lastName,
-        emailAddress: onboardingState.emailAddress,
+        firstName: onboardingState.firstName!,
+        lastName: onboardingState.lastName!,
+        emailAddress: onboardingState.emailAddress!,
         identifiers: [{did: identifier.did}],
       };
-      dispatch(createUser(user)).then(() => {
+      dispatch(createUser(user)).then((user: IUser) => {
         createCredential({
           credential: {
             '@context': [
@@ -50,8 +51,8 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
           },
           proofFormat: 'lds',
         })
-        .then((vc: VerifiableCredential) => storeCredential({vc}))
-        dispatch({type: CLEAR_ONBOARDING});
+        .then((vc: VerifiableCredential) => storeCredential({ vc }))
+        .then(async () => dispatch(login(user.id)).then(() => dispatch({ type: CLEAR_ONBOARDING })))
       });
     });
   };

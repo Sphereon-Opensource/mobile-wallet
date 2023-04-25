@@ -38,9 +38,10 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
       setShowMoreMenu(false);
     });
 
-    return () => {
-      subscription.remove();
-    };
+      return () => {
+        subscription.remove();
+      };
+    }
   }, []);
 
   const onBack = async (): Promise<void> => {

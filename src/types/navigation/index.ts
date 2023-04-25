@@ -1,16 +1,20 @@
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
-import {VerifiableCredential} from '@veramo/core';
+import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pex-models'
+import { IBasicIdentity, IContact } from '@sphereon/ssi-sdk-data-store';
+import { VerifiableCredential } from '@veramo/core';
 
-import {IButton, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {
+  IButton,
+  ICredentialSelection,
+  ICredentialSummary,
+  ICredentialTypeSelection,
+  PopupBadgesEnum,
+  PopupImagesEnum
+} from '../index';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
   CredentialRawJson: ICredentialRawJsonProps;
-  ConnectionsOverview: Record<string, never>;
-  IdentityDetails: IIdentityDetailsProps;
-  PexVerification: IPexVerificationProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
@@ -29,13 +33,22 @@ export type StackParamList = {
   PersonalData: Record<string, never>;
   PinCodeSet: IPinCodeSetProps;
   NotificationsOverview: Record<string, never>;
-  Lock: Record<string, never>;
+  Lock: ILockProps;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
+  CredentialsRequired: ICredentialsRequiredProps
+  CredentialsSelect: ICredentialsSelectProps
 };
 
-export interface IIdentityDetailsProps {
-  identity: IIdentity;
+export interface ICredentialsSelectProps {
+  credentialSelection: Array<ICredentialSelection>
+  onSelect: (vcs: Array<string>) => Promise<void>
+}
+
+export interface ICredentialsRequiredProps {
+  verifier: string
+  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2
+  onSend: (credentials: Array<VerifiableCredential>) => Promise<void>
 }
 
 export interface ICredentialDetailsProps {
@@ -53,11 +66,6 @@ export interface ICredentialDetailsProps {
 
 export interface ICredentialRawJsonProps {
   rawCredential: VerifiableCredential;
-}
-
-export interface IPexVerificationProps {
-  request: VerifiedAuthorizationRequest;
-  sessionId: string;
 }
 
 export interface IVerificationCodeProps {
@@ -92,7 +100,7 @@ export interface IPopupModalProps {
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
-  onAccept: (credentialTypes: Array<string>) => Promise<void>;
+  onSelect: (credentialTypes: Array<string>) => Promise<void>;
 }
 
 export interface IContactDetailsProps {
@@ -108,6 +116,10 @@ export interface IContactAddProps {
 
 export interface IPinCodeSetProps {
   headerSubTitle: string;
+}
+
+export interface ILockProps {
+  onAuthenticate: () => Promise<void>
 }
 
 export enum SwitchRoutesEnum {
@@ -136,8 +148,6 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
-  PEX_VERIFICATION = 'PexVerification',
-  IDENTITY_DETAILS = 'IdentityDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
@@ -149,4 +159,6 @@ export enum ScreenRoutesEnum {
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
+  CREDENTIALS_REQUIRED = 'CredentialsRequired',
+  CREDENTIALS_SELECT = 'CredentialsSelect',
 }

@@ -60,15 +60,15 @@ export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<
       .then((isDeleted: boolean) => {
         if (isDeleted) {
           dispatch({type: DELETE_CREDENTIAL_SUCCESS, payload: credentialHash});
-          showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_deleted_success_toast'));
+          showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_deleted_success_toast'), showBadge: false });
         } else {
           dispatch({type: DELETE_CREDENTIAL_FAILED});
-          showToast(ToastTypeEnum.TOAST_ERROR, translate('credential_deleted_failed_toast'));
+          showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('credential_deleted_failed_toast') });
         }
       })
       .catch(() => {
         dispatch({type: DELETE_CREDENTIAL_FAILED});
-        showToast(ToastTypeEnum.TOAST_ERROR, translate('credential_deleted_failed_toast'));
+        showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('credential_deleted_failed_toast') });
       });
   };
 };

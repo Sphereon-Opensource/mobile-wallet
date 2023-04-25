@@ -1,20 +1,20 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react'
 
-import {translate} from '../../../localization/Localization';
+import { translate } from '../../../localization/Localization'
 import {
   SSICredentialViewItemContainerStyled as Container,
   SSIFlexDirectionRowViewStyled as ContentBottomContainer,
   SSICredentialViewItemContentMiddleContainerStyled as ContentMiddleContainer,
   SSICredentialViewItemContentTopContainerStyled as ContentTopContainer,
-  SSICredentialViewItemStatusCaptionStyled as CredentialStatusCaption,
+  SSICredentialViewItemStatusContainerStyled as CredentialStatusContainer,
   SSICredentialViewItemExpirationDateCaptionStyled as ExpirationDateCaption,
   SSITextH5LightStyled as IssueDateCaption,
   SSITextH4LightStyled as IssuerCaption,
-  SSITextH3LightStyled as TitleCaption,
-} from '../../../styles/components';
-import {ICredentialSummary} from '../../../types';
-import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
-import SSIStatusLabel from '../../labels/SSIStatusLabel';
+  SSICredentialViewItemTitleCaptionStyled as TitleCaption
+} from '../../../styles/components'
+import { ICredentialSummary } from '../../../types'
+import { toLocalDateString, toLocalDateTimeString } from '../../../utils/DateUtils'
+import SSIStatusLabel from '../../labels/SSIStatusLabel'
 
 // TODO fix to many properties
 export interface Props extends ICredentialSummary {
@@ -23,15 +23,15 @@ export interface Props extends ICredentialSummary {
 }
 
 const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {showTime = false} = props;
+  const { showTime = false } = props;
 
   return (
     <Container>
       <ContentTopContainer>
-        <TitleCaption>{props.title}</TitleCaption>
-        <CredentialStatusCaption>
-          <SSIStatusLabel status={props.credentialStatus} />
-        </CredentialStatusCaption>
+        <TitleCaption numberOfLines={2}>{props.title}</TitleCaption>
+        <CredentialStatusContainer>
+            <SSIStatusLabel status={props.credentialStatus} />
+        </CredentialStatusContainer>
       </ContentTopContainer>
       <ContentMiddleContainer>
         <IssuerCaption>

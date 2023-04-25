@@ -25,21 +25,19 @@ enum TermsTabRoutesEnum {
 }
 
 const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
-  const [hasReadTerms, setHasReadTerms] = useState(false);
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
-  const [hasReadPrivacy, setHasReadPrivacy] = useState(false);
   const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false);
 
   const routes: Array<ITabViewRoute> = [
     {
       key: TermsTabRoutesEnum.TERMS,
       title: translate('terms_of_service_terms_tab_header_label'),
-      content: () => <SSITermsOfServiceView content={translate('terms_and_conditions_agreement_message')} onScrollBottom={onScrollBottomTerms} />,
+      content: () => <SSITermsOfServiceView content={translate('terms_and_conditions_agreement_message')} />,
     },
     {
       key: TermsTabRoutesEnum.PRIVACY,
       title: translate('terms_of_service_privacy_tab_header_label'),
-      content: () => <SSITermsOfServiceView content={translate('privacy_policy_agreement_message')} onScrollBottom={onScrollBottomPrivacy} />,
+      content: () => <SSITermsOfServiceView content={translate('privacy_policy_agreement_message')} />,
     },
   ];
 
@@ -64,14 +62,6 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   };
 
-  const onScrollBottomTerms = async (): Promise<void> => {
-    setHasReadTerms(true);
-  };
-
-  const onScrollBottomPrivacy = async (): Promise<void> => {
-    setHasReadPrivacy(true);
-  };
-
   const onAcceptTerms = async (isChecked: boolean): Promise<void> => {
     setHasAcceptedTerms(isChecked);
   };
@@ -87,10 +77,10 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       <BottomContainer>
         <CheckboxesContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptTerms} label={translate('terms_of_service_consent_terms_message')} disabled={!hasReadTerms} />
+            <SSICheckbox onValueChange={onAcceptTerms} label={translate('terms_of_service_consent_terms_message')} />
           </CheckboxContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptPrivacy} label={translate('terms_of_service_consent_privacy_message')} disabled={!hasReadPrivacy} />
+            <SSICheckbox onValueChange={onAcceptPrivacy} label={translate('terms_of_service_consent_privacy_message')} />
           </CheckboxContainer>
         </CheckboxesContainer>
         <SSIButtonsContainer
