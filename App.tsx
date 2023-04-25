@@ -3,8 +3,8 @@ import crypto from '@sphereon/isomorphic-webcrypto'
 import * as SplashScreen from 'expo-splash-screen'
 import * as React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-import { LogBox, Platform, StatusBar } from 'react-native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+import {LogBox, StatusBar, View} from 'react-native'
+import { SafeAreaProvider, useSafeAreaInsets} from 'react-native-safe-area-context';
 import { Provider } from 'react-redux'
 import 'react-native-gesture-handler'
 import { bindActionCreators } from 'redux'
@@ -46,6 +46,25 @@ LogBox.ignoreLogs([
   'new NativeEventEmitter'
 ])
 
+const CustomStatusBar = (
+    {
+      backgroundColor = backgrounds.primaryDark,
+      barStyle = "light-content",
+      translucent = false
+    }
+) => {
+  return (
+      <View style={{ height: useSafeAreaInsets().top, backgroundColor }}>
+        <StatusBar
+            animated={true}
+            backgroundColor={backgroundColor}
+            translucent={translucent}
+            barStyle={barStyle} />
+      </View>
+  );
+}
+
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
   // TODO use navigationIsReady to check if we can start the IntentHandler (as this needs a navigationRef) and remove the timeout placed in handleSharedFileData
@@ -57,13 +76,6 @@ export default function App() {
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
-        // TODO create better implementation for this
-        StatusBar.setBarStyle('light-content', true)
-        if (Platform.OS === 'android') {
-          StatusBar.setBackgroundColor(backgrounds.primaryDark)
-          StatusBar.setTranslucent(false)
-        }
-
         Localization.setI18nConfig()
         // Preload fonts, make any API calls you need to do here
         await _loadFontsAsync()
@@ -115,6 +127,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
+        <CustomStatusBar />
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <AppNavigator />
         </NavigationContainer>
