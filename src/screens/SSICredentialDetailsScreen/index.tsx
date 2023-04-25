@@ -1,8 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-import {TouchableWithoutFeedback} from 'react-native';
+import {DeviceEventEmitter, TouchableWithoutFeedback} from 'react-native';
 
-import {headerEmitter} from '../../components/bars/SSIHeaderBar';
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton';
 import SSIActivityView from '../../components/views/SSIActivityView';
@@ -50,7 +49,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   ];
 
   const onPress = async (): Promise<void> => {
-    headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+    DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
   };
 
   return (

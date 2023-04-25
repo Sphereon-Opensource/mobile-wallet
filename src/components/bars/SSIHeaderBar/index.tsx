@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useEffect} from 'react';
-import {NativeEventEmitter, NativeModules, TouchableWithoutFeedback, View} from 'react-native';
+import {DeviceEventEmitter, TouchableWithoutFeedback, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {
@@ -27,8 +27,6 @@ interface Props extends NativeStackHeaderProps {
   showProfileIcon?: boolean;
 }
 
-const {MyModule} = NativeModules;
-export const headerEmitter = new NativeEventEmitter(MyModule);
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
@@ -36,7 +34,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   const [showMoreMenu, setShowMoreMenu] = React.useState(false);
 
   useEffect(() => {
-    const subscription = headerEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
+    const subscription = DeviceEventEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
       setShowMoreMenu(false);
     });
 
