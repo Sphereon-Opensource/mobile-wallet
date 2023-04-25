@@ -242,6 +242,7 @@
     "@veramo/url-handler": "4.2.0",
     "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
-    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto"
+    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
+    "**/typeorm": "0.3.12"
   }
 }

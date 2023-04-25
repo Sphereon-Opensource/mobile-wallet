@@ -46,18 +46,18 @@ export const isExpired = (value?: string | number): boolean => {
   return expirationDate < Date.now();
 };
 
-export const translateDidToName = (did: string): string => {
+export const translateCorrelationIdToName = (correlationId: string): string => {
   const contacts = store.getState().contact.contacts
   const activeUser = store.getState().user.activeUser
 
-  const contact = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === did))
+  const contact = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
   if (contact) {
     return contact.alias
   }
 
-  if (activeUser && activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === did)) {
+  if (activeUser && activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === correlationId)) {
     return `${activeUser.firstName} ${activeUser.lastName}`
   }
 
-  return did
+  return correlationId
 }
