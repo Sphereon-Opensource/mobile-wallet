@@ -1,25 +1,32 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {VerifiableCredential} from '@veramo/core';
-import React, {PureComponent} from 'react';
-import {ListRenderItemInfo, RefreshControl} from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import {connect} from 'react-redux';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { VerifiableCredential } from "@veramo/core";
+import React, { PureComponent } from "react";
+import { ListRenderItemInfo, RefreshControl } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { connect } from "react-redux";
 
-import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
-import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
-import {translate} from '../../localization/Localization';
-import {getVerifiableCredential} from '../../services/credentialService';
-import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import { OVERVIEW_INITIAL_NUMBER_TO_RENDER } from "../../@config/constants";
+import SSICredentialViewItem from "../../components/views/SSICredentialViewItem";
+import SSISwipeRowViewItem from "../../components/views/SSISwipeRowViewItem";
+import { translate } from "../../localization/Localization";
+import { getVerifiableCredential } from "../../services/credentialService";
+import { deleteVerifiableCredential, getVerifiableCredentials } from "../../store/actions/credential.actions";
 import {
   SSIBasicContainerStyled as Container,
   SSIRippleContainerStyled as ItemContainer,
-  SSIStatusBarDarkModeStyled as StatusBar,
-} from '../../styles/components';
-import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgrounds} from '../../styles/colors';
-import {CredentialMapper, ICredential} from '@sphereon/ssi-types';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types/src/types/vc';
+  SSIStatusBarDarkModeStyled as StatusBar
+} from "../../styles/components";
+import {
+  ICredentialSummary,
+  IUser,
+  IUserIdentifier,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList
+} from "../../types";
+import { backgrounds } from "../../styles/colors";
+import { getOriginalVerifiableCredential } from "../../utils/CredentialUtils";
 
 const format = require('string-format');
 
@@ -65,7 +72,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   onItemPress = async (credential: ICredentialSummary): Promise<void> => {
     getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: CredentialMapper.toWrappedVerifiableCredential(vc as W3CVerifiableCredential).original,
+        rawCredential: getOriginalVerifiableCredential(vc),
         credential,
         showActivity: false,
       }),

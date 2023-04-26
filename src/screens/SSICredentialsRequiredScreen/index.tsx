@@ -20,7 +20,7 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
-import {getMatchingUniqueVerifiableCredential} from '../../utils/CredentialUtils';
+import { getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential } from "../../utils/CredentialUtils";
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -34,33 +34,33 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
       const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
-        (vc: UniqueVerifiableCredential) =>
-          CredentialMapper.toWrappedVerifiableCredential(vc.verifiableCredential as OriginalVerifiableCredential).original,
+        (uniqueVC: UniqueVerifiableCredential) =>
+          CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
       );
-      const credentials = new Map<string, Array<UniqueVerifiableCredential>>();
+      const availableVCs = new Map<string, Array<UniqueVerifiableCredential>>();
       presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
         const presentationDefinition = {
           id: inputDescriptor.id,
           input_descriptors: [inputDescriptor],
         };
         const selectResult: SelectResults = pex.selectFrom(presentationDefinition, originalVcs);
-        const matchedCredentials: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
+        const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
           ? selectResult.verifiableCredential
               .map((matchedVC: IVerifiableCredential) => getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC))
               .filter((matchedVC): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
           : [];
-        credentials.set(inputDescriptor.id, matchedCredentials);
+        availableVCs.set(inputDescriptor.id, matchedVCs);
       });
-      setAvailableCredentials(credentials);
+      setAvailableCredentials(availableVCs);
     });
   }, []);
 
   useEffect(() => {
-    const credentials = new Map<string, Array<UniqueVerifiableCredential>>();
+    const selectedVCs = new Map<string, Array<UniqueVerifiableCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) =>
-      credentials.set(inputDescriptor.id, []),
+      selectedVCs.set(inputDescriptor.id, []),
     );
-    setSelectedCredentials(credentials);
+    setSelectedCredentials(selectedVCs);
   }, [presentationDefinition]);
 
   const onDecline = async () => {
@@ -69,18 +69,18 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onSend = async () => {
     const {onSend} = props.route.params;
-    const credentials = getSelectedCredentials();
+    const selectedVCs = getSelectedCredentials();
 
-    await onSend(credentials);
+    await onSend(selectedVCs);
   };
 
   const getSelectedCredentials = (): Array<UniqueVerifiableCredential> => {
-    const credentials: Array<Array<UniqueVerifiableCredential>> = [];
-    for (const vcs of selectedCredentials.values()) {
-      credentials.push(vcs);
+    const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
+    for (const uniqueVCs of selectedVCs.values()) {
+      selectedVCs.push(uniqueVCs);
     }
 
-    return credentials.flat();
+    return selectedVCs.flat();
   };
 
   const isMatchingPresentationDefinition = (): boolean => {
@@ -94,29 +94,28 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     );
   };
 
-  const onItemPress = async (inputDescriptorId: string, credentials: Array<UniqueVerifiableCredential>) => {
+  const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>) => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
-      credentialSelection: credentials.map((uniqueVC: UniqueVerifiableCredential) => {
+      credentialSelection: uniqueVCs.map((uniqueVC: UniqueVerifiableCredential) => {
         const credentialSummary = toCredentialSummary(uniqueVC);
-        const wrappedVC = CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as W3CVerifiableCredential);
         return {
           hash: credentialSummary.hash,
           id: credentialSummary.id,
           credential: credentialSummary,
-          rawCredential: wrappedVC.original,
+          rawCredential: getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
           isSelected: selectedCredentials
             .get(inputDescriptorId)!
             .some(
-              matchedUniqueVC =>
-                matchedUniqueVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
-                matchedUniqueVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
+              matchedVC =>
+                matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
+                matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
             ),
         };
       }),
       // TODO move this to a function, would be nicer
       onSelect: async (hashes: Array<string>) => {
-        const selectVCs = availableCredentials.get(inputDescriptorId)!.filter(vc => hashes.includes(vc.hash));
-        selectedCredentials.set(inputDescriptorId, selectVCs);
+        const selectedVCs = availableCredentials.get(inputDescriptorId)!.filter(vc => hashes.includes(vc.hash));
+        selectedCredentials.set(inputDescriptorId, selectedVCs);
         const newSelection = new Map<string, Array<UniqueVerifiableCredential>>();
         for (const [key, value] of selectedCredentials) {
           newSelection.set(key, value);
@@ -151,7 +150,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
                   // To wrapped VC first to get the actual original as Veramo stores JWT credentials not as strings
                   .map(
                     uniqueVC =>
-                      CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
+                      getOriginalVerifiableCredential(uniqueVC.verifiableCredential)
                   ),
               ).areRequiredCredentialsPresent === Status.INFO
             : false

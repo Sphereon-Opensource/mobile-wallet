@@ -1,11 +1,10 @@
-import {ICredential} from '@sphereon/ssi-types';
+import { ICredential } from "@sphereon/ssi-types";
 
-import {ICredentialDetailsRow, ICredentialSummary} from '../../types';
-import {getCredentialStatus, translateCorrelationIdToName} from '../CredentialUtils';
-import {EPOCH_MILLISECONDS} from '../DateUtils';
-import {sha256} from 'did-jwt/lib/Digest';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
-import * as u8a from 'uint8arrays';
+import { ICredentialDetailsRow, ICredentialSummary } from "../../types";
+import { getCredentialStatus, translateCorrelationIdToName } from "../CredentialUtils";
+import { EPOCH_MILLISECONDS } from "../DateUtils";
+import { UniqueVerifiableCredential, VerifiableCredential } from "@veramo/core";
+import { computeEntryHash } from "@veramo/utils";
 
 const {v4: uuidv4} = require('uuid');
 
@@ -67,7 +66,7 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
 export function toNonPersistedCredentialSummary(verifiableCredential: ICredential | VerifiableCredential): ICredentialSummary {
   return toCredentialSummary({
     verifiableCredential: verifiableCredential as VerifiableCredential,
-    hash: verifiableCredential.id ?? u8a.toString(sha256(JSON.stringify(verifiableCredential)), 'base16'),
+    hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
   });
 }
 
