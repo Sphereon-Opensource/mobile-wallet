@@ -10,7 +10,7 @@ import {
   IDidAuthConfig,
   IIdentity,
 } from '@sphereon/ssi-sdk-data-store';
-import {CredentialMapper, W3CVerifiableCredential} from '@sphereon/ssi-types';
+import { CredentialMapper, OriginalVerifiableCredential, W3CVerifiableCredential } from "@sphereon/ssi-types";
 import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
 import {VerifiableCredential} from '@veramo/core';
 import Debug from 'debug';
@@ -189,7 +189,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
 
-  const onSend = async (credentials: Array<VerifiableCredential>): Promise<void> => {
+  const onSend = async (credentials: Array<OriginalVerifiableCredential>): Promise<void> => {
     siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
       sessionId,
       verifiableCredentialsWithDefinition: [
@@ -216,7 +216,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     verifier,
     // TODO currently only supporting 1 presentation definition
     presentationDefinition: request.presentationDefinitions[0].definition,
-    onSend: async (credentials: Array<VerifiableCredential>) => authenticate(() => onSend(credentials)),
+    onSend: async (credentials: Array<OriginalVerifiableCredential>) => authenticate(() => onSend(credentials)),
   });
 };
 

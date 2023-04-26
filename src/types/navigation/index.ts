@@ -43,7 +43,7 @@ export interface ICredentialsSelectProps {
 export interface ICredentialsRequiredProps {
   verifier: string;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
-  onSend: (credentials: Array<UniqueVerifiableCredential>) => Promise<void>;
+  onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {

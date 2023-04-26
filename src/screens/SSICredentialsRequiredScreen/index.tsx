@@ -71,12 +71,12 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     const {onSend} = props.route.params;
     const selectedVCs = getSelectedCredentials();
 
-    await onSend(selectedVCs);
+    await onSend(selectedVCs.map(uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)));
   };
 
   const getSelectedCredentials = (): Array<UniqueVerifiableCredential> => {
     const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
-    for (const uniqueVCs of selectedVCs.values()) {
+    for (const uniqueVCs of selectedCredentials.values()) {
       selectedVCs.push(uniqueVCs);
     }
 
@@ -88,7 +88,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       pex.evaluateCredentials(
         presentationDefinition,
         getSelectedCredentials().map(
-          uniqueVC => CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as W3CVerifiableCredential).original,
+          uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
         ),
       ).areRequiredCredentialsPresent === Status.INFO
     );
