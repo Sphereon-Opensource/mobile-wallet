@@ -8,7 +8,7 @@ import {backgrounds, fonts, highLightGradients} from '../../../styles/colors';
 import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container,
-  SSINavigationBarSafeAreaContainerStyled
+  SSINavigationBarSafeAreaContainerStyled as SafeAreaContainer
 } from '../../../styles/components';
 import {NavigationBarRoutesEnum} from '../../../types';
 import SSIBellIcon from '../../assets/icons/SSIBellIcon';
@@ -47,7 +47,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
 
   render() {
     return !this.state.keyboardVisible ? (
-        <SSINavigationBarSafeAreaContainerStyled>
+        <SafeAreaContainer>
           <SafeAreaView edges={['bottom']} >
             <Container>
               {this.props.state.routes.map((route, index: number) => {
@@ -87,7 +87,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
               })}
             </Container>
           </SafeAreaView>
-        </SSINavigationBarSafeAreaContainerStyled>
+        </SafeAreaContainer>
     ) : null;
   }
 }
