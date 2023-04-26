@@ -8,7 +8,7 @@ import {
   getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
   removeContact,
-  createContact as storeContact
+  createContact as storeContact,
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {

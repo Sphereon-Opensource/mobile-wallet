@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {TouchableOpacity,ViewStyle} from 'react-native';
+import {TouchableOpacity, ViewStyle} from 'react-native';
 
 import {
   SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
@@ -16,13 +16,13 @@ import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
-  id: string
-  title: string
-  issuer?: string
-  isSelected: boolean
-  image?: string // TODO WAL-302 Support passing in storage location
-  style?: ViewStyle
-  onLogoPress: () => Promise<void>
+  id: string;
+  title: string;
+  issuer?: string;
+  isSelected: boolean;
+  image?: string; // TODO WAL-302 Support passing in storage location
+  style?: ViewStyle;
+  onLogoPress: () => Promise<void>;
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {

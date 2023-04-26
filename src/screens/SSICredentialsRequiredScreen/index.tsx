@@ -20,7 +20,7 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
-import { getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential } from "../../utils/CredentialUtils";
+import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -87,9 +87,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     return (
       pex.evaluateCredentials(
         presentationDefinition,
-        getSelectedCredentials().map(
-          uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
-        ),
+        getSelectedCredentials().map(uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
       ).areRequiredCredentialsPresent === Status.INFO
     );
   };
@@ -145,12 +143,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
                   id: itemInfo.item.id,
                   input_descriptors: [itemInfo.item],
                 },
-                selectedCredentials
-                  .get(itemInfo.item.id)!
-                  .map(
-                    uniqueVC =>
-                      getOriginalVerifiableCredential(uniqueVC.verifiableCredential)
-                  ),
+                selectedCredentials.get(itemInfo.item.id)!.map(uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
               ).areRequiredCredentialsPresent === Status.INFO
             : false
         }

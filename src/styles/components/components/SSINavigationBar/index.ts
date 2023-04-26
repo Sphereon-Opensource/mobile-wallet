@@ -19,5 +19,5 @@ export const SSINavigationBarContainerStyled = styled(SSIFlexDirectionRowViewSty
 `;
 
 export const SSINavigationBarSafeAreaContainerStyled = styled.View`
-  background-color: ${backgrounds.primaryDark}
+  background-color: ${backgrounds.primaryDark};
 `;

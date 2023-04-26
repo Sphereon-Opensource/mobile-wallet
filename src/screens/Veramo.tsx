@@ -1,14 +1,14 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { IContact } from "@sphereon/ssi-sdk-data-store";
-import { CredentialMapper, OriginalVerifiableCredential } from "@sphereon/ssi-types";
-import { IIdentifier } from "@veramo/core";
-import React, { PureComponent } from "react";
-import { Button, Text, View } from "react-native";
-import { connect } from "react-redux";
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {IContact} from '@sphereon/ssi-sdk-data-store';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {IIdentifier} from '@veramo/core';
+import React, {PureComponent} from 'react';
+import {Button, Text, View} from 'react-native';
+import {connect} from 'react-redux';
 
-import { createIdentifier, getIdentifiers } from "../services/identityService";
-import { CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList } from "../types";
-import { toNonPersistedCredentialSummary } from "../utils/mappers/CredentialMapper";
+import {createIdentifier, getIdentifiers} from '../services/identityService';
+import {CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList} from '../types';
+import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper';
 
 interface IProps extends NativeStackScreenProps<StackParamList, 'Veramo'> {
   contacts: Array<IContact>;
