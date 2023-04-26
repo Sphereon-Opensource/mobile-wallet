@@ -65,7 +65,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <TouchableWithoutFeedback onPress={onPress} accessible={false}>
-      <Container showBorder={showBorder}>
+      <Container style={{paddingTop: useSafeAreaInsets().top}} showBorder={showBorder}>
         <Row>
           <LeftColumn>
             {showBackButton && (
