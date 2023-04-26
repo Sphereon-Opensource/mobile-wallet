@@ -58,7 +58,9 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
       }}>
       <Container>
         {value ? (
-          <SelectedContainer style={{backgroundColor: selectedColor, ...(label && {marginRight: 10}), ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}} />
+          <SelectedContainer
+            style={{backgroundColor: selectedColor, ...(label && {marginRight: 10}), ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}
+          />
         ) : (
           <UnselectedContainer
             style={{backgroundColor, ...(label && {marginRight: 10}), borderColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}

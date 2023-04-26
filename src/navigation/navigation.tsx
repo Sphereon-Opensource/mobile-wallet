@@ -541,7 +541,7 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      { userState.users.size === 0 || onboardingState.loading ? (
+      {userState.users.size === 0 || onboardingState.loading ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
       ) : !userState.activeUser ? (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />

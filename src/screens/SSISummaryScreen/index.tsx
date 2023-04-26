@@ -8,13 +8,7 @@ import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
-import {
-  ICredentialDetailsRow,
-  ITabViewRoute,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList
-} from '../../types'
+import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {IOnboardingState} from '../../types/store/onboarding.types';
 
 const {v4: uuidv4} = require('uuid');
@@ -52,9 +46,9 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
   };
 
   onAccept = async (): Promise<void> => {
-    const { finalizeOnboarding, navigation } = this.props
+    const {finalizeOnboarding, navigation} = this.props;
 
-    navigation.navigate(ScreenRoutesEnum.LOADING, { message: translate('action_onboarding_setup_message') })
+    navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_onboarding_setup_message')});
     finalizeOnboarding();
   };
 
@@ -77,7 +71,7 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
           primaryButton={{
             caption: translate('onboard_summary_button_caption'),
             onPress: this.onAccept,
-            disabled: onboardingState.loading
+            disabled: onboardingState.loading,
           }}
         />
       </Container>
