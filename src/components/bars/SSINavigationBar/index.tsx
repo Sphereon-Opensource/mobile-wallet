@@ -5,7 +5,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
 import {backgrounds, fonts, highLightGradients} from '../../../styles/colors';
-import {SSINavigationBarButtonStyled as Button, SSINavigationBarContainerStyled as Container} from '../../../styles/components';
+import {
+  SSINavigationBarButtonStyled as Button,
+  SSINavigationBarContainerStyled as Container,
+  SSINavigationBarSafeAreaContainerStyled
+} from '../../../styles/components';
 import {NavigationBarRoutesEnum} from '../../../types';
 import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
@@ -43,7 +47,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
 
   render() {
     return !this.state.keyboardVisible ? (
-        <View style={{backgroundColor: backgrounds.primaryDark}}>
+        <SSINavigationBarSafeAreaContainerStyled>
           <SafeAreaView edges={['bottom']} >
             <Container>
               {this.props.state.routes.map((route, index: number) => {
@@ -83,7 +87,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
               })}
             </Container>
           </SafeAreaView>
-        </View>
+        </SSINavigationBarSafeAreaContainerStyled>
     ) : null;
   }
 }
