@@ -4,8 +4,12 @@ import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
-import {fonts, highLightGradients} from '../../../styles/colors';
-import {SSINavigationBarButtonStyled as Button, SSINavigationBarContainerStyled as Container} from '../../../styles/components';
+import {backgrounds, fonts, highLightGradients} from '../../../styles/colors';
+import {
+  SSINavigationBarButtonStyled as Button,
+  SSINavigationBarContainerStyled as Container,
+  SSINavigationBarSafeAreaContainerStyled as SafeAreaContainer
+} from '../../../styles/components';
 import {NavigationBarRoutesEnum} from '../../../types';
 import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
@@ -43,45 +47,47 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
 
   render() {
     return !this.state.keyboardVisible ? (
-      <SafeAreaView edges={['bottom']}>
-        <Container>
-          {this.props.state.routes.map((route, index: number) => {
-            const {options} = this.props.descriptors[route.key];
-            const isFocused = this.props.state.index === index;
+        <SafeAreaContainer>
+          <SafeAreaView edges={['bottom']} >
+            <Container>
+              {this.props.state.routes.map((route, index: number) => {
+                const {options} = this.props.descriptors[route.key];
+                const isFocused = this.props.state.index === index;
 
-            const onPress = () => {
-              const event = this.props.navigation.emit({
-                type: 'tabPress',
-                target: route.key,
-                canPreventDefault: true,
-              });
+                const onPress = () => {
+                  const event = this.props.navigation.emit({
+                    type: 'tabPress',
+                    target: route.key,
+                    canPreventDefault: true,
+                  });
 
-              if (!isFocused && !event.defaultPrevented) {
-                // The `merge: true` option makes sure that the params inside the tab screen are preserved
-                this.props.navigation.navigate(route.name, {merge: true});
-              }
-            };
+                  if (!isFocused && !event.defaultPrevented) {
+                    // The `merge: true` option makes sure that the params inside the tab screen are preserved
+                    this.props.navigation.navigate(route.name, {merge: true});
+                  }
+                };
 
-            return (
-              <Button
-                key={route.key}
-                accessibilityRole="button"
-                accessibilityState={isFocused ? {selected: true} : {}}
-                accessibilityLabel={options.tabBarAccessibilityLabel}
-                testID={options.tabBarTestID}
-                onPress={onPress}
-                hitSlop={{
-                  top: HIT_SLOP_DISTANCE,
-                  bottom: HIT_SLOP_DISTANCE,
-                  left: HIT_SLOP_DISTANCE,
-                  right: HIT_SLOP_DISTANCE,
-                }}>
-                {getNavigationIcon(route.name, isFocused)}
-              </Button>
-            );
-          })}
-        </Container>
-      </SafeAreaView>
+                return (
+                  <Button
+                    key={route.key}
+                    accessibilityRole="button"
+                    accessibilityState={isFocused ? {selected: true} : {}}
+                    accessibilityLabel={options.tabBarAccessibilityLabel}
+                    testID={options.tabBarTestID}
+                    onPress={onPress}
+                    hitSlop={{
+                      top: HIT_SLOP_DISTANCE,
+                      bottom: HIT_SLOP_DISTANCE,
+                      left: HIT_SLOP_DISTANCE,
+                      right: HIT_SLOP_DISTANCE,
+                    }}>
+                    {getNavigationIcon(route.name, isFocused)}
+                  </Button>
+                );
+              })}
+            </Container>
+          </SafeAreaView>
+        </SafeAreaContainer>
     ) : null;
   }
 }
