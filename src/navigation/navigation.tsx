@@ -21,11 +21,12 @@ import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScr
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen';
 import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
 import SSIErrorScreen from '../screens/SSIErrorScreen';
+import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen';
 import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen';
-import SSIQRReader from '../screens/SSIQRReaderScreen';
+import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
@@ -249,7 +250,7 @@ const QRStack = (): JSX.Element => {
       }}>
       <Stack.Screen
         name={ScreenRoutesEnum.QR_READER}
-        component={SSIQRReader}
+        component={SSIQRReaderScreen}
         options={{
           headerShown: false,
         }}
@@ -496,6 +497,13 @@ const OnboardingStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.LOADING}
+        component={SSILoadingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}
         component={SSIPopupModal}
         options={{
@@ -534,6 +542,24 @@ const AuthenticationStack = (): JSX.Element => {
   );
 };
 
+// const LoadingStack = (): JSX.Element => {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName={ScreenRoutesEnum.LOADING}
+//       screenOptions={{
+//         animation: 'none',
+//       }}>
+//       <Stack.Screen
+//         name={ScreenRoutesEnum.LOADING}
+//         component={SSILoadingScreen}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+//     </Stack.Navigator>
+//   );
+// };
+
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
@@ -548,9 +574,9 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      {userState.users.size === 0 ? (
+      { userState.users.size === 0 || onboardingState.loading ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : !userState.activeUser && !onboardingState.firstName ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
+      ) : !userState.activeUser ? (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

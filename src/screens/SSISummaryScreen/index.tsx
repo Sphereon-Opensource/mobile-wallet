@@ -8,8 +8,16 @@ import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
-import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {
+  ICredentialDetailsRow,
+  ITabViewRoute,
+  NavigationBarRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList
+} from '../../types'
 import {IOnboardingState} from '../../types/store/onboarding.types';
+import RootNavigation from '../../navigation/rootNavigation'
 
 const {v4: uuidv4} = require('uuid');
 
@@ -46,7 +54,9 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
   };
 
   onAccept = async (): Promise<void> => {
-    this.props.finalizeOnboarding();
+    const { finalizeOnboarding, navigation } = this.props
+    navigation.navigate(ScreenRoutesEnum.LOADING, { message: 'Setting up wallet...' }) // TODO translation
+    finalizeOnboarding();
   };
 
   render() {

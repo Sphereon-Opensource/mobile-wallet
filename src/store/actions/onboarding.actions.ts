@@ -8,7 +8,11 @@ import {
 } from '../../services/credentialService'
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import { IUser, RootState, SupportedDidMethodEnum } from '../../types'
-import {CLEAR_ONBOARDING, SET_PERSONAL_DATA_SUCCESS} from '../../types/store/onboarding.action.types';
+import {
+  CLEAR_ONBOARDING,
+  ONBOARDING_LOADING,
+  SET_PERSONAL_DATA_SUCCESS
+} from '../../types/store/onboarding.action.types'
 import { IOnboardingState, ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
 
 import {createUser, login} from './user.actions'
@@ -23,6 +27,7 @@ export const setPersonalData = (args: ISetPersonalDataActionArgs): ThunkAction<P
 
 export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    dispatch({type: ONBOARDING_LOADING});
     getOrCreatePrimaryIdentifier({method: SupportedDidMethodEnum.DID_KEY}).then((identifier: IIdentifier) => {
       const onboardingState: IOnboardingState = getState().onboarding;
       const user = {

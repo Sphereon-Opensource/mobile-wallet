@@ -38,7 +38,13 @@ export type StackParamList = {
   OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps
   CredentialsSelect: ICredentialsSelectProps
+  Loading: ILoadingProps;
+  LoadingStack: Record<string, never>;
 };
+
+export interface ILoadingProps {
+  message: string
+}
 
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>
@@ -126,6 +132,7 @@ export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
   AUTHENTICATION = 'Authentication',
   MAIN = 'Main',
+  LOADING = 'LoadingStack',
 }
 
 export enum MainRoutesEnum {
@@ -161,4 +168,5 @@ export enum ScreenRoutesEnum {
   ONBOARDING_SUMMARY = 'OnboardingSummary',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  LOADING = 'Loading'
 }
