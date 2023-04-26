@@ -22,23 +22,19 @@ export interface Props {
   isSelected: boolean
   image?: string // TODO WAL-302 Support passing in storage location
   style?: ViewStyle
-}
-
-const onShortPress= async (props: Props): Promise<boolean> => {
-  props.isSelected = !props.isSelected
-  return props.isSelected
+  onLogoPress: () => Promise<void>
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title, issuer} = props;
+  const {image, style, title, issuer, onLogoPress} = props;
 
   return (
     <Container>
       <LogoContainer>
         <LogoOuterContainer>
           <LogoCheckboxContainer>
-            <TouchableOpacity onPress={() => onShortPress(props)}>
-              <SSICredentialLogo image={image}/>
+            <TouchableOpacity onPress={onLogoPress}>
+              <SSICredentialLogo image={image} />
             </TouchableOpacity>
             <CheckboxContainer>
               <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
