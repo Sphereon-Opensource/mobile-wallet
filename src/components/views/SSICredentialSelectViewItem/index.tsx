@@ -22,18 +22,22 @@ export interface Props {
   isSelected: boolean
   image?: string // TODO WAL-302 Support passing in storage location
   style?: ViewStyle
-  onLogoPress: () => Promise<void> // TODO fix event issue
+}
+
+const onShortPress= async (props: Props): Promise<boolean> => {
+  props.isSelected = !props.isSelected
+  return props.isSelected
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title, issuer, onLogoPress} = props;
+  const {image, style, title, issuer} = props;
 
   return (
     <Container>
       <LogoContainer>
         <LogoOuterContainer>
           <LogoCheckboxContainer>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onShortPress(props)}>
               <SSICredentialLogo image={image}/>
             </TouchableOpacity>
             <CheckboxContainer>
