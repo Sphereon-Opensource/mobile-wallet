@@ -1,4 +1,4 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
+import { PresentationDefinitionWithLocation, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop'
 import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
 import {
   ConnectionTypeEnum,
@@ -51,9 +51,6 @@ import { getContacts } from './contactService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { translateCorrelationIdToName } from '../utils/CredentialUtils'
-import {
-  PresentationDefinitionWithLocation
-} from '@sphereon/did-auth-siop/dist/main/authorization-response'
 
 const { v4: uuidv4 } = require('uuid')
 const format = require('string-format')
@@ -209,31 +206,49 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     await setTimeout(async () => {
       const request: VerifiedAuthorizationRequest = await siopGetRequest({...config, id: uuidv4()});
 
-      const contacts = await getContacts({
-        filter: [{
-          identities: {
-            identifier: {
-              correlationId: url.hostname,
+      const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id')
+      const correlationId = clientId
+        ? clientId.startsWith('did:')
+          ? clientId
+          : `${new URL(clientId).protocol}//${new URL(clientId).hostname}`
+        : undefined
+      if (correlationId) {
+        const contacts = await getContacts({
+          filter: [{
+            identities: {
+              identifier: {
+                correlationId: url.hostname,
+              }
             }
+          }]
+        })
+        if (contacts.length === 1) {
+          const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
+          if (!hasIdentity) {
+            const identity: IBasicIdentity = {
+              alias: correlationId,
+              roles: [IdentityRoleEnum.VERIFIER],
+              identifier: {
+                type: correlationId.startsWith('did:') ? CorrelationIdentifierEnum.DID : CorrelationIdentifierEnum.URL,
+                correlationId
+              },
+              ...(!correlationId.startsWith('did:') && {
+                connection: {
+                  type: ConnectionTypeEnum.SIOPv2,
+                  config: {
+                    ...config,
+                    redirectUrl: correlationId
+                  }
+                }
+              })
+            }
+            store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
           }
-        }]
-      })
-      if (contacts.length === 1) {
-        const correlationId = request.payload.client_id
-        const identity: IBasicIdentity = {
-          alias: correlationId,
-          roles: [IdentityRoleEnum.VERIFIER],
-          identifier: {
-            type: CorrelationIdentifierEnum.DID,
-            correlationId
-          }
-        }
-        const hasIdentity = contacts.find((contact: IContact) => contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId))
-        if (!hasIdentity) {
-          store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }))
         }
       }
 
+      // TODO SIOPv2 and OID4VP are separate. In other words SIOP doesn't require OID4VP. This means that presentation definitions are optional.
+      // TODO In that case we should skip the required credentials and send the response
       if (!request.presentationDefinitions || request.presentationDefinitions.length === 0) {
         return Promise.reject(Error('No presentation definitions present'))
       }
