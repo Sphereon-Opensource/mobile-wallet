@@ -18,6 +18,7 @@ import { navigationRef } from './src/navigation/rootNavigation'
 import store from './src/store'
 import { getUsers } from './src/store/actions/user.actions'
 import { backgrounds } from './src/styles/colors'
+import { PlatformsEnum } from "./src/types";
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -59,7 +60,7 @@ export default function App() {
       try {
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true)
-        if (Platform.OS === 'android') {
+        if (Platform.OS === PlatformsEnum.ANDROID) {
           StatusBar.setBackgroundColor(backgrounds.primaryDark)
           StatusBar.setTranslucent(false)
         }
