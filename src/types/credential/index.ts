@@ -1,7 +1,8 @@
 import {CredentialMetadata} from '@sphereon/openid4vci-client';
 
 import {LabelStatus} from '../component';
-import { VerifiableCredential } from '@veramo/core'
+import {VerifiableCredential} from '@veramo/core';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 export enum CredentialStatusEnum {
   VALID = 'valid',
@@ -20,7 +21,8 @@ export enum CredentialIssuanceStateEnum {
 
 // TODO create proper interface for credential summary / info
 export interface ICredentialSummary {
-  id: string; // TODO this is the hash of the vc. maybe call this hash to avoid confusion
+  hash: string;
+  id?: string; // The id of the credential (optional according to VCDM)
   title: string;
   issuer: IIssuerSummary;
   credentialStatus: CredentialStatusEnum;
@@ -32,7 +34,7 @@ export interface ICredentialSummary {
 // TODO create proper interface for credential summary / info
 export interface IIssuerSummary {
   name: string;
-  alias: string
+  alias: string;
   image?: string;
   url?: string;
 }
@@ -57,8 +59,9 @@ export interface ICredentialMetadata extends CredentialMetadata {
 }
 
 export interface ICredentialSelection {
-  id: string
-  credential: ICredentialSummary
-  rawCredential: VerifiableCredential
+  hash: string;
+  id?: string;
+  credential: ICredentialSummary;
+  rawCredential: OriginalVerifiableCredential;
   isSelected: boolean;
 }

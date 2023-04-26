@@ -26,12 +26,12 @@ export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootSta
     dispatch({type: USERS_LOADING});
     return userCreate(args)
       .then((user: IUser) => {
-        dispatch({type: CREATE_USER_SUCCESS, payload: user})
-        return user
+        dispatch({type: CREATE_USER_SUCCESS, payload: user});
+        return user;
       })
       .catch((error: Error) => {
-        dispatch({type: CREATE_USER_FAILED})
-        return Promise.reject(error)
+        dispatch({type: CREATE_USER_FAILED});
+        return Promise.reject(error);
       });
   };
 };
@@ -73,23 +73,23 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
-          const maxWaitTime = 5000
+          const maxWaitTime = 5000;
           dispatch({type: LOGIN_SUCCESS, payload: user});
           let startTime = Date.now();
           let userState: IUserState = getState().user;
           while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {
-            await new Promise((resolve) => setTimeout(resolve, 50));
+            await new Promise(resolve => setTimeout(resolve, 50));
             userState = getState().user;
           }
-          await dispatch(getContacts())
+          await dispatch(getContacts());
           startTime = Date.now();
           let contactState: IContactState = getState().contact;
           // this will work because we generate a contact from the user so there is always 1 present
           while (contactState.contacts.length === 0 && Date.now() - startTime < maxWaitTime) {
-            await new Promise((resolve) => setTimeout(resolve, 50));
+            await new Promise(resolve => setTimeout(resolve, 50));
             contactState = getState().contact;
           }
-          await dispatch(getVerifiableCredentials())
+          await dispatch(getVerifiableCredentials());
         } else {
           dispatch({type: LOGIN_FAILED});
         }

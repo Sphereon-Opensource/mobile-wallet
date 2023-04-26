@@ -13,7 +13,7 @@ import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toCredentialSummary, toNonPersistedCredentialSummary} from '../../utils/mappers/CredentialMapper';
 
 const debug = Debug(`${APP_ID}:IntentHandler`);
 
@@ -88,7 +88,7 @@ class IntentHandler {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0];
         if (!vc) {
-          showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('intent_share_file_unable_to_receive_message') });
+          showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('intent_share_file_unable_to_receive_message')});
           return;
         }
 
@@ -100,7 +100,7 @@ class IntentHandler {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential: vc,
-            credential: toCredentialSummary(vc as ICredential),
+            credential: toNonPersistedCredentialSummary(vc),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async () =>
@@ -110,8 +110,8 @@ class IntentHandler {
                       screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                     }),
                   )
-                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_offer_accepted_toast'), showBadge: false }))
-                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message })),
+                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('credential_offer_accepted_toast'), showBadge: false}))
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
             },
             secondaryAction: {
               caption: translate('action_decline_label'),
@@ -123,7 +123,7 @@ class IntentHandler {
           },
         });
       })
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
+      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
   }
 }
 

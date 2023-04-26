@@ -1,29 +1,29 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import React, { FC } from 'react'
-import { PIN_CODE_LENGTH } from '../../@config/constants'
-import SSIPinCode from '../../components/pinCodes/SSIPinCode'
-import { translate } from '../../localization/Localization'
-import { getPin } from '../../services/storageService'
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC} from 'react';
+import {PIN_CODE_LENGTH} from '../../@config/constants';
+import SSIPinCode from '../../components/pinCodes/SSIPinCode';
+import {translate} from '../../localization/Localization';
+import {getPin} from '../../services/storageService';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
-  SSILockScreenPinCodeContainerStyled as PinCodeContainer
-} from '../../styles/components'
-import { ScreenRoutesEnum, StackParamList } from '../../types'
+  SSILockScreenPinCodeContainerStyled as PinCodeContainer,
+} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
 // TODO This screen should be extended to do pin code or biometrics authentication
 const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
   const onVerification = async (value: string): Promise<void> => {
-    const { onAuthenticate } = props.route.params
+    const {onAuthenticate} = props.route.params;
 
     // TODO We are currently only supporting a single user right now
-    if (value !== await getPin()) {
-      return Promise.reject('Invalid pin code')
+    if (value !== (await getPin())) {
+      return Promise.reject('Invalid pin code');
     }
-    await onAuthenticate()
-  }
+    await onAuthenticate();
+  };
 
   return (
     <Container>
@@ -38,7 +38,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
         />
       </PinCodeContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default SSILockScreen
+export default SSILockScreen;

@@ -1,21 +1,18 @@
-import { IIdentifier, VerifiableCredential } from '@veramo/core'
+import {IIdentifier, VerifiableCredential} from '@veramo/core';
 import {Action, CombinedState} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
-import {
-  createVerifiableCredential as createCredential,
-  storeVerifiableCredential as storeCredential
-} from '../../services/credentialService'
+import {createVerifiableCredential as createCredential, storeVerifiableCredential as storeCredential} from '../../services/credentialService';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
-import { IUser, RootState, SupportedDidMethodEnum } from '../../types'
+import {IUser, RootState, SupportedDidMethodEnum} from '../../types';
 import {
   CLEAR_ONBOARDING,
   ONBOARDING_LOADING,
   SET_PERSONAL_DATA_SUCCESS
 } from '../../types/store/onboarding.action.types'
-import { IOnboardingState, ISetPersonalDataActionArgs } from '../../types/store/onboarding.types'
+import {IOnboardingState, ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
 
-import {createUser, login} from './user.actions'
+import {createUser, login} from './user.actions';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -56,8 +53,8 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
           },
           proofFormat: 'lds',
         })
-        .then((vc: VerifiableCredential) => storeCredential({ vc }))
-        .then(async () => dispatch(login(user.id)).then(() => dispatch({ type: CLEAR_ONBOARDING })))
+          .then((vc: VerifiableCredential) => storeCredential({vc}))
+          .then(async () => dispatch(login(user.id)).then(() => dispatch({type: CLEAR_ONBOARDING})));
       });
     });
   };
