@@ -11,8 +11,8 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {deleteContact, getContacts, getUserContact} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {translate} from "../../localization/Localization";
-import {backgrounds} from "../../styles/colors";
+import {translate} from '../../localization/Localization';
+import {backgrounds} from '../../styles/colors';
 
 const format = require('string-format');
 
@@ -53,41 +53,32 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
         onPress: async () => this.props.navigation.goBack(),
       },
     });
-  }
+  };
 
   onItemPress = async (contact: IContact): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact});
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => {
-    const contactItem = (
-      <SSIContactViewItem
-        name={itemInfo.item.alias}
-        uri={itemInfo.item.uri}
-        roles={itemInfo.item.roles}
-      />
-    )
+    const contactItem = <SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
 
-    return (itemInfo.item.id === this.props.activeUser.id)
-      ? (
-        <ItemContainer
-          style={{
-            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-          }}
-          onPress={() => this.onItemPress(itemInfo.item)}
-        >
-          {contactItem}
-        </ItemContainer>
-      )
-      : (
-        <SSISwipeRowViewItem
-          listIndex={itemInfo.index}
-          viewItem={contactItem}
-          onPress={() => this.onItemPress(itemInfo.item)}
-          onDelete={() => this.onDelete(itemInfo.item)}
-        />
-      );
-  }
+    return itemInfo.item.id === this.props.activeUser.id ? (
+      <ItemContainer
+        style={{
+          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+        }}
+        onPress={() => this.onItemPress(itemInfo.item)}>
+        {contactItem}
+      </ItemContainer>
+    ) : (
+      <SSISwipeRowViewItem
+        listIndex={itemInfo.index}
+        viewItem={contactItem}
+        onPress={() => this.onItemPress(itemInfo.item)}
+        onDelete={() => this.onDelete(itemInfo.item)}
+      />
+    );
+  };
 
   render() {
     return (
@@ -118,7 +109,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const mapStateToProps = (state: RootState) => {
   return {
     contacts: state.contact.contacts,
-    activeUser: state.user.activeUser!
+    activeUser: state.user.activeUser!,
   };
 };
 

@@ -1,11 +1,11 @@
-import Debug from 'debug'
-import { APP_ID } from '../@config/constants'
-import { BasicUser, BasicUserIdentifier, IUser } from '../types'
-import { getUsers as getUsersFromStorage, storeUser } from './storageService'
+import Debug from 'debug';
+import {APP_ID} from '../@config/constants';
+import {BasicUser, BasicUserIdentifier, IUser} from '../types';
+import {getUsers as getUsersFromStorage, storeUser} from './storageService';
 
-const debug = Debug(`${APP_ID}:userService`)
+const debug = Debug(`${APP_ID}:userService`);
 
-const { v4: uuidv4 } = require('uuid')
+const {v4: uuidv4} = require('uuid');
 
 export const createUser = async (args: BasicUser): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`);

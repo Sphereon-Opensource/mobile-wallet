@@ -15,7 +15,7 @@ import {
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView
+  SSIFullHeightScrollViewContainer as SSIScrollView,
 } from '../../styles/components';
 import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {ICreateContactArgs} from '../../types/store/contact.action.types';
@@ -80,7 +80,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   onValueChange = async (isChecked: boolean): Promise<void> => {
     this.setState({hasConsent: isChecked});
     if (!isChecked) {
-      showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('contact_add_no_consent_toast') });
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('contact_add_no_consent_toast')});
     }
   };
 
@@ -96,7 +96,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       secondaryButton: {
         caption: translate('action_cancel_label'),
         // TODO WAL-541 fix navigation hierarchy
-        onPress: async () => this.props.navigation.navigate(MainRoutesEnum.HOME, {})
+        onPress: async () => this.props.navigation.navigate(MainRoutesEnum.HOME, {}),
       },
     });
   };
@@ -108,33 +108,32 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
           <SSIScrollView>
-          <StatusBar />
-          <TextInputContainer>
-            <SSITextInputField
-              autoFocus={true}
-              label={translate('contact_name_label')}
-              maxLength={CONTACT_ALIAS_MAX_LENGTH}
-              onChangeText={this.onChangeText}
-              onEndEditing={this.onValidate}
-              placeholderValue={translate('contact_name_placeholder')}
+            <StatusBar />
+            <TextInputContainer>
+              <SSITextInputField
+                autoFocus={true}
+                label={translate('contact_name_label')}
+                maxLength={CONTACT_ALIAS_MAX_LENGTH}
+                onChangeText={this.onChangeText}
+                onEndEditing={this.onValidate}
+                placeholderValue={translate('contact_name_placeholder')}
+              />
+            </TextInputContainer>
+            <DisclaimerContainer>
+              <SSICheckbox initialValue label={translate('contact_add_disclaimer')} onValueChange={this.onValueChange} />
+            </DisclaimerContainer>
+            <SSIButtonsContainer
+              secondaryButton={{
+                caption: translate('action_decline_label'),
+                onPress: this.onDecline,
+              }}
+              primaryButton={{
+                caption: translate('action_accept_label'),
+                disabled: !hasConsent || contactAlias.length === 0,
+                onPress: this.onCreate,
+              }}
             />
-          </TextInputContainer>
-          <DisclaimerContainer>
-            <SSICheckbox initialValue label={translate('contact_add_disclaimer')} onValueChange={this.onValueChange} />
-          </DisclaimerContainer>
-          <SSIButtonsContainer
-            secondaryButton={{
-              caption: translate('action_decline_label'),
-              onPress: this.onDecline,
-            }}
-            primaryButton={{
-              caption: translate('action_accept_label'),
-              disabled: !hasConsent || contactAlias.length === 0,
-              onPress: this.onCreate,
-            }}
-          />
           </SSIScrollView>
-
         </Container>
       </TouchableWithoutFeedback>
     );

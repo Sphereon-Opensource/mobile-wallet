@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { TouchableOpacity, ViewStyle } from 'react-native'
+import React, {FC} from 'react';
+import {TouchableOpacity,ViewStyle} from 'react-native';
 
 import {
   SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
@@ -11,7 +11,7 @@ import {
   SSICredentialSelectViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
-} from '../../../styles/components'
+} from '../../../styles/components';
 import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
@@ -45,9 +45,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
       <ContentContainer>
         <ContentTextContainer>
           <CredentialTypeCaption>{title}</CredentialTypeCaption>
-          { issuer &&
-              <IssuerCaption>{issuer}</IssuerCaption>
-          }
+          {issuer && <IssuerCaption>{issuer}</IssuerCaption>}
         </ContentTextContainer>
       </ContentContainer>
     </Container>

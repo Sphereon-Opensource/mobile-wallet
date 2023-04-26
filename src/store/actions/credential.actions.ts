@@ -30,10 +30,7 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
     dispatch({type: CREDENTIALS_LOADING});
     getVerifiableCredentialsFromStorage()
       .then((credentials: Array<UniqueVerifiableCredential>) => {
-        const credentialSummaries = credentials.map((vc: UniqueVerifiableCredential) =>
-          // TODO fix mismatch in types
-          toCredentialSummary(vc.verifiableCredential as ICredential, vc.hash),
-        );
+        const credentialSummaries = credentials.map((uniqueVC: UniqueVerifiableCredential) => toCredentialSummary(uniqueVC));
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
       .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
@@ -43,11 +40,13 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
 export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CREDENTIALS_LOADING});
-    const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential);
-    storeCredential({vc: mappedVc as VerifiableCredential})
+    const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
+    storeCredential({vc: mappedVc})
       .then((hash: string) => {
-        // TODO fix mismatch in types
-        dispatch({type: STORE_CREDENTIAL_SUCCESS, payload: toCredentialSummary(mappedVc as ICredential, hash)});
+        dispatch({
+          type: STORE_CREDENTIAL_SUCCESS,
+          payload: toCredentialSummary({verifiableCredential: mappedVc, hash}),
+        });
       })
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
@@ -60,15 +59,18 @@ export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<
       .then((isDeleted: boolean) => {
         if (isDeleted) {
           dispatch({type: DELETE_CREDENTIAL_SUCCESS, payload: credentialHash});
-          showToast(ToastTypeEnum.TOAST_SUCCESS, { message: translate('credential_deleted_success_toast'), showBadge: false });
+          showToast(ToastTypeEnum.TOAST_SUCCESS, {
+            message: translate('credential_deleted_success_toast'),
+            showBadge: false,
+          });
         } else {
           dispatch({type: DELETE_CREDENTIAL_FAILED});
-          showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('credential_deleted_failed_toast') });
+          showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credential_deleted_failed_toast')});
         }
       })
       .catch(() => {
         dispatch({type: DELETE_CREDENTIAL_FAILED});
-        showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('credential_deleted_failed_toast') });
+        showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credential_deleted_failed_toast')});
       });
   };
 };
@@ -80,7 +82,10 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
       .then((vc: VerifiableCredential) => {
         storeCredential({vc}).then((hash: string) => {
           // TODO fix mismatch in types
-          dispatch({type: CREATE_CREDENTIAL_SUCCESS, payload: toCredentialSummary(vc as ICredential, hash)});
+          dispatch({
+            type: CREATE_CREDENTIAL_SUCCESS,
+            payload: toCredentialSummary({verifiableCredential: vc, hash}),
+          });
         });
       })
       .catch((error: Error) => {
