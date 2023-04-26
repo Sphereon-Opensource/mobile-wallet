@@ -68,6 +68,7 @@ export const SSIRippleContainerStyled = styled(Ripple).attrs({
   // this commit fixes it https://github.com/vjsingh/react-native-material-ripple/commit/12e8f8d872ee780caa94e7de8080701e67dc6a9a
 
   // displayUntilPressOut: false, // TODO currently not implemented in latest version
+  pointerEvents: 'box-none',
   rippleSequential: false,
   rippleColor: highlights.dark,
   rippleCentered: true,
