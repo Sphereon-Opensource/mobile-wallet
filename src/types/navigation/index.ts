@@ -39,7 +39,6 @@ export type StackParamList = {
   CredentialsRequired: ICredentialsRequiredProps
   CredentialsSelect: ICredentialsSelectProps
   Loading: ILoadingProps;
-  LoadingStack: Record<string, never>;
 };
 
 export interface ILoadingProps {
@@ -132,7 +131,6 @@ export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
   AUTHENTICATION = 'Authentication',
   MAIN = 'Main',
-  LOADING = 'LoadingStack',
 }
 
 export enum MainRoutesEnum {

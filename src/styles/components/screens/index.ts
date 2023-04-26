@@ -10,3 +10,4 @@ export * from './SSIPersonalDataScreen';
 export * from './SSINotificationsOverviewScreen';
 export * from './SSICredentialsRequiredScreen';
 export * from './SSILockScreen';
+export * from './SSILoadingScreen';
