@@ -147,7 +147,6 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
                 },
                 selectedCredentials
                   .get(itemInfo.item.id)!
-                  // To wrapped VC first to get the actual original as Veramo stores JWT credentials not as strings
                   .map(
                     uniqueVC =>
                       getOriginalVerifiableCredential(uniqueVC.verifiableCredential)
