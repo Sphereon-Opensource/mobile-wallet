@@ -527,24 +527,6 @@ const AuthenticationStack = (): JSX.Element => {
   );
 };
 
-// const LoadingStack = (): JSX.Element => {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName={ScreenRoutesEnum.LOADING}
-//       screenOptions={{
-//         animation: 'none',
-//       }}>
-//       <Stack.Screen
-//         name={ScreenRoutesEnum.LOADING}
-//         component={SSILoadingScreen}
-//         options={{
-//           headerShown: false,
-//         }}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
-
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
