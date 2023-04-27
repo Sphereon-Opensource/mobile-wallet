@@ -1,38 +1,33 @@
 import React, {FC, ForwardedRef} from 'react';
 import {SwipeRow} from 'react-native-swipe-list-view';
 
-import {backgrounds} from '../../../styles/colors';
 import {
   SSISwipeRowViewItemHiddenItemContainerStyled as HiddenItemContainer,
   SSIRippleContainerStyled as ItemContainer,
 } from '../../../styles/components';
 import SSISwipeDeleteButton from '../../buttons/SSISwipeDeleteButton';
+import {ViewStyle} from 'react-native';
 
 export interface IProps {
   viewItem: JSX.Element;
-  listIndex: number;
   onPress: () => Promise<void>;
-  onDelete?: () => Promise<void>; // In WAL-410 make it mandatory
+  onDelete: () => Promise<void>;
+  style: ViewStyle;
+  hiddenStyle: ViewStyle;
 }
 
 const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: ForwardedRef<unknown>): JSX.Element => {
-  const {listIndex, viewItem, onPress, onDelete} = props;
+  const {viewItem, onPress, onDelete, style, hiddenStyle} = props;
 
   return (
     // TODO fix style issue being an array when using styled component (rightOpenValue / stopRightSwipe)
-    // In WAL-410 remove disableLeftSwipe attribute from the following line.
     // https://github.com/jemise111/react-native-swipe-list-view/issues/614
-    <SwipeRow disableRightSwipe disableLeftSwipe={!props.onDelete} rightOpenValue={-97} stopRightSwipe={-97}>
-      <HiddenItemContainer
-        style={{
-          backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-        }}>
+    <SwipeRow disableRightSwipe rightOpenValue={-97} stopRightSwipe={-97}>
+      <HiddenItemContainer style={hiddenStyle}>
         <SSISwipeDeleteButton onPress={onDelete} />
       </HiddenItemContainer>
       <ItemContainer
-        style={{
-          backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-        }}
+        style={style}
         onPress={onPress}>
         {viewItem}
       </ItemContainer>

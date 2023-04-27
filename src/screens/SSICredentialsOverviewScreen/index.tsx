@@ -90,7 +90,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     ) ? (
       <ItemContainer
         style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+          backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
         }}
         onPress={() => this.onItemPress(itemInfo.item)}>
         {credentialItem}

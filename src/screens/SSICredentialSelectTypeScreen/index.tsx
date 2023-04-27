@@ -41,14 +41,14 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
     return (
       <ItemContainer
         style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+          backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
         }}
         onPress={() => onPress(itemInfo)}>
         <SSICredentialSelectTypeViewItem
           id={itemInfo.item.id}
           title={itemInfo.item.credentialType}
           isSelected={itemInfo.item.isSelected}
-          style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+          style={{backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
         />
       </ItemContainer>
     );

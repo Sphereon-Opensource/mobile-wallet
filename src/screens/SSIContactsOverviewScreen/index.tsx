@@ -8,11 +8,11 @@ import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
-import {deleteContact, getContacts, getUserContact} from '../../store/actions/contact.actions';
+import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {translate} from '../../localization/Localization';
-import {backgrounds} from '../../styles/colors';
+import {backgrounds, borders} from '../../styles/colors';
 
 const format = require('string-format');
 
@@ -38,19 +38,21 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   onDelete = async (contact: IContact): Promise<void> => {
-    this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+    const { navigation, deleteContact } = this.props
+
+    navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
       details: format(translate('contact_delete_message'), contact.alias),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => {
-          this.props.deleteContact(contact.id);
-          this.props.navigation.goBack();
+          deleteContact(contact.id);
+          navigation.goBack();
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => this.props.navigation.goBack(),
+        onPress: async () => navigation.goBack(),
       },
     });
   };
@@ -60,19 +62,26 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => {
+    const { activeUser, contacts } = this.props
     const contactItem = <SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
+    const hiddenStyle = {
+      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+    }
+    const style = {
+      ...hiddenStyle,
+      ...(itemInfo.index === (contacts.length - 1) && itemInfo.index % 2 !== 0 && { borderBottomWidth: 1, borderBottomColor: borders.dark })
+    }
 
-    return itemInfo.item.id === this.props.activeUser.id ? (
+    return itemInfo.item.id === activeUser.id ? (
       <ItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-        }}
+        style={style}
         onPress={() => this.onItemPress(itemInfo.item)}>
         {contactItem}
       </ItemContainer>
     ) : (
       <SSISwipeRowViewItem
-        listIndex={itemInfo.index}
+        style={style}
+        hiddenStyle={hiddenStyle}
         viewItem={contactItem}
         onPress={() => this.onItemPress(itemInfo.item)}
         onDelete={() => this.onDelete(itemInfo.item)}

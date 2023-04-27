@@ -56,7 +56,7 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => (
     <ItemContainer
-      style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+      style={{backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
       onPress={() => onItemPress(itemInfo.item)}
       onLongPress={() => onLongPress(itemInfo)}>
       <SSICredentialSelectViewItem
@@ -65,7 +65,7 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
         title={itemInfo.item.credential.title}
         issuer={itemInfo.item.credential.issuer.alias}
         isSelected={itemInfo.item.isSelected}
-        style={{backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
+        style={{backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
         onLogoPress={() => onLongPress(itemInfo)}
       />
     </ItemContainer>
