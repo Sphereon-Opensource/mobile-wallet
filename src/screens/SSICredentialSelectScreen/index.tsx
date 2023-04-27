@@ -24,11 +24,9 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const setSelection = async (selection: ICredentialSelection, select?: boolean): Promise<void> => {
     const newSelection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
-      const isSelected = select === undefined ? !selection.isSelected : select
+      const isSelected = select === undefined ? !selection.isSelected : select;
       credentialSelection.isSelected =
-        credentialSelection.hash == selection.hash
-          ? (credentialSelection.isSelected = isSelected)
-          : (credentialSelection.isSelected = false);
+        credentialSelection.hash == selection.hash ? (credentialSelection.isSelected = isSelected) : (credentialSelection.isSelected = false);
       return credentialSelection;
     });
     setCredentialSelection(newSelection);

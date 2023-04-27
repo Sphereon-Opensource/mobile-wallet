@@ -27,10 +27,15 @@ export const getCredentialTypeAsString = (credential: ICredential | VerifiableCr
  */
 export const getMatchingUniqueVerifiableCredential = (
   uniqueVCs: UniqueVerifiableCredential[],
-  searchVC: ICredential | VerifiableCredential,
+  searchVC: ICredential | VerifiableCredential | string,
 ): UniqueVerifiableCredential | undefined => {
   // Since an ID is optional in a VC according to VCDM, and we really need the matches, we have a fallback match on something which is guaranteed to be unique for any VC (the proof(s))
-  return uniqueVCs.find(uniqueVC => uniqueVC.verifiableCredential.id === searchVC.id || uniqueVC.verifiableCredential.proof === searchVC.proof);
+  return uniqueVCs.find(
+    uniqueVC =>
+      (typeof searchVC !== 'string' &&
+        (uniqueVC.verifiableCredential.id === searchVC.id || uniqueVC.verifiableCredential.proof === searchVC.proof)) ||
+      (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC),
+  );
 };
 
 /**

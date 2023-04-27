@@ -4,6 +4,7 @@ import 'react-native-get-random-values'
 import '@ethersproject/shims'
 import 'fast-text-encoding'
 import 'react-native-gesture-handler'
+// if (typeof BigInt === 'undefined') global.BigInt = require('big-integer')
 import { registerRootComponent } from 'expo'
 
 import App from './App'
