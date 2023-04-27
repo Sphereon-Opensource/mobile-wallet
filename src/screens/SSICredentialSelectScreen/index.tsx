@@ -22,11 +22,12 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onSelect} = props.route.params;
   const [credentialSelection, setCredentialSelection] = React.useState(props.route.params.credentialSelection);
 
-  const setSelection = async (selection: ICredentialSelection): Promise<void> => {
+  const setSelection = async (selection: ICredentialSelection, select?: boolean): Promise<void> => {
     const newSelection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
+      const isSelected = select === undefined ? !selection.isSelected : select
       credentialSelection.isSelected =
         credentialSelection.hash == selection.hash
-          ? (credentialSelection.isSelected = !selection.isSelected)
+          ? (credentialSelection.isSelected = isSelected)
           : (credentialSelection.isSelected = false);
       return credentialSelection;
     });
@@ -38,7 +39,7 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const onSelectPress = async (selection: ICredentialSelection): Promise<void> => {
-    await setSelection(selection);
+    await setSelection(selection, true);
     props.navigation.goBack();
   };
 
