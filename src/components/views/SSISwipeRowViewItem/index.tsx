@@ -12,8 +12,8 @@ export interface IProps {
   viewItem: JSX.Element;
   onPress: () => Promise<void>;
   onDelete: () => Promise<void>;
-  style: ViewStyle;
-  hiddenStyle: ViewStyle;
+  style?: ViewStyle;
+  hiddenStyle?: ViewStyle;
 }
 
 const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: ForwardedRef<unknown>): JSX.Element => {
