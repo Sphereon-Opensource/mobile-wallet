@@ -26,9 +26,7 @@ const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: Fo
       <HiddenItemContainer style={hiddenStyle}>
         <SSISwipeDeleteButton onPress={onDelete} />
       </HiddenItemContainer>
-      <ItemContainer
-        style={style}
-        onPress={onPress}>
+      <ItemContainer style={style} onPress={onPress}>
         {viewItem}
       </ItemContainer>
     </SwipeRow>

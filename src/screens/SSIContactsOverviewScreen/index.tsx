@@ -38,7 +38,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   onDelete = async (contact: IContact): Promise<void> => {
-    const { navigation, deleteContact } = this.props
+    const {navigation, deleteContact} = this.props;
 
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
@@ -62,26 +62,24 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => {
-    const { activeUser, contacts } = this.props
+    const {activeUser, contacts} = this.props;
     const contactItem = <SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
-    const hiddenStyle = {
+    const backgroundStyle = {
       backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-    }
+    };
     const style = {
-      ...hiddenStyle,
-      ...(itemInfo.index === (contacts.length - 1) && itemInfo.index % 2 !== 0 && { borderBottomWidth: 1, borderBottomColor: borders.dark })
-    }
+      ...backgroundStyle,
+      ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+    };
 
     return itemInfo.item.id === activeUser.id ? (
-      <ItemContainer
-        style={style}
-        onPress={() => this.onItemPress(itemInfo.item)}>
+      <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
         {contactItem}
       </ItemContainer>
     ) : (
       <SSISwipeRowViewItem
         style={style}
-        hiddenStyle={hiddenStyle}
+        hiddenStyle={backgroundStyle}
         viewItem={contactItem}
         onPress={() => this.onItemPress(itemInfo.item)}
         onDelete={() => this.onDelete(itemInfo.item)}

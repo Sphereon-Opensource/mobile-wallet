@@ -7,7 +7,7 @@ import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem';
 import {translate} from '../../localization/Localization';
-import {backgrounds} from '../../styles/colors';
+import {backgrounds, borders} from '../../styles/colors';
 import {
   SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
@@ -54,22 +54,26 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   };
 
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => (
-    <ItemContainer
-      style={{backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-      onPress={() => onItemPress(itemInfo.item)}
-      onLongPress={() => onLongPress(itemInfo)}>
-      <SSICredentialSelectViewItem
-        hash={itemInfo.item.hash}
-        id={itemInfo.item.id}
-        title={itemInfo.item.credential.title}
-        issuer={itemInfo.item.credential.issuer.alias}
-        isSelected={itemInfo.item.isSelected}
-        style={{backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}}
-        onLogoPress={() => onLongPress(itemInfo)}
-      />
-    </ItemContainer>
-  );
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => {
+    const backgroundStyle = {
+      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+    };
+    const style = {
+      ...backgroundStyle,
+      ...(itemInfo.index === credentialSelection.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+    };
+    return (
+      <ItemContainer style={style} onPress={() => onItemPress(itemInfo.item)} onLongPress={() => onLongPress(itemInfo)}>
+        <SSICredentialSelectViewItem
+          title={itemInfo.item.credential.title}
+          issuer={itemInfo.item.credential.issuer.alias}
+          isSelected={itemInfo.item.isSelected}
+          style={backgroundStyle}
+          onLogoPress={() => onLongPress(itemInfo)}
+        />
+      </ItemContainer>
+    );
+  };
 
   return (
     <Container>

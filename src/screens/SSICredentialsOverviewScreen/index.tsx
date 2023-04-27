@@ -17,7 +17,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgrounds} from '../../styles/colors';
+import {backgrounds, borders} from '../../styles/colors';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 
 const format = require('string-format');
@@ -72,6 +72,8 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
+    const {activeUser, verifiableCredentials} = this.props;
+
     const credentialItem = (
       <SSICredentialViewItem
         hash={itemInfo.item.hash}
@@ -85,19 +87,24 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       />
     );
 
-    return this.props.activeUser.identifiers.some(
+    const backgroundStyle = {
+      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+    };
+    const style = {
+      ...backgroundStyle,
+      ...(itemInfo.index === verifiableCredentials.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+    };
+
+    return activeUser.identifiers.some(
       (identifier: IUserIdentifier) => itemInfo.item.issuer.name === identifier.did && itemInfo.item.title === 'SphereonWalletIdentityCredential',
     ) ? (
-      <ItemContainer
-        style={{
-          backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-        }}
-        onPress={() => this.onItemPress(itemInfo.item)}>
+      <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
         {credentialItem}
       </ItemContainer>
     ) : (
       <SSISwipeRowViewItem
-        listIndex={itemInfo.index}
+        style={style}
+        hiddenStyle={backgroundStyle}
         viewItem={credentialItem}
         onPress={() => this.onItemPress(itemInfo.item)}
         onDelete={() => this.onDelete(itemInfo.item.hash, itemInfo.item.title)}

@@ -16,7 +16,6 @@ import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
-  id: string;
   title: string;
   issuer?: string;
   isSelected: boolean;
