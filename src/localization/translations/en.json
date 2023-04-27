@@ -150,5 +150,6 @@
     "credentials_share_success_toast_title": "Successfully shared",
     "credentials_share_success_toast_message": "You have successfully presented your selected credentials to {0}.",
     "action_select_label": "Select",
-    "action_onboarding_setup_message": "Setting up wallet..."
+    "action_onboarding_setup_message": "Setting up wallet...",
+    "action_getting_information_message": "Getting information..."
 }

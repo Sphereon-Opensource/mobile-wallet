@@ -1,5 +1,8 @@
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {CredentialResponse, IssuanceInitiation} from '@sphereon/openid4vci-client';
+import {
+  PresentationDefinitionWithLocation,
+  VerifiedAuthorizationRequest
+} from '@sphereon/did-auth-siop'
+import { CredentialResponse, IssuanceInitiation } from '@sphereon/openid4vci-client'
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -8,23 +11,30 @@ import {
   IContact,
   IdentityRoleEnum,
   IDidAuthConfig,
-  IIdentity,
-} from '@sphereon/ssi-sdk-data-store';
-import {CredentialMapper, OriginalVerifiableCredential, W3CVerifiableCredential} from '@sphereon/ssi-types';
-import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
-import {VerifiableCredential} from '@veramo/core';
-import Debug from 'debug';
-import {URL} from 'react-native-url-polyfill';
+  IIdentity
+} from '@sphereon/ssi-sdk-data-store'
+import {
+  CredentialMapper,
+  OriginalVerifiableCredential,
+  W3CVerifiableCredential
+} from '@sphereon/ssi-types'
+import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
+import { VerifiableCredential } from '@veramo/core'
+import Debug from 'debug'
+import { URL } from 'react-native-url-polyfill'
 
-import {APP_ID} from '../@config/constants';
-import {translate} from '../localization/Localization';
-import RootNavigation from '../navigation/rootNavigation';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../providers/authentication/SIOPv2Provider';
-import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
-import store from '../store';
-import {addIdentity} from '../store/actions/contact.actions';
-import {storeVerifiableCredential} from '../store/actions/credential.actions';
+import { APP_ID } from '../@config/constants'
+import { translate } from '../localization/Localization'
+import {
+  siopGetRequest,
+  siopSendAuthorizationResponse
+} from '../providers/authentication/SIOPv2Provider'
+import JwtVcPresentationProfileProvider
+  from '../providers/credential/JwtVcPresentationProfileProvider'
+import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider'
+import store from '../store'
+import { addIdentity } from '../store/actions/contact.actions'
+import { storeVerifiableCredential } from '../store/actions/credential.actions'
 import {
   ICredentialMetadata,
   ICredentialTypeSelection,
@@ -39,16 +49,16 @@ import {
   PopupImagesEnum,
   QrTypesEnum,
   ScreenRoutesEnum,
-  ToastTypeEnum,
-} from '../types';
-import {showToast} from '../utils/ToastUtils';
-import {toCredentialSummary, toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper';
+  ToastTypeEnum
+} from '../types'
+import { showToast } from '../utils/ToastUtils'
+import { toNonPersistedCredentialSummary } from '../utils/mappers/CredentialMapper'
 
-import {authenticate} from './authenticationService';
-import {getContacts} from './contactService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {translateCorrelationIdToName} from '../utils/CredentialUtils';
+import { authenticate } from './authenticationService'
+import { getContacts } from './contactService'
+import { getOrCreatePrimaryIdentifier } from './identityService'
+import { translateCorrelationIdToName } from '../utils/CredentialUtils'
+import { filterNavigationStack } from '../utils/NavigationUtils'
 
 const {v4: uuidv4} = require('uuid');
 const format = require('string-format');
@@ -154,7 +164,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 
   const connect = async (): Promise<void> => {
     const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest({...connection.config, id: uuidv4} as IDidAuthConfig);
-    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+    args.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
       verifier,
       presentationDefinition: verifiedAuthorizationRequest.presentationDefinitions![0].definition,
     });
@@ -193,7 +203,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       ],
     })
       .then(() => {
-        RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+        args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
           screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
         });
         showToast(ToastTypeEnum.TOAST_SUCCESS, {
@@ -206,6 +216,8 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const selectRequiredCredentials = async () => {
+    args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
+
     await setTimeout(async () => {
       const request: VerifiedAuthorizationRequest = await siopGetRequest({...config, id: uuidv4()});
 
@@ -264,13 +276,19 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       }
       const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = request.presentationDefinitions![0];
 
-      RootNavigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
+      args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+        params: {
         verifier: translateCorrelationIdToName(url.hostname),
         // TODO currently only supporting 1 presentation definition
         presentationDefinition: presentationDefinitionWithLocation.definition,
         onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
-          authenticate(() => sendResponse(presentationDefinitionWithLocation, credentials)),
-      });
+          authenticate(() => sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>)),
+      }});
+      filterNavigationStack(args.navigation, [
+        ScreenRoutesEnum.LOADING,
+        ScreenRoutesEnum.CONTACT_ADD
+      ])
     }, 1000);
   };
 
@@ -385,7 +403,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
     if (credentialTypes.length > 1) {
       await setTimeout(async () => {
-        await args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
           screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
           params: {
             issuer: translateCorrelationIdToName(new URL(args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer).hostname),
@@ -396,7 +414,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
           },
         });
-        removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE);
+        // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
+        filterNavigationStack(args.navigation, [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD])
       }, 1000);
     } else {
       await sendResponseOrAuthenticate(credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType));
@@ -416,7 +435,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           onVerification: async (pin: string) => await sendResponse(provider, pin),
         },
       });
-      removeAddContactFromStack(args.navigation, ScreenRoutesEnum.VERIFICATION_CODE);
+      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
+      filterNavigationStack(args.navigation, [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD])
     } else {
       await sendResponse(provider);
     }
@@ -484,11 +504,16 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 },
                 secondaryAction: {
                   caption: translate('action_decline_label'),
-                  onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER),
+                  onPress: async () => args.navigation.goBack(),
                 },
               },
             });
-            removeAddContactFromStack(args.navigation, ScreenRoutesEnum.CREDENTIAL_DETAILS);
+            // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
+            filterNavigationStack(args.navigation, [
+              ScreenRoutesEnum.LOADING,
+              ScreenRoutesEnum.CONTACT_ADD,
+              ScreenRoutesEnum.VERIFICATION_CODE
+            ])
           }, 1000);
         }
       })
@@ -516,6 +541,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         });
       });
 
+  args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
+
   const provider = await OpenId4VcIssuanceProvider.initiationFromUri({uri: args.qrData.uri});
   provider
     .getServerMetadataAndPerformCryptoMatching()
@@ -527,14 +554,3 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     });
 };
 
-// This function will reset the stack to a state where the add contact screen has been removed
-// Currently doing this as navigating back from a step after adding the contact, will get the flow stuck as the contact already exists
-// This will only keep working as long as the add contact and or pin code screen are the only screen between the qr reader and the current screen
-// (with a bonus that the pin code screen is present for any of the 3 steps, it will also be filtered)
-// TODO WAL-540 remove this function and add edit contact capabilities
-const removeAddContactFromStack = (navigation: NativeStackNavigationProp<any>, currentRoute: ScreenRoutesEnum) => {
-  navigation.reset({
-    index: 0,
-    routes: [{name: ScreenRoutesEnum.QR_READER}, {name: currentRoute}],
-  });
-};

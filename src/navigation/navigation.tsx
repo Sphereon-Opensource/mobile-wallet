@@ -362,6 +362,13 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.LOADING}
+        component={SSILoadingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={{
