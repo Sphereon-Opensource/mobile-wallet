@@ -25,7 +25,7 @@ export const filterNavigationStack = (args: filterNavigationStackArgs): void => 
 
   args.navigation.dispatch(
     CommonActions.reset({
-      index: filteredRoutes.length,
+      index: filteredRoutes.length, // Sets the last route in the stack as the current route
       routes: filteredRoutes.map((route: Route<string>) => ({name: route.name, params: route.params})),
     }),
   );
