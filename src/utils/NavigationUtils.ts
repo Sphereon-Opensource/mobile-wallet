@@ -6,11 +6,13 @@ import {filterNavigationStackArgs} from '../types/utils/navigationUtils';
 
 /**
  * Filters routes from a navigation stack
- * @param navigation The navigation object
- * @param stack The navigation stack to apply filter to
- * @param filter Routes to be filtered
+ * @param {Object} args - The arguments for filtering navigation stack
+ * @param {NativeStackNavigationProp<any>} args.navigation - The navigation object
+ * @param {NavigationBarRoutesEnum} args.stack - The navigation stack to apply filter to
+ * @param {Array<ScreenRoutesEnum>} args.filter - Routes to be filtered
+ * @returns {void}
  */
-export const filterNavigationStack = (args: filterNavigationStackArgs) => {
+export const filterNavigationStack = (args: filterNavigationStackArgs): void => {
   const rootState: NavigationState | undefined = navigationRef.current?.getRootState();
   if (!rootState) {
     return;
