@@ -17,7 +17,7 @@ import {
   SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
   SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton} from '../../../types';
+import {ButtonIconsEnum, HeaderEventEnum, IHeaderMenuButton, HeaderMenuIconsEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 import {useDispatch} from 'react-redux';
@@ -28,7 +28,7 @@ interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
   showBorder?: boolean;
   showBackButton?: boolean;
-  moreActions?: Array<IMoreMenuButton>;
+  moreActions?: Array<IHeaderMenuButton>;
   showProfileIcon?: boolean;
 }
 
@@ -96,8 +96,9 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
                 <SSIDropDownList
                   buttons={[
                     {
-                      caption: translate('profile_logout_label'),
+                      caption: translate('profile_logout_action_caption'),
                       onPress: () => dispatch<any>(logout()),
+                      icon: HeaderMenuIconsEnum.LOGOUT,
                     },
                   ]}
                 />
