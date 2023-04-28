@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useEffect} from 'react';
-import {DeviceEventEmitter, TouchableWithoutFeedback, View} from 'react-native';
+import {DeviceEventEmitter, TouchableWithoutFeedback} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {
@@ -14,10 +14,15 @@ import {
   SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
+  SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
+  SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton} from '../../../types';
+import { ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton } from '../../../types'
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../store/actions/user.actions'
+import { translate } from '../../../localization/Localization'
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -27,11 +32,12 @@ interface Props extends NativeStackHeaderProps {
   showProfileIcon?: boolean;
 }
 
-
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   const {showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = []} = props;
   const [showMoreMenu, setShowMoreMenu] = React.useState(false);
+  const [showProfileMenu, setShowProfileMenu] = React.useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const subscription = DeviceEventEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
@@ -48,6 +54,10 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const onProfile = async (): Promise<void> => {
+    setShowProfileMenu(!showProfileMenu);
+  };
+
+  const onProfileLong = async (): Promise<void> => {
     props.navigation.navigate('Veramo', {});
   };
 
@@ -57,6 +67,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
 
   const onPress = async (): Promise<void> => {
     setShowMoreMenu(false);
+    setShowProfileMenu(false);
   };
 
   return (
@@ -76,15 +87,29 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           </LeftColumn>
           <RightColumn>
             {showProfileIcon && (
-              <ProfileIconContainer onLongPress={onProfile}>
+              <ProfileIconContainer
+                onPress={onProfile}
+                onLongPress={onProfileLong}
+              >
                 <SSIProfileIcon />
               </ProfileIconContainer>
             )}
+            {showProfileMenu && (
+              <ProfileMenuContainer>
+                <SSIDropDownList buttons={[
+                  {
+                    caption: translate('profile_logout_label'),
+                    onPress: () => dispatch<any>(logout())
+                  }
+                ]}
+                />
+              </ProfileMenuContainer>
+            )}
             {moreActions.length > 0 && <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />}
             {showMoreMenu && (
-              <View style={{position: 'absolute', width: 250, right: 10, top: 92}}>
+              <MoreMenuContainer>
                 <SSIDropDownList buttons={moreActions} />
-              </View>
+              </MoreMenuContainer>
             )}
           </RightColumn>
         </Row>

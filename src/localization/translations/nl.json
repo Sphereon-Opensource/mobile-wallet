@@ -152,5 +152,6 @@
     "action_select_label": "Selecteer",
     "action_onboarding_setup_message": "Opzetten van wallet...",
     "action_getting_information_message": "Ophalen informatie...",
-    "action_sending_credentials_message": "Sturen credentials..."
+    "action_sending_credentials_message": "Sturen credentials...",
+    "profile_logout_label": "Log uit"
 }

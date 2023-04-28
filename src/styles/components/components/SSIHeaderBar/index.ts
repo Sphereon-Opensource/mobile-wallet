@@ -36,3 +36,17 @@ export const SSIHeaderBarBackIconContainerStyled = styled.View`
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin: 18px 0px 0px 24px;
 `;
+
+export const SSIHeaderBarMoreMenuContainerStyled = styled.View`
+  position: absolute;
+  width: 250px;
+  right: 10px;
+  top: 92px;
+`;
+
+export const SSIHeaderBarProfileMenuContainerStyled = styled.View`
+  position: absolute;
+  width: 250px;
+  right: 10px;
+  top: 46px;
+`;
