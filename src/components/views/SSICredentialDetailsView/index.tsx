@@ -25,9 +25,8 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
     <View
       onStartShouldSetResponder={() => {
         DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true
-      }}
-    >
+        return true;
+      }}>
       <SSITextField item={itemInfo.item} index={itemInfo.index} />
     </View>
   );
@@ -36,9 +35,8 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
     <FooterContainer
       onStartShouldSetResponder={() => {
         DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true
-      }}
-    >
+        return true;
+      }}>
       {props.issuer && (
         <>
           <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>

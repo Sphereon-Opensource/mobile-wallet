@@ -15,14 +15,14 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
   SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
-  SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer
+  SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
 } from '../../../styles/components';
-import { ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton } from '../../../types'
+import {ButtonIconsEnum, HeaderEventEnum, IMoreMenuButton} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../../store/actions/user.actions'
-import { translate } from '../../../localization/Localization'
+import {useDispatch} from 'react-redux';
+import {logout} from '../../../store/actions/user.actions';
+import {translate} from '../../../localization/Localization';
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -45,7 +45,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
     });
 
     return () => {
-        subscription.remove();
+      subscription.remove();
     };
   }, []);
 
@@ -87,21 +87,19 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           </LeftColumn>
           <RightColumn>
             {showProfileIcon && (
-              <ProfileIconContainer
-                onPress={onProfile}
-                onLongPress={onProfileLong}
-              >
+              <ProfileIconContainer onPress={onProfile} onLongPress={onProfileLong}>
                 <SSIProfileIcon />
               </ProfileIconContainer>
             )}
             {showProfileMenu && (
               <ProfileMenuContainer>
-                <SSIDropDownList buttons={[
-                  {
-                    caption: translate('profile_logout_label'),
-                    onPress: () => dispatch<any>(logout())
-                  }
-                ]}
+                <SSIDropDownList
+                  buttons={[
+                    {
+                      caption: translate('profile_logout_label'),
+                      onPress: () => dispatch<any>(logout()),
+                    },
+                  ]}
                 />
               </ProfileMenuContainer>
             )}

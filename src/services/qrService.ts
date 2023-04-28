@@ -274,7 +274,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
             authenticate(async () => {
               args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: 'Sending credentials...'});
-              await sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>)
+              await sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>);
             }),
         },
       });

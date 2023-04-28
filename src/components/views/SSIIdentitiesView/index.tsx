@@ -7,7 +7,7 @@ import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {SSIIdentitiesViewContainerStyled as Container} from '../../../styles/components';
 import SSIIdentityViewItem from '../SSIIdentityViewItem';
 import SSISwipeRowViewItem from '../SSISwipeRowViewItem';
-import { backgrounds, borders } from '../../../styles/colors'
+import {backgrounds, borders} from '../../../styles/colors';
 
 export interface IProps {
   identities: Array<IIdentity>;
