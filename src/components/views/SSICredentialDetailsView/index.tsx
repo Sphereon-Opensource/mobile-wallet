@@ -12,7 +12,6 @@ import {
 } from '../../../styles/components';
 import {HeaderEventEnum, ICredentialDetailsRow} from '../../../types';
 import SSITextField from '../../fields/SSITextField';
-import {headerEmitter} from '../../bars/SSIHeaderBar';
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;
