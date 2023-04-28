@@ -272,7 +272,10 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           // TODO currently only supporting 1 presentation definition
           presentationDefinition: presentationDefinitionWithLocation.definition,
           onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
-            authenticate(() => sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>)),
+            authenticate(async () => {
+              args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: 'Sending credentials...'});
+              await sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>)
+            }),
         },
       });
       filterNavigationStack({
