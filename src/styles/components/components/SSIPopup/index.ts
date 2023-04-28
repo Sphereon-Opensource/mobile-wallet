@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 import SSICheckmarkBadge from '../../../../components/assets/badges/SSICheckmarkBadge';
 import SSIExclamationMarkBadge from '../../../../components/assets/badges/SSIExclamationMarkBadge';
-import {buttons, fonts} from '../../../colors';
+import {elements, fonts} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundPrimaryLightStyled} from '../../containers';
 import {SSITextH4SemiBoldStyled, SSITextH5Styled} from '../../fonts';
 
@@ -53,7 +53,7 @@ export const SSIPopupExtraDetailsTextStyled = styled(SSITextH5Styled)`
 
 export const SSIPopupDetailsButtonTextStyled = styled(SSITextH4SemiBoldStyled)`
   flex-wrap: wrap;
-  color: ${buttons.blue};
+  color: ${elements.blue};
 `;
 
 export const SSIPopupCloseButtonContainerStyled = styled.View`

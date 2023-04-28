@@ -68,7 +68,7 @@ export const siopSendAuthorizationResponse = async (
   connectionType: ConnectionTypeEnum,
   args: {
     sessionId: string;
-    verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[]
+    verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[];
   },
 ) => {
   if (connectionType !== ConnectionTypeEnum.SIOPv2_OpenID4VP) {
@@ -86,8 +86,8 @@ export const siopSendAuthorizationResponse = async (
   if (await session.isOID4VP()) {
     const oid4vp = await session.getOID4VP();
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
-        ? args.verifiableCredentialsWithDefinition
-        : await siopSelectCredentials(oid4vp)
+      ? args.verifiableCredentialsWithDefinition
+      : await siopSelectCredentials(oid4vp);
     presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credentialsAndDefinitions, identifier);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');

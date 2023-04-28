@@ -149,5 +149,7 @@
     "action_send_label": "Stuur",
     "credentials_share_success_toast_title": "Succesvol gedeeld",
     "credentials_share_success_toast_message": "Je hebt je geselecteerde credentials met succes gepresenteerd aan {0}.",
-    "action_select_label": "Selecteer"
+    "action_select_label": "Selecteer",
+    "action_onboarding_setup_message": "Opzetten van wallet...",
+    "action_getting_information_message": "Ophalen informatie..."
 }

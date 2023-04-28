@@ -1,7 +1,7 @@
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components/native';
 
-import {borders} from '../../../colors';
+import {backgrounds, borders} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
 
@@ -16,4 +16,8 @@ export const SSINavigationBarContainerStyled = styled(SSIFlexDirectionRowViewSty
   ${SSIBackgroundPrimaryDarkColorCss};
   border-top-color: ${borders.dark};
   border-top-width: 1px;
+`;
+
+export const SSINavigationBarSafeAreaContainerStyled = styled.View`
+  background-color: ${backgrounds.primaryDark};
 `;

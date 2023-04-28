@@ -11,17 +11,9 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>;
 
-const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
+const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
-
-  const onShowDetails = async (): Promise<void> => {
-    setShowExtraDetails(true);
-  };
-
-  const onCloseDetails = async (): Promise<void> => {
-    setShowExtraDetails(true);
-  };
 
   return (
     <Container>
@@ -29,7 +21,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
         {showExtraDetails && detailsPopup && (
           <ExtraDetailsContainer>
             <SSIPopup
-              onClose={onCloseDetails}
+              onClose={async () => setShowExtraDetails(false)}
               title={detailsPopup.title}
               details={detailsPopup.details}
               extraDetails={detailsPopup.extraDetails}
@@ -48,7 +40,7 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
             detailsPopup
               ? {
                   caption: detailsPopup.buttonCaption,
-                  onPress: onShowDetails,
+                  onPress: async () => setShowExtraDetails(true),
                 }
               : undefined
           }
@@ -61,4 +53,4 @@ const SSIErrorScreenScreen: FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-export default SSIErrorScreenScreen;
+export default SSIErrorScreen;

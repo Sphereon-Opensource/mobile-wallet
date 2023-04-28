@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, {FC} from 'react';
 
-import { translate } from '../../../localization/Localization'
+import {translate} from '../../../localization/Localization';
 import {
   SSICredentialViewItemContainerStyled as Container,
   SSIFlexDirectionRowViewStyled as ContentBottomContainer,
@@ -10,11 +10,11 @@ import {
   SSICredentialViewItemExpirationDateCaptionStyled as ExpirationDateCaption,
   SSITextH5LightStyled as IssueDateCaption,
   SSITextH4LightStyled as IssuerCaption,
-  SSICredentialViewItemTitleCaptionStyled as TitleCaption
-} from '../../../styles/components'
-import { ICredentialSummary } from '../../../types'
-import { toLocalDateString, toLocalDateTimeString } from '../../../utils/DateUtils'
-import SSIStatusLabel from '../../labels/SSIStatusLabel'
+  SSICredentialViewItemTitleCaptionStyled as TitleCaption,
+} from '../../../styles/components';
+import {ICredentialSummary} from '../../../types';
+import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
+import SSIStatusLabel from '../../labels/SSIStatusLabel';
 
 // TODO fix to many properties
 export interface Props extends ICredentialSummary {
@@ -23,20 +23,18 @@ export interface Props extends ICredentialSummary {
 }
 
 const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const { showTime = false } = props;
+  const {showTime = false} = props;
 
   return (
     <Container>
       <ContentTopContainer>
         <TitleCaption numberOfLines={2}>{props.title}</TitleCaption>
         <CredentialStatusContainer>
-            <SSIStatusLabel status={props.credentialStatus} />
+          <SSIStatusLabel status={props.credentialStatus} />
         </CredentialStatusContainer>
       </ContentTopContainer>
       <ContentMiddleContainer>
-        <IssuerCaption>
-          {props.issuer.alias.length <= 50 ? props.issuer.alias : `${props.issuer.alias.substring(0, 50)}...`}
-        </IssuerCaption>
+        <IssuerCaption>{props.issuer.alias.length <= 50 ? props.issuer.alias : `${props.issuer.alias.substring(0, 50)}...`}</IssuerCaption>
       </ContentMiddleContainer>
       <ContentBottomContainer>
         <IssueDateCaption>{showTime ? toLocalDateTimeString(props.issueDate) : toLocalDateString(props.issueDate)}</IssueDateCaption>

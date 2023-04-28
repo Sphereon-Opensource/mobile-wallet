@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {DeviceEventEmitter, ListRenderItemInfo, View} from 'react-native'
+import {DeviceEventEmitter, ListRenderItemInfo, View} from 'react-native';
 
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
@@ -10,8 +10,9 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
-import { HeaderEventEnum, ICredentialDetailsRow } from '../../../types'
+import {HeaderEventEnum, ICredentialDetailsRow} from '../../../types';
 import SSITextField from '../../fields/SSITextField';
+import {headerEmitter} from '../../bars/SSIHeaderBar';
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;
@@ -21,7 +22,7 @@ export interface IProps {
 // TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) =>
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => (
     <View
       onStartShouldSetResponder={() => {
         DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
@@ -29,7 +30,8 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
       }}
     >
       <SSITextField item={itemInfo.item} index={itemInfo.index} />
-    </View>;
+    </View>
+  );
 
   const renderFooter = () => (
     <FooterContainer
