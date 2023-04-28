@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useEffect} from 'react';
-import {NativeEventEmitter, NativeModules, TouchableWithoutFeedback, View} from 'react-native';
+import {DeviceEventEmitter, TouchableWithoutFeedback, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {
@@ -27,8 +27,6 @@ interface Props extends NativeStackHeaderProps {
   showProfileIcon?: boolean;
 }
 
-const {MyModule} = NativeModules; // FIXME WAL-513 - on iOS MyModule is not defined, I also don't see a .h / .m file with MyModule in it. The functionality related to closing the ... menu is not working on iOS atm
-export const headerEmitter = MyModule ? new NativeEventEmitter(MyModule) : undefined;
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
@@ -36,15 +34,13 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   const [showMoreMenu, setShowMoreMenu] = React.useState(false);
 
   useEffect(() => {
-    if (headerEmitter) {
-      const subscription = headerEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
-        setShowMoreMenu(false);
-      });
+    const subscription = DeviceEventEmitter.addListener(HeaderEventEnum.ON_MORE_MENU_CLOSE, () => {
+      setShowMoreMenu(false);
+    });
 
-      return () => {
+    return () => {
         subscription.remove();
-      };
-    }
+    };
   }, []);
 
   const onBack = async (): Promise<void> => {

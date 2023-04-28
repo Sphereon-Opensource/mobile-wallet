@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {ListRenderItemInfo, View} from 'react-native';
+import {DeviceEventEmitter, ListRenderItemInfo, View} from 'react-native';
 
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
@@ -12,7 +12,6 @@ import {
 } from '../../../styles/components';
 import {HeaderEventEnum, ICredentialDetailsRow} from '../../../types';
 import SSITextField from '../../fields/SSITextField';
-import {headerEmitter} from '../../bars/SSIHeaderBar';
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;
@@ -25,9 +24,10 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => (
     <View
       onStartShouldSetResponder={() => {
-        headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true;
-      }}>
+        DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+        return true
+      }}
+    >
       <SSITextField item={itemInfo.item} index={itemInfo.index} />
     </View>
   );
@@ -35,9 +35,10 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderFooter = () => (
     <FooterContainer
       onStartShouldSetResponder={() => {
-        headerEmitter?.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true;
-      }}>
+        DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
+        return true
+      }}
+    >
       {props.issuer && (
         <>
           <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
