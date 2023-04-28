@@ -68,7 +68,7 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
           issuer={itemInfo.item.credential.issuer.alias}
           isSelected={itemInfo.item.isSelected}
           style={backgroundStyle}
-          onLogoPress={() => onLongPress(itemInfo)}
+          onPress={() => onLongPress(itemInfo)}
         />
       </ItemContainer>
     );

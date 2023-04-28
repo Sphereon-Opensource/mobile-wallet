@@ -35,7 +35,9 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
     labelColor = fonts.light,
   } = props;
   const [isChecked, setChecked] = React.useState(initialValue || false);
-  const value = props.isChecked || isChecked;
+  const value = props.isChecked !== undefined
+    ? props.isChecked
+    : isChecked
 
   const onValueChange = () => {
     const {onValueChange} = props;
