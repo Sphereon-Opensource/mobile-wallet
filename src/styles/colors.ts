@@ -104,9 +104,9 @@ export const statuses: Record<LabelStatus | 'error', string> = {
   error: '#D74500',
 };
 
-type Button = 'blue';
+type Element = 'blue';
 
-export const buttons: Record<Button, string> = {
+export const elements: Record<Element, string> = {
   blue: '#0B81FF',
 };
 

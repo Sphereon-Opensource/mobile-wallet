@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
-import { SSITextH3LightStyled, SSITextH5LightStyled } from '../../fonts'
+import {SSITextH3LightStyled, SSITextH5LightStyled} from '../../fonts';
 
 export const SSICredentialViewItemContainerStyled = styled.View`
   padding: 16px 21px 18px 24px;

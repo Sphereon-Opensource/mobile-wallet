@@ -77,7 +77,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
   // The uri is a transparent pixel in case there is not background image
   const backgroundImage = props.backgroundImage
     ? {uri: props.backgroundImage}
-    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='}
+    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='};
   const logoImage = props.logoImage ? {uri: props.logoImage} : null;
 
   return (
@@ -85,9 +85,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
       <ImageBackground style={{flex: 1}} source={backgroundImage} resizeMode="cover">
         <AlphaContainer>
           <HeaderContainer>
-            <LogoContainer>
-              {logoImage ? <Image style={{flex: 1}} source={logoImage} resizeMode="contain" /> : <SSIPlaceholderLogo />}
-            </LogoContainer>
+            <LogoContainer>{logoImage ? <Image style={{flex: 1}} source={logoImage} resizeMode="contain" /> : <SSIPlaceholderLogo />}</LogoContainer>
             {credentialTitle && (
               <TitleContainer>
                 <CredentialTitleText numberOfLines={2}>{credentialTitle}</CredentialTitleText>
