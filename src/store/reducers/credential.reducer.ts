@@ -55,7 +55,7 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
     case DELETE_CREDENTIAL_SUCCESS: {
       return {
         ...state,
-        verifiableCredentials: state.verifiableCredentials.filter((vc: ICredentialSummary) => vc.id !== action.payload),
+        verifiableCredentials: state.verifiableCredentials.filter((vc: ICredentialSummary) => vc.hash !== action.payload),
         loading: false,
       };
     }
