@@ -82,7 +82,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
         </LeftColumn>
         <RightColumn>
           {showProfileIcon && (
-            // we need this view wrapper to stop the event from propagating to the menu provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontocuh will be before onpress
+            // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>
               <ProfileIconContainer onPress={onProfile} onLongPress={onProfileLong}>
                 <SSIProfileIcon />
@@ -103,7 +103,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
             </ProfileMenuContainer>
           )}
           {moreActions.length > 0 &&
-            // we need this view wrapper to stop the event from propagating to the menu provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontocuh will be before onpress
+            // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>
               <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />
             </View>
