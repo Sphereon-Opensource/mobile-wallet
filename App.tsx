@@ -10,7 +10,7 @@ import 'react-native-gesture-handler'
 import { bindActionCreators } from 'redux'
 
 import IntentHandler from './src/handlers/IntentHandler'
-import LockingHandler from "./src/handlers/LockingHandler";
+import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
 import AppNavigator from './src/navigation/navigation'
@@ -18,7 +18,8 @@ import { navigationRef } from './src/navigation/rootNavigation'
 import store from './src/store'
 import { getUsers } from './src/store/actions/user.actions'
 import { backgrounds } from './src/styles/colors'
-import { PlatformsEnum } from "./src/types";
+import { PlatformsEnum } from './src/types';
+import OnTouchProvider from './src/providers/touch/OnTouchProvider'
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -117,7 +118,9 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
-          <AppNavigator />
+          <OnTouchProvider>
+            <AppNavigator />
+          </OnTouchProvider>
         </NavigationContainer>
       </SafeAreaProvider>
     </Provider>

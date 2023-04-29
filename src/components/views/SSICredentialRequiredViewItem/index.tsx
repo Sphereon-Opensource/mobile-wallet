@@ -1,5 +1,4 @@
-import {IVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
 
@@ -20,7 +19,6 @@ import {
   SSICredentialRequiredViewNoneAvailableContainerStyled as NoneAvailableContainer,
 } from '../../../styles/components';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
-import {WrappedVerifiableCredential} from '@sphereon/ssi-types/src/types/vc';
 import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
 
 export interface Props {

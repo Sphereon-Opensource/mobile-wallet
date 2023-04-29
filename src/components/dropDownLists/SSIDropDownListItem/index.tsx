@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {ColorValue, DeviceEventEmitter, View} from 'react-native';
+import {ColorValue, View} from 'react-native';
 
 import {borders, fonts} from '../../../styles/colors';
 import {
@@ -8,7 +8,7 @@ import {
   SSIDropDownListItemIconContainerStyled as IconContainer,
   SSIDropDownListItemCaptionContainerStyled as ListItemCaption,
 } from '../../../styles/components';
-import {HeaderEventEnum, HeaderMenuIconsEnum, OpacityStyleEnum} from '../../../types';
+import {HeaderMenuIconsEnum, OpacityStyleEnum} from '../../../types';
 import SSIAddIcon from '../../assets/icons/SSIAddIcon';
 import SSIDeleteIcon from '../../assets/icons/SSIDeleteIcon';
 import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
@@ -26,7 +26,6 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
   const {disabled, caption, icon, showBorder = false, fontColor = fonts.dark} = props;
 
   const onPress = async () => {
-    DeviceEventEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
     await props.onPress();
   };
 
