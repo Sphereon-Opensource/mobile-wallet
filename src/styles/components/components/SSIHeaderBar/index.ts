@@ -5,42 +5,46 @@ import SSIIconButton from '../../../../components/buttons/SSIIconButton';
 import {IHeaderProps} from '../../../../types';
 import {borders} from '../../../colors';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
-import {SSITextH1LightStyled, SSITextH4LightStyled} from '../../fonts';
+import {SSITextH4LightStyled} from '../../fonts';
 
 export const SSIHeaderBarContainerStyled = styled.View`
   ${SSIBackgroundPrimaryDarkColorCss};
   border-bottom-color: ${borders.dark};
   border-bottom-width: ${(props: IHeaderProps) => (props.showBorder ? '1px' : '0px')};
+  padding-right: 24px;
+  padding-left: 24px;
 `;
 
 export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
-  margin: 0px 24px 14px 24px;
-`;
-
-export const SSIHeaderBarHeaderCaptionStyled = styled(SSITextH1LightStyled)`
-  margin-left: 24px;
+  margin-bottom: 14px;
 `;
 
 export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`
-  margin: 7px 25px 0px auto;
+  margin: 7px 0px 15px auto;
 `;
 
+// TODO move height to attributes of SSIIconButton
 export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
-  margin: 35px 25px 14px auto;
+  margintop: 2px;
+  margin-left: auto;
+  height: 36px;
+  justify-content: center;
 `;
 
 export const SSIHeaderBarBackIconContainerStyled = styled.View`
   width: 50px;
 `;
 
+// TODO move width to attributes of SSIIconButton
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
-  margin: 18px 0px 0px 24px;
+  margin-top: 18px;
+  width: 20px;
 `;
 
 export const SSIHeaderBarMoreMenuContainerStyled = styled.View`
   position: absolute;
   width: 250px;
-  right: 10px;
+  right: -14px;
   top: 92px;
 `;
 
@@ -48,7 +52,7 @@ export const SSIHeaderBarMoreMenuContainerStyled = styled.View`
 export const SSIHeaderBarProfileMenuContainerStyled = styled.View`
   position: absolute;
   width: 250px;
-  right: 10px;
+  right: -14px;
   top: 46px;
   z-index: 1000;
 `;

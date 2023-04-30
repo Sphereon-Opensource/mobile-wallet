@@ -7,7 +7,7 @@ import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   SSIHeaderBarContainerStyled as Container,
-  SSIHeaderBarHeaderCaptionStyled as HeaderCaption,
+  SSITextH1LightStyled as HeaderCaption,
   SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   SSIFlexDirectionColumnViewStyled as LeftColumn,
   SSIHeaderBarMoreIconStyled as MoreIcon,
@@ -75,7 +75,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
               <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
             </BackIconContainer>
           )}
-          <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14}}>
+          <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 10}}>
             {props.options.headerTitle}
           </HeaderCaption>
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
@@ -102,12 +102,12 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
               />
             </ProfileMenuContainer>
           )}
-          {moreActions.length > 0 &&
+          {moreActions.length > 0 && (
             // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>
               <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />
             </View>
-          }
+          )}
           {showMoreMenu && (
             <MoreMenuContainer onTouchStart={onTouchStart}>
               <SSIDropDownList buttons={moreActions} />
