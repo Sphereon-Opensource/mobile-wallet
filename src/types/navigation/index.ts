@@ -16,7 +16,6 @@ export type StackParamList = {
   VerificationCode: IVerificationCodeProps;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
-  ó;
   Error: IPopupModalProps;
   CredentialSelectType: ICredentialSelectTypeProps;
   ContactsOverview: Record<string, never>;

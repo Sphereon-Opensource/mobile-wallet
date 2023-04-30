@@ -540,10 +540,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         if (error.message.includes('403') || errorResponse.status === 403) {
           return Promise.reject(error);
         }
-        console.log(`ER: ${JSON.stringify(error)}`);
-        console.log(`EEEEERRRRRRORRRRRR1: ${JSON.stringify(errorResponse)}`);
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse);
-        console.log(`EEEEERRRRRRORRRRRR2: ${JSON.stringify(errorDetails)}`);
 
         args.navigation.navigate(ScreenRoutesEnum.ERROR, {
           image: PopupImagesEnum.WARNING,
@@ -568,7 +565,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     .getServerMetadataAndPerformCryptoMatching()
     .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(metadata))
     .catch((error: Error) => {
-      console.log(`ERRORORRRR: ${error}`);
       debug(`Unable to retrieve vc. Error: ${error}`);
       //TODO create human readable error message
       showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message});
