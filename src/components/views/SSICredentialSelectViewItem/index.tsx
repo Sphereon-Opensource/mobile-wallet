@@ -36,11 +36,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
               <SSICredentialLogo image={image} />
             </TouchableOpacity>
             <CheckboxContainer>
-              <SSICheckbox
-                onValueChange={onPress}
-                isChecked={props.isSelected}
-                backgroundColor={style?.backgroundColor}
-              />
+              <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
             </CheckboxContainer>
           </LogoCheckboxContainer>
         </LogoOuterContainer>

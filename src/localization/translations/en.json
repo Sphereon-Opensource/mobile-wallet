@@ -152,5 +152,6 @@
     "action_select_label": "Select",
     "action_onboarding_setup_message": "Setting up wallet...",
     "action_getting_information_message": "Getting information...",
-    "action_sending_credentials_message": "Sending credentials..."
+    "action_sending_credentials_message": "Sending credentials...",
+    "profile_logout_action_caption": "Log out"
 }
