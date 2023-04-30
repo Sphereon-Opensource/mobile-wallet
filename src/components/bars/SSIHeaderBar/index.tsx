@@ -102,12 +102,12 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
               />
             </ProfileMenuContainer>
           )}
-          {moreActions.length > 0 &&
+          {moreActions.length > 0 && (
             // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>
               <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />
             </View>
-          }
+          )}
           {showMoreMenu && (
             <MoreMenuContainer onTouchStart={onTouchStart}>
               <SSIDropDownList buttons={moreActions} />

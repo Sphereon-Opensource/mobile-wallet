@@ -6,3 +6,5 @@ export enum SupportedDidMethodEnum {
   DID_FACTOM = 'factom',
   DID_JWK = 'jwk',
 }
+
+export type SupportedDIDMethod = 'ethr' | 'key' | 'lto' | 'ion' | 'jwk';

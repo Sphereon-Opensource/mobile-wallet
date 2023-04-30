@@ -1,16 +1,11 @@
-import { IIdentifier, IKey } from "@veramo/core";
+import {IIdentifier, IKey} from '@veramo/core';
 
-import { DID_PREFIX } from "../@config/constants";
-import { didManagerCreate, didManagerFind, didManagerGet } from "../agent";
-import store from "../store";
-import { getContacts } from "../store/actions/contact.actions";
-import { addIdentifier } from "../store/actions/user.actions";
-import {
-  ICreateIdentifierArgs,
-  ICreateOrGetIdentifierArgs,
-  IdentifierAliasEnum,
-  KeyManagementSystemEnum
-} from "../types";
+import {DID_PREFIX} from '../@config/constants';
+import {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
+import store from '../store';
+import {getContacts} from '../store/actions/contact.actions';
+import {addIdentifier} from '../store/actions/user.actions';
+import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum} from '../types';
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement

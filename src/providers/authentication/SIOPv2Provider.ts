@@ -1,10 +1,9 @@
 import {CheckLinkedDomain, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk-data-store';
 import {OpSession, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
-import {OID4VP} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP';
 import {getKey} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions';
 import {VerifiableCredentialsWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/src/types/IDidAuthSiopOpAuthenticator';
-import {FindCredentialsArgs, IIdentifier} from '@veramo/core';
+import {IIdentifier} from '@veramo/core';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
@@ -12,10 +11,7 @@ import agent, {didMethodsSupported} from '../../agent';
 
 const debug = Debug(`${APP_ID}:authentication`);
 
-export const siopGetRequest = async (
-  config: IDidAuthConfig,
-  // customApproval?: CustomApproval
-): Promise<VerifiedAuthorizationRequest> => {
+export const siopGetRequest = async (config: IDidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
   const session = await siopGetSession(config.sessionId).catch(
     async () => await siopRegisterSession({requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId}),
   );
@@ -23,12 +19,6 @@ export const siopGetRequest = async (
   console.log(`session: ${JSON.stringify(session.id, null, 2)}`);
   const verifiedAuthorizationRequest = await session.getAuthorizationRequest();
   console.log('Request: ' + JSON.stringify(verifiedAuthorizationRequest, null, 2));
-  /*if (customApproval && typeof customApproval !== 'string') {
-    await customApproval(authRequest)
-  } else {*/
-
-  // }
-
   return verifiedAuthorizationRequest;
 };
 
@@ -45,23 +35,6 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
     },
     requestJwtOrUri,
   });
-};
-
-// todo: We would need to include the wallet user after this method!
-export const siopSelectCredentials = async (
-  oid4vp: OID4VP,
-  credentialsFilter?: FindCredentialsArgs,
-): Promise<VerifiableCredentialsWithDefinition[]> => {
-  return await oid4vp.filterCredentialsAgainstAllDefinitions({filter: credentialsFilter});
-};
-
-// todo: We would need to include the wallet user before this method!
-export const siopCreateVerifiablePresentations = async (
-  oid4vp: OID4VP,
-  selectedCredentials: VerifiableCredentialsWithDefinition[],
-  identifier: IIdentifier,
-): Promise<VerifiablePresentationWithDefinition[]> => {
-  return await oid4vp.createVerifiablePresentations(selectedCredentials, {identifierOpts: {identifier}});
 };
 
 export const siopSendAuthorizationResponse = async (
@@ -87,8 +60,8 @@ export const siopSendAuthorizationResponse = async (
     const oid4vp = await session.getOID4VP();
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
-      : await siopSelectCredentials(oid4vp);
-    presentationsAndDefs = await siopCreateVerifiablePresentations(oid4vp, credentialsAndDefinitions, identifier);
+      : await oid4vp.filterCredentialsAgainstAllDefinitions();
+    presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {identifierOpts: {identifier}}); // siopCreateVerifiablePresentations(oid4vp, credentialsAndDefinitions, identifier);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     }
@@ -97,8 +70,8 @@ export const siopSendAuthorizationResponse = async (
   const kid = (await getKey(identifier, 'authentication', session.context)).kid;
 
   const response = session.sendAuthorizationResponse({
-    verifiablePresentations: presentationsAndDefs?.map(pd => pd.presentation),
+    verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation),
     responseSignerOpts: {identifier, kid},
   });
-  return response;
+  return await response;
 };

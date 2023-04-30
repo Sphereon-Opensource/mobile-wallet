@@ -1,6 +1,5 @@
 import {IKey, TKeyType} from '@veramo/core';
-
-import {SignatureAlgorithmEnum} from '../types';
+import {SignatureAlgorithmEnum} from '../providers/credential/OpenId4VcIssuanceProvider';
 
 export const SignatureAlgorithmFromKeyType = (type: TKeyType) => {
   switch (type) {

@@ -10,12 +10,6 @@ export enum IdentifierAliasEnum {
   PRIMARY = 'primary',
 }
 
-export enum SignatureAlgorithmEnum {
-  EdDSA = 'EdDSA',
-  ES256 = 'ES256',
-  ES256K = 'ES256K',
-}
-
 export interface IAddIdentifierArgs {
   did: string;
 }
