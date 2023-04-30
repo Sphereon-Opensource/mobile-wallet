@@ -185,8 +185,8 @@ class OpenId4VcIssuanceProvider {
 
     const callbacks: ProofOfPossessionCallbacks = {
       signCallback: (jwt: Jwt, kid: string) => {
-        console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
-        console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
+        // console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
+        // console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
           identifier,
           header: {...jwt.header, typ: 'JWT', kid},
@@ -274,7 +274,6 @@ class OpenId4VcIssuanceProvider {
     }
 
     this.issuanceOpts = issuanceOpts;
-    console.log(JSON.stringify(issuanceOpts));
     return this.issuanceOpts;
   };
 
@@ -293,7 +292,7 @@ class OpenId4VcIssuanceProvider {
     for (const format of vcFormatPreferences) {
       if (format in credentialMetadata.formats) {
         const credentialFormat = credentialMetadata.formats[format];
-        console.log(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
+        debug(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
         return {
           credentialFormat,
           format,
@@ -309,7 +308,6 @@ class OpenId4VcIssuanceProvider {
   private getIssuanceCryptoSuite = async ({credentialFormatOpts}: IGetIssuanceCryptoSuiteArgs): Promise<string> => {
     const suites_supported = credentialFormatOpts.credentialFormat.cryptographic_suites_supported || [];
 
-    console.log(suites_supported);
     switch (credentialFormatOpts.format) {
       case 'jwt':
       case 'jwt_vc': {
