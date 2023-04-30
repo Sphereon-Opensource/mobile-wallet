@@ -219,6 +219,7 @@
     "@sphereon/ssi-types": "0.10.0",
     "@sphereon/ssi-sdk-core": "0.10.0",
     "@sphereon/ssi-sdk-did-utils": "0.10.0",
+    "@sphereon/did-auth-siop": "0.3.0",
     "@mattrglobal/bbs-signatures": "npm:@animo-id/react-native-bbs-signatures@^0.1.0",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",

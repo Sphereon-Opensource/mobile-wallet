@@ -2929,10 +2929,10 @@
     "@trust/keyto" "^2.0.0-alpha1"
     "@veramo/core" "4.2.0"
 
-"@sphereon/did-auth-siop@0.3.0-unstable.45":
-  version "0.3.0-unstable.45"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.0-unstable.45.tgz#d9e2b6d8b9a4451d97c3265138eafd76bf3d575c"
-  integrity sha512-W6gvc4Kwyvw9caF+ovOTonuisfyWXGIpcf7tkXyc938qq4KdLWryqkOniadUXayTtjTdX5CKnPdF1argX+Tstg==
+"@sphereon/did-auth-siop@0.3.0", "@sphereon/did-auth-siop@0.3.0-unstable.45":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.0.tgz#fca2da96d76d7772d5b71109975934eb2ca6ad6f"
+  integrity sha512-ZMmSxxmy1n2/0HlDHpLsIitvMh2AvnjSV9ntLGr1PdyE3/aFs51oGm530wFCKyT1nV/3tLd6fXQBKdIHjM8+QQ==
   dependencies:
     "@sphereon/did-uni-client" "^0.6.0"
     "@sphereon/pex" "2.0.0"
