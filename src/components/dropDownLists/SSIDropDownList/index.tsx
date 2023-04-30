@@ -1,17 +1,17 @@
 import React, {FC} from 'react';
 
 import {SSIDropDownListContainerStyled as Container} from '../../../styles/components';
-import {IMoreMenuButton} from '../../../types';
+import {IHeaderMenuButton} from '../../../types';
 import SSIDropDownListItem from '../SSIDropDownListItem';
 
 export interface IProps {
-  buttons: Array<IMoreMenuButton>;
+  buttons: Array<IHeaderMenuButton>;
 }
 
 const SSIDropDownList: FC<IProps> = (props: IProps): JSX.Element => {
   const getItems = () => {
     const {buttons} = props;
-    return buttons.map((item: IMoreMenuButton, index: number) => {
+    return buttons.map((item: IHeaderMenuButton, index: number) => {
       const showBorder = buttons.length > 1 && index !== buttons.length - 1;
       return (
         <SSIDropDownListItem

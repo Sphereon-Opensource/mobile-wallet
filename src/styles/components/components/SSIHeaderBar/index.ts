@@ -36,3 +36,19 @@ export const SSIHeaderBarBackIconContainerStyled = styled.View`
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin: 18px 0px 0px 24px;
 `;
+
+export const SSIHeaderBarMoreMenuContainerStyled = styled.View`
+  position: absolute;
+  width: 250px;
+  right: 10px;
+  top: 92px;
+`;
+
+// we need this zIndex as the logout button is displayed over the more button and without it, when you press the logout button on the exact place where the more button is, the more button would also be triggered
+export const SSIHeaderBarProfileMenuContainerStyled = styled.View`
+  position: absolute;
+  width: 250px;
+  right: 10px;
+  top: 46px;
+  z-index: 1000;
+`;

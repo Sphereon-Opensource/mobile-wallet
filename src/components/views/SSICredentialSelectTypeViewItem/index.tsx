@@ -13,22 +13,22 @@ import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
 import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
-  id: string;
   title: string;
   isSelected: boolean;
   image?: string; // TODO WAL-302 Support passing in storage location
   style?: ViewStyle;
+  onPress: () => Promise<void>;
 }
 
 const SSICredentialSelectTypeViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title} = props;
+  const {image, style, title, onPress} = props;
 
   return (
     <Container>
       <LogoContainer>
         <SSICredentialLogo image={image} />
         <LogoCheckboxContainer>
-          <SSICheckbox isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
+          <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
         </LogoCheckboxContainer>
       </LogoContainer>
       <ContentContainer>
