@@ -76,14 +76,13 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const {onVerification} = this.props;
 
     onVerification(value)
-      .then(() => this.setState({retry: 0, pin: ''}))
+      .then(() => this.setState({retry: 0}))
       .catch(this.onVerificationFailed);
   };
 
   onVerificationFailed = async (): Promise<void> => {
     const {onMaxRetriesExceeded} = this.props;
     const {retry, maxRetries} = this.state;
-
     if (!maxRetries) {
       this.setState({pin: '', showErrorMessage: true});
       this.failureAnimation();
@@ -124,17 +123,16 @@ class SSIPinCode extends PureComponent<IProps, IState> {
 
   onKeyPressInput = async ({nativeEvent: {key}}: {nativeEvent: {key: string}}): Promise<void> => {
     const {length, pin} = this.state;
-
-    switch (key) {
-      case 'Backspace':
-        if (pin.length > 0) {
-          this.setState({
-            pin: pin.slice(0, -1),
-          });
-        }
-        return;
-      default: {
-        if (pin.length < length) {
+    if (pin.length < length) {
+      switch (key) {
+        case 'Backspace':
+          if (pin.length > 0) {
+            this.setState({
+              pin: pin.slice(0, -1),
+            });
+          }
+          return;
+        default: {
           if (!ONLY_ALLOW_NUMBERS_REGEX.test(key)) {
             return;
           }
