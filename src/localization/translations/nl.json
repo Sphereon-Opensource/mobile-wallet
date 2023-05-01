@@ -142,7 +142,7 @@
     "credentials_required_credential_select_label": "Selecteer een credential",
     "action_add_label": "Toevoegen",
     "credentials_select_title": "Selecteer credentials",
-    "credentials_select_subtitle": "Je hebt meer dan één credential die aan dit verzoek kan voldoen.",
+    "credentials_select_subtitle": "Je hebt meer dan één credential die aan dit verzoek kan voldoen. Kies er één om naar de verificateur te sturen.",
     "credentials_required_checking_label": "...bezig",
     "credentials_required_no_available_label": "Er is geen geschikte credential",
     "credentials_required_no_available_additional_label": "Je hebt geen credential om te delen met de verificateur. Neem contact op met een uitgever om een nieuwe credential uit te geven.",
