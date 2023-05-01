@@ -2929,15 +2929,15 @@
     "@trust/keyto" "^2.0.0-alpha1"
     "@veramo/core" "4.2.0"
 
-"@sphereon/did-auth-siop@0.3.0", "@sphereon/did-auth-siop@0.3.0-unstable.45":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.0.tgz#fca2da96d76d7772d5b71109975934eb2ca6ad6f"
-  integrity sha512-ZMmSxxmy1n2/0HlDHpLsIitvMh2AvnjSV9ntLGr1PdyE3/aFs51oGm530wFCKyT1nV/3tLd6fXQBKdIHjM8+QQ==
+"@sphereon/did-auth-siop@0.3.1-unstable.0":
+  version "0.3.1-unstable.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.1-unstable.0.tgz#01b7d7697f09f918be5adf2077ab86723c10c8c7"
+  integrity sha512-Omb3Vlr/PO+0GtP8dm6Ve4MGdy8B25rosH05w3OAclnSLciY8/cdU48Q2Q/me/tPURGwQK7Okz5/oTJqSnNulw==
   dependencies:
     "@sphereon/did-uni-client" "^0.6.0"
-    "@sphereon/pex" "2.0.0"
-    "@sphereon/pex-models" "2.0.0"
-    "@sphereon/ssi-types" "0.9.1-next.120"
+    "@sphereon/pex" "^2.0.1"
+    "@sphereon/pex-models" "^2.0.2"
+    "@sphereon/ssi-types" "^0.10.0"
     "@sphereon/wellknown-dids-client" "^0.1.3"
     cross-fetch "^3.1.5"
     did-jwt "^6.11.6"
@@ -3042,18 +3042,18 @@
     debug "^4.3.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/pex-models@2.0.0", "@sphereon/pex-models@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.0.tgz#144a17b91ed7062bcde6b4456f3f7d2ac3fe0504"
-  integrity sha512-DjshSMx2TxlC+jgWtc8l4iWy5sAeqsqhQeqDbDul2yZRfAzPucHALHUIC5QxZ5AU2VSbiunb/+8WJa98MSpD4Q==
+"@sphereon/pex-models@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.2.tgz#541b3f77522ab295da70b65baa0994e249073d1b"
+  integrity sha512-ptHM72tdQrhMYSItHoGCm3HgK+HGF6tI29zYfS47H3M7ZjKhBgfmVHohuxhxA0Q6cL5gqH1jEA8G5Z2tadHmTw==
 
-"@sphereon/pex@2.0.0", "@sphereon/pex@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.0.tgz#22f20b26e2e918b2b9d541bed4c55e99aaf6eb21"
-  integrity sha512-bjhTkuHzuPV+CZTXHGbG9R/RRTAZ2WqN4Bd3uM/ThB0eRppSi3u1yZkUff3fZC6Y6n8lAhzqv8mWgeluBZHp8Q==
+"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.1.tgz#277de5dd1346c30c50b67fbbbfb8919004c05b52"
+  integrity sha512-9UW1z60ltPMEauqKXa73gTfmU8SrPxH+X7Rx9v7G13ZmeTC8Yjfm2C7Mit01B9BCL49gShV4htG8np3+UKlorg==
   dependencies:
-    "@sphereon/pex-models" "^2.0.0"
-    "@sphereon/ssi-types" "0.9.1-next.120"
+    "@sphereon/pex-models" "^2.0.2"
+    "@sphereon/ssi-types" "^0.10.0"
     ajv "^8.12.0"
     ajv-formats "^2.1.1"
     jsonpath "^1.1.1"
@@ -3095,13 +3095,13 @@
     debug "^4.3.4"
     typeorm "^0.3.12"
 
-"@sphereon/ssi-sdk-did-auth-siop-authenticator@0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-did-auth-siop-authenticator/-/ssi-sdk-did-auth-siop-authenticator-0.10.0.tgz#b8b00c8fa43409f06b9830432575de084c29acb7"
-  integrity sha512-feLukPuuzpTmVmW+hQto1plaKjN6u66Bzd9cE133K9prTUM0aLSVLmouIMmZLWqqHNORrgV70OyfVIIxEn/gbQ==
+"@sphereon/ssi-sdk-did-auth-siop-authenticator@0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-did-auth-siop-authenticator/-/ssi-sdk-did-auth-siop-authenticator-0.10.1.tgz#f915c1249bba2e857f3d5bfd668247b7e261012e"
+  integrity sha512-TCSKLFnHWFwzxgu3Z9c7y6JlVmFpi7l2Lb20FnRyrIM+S3ge+WgN/DUPINcZT9RCU4PXbDou8noutjM6MK1RyA==
   dependencies:
-    "@sphereon/did-auth-siop" "0.3.0-unstable.45"
-    "@sphereon/pex" "2.0.0"
+    "@sphereon/did-auth-siop" "0.3.1-unstable.0"
+    "@sphereon/pex" "2.0.1"
     "@sphereon/ssi-sdk-core" "^0.10.0"
     "@sphereon/ssi-sdk-did-utils" "^0.10.0"
     "@sphereon/ssi-types" "^0.10.0"
@@ -3199,7 +3199,7 @@
     jsonld-signatures "^7.0.0"
     ts-node "^8.10.2"
 
-"@sphereon/ssi-types@0.10.0", "@sphereon/ssi-types@0.9.1-next.120", "@sphereon/ssi-types@^0.10.0", "@sphereon/ssi-types@^0.8.1-next.123", "@sphereon/ssi-types@^0.9.0":
+"@sphereon/ssi-types@0.10.0", "@sphereon/ssi-types@^0.10.0", "@sphereon/ssi-types@^0.8.1-next.123", "@sphereon/ssi-types@^0.9.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.10.0.tgz#dbb20d727586b40f1e98c84a1b57da3e899b4850"
   integrity sha512-ajAUeaR2fMSvlj/au40ltzSoQ+Qy0CdYouPeK6upFma/8g36RbRh0CI+Ee1qOl3R/SbHBzB3XKWFVGHzooVnNQ==
