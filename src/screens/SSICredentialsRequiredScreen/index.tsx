@@ -25,7 +25,7 @@ import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {presentationDefinition} = props.route.params;
+  const {presentationDefinition, format, subjectSyntaxTypesSupported} = props.route.params;
   const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const pex = new PEX();
@@ -43,7 +43,10 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           id: inputDescriptor.id,
           input_descriptors: [inputDescriptor],
         };
-        const selectResult: SelectResults = pex.selectFrom(presentationDefinition, originalVcs);
+        const selectResult: SelectResults = pex.selectFrom(presentationDefinition, originalVcs, {
+          restrictToFormats: format,
+          restrictToDIDMethods: subjectSyntaxTypesSupported,
+        });
         const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
           ? selectResult.verifiableCredential
               .map((matchedVC: IVerifiableCredential) => getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC))

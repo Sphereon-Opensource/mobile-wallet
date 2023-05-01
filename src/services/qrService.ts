@@ -1,4 +1,4 @@
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest, RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
 import {CredentialResponse, IssuanceInitiation} from '@sphereon/openid4vci-client';
 import {
   ConnectionTypeEnum,
@@ -48,6 +48,7 @@ import {getContacts} from './contactService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 import {translateCorrelationIdToName} from '../utils/CredentialUtils';
 import {filterNavigationStack} from '../utils/NavigationUtils';
+import {Format} from '@sphereon/pex-models';
 
 const {v4: uuidv4} = require('uuid');
 const format = require('string-format');
@@ -152,7 +153,10 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const connect = async (): Promise<void> => {
-    const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest({...connection.config, id: uuidv4} as IDidAuthConfig);
+    const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest({
+      ...connection.config,
+      id: uuidv4,
+    } as IDidAuthConfig);
     args.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
       verifier,
       presentationDefinition: verifiedAuthorizationRequest.presentationDefinitions![0].definition,
@@ -210,6 +214,10 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     await setTimeout(async () => {
       const request: VerifiedAuthorizationRequest = await siopGetRequest({...config, id: uuidv4()});
 
+      // todo: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
+      const registration: RPRegistrationMetadataPayload | undefined = await request.authorizationRequest.getMergedProperty('registration');
+      const format: Format | undefined = registration?.vp_formats;
+      const subjectSyntaxTypesSupported = registration?.subject_syntax_types_supported;
       const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
       const correlationId = clientId
         ? clientId.startsWith('did:')
@@ -271,6 +279,8 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           verifier: translateCorrelationIdToName(url.hostname),
           // TODO currently only supporting 1 presentation definition
           presentationDefinition: presentationDefinitionWithLocation.definition,
+          format,
+          subjectSyntaxTypesSupported,
           onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
             authenticate(async () => {
               args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: 'Sending credentials...'});
@@ -501,7 +511,12 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                           screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                         }),
                       )
-                      .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('credential_offer_accepted_toast'), showBadge: false}))
+                      .then(() =>
+                        showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                          message: translate('credential_offer_accepted_toast'),
+                          showBadge: false,
+                        }),
+                      )
                       .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
                 },
                 secondaryAction: {
@@ -525,7 +540,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         if (error.message.includes('403') || errorResponse.status === 403) {
           return Promise.reject(error);
         }
-        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse.error);
+        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse);
 
         args.navigation.navigate(ScreenRoutesEnum.ERROR, {
           image: PopupImagesEnum.WARNING,
@@ -534,7 +549,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           detailsPopup: {
             buttonCaption: translate('action_view_extra_details'),
             title: errorDetails.detailsTitle,
-            details: `${errorDetails.detailsMessage} ${errorResponse.error_description}`,
+            details: `${errorDetails?.detailsMessage} ${errorResponse?.error_description || errorResponse}`,
           },
           primaryButton: {
             caption: translate('action_ok_label'),

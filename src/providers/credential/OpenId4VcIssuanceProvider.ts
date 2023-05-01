@@ -14,7 +14,7 @@ import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
-import {getFirstKeyWithRelation, getOrCreatePrimaryIdentifier} from '../../services/identityService';
+import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
   ICredentialFormatOpts,
@@ -29,10 +29,11 @@ import {
   IServerMetadataAndCryptoMatchingResponse,
   Oidc4vciErrorEnum,
   QrTypesEnum,
-  SignatureAlgorithmEnum,
   SupportedDidMethodEnum,
 } from '../../types';
 import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils';
+import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
+import {agentContext} from '../../agent';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -41,15 +42,32 @@ const debug = Debug(`${APP_ID}:openid4vci`);
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc', 'ldp_vc'];
 
-export const didMethodPreferences = [SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_KEY];
+export type JsonLdSignatureSuite = 'Ed25519Signature2018' | 'EcdsaSecp256k1Signature2019' | 'Ed25519Signature2020' | 'JsonWebSignature2020'; //|
+// "JcsEd25519Signature2020"
+
+export enum LDPProofTypeEnum {
+  Ed25519Signature2018 = 'Ed25519Signature2018',
+  EcdsaSecp256k1Signature2019 = 'EcdsaSecp256k1Signature2019',
+  Ed25519Signature2020 = 'Ed25519Signature2020',
+  JsonWebSignature2020 = 'JsonWebSignature2020',
+  JcsEd25519Signature2020 = 'JcsEd25519Signature2020',
+}
+
+export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK];
 
 export const jsonldCryptographicSuitePreferences = [
   'Ed25519Signature2018',
   'EcdsaSecp256k1Signature2019',
   'Ed25519Signature2020',
   'JsonWebSignature2020',
-  'JcsEd25519Signature2020',
+  // "JcsEd25519Signature2020"
 ];
+
+export enum SignatureAlgorithmEnum {
+  EdDSA = 'EdDSA',
+  ES256 = 'ES256',
+  ES256K = 'ES256K',
+}
 
 export const jwtCryptographicSuitePreferences = [SignatureAlgorithmEnum.ES256K, SignatureAlgorithmEnum.ES256, SignatureAlgorithmEnum.EdDSA];
 
@@ -160,15 +178,15 @@ class OpenId4VcIssuanceProvider {
       createOpts: {options: {type: credIssuanceOpt.keyType, use: KeyUse.Signature}},
     });
     const key =
-      (await getFirstKeyWithRelation(identifier, 'authentication', false)) ||
-      ((await getFirstKeyWithRelation(identifier, 'verificationMethod', true)) as _ExtendedIKey);
+      (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
+      ((await getFirstKeyWithRelation(identifier, agentContext, 'verificationMethod', true)) as _ExtendedIKey);
     const kid = key.meta.verificationMethod.id;
     const alg = SignatureAlgorithmFromKey(key);
 
     const callbacks: ProofOfPossessionCallbacks = {
       signCallback: (jwt: Jwt, kid: string) => {
-        console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
-        console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
+        // console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
+        // console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
           identifier,
           header: {...jwt.header, typ: 'JWT', kid},
@@ -193,7 +211,7 @@ class OpenId4VcIssuanceProvider {
         jti: uuidv4(),
       });
     } catch (error) {
-      debug(`Unable to get credential: ${error}`);
+      console.log(`Unable to get credential: ${error}`);
       return Promise.reject(error);
     }
   };
@@ -245,8 +263,9 @@ class OpenId4VcIssuanceProvider {
       }
 
       const credentialFormatOpts: ICredentialFormatOpts = await this.getIssuanceCredentialFormat({credentialMetadata});
-      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialFormatOpts.format);
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialFormatOpts});
+      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialFormatOpts.format);
+
       issuanceOpts[credentialMetadata.credentialType] = {
         didMethod,
         format: credentialFormatOpts.format,
@@ -259,12 +278,12 @@ class OpenId4VcIssuanceProvider {
   };
 
   private defaultIssuanceOpts(credentialType: string): IIssuanceOpts {
-    debug(
+    console.log(
       `WARNING: Reverting to default for key/signature suites for credential type '${credentialType}', as no Server Metadata or not metadata match was present!`,
     );
     return {
-      didMethod: SupportedDidMethodEnum.DID_JWK,
-      keyType: 'Secp256k1',
+      didMethod: SupportedDidMethodEnum.DID_KEY,
+      keyType: 'Ed25519',
       format: 'jwt_vc',
     };
   }
@@ -272,14 +291,18 @@ class OpenId4VcIssuanceProvider {
   private getIssuanceCredentialFormat = async ({credentialMetadata}: IGetVcIssuanceFormatArgs): Promise<ICredentialFormatOpts> => {
     for (const format of vcFormatPreferences) {
       if (format in credentialMetadata.formats) {
+        const credentialFormat = credentialMetadata.formats[format];
+        debug(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
         return {
-          credentialFormat: credentialMetadata.formats[format],
+          credentialFormat,
           format,
         };
+      } else {
+        console.log(`Credential format ${format} not supported by issuer`);
       }
     }
 
-    return Promise.reject(Error(`Credential formats '${Object.keys(credentialMetadata.formats)}' not supported`));
+    return Promise.reject(Error(`Credential formats '${Object.keys(credentialMetadata.formats)}' not supported by wallet`));
   };
 
   private getIssuanceCryptoSuite = async ({credentialFormatOpts}: IGetIssuanceCryptoSuiteArgs): Promise<string> => {
@@ -305,7 +328,7 @@ class OpenId4VcIssuanceProvider {
 
   private getIssuanceDidMethod = async (format?: CredentialFormat): Promise<SupportedDidMethodEnum> => {
     // TODO implementation. None of the implementers are currently returning supported did methods.
-    return format ? (format.includes('jwt') ? didMethodPreferences[0] : didMethodPreferences[1]) : didMethodPreferences[0];
+    return format ? (format.includes('jwt') ? didMethodPreferences[1] : didMethodPreferences[0]) : didMethodPreferences[0];
   };
 }
 

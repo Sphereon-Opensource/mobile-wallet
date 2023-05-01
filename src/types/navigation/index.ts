@@ -1,9 +1,9 @@
-import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
-import {WrappedVerifiableCredential} from '@sphereon/ssi-types/src/types/vc';
+
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 export type StackParamList = {
@@ -47,6 +47,8 @@ export interface ICredentialsSelectProps {
 
 export interface ICredentialsRequiredProps {
   verifier: string;
+  format: Format | undefined;
+  subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
 }

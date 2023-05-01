@@ -139,3 +139,5 @@ export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCred
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential;
 export const createVerifiableCredential = agent.createVerifiableCredential;
 export default agent;
+
+export const agentContext = {...agent.context, agent};
