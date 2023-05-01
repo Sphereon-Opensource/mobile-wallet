@@ -76,14 +76,13 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const {onVerification} = this.props;
 
     onVerification(value)
-      .then(() => this.setState({retry: 0, pin: value}))
+      .then(() => this.setState({retry: 0}))
       .catch(this.onVerificationFailed);
   };
 
   onVerificationFailed = async (): Promise<void> => {
     const {onMaxRetriesExceeded} = this.props;
     const {retry, maxRetries} = this.state;
-
     if (!maxRetries) {
       this.setState({pin: '', showErrorMessage: true});
       this.failureAnimation();
