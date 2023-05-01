@@ -415,7 +415,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               id: uuidv4(),
               credentialType: credentialMetadata.credentialType,
             })),
-            onSelect: async (credentialTypes: Array<string>) => await sendResponseOrAuthenticate(credentialTypes),
+            onSelect: async (credentialTypes: Array<string>) => {
+              args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
+              await sendResponseOrAuthenticate(credentialTypes)
+            },
           },
         });
         // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact

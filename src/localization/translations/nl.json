@@ -153,5 +153,6 @@
     "action_onboarding_setup_message": "Opzetten van wallet...",
     "action_getting_information_message": "Ophalen informatie...",
     "action_sending_credentials_message": "Sturen credentials...",
-    "profile_logout_action_caption": "Log uit"
+    "profile_logout_action_caption": "Log uit",
+    "action_getting_credentials_message": "Ophalen credential..."
 }
