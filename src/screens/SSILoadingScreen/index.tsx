@@ -1,26 +1,40 @@
-import {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {PureComponent} from 'react';
+import {BackHandler, NativeEventSubscription} from 'react-native';
+
 import {
-  SSIBasicHorizontalCenterContainerStyled as Container,
-  SSILoadingScreenActivityIndicatorContainerStyled as ActivityIndicatorContainer,
   SSILoadingScreenActivityCaptionStyled as ActivityCaption,
   SSILoadingScreenActivityIndicatorStyled as ActivityIndicator,
+  SSILoadingScreenActivityIndicatorContainerStyled as ActivityIndicatorContainer,
+  SSIBasicHorizontalCenterContainerStyled as Container,
 } from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOADING>;
 
-const SSILoadingScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {message} = props.route.params;
+class SSILoadingScreen extends PureComponent<Props> {
+  hardwareBackPressListener: NativeEventSubscription;
 
-  return (
-    <Container>
-      <ActivityIndicatorContainer>
-        <ActivityIndicator />
-      </ActivityIndicatorContainer>
-      <ActivityCaption>{message}</ActivityCaption>
-    </Container>
-  );
+  componentDidMount = (): void => {
+    // we add this listener to block the os back button from executing on the loading screen. returning true will not let the event bubble up.
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', () => true);
+  };
+
+  componentWillUnmount = (): void => {
+    this.hardwareBackPressListener.remove();
+  };
+
+  render() {
+    const {message} = this.props.route.params;
+    return (
+        <Container>
+          <ActivityIndicatorContainer>
+            <ActivityIndicator />
+          </ActivityIndicatorContainer>
+          <ActivityCaption>{message}</ActivityCaption>
+        </Container>
+    );
+  }
 };
 
 export default SSILoadingScreen;
