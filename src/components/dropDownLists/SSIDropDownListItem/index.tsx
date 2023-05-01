@@ -12,6 +12,7 @@ import {HeaderMenuIconsEnum, OpacityStyleEnum} from '../../../types';
 import SSIAddIcon from '../../assets/icons/SSIAddIcon';
 import SSIDeleteIcon from '../../assets/icons/SSIDeleteIcon';
 import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
+import SSIDownloadIcon from '../../assets/icons/SSIDownloadIcon';
 
 export interface IProps {
   caption: string;
@@ -39,6 +40,8 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
         return <SSIAddIcon color={fontColor} />;
       case HeaderMenuIconsEnum.LOGOUT:
         return <SSILogoutIcon color={fontColor} />;
+      case HeaderMenuIconsEnum.DOWNLOAD:
+        return <SSIDownloadIcon color={fontColor} />;
       default:
         return <View />;
     }

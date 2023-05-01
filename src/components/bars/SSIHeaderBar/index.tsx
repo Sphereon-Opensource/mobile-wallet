@@ -7,7 +7,7 @@ import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   SSIHeaderBarContainerStyled as Container,
-  SSIHeaderBarHeaderCaptionStyled as HeaderCaption,
+  SSITextH1LightStyled as HeaderCaption,
   SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   SSIFlexDirectionColumnViewStyled as LeftColumn,
   SSIHeaderBarMoreIconStyled as MoreIcon,
@@ -75,7 +75,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
               <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
             </BackIconContainer>
           )}
-          <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 14}}>
+          <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 10}}>
             {props.options.headerTitle}
           </HeaderCaption>
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}

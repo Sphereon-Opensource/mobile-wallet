@@ -5,7 +5,6 @@ import {SSIFlexDirectionRowViewStyled} from '../../containers';
 export const SSICredentialDetailsScreenContentContainer = styled.View`
   width: 100%;
   flex: 1;
-  margin-top: 4px;
 `;
 
 export const SSICredentialDetailsScreenCredentialCardContainer = styled.View`

@@ -13,6 +13,7 @@ export enum HeaderMenuIconsEnum {
   ADD = 'add',
   DELETE = 'delete',
   LOGOUT = 'logout',
+  DOWNLOAD = 'download',
 }
 
 export enum PopupImagesEnum {

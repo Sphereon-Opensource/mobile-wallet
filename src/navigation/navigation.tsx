@@ -32,7 +32,7 @@ import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
-import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
+import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 import {login} from '../services/authenticationService';
 
 const format = require('string-format');
@@ -155,6 +155,7 @@ const CredentialsStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // TODO create actions that can be passed in
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
@@ -162,6 +163,7 @@ const CredentialsStack = (): JSX.Element => {
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),
+                  icon: HeaderMenuIconsEnum.DOWNLOAD,
                 },
               ]}
             />
@@ -274,6 +276,7 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
+              // TODO create actions that can be passed in
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
@@ -281,6 +284,7 @@ const QRStack = (): JSX.Element => {
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),
+                  icon: HeaderMenuIconsEnum.DOWNLOAD,
                 },
               ]}
             />
