@@ -4,10 +4,9 @@ import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {backgrounds, borders} from '../../../styles/colors';
 import {SSIIdentitiesViewContainerStyled as Container} from '../../../styles/components';
 import SSIIdentityViewItem from '../SSIIdentityViewItem';
-import SSISwipeRowViewItem from '../SSISwipeRowViewItem';
-import {backgrounds, borders} from '../../../styles/colors';
 
 export interface IProps {
   identities: Array<IIdentity>;
@@ -21,23 +20,14 @@ const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
     setRefreshing(false);
   };
 
-  const onDelete = async (): Promise<void> => {
-    console.log('Delete identity pressed!');
-  };
-
-  const onItemPress = async (identity: IIdentity): Promise<void> => {
-    console.log('Identity pressed!');
-  };
-
   const renderItem = (itemInfo: ListRenderItemInfo<IIdentity>): JSX.Element => (
-    <SSISwipeRowViewItem
+    <SSIIdentityViewItem
       style={{
         backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
         ...(itemInfo.index === identities.length - 1 && itemInfo.index % 2 === 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
       }}
-      viewItem={<SSIIdentityViewItem name={itemInfo.item.alias} roles={itemInfo.item.roles} />}
-      onPress={() => onItemPress(itemInfo.item)}
-      onDelete={onDelete}
+      name={itemInfo.item.alias}
+      roles={itemInfo.item.roles}
     />
   );
 

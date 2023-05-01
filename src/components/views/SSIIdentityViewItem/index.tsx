@@ -1,29 +1,31 @@
-import React, {FC} from 'react';
+import {IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
+import React, {FC, ForwardedRef} from 'react';
+import {ViewStyle} from 'react-native';
 
 import {
-  SSIIdentityViewItemContactDetailsContainerStyled as IdentityDetailsContainer,
   SSIIdentityViewItemContainerStyled as Container,
+  SSIIdentityViewItemContactDetailsContainerStyled as IdentityDetailsContainer,
   SSITextH3LightStyled as NameCaption,
   SSITextH4LightStyled as RolesCaption,
 } from '../../../styles/components';
-import {IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
 
 export interface IProps {
   name: string;
   roles: Array<IdentityRoleEnum>;
+  style?: ViewStyle;
 }
 
-const SSIIdentityViewItem: FC<IProps> = (props: IProps): JSX.Element => {
-  const {name, roles} = props;
+const SSIIdentityViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: ForwardedRef<unknown>): JSX.Element => {
+  const {name, roles, style} = props;
 
   return (
-    <Container>
+    <Container style={style}>
       <IdentityDetailsContainer>
         <NameCaption>{name}</NameCaption>
         <RolesCaption>{roles.join(', ')}</RolesCaption>
       </IdentityDetailsContainer>
     </Container>
   );
-};
+});
 
 export default SSIIdentityViewItem;
