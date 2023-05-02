@@ -10,9 +10,9 @@ import {translate} from '../../localization/Localization';
 import {setPersonalData} from '../../store/actions/onboarding.actions';
 import {
   SSIPersonalDataScreenContainerStyled as Container,
+  SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
