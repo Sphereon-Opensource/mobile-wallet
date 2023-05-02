@@ -1,8 +1,8 @@
 import {ActivityIndicator} from 'react-native';
 import styled from 'styled-components/native';
 
-import {SSITextH2SemiBoldLightStyled} from '../../fonts';
 import {elements} from '../../../colors';
+import {SSITextH2SemiBoldLightStyled} from '../../fonts';
 
 export const SSILoadingScreenActivityIndicatorContainerStyled = styled.View`
   margin-top: 282px;

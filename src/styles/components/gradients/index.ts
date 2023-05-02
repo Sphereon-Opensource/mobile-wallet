@@ -1,9 +1,9 @@
 import {LinearGradient} from 'expo-linear-gradient';
+import {LinearTextGradient} from 'react-native-text-gradient';
 import styled from 'styled-components/native';
 
 import {highLightGradients} from '../../colors';
 import {SSIRoundedEdgesCss} from '../css';
-import {LinearTextGradient} from 'react-native-text-gradient';
 
 export const SSILinearGradientStyled = styled(LinearGradient).attrs({
   colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],

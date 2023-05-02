@@ -1,7 +1,8 @@
-import {filterNavigationStackArgs, ScreenRoutesEnum} from '../types';
-import {navigationRef} from '../navigation/rootNavigation';
-import {CommonActions, NavigationState} from '@react-navigation/routers';
 import {Route} from '@react-navigation/native';
+import {CommonActions, NavigationState} from '@react-navigation/routers';
+
+import {navigationRef} from '../navigation/rootNavigation';
+import {filterNavigationStackArgs, ScreenRoutesEnum} from '../types';
 
 /**
  * Filters routes from a navigation stack

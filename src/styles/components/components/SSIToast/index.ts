@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
+import {alerts} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerStyled} from '../../containers';
 import {SSITextH4DarkStyled} from '../../fonts';
-import {alerts} from '../../../colors';
 
 export const SSIToastContainerStyled = styled(SSIRoundedContainerStyled)`
   width: 96.8%;

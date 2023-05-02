@@ -1,4 +1,5 @@
 import {Image} from 'react-native';
+
 import {IS_IMAGE_URI_REGEX} from '../@config/constants';
 import {IImageSize} from '../types';
 

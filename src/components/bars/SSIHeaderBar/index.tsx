@@ -2,7 +2,11 @@ import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useContext} from 'react';
 import {GestureResponderEvent, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
 
+import OnTouchContext from '../../../contexts/OnTouchContext';
+import {translate} from '../../../localization/Localization';
+import {logout} from '../../../store/actions/user.actions';
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
@@ -11,19 +15,15 @@ import {
   SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   SSIFlexDirectionColumnViewStyled as LeftColumn,
   SSIHeaderBarMoreIconStyled as MoreIcon,
+  SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
   SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
+  SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
-  SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
-  SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
 } from '../../../styles/components';
-import {ButtonIconsEnum, IHeaderMenuButton, HeaderMenuIconsEnum} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
-import {useDispatch} from 'react-redux';
-import {logout} from '../../../store/actions/user.actions';
-import {translate} from '../../../localization/Localization';
-import OnTouchContext from '../../../contexts/OnTouchContext';
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;

@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
+import {Image} from 'react-native';
 
 import {
   SSIImageFieldContainerStyled as Container,
+  SSIImageFieldContentContainerStyled as ContentContainer,
   SSIImageFieldHeaderContainerStyled as HeaderContainer,
   SSITextH5LightStyled as HeaderLabel,
-  SSIImageFieldContentContainerStyled as ContentContainer,
 } from '../../../styles/components';
 import {ICredentialDetailsRow, IImageSize} from '../../../types';
-import {Image} from 'react-native';
 import {scaleImageToMaxHeight} from '../../../utils/ImageUtils';
 
 export interface IProps {

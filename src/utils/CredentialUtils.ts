@@ -1,11 +1,12 @@
+import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {UniqueVerifiableCredential} from '@veramo/core';
+import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
 
+import store from '../store';
 import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
 
-import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
-import store from '../store';
-import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
-import {UniqueVerifiableCredential} from '@veramo/core';
+
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present

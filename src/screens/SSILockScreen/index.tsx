@@ -1,13 +1,14 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
+
 import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
 import {getPin} from '../../services/storageService';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
+  SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 

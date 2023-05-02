@@ -1,8 +1,8 @@
 import styled from 'styled-components/native';
 
+import {statuses} from '../../../colors';
 import {SSIRippleContainerStyled} from '../../containers';
 import {SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5LightStyled} from '../../fonts';
-import {statuses} from '../../../colors';
 
 export const SSICredentialRequiredViewItemContainerStyled = styled(SSIRippleContainerStyled)`
   padding: 16px 22px 18px 24px;

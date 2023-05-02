@@ -8,11 +8,11 @@ import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
+import {translate} from '../../localization/Localization';
 import {deleteContact, getContacts} from '../../store/actions/contact.actions';
+import {backgrounds, borders} from '../../styles/colors';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {translate} from '../../localization/Localization';
-import {backgrounds, borders} from '../../styles/colors';
 
 const format = require('string-format');
 

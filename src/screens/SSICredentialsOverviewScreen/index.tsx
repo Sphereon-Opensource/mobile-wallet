@@ -11,13 +11,13 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {backgrounds, borders} from '../../styles/colors';
 import {
   SSIBasicContainerStyled as Container,
   SSIRippleContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgrounds, borders} from '../../styles/colors';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 
 const format = require('string-format');

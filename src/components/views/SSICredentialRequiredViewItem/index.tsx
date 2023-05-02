@@ -14,12 +14,12 @@ import {
   SSITextFieldLinearTextGradientStyled as LinearGradientTextContainer,
   SSICredentialRequiredViewItemMatchInfoCaptionStyled as MatchInfoCaption,
   SSICredentialRequiredViewItemMatchInfoContainerStyled as MatchInfoContainer,
-  SSITextH5LightStyled as NoneAvailableSubCaption,
   SSICredentialRequiredViewItemNoneAvailableCaptionStyled as NoneAvailableCaption,
   SSICredentialRequiredViewNoneAvailableContainerStyled as NoneAvailableContainer,
+  SSITextH5LightStyled as NoneAvailableSubCaption,
 } from '../../../styles/components';
-import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
+import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 
 export interface Props {
   id: string;

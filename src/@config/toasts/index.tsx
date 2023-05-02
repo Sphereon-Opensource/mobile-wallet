@@ -1,7 +1,8 @@
 import React from 'react';
 import {ToastConfigParams} from 'react-native-toast-message';
-import {IToastCustomProps, ToastTypeEnum} from '../../types';
+
 import SSIToast from '../../components/messageBoxes/toasts/SSIToast';
+import {IToastCustomProps, ToastTypeEnum} from '../../types';
 
 export const toastsBottomOffset = 0;
 export const toastsAutoHide = true;

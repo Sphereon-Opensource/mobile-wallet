@@ -2,8 +2,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 
 import SSIActivityView from '../../components/views/SSIActivityView';
-import SSIIdentitiesView from '../../components/views/SSIIdentitiesView';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
+import SSIIdentitiesView from '../../components/views/SSIIdentitiesView';
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {SSIBasicContainerSecondaryStyled as Container} from '../../styles/components';
