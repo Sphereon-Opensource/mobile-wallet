@@ -16,7 +16,6 @@ import {
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer,
 } from '../../styles/components';
 import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
-import navigation from '../../navigation/navigation'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
 
