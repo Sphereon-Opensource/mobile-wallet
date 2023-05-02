@@ -94,7 +94,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
-          <SSIScrollView keyboardShouldPersistTaps="handled">
+          <SSIScrollView>
             <TextInputsContainer>
               <TextInputContainer>
                 <SSITextInputField
@@ -117,16 +117,14 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
                   placeholderValue={translate('last_name_placeholder')}
                 />
               </TextInputContainer>
-              <TextInputContainer>
-                <SSITextInputField
-                  label={translate('email_address_label')}
-                  maxLength={EMAIL_ADDRESS_MAX_LENGTH}
-                  autoComplete={'email'}
-                  onChangeText={this.onEmailAddressChange}
-                  onEndEditing={this.onEmailAddressValidation}
-                  placeholderValue={translate('email_address_placeholder')}
-                />
-              </TextInputContainer>
+              <SSITextInputField
+                label={translate('email_address_label')}
+                maxLength={EMAIL_ADDRESS_MAX_LENGTH}
+                autoComplete={'email'}
+                onChangeText={this.onEmailAddressChange}
+                onEndEditing={this.onEmailAddressValidation}
+                placeholderValue={translate('email_address_placeholder')}
+              />
             </TextInputsContainer>
             <SSIButtonsContainer
               primaryButton={{
