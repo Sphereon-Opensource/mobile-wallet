@@ -16,6 +16,7 @@ import {
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer,
 } from '../../styles/components';
 import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
+import navigation from '../../navigation/navigation'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
 
@@ -57,7 +58,19 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       details: translate('terms_of_service_decline_message'),
       primaryButton: {
         caption: translate('terms_of_service_decline_action_caption'),
-        onPress: async () => BackHandler.exitApp(),
+        onPress: async () => {
+          // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
+          BackHandler.exitApp()
+          // Adding a reset back to the Welcome screen and to reset its state as it is active in the current stack
+          props.navigation.reset({
+            index: 0,
+            routes: [{ name: ScreenRoutesEnum.WELCOME }],
+          });
+        },
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        onPress: async () => props.navigation.goBack(),
       },
     });
   };
