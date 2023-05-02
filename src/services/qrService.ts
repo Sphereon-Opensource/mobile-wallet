@@ -283,7 +283,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           subjectSyntaxTypesSupported,
           onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
             authenticate(async () => {
-              args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: 'Sending credentials...'});
+              args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_sharing_credentials_message')});
               await sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>);
             }),
         },

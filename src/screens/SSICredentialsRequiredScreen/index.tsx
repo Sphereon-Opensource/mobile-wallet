@@ -14,8 +14,8 @@ import SSICredentialRequiredViewItem from '../../components/views/SSICredentialR
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 import {
-  SSIBasicContainerStyled as Container,
   SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
+  SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
@@ -176,7 +176,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
             onPress: onDecline,
           }}
           primaryButton={{
-            caption: translate('action_send_label'),
+            caption: translate('action_share_label'),
             disabled: !isMatchingPresentationDefinition(),
             onPress: onSend,
           }}
