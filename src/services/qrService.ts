@@ -417,7 +417,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             })),
             onSelect: async (credentialTypes: Array<string>) => {
               args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
-              await sendResponseOrAuthenticate(credentialTypes)
+              await sendResponseOrAuthenticate(credentialTypes);
             },
           },
         });
@@ -504,7 +504,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
               params: {
                 rawCredential,
-                credential: toNonPersistedCredentialSummary(vc),
+                credential: await toNonPersistedCredentialSummary(vc),
                 primaryAction: {
                   caption: translate('action_accept_label'),
                   onPress: async () =>

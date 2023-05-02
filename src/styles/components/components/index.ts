@@ -35,3 +35,4 @@ export * from './SSIProfileIcon';
 export * from './SSICredentialRequiredViewItem';
 export * from './SSICredentialSelectViewItem';
 export * from './SSIToast';
+export * from './SSIImageField';
