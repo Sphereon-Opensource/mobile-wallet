@@ -46,10 +46,10 @@ export const getOriginalVerifiableCredential = (vc: VerifiableCredential | ICred
   return CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
 };
 
-export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary): CredentialStatusEnum => {
+export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary, expirationDate: number): CredentialStatusEnum => {
   if (isRevoked()) {
     return CredentialStatusEnum.REVOKED;
-  } else if (isExpired(credential.expirationDate)) {
+  } else if (isExpired(expirationDate)) {
     return CredentialStatusEnum.EXPIRED;
   }
 
@@ -83,8 +83,7 @@ export const isExpired = (value?: string | number): boolean => {
     return false;
   }
   const expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
-
-  return expirationDate < Date.now();
+  return expirationDate < Date.now()/1000;
 };
 
 export const translateCorrelationIdToName = (correlationId: string): string => {
