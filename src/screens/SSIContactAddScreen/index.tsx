@@ -107,7 +107,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
-          <SSIScrollView keyboardShouldPersistTaps='handled'>
+          <SSIScrollView keyboardShouldPersistTaps="handled">
             <StatusBar />
             <TextInputContainer>
               <SSITextInputField

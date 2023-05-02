@@ -94,7 +94,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
-          <SSIScrollView keyboardShouldPersistTaps='handled'>
+          <SSIScrollView keyboardShouldPersistTaps="handled">
             <TextInputsContainer>
               <TextInputContainer>
                 <SSITextInputField
@@ -128,13 +128,13 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
                 />
               </TextInputContainer>
             </TextInputsContainer>
-          <SSIButtonsContainer
-            primaryButton={{
-              caption: translate('action_next_label'),
-              disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
-              onPress: this.onNext,
-            }}
-          />
+            <SSIButtonsContainer
+              primaryButton={{
+                caption: translate('action_next_label'),
+                disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
+                onPress: this.onNext,
+              }}
+            />
           </SSIScrollView>
         </Container>
       </TouchableWithoutFeedback>
