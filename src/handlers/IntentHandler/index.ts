@@ -13,7 +13,7 @@ import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary, toNonPersistedCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/CredentialMapper';
 
 const debug = Debug(`${APP_ID}:IntentHandler`);
 
@@ -84,7 +84,7 @@ class IntentHandler {
     const file = typeof item.data === 'string' ? item.data : item.data[0];
 
     readFile({filePath: file})
-      .then((file: string) => {
+      .then(async (file: string) => {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0];
         if (!vc) {
@@ -100,7 +100,7 @@ class IntentHandler {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential: vc,
-            credential: toNonPersistedCredentialSummary(vc),
+            credential: await toNonPersistedCredentialSummary(vc),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async () =>

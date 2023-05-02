@@ -97,22 +97,26 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>) => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
-      credentialSelection: uniqueVCs.map((uniqueVC: UniqueVerifiableCredential) => {
-        const credentialSummary = toCredentialSummary(uniqueVC);
-        return {
-          hash: credentialSummary.hash,
-          id: credentialSummary.id,
-          credential: credentialSummary,
-          rawCredential: getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
-          isSelected: selectedCredentials
-            .get(inputDescriptorId)!
-            .some(
-              matchedVC =>
-                matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
-                matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
-            ),
-        };
-      }),
+      credentialSelection: await Promise.all(
+        uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
+          const credentialSummary = await toCredentialSummary(uniqueVC);
+          const rawCredential = await getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
+          const isSelected = selectedCredentials
+          .get(inputDescriptorId)!
+          .some(
+            matchedVC =>
+              matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
+              matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
+          );
+          return {
+            hash: credentialSummary.hash,
+            id: credentialSummary.id,
+            credential: credentialSummary,
+            rawCredential: rawCredential,
+            isSelected: isSelected,
+          };
+        })
+      ),
       // TODO move this to a function, would be nicer
       onSelect: async (hashes: Array<string>) => {
         const selectedVCs = availableCredentials.get(inputDescriptorId)!.filter(vc => hashes.includes(vc.hash));

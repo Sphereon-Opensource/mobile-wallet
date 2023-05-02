@@ -504,7 +504,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
               params: {
                 rawCredential,
-                credential: toNonPersistedCredentialSummary(vc),
+                credential: await toNonPersistedCredentialSummary(vc),
                 primaryAction: {
                   caption: translate('action_accept_label'),
                   onPress: async () =>

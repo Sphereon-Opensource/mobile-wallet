@@ -82,7 +82,7 @@ class Veramo extends PureComponent<IProps, IState> {
         <View style={{marginTop: 10}}>
           <Button
             title="Add Credential"
-            onPress={() => {
+            onPress={async () => {
               const verifiableCredential: OriginalVerifiableCredential = {
                 '@context': [
                   'https://www.w3.org/2018/credentials/v1',
@@ -129,7 +129,7 @@ class Veramo extends PureComponent<IProps, IState> {
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: verifiableCredential,
-                credential: toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
+                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
               });
             }}
           />

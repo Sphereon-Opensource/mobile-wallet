@@ -5,19 +5,22 @@ import {getCredentialStatus, translateCorrelationIdToName} from '../CredentialUt
 import {EPOCH_MILLISECONDS} from '../DateUtils';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
+import { getImageSize, isImage } from '../ImageUtils'
 
 const {v4: uuidv4} = require('uuid');
 
-function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetailsRow[] {
+const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICredentialDetailsRow[]> => {
   let rows: ICredentialDetailsRow[] = [];
   // eslint-disable-next-line prefer-const
   for (let [key, value] of Object.entries(object)) {
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
+      const image = typeof value === 'string' ? value : value.id
       rows.push({
         id: uuidv4(),
         label: 'image',
-        value: typeof value === 'string' ? value : value.id,
+        value: image,
+        imageSize: await isImage(image) ? await getImageSize(image) : undefined
       });
       continue;
     } else if (key === 'type') {
@@ -30,15 +33,20 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
     }
 
     if (typeof value !== 'string') {
-      rows.push({
-        id: uuidv4(),
-        label: key,
-        value: undefined,
-      });
-      rows = rows.concat(toCredentialDetailsRow(value));
+      // FIXME disabled this to not show keys of objects
+      // rows.push({
+      //   id: uuidv4(),
+      //   label: key,
+      //   value: undefined,
+      // });
+      rows = rows.concat(await toCredentialDetailsRow(value));
     } else {
       console.log(`==>${key}:${value}`);
-      let label = key === '0' ? `${value}` : key;
+      if (key === '0' || value === undefined) {
+        continue
+      }
+
+      let label = key
       if (key === 'id' && value.startsWith('did:')) {
         label = 'subject';
       }
@@ -51,7 +59,8 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
       rows.push({
         id: uuidv4(),
         label, // TODO Human readable mapping
-        value: key === '0' ? undefined : value,
+        value,
+        imageSize: await isImage(value) ? await getImageSize(value) : undefined
       });
     }
   }
@@ -63,7 +72,7 @@ function toCredentialDetailsRow(object: Record<string, any>): ICredentialDetails
  * To be used whenever we need to show a credential summary on VCs we have not persisted
  * @param verifiableCredential
  */
-export function toNonPersistedCredentialSummary(verifiableCredential: ICredential | VerifiableCredential): ICredentialSummary {
+export const toNonPersistedCredentialSummary = (verifiableCredential: ICredential | VerifiableCredential): Promise<ICredentialSummary> => {
   return toCredentialSummary({
     verifiableCredential: verifiableCredential as VerifiableCredential,
     hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
@@ -75,7 +84,7 @@ export function toNonPersistedCredentialSummary(verifiableCredential: ICredentia
  * @param hash The hash of the unique verifiable credential
  * @param verifiableCredential The VC itself
  */
-export function toCredentialSummary({hash, verifiableCredential}: UniqueVerifiableCredential): ICredentialSummary {
+export const toCredentialSummary = async ({hash, verifiableCredential}: UniqueVerifiableCredential): Promise<ICredentialSummary> => {
   console.log(`CREDENTIAL: ${JSON.stringify(verifiableCredential)}`);
 
   const expirationDate = verifiableCredential.expirationDate ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS : 0;
@@ -91,7 +100,7 @@ export function toCredentialSummary({hash, verifiableCredential}: UniqueVerifiab
     ? verifiableCredential.type
     : verifiableCredential.type.filter((value: string) => value !== 'VerifiableCredential')[0];
   console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`);
-  const properties = toCredentialDetailsRow(verifiableCredential.credentialSubject);
+  const properties = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
 
   const name =
     typeof verifiableCredential.issuer === 'string'

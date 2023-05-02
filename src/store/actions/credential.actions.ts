@@ -10,7 +10,7 @@ import {
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential,
 } from '../../services/credentialService';
-import {RootState, ToastTypeEnum} from '../../types';
+import { ICredentialSummary, RootState, ToastTypeEnum } from '../../types'
 import {
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
@@ -29,8 +29,8 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CREDENTIALS_LOADING});
     getVerifiableCredentialsFromStorage()
-      .then((credentials: Array<UniqueVerifiableCredential>) => {
-        const credentialSummaries = credentials.map((uniqueVC: UniqueVerifiableCredential) => toCredentialSummary(uniqueVC));
+      .then(async (credentials: Array<UniqueVerifiableCredential>) => {
+        const credentialSummaries = await Promise.all(credentials.map(async (uniqueVC: UniqueVerifiableCredential) => await toCredentialSummary(uniqueVC)));
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
       .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
@@ -42,12 +42,12 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     dispatch({type: CREDENTIALS_LOADING});
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
-      .then((hash: string) => {
-        dispatch({
+      .then((hash: string) =>
+        toCredentialSummary({verifiableCredential: mappedVc, hash}).then((summary: ICredentialSummary) => dispatch({
           type: STORE_CREDENTIAL_SUCCESS,
-          payload: toCredentialSummary({verifiableCredential: mappedVc, hash}),
-        });
-      })
+          payload: summary,
+        }))
+      )
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
 };
@@ -80,13 +80,16 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
     dispatch({type: CREDENTIALS_LOADING});
     createCredential(args)
       .then((vc: VerifiableCredential) => {
-        storeCredential({vc}).then((hash: string) => {
-          // TODO fix mismatch in types
-          dispatch({
-            type: CREATE_CREDENTIAL_SUCCESS,
-            payload: toCredentialSummary({verifiableCredential: vc, hash}),
-          });
-        });
+        storeCredential({vc}).then((hash: string) =>
+          toCredentialSummary({verifiableCredential: vc, hash}).then((summary: ICredentialSummary) =>
+            // TODO fix mismatch in types
+            dispatch({
+              type: CREATE_CREDENTIAL_SUCCESS,
+              payload: summary,
+            })
+          )
+
+        );
       })
       .catch((error: Error) => {
         console.log(error.message);
