@@ -146,13 +146,13 @@
     "credentials_required_checking_label": "...bezig",
     "credentials_required_no_available_label": "Er is geen geschikte credential",
     "credentials_required_no_available_additional_label": "Je hebt geen credential om te delen met de verificateur. Neem contact op met een uitgever om een nieuwe credential uit te geven.",
-    "action_send_label": "Stuur",
+    "action_share_label": "Deel",
     "credentials_share_success_toast_title": "Succesvol gedeeld",
     "credentials_share_success_toast_message": "Je hebt je geselecteerde credentials met succes gepresenteerd aan {0}.",
     "action_select_label": "Selecteer",
     "action_onboarding_setup_message": "Opzetten van wallet...",
     "action_getting_information_message": "Ophalen informatie...",
-    "action_sending_credentials_message": "Sturen credentials...",
+    "action_sharing_credentials_message": "Delen credentials...",
     "profile_logout_action_caption": "Log uit",
     "action_getting_credentials_message": "Ophalen credential..."
 }
