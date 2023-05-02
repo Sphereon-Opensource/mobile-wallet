@@ -27,14 +27,14 @@ class SSILoadingScreen extends PureComponent<Props> {
   render() {
     const {message} = this.props.route.params;
     return (
-        <Container>
-          <ActivityIndicatorContainer>
-            <ActivityIndicator />
-          </ActivityIndicatorContainer>
-          <ActivityCaption>{message}</ActivityCaption>
-        </Container>
+      <Container>
+        <ActivityIndicatorContainer>
+          <ActivityIndicator />
+        </ActivityIndicatorContainer>
+        <ActivityCaption>{message}</ActivityCaption>
+      </Container>
     );
   }
-};
+}
 
 export default SSILoadingScreen;

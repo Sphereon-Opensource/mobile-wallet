@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {ListRenderItemInfo} from 'react-native'
+import React, {FC} from 'react';
+import {ListRenderItemInfo} from 'react-native';
 
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
@@ -12,7 +12,7 @@ import {
 } from '../../../styles/components';
 import {ICredentialDetailsRow} from '../../../types';
 import SSITextField from '../../fields/SSITextField';
-import SSIImageField from '../../fields/SSIImageField'
+import SSIImageField from '../../fields/SSIImageField';
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;
@@ -24,11 +24,11 @@ export interface IProps {
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
-      return <SSIImageField item={itemInfo.item} index={itemInfo.index} />
+      return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
     } else {
-      return <SSITextField item={itemInfo.item} index={itemInfo.index} />
+      return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
     }
-  }
+  };
 
   const renderFooter = () => (
     <FooterContainer>

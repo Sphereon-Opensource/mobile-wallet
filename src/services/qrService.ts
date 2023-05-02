@@ -417,7 +417,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             })),
             onSelect: async (credentialTypes: Array<string>) => {
               args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
-              await sendResponseOrAuthenticate(credentialTypes)
+              await sendResponseOrAuthenticate(credentialTypes);
             },
           },
         });

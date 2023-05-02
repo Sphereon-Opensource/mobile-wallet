@@ -3,7 +3,7 @@ import {CredentialMetadata} from '@sphereon/openid4vci-client';
 import {LabelStatus} from '../component';
 import {VerifiableCredential} from '@veramo/core';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import { IImageSize } from '../../utils/ImageUtils'
+import {IImageSize} from '../../utils/ImageUtils';
 
 export enum CredentialStatusEnum {
   VALID = 'valid',
@@ -47,7 +47,7 @@ export interface ICredentialDetailsRow {
   value: any;
   isEditable?: boolean;
   status?: LabelStatus;
-  imageSize?: IImageSize
+  imageSize?: IImageSize;
 }
 
 export interface ICredentialTypeSelection {

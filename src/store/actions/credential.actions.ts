@@ -10,7 +10,7 @@ import {
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential,
 } from '../../services/credentialService';
-import { ICredentialSummary, RootState, ToastTypeEnum } from '../../types'
+import {ICredentialSummary, RootState, ToastTypeEnum} from '../../types';
 import {
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
@@ -30,7 +30,9 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
     dispatch({type: CREDENTIALS_LOADING});
     getVerifiableCredentialsFromStorage()
       .then(async (credentials: Array<UniqueVerifiableCredential>) => {
-        const credentialSummaries = await Promise.all(credentials.map(async (uniqueVC: UniqueVerifiableCredential) => await toCredentialSummary(uniqueVC)));
+        const credentialSummaries = await Promise.all(
+          credentials.map(async (uniqueVC: UniqueVerifiableCredential) => await toCredentialSummary(uniqueVC)),
+        );
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
       .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
@@ -43,10 +45,12 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
       .then((hash: string) =>
-        toCredentialSummary({verifiableCredential: mappedVc, hash}).then((summary: ICredentialSummary) => dispatch({
-          type: STORE_CREDENTIAL_SUCCESS,
-          payload: summary,
-        }))
+        toCredentialSummary({verifiableCredential: mappedVc, hash}).then((summary: ICredentialSummary) =>
+          dispatch({
+            type: STORE_CREDENTIAL_SUCCESS,
+            payload: summary,
+          }),
+        ),
       )
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
@@ -86,9 +90,8 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
             dispatch({
               type: CREATE_CREDENTIAL_SUCCESS,
               payload: summary,
-            })
-          )
-
+            }),
+          ),
         );
       })
       .catch((error: Error) => {

@@ -5,7 +5,7 @@ import {getCredentialStatus, translateCorrelationIdToName} from '../CredentialUt
 import {EPOCH_MILLISECONDS} from '../DateUtils';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
-import { getImageSize, isImage } from '../ImageUtils'
+import {getImageSize, isImage} from '../ImageUtils';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -15,12 +15,12 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
   for (let [key, value] of Object.entries(object)) {
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
-      const image = typeof value === 'string' ? value : value.id
+      const image = typeof value === 'string' ? value : value.id;
       rows.push({
         id: uuidv4(),
         label: 'image',
         value: image,
-        imageSize: await isImage(image) ? await getImageSize(image) : undefined
+        imageSize: (await isImage(image)) ? await getImageSize(image) : undefined,
       });
       continue;
     } else if (key === 'type') {
@@ -43,10 +43,10 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
     } else {
       console.log(`==>${key}:${value}`);
       if (key === '0' || value === undefined) {
-        continue
+        continue;
       }
 
-      let label = key
+      let label = key;
       if (key === 'id' && value.startsWith('did:')) {
         label = 'subject';
       }
@@ -60,13 +60,13 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
         id: uuidv4(),
         label, // TODO Human readable mapping
         value,
-        imageSize: await isImage(value) ? await getImageSize(value) : undefined
+        imageSize: (await isImage(value)) ? await getImageSize(value) : undefined,
       });
     }
   }
 
   return rows;
-}
+};
 
 /**
  * To be used whenever we need to show a credential summary on VCs we have not persisted
@@ -77,7 +77,7 @@ export const toNonPersistedCredentialSummary = (verifiableCredential: ICredentia
     verifiableCredential: verifiableCredential as VerifiableCredential,
     hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
   });
-}
+};
 
 /**
  * Map persisted (Unique) VCs to the summaries we display
@@ -129,4 +129,4 @@ export const toCredentialSummary = async ({hash, verifiableCredential}: UniqueVe
     expirationDate,
     properties,
   };
-}
+};
