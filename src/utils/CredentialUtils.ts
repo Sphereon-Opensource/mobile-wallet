@@ -84,10 +84,10 @@ export const isExpired = (value?: string | number): boolean => {
   if (!value) {
     return false;
   }
-  if (typeof value === 'number') {
-    value = value * EPOCH_MILLISECONDS
+  let expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
+  if(!isEpochMilli(expirationDate)) {
+    expirationDate = expirationDate * EPOCH_MILLISECONDS;
   }
-  const expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
   return expirationDate < Date.now();
 };
 
@@ -108,3 +108,8 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 
   return correlationId;
 };
+
+export const isEpochMilli = (epoch: number): boolean => {
+  const epochLength = epoch.toString().length;
+  return epochLength > 10;
+}
