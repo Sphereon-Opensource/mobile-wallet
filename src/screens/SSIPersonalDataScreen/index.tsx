@@ -10,9 +10,9 @@ import {translate} from '../../localization/Localization';
 import {setPersonalData} from '../../store/actions/onboarding.actions';
 import {
   SSIPersonalDataScreenContainerStyled as Container,
+  SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
@@ -94,7 +94,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
-          <SSIScrollView>
+          <SSIScrollView keyboardShouldPersistTaps='handled'>
             <TextInputsContainer>
               <TextInputContainer>
                 <SSITextInputField
@@ -117,22 +117,24 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
                   placeholderValue={translate('last_name_placeholder')}
                 />
               </TextInputContainer>
-              <SSITextInputField
-                label={translate('email_address_label')}
-                maxLength={EMAIL_ADDRESS_MAX_LENGTH}
-                autoComplete={'email'}
-                onChangeText={this.onEmailAddressChange}
-                onEndEditing={this.onEmailAddressValidation}
-                placeholderValue={translate('email_address_placeholder')}
-              />
+              <TextInputContainer>
+                <SSITextInputField
+                  label={translate('email_address_label')}
+                  maxLength={EMAIL_ADDRESS_MAX_LENGTH}
+                  autoComplete={'email'}
+                  onChangeText={this.onEmailAddressChange}
+                  onEndEditing={this.onEmailAddressValidation}
+                  placeholderValue={translate('email_address_placeholder')}
+                />
+              </TextInputContainer>
             </TextInputsContainer>
-            <SSIButtonsContainer
-              primaryButton={{
-                caption: translate('action_next_label'),
-                disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
-                onPress: this.onNext,
-              }}
-            />
+          <SSIButtonsContainer
+            primaryButton={{
+              caption: translate('action_next_label'),
+              disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
+              onPress: this.onNext,
+            }}
+          />
           </SSIScrollView>
         </Container>
       </TouchableWithoutFeedback>
