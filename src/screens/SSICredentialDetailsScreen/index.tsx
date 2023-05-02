@@ -56,7 +56,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             credentialTitle={credential.title}
             issuerName={issuer}
             expirationDate={credential.expirationDate}
-            credentialStatus={getCredentialStatus(credential, credential.expirationDate)}
+            credentialStatus={getCredentialStatus(credential)}
           />
         </CardContainer>
         <SSITabView routes={routes} />

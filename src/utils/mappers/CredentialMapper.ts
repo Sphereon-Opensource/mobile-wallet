@@ -81,7 +81,7 @@ export function toCredentialSummary({hash, verifiableCredential}: UniqueVerifiab
   const expirationDate = verifiableCredential.expirationDate ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS : 0;
   const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS;
 
-  const credentialStatus = getCredentialStatus(verifiableCredential, expirationDate);
+  const credentialStatus = getCredentialStatus(verifiableCredential);
 
   const title = verifiableCredential.name
     ? verifiableCredential.name

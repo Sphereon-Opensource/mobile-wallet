@@ -14,13 +14,13 @@ import SSICredentialRequiredViewItem from '../../components/views/SSICredentialR
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 import {
-  SSIBasicContainerStyled as Container,
   SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
+  SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
+import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
