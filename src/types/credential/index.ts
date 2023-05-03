@@ -1,9 +1,8 @@
 import {CredentialMetadata} from '@sphereon/openid4vci-client';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 import {LabelStatus} from '../component';
-import {VerifiableCredential} from '@veramo/core';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {IImageSize} from '../../utils/ImageUtils';
+import {IImageSize} from '../image';
 
 export enum CredentialStatusEnum {
   VALID = 'valid',

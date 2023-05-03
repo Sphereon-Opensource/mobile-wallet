@@ -154,5 +154,7 @@
     "action_getting_information_message": "Ophalen informatie...",
     "action_sharing_credentials_message": "Delen credentials...",
     "profile_logout_action_caption": "Log uit",
-    "action_getting_credentials_message": "Ophalen credential..."
+    "action_getting_credentials_message": "Ophalen credential...",
+    "credentials_share_failed_toast_message": "Kan credentials niet presenteren. Fout: {0}.",
+    "information_retrieve_failed_toast_message": "Kan informatie niet ophalen. Fout: {0}."
 }

@@ -11,8 +11,8 @@ import {
 import {HeaderMenuIconsEnum, OpacityStyleEnum} from '../../../types';
 import SSIAddIcon from '../../assets/icons/SSIAddIcon';
 import SSIDeleteIcon from '../../assets/icons/SSIDeleteIcon';
-import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
 import SSIDownloadIcon from '../../assets/icons/SSIDownloadIcon';
+import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
 
 export interface IProps {
   caption: string;

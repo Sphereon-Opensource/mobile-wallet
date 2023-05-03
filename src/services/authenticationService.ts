@@ -1,7 +1,7 @@
 import RootNavigation from '../navigation/rootNavigation';
-import {ScreenRoutesEnum} from '../types';
 import store from '../store';
 import {login as loginAction} from '../store/actions/user.actions';
+import {ScreenRoutesEnum} from '../types';
 
 export const authenticate = async (onAuthenticate: () => Promise<void>): Promise<void> => {
   // TODO extend this function to look for the preference (biometrics or pin code). If no preference is present, use pin code

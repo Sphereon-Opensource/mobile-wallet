@@ -7,12 +7,14 @@ import {
   OpenID4VCIClient,
   ProofOfPossessionCallbacks,
 } from '@sphereon/openid4vci-client';
+import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
+import {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
@@ -32,8 +34,6 @@ import {
   SupportedDidMethodEnum,
 } from '../../types';
 import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils';
-import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
-import {agentContext} from '../../agent';
 
 const {v4: uuidv4} = require('uuid');
 

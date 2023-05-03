@@ -13,9 +13,9 @@ import {createContact as StoreContact} from '../../store/actions/contact.actions
 import {
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
+  SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView,
 } from '../../styles/components';
 import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {ICreateContactArgs} from '../../types/store/contact.action.types';

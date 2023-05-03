@@ -1,5 +1,6 @@
-import React, {ReactNode, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import React, {ReactNode, useEffect, useState} from 'react';
+
 import OnTouchContext from '../../contexts/OnTouchContext';
 import {SSIOnTouchProviderContainerStyled as Container} from '../../styles/components';
 

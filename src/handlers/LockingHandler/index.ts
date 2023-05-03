@@ -5,8 +5,8 @@ import {APP_ID} from '../../@config/constants';
 const debug = Debug(`${APP_ID}:IntentHandler`);
 import {AppState} from 'react-native';
 import {NativeEventSubscription} from 'react-native/Libraries/EventEmitter/RCTNativeAppEventEmitter';
-import RootNavigation from '../../navigation/rootNavigation';
 
+import RootNavigation from '../../navigation/rootNavigation';
 import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {ScreenRoutesEnum} from '../../types';

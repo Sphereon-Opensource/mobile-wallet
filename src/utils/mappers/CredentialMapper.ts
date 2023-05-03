@@ -1,10 +1,10 @@
 import {ICredential} from '@sphereon/ssi-types';
+import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {computeEntryHash} from '@veramo/utils';
 
 import {ICredentialDetailsRow, ICredentialSummary} from '../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../DateUtils';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
-import {computeEntryHash} from '@veramo/utils';
 import {getImageSize, isImage} from '../ImageUtils';
 
 const {v4: uuidv4} = require('uuid');

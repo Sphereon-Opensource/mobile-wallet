@@ -1,3 +1,5 @@
+import {IContact} from '@sphereon/ssi-sdk-data-store';
+
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
@@ -11,7 +13,6 @@ import {
   GET_CONTACTS_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
-import {IContact} from '@sphereon/ssi-sdk-data-store';
 
 const initialState: IContactState = {
   loading: false,

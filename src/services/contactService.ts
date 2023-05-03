@@ -1,3 +1,4 @@
+import {IRemoveContactArgs} from '@sphereon/ssi-sdk-contact-manager';
 import {
   BasicCorrelationIdentifier,
   BasicMetadataItem,
@@ -12,7 +13,6 @@ import Debug from 'debug';
 import {APP_ID} from '../@config/constants';
 import {cmAddContact, cmAddIdentity, cmGetContacts, cmGetIdentities, cmRemoveContact} from '../agent';
 import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IGetIdentitiesArgs} from '../types';
-import {IRemoveContactArgs} from '@sphereon/ssi-sdk-contact-manager';
 
 const {v4: uuidv4} = require('uuid');
 

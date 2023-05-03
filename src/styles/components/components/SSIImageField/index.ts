@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 
+import {backgrounds} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 
 export const SSIImageFieldContainerStyled = styled.View`
@@ -14,6 +15,6 @@ export const SSIImageFieldHeaderContainerStyled = styled(SSIFlexDirectionRowView
 export const SSIImageFieldContentContainerStyled = styled.View`
   margin-left: 24px;
   padding: 10px;
-  background-color: #202537;
+  background-color: ${backgrounds.primaryDark};
   border-radius: 10px;
 `;

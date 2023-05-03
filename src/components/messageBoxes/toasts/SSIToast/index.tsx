@@ -1,16 +1,17 @@
 import React, {FC} from 'react';
+import {View} from 'react-native';
+
 import {
-  SSIFlexDirectionRowViewStyled as MessageContainer,
   SSIToastMessageCaptionStyled as MessageCaption,
+  SSIFlexDirectionRowViewStyled as MessageContainer,
+  SSITextH2SemiBoldStyled as TitleCaption,
+  SSIToastTitleContainerStyled as TitleContainer,
   SSIToastBadgeContainerStyled as ToastBadgeContainer,
   SSIToastContainerStyled as ToastContainer,
-  SSIToastTitleContainerStyled as TitleContainer,
-  SSITextH2SemiBoldStyled as TitleCaption,
 } from '../../../../styles/components';
+import {IToastConfigParams, ToastTypeEnum} from '../../../../types';
 import SSICheckmarkBadge from '../../../assets/badges/SSICheckmarkBadge';
 import SSIErrorBadge from '../../../assets/badges/SSIExclamationMarkBadge';
-import {IToastConfigParams, ToastTypeEnum} from '../../../../types';
-import {View} from 'react-native';
 
 export interface IProps extends IToastConfigParams {
   type: ToastTypeEnum;

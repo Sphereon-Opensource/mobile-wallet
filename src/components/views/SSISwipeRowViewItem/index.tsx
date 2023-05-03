@@ -1,4 +1,5 @@
 import React, {FC, ForwardedRef} from 'react';
+import {ViewStyle} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
 
 import {
@@ -6,7 +7,6 @@ import {
   SSIRippleContainerStyled as ItemContainer,
 } from '../../../styles/components';
 import SSISwipeDeleteButton from '../../buttons/SSISwipeDeleteButton';
-import {ViewStyle} from 'react-native';
 
 export interface IProps {
   viewItem: JSX.Element;

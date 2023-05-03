@@ -1,10 +1,9 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
-
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;

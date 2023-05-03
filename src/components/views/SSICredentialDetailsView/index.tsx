@@ -11,8 +11,8 @@ import {
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
 import {ICredentialDetailsRow} from '../../../types';
-import SSITextField from '../../fields/SSITextField';
 import SSIImageField from '../../fields/SSIImageField';
+import SSITextField from '../../fields/SSITextField';
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;

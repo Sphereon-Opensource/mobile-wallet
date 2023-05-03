@@ -99,7 +99,7 @@ export const SSIAlphaContainerStyled = styled.View`
 
 export const SSIFullHeightScrollViewContainer = styled.ScrollView.attrs({
   contentContainerStyle: {flexGrow: 1},
-  keyboardShouldPersistTaps: 'handled'
+  keyboardShouldPersistTaps: 'handled',
 })`
   flex: 1;
   width: 100%;

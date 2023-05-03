@@ -1,6 +1,8 @@
 import Debug from 'debug';
+
 import {APP_ID} from '../@config/constants';
 import {BasicUser, BasicUserIdentifier, IUser} from '../types';
+
 import {getUsers as getUsersFromStorage, storeUser} from './storageService';
 
 const debug = Debug(`${APP_ID}:userService`);
