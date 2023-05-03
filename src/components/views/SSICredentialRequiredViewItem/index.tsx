@@ -3,7 +3,7 @@ import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
 
 import {translate} from '../../../localization/Localization';
-import {backgrounds, icons, statuses} from '../../../styles/colors';
+import {backgrounds, statuses} from '../../../styles/colors';
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
@@ -14,12 +14,12 @@ import {
   SSITextFieldLinearTextGradientStyled as LinearGradientTextContainer,
   SSICredentialRequiredViewItemMatchInfoCaptionStyled as MatchInfoCaption,
   SSICredentialRequiredViewItemMatchInfoContainerStyled as MatchInfoContainer,
-  SSITextH5LightStyled as NoneAvailableSubCaption,
   SSICredentialRequiredViewItemNoneAvailableCaptionStyled as NoneAvailableCaption,
   SSICredentialRequiredViewNoneAvailableContainerStyled as NoneAvailableContainer,
+  SSITextH5LightStyled as NoneAvailableSubCaption,
 } from '../../../styles/components';
-import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
+import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 
 export interface Props {
   id: string;
@@ -33,12 +33,11 @@ export interface Props {
 
 const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props, ref?: ForwardedRef<unknown>): JSX.Element => {
   const {id, isMatching, selected, available, title, listIndex, onPress} = props;
-
   return (
     <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
       <ContentContainer>
-        <IconContainer>
-          <SSICheckmarkIcon color={isMatching ? statuses.valid : icons.noMatch} />
+        <IconContainer style={{...(!isMatching && {margin: 17})}}>
+          <SSICheckmarkIcon isMatching={isMatching} />
         </IconContainer>
         <ContentContainer>
           <View>
