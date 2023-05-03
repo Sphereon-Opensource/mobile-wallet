@@ -3,7 +3,7 @@ import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
 
 import {translate} from '../../../localization/Localization';
-import {backgrounds, icons, statuses} from '../../../styles/colors';
+import {backgrounds, statuses} from '../../../styles/colors';
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
@@ -37,10 +37,10 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
   return (
     <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
       <ContentContainer>
-        <IconContainer>
-          <SSICheckmarkIcon color={isMatching ? statuses.valid : icons.noMatch} />
-        </IconContainer>
-        <ContentContainer>
+        {isMatching && <IconContainer>
+          <SSICheckmarkIcon color={statuses.valid}/>
+        </IconContainer>}
+        <ContentContainer style={{...(!isMatching && {marginLeft: 29})}}>
           <View>
             <CredentialTitleCaption>{title}</CredentialTitleCaption>
             {selected.length > 0 ? (
