@@ -37,7 +37,7 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
     <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
       <ContentContainer>
         <IconContainer style={{...(!isMatching && {margin: 17})}}>
-          <SSICheckmarkIcon isMatching={isMatching} />
+          {isMatching &&  <SSICheckmarkIcon color={statuses.valid} />}
         </IconContainer>
         <ContentContainer>
           <View>
