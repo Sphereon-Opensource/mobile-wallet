@@ -33,6 +33,7 @@ export interface Props {
 
 const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props, ref?: ForwardedRef<unknown>): JSX.Element => {
   const {id, isMatching, selected, available, title, listIndex, onPress} = props;
+
   return (
     <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
       <ContentContainer>
