@@ -1,11 +1,13 @@
+import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {UniqueVerifiableCredential} from '@veramo/core';
+import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
 
+import store from '../store';
 import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
 
-import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
-import store from '../store';
-import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
-import {UniqueVerifiableCredential} from '@veramo/core';
+
+import {EPOCH_MILLISECONDS} from "./DateUtils";
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -82,8 +84,10 @@ export const isExpired = (value?: string | number): boolean => {
   if (!value) {
     return false;
   }
-  const expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
-
+  let expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
+  if(!isEpochMilli(expirationDate)) {
+    expirationDate = expirationDate * EPOCH_MILLISECONDS;
+  }
   return expirationDate < Date.now();
 };
 
@@ -104,3 +108,8 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 
   return correlationId;
 };
+
+export const isEpochMilli = (epoch: number): boolean => {
+  const epochLength = epoch.toString().length;
+  return epochLength > 10;
+}
