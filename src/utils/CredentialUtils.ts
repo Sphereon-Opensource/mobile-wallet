@@ -6,8 +6,6 @@ import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
 import store from '../store';
 import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
 
-
-
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
  * @param credential The input credential

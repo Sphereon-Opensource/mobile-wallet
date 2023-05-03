@@ -77,9 +77,9 @@
     "expo-linear-gradient": "~12.1.2",
     "expo-localization": "~14.1.1",
     "expo-modules-autolinking": "~1.1.0",
-    "expo-modules-core": "~1.2.5",
+    "expo-modules-core": "~1.2.6",
     "expo-random": "~13.1.1",
-    "expo-splash-screen": "~0.18.1",
+    "expo-splash-screen": "~0.18.2",
     "expo-sqlite": "^11.1.1",
     "expo-status-bar": "~1.4.4",
     "express": "^4.18.2",
@@ -96,7 +96,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "0.71.7",
     "react-native-app-auth": "^6.4.3",
     "react-native-camera": "^4.2.1",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git",
@@ -213,6 +213,7 @@
     ]
   },
   "resolutions": {
+    "**/@types/react-native": "0.71.3",
     "**/@types/react": "~18.0.28",
     "**/expo-random": "~13.1.1",
     "@sphereon/isomorphic-argon2": "1.0.1",

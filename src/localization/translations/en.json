@@ -154,5 +154,7 @@
     "action_getting_information_message": "Getting information...",
     "action_sharing_credentials_message": "Sharing credentials...",
     "profile_logout_action_caption": "Log out",
-    "action_getting_credentials_message": "Getting credential..."
+    "action_getting_credentials_message": "Getting credential...",
+    "credentials_share_failed_toast_message": "Unable to present credentials. Error: {0}.",
+    "information_retrieve_failed_toast_message": "Unable to retrieve information. Error: {0}."
 }

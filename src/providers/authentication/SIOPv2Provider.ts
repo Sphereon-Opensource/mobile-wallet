@@ -1,8 +1,8 @@
 import {CheckLinkedDomain, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk-data-store';
-import {OpSession, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
-import {getKey} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions';
-import {VerifiableCredentialsWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/src/types/IDidAuthSiopOpAuthenticator';
+import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
+import {OID4VP} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'; // FIXME we should fix the export of these objects
+import {getKey} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug from 'debug';
 
@@ -12,7 +12,7 @@ import agent, {didMethodsSupported} from '../../agent';
 const debug = Debug(`${APP_ID}:authentication`);
 
 export const siopGetRequest = async (config: IDidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
-  const session = await siopGetSession(config.sessionId).catch(
+  const session: OpSession = await siopGetSession(config.sessionId).catch(
     async () => await siopRegisterSession({requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId}),
   );
 
@@ -47,8 +47,8 @@ export const siopSendAuthorizationResponse = async (
   if (connectionType !== ConnectionTypeEnum.SIOPv2_OpenID4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
-  const session = await agent.siopGetOPSession({sessionId: args.sessionId});
-  const identifiers = await session.getSupportedIdentifiers();
+  const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
+  const identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
   if (!identifiers || identifiers.length === 0) {
     throw Error(`No DID methods found in agent that are supported by the relying party`);
   }
@@ -57,7 +57,7 @@ export const siopSendAuthorizationResponse = async (
   let presentationsAndDefs: VerifiablePresentationWithDefinition[] | undefined;
   let identifier: IIdentifier = identifiers[0];
   if (await session.isOID4VP()) {
-    const oid4vp = await session.getOID4VP();
+    const oid4vp: OID4VP = await session.getOID4VP();
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
       : await oid4vp.filterCredentialsAgainstAllDefinitions();
@@ -67,11 +67,12 @@ export const siopSendAuthorizationResponse = async (
     }
     identifier = presentationsAndDefs[0].identifierOpts.identifier;
   }
-  const kid = (await getKey(identifier, 'authentication', session.context)).kid;
+  const kid: string = (await getKey(identifier, 'authentication', session.context)).kid;
 
   const response = session.sendAuthorizationResponse({
     verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation),
     responseSignerOpts: {identifier, kid},
   });
+
   return await response;
 };

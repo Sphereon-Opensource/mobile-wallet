@@ -5,7 +5,6 @@ import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
 
-
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;

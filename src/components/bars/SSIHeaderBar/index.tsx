@@ -76,7 +76,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
             </BackIconContainer>
           )}
           <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: props.headerSubTitle ? 0 : 10}}>
-            {props.options.headerTitle}
+            {props.options.headerTitle as string}
           </HeaderCaption>
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
