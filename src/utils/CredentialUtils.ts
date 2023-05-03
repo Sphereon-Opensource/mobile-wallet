@@ -7,7 +7,7 @@ import store from '../store';
 import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
 
 
-import {EPOCH_MILLISECONDS} from "./DateUtils";
+import {makeEpochMilli} from "./DateUtils";
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -85,9 +85,7 @@ export const isExpired = (value?: string | number): boolean => {
     return false;
   }
   let expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
-  if(!isEpochMilli(expirationDate)) {
-    expirationDate = expirationDate * EPOCH_MILLISECONDS;
-  }
+  expirationDate = makeEpochMilli(expirationDate)
   return expirationDate < Date.now();
 };
 
@@ -108,8 +106,3 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 
   return correlationId;
 };
-
-export const isEpochMilli = (epoch: number): boolean => {
-  const epochLength = epoch.toString().length;
-  return epochLength > 10;
-}
