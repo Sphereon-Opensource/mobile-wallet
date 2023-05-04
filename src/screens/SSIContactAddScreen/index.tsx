@@ -32,7 +32,7 @@ interface IState {
 
 class SSIContactAddScreen extends PureComponent<IProps, IState> {
   state: IState = {
-    contactAlias: '',
+    contactAlias: this.props.route.params.name || '',
     hasConsent: true,
   };
 
@@ -117,6 +117,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
                 onChangeText={this.onChangeText}
                 onEndEditing={this.onValidate}
                 placeholderValue={translate('contact_name_placeholder')}
+                initialValue={contactAlias}
               />
             </TextInputContainer>
             <DisclaimerContainer>
