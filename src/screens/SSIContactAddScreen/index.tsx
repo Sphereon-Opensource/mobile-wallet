@@ -17,12 +17,19 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types';
 import {ICreateContactArgs} from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void;
+  loading: boolean
 }
 
 interface IState {
@@ -102,6 +109,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
+    const {loading} = this.props
     const {contactAlias, hasConsent} = this.state;
 
     return (
@@ -130,7 +138,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
               }}
               primaryButton={{
                 caption: translate('action_accept_label'),
-                disabled: !hasConsent || contactAlias.length === 0,
+                disabled: !hasConsent || contactAlias.length === 0 || loading,
                 onPress: this.onCreate,
               }}
             />
@@ -147,4 +155,10 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SSIContactAddScreen);
+const mapStateToProps = (state: RootState) => {
+  return {
+    loading: state.contact.loading,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SSIContactAddScreen);
