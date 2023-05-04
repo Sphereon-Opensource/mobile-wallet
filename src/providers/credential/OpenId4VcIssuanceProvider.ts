@@ -146,11 +146,13 @@ class OpenId4VcIssuanceProvider {
     );
   };
 
-  public getCredentialsFromIssuance = async ({pin}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
+  public getCredentialsFromIssuance = async ({pin, credentials}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
     await this.getServerMetadataAndPerformCryptoMatching();
     const credentialResponses: Record<string, CredentialResponse> = {};
+
+    const vcSelection = credentials || Object.keys(await this.getIssuanceOpts())
     const initTypes = this.client.getCredentialTypesFromInitiation();
-    for (const credentialType of Object.keys(await this.getIssuanceOpts())) {
+    for (const credentialType of vcSelection) {
       if (!initTypes.includes(credentialType)) {
         continue;
       }
@@ -159,6 +161,7 @@ class OpenId4VcIssuanceProvider {
         pin,
       });
     }
+
     if (Object.keys(credentialResponses).length === 0) {
       return Promise.reject(Error('Could not get credentials from issuance and match them on supported types.'));
     }

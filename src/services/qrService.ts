@@ -470,7 +470,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         params: {
           // Currently we only support receiving one credential, we are missing ui to display multiple
           credentialName: credentials[0],
-          onVerification: async (pin: string) => await sendResponse(provider, pin),
+          onVerification: async (pin: string) => await sendResponse(provider, credentials, pin),
         },
       });
       // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
@@ -480,16 +480,17 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
       });
     } else {
-      await sendResponse(provider);
+      await sendResponse(provider, credentials);
     }
   };
 
-  const sendResponse = async (provider: OpenId4VcIssuanceProvider, pin?: string): Promise<void> =>
+  const sendResponse = async (provider: OpenId4VcIssuanceProvider, credentialTypes: Array<string>, pin?: string): Promise<void> =>
     provider
-      .getCredentialsFromIssuance({pin})
+      .getCredentialsFromIssuance({pin, credentials: credentialTypes})
       .then(async (credentialsResponse: Record<string, CredentialResponse>) => {
         const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
-        for (const credentialResponse of Object.values(credentialsResponse)) {
+          // TODO only supporting one credential for now
+          const credentialResponse = Object.values(credentialsResponse)[0]
           const vc: IVerifiableCredential = CredentialMapper.toUniformCredential(credentialResponse.credential);
 
           const contacts: Array<IContact> = await getContacts({
@@ -563,7 +564,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             stack: NavigationBarRoutesEnum.QR,
             filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
           });
-        }
       })
       .catch((error: Error) => {
         // TODO refactor once the lib returns a proper response object
