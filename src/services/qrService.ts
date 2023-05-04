@@ -407,6 +407,11 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           ],
           onCreate: () => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported),
         });
+        filterNavigationStack({
+          navigation: args.navigation,
+          stack: NavigationBarRoutesEnum.QR,
+          filter: [ScreenRoutesEnum.LOADING],
+        });
       } else {
         sendResponseOrSelectCredentials(provider, metadata.credentialsSupported);
       }

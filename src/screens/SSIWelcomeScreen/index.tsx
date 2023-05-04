@@ -57,6 +57,8 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
   };
 
   componentDidMount = (): void => {
+    StatusBar.setTranslucent(true);
+    StatusBar.setBackgroundColor('transparent');
     this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack);
   };
 
@@ -89,7 +91,6 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
 
     return (
       <Container>
-        <StatusBar translucent backgroundColor="transparent" />
         {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
         <IntroBackgroundContainer>
           <WelcomeBackground />
