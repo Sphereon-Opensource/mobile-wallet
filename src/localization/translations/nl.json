@@ -1,6 +1,6 @@
 {
     "credential_details_action_share": "Delen",
-    "credential_details_title": "Credential Details",
+    "credential_details_title": "Credential details",
     "credentials_overview_title": "Credentials",
     "credential_details_view_issued_by": "Uitgegeven door",
     "credential_details_view_details": "Details",
@@ -43,7 +43,7 @@
     "issuer_status_unverified": "Ongeverifieerd",
     "status_missing": "Onbekent",
     "credential_details_receive_subtitle": "De informatie over de credential die u van plan bent toe te voegen, vindt u hieronder.",
-    "credential_details_info_tab_header_label": "Geverifieerde Info",
+    "credential_details_info_tab_header_label": "Geverifieerde info",
     "credential_details_activity_tab_header_label": "Activiteit",
     "action_view_extra_details": "Bekijk extra details",
     "action_ok_label": "Ok, ik begrijp het",
