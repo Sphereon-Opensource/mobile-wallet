@@ -567,16 +567,19 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           return Promise.reject(error);
         }
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse);
+        const errorMessage = errorResponse?.error_description || errorResponse
 
         args.navigation.navigate(ScreenRoutesEnum.ERROR, {
           image: PopupImagesEnum.WARNING,
           title: errorDetails.title,
           details: errorDetails.message,
-          detailsPopup: {
-            buttonCaption: translate('action_view_extra_details'),
-            title: errorDetails.detailsTitle,
-            details: `${errorDetails?.detailsMessage} ${errorResponse?.error_description || errorResponse}`,
-          },
+          ...(errorMessage && {
+            detailsPopup: {
+              buttonCaption: translate('action_view_extra_details'),
+              title: errorDetails.detailsTitle,
+              details: `${errorDetails?.detailsMessage} ${errorMessage}`,
+            }
+          }),
           primaryButton: {
             caption: translate('action_ok_label'),
             onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
