@@ -345,7 +345,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('credentials_required_subtitle'), route.params.verifier)}
+              headerSubTitle={`${format(translate('credentials_required_subtitle'), route.params.verifier)} ${route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`}`}
             />
           ),
         })}

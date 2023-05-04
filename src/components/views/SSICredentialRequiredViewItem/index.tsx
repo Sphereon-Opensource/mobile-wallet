@@ -7,6 +7,7 @@ import {backgrounds, statuses} from '../../../styles/colors';
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
+  SSICredentialRequiredViewItemCredentialPurposeCaptionStyled as CredentialPurposeCaption,
   SSICredentialRequiredViewItemSelectedCredentialsCaptionStyled as CredentialSelectedCaption,
   SSITextH4Styled as CredentialSubtitleCaption,
   SSICredentialRequiredViewItemCredentialTitleCaptionStyled as CredentialTitleCaption,
@@ -26,13 +27,14 @@ export interface Props {
   title: string;
   selected: Array<UniqueVerifiableCredential>;
   available?: Array<UniqueVerifiableCredential>;
+  purpose?: string;
   isMatching: boolean;
   listIndex: number;
   onPress?: () => Promise<void>;
 }
 
 const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props, ref?: ForwardedRef<unknown>): JSX.Element => {
-  const {id, isMatching, selected, available, title, listIndex, onPress} = props;
+  const {id, isMatching, selected, available, title, listIndex, purpose, onPress} = props;
 
   return (
     <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
@@ -43,6 +45,7 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
         <ContentContainer style={{...(!isMatching && {marginLeft: 29})}}>
           <View>
             <CredentialTitleCaption>{title}</CredentialTitleCaption>
+            {purpose && <CredentialPurposeCaption>{purpose}</CredentialPurposeCaption>}
             {selected.length > 0 ? (
               // TODO currently only supporting one selected credential, Also fix the naming
               <CredentialSelectedCaption>{getCredentialTypeAsString(selected[0].verifiableCredential)}</CredentialSelectedCaption>

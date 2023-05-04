@@ -141,6 +141,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       <SSICredentialRequiredViewItem
         id={itemInfo.item.id}
         title={itemInfo.item.name || itemInfo.item.id}
+        purpose={itemInfo.item.purpose}
         available={availableCredentials.has(itemInfo.item.id) ? availableCredentials.get(itemInfo.item.id)! : undefined}
         selected={selectedCredentials.has(itemInfo.item.id) ? selectedCredentials.get(itemInfo.item.id)! : []}
         isMatching={

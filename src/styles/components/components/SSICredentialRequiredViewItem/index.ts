@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import {statuses} from '../../../colors';
+import {fonts, statuses} from '../../../colors';
 import {SSIRippleContainerStyled} from '../../containers';
 import {SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5LightStyled} from '../../fonts';
 
@@ -15,6 +15,11 @@ export const SSICredentialRequiredViewItemIconContainerStyled = styled.View`
 
 export const SSICredentialRequiredViewItemCredentialTitleCaptionStyled = styled(SSITextH3LightStyled)`
   margin-bottom: 2px;
+`;
+
+export const SSICredentialRequiredViewItemCredentialPurposeCaptionStyled = styled(SSITextH5LightStyled)`
+  margin-bottom: 2px;
+  color: ${fonts.greyedOut}
 `;
 
 export const SSICredentialRequiredViewItemMatchInfoContainerStyled = styled.View`
