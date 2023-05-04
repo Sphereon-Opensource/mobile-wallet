@@ -489,81 +489,81 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       .getCredentialsFromIssuance({pin, credentials: credentialTypes})
       .then(async (credentialsResponse: Record<string, CredentialResponse>) => {
         const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
-          // TODO only supporting one credential for now
-          const credentialResponse = Object.values(credentialsResponse)[0]
-          const vc: IVerifiableCredential = CredentialMapper.toUniformCredential(credentialResponse.credential);
+        // TODO only supporting one credential for now
+        const credentialResponse = Object.values(credentialsResponse)[0];
+        const vc: IVerifiableCredential = CredentialMapper.toUniformCredential(credentialResponse.credential);
 
-          const contacts: Array<IContact> = await getContacts({
-            filter: [
-              {
-                identities: {
-                  identifier: {
-                    correlationId: new URL(metadata.serverMetadata.issuer).hostname,
-                  },
+        const contacts: Array<IContact> = await getContacts({
+          filter: [
+            {
+              identities: {
+                identifier: {
+                  correlationId: new URL(metadata.serverMetadata.issuer).hostname,
                 },
               },
-            ],
-          });
-          if (contacts.length === 1) {
-            const correlationId: string = (vc.issuer as IIssuer).id;
-            const identity: IBasicIdentity = {
-              alias: correlationId,
-              roles: [IdentityRoleEnum.ISSUER],
-              identifier: {
-                type: CorrelationIdentifierEnum.DID,
-                correlationId,
-              },
-            };
-            const hasIdentity: IContact | undefined = contacts.find((contact: IContact) =>
-              contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId),
-            );
-            if (!hasIdentity) {
-              store.dispatch<any>(addIdentity({contactId: contacts[0].id, identity}));
-            }
-          }
-
-          const rawCredential: VerifiableCredential = credentialResponse.credential as unknown as VerifiableCredential;
-          // TODO fix the store not having the correct action types (should include ThunkAction)
-          const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
-
-          // Adding a delay so the store is updated with the possible new contact
-          await delay(1000);
-
-          // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-            screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-            params: {
-              rawCredential,
-              credential: await toNonPersistedCredentialSummary(vc),
-              primaryAction: {
-                caption: translate('action_accept_label'),
-                onPress: async () =>
-                  storeCredential(rawCredential)
-                    .then(() =>
-                      args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                      }),
-                    )
-                    .then(() =>
-                      showToast(ToastTypeEnum.TOAST_SUCCESS, {
-                        message: translate('credential_offer_accepted_toast'),
-                        showBadge: false,
-                      }),
-                    )
-                    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
-              },
-              secondaryAction: {
-                caption: translate('action_decline_label'),
-                onPress: async () => args.navigation.goBack(),
-              },
             },
-          });
-          // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
-          filterNavigationStack({
-            navigation: args.navigation,
-            stack: NavigationBarRoutesEnum.QR,
-            filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
-          });
+          ],
+        });
+        if (contacts.length === 1) {
+          const correlationId: string = (vc.issuer as IIssuer).id;
+          const identity: IBasicIdentity = {
+            alias: correlationId,
+            roles: [IdentityRoleEnum.ISSUER],
+            identifier: {
+              type: CorrelationIdentifierEnum.DID,
+              correlationId,
+            },
+          };
+          const hasIdentity: IContact | undefined = contacts.find((contact: IContact) =>
+            contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId),
+          );
+          if (!hasIdentity) {
+            store.dispatch<any>(addIdentity({contactId: contacts[0].id, identity}));
+          }
+        }
+
+        const rawCredential: VerifiableCredential = credentialResponse.credential as unknown as VerifiableCredential;
+        // TODO fix the store not having the correct action types (should include ThunkAction)
+        const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
+
+        // Adding a delay so the store is updated with the possible new contact
+        await delay(1000);
+
+        // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+          params: {
+            rawCredential,
+            credential: await toNonPersistedCredentialSummary(vc),
+            primaryAction: {
+              caption: translate('action_accept_label'),
+              onPress: async () =>
+                storeCredential(rawCredential)
+                  .then(() =>
+                    args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                      screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                    }),
+                  )
+                  .then(() =>
+                    showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                      message: translate('credential_offer_accepted_toast'),
+                      showBadge: false,
+                    }),
+                  )
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
+            },
+            secondaryAction: {
+              caption: translate('action_decline_label'),
+              onPress: async () => args.navigation.goBack(),
+            },
+          },
+        });
+        // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
+        filterNavigationStack({
+          navigation: args.navigation,
+          stack: NavigationBarRoutesEnum.QR,
+          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
+        });
       })
       .catch((error: Error) => {
         // TODO refactor once the lib returns a proper response object
@@ -572,7 +572,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           return Promise.reject(error);
         }
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse);
-        const errorMessage = errorResponse?.error_description || errorResponse
+        const errorMessage = errorResponse?.error_description || errorResponse;
 
         args.navigation.navigate(ScreenRoutesEnum.ERROR, {
           image: PopupImagesEnum.WARNING,
@@ -583,7 +583,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               buttonCaption: translate('action_view_extra_details'),
               title: errorDetails.detailsTitle,
               details: `${errorDetails?.detailsMessage} ${errorMessage}`,
-            }
+            },
           }),
           primaryButton: {
             caption: translate('action_ok_label'),

@@ -8,28 +8,28 @@ export const DATE_FORMAT_OPTIONS = {
 } as const;
 
 export const toLocalDateTimeString = (date: number): string => {
-  date = makeEpochMilli(date)
+  date = makeEpochMilli(date);
   return new Date(date).toLocaleString(Localization.getLocale(), {
     ...DATE_FORMAT_OPTIONS,
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric',
   });
-}
+};
 
 export const toLocalDateString = (date: number): string => {
-  date = makeEpochMilli(date)
+  date = makeEpochMilli(date);
   return new Date(date).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS);
-}
+};
 
 export const makeEpochMilli = (epoch: number): number => {
   if (!isEpochMilli(epoch)) {
-    epoch = epoch * EPOCH_MILLISECONDS
+    epoch = epoch * EPOCH_MILLISECONDS;
   }
-  return epoch
-}
+  return epoch;
+};
 
 export const isEpochMilli = (epoch: number): boolean => {
   const epochLength = epoch.toString().length;
   return epochLength > 10;
-}
+};

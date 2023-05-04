@@ -10,7 +10,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
-import {toLocalDateTimeString} from "../../utils/DateUtils";
+import {toLocalDateTimeString} from '../../utils/DateUtils';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>;
 

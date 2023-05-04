@@ -150,7 +150,7 @@ class OpenId4VcIssuanceProvider {
     await this.getServerMetadataAndPerformCryptoMatching();
     const credentialResponses: Record<string, CredentialResponse> = {};
 
-    const vcSelection = credentials || Object.keys(await this.getIssuanceOpts())
+    const vcSelection = credentials || Object.keys(await this.getIssuanceOpts());
     const initTypes = this.client.getCredentialTypesFromInitiation();
     for (const credentialType of vcSelection) {
       if (!initTypes.includes(credentialType)) {

@@ -15,7 +15,7 @@ export interface IGetCredentialArgs {
 
 export interface IGetCredentialsArgs {
   pin?: string;
-  credentials?: Array<string>
+  credentials?: Array<string>;
 }
 
 export interface IIssuanceOpts {
