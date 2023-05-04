@@ -6,8 +6,7 @@ import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
 import store from '../store';
 import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
 
-
-import {makeEpochMilli} from "./DateUtils";
+import {makeEpochMilli} from './DateUtils';
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -85,7 +84,7 @@ export const isExpired = (value?: string | number): boolean => {
     return false;
   }
   let expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
-  expirationDate = makeEpochMilli(expirationDate)
+  expirationDate = makeEpochMilli(expirationDate);
   return expirationDate < Date.now();
 };
 
