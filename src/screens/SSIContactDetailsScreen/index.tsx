@@ -21,12 +21,12 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {contact} = props.route.params;
 
   const routes: Array<ITabViewRoute> = [
-    {
-      key: ContactTabRoutesEnum.INFO,
-      title: translate('contact_details_info_tab_header_label'),
-      // TODO WAL-350 implement content
-      content: () => <SSIActivityView />,
-    },
+    // {
+    //   key: ContactTabRoutesEnum.INFO,
+    //   title: translate('contact_details_info_tab_header_label'),
+    //   // TODO WAL-584 implement content
+    //   content: () => <SSIActivityView />,
+    // },
     {
       key: ContactTabRoutesEnum.IDENTITIES,
       title: translate('contact_details_identities_tab_header_label'),
@@ -43,7 +43,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <SSIContactViewItem name={contact.alias} uri={contact.uri} roles={contact.roles} />
-      <SSITabView routes={routes} />
+      <SSITabView routes={routes}/>
     </Container>
   );
 };
