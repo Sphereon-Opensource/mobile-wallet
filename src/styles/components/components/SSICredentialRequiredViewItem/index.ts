@@ -17,7 +17,7 @@ export const SSICredentialRequiredViewItemCredentialTitleCaptionStyled = styled(
   margin-bottom: 2px;
 `;
 
-export const SSICredentialRequiredViewItemCredentialPurposeCaptionStyled = styled(SSITextH5LightStyled)`
+export const SSICredentialRequiredViewItemCredentialPurposeCaptionStyled = styled(SSITextH4LightStyled)`
   margin-bottom: 2px;
   color: ${fonts.greyedOut}
 `;
