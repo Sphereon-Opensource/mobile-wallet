@@ -17,9 +17,11 @@ const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
     await readQr({qrData: readEvent.data, navigation: props.navigation});
   };
 
+  StatusBar.setTranslucent(true);
+  StatusBar.setBackgroundColor('transparent');
+
   return (
     <Container>
-      <StatusBar translucent backgroundColor="transparent" />
       <QRScanner
         onRead={onRead}
         reactivate
