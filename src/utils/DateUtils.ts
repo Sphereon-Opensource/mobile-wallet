@@ -8,8 +8,7 @@ export const DATE_FORMAT_OPTIONS = {
 } as const;
 
 export const toLocalDateTimeString = (date: number): string => {
-  date = makeEpochMilli(date);
-  return new Date(date).toLocaleString(Localization.getLocale(), {
+  return new Date(formatDate(date)).toLocaleString(Localization.getLocale(), {
     ...DATE_FORMAT_OPTIONS,
     hour: 'numeric',
     minute: 'numeric',
@@ -18,18 +17,39 @@ export const toLocalDateTimeString = (date: number): string => {
 };
 
 export const toLocalDateString = (date: number): string => {
-  date = makeEpochMilli(date);
-  return new Date(date).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS);
+  return new Date(formatDate(date)).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS);
 };
 
-export const makeEpochMilli = (epoch: number): number => {
+const formatDate = (date: number): number => {
+  let epoch: number = date
+  epoch = formatFractionalPart(epoch)
   if (!isEpochMilli(epoch)) {
-    epoch = epoch * EPOCH_MILLISECONDS;
+    epoch = makeEpochMilli(epoch)
   }
-  return epoch;
+
+  return epoch
+}
+
+const makeEpochMilli = (date: number): number => {
+  if (!isEpochMilli(date)) {
+    date = date * EPOCH_MILLISECONDS;
+  }
+  return date;
 };
 
-export const isEpochMilli = (epoch: number): boolean => {
-  const epochLength = epoch.toString().length;
+const isEpochMilli = (date: number): boolean => {
+  const epochLength: number = date.toString().length;
   return epochLength > 10;
+};
+
+const formatFractionalPart = (date: number): number => {
+  if (date.toString().includes('.')) {
+    const epochParts: Array<string> = date.toString().split('.')
+    const epoch: string = epochParts[0]
+    const fractionalPadded: string = epochParts[1].padEnd(3, '0');
+
+    return Number(`${epoch}${fractionalPadded}`)
+  }
+
+  return date
 };
