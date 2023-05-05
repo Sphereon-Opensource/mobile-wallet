@@ -41,6 +41,7 @@ export interface ILoadingProps {
 
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>;
+  purpose?: string;
   onSelect: (vcs: Array<string>) => Promise<void>;
 }
 

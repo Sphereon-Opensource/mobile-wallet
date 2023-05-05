@@ -353,17 +353,17 @@ const QRStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_SELECT}
         component={SSICredentialsSelectScreen}
-        options={{
+        options={({route}) =>({
           headerTitle: translate('credentials_select_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={translate('credentials_select_subtitle')}
+              headerSubTitle={`${translate('credentials_select_subtitle')} ${route.params.purpose && `\n\n${route.params.purpose}`}`}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.LOADING}
