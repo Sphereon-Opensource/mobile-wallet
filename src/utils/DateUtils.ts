@@ -38,8 +38,7 @@ const makeEpochMilli = (date: number): number => {
 };
 
 const isEpochMilli = (date: number): boolean => {
-  const epochLength: number = date.toString().length;
-  return epochLength > 10;
+  return date.toString().length > 10;
 };
 
 const formatFractionalPart = (date: number): number => {
