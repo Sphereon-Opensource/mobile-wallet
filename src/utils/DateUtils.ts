@@ -22,7 +22,7 @@ export const toLocalDateString = (date: number): string => {
 
 const formatDate = (date: number): number => {
   let epoch: number = date
-  epoch = formatFractionalPart(epoch)
+  epoch = removeFractionalPart(epoch)
   if (!isEpochMilli(epoch)) {
     epoch = makeEpochMilli(epoch)
   }
@@ -41,13 +41,9 @@ const isEpochMilli = (date: number): boolean => {
   return date.toString().length > 10;
 };
 
-const formatFractionalPart = (date: number): number => {
+const removeFractionalPart = (date: number): number => {
   if (date.toString().includes('.')) {
-    const epochParts: Array<string> = date.toString().split('.')
-    const epoch: string = epochParts[0]
-    const fractionalPadded: string = epochParts[1].padEnd(3, '0');
-
-    return Number(`${epoch}${fractionalPadded}`)
+    return Number(date.toString().split('.')[0])
   }
 
   return date
