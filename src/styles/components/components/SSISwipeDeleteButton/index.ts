@@ -8,8 +8,8 @@ export const SSISwipeDeleteButtonCaptionStyled = styled(SSITextH4LightStyled)`
 `;
 
 export const SSISwipeDeleteButtonLinearGradientStyled = styled(SSILinearGradientStyled)`
-  height: 97px;
   width: 97px;
-  padding-top: 30px;
+  flex: 1;
+  justify-content: center;
   align-items: center;
 `;
