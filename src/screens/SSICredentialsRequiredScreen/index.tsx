@@ -95,7 +95,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     );
   };
 
-  const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>) => {
+  const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>, inputDescriptorPurpose?: string) => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
       credentialSelection: await Promise.all(
         uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
@@ -117,6 +117,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           };
         }),
       ),
+      purpose: inputDescriptorPurpose,
       // TODO move this to a function, would be nicer
       onSelect: async (hashes: Array<string>) => {
         const selectedVCs = availableCredentials.get(inputDescriptorId)!.filter(vc => hashes.includes(vc.hash));
@@ -135,7 +136,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     const onPress =
       !availableCredentials.has(itemInfo.item.id) || availableCredentials.get(itemInfo.item.id)!.length === 0
         ? undefined
-        : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!);
+        : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!, itemInfo.item.purpose);
 
     return (
       <SSICredentialRequiredViewItem
