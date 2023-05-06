@@ -13,7 +13,15 @@ import {
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk-vc-handler-ld-local';
-import {createAgent, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
+import {
+  createAgent,
+  ICredentialPlugin,
+  IDataStore,
+  IDataStoreORM,
+  IDIDManager,
+  IKeyManager,
+  IResolver
+} from "@veramo/core";
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -21,6 +29,7 @@ import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
+import {getResolver as webDIDResolver} from 'web-did-resolver'
 import {KeyManager} from '@veramo/key-manager';
 import {KeyManagementSystem, SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
@@ -44,6 +53,10 @@ export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
     resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
   }),
+  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
+    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
+  }),
+  ...webDIDResolver,
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
 });
@@ -82,6 +95,7 @@ const agent = createAgent<
     IResolver &
     IDidAuthSiopOpAuthenticator &
     IContactManager &
+    ICredentialPlugin &
     ICredentialIssuer &
     ICredentialHandlerLDLocal
 >({
@@ -112,10 +126,12 @@ const agent = createAgent<
       suites: [
         new SphereonEd25519Signature2018(),
         new SphereonEd25519Signature2020(),
-        new SphereonBbsBlsSignature2020(),
+        // new SphereonBbsBlsSignature2020(),
         new SphereonJsonWebSignature2020(),
       ],
       bindingOverrides: new Map([
+        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
       ]),

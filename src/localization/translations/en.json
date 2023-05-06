@@ -156,5 +156,6 @@
     "profile_logout_action_caption": "Log out",
     "action_getting_credentials_message": "Getting credential...",
     "credentials_share_failed_toast_message": "Unable to present credentials. Error: {0}.",
-    "information_retrieve_failed_toast_message": "Unable to retrieve information. Error: {0}."
+    "information_retrieve_failed_toast_message": "Unable to retrieve information. Error: {0}.",
+    "credential_verification_failed_message": "The credential verification resulted in an error."
 }
