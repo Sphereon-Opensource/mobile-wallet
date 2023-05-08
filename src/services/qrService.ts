@@ -11,7 +11,13 @@ import {
   IDidAuthConfig,
   IIdentity,
 } from '@sphereon/ssi-sdk-data-store';
-import {CredentialMapper, IVerifiableCredential, OriginalVerifiableCredential, W3CVerifiableCredential} from '@sphereon/ssi-types';
+import {
+  CredentialMapper,
+  IVerifiableCredential,
+  OriginalVerifiableCredential,
+  W3CVerifiableCredential,
+  WrappedVerifiableCredential,
+} from '@sphereon/ssi-types';
 import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
 import {VerifiableCredential} from '@veramo/core';
 import Debug from 'debug';
@@ -21,7 +27,7 @@ import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
+import OpenId4VcIssuanceProvider, {IErrorDetailsOpts} from '../providers/credential/OpenId4VcIssuanceProvider';
 import store from '../store';
 import {addIdentity} from '../store/actions/contact.actions';
 import {storeVerifiableCredential} from '../store/actions/credential.actions';
@@ -36,6 +42,7 @@ import {
   IReadQrArgs,
   IServerMetadataAndCryptoMatchingResponse,
   NavigationBarRoutesEnum,
+  Oidc4vciErrorEnum,
   PopupImagesEnum,
   QrTypesEnum,
   ScreenRoutesEnum,
@@ -50,6 +57,8 @@ import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper
 import {authenticate} from './authenticationService';
 import {getContacts} from './contactService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
+import {verifyCredential} from './credentialService';
+import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
 
 const format = require('string-format');
 const {v4: uuidv4} = require('uuid');
@@ -492,7 +501,22 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
         // TODO only supporting one credential for now
         const credentialResponse = Object.values(credentialsResponse)[0];
-        const vc: IVerifiableCredential = CredentialMapper.toUniformCredential(credentialResponse.credential);
+        const origVC = credentialResponse.credential;
+        const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC);
+        const verificationResult = await verifyCredential({
+          credential: wrappedVC.original as VerifiableCredential | CompactJWT,
+          fetchRemoteContexts: true,
+          policies: {credentialStatus: false, expirationDate: false, issuanceDate: false},
+        });
+        if (!verificationResult.result || verificationResult.error) {
+          console.log(JSON.stringify(verificationResult, null, 2));
+          return handleError(Oidc4vciErrorEnum.VERIFICATION_FAILED, {
+            detailsMessage: verificationResult.errorDetails,
+            message: verificationResult.error,
+            title: 'Invalid credential',
+          });
+        }
+        const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
         const contacts: Array<IContact> = await getContacts({
           filter: [
@@ -506,7 +530,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           ],
         });
         if (contacts.length === 1) {
-          const correlationId: string = (vc.issuer as IIssuer).id;
+          const correlationId: string = (uniformVC.issuer as IIssuer).id;
           const identity: IBasicIdentity = {
             alias: correlationId,
             roles: [IdentityRoleEnum.ISSUER],
@@ -535,7 +559,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential,
-            credential: await toNonPersistedCredentialSummary(vc),
+            credential: await toNonPersistedCredentialSummary(uniformVC),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async () =>
@@ -572,26 +596,30 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         if (error.message.includes('403') || errorResponse.status === 403) {
           return Promise.reject(error);
         }
-        const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse);
-        const errorMessage = errorResponse?.error_description || errorResponse;
-
-        args.navigation.navigate(ScreenRoutesEnum.ERROR, {
-          image: PopupImagesEnum.WARNING,
-          title: errorDetails.title,
-          details: errorDetails.message,
-          ...(errorMessage && {
-            detailsPopup: {
-              buttonCaption: translate('action_view_extra_details'),
-              title: errorDetails.detailsTitle,
-              details: `${errorDetails?.detailsMessage} ${errorMessage}`,
-            },
-          }),
-          primaryButton: {
-            caption: translate('action_ok_label'),
-            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
-          },
-        });
+        handleError(errorResponse);
       });
+
+  const handleError = (errorResponse: Oidc4vciErrorEnum | any, opts?: IErrorDetailsOpts) => {
+    const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse, opts);
+    const errorMessage = errorResponse?.error_description || errorResponse;
+
+    args.navigation.navigate(ScreenRoutesEnum.ERROR, {
+      image: PopupImagesEnum.WARNING,
+      title: errorDetails.title,
+      details: errorDetails.message,
+      ...(errorMessage && {
+        detailsPopup: {
+          buttonCaption: translate('action_view_extra_details'),
+          title: errorDetails.detailsTitle,
+          details: `${errorDetails?.detailsMessage} ${errorMessage}`,
+        },
+      }),
+      primaryButton: {
+        caption: translate('action_ok_label'),
+        onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+      },
+    });
+  };
 
   args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
 

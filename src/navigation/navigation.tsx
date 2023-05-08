@@ -345,7 +345,9 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${format(translate('credentials_required_subtitle'), route.params.verifier)} ${route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`}`}
+              headerSubTitle={`${format(translate('credentials_required_subtitle'), route.params.verifier)} ${
+                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+              }`}
             />
           ),
         })}
@@ -353,7 +355,7 @@ const QRStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_SELECT}
         component={SSICredentialsSelectScreen}
-        options={({route}) =>({
+        options={({route}) => ({
           headerTitle: translate('credentials_select_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar

@@ -45,6 +45,7 @@ export enum Oidc4vciErrorEnum {
   UNSUPPORTED_GRANT_TYPE = 'unsupported_grant_type',
   INVALID_SCOPE = 'invalid_scope',
   INVALID_OR_MISSING_PROOF = 'invalid_or_missing_proof',
+  VERIFICATION_FAILED = 'verification_failed',
 }
 
 export interface IServerMetadataAndCryptoMatchingResponse {

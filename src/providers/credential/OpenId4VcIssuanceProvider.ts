@@ -71,13 +71,19 @@ export enum SignatureAlgorithmEnum {
 
 export const jwtCryptographicSuitePreferences = [SignatureAlgorithmEnum.ES256K, SignatureAlgorithmEnum.ES256, SignatureAlgorithmEnum.EdDSA];
 
+export interface IErrorDetailsOpts {
+  title?: string;
+  message?: string;
+  detailsMessage?: string;
+}
+
 class OpenId4VcIssuanceProvider {
-  public static getErrorDetails = (error: Oidc4vciErrorEnum): IErrorDetails => {
+  public static getErrorDetails = (error: Oidc4vciErrorEnum | string, opts?: IErrorDetailsOpts): IErrorDetails => {
     // We want to move this over to some general error handling within the app
     const genericError = {
-      title: translate('error_generic_title'),
-      message: translate('error_generic_message'),
-      detailsMessage: `<b>${translate('error_details_generic_message')}</b>`,
+      title: opts?.title ?? translate('error_generic_title'),
+      message: opts?.message ?? translate('error_generic_message'),
+      detailsMessage: `<b>${opts?.detailsMessage ?? translate('error_details_generic_message')}</b>`,
     };
 
     switch (error) {
@@ -115,6 +121,11 @@ class OpenId4VcIssuanceProvider {
         return {
           ...genericError,
           detailsTitle: translate('oidc4vci_error_invalid_or_missing_proof'),
+        };
+      case Oidc4vciErrorEnum.VERIFICATION_FAILED:
+        return {
+          ...genericError,
+          detailsTitle: translate('credential_verification_failed_message'),
         };
       default:
         return {
