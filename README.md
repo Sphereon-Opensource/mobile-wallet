@@ -40,7 +40,7 @@ The wallet is build using our Apache2 open-source licensed [SSI-SDK](https://git
 its [key/DID extensions](https://github.com/Sphereon-Opensource/SSI-SDK-crypto-extensions), which you can use to create
 Issuer and Verifier agents as well as mobile and web wallets.
 
-![Intro](./docs/intro.png)
+![Intro](docs/img/intro.png)
 
 ## Technologies supported
 
