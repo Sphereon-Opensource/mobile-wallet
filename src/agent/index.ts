@@ -13,15 +13,7 @@ import {
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk-vc-handler-ld-local';
-import {
-  createAgent,
-  ICredentialPlugin,
-  IDataStore,
-  IDataStoreORM,
-  IDIDManager,
-  IKeyManager,
-  IResolver
-} from "@veramo/core";
+import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -29,7 +21,7 @@ import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {getResolver as webDIDResolver} from 'web-did-resolver'
+import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {KeyManager} from '@veramo/key-manager';
 import {KeyManagementSystem, SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';

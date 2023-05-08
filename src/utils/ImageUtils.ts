@@ -4,7 +4,7 @@ import {IS_IMAGE_URI_REGEX, IS_IMAGE_URL_REGEX} from '../@config/constants';
 import {IImageSize} from '../types';
 
 export const isImage = async (value: string): Promise<boolean> => {
-  return IS_IMAGE_URI_REGEX.test(value) || IS_IMAGE_URL_REGEX.test(value)
+  return IS_IMAGE_URI_REGEX.test(value) || IS_IMAGE_URL_REGEX.test(value);
 };
 
 export const scaleImageToMaxWidth = (width: number, height: number, maxWidth: number): IImageSize => {

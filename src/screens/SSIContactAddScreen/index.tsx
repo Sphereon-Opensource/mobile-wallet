@@ -17,19 +17,13 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
 } from '../../styles/components';
-import {
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  ToastTypeEnum
-} from '../../types';
+import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {ICreateContactArgs} from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void;
-  loading: boolean
+  loading: boolean;
 }
 
 interface IState {
@@ -109,7 +103,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
-    const {loading} = this.props
+    const {loading} = this.props;
     const {contactAlias, hasConsent} = this.state;
 
     return (

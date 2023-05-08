@@ -21,14 +21,14 @@ export const toLocalDateString = (date: number): string => {
 };
 
 const formatDate = (date: number): number => {
-  let epoch: number = date
-  epoch = removeFractionalPart(epoch)
+  let epoch: number = date;
+  epoch = removeFractionalPart(epoch);
   if (!isEpochMilli(epoch)) {
-    epoch = makeEpochMilli(epoch)
+    epoch = makeEpochMilli(epoch);
   }
 
-  return epoch
-}
+  return epoch;
+};
 
 const makeEpochMilli = (date: number): number => {
   if (!isEpochMilli(date)) {
@@ -43,8 +43,8 @@ const isEpochMilli = (date: number): boolean => {
 
 const removeFractionalPart = (date: number): number => {
   if (date.toString().includes('.')) {
-    return Number(date.toString().split('.')[0])
+    return Number(date.toString().split('.')[0]);
   }
 
-  return date
+  return date;
 };
