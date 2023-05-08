@@ -30,7 +30,7 @@ const formatDate = (date: number): number => {
   return epoch;
 };
 
-const makeEpochMilli = (date: number): number => {
+export const makeEpochMilli = (date: number): number => {
   if (!isEpochMilli(date)) {
     date = date * EPOCH_MILLISECONDS;
   }
