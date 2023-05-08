@@ -8,8 +8,7 @@ export const DATE_FORMAT_OPTIONS = {
 } as const;
 
 export const toLocalDateTimeString = (date: number): string => {
-  date = makeEpochMilli(date);
-  return new Date(date).toLocaleString(Localization.getLocale(), {
+  return new Date(formatDate(date)).toLocaleString(Localization.getLocale(), {
     ...DATE_FORMAT_OPTIONS,
     hour: 'numeric',
     minute: 'numeric',
@@ -18,18 +17,34 @@ export const toLocalDateTimeString = (date: number): string => {
 };
 
 export const toLocalDateString = (date: number): string => {
-  date = makeEpochMilli(date);
-  return new Date(date).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS);
+  return new Date(formatDate(date)).toLocaleDateString(Localization.getLocale(), DATE_FORMAT_OPTIONS);
 };
 
-export const makeEpochMilli = (epoch: number): number => {
+const formatDate = (date: number): number => {
+  let epoch: number = date
+  epoch = removeFractionalPart(epoch)
   if (!isEpochMilli(epoch)) {
-    epoch = epoch * EPOCH_MILLISECONDS;
+    epoch = makeEpochMilli(epoch)
   }
-  return epoch;
+
+  return epoch
+}
+
+const makeEpochMilli = (date: number): number => {
+  if (!isEpochMilli(date)) {
+    date = date * EPOCH_MILLISECONDS;
+  }
+  return date;
 };
 
-export const isEpochMilli = (epoch: number): boolean => {
-  const epochLength = epoch.toString().length;
-  return epochLength > 10;
+const isEpochMilli = (date: number): boolean => {
+  return date.toString().length > 10;
+};
+
+const removeFractionalPart = (date: number): number => {
+  if (date.toString().includes('.')) {
+    return Number(date.toString().split('.')[0])
+  }
+
+  return date
 };

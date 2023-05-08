@@ -3,7 +3,7 @@ import {
   RPRegistrationMetadataPayload,
   VerifiedAuthorizationRequest
 } from "@sphereon/did-auth-siop";
-import { CredentialResponse, IssuanceInitiation } from "@sphereon/openid4vci-client";
+import { CredentialIssuer,CredentialResponse, IssuanceInitiation } from "@sphereon/openid4vci-client";
 import { Format } from "@sphereon/pex-models";
 import {
   ConnectionTypeEnum,
@@ -380,6 +380,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     metadata: IServerMetadataAndCryptoMatchingResponse,
   ): Promise<void> => {
     const url: URL = new URL(metadata.serverMetadata.issuer);
+    const name = metadata?.serverMetadata?.openid4vci_metadata?.credential_issuer?.['name' as keyof CredentialIssuer] ?? url.hostname;
     getContacts({
       filter: [
         {
@@ -393,7 +394,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }).then((contacts: Array<IContact>) => {
       if (contacts.length === 0) {
         args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-          name: url.hostname,
+          name,
           uri: `${url.protocol}//${url.hostname}`,
           identities: [
             {
