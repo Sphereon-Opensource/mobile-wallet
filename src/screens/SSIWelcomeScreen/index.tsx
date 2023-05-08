@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
-import {BackHandler, NativeEventSubscription, StatusBar} from 'react-native';
+import {BackHandler, NativeEventSubscription, Platform, StatusBar} from 'react-native';
 
 import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg';
 import SSIWelcomeView from '../../components/views/SSIWelcomeView';
@@ -11,7 +11,7 @@ import {
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer,
 } from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
 
@@ -57,8 +57,10 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
   };
 
   componentDidMount = (): void => {
-    StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
+    if (Platform.OS === PlatformsEnum.ANDROID) {
+      StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('transparent');
+    }
     this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this._onBack);
   };
 
