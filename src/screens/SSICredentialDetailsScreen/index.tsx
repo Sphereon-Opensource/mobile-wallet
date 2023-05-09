@@ -8,6 +8,7 @@ import SSICardView from '../../components/views/SSICardView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
+import {backgrounds} from "../../styles/colors";
 import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
   SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
@@ -62,7 +63,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         <SSITabView routes={routes} />
         {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
         {(primaryAction || secondaryAction) && (
-          <ButtonContainer>
+          <ButtonContainer style={{ backgroundColor: backgrounds.secondaryDark }}>
             <ButtonContainerContent>
               {secondaryAction && (
                 <SSISecondaryButton
