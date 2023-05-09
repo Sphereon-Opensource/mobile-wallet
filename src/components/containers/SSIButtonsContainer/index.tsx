@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {EmitterSubscription, Keyboard} from 'react-native';
+import {EmitterSubscription, Keyboard, ViewStyle} from 'react-native';
 
 import {SSIButtonBottomContainerStyled as ButtonContainer, SSIButtonsContainerSpacerStyled as Spacer} from '../../../styles/components';
 import {IButton} from '../../../types';
@@ -7,6 +7,7 @@ import SSIPrimaryButton from '../../buttons/SSIPrimaryButton';
 import SSISecondaryButton from '../../buttons/SSISecondaryButton';
 
 export interface Props {
+  style?: ViewStyle;
   primaryButton?: IButton;
   secondaryButton?: IButton;
 }
@@ -41,11 +42,11 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
   };
 
   render() {
-    const {primaryButton, secondaryButton} = this.props;
+    const {primaryButton, secondaryButton, style} = this.props;
     const {keyboardVisible} = this.state;
 
     return (
-      <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
+        <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36, ...(style && style)}}>
         {secondaryButton && (
           <SSISecondaryButton
             title={secondaryButton.caption}

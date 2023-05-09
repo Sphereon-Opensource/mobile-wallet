@@ -66,9 +66,10 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
     ];
 
     return (
-      <Container style={{ backgroundColor: backgrounds.secondaryDark }}>
-        <SSITabView routes={routes} />
+      <Container>
+        <SSITabView routes={routes} style={{ backgroundColor: backgrounds.primaryDark }} />
         <SSIButtonsContainer
+          style={{ backgroundColor: backgrounds.secondaryDark }}
           primaryButton={{
             caption: translate('onboard_summary_button_caption'),
             onPress: this.onAccept,
