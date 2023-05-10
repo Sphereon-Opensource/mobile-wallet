@@ -269,7 +269,7 @@ const QRStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
         options={({route}) => ({
-          headerTitle: translate('credential_details_title'),
+          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}

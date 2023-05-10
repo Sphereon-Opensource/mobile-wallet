@@ -558,6 +558,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         args.navigation.navigate(NavigationBarRoutesEnum.QR, {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
+            headerTitle: translate('credential_offer_title'),
             rawCredential,
             credential: await toNonPersistedCredentialSummary(uniformVC),
             primaryAction: {
