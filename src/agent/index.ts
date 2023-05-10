@@ -136,6 +136,7 @@ export const didManagerCreate = agent.didManagerCreate;
 export const didManagerFind = agent.didManagerFind;
 export const cmGetContacts = agent.cmGetContacts;
 export const cmAddContact = agent.cmAddContact;
+export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
 export const cmGetIdentities = agent.cmGetIdentities;

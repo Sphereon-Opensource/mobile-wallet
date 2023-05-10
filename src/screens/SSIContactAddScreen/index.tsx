@@ -9,7 +9,7 @@ import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
 import {translate} from '../../localization/Localization';
 import {getContacts} from '../../services/contactService';
-import {createContact as StoreContact} from '../../store/actions/contact.actions';
+import {createContact as StoreContact, updateContact as editContact} from '../../store/actions/contact.actions';
 import {
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
@@ -17,12 +17,12 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
 } from '../../styles/components';
-import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {ICreateContactArgs} from '../../types/store/contact.action.types';
+import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void;
+  updateContact: (args: IUpdateContactArgs) => void;
   loading: boolean;
 }
 
@@ -54,20 +54,28 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onCreate = async (): Promise<void> => {
-    const {identities, name, uri, onCreate} = this.props.route.params;
+    const {identities, name, uri, onUpsert} = this.props.route.params;
     const {contactAlias} = this.state;
 
     Keyboard.dismiss();
 
     this.onValidate(contactAlias)
-      .then(() => {
-        this.props.createContact({
-          name,
-          alias: contactAlias.trim(),
-          uri,
-          identities,
-        });
-        onCreate();
+      .then(async () => {
+        const contacts = await getContacts({filter: [{name: name}]});
+        if (contacts.length !== 0) {
+          let contactToUpdate : IUpdateContactArgs = {contact: contacts[0]};
+          contactToUpdate.contact.alias = contactAlias;
+          this.props.updateContact(contactToUpdate)
+        } else {
+          this.props.createContact({
+            name,
+            alias: contactAlias.trim(),
+            uri,
+            identities,
+          });
+        }
+
+        onUpsert();
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
@@ -146,6 +154,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     createContact: (args: ICreateContactArgs) => dispatch(StoreContact(args)),
+    updateContact: (args: IUpdateContactArgs) => dispatch(editContact(args))
   };
 };
 

@@ -11,8 +11,11 @@ import {
   DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
+import {compareContact} from "../../utils/ContactUtil";
 
 const initialState: IContactState = {
   loading: false,
@@ -30,7 +33,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case GET_CONTACTS_SUCCESS: {
       return {
         ...state,
-        contacts: action.payload,
+        contacts: action.payload.sort(compareContact),
         loading: false,
       };
     }
@@ -43,7 +46,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case CREATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: [...state.contacts, action.payload],
+        contacts: [...state.contacts, action.payload].sort(compareContact),
         loading: false,
       };
     }
@@ -53,10 +56,23 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         loading: false,
       };
     }
+    case UPDATE_CONTACT_SUCCESS: {
+      return {
+        ...state,
+        contacts: action.payload,
+        loading: false,
+      };
+    }
+    case UPDATE_CONTACT_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case DELETE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload),
+        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload).sort(compareContact),
         loading: false,
       };
     }
@@ -71,7 +87,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         ...state,
         contacts: state.contacts.map((contact: IContact) =>
           contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
-        ),
+        ).sort(compareContact),
         loading: false,
       };
     }

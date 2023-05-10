@@ -8,9 +8,9 @@ import {
   getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
   removeContact,
-  createContact as storeContact,
+  createContact as storeContact, updateContact as editContact,
 } from '../../services/contactService';
-import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
+import { IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
@@ -21,11 +21,15 @@ import {
   DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
   IAddIdentityArgs,
   ICreateContactArgs,
+  IUpdateContactArgs,
 } from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
+import {compareContact} from "../../utils/ContactUtil";
 
 export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
@@ -47,6 +51,29 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
       })
       .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
+  };
+};
+
+export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: CONTACTS_LOADING});
+    editContact(args)
+    .then(()=> {
+      getUserContact()
+        .then((userContact: IContact) => {
+          getContactsFromStorage()
+          .then(async (contacts: Array<IContact>) => {
+            dispatch({
+              type: UPDATE_CONTACT_SUCCESS,
+              payload: [
+                ...contacts.filter((contact: IContact) => contact.id !== args.contact.id),
+                userContact,
+                args.contact
+              ].sort(compareContact)
+            })
+          }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}))
+        }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}))
+    }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
 

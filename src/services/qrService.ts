@@ -346,7 +346,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
             },
           },
         ],
-        onCreate: selectCredentials,
+        onUpsert: selectCredentials,
       });
     } else {
       selectCredentials();
@@ -415,7 +415,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
-          onCreate: () => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported),
+          onUpsert: () => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported),
         });
         filterNavigationStack({
           navigation: args.navigation,
@@ -456,12 +456,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           },
         },
       });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
-      filterNavigationStack({
-        navigation: args.navigation,
-        stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
-      });
     } else {
       await sendResponseOrAuthenticate(
         provider,
@@ -482,12 +476,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           credentialName: credentials[0],
           onVerification: async (pin: string) => await sendResponse(provider, credentials, pin),
         },
-      });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
-      filterNavigationStack({
-        navigation: args.navigation,
-        stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
       });
     } else {
       await sendResponse(provider, credentials);
@@ -582,12 +570,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               onPress: async () => args.navigation.goBack(),
             },
           },
-        });
-        // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
-        filterNavigationStack({
-          navigation: args.navigation,
-          stack: NavigationBarRoutesEnum.QR,
-          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
         });
       })
       .catch((error: Error) => {
