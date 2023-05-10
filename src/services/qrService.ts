@@ -237,6 +237,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const selectRequiredCredentials = async (): Promise<void> => {
+    // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
     const format: Format | undefined = registration?.vp_formats;
     const subjectSyntaxTypesSupported: Array<string> | undefined = registration?.subject_syntax_types_supported;
     const clientId: string | undefined = await request.authorizationRequest.getMergedProperty<string>('client_id');
