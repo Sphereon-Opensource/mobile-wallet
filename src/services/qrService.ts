@@ -192,6 +192,21 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     identifier: await getOrCreatePrimaryIdentifier(), // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   };
 
+  // Adding a loading screen as the next action is to contact the other side
+  args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
+
+  let request: VerifiedAuthorizationRequest
+  let registration: RPRegistrationMetadataPayload | undefined
+  try {
+    request = await siopGetRequest({...config, id: uuidv4()})
+    // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
+    registration = await request.authorizationRequest.getMergedProperty('registration');
+  } catch(error: unknown) {
+    debug(`Unable to retrieve information. Error: ${(error as Error).message}.`);
+    args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
+    showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), (error as Error).message)});
+  }
+
   const sendResponse = async (
     presentationDefinitionWithLocation: PresentationDefinitionWithLocation,
     credentials: Array<VerifiableCredential>,
@@ -221,23 +236,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       });
   };
 
-  const selectCredentials = async (): Promise<void> => {
-    selectRequiredCredentials().catch((error: Error) => {
-      debug(`Unable to retrieve information. Error: ${error.message}.`);
-      args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-      showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), error.message)});
-    });
-  };
-
   const selectRequiredCredentials = async (): Promise<void> => {
-    args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
-
-    // Adding a delay so the store is updated with the possible new contact
-    await delay(1000);
-
-    const request: VerifiedAuthorizationRequest = await siopGetRequest({...config, id: uuidv4()});
-    // todo: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
-    const registration: RPRegistrationMetadataPayload | undefined = await request.authorizationRequest.getMergedProperty('registration');
     const format: Format | undefined = registration?.vp_formats;
     const subjectSyntaxTypesSupported: Array<string> | undefined = registration?.subject_syntax_types_supported;
     const clientId: string | undefined = await request.authorizationRequest.getMergedProperty<string>('client_id');
@@ -330,7 +329,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   }).then((contacts: Array<IContact>) => {
     if (contacts.length === 0) {
       args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-        name: url.hostname,
+        name: registration?.client_name ?? url.hostname,
         uri: `${url.protocol}//${url.hostname}`,
         identities: [
           {
@@ -346,12 +345,14 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
             },
           },
         ],
-        onCreate: selectCredentials,
+        // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
+        onCreate: () => delay(1000).then(() => selectRequiredCredentials()),
       });
     } else {
-      selectCredentials();
+      selectRequiredCredentials()
     }
   });
+
 };
 
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void> => {
@@ -415,7 +416,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
-          onCreate: () => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported),
+          // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
+          onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported)),
         });
         filterNavigationStack({
           navigation: args.navigation,
@@ -439,9 +441,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     }));
 
     if (credentialTypes.length > 1) {
-      // Adding a delay so the store is updated with the possible new contact
-      await delay(1000);
-
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
         screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
         params: {
@@ -550,9 +549,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const rawCredential: VerifiableCredential = credentialResponse.credential as unknown as VerifiableCredential;
         // TODO fix the store not having the correct action types (should include ThunkAction)
         const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
-
-        // Adding a delay so the store is updated with the possible new contact
-        await delay(1000);
 
         // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
         args.navigation.navigate(NavigationBarRoutesEnum.QR, {
