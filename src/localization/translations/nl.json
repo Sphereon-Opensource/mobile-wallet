@@ -77,6 +77,7 @@
     "contact_name_label": "Contact Naam",
     "contact_name_placeholder": "Naam contact",
     "contact_name_invalid_message": "Vul een geldige contact naam in",
+    "contact_name_unavailable_message": "Deze naam bestaat al, vul een unieke contactnaam in",
     "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
     "contact_delete_title": "Verwijder contact",
     "contact_delete_message": "Weet u zeker dat u het contact wilt verwijderen: {0}?",
