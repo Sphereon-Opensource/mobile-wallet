@@ -1,4 +1,3 @@
-import {ICredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import Debug from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';

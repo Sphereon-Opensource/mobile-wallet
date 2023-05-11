@@ -64,7 +64,7 @@ export interface ICredentialDetailsProps {
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
   rawCredential?: OriginalVerifiableCredential;
-  headerTitle?: string
+  headerTitle?: string;
 }
 
 export interface ICredentialRawJsonProps {

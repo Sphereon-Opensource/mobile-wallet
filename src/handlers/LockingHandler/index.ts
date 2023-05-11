@@ -35,15 +35,15 @@ class LockingHandler {
             debug('Locking application...');
             store.dispatch<any>(logout());
           }
-        }
+        };
         debug('Subscribing to locking event...');
         this.lockingEventListener = DeviceEventEmitter.addListener('appStateChange', handleAppStateChange);
         break;
       }
       default: {
-        const message = 'Unable to enable locking listener. OS type is not supported.'
+        const message = 'Unable to enable locking listener. OS type is not supported.';
         debug(message);
-        return Promise.reject(Error(message))
+        return Promise.reject(Error(message));
       }
     }
   };
