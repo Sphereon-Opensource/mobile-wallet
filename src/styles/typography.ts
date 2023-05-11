@@ -1,30 +1,30 @@
 import {TextStyle} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
-
+import { moderateScale } from 'react-native-size-matters';
 type FontSize = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800;
 
 export const fontSize: Record<FontSize, number> = {
-  100: RFValue(9),
-  200: RFValue(10),
-  300: RFValue(11),
-  400: RFValue(14),
-  500: RFValue(16),
-  600: RFValue(24),
-  700: RFValue(36), // TODO fix order
-  800: RFValue(12), // TODO fix order
+  100: moderateScale(9),
+  200: moderateScale(10),
+  300: moderateScale(11),
+  400: moderateScale(14),
+  500: moderateScale(16),
+  600: moderateScale(24),
+  700: moderateScale(36), // TODO fix order
+  800: moderateScale(12), // TODO fix order
 };
 
 type LineHeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800;
 
 export const lineHeight: Record<LineHeight, number> = {
-  100: 13.5,
-  200: 15,
-  300: 16.5,
-  400: 21,
-  500: 24,
-  600: 34, // TODO design says 36 which makes a part of the line disappear
-  700: 54,
-  800: 18, // TODO fix the order
+  100: moderateScale(13.5),
+  200: moderateScale(15),
+  300: moderateScale(16.5),
+  400: moderateScale(21),
+  500: moderateScale(24),
+  600: moderateScale(34), // TODO design says 36 which makes a part of the line disappear
+  700: moderateScale(54),
+  800: moderateScale(18), // TODO fix the order
 };
 
 type FontWeight = 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';

@@ -120,6 +120,7 @@
     "react-native-securerandom": "^1.0.1",
     "react-native-share": "^8.0.0",
     "react-native-share-menu": "^6.0.0",
+    "react-native-size-matters": "^0.4.0",
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-swipe-list-view": "^3.2.9",

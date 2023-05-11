@@ -12480,6 +12480,11 @@ react-native-share@^8.0.0:
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-8.2.2.tgz#987d6f164afe57b089950dca42e0555f19045d27"
   integrity sha512-kVCI/cT0GnuYUTXe6mAimrjrnt4VWoRfrWqJZjFeoYFqAyOEfos84RC4eZlZnOT5eVtmTXRIkor5vgSkKOlZhw==
 
+react-native-size-matters@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-size-matters/-/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
+  integrity sha512-8/C0htHrFWeUm9N8JegmadovUfgTWkGBkDPZ1N3YkXtDWb+98Ya2gThiKcu445r8c7YhcrBfnHz/mYsXIusaOQ==
+
 react-native-svg-transformer@^0.14.3:
   version "0.14.3"
   resolved "https://registry.yarnpkg.com/react-native-svg-transformer/-/react-native-svg-transformer-0.14.3.tgz#43c8e176f5a11f16f39b87a64018e0ac090ffbdb"
