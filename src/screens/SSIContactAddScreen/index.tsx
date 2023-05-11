@@ -54,33 +54,36 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onCreate = async (): Promise<void> => {
-    const {identities, name, uri, onUpsert} = this.props.route.params;
-    const {contactAlias} = this.state;
-
     Keyboard.dismiss();
 
-    this.onValidate(contactAlias)
+    this.onValidate(this.state.contactAlias)
       .then(async () => {
-        const contacts = await getContacts({filter: [{name: name}]});
-        if (contacts.length !== 0) {
-          let contactToUpdate : IUpdateContactArgs = {contact: contacts[0]};
-          contactToUpdate.contact.alias = contactAlias;
-          this.props.updateContact(contactToUpdate)
-        } else {
-          this.props.createContact({
-            name,
-            alias: contactAlias.trim(),
-            uri,
-            identities,
-          });
-        }
-
-        onUpsert();
+        await this.upsert();
+        await this.props.route.params.onCreate();
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
       });
   };
+
+  private async upsert() {
+    const {identities, name, uri} = this.props.route.params;
+    const {contactAlias} = this.state;
+
+    const contacts = await getContacts({filter: [{name: name}]});
+    if (contacts.length !== 0) {
+      let contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
+      contactToUpdate.contact.alias = contactAlias;
+      this.props.updateContact(contactToUpdate)
+    } else {
+      this.props.createContact({
+        name,
+        alias: contactAlias.trim(),
+        uri,
+        identities,
+      });
+    }
+  }
 
   onChangeText = async (value: string): Promise<void> => {
     this.setState({contactAlias: value});

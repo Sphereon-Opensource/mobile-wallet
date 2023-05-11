@@ -113,7 +113,7 @@ export interface IContactAddProps {
   name: string;
   uri?: string;
   identities?: Array<IBasicIdentity>;
-  onUpsert: () => Promise<void>;
+  onCreate: () => Promise<void>;
 }
 
 export interface IPinCodeSetProps {

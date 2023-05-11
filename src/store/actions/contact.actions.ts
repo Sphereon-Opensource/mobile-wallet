@@ -29,7 +29,6 @@ import {
 } from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
-import {compareContact} from "../../utils/ContactUtil";
 
 export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
@@ -58,22 +57,10 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<voi
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
     editContact(args)
-    .then(()=> {
-      getUserContact()
-        .then((userContact: IContact) => {
-          getContactsFromStorage()
-          .then(async (contacts: Array<IContact>) => {
-            dispatch({
-              type: UPDATE_CONTACT_SUCCESS,
-              payload: [
-                ...contacts.filter((contact: IContact) => contact.id !== args.contact.id),
-                userContact,
-                args.contact
-              ].sort(compareContact)
-            })
-          }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}))
-        }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}))
-    }).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
+      .then(() => dispatch({
+          type: UPDATE_CONTACT_SUCCESS,
+          payload: args.contact})
+      ).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
 

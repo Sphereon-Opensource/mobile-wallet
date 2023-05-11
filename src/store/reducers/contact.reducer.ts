@@ -15,7 +15,7 @@ import {
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
-import {compareContact} from "../../utils/ContactUtil";
+import {sortBy, SortOrder} from "../../utils/SortUtil";
 
 const initialState: IContactState = {
   loading: false,
@@ -23,6 +23,13 @@ const initialState: IContactState = {
 };
 
 const contactReducer = (state: IContactState = initialState, action: ContactActionTypes): IContactState => {
+
+  if ("payload" in action) {
+    if (Array.isArray(action.payload)) {
+      action.payload = action.payload.sort(sortBy('alias', SortOrder.ASC));
+    }
+  }
+
   switch (action.type) {
     case CONTACTS_LOADING: {
       return {
@@ -33,7 +40,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case GET_CONTACTS_SUCCESS: {
       return {
         ...state,
-        contacts: action.payload.sort(compareContact),
+        contacts: action.payload,
         loading: false,
       };
     }
@@ -46,7 +53,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case CREATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: [...state.contacts, action.payload].sort(compareContact),
+        contacts: [...state.contacts, action.payload],
         loading: false,
       };
     }
@@ -72,7 +79,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case DELETE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload).sort(compareContact),
+        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload),
         loading: false,
       };
     }
@@ -87,7 +94,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         ...state,
         contacts: state.contacts.map((contact: IContact) =>
           contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
-        ).sort(compareContact),
+        ),
         loading: false,
       };
     }

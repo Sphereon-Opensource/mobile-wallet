@@ -47,7 +47,7 @@ interface ICreateContactFailedAction {
 
 interface IUpdateContactSuccessAction {
   type: UPDATE_CONTACT_SUCCESS;
-  payload: Array<IContact>;
+  payload: IContact;
 }
 
 interface IUpdateContactFailedAction {
