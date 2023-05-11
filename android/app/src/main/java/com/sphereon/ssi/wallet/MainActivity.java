@@ -125,7 +125,7 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onStop() {
-    super.onPause();
+    super.onStop();
     if (isAppMovingToBackground()) {
       backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
     }
