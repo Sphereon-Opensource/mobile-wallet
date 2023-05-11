@@ -94,15 +94,14 @@ export interface IAddIdentitySuccessActionPayload {
 }
 
 export type ContactActionTypes =
-    | IContactsLoading
-    | IGetContactsSuccessAction
-    | IGetContactsFailedAction
-    | ICreateContactSuccessAction
-    | ICreateContactFailedAction
-    | IUpdateContactSuccessAction
-    | IUpdateContactFailedAction
-    | IDeleteContactSuccessAction
-    | IDeleteContactFailedAction
-    | IAddIdentitySuccessAction
-    | IAddIdentityFailedAction;
-
+  | IContactsLoading
+  | IGetContactsSuccessAction
+  | IGetContactsFailedAction
+  | ICreateContactSuccessAction
+  | ICreateContactFailedAction
+  | IUpdateContactSuccessAction
+  | IUpdateContactFailedAction
+  | IDeleteContactSuccessAction
+  | IDeleteContactFailedAction
+  | IAddIdentitySuccessAction
+  | IAddIdentityFailedAction;

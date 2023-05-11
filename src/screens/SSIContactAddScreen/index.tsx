@@ -9,7 +9,7 @@ import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
 import {translate} from '../../localization/Localization';
 import {getContacts} from '../../services/contactService';
-import {createContact as StoreContact, updateContact as editContact} from '../../store/actions/contact.actions';
+import {updateContact as editContact, createContact as StoreContact} from '../../store/actions/contact.actions';
 import {
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
@@ -72,9 +72,9 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
 
     const contacts = await getContacts({filter: [{name: name}]});
     if (contacts.length !== 0) {
-      let contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
+      const contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
       contactToUpdate.contact.alias = contactAlias;
-      this.props.updateContact(contactToUpdate)
+      this.props.updateContact(contactToUpdate);
     } else {
       this.props.createContact({
         name,
@@ -157,7 +157,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     createContact: (args: ICreateContactArgs) => dispatch(StoreContact(args)),
-    updateContact: (args: IUpdateContactArgs) => dispatch(editContact(args))
+    updateContact: (args: IUpdateContactArgs) => dispatch(editContact(args)),
   };
 };
 

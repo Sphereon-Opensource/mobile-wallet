@@ -5,12 +5,13 @@ import {v4 as uuidv4} from 'uuid';
 
 import {translate} from '../../localization/Localization';
 import {
+  updateContact as editContact,
   getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
   removeContact,
-  createContact as storeContact, updateContact as editContact,
+  createContact as storeContact,
 } from '../../services/contactService';
-import { IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
+import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
@@ -21,11 +22,11 @@ import {
   DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
-  UPDATE_CONTACT_FAILED,
-  UPDATE_CONTACT_SUCCESS,
   IAddIdentityArgs,
   ICreateContactArgs,
   IUpdateContactArgs,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
@@ -57,10 +58,13 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<voi
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
     editContact(args)
-      .then(() => dispatch({
+      .then(() =>
+        dispatch({
           type: UPDATE_CONTACT_SUCCESS,
-          payload: args.contact})
-      ).catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
+          payload: args.contact,
+        }),
+      )
+      .catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
 

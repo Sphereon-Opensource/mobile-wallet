@@ -15,7 +15,7 @@ import {
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
-import {sortBy, SortOrder} from "../../utils/SortUtil";
+import {sortBy, SortOrder} from '../../utils/SortUtil';
 
 const initialState: IContactState = {
   loading: false,
@@ -23,8 +23,7 @@ const initialState: IContactState = {
 };
 
 const contactReducer = (state: IContactState = initialState, action: ContactActionTypes): IContactState => {
-
-  if ("payload" in action) {
+  if ('payload' in action) {
     if (Array.isArray(action.payload)) {
       action.payload = action.payload.sort(sortBy('alias', SortOrder.ASC));
     }

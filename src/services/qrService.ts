@@ -20,6 +20,7 @@ import {
 } from '@sphereon/ssi-types';
 import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
 import {VerifiableCredential} from '@veramo/core';
+import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
 import Debug from 'debug';
 import {URL} from 'react-native-url-polyfill';
 
@@ -56,9 +57,8 @@ import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper
 
 import {authenticate} from './authenticationService';
 import {getContacts} from './contactService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
 import {verifyCredential} from './credentialService';
-import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
+import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const format = require('string-format');
 const {v4: uuidv4} = require('uuid');

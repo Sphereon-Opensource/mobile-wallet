@@ -8,7 +8,7 @@ export interface ICreateContactArgs {
 }
 
 export interface IUpdateContactArgs {
-  contact: IContact
+  contact: IContact;
 }
 
 export interface IAddIdentityArgs {
