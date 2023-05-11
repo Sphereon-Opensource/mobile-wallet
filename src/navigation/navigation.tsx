@@ -34,6 +34,7 @@ import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {login} from '../services/authenticationService';
 import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
+import {Platform} from "react-native";
 
 const format = require('string-format');
 
@@ -484,21 +485,27 @@ const OnboardingStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
-        component={SSIOnboardingSummaryScreen}
-        options={{
-          headerTitle: translate('onboard_summary_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('onboard_summary_subtitle')}
-            />
-          ),
-        }}
+          name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
+          component={SSIOnboardingSummaryScreen}
+          options={{
+            headerTitle: translate('onboard_summary_title'),
+            header: (props: NativeStackHeaderProps) => (
+                <SSIHeaderBar
+                    {...props}
+                    // TODO rethink back button visibility for Android
+                    //showBackButton={Platform.OS === PlatformsEnum.IOS}
+                    showProfileIcon={false}
+                    headerSubTitle={translate('onboard_summary_subtitle')}
+                    style={{backgroundColor: 'yellow'}}
+                />
+            ),
+            headerStyle: {
+              backgroundColor: 'blue',
+            },
+            headerShadowVisible: Platform.OS === 'ios' ? false : true, // Hide the header shadow on iOS
+          }}
       />
+
       <Stack.Screen
         name={ScreenRoutesEnum.LOADING}
         component={SSILoadingScreen}

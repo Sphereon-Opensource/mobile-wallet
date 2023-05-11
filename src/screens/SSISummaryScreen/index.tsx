@@ -7,10 +7,11 @@ import SSICredentialDetailsView from '../../components/views/SSICredentialDetail
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
-import {backgrounds} from "../../styles/colors";
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {IOnboardingState} from '../../types/store/onboarding.types';
+import {backgrounds} from "../../styles/colors";
+import {Platform, View} from "react-native";
 
 const {v4: uuidv4} = require('uuid');
 
@@ -24,6 +25,35 @@ enum SummaryTabRoutesEnum {
 }
 
 class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
+  componentDidMount() {
+    const {navigation} = this.props;
+
+    navigation.setOptions({
+      headerStyle: {
+        backgroundColor: 'blue',
+      },
+      headerTintColor: '#fff', // Optional: Change the text color if needed
+      headerTitleStyle: {
+        fontWeight: 'bold', // Optional: Change the font-weight if needed
+      },
+    });
+
+    // For iOS only
+    if (Platform.OS === 'ios') {
+      navigation.setOptions({
+        headerTransparent: true,
+        headerBackground: () => (
+            <View
+                style={{
+                  backgroundColor: 'blue',
+                  height: 100, // Adjust the height to match your app's design
+                }}
+            />
+        ),
+      });
+    }
+  }
+
   getProperties = (): Array<ICredentialDetailsRow> => {
     const {onboardingState} = this.props;
 
@@ -66,10 +96,9 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
     ];
 
     return (
-      <Container>
+      <Container style={{backgroundColor: 'blue'}}>
         <SSITabView routes={routes} style={{ backgroundColor: backgrounds.primaryDark }} />
         <SSIButtonsContainer
-          style={{ backgroundColor: backgrounds.secondaryDark }}
           primaryButton={{
             caption: translate('onboard_summary_button_caption'),
             onPress: this.onAccept,

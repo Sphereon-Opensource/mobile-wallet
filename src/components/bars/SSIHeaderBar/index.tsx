@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useContext} from 'react';
-import {GestureResponderEvent, View} from 'react-native';
+import {GestureResponderEvent, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 
@@ -31,11 +31,12 @@ interface Props extends NativeStackHeaderProps {
   showBackButton?: boolean;
   moreActions?: Array<IHeaderMenuButton>;
   showProfileIcon?: boolean;
+  style?: ViewStyle;
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
 const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
-  const {showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = []} = props;
+  const {showBorder = false, showBackButton = true, showProfileIcon = true, moreActions = [], style} = props;
   const dispatch = useDispatch();
   const {showProfileMenu, setShowProfileMenu, showMoreMenu, setShowMoreMenu} = useContext(OnTouchContext);
 
@@ -67,7 +68,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   };
 
   return (
-    <Container style={{paddingTop: useSafeAreaInsets().top}} showBorder={showBorder}>
+    <Container style={{paddingTop: useSafeAreaInsets().top, backgroundColor: 'green'}} showBorder={showBorder}>
       <Row>
         <LeftColumn>
           {showBackButton && (
