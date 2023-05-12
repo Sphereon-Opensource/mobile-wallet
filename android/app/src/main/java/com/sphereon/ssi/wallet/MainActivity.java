@@ -125,10 +125,10 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onStop() {
-    super.onStop();
     if (isAppMovingToBackground()) {
       backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
     }
+    super.onStop();
   }
 
   private boolean isAppMovingToBackground() {
@@ -169,8 +169,8 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onDestroy() {
-    super.onDestroy();
     unregisterReceiver(screenOffReceiver);
+    super.onDestroy();
   }
 
 }
