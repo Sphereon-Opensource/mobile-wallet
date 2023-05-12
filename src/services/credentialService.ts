@@ -1,14 +1,3 @@
-import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
-
-import agent, {
-  dataStoreDeleteVerifiableCredential,
-  dataStoreGetVerifiableCredential,
-  dataStoreORMGetVerifiableCredentials,
-  dataStoreSaveVerifiableCredential,
-  createVerifiableCredential as issueVerifiableCredential,
-} from '../agent';
-import {IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs} from '../types';
-import {IVerifyCredentialArgs} from '@veramo/core/src/types/ICredentialVerifier';
 import {
   CredentialMapper,
   IVerifyResult,
@@ -18,6 +7,17 @@ import {
   WrappedVerifiableCredential,
   WrappedVerifiablePresentation,
 } from '@sphereon/ssi-types';
+import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {IVerifyCredentialArgs} from '@veramo/core/src/types/ICredentialVerifier';
+
+import agent, {
+  dataStoreDeleteVerifiableCredential,
+  dataStoreGetVerifiableCredential,
+  dataStoreORMGetVerifiableCredentials,
+  dataStoreSaveVerifiableCredential,
+  createVerifiableCredential as issueVerifiableCredential,
+} from '../agent';
+import {IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs} from '../types';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueVerifiableCredential>> => {
   return dataStoreORMGetVerifiableCredentials();
@@ -41,7 +41,7 @@ export const createVerifiableCredential = async (args: ICreateVerifiableCredenti
 
 export const verifyCredential = async (args: IVerifyCredentialArgs): Promise<IVerificationResult> => {
   // We also allow/add boolean, because 4.x Veramo returns a boolean for JWTs. 5.X will return better results
-  let result: IVerifyResult | boolean = (await agent.verifyCredential(args)) as IVerifyResult | boolean;
+  const result: IVerifyResult | boolean = (await agent.verifyCredential(args)) as IVerifyResult | boolean;
 
   if (typeof result === 'boolean') {
     return {

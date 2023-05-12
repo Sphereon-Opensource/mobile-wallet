@@ -92,7 +92,7 @@ export default function App() {
     }
     void prepare()
 
-    return async (): Promise<void> => {
+    return async (): Promise<void | { [UNDEFINED_VOID_ONLY]: never }> => {
       await intentHandler.disable()
       await lockingHandler.disableLocking()
     };
