@@ -1,16 +1,13 @@
 package com.sphereon.ssi.wallet;
 
-import android.app.ActivityManager;
-
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -27,16 +24,12 @@ import expo.modules.ReactActivityDelegateWrapper;
 import expo.modules.splashscreen.singletons.SplashScreen;
 import expo.modules.splashscreen.SplashScreenImageResizeMode;
 
-import java.util.List;
-
 import com.sphereon.ssi.wallet.Constants;
 
 public class MainActivity extends ReactActivity {
   // Adding a handler for the timer to lock the app
   private Handler backgroundHandler = new Handler();
   private Runnable backgroundRunnable;
-  // Adding a receiver for the screen turning off
-  private BroadcastReceiver screenOffReceiver;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -48,33 +41,29 @@ public class MainActivity extends ReactActivity {
     // SplashScreen.show(...) has to be called after super.onCreate(...)
     SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
 
-    // Initialize BackgroundRunnable
-    initBackgroundRunnable();
-    // Initialize SreenOffReceiver
-    initSreenOffReceiver();
+    // initiate background observer
+    initBackgroundObserver();
   }
 
-  private void initBackgroundRunnable() {
+  private void initBackgroundObserver() {
     backgroundRunnable = new Runnable() {
       @Override
       public void run() {
         sendAppInBackgroundEvent("appMovingToBackground");
       }
     };
-  }
 
-  private void initSreenOffReceiver() {
-    screenOffReceiver = new BroadcastReceiver() {
-      @Override
-      public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-          backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
-        }
+    ProcessLifecycleOwner.get().getLifecycle().addObserver(new LifecycleObserver() {
+      @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+      public void onAppBackgrounded() {
+        backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
       }
-    };
 
-    IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-    registerReceiver(screenOffReceiver, filter);
+      @OnLifecycleEvent(Lifecycle.Event.ON_START)
+      public void onAppForegrounded() {
+        backgroundHandler.removeCallbacks(backgroundRunnable);
+      }
+    });
   }
 
   /**
@@ -123,35 +112,6 @@ public class MainActivity extends ReactActivity {
     super.invokeDefaultOnBackPressed();
   }
 
-  @Override
-  protected void onStop() {
-    if (isAppMovingToBackground()) {
-      backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
-    }
-    super.onStop();
-  }
-
-  private boolean isAppMovingToBackground() {
-    ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-    if (activityManager == null) {
-      return false;
-    }
-
-    List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-    if (tasks == null || tasks.isEmpty()) {
-      return false;
-    }
-
-    ActivityManager.RunningTaskInfo topTask = tasks.get(0);
-    try {
-      String packageName = getPackageManager().getPackageInfo(getPackageName(), 0).packageName;
-      return !topTask.topActivity.getPackageName().equals(packageName);
-    } catch (PackageManager.NameNotFoundException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
-
   private void sendAppInBackgroundEvent(String eventName) {
     ReactContext reactContext = getReactInstanceManager().getCurrentReactContext();
     if (reactContext != null) {
@@ -160,17 +120,4 @@ public class MainActivity extends ReactActivity {
       reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("appStateChange", params);
     }
   }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    backgroundHandler.removeCallbacks(backgroundRunnable);
-  }
-
-  @Override
-  protected void onDestroy() {
-    unregisterReceiver(screenOffReceiver);
-    super.onDestroy();
-  }
-
 }
