@@ -65,7 +65,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case UPDATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: action.payload,
+        contacts: [...state.contacts.filter((contact: IContact) => contact.id !== action.payload.id), action.payload],
         loading: false,
       };
     }

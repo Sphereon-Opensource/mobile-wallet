@@ -54,12 +54,14 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onCreate = async (): Promise<void> => {
+    const {onCreate} = this.props.route.params;
+
     Keyboard.dismiss();
 
     this.onValidate(this.state.contactAlias)
       .then(async () => {
         await this.upsert();
-        await this.props.route.params.onCreate();
+        await onCreate();
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
@@ -67,6 +69,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   private async upsert() {
+    const {updateContact} = this.props;
     const {identities, name, uri} = this.props.route.params;
     const {contactAlias} = this.state;
 
@@ -74,7 +77,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     if (contacts.length !== 0) {
       const contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
       contactToUpdate.contact.alias = contactAlias;
-      this.props.updateContact(contactToUpdate);
+      updateContact(contactToUpdate);
     } else {
       this.props.createContact({
         name,
