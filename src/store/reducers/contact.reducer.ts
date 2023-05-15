@@ -91,6 +91,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case ADD_IDENTITY_SUCCESS: {
       return {
         ...state,
+        // For WAL-605 we can add sorting taking inspiration from contactReducer WAL-540
         contacts: state.contacts.map((contact: IContact) =>
           contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
         ),
