@@ -69,7 +69,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   private async upsert() {
-    const {updateContact} = this.props;
+    const {createContact, updateContact} = this.props;
     const {identities, name, uri} = this.props.route.params;
     const {contactAlias} = this.state;
 
@@ -79,7 +79,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       contactToUpdate.contact.alias = contactAlias;
       updateContact(contactToUpdate);
     } else {
-      this.props.createContact({
+      createContact({
         name,
         alias: contactAlias.trim(),
         uri,
