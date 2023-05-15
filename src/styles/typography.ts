@@ -1,5 +1,4 @@
 import {TextStyle} from 'react-native';
-import {RFValue} from 'react-native-responsive-fontsize';
 import { moderateScale } from 'react-native-size-matters';
 type FontSize = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800;
 
