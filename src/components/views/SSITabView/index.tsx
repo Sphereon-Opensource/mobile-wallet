@@ -13,6 +13,7 @@ export interface IProps {
 const SSITabView: FC<IProps> = (props: IProps): JSX.Element => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState(props.routes);
+
   const sceneMap = props.routes.reduce((a: Record<string, any>, v: ITabViewRoute) => ({...a, [v.key]: v.content}), {});
 
   return (

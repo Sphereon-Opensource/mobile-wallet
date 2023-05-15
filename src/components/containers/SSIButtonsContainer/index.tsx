@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {EmitterSubscription, Keyboard, ViewStyle} from 'react-native';
+import {EmitterSubscription, Keyboard} from 'react-native';
 
 import {SSIButtonBottomContainerStyled as ButtonContainer, SSIButtonsContainerSpacerStyled as Spacer} from '../../../styles/components';
 import {IButton} from '../../../types';
