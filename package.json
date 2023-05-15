@@ -53,7 +53,6 @@
     "@sphereon/ssi-sdk-vc-handler-ld-local": "0.11.0",
     "@sphereon/ssi-types": "0.11.0",
     "@transmute/lds-ecdsa-secp256k1-recovery2020": "^0.0.7",
-    "web-did-resolver": "^2.0.23",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
     "@veramo/data-store": "4.2.0",
@@ -113,13 +112,13 @@
     "react-native-pure-jwt": "^3.0.1",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-randombytes": "^3.6.1",
-    "react-native-responsive-fontsize": "^0.5.1",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-secure-key-store": "^2.0.10",
     "react-native-securerandom": "^1.0.1",
     "react-native-share": "^8.0.0",
     "react-native-share-menu": "^6.0.0",
+    "react-native-size-matters": "^0.4.0",
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-swipe-list-view": "^3.2.9",
@@ -138,7 +137,8 @@
     "text-encoding": "^0.7.0",
     "typeorm": "0.3.12",
     "uint8arrays": "^3.1.1",
-    "vm-browserify": "^1.1.2"
+    "vm-browserify": "^1.1.2",
+    "web-did-resolver": "^2.0.23"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
