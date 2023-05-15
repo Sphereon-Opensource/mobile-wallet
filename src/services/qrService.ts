@@ -20,6 +20,7 @@ import {
 } from '@sphereon/ssi-types';
 import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
 import {VerifiableCredential} from '@veramo/core';
+import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
 import Debug from 'debug';
 import {URL} from 'react-native-url-polyfill';
 
@@ -56,9 +57,8 @@ import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper
 
 import {authenticate} from './authenticationService';
 import {getContacts} from './contactService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
 import {verifyCredential} from './credentialService';
-import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
+import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const format = require('string-format');
 const {v4: uuidv4} = require('uuid');
@@ -456,11 +456,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           },
         },
       });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
       filterNavigationStack({
         navigation: args.navigation,
         stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
+        filter: [ScreenRoutesEnum.LOADING],
       });
     } else {
       await sendResponseOrAuthenticate(
@@ -483,11 +482,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           onVerification: async (pin: string) => await sendResponse(provider, credentials, pin),
         },
       });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
       filterNavigationStack({
         navigation: args.navigation,
         stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
+        filter: [ScreenRoutesEnum.LOADING],
       });
     } else {
       await sendResponse(provider, credentials);
@@ -581,11 +579,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             },
           },
         });
-        // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
         filterNavigationStack({
           navigation: args.navigation,
           stack: NavigationBarRoutesEnum.QR,
-          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
+          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE],
         });
       })
       .catch((error: Error) => {

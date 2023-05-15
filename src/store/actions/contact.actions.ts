@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import {translate} from '../../localization/Localization';
 import {
+  updateContact as editContact,
   getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
   removeContact,
@@ -23,6 +24,9 @@ import {
   GET_CONTACTS_SUCCESS,
   IAddIdentityArgs,
   ICreateContactArgs,
+  IUpdateContactArgs,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
@@ -47,6 +51,18 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
       })
       .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
+  };
+};
+
+export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: CONTACTS_LOADING});
+    editContact(args)
+      .then((contact: IContact) => {
+        dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: contact});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
+      })
+      .catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
 

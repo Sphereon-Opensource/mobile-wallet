@@ -8,7 +8,6 @@ import {
   CredentialHandlerLDLocal,
   ICredentialHandlerLDLocal,
   MethodNames,
-  SphereonBbsBlsSignature2020,
   SphereonEd25519Signature2018,
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
@@ -21,12 +20,12 @@ import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {KeyManager} from '@veramo/key-manager';
 import {KeyManagementSystem, SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
+import {getResolver as webDIDResolver} from 'web-did-resolver';
 
 import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
@@ -136,6 +135,7 @@ export const didManagerCreate = agent.didManagerCreate;
 export const didManagerFind = agent.didManagerFind;
 export const cmGetContacts = agent.cmGetContacts;
 export const cmAddContact = agent.cmAddContact;
+export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
 export const cmGetIdentities = agent.cmGetIdentities;
