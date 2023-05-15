@@ -21,6 +21,9 @@ const initialState: IUserState = {
 };
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {
+
+  // For WAL-605 we can add sorting taking inspiration from contactReducer WAL-540
+
   switch (action.type) {
     case USERS_LOADING: {
       return {

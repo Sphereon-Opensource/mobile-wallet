@@ -15,7 +15,7 @@ import {
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
-import {sortBy, SortOrder} from '../../utils/SortUtil';
+import {sortBy, SortOrder} from '../../utils/SortUtils';
 
 const initialState: IContactState = {
   loading: false,
