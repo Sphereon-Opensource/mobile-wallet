@@ -58,12 +58,10 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<voi
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
     editContact(args)
-      .then((contact: IContact) =>
-        dispatch({
-          type: UPDATE_CONTACT_SUCCESS,
-          payload: contact,
-        }),
-      )
+      .then((contact: IContact) => {
+        dispatch({ type: UPDATE_CONTACT_SUCCESS, payload: contact});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
+      })
       .catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
