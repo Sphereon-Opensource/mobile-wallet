@@ -23,89 +23,82 @@ const initialState: IContactState = {
 };
 
 const contactReducer = (state: IContactState = initialState, action: ContactActionTypes): IContactState => {
-  if ('payload' in action) {
-    if (Array.isArray(action.payload)) {
-      action.payload = action.payload.sort(sortBy('alias', SortOrder.ASC));
-    }
-  }
-
   switch (action.type) {
     case CONTACTS_LOADING: {
-      return {
+      return  {
         ...state,
         loading: true,
       };
     }
     case GET_CONTACTS_SUCCESS: {
-      return {
+      return  {
         ...state,
-        contacts: action.payload,
+        contacts: action.payload.sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
     case GET_CONTACTS_FAILED: {
-      return {
+      return  {
         ...state,
         loading: false,
       };
     }
     case CREATE_CONTACT_SUCCESS: {
-      return {
+      return  {
         ...state,
-        contacts: [...state.contacts, action.payload],
+        contacts: [...state.contacts, action.payload].sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
     case CREATE_CONTACT_FAILED: {
-      return {
+      return  {
         ...state,
         loading: false,
       };
     }
     case UPDATE_CONTACT_SUCCESS: {
-      return {
+      return  {
         ...state,
-        contacts: [...state.contacts.filter((contact: IContact) => contact.id !== action.payload.id), action.payload],
+        contacts: [...state.contacts.filter((contact: IContact) => contact.id !== action.payload.id), action.payload].sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
     case UPDATE_CONTACT_FAILED: {
-      return {
+      return  {
         ...state,
         loading: false,
       };
     }
     case DELETE_CONTACT_SUCCESS: {
-      return {
+      return  {
         ...state,
-        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload),
+        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload).sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
     case DELETE_CONTACT_FAILED: {
-      return {
+      return  {
         ...state,
         loading: false,
       };
     }
     case ADD_IDENTITY_SUCCESS: {
-      return {
+      return  {
         ...state,
-        // For WAL-605 we can add sorting taking inspiration from contactReducer WAL-540
         contacts: state.contacts.map((contact: IContact) =>
           contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
-        ),
+        ).sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
     case ADD_IDENTITY_FAILED: {
-      return {
+      return  {
         ...state,
         loading: false,
       };
     }
     default:
-      return state;
+      return  state;
   }
 };
 
