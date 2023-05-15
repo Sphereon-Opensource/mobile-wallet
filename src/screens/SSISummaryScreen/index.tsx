@@ -7,7 +7,7 @@ import SSICredentialDetailsView from '../../components/views/SSICredentialDetail
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
-import {SSISummaryScreenContainerStyled as Container} from '../../styles/components/screens/SSISummaryScreen';
+import {SSISummaryScreenContainerStyled as Container} from '../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {IOnboardingState} from '../../types/store/onboarding.types';
 
