@@ -7,7 +7,6 @@ import SSIPrimaryButton from '../../buttons/SSIPrimaryButton';
 import SSISecondaryButton from '../../buttons/SSISecondaryButton';
 
 export interface Props {
-  style?: ViewStyle;
   primaryButton?: IButton;
   secondaryButton?: IButton;
 }
@@ -42,11 +41,11 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
   };
 
   render() {
-    const {primaryButton, secondaryButton, style} = this.props;
+    const {primaryButton, secondaryButton} = this.props;
     const {keyboardVisible} = this.state;
 
     return (
-        <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36, ...(style && style)}}>
+      <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
         {secondaryButton && (
           <SSISecondaryButton
             title={secondaryButton.caption}
