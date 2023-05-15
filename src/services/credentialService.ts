@@ -2,8 +2,6 @@ import {
   CredentialMapper,
   IVerifyResult,
   OriginalVerifiableCredential,
-  W3CVerifiableCredential,
-  W3CVerifiablePresentation,
   WrappedVerifiableCredential,
   WrappedVerifiablePresentation,
 } from '@sphereon/ssi-types';

@@ -19,6 +19,9 @@ const initialState: ICredentialState = {
 };
 
 const credentialReducer = (state: ICredentialState = initialState, action: CredentialActionTypes): ICredentialState => {
+
+  // For WAL-605 add sorting taking inspiration from contactReducer WAL-540
+
   switch (action.type) {
     case CREDENTIALS_LOADING: {
       return {

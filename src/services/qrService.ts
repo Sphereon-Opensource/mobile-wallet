@@ -456,11 +456,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           },
         },
       });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
       filterNavigationStack({
         navigation: args.navigation,
         stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
+        filter: [ScreenRoutesEnum.LOADING],
       });
     } else {
       await sendResponseOrAuthenticate(
@@ -483,11 +482,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           onVerification: async (pin: string) => await sendResponse(provider, credentials, pin),
         },
       });
-      // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
       filterNavigationStack({
         navigation: args.navigation,
         stack: NavigationBarRoutesEnum.QR,
-        filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD],
+        filter: [ScreenRoutesEnum.LOADING],
       });
     } else {
       await sendResponse(provider, credentials);
@@ -581,11 +579,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             },
           },
         });
-        // TODO WAL-540 do not filter CONTACT_ADD, this route should support edit contact
         filterNavigationStack({
           navigation: args.navigation,
           stack: NavigationBarRoutesEnum.QR,
-          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.CONTACT_ADD, ScreenRoutesEnum.VERIFICATION_CODE],
+          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE],
         });
       })
       .catch((error: Error) => {

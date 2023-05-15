@@ -85,6 +85,8 @@
     "contact_deleted_failed_toast": "Unable to delete the contact",
     "credential_status_never_expires_date_label": "Never expires",
     "contact_add_success_toast": "Contact successfully created",
+    "contact_update_success_toast": "Contact successfully updated",
+    "contact_update_failed_toast": "Contact failed to update",
     "contact_add_no_consent_toast": "Without acknowledgement you will not continue the credential exchange process, and have to use the Decline button.",
     "contact_add_cancel_title": "Are you sure you want to decline?",
     "contact_add_cancel_message": "Adding a contact is mandatory when encountering a new party in a credential exchange process. Please be aware that the whole credential exchange process will be aborted if you confirm.",
