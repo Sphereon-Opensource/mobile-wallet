@@ -7,7 +7,8 @@ import SSICredentialDetailsView from '../../components/views/SSICredentialDetail
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
-import {SSISummaryScreenContainerStyled as Container} from '../../styles/components';
+import {backgrounds} from '../../styles/colors';
+import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {IOnboardingState} from '../../types/store/onboarding.types';
 
@@ -68,6 +69,7 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
       <Container>
         <SSITabView routes={routes} />
         <SSIButtonsContainer
+          backgroundColor={backgrounds.secondaryDark}
           primaryButton={{
             caption: translate('onboard_summary_button_caption'),
             onPress: this.onAccept,

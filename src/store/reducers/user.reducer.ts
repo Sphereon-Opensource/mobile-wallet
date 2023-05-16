@@ -2,6 +2,8 @@ import {IUser} from '../../types';
 import {
   CREATE_USER_FAILED,
   CREATE_USER_SUCCESS,
+  DELETE_USER_FAILED,
+  DELETE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
@@ -10,8 +12,8 @@ import {
   UPDATE_USER_FAILED,
   UPDATE_USER_SUCCESS,
   UserActionTypes,
-  USERS_LOADING,
-} from '../../types/store/user.action.types';
+  USERS_LOADING
+} from '../../types/store/user.action.types'
 import {IUserState} from '../../types/store/user.types';
 
 const initialState: IUserState = {
@@ -86,6 +88,19 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       };
     }
     case UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case DELETE_USER_SUCCESS: {
+      state.users.delete(action.payload)
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case DELETE_USER_FAILED: {
       return {
         ...state,
         loading: false,

@@ -1,5 +1,6 @@
 import {ICredentialSummary} from '../../types';
 import {
+  CLEAR_CREDENTIALS,
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
   CredentialActionTypes,
@@ -9,8 +10,8 @@ import {
   GET_CREDENTIALS_FAILED,
   GET_CREDENTIALS_SUCCESS,
   STORE_CREDENTIAL_FAILED,
-  STORE_CREDENTIAL_SUCCESS,
-} from '../../types/store/credential.action.types';
+  STORE_CREDENTIAL_SUCCESS
+} from '../../types/store/credential.action.types'
 import {ICredentialState} from '../../types/store/credential.types';
 
 const initialState: ICredentialState = {
@@ -19,7 +20,6 @@ const initialState: ICredentialState = {
 };
 
 const credentialReducer = (state: ICredentialState = initialState, action: CredentialActionTypes): ICredentialState => {
-
   // For WAL-605 add sorting taking inspiration from contactReducer WAL-540
 
   switch (action.type) {
@@ -80,6 +80,9 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
         ...state,
         loading: false,
       };
+    }
+    case CLEAR_CREDENTIALS: {
+      return initialState
     }
     default:
       return state;

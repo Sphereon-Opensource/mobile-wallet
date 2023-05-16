@@ -160,5 +160,8 @@
     "credentials_share_failed_toast_message": "Kan credentials niet presenteren. Fout: {0}.",
     "information_retrieve_failed_toast_message": "Kan informatie niet ophalen. Fout: {0}.",
     "credential_verification_failed_message": "Verificatie van de credential leidde tot een fout.",
-    "credential_offer_title": "Credential aanbod"
+    "credential_offer_title": "Credential aanbod",
+    "profile_delete_wallet_action_caption": "Wallet verwijderen",
+    "profile_delete_wallet_action_title": "Weet je zeker dat je de wallet wilt verwijderen?",
+    "profile_delete_wallet_action_subtitle": "Weet je zeker dat je de wallet wilt verwijderen: {0}?"
 }

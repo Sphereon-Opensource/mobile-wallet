@@ -160,5 +160,8 @@
     "credentials_share_failed_toast_message": "Unable to present credentials. Error: {0}.",
     "information_retrieve_failed_toast_message": "Unable to retrieve information. Error: {0}.",
     "credential_verification_failed_message": "The credential verification resulted in an error.",
-    "credential_offer_title": "Credential offer"
+    "credential_offer_title": "Credential offer",
+    "profile_delete_wallet_action_caption": "Delete wallet",
+    "profile_delete_wallet_action_title": "Are you sure you want to delete your wallet?",
+    "profile_delete_wallet_action_subtitle": "Are you sure you want to delete your wallet: {0}?"
 }

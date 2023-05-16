@@ -18,6 +18,8 @@ export const CREATE_CREDENTIAL_SUCCESS = '[CREDENTIAL] CREATE_CREDENTIAL_SUCCESS
 export type CREATE_CREDENTIAL_SUCCESS = typeof CREATE_CREDENTIAL_SUCCESS;
 export const CREATE_CREDENTIAL_FAILED = '[CREDENTIAL] CREATE_CREDENTIAL_FAILED';
 export type CREATE_CREDENTIAL_FAILED = typeof CREATE_CREDENTIAL_FAILED;
+export const CLEAR_CREDENTIALS = '[CREDENTIAL] CLEAR_CREDENTIALS';
+export type CLEAR_CREDENTIALS = typeof CLEAR_CREDENTIALS;
 
 interface ICredentialsLoading {
   type: CREDENTIALS_LOADING;
@@ -59,6 +61,10 @@ interface ICreateCredentialsFailedAction {
   type: CREATE_CREDENTIAL_FAILED;
 }
 
+interface IClearCredentialsAction {
+  type: CLEAR_CREDENTIALS;
+}
+
 export type CredentialActionTypes =
   | ICredentialsLoading
   | IGetCredentialsSuccessAction
@@ -68,4 +74,5 @@ export type CredentialActionTypes =
   | IDeleteCredentialsSuccessAction
   | IDeleteCredentialsFailedAction
   | ICreateCredentialsSuccessAction
-  | ICreateCredentialsFailedAction;
+  | ICreateCredentialsFailedAction
+  | IClearCredentialsAction;

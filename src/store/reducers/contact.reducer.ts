@@ -3,6 +3,7 @@ import {IContact} from '@sphereon/ssi-sdk-data-store';
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
+  CLEAR_CONTACTS,
   ContactActionTypes,
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
@@ -12,8 +13,8 @@ import {
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
   UPDATE_CONTACT_FAILED,
-  UPDATE_CONTACT_SUCCESS,
-} from '../../types/store/contact.action.types';
+  UPDATE_CONTACT_SUCCESS
+} from '../../types/store/contact.action.types'
 import {IContactState} from '../../types/store/contact.types';
 import {sortBy, SortOrder} from '../../utils/SortUtils';
 
@@ -96,6 +97,9 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         ...state,
         loading: false,
       };
+    }
+    case CLEAR_CONTACTS: {
+      return initialState
     }
     default:
       return  state;

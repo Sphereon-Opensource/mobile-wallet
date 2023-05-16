@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {EmitterSubscription, Keyboard} from 'react-native';
+import {ColorValue, EmitterSubscription, Keyboard} from 'react-native';
 
 import {SSIButtonBottomContainerStyled as ButtonContainer, SSIButtonsContainerSpacerStyled as Spacer} from '../../../styles/components';
 import {IButton} from '../../../types';
@@ -9,6 +9,7 @@ import SSISecondaryButton from '../../buttons/SSISecondaryButton';
 export interface Props {
   primaryButton?: IButton;
   secondaryButton?: IButton;
+  backgroundColor?: ColorValue
 }
 
 interface IState {
@@ -41,11 +42,11 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
   };
 
   render() {
-    const {primaryButton, secondaryButton} = this.props;
+    const {backgroundColor, primaryButton, secondaryButton} = this.props;
     const {keyboardVisible} = this.state;
 
     return (
-      <ButtonContainer style={{marginBottom: keyboardVisible ? 18 : 36}}>
+      <ButtonContainer style={{paddingBottom: keyboardVisible ? 18 : 36, ...(backgroundColor && { backgroundColor })}}>
         {secondaryButton && (
           <SSISecondaryButton
             title={secondaryButton.caption}

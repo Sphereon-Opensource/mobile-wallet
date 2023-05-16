@@ -22,6 +22,8 @@ export const ADD_IDENTITY_SUCCESS = '[CONTACT] ADD_IDENTITY_SUCCESS';
 export type ADD_IDENTITY_SUCCESS = typeof ADD_IDENTITY_SUCCESS;
 export const ADD_IDENTITY_FAILED = '[CONTACT] ADD_IDENTITY_FAILED';
 export type ADD_IDENTITY_FAILED = typeof ADD_IDENTITY_FAILED;
+export const CLEAR_CONTACTS = '[CONTACT] CLEAR_CONTACTS';
+export type CLEAR_CONTACTS = typeof CLEAR_CONTACTS;
 
 interface IContactsLoading {
   type: CONTACTS_LOADING;
@@ -93,6 +95,10 @@ export interface IAddIdentitySuccessActionPayload {
   identity: IIdentity;
 }
 
+interface IClearContactsAction {
+  type: CLEAR_CONTACTS;
+}
+
 export type ContactActionTypes =
   | IContactsLoading
   | IGetContactsSuccessAction
@@ -104,4 +110,5 @@ export type ContactActionTypes =
   | IDeleteContactSuccessAction
   | IDeleteContactFailedAction
   | IAddIdentitySuccessAction
-  | IAddIdentityFailedAction;
+  | IAddIdentityFailedAction
+  | IClearContactsAction;
