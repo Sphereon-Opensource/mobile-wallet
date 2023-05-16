@@ -10,8 +10,8 @@ import {
   GET_CREDENTIALS_FAILED,
   GET_CREDENTIALS_SUCCESS,
   STORE_CREDENTIAL_FAILED,
-  STORE_CREDENTIAL_SUCCESS
-} from '../../types/store/credential.action.types'
+  STORE_CREDENTIAL_SUCCESS,
+} from '../../types/store/credential.action.types';
 import {ICredentialState} from '../../types/store/credential.types';
 
 const initialState: ICredentialState = {
@@ -82,7 +82,7 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
       };
     }
     case CLEAR_CREDENTIALS: {
-      return initialState
+      return initialState;
     }
     default:
       return state;

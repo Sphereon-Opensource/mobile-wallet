@@ -76,22 +76,21 @@ export const deleteUser = async (userId: string): Promise<void> => {
   debug(`deleteUser(${userId})...`);
 
   await AsyncStorage.getItem(STORAGE_USERS_KEY)
-  .then((result: string | null) => {
-    if (!result || result === '{}') {
-      debug(`deleteUser(${userId}) no users found`);
-      return
-    }
+    .then((result: string | null) => {
+      if (!result || result === '{}') {
+        debug(`deleteUser(${userId}) no users found`);
+        return;
+      }
 
-    const users: Map<string, IUser> = new Map<string, IUser>();
-    JSON.parse(result).forEach(([key, value]: [string, IUser]) => {
-      users.set(key, value);
-    });
+      const users: Map<string, IUser> = new Map<string, IUser>();
+      JSON.parse(result).forEach(([key, value]: [string, IUser]) => {
+        users.set(key, value);
+      });
 
-    debug(`deleteUser(${userId}) deleting user`);
-    users.delete(userId);
+      debug(`deleteUser(${userId}) deleting user`);
+      users.delete(userId);
 
-    AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));
-  })
-  .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
-}
-
+      AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));
+    })
+    .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
+};

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+
 import {backgrounds} from '../../../colors';
 
 export const SSITabViewContainerStyled = styled.View`

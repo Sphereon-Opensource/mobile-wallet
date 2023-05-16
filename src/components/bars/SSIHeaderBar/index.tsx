@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useContext} from 'react';
-import {GestureResponderEvent, View} from 'react-native'
+import {GestureResponderEvent, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 
@@ -22,12 +22,7 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {
-  ButtonIconsEnum,
-  HeaderMenuIconsEnum,
-  IHeaderMenuButton, IUser,
-  MainRoutesEnum,
-} from '../../../types'
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 
@@ -79,7 +74,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
       details: format(translate('profile_delete_wallet_action_subtitle'), `${activeUser.firstName} ${activeUser.lastName}`),
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: async () => dispatch<any>(deleteUser(activeUser.id))
+        onPress: async () => dispatch<any>(deleteUser(activeUser.id)),
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),

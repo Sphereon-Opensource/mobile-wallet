@@ -50,6 +50,5 @@ export const updateUser = async (args: IUser): Promise<IUser> => {
 };
 
 export const deleteUser = async (userId: string): Promise<void> => {
-  removeUser(userId)
-    .catch((error: Error) => Promise.reject(Error(`Unable to delete user with id: ${userId}. Error: ${error}`)))
-}
+  removeUser(userId).catch((error: Error) => Promise.reject(Error(`Unable to delete user with id: ${userId}. Error: ${error}`)));
+};

@@ -1,5 +1,5 @@
 import {TextStyle} from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
+import {moderateScale} from 'react-native-size-matters';
 type FontSize = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800;
 
 export const fontSize: Record<FontSize, number> = {

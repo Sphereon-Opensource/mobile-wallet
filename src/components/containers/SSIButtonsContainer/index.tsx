@@ -9,7 +9,7 @@ import SSISecondaryButton from '../../buttons/SSISecondaryButton';
 export interface Props {
   primaryButton?: IButton;
   secondaryButton?: IButton;
-  backgroundColor?: ColorValue
+  backgroundColor?: ColorValue;
 }
 
 interface IState {
@@ -46,7 +46,7 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
     const {keyboardVisible} = this.state;
 
     return (
-      <ButtonContainer style={{paddingBottom: keyboardVisible ? 18 : 36, ...(backgroundColor && { backgroundColor })}}>
+      <ButtonContainer style={{paddingBottom: keyboardVisible ? 18 : 36, ...(backgroundColor && {backgroundColor})}}>
         {secondaryButton && (
           <SSISecondaryButton
             title={secondaryButton.caption}
