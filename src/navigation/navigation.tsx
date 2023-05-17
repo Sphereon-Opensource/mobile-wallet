@@ -35,8 +35,6 @@ import Veramo from '../screens/Veramo';
 import {login} from '../services/authenticationService';
 import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 
-const format = require('string-format');
-
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
 
@@ -260,7 +258,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('verification_code_subtitle'), route.params.credentialName)}
+              headerSubTitle={translate('verification_code_subtitle', {credentialName: route.params.credentialName})}
             />
           ),
         })}
@@ -301,7 +299,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('credential_select_type_subtitle'), route.params.issuer)}
+              headerSubTitle={translate('credential_select_type_subtitle', {issuerName: route.params.issuer})}
             />
           ),
         })}
@@ -345,7 +343,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${format(translate('credentials_required_subtitle'), route.params.verifier)} ${
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier})} ${
                 route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
               }`}
             />

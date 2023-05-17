@@ -60,7 +60,6 @@ import {getContacts} from './contactService';
 import {verifyCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 
-const format = require('string-format');
 const {v4: uuidv4} = require('uuid');
 const debug = Debug(`${APP_ID}:qrService`);
 
@@ -204,7 +203,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   } catch (error: unknown) {
     debug(`Unable to retrieve information. Error: ${(error as Error).message}.`);
     args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-    showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), (error as Error).message)});
+    showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message})});
   }
 
   const sendResponse = async (
@@ -226,13 +225,13 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         });
         showToast(ToastTypeEnum.TOAST_SUCCESS, {
           title: translate('credentials_share_success_toast_title'),
-          message: format(translate('credentials_share_success_toast_message'), translateCorrelationIdToName(url.hostname)),
+          message: translate('credentials_share_success_toast_message', {verifierName: translateCorrelationIdToName(url.hostname)}),
         });
       })
       .catch((error: Error) => {
         debug(`Unable to present credentials. Error: ${error.message}.`);
         args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {});
-        showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('credentials_share_failed_toast_message'), error.message)});
+        showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_share_failed_toast_message', {errorMessage: error.message})});
       });
   };
 
@@ -626,6 +625,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     .catch((error: Error) => {
       debug(`Unable to retrieve vc. Error: ${error}`);
       args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-      showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), error.message)});
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: error.message})});
     });
 };

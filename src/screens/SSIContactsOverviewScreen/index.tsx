@@ -14,8 +14,6 @@ import {backgrounds, borders} from '../../styles/colors';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 
-const format = require('string-format');
-
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
   contacts: Array<IContact>;
@@ -42,7 +40,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
-      details: format(translate('contact_delete_message'), contact.alias),
+      details: translate('contact_delete_message', {contactName: contact.alias}),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => {

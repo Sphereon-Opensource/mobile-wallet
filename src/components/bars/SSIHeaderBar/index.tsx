@@ -26,8 +26,6 @@ import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRout
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 
-const format = require('string-format');
-
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
   showBorder?: boolean;
@@ -71,7 +69,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
 
     props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('profile_delete_wallet_action_title'),
-      details: format(translate('profile_delete_wallet_action_subtitle'), `${activeUser.firstName} ${activeUser.lastName}`),
+      details: translate('profile_delete_wallet_action_subtitle', {userName: `${activeUser.firstName} ${activeUser.lastName}`}),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => dispatch<any>(deleteUser(activeUser.id)),
