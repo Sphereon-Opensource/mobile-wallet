@@ -2,6 +2,8 @@ import {IUser} from '../../types';
 import {
   CREATE_USER_FAILED,
   CREATE_USER_SUCCESS,
+  DELETE_USER_FAILED,
+  DELETE_USER_SUCCESS,
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
@@ -21,7 +23,6 @@ const initialState: IUserState = {
 };
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {
-
   // For WAL-605 we can add sorting taking inspiration from contactReducer WAL-540
 
   switch (action.type) {
@@ -86,6 +87,19 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       };
     }
     case UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case DELETE_USER_SUCCESS: {
+      state.users.delete(action.payload);
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case DELETE_USER_FAILED: {
       return {
         ...state,
         loading: false,

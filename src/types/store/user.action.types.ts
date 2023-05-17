@@ -20,6 +20,10 @@ export const UPDATE_USER_SUCCESS = '[USER] UPDATE_USER_SUCCESS';
 export type UPDATE_USER_SUCCESS = typeof UPDATE_USER_SUCCESS;
 export const UPDATE_USER_FAILED = '[USER] UPDATE_USER_FAILED';
 export type UPDATE_USER_FAILED = typeof UPDATE_USER_FAILED;
+export const DELETE_USER_SUCCESS = '[USER] DELETE_USER_SUCCESS';
+export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
+export const DELETE_USER_FAILED = '[USER] DELETE_USER_FAILED';
+export type DELETE_USER_FAILED = typeof DELETE_USER_FAILED;
 
 interface IUsersLoading {
   type: USERS_LOADING;
@@ -65,6 +69,15 @@ interface IUpdateUserActionFailedAction {
   type: UPDATE_USER_FAILED;
 }
 
+interface IDeleteUserActionSuccessAction {
+  type: DELETE_USER_SUCCESS;
+  payload: string;
+}
+
+interface IDeleteUserActionFailedAction {
+  type: DELETE_USER_FAILED;
+}
+
 export type UserActionTypes =
   | IUsersLoading
   | IGetUsersActionFailedAction
@@ -75,4 +88,6 @@ export type UserActionTypes =
   | ILoginActionFailedAction
   | ILogoutActionSuccessAction
   | IUpdateUserActionSuccessAction
-  | IUpdateUserActionFailedAction;
+  | IUpdateUserActionFailedAction
+  | IDeleteUserActionSuccessAction
+  | IDeleteUserActionFailedAction;

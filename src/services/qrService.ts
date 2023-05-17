@@ -60,7 +60,6 @@ import {getContacts} from './contactService';
 import {verifyCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 
-const format = require('string-format');
 const {v4: uuidv4} = require('uuid');
 const debug = Debug(`${APP_ID}:qrService`);
 
@@ -195,16 +194,16 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   // Adding a loading screen as the next action is to contact the other side
   args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
 
-  let request: VerifiedAuthorizationRequest
-  let registration: RPRegistrationMetadataPayload | undefined
+  let request: VerifiedAuthorizationRequest;
+  let registration: RPRegistrationMetadataPayload | undefined;
   try {
-    request = await siopGetRequest({...config, id: uuidv4()})
+    request = await siopGetRequest({...config, id: uuidv4()});
     // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
     registration = await request.authorizationRequest.getMergedProperty('registration');
-  } catch(error: unknown) {
+  } catch (error: unknown) {
     debug(`Unable to retrieve information. Error: ${(error as Error).message}.`);
     args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-    showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), (error as Error).message)});
+    showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message})});
   }
 
   const sendResponse = async (
@@ -226,13 +225,13 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         });
         showToast(ToastTypeEnum.TOAST_SUCCESS, {
           title: translate('credentials_share_success_toast_title'),
-          message: format(translate('credentials_share_success_toast_message'), translateCorrelationIdToName(url.hostname)),
+          message: translate('credentials_share_success_toast_message', {verifierName: translateCorrelationIdToName(url.hostname)}),
         });
       })
       .catch((error: Error) => {
         debug(`Unable to present credentials. Error: ${error.message}.`);
         args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {});
-        showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('credentials_share_failed_toast_message'), error.message)});
+        showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_share_failed_toast_message', {errorMessage: error.message})});
       });
   };
 
@@ -350,10 +349,9 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         onCreate: () => delay(1000).then(() => selectRequiredCredentials()),
       });
     } else {
-      selectRequiredCredentials()
+      selectRequiredCredentials();
     }
   });
-
 };
 
 const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void> => {
@@ -627,6 +625,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     .catch((error: Error) => {
       debug(`Unable to retrieve vc. Error: ${error}`);
       args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-      showToast(ToastTypeEnum.TOAST_ERROR, {message: format(translate('information_retrieve_failed_toast_message'), error.message)});
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: error.message})});
     });
 };

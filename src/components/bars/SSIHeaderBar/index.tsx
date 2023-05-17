@@ -6,7 +6,8 @@ import {useDispatch} from 'react-redux';
 
 import OnTouchContext from '../../../contexts/OnTouchContext';
 import {translate} from '../../../localization/Localization';
-import {logout} from '../../../store/actions/user.actions';
+import store from '../../../store';
+import {deleteUser, logout} from '../../../store/actions/user.actions';
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
@@ -21,7 +22,7 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 
@@ -62,6 +63,24 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
     dispatch<any>(logout());
   };
 
+  const onDeleteWallet = async (): Promise<void> => {
+    setShowProfileMenu(false);
+    const activeUser: IUser = store.getState().user.activeUser!;
+
+    props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+      title: translate('profile_delete_wallet_action_title'),
+      details: translate('profile_delete_wallet_action_subtitle', {userName: `${activeUser.firstName} ${activeUser.lastName}`}),
+      primaryButton: {
+        caption: translate('action_confirm_label'),
+        onPress: async () => dispatch<any>(deleteUser(activeUser.id)),
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        onPress: async () => props.navigation.goBack(),
+      },
+    });
+  };
+
   const onTouchStart = (event: GestureResponderEvent): void => {
     event.stopPropagation();
   };
@@ -82,7 +101,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
         </LeftColumn>
         <RightColumn>
           {showProfileIcon && (
-            // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
+            // we need this view wrapper to stop the event from propagating to the onTouch provider which will catch the onTouch set show menu to false and then the onPress would set it to true again, as onTouch will be before onPress
             <View onTouchStart={onTouchStart}>
               <ProfileIconContainer onPress={onProfile} onLongPress={onProfileLong}>
                 <SSIProfileIcon />
@@ -98,12 +117,17 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
                     onPress: onLogout,
                     icon: HeaderMenuIconsEnum.LOGOUT,
                   },
+                  {
+                    caption: translate('profile_delete_wallet_action_caption'),
+                    onPress: onDeleteWallet,
+                    icon: HeaderMenuIconsEnum.DELETE,
+                  },
                 ]}
               />
             </ProfileMenuContainer>
           )}
           {moreActions.length > 0 && (
-            // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
+            // we need this view wrapper to stop the event from propagating to the onTouch provider which will catch the onTouch set show menu to false and then the onPress would set it to true again, as onTouch will be before onPress
             <View onTouchStart={onTouchStart}>
               <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />
             </View>

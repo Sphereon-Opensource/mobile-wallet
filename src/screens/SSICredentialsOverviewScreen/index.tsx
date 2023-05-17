@@ -20,8 +20,6 @@ import {
 import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 
-const format = require('string-format');
-
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
@@ -43,10 +41,10 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  onDelete = async (credentialHash: string, credentialTitle: string): Promise<void> => {
+  onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
     this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_delete_title'),
-      details: format(translate('credential_delete_message'), credentialTitle),
+      details: translate('credential_delete_message', {credentialName}),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => {
