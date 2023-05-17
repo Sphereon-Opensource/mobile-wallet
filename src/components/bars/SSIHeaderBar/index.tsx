@@ -21,9 +21,13 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, NavigationBarRoutesEnum, ScreenRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
+import {fonts} from "../../../styles/colors";
+import SSIIconButton from "../../buttons/SSIIconButton";
+import RootNavigation from "../../../navigation/rootNavigation";
+import {ConnectionTypeEnum, CorrelationIdentifierEnum, IdentityRoleEnum} from "@sphereon/ssi-sdk-data-store";
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -57,6 +61,31 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
     setShowMoreMenu(!showMoreMenu);
   };
 
+  const openAddContact = async (): Promise<void> => {
+    RootNavigation.navigate(NavigationBarRoutesEnum.QR, {
+      screen: ScreenRoutesEnum.CONTACT_ADD,
+      params: {
+        name: 'host.name',
+        uri: 'http://host.name',
+        identities: [
+          {
+            alias: 'host.name',
+            roles: [IdentityRoleEnum.VERIFIER],
+            identifier: {
+              type: CorrelationIdentifierEnum.URL,
+              correlationId: 'host.name',
+            },
+            connection: {
+              type: ConnectionTypeEnum.SIOPv2,
+              config: {}
+            },
+          },
+        ],
+        onCreate: () => {console.log("onCreate called.")},
+      }
+    })
+  };
+
   const onLogout = async (): Promise<void> => {
     setShowProfileMenu(false);
     dispatch<any>(logout());
@@ -81,6 +110,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
+          <SSIIconButton icon={ButtonIconsEnum.BACK} onPress={openAddContact} />
           {showProfileIcon && (
             // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>
