@@ -15,7 +15,8 @@ Certain functionality might not be available yet
 
 <div>
 <a href='https://apps.apple.com/us/app/sphereon-wallet/id1661096796'><img alt='Download on the App Store' src='./docs/img/stores/appstore.svg' width='250px;'/></a>
-<br/><a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='250px'/></a></div>
+<br/>
+<a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='250px'/></a></div>
 
 # Table of content:
 - [Introduction and technology](#sphereon-wallet)
