@@ -8,18 +8,14 @@
 
 ---
 
-<h3>Warning: The wallet is currently in a beta stage and still incomplete. Certain functionality
-might not be available yet</h3>
+<h3>Warning: The wallet is currently in a beta stage and still incomplete</h3>
+Certain functionality might not be available yet
 
----
+<br/>
 
-<div style=" display: -webkit-flex;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  height: 130px;">
-<a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='320px'/></a><a href='https://apps.apple.com/us/app/sphereon-wallet/id1661096796'><img alt='Download on the App Store' src='./docs/img/stores/appstore.svg' width='250px;'/></a>
-</div>
+<div style="justify-content: left; height: 220px;">
+<a href='https://apps.apple.com/us/app/sphereon-wallet/id1661096796'><img style='margin-left: 20px;' alt='Download on the App Store' src='./docs/img/stores/appstore.svg' width='250px;'/></a>
+<br/><a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='290px'/></a></div>
 
 # Table of content:
 - [Introduction and technology](#sphereon-wallet)
