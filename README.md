@@ -194,7 +194,7 @@ demo/testing purposes.
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following verifiers:
     * Sphereon - https://ssi.sphereon.com
-     * Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "<SphereonWalletIdentityCredential>"`)
+     * Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
 
    <br>
    <img src="./docs/img/share/1_qr_reader.jpg" width=33% height=33%>
