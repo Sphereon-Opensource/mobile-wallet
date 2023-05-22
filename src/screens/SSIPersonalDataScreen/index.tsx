@@ -10,9 +10,9 @@ import {translate} from '../../localization/Localization';
 import {setPersonalData} from '../../store/actions/onboarding.actions';
 import {
   SSIPersonalDataScreenContainerStyled as Container,
+  SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
@@ -95,44 +95,44 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
           <SSIScrollView>
-          <TextInputsContainer>
-            <TextInputContainer>
+            <TextInputsContainer>
+              <TextInputContainer>
+                <SSITextInputField
+                  autoComplete={'name-given'}
+                  autoFocus={true}
+                  label={translate('first_name_label')}
+                  maxLength={FIRST_NAME_MAX_LENGTH}
+                  onChangeText={this.onFirstNameChange}
+                  onEndEditing={this.onFirstNameValidation}
+                  placeholderValue={translate('first_name_placeholder')}
+                />
+              </TextInputContainer>
+              <TextInputContainer>
+                <SSITextInputField
+                  autoComplete={'name-family'}
+                  label={translate('last_name_label')}
+                  maxLength={LAST_NAME_MAX_LENGTH}
+                  onChangeText={this.onLastNameChange}
+                  onEndEditing={this.onLastNameValidation}
+                  placeholderValue={translate('last_name_placeholder')}
+                />
+              </TextInputContainer>
               <SSITextInputField
-                autoComplete={'name-given'}
-                autoFocus={true}
-                label={translate('first_name_label')}
-                maxLength={FIRST_NAME_MAX_LENGTH}
-                onChangeText={this.onFirstNameChange}
-                onEndEditing={this.onFirstNameValidation}
-                placeholderValue={translate('first_name_placeholder')}
+                label={translate('email_address_label')}
+                maxLength={EMAIL_ADDRESS_MAX_LENGTH}
+                autoComplete={'email'}
+                onChangeText={this.onEmailAddressChange}
+                onEndEditing={this.onEmailAddressValidation}
+                placeholderValue={translate('email_address_placeholder')}
               />
-            </TextInputContainer>
-            <TextInputContainer>
-              <SSITextInputField
-                autoComplete={'name-family'}
-                label={translate('last_name_label')}
-                maxLength={LAST_NAME_MAX_LENGTH}
-                onChangeText={this.onLastNameChange}
-                onEndEditing={this.onLastNameValidation}
-                placeholderValue={translate('last_name_placeholder')}
-              />
-            </TextInputContainer>
-            <SSITextInputField
-              label={translate('email_address_label')}
-              maxLength={EMAIL_ADDRESS_MAX_LENGTH}
-              autoComplete={'email'}
-              onChangeText={this.onEmailAddressChange}
-              onEndEditing={this.onEmailAddressValidation}
-              placeholderValue={translate('email_address_placeholder')}
+            </TextInputsContainer>
+            <SSIButtonsContainer
+              primaryButton={{
+                caption: translate('action_next_label'),
+                disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
+                onPress: this.onNext,
+              }}
             />
-          </TextInputsContainer>
-          <SSIButtonsContainer
-            primaryButton={{
-              caption: translate('action_next_label'),
-              disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
-              onPress: this.onNext,
-            }}
-          />
           </SSIScrollView>
         </Container>
       </TouchableWithoutFeedback>

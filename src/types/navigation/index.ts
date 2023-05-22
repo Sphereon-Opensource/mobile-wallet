@@ -1,23 +1,14 @@
-import { VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
-import { PresentationDefinitionV1, PresentationDefinitionV2 } from '@sphereon/pex-models'
-import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store';
-import { VerifiableCredential } from '@veramo/core';
+import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {VerifiableCredential} from '@veramo/core';
 
-import {
-  IButton,
-  ICredentialSelection,
-  ICredentialSummary,
-  ICredentialTypeSelection,
-  PopupBadgesEnum,
-  PopupImagesEnum
-} from '../index';
+import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
   CredentialRawJson: ICredentialRawJsonProps;
-  IdentityDetails: IIdentityDetailsProps;
-  PexVerification: IPexVerificationProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
@@ -39,22 +30,27 @@ export type StackParamList = {
   Lock: ILockProps;
   Authentication: Record<string, never>;
   OnboardingSummary: Record<string, never>;
-  CredentialsRequired: ICredentialsRequiredProps
-  CredentialsSelect: ICredentialsSelectProps
+  CredentialsRequired: ICredentialsRequiredProps;
+  CredentialsSelect: ICredentialsSelectProps;
+  Loading: ILoadingProps;
 };
 
+export interface ILoadingProps {
+  message: string;
+}
+
 export interface ICredentialsSelectProps {
-  credentialSelection: Array<ICredentialSelection>
-  onSelect: (vcs: Array<string>) => Promise<void>
+  credentialSelection: Array<ICredentialSelection>;
+  purpose?: string;
+  onSelect: (vcs: Array<string>) => Promise<void>;
 }
 
 export interface ICredentialsRequiredProps {
-  verifier: string
-  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2
-}
-
-export interface IIdentityDetailsProps {
-  identity: IIdentity;
+  verifier: string;
+  format: Format | undefined;
+  subjectSyntaxTypesSupported: string[] | undefined;
+  presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
+  onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {
@@ -67,16 +63,12 @@ export interface ICredentialDetailsProps {
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
-  rawCredential?: VerifiableCredential;
+  rawCredential?: OriginalVerifiableCredential;
+  headerTitle?: string;
 }
 
 export interface ICredentialRawJsonProps {
   rawCredential: VerifiableCredential;
-}
-
-export interface IPexVerificationProps {
-  request: VerifiedAuthorizationRequest;
-  sessionId: string;
 }
 
 export interface IVerificationCodeProps {
@@ -111,7 +103,7 @@ export interface IPopupModalProps {
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
-  onAccept: (credentialTypes: Array<string>) => Promise<void>;
+  onSelect: (credentialTypes: Array<string>) => Promise<void>;
 }
 
 export interface IContactDetailsProps {
@@ -130,7 +122,7 @@ export interface IPinCodeSetProps {
 }
 
 export interface ILockProps {
-  onVerificationSuccess: () => void
+  onAuthenticate: () => Promise<void>;
 }
 
 export enum SwitchRoutesEnum {
@@ -159,8 +151,6 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
   VERIFICATION_CODE = 'VerificationCode',
-  PEX_VERIFICATION = 'PexVerification',
-  IDENTITY_DETAILS = 'IdentityDetails',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
@@ -174,4 +164,5 @@ export enum ScreenRoutesEnum {
   ONBOARDING_SUMMARY = 'OnboardingSummary',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  LOADING = 'Loading',
 }

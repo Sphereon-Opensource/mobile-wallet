@@ -22,3 +22,6 @@ export const PIN_CODE_LENGTH = 6;
 
 export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 export const ONLY_ALLOW_NUMBERS_REGEX = /^\d+$/;
+// TODO probably not supporting all mime variants
+export const IS_IMAGE_URI_REGEX = /^data:image\/(png|jpg|jpeg|bmp|gif|webp);base64,/;
+export const IS_IMAGE_URL_REGEX = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;

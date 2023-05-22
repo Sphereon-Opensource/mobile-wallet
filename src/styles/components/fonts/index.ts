@@ -44,6 +44,10 @@ export const SSITextH2SemiBoldStyled = styled.Text`
   height: auto;
 `;
 
+export const SSITextH2SemiBoldLightStyled = styled(SSITextH2SemiBoldStyled)`
+  color: ${fonts.light};
+`;
+
 export const SSITextH2LightStyled = styled(SSITextH2Styled)`
   color: ${fonts.light};
 `;

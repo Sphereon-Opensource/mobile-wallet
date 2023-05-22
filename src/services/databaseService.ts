@@ -36,3 +36,18 @@ export const getDbConnection = async (dbName: string): Promise<DataSource> => {
 
   return dataSource;
 };
+
+export const dropDatabase = async (dbName: string): Promise<void> => {
+  if (!dataSources.has(dbName)) {
+    return Promise.reject(Error(`No database present with name: ${dbName}`));
+  }
+
+  const connection: DataSource = await getDbConnection(dbName);
+  await connection.dropDatabase();
+  dataSources.delete(dbName);
+};
+
+export const resetDatabase = async (dbName: string): Promise<void> => {
+  await dropDatabase(dbName);
+  await getDbConnection(dbName);
+};

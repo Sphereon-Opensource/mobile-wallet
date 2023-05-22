@@ -16,13 +16,14 @@ export interface IProps {
 
 const SSICredentialLogo: FC<IProps> = (props: IProps): JSX.Element => {
   const {image, style, backgroundColor = credentialCards.default} = props;
-  const backgroundImage = image ? {uri: image} : {};
+  // The uri is a transparent pixel in case there is not background image
+  const backgroundImage = image
+    ? {uri: image}
+    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='};
 
   return (
     <Container style={[style, {backgroundColor}]}>
-      <BackgroundImage source={backgroundImage}>
-        {!image && <PlaceholderImage />}
-      </BackgroundImage>
+      <BackgroundImage source={backgroundImage}>{!image && <PlaceholderImage />}</BackgroundImage>
     </Container>
   );
 };

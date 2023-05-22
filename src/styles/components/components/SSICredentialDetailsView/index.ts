@@ -5,6 +5,7 @@ import {SSITextH5LightStyled, SSITextH7SemiBoldLightStyled} from '../../fonts';
 
 export const SSICredentialDetailsViewContainerStyled = styled.View`
   ${SSIBackgroundSecondaryDarkColorCss};
+  flex: 1;
 `;
 
 export const SSICredentialDetailsViewFooterContainerStyled = styled.View`

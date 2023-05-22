@@ -1,11 +1,11 @@
 import styled from 'styled-components/native';
 
+import {backgrounds} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 
 export const SSICredentialDetailsScreenContentContainer = styled.View`
   width: 100%;
   flex: 1;
-  margin-top: 4px;
 `;
 
 export const SSICredentialDetailsScreenCredentialCardContainer = styled.View`
@@ -17,6 +17,7 @@ export const SSICredentialDetailsScreenButtonContainer = styled.View`
   height: 80px;
   width: 100%;
   margin-top: auto;
+  backgroundcolor: ${backgrounds.secondaryDark};
 `;
 
 export const SSICredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`

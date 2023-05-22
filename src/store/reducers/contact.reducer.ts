@@ -1,6 +1,9 @@
+import {IContact} from '@sphereon/ssi-sdk-data-store';
+
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
+  CLEAR_CONTACTS,
   ContactActionTypes,
   CONTACTS_LOADING,
   CREATE_CONTACT_FAILED,
@@ -8,10 +11,12 @@ import {
   DELETE_CONTACT_FAILED,
   DELETE_CONTACT_SUCCESS,
   GET_CONTACTS_FAILED,
-  GET_CONTACTS_SUCCESS
-} from '../../types/store/contact.action.types'
-import { IContactState } from '../../types/store/contact.types'
-import { IContact } from '@sphereon/ssi-sdk-data-store'
+  GET_CONTACTS_SUCCESS,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
+} from '../../types/store/contact.action.types';
+import {IContactState} from '../../types/store/contact.types';
+import {sortBy, SortOrder} from '../../utils/SortUtils';
 
 const initialState: IContactState = {
   loading: false,
@@ -29,7 +34,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case GET_CONTACTS_SUCCESS: {
       return {
         ...state,
-        contacts: action.payload,
+        contacts: action.payload.sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -42,7 +47,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case CREATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: [...state.contacts, action.payload],
+        contacts: [...state.contacts, action.payload].sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -52,10 +57,25 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         loading: false,
       };
     }
+    case UPDATE_CONTACT_SUCCESS: {
+      return {
+        ...state,
+        contacts: [...state.contacts.filter((contact: IContact) => contact.id !== action.payload.id), action.payload].sort(
+          sortBy('alias', SortOrder.ASC),
+        ),
+        loading: false,
+      };
+    }
+    case UPDATE_CONTACT_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
     case DELETE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload),
+        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload).sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -68,7 +88,11 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case ADD_IDENTITY_SUCCESS: {
       return {
         ...state,
-        contacts: state.contacts.map((contact: IContact) => (contact.id === action.payload.contactId ? { ...contact, identities: [...contact!.identities, action.payload.identity] } : contact)),
+        contacts: state.contacts
+          .map((contact: IContact) =>
+            contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
+          )
+          .sort(sortBy('alias', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -77,6 +101,9 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
         ...state,
         loading: false,
       };
+    }
+    case CLEAR_CONTACTS: {
+      return initialState;
     }
     default:
       return state;

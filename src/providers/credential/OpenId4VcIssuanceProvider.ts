@@ -6,15 +6,17 @@ import {
   EndpointMetadata,
   Jwt,
   ProofOfPossessionCallbacks,
-} from '@sphereon/openid4vci-common';
+} from '@sphereon/openid4vci-client';
+import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
+import {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
-import {getFirstKeyWithRelation, getOrCreatePrimaryIdentifier} from '../../services/identityService';
+import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
   ICredentialFormatOpts,
@@ -29,7 +31,6 @@ import {
   IServerMetadataAndCryptoMatchingResponse,
   Oidc4vciErrorEnum,
   QrTypesEnum,
-  SignatureAlgorithmEnum,
   SupportedDidMethodEnum,
 } from '../../types';
 import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils';
@@ -41,25 +42,48 @@ const debug = Debug(`${APP_ID}:openid4vci`);
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc', 'ldp_vc'];
 
-export const didMethodPreferences = [SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_KEY];
+export type JsonLdSignatureSuite = 'Ed25519Signature2018' | 'EcdsaSecp256k1Signature2019' | 'Ed25519Signature2020' | 'JsonWebSignature2020'; //|
+// "JcsEd25519Signature2020"
+
+export enum LDPProofTypeEnum {
+  Ed25519Signature2018 = 'Ed25519Signature2018',
+  EcdsaSecp256k1Signature2019 = 'EcdsaSecp256k1Signature2019',
+  Ed25519Signature2020 = 'Ed25519Signature2020',
+  JsonWebSignature2020 = 'JsonWebSignature2020',
+  JcsEd25519Signature2020 = 'JcsEd25519Signature2020',
+}
+
+export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK];
 
 export const jsonldCryptographicSuitePreferences = [
   'Ed25519Signature2018',
   'EcdsaSecp256k1Signature2019',
   'Ed25519Signature2020',
   'JsonWebSignature2020',
-  'JcsEd25519Signature2020',
+  // "JcsEd25519Signature2020"
 ];
+
+export enum SignatureAlgorithmEnum {
+  EdDSA = 'EdDSA',
+  ES256 = 'ES256',
+  ES256K = 'ES256K',
+}
 
 export const jwtCryptographicSuitePreferences = [SignatureAlgorithmEnum.ES256K, SignatureAlgorithmEnum.ES256, SignatureAlgorithmEnum.EdDSA];
 
+export interface IErrorDetailsOpts {
+  title?: string;
+  message?: string;
+  detailsMessage?: string;
+}
+
 class OpenId4VcIssuanceProvider {
-  public static getErrorDetails = (error: Oidc4vciErrorEnum): IErrorDetails => {
+  public static getErrorDetails = (error: Oidc4vciErrorEnum | string, opts?: IErrorDetailsOpts): IErrorDetails => {
     // We want to move this over to some general error handling within the app
     const genericError = {
-      title: translate('error_generic_title'),
-      message: translate('error_generic_message'),
-      detailsMessage: `<b>${translate('error_details_generic_message')}</b>`,
+      title: opts?.title ?? translate('error_generic_title'),
+      message: opts?.message ?? translate('error_generic_message'),
+      detailsMessage: `<b>${opts?.detailsMessage ?? translate('error_details_generic_message')}</b>`,
     };
 
     switch (error) {
@@ -98,6 +122,11 @@ class OpenId4VcIssuanceProvider {
           ...genericError,
           detailsTitle: translate('oidc4vci_error_invalid_or_missing_proof'),
         };
+      case Oidc4vciErrorEnum.VERIFICATION_FAILED:
+        return {
+          ...genericError,
+          detailsTitle: translate('credential_verification_failed_message'),
+        };
       default:
         return {
           ...genericError,
@@ -128,7 +157,7 @@ class OpenId4VcIssuanceProvider {
     );
   };
 
-  public getCredentialsFromIssuance = async ({pin}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
+  public getCredentialsFromIssuance = async ({pin, credentials}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
     await this.getServerMetadataAndPerformCryptoMatching();
     const credentialResponses: Record<string, CredentialResponse> = {};
     const initTypes = this.client.getCredentialTypes();
@@ -141,6 +170,7 @@ class OpenId4VcIssuanceProvider {
         pin,
       });
     }
+
     if (Object.keys(credentialResponses).length === 0) {
       return Promise.reject(Error('Could not get credentials from issuance and match them on supported types.'));
     }
@@ -159,8 +189,8 @@ class OpenId4VcIssuanceProvider {
       createOpts: {options: {type: credIssuanceOpt.keyType, use: KeyUse.Signature}},
     });
     const key =
-      (await getFirstKeyWithRelation(identifier, 'authentication', false)) ||
-      ((await getFirstKeyWithRelation(identifier, 'verificationMethod', true)) as _ExtendedIKey);
+      (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
+      ((await getFirstKeyWithRelation(identifier, agentContext, 'verificationMethod', true)) as _ExtendedIKey);
     const kid = key.meta.verificationMethod.id;
     const alg = SignatureAlgorithmFromKey(key);
 
@@ -224,7 +254,7 @@ class OpenId4VcIssuanceProvider {
     if (!this.accessTokenResponse) {
       const clientId = OpenId4VcIssuanceProvider.determineClientId(this.serverMetadata?.issuer);
       this.accessTokenResponse = await this.client.acquireAccessToken({pin, clientId});
-      console.log(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`)
+      debug(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`)
     }
     return this.accessTokenResponse;
   };
@@ -245,8 +275,9 @@ class OpenId4VcIssuanceProvider {
       }
 
       const credentialFormatOpts: ICredentialFormatOpts = await this.getIssuanceCredentialFormat({credentialMetadata});
-      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialFormatOpts.format);
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialFormatOpts});
+      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialFormatOpts.format);
+
       issuanceOpts[credentialMetadata.credentialType] = {
         didMethod,
         format: credentialFormatOpts.format,
@@ -272,14 +303,18 @@ class OpenId4VcIssuanceProvider {
   private getIssuanceCredentialFormat = async ({credentialMetadata}: IGetVcIssuanceFormatArgs): Promise<ICredentialFormatOpts> => {
     for (const format of vcFormatPreferences) {
       if (format in credentialMetadata.formats) {
+        const credentialFormat = credentialMetadata.formats[format];
+        debug(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
         return {
-          credentialFormat: credentialMetadata.formats[format],
+          credentialFormat,
           format,
         };
+      } else {
+        console.log(`Credential format ${format} not supported by issuer`);
       }
     }
 
-    return Promise.reject(Error(`Credential formats '${Object.keys(credentialMetadata.formats)}' not supported`));
+    return Promise.reject(Error(`Credential formats '${Object.keys(credentialMetadata.formats)}' not supported by wallet`));
   };
 
   private getIssuanceCryptoSuite = async ({credentialFormatOpts}: IGetIssuanceCryptoSuiteArgs): Promise<string> => {
@@ -305,7 +340,7 @@ class OpenId4VcIssuanceProvider {
 
   private getIssuanceDidMethod = async (format?: CredentialFormat): Promise<SupportedDidMethodEnum> => {
     // TODO implementation. None of the implementers are currently returning supported did methods.
-    return format ? (format.includes('jwt') ? didMethodPreferences[0] : didMethodPreferences[1]) : didMethodPreferences[0];
+    return format ? (format.includes('jwt') ? didMethodPreferences[1] : didMethodPreferences[0]) : didMethodPreferences[0];
   };
 }
 

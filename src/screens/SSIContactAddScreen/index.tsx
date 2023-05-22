@@ -9,20 +9,21 @@ import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
 import {translate} from '../../localization/Localization';
 import {getContacts} from '../../services/contactService';
-import {createContact as StoreContact} from '../../store/actions/contact.actions';
+import {updateContact as editContact, createContact as StoreContact} from '../../store/actions/contact.actions';
 import {
   SSIContactAddScreenContainerStyled as Container,
   SSIContactAddScreenDisclaimerContainerStyled as DisclaimerContainer,
+  SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
-  SSIFullHeightScrollViewContainer as SSIScrollView
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {ICreateContactArgs} from '../../types/store/contact.action.types';
+import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => void;
+  updateContact: (args: IUpdateContactArgs) => void;
+  loading: boolean;
 }
 
 interface IState {
@@ -32,7 +33,7 @@ interface IState {
 
 class SSIContactAddScreen extends PureComponent<IProps, IState> {
   state: IState = {
-    contactAlias: '',
+    contactAlias: this.props.route.params.name || '',
     hasConsent: true,
   };
 
@@ -53,25 +54,39 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onCreate = async (): Promise<void> => {
-    const {identities, name, uri, onCreate} = this.props.route.params;
-    const {contactAlias} = this.state;
+    const {onCreate} = this.props.route.params;
 
     Keyboard.dismiss();
 
-    this.onValidate(contactAlias)
-      .then(() => {
-        this.props.createContact({
-          name,
-          alias: contactAlias.trim(),
-          uri,
-          identities,
-        });
-        onCreate();
+    this.onValidate(this.state.contactAlias)
+      .then(async () => {
+        await this.upsert();
+        await onCreate();
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
       });
   };
+
+  private async upsert() {
+    const {createContact, updateContact} = this.props;
+    const {identities, name, uri} = this.props.route.params;
+    const {contactAlias} = this.state;
+
+    const contacts = await getContacts({filter: [{name: name}]});
+    if (contacts.length !== 0) {
+      const contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
+      contactToUpdate.contact.alias = contactAlias;
+      updateContact(contactToUpdate);
+    } else {
+      createContact({
+        name,
+        alias: contactAlias.trim(),
+        uri,
+        identities,
+      });
+    }
+  }
 
   onChangeText = async (value: string): Promise<void> => {
     this.setState({contactAlias: value});
@@ -80,7 +95,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   onValueChange = async (isChecked: boolean): Promise<void> => {
     this.setState({hasConsent: isChecked});
     if (!isChecked) {
-      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_add_no_consent_toast'));
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('contact_add_no_consent_toast')});
     }
   };
 
@@ -95,46 +110,47 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        // TODO fix navigation WAL-405
-        onPress: async () => this.props.navigation.goBack(),
+        // TODO WAL-541 fix navigation hierarchy
+        onPress: async () => this.props.navigation.navigate(MainRoutesEnum.HOME, {}),
       },
     });
   };
 
   render() {
+    const {loading} = this.props;
     const {contactAlias, hasConsent} = this.state;
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>
           <SSIScrollView>
-          <StatusBar />
-          <TextInputContainer>
-            <SSITextInputField
-              autoFocus={true}
-              label={translate('contact_name_label')}
-              maxLength={CONTACT_ALIAS_MAX_LENGTH}
-              onChangeText={this.onChangeText}
-              onEndEditing={this.onValidate}
-              placeholderValue={translate('contact_name_placeholder')}
+            <StatusBar />
+            <TextInputContainer>
+              <SSITextInputField
+                autoFocus={true}
+                label={translate('contact_name_label')}
+                maxLength={CONTACT_ALIAS_MAX_LENGTH}
+                onChangeText={this.onChangeText}
+                onEndEditing={this.onValidate}
+                placeholderValue={translate('contact_name_placeholder')}
+                initialValue={contactAlias}
+              />
+            </TextInputContainer>
+            <DisclaimerContainer>
+              <SSICheckbox initialValue label={translate('contact_add_disclaimer')} onValueChange={this.onValueChange} />
+            </DisclaimerContainer>
+            <SSIButtonsContainer
+              secondaryButton={{
+                caption: translate('action_decline_label'),
+                onPress: this.onDecline,
+              }}
+              primaryButton={{
+                caption: translate('action_accept_label'),
+                disabled: !hasConsent || contactAlias.length === 0 || loading,
+                onPress: this.onCreate,
+              }}
             />
-          </TextInputContainer>
-          <DisclaimerContainer>
-            <SSICheckbox initialValue label={translate('contact_add_disclaimer')} onValueChange={this.onValueChange} />
-          </DisclaimerContainer>
-          <SSIButtonsContainer
-            secondaryButton={{
-              caption: translate('action_decline_label'),
-              onPress: this.onDecline,
-            }}
-            primaryButton={{
-              caption: translate('action_accept_label'),
-              disabled: !hasConsent || contactAlias.length === 0,
-              onPress: this.onCreate,
-            }}
-          />
           </SSIScrollView>
-
         </Container>
       </TouchableWithoutFeedback>
     );
@@ -144,7 +160,14 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     createContact: (args: ICreateContactArgs) => dispatch(StoreContact(args)),
+    updateContact: (args: IUpdateContactArgs) => dispatch(editContact(args)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(SSIContactAddScreen);
+const mapStateToProps = (state: RootState) => {
+  return {
+    loading: state.contact.loading,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SSIContactAddScreen);

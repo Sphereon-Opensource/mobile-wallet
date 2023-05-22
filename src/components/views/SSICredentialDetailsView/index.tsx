@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import { ListRenderItemInfo, View } from 'react-native'
+import {ListRenderItemInfo} from 'react-native';
 
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
@@ -10,9 +10,9 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
-import { HeaderEventEnum, ICredentialDetailsRow } from '../../../types'
+import {ICredentialDetailsRow} from '../../../types';
+import SSIImageField from '../../fields/SSIImageField';
 import SSITextField from '../../fields/SSITextField';
-import { headerEmitter } from '../../bars/SSIHeaderBar'
 
 export interface IProps {
   credentialProperties: Array<ICredentialDetailsRow>;
@@ -22,23 +22,16 @@ export interface IProps {
 // TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) =>
-    <View
-      onStartShouldSetResponder={() => {
-        headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true
-      }}
-    >
-      <SSITextField item={itemInfo.item} index={itemInfo.index} />
-    </View>;
+  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => {
+    if (itemInfo.item.imageSize) {
+      return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
+    } else {
+      return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
+    }
+  };
 
   const renderFooter = () => (
-    <FooterContainer
-      onStartShouldSetResponder={() => {
-        headerEmitter.emit(HeaderEventEnum.ON_MORE_MENU_CLOSE);
-        return true
-      }}
-    >
+    <FooterContainer>
       {props.issuer && (
         <>
           <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>

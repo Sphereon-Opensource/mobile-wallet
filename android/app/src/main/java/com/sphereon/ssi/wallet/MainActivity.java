@@ -2,18 +2,35 @@ package com.sphereon.ssi.wallet;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import expo.modules.ReactActivityDelegateWrapper;
 import expo.modules.splashscreen.singletons.SplashScreen;
 import expo.modules.splashscreen.SplashScreenImageResizeMode;
 
+import com.sphereon.ssi.wallet.Constants;
+
 public class MainActivity extends ReactActivity {
+  // Adding a handler for the timer to lock the app
+  private Handler backgroundHandler = new Handler();
+  private Runnable backgroundRunnable;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     // Set the theme to AppTheme BEFORE onCreate to support
@@ -23,6 +40,30 @@ public class MainActivity extends ReactActivity {
     super.onCreate(null);
     // SplashScreen.show(...) has to be called after super.onCreate(...)
     SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
+
+    // initiate background observer
+    initBackgroundObserver();
+  }
+
+  private void initBackgroundObserver() {
+    backgroundRunnable = new Runnable() {
+      @Override
+      public void run() {
+        sendAppInBackgroundEvent("appMovingToBackground");
+      }
+    };
+
+    ProcessLifecycleOwner.get().getLifecycle().addObserver(new LifecycleObserver() {
+      @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+      public void onAppBackgrounded() {
+        backgroundHandler.postDelayed(backgroundRunnable, Constants.BACKGROUND_DELAY);
+      }
+
+      @OnLifecycleEvent(Lifecycle.Event.ON_START)
+      public void onAppForegrounded() {
+        backgroundHandler.removeCallbacks(backgroundRunnable);
+      }
+    });
   }
 
   /**
@@ -71,5 +112,12 @@ public class MainActivity extends ReactActivity {
     super.invokeDefaultOnBackPressed();
   }
 
-
+  private void sendAppInBackgroundEvent(String eventName) {
+    ReactContext reactContext = getReactInstanceManager().getCurrentReactContext();
+    if (reactContext != null) {
+      WritableMap params = Arguments.createMap();
+      params.putString("event", eventName);
+      reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("appStateChange", params);
+    }
+  }
 }

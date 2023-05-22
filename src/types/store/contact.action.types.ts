@@ -1,4 +1,4 @@
-import { IBasicIdentity, IContact, IIdentity } from '@sphereon/ssi-sdk-data-store'
+import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING;
@@ -10,6 +10,10 @@ export const CREATE_CONTACT_SUCCESS = '[CONTACT] CREATE_CONTACT_SUCCESS';
 export type CREATE_CONTACT_SUCCESS = typeof CREATE_CONTACT_SUCCESS;
 export const CREATE_CONTACT_FAILED = '[CONTACT] STORE_CONTACT_FAILED';
 export type CREATE_CONTACT_FAILED = typeof CREATE_CONTACT_FAILED;
+export const UPDATE_CONTACT_SUCCESS = '[CONTACT] UPDATE_CONTACT_SUCCESS';
+export type UPDATE_CONTACT_SUCCESS = typeof UPDATE_CONTACT_SUCCESS;
+export const UPDATE_CONTACT_FAILED = '[CONTACT] UPDATE_CONTACT_FAILED';
+export type UPDATE_CONTACT_FAILED = typeof UPDATE_CONTACT_FAILED;
 export const DELETE_CONTACT_SUCCESS = '[CONTACT] DELETE_CONTACT_SUCCESS';
 export type DELETE_CONTACT_SUCCESS = typeof DELETE_CONTACT_SUCCESS;
 export const DELETE_CONTACT_FAILED = '[CONTACT] DELETE_CONTACT_FAILED';
@@ -18,7 +22,8 @@ export const ADD_IDENTITY_SUCCESS = '[CONTACT] ADD_IDENTITY_SUCCESS';
 export type ADD_IDENTITY_SUCCESS = typeof ADD_IDENTITY_SUCCESS;
 export const ADD_IDENTITY_FAILED = '[CONTACT] ADD_IDENTITY_FAILED';
 export type ADD_IDENTITY_FAILED = typeof ADD_IDENTITY_FAILED;
-
+export const CLEAR_CONTACTS = '[CONTACT] CLEAR_CONTACTS';
+export type CLEAR_CONTACTS = typeof CLEAR_CONTACTS;
 
 interface IContactsLoading {
   type: CONTACTS_LOADING;
@@ -42,6 +47,15 @@ interface ICreateContactFailedAction {
   type: CREATE_CONTACT_FAILED;
 }
 
+interface IUpdateContactSuccessAction {
+  type: UPDATE_CONTACT_SUCCESS;
+  payload: IContact;
+}
+
+interface IUpdateContactFailedAction {
+  type: UPDATE_CONTACT_FAILED;
+}
+
 interface IDeleteContactSuccessAction {
   type: DELETE_CONTACT_SUCCESS;
   payload: string;
@@ -60,17 +74,6 @@ interface IAddIdentityFailedAction {
   type: ADD_IDENTITY_FAILED;
 }
 
-export type ContactActionTypes =
-  | IContactsLoading
-  | IGetContactsSuccessAction
-  | IGetContactsFailedAction
-  | ICreateContactSuccessAction
-  | ICreateContactFailedAction
-  | IDeleteContactSuccessAction
-  | IDeleteContactFailedAction
-  | IAddIdentitySuccessAction
-  | IAddIdentityFailedAction
-
 export interface ICreateContactArgs {
   name: string;
   alias: string;
@@ -78,12 +81,34 @@ export interface ICreateContactArgs {
   identities?: Array<IBasicIdentity>;
 }
 
+export interface IUpdateContactArgs {
+  contact: IContact;
+}
+
 export interface IAddIdentityArgs {
   contactId: string;
   identity: IBasicIdentity;
 }
 
-export interface IAddIdentitySuccessActionPayload  {
-  contactId: string
-  identity: IIdentity
+export interface IAddIdentitySuccessActionPayload {
+  contactId: string;
+  identity: IIdentity;
 }
+
+interface IClearContactsAction {
+  type: CLEAR_CONTACTS;
+}
+
+export type ContactActionTypes =
+  | IContactsLoading
+  | IGetContactsSuccessAction
+  | IGetContactsFailedAction
+  | ICreateContactSuccessAction
+  | ICreateContactFailedAction
+  | IUpdateContactSuccessAction
+  | IUpdateContactFailedAction
+  | IDeleteContactSuccessAction
+  | IDeleteContactFailedAction
+  | IAddIdentitySuccessAction
+  | IAddIdentityFailedAction
+  | IClearContactsAction;

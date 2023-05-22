@@ -121,7 +121,7 @@ android {
         applicationId "com.sphereon.ssi.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 4
         versionName "0.1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
@@ -200,7 +200,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation project(':react-native-secure-key-store')
-
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

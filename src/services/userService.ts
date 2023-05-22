@@ -3,9 +3,7 @@ import Debug from 'debug';
 import {APP_ID} from '../@config/constants';
 import {BasicUser, BasicUserIdentifier, IUser} from '../types';
 
-import {getUsers as getUsersFromStorage, storeUser} from './storageService';
-import store from "../store";
-import {login} from "../store/actions/user.actions";
+import {getUsers as getUsersFromStorage, deleteUser as removeUser, storeUser} from './storageService';
 
 const debug = Debug(`${APP_ID}:userService`);
 
@@ -51,7 +49,6 @@ export const updateUser = async (args: IUser): Promise<IUser> => {
     .catch((error: Error) => Promise.reject(Error(`Unable to update user. Error: ${error}`)));
 };
 
-
-export const onLogin = () => {
-  store.dispatch<any>(login(store.getState().user.users.values().next().value.id))
-}
+export const deleteUser = async (userId: string): Promise<void> => {
+  removeUser(userId).catch((error: Error) => Promise.reject(Error(`Unable to delete user with id: ${userId}. Error: ${error}`)));
+};

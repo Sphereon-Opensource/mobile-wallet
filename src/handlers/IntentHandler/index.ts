@@ -1,4 +1,3 @@
-import {ICredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import Debug from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';
@@ -13,7 +12,7 @@ import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/CredentialMapper';
 
 const debug = Debug(`${APP_ID}:IntentHandler`);
 
@@ -76,7 +75,7 @@ class IntentHandler {
   };
 
   private sharedFileDataListener(item?: ShareData): void {
-    if (!item) {
+    if (!item || !item.data) {
       return;
     }
 
@@ -84,11 +83,11 @@ class IntentHandler {
     const file = typeof item.data === 'string' ? item.data : item.data[0];
 
     readFile({filePath: file})
-      .then((file: string) => {
+      .then(async (file: string) => {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0];
         if (!vc) {
-          showToast(ToastTypeEnum.TOAST_ERROR, translate('intent_share_file_unable_to_receive_message'));
+          showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('intent_share_file_unable_to_receive_message')});
           return;
         }
 
@@ -100,7 +99,7 @@ class IntentHandler {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential: vc,
-            credential: toCredentialSummary(vc as ICredential),
+            credential: await toNonPersistedCredentialSummary(vc),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async () =>
@@ -110,8 +109,8 @@ class IntentHandler {
                       screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                     }),
                   )
-                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, translate('credential_offer_accepted_toast')))
-                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message)),
+                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('credential_offer_accepted_toast'), showBadge: false}))
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
             },
             secondaryAction: {
               caption: translate('action_decline_label'),
@@ -123,7 +122,7 @@ class IntentHandler {
           },
         });
       })
-      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, error.message));
+      .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
   }
 }
 

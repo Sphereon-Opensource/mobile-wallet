@@ -1,19 +1,15 @@
-import {
-  CorrelationIdentifierEnum,
-  IContact,
-  IdentityRoleEnum,
-  IIdentity
-} from '@sphereon/ssi-sdk-data-store'
+import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum, IIdentity} from '@sphereon/ssi-sdk-data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
 
 import {translate} from '../../localization/Localization';
 import {
+  updateContact as editContact,
   getContacts as getContactsFromStorage,
-  createContact as storeContact,
   addIdentity as identityAdd,
-  removeContact
+  removeContact,
+  createContact as storeContact,
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
@@ -27,8 +23,11 @@ import {
   GET_CONTACTS_FAILED,
   GET_CONTACTS_SUCCESS,
   IAddIdentityArgs,
-  ICreateContactArgs
-} from '../../types/store/contact.action.types'
+  ICreateContactArgs,
+  IUpdateContactArgs,
+  UPDATE_CONTACT_FAILED,
+  UPDATE_CONTACT_SUCCESS,
+} from '../../types/store/contact.action.types';
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 
@@ -37,8 +36,8 @@ export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Ac
     dispatch({type: CONTACTS_LOADING});
     getUserContact().then((userContact: IContact) => {
       getContactsFromStorage()
-      .then(async (contacts: Array<IContact>) => dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
-      .catch(() => dispatch({type: GET_CONTACTS_FAILED}));
+        .then(async (contacts: Array<IContact>) => dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
+        .catch(() => dispatch({type: GET_CONTACTS_FAILED}));
     });
   };
 };
@@ -49,9 +48,21 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
     storeContact(args)
       .then((contact: IContact) => {
         dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_add_success_toast'));
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
       })
       .catch(() => dispatch({type: CREATE_CONTACT_FAILED}));
+  };
+};
+
+export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    dispatch({type: CONTACTS_LOADING});
+    editContact(args)
+      .then((contact: IContact) => {
+        dispatch({type: UPDATE_CONTACT_SUCCESS, payload: contact});
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
+      })
+      .catch(() => dispatch({type: UPDATE_CONTACT_FAILED}));
   };
 };
 
@@ -59,8 +70,8 @@ export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, 
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
     identityAdd(args)
-    .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: { contactId: args.contactId, identity }}))
-    .catch(() => dispatch({type: ADD_IDENTITY_FAILED}));
+      .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}}))
+      .catch(() => dispatch({type: ADD_IDENTITY_FAILED}));
   };
 };
 
@@ -69,26 +80,26 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
     dispatch({type: CONTACTS_LOADING});
 
     removeContact({contactId: contactId})
-    .then((isDeleted: boolean) => {
-      if (isDeleted) {
-        dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
-        showToast(ToastTypeEnum.TOAST_SUCCESS, translate('contact_deleted_success_toast'));
-      } else {
+      .then((isDeleted: boolean) => {
+        if (isDeleted) {
+          dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
+          showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_deleted_success_toast'), showBadge: false});
+        } else {
+          dispatch({type: DELETE_CONTACT_FAILED});
+          showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('contact_deleted_failed_toast')});
+        }
+      })
+      .catch(() => {
         dispatch({type: DELETE_CONTACT_FAILED});
-        showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
-      }
-    })
-    .catch(() => {
-      dispatch({type: DELETE_CONTACT_FAILED});
-      showToast(ToastTypeEnum.TOAST_ERROR, translate('contact_deleted_failed_toast'));
-    });
+        showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('contact_deleted_failed_toast')});
+      });
   };
 };
 
-const getUserContact = async (): Promise<IContact> => {
+export const getUserContact = async (): Promise<IContact> => {
   const userState = store.getState().user;
   // TODO supporting only one user at the moment
-  const user: IUser = userState.activeUser!
+  const user: IUser = userState.activeUser!;
 
   const userFullName = `${user.firstName} ${user.lastName}`;
 
@@ -97,11 +108,12 @@ const getUserContact = async (): Promise<IContact> => {
     name: userFullName,
     alias: userFullName,
     uri: user.emailAddress,
-    roles: [IdentityRoleEnum.ISSUER],
+    //todo: (WAL-545) handle this based on the identities available in the wallet
+    roles: [IdentityRoleEnum.HOLDER],
     identities: user.identifiers.map((identifier: IUserIdentifier) => ({
       id: uuidv4(),
       alias: identifier.did,
-      roles: [IdentityRoleEnum.ISSUER],
+      roles: [IdentityRoleEnum.HOLDER],
       identifier: {
         id: uuidv4(),
         type: CorrelationIdentifierEnum.DID,

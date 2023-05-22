@@ -14,3 +14,11 @@ export const scanFingerPrint = async () => {
       return Promise.reject(error);
     });
 };
+
+// TODO
+// we should use this to catch the canceling of a fingerprint
+// .catch(error => {
+//   if (!/UserCancel|UserFallback|SystemCancel/.test(error.name)) {
+//     console.error('Error', error);
+//   }
+// });

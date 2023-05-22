@@ -35,7 +35,7 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
     labelColor = fonts.light,
   } = props;
   const [isChecked, setChecked] = React.useState(initialValue || false);
-  const value = props.isChecked || isChecked;
+  const value = props.isChecked !== undefined ? props.isChecked : isChecked;
 
   const onValueChange = () => {
     const {onValueChange} = props;
@@ -57,10 +57,15 @@ const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
         right: HIT_SLOP_DISTANCE,
       }}>
       <Container>
-        { value
-          ? <SelectedContainer style={{backgroundColor: selectedColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}} />
-          : <UnselectedContainer style={{backgroundColor, ...(label && {marginRight: 10}), borderColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}/>
-        }
+        {value ? (
+          <SelectedContainer
+            style={{backgroundColor: selectedColor, ...(label && {marginRight: 10}), ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}
+          />
+        ) : (
+          <UnselectedContainer
+            style={{backgroundColor, ...(label && {marginRight: 10}), borderColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}
+          />
+        )}
         {label && <LabelCaption style={{color: labelColor, ...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>{label}</LabelCaption>}
       </Container>
     </TouchableOpacity>

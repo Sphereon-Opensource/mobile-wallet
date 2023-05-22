@@ -104,9 +104,9 @@ export const statuses: Record<LabelStatus | 'error', string> = {
   error: '#D74500',
 };
 
-type Button = 'blue';
+type Element = 'blue';
 
-export const buttons: Record<Button, string> = {
+export const elements: Record<Element, string> = {
   blue: '#0B81FF',
 };
 
@@ -135,10 +135,4 @@ type Input = 'placeholder' | 'disabled'; // TODO check other disabled colors and
 export const inputs: Record<Input, string> = {
   placeholder: '#8D9099',
   disabled: '#8D9099',
-};
-
-type Icon = 'noMatch';
-
-export const icons: Record<Icon, string> = {
-  noMatch: '#5D6990',
 };

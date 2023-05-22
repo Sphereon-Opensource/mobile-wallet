@@ -9,9 +9,11 @@ export enum ButtonIconsEnum {
   CLOSE = 'close',
 }
 
-export enum MoreMenuIconsEnum {
+export enum HeaderMenuIconsEnum {
   ADD = 'add',
   DELETE = 'delete',
+  LOGOUT = 'logout',
+  DOWNLOAD = 'download',
 }
 
 export enum PopupImagesEnum {
@@ -34,8 +36,8 @@ export interface IButton {
   disabled?: boolean;
 }
 
-export interface IMoreMenuButton extends IButton {
-  icon?: MoreMenuIconsEnum;
+export interface IHeaderMenuButton extends IButton {
+  icon?: HeaderMenuIconsEnum;
   fontColor?: ColorValue;
 }
 

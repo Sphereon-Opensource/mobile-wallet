@@ -8,12 +8,11 @@ import {
   CredentialHandlerLDLocal,
   ICredentialHandlerLDLocal,
   MethodNames,
-  SphereonBbsBlsSignature2020,
   SphereonEd25519Signature2018,
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk-vc-handler-ld-local';
-import {createAgent, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
+import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -26,6 +25,7 @@ import {KeyManagementSystem, SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
+import {getResolver as webDIDResolver} from 'web-did-resolver';
 
 import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
@@ -44,6 +44,10 @@ export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
     resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
   }),
+  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
+    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
+  }),
+  ...webDIDResolver,
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
 });
@@ -82,6 +86,7 @@ const agent = createAgent<
     IResolver &
     IDidAuthSiopOpAuthenticator &
     IContactManager &
+    ICredentialPlugin &
     ICredentialIssuer &
     ICredentialHandlerLDLocal
 >({
@@ -96,7 +101,7 @@ const agent = createAgent<
     }),
     new DIDManager({
       store: new DIDStore(dbConnection),
-      defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`,
+      defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
       providers: didProviders,
     }),
     new DIDResolverPlugin({
@@ -112,10 +117,12 @@ const agent = createAgent<
       suites: [
         new SphereonEd25519Signature2018(),
         new SphereonEd25519Signature2020(),
-        new SphereonBbsBlsSignature2020(),
+        // new SphereonBbsBlsSignature2020(),
         new SphereonJsonWebSignature2020(),
       ],
       bindingOverrides: new Map([
+        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
       ]),
@@ -128,6 +135,7 @@ export const didManagerCreate = agent.didManagerCreate;
 export const didManagerFind = agent.didManagerFind;
 export const cmGetContacts = agent.cmGetContacts;
 export const cmAddContact = agent.cmAddContact;
+export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
 export const cmGetIdentities = agent.cmGetIdentities;
@@ -139,3 +147,5 @@ export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCred
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential;
 export const createVerifiableCredential = agent.createVerifiableCredential;
 export default agent;
+
+export const agentContext = {...agent.context, agent};

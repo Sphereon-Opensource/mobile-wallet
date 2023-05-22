@@ -8,3 +8,4 @@ export * from './modals';
 export * from './buttons';
 export * from './views';
 export * from './text';
+export * from './providers';

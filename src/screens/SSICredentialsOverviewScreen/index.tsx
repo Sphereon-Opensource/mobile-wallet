@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {VerifiableCredential} from '@veramo/core';
 import React, {PureComponent} from 'react';
-import { ListRenderItemInfo, RefreshControl } from 'react-native'
+import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
@@ -11,23 +11,14 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {backgrounds, borders} from '../../styles/colors';
 import {
   SSIBasicContainerStyled as Container,
   SSIRippleContainerStyled as ItemContainer,
-  SSIStatusBarDarkModeStyled as StatusBar
-} from '../../styles/components'
-import {
-  ICredentialSummary,
-  IUser,
-  IUserIdentifier,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList
-} from '../../types'
-import { backgrounds } from '../../styles/colors'
-
-const format = require('string-format');
+  SSIStatusBarDarkModeStyled as StatusBar,
+} from '../../styles/components';
+import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
@@ -50,10 +41,10 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  onDelete = async (credentialHash: string, credentialTitle: string): Promise<void> => {
+  onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
     this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_delete_title'),
-      details: format(translate('credential_delete_message'), credentialTitle),
+      details: translate('credential_delete_message', {credentialName}),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async () => {
@@ -69,9 +60,9 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   onItemPress = async (credential: ICredentialSummary): Promise<void> => {
-    getVerifiableCredential({hash: credential.id}).then((vc: VerifiableCredential) =>
+    getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: vc as VerifiableCredential,
+        rawCredential: getOriginalVerifiableCredential(vc),
         credential,
         showActivity: false,
       }),
@@ -79,8 +70,11 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
+    const {activeUser, verifiableCredentials} = this.props;
+
     const credentialItem = (
       <SSICredentialViewItem
+        hash={itemInfo.item.hash}
         id={itemInfo.item.id}
         title={itemInfo.item.title}
         issuer={itemInfo.item.issuer}
@@ -91,28 +85,29 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       />
     );
 
-    return this.props.activeUser.identifiers.some((identifier: IUserIdentifier) =>
-        itemInfo.item.issuer.name === identifier.did &&
-        itemInfo.item.title === 'SphereonWalletIdentityCredential'
-    )
-      ? (
-        <ItemContainer
-          style={{
-            backgroundColor: itemInfo.index % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
-          }}
-          onPress={() => this.onItemPress(itemInfo.item)}
-        >
-          {credentialItem}
-        </ItemContainer>
-      )
-      : (
-        <SSISwipeRowViewItem
-          listIndex={itemInfo.index}
-          viewItem={credentialItem}
-          onPress={() => this.onItemPress(itemInfo.item)}
-          onDelete={() => this.onDelete(itemInfo.item.id, itemInfo.item.title)}
-        />
-      );
+    const backgroundStyle = {
+      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+    };
+    const style = {
+      ...backgroundStyle,
+      ...(itemInfo.index === verifiableCredentials.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+    };
+
+    return activeUser.identifiers.some(
+      (identifier: IUserIdentifier) => itemInfo.item.issuer.name === identifier.did && itemInfo.item.title === 'SphereonWalletIdentityCredential',
+    ) ? (
+      <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
+        {credentialItem}
+      </ItemContainer>
+    ) : (
+      <SSISwipeRowViewItem
+        style={style}
+        hiddenStyle={backgroundStyle}
+        viewItem={credentialItem}
+        onPress={() => this.onItemPress(itemInfo.item)}
+        onDelete={() => this.onDelete(itemInfo.item.hash, itemInfo.item.title)}
+      />
+    );
   };
 
   render() {
@@ -121,7 +116,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
         <StatusBar />
         <SwipeListView
           data={this.props.verifiableCredentials}
-          keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.id}
+          keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.hash}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe
@@ -146,7 +141,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const mapStateToProps = (state: RootState) => {
   return {
     verifiableCredentials: state.credential.verifiableCredentials,
-    activeUser: state.user.activeUser!
+    activeUser: state.user.activeUser!,
   };
 };
 

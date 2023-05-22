@@ -1,14 +1,14 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IContact} from '@sphereon/ssi-sdk-data-store';
-import {CredentialMapper, IVerifiableCredential} from '@sphereon/ssi-types';
-import {IIdentifier, VerifiableCredential} from '@veramo/core';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {IIdentifier} from '@veramo/core';
 import React, {PureComponent} from 'react';
 import {Button, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 
 import {createIdentifier, getIdentifiers} from '../services/identityService';
 import {CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList} from '../types';
-import {toCredentialSummary} from '../utils/mappers/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper';
 
 interface IProps extends NativeStackScreenProps<StackParamList, 'Veramo'> {
   contacts: Array<IContact>;
@@ -82,8 +82,8 @@ class Veramo extends PureComponent<IProps, IState> {
         <View style={{marginTop: 10}}>
           <Button
             title="Add Credential"
-            onPress={() => {
-              const verifiableCredential: IVerifiableCredential = {
+            onPress={async () => {
+              const verifiableCredential: OriginalVerifiableCredential = {
                 '@context': [
                   'https://www.w3.org/2018/credentials/v1',
                   'https://sphereon-opensource.github.io/vc-contexts/boa/boa-id-v1.jsonld',
@@ -128,8 +128,8 @@ class Veramo extends PureComponent<IProps, IState> {
               };
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-                rawCredential: verifiableCredential as unknown as VerifiableCredential,
-                credential: toCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
+                rawCredential: verifiableCredential,
+                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
               });
             }}
           />

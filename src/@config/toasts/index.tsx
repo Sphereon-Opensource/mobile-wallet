@@ -1,29 +1,22 @@
 import React from 'react';
 import {ToastConfigParams} from 'react-native-toast-message';
 
-import {
-  SSIAlertToastContainerStyled as AlertToastContainer,
-  SSIAlertToastIconContainerStyled as AlertToastIconContainer,
-  SSIAlertToastMessageTextStyled as AlertToastMessageCaption,
-  SSIAlertToastErrorIconStyled as ErrorIcon,
-} from '../../../src/styles/components';
+import SSIToast from '../../components/messageBoxes/toasts/SSIToast';
+import {IToastCustomProps, ToastTypeEnum} from '../../types';
 
 export const toastsBottomOffset = 0;
 export const toastsAutoHide = true;
 export const toastsVisibilityTime = 6000;
 
 export const toastConfig = {
-  ssiAlertToastSuccess: (params: ToastConfigParams<unknown>) => (
-    <AlertToastContainer>
-      <AlertToastMessageCaption>{params.text1}</AlertToastMessageCaption>
-    </AlertToastContainer>
-  ),
-  ssiAlertToastError: (params: ToastConfigParams<unknown>) => (
-    <AlertToastContainer>
-      <AlertToastIconContainer>
-        <ErrorIcon />
-      </AlertToastIconContainer>
-      <AlertToastMessageCaption>{params.text1}</AlertToastMessageCaption>
-    </AlertToastContainer>
-  ),
+  ssiAlertToastSuccess: (params: ToastConfigParams<IToastCustomProps>) => {
+    const {text1, text2} = params;
+    const {showBadge = true} = params.props;
+    return <SSIToast type={ToastTypeEnum.TOAST_SUCCESS} title={text1} message={text2} showBadge={showBadge} />;
+  },
+  ssiAlertToastError: (params: ToastConfigParams<IToastCustomProps>) => {
+    const {text1, text2} = params;
+    const {showBadge = true} = params.props;
+    return <SSIToast type={ToastTypeEnum.TOAST_ERROR} title={text1} message={text2} showBadge={showBadge} />;
+  },
 };

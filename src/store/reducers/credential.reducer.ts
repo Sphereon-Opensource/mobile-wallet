@@ -1,5 +1,6 @@
 import {ICredentialSummary} from '../../types';
 import {
+  CLEAR_CREDENTIALS,
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
   CredentialActionTypes,
@@ -19,6 +20,8 @@ const initialState: ICredentialState = {
 };
 
 const credentialReducer = (state: ICredentialState = initialState, action: CredentialActionTypes): ICredentialState => {
+  // For WAL-605 add sorting taking inspiration from contactReducer WAL-540
+
   switch (action.type) {
     case CREDENTIALS_LOADING: {
       return {
@@ -55,7 +58,7 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
     case DELETE_CREDENTIAL_SUCCESS: {
       return {
         ...state,
-        verifiableCredentials: state.verifiableCredentials.filter((vc: ICredentialSummary) => vc.id !== action.payload),
+        verifiableCredentials: state.verifiableCredentials.filter((vc: ICredentialSummary) => vc.hash !== action.payload),
         loading: false,
       };
     }
@@ -77,6 +80,9 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
         ...state,
         loading: false,
       };
+    }
+    case CLEAR_CREDENTIALS: {
+      return initialState;
     }
     default:
       return state;

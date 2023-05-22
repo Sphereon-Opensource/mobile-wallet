@@ -11,32 +11,29 @@ import {translate} from '../localization/Localization';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
-import SSIConnectionDetailsScreen from '../screens/SSIConnectionDetailsScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
 import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen';
 import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen';
+import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen';
 import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen';
+import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen';
 import SSIErrorScreen from '../screens/SSIErrorScreen';
+import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
-import SSIPEXVerificationScreen from '../screens/SSIPEXVerificationScreen';
 import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen';
 import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen';
-import SSIQRReader from '../screens/SSIQRReaderScreen';
+import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
-import {MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
-import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen'
-import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
-import {onLogin} from "../services/userService";
-
-const format = require('string-format');
+import {login} from '../services/authenticationService';
+import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -63,6 +60,7 @@ const MainStackNavigator = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        // TODO WAL-541 fix navigation hierarchy
         name={MainRoutesEnum.POPUP_MODAL}
         children={({navigation, route}) => (
           <>
@@ -155,6 +153,7 @@ const CredentialsStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // TODO create actions that can be passed in
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
@@ -162,6 +161,7 @@ const CredentialsStack = (): JSX.Element => {
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),
+                  icon: HeaderMenuIconsEnum.DOWNLOAD,
                 },
               ]}
             />
@@ -243,7 +243,7 @@ const QRStack = (): JSX.Element => {
       }}>
       <Stack.Screen
         name={ScreenRoutesEnum.QR_READER}
-        component={SSIQRReader}
+        component={SSIQRReaderScreen}
         options={{
           headerShown: false,
         }}
@@ -258,50 +258,23 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('verification_code_subtitle'), route.params.credentialName)}
+              headerSubTitle={translate('verification_code_subtitle', {credentialName: route.params.credentialName})}
             />
           ),
         })}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.IDENTITY_DETAILS}
-        component={SSIConnectionDetailsScreen}
-        options={{
-          headerTitle: translate('connection_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.PEX_VERIFICATION}
-        component={SSIPEXVerificationScreen}
-        options={{
-          headerTitle: translate('pex_verification_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={SSICredentialDetailsScreen}
         options={({route}) => ({
-          headerTitle: translate('credential_details_title'),
+          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
+              // TODO create actions that can be passed in
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
@@ -309,6 +282,7 @@ const QRStack = (): JSX.Element => {
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),
+                  icon: HeaderMenuIconsEnum.DOWNLOAD,
                 },
               ]}
             />
@@ -325,7 +299,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('credential_select_type_subtitle'), route.params.issuer)}
+              headerSubTitle={translate('credential_select_type_subtitle', {issuerName: route.params.issuer})}
             />
           ),
         })}
@@ -369,25 +343,34 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={format(translate('credentials_required_subtitle'), route.params.verifier)}
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier})} ${
+                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+              }`}
             />
           ),
         })}
       />
       <Stack.Screen
-          name={ScreenRoutesEnum.CREDENTIALS_SELECT}
-          component={SSICredentialsSelectScreen}
-          options={{
-            headerTitle: translate('credentials_select_title'),
-            header: (props: NativeStackHeaderProps) => (
-                <SSIHeaderBar
-                    {...props}
-                    // TODO rethink back button visibility for Android
-                    //showBackButton={Platform.OS === PlatformsEnum.IOS}
-                    headerSubTitle={translate('credentials_select_subtitle')}
-                />
-            ),
-          }}
+        name={ScreenRoutesEnum.CREDENTIALS_SELECT}
+        component={SSICredentialsSelectScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_select_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={`${translate('credentials_select_subtitle')} ${route.params.purpose && `\n\n${route.params.purpose}`}`}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.LOADING}
+        component={SSILoadingScreen}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
@@ -401,10 +384,7 @@ const QRStack = (): JSX.Element => {
         component={SSILockScreen}
         options={{
           headerTitle: translate('authentication_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar {...props}
-              headerSubTitle={translate('authentication_pin_code_subtitle')} />
-          ),
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} />,
         }}
       />
     </Stack.Navigator>
@@ -518,6 +498,13 @@ const OnboardingStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.LOADING}
+        component={SSILoadingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name={MainRoutesEnum.POPUP_MODAL}
         component={SSIPopupModal}
         options={{
@@ -539,7 +526,7 @@ const AuthenticationStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
-        initialParams={{onVerificationSuccess: onLogin}}
+        initialParams={{onAuthenticate: login}}
         options={{
           headerTitle: translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -565,9 +552,9 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      {userState.users.size === 0 ? (
+      {userState.users.size === 0 || onboardingState.loading ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : !userState.activeUser && !onboardingState.firstName ? ( // Adding a check for any onboarding state here to check if someone is onboarding to skip authentication stack
+      ) : !userState.activeUser ? (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
