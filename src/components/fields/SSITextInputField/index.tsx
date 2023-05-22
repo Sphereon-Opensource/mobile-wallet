@@ -141,7 +141,8 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
             {label}
           </LabelCaption>
         ) : (
-          <LinearTextGradient style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>
+          <LinearTextGradient style={{...(disabled === true && {opacity: OpacityStyleEnum.DISABLED})}}>
+            <LabelCaption>disabled : [{disabled}] : something</LabelCaption>
             <LabelCaption>{label}</LabelCaption>
           </LinearTextGradient>
         )

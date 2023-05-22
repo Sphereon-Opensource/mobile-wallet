@@ -21,13 +21,19 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, NavigationBarRoutesEnum, ScreenRoutesEnum} from '../../../types';
+import {
+  ButtonIconsEnum,
+  HeaderMenuIconsEnum,
+  IHeaderMenuButton,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum
+} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
-import {fonts} from "../../../styles/colors";
 import SSIIconButton from "../../buttons/SSIIconButton";
 import RootNavigation from "../../../navigation/rootNavigation";
 import {ConnectionTypeEnum, CorrelationIdentifierEnum, IdentityRoleEnum} from "@sphereon/ssi-sdk-data-store";
+import {Rules} from "@sphereon/pex-models";
 
 interface Props extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -59,6 +65,92 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   const onMore = async (): Promise<void> => {
     setShowProfileMenu(false);
     setShowMoreMenu(!showMoreMenu);
+  };
+
+  const openSelectContact = async (): Promise<void> => {
+    RootNavigation.navigate(NavigationBarRoutesEnum.QR, {
+      screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+      params: {
+        verifier: 'somethig.com',
+        presentationDefinition: {
+          id: "9449e2db-791f-407c-b086-c21cc677d2e0",
+          purpose: "You need to prove your Wallet Identity data",
+          submission_requirements: [{
+            name: "Wallet Identity",
+            rule: Rules.Pick,
+            min: 2,
+            max: 3,
+            from: "A"
+          }],
+          input_descriptors: [/*{
+        id: "walletId",
+        purpose: "Checking your Wallet information",
+        name: "Wallet Identity",
+        group: ["A"],
+        schema: [{uri: "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld"}]
+            },*/
+            {
+              id: "WorkplaceCredential",
+              name: "ProfessionalCredential",
+              purpose: "We need to verify your employment for the demo",
+              group: ["A"],
+              schema: [
+                {
+                  uri: "WorkplaceCredential" // ENTRA
+                },
+                {uri: "https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld"} // Sphereon
+
+              ],
+              constraints: {
+                fields: [
+                  {
+                    path: [
+                      "$.issuer",
+                      "$.vc.issuer",
+                      "$.iss"
+                    ],
+                    filter: {
+                      "type": "string",
+                      "pattern": "did.*"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              id: "OpenBadgeCredential",
+              name: "AchievementCredential",
+              purpose: "We need to verify your achievement for the demo",
+              group: ["A"],
+              schema: [
+                {
+                  uri: "AchievementCredential" // ENTRA
+                },
+                {uri: "https://purl.imsglobal.org/spec/ob/v3p0/context.json"}
+
+              ],
+              constraints: {
+                fields: [
+                  {
+                    path: [
+                      "$.issuer",
+                      "$.vc.issuer",
+                      "$.iss",
+                      "$.issuer.id",
+                    ],
+                    filter: {
+                      "type": "string",
+                      "pattern": "did.*"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+      }
+    });
+
   };
 
   const openAddContact = async (): Promise<void> => {
@@ -98,6 +190,9 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container style={{paddingTop: useSafeAreaInsets().top}} showBorder={showBorder}>
       <Row>
+
+        <SSIIconButton icon={ButtonIconsEnum.BACK} onPress={openAddContact} />
+        <SSIIconButton icon={ButtonIconsEnum.BACK} onPress={openSelectContact} />
         <LeftColumn>
           {showBackButton && (
             <BackIconContainer>
@@ -110,7 +205,7 @@ const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
           {props.headerSubTitle && <HeaderSubCaption>{props.headerSubTitle}</HeaderSubCaption>}
         </LeftColumn>
         <RightColumn>
-          <SSIIconButton icon={ButtonIconsEnum.BACK} onPress={openAddContact} />
+
           {showProfileIcon && (
             // we need this view wrapper to stop the event from propagating to the ontouch provider which will catch the ontouch set show menu to false and then the onpress would set it to true again, as ontouch will be before onpress
             <View onTouchStart={onTouchStart}>

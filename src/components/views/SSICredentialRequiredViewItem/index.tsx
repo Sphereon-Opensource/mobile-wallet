@@ -21,6 +21,7 @@ import {
 } from '../../../styles/components';
 import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
+import {OpacityStyleEnum} from "../../../types";
 
 export interface Props {
   id: string;
