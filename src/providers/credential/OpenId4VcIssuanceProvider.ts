@@ -1,12 +1,5 @@
-import { OpenID4VCIClient } from '@sphereon/openid4vci-client';
-import {
-  AccessTokenResponse,
-  AuthzFlowType,
-  CredentialResponse,
-  EndpointMetadata,
-  Jwt,
-  ProofOfPossessionCallbacks,
-} from '@sphereon/openid4vci-client';
+import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
+import {AccessTokenResponse, AuthzFlowType, CredentialResponse, EndpointMetadata, Jwt, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {CredentialFormat} from '@sphereon/ssi-types';
@@ -214,7 +207,7 @@ class OpenId4VcIssuanceProvider {
 
       debug(`cred type: ${credentialType}, format: ${credIssuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
       return this.client.acquireCredentials({
-        credentialType,
+        credentialTypes: credentialType,
         proofCallbacks: callbacks,
         format: credIssuanceOpt.format,
         kid,
@@ -254,7 +247,7 @@ class OpenId4VcIssuanceProvider {
     if (!this.accessTokenResponse) {
       const clientId = OpenId4VcIssuanceProvider.determineClientId(this.serverMetadata?.issuer);
       this.accessTokenResponse = await this.client.acquireAccessToken({pin, clientId});
-      debug(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`)
+      debug(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`);
     }
     return this.accessTokenResponse;
   };

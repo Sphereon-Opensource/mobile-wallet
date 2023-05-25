@@ -1,5 +1,6 @@
-import { CredentialOffer } from '@sphereon/openid4vci-client'
-import { CredentialResponse } from '@sphereon/openid4vci-common'
+import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {CredentialOfferClient} from '@sphereon/oid4vci-client';
+import {CredentialResponse} from '@sphereon/oid4vci-common';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -122,7 +123,7 @@ const parseOpenID4VCI = (qrData: string): Promise<IQrData> => {
   try {
     return Promise.resolve({
       type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
-      issuanceInitiation: CredentialOffer.fromURI(qrData),
+      issuanceInitiation: CredentialOfferClient.fromURI(qrData),
       uri: qrData,
     });
   } catch (error: unknown) {
@@ -200,7 +201,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
     registration = await request.authorizationRequest.getMergedProperty('registration');
   } catch (error: unknown) {
-    debug(`Unable to retrieve information. Error: ${(error as Error).message}.`);
+    debug(translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message}));
     args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
     showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message})});
   }
@@ -467,10 +468,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const sendResponseOrAuthenticate = async (provider: OpenId4VcIssuanceProvider, credentials: Array<string>): Promise<void> => {
-    if (
-      args.qrData.issuanceInitiation.request.user_pin_required === 'true' ||
-      args.qrData.issuanceInitiation.request.user_pin_required === true
-    ) {
+    if (args.qrData.issuanceInitiation.request.user_pin_required === 'true' || args.qrData.issuanceInitiation.request.user_pin_required === true) {
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
         screen: ScreenRoutesEnum.VERIFICATION_CODE,
         params: {

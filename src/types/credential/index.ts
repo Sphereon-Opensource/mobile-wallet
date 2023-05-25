@@ -1,4 +1,4 @@
-import {CredentialMetadata} from '@sphereon/openid4vci-client';
+import {CredentialMetadata} from '@sphereon/oid4vci-common';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 import {LabelStatus} from '../component';
