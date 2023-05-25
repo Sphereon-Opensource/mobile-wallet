@@ -1,6 +1,7 @@
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CredentialOfferClient} from '@sphereon/oid4vci-client';
 import {CredentialResponse} from '@sphereon/oid4vci-common';
+import {Format} from '@sphereon/pex-models';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -369,6 +370,13 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
   }
   // TODO WAL-301 need to send a response when we do not need a pin code
 };
+/**
+ * TODO check again when WAL-617 is done to replace how we get the issuer name.
+ */
+function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
+  return metadata?.serverMetadata?.issuerMetadata?.display?.filter(metadataDisplay => !(metadataDisplay.name))
+    .map(metadataDisplay => metadataDisplay.name) ?? url.hostname;
+}
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (
@@ -376,7 +384,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     metadata: IServerMetadataAndCryptoMatchingResponse,
   ): Promise<void> => {
     const url: URL = new URL(metadata.serverMetadata.issuer);
-    const name = metadata?.serverMetadata?.openid4vci_metadata?.credential_issuer?.['name' as keyof CredentialIssuer] ?? url.hostname;
+    const name = getName(metadata, url);
     getContacts({
       filter: [
         {
@@ -495,7 +503,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         // TODO only supporting one credential for now
         const credentialResponse = Object.values(credentialsResponse)[0];
         const origVC = credentialResponse.credential;
-        const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC);
+        const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC as OriginalVerifiableCredential);
         const verificationResult = await verifyCredential({
           credential: wrappedVC.original as VerifiableCredential | CompactJWT,
           fetchRemoteContexts: true,
