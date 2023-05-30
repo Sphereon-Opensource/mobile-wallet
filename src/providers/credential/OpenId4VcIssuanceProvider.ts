@@ -238,7 +238,7 @@ class OpenId4VcIssuanceProvider {
     }
     return {
       serverMetadata: this.serverMetadata,
-      credentialsSupported: this.credentialsSupported,
+      credentialsSupported: this.credentialsSupported!,
       issuanceOpts: await this.getIssuanceOpts(),
     };
   };
