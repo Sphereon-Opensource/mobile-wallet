@@ -1,4 +1,4 @@
-import {CredentialMetadata} from '@sphereon/oid4vci-common';
+import {CredentialSupported} from '@sphereon/oid4vci-common';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 import {LabelStatus} from '../component';
@@ -55,7 +55,7 @@ export interface ICredentialTypeSelection {
   isSelected: boolean;
 }
 
-export interface ICredentialMetadata extends CredentialMetadata {
+export type ICredentialMetadata = CredentialSupported & {
   credentialType: string;
 }
 

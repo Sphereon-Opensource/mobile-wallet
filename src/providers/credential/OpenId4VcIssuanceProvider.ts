@@ -1,10 +1,18 @@
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
-import {AccessTokenResponse, AuthzFlowType, CredentialResponse, EndpointMetadata, Jwt, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
+import {
+  AccessTokenResponse,
+  AuthzFlowType,
+  CredentialResponse,
+  CredentialSupported,
+  EndpointMetadata,
+  Jwt,
+  OID4VCICredentialFormat,
+  ProofOfPossessionCallbacks
+} from '@sphereon/oid4vci-common';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
-import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import {agentContext} from '../../agent';
@@ -12,14 +20,10 @@ import {translate} from '../../localization/Localization';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
-  ICredentialFormatOpts,
-  ICredentialMetadata,
   IErrorDetails,
   IGetCredentialArgs,
   IGetCredentialsArgs,
-  IGetIssuanceCryptoSuiteArgs,
   IGetIssuanceInitiationFromUriArgs,
-  IGetVcIssuanceFormatArgs,
   IIssuanceOpts,
   IServerMetadataAndCryptoMatchingResponse,
   Oidc4vciErrorEnum,
@@ -30,7 +34,7 @@ import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../ut
 
 const {v4: uuidv4} = require('uuid');
 
-const debug = Debug(`${APP_ID}:openid4vci`);
+const debug = console.log(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc', 'ldp_vc'];
@@ -68,6 +72,12 @@ export interface IErrorDetailsOpts {
   title?: string;
   message?: string;
   detailsMessage?: string;
+}
+
+export interface CredentialFromOffer {
+  id?: string;
+  issuanceOpt: IIssuanceOpts;
+  credentialResponse: CredentialResponse;
 }
 
 class OpenId4VcIssuanceProvider {
@@ -129,8 +139,8 @@ class OpenId4VcIssuanceProvider {
   };
   private readonly client: OpenID4VCIClient;
   private serverMetadata: EndpointMetadata | undefined;
-  private credentialsSupported: Array<ICredentialMetadata> | undefined;
-  private issuanceOpts: Record<string, IIssuanceOpts> | undefined;
+  private credentialsSupported: Array<CredentialSupported> | undefined;
+  private issuanceOpts: Array<IIssuanceOpts> | undefined;
   private accessTokenResponse: AccessTokenResponse | undefined;
 
   private constructor(client: OpenID4VCIClient) {
@@ -138,8 +148,8 @@ class OpenId4VcIssuanceProvider {
   }
 
   public static initiationFromUri = async ({uri}: IGetIssuanceInitiationFromUriArgs): Promise<OpenId4VcIssuanceProvider> => {
-    if (!uri || !uri.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
-      debug(`Invalid Uri: ${uri}`);
+    if (!uri || !(uri.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || uri.startsWith(QrTypesEnum.OPENID_CREDENTIAL_OFFER))) {
+      console.log(`Invalid Uri: ${uri}`);
       return Promise.reject(Error('Invalid Uri'));
     }
     return new OpenId4VcIssuanceProvider(
@@ -150,36 +160,39 @@ class OpenId4VcIssuanceProvider {
     );
   };
 
-  public getCredentialsFromIssuance = async ({pin, credentials}: IGetCredentialsArgs): Promise<Record<string, CredentialResponse>> => {
-    await this.getServerMetadataAndPerformCryptoMatching();
-    const credentialResponses: Record<string, CredentialResponse> = {};
-    const initTypes = this.client.getCredentialTypes();
-    for (const credentialType of Object.keys(await this.getIssuanceOpts())) {
-      if (!initTypes.includes(credentialType)) {
+  public getCredentialsFromIssuance = async ({pin, credentials}: IGetCredentialsArgs): Promise<Array<CredentialFromOffer>> => {
+    const matches = await this.getServerMetadataAndPerformCryptoMatching();
+    const credentialResponses: Array<CredentialFromOffer> = [];
+    // const initTypes = this.client.getCredentialTypes();
+    for (const issuanceOpt of matches.issuanceOpts) {
+    /*  if (!initTypes.includes(credentialType)) {
         continue;
-      }
-      credentialResponses[credentialType] = await this.getCredential({
-        credentialType,
+      }*/
+      const credentialResponse = await this.getCredential({
+        issuanceOpt,
         pin,
       });
+      credentialResponses.push({
+        id: issuanceOpt.id,
+        issuanceOpt,
+        credentialResponse
+      })
     }
 
-    if (Object.keys(credentialResponses).length === 0) {
+    if (credentialResponses.length === 0) {
       return Promise.reject(Error('Could not get credentials from issuance and match them on supported types.'));
     }
 
     return credentialResponses;
   };
 
-  public getCredential = async ({credentialType, pin}: IGetCredentialArgs): Promise<CredentialResponse> => {
-    const {issuanceOpts} = await this.getServerMetadataAndPerformCryptoMatching();
-    const credIssuanceOpt = issuanceOpts[credentialType];
-    if (!credIssuanceOpt) {
-      return Promise.reject(Error(`Cannot get credential issuance options for credential type ${credentialType}`));
+  public getCredential = async ({issuanceOpt, pin}: { pin?: string, issuanceOpt: IIssuanceOpts }): Promise<CredentialResponse> => {
+    if (!issuanceOpt) {
+      return Promise.reject(Error(`Cannot get credential issuance options`));
     }
     const identifier = await getOrCreatePrimaryIdentifier({
-      method: credIssuanceOpt.didMethod,
-      createOpts: {options: {type: credIssuanceOpt.keyType, use: KeyUse.Signature}},
+      method: issuanceOpt.didMethod,
+      createOpts: {options: {type: issuanceOpt.keyType, use: KeyUse.Signature}},
     });
     const key =
       (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
@@ -189,14 +202,14 @@ class OpenId4VcIssuanceProvider {
 
     const callbacks: ProofOfPossessionCallbacks = {
       signCallback: (jwt: Jwt, kid?: string) => {
-        debug(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
-        debug(`payload: ${JSON.stringify({...jwt.payload})}`);
+        console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
+        console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
           identifier,
           header: {...jwt.header, typ: 'JWT', kid},
           payload: {...jwt.payload},
           // TODO fix non null assertion
-          options: {issuer: jwt.payload!.iss!, expiresIn: jwt.payload!.exp, canonicalize: false},
+          options: {issuer: jwt.payload.iss!, expiresIn: jwt.payload.exp, canonicalize: false},
         });
       },
     };
@@ -205,17 +218,17 @@ class OpenId4VcIssuanceProvider {
       // We need to make sure we have acquired the access token
       await this.acquireAccessToken({pin});
 
-      debug(`cred type: ${credentialType}, format: ${credIssuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
-      return this.client.acquireCredentials({
-        credentialTypes: credentialType,
+      console.log(`cred type: ${JSON.stringify(issuanceOpt.types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
+      return await this.client.acquireCredentials({
+        credentialTypes: issuanceOpt.types.filter(type => type !== 'VerifiableCredential'),
         proofCallbacks: callbacks,
-        format: credIssuanceOpt.format,
+        format: issuanceOpt.format,
         kid,
         alg,
         jti: uuidv4(),
       });
     } catch (error) {
-      debug(`Unable to get credential: ${error}`);
+      console.log(`Unable to get credential: ${error}`);
       return Promise.reject(error);
     }
   };
@@ -229,12 +242,8 @@ class OpenId4VcIssuanceProvider {
     if (!this.serverMetadata) {
       this.serverMetadata = await this.client.retrieveServerMetadata();
     }
-    if (!this.credentialsSupported) {
-      const credentialsSupported = [];
-      for (const [credentialType, credentialMetadata] of Object.entries(await this.client.getCredentialsSupported(true))) {
-        credentialsSupported.push({credentialType, ...credentialMetadata});
-      }
-      this.credentialsSupported = credentialsSupported;
+    if (!this.credentialsSupported || this.credentialsSupported.length===0) {
+      this.credentialsSupported = this.client.getCredentialsSupported(true)
     }
     return {
       serverMetadata: this.serverMetadata,
@@ -247,93 +256,98 @@ class OpenId4VcIssuanceProvider {
     if (!this.accessTokenResponse) {
       const clientId = OpenId4VcIssuanceProvider.determineClientId(this.serverMetadata?.issuer);
       this.accessTokenResponse = await this.client.acquireAccessToken({pin, clientId});
-      debug(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`);
+      console.log(`OpenId4VcIssuanceProvider.accessTokenResponse accessTokenResponse: ${this.accessTokenResponse}`);
     }
     return this.accessTokenResponse;
   };
 
-  private getIssuanceOpts = async (): Promise<Record<string, IIssuanceOpts>> => {
-    if (this.issuanceOpts) {
+  private getIssuanceOpts = async (): Promise<Array<IIssuanceOpts>> => {
+    if (this.issuanceOpts && this.issuanceOpts.length > 0) {
       return this.issuanceOpts;
     }
-    const issuanceOpts: Record<string, IIssuanceOpts> = {};
     if (!this.credentialsSupported) {
       return Promise.reject(Error('No credentials supported'));
     }
+    const issuanceOpts: Array<IIssuanceOpts> = [];
 
-    for (const credentialMetadata of this.credentialsSupported) {
-      if (!this.serverMetadata?.issuerMetadata || !credentialMetadata) {
-        issuanceOpts[credentialMetadata.credentialType] = this.defaultIssuanceOpts(credentialMetadata.credentialType);
+    for (const credentialSupported of this.credentialsSupported) {
+      if (!this.serverMetadata?.issuerMetadata) {
+        issuanceOpts.push(this.defaultIssuanceOpts(credentialSupported))
         continue;
       }
 
-      const credentialFormatOpts: ICredentialFormatOpts = await this.getIssuanceCredentialFormat({credentialMetadata});
-      const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialFormatOpts});
-      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialFormatOpts.format);
+      const format = await this.getIssuanceCredentialFormat({credentialSupported});
+      const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialSupported});
+      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported.format);
 
-      issuanceOpts[credentialMetadata.credentialType] = {
+      issuanceOpts.push( {
+        ...credentialSupported,
         didMethod,
-        format: credentialFormatOpts.format,
-        keyType: KeyTypeFromCryptographicSuite(cryptographicSuite),
-      };
+        format,
+        keyType: KeyTypeFromCryptographicSuite(cryptographicSuite)
+      } as IIssuanceOpts)
     }
 
     this.issuanceOpts = issuanceOpts;
     return this.issuanceOpts;
   };
 
-  private defaultIssuanceOpts(credentialType: string): IIssuanceOpts {
-    debug(
-      `WARNING: Reverting to default for key/signature suites for credential type '${credentialType}', as no Server Metadata or not metadata match was present!`,
+  private defaultIssuanceOpts(credentialSupported: CredentialSupported): IIssuanceOpts {
+    console.log(
+      `WARNING: Reverting to default for key/signature suites for credential type '${JSON.stringify(credentialSupported.types)}', as no Server Metadata or no metadata match was present!`,
     );
     return {
+      ...credentialSupported,
       didMethod: SupportedDidMethodEnum.DID_JWK,
       keyType: 'Secp256k1',
-      format: 'jwt_vc',
     };
   }
 
-  private getIssuanceCredentialFormat = async ({credentialMetadata}: IGetVcIssuanceFormatArgs): Promise<ICredentialFormatOpts> => {
+  private getIssuanceCredentialFormat = async ({credentialSupported}: { credentialSupported: CredentialSupported }): Promise<string> => {
     for (const format of vcFormatPreferences) {
-      if (format in credentialMetadata.formats) {
-        const credentialFormat = credentialMetadata.formats[format];
-        debug(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
-        return {
-          credentialFormat,
-          format,
-        };
+      if (format === credentialSupported.format) {
+        const credentialFormat = credentialSupported.format;
+        console.log(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
+        return           credentialFormat;
       } else {
         console.log(`Credential format ${format} not supported by issuer`);
       }
     }
 
-    return Promise.reject(Error(`Credential formats '${Object.keys(credentialMetadata.formats)}' not supported by wallet`));
+    return Promise.reject(Error(`Credential formats '${credentialSupported.format}' not supported by wallet`));
   };
 
-  private getIssuanceCryptoSuite = async ({credentialFormatOpts}: IGetIssuanceCryptoSuiteArgs): Promise<string> => {
-    const suites_supported = credentialFormatOpts.credentialFormat.cryptographic_suites_supported || [];
+  private getIssuanceCryptoSuite = async ({credentialSupported}: { credentialSupported: CredentialSupported }): Promise<string> => {
+    const suites_supported = credentialSupported.cryptographic_suites_supported ?? [];
 
-    switch (credentialFormatOpts.format) {
+    // TODO: Return array, so the wallet/user could choose
+    switch (credentialSupported.format) {
       case 'jwt':
+      case 'jwt_vc_json':
       case 'jwt_vc': {
         const supportedPreferences = jwtCryptographicSuitePreferences.filter((suite: SignatureAlgorithmEnum) => suites_supported.includes(suite));
         // if we cannot find supported cryptographic suites, we just try with the first preference
         return supportedPreferences.length > 0 ? supportedPreferences[0] : jwtCryptographicSuitePreferences[0];
       }
       case 'ldp':
+      case 'jwt_vc_json_ld':
       case 'ldp_vc': {
         const supportedPreferences = jsonldCryptographicSuitePreferences.filter((suite: string) => suites_supported.includes(suite));
         // if we cannot find supported cryptographic suites, we just try with the first preference
         return supportedPreferences.length > 0 ? supportedPreferences[0] : jsonldCryptographicSuitePreferences[0];
       }
       default:
-        return Promise.reject(Error(`Credential format '${credentialFormatOpts.format}' not supported`));
+        return Promise.reject(Error(`Credential format '${credentialSupported.format}' not supported`));
     }
   };
 
-  private getIssuanceDidMethod = async (format?: CredentialFormat): Promise<SupportedDidMethodEnum> => {
+  private getIssuanceDidMethod = async (format?: CredentialFormat | OID4VCICredentialFormat): Promise<SupportedDidMethodEnum> => {
     // TODO implementation. None of the implementers are currently returning supported did methods.
-    return format ? (format.includes('jwt') ? didMethodPreferences[1] : didMethodPreferences[0]) : didMethodPreferences[0];
+    if (format?.includes('jwt') && !format?.includes('jwt_vc_json_ld')) {
+      return format ? didMethodPreferences[1] : didMethodPreferences[0];
+    } else {
+      return didMethodPreferences[0];
+    }
   };
 }
 

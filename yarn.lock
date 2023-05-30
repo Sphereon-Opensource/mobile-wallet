@@ -2999,33 +2999,32 @@
     "@waves/ts-lib-crypto" "^1.4.4-beta.1"
     lto-api "^0.5.14"
 
-"@sphereon/oid4vci-client@file:.yalc/@sphereon/oid4vci-client":
-  version "0.5.0"
+"@sphereon/oid4vci-client@0.4.1-unstable.267":
+  version "0.4.1-unstable.267"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.4.1-unstable.267.tgz#6058d36a3233d5f9472ca28f931ce5e9fb6043d6"
+  integrity sha512-FYkNIy/O7aOxNUUeyNVPcnTwgWF3zTVWljfQFczgRWNbpQR+cD0G27P1rm2FC67h/Co8WsUR54JHnNdMkZRwAg==
   dependencies:
-    "@sphereon/oid4vci-common" "0.5.0"
+    "@sphereon/oid4vci-common" "0.4.1-unstable.267+e0a1ec6"
     "@sphereon/ssi-types" "^0.9.0"
     cross-fetch "^3.1.5"
     debug "^4.3.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/oid4vci-common@0.5.0", "@sphereon/oid4vci-common@file:.yalc/@sphereon/oid4vci-common":
-  version "0.5.0"
+"@sphereon/oid4vci-common@0.4.1-unstable.267", "@sphereon/oid4vci-common@0.4.1-unstable.267+e0a1ec6":
+  version "0.4.1-unstable.267"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.4.1-unstable.267.tgz#501db270021c072480cdc1ced7c94dde612a5cbc"
+  integrity sha512-xb1rMOfiB9KhOmcZnCXrz8rgdUWLBmsbuabNEg2FGMhdoJTq347VdnZ1f1TtALYpz7nOtQcYb8X/0ZGrNyR4Eg==
   dependencies:
     "@sphereon/ssi-types" "^0.9.0"
     cross-fetch "^3.1.6"
     jwt-decode "^3.1.2"
-
-"@sphereon/pex-models@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-1.2.2.tgz#85d2062693c0a9c31fb5c1be0847675141803846"
-  integrity sha512-/pGDQGs4lSK4Fuf6WzaGengb1UqNYmjRdkIC+dJT89kMktIwJLoNB2PvQHcggn3nEbmwZFB/1dgJGumAnWPYsg==
 
 "@sphereon/pex-models@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.2.tgz#541b3f77522ab295da70b65baa0994e249073d1b"
   integrity sha512-ptHM72tdQrhMYSItHoGCm3HgK+HGF6tI29zYfS47H3M7ZjKhBgfmVHohuxhxA0Q6cL5gqH1jEA8G5Z2tadHmTw==
 
-"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.0-unstable.13", "@sphereon/pex@^2.0.1":
+"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.1.tgz#277de5dd1346c30c50b67fbbbfb8919004c05b52"
   integrity sha512-9UW1z60ltPMEauqKXa73gTfmU8SrPxH+X7Rx9v7G13ZmeTC8Yjfm2C7Mit01B9BCL49gShV4htG8np3+UKlorg==
