@@ -601,62 +601,57 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 // TODO fix the store not having the correct action types (should include ThunkAction)
                 const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
 
-              const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = metadata.credentialBranding.get(credentialTypes[0]) // TODO only supporting one credential for now
-                // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
-                args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-                    screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
-                    params: {
-                        headerTitle: translate('credential_offer_title'),
-                        rawCredential,
-                        credential: await toNonPersistedCredentialSummary(uniformVC, localeBranding),
-                        primaryAction: {
-                            caption: translate('action_accept_label'),
-                            onPress: async () => {
-                              if (localeBranding && localeBranding.length > 0) {
-                                await addCredentialBranding({
-                                  vcHash: computeEntryHash(rawCredential),
-                                  issuerCorrelationId,
-                                  localeBranding,
-                                })
-                              }
-
-                              storeCredential(rawCredential)
-                              .then(() =>{
-                                args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                                  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                                });
-                                showToast(ToastTypeEnum.TOAST_SUCCESS, {
-                                  message: translate('credential_offer_accepted_toast'),
-                                  showBadge: false,
-                                });
-                              })
-                              .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}))
-                            }
-                        },
-                        secondaryAction: {
-                            caption: translate('action_decline_label'),
-                            onPress: async () => {
-                              args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                                screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                              });
-                            },
-                        },
-                    },
+        // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+          params: {
+            headerTitle: translate('credential_offer_title'),
+            rawCredential,
+            credential: await toNonPersistedCredentialSummary(uniformVC, metadata.credentialBranding.get(credentialTypes[0])), // TODO only supporting one credential for now
+            primaryAction: {
+              caption: translate('action_accept_label'),
+              onPress: async () =>
+                  addCredentialBranding({
+                  vcHash: computeEntryHash(rawCredential),
+                  issuerCorrelationId,
+                  localeBranding: metadata.credentialBranding.get(credentialTypes[0])!, // TODO only supporting one credential for now
+                })
+                  .then(() => storeCredential(rawCredential))
+                  .then(() => {
+                    args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                      screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                    });
+                    showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                      message: translate('credential_offer_accepted_toast'),
+                      showBadge: false,
+                    });
+                  })
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
+            },
+            secondaryAction: {
+              caption: translate('action_decline_label'),
+              onPress: async () => {
+                args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                 });
-                filterNavigationStack({
-                    navigation: args.navigation,
-                    stack: NavigationBarRoutesEnum.QR,
-                    filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE, ScreenRoutesEnum.CONTACT_ADD],
-                });
-            })
-            .catch((error: Error) => {
-                // TODO refactor once the lib returns a proper response object
-                const errorResponse = error.message.includes('response:') ? JSON.parse(error.message.split('response:')[1].trim()) : error.message;
-                if (error.message.includes('403') || errorResponse.status === 403) {
-                    return Promise.reject(error);
-                }
-                handleError(errorResponse);
-            });
+              },
+            },
+          },
+        });
+        filterNavigationStack({
+          navigation: args.navigation,
+          stack: NavigationBarRoutesEnum.QR,
+          filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE],
+        });
+      })
+      .catch((error: Error) => {
+        // TODO refactor once the lib returns a proper response object
+        const errorResponse = error.message.includes('response:') ? JSON.parse(error.message.split('response:')[1].trim()) : error.message;
+        if (error.message.includes('403') || errorResponse.status === 403) {
+          return Promise.reject(error);
+        }
+        handleError(errorResponse);
+      });
 
     const handleError = (errorResponse: Oidc4vciErrorEnum | any, opts?: IErrorDetailsOpts) => {
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse, opts);

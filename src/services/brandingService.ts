@@ -11,6 +11,7 @@ import {
   ISelectAppLocaleBrandingArgs
 } from '../types'
 import {preloadImage} from '../utils/ImageUtils';
+import {preloadImage} from '../utils/ImageUtils';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:brandingService`);
 
