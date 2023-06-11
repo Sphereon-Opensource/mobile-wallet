@@ -7,7 +7,7 @@ import {selectAppLocaleBranding} from '../../../services/brandingService';
 import {CredentialStatusEnum, ICredentialDetailsRow, ICredentialSummary} from '../../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../../DateUtils';
-import {getImageSize, isImage, preloadImage} from '../../ImageUtils';
+import {getImageSize, isImage} from '../../ImageUtils';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -127,13 +127,12 @@ export const toCredentialSummary = async (
       ? translateCorrelationIdToName(verifiableCredential.issuer)
       : translateCorrelationIdToName(verifiableCredential.issuer?.id);
 
-  const localeBranding: IBasicCredentialLocaleBranding | undefined = await getCredentialLocaleBranding(branding);
+  const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
 
-  // TODO make one nice object where we only look at one field (title / branding) / (issuer / branding)
   return {
     hash,
     id: verifiableCredential.id,
-    title,
+    title: localeBranding?.alias || title,
     credentialStatus,
     issueDate,
     expirationDate,
@@ -146,30 +145,4 @@ export const toCredentialSummary = async (
       url: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined,
     },
   };
-};
-
-/**
- * Selects the branding matching the app locale and preloads the images
- * @param branding The branding for the credential
- */
-export const getCredentialLocaleBranding = async (
-  branding?: Array<IBasicCredentialLocaleBranding>,
-): Promise<IBasicCredentialLocaleBranding | undefined> => {
-  const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
-
-  const logo: string | undefined = localeBranding?.logo?.dataUri || localeBranding?.logo?.uri;
-  if (logo) {
-    preloadImage([{uri: logo}]).catch((): void => {
-      //ignore
-    });
-  }
-
-  const backgroundImage: string | undefined = localeBranding?.background?.image?.dataUri || localeBranding?.background?.image?.uri;
-  if (backgroundImage) {
-    preloadImage([{uri: backgroundImage}]).catch((): void => {
-      //ignore
-    });
-  }
-
-  return localeBranding;
 };

@@ -58,7 +58,7 @@ import {showToast} from '../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 
 import {authenticate} from './authenticationService';
-import {createCredentialBranding, selectAppLocaleBranding} from './brandingService';
+import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
 import {getContacts} from './contactService';
 import {verifyCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
@@ -560,7 +560,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async () =>
-                createCredentialBranding({
+                addCredentialBranding({
                   vcHash: computeEntryHash(rawCredential),
                   issuerCorrelationId,
                   localeBranding: metadata.credentialBranding.get(credentialTypes[0])!, // TODO only supporting one credential for now

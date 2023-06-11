@@ -53,7 +53,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       <ContentContainer>
         <CardContainer>
           <SSICardView
-            credentialTitle={credential.branding?.alias || credential.title}
+            credentialTitle={credential.title}
             issuerName={issuer}
             expirationDate={credential.expirationDate}
             credentialStatus={getCredentialStatus(credential)}

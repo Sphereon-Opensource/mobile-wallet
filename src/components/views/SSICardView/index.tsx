@@ -1,4 +1,4 @@
-import {IImageAttributes} from '@sphereon/ssi-sdk.data-store';
+import {IBasicImageAttributes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -40,8 +40,8 @@ export interface IProps {
   expirationDate?: number;
   properties?: Array<IProperty>;
   backgroundColor?: ColorValue;
-  backgroundImage?: IImageAttributes;
-  logo?: IImageAttributes;
+  backgroundImage?: IBasicImageAttributes;
+  logo?: IBasicImageAttributes;
   textColor?: ColorValue;
 }
 

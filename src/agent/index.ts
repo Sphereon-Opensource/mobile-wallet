@@ -143,7 +143,6 @@ export const cmAddContact = agent.cmAddContact;
 export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
-export const cmGetIdentities = agent.cmGetIdentities;
 export const didManagerGet = agent.didManagerGet;
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials;
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential;

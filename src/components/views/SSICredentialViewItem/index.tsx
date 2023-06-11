@@ -27,7 +27,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <ContentTopContainer>
-        <TitleCaption numberOfLines={2}>{branding?.alias || title}</TitleCaption>
+        <TitleCaption numberOfLines={2}>{title}</TitleCaption>
         <CredentialStatusContainer>
           <SSIStatusLabel status={credentialStatus} />
         </CredentialStatusContainer>
