@@ -5,7 +5,7 @@ import {BasicUser, BasicUserIdentifier, IUser} from '../types';
 
 import {getUsers as getUsersFromStorage, deleteUser as removeUser, storeUser} from './storageService';
 
-const debug = Debug(`${APP_ID}:userService`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:userService`);
 
 const {v4: uuidv4} = require('uuid');
 

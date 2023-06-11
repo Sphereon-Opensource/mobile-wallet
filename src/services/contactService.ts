@@ -1,4 +1,4 @@
-import {IRemoveContactArgs} from '@sphereon/ssi-sdk-contact-manager';
+import {IRemoveContactArgs} from '@sphereon/ssi-sdk.contact-manager';
 import {
   BasicCorrelationIdentifier,
   BasicMetadataItem,
@@ -7,7 +7,7 @@ import {
   IContact,
   IdentityRoleEnum,
   IIdentity,
-} from '@sphereon/ssi-sdk-data-store';
+} from '@sphereon/ssi-sdk.data-store';
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
@@ -16,7 +16,7 @@ import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IGetIdentitiesAr
 
 const {v4: uuidv4} = require('uuid');
 
-const debug = Debug(`${APP_ID}:contactService`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:contactService`);
 
 export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IContact>> => {
   debug(`getContacts(${JSON.stringify(args)})...`);

@@ -76,6 +76,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
       <SSICredentialViewItem
         hash={itemInfo.item.hash}
         id={itemInfo.item.id}
+        branding={itemInfo.item.branding}
         title={itemInfo.item.title}
         issuer={itemInfo.item.issuer}
         issueDate={itemInfo.item.issueDate}

@@ -1,4 +1,4 @@
-import {IIdentity, IMetadataItem} from '@sphereon/ssi-sdk-data-store';
+import {IIdentity, IMetadataItem} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 

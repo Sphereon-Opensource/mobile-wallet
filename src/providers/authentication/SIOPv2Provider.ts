@@ -1,5 +1,5 @@
 import {CheckLinkedDomain, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk-data-store';
+import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
 import {OID4VP} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'; // FIXME we should fix the export of these objects
 import {getKey} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions'; // FIXME we should fix the export of these objects
@@ -9,7 +9,7 @@ import Debug from 'debug';
 import {APP_ID} from '../../@config/constants';
 import agent, {didMethodsSupported} from '../../agent';
 
-const debug = Debug(`${APP_ID}:authentication`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:authentication`);
 
 export const siopGetRequest = async (config: IDidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(

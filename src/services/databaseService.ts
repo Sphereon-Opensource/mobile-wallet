@@ -4,7 +4,7 @@ import {DataSource} from 'typeorm';
 import {APP_ID} from '../@config/constants';
 import {sqliteConfig} from '../@config/database';
 
-const debug = Debug(`${APP_ID}:databaseService`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:databaseService`);
 
 /**
  * Todo, move to a class

@@ -1,4 +1,4 @@
-import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum, IIdentity} from '@sphereon/ssi-sdk-data-store';
+import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';

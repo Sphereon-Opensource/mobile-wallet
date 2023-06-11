@@ -1,10 +1,4 @@
-import {
-  CredentialMapper,
-  IVerifyResult,
-  OriginalVerifiableCredential,
-  WrappedVerifiableCredential,
-  WrappedVerifiablePresentation,
-} from '@sphereon/ssi-types';
+import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {IVerifyCredentialArgs} from '@veramo/core/src/types/ICredentialVerifier';
 
@@ -15,7 +9,15 @@ import agent, {
   dataStoreSaveVerifiableCredential,
   createVerifiableCredential as issueVerifiableCredential,
 } from '../agent';
-import {IDeleteVerifiableCredentialArgs, IGetVerifiableCredentialArgs, IStoreVerifiableCredentialArgs} from '../types';
+import {
+  IDeleteVerifiableCredentialArgs,
+  IGetVerifiableCredentialArgs,
+  IStoreVerifiableCredentialArgs,
+  IVerificationResult,
+  IVerificationSubResult,
+} from '../types';
+
+import {removeCredentialBranding} from './brandingService';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueVerifiableCredential>> => {
   return dataStoreORMGetVerifiableCredentials();
@@ -30,7 +32,7 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
 };
 
 export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredentialArgs): Promise<boolean> => {
-  return dataStoreDeleteVerifiableCredential({hash: args.hash});
+  return removeCredentialBranding({filter: [{vcHash: args.hash}]}).then(() => dataStoreDeleteVerifiableCredential({hash: args.hash}));
 };
 
 export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredential> => {
@@ -76,17 +78,3 @@ export const verifyCredential = async (args: IVerifyCredentialArgs): Promise<IVe
     };
   }
 };
-
-export interface IVerificationResult {
-  result: boolean;
-  source: WrappedVerifiableCredential | WrappedVerifiablePresentation;
-  subResults: IVerificationSubResult[];
-  error?: string | undefined;
-  errorDetails?: string;
-}
-
-export interface IVerificationSubResult {
-  result: boolean;
-  error?: string;
-  errorDetails?: string;
-}

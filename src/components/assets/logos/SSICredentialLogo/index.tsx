@@ -14,6 +14,8 @@ export interface IProps {
   style?: ViewStyle;
 }
 
+// TODO maybe rename this component as this is actually a small card'ish view
+// And create a component that is an actual SSICredentialLogo, which is an image or the PlaceholderImage
 const SSICredentialLogo: FC<IProps> = (props: IProps): JSX.Element => {
   const {image, style, backgroundColor = credentialCards.default} = props;
   // The uri is a transparent pixel in case there is not background image

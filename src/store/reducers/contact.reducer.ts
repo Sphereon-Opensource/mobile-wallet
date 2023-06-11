@@ -1,4 +1,4 @@
-import {IContact} from '@sphereon/ssi-sdk-data-store';
+import {IContact} from '@sphereon/ssi-sdk.data-store';
 
 import {
   ADD_IDENTITY_FAILED,

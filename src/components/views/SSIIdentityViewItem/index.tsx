@@ -1,4 +1,4 @@
-import {IdentityRoleEnum} from '@sphereon/ssi-sdk-data-store';
+import {IdentityRoleEnum} from '@sphereon/ssi-sdk.data-store';
 import React, {FC, ForwardedRef} from 'react';
 import {ViewStyle} from 'react-native';
 

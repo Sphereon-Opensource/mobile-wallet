@@ -1,8 +1,10 @@
-import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
+import {ibGetCredentialBranding} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {
   createVerifiableCredential as createCredential,
@@ -23,15 +25,24 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CREDENTIALS_LOADING});
     getVerifiableCredentialsFromStorage()
       .then(async (credentials: Array<UniqueVerifiableCredential>) => {
-        const credentialSummaries = await Promise.all(
-          credentials.map(async (uniqueVC: UniqueVerifiableCredential) => await toCredentialSummary(uniqueVC)),
+        const vcHashes: Array<{vcHash: string}> = credentials.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
+          vcHash: uniqueCredential.hash,
+        }));
+        const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
+        const credentialSummaries: Array<ICredentialSummary> = await Promise.all(
+          credentials.map(async (uniqueVC: UniqueVerifiableCredential): Promise<ICredentialSummary> => {
+            const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
+              (branding: ICredentialBranding) => branding.vcHash === uniqueVC.hash,
+            );
+            return await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+          }),
         );
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
@@ -44,14 +55,15 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     dispatch({type: CREDENTIALS_LOADING});
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
-      .then((hash: string) =>
-        toCredentialSummary({verifiableCredential: mappedVc, hash}).then((summary: ICredentialSummary) =>
+      .then(async (hash: string) => {
+        const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
+        toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialsBranding[0].localeBranding).then((summary: ICredentialSummary) =>
           dispatch({
             type: STORE_CREDENTIAL_SUCCESS,
             payload: summary,
           }),
-        ),
-      )
+        );
+      })
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
 };

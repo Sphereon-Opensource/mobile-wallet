@@ -23,25 +23,24 @@ export interface Props extends ICredentialSummary {
 }
 
 const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {showTime = false} = props;
-
+  const {branding, credentialStatus, expirationDate, issueDate, issuer, showTime = false, title} = props;
   return (
     <Container>
       <ContentTopContainer>
-        <TitleCaption numberOfLines={2}>{props.title}</TitleCaption>
+        <TitleCaption numberOfLines={2}>{branding?.alias || title}</TitleCaption>
         <CredentialStatusContainer>
-          <SSIStatusLabel status={props.credentialStatus} />
+          <SSIStatusLabel status={credentialStatus} />
         </CredentialStatusContainer>
       </ContentTopContainer>
       <ContentMiddleContainer>
-        <IssuerCaption>{props.issuer.alias.length <= 50 ? props.issuer.alias : `${props.issuer.alias.substring(0, 50)}...`}</IssuerCaption>
+        <IssuerCaption>{issuer.alias}</IssuerCaption>
       </ContentMiddleContainer>
       <ContentBottomContainer>
-        <IssueDateCaption>{showTime ? toLocalDateTimeString(props.issueDate) : toLocalDateString(props.issueDate)}</IssueDateCaption>
+        <IssueDateCaption>{showTime ? toLocalDateTimeString(issueDate) : toLocalDateString(issueDate)}</IssueDateCaption>
         <ExpirationDateCaption>
-          {props.expirationDate
+          {expirationDate
             ? `${translate('credentials_view_item_expires_on')} ${
-                showTime ? toLocalDateTimeString(props.expirationDate) : toLocalDateString(props.expirationDate)
+                showTime ? toLocalDateTimeString(expirationDate) : toLocalDateString(expirationDate)
               }`
             : translate('credential_status_never_expires_date_label')}
         </ExpirationDateCaption>
