@@ -23,6 +23,10 @@ export const removeCredentialBranding = async (args: IRemoveCredentialBrandingAr
 export const selectAppLocaleBranding = async (args: {
   localeBranding?: Array<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding>;
 }): Promise<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined> => {
+  if (!args) {
+    console.log('Locale branding was missing!')
+    return
+  }
   // We need to retrieve the locale of the app and select a matching branding or fallback on a branding without a locale
   // We search for a first match that starts with the app locale
   const appLocale: string = Localization.getLocale();

@@ -10,7 +10,7 @@ import {
     IssuerMetadataV1_0_08,
     MetadataDisplay
 } from '@sphereon/oid4vci-common';
-import {CredentialIssuer, CredentialResponse, EndpointMetadata, IssuanceInitiation, IssuerDisplay} from '@sphereon/openid4vci-client';
+import {CredentialResponse, EndpointMetadata} from '@sphereon/openid4vci-client';
 import {Format} from '@sphereon/pex-models';
 import {
     ConnectionTypeEnum,
@@ -56,7 +56,8 @@ import {
     IQrDidSiopAuthenticationRequest,
     IReadQrArgs,
     IServerMetadataAndCryptoMatchingResponse,
-    IVerificationResult,NavigationBarRoutesEnum,
+    IVerificationResult,
+    NavigationBarRoutesEnum,
     Oidc4vciErrorEnum,
     PopupImagesEnum,
     QrTypesEnum,
@@ -65,9 +66,9 @@ import {
 } from '../types';
 import {delay} from '../utils/AppUtils';
 import {translateCorrelationIdToName} from '../utils/CredentialUtils';
+import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 import {filterNavigationStack} from '../utils/NavigationUtils';
 import {showToast} from '../utils/ToastUtils';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 
 import {authenticate} from './authenticationService';
 import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
@@ -412,10 +413,13 @@ function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
-  const sendResponseOrCreateContact = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
-    const serverMetadata: EndpointMetadata = (await provider.getServerMetadataAndPerformCryptoMatching()).serverMetadata;
+  const sendResponseOrCreateContact = async (
+      provider: OpenId4VcIssuanceProvider,
+      metadata: IServerMetadataAndCryptoMatchingResponse
+  ): Promise<void> => {
+    const serverMetadata: EndpointMetadata = metadata.serverMetadata
     const url: URL = new URL(serverMetadata.issuer); // TODO fix non null assertion
-    const name: getName(serverMetadata., url);
+    const name: string = getName(metadata, url);
     getContacts({
       filter: [
         {
@@ -455,7 +459,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             },
           ],
           // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
-          onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider)),
+          onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider, metadata)),
         });
         filterNavigationStack({
           navigation: args.navigation,
@@ -463,22 +467,27 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           filter: [ScreenRoutesEnum.LOADING],
         });
       } else {
-        sendResponseOrSelectCredentials(provider, metadata.credentialsSupported);
+        sendResponseOrSelectCredentials(provider, metadata);
       }
     });
   };
 
-  const sendResponseOrSelectCredentials = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
-    const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
+  const sendResponseOrSelectCredentials = async (
+      provider: OpenId4VcIssuanceProvider,
+      metadata: IServerMetadataAndCryptoMatchingResponse,
+      ): Promise<void> => {
+    // const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
+      const credentialsSupported = metadata.credentialsSupported
     const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(
-      metadata.credentialsSupported.map(async (credentialMetadata: ICredentialMetadata) => ({
+      credentialsSupported?.map(async (credentialMetadata: CredentialSupported) => {
+          const credentialType = credentialMetadata.types.find(t => t !== 'VerifiableCredential') ?? 'VerifiableCredential'
+          return {
         id: uuidv4(),
-        credentialType: credentialMetadata.credentialType,
+        credentialType,
         credentialAlias:
-          (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialMetadata.credentialType)}))?.alias ||
-          credentialMetadata.credentialType,
+          (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialType)}))?.alias || credentialType,
         isSelected: false,
-      })),
+      }}),
     );
 
     if (credentialTypeSelection.length > 1) {
@@ -551,7 +560,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 }
                 const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
-                const issuerCorrelationId: string = new URL(metadata.serverMetadata.issuer).hostname;const contacts: Array<IContact> = await getContacts({
+                const issuerCorrelationId: string = new URL(metadata.serverMetadata.issuer).hostname;
+                const contacts: Array<IContact> = await getContacts({
                     filter: [
                         {
                             identities: {
@@ -660,7 +670,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         .then((provider: OpenId4VcIssuanceProvider) =>
             provider
                 .getServerMetadataAndPerformCryptoMatching()
-                .then(() => sendResponseOrCreateContact(provider)),
+                .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(provider, metadata)),
         )
         .catch((error: Error) => {
             console.log(`Unable to retrieve vc. Error: ${error}`);
