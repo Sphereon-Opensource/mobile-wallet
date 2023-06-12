@@ -4,7 +4,12 @@ import {
     VerifiedAuthorizationRequest
 } from '@sphereon/did-auth-siop';
 import {CredentialOfferClient} from '@sphereon/oid4vci-client';
-import {CredentialSupported} from '@sphereon/oid4vci-common';
+import {
+    CredentialIssuerMetadata,
+    CredentialSupported,
+    IssuerMetadataV1_0_08,
+    MetadataDisplay
+} from '@sphereon/oid4vci-common';
 import {Format} from '@sphereon/pex-models';
 import {
     ConnectionTypeEnum,
@@ -41,7 +46,6 @@ import store from '../store';
 import {addIdentity} from '../store/actions/contact.actions';
 import {storeVerifiableCredential} from '../store/actions/credential.actions';
 import {
-    ICredentialMetadata,
     ICredentialTypeSelection,
     IErrorDetails,
     IQrAuthentication,
@@ -99,7 +103,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
         debug(`Unable to parse QR value as URL. Error: ${error}`);
     }
 
-    if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
+    if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.startsWith(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
         return await parseOpenID4VCI(qrData).catch(error => {
             debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`)
             return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
@@ -128,11 +132,19 @@ const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
 };
 
 const parseOpenID4VCI = async (qrData: string): Promise<IQrData> => {
-    return Promise.resolve({
-        type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
-        credentialOffer: await CredentialOfferClient.fromURI(qrData),
-        uri: qrData,
-    });
+    if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
+        return Promise.resolve({
+            type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
+            credentialOffer: await CredentialOfferClient.fromURI(qrData),
+            uri: qrData,
+        });
+    } else {
+        return Promise.resolve({
+            type: QrTypesEnum.OPENID_CREDENTIAL_OFFER,
+            credentialOffer: await CredentialOfferClient.fromURI(qrData),
+            uri: qrData,
+        });
+    }
 };
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
@@ -145,6 +157,7 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
         case QrTypesEnum.SIOPV2:
         case QrTypesEnum.OPENID_VC:
             return connectSiopV2(args);
+        case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
         case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
             return connectOpenId4VcIssuance(args);
     }
@@ -373,12 +386,26 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
     // TODO WAL-301 need to send a response when we do not need a pin code
 };
 
+export function getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08, opts?: { prefLocales: string[] }): MetadataDisplay[] {
+    const matchedDisplays = metadata.display?.filter(item => !opts?.prefLocales || opts.prefLocales.length === 0 || (item.locale && opts.prefLocales.includes(item.locale)) || !item.locale) ?? []
+    return matchedDisplays.sort(item => item.locale ? (opts?.prefLocales.indexOf(item.locale) ?? 1) : Number.MAX_VALUE)
+}
 /**
  * TODO check again when WAL-617 is done to replace how we get the issuer name.
  */
 function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
-    return metadata?.serverMetadata?.issuerMetadata?.display?.filter(metadataDisplay => !(metadataDisplay.name))
-        .map(metadataDisplay => metadataDisplay.name) ?? url.hostname;
+    const displays = metadata.serverMetadata.issuerMetadata ? getIssuerDisplays(metadata.serverMetadata.issuerMetadata) : []
+    let name
+    for (const display of displays) {
+        if (display.name) {
+            name = display.name
+            break
+        }
+    }
+    if (!name) {
+        name = url.hostname
+    }
+    return name
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {

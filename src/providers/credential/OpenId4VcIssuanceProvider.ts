@@ -37,7 +37,7 @@ const {v4: uuidv4} = require('uuid');
 const debug = console.log(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
-export const vcFormatPreferences = ['jwt_vc', 'ldp_vc'];
+export const vcFormatPreferences = ['jwt_vc_json', 'jwt_vc', 'ldp_vc'];
 
 export type JsonLdSignatureSuite = 'Ed25519Signature2018' | 'EcdsaSecp256k1Signature2019' | 'Ed25519Signature2020' | 'JsonWebSignature2020'; //|
 // "JcsEd25519Signature2020"
@@ -202,11 +202,13 @@ class OpenId4VcIssuanceProvider {
 
     const callbacks: ProofOfPossessionCallbacks = {
       signCallback: (jwt: Jwt, kid?: string) => {
-        console.log(`header: ${JSON.stringify({...jwt.header, typ: 'JWT', kid})}`);
+        console.log(`header: ${JSON.stringify({...jwt.header, kid})}`);
         console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
         return signJWT({
           identifier,
-          header: {...jwt.header, typ: 'JWT', kid},
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          header: {...jwt.header, kid},
           payload: {...jwt.payload},
           // TODO fix non null assertion
           options: {issuer: jwt.payload.iss!, expiresIn: jwt.payload.exp, canonicalize: false},
@@ -308,7 +310,7 @@ class OpenId4VcIssuanceProvider {
       if (format === credentialSupported.format) {
         const credentialFormat = credentialSupported.format;
         console.log(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
-        return           credentialFormat;
+        return credentialFormat;
       } else {
         console.log(`Credential format ${format} not supported by issuer`);
       }
