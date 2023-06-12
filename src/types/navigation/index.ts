@@ -1,5 +1,5 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk-data-store';
+import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 

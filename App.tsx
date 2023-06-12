@@ -56,6 +56,7 @@ export default function App() {
   useEffect(() => {
     const intentHandler: IntentHandler = new IntentHandler()
     const lockingHandler: LockingHandler = new LockingHandler();
+
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {

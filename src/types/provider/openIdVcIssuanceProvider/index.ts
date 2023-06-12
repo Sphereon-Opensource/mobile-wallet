@@ -5,6 +5,7 @@ import {
 import {TKeyType} from '@veramo/core';
 
 import {SupportedDidMethodEnum} from '../../did';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 
 export interface IGetIssuanceInitiationFromUriArgs {
   uri: string;
@@ -57,4 +58,5 @@ export interface IServerMetadataAndCryptoMatchingResponse {
   serverMetadata: EndpointMetadata;
   issuanceOpts: Array<IIssuanceOpts>;
   credentialsSupported: Array<CredentialSupported>;
+  credentialBranding: Map<string, Array<IBasicCredentialLocaleBranding>>;
 }

@@ -12,9 +12,9 @@ import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
-import {toNonPersistedCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
-const debug = Debug(`${APP_ID}:IntentHandler`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class IntentHandler {
   private deeplinkListener: EmitterSubscription;

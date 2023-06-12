@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {IContact} from '@sphereon/ssi-sdk-data-store';
+import {IContact} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';

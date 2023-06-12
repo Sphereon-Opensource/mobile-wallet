@@ -10,6 +10,7 @@ import {
     IssuerMetadataV1_0_08,
     MetadataDisplay
 } from '@sphereon/oid4vci-common';
+import {CredentialIssuer, CredentialResponse, EndpointMetadata, IssuanceInitiation, IssuerDisplay} from '@sphereon/openid4vci-client';
 import {Format} from '@sphereon/pex-models';
 import {
     ConnectionTypeEnum,
@@ -20,7 +21,7 @@ import {
     IdentityRoleEnum,
     IDidAuthConfig,
     IIdentity,
-} from '@sphereon/ssi-sdk-data-store';
+} from '@sphereon/ssi-sdk.data-store';
 import {
     CredentialMapper,
     IVerifiableCredential,
@@ -31,6 +32,7 @@ import {
 import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
 import {VerifiableCredential} from '@veramo/core';
 import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
+import {computeEntryHash} from '@veramo/utils';
 import Debug from 'debug';
 import {URL} from 'react-native-url-polyfill';
 
@@ -54,7 +56,7 @@ import {
     IQrDidSiopAuthenticationRequest,
     IReadQrArgs,
     IServerMetadataAndCryptoMatchingResponse,
-    NavigationBarRoutesEnum,
+    IVerificationResult,NavigationBarRoutesEnum,
     Oidc4vciErrorEnum,
     PopupImagesEnum,
     QrTypesEnum,
@@ -65,15 +67,16 @@ import {delay} from '../utils/AppUtils';
 import {translateCorrelationIdToName} from '../utils/CredentialUtils';
 import {filterNavigationStack} from '../utils/NavigationUtils';
 import {showToast} from '../utils/ToastUtils';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 
 import {authenticate} from './authenticationService';
+import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
 import {getContacts} from './contactService';
 import {verifyCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const {v4: uuidv4} = require('uuid');
-const debug = Debug(`${APP_ID}:qrService`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:qrService`);
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
     parseQr(args.qrData)
@@ -409,110 +412,99 @@ function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
 }
 
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
-    const sendResponseOrCreateContact = async (
-        provider: OpenId4VcIssuanceProvider,
-        metadata: IServerMetadataAndCryptoMatchingResponse,
-    ): Promise<void> => {
-        const url: URL = new URL(metadata.serverMetadata.issuer);
-        const name = getName(metadata, url);
-        getContacts({
-            filter: [
-                {
-                    identities: {
-                        identifier: {
-                            correlationId: url.hostname,
-                        },
-                    },
+  const sendResponseOrCreateContact = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
+    const serverMetadata: EndpointMetadata = (await provider.getServerMetadataAndPerformCryptoMatching()).serverMetadata;
+    const url: URL = new URL(serverMetadata.issuer); // TODO fix non null assertion
+    const name: getName(serverMetadata., url);
+    getContacts({
+      filter: [
+        {
+          identities: {
+            identifier: {
+              correlationId: url.hostname,
+            },
+          },
+        },
+      ],
+    }).then((contacts: Array<IContact>) => {
+      if (contacts.length === 0) {
+        args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
+          name,
+          uri: `${url.protocol}//${url.hostname}`,
+          identities: [
+            {
+              alias: url.hostname,
+              roles: [IdentityRoleEnum.ISSUER],
+              identifier: {
+                type: CorrelationIdentifierEnum.URL,
+                correlationId: url.hostname,
+              },
+              // TODO WAL-476 add support for correct connection
+              connection: {
+                type: ConnectionTypeEnum.OPENID_CONNECT,
+                config: {
+                  clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
+                  clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+                  scopes: ['auth'],
+                  issuer: 'https://example.com/app-test',
+                  redirectUrl: 'app:/callback',
+                  dangerouslyAllowInsecureHttpRequests: true,
+                  clientAuthMethod: 'post' as const,
                 },
-            ],
-        }).then((contacts: Array<IContact>) => {
-            if (contacts.length === 0) {
-                args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-                    name,
-                    uri: `${url.protocol}//${url.hostname}`,
-                    identities: [
-                        {
-                            alias: url.hostname,
-                            roles: [IdentityRoleEnum.ISSUER],
-                            identifier: {
-                                type: CorrelationIdentifierEnum.URL,
-                                correlationId: url.hostname,
-                            },
-                            // TODO WAL-476 add support for correct connection
-                            connection: {
-                                type: ConnectionTypeEnum.OPENID_CONNECT,
-                                config: {
-                                    clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
-                                    clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
-                                    scopes: ['auth'],
-                                    issuer: 'https://example.com/app-test',
-                                    redirectUrl: 'app:/callback',
-                                    dangerouslyAllowInsecureHttpRequests: true,
-                                    clientAuthMethod: 'post' as const,
-                                },
-                            },
-                        },
-                    ],
-                    // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
-                    onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider, metadata.credentialsSupported)),
-                });
-                filterNavigationStack({
-                    navigation: args.navigation,
-                    stack: NavigationBarRoutesEnum.QR,
-                    filter: [ScreenRoutesEnum.LOADING],
-                });
-            } else {
-                sendResponseOrSelectCredentials(provider, metadata.credentialsSupported);
-            }
+              },
+            },
+          ],
+          // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
+          onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider)),
         });
-    };
+        filterNavigationStack({
+          navigation: args.navigation,
+          stack: NavigationBarRoutesEnum.QR,
+          filter: [ScreenRoutesEnum.LOADING],
+        });
+      } else {
+        sendResponseOrSelectCredentials(provider, metadata.credentialsSupported);
+      }
+    });
+  };
 
-    const sendResponseOrSelectCredentials = async (
-        provider: OpenId4VcIssuanceProvider,
-        credentialsSupported: Array<CredentialSupported>,
-    ): Promise<void> => {
-        const credentialTypes: Array<ICredentialTypeSelection> = credentialsSupported.flatMap((credentialMetadata: CredentialSupported) => {
-            const types: ICredentialTypeSelection[] = []
-            credentialMetadata.types.filter(type => type !== 'VerifiableCredential').forEach(type => types.push({
-                id: uuidv4(),
-                credentialType: type,
-                isSelected: true,
-            }))
-            return types
-        })
+  const sendResponseOrSelectCredentials = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
+    const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
+    const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(
+      metadata.credentialsSupported.map(async (credentialMetadata: ICredentialMetadata) => ({
+        id: uuidv4(),
+        credentialType: credentialMetadata.credentialType,
+        credentialAlias:
+          (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialMetadata.credentialType)}))?.alias ||
+          credentialMetadata.credentialType,
+        isSelected: false,
+      })),
+    );
 
-        if (credentialTypes.length > 1) {
-            args.navigation.navigate(NavigationBarRoutesEnum.QR, {
-                screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
-                params: {
-                    issuer: translateCorrelationIdToName(new URL(args.qrData.credentialOffer.issuanceInitiationRequest.issuer).hostname),
-                    credentialTypes: credentialsSupported.flatMap((credentialMetadata: CredentialSupported) => (
-                            credentialMetadata.types.filter(type => type !== 'VerifiableCredential').map((type) => {
-                                return {
-                                    id: uuidv4(),
-                                    credentialType: type
-                                }
-                            })
-                        )
-                    ),
-                    onSelect: async (credentialTypes: Array<string>) => {
-                        args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
-                        await sendResponseOrAuthenticate(provider, credentialTypes);
-                    },
-                },
-            });
-            filterNavigationStack({
-                navigation: args.navigation,
-                stack: NavigationBarRoutesEnum.QR,
-                filter: [ScreenRoutesEnum.LOADING],
-            });
-        } else {
-            await sendResponseOrAuthenticate(
-                provider,
-                credentialTypes.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType),
-            );
-        }
-    };
+    if (credentialTypeSelection.length > 1) {
+      args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
+        params: {
+          issuer: translateCorrelationIdToName(new URL(args.qrData.issuanceInitiation.issuanceInitiationRequest.issuer).hostname),
+          credentialTypes: credentialTypeSelection,
+          onSelect: async (credentialTypes: Array<string>) => {
+            args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
+            await sendResponseOrAuthenticate(provider, credentialTypes);
+          },
+        },
+      });
+      filterNavigationStack({
+        navigation: args.navigation,
+        stack: NavigationBarRoutesEnum.QR,
+        filter: [ScreenRoutesEnum.LOADING],
+      });
+    } else {
+      await sendResponseOrAuthenticate(
+        provider,
+        credentialTypeSelection.map((credentialSelection: ICredentialTypeSelection) => credentialSelection.credentialType),
+      );
+    }
+  };
 
     const sendResponseOrAuthenticate = async (provider: OpenId4VcIssuanceProvider, credentials: Array<string>): Promise<void> => {
         if (args.qrData.credentialOffer.userPinRequired) {
@@ -541,10 +533,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
                 // TODO only supporting one credential for now
                 console.log(`# Credential responses: ${credentialResponses.length}`)
-                const credentialResponse = credentialResponses[0];
-                const origVC = credentialResponse.credentialResponse.credential;
+                const credentialResponse: CredentialResponse = credentialResponses[0];
+                const origVC: W3CVerifiableCredential = credentialResponse.credentialResponse.credential;
                 const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC as OriginalVerifiableCredential);
-                const verificationResult = await verifyCredential({
+                const verificationResult: IVerificationResult = await verifyCredential({
                     credential: origVC as VerifiableCredential | CompactJWT,
                     fetchRemoteContexts: true,
                     policies: {credentialStatus: false, expirationDate: false, issuanceDate: false},
@@ -559,12 +551,12 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 }
                 const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
-                const contacts: Array<IContact> = await getContacts({
+                const issuerCorrelationId: string = new URL(metadata.serverMetadata.issuer).hostname;const contacts: Array<IContact> = await getContacts({
                     filter: [
                         {
                             identities: {
                                 identifier: {
-                                    correlationId: new URL(metadata.serverMetadata.issuer).hostname,
+                                    correlationId: issuerCorrelationId,
                                 },
                             },
                         },
@@ -598,22 +590,25 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                     params: {
                         headerTitle: translate('credential_offer_title'),
                         rawCredential,
-                        credential: await toNonPersistedCredentialSummary(uniformVC),
+                        credential: await toNonPersistedCredentialSummary(uniformVC, metadata.credentialBranding.get(credentialTypes[0])), // TODO only supporting one credential for now
                         primaryAction: {
                             caption: translate('action_accept_label'),
                             onPress: async () =>
-                                storeCredential(rawCredential)
-                                    .then(() =>
+                                addCredentialBranding({
+                  vcHash: computeEntryHash(rawCredential),
+                  issuerCorrelationId,
+                  localeBranding: metadata.credentialBranding.get(credentialTypes[0])!, // TODO only supporting one credential for now
+                })
+                  .then(() => storeCredential(rawCredential))
+                                    .then(() =>{
                                         args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
                                             screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                                        }),
-                                    )
-                                    .then(() =>
+                                        });
                                         showToast(ToastTypeEnum.TOAST_SUCCESS, {
                                             message: translate('credential_offer_accepted_toast'),
                                             showBadge: false,
-                                        }),
-                                    )
+                                        });
+                                    })
                                     .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
                         },
                         secondaryAction: {
@@ -665,7 +660,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         .then((provider: OpenId4VcIssuanceProvider) =>
             provider
                 .getServerMetadataAndPerformCryptoMatching()
-                .then((metadata: IServerMetadataAndCryptoMatchingResponse) => sendResponseOrCreateContact(provider, metadata)),
+                .then(() => sendResponseOrCreateContact(provider)),
         )
         .catch((error: Error) => {
             console.log(`Unable to retrieve vc. Error: ${error}`);

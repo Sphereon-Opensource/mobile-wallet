@@ -1,6 +1,4 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
-import {ContactManager, IContactManager} from '@sphereon/ssi-sdk-contact-manager';
-import {ContactStore} from '@sphereon/ssi-sdk-data-store';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
 import {getDidJwkResolver, JwkDIDProvider} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-lto-did-provider';
@@ -12,6 +10,9 @@ import {
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk-vc-handler-ld-local';
+import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
+import {ContactStore, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
+import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
@@ -88,7 +89,8 @@ const agent = createAgent<
     IContactManager &
     ICredentialPlugin &
     ICredentialIssuer &
-    ICredentialHandlerLDLocal
+    ICredentialHandlerLDLocal &
+    IIssuanceBranding
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -110,6 +112,9 @@ const agent = createAgent<
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection),
+    }),
+    new IssuanceBranding({
+      store: new IssuanceBrandingStore(dbConnection),
     }),
     new CredentialPlugin(),
     new CredentialHandlerLDLocal({
@@ -138,7 +143,6 @@ export const cmAddContact = agent.cmAddContact;
 export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
-export const cmGetIdentities = agent.cmGetIdentities;
 export const didManagerGet = agent.didManagerGet;
 export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials;
 export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential;
@@ -146,6 +150,11 @@ export const keyManagerSign = agent.keyManagerSign;
 export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential;
 export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential;
 export const createVerifiableCredential = agent.createVerifiableCredential;
+export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
+export const ibGetCredentialBranding = agent.ibGetCredentialBranding;
+export const ibCredentialLocaleBrandingFrom = agent.ibCredentialLocaleBrandingFrom;
+export const ibRemoveCredentialBranding = agent.ibRemoveCredentialBranding;
+
 export default agent;
 
 export const agentContext = {...agent.context, agent};

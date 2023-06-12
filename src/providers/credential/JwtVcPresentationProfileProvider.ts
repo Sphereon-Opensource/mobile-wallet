@@ -7,7 +7,7 @@ import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
 import {QrTypesEnum} from '../../types';
 
-const debug = Debug(`${APP_ID}:jwt`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:jwt`);
 
 class JwtVcPresentationProfileProvider {
   public getUrl = async (uri: string): Promise<string> => {

@@ -1,4 +1,5 @@
 import {CredentialSupported} from '@sphereon/oid4vci-common';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 import {LabelStatus} from '../component';
@@ -29,6 +30,7 @@ export interface ICredentialSummary {
   issueDate: number;
   expirationDate: number;
   properties: ICredentialDetailsRow[];
+  branding?: IBasicCredentialLocaleBranding;
 }
 
 // TODO create proper interface for credential summary / info
@@ -52,6 +54,7 @@ export interface ICredentialDetailsRow {
 export interface ICredentialTypeSelection {
   id: string;
   credentialType: string;
+  credentialAlias: string;
   isSelected: boolean;
 }
 

@@ -7,7 +7,7 @@ import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
-const debug = Debug(`${APP_ID}:IntentHandler`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class LockingHandler {
   private lockingEventListener: NativeEventSubscription | EmitterSubscription;

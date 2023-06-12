@@ -4,7 +4,7 @@ import {backgrounds} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 
 export const SSIImageFieldContainerStyled = styled.View`
-  width: 100%;
+  flex: 0;
   padding: 2px 24px 4px 0px;
 `;
 
