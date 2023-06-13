@@ -3,25 +3,26 @@ import {
     RPRegistrationMetadataPayload,
     VerifiedAuthorizationRequest
 } from '@sphereon/did-auth-siop';
-import {CredentialOfferClient} from '@sphereon/oid4vci-client';
+import {CredentialOfferClient, } from '@sphereon/oid4vci-client';
 import {
     CredentialIssuerMetadata,
+    CredentialResponse,
     CredentialSupported,
+    EndpointMetadata,
     IssuerMetadataV1_0_08,
     MetadataDisplay
 } from '@sphereon/oid4vci-common';
-import {CredentialResponse, EndpointMetadata} from '@sphereon/openid4vci-client';
 import {Format} from '@sphereon/pex-models';
 import {
-    ConnectionTypeEnum,
-    CorrelationIdentifierEnum,
-    IBasicConnection,
-    IBasicIdentity,
-    IContact,
-    IdentityRoleEnum,
-    IDidAuthConfig,
-    IIdentity,
-} from '@sphereon/ssi-sdk.data-store';
+  ConnectionTypeEnum,
+  CorrelationIdentifierEnum,
+  IBasicConnection, IBasicCredentialLocaleBranding,
+  IBasicIdentity,
+  IContact,
+  IdentityRoleEnum,
+  IDidAuthConfig,
+  IIdentity
+} from '@sphereon/ssi-sdk.data-store'
 import {
     CredentialMapper,
     IVerifiableCredential,
@@ -66,9 +67,9 @@ import {
 } from '../types';
 import {delay} from '../utils/AppUtils';
 import {translateCorrelationIdToName} from '../utils/CredentialUtils';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 import {filterNavigationStack} from '../utils/NavigationUtils';
 import {showToast} from '../utils/ToastUtils';
+import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 
 import {authenticate} from './authenticationService';
 import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
@@ -480,13 +481,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       const credentialsSupported = metadata.credentialsSupported
     const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(
       credentialsSupported?.map(async (credentialMetadata: CredentialSupported) => {
-          const credentialType = credentialMetadata.types.find(t => t !== 'VerifiableCredential') ?? 'VerifiableCredential'
-          return {
-        id: uuidv4(),
-        credentialType,
-        credentialAlias:
-          (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialType)}))?.alias || credentialType,
-        isSelected: false,
+        // FIXME this allows for duplicate VerifiableCredential, which the user has no idea which ones those are and we also have a branding map with unique keys, so some branding will not match
+        const credentialType = credentialMetadata.types.find(t => t !== 'VerifiableCredential') ?? 'VerifiableCredential'
+        return {
+          id: uuidv4(),
+          credentialType,
+          credentialAlias: (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialType)}))?.alias || credentialType,
+          isSelected: false,
       }}),
     );
 
@@ -538,12 +539,12 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     const sendResponse = async (provider: OpenId4VcIssuanceProvider, credentialTypes: Array<string>, pin?: string): Promise<void> =>
         provider
             .getCredentialsFromIssuance({pin, credentials: credentialTypes})
-            .then(async (credentialResponses: Array<CredentialFromOffer>) => {
-                const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
+            .then(async (credentialOffers: Array<CredentialFromOffer>) => {
+
+              const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
                 // TODO only supporting one credential for now
-                console.log(`# Credential responses: ${credentialResponses.length}`)
-                const credentialResponse: CredentialResponse = credentialResponses[0];
-                const origVC: W3CVerifiableCredential = credentialResponse.credentialResponse.credential;
+                const credentialResponse: CredentialResponse = credentialOffers[0].credentialResponse;
+                const origVC: W3CVerifiableCredential| undefined = credentialResponse.credential;
                 const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC as OriginalVerifiableCredential);
                 const verificationResult: IVerificationResult = await verifyCredential({
                     credential: origVC as VerifiableCredential | CompactJWT,
@@ -590,36 +591,41 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                     }
                 }
 
-                const rawCredential: VerifiableCredential = credentialResponse.credentialResponse.credential as unknown as VerifiableCredential;
+                const rawCredential: VerifiableCredential = credentialResponse.credential as unknown as VerifiableCredential;
                 // TODO fix the store not having the correct action types (should include ThunkAction)
                 const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
 
+              const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = metadata.credentialBranding.get(credentialTypes[0]) // TODO only supporting one credential for now
                 // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
                 args.navigation.navigate(NavigationBarRoutesEnum.QR, {
                     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
                     params: {
                         headerTitle: translate('credential_offer_title'),
                         rawCredential,
-                        credential: await toNonPersistedCredentialSummary(uniformVC, metadata.credentialBranding.get(credentialTypes[0])), // TODO only supporting one credential for now
+                        credential: await toNonPersistedCredentialSummary(uniformVC, localeBranding),
                         primaryAction: {
                             caption: translate('action_accept_label'),
-                            onPress: async () =>
-                                addCredentialBranding({
-                  vcHash: computeEntryHash(rawCredential),
-                  issuerCorrelationId,
-                  localeBranding: metadata.credentialBranding.get(credentialTypes[0])!, // TODO only supporting one credential for now
-                })
-                  .then(() => storeCredential(rawCredential))
-                                    .then(() =>{
-                                        args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                                            screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                                        });
-                                        showToast(ToastTypeEnum.TOAST_SUCCESS, {
-                                            message: translate('credential_offer_accepted_toast'),
-                                            showBadge: false,
-                                        });
-                                    })
-                                    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
+                            onPress: async () => {
+                              if (localeBranding && localeBranding.length > 0) {
+                                await addCredentialBranding({
+                                  vcHash: computeEntryHash(rawCredential),
+                                  issuerCorrelationId,
+                                  localeBranding,
+                                })
+                              }
+
+                              storeCredential(rawCredential)
+                              .then(() =>{
+                                args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                                  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                                });
+                                showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                                  message: translate('credential_offer_accepted_toast'),
+                                  showBadge: false,
+                                });
+                              })
+                              .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}))
+                            }
                         },
                         secondaryAction: {
                             caption: translate('action_decline_label'),
