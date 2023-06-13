@@ -6,10 +6,10 @@ import {
   CredentialSupported,
   EndpointMetadata,
   Jwt,
+  MetadataDisplay,
   OID4VCICredentialFormat,
-  ProofOfPossessionCallbacks
+  ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
-import {CredentialDisplay} from '@sphereon/openid4vci-client/dist/main/lib/types/OpenID4VCIServerMetadata';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
@@ -23,7 +23,6 @@ import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
   IErrorDetails,
-  IGetCredentialArgs,
   IGetCredentialsArgs,
   IGetIssuanceInitiationFromUriArgs,
   IIssuanceOpts,
@@ -255,16 +254,20 @@ class OpenId4VcIssuanceProvider {
     if (!this.credentialBranding) {
       this.credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
       await Promise.all(
-        this.credentialsSupported.map(async (metadata: ICredentialMetadata): Promise<void> => {
+        this.credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
           const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
             (metadata.display ?? []).map(
-              async (display: CredentialDisplay): Promise<IBasicCredentialLocaleBranding> =>
+              async (display: MetadataDisplay): Promise<IBasicCredentialLocaleBranding> =>
                 await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)}),
             ),
           );
 
+          const credentialTypes: Array<string> = metadata.types.length > 1
+            ? metadata.types.filter((type: string) => type !== 'VerifiableCredential')
+            : metadata.types
+
           if (this.credentialBranding) {
-            this.credentialBranding.set(metadata.credentialType, localeBranding);
+            this.credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
           }
         }),
       );
