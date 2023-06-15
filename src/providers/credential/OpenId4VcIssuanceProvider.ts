@@ -264,7 +264,7 @@ class OpenId4VcIssuanceProvider {
 
           const credentialTypes: Array<string> = metadata.types.length > 1
             ? metadata.types.filter((type: string) => type !== 'VerifiableCredential')
-            : metadata.types
+            : metadata.types.lenght === 0 ? ['VerifiableCredential'] : metadata.types
 
           if (this.credentialBranding) {
             this.credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
