@@ -56,8 +56,8 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
       .then(async (hash: string) => {
-        const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
-        toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialsBranding[0].localeBranding).then((summary: ICredentialSummary) =>
+        const credentialBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
+        toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding).then((summary: ICredentialSummary) =>
           dispatch({
             type: STORE_CREDENTIAL_SUCCESS,
             payload: summary,
