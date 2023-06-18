@@ -1,22 +1,23 @@
 import {
-    PresentationDefinitionWithLocation,
-    RPRegistrationMetadataPayload,
-    VerifiedAuthorizationRequest
-} from '@sphereon/did-auth-siop';
-import {CredentialOfferClient, } from '@sphereon/oid4vci-client';
+  PresentationDefinitionWithLocation,
+  RPRegistrationMetadataPayload,
+  VerifiedAuthorizationRequest
+} from '@sphereon/did-auth-siop'
+import { CredentialOfferClient } from '@sphereon/oid4vci-client'
 import {
-    CredentialIssuerMetadata,
-    CredentialResponse,
-    CredentialSupported,
-    EndpointMetadata,
-    IssuerMetadataV1_0_08,
-    MetadataDisplay
-} from '@sphereon/oid4vci-common';
-import {Format} from '@sphereon/pex-models';
+  CredentialIssuerMetadata,
+  CredentialResponse,
+  CredentialSupported,
+  EndpointMetadata,
+  IssuerMetadataV1_0_08,
+  MetadataDisplay
+} from '@sphereon/oid4vci-common'
+import { Format } from '@sphereon/pex-models'
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
-  IBasicConnection, IBasicCredentialLocaleBranding,
+  IBasicConnection,
+  IBasicCredentialLocaleBranding,
   IBasicIdentity,
   IContact,
   IdentityRoleEnum,
@@ -24,58 +25,62 @@ import {
   IIdentity
 } from '@sphereon/ssi-sdk.data-store'
 import {
-    CredentialMapper,
-    IVerifiableCredential,
-    OriginalVerifiableCredential,
-    W3CVerifiableCredential,
-    WrappedVerifiableCredential,
-} from '@sphereon/ssi-types';
-import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
-import {VerifiableCredential} from '@veramo/core';
-import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
-import {computeEntryHash} from '@veramo/utils';
-import Debug from 'debug';
-import {URL} from 'react-native-url-polyfill';
+  CredentialMapper,
+  IVerifiableCredential,
+  OriginalVerifiableCredential,
+  W3CVerifiableCredential,
+  WrappedVerifiableCredential
+} from '@sphereon/ssi-types'
+import { IIssuer } from '@sphereon/ssi-types/src/types/vc'
+import { VerifiableCredential } from '@veramo/core'
+import { CompactJWT } from '@veramo/core/src/types/vc-data-model'
+import { computeEntryHash } from '@veramo/utils'
+import Debug from 'debug'
+import { URL } from 'react-native-url-polyfill'
 
-import {APP_ID} from '../@config/constants';
-import {translate} from '../localization/Localization';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../providers/authentication/SIOPv2Provider';
-import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import OpenId4VcIssuanceProvider, {
-    CredentialFromOffer,
-    IErrorDetailsOpts
-} from '../providers/credential/OpenId4VcIssuanceProvider';
-import store from '../store';
-import {addIdentity} from '../store/actions/contact.actions';
-import {storeVerifiableCredential} from '../store/actions/credential.actions';
+import { APP_ID } from '../@config/constants'
+import { translate } from '../localization/Localization'
 import {
-    ICredentialTypeSelection,
-    IErrorDetails,
-    IQrAuthentication,
-    IQrData,
-    IQrDataArgs,
-    IQrDidSiopAuthenticationRequest,
-    IReadQrArgs,
-    IServerMetadataAndCryptoMatchingResponse,
-    IVerificationResult,
-    NavigationBarRoutesEnum,
-    Oidc4vciErrorEnum,
-    PopupImagesEnum,
-    QrTypesEnum,
-    ScreenRoutesEnum,
-    ToastTypeEnum,
-} from '../types';
-import {delay} from '../utils/AppUtils';
-import {translateCorrelationIdToName} from '../utils/CredentialUtils';
-import {filterNavigationStack} from '../utils/NavigationUtils';
-import {showToast} from '../utils/ToastUtils';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
+  siopGetRequest,
+  siopSendAuthorizationResponse
+} from '../providers/authentication/SIOPv2Provider'
+import JwtVcPresentationProfileProvider
+  from '../providers/credential/JwtVcPresentationProfileProvider'
+import OpenId4VcIssuanceProvider, {
+  CredentialFromOffer,
+  IErrorDetailsOpts
+} from '../providers/credential/OpenId4VcIssuanceProvider'
+import store from '../store'
+import { addIdentity } from '../store/actions/contact.actions'
+import { storeVerifiableCredential } from '../store/actions/credential.actions'
+import {
+  ICredentialTypeSelection,
+  IErrorDetails,
+  IQrAuthentication,
+  IQrData,
+  IQrDataArgs,
+  IQrDidSiopAuthenticationRequest,
+  IReadQrArgs,
+  IServerMetadataAndCryptoMatchingResponse,
+  IVerificationResult,
+  NavigationBarRoutesEnum,
+  Oidc4vciErrorEnum,
+  PopupImagesEnum,
+  QrTypesEnum,
+  ScreenRoutesEnum,
+  ToastTypeEnum
+} from '../types'
+import { delay } from '../utils/AppUtils'
+import { translateCorrelationIdToName } from '../utils/CredentialUtils'
+import { filterNavigationStack } from '../utils/NavigationUtils'
+import { showToast } from '../utils/ToastUtils'
+import { toNonPersistedCredentialSummary } from '../utils/mappers/credential/CredentialMapper'
 
-import {authenticate} from './authenticationService';
-import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
-import {getContacts} from './contactService';
-import {verifyCredential} from './credentialService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
+import { authenticate } from './authenticationService'
+import { addCredentialBranding, selectAppLocaleBranding } from './brandingService'
+import { getContacts } from './contactService'
+import { verifyCredential } from './credentialService'
+import { getOrCreatePrimaryIdentifier } from './identityService'
 
 const {v4: uuidv4} = require('uuid');
 const debug: Debug.Debugger = Debug(`${APP_ID}:qrService`);
@@ -457,6 +462,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
               },
             },
           ],
+          onDecline: () => {
+            // TODO WAL-541 fix navigation hierarchy
+            args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+          },
           // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
           onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider)),
         });
@@ -485,7 +494,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           isSelected: false,
       }}),
     );
-    console.log(`SELECTION ${JSON.stringify(credentialTypeSelection)}`)
 
     if (credentialTypeSelection.length > 1) {
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -569,7 +577,9 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                     ],
                 });
                 if (contacts.length === 1) {
-                    const correlationId: string = (uniformVC.issuer as IIssuer).id;
+                  const correlationId: string = typeof uniformVC.issuer === 'string'
+                    ? uniformVC.issuer
+                    : (uniformVC.issuer as IIssuer).id;
                     const identity: IBasicIdentity = {
                         alias: correlationId,
                         roles: [IdentityRoleEnum.ISSUER],
@@ -583,6 +593,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                     );
                     if (!hasIdentity) {
                         store.dispatch<any>(addIdentity({contactId: contacts[0].id, identity}));
+                        await delay(1000)
                     }
                 }
 
@@ -624,14 +635,18 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                         },
                         secondaryAction: {
                             caption: translate('action_decline_label'),
-                            onPress: async () => args.navigation.goBack(),
+                            onPress: async () => {
+                              args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                                screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                              });
+                            },
                         },
                     },
                 });
                 filterNavigationStack({
                     navigation: args.navigation,
                     stack: NavigationBarRoutesEnum.QR,
-                    filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE],
+                    filter: [ScreenRoutesEnum.LOADING, ScreenRoutesEnum.VERIFICATION_CODE, ScreenRoutesEnum.CONTACT_ADD],
                 });
             })
             .catch((error: Error) => {

@@ -100,13 +100,15 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onDecline = async (): Promise<void> => {
+    const {onDecline} = this.props.route.params;
+
     Keyboard.dismiss();
     this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_add_cancel_title'),
       details: translate('contact_add_cancel_message'),
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: async () => this.props.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+        onPress: onDecline
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
