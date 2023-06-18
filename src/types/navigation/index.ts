@@ -114,6 +114,7 @@ export interface IContactAddProps {
   name: string;
   uri?: string;
   identities?: Array<IBasicIdentity>;
+  onDecline: () => Promise<void>;
   onCreate: () => Promise<void>;
 }
 
