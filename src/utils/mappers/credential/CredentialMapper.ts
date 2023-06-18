@@ -127,8 +127,6 @@ export const toCredentialSummary = async (
       ? translateCorrelationIdToName(verifiableCredential.issuer)
       : translateCorrelationIdToName(verifiableCredential.issuer?.id);
 
-  console.log(`CRED MAPPING ISSUER NAME: ${issuerAlias}`)
-
   const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
 
   return {
