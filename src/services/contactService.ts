@@ -1,22 +1,12 @@
-import {IRemoveContactArgs} from '@sphereon/ssi-sdk-contact-manager';
-import {
-  BasicCorrelationIdentifier,
-  BasicMetadataItem,
-  IBasicConnection,
-  IBasicIdentity,
-  IContact,
-  IdentityRoleEnum,
-  IIdentity,
-} from '@sphereon/ssi-sdk-data-store';
+import {IRemoveContactArgs} from '@sphereon/ssi-sdk.contact-manager';
+import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {cmAddContact, cmAddIdentity, cmGetContacts, cmGetIdentities, cmRemoveContact, cmUpdateContact} from '../agent';
-import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IGetIdentitiesArgs, IUpdateContactArgs} from '../types';
+import {cmAddContact, cmAddIdentity, cmGetContacts, cmRemoveContact, cmUpdateContact} from '../agent';
+import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IUpdateContactArgs} from '../types';
 
-const {v4: uuidv4} = require('uuid');
-
-const debug = Debug(`${APP_ID}:contactService`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:contactService`);
 
 export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IContact>> => {
   debug(`getContacts(${JSON.stringify(args)})...`);
@@ -61,25 +51,4 @@ export const addIdentity = async (args: IAddIdentityArgs): Promise<IIdentity> =>
       return identity;
     })
     .catch((error: Error) => Promise.reject(Error(`Unable to add identity to contact ${args.contactId}. Error: ${error}`)));
-};
-
-export const getIdentities = async (args?: IGetIdentitiesArgs): Promise<Array<IIdentity>> => {
-  debug(`getIdentities(${JSON.stringify(args)})...`);
-  return await cmGetIdentities(args);
-};
-
-export const identityFrom = (args: {
-  alias: string;
-  roles: Array<IdentityRoleEnum>;
-  identifier: BasicCorrelationIdentifier;
-  connection?: IBasicConnection;
-  metadata?: Array<BasicMetadataItem>;
-}): IBasicIdentity => {
-  return {
-    alias: args.alias,
-    roles: args.roles,
-    identifier: args.identifier,
-    connection: args.connection,
-    metadata: args.metadata ? args.metadata.map((item: BasicMetadataItem) => ({...item, id: uuidv4()})) : [],
-  };
 };

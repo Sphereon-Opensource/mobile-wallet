@@ -1,4 +1,4 @@
-import {IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
+import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';

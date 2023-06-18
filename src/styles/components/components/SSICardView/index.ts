@@ -14,8 +14,6 @@ export const SSICardViewHeaderContainerStyled = styled(SSIFlexDirectionRowViewSt
   margin-top: 16px;
 `;
 
-// TODO we need a width for the image to actually show something
-//  width: 100%
 export const SSICardViewHeaderLogoContainerStyled = styled.View`
   margin-left: 9px;
   margin-right: 12px;

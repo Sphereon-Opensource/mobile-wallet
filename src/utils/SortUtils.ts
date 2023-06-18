@@ -1,7 +1,4 @@
-export enum SortOrder {
-  ASC = 'asc',
-  DESC = 'desc',
-}
+import {SortOrder} from '../types';
 
 export function sortBy<T>(key: keyof T, order: SortOrder) {
   return function (a: T, b: T) {

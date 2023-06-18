@@ -1,11 +1,13 @@
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {ICredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
 
-import {ICredentialDetailsRow, ICredentialSummary} from '../../types';
-import {getCredentialStatus, translateCorrelationIdToName} from '../CredentialUtils';
-import {EPOCH_MILLISECONDS} from '../DateUtils';
-import {getImageSize, isImage} from '../ImageUtils';
+import {selectAppLocaleBranding} from '../../../services/brandingService';
+import {CredentialStatusEnum, ICredentialDetailsRow, ICredentialSummary} from '../../../types';
+import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
+import {EPOCH_MILLISECONDS} from '../../DateUtils';
+import {getImageSize, isImage} from '../../ImageUtils';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -71,26 +73,37 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
 /**
  * To be used whenever we need to show a credential summary on VCs we have not persisted
  * @param verifiableCredential
+ * @param branding The branding for the credential
  */
-export const toNonPersistedCredentialSummary = (verifiableCredential: ICredential | VerifiableCredential): Promise<ICredentialSummary> => {
-  return toCredentialSummary({
-    verifiableCredential: verifiableCredential as VerifiableCredential,
-    hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
-  });
+export const toNonPersistedCredentialSummary = (
+  verifiableCredential: ICredential | VerifiableCredential,
+  branding?: Array<IBasicCredentialLocaleBranding>,
+): Promise<ICredentialSummary> => {
+  return toCredentialSummary(
+    {
+      verifiableCredential: verifiableCredential as VerifiableCredential,
+      hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
+    },
+    branding,
+  );
 };
 
 /**
  * Map persisted (Unique) VCs to the summaries we display
  * @param hash The hash of the unique verifiable credential
  * @param verifiableCredential The VC itself
+ * @param branding The branding for the credential
  */
-export const toCredentialSummary = async ({hash, verifiableCredential}: UniqueVerifiableCredential): Promise<ICredentialSummary> => {
-  console.log(`CREDENTIAL: ${JSON.stringify(verifiableCredential)}`);
+export const toCredentialSummary = async (
+  {hash, verifiableCredential}: UniqueVerifiableCredential,
+  branding?: Array<IBasicCredentialLocaleBranding>,
+): Promise<ICredentialSummary> => {
+  const expirationDate: number = verifiableCredential.expirationDate
+    ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS
+    : 0;
+  const issueDate: number = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS;
 
-  const expirationDate = verifiableCredential.expirationDate ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS : 0;
-  const issueDate = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS;
-
-  const credentialStatus = getCredentialStatus(verifiableCredential);
+  const credentialStatus: CredentialStatusEnum = getCredentialStatus(verifiableCredential);
 
   const title = verifiableCredential.name
     ? verifiableCredential.name
@@ -98,35 +111,38 @@ export const toCredentialSummary = async ({hash, verifiableCredential}: UniqueVe
     ? 'unknown'
     : typeof verifiableCredential.type === 'string'
     ? verifiableCredential.type
-    : verifiableCredential.type.filter((value: string) => value !== 'VerifiableCredential')[0];
+    : verifiableCredential.type.filter((value: string): boolean => value !== 'VerifiableCredential')[0];
   console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`);
-  const properties = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
+  const properties: Array<ICredentialDetailsRow> = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
 
-  const name =
+  const name: string =
     typeof verifiableCredential.issuer === 'string'
       ? verifiableCredential.issuer
       : verifiableCredential.issuer?.name
       ? verifiableCredential.issuer?.name
       : verifiableCredential.issuer?.id;
 
-  const issuerAlias =
+  const issuerAlias: string =
     typeof verifiableCredential.issuer === 'string'
       ? translateCorrelationIdToName(verifiableCredential.issuer)
       : translateCorrelationIdToName(verifiableCredential.issuer?.id);
 
+  const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
+
   return {
     hash,
     id: verifiableCredential.id,
-    title,
+    title: localeBranding?.alias || title,
+    credentialStatus,
+    issueDate,
+    expirationDate,
+    properties,
+    branding: localeBranding,
     issuer: {
       name,
       alias: issuerAlias.length > 50 ? `${issuerAlias.substring(0, 50)}...` : issuerAlias,
       image: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.image : undefined,
       url: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined,
     },
-    credentialStatus,
-    issueDate,
-    expirationDate,
-    properties,
   };
 };

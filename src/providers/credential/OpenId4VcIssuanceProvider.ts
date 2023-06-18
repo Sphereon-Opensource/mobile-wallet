@@ -7,14 +7,16 @@ import {
   OpenID4VCIClient,
   ProofOfPossessionCallbacks,
 } from '@sphereon/openid4vci-client';
+import {CredentialDisplay} from '@sphereon/openid4vci-client/dist/main/lib/types/OpenID4VCIServerMetadata';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
-import {agentContext} from '../../agent';
+import {agentContext, ibCredentialLocaleBrandingFrom} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
@@ -34,10 +36,11 @@ import {
   SupportedDidMethodEnum,
 } from '../../types';
 import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils';
+import {credentialLocaleBrandingFrom} from '../../utils/mappers/branding/OIDC4VCIBrandingMapper';
 
 const {v4: uuidv4} = require('uuid');
 
-const debug = Debug(`${APP_ID}:openid4vci`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc', 'ldp_vc'];
@@ -139,6 +142,7 @@ class OpenId4VcIssuanceProvider {
   private credentialsSupported: Array<ICredentialMetadata> | undefined;
   private issuanceOpts: Record<string, IIssuanceOpts> | undefined;
   private accessTokenResponse: AccessTokenResponse | undefined;
+  private credentialBranding: Map<string, Array<IBasicCredentialLocaleBranding>> | undefined;
 
   private constructor(client: OpenID4VCIClient) {
     this.client = client;
@@ -246,10 +250,30 @@ class OpenId4VcIssuanceProvider {
       }
       this.credentialsSupported = credentialsSupported;
     }
+
+    if (!this.credentialBranding) {
+      this.credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
+      await Promise.all(
+        this.credentialsSupported.map(async (metadata: ICredentialMetadata): Promise<void> => {
+          const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
+            (metadata.display ?? []).map(
+              async (display: CredentialDisplay): Promise<IBasicCredentialLocaleBranding> =>
+                await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)}),
+            ),
+          );
+
+          if (this.credentialBranding) {
+            this.credentialBranding.set(metadata.credentialType, localeBranding);
+          }
+        }),
+      );
+    }
+
     return {
       serverMetadata: this.serverMetadata,
       credentialsSupported: this.credentialsSupported,
       issuanceOpts: await this.getIssuanceOpts(),
+      credentialBranding: this.credentialBranding,
     };
   };
 

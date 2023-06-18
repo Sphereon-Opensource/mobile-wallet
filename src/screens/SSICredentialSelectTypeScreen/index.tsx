@@ -50,7 +50,7 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
       <ItemContainer style={style} onPress={() => onPress(itemInfo)}>
         <SSICredentialSelectTypeViewItem
           onPress={async () => onPress(itemInfo)}
-          title={itemInfo.item.credentialType}
+          title={itemInfo.item.credentialAlias}
           isSelected={itemInfo.item.isSelected}
           style={backgroundStyle}
         />
