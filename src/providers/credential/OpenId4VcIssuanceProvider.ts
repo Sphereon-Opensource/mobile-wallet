@@ -15,6 +15,8 @@ import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
+import Debug from "debug";
+import {DIDDocument} from "did-resolver";
 
 import {APP_ID} from '../../@config/constants';
 import {agentContext, ibCredentialLocaleBrandingFrom} from '../../agent';
@@ -203,7 +205,7 @@ class OpenId4VcIssuanceProvider {
     const kid = key.meta.verificationMethod.id;
     const alg = SignatureAlgorithmFromKey(key);
 
-    const callbacks: ProofOfPossessionCallbacks = {
+    const callbacks: ProofOfPossessionCallbacks<DIDDocument> = {
       signCallback: (jwt: Jwt, kid?: string) => {
         console.log(`header: ${JSON.stringify({...jwt.header, kid})}`);
         console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
@@ -264,7 +266,7 @@ class OpenId4VcIssuanceProvider {
 
           const credentialTypes: Array<string> = metadata.types.length > 1
             ? metadata.types.filter((type: string) => type !== 'VerifiableCredential')
-            : metadata.types.lenght === 0 ? ['VerifiableCredential'] : metadata.types
+            : metadata.types.length === 0 ? ['VerifiableCredential'] : metadata.types
 
           if (this.credentialBranding) {
             this.credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
