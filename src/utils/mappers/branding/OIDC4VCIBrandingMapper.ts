@@ -1,7 +1,7 @@
-import {CredentialDisplay} from '@sphereon/openid4vci-client';
+import {CredentialsSupportedDisplay} from "@sphereon/oid4vci-common";
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 
-export const credentialLocaleBrandingFrom = async (credentialDisplay: CredentialDisplay): Promise<IBasicCredentialLocaleBranding> => {
+export const credentialLocaleBrandingFrom = async (credentialDisplay: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding> => {
   return {
     ...(credentialDisplay.name && {
       alias: credentialDisplay.name,

@@ -6,10 +6,10 @@ import {
   CredentialSupported,
   EndpointMetadata,
   Jwt,
-  MetadataDisplay,
   OID4VCICredentialFormat,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
+import {CredentialsSupportedDisplay} from "@sphereon/oid4vci-common";
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
@@ -259,7 +259,7 @@ class OpenId4VcIssuanceProvider {
         this.credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
           const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
             (metadata.display ?? []).map(
-              async (display: MetadataDisplay): Promise<IBasicCredentialLocaleBranding> =>
+              async (display: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding> =>
                 await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)}),
             ),
           );
