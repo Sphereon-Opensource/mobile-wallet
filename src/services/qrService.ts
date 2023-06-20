@@ -403,7 +403,7 @@ export function getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMet
 /**
  * TODO check again when WAL-617 is done to replace how we get the issuer name.
  */
-function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
+function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: string) {
     const displays = metadata.serverMetadata.issuerMetadata ? getIssuerDisplays(metadata.serverMetadata.issuerMetadata) : []
     let name
     for (const display of displays) {
@@ -413,7 +413,7 @@ function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: URL) {
         }
     }
     if (!name) {
-        name = url.toString()
+        name = url
     }
     return name
 }
@@ -422,14 +422,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
     const serverMetadata: EndpointMetadata = metadata.serverMetadata
-    const url: URL = new URL(serverMetadata.issuer); // TODO fix non null assertion
-    const name: string = getName(metadata, url);
+    const correlationId = serverMetadata.issuer
+    const name: string = getName(metadata, correlationId);
     getContacts({
       filter: [
         {
           identities: {
             identifier: {
-              correlationId: url.toString(),
+              correlationId,
             },
           },
         },
@@ -438,14 +438,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       if (contacts.length === 0) {
         args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
           name,
-          uri: url.toString(),
+          uri: correlationId,
           identities: [
             {
-              alias: url.toString(),
+              alias: correlationId,
               roles: [IdentityRoleEnum.ISSUER],
               identifier: {
                 type: CorrelationIdentifierEnum.URL,
-                correlationId: url.toString(),
+                correlationId,
               },
               // TODO WAL-476 add support for correct connection
               connection: {
@@ -564,7 +564,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 }
                 const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
-                const issuerCorrelationId: string = new URL(metadata.serverMetadata.issuer).toString();
+                const issuerCorrelationId: string = metadata.serverMetadata.issuer;
                 const contacts: Array<IContact> = await getContacts({
                     filter: [
                         {
