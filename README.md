@@ -2,17 +2,21 @@
 <h1 align="center">
   <br>
   <a href="https://www.sphereon.com"><img src="https://sphereon.com/content/themes/sphereon/assets/img/logo.svg" alt="Sphereon" width="400"></a>
-  <br>SSI Wallet (iOS/Android)
+  <br>Mobile Wallet (iOS/Android)
   <br>
 </h1>
 
 ---
 
-__Warning: The wallet is currently in a beta stage of the first release and still incomplete. Certain functionality
-might not be available yet__
+<h3>Warning: The wallet is currently in a beta stage and still incomplete</h3>
+Certain functionality might not be available yet
+<br/>
+<br/>
 
----
-
+<div>
+<a href='https://apps.apple.com/us/app/sphereon-wallet/id1661096796'><img alt='Download on the App Store' src='./docs/img/stores/appstore.svg' width='250px;'/></a>
+<br/>
+<a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='250px'/></a></div>
 
 # Table of content:
 - [Introduction and technology](#sphereon-wallet)
@@ -190,7 +194,7 @@ demo/testing purposes.
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following verifiers:
     * Sphereon - https://ssi.sphereon.com
-     * Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "<SphereonWalletIdentityCredential>"`)
+     * Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
 
    <br>
    <img src="./docs/img/share/1_qr_reader.jpg" width=33% height=33%>

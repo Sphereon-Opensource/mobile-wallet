@@ -1,5 +1,7 @@
+import {IBasicImageAttributes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
-import {ColorValue, Image, ImageBackground, View, ViewStyle} from 'react-native';
+import {ColorValue, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {translate} from '../../../localization/Localization';
 import {backgrounds, credentialCards} from '../../../styles/colors';
@@ -25,21 +27,22 @@ import {
 } from '../../../styles/components';
 import {CredentialStatusEnum} from '../../../types';
 import {toLocalDateString} from '../../../utils/DateUtils';
+import {calculateAspectRatio} from '../../../utils/ImageUtils';
 import SSIPlaceholderLogo from '../../assets/logos/SSIPlaceholderLogo';
 
 const {v4: uuidv4} = require('uuid');
 
 export interface IProps {
-  backgroundColor?: ColorValue;
-  backgroundImage?: string; // TODO WAL-302 Support passing in storage location
-  logoImage?: string; // TODO WAL-302 Support passing in storage location
   credentialTitle: string;
   credentialSubtitle?: string;
   credentialStatus?: CredentialStatusEnum;
   issuerName?: string;
   expirationDate?: number;
   properties?: Array<IProperty>;
-  style?: ViewStyle;
+  backgroundColor?: ColorValue;
+  backgroundImage?: IBasicImageAttributes;
+  logo?: IBasicImageAttributes;
+  textColor?: ColorValue;
 }
 
 export interface IProperty {
@@ -64,32 +67,46 @@ const getPropertyElementsFrom = (properties: Array<IProperty>): Array<JSX.Elemen
 
 const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
   const {
-    backgroundColor = credentialCards.default,
     credentialTitle,
     credentialSubtitle,
     credentialStatus,
     issuerName,
     expirationDate,
     properties,
-    style,
+    backgroundColor = credentialCards.default,
+    logo,
+    textColor = backgrounds.primaryLight,
   } = props;
 
-  // The uri is a transparent pixel in case there is not background image
-  const backgroundImage = props.backgroundImage
-    ? {uri: props.backgroundImage}
-    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='};
-  const logoImage = props.logoImage ? {uri: props.logoImage} : null;
+  const uri = props.backgroundImage?.dataUri || props.backgroundImage?.uri;
+  const backgroundImage = uri
+    ? {uri}
+    : {uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='}; // The uri is a transparent pixel in case there is not background image
 
   return (
-    <Container style={[style, {backgroundColor}]}>
-      <ImageBackground style={{flex: 1}} source={backgroundImage} resizeMode="cover">
+    <Container style={{backgroundColor}}>
+      <FastImage style={{flex: 1}} source={backgroundImage} resizeMode="cover">
         <AlphaContainer>
           <HeaderContainer>
-            <LogoContainer>{logoImage ? <Image style={{flex: 1}} source={logoImage} resizeMode="contain" /> : <SSIPlaceholderLogo />}</LogoContainer>
+            <LogoContainer>
+              {logo ? (
+                <FastImage
+                  style={{
+                    aspectRatio: logo?.dimensions && calculateAspectRatio(logo?.dimensions.width, logo?.dimensions.height),
+                    height: 32,
+                  }}
+                  source={logo}
+                />
+              ) : (
+                <SSIPlaceholderLogo />
+              )}
+            </LogoContainer>
             {credentialTitle && (
               <TitleContainer>
-                <CredentialTitleText numberOfLines={2}>{credentialTitle}</CredentialTitleText>
-                {credentialSubtitle && <CredentialSubtitleText>{credentialSubtitle}</CredentialSubtitleText>}
+                <CredentialTitleText style={{color: textColor}} numberOfLines={2}>
+                  {credentialTitle}
+                </CredentialTitleText>
+                {credentialSubtitle && <CredentialSubtitleText style={{color: textColor}}>{credentialSubtitle}</CredentialSubtitleText>}
               </TitleContainer>
             )}
           </HeaderContainer>
@@ -97,7 +114,7 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
             <ContentSubContainer>
               {issuerName && (
                 <IssueNameContainer>
-                  <H4Text>{issuerName}</H4Text>
+                  <H4Text style={{color: textColor}}>{issuerName}</H4Text>
                 </IssueNameContainer>
               )}
               {properties && <PropertiesContainer>{getPropertyElementsFrom(properties)}</PropertiesContainer>}
@@ -106,17 +123,17 @@ const SSICardView: FC<IProps> = (props: IProps): JSX.Element => {
           <FooterContainer>
             <BlurredView>
               <FooterContentContainer>
-                <ExpirationDateText>
+                <ExpirationDateText style={{color: textColor}}>
                   {expirationDate
                     ? `${translate('credential_card_expires_message')} ${toLocalDateString(expirationDate)}`
                     : translate('credential_status_never_expires_date_label')}
                 </ExpirationDateText>
-                {credentialStatus && <CredentialStatus status={credentialStatus} color={backgrounds.primaryLight} />}
+                {credentialStatus && <CredentialStatus status={credentialStatus} color={textColor} />}
               </FooterContentContainer>
             </BlurredView>
           </FooterContainer>
         </AlphaContainer>
-      </ImageBackground>
+      </FastImage>
     </Container>
   );
 };

@@ -20,7 +20,7 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
-import {toCredentialSummary} from '../../utils/mappers/CredentialMapper';
+import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 

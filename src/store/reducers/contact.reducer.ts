@@ -1,5 +1,6 @@
-import {IContact} from '@sphereon/ssi-sdk-data-store';
+import {IContact} from '@sphereon/ssi-sdk.data-store';
 
+import {SortOrder} from '../../types';
 import {
   ADD_IDENTITY_FAILED,
   ADD_IDENTITY_SUCCESS,
@@ -16,7 +17,7 @@ import {
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
-import {sortBy, SortOrder} from '../../utils/SortUtils';
+import {sortBy} from '../../utils/SortUtils';
 
 const initialState: IContactState = {
   loading: false,

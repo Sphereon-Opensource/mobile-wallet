@@ -57,6 +57,10 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             issuerName={issuer}
             expirationDate={credential.expirationDate}
             credentialStatus={getCredentialStatus(credential)}
+            logo={credential.branding?.logo}
+            backgroundColor={credential.branding?.background?.color}
+            backgroundImage={credential.branding?.background?.image}
+            textColor={credential.branding?.text?.color}
           />
         </CardContainer>
         <SSITabView routes={routes} />

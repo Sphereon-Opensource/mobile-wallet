@@ -1,8 +1,11 @@
-import {CredentialFormatSupport, CredentialMetadata, EndpointMetadata, OpenID4VCICredentialFormatTypes} from '@sphereon/openid4vci-client';
+import {
+  CredentialSupported,
+  EndpointMetadata,
+} from '@sphereon/oid4vci-common';
 import {TKeyType} from '@veramo/core';
 
-import {ICredentialMetadata} from '../../credential';
 import {SupportedDidMethodEnum} from '../../did';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 
 export interface IGetIssuanceInitiationFromUriArgs {
   uri: string;
@@ -18,24 +21,27 @@ export interface IGetCredentialsArgs {
   credentials?: Array<string>;
 }
 
-export interface IIssuanceOpts {
+export type IIssuanceOpts = CredentialSupported & {
   didMethod: SupportedDidMethodEnum;
-  format: OpenID4VCICredentialFormatTypes;
   keyType: TKeyType;
 }
 
 export interface IGetVcIssuanceFormatArgs {
-  credentialMetadata: CredentialMetadata;
+  credentialSupported: CredentialSupported;
 }
 
+/*
 export interface IGetIssuanceCryptoSuiteArgs {
   credentialFormatOpts: ICredentialFormatOpts;
 }
+*/
 
+/*
 export interface ICredentialFormatOpts {
-  credentialFormat: CredentialFormatSupport;
-  format: OpenID4VCICredentialFormatTypes;
+  // credentialFormat: CredentialFormatSupport;
+  // format: OpenID4VCICredentialFormatTypes;
 }
+*/
 
 export enum Oidc4vciErrorEnum {
   INVALID_REQUEST = 'invalid_request',
@@ -50,6 +56,7 @@ export enum Oidc4vciErrorEnum {
 
 export interface IServerMetadataAndCryptoMatchingResponse {
   serverMetadata: EndpointMetadata;
-  issuanceOpts: Record<string, IIssuanceOpts>;
-  credentialsSupported: Array<ICredentialMetadata>;
+  issuanceOpts: Array<IIssuanceOpts>;
+  credentialsSupported: Array<CredentialSupported>;
+  credentialBranding: Map<string, Array<IBasicCredentialLocaleBranding>>;
 }

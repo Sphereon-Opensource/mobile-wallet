@@ -1,4 +1,4 @@
-import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk-data-store';
+import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING;
