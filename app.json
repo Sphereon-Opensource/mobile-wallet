@@ -2,7 +2,7 @@
   "expo": {
     "name": "SphereonWallet",
     "slug": "SphereonWallet",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,6 +21,11 @@
     "androidNavigationBar": {
       "barStyle": "light-content",
       "backgroundColor": "#202537"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "76b1c6a4-d1d8-421e-8514-ee9db0b197b4"
+      }
     }
   }
 }
