@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {Status} from '@sphereon/pex/dist/main/lib/ConstraintUtils';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
+import { ICredentialBranding } from '@sphereon/ssi-sdk.data-store'
 import {CredentialMapper, IVerifiableCredential, OriginalVerifiableCredential, W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
@@ -9,6 +10,7 @@ import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
+import { ibGetCredentialBranding } from '../../agent'
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
@@ -31,6 +33,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const pex = new PEX();
 
   useEffect(() => {
+    // TODO we need to have one source for these credentials as then all the data is always available
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
       const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
@@ -96,10 +99,20 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>, inputDescriptorPurpose?: string) => {
+    // TODO we need to have one source for these credentials as then all the data is always available
+    const vcHashes: Array<{vcHash: string}> = uniqueVCs.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
+      vcHash: uniqueCredential.hash,
+    }));
+    const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
+
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
       credentialSelection: await Promise.all(
         uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
-          const credentialSummary = await toCredentialSummary(uniqueVC);
+          // TODO we need to have one source for these credentials as then all the data is always available
+          const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
+            (branding: ICredentialBranding) => branding.vcHash === uniqueVC.hash,
+          );
+          const credentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
           const rawCredential = await getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
           const isSelected = selectedCredentials
             .get(inputDescriptorId)!
