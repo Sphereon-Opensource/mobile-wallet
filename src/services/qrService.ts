@@ -601,32 +601,37 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 // TODO fix the store not having the correct action types (should include ThunkAction)
                 const storeCredential = async (vc: VerifiableCredential) => store.dispatch<any>(storeVerifiableCredential(vc));
 
+        const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = metadata.credentialBranding.get(credentialTypes[0]) // TODO only supporting one credential for now
         // We are specifically navigating to a stack, so that when a deeplink is used the navigator knows in which stack it is
         args.navigation.navigate(NavigationBarRoutesEnum.QR, {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             headerTitle: translate('credential_offer_title'),
             rawCredential,
-            credential: await toNonPersistedCredentialSummary(uniformVC, metadata.credentialBranding.get(credentialTypes[0])), // TODO only supporting one credential for now
+            credential: await toNonPersistedCredentialSummary(uniformVC, localeBranding),
             primaryAction: {
               caption: translate('action_accept_label'),
-              onPress: async () =>
-                  addCredentialBranding({
-                  vcHash: computeEntryHash(rawCredential),
-                  issuerCorrelationId,
-                  localeBranding: metadata.credentialBranding.get(credentialTypes[0])!, // TODO only supporting one credential for now
-                })
-                  .then(() => storeCredential(rawCredential))
-                  .then(() => {
-                    args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-                      screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
-                    });
-                    showToast(ToastTypeEnum.TOAST_SUCCESS, {
-                      message: translate('credential_offer_accepted_toast'),
-                      showBadge: false,
-                    });
+              onPress: async () => {
+
+                if (localeBranding && localeBranding?.length > 0) {
+                  await addCredentialBranding({
+                    vcHash: computeEntryHash(rawCredential),
+                    issuerCorrelationId,
+                    localeBranding
                   })
-                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
+                }
+                storeCredential(rawCredential)
+                .then(() => {
+                  args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                    screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                  });
+                  showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                    message: translate('credential_offer_accepted_toast'),
+                    showBadge: false,
+                  });
+                })
+                .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}))
+              }
             },
             secondaryAction: {
               caption: translate('action_decline_label'),
