@@ -22,6 +22,10 @@ export const filterNavigationStack = (args: filterNavigationStackArgs): void => 
   const homeStack = mainStack!.routes!.find((route: Route<string>) => route.name === 'Home').state;
   const currentStack = homeStack.routes.find((route: Route<string>) => route.name === args.stack).state;
 
+  if (!currentStack) {
+    return
+  }
+
   const filteredRoutes = currentStack.routes.filter((route: Route<ScreenRoutesEnum>) => !args.filter.includes(route.name));
 
   args.navigation.dispatch(

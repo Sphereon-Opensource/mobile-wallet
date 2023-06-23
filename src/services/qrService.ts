@@ -218,7 +218,12 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     };
 
     // Adding a loading screen as the next action is to contact the other side
-    args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
+    args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+      screen: ScreenRoutesEnum.LOADING,
+      params: {
+        message: translate('action_getting_information_message')
+      }
+    })
 
     let request: VerifiedAuthorizationRequest;
     let registration: RPRegistrationMetadataPayload | undefined;
@@ -354,26 +359,33 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         ],
     }).then((contacts: Array<IContact>) => {
         if (contacts.length === 0) {
-            args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-                name: registration?.client_name ?? url.hostname,
-                uri: `${url.protocol}//${url.hostname}`,
-                identities: [
-                    {
-                        alias: url.hostname,
-                        roles: [IdentityRoleEnum.VERIFIER],
-                        identifier: {
-                            type: CorrelationIdentifierEnum.URL,
-                            correlationId: url.hostname,
-                        },
-                        connection: {
-                            type: ConnectionTypeEnum.SIOPv2,
-                            config,
-                        },
-                    },
-                ],
-                // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
-                onCreate: () => delay(1000).then(() => selectRequiredCredentials()),
-            });
+          args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+            screen: ScreenRoutesEnum.CONTACT_ADD,
+            params: {
+              name: registration?.client_name ?? url.hostname,
+              uri: `${url.protocol}//${url.hostname}`,
+              identities: [
+                {
+                  alias: url.hostname,
+                  roles: [IdentityRoleEnum.VERIFIER],
+                  identifier: {
+                    type: CorrelationIdentifierEnum.URL,
+                    correlationId: url.hostname,
+                  },
+                  connection: {
+                    type: ConnectionTypeEnum.SIOPv2,
+                    config,
+                  },
+                },
+              ],
+              onDecline: async () => {
+                // TODO WAL-541 fix navigation hierarchy
+                args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
+              },
+              // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
+              onCreate: () => delay(1000).then(() => selectRequiredCredentials()),
+            }
+          });
         } else {
             selectRequiredCredentials();
         }
@@ -436,38 +448,41 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       ],
     }).then((contacts: Array<IContact>) => {
       if (contacts.length === 0) {
-        args.navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-          name,
-          uri: correlationId,
-          identities: [
-            {
-              alias: correlationId,
-              roles: [IdentityRoleEnum.ISSUER],
-              identifier: {
-                type: CorrelationIdentifierEnum.URL,
-                correlationId,
-              },
-              // TODO WAL-476 add support for correct connection
-              connection: {
-                type: ConnectionTypeEnum.OPENID_CONNECT,
-                config: {
-                  clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
-                  clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
-                  scopes: ['auth'],
-                  issuer: 'https://example.com/app-test',
-                  redirectUrl: 'app:/callback',
-                  dangerouslyAllowInsecureHttpRequests: true,
-                  clientAuthMethod: 'post' as const,
+        args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+          screen: ScreenRoutesEnum.CONTACT_ADD,
+          params: {
+            name,
+            uri: correlationId,
+            identities: [
+              {
+                alias: correlationId,
+                roles: [IdentityRoleEnum.ISSUER],
+                identifier: {
+                  type: CorrelationIdentifierEnum.URL,
+                  correlationId,
+                },
+                // TODO WAL-476 add support for correct connection
+                connection: {
+                  type: ConnectionTypeEnum.OPENID_CONNECT,
+                  config: {
+                    clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
+                    clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+                    scopes: ['auth'],
+                    issuer: 'https://example.com/app-test',
+                    redirectUrl: 'app:/callback',
+                    dangerouslyAllowInsecureHttpRequests: true,
+                    clientAuthMethod: 'post' as const,
+                  },
                 },
               },
+            ],
+            onDecline: async () => {
+              // TODO WAL-541 fix navigation hierarchy
+              args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
             },
-          ],
-          onDecline: () => {
-            // TODO WAL-541 fix navigation hierarchy
-            args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
-          },
-          // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
-          onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider)),
+            // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
+            onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider))
+          }
         });
         filterNavigationStack({
           navigation: args.navigation,
@@ -481,6 +496,8 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const sendResponseOrSelectCredentials = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
+    console.log('sendResponseOrSelectCredentials')
+
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
     const credentialsSupported = metadata.credentialsSupported
     const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(
@@ -502,7 +519,12 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           issuer: translateCorrelationIdToName(new URL(metadata.serverMetadata.issuer).toString()),
           credentialTypes: credentialTypeSelection,
           onSelect: async (credentialTypes: Array<string>) => {
-            args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_credentials_message')});
+            args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+              screen: ScreenRoutesEnum.LOADING,
+              params: {
+                message: translate('action_getting_credentials_message')
+              }
+            })
             await sendResponseOrAuthenticate(provider, credentialTypes);
           },
         },
@@ -662,25 +684,33 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const errorDetails: IErrorDetails = OpenId4VcIssuanceProvider.getErrorDetails(errorResponse, opts);
         const errorMessage = errorResponse?.error_description || errorResponse;
 
-        args.navigation.navigate(ScreenRoutesEnum.ERROR, {
-            image: PopupImagesEnum.WARNING,
-            title: errorDetails.title,
-            details: errorDetails.message,
-            ...(errorMessage && {
-                detailsPopup: {
-                    buttonCaption: translate('action_view_extra_details'),
-                    title: errorDetails.detailsTitle,
-                    details: `${errorDetails?.detailsMessage} ${errorMessage}`,
-                },
-            }),
-            primaryButton: {
-                caption: translate('action_ok_label'),
-                onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+      args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+        screen: ScreenRoutesEnum.ERROR,
+        params: {
+          image: PopupImagesEnum.WARNING,
+          title: errorDetails.title,
+          details: errorDetails.message,
+          ...(errorMessage && {
+            detailsPopup: {
+              buttonCaption: translate('action_view_extra_details'),
+              title: errorDetails.detailsTitle,
+              details: `${errorDetails?.detailsMessage} ${errorMessage}`,
             },
-        });
+          }),
+          primaryButton: {
+            caption: translate('action_ok_label'),
+            onPress: async () => args.navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+          },
+        }
+      })
     };
 
-    args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_getting_information_message')});
+    args.navigation.navigate(NavigationBarRoutesEnum.QR, {
+      screen: ScreenRoutesEnum.LOADING,
+      params: {
+        message: translate('action_getting_information_message')
+      }
+    })
 
     OpenId4VcIssuanceProvider.initiationFromUri({uri: args.qrData.uri})
         .then((provider: OpenId4VcIssuanceProvider) =>

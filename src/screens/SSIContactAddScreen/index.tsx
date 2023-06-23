@@ -103,6 +103,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     const {onDecline} = this.props.route.params;
 
     Keyboard.dismiss();
+
     this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_add_cancel_title'),
       details: translate('contact_add_cancel_message'),
