@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {Status} from '@sphereon/pex/dist/main/lib/ConstraintUtils';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
-import { ICredentialBranding } from '@sphereon/ssi-sdk.data-store'
+import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, IVerifiableCredential, OriginalVerifiableCredential, W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
@@ -10,7 +10,7 @@ import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import { ibGetCredentialBranding } from '../../agent'
+import {ibGetCredentialBranding} from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
@@ -69,11 +69,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     setSelectedCredentials(selectedVCs);
   }, [presentationDefinition]);
 
-  const onDecline = async () => {
-    props.navigation.goBack();
+  const onDecline = async (): Promise<void> => {
+    await props.route.params.onDecline();
   };
 
-  const onSend = async () => {
+  const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
     const selectedVCs = getSelectedCredentials();
 
