@@ -1,4 +1,4 @@
-import {getFirstKeyWithRelation, mapIdentifierKeysToDocWithJwkSupport} from '@sphereon/ssi-sdk-did-utils';
+import {getFirstKeyWithRelation, mapIdentifierKeysToDocWithJwkSupport} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IAgentContext, IIdentifier, IResolver, VerifiableCredential} from '@veramo/core';
 import {Action, CombinedState} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';

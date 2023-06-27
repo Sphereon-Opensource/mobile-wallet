@@ -434,14 +434,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
     const serverMetadata: EndpointMetadata = metadata.serverMetadata
-    const correlationId = serverMetadata.issuer
+    const correlationId = `${new URL(serverMetadata.issuer).protocol}//${new URL(serverMetadata.issuer).hostname}`
     const name: string = getName(metadata, correlationId);
     getContacts({
       filter: [
         {
           identities: {
             identifier: {
-              correlationId,
+                correlationId: new URL(serverMetadata.issuer).hostname,
             },
           },
         },
@@ -459,7 +459,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 roles: [IdentityRoleEnum.ISSUER],
                 identifier: {
                   type: CorrelationIdentifierEnum.URL,
-                  correlationId,
+                  correlationId: new URL(serverMetadata.issuer).hostname,
                 },
                 // TODO WAL-476 add support for correct connection
                 connection: {
@@ -516,7 +516,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
         screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
         params: {
-          issuer: translateCorrelationIdToName(new URL(metadata.serverMetadata.issuer).toString()),
+          issuer: translateCorrelationIdToName(new URL(metadata.serverMetadata.issuer).hostname),
           credentialTypes: credentialTypeSelection,
           onSelect: async (credentialTypes: Array<string>) => {
             args.navigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -586,7 +586,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 }
                 const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
-                const issuerCorrelationId: string = metadata.serverMetadata.issuer;
+                const issuerCorrelationId = new URL(metadata.serverMetadata.issuer).hostname;
                 const contacts: Array<IContact> = await getContacts({
                     filter: [
                         {
