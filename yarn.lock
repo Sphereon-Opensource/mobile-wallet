@@ -2999,21 +2999,21 @@
     "@waves/ts-lib-crypto" "^1.4.4-beta.1"
     lto-api "^0.5.14"
 
-"@sphereon/oid4vci-client@0.4.1-unstable.308":
-  version "0.4.1-unstable.308"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.4.1-unstable.308.tgz#1a37f1c0079e877c63b868999d1a7d9954664936"
-  integrity sha512-m1cs08wzFQ8uOgurGKWanVuzd1PuiD+3CZUE4QJoCtYVzgQS3FbaMzCJvbDG7MsfhlTmXsV8LGnG00VPOmVntg==
+"@sphereon/oid4vci-client@0.6.1-next.3":
+  version "0.6.1-next.3"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.6.1-next.3.tgz#90ab55dac32c721a93e9fd2c675c64a41c6029d8"
+  integrity sha512-5GZiayOGfd4UY1naijQEFGp4QWSdwcRGaY8I0tx8/Niilz9QdXd9Fd4/gCp2harjg5i9EH6YI7muPj94BuKWLQ==
   dependencies:
-    "@sphereon/oid4vci-common" "0.4.1-unstable.308+7d9a8cd"
+    "@sphereon/oid4vci-common" "0.6.1-next.3+5f379e5"
     "@sphereon/ssi-types" "^0.11.0"
     cross-fetch "^3.1.5"
     debug "^4.3.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/oid4vci-common@0.4.1-unstable.308", "@sphereon/oid4vci-common@0.4.1-unstable.308+7d9a8cd":
-  version "0.4.1-unstable.308"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.4.1-unstable.308.tgz#b21b3091ecc39a4c65c111ac0f13c0849c952431"
-  integrity sha512-zFiBN6fTpGansNQ5i82wpSrOlvsicRg6UUW/9wZp8exWPzPVZBU1gsKbp+QgoNWK+4qgC3w1Kfr2ZQ+oYjzgfw==
+"@sphereon/oid4vci-common@0.6.1-next.3", "@sphereon/oid4vci-common@0.6.1-next.3+5f379e5":
+  version "0.6.1-next.3"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.6.1-next.3.tgz#e8ee448f4b914b3c679dbefbb7916cbd3a799f95"
+  integrity sha512-p5AWqtxNoeneVmGJVEA7ISBdi4G8LFMbIkv5b1qqg6iC+A5UFRDcNXg5gUNxd4TyPAgKJKLqcF2DTaBTKUwC2Q==
   dependencies:
     "@sphereon/ssi-types" "^0.11.0"
     cross-fetch "^3.1.6"
