@@ -69,11 +69,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     setSelectedCredentials(selectedVCs);
   }, [presentationDefinition]);
 
-  const onDecline = async () => {
+  const onDecline = async (): Promise<void> => {
     props.navigation.goBack();
   };
 
-  const onSend = async () => {
+  const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
     const selectedVCs = getSelectedCredentials();
 
