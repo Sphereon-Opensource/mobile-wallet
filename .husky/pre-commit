@@ -1,0 +1,5 @@
+#!/bin/sh
+
+yarn run fix:prettier
+
+exit $?
