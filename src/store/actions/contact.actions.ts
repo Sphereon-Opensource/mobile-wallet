@@ -71,15 +71,11 @@ export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, 
     dispatch({type: CONTACTS_LOADING});
     identityAdd(args)
       .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}}))
-      .catch(error => {
+      .catch((error) => {
         //FIXME:
-        console.log(
-          `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
-            args.contactId
-          }, ${JSON.stringify(args.identity)}`,
-        );
-        console.log(error);
-        dispatch({type: ADD_IDENTITY_FAILED});
+        console.log(`FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${args.contactId}, ${JSON.stringify(args.identity)}`)
+        console.log(error)
+        dispatch({type: ADD_IDENTITY_FAILED})
       });
   };
 };

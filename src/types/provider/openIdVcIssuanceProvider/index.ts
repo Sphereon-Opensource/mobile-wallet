@@ -1,4 +1,7 @@
-import {CredentialSupported, EndpointMetadata} from '@sphereon/oid4vci-common';
+import {
+  CredentialSupported,
+  EndpointMetadata,
+} from '@sphereon/oid4vci-common';
 import {TKeyType} from '@veramo/core';
 
 import {SupportedDidMethodEnum} from '../../did';
@@ -21,7 +24,7 @@ export interface IGetCredentialsArgs {
 export type IIssuanceOpts = CredentialSupported & {
   didMethod: SupportedDidMethodEnum;
   keyType: TKeyType;
-};
+}
 
 export interface IGetVcIssuanceFormatArgs {
   credentialSupported: CredentialSupported;

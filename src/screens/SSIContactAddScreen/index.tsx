@@ -109,7 +109,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       details: translate('contact_add_cancel_message'),
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: onDecline,
+        onPress: onDecline
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),

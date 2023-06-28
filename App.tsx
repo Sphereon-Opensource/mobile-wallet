@@ -1,24 +1,25 @@
-import {NavigationContainer} from '@react-navigation/native';
-import crypto from '@sphereon/isomorphic-webcrypto';
-import * as SplashScreen from 'expo-splash-screen';
-import * as React from 'react';
-import {useCallback, useEffect, useState} from 'react';
-import {LogBox, Platform, StatusBar} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Provider} from 'react-redux';
-import 'react-native-gesture-handler';
-import {bindActionCreators} from 'redux';
+import { NavigationContainer } from '@react-navigation/native'
+import crypto from '@sphereon/isomorphic-webcrypto'
+import * as SplashScreen from 'expo-splash-screen'
+import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { LogBox, Platform, StatusBar } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { Provider } from 'react-redux'
+import 'react-native-gesture-handler'
+import { bindActionCreators } from 'redux'
 
+import IntentHandler from './src/handlers/IntentHandler'
 import LockingHandler from './src/handlers/LockingHandler';
-import _loadFontsAsync from './src/hooks/useFonts';
-import Localization from './src/localization/Localization';
-import AppNavigator from './src/navigation/navigation';
-import {navigationRef} from './src/navigation/rootNavigation';
-import OnTouchProvider from './src/providers/touch/OnTouchProvider';
-import store from './src/store';
-import {getUsers} from './src/store/actions/user.actions';
-import {backgrounds} from './src/styles/colors';
-import {PlatformsEnum} from './src/types';
+import _loadFontsAsync from './src/hooks/useFonts'
+import Localization from './src/localization/Localization'
+import AppNavigator from './src/navigation/navigation'
+import { navigationRef } from './src/navigation/rootNavigation'
+import OnTouchProvider from './src/providers/touch/OnTouchProvider'
+import store from './src/store'
+import { getUsers } from './src/store/actions/user.actions'
+import { backgrounds } from './src/styles/colors'
+import { PlatformsEnum } from './src/types';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -44,13 +45,13 @@ LogBox.ignoreLogs([
     https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir/69649068#69649068
     The above seems very likely as the last update on react-native-share-menu was on May 12 2022
   */
-  'new NativeEventEmitter',
-]);
+  'new NativeEventEmitter'
+])
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false)
   // TODO use navigationIsReady to check if we can start the IntentHandler (as this needs a navigationRef) and remove the timeout placed in handleSharedFileData
-  const [navigationIsReady, setNavigationIsReady] = useState(false);
+  const [navigationIsReady, setNavigationIsReady] = useState(false)
 
   useEffect(() => {
     const lockingHandler: LockingHandler = new LockingHandler();
@@ -59,37 +60,41 @@ export default function App() {
     async function prepare(): Promise<void> {
       try {
         // TODO create better implementation for this
-        StatusBar.setBarStyle('light-content', true);
+        StatusBar.setBarStyle('light-content', true)
         if (Platform.OS === PlatformsEnum.ANDROID) {
-          StatusBar.setBackgroundColor(backgrounds.primaryDark);
-          StatusBar.setTranslucent(false);
+          StatusBar.setBackgroundColor(backgrounds.primaryDark)
+          StatusBar.setTranslucent(false)
         }
 
-        Localization.setI18nConfig();
+        Localization.setI18nConfig()
         // Preload fonts, make any API calls you need to do here
-        await _loadFontsAsync();
+        await _loadFontsAsync()
 
         // Needed for isomorphic-webcrypto. Must be removed if react-native-crypto is used instead
-        await crypto.ensureSecure();
+        await crypto.ensureSecure()
 
         // Load the redux store
-        const actions = bindActionCreators({getUsers}, store.dispatch);
-        await actions.getUsers();
+        const actions = bindActionCreators(
+          { getUsers },
+          store.dispatch
+        )
+        await actions.getUsers()
 
         await lockingHandler.enableLocking();
       } catch (e) {
-        console.warn(e);
+        console.warn(e)
       } finally {
         // Tell the application to render
-        setAppIsReady(true);
+        setAppIsReady(true)
       }
     }
-    void prepare();
+    void prepare()
 
     return (): void => {
-      void lockingHandler.disableLocking();
+      void lockingHandler.disableLocking()
     };
-  }, []);
+
+  }, [])
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady && navigationIsReady) {
@@ -98,12 +103,12 @@ export default function App() {
       // loading its initial state and rendering its first pixels. So instead,
       // we hide the splash screen once we know the root view has already
       // performed layout.
-      await SplashScreen.hideAsync();
+      await SplashScreen.hideAsync()
     }
-  }, [appIsReady, navigationIsReady]);
+  }, [appIsReady, navigationIsReady])
 
   if (!appIsReady) {
-    return null;
+    return null
   }
 
   return (
@@ -116,5 +121,5 @@ export default function App() {
         </NavigationContainer>
       </SafeAreaProvider>
     </Provider>
-  );
+  )
 }
