@@ -294,7 +294,7 @@ class OpenId4VcIssuanceProvider {
   };
 
   private getPreferredCredentialFormats = async (credentials: Array<CredentialSupported>): Promise<Array<CredentialSupported>> => {
-    // Pair credentials based on types as we now have multiple entries for one vc with different formats
+    // Group credentials based on types as we now have multiple entries for one vc with different formats
     const groupedFormats = Array.from(credentials
       .reduce((map: Map<any, any>, value: CredentialSupported) => map.set(value.types.toString(), [...map.get(value.types.toString()) || [], value]), new Map)
       .values()
