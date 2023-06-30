@@ -24,6 +24,11 @@
     "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package",
     "prepare": "husky install"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "prettier --write . && git add -A ."
+    }
+  },
   "dependencies": {
     "@babel/preset-env": "^7.1.6",
     "@babel/runtime": "^7.20.0",
