@@ -3024,10 +3024,10 @@
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.2.tgz#541b3f77522ab295da70b65baa0994e249073d1b"
   integrity sha512-ptHM72tdQrhMYSItHoGCm3HgK+HGF6tI29zYfS47H3M7ZjKhBgfmVHohuxhxA0Q6cL5gqH1jEA8G5Z2tadHmTw==
 
-"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.1.tgz#277de5dd1346c30c50b67fbbbfb8919004c05b52"
-  integrity sha512-9UW1z60ltPMEauqKXa73gTfmU8SrPxH+X7Rx9v7G13ZmeTC8Yjfm2C7Mit01B9BCL49gShV4htG8np3+UKlorg==
+"@sphereon/pex@2.0.1", "@sphereon/pex@2.0.2-unstable.2", "@sphereon/pex@^2.0.1":
+  version "2.0.2-unstable.2"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.2-unstable.2.tgz#b78c7bced83e99fe91947215548661913f946729"
+  integrity sha512-W92TAwWiHIMVsuj8XsxwHcBPE8gEF1K0VG+MNvVh1vXdo5XDx4mnK3rxZMzWP7BUeDi1/w14eOK+WzeFD0tbag==
   dependencies:
     "@sphereon/pex-models" "^2.0.2"
     "@sphereon/ssi-types" "^0.10.0"
