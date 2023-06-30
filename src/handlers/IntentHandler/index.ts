@@ -61,10 +61,8 @@ class IntentHandler {
       if (!data) {
         return;
       }
-      // TODO Added a timeout to let the navigationRef be mounted. This should be removed once we have a better loading check (appIsReady) that includes the navigation ref
-      setTimeout(() => {
-        this.sharedFileDataListener(data);
-      }, 1000);
+
+      this.sharedFileDataListener(data);
     });
   }
 

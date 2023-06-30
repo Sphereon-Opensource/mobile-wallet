@@ -81,6 +81,7 @@ import { addCredentialBranding, selectAppLocaleBranding } from './brandingServic
 import { getContacts } from './contactService'
 import { verifyCredential } from './credentialService'
 import { getOrCreatePrimaryIdentifier } from './identityService'
+import RootNavigation from '../navigation/rootNavigation'
 
 const {v4: uuidv4} = require('uuid');
 const debug: Debug.Debugger = Debug(`${APP_ID}:qrService`);
@@ -333,6 +334,10 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
                 presentationDefinition: presentationDefinitionWithLocation.definition,
                 format,
                 subjectSyntaxTypesSupported,
+                onDecline: async (): Promise<void> =>
+                  args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                    screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                  }),
                 onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
                     authenticate(async () => {
                         args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_sharing_credentials_message')});
@@ -378,10 +383,10 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
                   },
                 },
               ],
-              onDecline: async () => {
-                // TODO WAL-541 fix navigation hierarchy
-                args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
-              },
+              onDecline: async (): Promise<void> =>
+                args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                  screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+                }),
               // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
               onCreate: () => delay(1000).then(() => selectRequiredCredentials()),
             }
@@ -476,10 +481,10 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                 },
               },
             ],
-            onDecline: async () => {
-              // TODO WAL-541 fix navigation hierarchy
-              args.navigation.navigate(ScreenRoutesEnum.QR_READER, {})
-            },
+            onDecline: async (): Promise<void> =>
+              args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
+                screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
+              }),
             // Adding a delay here, so the store is updated with the new contact. And we only have a delay when a new contact is created
             onCreate: () => delay(1000).then(() => sendResponseOrSelectCredentials(provider))
           }
@@ -496,8 +501,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const sendResponseOrSelectCredentials = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
-    console.log('sendResponseOrSelectCredentials')
-
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
     const credentialsSupported = metadata.credentialsSupported
     const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(

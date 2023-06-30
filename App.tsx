@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import 'react-native-gesture-handler'
 import { bindActionCreators } from 'redux'
 
-import IntentHandler from './src/handlers/IntentHandler'
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts'
 import Localization from './src/localization/Localization'
@@ -54,7 +53,6 @@ export default function App() {
   const [navigationIsReady, setNavigationIsReady] = useState(false)
 
   useEffect(() => {
-    const intentHandler: IntentHandler = new IntentHandler()
     const lockingHandler: LockingHandler = new LockingHandler();
 
     // TODO this function should be moved to an init place
@@ -81,8 +79,6 @@ export default function App() {
         )
         await actions.getUsers()
 
-        await intentHandler.enable()
-
         await lockingHandler.enableLocking();
       } catch (e) {
         console.warn(e)
@@ -93,9 +89,8 @@ export default function App() {
     }
     void prepare()
 
-    return async (): Promise<void> => {
-      await intentHandler.disable()
-      await lockingHandler.disableLocking()
+    return (): void => {
+      void lockingHandler.disableLocking()
     };
 
   }, [])

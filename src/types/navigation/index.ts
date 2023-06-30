@@ -50,6 +50,7 @@ export interface ICredentialsRequiredProps {
   format: Format | undefined;
   subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
+  onDecline: () => Promise<void>
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
 }
 
