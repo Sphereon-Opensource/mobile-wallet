@@ -1,8 +1,4 @@
-import {
-  FindCredentialBrandingArgs,
-  IBasicCredentialLocaleBranding,
-  IBasicIssuerLocaleBranding
-} from '@sphereon/ssi-sdk.data-store'
+import {FindCredentialBrandingArgs, IBasicCredentialLocaleBranding, IBasicIssuerLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 
 export interface IAddCredentialBrandingArgs {
   issuerCorrelationId: string;
@@ -15,5 +11,5 @@ export interface IRemoveCredentialBrandingArgs {
 }
 
 export interface ISelectAppLocaleBrandingArgs {
-  localeBranding?: Array<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding>
+  localeBranding?: Array<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding>;
 }

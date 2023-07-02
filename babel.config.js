@@ -1,7 +1,7 @@
 module.exports = function (api) {
-  api.cache(true)
+  api.cache(true);
   return {
     presets: ['babel-preset-expo'],
-    plugins: ['@babel/plugin-syntax-import-assertions']
-  }
-}
+    plugins: ['@babel/plugin-syntax-import-assertions'],
+  };
+};

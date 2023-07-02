@@ -9,14 +9,14 @@ import {
   OID4VCICredentialFormat,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
-import {CredentialsSupportedDisplay} from "@sphereon/oid4vci-common";
+import {CredentialsSupportedDisplay} from '@sphereon/oid4vci-common';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-did-utils';
 import {KeyUse} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
-import Debug from "debug";
-import {DIDDocument} from "did-resolver";
+import Debug from 'debug';
+import {DIDDocument} from 'did-resolver';
 
 import {APP_ID} from '../../@config/constants';
 import {agentContext, ibCredentialLocaleBrandingFrom} from '../../agent';
@@ -170,7 +170,7 @@ class OpenId4VcIssuanceProvider {
     const credentialResponses: Array<CredentialFromOffer> = [];
     // const initTypes = this.client.getCredentialTypes();
     for (const issuanceOpt of matches.issuanceOpts) {
-    /*  if (!initTypes.includes(credentialType)) {
+      /*  if (!initTypes.includes(credentialType)) {
         continue;
       }*/
       const credentialResponse = await this.getCredential({
@@ -180,8 +180,8 @@ class OpenId4VcIssuanceProvider {
       credentialResponses.push({
         id: issuanceOpt.id,
         issuanceOpt,
-        credentialResponse
-      })
+        credentialResponse,
+      });
     }
 
     if (credentialResponses.length === 0) {
@@ -191,7 +191,7 @@ class OpenId4VcIssuanceProvider {
     return credentialResponses;
   };
 
-  public getCredential = async ({issuanceOpt, pin}: { pin?: string, issuanceOpt: IIssuanceOpts }): Promise<CredentialResponse> => {
+  public getCredential = async ({issuanceOpt, pin}: {pin?: string; issuanceOpt: IIssuanceOpts}): Promise<CredentialResponse> => {
     if (!issuanceOpt) {
       return Promise.reject(Error(`Cannot get credential issuance options`));
     }
@@ -249,9 +249,8 @@ class OpenId4VcIssuanceProvider {
     if (!this.serverMetadata) {
       this.serverMetadata = await this.client.retrieveServerMetadata();
     }
-    if (!this.credentialsSupported || this.credentialsSupported.length===0) {
-      this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true))
-
+    if (!this.credentialsSupported || this.credentialsSupported.length === 0) {
+      this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true));
     }
 
     if (!this.credentialBranding) {
@@ -265,9 +264,12 @@ class OpenId4VcIssuanceProvider {
             ),
           );
 
-          const credentialTypes: Array<string> = metadata.types.length > 1
-            ? metadata.types.filter((type: string) => type !== 'VerifiableCredential')
-            : metadata.types.length === 0 ? ['VerifiableCredential'] : metadata.types
+          const credentialTypes: Array<string> =
+            metadata.types.length > 1
+              ? metadata.types.filter((type: string) => type !== 'VerifiableCredential')
+              : metadata.types.length === 0
+              ? ['VerifiableCredential']
+              : metadata.types;
 
           if (this.credentialBranding) {
             this.credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
@@ -295,25 +297,31 @@ class OpenId4VcIssuanceProvider {
 
   private getPreferredCredentialFormats = async (credentials: Array<CredentialSupported>): Promise<Array<CredentialSupported>> => {
     // Group credentials based on types as we now have multiple entries for one vc with different formats
-    const groupedTypes = Array.from(credentials
-      .reduce((map: Map<any, any>, value: CredentialSupported) => map.set(value.types.toString(), [...map.get(value.types.toString()) || [], value]), new Map)
-      .values()
+    const groupedTypes = Array.from(
+      credentials
+        .reduce(
+          (map: Map<any, any>, value: CredentialSupported) => map.set(value.types.toString(), [...(map.get(value.types.toString()) || []), value]),
+          new Map(),
+        )
+        .values(),
     );
 
     const preferredCredentials: Array<CredentialSupported> = [];
 
     for (const group of groupedTypes) {
       for (const vcFormatPreference of vcFormatPreferences) {
-        const credentialSupported = group.find((credentialSupported: CredentialSupported): boolean => credentialSupported.format === vcFormatPreference);
+        const credentialSupported = group.find(
+          (credentialSupported: CredentialSupported): boolean => credentialSupported.format === vcFormatPreference,
+        );
         if (credentialSupported) {
-          preferredCredentials.push(credentialSupported)
+          preferredCredentials.push(credentialSupported);
           break;
         }
       }
     }
 
-    return preferredCredentials
-  }
+    return preferredCredentials;
+  };
 
   private getIssuanceOpts = async (): Promise<Array<IIssuanceOpts>> => {
     if (this.issuanceOpts && this.issuanceOpts.length > 0) {
@@ -326,19 +334,19 @@ class OpenId4VcIssuanceProvider {
 
     for (const credentialSupported of this.credentialsSupported) {
       if (!this.serverMetadata?.issuerMetadata) {
-        issuanceOpts.push(this.defaultIssuanceOpts(credentialSupported))
+        issuanceOpts.push(this.defaultIssuanceOpts(credentialSupported));
         continue;
       }
 
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialSupported});
       const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported.format);
 
-      issuanceOpts.push( {
+      issuanceOpts.push({
         ...credentialSupported,
         didMethod,
         format: credentialSupported.format,
-        keyType: KeyTypeFromCryptographicSuite(cryptographicSuite)
-      } as IIssuanceOpts)
+        keyType: KeyTypeFromCryptographicSuite(cryptographicSuite),
+      } as IIssuanceOpts);
     }
 
     this.issuanceOpts = issuanceOpts;
@@ -347,7 +355,9 @@ class OpenId4VcIssuanceProvider {
 
   private defaultIssuanceOpts(credentialSupported: CredentialSupported): IIssuanceOpts {
     console.log(
-      `WARNING: Reverting to default for key/signature suites for credential type '${JSON.stringify(credentialSupported.types)}', as no Server Metadata or no metadata match was present!`,
+      `WARNING: Reverting to default for key/signature suites for credential type '${JSON.stringify(
+        credentialSupported.types,
+      )}', as no Server Metadata or no metadata match was present!`,
     );
     return {
       ...credentialSupported,
@@ -356,7 +366,7 @@ class OpenId4VcIssuanceProvider {
     };
   }
 
-  private getIssuanceCryptoSuite = async ({credentialSupported}: { credentialSupported: CredentialSupported }): Promise<string> => {
+  private getIssuanceCryptoSuite = async ({credentialSupported}: {credentialSupported: CredentialSupported}): Promise<string> => {
     const suites_supported = credentialSupported.cryptographic_suites_supported ?? [];
 
     // TODO: Return array, so the wallet/user could choose

@@ -1,14 +1,14 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
-import { IUserState } from 'src/types/store/user.types';
+import {IUserState} from 'src/types/store/user.types';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
-import IntentHandler from '../handlers/IntentHandler'
+import IntentHandler from '../handlers/IntentHandler';
 import {translate} from '../localization/Localization';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
@@ -36,7 +36,7 @@ import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {login} from '../services/authenticationService';
 import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
-import { IOnboardingState } from '../types/store/onboarding.types'
+import {IOnboardingState} from '../types/store/onboarding.types';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
