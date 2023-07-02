@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "Running prettier..."
-yarn run fix:prettier "src/**/*.(ts|tsx)" "App.tsx" --write . && git add -A .
+yarn run fix:prettier --write . && git add -A .
 
 exit $?
