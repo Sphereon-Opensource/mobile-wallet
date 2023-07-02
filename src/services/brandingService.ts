@@ -5,11 +5,7 @@ import Debug from 'debug';
 import {APP_ID} from '../@config/constants';
 import {ibAddCredentialBranding, ibRemoveCredentialBranding} from '../agent';
 import Localization from '../localization/Localization';
-import {
-  IAddCredentialBrandingArgs,
-  IRemoveCredentialBrandingArgs,
-  ISelectAppLocaleBrandingArgs
-} from '../types'
+import {IAddCredentialBrandingArgs, IRemoveCredentialBrandingArgs, ISelectAppLocaleBrandingArgs} from '../types';
 import {preloadImage} from '../utils/ImageUtils';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:brandingService`);
@@ -24,7 +20,9 @@ export const removeCredentialBranding = async (args: IRemoveCredentialBrandingAr
   return ibRemoveCredentialBranding(args);
 };
 
-export const selectAppLocaleBranding = async (args: ISelectAppLocaleBrandingArgs): Promise<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined> => {
+export const selectAppLocaleBranding = async (
+  args: ISelectAppLocaleBrandingArgs,
+): Promise<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined> => {
   // We need to retrieve the locale of the app and select a matching branding or fallback on a branding without a locale
   // We search for a first match that starts with the app locale
   const appLocale: string = Localization.getLocale();

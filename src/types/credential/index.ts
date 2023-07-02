@@ -60,7 +60,7 @@ export interface ICredentialTypeSelection {
 
 export type ICredentialMetadata = CredentialSupported & {
   credentialType: string;
-}
+};
 
 export interface ICredentialSelection {
   hash: string;

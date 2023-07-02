@@ -19,6 +19,7 @@ Certain functionality might not be available yet
 <a href='https://play.google.com/store/apps/details?id=com.sphereon.ssi.wallet&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='./docs/img/stores/play-store.png' width='250px'/></a></div>
 
 # Table of content:
+
 - [Introduction and technology](#sphereon-wallet)
 - [Onboarding](#onboarding)
 - [Receiving a Credential from an Issuer](#receiving-credentials-from-an-issuer)
@@ -48,23 +49,23 @@ Issuer and Verifier agents as well as mobile and web wallets.
 
 ## Technologies supported
 
-The wallet supports or soon (*) will the following features:
+The wallet supports or soon (\*) will the following features:
 
 - [W3C JWT and LDP/JSON-LD](https://www.w3.org/TR/vc-data-model/) credentials
-- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr, lto, factom, accumulate <sup>*</sup>,
-  cheqd <sup>*</sup>, ebsi<sup>*</sup>
-- Uniform rendering and representation library<sup>*</sup>
-- Card/Graphical and textual views<sup>*</sup>
+- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr, lto, factom, accumulate <sup>_</sup>,
+  cheqd <sup>_</sup>, ebsi<sup>\*</sup>
+- Uniform rendering and representation library<sup>\*</sup>
+- Card/Graphical and textual views<sup>\*</sup>
 - [Presentation Exchange](https://github.com/Sphereon-Opensource/pex)
-- [Credential Manifest](https://identity.foundation/credential-manifest/)<sup>*</sup>
+- [Credential Manifest](https://identity.foundation/credential-manifest/)<sup>\*</sup>
 - [Well-known DIDs (domain linkage of DIDs)](https://identity.foundation/.well-known/resources/did-configuration/)
 - [Self Issued Open ID V2 (SIOPv2)](https://github.com/Sphereon-Opensource/did-auth-siop)
 - [OpenID for Verifiable Credential Issuance (OID4VCI)](https://github.com/Sphereon-Opensource/OID4VCI-client)
 - [OpenID for Verifiable Presentations (OID4VP)](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
 - [DIDComm messaging v2](https://identity.foundation/didcomm-messaging/spec/)<sup>
-  *</sup> & [WACI DIDComm](https://identity.foundation/waci-didcomm/)<sup>*</sup>
+  _</sup> & [WACI DIDComm](https://identity.foundation/waci-didcomm/)<sup>_</sup>
 - [JWT VC Presentation Profile](https://identity.foundation/jwt-vc-presentation-profile/)
-- [VC API](https://w3c-ccg.github.io/vc-api/)<sup>*</sup> and [CHAPI](https://chapi.io/)
+- [VC API](https://w3c-ccg.github.io/vc-api/)<sup>\*</sup> and [CHAPI](https://chapi.io/)
 - [Mnemonic seed and key derivation with backup](https://github.com/Sphereon-Opensource/ssi-sdk/tree/develop/packages/mnemonic-seed-manager)
 - [Microsoft Entra Verified ID integration](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-verified-id)
 - [Sphereon VDX Platform integration](https://sphereon.com/sphereon-vdx-verifiable-data-exchange/)
@@ -138,11 +139,12 @@ demo/testing purposes.
 1. Launch the wallet
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following issuers:
-    * Walt.id - https://jff.walt.id
-    * Spruce - https://ngi-oidc4vci-test.spruceid.xyz
-    * Diwala - https://oidc4vc.diwala.io/issue
-    * Mattr - https://launchpad.mattrlabs.com/ (<= has some issues in schema loading in it's VCs currently. We are
-      investigating)
+
+   - Walt.id - https://jff.walt.id
+   - Spruce - https://ngi-oidc4vci-test.spruceid.xyz
+   - Diwala - https://oidc4vc.diwala.io/issue
+   - Mattr - https://launchpad.mattrlabs.com/ (<= has some issues in schema loading in it's VCs currently. We are
+     investigating)
 
    <br>
    <img src="./docs/img/issuance/1_qr_reader.jpg" width=33% height=33%>
@@ -174,9 +176,6 @@ demo/testing purposes.
 
 <img src="./docs/img/issuance/6_credential_accepted.jpg" width=33% height=33%>
 
-
-
-
 # Sharing Credentials with a Verifier
 
 You can share Verifiable Credentials with so called Verifiers or Relying Parties. The wallet has support for multiple open standards to share
@@ -193,8 +192,9 @@ demo/testing purposes.
 1. Launch the wallet
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following verifiers:
-    * Sphereon - https://ssi.sphereon.com
-     * Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
+
+   - Sphereon - https://ssi.sphereon.com
+   - Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
 
    <br>
    <img src="./docs/img/share/1_qr_reader.jpg" width=33% height=33%>
@@ -210,7 +210,7 @@ demo/testing purposes.
 
 <img src="./docs/img/share/3_required_credentials.jpg" width=33% height=33%>
 
-7. You need to click on the list items in the screen showing "Select  a credential". The texts in these list items come from the Verifier and should provide you with hints on why the information is needed.
+7. You need to click on the list items in the screen showing "Select a credential". The texts in these list items come from the Verifier and should provide you with hints on why the information is needed.
 8. After you click on a single list-item for a specific input requirement, you will go to the overview screen of available Verifiable Credentials that can satisfy this requirement:
 
 <img src="./docs/img/share/4_available_credentials.jpg" width=33% height=33%>
@@ -229,8 +229,6 @@ demo/testing purposes.
 
 12. The credential has now been successfully shared with the Verifier. Typically the Verifier system will show you some message or change it's screen
 
-
-
 # License
 
 Please note that this wallet is licensed as GPLv3, meaning restrictions apply. Sphereon does offer commercial licenses
@@ -243,16 +241,16 @@ approach to protect the IP and designs of the wallet a bit more.
 
 There are several other utility scripts that help with development.
 
-* `yarn fix:lint` - runs `eslint --fix` to fix code style.
-* `yarn fix:prettier` - runs `prettier --write` to fix code style.
+- `yarn fix:lint` - runs `eslint --fix` to fix code style.
+- `yarn fix:prettier` - runs `prettier --write` to fix code style.
 
 ## Requirements
 
 SSI Wallet uses Expo SDK v48 and React-Native v0.71.
 
-* Node v16.x.x
-* Expo CLI v6.0.1 or above
-* Yarn
+- Node v16.x.x
+- Expo CLI v6.0.1 or above
+- Yarn
 
 ### Node
 
@@ -260,7 +258,7 @@ Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. Th
 which is required for RN 0.71 to work. The app is not guaranteed to work with higher Node versions and it will
 certainly not work with lower Node versions.
 
-Use <code>nvm list available</code>  to list the available versions of Node.
+Use <code>nvm list available</code> to list the available versions of Node.
 
 Then install and make it the default. Please ensure you have proper permissions. On Windows this can mean running the
 command prompt or powershell as administrator!
@@ -307,9 +305,9 @@ If you do not connect the phone using USB it will start the Android emulator ins
 
 By default, it uses port 8081.
 
-* Ensure your phone and your development computer are on the same (Wi-Fi) network.
-* Ensure you phone is connected via USB
-* Ensure the firewall on you computer allows incoming traffic on port 8081.
+- Ensure your phone and your development computer are on the same (Wi-Fi) network.
+- Ensure you phone is connected via USB
+- Ensure the firewall on you computer allows incoming traffic on port 8081.
 
 ### iOS
 
@@ -321,11 +319,11 @@ expo ios:start  // Please note this command currently doesn't work
 
 Run the below commands on the command line to update all dependencies.
 
-````shell
+```shell
 yarn install
 cd ios
 pod install
-````
+```
 
 In XCode select the `Product -> Run` option from the menu. (If you want to create a archive for instance for TestFlight,
 you can choose `Product -> Archive`).

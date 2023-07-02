@@ -4,13 +4,16 @@
     // Only values not in expo/tsconfig.base
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "module": "commonjs",                                   /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "strict": true,                                         /* Enable all strict type-checking options. */
-    "baseUrl": "./",                                        /* Base directory to resolve non-absolute module names. */
-    "allowSyntheticDefaultImports": true,                   /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
-    "typeRoots": ["./src/@types", "./node_modules/@types"], /* By default, all visible '@types' packages are included in your compilation. Packages in node_modules/@types of any enclosing folder are considered visible. */
-    "removeComments": true,                                 /* Removes all comments. */
-    "strictPropertyInitialization": false,                  /* Disables the need to initialize every property */
+    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
+    "typeRoots": [
+      "./src/@types",
+      "./node_modules/@types"
+    ] /* By default, all visible '@types' packages are included in your compilation. Packages in node_modules/@types of any enclosing folder are considered visible. */,
+    "removeComments": true /* Removes all comments. */,
+    "strictPropertyInitialization": false /* Disables the need to initialize every property */,
     "allowJs": true
   }
 }
