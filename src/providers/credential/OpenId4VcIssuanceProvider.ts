@@ -38,7 +38,7 @@ import {credentialLocaleBrandingFrom} from '../../utils/mappers/branding/OIDC4VC
 
 const {v4: uuidv4} = require('uuid');
 
-const debug: Debug.Debugger = console.log(`${APP_ID}:openid4vci`);
+const debug: Debug.Debugger = Debug(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc_json', 'jwt_vc', 'ldp_vc'];
@@ -250,7 +250,7 @@ class OpenId4VcIssuanceProvider {
       this.serverMetadata = await this.client.retrieveServerMetadata();
     }
     if (!this.credentialsSupported || this.credentialsSupported.length === 0) {
-      this.credentialsSupported = this.client.getCredentialsSupported(true);
+      this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true));
     }
 
     if (!this.credentialBranding) {
@@ -295,6 +295,34 @@ class OpenId4VcIssuanceProvider {
     return this.accessTokenResponse;
   };
 
+  private getPreferredCredentialFormats = async (credentials: Array<CredentialSupported>): Promise<Array<CredentialSupported>> => {
+    // Group credentials based on types as we now have multiple entries for one vc with different formats
+    const groupedTypes = Array.from(
+      credentials
+        .reduce(
+          (map: Map<any, any>, value: CredentialSupported) => map.set(value.types.toString(), [...(map.get(value.types.toString()) || []), value]),
+          new Map(),
+        )
+        .values(),
+    );
+
+    const preferredCredentials: Array<CredentialSupported> = [];
+
+    for (const group of groupedTypes) {
+      for (const vcFormatPreference of vcFormatPreferences) {
+        const credentialSupported = group.find(
+          (credentialSupported: CredentialSupported): boolean => credentialSupported.format === vcFormatPreference,
+        );
+        if (credentialSupported) {
+          preferredCredentials.push(credentialSupported);
+          break;
+        }
+      }
+    }
+
+    return preferredCredentials;
+  };
+
   private getIssuanceOpts = async (): Promise<Array<IIssuanceOpts>> => {
     if (this.issuanceOpts && this.issuanceOpts.length > 0) {
       return this.issuanceOpts;
@@ -310,14 +338,13 @@ class OpenId4VcIssuanceProvider {
         continue;
       }
 
-      const format = await this.getIssuanceCredentialFormat({credentialSupported});
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialSupported});
       const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported.format);
 
       issuanceOpts.push({
         ...credentialSupported,
         didMethod,
-        format,
+        format: credentialSupported.format,
         keyType: KeyTypeFromCryptographicSuite(cryptographicSuite),
       } as IIssuanceOpts);
     }
@@ -338,20 +365,6 @@ class OpenId4VcIssuanceProvider {
       keyType: 'Secp256k1',
     };
   }
-
-  private getIssuanceCredentialFormat = async ({credentialSupported}: {credentialSupported: CredentialSupported}): Promise<string> => {
-    for (const format of vcFormatPreferences) {
-      if (format === credentialSupported.format) {
-        const credentialFormat = credentialSupported.format;
-        console.log(`Credential format ${format} supported by issuer, details: ${JSON.stringify(credentialFormat)}`);
-        return credentialFormat;
-      } else {
-        console.log(`Credential format ${format} not supported by issuer`);
-      }
-    }
-
-    return Promise.reject(Error(`Credential formats '${credentialSupported.format}' not supported by wallet`));
-  };
 
   private getIssuanceCryptoSuite = async ({credentialSupported}: {credentialSupported: CredentialSupported}): Promise<string> => {
     const suites_supported = credentialSupported.cryptographic_suites_supported ?? [];

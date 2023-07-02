@@ -492,8 +492,6 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   };
 
   const sendResponseOrSelectCredentials = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
-    console.log('sendResponseOrSelectCredentials');
-
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
     const credentialsSupported = metadata.credentialsSupported;
     const credentialTypeSelection: Array<ICredentialTypeSelection> = await Promise.all(
