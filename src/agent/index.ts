@@ -1,9 +1,9 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-lto';
-import {getDidJwkResolver} from "@sphereon/ssi-sdk-ext.did-resolver-jwk";
-import { SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
-import {SphereonKeyManagementSystem} from "@sphereon/ssi-sdk-ext.kms-local";
+import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
+import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
+import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {ContactStore, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
@@ -24,7 +24,7 @@ import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {SecretBox} from "@veramo/kms-local";
+import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
@@ -37,19 +37,10 @@ import {getDbConnection} from '../services/databaseService';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
 
 export const didResolver = new Resolver({
+  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
+    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
+  }),
   ...getDidKeyResolver(),
-  ...getUniResolver(SupportedDidMethodEnum.DID_LTO, {
-    resolveUrl: SPHEREON_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_FACTOM, {
-    resolveUrl: SPHEREON_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
-    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
-    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
-  }),
   ...webDIDResolver,
   ...getDidIonResolver(),
   ...getDidJwkResolver(),

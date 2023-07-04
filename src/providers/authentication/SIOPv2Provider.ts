@@ -1,5 +1,5 @@
 import {CheckLinkedDomain, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {getKey} from "@sphereon/ssi-sdk-ext.did-utils";
+import {getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/dist/session/OID4VP'; // FIXME we should fix the export of these objects

@@ -429,15 +429,15 @@ function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: string
 const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
   const sendResponseOrCreateContact = async (provider: OpenId4VcIssuanceProvider): Promise<void> => {
     const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
-    const serverMetadata: EndpointMetadata = metadata.serverMetadata
-    const correlationId = `${new URL(serverMetadata.issuer).protocol}//${new URL(serverMetadata.issuer).hostname}`
+    const serverMetadata: EndpointMetadata = metadata.serverMetadata;
+    const correlationId = `${new URL(serverMetadata.issuer).protocol}//${new URL(serverMetadata.issuer).hostname}`;
     const name: string = getName(metadata, correlationId);
     getContacts({
       filter: [
         {
           identities: {
             identifier: {
-                correlationId: new URL(serverMetadata.issuer).hostname,
+              correlationId: new URL(serverMetadata.issuer).hostname,
             },
           },
         },

@@ -10,7 +10,7 @@ import {
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
 import {CredentialsSupportedDisplay} from '@sphereon/oid4vci-common';
-import {KeyUse} from "@sphereon/ssi-sdk-ext.did-resolver-jwk";
+import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialFormat} from '@sphereon/ssi-types';
