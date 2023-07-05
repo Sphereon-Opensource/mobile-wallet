@@ -548,10 +548,9 @@ const AuthenticationStack = (): JSX.Element => {
 const AppNavigator = (): JSX.Element => {
   const userState: IUserState = useSelector((state: RootState) => state.user);
   const onboardingState: IOnboardingState = useSelector((state: RootState) => state.onboarding);
+  const intentHandler: IntentHandler = new IntentHandler();
 
   useEffect(() => {
-    const intentHandler: IntentHandler = new IntentHandler();
-
     if (userState.activeUser) {
       void intentHandler.enable();
     }
