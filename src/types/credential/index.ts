@@ -1,20 +1,8 @@
-import {CredentialSupported} from '@sphereon/oid4vci-common';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialStatus, ImageSize} from '@sphereon/ui-components.core';
 
 import {LabelStatus} from '../component';
-import {IImageSize} from '../image';
-
-export enum CredentialStatusEnum {
-  VALID = 'valid',
-  EXPIRED = 'expired',
-  REVOKED = 'revoked',
-}
-
-export enum IssuerStatusEnum {
-  VERIFIED = 'verified',
-  UNVERIFIED = 'unverified',
-}
 
 export enum CredentialIssuanceStateEnum {
   OFFER = 'offer',
@@ -26,7 +14,7 @@ export interface ICredentialSummary {
   id?: string; // The id of the credential (optional according to VCDM)
   title: string;
   issuer: IIssuerSummary;
-  credentialStatus: CredentialStatusEnum;
+  credentialStatus: CredentialStatus;
   issueDate: number;
   expirationDate: number;
   properties: ICredentialDetailsRow[];
@@ -48,7 +36,7 @@ export interface ICredentialDetailsRow {
   value: any;
   isEditable?: boolean;
   status?: LabelStatus;
-  imageSize?: IImageSize;
+  imageSize?: ImageSize;
 }
 
 export interface ICredentialTypeSelection {
@@ -57,10 +45,6 @@ export interface ICredentialTypeSelection {
   credentialAlias: string;
   isSelected: boolean;
 }
-
-export type ICredentialMetadata = CredentialSupported & {
-  credentialType: string;
-};
 
 export interface ICredentialSelection {
   hash: string;

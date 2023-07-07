@@ -3208,6 +3208,25 @@
   dependencies:
     jwt-decode "^3.1.2"
 
+"@sphereon/ui-components.core@file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz":
+  version "0.1.0-bram"
+  resolved "file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz#e01201c6f400a7e2a8cf78191c5cd6f1fb5e3175"
+  dependencies:
+    i18n-js "^3.8.0"
+    lodash.memoize "^4.1.2"
+    styled-components "^5.3.3"
+
+"@sphereon/ui-components.ssi-react-native@file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.1.2-bram.tgz":
+  version "0.1.2-bram"
+  resolved "file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.1.2-bram.tgz#e94f60af0abd2275db25734bbfe68835355debe7"
+  dependencies:
+    "@react-native-community/blur" "^4.3.0"
+    "@sphereon/ui-components.core" "file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz"
+    react-native-fast-image "^8.6.3"
+    react-native-size-matters "^0.4.0"
+    react-native-svg "13.4.0"
+    styled-components "^5.3.3"
+
 "@sphereon/wellknown-dids-client@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@sphereon/wellknown-dids-client/-/wellknown-dids-client-0.1.3.tgz#4711599ed732903e9f45fe051660f925c9b508a4"

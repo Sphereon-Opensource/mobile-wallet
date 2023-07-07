@@ -10,8 +10,7 @@ import {
   SSIToastContainerStyled as ToastContainer,
 } from '../../../../styles/components';
 import {IToastConfigParams, ToastTypeEnum} from '../../../../types';
-import SSICheckmarkBadge from '../../../assets/badges/SSICheckmarkBadge';
-import SSIErrorBadge from '../../../assets/badges/SSIExclamationMarkBadge';
+import {SSICheckmarkBadge, SSIExclamationMarkBadge} from '@sphereon/ui-components.ssi-react-native';
 
 export interface IProps extends IToastConfigParams {
   type: ToastTypeEnum;
@@ -22,7 +21,7 @@ const getBadge = (type: ToastTypeEnum) => {
     case ToastTypeEnum.TOAST_SUCCESS:
       return <SSICheckmarkBadge />;
     case ToastTypeEnum.TOAST_ERROR:
-      return <SSIErrorBadge />;
+      return <SSIExclamationMarkBadge />;
     default:
       return <View />;
   }

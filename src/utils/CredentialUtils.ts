@@ -2,9 +2,9 @@ import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
-
+import {CredentialStatus} from '@sphereon/ui-components.core';
 import store from '../store';
-import {CredentialStatusEnum, ICredentialSummary, IUserIdentifier} from '../types';
+import {ICredentialSummary, IUserIdentifier} from '../types';
 
 import {makeEpochMilli} from './DateUtils';
 
@@ -47,14 +47,14 @@ export const getOriginalVerifiableCredential = (vc: VerifiableCredential | ICred
   return CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
 };
 
-export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary): CredentialStatusEnum => {
+export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary): CredentialStatus => {
   if (isRevoked()) {
-    return CredentialStatusEnum.REVOKED;
+    return CredentialStatus.REVOKED;
   } else if (isExpired(credential.expirationDate)) {
-    return CredentialStatusEnum.EXPIRED;
+    return CredentialStatus.EXPIRED;
   }
 
-  return CredentialStatusEnum.VALID;
+  return CredentialStatus.VALID;
 };
 
 /**

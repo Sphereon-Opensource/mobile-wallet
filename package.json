@@ -54,6 +54,8 @@
     "@sphereon/ssi-sdk.data-store": "0.11.1-next.162",
     "@sphereon/ssi-sdk.issuance-branding": "0.11.1-next.162",
     "@sphereon/ssi-types": "0.11.1-next.162",
+    "@sphereon/ui-components.core": "file://C:\\Git\\Sphereon-Opensource\\UI-Components\\packages\\core\\sphereon-ui-components.core-0.1.0-bram.tgz",
+    "@sphereon/ui-components.ssi-react-native": "file://C:\\Git\\Sphereon-Opensource\\UI-Components\\packages\\ssi-react-native\\sphereon-ui-components.ssi-react-native-0.1.2-bram.tgz",
     "@transmute/lds-ecdsa-secp256k1-recovery2020": "^0.0.7",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",

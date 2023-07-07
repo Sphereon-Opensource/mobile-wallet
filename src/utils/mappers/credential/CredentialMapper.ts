@@ -2,9 +2,9 @@ import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {ICredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
-
+import {CredentialStatus} from '@sphereon/ui-components.core';
 import {selectAppLocaleBranding} from '../../../services/brandingService';
-import {CredentialStatusEnum, ICredentialDetailsRow, ICredentialSummary} from '../../../types';
+import {ICredentialDetailsRow, ICredentialSummary} from '../../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../../DateUtils';
 import {getImageSize, isImage} from '../../ImageUtils';
@@ -103,7 +103,7 @@ export const toCredentialSummary = async (
     : 0;
   const issueDate: number = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS;
 
-  const credentialStatus: CredentialStatusEnum = getCredentialStatus(verifiableCredential);
+  const credentialStatus: CredentialStatus = getCredentialStatus(verifiableCredential);
 
   const title = verifiableCredential.name
     ? verifiableCredential.name
