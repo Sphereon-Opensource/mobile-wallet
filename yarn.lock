@@ -2980,14 +2980,13 @@
     "@trust/keyto" "^2.0.0-alpha1"
     "@veramo/core" "4.2.0"
 
-"@sphereon/did-auth-siop@0.3.2-jsonpath-test.2", "@sphereon/did-auth-siop@0.3.2-unstable.6":
-  version "0.3.2-jsonpath-test.2"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.2-jsonpath-test.2.tgz#127b30b00ab69bbd5af2b36ecc4afff919bbaa8b"
-  integrity sha512-T/RNPpuKyxujsQXb+YQShSJRRizV1CHPcGST+w6IerY3gk9xqewcAZS8F4nXZET7AhXxKNl1yu+rhxbqZE7OyA==
+"@sphereon/did-auth-siop@0.3.2-unstable.6", "@sphereon/did-auth-siop@0.3.2-unstable.7":
+  version "0.3.2-unstable.7"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.3.2-unstable.7.tgz#a41152119e9b63bd442f53e9201b2d13fecbb708"
+  integrity sha512-zPWCf989VALCE3YoZZhTMq4xp18aX/pg18+xyNndxXuQ85yOxyREte4/TyXFrbT60FDu4M/smpp/+3r6EeD91w==
   dependencies:
-    "@astronautlabs/jsonpath" "^1.1.2"
     "@sphereon/did-uni-client" "^0.6.0"
-    "@sphereon/pex" "^2.0.2-jsonpath-test.1"
+    "@sphereon/pex" "^2.0.1"
     "@sphereon/pex-models" "^2.0.2"
     "@sphereon/ssi-types" "^0.13.0"
     "@sphereon/wellknown-dids-client" "^0.1.3"
@@ -3110,7 +3109,21 @@
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.2.tgz#541b3f77522ab295da70b65baa0994e249073d1b"
   integrity sha512-ptHM72tdQrhMYSItHoGCm3HgK+HGF6tI29zYfS47H3M7ZjKhBgfmVHohuxhxA0Q6cL5gqH1jEA8G5Z2tadHmTw==
 
-"@sphereon/pex@2.0.1", "@sphereon/pex@2.0.2-jsonpath-test.1", "@sphereon/pex@^2.0.2-jsonpath-test.1":
+"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.1.tgz#277de5dd1346c30c50b67fbbbfb8919004c05b52"
+  integrity sha512-9UW1z60ltPMEauqKXa73gTfmU8SrPxH+X7Rx9v7G13ZmeTC8Yjfm2C7Mit01B9BCL49gShV4htG8np3+UKlorg==
+  dependencies:
+    "@sphereon/pex-models" "^2.0.2"
+    "@sphereon/ssi-types" "^0.10.0"
+    ajv "^8.12.0"
+    ajv-formats "^2.1.1"
+    jsonpath "^1.1.1"
+    jwt-decode "^3.1.2"
+    nanoid "^3.3.6"
+    string.prototype.matchall "^4.0.8"
+
+"@sphereon/pex@2.0.2-jsonpath-test.1":
   version "2.0.2-jsonpath-test.1"
   resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.2-jsonpath-test.1.tgz#0071bb2165274cd250be2ccc7461b62a61ec2ab5"
   integrity sha512-AfL6rvjVMSIg5Rc62/e7yuxY1dMr44xH2W+9YlXYzvqCYFCdqfAC/vuq5eW61TrMt2nBV1xR/UD12fhVvTs62A==
@@ -3379,7 +3392,7 @@
     jsonld "^4.0.1"
     jsonld-signatures "^7.0.0"
 
-"@sphereon/ssi-types@0.13.1-next.5", "@sphereon/ssi-types@0.13.1-next.5+c4a4684", "@sphereon/ssi-types@^0.11.0", "@sphereon/ssi-types@^0.13.0", "@sphereon/ssi-types@^0.9.0":
+"@sphereon/ssi-types@0.13.1-next.5", "@sphereon/ssi-types@0.13.1-next.5+c4a4684", "@sphereon/ssi-types@^0.10.0", "@sphereon/ssi-types@^0.11.0", "@sphereon/ssi-types@^0.13.0", "@sphereon/ssi-types@^0.9.0":
   version "0.13.1-next.5"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.13.1-next.5.tgz#b7826d6b34553bae749637161d9a25263dd7e289"
   integrity sha512-1y2YVsFj+6Q4/fOC4RCZNMSayWPpaWekbbdw+B4bV2JvLJ01E1hI0S90wsSqUoBudppCq3LEQJo/LtxJT6C1Ag==
@@ -7663,6 +7676,11 @@ espree@^9.6.0:
     acorn-jsx "^5.3.2"
     eslint-visitor-keys "^3.4.1"
 
+esprima@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/esprima/-/esprima-1.2.2.tgz#76a0fd66fcfe154fd292667dc264019750b1657b"
+  integrity sha512-+JpPZam9w5DuJ3Q67SqsMGtiHKENSMRVoxvArfJZK01/BfLEObtZ6orJa/MtoGNR/rfMgp5837T41PAmTwAv/A==
+
 esprima@^4.0.0, esprima@^4.0.1, esprima@~4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
@@ -10329,6 +10347,15 @@ jsonld@^5.2.0:
 "jsonld@link:./node_modules/@digitalcredentials/jsonld":
   version "0.0.0"
   uid ""
+
+jsonpath@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/jsonpath/-/jsonpath-1.1.1.tgz#0ca1ed8fb65bb3309248cc9d5466d12d5b0b9901"
+  integrity sha512-l6Cg7jRpixfbgoWgkrl77dgEj8RPvND0wMH6TwQmi9Qs4TFfS9u5cUFnbeKTwj5ga5Y3BTGGNI28k117LJ009w==
+  dependencies:
+    esprima "1.2.2"
+    static-eval "2.0.2"
+    underscore "1.12.1"
 
 "jsx-ast-utils@^2.4.1 || ^3.0.0":
   version "3.3.4"
@@ -14723,6 +14750,11 @@ unbox-primitive@^1.0.2:
     has-bigints "^1.0.2"
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
+
+underscore@1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.1.tgz#7bb8cc9b3d397e201cf8553336d262544ead829e"
+  integrity sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"

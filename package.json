@@ -143,7 +143,8 @@
     "typeorm": "0.3.12",
     "uint8arrays": "^3.1.1",
     "vm-browserify": "^1.1.2",
-    "web-did-resolver": "^2.0.23"
+    "web-did-resolver": "^2.0.23",
+    "jsonpath": "^1.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -222,9 +223,9 @@
     "**/@types/react-native": "0.71.3",
     "**/@types/react": "~18.0.28",
     "**/expo-random": "~13.1.1",
-    "@sphereon/pex": "2.0.2-jsonpath-test.1",
+    "@sphereon/pex": "2.0.1",
     "@sphereon/isomorphic-argon2": "1.0.1",
-    "@sphereon/did-auth-siop": "0.3.2-jsonpath-test.2",
+    "@sphereon/did-auth-siop": "0.3.2-unstable.7",
     "@sphereon/ssi-types": "0.13.1-next.5",
     "@sphereon/ssi-sdk.core": "0.13.1-next.5",
     "@sphereon/ssi-sdk-ext.did-utils": "0.12.1",

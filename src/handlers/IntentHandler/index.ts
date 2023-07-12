@@ -17,21 +17,47 @@ import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/Cr
 const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class IntentHandler {
+  private static instance: IntentHandler;
   private deeplinkListener: EmitterSubscription;
   private shareListener: ShareListener;
+  private initialUrl?: string;
+  private _propagateEvents = false;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
 
   public enable = async (): Promise<void> => {
-    await this.addListeners();
-    await this.getDataOnStartup();
+    await this.handleLinksForRunningApp();
+    await this.handleLinksForStartingApp();
   };
 
+  public static getInstance(): IntentHandler {
+    if (!IntentHandler.instance) {
+      IntentHandler.instance = new IntentHandler();
+    }
+    return IntentHandler.instance;
+  }
+
   public disable = async (): Promise<void> => {
+    this.propagateEvents = false;
     await this.removeListeners();
   };
 
-  private addListeners = async (): Promise<void> => {
-    this.deeplinkListener = Linking.addEventListener('url', this.deepLinkListener);
-    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataListener);
+  get propagateEvents(): boolean {
+    return this._propagateEvents;
+  }
+
+  set propagateEvents(value: boolean) {
+    this._propagateEvents = value;
+  }
+
+  private handleLinksForRunningApp = async (): Promise<void> => {
+    /**
+     * 1. If the app is already open, the app is foregrounded and a Linking event is fired
+     * You can handle these events with Linking.addEventListener('url', callback).
+     */
+    this.deeplinkListener = Linking.addEventListener('url', this.initialUrlDeepLinkHandler);
+    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
   };
 
   private removeListeners = async (): Promise<void> => {
@@ -39,20 +65,28 @@ class IntentHandler {
     this.shareListener?.remove();
   };
 
-  private async getDataOnStartup(): Promise<void> {
-    await this.handleDeepLinkData();
+  private async handleLinksForStartingApp(): Promise<void> {
+    /**
+     * 2. If the app is not already open, it is opened and the url is passed in as the initialURL
+     * You can handle these events with Linking.getInitialURL() -- it returns a Promise that resolves to the url, if there is one.
+     */
+    await this.storeInitialURLOnStart();
     await this.handleSharedFileData();
   }
 
-  private async handleDeepLinkData(): Promise<void> {
-    Linking.getInitialURL().then((url: string | null) => {
-      debug(`Receiving deeplink data: ${url}`);
+  private async storeInitialURLOnStart(): Promise<void> {
+    const url = await Linking.getInitialURL().then((url: string | null) => {
+      console.log(`Receiving deeplink data: ${url}`);
       // Added expo-development-client check because of how the expo works in development
       if (!url || url.includes('expo-development-client')) {
         return;
       }
-      this.deepLinkListener({url});
+      return url;
+      // this.deepLinkAction({url});
     });
+    if (url) {
+      this.initialUrl = url;
+    }
   }
 
   private async handleSharedFileData(): Promise<void> {
@@ -62,17 +96,33 @@ class IntentHandler {
         return;
       }
 
-      this.sharedFileDataListener(data);
+      this.sharedFileDataAction(data);
     });
   }
 
-  private deepLinkListener = async (event: {url: string}): Promise<void> => {
-    // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
-    // TODO fix this type issue
-    await readQr({qrData: event.url, navigation: RootNavigation});
+  private initialUrlDeepLinkHandler = async (event: {url: string}): Promise<void> => {
+    if (event.url) {
+      this.initialUrl = event.url;
+    }
+    if (this.hasDeepLink() && this.propagateEvents) {
+      void this.openDeepLink();
+    }
   };
 
-  private sharedFileDataListener(item?: ShareData): void {
+  public hasDeepLink = (): boolean => {
+    return !!this.initialUrl;
+  };
+  public openDeepLink = async (): Promise<void> => {
+    const url = this.initialUrl;
+    this.initialUrl = undefined;
+    if (url) {
+      // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
+      // TODO fix this type issue
+      await readQr({qrData: url, navigation: RootNavigation});
+    }
+  };
+
+  private sharedFileDataAction(item?: ShareData): void {
     if (!item || !item.data) {
       return;
     }
@@ -107,7 +157,12 @@ class IntentHandler {
                       screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                     }),
                   )
-                  .then(() => showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('credential_offer_accepted_toast'), showBadge: false}))
+                  .then(() =>
+                    showToast(ToastTypeEnum.TOAST_SUCCESS, {
+                      message: translate('credential_offer_accepted_toast'),
+                      showBadge: false,
+                    }),
+                  )
                   .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message})),
             },
             secondaryAction: {

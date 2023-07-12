@@ -548,11 +548,15 @@ const AuthenticationStack = (): JSX.Element => {
 const AppNavigator = (): JSX.Element => {
   const userState: IUserState = useSelector((state: RootState) => state.user);
   const onboardingState: IOnboardingState = useSelector((state: RootState) => state.onboarding);
-  const intentHandler: IntentHandler = new IntentHandler();
+  const intentHandler: IntentHandler = IntentHandler.getInstance();
 
   useEffect(() => {
     if (userState.activeUser) {
-      void intentHandler.enable();
+      intentHandler.propagateEvents = true;
+      if (intentHandler.hasDeepLink()) {
+        // In case the app was closed but got a deeplink. We wait till we have an activeUser
+        void intentHandler.openDeepLink();
+      }
     }
 
     return (): void => {
