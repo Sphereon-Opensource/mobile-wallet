@@ -25,3 +25,9 @@ export interface IOpenIdAuthenticatedUser {
   roles: Array<string>;
   scope: Array<string>;
 }
+
+export enum WalletAuthLockState {
+  ONBOARDING = 'onboarding',
+  AUTHENTICATED = 'authenticated',
+  LOCKED = 'locked',
+}

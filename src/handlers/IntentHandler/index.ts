@@ -20,15 +20,22 @@ class IntentHandler {
   private static instance: IntentHandler;
   private deeplinkListener: EmitterSubscription;
   private shareListener: ShareListener;
-  private initialUrl?: string;
+  private _initialUrl?: string;
   private _propagateEvents = false;
+  private _enabled = false;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
+  public isEnabled(): boolean {
+    return this._enabled;
+  }
   public enable = async (): Promise<void> => {
-    await this.handleLinksForRunningApp();
-    await this.handleLinksForStartingApp();
+    if (!this.isEnabled()) {
+      await this.handleLinksForRunningApp();
+      await this.handleLinksForStartingApp();
+      this._enabled = true;
+    }
   };
 
   public static getInstance(): IntentHandler {
@@ -39,8 +46,10 @@ class IntentHandler {
   }
 
   public disable = async (): Promise<void> => {
-    this.propagateEvents = false;
+    this._propagateEvents = false;
+    this._initialUrl = undefined;
     await this.removeListeners();
+    this._enabled = false;
   };
 
   get propagateEvents(): boolean {
@@ -56,7 +65,8 @@ class IntentHandler {
      * 1. If the app is already open, the app is foregrounded and a Linking event is fired
      * You can handle these events with Linking.addEventListener('url', callback).
      */
-    this.deeplinkListener = Linking.addEventListener('url', this.initialUrlDeepLinkHandler);
+    Linking.removeAllListeners('url');
+    this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
     this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
   };
 
@@ -75,18 +85,16 @@ class IntentHandler {
   }
 
   private async storeInitialURLOnStart(): Promise<void> {
-    const url = await Linking.getInitialURL().then((url: string | null) => {
-      console.log(`Receiving deeplink data: ${url}`);
-      // Added expo-development-client check because of how the expo works in development
-      if (!url || url.includes('expo-development-client')) {
-        return;
-      }
-      return url;
-      // this.deepLinkAction({url});
-    });
-    if (url) {
-      this.initialUrl = url;
+    const url = await Linking.getInitialURL();
+
+    // Added expo-development-client check because of how the expo works in development
+    if (!url || url.includes('expo-development-client')) {
+      debug('No deeplink on start');
+      return;
     }
+    // this.deepLinkAction({url});
+    debug(`deeplink on start: ${url}`);
+    this._initialUrl = url;
   }
 
   private async handleSharedFileData(): Promise<void> {
@@ -100,9 +108,10 @@ class IntentHandler {
     });
   }
 
-  private initialUrlDeepLinkHandler = async (event: {url: string}): Promise<void> => {
+  private deepLinkHandler = async (event: {url: string}): Promise<void> => {
     if (event.url) {
-      this.initialUrl = event.url;
+      debug(`Deeplink for running app: ${event.url}`);
+      this._initialUrl = event.url;
     }
     if (this.hasDeepLink() && this.propagateEvents) {
       void this.openDeepLink();
@@ -110,11 +119,17 @@ class IntentHandler {
   };
 
   public hasDeepLink = (): boolean => {
-    return !!this.initialUrl;
+    return !!this._initialUrl;
   };
+
+  public getDeepLink(): string | undefined {
+    return this._initialUrl;
+  }
+
   public openDeepLink = async (): Promise<void> => {
-    const url = this.initialUrl;
-    this.initialUrl = undefined;
+    debug(`Open deeplink for ${this._initialUrl}`);
+    const url = this._initialUrl;
+    this._initialUrl = undefined;
     if (url) {
       // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
       // TODO fix this type issue

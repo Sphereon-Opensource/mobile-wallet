@@ -1,7 +1,7 @@
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {BasicUser, BasicUserIdentifier, IUser} from '../types';
+import {BasicUser, BasicUserIdentifier, IUser, RootState} from '../types';
 
 import {getUsers as getUsersFromStorage, deleteUser as removeUser, storeUser} from './storageService';
 

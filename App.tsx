@@ -57,7 +57,9 @@ export default function App() {
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
+        console.log('Enabling deeplink listener...');
         await IntentHandler.getInstance().enable();
+        console.log('Enabled deeplink listener');
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);

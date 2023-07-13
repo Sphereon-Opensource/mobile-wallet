@@ -1,14 +1,11 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React from 'react';
 import Toast from 'react-native-toast-message';
-import {useSelector} from 'react-redux';
-import {IUserState} from 'src/types/store/user.types';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
-import IntentHandler from '../handlers/IntentHandler';
 import {translate} from '../localization/Localization';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
@@ -34,9 +31,16 @@ import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
-import {login} from '../services/authenticationService';
-import {HeaderMenuIconsEnum, MainRoutesEnum, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, SwitchRoutesEnum} from '../types';
-import {IOnboardingState} from '../types/store/onboarding.types';
+import {login, walletAuthLockState} from '../services/authenticationService';
+import {
+  HeaderMenuIconsEnum,
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum,
+  StackParamList,
+  SwitchRoutesEnum,
+  WalletAuthLockState,
+} from '../types';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -546,36 +550,19 @@ const AuthenticationStack = (): JSX.Element => {
  * https://reactnavigation.org/docs/auth-flow/
  */
 const AppNavigator = (): JSX.Element => {
-  const userState: IUserState = useSelector((state: RootState) => state.user);
-  const onboardingState: IOnboardingState = useSelector((state: RootState) => state.onboarding);
-  const intentHandler: IntentHandler = IntentHandler.getInstance();
-
-  useEffect(() => {
-    if (userState.activeUser) {
-      intentHandler.propagateEvents = true;
-      if (intentHandler.hasDeepLink()) {
-        // In case the app was closed but got a deeplink. We wait till we have an activeUser
-        void intentHandler.openDeepLink();
-      }
-    }
-
-    return (): void => {
-      void intentHandler.disable();
-    };
-  }, [userState.activeUser]);
-
+  const lockState = walletAuthLockState();
   return (
     <Stack.Navigator
       screenOptions={{
         animation: 'none',
         headerShown: false,
       }}>
-      {userState.users.size === 0 || onboardingState.loading ? (
+      {lockState === WalletAuthLockState.ONBOARDING ? (
         <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
-      ) : !userState.activeUser ? (
-        <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
-      ) : (
+      ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
+      ) : (
+        <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />
       )}
     </Stack.Navigator>
   );
