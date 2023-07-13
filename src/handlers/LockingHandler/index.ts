@@ -10,7 +10,18 @@ import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class LockingHandler {
+  private static instance: LockingHandler;
   private lockingEventListener: NativeEventSubscription | EmitterSubscription;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  private constructor() {}
+
+  public static getInstance(): LockingHandler {
+    if (!LockingHandler.instance) {
+      LockingHandler.instance = new LockingHandler();
+    }
+    return LockingHandler.instance;
+  }
 
   public enableLocking = async (): Promise<void> => {
     debug('Enabling locking listener...');

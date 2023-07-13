@@ -8,6 +8,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import 'react-native-gesture-handler';
 import {bindActionCreators} from 'redux';
+import IntentHandler from './src/handlers/IntentHandler';
 
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
@@ -53,11 +54,13 @@ export default function App() {
   const [navigationIsReady, setNavigationIsReady] = useState(false);
 
   useEffect(() => {
-    const lockingHandler: LockingHandler = new LockingHandler();
-
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
+        console.log('Enabling deeplink listener...');
+        await IntentHandler.getInstance().enable();
+        console.log('Enabled deeplink listener');
+
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
         if (Platform.OS === PlatformsEnum.ANDROID) {
@@ -76,7 +79,7 @@ export default function App() {
         const actions = bindActionCreators({getUsers}, store.dispatch);
         await actions.getUsers();
 
-        await lockingHandler.enableLocking();
+        await LockingHandler.getInstance().enableLocking();
       } catch (e) {
         console.warn(e);
       } finally {
@@ -87,7 +90,8 @@ export default function App() {
     void prepare();
 
     return (): void => {
-      void lockingHandler.disableLocking();
+      void IntentHandler.getInstance().disable();
+      void LockingHandler.getInstance().disableLocking();
     };
   }, []);
 

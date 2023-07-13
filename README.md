@@ -140,11 +140,20 @@ demo/testing purposes.
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following issuers:
 
-   - Walt.id - https://jff.walt.id
-   - Spruce - https://ngi-oidc4vci-test.spruceid.xyz
-   - Diwala - https://oidc4vc.diwala.io/issue
-   - Mattr - https://launchpad.mattrlabs.com/ (<= has some issues in schema loading in it's VCs currently. We are
-     investigating)
+These 4 links are Sphereon demo issuers, branded differently
+
+- [Sphereon (branded credentials)](https://ssi.sphereon.com/demo/issuer/)
+- [Dutch Blockchain Coalition (branded credentials)](https://ssi.dutchblockchaincoalition.org/demo/issuer/)
+- [Triall (branded credentials)](ssi.triall.io/demo/issuer/)
+- [Future Mobility Alliance (branded credentials)](https://ssi.future-mobility-alliance.org/demo/issuer/)
+
+Other issuers:
+
+- [SpruceId](https://ngi-oidc4vci-test.spruceid.xyz)
+- [Diwala](https://oidc4vc.diwala.io/issue)
+- [Walt.id](https://jff.walt.id) (<= has some issues in our latest wallet, will be fixed in the next version)
+- [Mattr](https://launchpad.mattrlabs.com/) (<= has some issues in schema loading in it's VCs currently. We are
+  investigating)
 
    <br>
    <img src="./docs/img/issuance/1_qr_reader.jpg" width=33% height=33%>
@@ -193,8 +202,11 @@ demo/testing purposes.
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following verifiers:
 
-   - Sphereon - https://ssi.sphereon.com
-   - Auth0 - https://verifiablecredentials.dev/presentation (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
+   - [Sphereon](https://ssi.sphereon.com/demo/verifier/) (needs the branded Sphereon credential from the Sphereon issuer)
+   - [Dutch Blockchain Coalition](https://dutchblockchaincoalition.org/en/userlogin) (Use the login button/screen. It needs the branded DBC credential from the Dutch Blockchain Coalition issuer)
+   - [Future Mobility Data Marketplace](https://marketplace.future-mobility-alliance.org/) (Use the login button top-right. It needs the branded FMDM credential from the Future Mobility Alliance issuer)
+   - [Triall Clinical Insights Exchange](https://cix.triall.io) (Use the login button top-right. It needs the branded Triall credential from the Triall issuer)
+   - [Auth0](https://verifiablecredentials.dev/presentation) (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
 
    <br>
    <img src="./docs/img/share/1_qr_reader.jpg" width=33% height=33%>
