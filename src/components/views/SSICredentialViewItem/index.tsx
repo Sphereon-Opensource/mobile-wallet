@@ -1,3 +1,4 @@
+import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC} from 'react';
 
 import {translate} from '../../../localization/Localization';
@@ -14,7 +15,6 @@ import {
 } from '../../../styles/components';
 import {ICredentialSummary} from '../../../types';
 import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
-import SSIStatusLabel from '../../labels/SSIStatusLabel';
 
 // TODO fix to many properties
 export interface Props extends ICredentialSummary {
