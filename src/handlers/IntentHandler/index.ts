@@ -1,9 +1,9 @@
 import {VerifiableCredential} from '@veramo/core';
-import Debug from 'debug';
+// import Debug from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';
 import ShareMenu, {ShareData, ShareListener} from 'react-native-share-menu';
 
-import {APP_ID} from '../../@config/constants';
+// import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
 import RootNavigation from '../../navigation/rootNavigation';
 import {readFile} from '../../services/fileService';
@@ -14,7 +14,7 @@ import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../ty
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
+// const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class IntentHandler {
   private static instance: IntentHandler;
@@ -31,15 +31,19 @@ class IntentHandler {
     return this._enabled;
   }
   public enable = async (): Promise<void> => {
+    console.log(`Enable intenthandler... `);
     if (!this.isEnabled()) {
+      console.log(`intenthandler was not enabled yet`);
       await this.handleLinksForRunningApp();
       await this.handleLinksForStartingApp();
       this._enabled = true;
     }
+    console.log(`intenthandler enabled`);
   };
 
   public static getInstance(): IntentHandler {
-    if (!IntentHandler.instance) {
+    if (typeof IntentHandler.instance !== 'object') {
+      console.log('########## INSTANTIATING NEW INTENTHANDLER');
       IntentHandler.instance = new IntentHandler();
     }
     return IntentHandler.instance;
@@ -65,7 +69,7 @@ class IntentHandler {
      * 1. If the app is already open, the app is foregrounded and a Linking event is fired
      * You can handle these events with Linking.addEventListener('url', callback).
      */
-    Linking.removeAllListeners('url');
+    // Linking.removeAllListeners('url');
     this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
     this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
   };
@@ -89,20 +93,20 @@ class IntentHandler {
 
     // Added expo-development-client check because of how the expo works in development
     if (!url || url.includes('expo-development-client')) {
-      debug('No deeplink on start');
+      console.log('No deeplink on start');
       return;
     }
     // this.deepLinkAction({url});
-    debug(`deeplink on start: ${url}`);
+    console.log(`deeplink on start: ${url}`);
     this._initialUrl = url;
   }
 
   private async handleSharedFileData(): Promise<void> {
     await ShareMenu.getSharedText((data?: ShareData) => {
-      debug(`Receiving shared data: ${JSON.stringify(data, null, 2)}`);
       if (!data) {
         return;
       }
+      console.log(`Receiving shared data: ${JSON.stringify(data, null, 2)}`);
 
       this.sharedFileDataAction(data);
     });
@@ -110,7 +114,7 @@ class IntentHandler {
 
   private deepLinkHandler = async (event: {url: string}): Promise<void> => {
     if (event.url) {
-      debug(`Deeplink for running app: ${event.url}`);
+      console.log(`Deeplink for running app: ${event.url}`);
       this._initialUrl = event.url;
     }
     if (this.hasDeepLink() && this.propagateEvents) {
@@ -127,7 +131,7 @@ class IntentHandler {
   }
 
   public openDeepLink = async (): Promise<void> => {
-    debug(`Open deeplink for ${this._initialUrl}`);
+    console.log(`Open deeplink for ${this._initialUrl}`);
     const url = this._initialUrl;
     this._initialUrl = undefined;
     if (url) {

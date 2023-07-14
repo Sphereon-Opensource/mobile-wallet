@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import {useSelector} from 'react-redux';
-import {APP_ID} from '../@config/constants';
 
+import {APP_ID} from '../@config/constants';
 import RootNavigation from '../navigation/rootNavigation';
 import store from '../store';
 import {login as loginAction} from '../store/actions/user.actions';

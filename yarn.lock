@@ -3079,32 +3079,18 @@
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.2.tgz#541b3f77522ab295da70b65baa0994e249073d1b"
   integrity sha512-ptHM72tdQrhMYSItHoGCm3HgK+HGF6tI29zYfS47H3M7ZjKhBgfmVHohuxhxA0Q6cL5gqH1jEA8G5Z2tadHmTw==
 
-"@sphereon/pex-models@^2.0.2":
+"@sphereon/pex-models@^2.0.2", "@sphereon/pex-models@^2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.0.3.tgz#8ae1cc7fda9e6d10b65266e4ba3f940428e6816f"
   integrity sha512-NsPeYmJLhxRG5fJxpcHnRR3xvi7i8SK8s21kYR9oBWO8cBU9qBCpw3gdUNiyI01/h6fbYqkIZ7eBNsHBIzqk5Q==
 
-"@sphereon/pex@2.0.1", "@sphereon/pex@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.1.tgz#277de5dd1346c30c50b67fbbbfb8919004c05b52"
-  integrity sha512-9UW1z60ltPMEauqKXa73gTfmU8SrPxH+X7Rx9v7G13ZmeTC8Yjfm2C7Mit01B9BCL49gShV4htG8np3+UKlorg==
-  dependencies:
-    "@sphereon/pex-models" "^2.0.2"
-    "@sphereon/ssi-types" "^0.10.0"
-    ajv "^8.12.0"
-    ajv-formats "^2.1.1"
-    jsonpath "^1.1.1"
-    jwt-decode "^3.1.2"
-    nanoid "^3.3.6"
-    string.prototype.matchall "^4.0.8"
-
-"@sphereon/pex@2.0.2-jsonpath-test.1":
-  version "2.0.2-jsonpath-test.1"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.0.2-jsonpath-test.1.tgz#0071bb2165274cd250be2ccc7461b62a61ec2ab5"
-  integrity sha512-AfL6rvjVMSIg5Rc62/e7yuxY1dMr44xH2W+9YlXYzvqCYFCdqfAC/vuq5eW61TrMt2nBV1xR/UD12fhVvTs62A==
+"@sphereon/pex@2.0.1", "@sphereon/pex@2.1.0", "@sphereon/pex@^2.0.1":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-2.1.0.tgz#1e0f6c726f595ef2bf5360965b10bc486e78348a"
+  integrity sha512-108iEqbu6D421pK9Q6bq4wnWcL8V+fEtw4Ry6NhBidIlDHuJehdLM8Z70A/axgNYMB1C0smMDYt1Xur/ROLwvQ==
   dependencies:
     "@astronautlabs/jsonpath" "^1.1.2"
-    "@sphereon/pex-models" "^2.0.2"
+    "@sphereon/pex-models" "^2.0.3"
     "@sphereon/ssi-types" "^0.13.0"
     ajv "^8.12.0"
     ajv-formats "^2.1.1"
@@ -3342,7 +3328,7 @@
     jsonld "^4.0.1"
     jsonld-signatures "^7.0.0"
 
-"@sphereon/ssi-types@0.13.1-next.10", "@sphereon/ssi-types@0.13.1-next.10+fc03507", "@sphereon/ssi-types@^0.10.0", "@sphereon/ssi-types@^0.11.0", "@sphereon/ssi-types@^0.13.0", "@sphereon/ssi-types@^0.9.0":
+"@sphereon/ssi-types@0.13.1-next.10", "@sphereon/ssi-types@0.13.1-next.10+fc03507", "@sphereon/ssi-types@^0.11.0", "@sphereon/ssi-types@^0.13.0", "@sphereon/ssi-types@^0.9.0":
   version "0.13.1-next.10"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.13.1-next.10.tgz#b5ab55bca5d36308d8ac07ffb1fc5ad4ddf51c2a"
   integrity sha512-kxh0YVT6IF5+J/k4Sqx2xUYjr+crX5bXYvfQC6qWD65PILYTwW5TICyXxW02k9bqjjilYln020820lUVpDRo9Q==
@@ -4503,7 +4489,7 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020":
+"@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
   version "0.0.8"
   resolved "https://codeload.github.com/uport-project/EcdsaSecp256k1RecoverySignature2020/tar.gz/ab0db52de6f4e6663ef271a48009ba26e688ef9b"
   dependencies:

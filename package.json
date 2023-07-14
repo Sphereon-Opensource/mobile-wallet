@@ -1,6 +1,6 @@
 {
   "name": "@sphereon/sphereon-wallet",
-  "version": "0.1.1",
+  "version": "0.1.2-unstable.o",
   "license": "GPL-3.0",
   "private": true,
   "scripts": {
@@ -38,6 +38,8 @@
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.3",
     "@astronautlabs/jsonpath": "^1.1.2",
+    "ajv-formats": "^2.1.1",
+    "jsonpath": "^1.1.1",
     "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.4",
     "@sphereon/oid4vci-client": "0.6.1-next.3",
     "@sphereon/oid4vci-common": "0.6.1-next.3",
