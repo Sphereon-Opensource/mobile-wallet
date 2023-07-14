@@ -41,8 +41,8 @@
     "@sphereon/isomorphic-webcrypto": "2.4.0-unstable.4",
     "@sphereon/oid4vci-client": "0.6.1-next.3",
     "@sphereon/oid4vci-common": "0.6.1-next.3",
-    "@sphereon/pex": "2.0.2-jsonpath-test.1",
-    "@sphereon/pex-models": "^2.0.2",
+    "@sphereon/pex": "2.1.0",
+    "@sphereon/pex-models": "^2.0.3",
     "@sphereon/react-native-argon2": "2.0.9",
     "@sphereon/ssi-sdk.contact-manager": "0.13.1-next.10",
     "@sphereon/ssi-sdk.core": "0.13.1-next.10",
@@ -55,6 +55,8 @@
     "@sphereon/ssi-sdk.data-store": "0.13.1-next.10",
     "@sphereon/ssi-sdk.issuance-branding": "0.13.1-next.10",
     "@sphereon/ssi-types": "0.13.1-next.10",
+    "@sphereon/ui-components.core": "0.1.1",
+    "@sphereon/ui-components.ssi-react-native": "0.1.1",
     "@transmute/lds-ecdsa-secp256k1-recovery2020": "^0.0.7",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
@@ -142,8 +144,7 @@
     "typeorm": "0.3.12",
     "uint8arrays": "^3.1.1",
     "vm-browserify": "^1.1.2",
-    "web-did-resolver": "^2.0.23",
-    "jsonpath": "^1.1.1"
+    "web-did-resolver": "^2.0.23"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -222,7 +223,7 @@
     "**/@types/react-native": "0.71.3",
     "**/@types/react": "~18.0.28",
     "**/expo-random": "~13.1.1",
-    "@sphereon/pex": "2.0.1",
+    "@sphereon/pex": "2.1.0",
     "@sphereon/isomorphic-argon2": "1.0.1",
     "@sphereon/did-auth-siop": "0.3.2-unstable.7",
     "@sphereon/ssi-types": "0.13.1-next.10",

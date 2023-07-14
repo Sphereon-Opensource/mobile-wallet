@@ -4,9 +4,6 @@
   "credential_details_view_issued_by": "Issued by",
   "credentials_view_item_expires_on": "Expires on",
   "swipe_delete_button_caption": "Delete",
-  "credential_status_valid": "Valid",
-  "credential_status_expired": "Expired",
-  "credential_status_revoked": "Revoked",
   "credential_offer_accepted_toast": "Credential successfully stored",
   "biometrics_title": "Authenticate with biometrics",
   "authentication_pin_code_title": "Enter your pin code",
@@ -28,10 +25,6 @@
   "verification_code_invalid_code_details": "That wasn't the code we’re seeking. Try again by requesting a new link or scanning the QR code again.",
   "verification_code_invalid_code_details_title": "Extra details",
   "verification_code_invalid_code_message": "Wrong verification code. Please try again.",
-  "credential_card_expires_message": "Expires:",
-  "issuer_status_verified": "Verified",
-  "issuer_status_unverified": "Unverified",
-  "status_missing": "Unknown",
   "credential_details_info_tab_header_label": "Verified info",
   "credential_details_activity_tab_header_label": "Activity",
   "action_view_extra_details": "View extra details",
@@ -72,7 +65,6 @@
   "contact_delete_message": "Are you sure you want to delete the contact: {{contactName}}?",
   "contact_deleted_success_toast": "Contact successfully deleted",
   "contact_deleted_failed_toast": "Unable to delete the contact",
-  "credential_status_never_expires_date_label": "Never expires",
   "contact_add_success_toast": "Contact successfully created",
   "contact_update_success_toast": "Contact successfully updated",
   "contact_add_no_consent_toast": "Without acknowledgement you will not continue the credential exchange process, and have to use the Decline button.",
@@ -150,5 +142,6 @@
   "credential_offer_title": "Credential offer",
   "profile_delete_wallet_action_caption": "Delete wallet",
   "profile_delete_wallet_action_title": "Are you sure you want to delete your wallet?",
-  "profile_delete_wallet_action_subtitle": "Are you sure you want to delete your wallet: {{userName}}?"
+  "profile_delete_wallet_action_subtitle": "Are you sure you want to delete your wallet: {{userName}}?",
+  "credential_status_never_expires_date_label": "Never expires"
 }
