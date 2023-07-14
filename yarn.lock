@@ -3208,20 +3208,22 @@
   dependencies:
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz":
-  version "0.1.0-bram"
-  resolved "file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz#e01201c6f400a7e2a8cf78191c5cd6f1fb5e3175"
+"@sphereon/ui-components.core@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.1.1.tgz#1c0b33575be2da06c1fa90b2212e1ad0b1993f77"
+  integrity sha512-6zl4kpKBru1PfOTc7KO6lym3THvs8HXfUvAvo89YYLnVwsk2c8TXYBrVm7dEmb7mSoiU/iAVb+yueFhG6G20ig==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^5.3.3"
 
-"@sphereon/ui-components.ssi-react-native@file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.1.2-bram.tgz":
-  version "0.1.2-bram"
-  resolved "file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.1.2-bram.tgz#e94f60af0abd2275db25734bbfe68835355debe7"
+"@sphereon/ui-components.ssi-react-native@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.1.1.tgz#6f87b64a20af3602e72848344f25075f4092d024"
+  integrity sha512-KmC3euPMl4/qrNAJGGDErNjk5kMODX125wX4nypn5CED4ZrvqHqlNGPUZVtAQzt4gt/VaWNY9FSksTSiPz8sqw==
   dependencies:
     "@react-native-community/blur" "^4.3.0"
-    "@sphereon/ui-components.core" "file:../UI-Components/packages/core/sphereon-ui-components.core-0.1.0-bram.tgz"
+    "@sphereon/ui-components.core" "0.1.1"
     react-native-fast-image "^8.6.3"
     react-native-size-matters "^0.4.0"
     react-native-svg "13.4.0"
