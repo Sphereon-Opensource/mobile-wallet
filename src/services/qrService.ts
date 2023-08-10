@@ -1,14 +1,7 @@
-import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {CredentialOfferClient} from '@sphereon/oid4vci-client';
-import {
-  CredentialIssuerMetadata,
-  CredentialResponse,
-  CredentialSupported,
-  EndpointMetadata,
-  IssuerMetadataV1_0_08,
-  MetadataDisplay,
-} from '@sphereon/oid4vci-common';
-import {Format} from '@sphereon/pex-models';
+import { PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
+import { CredentialOfferClient } from '@sphereon/oid4vci-client';
+import { CredentialIssuerMetadata, CredentialResponse, CredentialSupported, EndpointMetadata, IssuerMetadataV1_0_08, MetadataDisplay, } from '@sphereon/oid4vci-common';
+import { Format } from '@sphereon/pex-models';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -20,28 +13,22 @@ import {
   IDidAuthConfig,
   IIdentity,
 } from '@sphereon/ssi-sdk.data-store';
-import {
-  CredentialMapper,
-  IVerifiableCredential,
-  OriginalVerifiableCredential,
-  W3CVerifiableCredential,
-  WrappedVerifiableCredential,
-} from '@sphereon/ssi-types';
-import {IIssuer} from '@sphereon/ssi-types/src/types/vc';
-import {VerifiableCredential} from '@veramo/core';
-import {CompactJWT} from '@veramo/core/src/types/vc-data-model';
-import {computeEntryHash} from '@veramo/utils';
+import { CredentialMapper, IVerifiableCredential, OriginalVerifiableCredential, W3CVerifiableCredential, WrappedVerifiableCredential, } from '@sphereon/ssi-types';
+import { IIssuer } from '@sphereon/ssi-types/src/types/vc';
+import { VerifiableCredential } from '@veramo/core';
+import { CompactJWT } from '@veramo/core/src/types/vc-data-model';
+import { computeEntryHash } from '@veramo/utils';
 import Debug from 'debug';
-import {URL} from 'react-native-url-polyfill';
+import { URL } from 'react-native-url-polyfill';
 
-import {APP_ID} from '../@config/constants';
-import {translate} from '../localization/Localization';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../providers/authentication/SIOPv2Provider';
+import { APP_ID } from '../@config/constants';
+import { translate } from '../localization/Localization';
+import { siopGetRequest, siopSendAuthorizationResponse } from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import OpenId4VcIssuanceProvider, {CredentialFromOffer, IErrorDetailsOpts} from '../providers/credential/OpenId4VcIssuanceProvider';
+import OpenId4VcIssuanceProvider, { CredentialFromOffer, IErrorDetailsOpts } from '../providers/credential/OpenId4VcIssuanceProvider';
 import store from '../store';
-import {addIdentity} from '../store/actions/contact.actions';
-import {storeVerifiableCredential} from '../store/actions/credential.actions';
+import { addIdentity } from '../store/actions/contact.actions';
+import { storeVerifiableCredential } from '../store/actions/credential.actions';
 import {
   ICredentialTypeSelection,
   IErrorDetails,
@@ -59,29 +46,32 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum,
 } from '../types';
-import {delay} from '../utils/AppUtils';
-import {translateCorrelationIdToName} from '../utils/CredentialUtils';
-import {filterNavigationStack} from '../utils/NavigationUtils';
-import {showToast} from '../utils/ToastUtils';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
+import { delay } from '../utils/AppUtils';
+import { translateCorrelationIdToName } from '../utils/CredentialUtils';
+import { filterNavigationStack } from '../utils/NavigationUtils';
+import { showToast } from '../utils/ToastUtils';
+import { toNonPersistedCredentialSummary } from '../utils/mappers/credential/CredentialMapper';
 
-import {authenticate} from './authenticationService';
-import {addCredentialBranding, selectAppLocaleBranding} from './brandingService';
-import {getContacts} from './contactService';
-import {verifyCredential} from './credentialService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
-import RootNavigation from '../navigation/rootNavigation';
+import { authenticate } from './authenticationService';
+import { addCredentialBranding, selectAppLocaleBranding } from './brandingService';
+import { getContacts } from './contactService';
+import { verifyCredential } from './credentialService';
+import { getOrCreatePrimaryIdentifier } from './identityService';
+import * as oydid from 'oydid-did-resolver';
+import {Resolver} from 'did-resolver';
 
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const debug: Debug.Debugger = Debug(`${APP_ID}:qrService`);
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
-    .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
+    .then((qrData: IQrData) => processQr({ qrData, navigation: args.navigation }))
+    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
 };
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
+  console.log(qrData);
+
   try {
     const parsedJson = JSON.parse(qrData);
     if (parsedJson && typeof parsedJson === 'object') {
@@ -114,9 +104,26 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
     } catch (error: unknown) {
       debug(`Unable to parse QR value as openid-vc. Error: ${error}`);
     }
+  } else if (qrData.startsWith(QrTypesEnum.OYD)) {
+    try {
+      return parseOYDDid(qrData);
+    } catch (error: unknown) {
+      debug(`Unable to parse QR value as oyd. Error: ${error}`);
+    }
   }
 
   return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
+};
+
+const parseOYDDid = async (qrData: string): Promise<IQrData> => {
+  try {
+    return Promise.resolve({
+      type: QrTypesEnum.OYD,
+      uri: qrData,
+    });
+  } catch (error: unknown) {
+    return Promise.reject(error);
+  }
 };
 
 const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
@@ -159,7 +166,18 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
     case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
       return connectOpenId4VcIssuance(args);
+    case QrTypesEnum.OYD:
+      return connectOydid(args);
   }
+};
+
+const connectOydid = async (args: IQrDataArgs): Promise<void> => {
+  const resolver = new Resolver({
+    ...oydid.getResolver()
+  });
+  resolver.resolve(args.qrData.uri).then(data =>
+    console.log(JSON.stringify(data, undefined, 2))
+  );
 };
 
 // TODO remove old flow
@@ -217,13 +235,13 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
   let request: VerifiedAuthorizationRequest;
   let registration: RPRegistrationMetadataPayload | undefined;
   try {
-    request = await siopGetRequest({...config, id: uuidv4()});
+    request = await siopGetRequest({ ...config, id: uuidv4() });
     // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
     registration = await request.authorizationRequest.getMergedProperty('registration');
   } catch (error: unknown) {
-    debug(translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message}));
+    debug(translate('information_retrieve_failed_toast_message', { errorMessage: (error as Error).message }));
     args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-    showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message})});
+    showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('information_retrieve_failed_toast_message', { errorMessage: (error as Error).message }) });
   }
 
   const sendResponse = async (
@@ -245,13 +263,13 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         });
         showToast(ToastTypeEnum.TOAST_SUCCESS, {
           title: translate('credentials_share_success_toast_title'),
-          message: translate('credentials_share_success_toast_message', {verifierName: translateCorrelationIdToName(url.hostname)}),
+          message: translate('credentials_share_success_toast_message', { verifierName: translateCorrelationIdToName(url.hostname) }),
         });
       })
       .catch((error: Error) => {
         debug(`Unable to present credentials. Error: ${error.message}.`);
         args.navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {});
-        showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_share_failed_toast_message', {errorMessage: error.message})});
+        showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('credentials_share_failed_toast_message', { errorMessage: error.message }) });
       });
   };
 
@@ -299,7 +317,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
               },
             }),
           };
-          store.dispatch<any>(addIdentity({contactId: contacts[0].id, identity}));
+          store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }));
         }
       }
     }
@@ -328,7 +346,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           }),
         onSend: async (credentials: Array<OriginalVerifiableCredential>) =>
           authenticate(async () => {
-            args.navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_sharing_credentials_message')});
+            args.navigation.navigate(ScreenRoutesEnum.LOADING, { message: translate('action_sharing_credentials_message') });
             await sendResponse(presentationDefinitionWithLocation, credentials as Array<VerifiableCredential>);
           }),
       },
@@ -401,13 +419,14 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
   // TODO WAL-301 need to send a response when we do not need a pin code
 };
 
-export function getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08, opts?: {prefLocales: string[]}): MetadataDisplay[] {
+export function getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08, opts?: { prefLocales: string[] }): MetadataDisplay[] {
   const matchedDisplays =
     metadata.display?.filter(
       item => !opts?.prefLocales || opts.prefLocales.length === 0 || (item.locale && opts.prefLocales.includes(item.locale)) || !item.locale,
     ) ?? [];
   return matchedDisplays.sort(item => (item.locale ? opts?.prefLocales.indexOf(item.locale) ?? 1 : Number.MAX_VALUE));
 }
+
 /**
  * TODO check again when WAL-617 is done to replace how we get the issuer name.
  */
@@ -502,7 +521,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           id: uuidv4(),
           credentialType,
           credentialAlias:
-            (await selectAppLocaleBranding({localeBranding: metadata.credentialBranding.get(credentialType)}))?.alias || credentialType,
+            (await selectAppLocaleBranding({ localeBranding: metadata.credentialBranding.get(credentialType) }))?.alias || credentialType,
           isSelected: false,
         };
       }),
@@ -560,7 +579,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
 
   const sendResponse = async (provider: OpenId4VcIssuanceProvider, credentialTypes: Array<string>, pin?: string): Promise<void> =>
     provider
-      .getCredentialsFromIssuance({pin, credentials: credentialTypes})
+      .getCredentialsFromIssuance({ pin, credentials: credentialTypes })
       .then(async (credentialOffers: Array<CredentialFromOffer>) => {
         const metadata: IServerMetadataAndCryptoMatchingResponse = await provider.getServerMetadataAndPerformCryptoMatching();
         // TODO only supporting one credential for now
@@ -570,7 +589,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const verificationResult: IVerificationResult = await verifyCredential({
           credential: origVC as VerifiableCredential | CompactJWT,
           fetchRemoteContexts: true,
-          policies: {credentialStatus: false, expirationDate: false, issuanceDate: false},
+          policies: { credentialStatus: false, expirationDate: false, issuanceDate: false },
         });
         if (!verificationResult.result || verificationResult.error) {
           console.log(JSON.stringify(verificationResult, null, 2));
@@ -608,7 +627,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
             contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId),
           );
           if (!hasIdentity) {
-            store.dispatch<any>(addIdentity({contactId: contacts[0].id, identity}));
+            store.dispatch<any>(addIdentity({ contactId: contacts[0].id, identity }));
             await delay(1000);
           }
         }
@@ -645,7 +664,7 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
                       showBadge: false,
                     });
                   })
-                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
+                  .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, { message: error.message }));
               },
             },
             secondaryAction: {
@@ -705,13 +724,13 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
     },
   });
 
-  OpenId4VcIssuanceProvider.initiationFromUri({uri: args.qrData.uri})
+  OpenId4VcIssuanceProvider.initiationFromUri({ uri: args.qrData.uri })
     .then((provider: OpenId4VcIssuanceProvider) =>
       provider.getServerMetadataAndPerformCryptoMatching().then(() => sendResponseOrCreateContact(provider)),
     )
     .catch((error: Error) => {
       console.log(`Unable to retrieve vc. Error: ${error}`);
       args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
-      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: error.message})});
+      showToast(ToastTypeEnum.TOAST_ERROR, { message: translate('information_retrieve_failed_toast_message', { errorMessage: error.message }) });
     });
 };

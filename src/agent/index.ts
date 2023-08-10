@@ -33,7 +33,7 @@ import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {getDbConnection} from '../services/databaseService';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
-
+import * as oydid from 'oydid-did-resolver';
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
   ...getUniResolver(SupportedDidMethodEnum.DID_LTO, {
@@ -51,6 +51,7 @@ export const didResolver = new Resolver({
   ...webDIDResolver,
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
+  ...oydid.getResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
@@ -72,6 +73,9 @@ export const didProviders = {
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
+    defaultKms: KeyManagementSystemEnum.LOCAL,
+  }),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
 };
