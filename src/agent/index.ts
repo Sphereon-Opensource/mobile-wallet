@@ -48,7 +48,7 @@ export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
     resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
   }),
-  ...webDIDResolver,
+  ...webDIDResolver(),
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
 });
