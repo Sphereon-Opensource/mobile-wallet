@@ -8,8 +8,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import 'react-native-gesture-handler';
 import {bindActionCreators} from 'redux';
-import IntentHandler from './src/handlers/IntentHandler';
 
+import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
@@ -57,9 +57,8 @@ export default function App() {
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
-        const intentHandler = IntentHandler.getInstance();
-        await intentHandler.enable();
-        intentHandler.propagateEvents = true;
+        // Enable the intent handler early, so we can get deeplinks on start or before login
+        await IntentHandler.getInstance().enable();
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
@@ -77,7 +76,7 @@ export default function App() {
 
         // Load the redux store
         const actions = bindActionCreators({getUsers}, store.dispatch);
-        await actions.getUsers();
+        actions.getUsers();
 
         await LockingHandler.getInstance().enableLocking();
       } catch (e) {

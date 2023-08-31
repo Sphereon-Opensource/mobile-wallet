@@ -13,6 +13,7 @@ import {storeVerifiableCredential} from '../../store/actions/credential.actions'
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import LockingHandler from '../LockingHandler';
 
 // const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
@@ -21,7 +22,7 @@ class IntentHandler {
   private deeplinkListener: EmitterSubscription;
   private shareListener: ShareListener;
   private _initialUrl?: string;
-  private _propagateEvents = false;
+  // private _propagateEvents = false;
   private _enabled = false;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -30,9 +31,12 @@ class IntentHandler {
   public isEnabled(): boolean {
     return this._enabled;
   }
+
   public enable = async (): Promise<void> => {
     console.log(`Enable intenthandler... `);
-    if (!this.isEnabled()) {
+    if (this.isEnabled()) {
+      console.log('intenthandler was already enabled');
+    } else {
       this._enabled = true;
       try {
         console.log(`####intenthandler was not enabled yet`);
@@ -43,8 +47,8 @@ class IntentHandler {
         console.log(JSON.stringify(error));
         this._enabled = false;
       }
+      console.log(`intenthandler enabled`);
     }
-    console.log(`intenthandler enabled`);
   };
 
   public static getInstance(): IntentHandler {
@@ -58,7 +62,7 @@ class IntentHandler {
   public disable = async (): Promise<void> => {
     this._enabled = false;
 
-    this._propagateEvents = false;
+    // this._propagateEvents = false;
     this._initialUrl = undefined;
     try {
       await this.removeListeners();
@@ -68,14 +72,14 @@ class IntentHandler {
     }
   };
 
-  get propagateEvents(): boolean {
-    return this._propagateEvents;
-  }
+  /* get propagateEvents(): boolean {
+     return this._propagateEvents;
+   }
 
-  set propagateEvents(value: boolean) {
-    this._propagateEvents = value;
-  }
-
+   set propagateEvents(value: boolean) {
+     this._propagateEvents = value;
+   }
+ */
   private handleLinksForRunningApp = async (): Promise<void> => {
     /**
      * 1. If the app is already open, the app is foregrounded and a Linking event is fired
@@ -136,10 +140,14 @@ class IntentHandler {
     } else {
       console.log(`No deeplink for running app. Event: ${JSON.stringify(event)}`);
     }
-    if (this.hasDeepLink() && this.propagateEvents) {
+    this.openDeepLinkIfExistsAndAppUnlocked();
+  };
+
+  public openDeepLinkIfExistsAndAppUnlocked() {
+    if (this.isEnabled() && this.hasDeepLink() && !LockingHandler.getInstance().isLocked) {
       void this.openDeepLink();
     }
-  };
+  }
 
   public hasDeepLink = (): boolean => {
     const hasLink = !!this._initialUrl;

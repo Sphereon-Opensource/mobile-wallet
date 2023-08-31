@@ -99,15 +99,11 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           }
           await dispatch(getVerifiableCredentials());
           const intentHandler = IntentHandler.getInstance();
-          if (!intentHandler.isEnabled()) {
-            await intentHandler.enable();
-            intentHandler.propagateEvents = true;
-          }
-          console.log(`INTENT HANDLER SHOULD BE ENABLED AT THIS POINT. ENABLED: ${intentHandler.isEnabled()}`);
+          await intentHandler.enable();
 
           if (intentHandler.hasDeepLink()) {
             console.log('Intenthandler has deeplink');
-            await intentHandler.openDeepLink();
+            intentHandler.openDeepLinkIfExistsAndAppUnlocked();
           } else {
             console.log('Intenthandler has no deeplink');
           }
