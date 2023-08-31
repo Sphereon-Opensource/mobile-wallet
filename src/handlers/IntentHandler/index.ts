@@ -146,6 +146,10 @@ class IntentHandler {
   public openDeepLinkIfExistsAndAppUnlocked() {
     if (this.isEnabled() && this.hasDeepLink() && !LockingHandler.getInstance().isLocked) {
       void this.openDeepLink();
+    } else {
+      console.log(
+        `intnet handler enabled: ${this.isEnabled()}, has deeplink: ${this.hasDeepLink()}, is locked: ${LockingHandler.getInstance().isLocked}`,
+      );
     }
   }
 

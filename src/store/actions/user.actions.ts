@@ -3,6 +3,7 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
+import LockingHandler from '../../handlers/LockingHandler';
 import {resetDatabase} from '../../services/databaseService';
 import {deletePin} from '../../services/storageService';
 import {getUsers as getUsersFromStorage, deleteUser as removeUser, updateUser, createUser as userCreate} from '../../services/userService';
@@ -98,11 +99,12 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             contactState = getState().contact;
           }
           await dispatch(getVerifiableCredentials());
+          LockingHandler.getInstance().isLocked = false;
           const intentHandler = IntentHandler.getInstance();
           await intentHandler.enable();
 
           if (intentHandler.hasDeepLink()) {
-            console.log('Intenthandler has deeplink');
+            console.log('Intenthandler has deeplink, should open deepling');
             intentHandler.openDeepLinkIfExistsAndAppUnlocked();
           } else {
             console.log('Intenthandler has no deeplink');

@@ -37,12 +37,12 @@ class LockingHandler {
                 return;
               }
               console.log('Locking application...');
-              this._isLocked = true;
+              this.isLocked = true;
               await store.dispatch<any>(logout());
               return;
             }
           }
-          this._isLocked = false;
+          this.isLocked = false;
         };
         console.log('Subscribing to locking event...');
         this.lockingEventListener = AppState.addEventListener('change', handleAppStateChange);
