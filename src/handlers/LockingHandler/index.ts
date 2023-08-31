@@ -25,7 +25,7 @@ class LockingHandler {
   }
 
   public enableLocking = async (): Promise<void> => {
-    console.log('Enabling locking listener...');
+    debug('Enabling locking listener...');
     switch (Platform.OS) {
       case PlatformsEnum.IOS: {
         // TODO WAL-601, refactor locking mechanism
@@ -33,10 +33,10 @@ class LockingHandler {
           if (nextAppState === 'background' || nextAppState === 'active') {
             if (this.isLockingRequiredForScreen()) {
               if (this._isLocked) {
-                console.log('Application was already locked');
+                debug('Application was already locked');
                 return;
               }
-              console.log('Locking application...');
+              debug('Locking application...');
               this.isLocked = true;
               await store.dispatch<any>(logout());
               return;
@@ -44,7 +44,7 @@ class LockingHandler {
           }
           this.isLocked = false;
         };
-        console.log('Subscribing to locking event...');
+        debug('Subscribing to locking event...');
         this.lockingEventListener = AppState.addEventListener('change', handleAppStateChange);
         break;
       }
@@ -52,17 +52,18 @@ class LockingHandler {
         const handleAppStateChange = (event: any): void => {
           if (event.event === 'appMovingToBackground') {
             if (this.isLocked) {
-              console.log('Application was already locked');
+              debug('Application was already locked');
               return;
             }
-            console.log('Locking application...');
+            debug('Locking application...');
             this.isLocked = true;
             store.dispatch<any>(logout());
           } else {
+            debug('Not locking for event: ' + JSON.stringify(event));
             this.isLocked = false;
           }
         };
-        console.log('Subscribing to locking event...');
+        debug('Subscribing to locking event...');
         this.lockingEventListener = DeviceEventEmitter.addListener('appStateChange', handleAppStateChange);
         break;
       }
@@ -80,7 +81,7 @@ class LockingHandler {
   }
 
   public disableLocking = async (): Promise<void> => {
-    console.log('Unsubscribing from locking event...');
+    debug('Unsubscribing from locking event...');
     this.lockingEventListener?.remove();
   };
 
