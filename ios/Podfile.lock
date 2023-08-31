@@ -16,9 +16,9 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.1.1):
     - ExpoModulesCore
-  - Expo (48.0.17):
+  - Expo (48.0.20):
     - ExpoModulesCore
-  - ExpoCrypto (12.2.2):
+  - ExpoCrypto (12.4.1):
     - ExpoModulesCore
   - ExpoKeepAwake (12.0.1):
     - ExpoModulesCore
@@ -30,13 +30,13 @@ PODS:
     - React-Core
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
-  - ExpoRandom (13.1.1):
+  - ExpoRandom (13.1.2):
+    - ExpoModulesCore
+  - ExpoSQLite (11.3.1):
     - ExpoModulesCore
   - EXSplashScreen (0.18.2):
     - ExpoModulesCore
     - React-Core
-  - EXSQLite (11.1.1):
-    - ExpoModulesCore
   - FBLazyVector (0.71.7)
   - FBReactNativeSpec (0.71.7):
     - RCT-Folly (= 2021.07.22.00)
@@ -58,13 +58,13 @@ PODS:
   - libwebp/mux (1.2.4):
     - libwebp/demux
   - libwebp/webp (1.2.4)
-  - Permission-AppTrackingTransparency (3.8.0):
+  - Permission-AppTrackingTransparency (3.8.4):
     - RNPermissions
-  - Permission-Camera (3.8.0):
+  - Permission-Camera (3.8.4):
     - RNPermissions
-  - Permission-FaceID (3.8.0):
+  - Permission-FaceID (3.8.4):
     - RNPermissions
-  - Permission-Notifications (3.8.0):
+  - Permission-Notifications (3.8.4):
     - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -418,7 +418,7 @@ PODS:
     - React-Core
   - RNOS (1.2.6):
     - React
-  - RNPermissions (3.8.0):
+  - RNPermissions (3.8.4):
     - React-Core
   - RNScreens (3.20.0):
     - React-Core
@@ -456,8 +456,8 @@ DEPENDENCIES:
   - ExpoLocalization (from `../node_modules/expo-localization/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
+  - ExpoSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
-  - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -558,10 +558,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-modules-core"
   ExpoRandom:
     :path: "../node_modules/expo-random/ios"
+  ExpoSQLite:
+    :path: "../node_modules/expo-sqlite/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
-  EXSQLite:
-    :path: "../node_modules/expo-sqlite/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -690,32 +690,32 @@ SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
-  CatCrypto: a477899b6be4954e75be4897e732da098cc0a5a8
+  CatCrypto: 1840d9e5ff3c706b8f414f90d28d63a352078fa0
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EXApplication: d8f53a7eee90a870a75656280e8d4b85726ea903
   EXConstants: f348da07e21b23d2b085e270d7b74f282df1a7d9
   EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
   EXFont: 6ea3800df746be7233208d80fe379b8ed74f4272
-  Expo: d351b4546895fb99ae4e5a1bc39df770ab9dc7d1
-  ExpoCrypto: 9105610a09cd6290b900bd82fc5d190e489125a3
+  Expo: b7d2843b0a0027d0ce76121a63085764355a16ed
+  ExpoCrypto: a382ab9a2fa91f0b511ce1fe4d6baecee40a1615
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
   ExpoLinearGradient: 8eaab76b7f55c612ed8348c8be8c2a18a9b4529f
   ExpoLocalization: f26cd431ad9ea3533c5b08c4fabd879176a794bb
   ExpoModulesCore: 653958063a301098b541ae4dfed1ac0b98db607b
-  ExpoRandom: 7ee07d62e7003b74d0536e0495e3a653fe1b2a74
+  ExpoRandom: 2b8cb73f02f534b083a1f79b10b89ca0f0111b55
+  ExpoSQLite: fdbc8d08a0efa64fd4ebbc5c261d55fc0ae3b21d
   EXSplashScreen: 0e0a9ba0cf7553094e93213099bd7b42e6e237e9
-  EXSQLite: 848167441b14cb6cdd6ae46c8d62289161a79550
   FBLazyVector: a89a0525bc7ca174675045c2b492b5280d5a2470
   FBReactNativeSpec: 7714e6bc1e9ea23df6c4cb42f0b2fd9c6a3a559c
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: 791fe035093b84822da7f0870421a25839ca7870
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
-  Permission-AppTrackingTransparency: 7a48e816f801d10f2402c5b4edbe620ad8a412d9
-  Permission-Camera: e6d142d7d8b714afe0a83e5e6ae17eb949f1e3e9
-  Permission-FaceID: 257965cb6ba2dc098cd485642df13e8ee6e281ef
-  Permission-Notifications: aa91ec29236626ff59cb60e08389c0a59a9d32c5
-  RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
+  Permission-AppTrackingTransparency: 644f9b7ee1355b34c1b552f87c2fc9f440e03236
+  Permission-Camera: 7ec9ee99704766ff9b90198183387a7f5d82b0c1
+  Permission-FaceID: 2e7d5070c6df9315c6ed8de8fb22fed69a762b0d
+  Permission-Notifications: e06c4b115105e9aed6ed8d03c9894c23c1051731
+  RCT-Folly: 186619bc27c1f94f2f7c6ef60927516c71005915
   RCTRequired: 5a4a30ac20c86eeadd6844a9328f78d4168cf9b2
   RCTTypeSafety: 279fc5861a89f0f37db3a585f27f971485b4b734
   React: 88307a9be3bd0e71a6822271cf28b84a587fb97f
@@ -759,7 +759,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
+  RNPermissions: f1b49dd05fa9b83993cd05a9ee115247944d8f1a
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: d82e10f6b7677f4b0048c23709bd04098d5aee6c
