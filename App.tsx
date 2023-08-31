@@ -90,6 +90,7 @@ export default function App() {
     void prepare();
 
     return (): void => {
+      console.log('DESTRUCTOR CALLED. DISABLING INTENT HANDLER ');
       void IntentHandler.getInstance().disable();
       void LockingHandler.getInstance().disableLocking();
     };

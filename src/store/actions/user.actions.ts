@@ -99,6 +99,10 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           }
           await dispatch(getVerifiableCredentials());
           const intentHandler = IntentHandler.getInstance();
+          if (!intentHandler.isEnabled()) {
+            await intentHandler.enable();
+            intentHandler.propagateEvents = true;
+          }
           console.log(`INTENT HANDLER SHOULD BE ENABLED AT THIS POINT. ENABLED: ${intentHandler.isEnabled()}`);
 
           if (intentHandler.hasDeepLink()) {
@@ -117,6 +121,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
 
 export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+    console.log('LOGOUT CALLED. DISABLING INTENT HANDLER');
     await IntentHandler.getInstance().disable();
     dispatch({type: USERS_LOADING});
     dispatch({type: LOGOUT_SUCCESS});
