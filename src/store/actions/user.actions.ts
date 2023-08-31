@@ -121,9 +121,11 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
 
 export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-    console.log('LOGOUT CALLED. DISABLING INTENT HANDLER');
-    await IntentHandler.getInstance().disable();
-    dispatch({type: USERS_LOADING});
+    console.log('LOGOUT CALLED...');
+
+    /*console.log('LOGOUT CALLED. DISABLING INTENT HANDLER');
+    await IntentHandler.getInstance().disable();*/
+    // dispatch({type: USERS_LOADING});
     dispatch({type: LOGOUT_SUCCESS});
     dispatch({type: CLEAR_CREDENTIALS});
     dispatch({type: CLEAR_CONTACTS});
