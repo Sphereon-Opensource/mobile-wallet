@@ -39,6 +39,8 @@ export const credentialLocaleBrandingFrom = async (credentialDisplay: Credential
               alt: credentialDisplay.background_image?.alt_text,
             }),
           },
+        }),
+        ...(credentialDisplay.background_color && {
           color: credentialDisplay.background_color,
         }),
       },
