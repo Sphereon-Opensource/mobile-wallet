@@ -112,7 +112,7 @@ export const toCredentialSummary = async (
     : typeof verifiableCredential.type === 'string'
     ? verifiableCredential.type
     : verifiableCredential.type.filter((value: string): boolean => value !== 'VerifiableCredential')[0];
-  console.log(`Credential Subject: ${verifiableCredential.credentialSubject}`);
+  console.log(`Credential Subject: ${JSON.stringify(verifiableCredential.credentialSubject)}`);
   const properties: Array<ICredentialDetailsRow> = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
 
   const name: string =

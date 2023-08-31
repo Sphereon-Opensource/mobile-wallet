@@ -33,10 +33,16 @@ class IntentHandler {
   public enable = async (): Promise<void> => {
     console.log(`Enable intenthandler... `);
     if (!this.isEnabled()) {
-      console.log(`intenthandler was not enabled yet`);
-      await this.handleLinksForRunningApp();
-      await this.handleLinksForStartingApp();
       this._enabled = true;
+      try {
+        console.log(`####intenthandler was not enabled yet`);
+        await this.handleLinksForStartingApp();
+        await this.handleLinksForRunningApp();
+      } catch (error) {
+        console.log('Enable intenthandler had an error:');
+        console.log(JSON.stringify(error));
+        this._enabled = false;
+      }
     }
     console.log(`intenthandler enabled`);
   };
@@ -50,10 +56,16 @@ class IntentHandler {
   }
 
   public disable = async (): Promise<void> => {
+    this._enabled = false;
+
     this._propagateEvents = false;
     this._initialUrl = undefined;
-    await this.removeListeners();
-    this._enabled = false;
+    try {
+      await this.removeListeners();
+    } catch (error) {
+      console.log('Disable intenthandler had an error:');
+      console.log(JSON.stringify(error));
+    }
   };
 
   get propagateEvents(): boolean {
@@ -70,8 +82,12 @@ class IntentHandler {
      * You can handle these events with Linking.addEventListener('url', callback).
      */
     // Linking.removeAllListeners('url');
-    this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
-    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
+    if (!this.deeplinkListener) {
+      this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
+    }
+    if (!this.shareListener) {
+      this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
+    }
   };
 
   private removeListeners = async (): Promise<void> => {
@@ -102,8 +118,9 @@ class IntentHandler {
   }
 
   private async handleSharedFileData(): Promise<void> {
-    await ShareMenu.getSharedText((data?: ShareData) => {
-      if (!data) {
+    ShareMenu.getSharedText((data?: ShareData) => {
+      if (!data || ((!data.data || data.data.length === 0) && !data.extraData)) {
+        console.log('No shared data received');
         return;
       }
       console.log(`Receiving shared data: ${JSON.stringify(data, null, 2)}`);
@@ -116,6 +133,8 @@ class IntentHandler {
     if (event.url) {
       console.log(`Deeplink for running app: ${event.url}`);
       this._initialUrl = event.url;
+    } else {
+      console.log(`No deeplink for running app. Event: ${JSON.stringify(event)}`);
     }
     if (this.hasDeepLink() && this.propagateEvents) {
       void this.openDeepLink();
@@ -123,10 +142,13 @@ class IntentHandler {
   };
 
   public hasDeepLink = (): boolean => {
-    return !!this._initialUrl;
+    const hasLink = !!this._initialUrl;
+    console.log(`has deeplink called. Value: ${hasLink} (${this._initialUrl})`);
+    return hasLink;
   };
 
   public getDeepLink(): string | undefined {
+    console.log(`get deeplink called. Value: (${this._initialUrl})`);
     return this._initialUrl;
   }
 
