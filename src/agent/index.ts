@@ -2,6 +2,8 @@ import {getUniResolver} from '@sphereon/did-uni-client';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
 import {getDidJwkResolver, JwkDIDProvider} from '@sphereon/ssi-sdk-jwk-did-provider';
 import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-lto-did-provider';
+import {OydDIDProvider} from '@sphereon/ssi-sdk-oyd-did-provider';
+import {getResolver as getOYDResolver} from '@sphereon/ssi-sdk-oyd-did-resolver';
 import {
   CredentialHandlerLDLocal,
   ICredentialHandlerLDLocal,
@@ -33,7 +35,7 @@ import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {getDbConnection} from '../services/databaseService';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
-import * as oydid from 'oydid-did-resolver';
+
 export const didResolver = new Resolver({
   ...getDidKeyResolver(),
   ...getUniResolver(SupportedDidMethodEnum.DID_LTO, {
@@ -51,7 +53,7 @@ export const didResolver = new Resolver({
   ...webDIDResolver,
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
-  ...oydid.getResolver(),
+  ...getOYDResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));

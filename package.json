@@ -21,8 +21,7 @@
     "build:android:local": "eas build -p android --profile preview --local",
     "build:android:remote": "eas build -p android --profile preview",
     "build:android:production": "eas build -p android --profile production",
-    "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package",
-    "prepare": "husky install"
+    "postinstall": "rn-nodeify --install os,fs,path,assert,buffer,process,stream,vm --hack && patch-package"
   },
   "dependencies": {
     "@babel/preset-env": "^7.1.6",
