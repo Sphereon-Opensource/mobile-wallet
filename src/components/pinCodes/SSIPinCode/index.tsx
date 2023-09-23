@@ -11,7 +11,6 @@ import {
   SSIPinCodeContainerAnimatedStyled as SegmentsContainer,
 } from '../../../styles/components';
 import SSIPinCodeSegment from '../SSIPinCodeSegment';
-import {deletePin} from '../../../services/storageService';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -43,18 +42,13 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     inputRef: null,
     length: this.props.length || 4,
     maxRetries: this.props.maxRetries,
-    pin: '123456',
+    pin: '',
     retry: 0,
     secureCode: this.props.secureCode || true,
     shakeAnimation: new Animated.Value(0),
     colorShiftAnimation: new Animated.Value(0),
     showErrorMessage: false,
   };
-
-  constructor(props) {
-    super(props);
-    this.submit(this.state.pin);
-  }
 
   failureAnimation = (): void => {
     const {colorShiftAnimation, shakeAnimation} = this.state;
