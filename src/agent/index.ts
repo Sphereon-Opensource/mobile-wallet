@@ -109,7 +109,7 @@ const agent = createAgent<
     }),
     new DIDManager({
       store: new DIDStore(dbConnection),
-      defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
+      defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`,
       providers: didProviders,
     }),
     new DIDResolverPlugin({
