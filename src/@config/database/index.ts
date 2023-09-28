@@ -1,15 +1,17 @@
 import {DataStoreContactEntities, DataStoreIssuanceBrandingEntities, DataStoreMigrations} from '@sphereon/ssi-sdk.data-store';
 import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store';
-import * as driver from 'expo-sqlite';
+// import * as driver from 'react-native-sqlite-storage';
 import {ExpoConnectionOptions} from 'typeorm/driver/expo/ExpoConnectionOptions';
+import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
 
 const DB_CONNECTION_NAME = 'default';
 const DB_ENCRYPTION_KEY = '29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f86664aa830c';
 
-const sqliteConfig: ExpoConnectionOptions = {
-  type: 'expo',
+const sqliteConfig: ReactNativeConnectionOptions = {
+  type: 'react-native',
+  location: 'default',
   database: 'sphereon-wallet.sqlite',
-  driver,
+  // driver,
   entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux

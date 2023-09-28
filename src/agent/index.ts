@@ -1,7 +1,13 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
-import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
-import {getDidJwkResolver, JwkDIDProvider} from '@sphereon/ssi-sdk-jwk-did-provider';
-import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-lto-did-provider';
+import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
+import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-lto';
+import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
+import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
+import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
+import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
+import {ContactStore, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
+import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
+import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
   ICredentialHandlerLDLocal,
@@ -9,10 +15,7 @@ import {
   SphereonEd25519Signature2018,
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
-} from '@sphereon/ssi-sdk-vc-handler-ld-local';
-import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
-import {ContactStore, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
-import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
+} from '@sphereon/ssi-sdk.vc-handler-ld-local';
 import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
@@ -21,8 +24,7 @@ import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {KeyManager} from '@veramo/key-manager';
-import {KeyManagementSystem, SecretBox} from '@veramo/kms-local';
+import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
@@ -35,19 +37,10 @@ import {getDbConnection} from '../services/databaseService';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
 
 export const didResolver = new Resolver({
+  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
+    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
+  }),
   ...getDidKeyResolver(),
-  ...getUniResolver(SupportedDidMethodEnum.DID_LTO, {
-    resolveUrl: SPHEREON_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_FACTOM, {
-    resolveUrl: SPHEREON_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
-    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
-  }),
-  ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
-    resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
-  }),
   ...webDIDResolver(),
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
@@ -58,7 +51,7 @@ export const didMethodsSupported = Object.keys(didResolver['registry']).map(meth
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ETHR}`]: new EthrDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
-    network: 'ropsten',
+    network: 'goerli',
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new KeyDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
@@ -95,10 +88,10 @@ const agent = createAgent<
   plugins: [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
-    new KeyManager({
+    new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        local: new KeyManagementSystem(privateKeyStore),
+        local: new SphereonKeyManagementSystem(privateKeyStore),
       },
     }),
     new DIDManager({

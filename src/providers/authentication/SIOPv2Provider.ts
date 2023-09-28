@@ -1,13 +1,13 @@
 import {CheckLinkedDomain, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk.data-store';
-import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk-did-auth-siop-authenticator';
-import {OID4VP} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/OID4VP'; // FIXME we should fix the export of these objects
-import {getKey} from '@sphereon/ssi-sdk-did-auth-siop-authenticator/dist/session/functions'; // FIXME we should fix the export of these objects
+import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/dist/session/OID4VP'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
-import agent, {didMethodsSupported} from '../../agent';
+import agent, {didMethodsSupported, didResolver} from '../../agent';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -31,6 +31,9 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
     sessionId,
     op: {
       checkLinkedDomains: CheckLinkedDomain.NEVER, // fixme: check whether it works and enable
+      resolveOpts: {
+        resolver: didResolver,
+      },
       supportedDIDMethods: didMethodsSupported,
     },
     requestJwtOrUri,
@@ -56,7 +59,7 @@ export const siopSendAuthorizationResponse = async (
   // todo: This should be moved to code calling the sendAuthorizationResponse (this) method, as to allow the user to subselect and approve credentials!
   let presentationsAndDefs: VerifiablePresentationWithDefinition[] | undefined;
   let identifier: IIdentifier = identifiers[0];
-  if (await session.isOID4VP()) {
+  if (await session.hasPresentationDefinitions()) {
     const oid4vp: OID4VP = await session.getOID4VP();
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition

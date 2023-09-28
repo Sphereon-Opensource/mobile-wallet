@@ -1,4 +1,4 @@
-import {CredentialSupported, EndpointMetadata} from '@sphereon/oid4vci-common';
+import {CredentialSupported, EndpointMetadata, EndpointMetadataResult, MetadataDisplay} from '@sphereon/oid4vci-common';
 import {TKeyType} from '@veramo/core';
 
 import {SupportedDidMethodEnum} from '../../did';
@@ -52,8 +52,9 @@ export enum Oidc4vciErrorEnum {
 }
 
 export interface IServerMetadataAndCryptoMatchingResponse {
-  serverMetadata: EndpointMetadata;
+  serverMetadata: EndpointMetadataResult;
   issuanceOpts: Array<IIssuanceOpts>;
   credentialsSupported: Array<CredentialSupported>;
   credentialBranding: Map<string, Array<IBasicCredentialLocaleBranding>>;
+  issuerBranding?: Array<MetadataDisplay>;
 }
