@@ -149,7 +149,6 @@ These 4 links are Sphereon demo issuers, branded differently
 
 Other issuers:
 
-- [SpruceId](https://ngi-oidc4vci-test.spruceid.xyz)
 - [Diwala](https://oidc4vc.diwala.io/issue)
 - [Walt.id](https://jff.walt.id) (<= has some issues in their environment currently (proofPurpose is missing))
 - [Mattr](https://launchpad.mattrlabs.com/)
