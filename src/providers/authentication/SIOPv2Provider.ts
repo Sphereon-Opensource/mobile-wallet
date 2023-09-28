@@ -7,7 +7,7 @@ import {IIdentifier} from '@veramo/core';
 import Debug from 'debug';
 
 import {APP_ID} from '../../@config/constants';
-import agent, {didMethodsSupported} from '../../agent';
+import agent, {didMethodsSupported, didResolver} from '../../agent';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -31,6 +31,9 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
     sessionId,
     op: {
       checkLinkedDomains: CheckLinkedDomain.NEVER, // fixme: check whether it works and enable
+      resolveOpts: {
+        resolver: didResolver,
+      },
       supportedDIDMethods: didMethodsSupported,
     },
     requestJwtOrUri,
