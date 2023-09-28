@@ -2,14 +2,17 @@ import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {
   AccessTokenResponse,
   AuthzFlowType,
+  CredentialIssuerMetadata,
   CredentialResponse,
   CredentialSupported,
   EndpointMetadata,
+  EndpointMetadataResult,
   Jwt,
   OID4VCICredentialFormat,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
 import {CredentialsSupportedDisplay} from '@sphereon/oid4vci-common';
+import {MetadataDisplay} from '@sphereon/oid4vci-common/lib/types/Generic.types';
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
@@ -54,7 +57,7 @@ export enum LDPProofTypeEnum {
   JcsEd25519Signature2020 = 'JcsEd25519Signature2020',
 }
 
-export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK];
+export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_ION];
 
 export const jsonldCryptographicSuitePreferences = [
   'Ed25519Signature2018',
@@ -142,11 +145,12 @@ class OpenId4VcIssuanceProvider {
     }
   };
   private readonly client: OpenID4VCIClient;
-  private serverMetadata: EndpointMetadata | undefined;
+  private serverMetadata: EndpointMetadataResult | undefined;
   private credentialsSupported: Array<CredentialSupported> | undefined;
   private issuanceOpts: Array<IIssuanceOpts> | undefined;
   private accessTokenResponse: AccessTokenResponse | undefined;
   private credentialBranding: Map<string, Array<IBasicCredentialLocaleBranding>> | undefined;
+  private issuerBranding: MetadataDisplay[] | undefined;
 
   private constructor(client: OpenID4VCIClient) {
     this.client = client;
@@ -252,6 +256,9 @@ class OpenId4VcIssuanceProvider {
     if (!this.credentialsSupported || this.credentialsSupported.length === 0) {
       this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true));
     }
+    if (!this.issuerBranding) {
+      this.issuerBranding = this.serverMetadata.credentialIssuerMetadata?.display;
+    }
 
     if (!this.credentialBranding) {
       this.credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
@@ -279,6 +286,7 @@ class OpenId4VcIssuanceProvider {
     }
 
     return {
+      issuerBranding: this.issuerBranding,
       serverMetadata: this.serverMetadata,
       credentialsSupported: this.credentialsSupported,
       issuanceOpts: await this.getIssuanceOpts(),
@@ -333,13 +341,13 @@ class OpenId4VcIssuanceProvider {
     const issuanceOpts: Array<IIssuanceOpts> = [];
 
     for (const credentialSupported of this.credentialsSupported) {
-      if (!this.serverMetadata?.issuerMetadata) {
+      if (!this.serverMetadata?.credentialIssuerMetadata) {
         issuanceOpts.push(this.defaultIssuanceOpts(credentialSupported));
         continue;
       }
 
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialSupported});
-      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported.format);
+      const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported);
 
       issuanceOpts.push({
         ...credentialSupported,
@@ -390,11 +398,22 @@ class OpenId4VcIssuanceProvider {
     }
   };
 
-  private getIssuanceDidMethod = async (format?: CredentialFormat | OID4VCICredentialFormat): Promise<SupportedDidMethodEnum> => {
-    // TODO implementation. None of the implementers are currently returning supported did methods.
-    if (format?.includes('jwt') && !format?.includes('jwt_vc_json_ld')) {
+  private getIssuanceDidMethod = async (credentialSupported: CredentialSupported): Promise<SupportedDidMethodEnum> => {
+    const {format, cryptographic_binding_methods_supported} = credentialSupported;
+    if (cryptographic_binding_methods_supported && Array.isArray(cryptographic_binding_methods_supported)) {
+      const method = didMethodPreferences.find(method =>
+        cryptographic_binding_methods_supported.includes(`did:${method.toLowerCase().replace('did:', '')}`),
+      );
+      if (method) {
+        return method;
+      } else if (cryptographic_binding_methods_supported.includes('did')) {
+        return format ? didMethodPreferences[1] : didMethodPreferences[0];
+      }
+    }
+    if (!format || (format.includes('jwt') && !format?.includes('jwt_vc_json_ld'))) {
       return format ? didMethodPreferences[1] : didMethodPreferences[0];
     } else {
+      // JsonLD
       return didMethodPreferences[0];
     }
   };

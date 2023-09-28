@@ -1,5 +1,5 @@
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
-import {ICredential} from '@sphereon/ssi-types';
+import {ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
 import {CredentialStatus} from '@sphereon/ui-components.core';
@@ -115,19 +115,19 @@ export const toCredentialSummary = async (
   console.log(`Credential Subject: ${JSON.stringify(verifiableCredential.credentialSubject)}`);
   const properties: Array<ICredentialDetailsRow> = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
 
+  const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
+  const logo = getIssuerLogo(verifiableCredential, localeBranding);
+  const url = typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined;
+
   const name: string =
     typeof verifiableCredential.issuer === 'string'
       ? verifiableCredential.issuer
-      : verifiableCredential.issuer?.name
-      ? verifiableCredential.issuer?.name
-      : verifiableCredential.issuer?.id;
+      : verifiableCredential.issuer?.name ?? verifiableCredential.issuer?.id;
 
   const issuerAlias: string =
     typeof verifiableCredential.issuer === 'string'
       ? translateCorrelationIdToName(verifiableCredential.issuer)
       : translateCorrelationIdToName(verifiableCredential.issuer?.id);
-
-  const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
 
   return {
     hash,
@@ -141,8 +141,41 @@ export const toCredentialSummary = async (
     issuer: {
       name,
       alias: issuerAlias.length > 50 ? `${issuerAlias.substring(0, 50)}...` : issuerAlias,
-      image: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.image : undefined,
-      url: typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined,
+      image: logo,
+      url,
     },
   };
 };
+
+export function getIssuerLogo(verifiableCredential: VerifiableCredential | ICredentialSummary, localeBranding?: IBasicCredentialLocaleBranding) {
+  let logo: string | undefined;
+
+  if (localeBranding?.logo) {
+    logo = localeBranding.logo.dataUri ?? localeBranding.logo.uri;
+  }
+  if (!logo && typeof verifiableCredential.issuer === 'object') {
+    if ('logo' in verifiableCredential.issuer && verifiableCredential.issuer.logo) {
+      logo = getImageFromObjectOrString(verifiableCredential.issuer.logo);
+    } else if (verifiableCredential.issuer.image) {
+      logo = getImageFromObjectOrString(verifiableCredential.issuer.image);
+    }
+  }
+  return logo;
+}
+
+export function getImageFromObjectOrString(image?: string | object): string | undefined {
+  if (!image) {
+    return undefined;
+  } else if (typeof image === 'string' && image.length > 0) {
+    return image;
+  } else if (typeof image === 'object') {
+    if ('id' in image && typeof image.id === 'string' && image.id.includes('://')) {
+      return image.id;
+    } else if ('url' in image && typeof image.url === 'string' && image.url.includes('://')) {
+      return image.url;
+    } else if ('uri' in image && typeof image.uri === 'string' && image.uri.includes('://')) {
+      return image.uri;
+    }
+  }
+  return undefined;
+}
