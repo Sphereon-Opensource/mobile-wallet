@@ -2,21 +2,19 @@ import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {
   AccessTokenResponse,
   AuthzFlowType,
-  CredentialIssuerMetadata,
+  CredentialOfferFormat,
   CredentialResponse,
+  CredentialsSupportedDisplay,
   CredentialSupported,
-  EndpointMetadata,
   EndpointMetadataResult,
   Jwt,
-  OID4VCICredentialFormat,
+  OpenId4VCIVersion,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
-import {CredentialsSupportedDisplay} from '@sphereon/oid4vci-common';
 import {MetadataDisplay} from '@sphereon/oid4vci-common/lib/types/Generic.types';
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
-import {CredentialFormat} from '@sphereon/ssi-types';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug from 'debug';
 import {DIDDocument} from 'did-resolver';
@@ -254,7 +252,14 @@ class OpenId4VcIssuanceProvider {
       this.serverMetadata = await this.client.retrieveServerMetadata();
     }
     if (!this.credentialsSupported || this.credentialsSupported.length === 0) {
-      this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true));
+      // todo: remove format here. This is just a temp hack for V11+ issuance of only one credential. Having a single array with formats for multiple credentials will not work. This should be handled in VCI itself
+      let format: string[] = [];
+      if (this.client.version() > OpenId4VCIVersion.VER_1_0_09 && typeof this.client.credentialOffer.credential_offer === 'object') {
+        format = this.client.credentialOffer.credential_offer.credentials
+          .filter(c => typeof c !== 'string')
+          .map(c => (c as CredentialOfferFormat).format);
+      }
+      this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true, format));
     }
     if (!this.issuerBranding) {
       this.issuerBranding = this.serverMetadata.credentialIssuerMetadata?.display;
