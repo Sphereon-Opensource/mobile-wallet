@@ -253,11 +253,14 @@ class OpenId4VcIssuanceProvider {
     }
     if (!this.credentialsSupported || this.credentialsSupported.length === 0) {
       // todo: remove format here. This is just a temp hack for V11+ issuance of only one credential. Having a single array with formats for multiple credentials will not work. This should be handled in VCI itself
-      let format: string[] = [];
+      let format: string[] | undefined = undefined;
       if (this.client.version() > OpenId4VCIVersion.VER_1_0_09 && typeof this.client.credentialOffer.credential_offer === 'object') {
         format = this.client.credentialOffer.credential_offer.credentials
           .filter(c => typeof c !== 'string')
           .map(c => (c as CredentialOfferFormat).format);
+        if (format.length === 0) {
+          format = undefined; // Otherwise we would match nothing
+        }
       }
       this.credentialsSupported = await this.getPreferredCredentialFormats(this.client.getCredentialsSupported(true, format));
     }
