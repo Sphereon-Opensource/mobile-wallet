@@ -258,13 +258,13 @@ There are several other utility scripts that help with development.
 
 SSI Wallet uses Expo SDK v48 and React-Native v0.71.
 
-- Node v16.x.x
+- Node v18.x.x
 - Expo CLI v6.0.1 or above
 - Yarn
 
 ### Node
 
-Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 16.x.x
+Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 18.x.x
 which is required for RN 0.71 to work. The app is not guaranteed to work with higher Node versions and it will
 certainly not work with lower Node versions.
 
@@ -276,8 +276,8 @@ command prompt or powershell as administrator!
 Example:
 
 ```shell
-nvm install 16.19.0
-nvm use 16.19.0
+nvm install 18.17.0
+nvm use 18.17.0
 ```
 
 You can use the following command to check the node version.
