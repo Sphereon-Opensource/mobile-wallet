@@ -59,6 +59,7 @@
     "@sphereon/ui-components.core": "0.1.2",
     "@sphereon/ui-components.ssi-react-native": "0.1.2",
     "@transmute/lds-ecdsa-secp256k1-recovery2020": "^0.0.7",
+    "@animo-id/react-native-bbs-signatures": "^0.1.0",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
     "@veramo/data-store": "4.2.0",
@@ -270,7 +271,6 @@
     "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
-    "@mattrglobal/node-bbs-signatures": "npm:dry-uninstall",
     "**/typeorm": "0.3.12"
   },
   "engines": {

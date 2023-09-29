@@ -20,6 +20,11 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@animo-id/react-native-bbs-signatures@^0.1.0", "@mattrglobal/bbs-signatures@1.2.0", "@mattrglobal/bbs-signatures@^1.1.0", "@mattrglobal/bbs-signatures@npm:@animo-id/react-native-bbs-signatures@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@animo-id/react-native-bbs-signatures/-/react-native-bbs-signatures-0.1.0.tgz#f62bc16b867c9f690977982d66f0a03566b21ad2"
+  integrity sha512-7qvsiWhGfUev8ngE8YzF6ON9PtCID5LiYVYM4EC5eyj80gCdhx3R46CI7K1qbqIlGsoTYQ/Xx5Ubo5Ji9eaUEA==
+
 "@astronautlabs/jsonpath@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@astronautlabs/jsonpath/-/jsonpath-1.1.2.tgz#af19bb4a7d13dcfbc60c3c998ee1e73d7c2ddc38"
@@ -2523,11 +2528,6 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@mattrglobal/bbs-signatures@1.2.0", "@mattrglobal/bbs-signatures@^1.1.0", "@mattrglobal/bbs-signatures@npm:@animo-id/react-native-bbs-signatures@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@animo-id/react-native-bbs-signatures/-/react-native-bbs-signatures-0.1.0.tgz#f62bc16b867c9f690977982d66f0a03566b21ad2"
-  integrity sha512-7qvsiWhGfUev8ngE8YzF6ON9PtCID5LiYVYM4EC5eyj80gCdhx3R46CI7K1qbqIlGsoTYQ/Xx5Ubo5Ji9eaUEA==
-
 "@mattrglobal/bls12381-key-pair@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@mattrglobal/bls12381-key-pair/-/bls12381-key-pair-1.1.0.tgz#2cd71dfd76a9d67ef4fee4ff0656bdf3be0e6e5f"
@@ -2548,11 +2548,6 @@
     bs58 "4.0.1"
     jsonld "4.0.1"
     jsonld-signatures "7.0.0"
-
-"@mattrglobal/node-bbs-signatures@npm:dry-uninstall", dry-uninstall@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/dry-uninstall/-/dry-uninstall-0.3.0.tgz#29847a27ed3b3bb94e6212547a677e37f4427011"
-  integrity sha512-b8h94RVpETWkVV59x62NsY++79bM7Si6Dxq7a4iVxRcJU3ZJJ4vaiC7wUZwM8WDK0ySRL+i+T/1SMAzbJLejYA==
 
 "@metamask/eth-sig-util@^5.0.0":
   version "5.1.0"
@@ -7560,6 +7555,11 @@ drbg.js@^1.0.1:
     create-hash "^1.1.2"
     create-hmac "^1.1.4"
 
+dry-uninstall@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/dry-uninstall/-/dry-uninstall-0.3.0.tgz#29847a27ed3b3bb94e6212547a677e37f4427011"
+  integrity sha512-b8h94RVpETWkVV59x62NsY++79bM7Si6Dxq7a4iVxRcJU3ZJJ4vaiC7wUZwM8WDK0ySRL+i+T/1SMAzbJLejYA==
+
 ed25519-signature-2018-context@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/ed25519-signature-2018-context/-/ed25519-signature-2018-context-1.1.0.tgz#68002ea7497c32e8170667cfd67468dedf7d220e"
@@ -8710,9 +8710,9 @@ flow-enums-runtime@^0.0.5:
   integrity sha512-PSZF9ZuaZD03sT9YaIs0FrGJ7lSUw7rHZIex+73UYVXg46eL/wxN5PaVcPJFudE2cJu5f0fezitV5aBkLHPUOQ==
 
 flow-parser@0.*:
-  version "0.217.1"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.217.1.tgz#1d193f0401c5850f4ea6644c96e76d511e48718a"
-  integrity sha512-t4NrcNTgMzT85ffQWeiB3xl4cFtKkN0mlKBWNP1M7KZt/94SG6a4dhLlx2nPT8Cr8FMmLG/yT1/UEfp+4ZdLxw==
+  version "0.217.2"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.217.2.tgz#3a4aade40ea55a863295120a0b0da8a960967ad6"
+  integrity sha512-O+nt/FLXa1hTwtW0O9h36iZjbL84G8e1uByx5dDXMC97AJEbZXwJ4ohfaE8BNWrYFyYX0NGfz1o8AtLQvaaD/Q==
 
 flow-parser@^0.206.0:
   version "0.206.0"

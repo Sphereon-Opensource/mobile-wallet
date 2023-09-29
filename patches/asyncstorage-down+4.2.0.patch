@@ -9,38 +9,3 @@ index c076d3d..ccf6f8f 100644
 +    return require('@react-native-async-storage/async-storage').AsyncStorage
    }
  }
-diff --git a/node_modules/asyncstorage-down/mock-react-native/package.json b/node_modules/asyncstorage-down/mock-react-native/package.json
-index 4bd7ed7..3408d06 100644
---- a/node_modules/asyncstorage-down/mock-react-native/package.json
-+++ b/node_modules/asyncstorage-down/mock-react-native/package.json
-@@ -2,5 +2,29 @@
-   "name": "react-native",
-   "description": "A fake React Native package to contain the mock for AsyncStorage",
-   "version": "0.0.0",
--  "main": "index.js"
-+  "main": "index.js",
-+  "react-native": {
-+    "os": "react-native-os",
-+    "path": "path-browserify",
-+    "fs": "react-native-level-fs",
-+    "_stream_transform": "readable-stream/transform",
-+    "_stream_readable": "readable-stream/readable",
-+    "_stream_writable": "readable-stream/writable",
-+    "_stream_duplex": "readable-stream/duplex",
-+    "_stream_passthrough": "readable-stream/passthrough",
-+    "stream": "stream-browserify",
-+    "vm": "vm-browserify"
-+  },
-+  "browser": {
-+    "os": "react-native-os",
-+    "path": "path-browserify",
-+    "fs": "react-native-level-fs",
-+    "_stream_transform": "readable-stream/transform",
-+    "_stream_readable": "readable-stream/readable",
-+    "_stream_writable": "readable-stream/writable",
-+    "_stream_duplex": "readable-stream/duplex",
-+    "_stream_passthrough": "readable-stream/passthrough",
-+    "stream": "stream-browserify",
-+    "vm": "vm-browserify"
-+  }
- }
