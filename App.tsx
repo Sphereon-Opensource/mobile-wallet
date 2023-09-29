@@ -27,7 +27,7 @@ LogBox.ignoreLogs([
   /*
     This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
   */
-  'AsyncStorage has been extracted from react-native',
+  // 'AsyncStorage has been extracted from react-native',
   /*
     TODO WAL-342
     Non-serializable values were found in the navigation state. Check:

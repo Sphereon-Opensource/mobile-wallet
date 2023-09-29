@@ -2,7 +2,7 @@
   "expo": {
     "name": "SphereonWallet",
     "slug": "SphereonWallet",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "orientation": "portrait",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,6 +24,7 @@
       "eas": {
         "projectId": "76b1c6a4-d1d8-421e-8514-ee9db0b197b4"
       }
-    }
+    },
+    "plugins": ["expo-localization"]
   }
 }
