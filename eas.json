@@ -1,5 +1,9 @@
 {
   "build": {
+    "base": {
+      "node": "18.17.0",
+      "yarn": "1.22.19"
+    },
     "preview": {
       "android": {
         "buildType": "apk"
@@ -13,6 +17,8 @@
     "preview3": {
       "developmentClient": true
     },
-    "production": {}
+    "production": {
+      "extends": "base"
+    }
   }
 }
