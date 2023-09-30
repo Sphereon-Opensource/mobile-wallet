@@ -412,7 +412,7 @@ export function getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMet
  * TODO check again when WAL-617 is done to replace how we get the issuer name.
  */
 function getName(metadata: IServerMetadataAndCryptoMatchingResponse, url: string) {
-  const displays = metadata.serverMetadata.issuerMetadata ? getIssuerDisplays(metadata.serverMetadata.issuerMetadata) : [];
+  const displays = metadata.serverMetadata.credentialIssuerMetadata ? getIssuerDisplays(metadata.serverMetadata.credentialIssuerMetadata) : [];
   let name;
   for (const display of displays) {
     if (display.name) {

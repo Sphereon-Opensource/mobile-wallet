@@ -41,7 +41,7 @@ export const didResolver = new Resolver({
     resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
   }),
   ...getDidKeyResolver(),
-  ...webDIDResolver,
+  ...webDIDResolver(),
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
 });

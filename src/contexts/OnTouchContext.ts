@@ -9,8 +9,10 @@ interface OnTouchContextType {
 
 const OnTouchContext = createContext<OnTouchContextType>({
   showProfileMenu: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setShowProfileMenu: () => {},
   showMoreMenu: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setShowMoreMenu: () => {},
 });
 

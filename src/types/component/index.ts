@@ -1,7 +1,7 @@
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
 
-import {CredentialStatusEnum, IssuerStatusEnum} from '../credential';
+import {CredentialStatus, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -41,7 +41,7 @@ export interface IHeaderMenuButton extends IButton {
   fontColor?: ColorValue;
 }
 
-export type LabelStatus = CredentialStatusEnum | IssuerStatusEnum;
+export type LabelStatus = CredentialStatus | IssuerStatus;
 
 export interface ITabRoute {
   key: string;

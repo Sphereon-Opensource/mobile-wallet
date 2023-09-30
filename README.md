@@ -149,11 +149,9 @@ These 4 links are Sphereon demo issuers, branded differently
 
 Other issuers:
 
-- [SpruceId](https://ngi-oidc4vci-test.spruceid.xyz)
 - [Diwala](https://oidc4vc.diwala.io/issue)
-- [Walt.id](https://jff.walt.id) (<= has some issues in our latest wallet, will be fixed in the next version)
-- [Mattr](https://launchpad.mattrlabs.com/) (<= has some issues in schema loading in it's VCs currently. We are
-  investigating)
+- [Walt.id](https://jff.walt.id) (<= has some issues in their environment currently (proofPurpose is missing))
+- [Mattr](https://launchpad.mattrlabs.com/)
 
    <br>
    <img src="./docs/img/issuance/1_qr_reader.jpg" width=33% height=33%>
@@ -260,13 +258,13 @@ There are several other utility scripts that help with development.
 
 SSI Wallet uses Expo SDK v48 and React-Native v0.71.
 
-- Node v16.x.x
+- Node v18.x.x
 - Expo CLI v6.0.1 or above
 - Yarn
 
 ### Node
 
-Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 16.x.x
+Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 18.x.x
 which is required for RN 0.71 to work. The app is not guaranteed to work with higher Node versions and it will
 certainly not work with lower Node versions.
 
@@ -278,8 +276,8 @@ command prompt or powershell as administrator!
 Example:
 
 ```shell
-nvm install 16.19.0
-nvm use 16.19.0
+nvm install 18.17.0
+nvm use 18.17.0
 ```
 
 You can use the following command to check the node version.

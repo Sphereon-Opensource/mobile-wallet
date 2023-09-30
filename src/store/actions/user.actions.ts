@@ -3,6 +3,7 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
+import LockingHandler from '../../handlers/LockingHandler';
 import {resetDatabase} from '../../services/databaseService';
 import {deletePin} from '../../services/storageService';
 import {getUsers as getUsersFromStorage, deleteUser as removeUser, updateUser, createUser as userCreate} from '../../services/userService';
@@ -98,11 +99,12 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             contactState = getState().contact;
           }
           await dispatch(getVerifiableCredentials());
+          LockingHandler.getInstance().isLocked = false;
           const intentHandler = IntentHandler.getInstance();
           await intentHandler.enable();
-          intentHandler.propagateEvents = true;
+
           if (intentHandler.hasDeepLink()) {
-            await intentHandler.openDeepLink();
+            intentHandler.openDeepLinkIfExistsAndAppUnlocked();
           }
         } else {
           dispatch({type: LOGIN_FAILED});
@@ -114,8 +116,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
 
 export const logout = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
-    await IntentHandler.getInstance().disable();
-    dispatch({type: USERS_LOADING});
+    // dispatch({type: USERS_LOADING});
     dispatch({type: LOGOUT_SUCCESS});
     dispatch({type: CLEAR_CREDENTIALS});
     dispatch({type: CLEAR_CONTACTS});

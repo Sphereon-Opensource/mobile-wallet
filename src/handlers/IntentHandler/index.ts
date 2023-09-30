@@ -13,6 +13,7 @@ import {storeVerifiableCredential} from '../../store/actions/credential.actions'
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import LockingHandler from '../LockingHandler';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
 
@@ -21,7 +22,6 @@ class IntentHandler {
   private deeplinkListener: EmitterSubscription;
   private shareListener: ShareListener;
   private _initialUrl?: string;
-  private _propagateEvents = false;
   private _enabled = false;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -30,44 +30,57 @@ class IntentHandler {
   public isEnabled(): boolean {
     return this._enabled;
   }
+
   public enable = async (): Promise<void> => {
-    if (!this.isEnabled()) {
-      await this.handleLinksForRunningApp();
-      await this.handleLinksForStartingApp();
+    debug(`Enable intenthandler... `);
+    if (this.isEnabled()) {
+      debug('intenthandler was already enabled');
+    } else {
       this._enabled = true;
+      try {
+        debug(`intenthandler was not enabled yet`);
+        await this.handleLinksForStartingApp();
+        await this.handleLinksForRunningApp();
+      } catch (error) {
+        console.log('Enable intenthandler had an error:');
+        console.log(JSON.stringify(error));
+        this._enabled = false;
+      }
+      debug(`intenthandler enabled`);
     }
   };
 
   public static getInstance(): IntentHandler {
-    if (!IntentHandler.instance) {
+    if (typeof IntentHandler.instance !== 'object') {
       IntentHandler.instance = new IntentHandler();
     }
     return IntentHandler.instance;
   }
 
   public disable = async (): Promise<void> => {
-    this._propagateEvents = false;
-    this._initialUrl = undefined;
-    await this.removeListeners();
     this._enabled = false;
+
+    // this._propagateEvents = false;
+    this._initialUrl = undefined;
+    try {
+      await this.removeListeners();
+    } catch (error) {
+      console.log('Disable intenthandler had an error:');
+      console.log(JSON.stringify(error));
+    }
   };
-
-  get propagateEvents(): boolean {
-    return this._propagateEvents;
-  }
-
-  set propagateEvents(value: boolean) {
-    this._propagateEvents = value;
-  }
 
   private handleLinksForRunningApp = async (): Promise<void> => {
     /**
      * 1. If the app is already open, the app is foregrounded and a Linking event is fired
      * You can handle these events with Linking.addEventListener('url', callback).
      */
-    Linking.removeAllListeners('url');
-    this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
-    this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
+    if (!this.deeplinkListener) {
+      this.deeplinkListener = Linking.addEventListener('url', this.deepLinkHandler);
+    }
+    if (!this.shareListener) {
+      this.shareListener = ShareMenu.addNewShareListener(this.sharedFileDataAction);
+    }
   };
 
   private removeListeners = async (): Promise<void> => {
@@ -92,17 +105,17 @@ class IntentHandler {
       debug('No deeplink on start');
       return;
     }
-    // this.deepLinkAction({url});
     debug(`deeplink on start: ${url}`);
     this._initialUrl = url;
   }
 
   private async handleSharedFileData(): Promise<void> {
-    await ShareMenu.getSharedText((data?: ShareData) => {
-      debug(`Receiving shared data: ${JSON.stringify(data, null, 2)}`);
-      if (!data) {
+    ShareMenu.getSharedText((data?: ShareData) => {
+      if (!data || ((!data.data || data.data.length === 0) && !data.extraData)) {
+        console.log('No shared data received');
         return;
       }
+      console.log(`Receiving shared data: ${JSON.stringify(data, null, 2)}`);
 
       this.sharedFileDataAction(data);
     });
@@ -112,17 +125,27 @@ class IntentHandler {
     if (event.url) {
       debug(`Deeplink for running app: ${event.url}`);
       this._initialUrl = event.url;
+    } else {
+      debug(`No deeplink for running app. Event: ${JSON.stringify(event)}`);
     }
-    if (this.hasDeepLink() && this.propagateEvents) {
-      void this.openDeepLink();
-    }
+    this.openDeepLinkIfExistsAndAppUnlocked();
   };
 
+  public openDeepLinkIfExistsAndAppUnlocked() {
+    if (this.isEnabled() && this.hasDeepLink() && !LockingHandler.getInstance().isLocked) {
+      void this.openDeepLink();
+    } else {
+      debug(`intent handler enabled: ${this.isEnabled()}, has deeplink: ${this.hasDeepLink()}, is locked: ${LockingHandler.getInstance().isLocked}`);
+    }
+  }
+
   public hasDeepLink = (): boolean => {
-    return !!this._initialUrl;
+    const hasLink = !!this._initialUrl;
+    return hasLink;
   };
 
   public getDeepLink(): string | undefined {
+    debug(`get deeplink called. Value: (${this._initialUrl})`);
     return this._initialUrl;
   }
 

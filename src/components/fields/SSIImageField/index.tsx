@@ -1,3 +1,4 @@
+import {calculateAspectRatio} from '@sphereon/ui-components.core';
 import React, {FC} from 'react';
 import FastImage from 'react-native-fast-image';
 
@@ -8,7 +9,6 @@ import {
   SSITextH5LightStyled as HeaderLabel,
 } from '../../../styles/components';
 import {ICredentialDetailsRow} from '../../../types';
-import {calculateAspectRatio} from '../../../utils/ImageUtils';
 
 export interface IProps {
   item: ICredentialDetailsRow;
