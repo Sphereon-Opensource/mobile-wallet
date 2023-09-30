@@ -37,7 +37,7 @@
 
 // Linking API
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-  return [super application:application openURL:url options:options] || [RCTLinkingManager application:application openURL:url options:options];
+  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 // Universal Links
