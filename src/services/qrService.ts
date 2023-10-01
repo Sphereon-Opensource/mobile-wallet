@@ -567,12 +567,12 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
         const credentialResponse: CredentialResponse = credentialOffers[0].credentialResponse;
         const origVC: W3CVerifiableCredential | undefined = credentialResponse.credential;
         const wrappedVC: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(origVC as OriginalVerifiableCredential);
-        const verificationResult: IVerificationResult = await verifyCredential({
+      /*  const verificationResult: IVerificationResult = await verifyCredential({
           credential: origVC as VerifiableCredential | CompactJWT,
           fetchRemoteContexts: true,
           policies: {credentialStatus: false, expirationDate: false, issuanceDate: false},
         });
-      /*  if (!verificationResult.result || verificationResult.error) {
+        if (!verificationResult.result || verificationResult.error) {
           console.log(JSON.stringify(verificationResult, null, 2));
           return handleError(Oidc4vciErrorEnum.VERIFICATION_FAILED, {
             detailsMessage: verificationResult.errorDetails,
