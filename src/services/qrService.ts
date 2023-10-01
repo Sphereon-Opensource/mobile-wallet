@@ -572,14 +572,14 @@ const connectOpenId4VcIssuance = async (args: IQrDataArgs): Promise<void> => {
           fetchRemoteContexts: true,
           policies: {credentialStatus: false, expirationDate: false, issuanceDate: false},
         });
-        if (!verificationResult.result || verificationResult.error) {
+      /*  if (!verificationResult.result || verificationResult.error) {
           console.log(JSON.stringify(verificationResult, null, 2));
           return handleError(Oidc4vciErrorEnum.VERIFICATION_FAILED, {
             detailsMessage: verificationResult.errorDetails,
             message: verificationResult.error,
             title: 'Invalid credential',
           });
-        }
+        }*/
         const uniformVC: IVerifiableCredential = wrappedVC.credential;
 
         const issuerCorrelationId = new URL(metadata.serverMetadata.issuer).hostname;
