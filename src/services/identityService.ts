@@ -42,5 +42,7 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
   // Currently we only support one identifier
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
+  console.log(identifier);
+  console.log(didManagerGet({did: identifier.did}));
   return didManagerGet({did: identifier.did});
 };

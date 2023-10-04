@@ -36,6 +36,7 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
 };
 
 export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredential> => {
+  console.log('CREATING CREDENTIAL', args);
   return issueVerifiableCredential(args);
 };
 

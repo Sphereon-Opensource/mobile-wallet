@@ -5,8 +5,8 @@ import {BackHandler, NativeEventSubscription, View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
-import {createIdentifier, getOrCreatePrimaryIdentifier} from '../../services/identityService';
-import {deletePin, storePin} from '../../services/storageService';
+import {createIdentifier} from '../../services/identityService';
+import {storePin} from '../../services/storageService';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, SupportedDidMethodEnum} from '../../types';
 
@@ -65,17 +65,10 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
     const {navigation} = this.props;
     const {isConfirmPin, pin} = this.state;
 
-    const savedIdentifier = await getOrCreatePrimaryIdentifier({method: SupportedDidMethodEnum.DID_OYD});
-    console.log(savedIdentifier);
-
     if (isConfirmPin) {
       if (value !== pin) {
         return Promise.reject(Error('Invalid code'));
       }
-
-      const identifier = await createIdentifier({method: SupportedDidMethodEnum.DID_OYD});
-
-      console.log(identifier);
 
       storePin({value}).then(() => navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {}));
     } else {

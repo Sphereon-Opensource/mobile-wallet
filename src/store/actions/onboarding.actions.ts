@@ -23,7 +23,7 @@ export const setPersonalData = (args: ISetPersonalDataActionArgs): ThunkAction<P
 export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: ONBOARDING_LOADING});
-    getOrCreatePrimaryIdentifier({method: SupportedDidMethodEnum.DID_KEY}).then((identifier: IIdentifier) => {
+    getOrCreatePrimaryIdentifier({method: SupportedDidMethodEnum.DID_OYD}).then((identifier: IIdentifier) => {
       const onboardingState: IOnboardingState = getState().onboarding;
       const user = {
         firstName: onboardingState.firstName!,
@@ -33,32 +33,35 @@ export const finalizeOnboarding = (): ThunkAction<Promise<void>, RootState, unkn
       };
       dispatch(createUser(user)).then((user: IUser) => {
         const context = {...agent?.context, agent};
-        getFirstKeyWithRelation(identifier, context, 'authentication').then(key =>
-          createCredential({
-            credential: {
-              '@context': [
-                'https://www.w3.org/2018/credentials/v1',
-                'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-              ],
-              id: `urn:uuid:${uuidv4()}`,
-              type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
-              issuer: identifier.did,
-              issuanceDate: new Date(),
-              credentialSubject: {
-                id: identifier.did,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailAddress: user.emailAddress,
+        getFirstKeyWithRelation(identifier, context, 'authentication')
+          .then(key => {
+            console.log('KEY:', key);
+            createCredential({
+              credential: {
+                '@context': [
+                  'https://www.w3.org/2018/credentials/v1',
+                  'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
+                ],
+                id: `urn:uuid:${uuidv4()}`,
+                type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
+                issuer: identifier.did,
+                issuanceDate: new Date(),
+                credentialSubject: {
+                  id: identifier.did,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  emailAddress: user.emailAddress,
+                },
               },
-            },
-            proofFormat: 'jwt',
-            header: {
-              kid: key?.meta?.verificationMethod?.id,
-            },
+              proofFormat: 'jwt',
+              header: {
+                kid: key?.meta?.verificationMethod?.id,
+              },
+            })
+              .then((vc: VerifiableCredential) => storeCredential({vc}))
+              .then(async () => dispatch(login(user.id)).then(() => dispatch({type: CLEAR_ONBOARDING})));
           })
-            .then((vc: VerifiableCredential) => storeCredential({vc}))
-            .then(async () => dispatch(login(user.id)).then(() => dispatch({type: CLEAR_ONBOARDING}))),
-        );
+          .catch(console.error);
       });
     });
   };
