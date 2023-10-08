@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {TouchableOpacity, ViewStyle} from 'react-native';
-
+import {SSICredentialMiniCardView} from '@sphereon/ui-components.ssi-react-native';
+import SSICheckbox from '../../fields/SSICheckbox';
 import {
   SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
   SSIFlexDirectionRowViewStyled as Container,
@@ -12,14 +13,12 @@ import {
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
 } from '../../../styles/components';
-import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
-import SSICheckbox from '../../fields/SSICheckbox';
 
 export interface Props {
   title: string;
   issuer?: string;
   isSelected: boolean;
-  image?: string; // TODO WAL-302 Support passing in storage location
+  image?: string;
   style?: ViewStyle;
   onPress: () => Promise<void>;
 }
@@ -33,7 +32,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
         <LogoOuterContainer>
           <LogoCheckboxContainer>
             <TouchableOpacity onPress={onPress}>
-              <SSICredentialLogo image={image} />
+              <SSICredentialMiniCardView backgroundImage={{uri: image}} />
             </TouchableOpacity>
             <CheckboxContainer>
               <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
