@@ -10,24 +10,30 @@ import {
   SSICredentialSelectTypeViewItemLogoCheckboxContainerStyled as LogoCheckboxContainer,
   SSICredentialSelectTypeViewItemLogoContainerStyled as LogoContainer,
 } from '../../../styles/components';
+import {CredentialMiniCardDisplay} from '../../../types';
 
-export interface Props {
+interface Props {
   title: string;
   isSelected: boolean;
-  image?: string;
-  style?: ViewStyle;
   onPress: () => Promise<void>;
+  cardDisplay?: CredentialMiniCardDisplay;
+  style?: ViewStyle;
 }
 
 const SSICredentialSelectTypeViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title, onPress} = props;
+  const {cardDisplay, isSelected, style, title, onPress} = props;
 
   return (
     <Container>
       <LogoContainer>
-        <SSICredentialMiniCardView backgroundImage={{uri: image}} />
+        <SSICredentialMiniCardView
+          backgroundColor={cardDisplay?.backgroundColor}
+          backgroundImage={cardDisplay?.backgroundImage}
+          logoColor={cardDisplay?.logoColor}
+          logo={cardDisplay?.logo}
+        />
         <LogoCheckboxContainer>
-          <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
+          <SSICheckbox onValueChange={onPress} isChecked={isSelected} backgroundColor={style?.backgroundColor} />
         </LogoCheckboxContainer>
       </LogoContainer>
       <ContentContainer>

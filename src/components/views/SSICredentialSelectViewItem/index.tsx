@@ -13,18 +13,19 @@ import {
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
 } from '../../../styles/components';
+import {CredentialMiniCardDisplay} from '../../../types';
 
 export interface Props {
   title: string;
-  issuer?: string;
   isSelected: boolean;
-  image?: string;
-  style?: ViewStyle;
   onPress: () => Promise<void>;
+  issuer?: string;
+  cardDisplay?: CredentialMiniCardDisplay;
+  style?: ViewStyle;
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title, issuer, onPress} = props;
+  const {cardDisplay, style, title, issuer, onPress} = props;
 
   return (
     <Container>
@@ -32,7 +33,12 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
         <LogoOuterContainer>
           <LogoCheckboxContainer>
             <TouchableOpacity onPress={onPress}>
-              <SSICredentialMiniCardView backgroundImage={{uri: image}} />
+              <SSICredentialMiniCardView
+                backgroundColor={cardDisplay?.backgroundColor}
+                backgroundImage={cardDisplay?.backgroundImage}
+                logoColor={cardDisplay?.logoColor}
+                logo={cardDisplay?.logo}
+              />
             </TouchableOpacity>
             <CheckboxContainer>
               <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />

@@ -1,7 +1,7 @@
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
 
-import {CredentialStatus, IssuerStatus} from '@sphereon/ui-components.core';
+import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -51,3 +51,10 @@ export interface ITabRoute {
 export interface ITabViewRoute extends ITabRoute {
   content: ComponentType<unknown>;
 }
+
+export type CredentialMiniCardDisplay = {
+  backgroundColor?: ColorValue;
+  backgroundImage?: ImageAttributes;
+  logoColor: ColorValue;
+  logo?: ImageAttributes;
+};
