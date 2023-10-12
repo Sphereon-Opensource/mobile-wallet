@@ -1,15 +1,14 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {imageAttributesEntityFrom} from '@sphereon/ssi-sdk.data-store';
-import {ImageAttributes} from '@sphereon/ui-components.core';
-import {SSICardView} from '@sphereon/ui-components.ssi-react-native';
-import {randomUUID} from 'expo-crypto';
 import React, {FC} from 'react';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {ImageAttributes} from '@sphereon/ui-components.core';
+import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import SSISecondaryButton from '../../components/buttons/SSISecondaryButton';
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
+import {getCredentialStatus} from '../../utils/CredentialUtils';
+import {getIssuerLogo} from '../../utils/mappers/credential/CredentialMapper';
 import {translate} from '../../localization/Localization';
 import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,
@@ -19,9 +18,7 @@ import {
   SSICredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
-import {getCredentialStatus} from '../../utils/CredentialUtils';
-import {getIssuerLogo} from '../../utils/mappers/credential/CredentialMapper';
+import {ICredentialSummary, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -30,9 +27,21 @@ enum CredentialTabRoutesEnum {
   ACTIVITY = 'activity',
 }
 
+const getCredentialCardLogo = (credential: ICredentialSummary): ImageAttributes | undefined => {
+  if (credential.branding?.logo?.uri || credential.branding?.logo?.dataUri) {
+    return credential.branding.logo;
+  }
+
+  const uri: string | undefined = getIssuerLogo(credential, credential.branding);
+  if (uri) {
+    return {uri};
+  }
+};
+
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {credential, primaryAction, secondaryAction, showActivity = false} = props.route.params;
   const issuer = credential.issuer.alias;
+  const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -50,30 +59,17 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         ]
       : []),
   ];
-  let logo: ImageAttributes | undefined;
-  if (credential.branding?.logo?.uri || credential.branding?.logo?.dataUri) {
-    logo = credential.branding.logo;
-  }
-  if (!logo && typeof credential.branding?.logo === 'string') {
-    logo = {uri: credential.branding.logo};
-  }
-  if (!logo) {
-    const uri = getIssuerLogo(credential, credential.branding);
-    if (uri) {
-      logo = {uri};
-    }
-  }
 
   return (
     <Container>
       <StatusBar />
       <ContentContainer>
         <CardContainer>
-          <SSICardView
+          <SSICredentialCardView
             header={{
               credentialTitle: credential.title ?? credential.branding?.alias,
               credentialSubtitle: credential.branding?.description,
-              logo,
+              logo: credentialCardLogo,
             }}
             body={{
               issuerName: issuer ?? credential.issuer.name,

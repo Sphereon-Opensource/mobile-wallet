@@ -17,13 +17,11 @@ export const SSICredentialDetailsScreenButtonContainer = styled.View`
   height: 80px;
   width: 100%;
   margin-top: auto;
-  backgroundcolor: ${backgrounds.secondaryDark};
+  background-color: ${backgrounds.secondaryDark};
 `;
 
 export const SSICredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
-  margin-top: auto;
-  margin-bottom: auto;
+  margin: auto auto;
   justify-content: space-between;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 0 24px;
 `;

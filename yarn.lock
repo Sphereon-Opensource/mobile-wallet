@@ -3508,22 +3508,22 @@
   dependencies:
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.1.2.tgz#f0ad61a1084ea62a821928d1fadce8b852808fab"
-  integrity sha512-QUNA8U3RUiCJ1SLPpoZ7Phhm8UWHfrcad6sR7bVJrj5sXi2XmdLjcNXhEuJ5EoubVTiYw4rVJdQWRcoEUsydAA==
+"@sphereon/ui-components.core@0.1.3-next.16", "@sphereon/ui-components.core@0.1.3-next.16+40041e4":
+  version "0.1.3-next.16"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.1.3-next.16.tgz#fd77331024e9e69655c220b09e1b31770b762a64"
+  integrity sha512-chOe5yiFVrRq1uQ3q1h6+0cZGlA03KMNeQno/duLp168L1fyA+qFee81Iaw1XmL0M7RkcHgh0sv3YlJrE+qy5A==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^5.3.3"
 
-"@sphereon/ui-components.ssi-react-native@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.1.2.tgz#f38714c758ea20777a035b60dd91fd8a6759a4c1"
-  integrity sha512-Z+UVyNDvmsgBMYuGiPgmIpttiDbxOhx0aEPpr+cN7OWutXl14IleivD5YlDEGczyXUaS7hlx4/YUerunSCrWdw==
+"@sphereon/ui-components.ssi-react-native@0.1.3-next.16":
+  version "0.1.3-next.16"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.1.3-next.16.tgz#ed95fabf5842bf3b511d13ca00c190bf8f33a974"
+  integrity sha512-nMCeAp4qKa+KVhtvPa0sNv7a8LS3Vk0G2+TW7cHnHA7n0HEafyqwC3CmdycZ6vpED2QqomXdeqHKRLOVZi+MXA==
   dependencies:
     "@react-native-community/blur" "^4.3.0"
-    "@sphereon/ui-components.core" "0.1.2"
+    "@sphereon/ui-components.core" "0.1.3-next.16+40041e4"
     react-native-fast-image "^8.6.3"
     react-native-size-matters "^0.4.0"
     react-native-svg "13.4.0"
@@ -4614,7 +4614,7 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020", "@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
+"@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
   version "0.0.8"
   resolved "https://codeload.github.com/uport-project/EcdsaSecp256k1RecoverySignature2020/tar.gz/ab0db52de6f4e6663ef271a48009ba26e688ef9b"
   dependencies:

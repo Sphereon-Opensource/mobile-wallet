@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {TouchableOpacity, ViewStyle} from 'react-native';
-
+import {SSICredentialMiniCardView} from '@sphereon/ui-components.ssi-react-native';
+import SSICheckbox from '../../fields/SSICheckbox';
 import {
   SSICredentialSelectViewItemCheckboxContainerStyled as CheckboxContainer,
   SSIFlexDirectionRowViewStyled as Container,
@@ -12,20 +13,19 @@ import {
   SSICredentialSelectViewItemLogoContainerStyled as LogoContainer,
   SSICredentialSelectViewItemLogoOuterContainerStyled as LogoOuterContainer,
 } from '../../../styles/components';
-import SSICredentialLogo from '../../assets/logos/SSICredentialLogo';
-import SSICheckbox from '../../fields/SSICheckbox';
+import {CredentialMiniCardDisplay} from '../../../types';
 
 export interface Props {
   title: string;
-  issuer?: string;
   isSelected: boolean;
-  image?: string; // TODO WAL-302 Support passing in storage location
-  style?: ViewStyle;
   onPress: () => Promise<void>;
+  issuer?: string;
+  cardDisplay?: CredentialMiniCardDisplay;
+  style?: ViewStyle;
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {image, style, title, issuer, onPress} = props;
+  const {cardDisplay, style, title, issuer, onPress} = props;
 
   return (
     <Container>
@@ -33,7 +33,12 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
         <LogoOuterContainer>
           <LogoCheckboxContainer>
             <TouchableOpacity onPress={onPress}>
-              <SSICredentialLogo image={image} />
+              <SSICredentialMiniCardView
+                backgroundColor={cardDisplay?.backgroundColor}
+                backgroundImage={cardDisplay?.backgroundImage}
+                logoColor={cardDisplay?.logoColor}
+                logo={cardDisplay?.logo}
+              />
             </TouchableOpacity>
             <CheckboxContainer>
               <SSICheckbox onValueChange={onPress} isChecked={props.isSelected} backgroundColor={style?.backgroundColor} />
