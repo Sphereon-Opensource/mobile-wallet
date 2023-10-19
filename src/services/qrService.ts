@@ -24,6 +24,7 @@ import {
   CredentialMapper,
   IVerifiableCredential,
   OriginalVerifiableCredential,
+  PresentationSubmission,
   W3CVerifiableCredential,
   WrappedVerifiableCredential,
 } from '@sphereon/ssi-types';
@@ -155,6 +156,7 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
       break;
     case QrTypesEnum.SIOPV2:
     case QrTypesEnum.OPENID_VC:
+    case QrTypesEnum.OPENID4VC:
       return connectSiopV2(args);
     case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
@@ -197,7 +199,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  const url: URL = new URL(decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim()));
+  //const url: URL = new URL(decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim()));
   const config = {
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),
@@ -216,16 +218,31 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
 
   let request: VerifiedAuthorizationRequest;
   let registration: RPRegistrationMetadataPayload | undefined;
+  let url: string;
+  let name: string | undefined;
   try {
     request = await siopGetRequest({...config, id: uuidv4()});
     // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
-    registration = await request.authorizationRequest.getMergedProperty('registration');
+    registration = request.registrationMetadataPayload;
+    name = registration?.client_name;
+    url =
+      request.responseURI ??
+      (args.qrData.uri.includes('request_uri')
+        ? decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim())
+        : request.issuer ?? request.registrationMetadataPayload?.client_id);
   } catch (error: unknown) {
     debug(translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message}));
     args.navigation.navigate(ScreenRoutesEnum.QR_READER, {});
     showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {errorMessage: (error as Error).message})});
+    return;
   }
 
+  const uri = url.includes('://') ? new URL(url) : undefined;
+  const correlationIdName = uri
+    ? translateCorrelationIdToName(uri.hostname)
+    : request.issuer
+    ? translateCorrelationIdToName(request.issuer.split('://')[1])
+    : name;
   const sendResponse = async (
     presentationDefinitionWithLocation: PresentationDefinitionWithLocation,
     credentials: Array<VerifiableCredential>,
@@ -245,7 +262,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
         });
         showToast(ToastTypeEnum.TOAST_SUCCESS, {
           title: translate('credentials_share_success_toast_title'),
-          message: translate('credentials_share_success_toast_message', {verifierName: translateCorrelationIdToName(url.hostname)}),
+          message: translate('credentials_share_success_toast_message', {verifierName: registration?.client_name ?? correlationIdName}),
         });
       })
       .catch((error: Error) => {
@@ -259,7 +276,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     // TODO: Makes sense to move these types of common queries/retrievals to the SIOP auth request object
     const format: Format | undefined = registration?.vp_formats;
     const subjectSyntaxTypesSupported: Array<string> | undefined = registration?.subject_syntax_types_supported;
-    const clientId: string | undefined = await request.authorizationRequest.getMergedProperty<string>('client_id');
+    const clientId: string | undefined = (await request.authorizationRequest.getMergedProperty<string>('client_id')) ?? request.issuer;
     const correlationId: string | undefined = clientId
       ? clientId.startsWith('did:')
         ? clientId
@@ -271,7 +288,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
           {
             identities: {
               identifier: {
-                correlationId: url.hostname,
+                correlationId: request.issuer ?? request.registrationMetadataPayload?.client_id ?? correlationId,
               },
             },
           },
@@ -317,7 +334,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
     args.navigation.navigate(NavigationBarRoutesEnum.QR, {
       screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
       params: {
-        verifier: translateCorrelationIdToName(url.hostname),
+        verifier: name ?? correlationIdName ?? correlationId,
         // TODO currently only supporting 1 presentation definition
         presentationDefinition: presentationDefinitionWithLocation.definition,
         format,
@@ -345,7 +362,7 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       {
         identities: {
           identifier: {
-            correlationId: url.hostname,
+            correlationId: uri ? uri.hostname : correlationIdName,
           },
         },
       },
@@ -355,15 +372,15 @@ const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
       args.navigation.navigate(NavigationBarRoutesEnum.QR, {
         screen: ScreenRoutesEnum.CONTACT_ADD,
         params: {
-          name: registration?.client_name ?? url.hostname,
-          uri: `${url.protocol}//${url.hostname}`,
+          name: name ?? correlationIdName ?? uri?.hostname,
+          uri: `${uri?.protocol}//${uri?.hostname}`,
           identities: [
             {
-              alias: url.hostname,
+              alias: uri?.hostname,
               roles: [IdentityRoleEnum.VERIFIER],
               identifier: {
                 type: CorrelationIdentifierEnum.URL,
-                correlationId: url.hostname,
+                correlationId: uri?.hostname,
               },
               connection: {
                 type: ConnectionTypeEnum.SIOPv2,

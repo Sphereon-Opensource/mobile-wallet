@@ -27,7 +27,7 @@ import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapp
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {presentationDefinition, format, subjectSyntaxTypesSupported} = props.route.params;
+  const {presentationDefinition, format, subjectSyntaxTypesSupported, verifier} = props.route.params;
   const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const pex = new PEX();
@@ -52,7 +52,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         });
         const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
           ? selectResult.verifiableCredential
-              .map((matchedVC: IVerifiableCredential) => getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC))
+              .map((matchedVC: OriginalVerifiableCredential) => getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC))
               .filter((matchedVC): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
           : [];
         availableVCs.set(inputDescriptor.id, matchedVCs);
