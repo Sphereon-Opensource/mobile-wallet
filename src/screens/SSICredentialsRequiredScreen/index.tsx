@@ -162,14 +162,17 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!, itemInfo.item.purpose);
 
     const checkIsMatching = (itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
-                             selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>) => {
+                             selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>) : boolean => {
       if (!selectedCredentials.has(itemInfo.item.id)) {
         return false;
       }
+      const selectedCredential: Array<UniqueVerifiableCredential> | undefined = selectedCredentials.get(itemInfo.item.id);
+      if(!selectedCredential) {
+        return false
+      }
 
-      const credentials = selectedCredentials.get(itemInfo.item.id)!.map((uniqueVC: UniqueVerifiableCredential) =>
+      const credentials : Array<OriginalVerifiableCredential> = selectedCredential.map((uniqueVC: UniqueVerifiableCredential) =>
         getOriginalVerifiableCredential(uniqueVC.verifiableCredential));
-
       return pex.evaluateCredentials(
         {
           id: itemInfo.item.id,
