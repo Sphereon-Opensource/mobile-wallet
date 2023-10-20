@@ -51,7 +51,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           restrictToDIDMethods: subjectSyntaxTypesSupported,
         });
         if (selectResult.areRequiredCredentialsPresent === "error") {
-          console.error(JSON.stringify(selectResult.errors));
+          console.info('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
           availableVCs.set(inputDescriptor.id, []);
         } else {
           const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
