@@ -59,7 +59,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.matches && selectResult.verifiableCredential
           ? selectResult.matches.map((match: SubmissionRequirementMatch) => {
             const matchedVC = JSONPath.query(selectResult, match.vc_path[0])
-            if(matchedVC && matchedVC.length) {
+            if (matchedVC?.length) {
               return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
             }
           })
