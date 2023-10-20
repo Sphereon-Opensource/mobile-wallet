@@ -161,17 +161,19 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         ? undefined
         : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!, itemInfo.item.purpose);
 
-    const checkIsMatching = (itemInfo: any, selectedCredentials: any, pex: any, getOriginalVerifiableCredential: any) => {
+    const checkIsMatching = (itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
+                             selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>) => {
       if (!selectedCredentials.has(itemInfo.item.id)) {
         return false;
       }
 
-      const credentials = selectedCredentials.get(itemInfo.item.id)!.map((uniqueVC: any) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential));
+      const credentials = selectedCredentials.get(itemInfo.item.id)!.map((uniqueVC: UniqueVerifiableCredential) =>
+        getOriginalVerifiableCredential(uniqueVC.verifiableCredential));
 
       return pex.evaluateCredentials(
         {
           id: itemInfo.item.id,
-          input_descriptors: [itemInfo.item],
+          input_descriptors: [itemInfo.item]
         },
         credentials
       ).areRequiredCredentialsPresent === Status.INFO;
@@ -184,7 +186,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         purpose={itemInfo.item.purpose}
         available={availableCredentials.has(itemInfo.item.id) ? availableCredentials.get(itemInfo.item.id)! : undefined}
         selected={selectedCredentials.has(itemInfo.item.id) ? selectedCredentials.get(itemInfo.item.id)! : []}
-        isMatching={checkIsMatching(itemInfo, selectedCredentials, pex, getOriginalVerifiableCredential)}
+        isMatching={checkIsMatching(itemInfo, selectedCredentials)}
         listIndex={itemInfo.index}
         onPress={onPress}
       />
