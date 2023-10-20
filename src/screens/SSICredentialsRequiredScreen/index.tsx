@@ -53,17 +53,17 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           restrictToFormats: format,
           restrictToDIDMethods: subjectSyntaxTypesSupported,
         });
-        if (selectResult.areRequiredCredentialsPresent === "error") {
+        if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
           console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
         }
         const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.matches && selectResult.verifiableCredential
           ? selectResult.matches.map((match: SubmissionRequirementMatch) => {
-            const matchedVC = JSONPath.query(selectResult, match.vc_path[0])
-            if (matchedVC?.length) {
+            const matchedVC = JSONPath.query(selectResult, match.vc_path[0]) // TODO Can we have multiple vc_path elements for a single match?
+            if (matchedVC?.length > 0) {
               return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
             }
           })
-          .filter((matchedVC): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
+          .filter((matchedVC : UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
           : [];
         availableVCs.set(inputDescriptor.id, matchedVCs);
       });
