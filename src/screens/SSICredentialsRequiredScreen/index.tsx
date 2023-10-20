@@ -9,6 +9,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
+
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {ibGetCredentialBranding} from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
@@ -23,6 +24,8 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import { SubmissionRequirementMatch } from "@sphereon/pex/dist/main/lib/evaluation/core/submissionRequirementMatch";
+import { JSONPath } from "@astronautlabs/jsonpath/src/jsonpath";
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -52,15 +55,17 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         });
         if (selectResult.areRequiredCredentialsPresent === "error") {
           console.info('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
-          availableVCs.set(inputDescriptor.id, []);
-        } else {
-          const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.verifiableCredential
-            ? selectResult.verifiableCredential
-            .map((matchedVC: IVerifiableCredential) => getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC))
-            .filter((matchedVC): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
-            : [];
-          availableVCs.set(inputDescriptor.id, matchedVCs);
         }
+        const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.matches && selectResult.verifiableCredential
+          ? selectResult.matches.map((match: SubmissionRequirementMatch) => {
+            const matchedVC = JSONPath.query(selectResult, match.vc_path[0])
+            if(matchedVC && matchedVC.length > 0) {
+              return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
+            }
+          })
+          .filter((matchedVC): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
+          : [];
+        availableVCs.set(inputDescriptor.id, matchedVCs);
       });
       setAvailableCredentials(availableVCs);
     });
