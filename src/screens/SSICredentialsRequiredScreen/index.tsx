@@ -1,9 +1,9 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {PEX, SelectResults} from '@sphereon/pex';
+import { PEX, SelectResults, SubmissionRequirementMatch } from "@sphereon/pex";
 import {Status} from '@sphereon/pex/dist/main/lib/ConstraintUtils';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, IVerifiableCredential, OriginalVerifiableCredential, W3CVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
@@ -24,7 +24,6 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import { SubmissionRequirementMatch } from "@sphereon/pex/dist/main/lib/evaluation/core/submissionRequirementMatch";
 import { JSONPath } from "@astronautlabs/jsonpath/src/jsonpath";
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
@@ -59,7 +58,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.matches && selectResult.verifiableCredential
           ? selectResult.matches.map((match: SubmissionRequirementMatch) => {
             const matchedVC = JSONPath.query(selectResult, match.vc_path[0]) // TODO Can we have multiple vc_path elements for a single match?
-            if (matchedVC?.length > 0) {
+            if (matchedVC && matchedVC.length > 0) {
               return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
             }
           })
