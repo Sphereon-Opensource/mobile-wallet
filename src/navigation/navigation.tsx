@@ -32,6 +32,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
+// import {OnboardingContext, OnboardingMachine} from '../services/onboardingMachine';
 import {
   HeaderMenuIconsEnum,
   MainRoutesEnum,
@@ -424,6 +425,17 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
+const OnboardingStackWithContext = (): JSX.Element => {
+  // const onboardingMachine = OnboardingMachine.withConfig({
+  //   services: props.services
+  // })
+  return (
+    // <OnboardingContext.Provider value={onboardingMachine}>
+    <OnboardingStack />
+    // </OnboardingContext.Provider>
+  );
+};
+
 const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
@@ -558,7 +570,7 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStack} />
+        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStackWithContext} />
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (
