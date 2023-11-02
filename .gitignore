@@ -66,5 +66,7 @@ dist/
 
 # @end expo-cli
 
+coverage/
+
 .yalc
 yalc.lock
