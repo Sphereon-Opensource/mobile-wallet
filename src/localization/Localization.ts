@@ -34,7 +34,7 @@ class Localization {
     }
     const fallback = Localization.supportedLanguages.ENGLISH;
     const deviceLocale = Localization.findSupportedLanguage(ExpoLocalization.locale);
-    const languageTag = preferredLanguage || deviceLocale || fallback;
+    const languageTag = preferredLanguage ?? deviceLocale ?? fallback;
 
     i18n.translations = {
       [languageTag]: Localization.translationGetters[languageTag](),

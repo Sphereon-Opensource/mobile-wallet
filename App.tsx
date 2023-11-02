@@ -4,9 +4,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
 import {LogBox, Platform, StatusBar} from 'react-native';
+import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
-import 'react-native-gesture-handler';
 import {bindActionCreators} from 'redux';
 
 import IntentHandler from './src/handlers/IntentHandler';
@@ -16,6 +16,7 @@ import Localization from './src/localization/Localization';
 import AppNavigator from './src/navigation/navigation';
 import {navigationRef} from './src/navigation/rootNavigation';
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
+import {OnboardingMachine, onboardingNavigations} from './src/services/onboardingMachine';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {backgrounds} from './src/styles/colors';
@@ -94,6 +95,7 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {}, [navigationIsReady]);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady && navigationIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -105,6 +107,25 @@ export default function App() {
     }
   }, [appIsReady, navigationIsReady]);
 
+  useEffect(() => {
+    if (!navigationIsReady || !appIsReady) {
+      console.log(`app or navigation not ready yet`);
+      return;
+    }
+    const onboardingInstance = OnboardingMachine.getInstance({noDefaultNavigationHook: true});
+    const subscription = onboardingInstance.subscribe(state => onboardingNavigations(onboardingInstance, state));
+    const snapshot = onboardingInstance.getSnapshot();
+    if (!snapshot || snapshot.done || snapshot.events.length === 0) {
+      console.log(`ONBOARDING STARTING...`);
+      onboardingInstance.start();
+      console.log(`ONBOARDING STARTED`);
+    } else {
+      console.log(`ONBOARDING ALREADY STARTED: ${snapshot.value}: ${snapshot}`);
+    }
+
+    return subscription.unsubscribe;
+  }, [appIsReady, navigationIsReady]);
+
   if (!appIsReady) {
     return null;
   }
@@ -112,7 +133,12 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
+        <NavigationContainer
+          onReady={() => {
+            console.log('REDY########################################');
+            setNavigationIsReady(true);
+          }}
+          ref={navigationRef}>
           <OnTouchProvider>
             <AppNavigator />
           </OnTouchProvider>

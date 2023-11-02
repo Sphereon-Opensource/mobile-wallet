@@ -1,41 +1,41 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
-import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-import {connect} from 'react-redux';
+import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 
 import {EMAIL_ADDRESS_MAX_LENGTH, EMAIL_ADDRESS_VALIDATION_REGEX, FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH} from '../../@config/constants';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSITextInputField from '../../components/fields/SSITextInputField';
 import {translate} from '../../localization/Localization';
-import {setPersonalData} from '../../store/actions/onboarding.actions';
+import {IOnboardingPersonalData, OnboardingMachine} from '../../services/onboardingMachine';
 import {
-  SSIPersonalDataScreenContainerStyled as Container,
   SSIFullHeightScrollViewContainer as SSIScrollView,
+  SSIPersonalDataScreenContainerStyled as Container,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {ISetPersonalDataActionArgs} from '../../types/store/onboarding.types';
 
-interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA> {
-  setPersonalData: (args: ISetPersonalDataActionArgs) => void;
-}
+type IProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
-interface IState {
-  firstName: string;
-  lastName: string;
-  emailAddress: string;
-}
+class SSIPersonalDataScreen extends PureComponent<IProps> {
+  get personalData(): IOnboardingPersonalData {
+    return this._personalData;
+  }
 
-class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
-  state: IState = {
+  set personalData(value: IOnboardingPersonalData) {
+    this._personalData = value;
+  }
+
+  hardwareBackPressListener: NativeEventSubscription;
+
+  private _personalData: IOnboardingPersonalData = OnboardingMachine.instance.getSnapshot()?.context?.personalData ?? {
     firstName: '',
     lastName: '',
     emailAddress: '',
   };
 
   onFirstNameChange = async (value: string): Promise<void> => {
-    this.setState({firstName: value});
+    this.personalData.firstName = value.trim();
   };
 
   onFirstNameValidation = async (value: string): Promise<void> => {
@@ -45,7 +45,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
   };
 
   onLastNameChange = async (value: string): Promise<void> => {
-    this.setState({lastName: value});
+    this.personalData.lastName = value.trim();
   };
 
   onLastNameValidation = async (value: string): Promise<void> => {
@@ -55,41 +55,45 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
   };
 
   onEmailAddressChange = async (value: string): Promise<void> => {
-    this.setState({emailAddress: value.toLowerCase()});
+    this.personalData.emailAddress = value.toLowerCase().trim();
   };
 
   onEmailAddressValidation = async (value: string): Promise<void> => {
     if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(value)) {
-      this.setState({emailAddress: ''});
+      // this.setState({emailAddress: ''});
       return Promise.reject(Error(translate('email_address_invalid_message')));
     }
   };
 
   onNext = async (): Promise<void> => {
-    const {firstName, lastName, emailAddress} = this.state;
-
+    const {emailAddress} = this._personalData;
     Keyboard.dismiss();
 
     // only validating email address here as the other fields do not have any special validation
     this.onEmailAddressValidation(emailAddress)
       .then(() => {
-        this.props.setPersonalData({
-          firstName,
-          lastName,
-          emailAddress,
-        });
-
-        this.props.navigation.navigate(ScreenRoutesEnum.PIN_CODE_SET, {
-          headerSubTitle: translate('pin_code_choose_pin_code_subtitle'),
-        });
+        this.props.route.params.onNext();
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
       });
   };
 
+  isDisabled = (): boolean => {
+    const {firstName, lastName, emailAddress} = this.personalData;
+    return !firstName || firstName.length === 0 || !lastName || lastName.length === 0 || !emailAddress || emailAddress.length === 0;
+  };
+
+  componentDidMount() {
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', () => {
+      void this.props.route.params.onBack();
+      // make sure event stops here
+      return true;
+    });
+  }
+
   render() {
-    const {firstName, lastName, emailAddress} = this.state;
+    console.log(`PERSONAL DATA: ${JSON.stringify(this.personalData)}`);
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -129,7 +133,8 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
             <SSIButtonsContainer
               primaryButton={{
                 caption: translate('action_next_label'),
-                disabled: firstName.length === 0 || lastName.length === 0 || emailAddress.length === 0,
+                // todo: move to guard in state machine
+                disabled: !this.isDisabled,
                 onPress: this.onNext,
               }}
             />
@@ -140,10 +145,4 @@ class SSIPersonalDataScreen extends PureComponent<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setPersonalData: (args: ISetPersonalDataActionArgs) => dispatch(setPersonalData(args)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(SSIPersonalDataScreen);
+export default SSIPersonalDataScreen;

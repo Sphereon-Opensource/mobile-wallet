@@ -1,33 +1,37 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useContext, useMemo, useState} from 'react';
 import {BackHandler} from 'react-native';
+import {useBackHandler} from '@react-native-community/hooks';
 
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITabView from '../../components/views/SSITabView';
 import SSITermsOfServiceView from '../../components/views/SSITermsOfServiceView';
 import {translate} from '../../localization/Localization';
-import navigation from '../../navigation/navigation';
+import {OnboardingContext, OnboardingEvents} from '../../services/onboardingMachine';
 import {
+  SSIBasicContainerStyled as Container,
+  SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenBottomContainerStyled as BottomContainer,
   SSITermsOfServiceScreenCheckboxContainerStyled as CheckboxContainer,
   SSITermsOfServiceScreenCheckboxesContainerStyled as CheckboxesContainer,
-  SSIBasicContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer,
 } from '../../styles/components';
 import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
-
 enum TermsTabRoutesEnum {
   TERMS = 'terms',
   PRIVACY = 'privacy',
 }
 
 const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
-  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
-  const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false);
+  const {onboardingInstance} = useContext(OnboardingContext);
+  useBackHandler(() => {
+    void props.route.params.onBack();
+    // make sure event stops here
+    return true;
+  });
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -49,7 +53,9 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const memoTabView = useMemo(() => <SSITabView routes={routes} />, []);
 
   const onAccept = async (): Promise<void> => {
-    props.navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {});
+    // hardwareBackPressListener.remove()
+    await props.route.params.onNext();
+    // props.navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {});
   };
 
   const onDecline = async (): Promise<void> => {
@@ -61,26 +67,31 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
         onPress: async () => {
           // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
           BackHandler.exitApp();
+          props.route.params.onDecline();
+
+          // onboardingService.send(OnboardingEvents.DECLINE);
           // Adding a reset back to the Welcome screen and to reset its state as it is active in the current stack
-          props.navigation.reset({
-            index: 0,
-            routes: [{name: ScreenRoutesEnum.WELCOME}],
-          });
+          /*  props.navigation.reset({
+              index: 0,
+              routes: [{name: ScreenRoutesEnum.WELCOME}],
+            });*/
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => props.navigation.goBack(),
+        onPress: async () => {
+          props.navigation.goBack();
+        },
       },
     });
   };
 
   const onAcceptTerms = async (isChecked: boolean): Promise<void> => {
-    setHasAcceptedTerms(isChecked);
+    await props.route.params.onAcceptTerms(isChecked);
   };
 
   const onAcceptPrivacy = async (isChecked: boolean): Promise<void> => {
-    setHasAcceptedPrivacy(isChecked);
+    await props.route.params.onAcceptPrivacy(isChecked);
   };
 
   return (
@@ -103,7 +114,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
           }}
           primaryButton={{
             caption: translate('action_accept_label'),
-            disabled: !hasAcceptedTerms || !hasAcceptedPrivacy,
+            disabled: !onboardingInstance.getSnapshot()?.can(OnboardingEvents.NEXT),
             onPress: onAccept,
           }}
         />

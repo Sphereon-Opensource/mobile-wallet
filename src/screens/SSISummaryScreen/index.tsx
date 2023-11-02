@@ -6,17 +6,18 @@ import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
 import {translate} from '../../localization/Localization';
+import {OnboardingEvents, onboardingService} from '../../services/onboardingMachine';
 import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
 import {backgrounds} from '../../styles/colors';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {IOnboardingState} from '../../types/store/onboarding.types';
 
-const {v4: uuidv4} = require('uuid');
+import {v4 as uuidv4} from 'uuid';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY> {
-  onboardingState: IOnboardingState;
-  finalizeOnboarding: () => void;
+  // onboardingState: IOnboardingState;
+  // finalizeOnboarding: () => void;
 }
 
 enum SummaryTabRoutesEnum {
@@ -25,36 +26,37 @@ enum SummaryTabRoutesEnum {
 
 class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
   getProperties = (): Array<ICredentialDetailsRow> => {
-    const {onboardingState} = this.props;
+    const {personalData} = onboardingService.getSnapshot().context ?? {};
 
     return [
       {
         id: uuidv4(),
         label: translate('first_name_label'),
-        value: onboardingState.firstName,
+        value: personalData.firstName,
       },
       {
         id: uuidv4(),
         label: translate('last_name_label'),
-        value: onboardingState.lastName,
+        value: personalData.lastName,
       },
       {
         id: uuidv4(),
         label: translate('email_address_label'),
-        value: onboardingState.emailAddress,
+        value: personalData.emailAddress,
       },
     ];
   };
 
   onAccept = async (): Promise<void> => {
-    const {finalizeOnboarding, navigation} = this.props;
+    // const {finalizeOnboarding, navigation} = this.props;
+    onboardingService.send(OnboardingEvents.NEXT);
 
-    navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_onboarding_setup_message')});
+    // navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_onboarding_setup_message')});
     finalizeOnboarding();
   };
 
   render() {
-    const {onboardingState} = this.props;
+    // const {onboardingState} = this.props;
 
     const routes: Array<ITabViewRoute> = [
       {
@@ -73,7 +75,8 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
           primaryButton={{
             caption: translate('onboard_summary_button_caption'),
             onPress: this.onAccept,
-            disabled: onboardingState.loading,
+            // todo: USe same machine guard as the to be created one from the entry screen
+            // disabled: onboardingState.loading,
           }}
         />
       </Container>
@@ -81,6 +84,9 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
   }
 }
 
+export default SSIOnboardingSummaryScreen;
+
+/*
 const mapStateToProps = (state: RootState) => {
   return {
     onboardingState: state.onboarding,
@@ -94,3 +100,4 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SSIOnboardingSummaryScreen);
+*/

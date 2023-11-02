@@ -5,6 +5,7 @@ import {BackHandler, NativeEventSubscription, View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
+import {OnboardingEvents, onboardingService} from '../../services/onboardingMachine';
 import {storePin} from '../../services/storageService';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
@@ -41,15 +42,14 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
       navigation.setOptions({headerTitle: translate('pin_code_choose_pin_code_title')});
       navigation.setParams({headerSubTitle: translate('pin_code_choose_pin_code_subtitle')});
       this.setState({pin: '', isConfirmPin: false});
-
-      return true;
     }
-
-    /**
-     * Returning false will let the event bubble up & let other event listeners
-     * or the system's default back action to be executed.
-     */
-    return false;
+    onboardingService.send(OnboardingEvents.PREVIOUS);
+    return true;
+    // /**
+    //  * Returning false will let the event bubble up & let other event listeners
+    //  * or the system's default back action to be executed.
+    //  */
+    // return false;
   };
 
   componentDidMount = (): void => {
@@ -69,12 +69,13 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
         return Promise.reject(Error('Invalid code'));
       }
 
-      storePin({value}).then(() => navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {}));
+      storePin({value}).then(() => onboardingService.send(OnboardingEvents.NEXT));
     } else {
       // TODO fix type issue
       navigation.setOptions({headerTitle: translate('pin_code_confirm_pin_code_title')});
       navigation.setParams({headerSubTitle: translate('pin_code_confirm_pin_code_subtitle')});
       this.setState({pin: value, isConfirmPin: true});
+      onboardingService.send(OnboardingEvents.NEXT);
     }
   };
 

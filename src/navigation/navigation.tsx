@@ -1,10 +1,10 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {ReactNode} from 'react';
 import Toast from 'react-native-toast-message';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
-import SSIHeaderBar from '../components/bars/SSIHeaderBar';
+import SSIHeaderBar, {HeaderBarProps} from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import SSIAlertModal from '../modals/SSIAlertModal';
@@ -30,9 +30,8 @@ import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
-import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
-// import {OnboardingContext, OnboardingMachine} from '../services/onboardingMachine';
+import {OnboardingInterpretType, OnboardingProvider} from '../services/onboardingMachine';
 import {
   HeaderMenuIconsEnum,
   MainRoutesEnum,
@@ -80,7 +79,7 @@ const MainStackNavigator = (): JSX.Element => {
           presentation: 'transparentModal',
         }}
       />
-      <Stack.Screen name="Veramo" component={Veramo} />
+      {/*<Stack.Screen name="Veramo" component={Veramo} />*/}
     </Stack.Navigator>
   );
 };
@@ -425,21 +424,18 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
-const OnboardingStackWithContext = (): JSX.Element => {
-  // const onboardingMachine = OnboardingMachine.withConfig({
-  //   services: props.services
-  // })
+export const OnboardingStackScreenWithContext = (props?: {customOnboardingService?: OnboardingInterpretType}): JSX.Element => {
   return (
-    // <OnboardingContext.Provider value={onboardingMachine}>
-    <OnboardingStack />
-    // </OnboardingContext.Provider>
+    <OnboardingProvider customOnboardingInstance={props?.customOnboardingService}>
+      <OnboardingStack />
+    </OnboardingProvider>
   );
 };
 
 const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.WELCOME}
+      // initialRouteName={ScreenRoutesEnum.WELCOME}
       screenOptions={{
         animation: 'none',
       }}>
@@ -448,6 +444,7 @@ const OnboardingStack = (): JSX.Element => {
         component={SSIWelcomeScreen}
         options={{
           headerShown: false,
+          // onNext
         }}
       />
       <Stack.Screen
@@ -455,15 +452,6 @@ const OnboardingStack = (): JSX.Element => {
         component={SSITermsOfServiceScreen}
         options={{
           headerTitle: translate('terms_of_service_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('terms_of_service_subtitle')}
-            />
-          ),
         }}
       />
       <Stack.Screen
@@ -471,7 +459,7 @@ const OnboardingStack = (): JSX.Element => {
         component={SSIPersonalDataScreen}
         options={{
           headerTitle: translate('personal_data_title'),
-          header: (props: NativeStackHeaderProps) => (
+          header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
               // TODO rethink back button visibility for Android
@@ -505,7 +493,7 @@ const OnboardingStack = (): JSX.Element => {
         component={SSIOnboardingSummaryScreen}
         options={{
           headerTitle: translate('onboard_summary_title'),
-          header: (props: NativeStackHeaderProps) => (
+          header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
               // TODO rethink back button visibility for Android
@@ -570,7 +558,7 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStackWithContext} />
+        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStackScreenWithContext} />
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (

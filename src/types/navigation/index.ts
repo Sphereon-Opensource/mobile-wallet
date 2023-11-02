@@ -21,11 +21,11 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps;
   Onboarding: Record<string, never>;
-  Welcome: Record<string, never>;
+  Welcome: IWelcomeProps;
   Main: Record<string, never>;
-  TermsOfService: Record<string, never>;
-  PersonalData: Record<string, never>;
-  PinCodeSet: IPinCodeSetProps;
+  TermsOfService: ITermsOfServiceProps;
+  PersonalData: IHasOnNextAndBackProps;
+  PinCodeSet: IHasOnNextAndBackProps & {[x: string]: any};
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
@@ -39,6 +39,22 @@ export interface ILoadingProps {
   message: string;
 }
 
+export interface IHasOnNextProps {
+  onNext: () => Promise<void>;
+}
+export interface IHasOnBackProps {
+  onBack: () => Promise<void>;
+}
+
+export interface IHasOnNextAndBackProps extends IHasOnNextProps, IHasOnBackProps {}
+
+export type IWelcomeProps = IHasOnNextProps;
+
+export interface ITermsOfServiceProps extends IHasOnNextAndBackProps {
+  onDecline: () => Promise<void>;
+  onAcceptTerms: (accept: boolean) => Promise<void>;
+  onAcceptPrivacy: (accept: boolean) => Promise<void>;
+}
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>;
   purpose?: string;

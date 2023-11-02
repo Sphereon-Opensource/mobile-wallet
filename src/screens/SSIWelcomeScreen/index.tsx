@@ -6,14 +6,13 @@ import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg';
 import SSIWelcomeView from '../../components/views/SSIWelcomeView';
 import {translate} from '../../localization/Localization';
 import {
-  // SSIWelcomeScreenBackgroundContainerStyled as BackgroundContainer,
   SSIWelcomeScreenContainerStyled as Container,
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer,
 } from '../../styles/components';
 import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
+type WelcomScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
 
 interface IState {
   body: string;
@@ -21,7 +20,7 @@ interface IState {
   step: number;
 }
 
-class SSIWelcomeScreen extends PureComponent<Props, IState> {
+class SSIWelcomeScreen extends PureComponent<WelcomScreenProps, IState> {
   hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     body: translate('onboarding_welcome_intro_body'),
@@ -83,7 +82,7 @@ class SSIWelcomeScreen extends PureComponent<Props, IState> {
         });
         break;
       default:
-        this.props.navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {});
+        this.props.route.params.onNext();
     }
   };
 
