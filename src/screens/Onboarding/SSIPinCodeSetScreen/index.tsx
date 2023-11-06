@@ -2,15 +2,14 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
 import {BackHandler, NativeEventSubscription, View} from 'react-native';
 
-import {PIN_CODE_LENGTH} from '../../@config/constants';
-import SSIPinCode from '../../components/pinCodes/SSIPinCode';
-import {translate} from '../../localization/Localization';
-import {OnboardingEvents, onboardingService} from '../../services/onboardingMachine';
-import {storePin} from '../../services/storageService';
-import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {PIN_CODE_LENGTH} from '../../../@config/constants';
+import SSIPinCode from '../../../components/pinCodes/SSIPinCode';
+import {translate} from '../../../localization/Localization';
+import {storePin} from '../../../services/storageService';
+import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
+type PincodeSetProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
 
 enum StateKeyEnum {
   CHOOSE_PIN = 'choose_pin',
@@ -22,7 +21,7 @@ interface IState {
   isConfirmPin: boolean;
 }
 
-class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
+class SSIPinCodeSetScreen extends PureComponent<PincodeSetProps, IState> {
   hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     pin: '',
@@ -43,7 +42,7 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
       navigation.setParams({headerSubTitle: translate('pin_code_choose_pin_code_subtitle')});
       this.setState({pin: '', isConfirmPin: false});
     }
-    onboardingService.send(OnboardingEvents.PREVIOUS);
+    void this.props.route.params.onBack();
     return true;
     // /**
     //  * Returning false will let the event bubble up & let other event listeners
@@ -69,13 +68,13 @@ class SSIPinCodeSetScreen extends PureComponent<Props, IState> {
         return Promise.reject(Error('Invalid code'));
       }
 
-      storePin({value}).then(() => onboardingService.send(OnboardingEvents.NEXT));
+      storePin({value}).then(() => this.props.route.params.onNext());
     } else {
       // TODO fix type issue
       navigation.setOptions({headerTitle: translate('pin_code_confirm_pin_code_title')});
       navigation.setParams({headerSubTitle: translate('pin_code_confirm_pin_code_subtitle')});
       this.setState({pin: value, isConfirmPin: true});
-      onboardingService.send(OnboardingEvents.NEXT);
+      void this.props.route.params.onNext();
     }
   };
 

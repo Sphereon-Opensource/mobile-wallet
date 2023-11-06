@@ -2,37 +2,27 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
 import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 
-import {EMAIL_ADDRESS_MAX_LENGTH, EMAIL_ADDRESS_VALIDATION_REGEX, FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH} from '../../@config/constants';
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
-import SSITextInputField from '../../components/fields/SSITextInputField';
-import {translate} from '../../localization/Localization';
-import {IOnboardingPersonalData, OnboardingMachine} from '../../services/onboardingMachine';
+import {EMAIL_ADDRESS_MAX_LENGTH, EMAIL_ADDRESS_VALIDATION_REGEX, FIRST_NAME_MAX_LENGTH, LAST_NAME_MAX_LENGTH} from '../../../@config/constants';
+import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
+import SSITextInputField from '../../../components/fields/SSITextInputField';
+import {translate} from '../../../localization/Localization';
+import {IOnboardingPersonalData} from '../../../services/onboardingMachine';
 import {
   SSIFullHeightScrollViewContainer as SSIScrollView,
   SSIPersonalDataScreenContainerStyled as Container,
   SSIPersonalDataScreenTextInputContainerStyled as TextInputContainer,
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
-} from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+} from '../../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type IProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
+type PersonalDataProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
-class SSIPersonalDataScreen extends PureComponent<IProps> {
+class SSIPersonalDataScreen extends PureComponent<PersonalDataProps> {
   get personalData(): IOnboardingPersonalData {
-    return this._personalData;
-  }
-
-  set personalData(value: IOnboardingPersonalData) {
-    this._personalData = value;
+    return this.props.route.params.context.personalData;
   }
 
   hardwareBackPressListener: NativeEventSubscription;
-
-  private _personalData: IOnboardingPersonalData = OnboardingMachine.instance.getSnapshot()?.context?.personalData ?? {
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-  };
 
   onFirstNameChange = async (value: string): Promise<void> => {
     this.personalData.firstName = value.trim();
@@ -60,19 +50,18 @@ class SSIPersonalDataScreen extends PureComponent<IProps> {
 
   onEmailAddressValidation = async (value: string): Promise<void> => {
     if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(value)) {
-      // this.setState({emailAddress: ''});
       return Promise.reject(Error(translate('email_address_invalid_message')));
     }
   };
 
   onNext = async (): Promise<void> => {
-    const {emailAddress} = this._personalData;
+    const {emailAddress} = this.personalData;
     Keyboard.dismiss();
 
     // only validating email address here as the other fields do not have any special validation
     this.onEmailAddressValidation(emailAddress)
       .then(() => {
-        this.props.route.params.onNext();
+        this.props.route.params.onNext(this.personalData);
       })
       .catch(() => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
@@ -80,8 +69,7 @@ class SSIPersonalDataScreen extends PureComponent<IProps> {
   };
 
   isDisabled = (): boolean => {
-    const {firstName, lastName, emailAddress} = this.personalData;
-    return !firstName || firstName.length === 0 || !lastName || lastName.length === 0 || !emailAddress || emailAddress.length === 0;
+    return this.props.route.params.isDisabled();
   };
 
   componentDidMount() {

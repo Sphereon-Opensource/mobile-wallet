@@ -74,16 +74,16 @@ describe('Testing onboarding, should ', () => {
     expect(items.length).toBe(1);
 
     // We click 3 times next to go the next screen
-    act(() => fireEvent.press(nextButtonText));
-    act(() => fireEvent.press(nextButtonText));
-    act(() => fireEvent.press(nextButtonText));
+    await act(() => fireEvent.press(nextButtonText));
+    await act(() => fireEvent.press(nextButtonText));
+    await act(() => fireEvent.press(nextButtonText));
 
     // TOS screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.tosAgreement);
     expect(header).toBeOnTheScreen();
     await act(async () => fireEvent.press(await screen.findByText(/accept the terms/)));
     await act(async () => fireEvent.press(await screen.findByText(/accept the privacy/)));
-    act(() => fireEvent.press(nextButtonText));
+    await act(() => fireEvent.press(nextButtonText));
 
     // Personal Details screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.personalDetailsEntry);

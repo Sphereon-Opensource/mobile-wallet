@@ -23,13 +23,13 @@ import SSIErrorScreen from '../screens/SSIErrorScreen';
 import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
-import SSIPersonalDataScreen from '../screens/SSIPersonalDataScreen';
-import SSIPinCodeSetScreen from '../screens/SSIPinCodeSetScreen';
+import SSIPersonalDataScreen from '../screens/Onboarding/SSIPersonalDataScreen';
+import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
-import SSIOnboardingSummaryScreen from '../screens/SSISummaryScreen';
-import SSITermsOfServiceScreen from '../screens/SSITermsOfServiceScreen';
+import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
+import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
-import SSIWelcomeScreen from '../screens/SSIWelcomeScreen';
+import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {OnboardingInterpretType, OnboardingProvider} from '../services/onboardingMachine';
 import {

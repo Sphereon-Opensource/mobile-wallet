@@ -1,32 +1,26 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
-
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
-import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
-import SSITabView from '../../components/views/SSITabView';
-import {translate} from '../../localization/Localization';
-import {OnboardingEvents, onboardingService} from '../../services/onboardingMachine';
-import {finalizeOnboarding} from '../../store/actions/onboarding.actions';
-import {backgrounds} from '../../styles/colors';
-import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../styles/components';
-import {ICredentialDetailsRow, ITabViewRoute, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {IOnboardingState} from '../../types/store/onboarding.types';
 
 import {v4 as uuidv4} from 'uuid';
 
-interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY> {
-  // onboardingState: IOnboardingState;
-  // finalizeOnboarding: () => void;
-}
+import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
+import SSICredentialDetailsView from '../../../components/views/SSICredentialDetailsView';
+import SSITabView from '../../../components/views/SSITabView';
+import {translate} from '../../../localization/Localization';
+// import {OnboardingMachine} from '../../../services/onboardingMachine';
+import {backgrounds} from '../../../styles/colors';
+import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
+import {ICredentialDetailsRow, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
+
+type SummaryScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 
 enum SummaryTabRoutesEnum {
   INFO = 'info',
 }
 
-class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
+class SSIOnboardingSummaryScreen extends PureComponent<SummaryScreenProps> {
   getProperties = (): Array<ICredentialDetailsRow> => {
-    const {personalData} = onboardingService.getSnapshot().context ?? {};
+    const {personalData} = this.props.route.params.context;
 
     return [
       {
@@ -49,10 +43,10 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
 
   onAccept = async (): Promise<void> => {
     // const {finalizeOnboarding, navigation} = this.props;
-    onboardingService.send(OnboardingEvents.NEXT);
+    void this.props.route.params.onNext();
 
     // navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_onboarding_setup_message')});
-    finalizeOnboarding();
+    // finalizeOnboarding();
   };
 
   render() {
@@ -85,19 +79,3 @@ class SSIOnboardingSummaryScreen extends PureComponent<IProps> {
 }
 
 export default SSIOnboardingSummaryScreen;
-
-/*
-const mapStateToProps = (state: RootState) => {
-  return {
-    onboardingState: state.onboarding,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    finalizeOnboarding: () => dispatch(finalizeOnboarding()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SSIOnboardingSummaryScreen);
-*/

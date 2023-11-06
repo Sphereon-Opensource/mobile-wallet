@@ -2,6 +2,7 @@ import {useInterpret} from '@xstate/react';
 import React, {createContext, ReactNode} from 'react';
 import {LogBox} from 'react-native';
 import {ActorRefFrom, assign, createMachine, interpret, Interpreter, State, TypegenDisabled} from 'xstate';
+import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {translate} from '../localization/Localization';
 import RootNavigation, {navigationRef} from '../navigation/rootNavigation';
 import {finalizeOnboarding} from '../store/actions/onboarding.actions';
@@ -61,6 +62,11 @@ export type OnboardingEventTypes =
 const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
   ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
 
+const onboardingPersonalDataGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
+  const {firstName, lastName, emailAddress} = ctx.personalData;
+  return firstName && firstName.length > 0 && lastName && lastName.length > 0 && emailAddress && EMAIL_ADDRESS_VALIDATION_REGEX.test(emailAddress);
+};
+
 const walletSetup = finalizeOnboarding;
 
 export const onboardingSelector = (state: any, matchesState: OnboardingStates) => {
@@ -74,7 +80,7 @@ export const createOnboardingMachine = () => {
     initial: OnboardingStates.welcomeIntro,
     schema: {
       events: {} as OnboardingEventTypes,
-      guards: {} as {type: 'onboardingToSAgreementGuard'} | {type: 'dsasddstermsConditionsAccepted'},
+      guards: {} as {type: 'onboardingToSAgreementGuard'} | {type: 'onboardingPersonalDataGuard'},
     },
     context: {
       termsConditionsAccepted: false,
@@ -117,7 +123,7 @@ export const createOnboardingMachine = () => {
             actions: assign({personalData: (_ctx, e: PersonalDataEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
-            // cond: 'onboardingToSAgreementGuard',
+            cond: 'onboardingPersonalDataGuard',
             target: OnboardingStates.pinEntry,
           },
           [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.tosAgreement},
@@ -204,6 +210,7 @@ export const onboardingNavigations = (
 ) => {
   const onBack = () => onboardingMachine.send(OnboardingEvents.PREVIOUS);
   const onNext = () => onboardingMachine.send(OnboardingEvents.NEXT);
+  const context = onboardingMachine.getSnapshot().context;
 
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
@@ -220,12 +227,13 @@ export const onboardingNavigations = (
         routes: [{name: ScreenRoutesEnum.WELCOME}],
 
       },*/
-      {onNext},
+      {context, onNext},
     );
     // navigation.navigate(ScreenRoutesEnum.WELCOME, {step: 1});
   } else if (state.matches(OnboardingStates.tosAgreement)) {
     nav.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {
       headerTitle: translate('terms_of_service_title'),
+      context,
       onBack,
       onNext,
       onDecline: () => onboardingMachine.send(OnboardingEvents.DECLINE),
@@ -239,9 +247,12 @@ export const onboardingNavigations = (
           type: OnboardingEvents.SET_POLICY,
           data: accept,
         }),
+      isDisabled: () => onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true,
     });
   } else if (state.matches(OnboardingStates.personalDetailsEntry)) {
     nav.navigate(ScreenRoutesEnum.PERSONAL_DATA, {
+      context,
+      isDisabled: onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true,
       onBack,
       onNext: (personalData: IOnboardingPersonalData) => {
         onboardingMachine.send([
@@ -256,6 +267,7 @@ export const onboardingNavigations = (
   } else if (state.matches(OnboardingStates.pinEntry)) {
     nav.navigate(ScreenRoutesEnum.PIN_CODE_SET, {
       headerSubTitle: translate('pin_code_choose_pin_code_subtitle'),
+      context,
       onBack,
       onNext,
     });
@@ -264,6 +276,7 @@ export const onboardingNavigations = (
   } else if (state.matches(OnboardingStates.walletSetup)) {
     nav.navigate(ScreenRoutesEnum.LOADING, {
       message: translate('action_onboarding_setup_message'),
+      context,
       onBack,
       onNext,
     });
@@ -305,7 +318,7 @@ export class OnboardingMachine {
     const newInst: OnboardingInterpretType = interpret(
       createOnboardingMachine().withConfig({
         services: {...walletSetup, ...opts?.services},
-        guards: {onboardingToSAgreementGuard, ...opts?.guards},
+        guards: {onboardingToSAgreementGuard, onboardingPersonalDataGuard, ...opts?.guards},
       }),
     );
     if (typeof opts?.subscription === 'function') {

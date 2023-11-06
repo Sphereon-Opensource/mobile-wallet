@@ -2,6 +2,7 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
+import {IOnboardingMachineContext, IOnboardingPersonalData} from '../../services/onboardingMachine';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
 
@@ -21,19 +22,23 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps;
   Onboarding: Record<string, never>;
-  Welcome: IWelcomeProps;
   Main: Record<string, never>;
-  TermsOfService: ITermsOfServiceProps;
-  PersonalData: IHasOnNextAndBackProps;
-  PinCodeSet: IHasOnNextAndBackProps & {[x: string]: any};
+  Welcome: IOnboardingProps & IHasOnNextProps;
+  TermsOfService: IOnboardingProps & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
+  PersonalData: IOnboardingProps & IHasOnBackProps & {isDisabled: () => boolean; onNext: (personalData: IOnboardingPersonalData) => void};
+  PinCodeSet: IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
+  OnboardingSummary: IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
-  OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
 };
+
+export interface IOnboardingProps {
+  context: IOnboardingMachineContext;
+}
 
 export interface ILoadingProps {
   message: string;
@@ -42,19 +47,20 @@ export interface ILoadingProps {
 export interface IHasOnNextProps {
   onNext: () => Promise<void>;
 }
+
 export interface IHasOnBackProps {
   onBack: () => Promise<void>;
 }
 
-export interface IHasOnNextAndBackProps extends IHasOnNextProps, IHasOnBackProps {}
-
 export type IWelcomeProps = IHasOnNextProps;
 
-export interface ITermsOfServiceProps extends IHasOnNextAndBackProps {
+export interface ITermsOfServiceProps {
+  isDisabled: () => boolean;
   onDecline: () => Promise<void>;
   onAcceptTerms: (accept: boolean) => Promise<void>;
   onAcceptPrivacy: (accept: boolean) => Promise<void>;
 }
+
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>;
   purpose?: string;

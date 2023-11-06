@@ -2,17 +2,17 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {PureComponent} from 'react';
 import {BackHandler, NativeEventSubscription, Platform, StatusBar} from 'react-native';
 
-import WelcomeBackground from '../../assets/images/welcomeIntroBackground.svg';
-import SSIWelcomeView from '../../components/views/SSIWelcomeView';
-import {translate} from '../../localization/Localization';
+import WelcomeBackground from '../../../assets/images/welcomeIntroBackground.svg';
+import SSIWelcomeView from '../../../components/views/SSIWelcomeView';
+import {translate} from '../../../localization/Localization';
 import {
   SSIWelcomeScreenContainerStyled as Container,
   SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
   SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer,
-} from '../../styles/components';
-import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
+} from '../../../styles/components';
+import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type WelcomScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
+type WelcomeScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
 
 interface IState {
   body: string;
@@ -20,7 +20,7 @@ interface IState {
   step: number;
 }
 
-class SSIWelcomeScreen extends PureComponent<WelcomScreenProps, IState> {
+class SSIWelcomeScreen extends PureComponent<WelcomeScreenProps, IState> {
   hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     body: translate('onboarding_welcome_intro_body'),
@@ -82,7 +82,7 @@ class SSIWelcomeScreen extends PureComponent<WelcomScreenProps, IState> {
         });
         break;
       default:
-        this.props.route.params.onNext();
+        void this.props.route.params.onNext();
     }
   };
 

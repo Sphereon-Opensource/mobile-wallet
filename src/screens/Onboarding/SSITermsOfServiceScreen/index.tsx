@@ -1,14 +1,13 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useContext, useMemo, useState} from 'react';
-import {BackHandler} from 'react-native';
 import {useBackHandler} from '@react-native-community/hooks';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC, useMemo} from 'react';
+import {BackHandler} from 'react-native';
 
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
-import SSICheckbox from '../../components/fields/SSICheckbox';
-import SSITabView from '../../components/views/SSITabView';
-import SSITermsOfServiceView from '../../components/views/SSITermsOfServiceView';
-import {translate} from '../../localization/Localization';
-import {OnboardingContext, OnboardingEvents} from '../../services/onboardingMachine';
+import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
+import SSICheckbox from '../../../components/fields/SSICheckbox';
+import SSITabView from '../../../components/views/SSITabView';
+import SSITermsOfServiceView from '../../../components/views/SSITermsOfServiceView';
+import {translate} from '../../../localization/Localization';
 import {
   SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
@@ -16,17 +15,16 @@ import {
   SSITermsOfServiceScreenCheckboxContainerStyled as CheckboxContainer,
   SSITermsOfServiceScreenCheckboxesContainerStyled as CheckboxesContainer,
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer,
-} from '../../styles/components';
-import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
+} from '../../../styles/components';
+import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
+type TermsOfServiceProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
 enum TermsTabRoutesEnum {
   TERMS = 'terms',
   PRIVACY = 'privacy',
 }
 
-const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {onboardingInstance} = useContext(OnboardingContext);
+const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceProps): JSX.Element => {
   useBackHandler(() => {
     void props.route.params.onBack();
     // make sure event stops here
@@ -114,7 +112,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
           }}
           primaryButton={{
             caption: translate('action_accept_label'),
-            disabled: !onboardingInstance.getSnapshot()?.can(OnboardingEvents.NEXT),
+            disabled: props.route.params.isDisabled(),
             onPress: onAccept,
           }}
         />

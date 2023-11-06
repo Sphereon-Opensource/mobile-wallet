@@ -23,7 +23,7 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import {JSONPath} from '@astronautlabs/jsonpath/src/jsonpath';
+import {JSONPath} from '@astronautlabs/jsonpath';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
