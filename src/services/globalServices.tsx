@@ -1,9 +1,9 @@
 import {createContext} from 'react';
 import {ActorRefFrom} from 'xstate';
-import {createOnboardingMachine} from './onboardingMachine';
+import {CreateOnboardingMachineType} from '../machines/onboardingMachine';
 
 interface GlobalStateContextType {
-  onboardingService: ActorRefFrom<typeof createOnboardingMachine>;
+  onboardingService: ActorRefFrom<CreateOnboardingMachineType>;
 }
 
 export const GlobalStateContext = createContext({} as GlobalStateContextType);

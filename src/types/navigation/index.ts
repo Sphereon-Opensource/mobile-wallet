@@ -2,7 +2,7 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-import {IOnboardingMachineContext, IOnboardingPersonalData} from '../../services/onboardingMachine';
+import {IOnboardingMachineContext, IOnboardingPersonalData} from '@machines/onboardingMachine';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
 

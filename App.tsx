@@ -8,19 +8,21 @@ import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {IOnboardingMachineContext, OnboardingEventTypes, PlatformsEnum} from 'src/types';
+import {State} from 'xstate';
 
 import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
+import {OnboardingMachine} from './src/machines/onboardingMachine';
 import AppNavigator from './src/navigation/navigation';
+import {onboardingStateNavigationListener} from './src/navigation/onboardingStateNavigation';
 import {navigationRef} from './src/navigation/rootNavigation';
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
-import {OnboardingMachine, onboardingNavigations} from './src/services/onboardingMachine';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {backgrounds} from './src/styles/colors';
-import {PlatformsEnum} from './src/types';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -87,6 +89,7 @@ export default function App() {
         setAppIsReady(true);
       }
     }
+
     void prepare();
 
     return (): void => {
@@ -112,8 +115,11 @@ export default function App() {
       console.log(`app or navigation not ready yet`);
       return;
     }
-    const onboardingInstance = OnboardingMachine.getInstance({noDefaultNavigationHook: true});
-    const subscription = onboardingInstance.subscribe(state => onboardingNavigations(onboardingInstance, state));
+    const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: true});
+    const subscription = onboardingInstance.subscribe(
+      (state: State<IOnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: IOnboardingMachineContext}, any>) =>
+        onboardingStateNavigationListener(onboardingInstance, state),
+    );
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
       console.log(`ONBOARDING STARTING...`);
@@ -135,7 +141,6 @@ export default function App() {
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer
           onReady={() => {
-            console.log('REDY########################################');
             setNavigationIsReady(true);
           }}
           ref={navigationRef}>

@@ -5,7 +5,6 @@ import {BackHandler, NativeEventSubscription, View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import SSIPinCode from '../../../components/pinCodes/SSIPinCode';
 import {translate} from '../../../localization/Localization';
-import {storePin} from '../../../services/storageService';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../../types';
 
@@ -67,14 +66,13 @@ class SSIPinCodeSetScreen extends PureComponent<PincodeSetProps, IState> {
       if (value !== pin) {
         return Promise.reject(Error('Invalid code'));
       }
-
-      storePin({value}).then(() => this.props.route.params.onNext());
+      await this.props.route.params.onNext();
     } else {
       // TODO fix type issue
       navigation.setOptions({headerTitle: translate('pin_code_confirm_pin_code_title')});
       navigation.setParams({headerSubTitle: translate('pin_code_confirm_pin_code_subtitle')});
       this.setState({pin: value, isConfirmPin: true});
-      void this.props.route.params.onNext();
+      // void this.props.route.params.onNext();
     }
   };
 

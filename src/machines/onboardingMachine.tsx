@@ -1,0 +1,239 @@
+import {CredentialPayload} from '@veramo/core';
+import React, {createContext, ReactNode} from 'react';
+import {v4 as uuidv4} from 'uuid';
+import {assign, createMachine, interpret} from 'xstate';
+import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
+import {onboardingStateNavigationListener} from '../navigation/onboardingStateNavigation';
+import {walletSetup} from '../services/onboardingService';
+import {
+  ICreateOnboardingMachineOpts,
+  IOnboardingMachineContext,
+  OnboardingContextType,
+  OnboardingEvents,
+  OnboardingEventTypes,
+  OnboardingGuards,
+  OnboardingInterpretType,
+  OnboardingStates,
+  PersonalDataEvent,
+  PinEvent,
+  PrivacyPolicyEvent,
+  SupportedDidMethodEnum,
+  TermsConditionsEvent,
+} from '../types';
+
+const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
+  ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
+
+const onboardingPersonalDataGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
+  const {firstName, lastName, emailAddress} = ctx.personalData;
+  return firstName && firstName.length > 0 && lastName && lastName.length > 0 && emailAddress && EMAIL_ADDRESS_VALIDATION_REGEX.test(emailAddress);
+};
+
+export const onboardingSelector = (state: any, matchesState: OnboardingStates) => {
+  return state.matches(matchesState);
+};
+
+const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
+  const credentialData = {
+    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_KEY,
+    proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
+    credential:
+      opts?.credentialData?.credential ??
+      ({
+        '@context': [
+          'https://www.w3.org/2018/credentials/v1',
+          'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
+        ],
+        id: `urn:uuid:${uuidv4()}`,
+        type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
+        issuanceDate: new Date(),
+        credentialSubject: {},
+      } as Partial<CredentialPayload>),
+  };
+
+  return createMachine<IOnboardingMachineContext, OnboardingEventTypes>({
+    id: opts?.machineId ?? 'Onboarding',
+    predictableActionArguments: true,
+    initial: OnboardingStates.welcomeIntro,
+    schema: {
+      events: {} as OnboardingEventTypes,
+      guards: {} as {type: OnboardingGuards.onboardingPersonalDataGuard} | {type: OnboardingGuards.onboardingToSAgreementGuard},
+    },
+    context: {
+      credentialData,
+      termsConditionsAccepted: false,
+      privacyPolicyAccepted: false,
+      personalData: {},
+      pinCode: '',
+    } as IOnboardingMachineContext,
+
+    states: {
+      [OnboardingStates.welcomeIntro]: {
+        on: {
+          [OnboardingEvents.NEXT]: [
+            {
+              target: OnboardingStates.tosAgreement,
+            },
+          ],
+        },
+      },
+      [OnboardingStates.tosAgreement]: {
+        on: {
+          [OnboardingEvents.SET_POLICY]: {
+            actions: assign({privacyPolicyAccepted: (_ctx, e: PrivacyPolicyEvent) => e.data}),
+          },
+          [OnboardingEvents.SET_TOC]: {
+            actions: assign({termsConditionsAccepted: (_ctx, e: TermsConditionsEvent) => e.data}),
+          },
+          [OnboardingEvents.DECLINE]: {
+            target: OnboardingStates.onboardingDeclined,
+          },
+          [OnboardingEvents.NEXT]: {
+            cond: OnboardingGuards.onboardingToSAgreementGuard,
+            target: OnboardingStates.personalDetailsEntry,
+          },
+          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.welcomeIntro},
+        },
+      },
+      [OnboardingStates.personalDetailsEntry]: {
+        on: {
+          [OnboardingEvents.SET_PERSONAL_DATA]: {
+            actions: assign({personalData: (_ctx, e: PersonalDataEvent) => e.data}),
+          },
+          [OnboardingEvents.NEXT]: {
+            cond: OnboardingGuards.onboardingPersonalDataGuard,
+            target: OnboardingStates.pinEntry,
+          },
+          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.tosAgreement},
+        },
+      },
+      [OnboardingStates.pinEntry]: {
+        on: {
+          [OnboardingEvents.SET_PIN]: {
+            actions: assign({pinCode: (_ctx, e: PinEvent) => e.data}),
+          },
+          [OnboardingEvents.NEXT]: {
+            target: OnboardingStates.personalDetailsVerify,
+          },
+          [OnboardingEvents.PREVIOUS]: {
+            target: OnboardingStates.personalDetailsEntry,
+          },
+        },
+      },
+      /*[OnboardingStates.pinVerify]: {
+        on: {
+          [OnboardingEvents.NEXT]: {
+            target: OnboardingStates.personalDetailsVerify,
+          },
+          [OnboardingEvents.PREVIOUS]: {
+            target: OnboardingStates.pinEntry,
+          },
+        },
+      },*/
+      [OnboardingStates.personalDetailsVerify]: {
+        on: {
+          [OnboardingEvents.NEXT]: {
+            target: OnboardingStates.walletSetup,
+          },
+          [OnboardingEvents.PREVIOUS]: {
+            target: OnboardingStates.pinEntry, // We are going back to pin entry and then verify
+          },
+        },
+      },
+      [OnboardingStates.walletSetup]: {
+        invoke: {
+          id: OnboardingStates.walletSetup,
+          src: OnboardingStates.walletSetup,
+          onDone: {
+            target: OnboardingStates.onboardingDone,
+          },
+          // todo: On Error
+        },
+      },
+      [OnboardingStates.onboardingDeclined]: {
+        id: OnboardingStates.onboardingDeclined,
+        always: OnboardingStates.welcomeIntro,
+        onDone: {
+          actions: assign((cxt, event) => {
+            return {
+              pinCode: '',
+              personalData: {},
+              privacyPolicyAccepted: false,
+              termsConditionsAccepted: false,
+            } as IOnboardingMachineContext;
+          }),
+        },
+        // Since we are not allowed to exit an app by Apple/Google, we go back to the onboarding state when the user declines
+      },
+      [OnboardingStates.onboardingDone]: {
+        type: 'final',
+        id: OnboardingStates.onboardingDone,
+        always: {
+          // We clear all data to be sure
+          actions: assign((cxt, event) => {
+            return {
+              pinCode: '',
+              personalData: {},
+              privacyPolicyAccepted: false,
+              termsConditionsAccepted: false,
+            } as IOnboardingMachineContext;
+          }),
+        },
+      },
+    },
+  });
+};
+
+export type CreateOnboardingMachineType = typeof createOnboardingMachine;
+export const OnboardingContext = createContext({} as OnboardingContextType);
+
+export class OnboardingMachine {
+  static get instance(): OnboardingInterpretType {
+    if (!this._instance) {
+      throw Error('Please initialize an onboarding machine first');
+    }
+    return this._instance;
+  }
+
+  private static _instance: OnboardingInterpretType | undefined;
+
+  // todo: Determine whether we need to make this public
+  private static newInstance(
+    opts?: ICreateOnboardingMachineOpts & {services?: any; guards?: any; subscription?: () => void; requireCustomNavigationHook?: boolean},
+  ): OnboardingInterpretType {
+    const newInst: OnboardingInterpretType = interpret(
+      createOnboardingMachine(opts).withConfig({
+        services: {walletSetup, ...opts?.services},
+        guards: {onboardingToSAgreementGuard, onboardingPersonalDataGuard, ...opts?.guards},
+      }),
+    );
+    if (typeof opts?.subscription === 'function') {
+      newInst.subscribe(opts.subscription);
+    } else {
+      newInst.subscribe(snapshot => {
+        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}`);
+        if (opts?.requireCustomNavigationHook !== true) {
+          onboardingStateNavigationListener(newInst, snapshot);
+        }
+      });
+    }
+    return newInst;
+  }
+
+  static getInstance(
+    opts?: ICreateOnboardingMachineOpts & {services?: any; guards?: any; subscription?: () => void; requireCustomNavigationHook?: boolean},
+  ): OnboardingInterpretType {
+    if (!OnboardingMachine._instance) {
+      OnboardingMachine._instance = OnboardingMachine.newInstance(opts);
+    }
+    return OnboardingMachine._instance;
+  }
+}
+
+export const OnboardingProvider = (props: {children?: ReactNode | undefined; customOnboardingInstance?: OnboardingInterpretType}): JSX.Element => {
+  return (
+    <OnboardingContext.Provider value={{onboardingInstance: props.customOnboardingInstance ?? OnboardingMachine.getInstance()}}>
+      {props.children}
+    </OnboardingContext.Provider>
+  );
+};

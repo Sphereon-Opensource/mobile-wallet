@@ -1,30 +1,28 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {fireEvent, render, screen} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 import {act} from 'react-test-renderer';
-import {State} from 'xstate';
+import {OnboardingMachine} from '../machines/onboardingMachine';
 import {OnboardingStackScreenWithContext} from '../navigation/navigation';
 import {navigationRef} from '../navigation/rootNavigation';
 import OnTouchProvider from '../providers/touch/OnTouchProvider';
-import {
-  IOnboardingMachineContext,
-  OnboardingEventTypes,
-  OnboardingMachine,
-  onboardingNavigations,
-  OnboardingStates,
-} from '../services/onboardingMachine';
 import store from '../store';
-import {StackParamList, SwitchRoutesEnum} from '../types';
+import {OnboardingStates, StackParamList, SwitchRoutesEnum} from '../types';
 
 jest.setTimeout(1000 * 1000); // 60 seconds
 
 describe('Testing onboarding, should ', () => {
-  test('show Welcome screen', async () => {
-    // await act(async () => {
-    const onboardingInstance = OnboardingMachine.getInstance({services: {}, noDefaultNavigationHook: true});
-    onboardingInstance.subscribe(
+  test('result in fully onboarded user with credential', async () => {
+    const onboardingInstance = OnboardingMachine.getInstance({
+      /*services: {
+        [OnboardingStates.walletSetup]: () => {
+          console.log('done!');
+        },
+      },*/
+      requireCustomNavigationHook: false,
+    });
+    /*onboardingInstance.subscribe(
       (
         state: State<
           IOnboardingMachineContext,
@@ -38,9 +36,8 @@ describe('Testing onboarding, should ', () => {
         >,
       ) => onboardingNavigations(onboardingInstance, state),
     );
-
+*/
     const Stack = createNativeStackNavigator<StackParamList>();
-    const Tab = createBottomTabNavigator();
     const component = (
       <Provider store={store}>
         <NavigationContainer
@@ -61,7 +58,7 @@ describe('Testing onboarding, should ', () => {
         </NavigationContainer>
       </Provider>
     );
-    const rendered = render(component);
+    render(component);
     // rendered.debug();
 
     const header = await screen.findByText(/Welcome/);
@@ -87,7 +84,25 @@ describe('Testing onboarding, should ', () => {
 
     // Personal Details screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.personalDetailsEntry);
+    await act(async () => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
+    await act(async () => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
+    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
+    await act(() => fireEvent.press(nextButtonText));
 
-    // rendered.debug();
+    // Pin entry and verification
+    expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.pinEntry);
+    // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
+    await act(async () => fireEvent(await screen.findByLabelText('Pin code', {hidden: true}), 'submitEditing', {nativeEvent: {text: '123456'}}));
+    await act(async () => fireEvent(await screen.findByLabelText('Pin code', {hidden: true}), 'submitEditing', {nativeEvent: {text: '123456'}}));
+
+    // Verification screen
+    expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.personalDetailsVerify);
+    await act(() => fireEvent.press(nextButtonText));
+
+    // This is where the walletSetup state runs it's setup tasks
+    await new Promise(res => setTimeout(res, 2000));
+
+    // Done
+    expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.onboardingDone);
   });
 });

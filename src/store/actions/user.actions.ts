@@ -5,8 +5,13 @@ import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
 import {resetDatabase} from '../../services/databaseService';
-import {deletePin} from '../../services/storageService';
-import {getUsers as getUsersFromStorage, deleteUser as removeUser, updateUser, createUser as userCreate} from '../../services/userService';
+import {storageDeletePin} from '../../services/storageService';
+import {
+  getUsers as userServiceGetUsers,
+  deleteUser as userServiceDeleteUser,
+  updateUser as userServiceUpdateUser,
+  createUser as userServiceCreateUser,
+} from '../../services/userService';
 import {BasicUser, IAddIdentifierArgs, IUser, RootState} from '../../types';
 import {CLEAR_CONTACTS} from '../../types/store/contact.action.types';
 import {IContactState} from '../../types/store/contact.types';
@@ -33,7 +38,7 @@ import {getVerifiableCredentials} from './credential.actions';
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    return userCreate(args)
+    return userServiceCreateUser(args)
       .then((user: IUser) => {
         dispatch({type: CREATE_USER_SUCCESS, payload: user});
         return user;
@@ -48,7 +53,7 @@ export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootSta
 export const getUsers = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    getUsersFromStorage()
+    userServiceGetUsers()
       .then((users: Map<string, IUser>) => dispatch({type: GET_USERS_SUCCESS, payload: users}))
       .catch(() => dispatch({type: GET_USERS_FAILED}));
   };
@@ -69,7 +74,7 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
       identifiers: [...userSate.users.values().next().value.identifiers, userIdentifier],
     };
 
-    updateUser(user)
+    userServiceUpdateUser(user)
       .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
       .catch(() => dispatch({type: UPDATE_USER_FAILED}));
   };
@@ -78,7 +83,7 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
 export const login = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: USERS_LOADING});
-    await getUsersFromStorage()
+    await userServiceGetUsers()
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
@@ -129,12 +134,12 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
     dispatch({type: USERS_LOADING});
     // first delete the user (including redux store) then logout (remove active user). As then the switch navigator will navigate directly to the onboarding stack
     // without an active user the switch navigator will navigate to the login screen. So doing this first would flicker the login screen
-    removeUser(userId)
+    userServiceDeleteUser(userId)
       .then(() => {
         dispatch({type: DELETE_USER_SUCCESS, payload: userId});
         dispatch({type: LOGOUT_SUCCESS});
         void resetDatabase(DB_CONNECTION_NAME);
-        void deletePin();
+        void storageDeletePin();
         // TODO would be nice if we have 1 action that deletes the content a user has
         dispatch({type: CLEAR_CREDENTIALS});
         dispatch({type: CLEAR_CONTACTS});

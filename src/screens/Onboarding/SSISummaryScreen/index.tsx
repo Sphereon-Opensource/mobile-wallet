@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {PureComponent} from 'react';
+import React, {FC} from 'react';
 
 import {v4 as uuidv4} from 'uuid';
 
@@ -7,7 +7,6 @@ import SSIButtonsContainer from '../../../components/containers/SSIButtonsContai
 import SSICredentialDetailsView from '../../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../../components/views/SSITabView';
 import {translate} from '../../../localization/Localization';
-// import {OnboardingMachine} from '../../../services/onboardingMachine';
 import {backgrounds} from '../../../styles/colors';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
@@ -18,9 +17,9 @@ enum SummaryTabRoutesEnum {
   INFO = 'info',
 }
 
-class SSIOnboardingSummaryScreen extends PureComponent<SummaryScreenProps> {
-  getProperties = (): Array<ICredentialDetailsRow> => {
-    const {personalData} = this.props.route.params.context;
+const SSIOnboardingSummaryScreen: FC<SummaryScreenProps> = (props: SummaryScreenProps): JSX.Element => {
+  const getProperties = (): Array<ICredentialDetailsRow> => {
+    const {personalData} = props.route.params.context;
 
     return [
       {
@@ -41,41 +40,27 @@ class SSIOnboardingSummaryScreen extends PureComponent<SummaryScreenProps> {
     ];
   };
 
-  onAccept = async (): Promise<void> => {
-    // const {finalizeOnboarding, navigation} = this.props;
-    void this.props.route.params.onNext();
+  const routes: Array<ITabViewRoute> = [
+    {
+      key: SummaryTabRoutesEnum.INFO,
+      title: translate('onboard_summary_info_tab_header_label'),
+      // TODO replace refactored SSICredentialDetailsView to general component
+      content: () => <SSICredentialDetailsView credentialProperties={getProperties()} />,
+    },
+  ];
 
-    // navigation.navigate(ScreenRoutesEnum.LOADING, {message: translate('action_onboarding_setup_message')});
-    // finalizeOnboarding();
-  };
-
-  render() {
-    // const {onboardingState} = this.props;
-
-    const routes: Array<ITabViewRoute> = [
-      {
-        key: SummaryTabRoutesEnum.INFO,
-        title: translate('onboard_summary_info_tab_header_label'),
-        // TODO replace refactored SSICredentialDetailsView to general component
-        content: () => <SSICredentialDetailsView credentialProperties={this.getProperties()} />,
-      },
-    ];
-
-    return (
-      <Container>
-        <SSITabView routes={routes} />
-        <SSIButtonsContainer
-          backgroundColor={backgrounds.secondaryDark}
-          primaryButton={{
-            caption: translate('onboard_summary_button_caption'),
-            onPress: this.onAccept,
-            // todo: USe same machine guard as the to be created one from the entry screen
-            // disabled: onboardingState.loading,
-          }}
-        />
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <SSITabView routes={routes} />
+      <SSIButtonsContainer
+        backgroundColor={backgrounds.secondaryDark}
+        primaryButton={{
+          caption: translate('onboard_summary_button_caption'),
+          onPress: props.route.params.onNext,
+        }}
+      />
+    </Container>
+  );
+};
 
 export default SSIOnboardingSummaryScreen;

@@ -1,6 +1,6 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React, {ReactNode} from 'react';
+import React from 'react';
 import Toast from 'react-native-toast-message';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
@@ -10,6 +10,11 @@ import {translate} from '../localization/Localization';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
+import SSIPersonalDataScreen from '../screens/Onboarding/SSIPersonalDataScreen';
+import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
+import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
+import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
+import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
@@ -23,24 +28,20 @@ import SSIErrorScreen from '../screens/SSIErrorScreen';
 import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
-import SSIPersonalDataScreen from '../screens/Onboarding/SSIPersonalDataScreen';
-import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
-import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
-import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
-import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
-import {login, walletAuthLockState} from '../services/authenticationService';
-import {OnboardingInterpretType, OnboardingProvider} from '../services/onboardingMachine';
 import {
   HeaderMenuIconsEnum,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
+  OnboardingInterpretType,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
+import {OnboardingProvider} from '../machines/onboardingMachine';
+import {login, walletAuthLockState} from '../services/authenticationService';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -452,6 +453,15 @@ const OnboardingStack = (): JSX.Element => {
         component={SSITermsOfServiceScreen}
         options={{
           headerTitle: translate('terms_of_service_title'),
+          header: (props: HeaderBarProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showProfileIcon={false}
+              headerSubTitle={translate('terms_of_service_subtitle')}
+            />
+          ),
         }}
       />
       <Stack.Screen

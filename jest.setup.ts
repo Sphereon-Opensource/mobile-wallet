@@ -2,13 +2,14 @@ import {DataStoreContactEntities, DataStoreIssuanceBrandingEntities, DataStoreMi
 import '@testing-library/jest-native/extend-expect';
 import {Entities as VeramoDataStoreEntities} from '@veramo/data-store';
 import {migrations as VeramoDataStoreMigrations} from '@veramo/data-store/build/migrations';
+import {LogBox} from 'react-native';
 // include this line for mocking react-native-gesture-handler
 import 'react-native-gesture-handler/jestSetup';
-import {LogBox} from 'react-native';
 import {DataSource} from 'typeorm';
 import {SqliteConnectionOptions} from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import {TextDecoder, TextEncoder} from 'util';
 import Localization from './src/localization/Localization';
+import {IStorePinArgs} from './src/types';
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
@@ -17,6 +18,7 @@ jest.mock('react-native-permissions', () => require('react-native-permissions/mo
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
+
 jest.mock('@react-navigation/native/lib/commonjs/useLinking.native', () => ({
   default: () => ({getInitialState: {then: jest.fn()}}),
   __esModule: true,
@@ -27,7 +29,7 @@ const sqliteConfig: SqliteConnectionOptions = {
   driver: 'sqlite',
   entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
-  migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
+  migrationsRun: true, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code
   migrationsTransactionMode: 'each', // protect every migration with a separate transaction
   logging: 'all', // 'all' means to enable all logging
@@ -42,7 +44,7 @@ jest.doMock('./src/services/databaseService', () => ({
       // driver: 'sqlite3',
       entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
       migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
-      migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
+      migrationsRun: true, // We run migrations from code to ensure proper ordering with Redux
       synchronize: false, // We do not enable synchronize, as we use migrations from code
       migrationsTransactionMode: 'each', // protect every migration with a separate transaction
       logging: 'all', // 'all' means to enable all logging
@@ -51,8 +53,6 @@ jest.doMock('./src/services/databaseService', () => ({
 
     const dataSource = new DataSource({
       ...sqliteConfig,
-      synchronize: false,
-      migrationsRun: false,
       name: 'test',
     }).initialize();
     return dataSource;
@@ -68,6 +68,60 @@ jest.mock('@mattrglobal/bbs-signatures', () => {
     generateBls12381G2KeyPair: jest.fn(),
   };
 });
+
+/*
+export enum ACCESSIBLE {
+  // @ts-ignore
+  WHEN_UNLOCKED_THIS_DEVICE_ONLY = 'AccessibleWhenUnlockedThisDeviceOnly',
+}
+*/
+
+const originalRNSecureKeyStore = jest.requireActual('react-native-secure-key-store');
+
+export const ACCESSIBLE = originalRNSecureKeyStore.ACCESSIBLE;
+
+class RNSecureKeyStoreMock {
+  store;
+
+  constructor() {
+    this.store = new Map();
+  }
+
+  get(k: string) {
+    const result = this.store.get(k);
+    return Promise.resolve(result);
+  }
+
+  remove(k: string) {
+    this.store.delete(k);
+    return Promise.resolve(true);
+  }
+
+  set(k: string, value: any, opts?: {accessible?: typeof ACCESSIBLE | string}) {
+    console.log('set', k, value);
+
+    this.store.set(k, value);
+    return Promise.resolve(true);
+  }
+}
+
+const RNSecureKeyStore = new RNSecureKeyStoreMock();
+const mockRNSecureKeyStore = RNSecureKeyStore;
+const mockAccessible = ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
+jest.mock('react-native-secure-key-store', () => ({
+  ACCESSIBLE: mockAccessible,
+  get: jest.fn((key: string) => mockRNSecureKeyStore.get(key)),
+  set: jest.fn(
+    (
+      key: string,
+      value: string,
+      options?: {
+        accessible?: typeof ACCESSIBLE;
+      },
+    ) => mockRNSecureKeyStore.set(key, value),
+  ),
+  remove: jest.fn((key: string) => mockRNSecureKeyStore.remove(key)),
+}));
 
 jest.mock('expo-crypto', () => ({
   getRandomBytesAsync: jest.fn((byteCount: number): Promise<Uint8Array> => {
