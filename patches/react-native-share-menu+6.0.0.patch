@@ -1,15 +1,63 @@
-diff --git a//node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
-index 09abd7b..890b5f1 100644
+diff --git a/node_modules/react-native-share-menu/android/build.gradle b/node_modules/react-native-share-menu/android/build.gradle
+index 9557fdb..cc6d464 100644
+--- a/node_modules/react-native-share-menu/android/build.gradle
++++ b/node_modules/react-native-share-menu/android/build.gradle
+@@ -1,12 +1,22 @@
++buildscript {
++    ext {
++        rnsmDefaultTargetSdkVersion = 31
++        rnsmDefaultCompileSdkVersion = 31
++        rnsmDefaultMinSdkVersion = 21
++    }
++    ext.safeExtGet = {prop, fallback ->
++        rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
++    }
++}
++
+ apply plugin: 'com.android.library'
+ 
+ android {
+-    compileSdkVersion 29
+-    buildToolsVersion "29.0.2"
++    compileSdkVersion safeExtGet('compileSdkVersion', rnsmDefaultCompileSdkVersion)
+ 
+     defaultConfig {
+-        minSdkVersion 16
+-        targetSdkVersion 29
++        minSdkVersion safeExtGet('minSdkVersion', rnsmDefaultCompileSdkVersion)
++        targetSdkVersion safeExtGet('targetSdkVersion', rnsmDefaultCompileSdkVersion)
+         versionCode 1
+         versionName "1.0"
+         ndk {
+diff --git a/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
+index 09abd7b..86e7bc7 100644
 --- a/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
 +++ b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
 @@ -59,10 +59,6 @@ public class ShareMenuModule extends ReactContextBaseJavaModule implements Activ
      data.putString(MIME_TYPE_KEY, type);
-
+ 
      if (Intent.ACTION_SEND.equals(action)) {
 -      if ("text/plain".equals(type)) {
 -        data.putString(DATA_KEY, intent.getStringExtra(Intent.EXTRA_TEXT));
 -        return data;
 -      }
-
+ 
        Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
        if (fileUri != null) {
+@@ -112,6 +108,16 @@ public class ShareMenuModule extends ReactContextBaseJavaModule implements Activ
+     clearSharedText();
+   }
+ 
++    @ReactMethod
++    public void addListener(String eventName) {
++      // Required for RN built in Event Emitter Calls.
++    }
++
++    @ReactMethod
++    public void removeListeners(Integer count) {
++      // Required for RN built in Event Emitter Calls.
++    }
++
+   private void dispatchEvent(ReadableMap shared) {
+     if (mReactContext == null || !mReactContext.hasActiveCatalystInstance()) {
+       return;

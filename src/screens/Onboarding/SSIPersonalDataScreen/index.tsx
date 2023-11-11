@@ -14,6 +14,7 @@ import {
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
 } from '../../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../../types';
+import {IOnboardingPersonalData} from '../../../types/onboarding';
 
 type PersonalDataProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
@@ -30,6 +31,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
   };
 
   const onFirstNameValidation = async (value: string): Promise<void> => {
+    onPersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('first_name_invalid_message')));
     }
@@ -40,6 +42,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
   };
 
   const onLastNameValidation = async (value: string): Promise<void> => {
+    onPersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('last_name_invalid_message')));
     }
@@ -47,30 +50,27 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
 
   const onEmailAddressChange = async (value: string): Promise<void> => {
     personalData.emailAddress = value.toLowerCase().trim();
+    onPersonalData(); // We are doing this on change, given the user otherwise need to tap outside of the input to trigger validation and enable the next button
   };
 
   const onEmailAddressValidation = async (value: string): Promise<void> => {
+    onPersonalData();
     if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(value)) {
       return Promise.reject(Error(translate('email_address_invalid_message')));
     }
   };
 
   const onNext = async (): Promise<void> => {
-    const {emailAddress} = personalData;
     Keyboard.dismiss();
-
-    // only validating email address here as the other fields do not have any special validation
-    onEmailAddressValidation(emailAddress)
-      .then(() => {
-        props.route.params.onNext(personalData);
-      })
-      .catch(() => {
-        // do nothing as the state is already handled by the validate function, and we do not want to create the contact
-      });
+    props.route.params.onNext(personalData);
   };
 
   const isDisabled = (): boolean => {
-    return props.route.params.isDisabled();
+    return props.route.params.isDisabled(personalData);
+  };
+
+  const onPersonalData = () => {
+    props.route.params.onPersonalData(personalData);
   };
 
   console.log(`PERSONAL DATA: ${JSON.stringify(personalData)}`);

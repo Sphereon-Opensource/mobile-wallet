@@ -201,7 +201,6 @@ class SSIPinCode extends PureComponent<IProps, IState> {
           {maxRetries && retry > 0 && <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${maxRetries - retry}`}</AttemptsLeftText>}
           <TextInput
             ref={this.onRef}
-            id={'pin-code-text-input'}
             style={{display: 'none'}}
             accessible
             accessibilityLabel={accessibilityLabel}

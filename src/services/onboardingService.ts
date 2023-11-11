@@ -6,25 +6,24 @@ import agent from '../agent';
 import store from '../store';
 
 import {createUser, login} from '../store/actions/user.actions';
-import {IOnboardingMachineContext, IUser} from '../types';
+import {IUser} from '../types';
+import {IOnboardingMachineContext} from '../types/onboarding';
 import {createVerifiableCredential, storeVerifiableCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 import {storagePersistPin} from './storageService';
 
 export const walletSetup = async (context: IOnboardingMachineContext) => {
-  return await Promise.all([
+  const setup = await Promise.all([
     storagePersistPin({
       value: context.pinCode,
     }),
     finalizeOnboarding(context),
     // Make sure we never finish before the timeout, to ensure the UI doesn't change too fast as a user might get confused
     new Promise(resolve => setTimeout(() => resolve(true), 1500)),
-  ])
-    .then(value => {
-      store.dispatch<any>(login(value[1].storedUser.id));
-      return value[1];
-    })
-    .catch(e => Promise.reject(e));
+  ]);
+
+  await store.dispatch<any>(login(setup[1].storedUser.id));
+  return setup[1];
 };
 
 const finalizeOnboarding = async (context: IOnboardingMachineContext) => {

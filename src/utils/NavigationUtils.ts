@@ -1,7 +1,7 @@
-import {Route} from '@react-navigation/native';
+import {ParamListBase, PartialRoute, Route} from '@react-navigation/native';
 import {CommonActions, NavigationState} from '@react-navigation/routers';
-
 import {navigationRef} from '../navigation/rootNavigation';
+
 import {filterNavigationStackArgs, ScreenRoutesEnum} from '../types';
 
 /**
@@ -14,12 +14,16 @@ import {filterNavigationStackArgs, ScreenRoutesEnum} from '../types';
  */
 export const filterNavigationStack = (args: filterNavigationStackArgs): void => {
   const rootState: NavigationState | undefined = navigationRef.current?.getRootState();
-  if (!rootState) {
+  if (!rootState?.routes) {
     return;
   }
 
-  const mainStack = rootState!.routes!.find((route: Route<string>) => route.name === 'Main')!.state;
-  const homeStack = mainStack!.routes!.find((route: Route<string>) => route.name === 'Home').state;
+  const mainStack = rootState.routes.find((route: Route<string>) => route.name === 'Main')?.state;
+  if (!mainStack?.routes) {
+    return;
+  }
+  // @ts-ignore
+  const homeStack = mainStack.routes.find((route: Route<string>) => route.name === 'Home').state;
   const currentStack = homeStack.routes.find((route: Route<string>) => route.name === args.stack).state;
 
   if (!currentStack) {

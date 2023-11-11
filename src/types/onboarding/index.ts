@@ -1,6 +1,6 @@
 import {CredentialPayload, ProofFormat} from '@veramo/core';
 import {Interpreter} from 'xstate';
-import {SupportedDidMethodEnum} from '../index';
+import {SupportedDidMethodEnum} from '../did';
 import {ISetPersonalDataActionArgs} from '../store/onboarding.types';
 
 export interface IOnboardingCredentialData {
@@ -8,6 +8,7 @@ export interface IOnboardingCredentialData {
   credential?: Partial<CredentialPayload>;
   proofFormat?: ProofFormat;
 }
+
 export interface IOnboardingPersonalData {
   firstName: string;
   lastName: string;
@@ -44,12 +45,12 @@ export enum OnboardingEvents {
   SET_PIN = 'SET_PIN',
 }
 
-export type NextEvent = {type: OnboardingEvents.NEXT};
+export type NextEvent = {type: OnboardingEvents.NEXT; data?: any};
 export type PreviousEvent = {type: OnboardingEvents.PREVIOUS};
 export type PersonalDataEvent = {type: OnboardingEvents.SET_PERSONAL_DATA; data: ISetPersonalDataActionArgs};
 export type TermsConditionsEvent = {type: OnboardingEvents.SET_TOC; data: boolean};
 export type PrivacyPolicyEvent = {type: OnboardingEvents.SET_POLICY; data: boolean};
-export type PinEvent = {type: OnboardingEvents.SET_PIN; data: string};
+export type PinSetEvent = {type: OnboardingEvents.SET_PIN; data: string};
 export type DeclineEvent = {type: OnboardingEvents.DECLINE};
 export type OnboardingEventTypes =
   | NextEvent
@@ -57,12 +58,14 @@ export type OnboardingEventTypes =
   | TermsConditionsEvent
   | PrivacyPolicyEvent
   | PersonalDataEvent
-  | PinEvent
+  | PinSetEvent
   | DeclineEvent;
 
 export enum OnboardingGuards {
   onboardingToSAgreementGuard = 'onboardingToSAgreementGuard',
   onboardingPersonalDataGuard = 'onboardingPersonalDataGuard',
+  onboardingPinCodeSetGuard = 'onboardingPinCodeSetGuard',
+  onboardingPinCodeVerifyGuard = 'onboardingPinCodeVerifyGuard',
 }
 
 // We use this in class components, as there is no context available there. It is also used by default in the onboarding provider
@@ -77,6 +80,7 @@ export type OnboardingInterpretType = Interpreter<
   },
   any
 >;
+
 export interface OnboardingContextType {
   onboardingInstance: OnboardingInterpretType;
 }
@@ -84,4 +88,11 @@ export interface OnboardingContextType {
 export interface ICreateOnboardingMachineOpts {
   credentialData?: Partial<IOnboardingCredentialData>;
   machineId?: string;
+}
+
+export interface IInstanceOnboardingMachineOpts extends ICreateOnboardingMachineOpts {
+  services?: any;
+  guards?: any;
+  subscription?: () => void;
+  requireCustomNavigationHook?: boolean;
 }

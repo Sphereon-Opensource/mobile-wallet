@@ -1,3 +1,8 @@
+import Debug from 'debug';
+import {State} from 'xstate';
+import {APP_ID} from '../@config/constants';
+import {translate} from '../localization/Localization';
+import {ScreenRoutesEnum} from '../types';
 import {
   IOnboardingMachineContext,
   IOnboardingPersonalData,
@@ -5,13 +10,10 @@ import {
   OnboardingEventTypes,
   OnboardingInterpretType,
   OnboardingStates,
-  ScreenRoutesEnum,
-} from '../types';
-import {LogBox} from 'react-native';
-import {State} from 'xstate';
-import {translate} from '../localization/Localization';
+} from '../types/onboarding';
 import RootNavigation from './rootNavigation';
 
+const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
 export const onboardingStateNavigationListener = (
   onboardingMachine: OnboardingInterpretType,
   state: State<
@@ -32,12 +34,10 @@ export const onboardingStateNavigationListener = (
 
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
-    console.log(`navigation not ready yet`);
+    debug(`navigation not ready yet`);
     return;
   }
-  LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
   if (state.matches(OnboardingStates.welcomeIntro)) {
-    console.log(`welcome!`);
     nav.navigate(
       ScreenRoutesEnum.WELCOME,
       /*{
@@ -71,6 +71,11 @@ export const onboardingStateNavigationListener = (
     nav.navigate(ScreenRoutesEnum.PERSONAL_DATA, {
       context,
       isDisabled: () => onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true,
+      onPersonalData: (personalData: IOnboardingPersonalData) =>
+        onboardingMachine.send({
+          type: OnboardingEvents.SET_PERSONAL_DATA,
+          data: personalData,
+        }),
       onBack,
       onNext: (personalData: IOnboardingPersonalData) => {
         onboardingMachine.send([
@@ -87,7 +92,27 @@ export const onboardingStateNavigationListener = (
       headerSubTitle: translate('pin_code_choose_pin_code_subtitle'),
       context,
       onBack,
-      onNext,
+      onNext: (pinCode: string) => {
+        onboardingMachine.send([
+          {
+            type: OnboardingEvents.SET_PIN,
+            data: pinCode,
+          },
+          OnboardingEvents.NEXT,
+        ]);
+      },
+    });
+  } else if (state.matches(OnboardingStates.pinVerify)) {
+    nav.navigate(ScreenRoutesEnum.PIN_CODE_VERIFY, {
+      headerSubTitle: translate('pin_code_confirm_pin_code_subtitle'),
+      context,
+      onBack,
+      onNext: (pinCode: string) => {
+        onboardingMachine.send({
+          type: OnboardingEvents.NEXT,
+          data: pinCode,
+        });
+      },
     });
   } else if (state.matches(OnboardingStates.personalDetailsVerify)) {
     nav.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {context, onBack, onNext});
@@ -97,6 +122,6 @@ export const onboardingStateNavigationListener = (
       context,
     });
   } else {
-    console.log(`TODO navigation for ${JSON.stringify(state)}`);
+    debug(`TODO navigation for ${JSON.stringify(state)}`);
   }
 };

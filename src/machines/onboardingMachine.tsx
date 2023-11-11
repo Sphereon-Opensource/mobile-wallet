@@ -5,9 +5,12 @@ import {assign, createMachine, interpret} from 'xstate';
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/onboardingStateNavigation';
 import {walletSetup} from '../services/onboardingService';
+import {SupportedDidMethodEnum} from '../types';
 import {
   ICreateOnboardingMachineOpts,
+  IInstanceOnboardingMachineOpts,
   IOnboardingMachineContext,
+  NextEvent,
   OnboardingContextType,
   OnboardingEvents,
   OnboardingEventTypes,
@@ -15,11 +18,10 @@ import {
   OnboardingInterpretType,
   OnboardingStates,
   PersonalDataEvent,
-  PinEvent,
+  PinSetEvent,
   PrivacyPolicyEvent,
-  SupportedDidMethodEnum,
   TermsConditionsEvent,
-} from '../types';
+} from '../types/onboarding';
 
 const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
   ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
@@ -27,6 +29,15 @@ const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: Onb
 const onboardingPersonalDataGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
   const {firstName, lastName, emailAddress} = ctx.personalData;
   return firstName && firstName.length > 0 && lastName && lastName.length > 0 && emailAddress && EMAIL_ADDRESS_VALIDATION_REGEX.test(emailAddress);
+};
+
+const onboardingPinCodeSetGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
+  const {pinCode} = ctx;
+  return pinCode && pinCode.length === 6;
+};
+
+const onboardingPinCodeVerifyGuard = (ctx: IOnboardingMachineContext, event: NextEvent) => {
+  return onboardingPinCodeSetGuard(ctx, event) && ctx.pinCode === event.data;
 };
 
 export const onboardingSelector = (state: any, matchesState: OnboardingStates) => {
@@ -57,7 +68,11 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
     initial: OnboardingStates.welcomeIntro,
     schema: {
       events: {} as OnboardingEventTypes,
-      guards: {} as {type: OnboardingGuards.onboardingPersonalDataGuard} | {type: OnboardingGuards.onboardingToSAgreementGuard},
+      guards: {} as
+        | {type: OnboardingGuards.onboardingPersonalDataGuard}
+        | {type: OnboardingGuards.onboardingToSAgreementGuard}
+        | {type: OnboardingGuards.onboardingPinCodeSetGuard}
+        | {type: OnboardingGuards.onboardingPinCodeVerifyGuard},
     },
     context: {
       credentialData,
@@ -110,26 +125,28 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.pinEntry]: {
         on: {
           [OnboardingEvents.SET_PIN]: {
-            actions: assign({pinCode: (_ctx, e: PinEvent) => e.data}),
+            actions: assign({pinCode: (_ctx, e: PinSetEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
-            target: OnboardingStates.personalDetailsVerify,
+            cond: OnboardingGuards.onboardingPinCodeSetGuard,
+            target: OnboardingStates.pinVerify,
           },
           [OnboardingEvents.PREVIOUS]: {
             target: OnboardingStates.personalDetailsEntry,
           },
         },
       },
-      /*[OnboardingStates.pinVerify]: {
+      [OnboardingStates.pinVerify]: {
         on: {
           [OnboardingEvents.NEXT]: {
+            cond: OnboardingGuards.onboardingPinCodeVerifyGuard,
             target: OnboardingStates.personalDetailsVerify,
           },
           [OnboardingEvents.PREVIOUS]: {
             target: OnboardingStates.pinEntry,
           },
         },
-      },*/
+      },
       [OnboardingStates.personalDetailsVerify]: {
         on: {
           [OnboardingEvents.NEXT]: {
@@ -188,6 +205,12 @@ export type CreateOnboardingMachineType = typeof createOnboardingMachine;
 export const OnboardingContext = createContext({} as OnboardingContextType);
 
 export class OnboardingMachine {
+  private static _instance: OnboardingInterpretType | undefined;
+
+  static hasInstance(): boolean {
+    return !!OnboardingMachine._instance;
+  }
+
   static get instance(): OnboardingInterpretType {
     if (!this._instance) {
       throw Error('Please initialize an onboarding machine first');
@@ -195,35 +218,30 @@ export class OnboardingMachine {
     return this._instance;
   }
 
-  private static _instance: OnboardingInterpretType | undefined;
-
-  // todo: Determine whether we need to make this public
-  private static newInstance(
-    opts?: ICreateOnboardingMachineOpts & {services?: any; guards?: any; subscription?: () => void; requireCustomNavigationHook?: boolean},
-  ): OnboardingInterpretType {
+  // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
+  private static newInstance(opts?: IInstanceOnboardingMachineOpts): OnboardingInterpretType {
     const newInst: OnboardingInterpretType = interpret(
       createOnboardingMachine(opts).withConfig({
         services: {walletSetup, ...opts?.services},
-        guards: {onboardingToSAgreementGuard, onboardingPersonalDataGuard, ...opts?.guards},
+        guards: {onboardingToSAgreementGuard, onboardingPersonalDataGuard, onboardingPinCodeSetGuard, onboardingPinCodeVerifyGuard, ...opts?.guards},
       }),
     );
     if (typeof opts?.subscription === 'function') {
       newInst.subscribe(opts.subscription);
-    } else {
+    } else if (opts?.requireCustomNavigationHook !== true) {
       newInst.subscribe(snapshot => {
         console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}`);
-        if (opts?.requireCustomNavigationHook !== true) {
-          onboardingStateNavigationListener(newInst, snapshot);
-        }
+        onboardingStateNavigationListener(newInst, snapshot);
       });
     }
     return newInst;
   }
 
-  static getInstance(
-    opts?: ICreateOnboardingMachineOpts & {services?: any; guards?: any; subscription?: () => void; requireCustomNavigationHook?: boolean},
-  ): OnboardingInterpretType {
+  static getInstance(opts?: IInstanceOnboardingMachineOpts & {requireExisting?: boolean}): OnboardingInterpretType {
     if (!OnboardingMachine._instance) {
+      if (opts?.requireExisting === true) {
+        throw Error(`Existing onboarding instance requested, but none was created at this point!`);
+      }
       OnboardingMachine._instance = OnboardingMachine.newInstance(opts);
     }
     return OnboardingMachine._instance;

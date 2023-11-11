@@ -1,17 +1,19 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {fireEvent, render, screen} from '@testing-library/react-native';
+import React from 'react';
 import {Provider} from 'react-redux';
 import {act} from 'react-test-renderer';
-import {OnboardingMachine} from '../machines/onboardingMachine';
-import {OnboardingStackScreenWithContext} from '../navigation/navigation';
-import {navigationRef} from '../navigation/rootNavigation';
-import OnTouchProvider from '../providers/touch/OnTouchProvider';
-import store from '../store';
-import {OnboardingStates, StackParamList, SwitchRoutesEnum} from '../types';
+import {OnboardingStack} from '../src/navigation/navigation';
+import {OnboardingStates} from '../src/types/onboarding';
+import {OnboardingMachine, OnboardingProvider} from '../src/machines/onboardingMachine';
 
-jest.setTimeout(1000 * 1000); // 60 seconds
+import {navigationRef} from '../src/navigation/rootNavigation';
+import OnTouchProvider from '../src/providers/touch/OnTouchProvider';
+import store from '../src/store';
+import {StackParamList, SwitchRoutesEnum} from '../src/types';
 
+jest.setTimeout(60 * 1000); // 60 seconds
 describe('Testing onboarding, should ', () => {
   test('result in fully onboarded user with credential', async () => {
     const onboardingInstance = OnboardingMachine.getInstance({
@@ -37,7 +39,7 @@ describe('Testing onboarding, should ', () => {
       ) => onboardingNavigations(onboardingInstance, state),
     );
 */
-    const Stack = createNativeStackNavigator<StackParamList>();
+    // const Stack = createNativeStackNavigator<StackParamList>();
     const component = (
       <Provider store={store}>
         <NavigationContainer
@@ -47,13 +49,9 @@ describe('Testing onboarding, should ', () => {
           }}
           ref={navigationRef}>
           <OnTouchProvider>
-            <Stack.Navigator
-              screenOptions={{
-                animation: 'none',
-                headerShown: false,
-              }}>
-              <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStackScreenWithContext} />
-            </Stack.Navigator>
+            <OnboardingProvider customOnboardingInstance={OnboardingMachine.getInstance({requireExisting: true})}>
+              <OnboardingStack />
+            </OnboardingProvider>
           </OnTouchProvider>
         </NavigationContainer>
       </Provider>
@@ -92,8 +90,13 @@ describe('Testing onboarding, should ', () => {
     // Pin entry and verification
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.pinEntry);
     // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
-    await act(async () => fireEvent(await screen.findByLabelText('Pin code', {hidden: true}), 'submitEditing', {nativeEvent: {text: '123456'}}));
-    await act(async () => fireEvent(await screen.findByLabelText('Pin code', {hidden: true}), 'submitEditing', {nativeEvent: {text: '123456'}}));
+    await act(async () =>
+      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    );
+    expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.pinVerify);
+    await act(async () =>
+      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    );
 
     // Verification screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.personalDetailsVerify);

@@ -87,8 +87,8 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
-          const maxWaitTime = 5000;
           dispatch({type: LOGIN_SUCCESS, payload: user});
+          const maxWaitTime = 5000;
           let startTime = Date.now();
           let userState: IUserState = getState().user;
           while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {

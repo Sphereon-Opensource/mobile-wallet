@@ -2,16 +2,19 @@ import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bot
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React from 'react';
 import Toast from 'react-native-toast-message';
+import {State} from 'xstate';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar, {HeaderBarProps} from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
+import {OnboardingMachine, OnboardingProvider} from '../machines/onboardingMachine';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
 import SSIPersonalDataScreen from '../screens/Onboarding/SSIPersonalDataScreen';
 import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
+import SSIPinCodeVerifyScreen from '../screens/Onboarding/SSIPinCodeVerifyScreen';
 import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
 import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
@@ -30,18 +33,18 @@ import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
+import {login, walletAuthLockState} from '../services/authenticationService';
 import {
   HeaderMenuIconsEnum,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
-  OnboardingInterpretType,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {OnboardingProvider} from '../machines/onboardingMachine';
-import {login, walletAuthLockState} from '../services/authenticationService';
+import {IOnboardingMachineContext, OnboardingEventTypes} from '../types/onboarding';
+import {onboardingStateNavigationListener} from './onboardingStateNavigation';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -425,15 +428,17 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
-export const OnboardingStackScreenWithContext = (props?: {customOnboardingService?: OnboardingInterpretType}): JSX.Element => {
+/*
+export const OnboardingStackScreenWithContext = (props?: {customOnboardingInstance?: OnboardingInterpretType}): JSX.Element => {
   return (
-    <OnboardingProvider customOnboardingInstance={props?.customOnboardingService}>
+    <OnboardingProvider customOnboardingInstance={props?.customOnboardingInstance}>
       <OnboardingStack />
     </OnboardingProvider>
   );
 };
+*/
 
-const OnboardingStack = (): JSX.Element => {
+export const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       // initialRouteName={ScreenRoutesEnum.WELCOME}
@@ -487,13 +492,31 @@ const OnboardingStack = (): JSX.Element => {
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => (
+          header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
-              headerSubTitle={route.params.headerSubTitle}
+              headerSubTitle={translate('pin_code_choose_pin_code_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.PIN_CODE_VERIFY}
+        component={SSIPinCodeVerifyScreen}
+        options={({route}) => ({
+          // unmountOnBlur resets the screen back to initial state
+          unmountOnBlur: true,
+          headerTitle: translate('pin_code_confirm_pin_code_title'),
+          header: (props: HeaderBarProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showProfileIcon={false}
+              headerSubTitle={translate('pin_code_confirm_pin_code_subtitle')}
             />
           ),
         })}
@@ -561,15 +584,31 @@ const AuthenticationStack = (): JSX.Element => {
  */
 const AppNavigator = (): JSX.Element => {
   const lockState = walletAuthLockState();
+  if (lockState === WalletAuthLockState.ONBOARDING) {
+    if (!OnboardingMachine.hasInstance()) {
+      const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: true});
+      onboardingInstance.subscribe(
+        (state: State<IOnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: IOnboardingMachineContext}, any>) => {
+          console.log(`CURRENT STATE: ${JSON.stringify(onboardingInstance.getSnapshot().value)}`);
+          onboardingStateNavigationListener(onboardingInstance, state);
+        },
+      );
+    }
+
+    return (
+      <OnboardingProvider customOnboardingInstance={OnboardingMachine.getInstance({requireExisting: true})}>
+        <OnboardingStack />
+      </OnboardingProvider>
+    );
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{
         animation: 'none',
         headerShown: false,
       }}>
-      {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen name={SwitchRoutesEnum.ONBOARDING} component={OnboardingStackScreenWithContext} />
-      ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
+      {lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />

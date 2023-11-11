@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import crypto from '@sphereon/isomorphic-webcrypto';
+import Debug from 'debug';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
@@ -8,8 +9,7 @@ import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {IOnboardingMachineContext, OnboardingEventTypes, PlatformsEnum} from 'src/types';
-import {State} from 'xstate';
+import {APP_ID} from './src/@config/constants';
 
 import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
@@ -17,16 +17,19 @@ import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
 import {OnboardingMachine} from './src/machines/onboardingMachine';
 import AppNavigator from './src/navigation/navigation';
-import {onboardingStateNavigationListener} from './src/navigation/onboardingStateNavigation';
 import {navigationRef} from './src/navigation/rootNavigation';
+
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {backgrounds} from './src/styles/colors';
+import {PlatformsEnum} from './src/types';
+
+const debug: Debug.Debugger = Debug(`${APP_ID}:app`);
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
-  'Require cycle:',
+  // 'Require cycle:',
   /*
     This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
   */
@@ -48,7 +51,7 @@ LogBox.ignoreLogs([
     https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir/69649068#69649068
     The above seems very likely as the last update on react-native-share-menu was on May 12 2022
   */
-  'new NativeEventEmitter',
+  // 'new NativeEventEmitter',
 ]);
 
 export default function App() {
@@ -98,7 +101,6 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {}, [navigationIsReady]);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady && navigationIsReady) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -112,38 +114,29 @@ export default function App() {
 
   useEffect(() => {
     if (!navigationIsReady || !appIsReady) {
-      console.log(`app or navigation not ready yet`);
+      debug(`app or navigation not ready yet`);
       return;
     }
-    const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: true});
-    const subscription = onboardingInstance.subscribe(
-      (state: State<IOnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: IOnboardingMachineContext}, any>) =>
-        onboardingStateNavigationListener(onboardingInstance, state),
-    );
+    debug(`app and navigation ready`);
+
+    // Existing instance is already created by the provider. So we make sure by requiring an existing instance
+    const onboardingInstance = OnboardingMachine.getInstance({requireExisting: true});
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
-      console.log(`ONBOARDING STARTING...`);
+      debug(`ONBOARDING starting...`);
       onboardingInstance.start();
-      console.log(`ONBOARDING STARTED`);
-    } else {
-      console.log(`ONBOARDING ALREADY STARTED: ${snapshot.value}: ${snapshot}`);
+      debug(`ONBOARDING started`);
     }
-
-    return subscription.unsubscribe;
   }, [appIsReady, navigationIsReady]);
 
-  if (!appIsReady) {
+  if (!appIsReady || !navigationRef) {
     return null;
   }
 
   return (
     <Provider store={store}>
       <SafeAreaProvider onLayout={onLayoutRootView}>
-        <NavigationContainer
-          onReady={() => {
-            setNavigationIsReady(true);
-          }}
-          ref={navigationRef}>
+        <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
             <AppNavigator />
           </OnTouchProvider>

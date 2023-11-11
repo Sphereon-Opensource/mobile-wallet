@@ -2,9 +2,15 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-import {IOnboardingMachineContext, IOnboardingPersonalData} from '@machines/onboardingMachine';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../onboarding';
+
+interface IPersonalDataProps {
+  isDisabled: (personalData: IOnboardingPersonalData) => boolean;
+  onNext: (personalData: IOnboardingPersonalData) => void;
+  onPersonalData: (personalData: IOnboardingPersonalData) => void;
+}
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -21,12 +27,13 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps;
-  Onboarding: Record<string, never>;
+  Onboarding: {customOnboardingInstance?: OnboardingInterpretType};
   Main: Record<string, never>;
   Welcome: IOnboardingProps & IHasOnNextProps;
   TermsOfService: IOnboardingProps & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
-  PersonalData: IOnboardingProps & IHasOnBackProps & {isDisabled: () => boolean; onNext: (personalData: IOnboardingPersonalData) => void};
-  PinCodeSet: IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
+  PersonalData: IOnboardingProps & IHasOnBackProps & IPersonalDataProps;
+  PinCodeSet: IPinCodeSetProps & IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
+  PinCodeVerify: IPinCodeVerifyProps & IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
   OnboardingSummary: IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -45,7 +52,7 @@ export interface ILoadingProps {
 }
 
 export interface IHasOnNextProps {
-  onNext: () => Promise<void>;
+  onNext: (data?: any) => Promise<void>;
 }
 
 export interface IHasOnBackProps {
@@ -145,6 +152,14 @@ export interface IPinCodeSetProps {
   headerSubTitle: string;
 }
 
+export interface IPinCodeVerifyProps {
+  headerSubTitle: string;
+}
+
+export enum PinCodeMode {
+  CHOOSE_PIN = 'choose_pin',
+  CONFIRM_PIN = 'confirm_pin',
+}
 export interface ILockProps {
   onAuthenticate: () => Promise<void>;
 }
@@ -183,6 +198,7 @@ export enum ScreenRoutesEnum {
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
+  PIN_CODE_VERIFY = 'PinCodeVerify',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
