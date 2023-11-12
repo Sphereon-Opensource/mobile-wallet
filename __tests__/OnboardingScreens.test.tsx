@@ -48,28 +48,8 @@ function createComponent(
 describe('Testing onboarding with regular machine, should ', () => {
   test('result in fully onboarded user with credential', async () => {
     const onboardingInstance = OnboardingMachine.getInstance({
-      /*services: {
-        [OnboardingStates.walletSetup]: () => {
-          console.log('done!');
-        },
-      },*/
       requireCustomNavigationHook: false,
     });
-    /*onboardingInstance.subscribe(
-      (
-        state: State<
-          IOnboardingMachineContext,
-          OnboardingEventTypes,
-          any,
-          {
-            value: any;
-            context: IOnboardingMachineContext;
-          },
-          any
-        >,
-      ) => onboardingNavigations(onboardingInstance, state),
-    );
-*/
     const component = createComponent(onboardingInstance);
     render(component);
     // rendered.debug();
