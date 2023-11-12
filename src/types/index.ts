@@ -1,5 +1,4 @@
 export * from './authentication';
-// export * from './onboarding';
 export * from './component';
 export * from './credential';
 export * from './did';

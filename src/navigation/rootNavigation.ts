@@ -11,7 +11,6 @@ export const navigationRef = createNavigationContainerRef<StackParamList>();
 const RootNavigation: NavigationHelpersCommon<StackParamList, NavigationState> = {
   dispatch: (action: NavigationAction | ((state: NavigationState) => NavigationAction)) => navigationRef.current?.dispatch(action),
   navigate: (...args: any) => navigationRef.current?.navigate(...args),
-  // setParams: <RouteName extends keyof StackParamList>(params: Partial<StackParamList[RouteName]>) => navigationRef.current?.setParams(params),
   reset: (state: PartialState<NavigationState> | NavigationState) => navigationRef.current?.reset(state),
   goBack: () => navigationRef.current?.goBack(),
   isFocused: () => navigationRef.current?.isFocused(),

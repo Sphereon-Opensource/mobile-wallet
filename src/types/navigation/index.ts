@@ -14,7 +14,6 @@ interface IPersonalDataProps {
 
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingInterpretType;
-  // onBack?: () => void;
 }
 
 export type StackParamList = {

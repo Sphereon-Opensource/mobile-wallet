@@ -4,7 +4,6 @@ import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigat
 import Debug from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
-import {State} from 'xstate';
 import {APP_ID} from '../@config/constants';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
@@ -47,7 +46,6 @@ import {
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {IOnboardingMachineContext, OnboardingEvents, OnboardingEventTypes} from '../types/onboarding';
 import {OnboardingProvider, onboardingStateNavigationListener} from './onboardingStateNavigation';
 
 const debug = Debug(`${APP_ID}:navigation`);
@@ -599,6 +597,7 @@ const AppNavigator = (): JSX.Element => {
 
   useEffect(() => {
     if (!RootNavigation.isReady() || lockState !== WalletAuthLockState.ONBOARDING) {
+      debug(`app or navigation not ready (yet)`);
       return;
     }
     debug(`app and navigation ready`);
@@ -611,19 +610,10 @@ const AppNavigator = (): JSX.Element => {
       onboardingInstance.start();
       debug(`ONBOARDING started`);
     }
-    /* return () => {
-      OnboardingMachine.stopInstance();
-    };*/
   }, []);
   if (lockState === WalletAuthLockState.ONBOARDING) {
     if (!OnboardingMachine.hasInstance()) {
-      const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: false});
-      /*onboardingInstance.subscribe(
-        (state: State<IOnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: IOnboardingMachineContext}, any>) => {
-          console.log(`CURRENT STATE: ${JSON.stringify(state.value)}: context: ${JSON.stringify(state.context)}`);
-          onboardingStateNavigationListener(onboardingInstance, state);
-        },
-      );*/
+      OnboardingMachine.getInstance({requireCustomNavigationHook: false});
     }
   }
 

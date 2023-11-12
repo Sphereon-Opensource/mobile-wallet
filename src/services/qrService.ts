@@ -199,7 +199,6 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  //const url: URL = new URL(decodeURIComponent(args.qrData.uri.split('?request_uri=')[1].trim()));
   const config = {
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),

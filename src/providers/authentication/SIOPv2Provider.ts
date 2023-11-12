@@ -73,7 +73,7 @@ export const siopSendAuthorizationResponse = async (
       (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
-    console.log(`NONCE: ${session.nonce}, domain: ${domain}`);
+    debug(`NONCE: ${session.nonce}, domain: ${domain}`);
     presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {
       identifierOpts: {identifier},
       proofOpts: {
@@ -92,11 +92,8 @@ export const siopSendAuthorizationResponse = async (
   }
   const kid: string = (await getKey(identifier, 'authentication', session.context)).kid;
 
-  console.log('definitions and locations:');
-  // @ts-ignore
-  console.log(JSON.stringify(presentationsAndDefs[0].verifiablePresentation, null, 2));
-  console.log('PRESENTATION SUBMISSION:');
-  console.log(JSON.stringify(presentationSubmission, null, 2));
+  debug(`Definitions and locations: ${JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2)}`);
+  debug(`Presentation Submission: ${JSON.stringify(presentationSubmission, null, 2)}`);
   const response = session.sendAuthorizationResponse({
     verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation),
     ...(presentationSubmission && {presentationSubmission}),

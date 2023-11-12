@@ -10,7 +10,7 @@
     "android:prod": "expo run:android --variant release",
     "ios": "expo run:ios",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "jest --coverage=true",
     "test:lint": "eslint . --ext .ts,.tsx",
     "test:prettier": "prettier --check",
     "test:doctor": "npx expo-doctor",

@@ -16,36 +16,17 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
-
-/*jest.mock(
-  'react-native/Libraries/Utilities/BackHandler',
-  () => mockBackHandler,
-);*/
 jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
 
 jest.mock('@react-navigation/native/lib/commonjs/useLinking.native', () => ({
   default: () => ({getInitialState: {then: jest.fn()}}),
   __esModule: true,
 }));
-const sqliteConfig: SqliteConnectionOptions = {
-  type: 'sqlite',
-  database: 'testsqlite',
-  driver: 'sqlite',
-  entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
-  migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
-  migrationsRun: true, // We run migrations from code to ensure proper ordering with Redux
-  synchronize: false, // We do not enable synchronize, as we use migrations from code
-  migrationsTransactionMode: 'each', // protect every migration with a separate transaction
-  logging: 'all', // 'all' means to enable all logging
-  logger: 'advanced-console',
-};
-
 jest.doMock('./src/services/databaseService', () => ({
   getDbConnection: jest.fn(() => {
     const sqliteConfig: SqliteConnectionOptions = {
       type: 'sqlite',
       database: ':memory:',
-      // driver: 'sqlite3',
       entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
       migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
       migrationsRun: true, // We run migrations from code to ensure proper ordering with Redux
@@ -72,13 +53,6 @@ jest.mock('@mattrglobal/bbs-signatures', () => {
     generateBls12381G2KeyPair: jest.fn(),
   };
 });
-
-/*
-export enum ACCESSIBLE {
-  // @ts-ignore
-  WHEN_UNLOCKED_THIS_DEVICE_ONLY = 'AccessibleWhenUnlockedThisDeviceOnly',
-}
-*/
 
 const originalRNSecureKeyStore = jest.requireActual('react-native-secure-key-store');
 

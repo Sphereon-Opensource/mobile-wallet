@@ -28,7 +28,6 @@ export const login = async (): Promise<void> => {
 
 export const walletAuthLockState = (): WalletAuthLockState => {
   const userState: IUserState = useSelector((state: RootState) => state.user);
-  console.log(`User state: ${JSON.stringify(userState)}`);
   let lockState: WalletAuthLockState;
   if (userState.users.size === 0 || OnboardingMachine.hasInstance()) {
     lockState = WalletAuthLockState.ONBOARDING;
@@ -37,7 +36,7 @@ export const walletAuthLockState = (): WalletAuthLockState => {
   } else {
     lockState = WalletAuthLockState.AUTHENTICATED;
   }
-  console.log(`Lock state: ${lockState}`);
+  debug(`Lock state: ${lockState}`);
 
   return lockState;
 };

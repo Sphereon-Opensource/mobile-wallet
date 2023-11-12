@@ -1,18 +1,14 @@
 import {createContext} from 'react';
-import {ActorRefFrom} from 'xstate';
-import {CreateOnboardingMachineType} from '../machines/onboardingMachine';
 
 interface GlobalStateContextType {
-  onboardingService: ActorRefFrom<CreateOnboardingMachineType>;
+  // Onboarding service was here as a test. Removed as that should not be a global service.
+  // This file will need to be used in the future for global services/providers though, hence leaving it in
+  // onboardingService: ActorRefFrom<CreateOnboardingMachineType>;
 }
 
 export const GlobalStateContext = createContext({} as GlobalStateContextType);
 /*
-
 export const GlobalStateProvider = (props: any): JSX.Element => {
-  // todo: Onboardig should not need global context. It is only used once during wallet init! Just here for testing
-  // should be moved to correct location afterwards
-
-  return <GlobalStateContext.Provider value={{onboardingService}}>{props.children}</GlobalStateContext.Provider>;
+  todo: Add services here
 };
 */

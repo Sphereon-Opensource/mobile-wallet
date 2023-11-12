@@ -1,6 +1,5 @@
 import {NavigationContainer} from '@react-navigation/native';
 import crypto from '@sphereon/isomorphic-webcrypto';
-import Debug from 'debug';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
@@ -9,7 +8,6 @@ import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {APP_ID} from './src/@config/constants';
 
 import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
@@ -24,11 +22,9 @@ import {getUsers} from './src/store/actions/user.actions';
 import {backgrounds} from './src/styles/colors';
 import {PlatformsEnum} from './src/types';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:app`);
-
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
-  // 'Require cycle:',
+  'Require cycle:',
   /*
     This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
   */
@@ -50,7 +46,7 @@ LogBox.ignoreLogs([
     https://stackoverflow.com/questions/69538962/new-nativeeventemitter-was-called-with-a-non-null-argument-without-the-requir/69649068#69649068
     The above seems very likely as the last update on react-native-share-menu was on May 12 2022
   */
-  // 'new NativeEventEmitter',
+  'new NativeEventEmitter',
 ]);
 
 export default function App() {
@@ -111,7 +107,7 @@ export default function App() {
   }, [appIsReady, navigationIsReady]);
 
   if (!appIsReady || !navigationRef) {
-    return <></>;
+    return null;
   }
 
   return (
