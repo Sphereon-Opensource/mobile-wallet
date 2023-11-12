@@ -1,14 +1,17 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-import React from 'react';
+
+import Debug from 'debug';
+import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {State} from 'xstate';
+import {APP_ID} from '../@config/constants';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar, {HeaderBarProps} from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
-import {OnboardingMachine, OnboardingProvider} from '../machines/onboardingMachine';
+import {OnboardingMachine} from '../machines/onboardingMachine';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
@@ -36,6 +39,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
   HeaderMenuIconsEnum,
+  IOnboardingProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
   ScreenRoutesEnum,
@@ -43,8 +47,10 @@ import {
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {IOnboardingMachineContext, OnboardingEventTypes} from '../types/onboarding';
-import {onboardingStateNavigationListener} from './onboardingStateNavigation';
+import {IOnboardingMachineContext, OnboardingEvents, OnboardingEventTypes} from '../types/onboarding';
+import {OnboardingProvider, onboardingStateNavigationListener} from './onboardingStateNavigation';
+
+const debug = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -428,17 +434,9 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
-/*
-export const OnboardingStackScreenWithContext = (props?: {customOnboardingInstance?: OnboardingInterpretType}): JSX.Element => {
-  return (
-    <OnboardingProvider customOnboardingInstance={props?.customOnboardingInstance}>
-      <OnboardingStack />
-    </OnboardingProvider>
-  );
-};
-*/
-
-export const OnboardingStack = (): JSX.Element => {
+export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element => {
+  // const {onBack} = props;
+  // const onBack = (): void => OnboardingMachine.getInstance({requireExisting: true}).send(OnboardingEvents.PREVIOUS)
   return (
     <Stack.Navigator
       // initialRouteName={ScreenRoutesEnum.WELCOME}
@@ -456,34 +454,36 @@ export const OnboardingStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.TERMS_OF_SERVICE}
         component={SSITermsOfServiceScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('terms_of_service_title'),
           header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
               headerSubTitle={translate('terms_of_service_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.PERSONAL_DATA}
         component={SSIPersonalDataScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('personal_data_title'),
           header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
               headerSubTitle={translate('personal_data_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.PIN_CODE_SET}
@@ -495,6 +495,7 @@ export const OnboardingStack = (): JSX.Element => {
           header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
@@ -513,6 +514,7 @@ export const OnboardingStack = (): JSX.Element => {
           header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
@@ -524,18 +526,19 @@ export const OnboardingStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
         component={SSIOnboardingSummaryScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('onboard_summary_title'),
           header: (props: HeaderBarProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
               headerSubTitle={translate('onboard_summary_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.LOADING}
@@ -578,28 +581,50 @@ const AuthenticationStack = (): JSX.Element => {
   );
 };
 
+export const OnboardingStackScreenWithContext = (props: IOnboardingProps): JSX.Element => {
+  return (
+    <OnboardingProvider customOnboardingInstance={props?.customOnboardingInstance}>
+      <OnboardingStack />
+      {/*<OnboardingStack onBack={props.onBack} />*/}
+    </OnboardingProvider>
+  );
+};
+
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
  */
 const AppNavigator = (): JSX.Element => {
   const lockState = walletAuthLockState();
+
+  useEffect(() => {
+    if (!RootNavigation.isReady() || lockState !== WalletAuthLockState.ONBOARDING) {
+      return;
+    }
+    debug(`app and navigation ready`);
+
+    // Existing instance is already created by the provider. So we make sure by requiring an existing instance
+    const onboardingInstance = OnboardingMachine.getInstance({requireExisting: true});
+    const snapshot = onboardingInstance.getSnapshot();
+    if (!snapshot || snapshot.done || snapshot.events.length === 0) {
+      debug(`ONBOARDING starting...`);
+      onboardingInstance.start();
+      debug(`ONBOARDING started`);
+    }
+    /* return () => {
+      OnboardingMachine.stopInstance();
+    };*/
+  }, []);
   if (lockState === WalletAuthLockState.ONBOARDING) {
     if (!OnboardingMachine.hasInstance()) {
-      const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: true});
-      onboardingInstance.subscribe(
+      const onboardingInstance = OnboardingMachine.getInstance({requireCustomNavigationHook: false});
+      /*onboardingInstance.subscribe(
         (state: State<IOnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: IOnboardingMachineContext}, any>) => {
-          console.log(`CURRENT STATE: ${JSON.stringify(onboardingInstance.getSnapshot().value)}`);
+          console.log(`CURRENT STATE: ${JSON.stringify(state.value)}: context: ${JSON.stringify(state.context)}`);
           onboardingStateNavigationListener(onboardingInstance, state);
         },
-      );
+      );*/
     }
-
-    return (
-      <OnboardingProvider customOnboardingInstance={OnboardingMachine.getInstance({requireExisting: true})}>
-        <OnboardingStack />
-      </OnboardingProvider>
-    );
   }
 
   return (
@@ -608,7 +633,15 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      {lockState === WalletAuthLockState.AUTHENTICATED ? (
+      {lockState === WalletAuthLockState.ONBOARDING ? (
+        <Stack.Screen
+          name={SwitchRoutesEnum.ONBOARDING}
+          component={OnboardingStackScreenWithContext}
+          initialParams={{
+            customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+          }}
+        />
+      ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />

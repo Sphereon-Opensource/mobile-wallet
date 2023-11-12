@@ -1,5 +1,5 @@
 import {CredentialPayload} from '@veramo/core';
-import React, {createContext, ReactNode} from 'react';
+import {createContext} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
@@ -40,10 +40,6 @@ const onboardingPinCodeVerifyGuard = (ctx: IOnboardingMachineContext, event: Nex
   return onboardingPinCodeSetGuard(ctx, event) && ctx.pinCode === event.data;
 };
 
-export const onboardingSelector = (state: any, matchesState: OnboardingStates) => {
-  return state.matches(matchesState);
-};
-
 const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
   const credentialData = {
     didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_KEY,
@@ -62,6 +58,14 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       } as Partial<CredentialPayload>),
   };
 
+  const initialContext = {
+    credentialData,
+    termsConditionsAccepted: false,
+    privacyPolicyAccepted: false,
+    personalData: {},
+    pinCode: '',
+  } as IOnboardingMachineContext;
+
   return createMachine<IOnboardingMachineContext, OnboardingEventTypes>({
     id: opts?.machineId ?? 'Onboarding',
     predictableActionArguments: true,
@@ -69,18 +73,22 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
     schema: {
       events: {} as OnboardingEventTypes,
       guards: {} as
-        | {type: OnboardingGuards.onboardingPersonalDataGuard}
-        | {type: OnboardingGuards.onboardingToSAgreementGuard}
-        | {type: OnboardingGuards.onboardingPinCodeSetGuard}
-        | {type: OnboardingGuards.onboardingPinCodeVerifyGuard},
+        | {
+            type: OnboardingGuards.onboardingPersonalDataGuard;
+          }
+        | {
+            type: OnboardingGuards.onboardingToSAgreementGuard;
+          }
+        | {
+            type: OnboardingGuards.onboardingPinCodeSetGuard;
+          }
+        | {
+            type: OnboardingGuards.onboardingPinCodeVerifyGuard;
+          },
     },
     context: {
-      credentialData,
-      termsConditionsAccepted: false,
-      privacyPolicyAccepted: false,
-      personalData: {},
-      pinCode: '',
-    } as IOnboardingMachineContext,
+      ...initialContext,
+    },
 
     states: {
       [OnboardingStates.welcomeIntro]: {
@@ -170,32 +178,21 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.onboardingDeclined]: {
         id: OnboardingStates.onboardingDeclined,
         always: OnboardingStates.welcomeIntro,
-        onDone: {
-          actions: assign((cxt, event) => {
-            return {
-              pinCode: '',
-              personalData: {},
-              privacyPolicyAccepted: false,
-              termsConditionsAccepted: false,
-            } as IOnboardingMachineContext;
-          }),
-        },
+        entry: assign({
+          ...initialContext,
+        }),
         // Since we are not allowed to exit an app by Apple/Google, we go back to the onboarding state when the user declines
       },
       [OnboardingStates.onboardingDone]: {
         type: 'final',
         id: OnboardingStates.onboardingDone,
-        always: {
-          // We clear all data to be sure
-          actions: assign((cxt, event) => {
-            return {
-              pinCode: '',
-              personalData: {},
-              privacyPolicyAccepted: false,
-              termsConditionsAccepted: false,
-            } as IOnboardingMachineContext;
-          }),
-        },
+        entry: assign({
+          pinCode: '',
+          personalData: undefined,
+          credentialData: undefined,
+          privacyPolicyAccepted: false,
+          termsConditionsAccepted: false,
+        }),
       },
     },
   });
@@ -218,6 +215,16 @@ export class OnboardingMachine {
     return this._instance;
   }
 
+  static stopInstance() {
+    console.log(`Stop instance...`);
+    if (!OnboardingMachine.hasInstance()) {
+      return;
+    }
+    OnboardingMachine.instance.stop();
+    OnboardingMachine._instance = undefined;
+    console.log(`Stopped instance`);
+  }
+
   // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
   private static newInstance(opts?: IInstanceOnboardingMachineOpts): OnboardingInterpretType {
     const newInst: OnboardingInterpretType = interpret(
@@ -227,17 +234,21 @@ export class OnboardingMachine {
       }),
     );
     if (typeof opts?.subscription === 'function') {
-      newInst.subscribe(opts.subscription);
+      newInst.onTransition(opts.subscription);
     } else if (opts?.requireCustomNavigationHook !== true) {
-      newInst.subscribe(snapshot => {
-        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}`);
+      newInst.onTransition(snapshot => {
+        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
         onboardingStateNavigationListener(newInst, snapshot);
       });
     }
     return newInst;
   }
 
-  static getInstance(opts?: IInstanceOnboardingMachineOpts & {requireExisting?: boolean}): OnboardingInterpretType {
+  static getInstance(
+    opts?: IInstanceOnboardingMachineOpts & {
+      requireExisting?: boolean;
+    },
+  ): OnboardingInterpretType {
     if (!OnboardingMachine._instance) {
       if (opts?.requireExisting === true) {
         throw Error(`Existing onboarding instance requested, but none was created at this point!`);
@@ -247,11 +258,3 @@ export class OnboardingMachine {
     return OnboardingMachine._instance;
   }
 }
-
-export const OnboardingProvider = (props: {children?: ReactNode | undefined; customOnboardingInstance?: OnboardingInterpretType}): JSX.Element => {
-  return (
-    <OnboardingContext.Provider value={{onboardingInstance: props.customOnboardingInstance ?? OnboardingMachine.getInstance()}}>
-      {props.children}
-    </OnboardingContext.Provider>
-  );
-};

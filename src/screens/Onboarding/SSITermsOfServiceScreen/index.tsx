@@ -51,9 +51,7 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
   const memoTabView = useMemo(() => <SSITabView routes={routes} />, []);
 
   const onAccept = async (): Promise<void> => {
-    // hardwareBackPressListener.remove()
     await props.route.params.onNext();
-    // props.navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {});
   };
 
   const onDecline = async (): Promise<void> => {
@@ -65,14 +63,7 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
         onPress: async () => {
           // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
           BackHandler.exitApp();
-          props.route.params.onDecline();
-
-          // onboardingService.send(OnboardingEvents.DECLINE);
-          // Adding a reset back to the Welcome screen and to reset its state as it is active in the current stack
-          /*  props.navigation.reset({
-              index: 0,
-              routes: [{name: ScreenRoutesEnum.WELCOME}],
-            });*/
+          await props.route.params.onDecline();
         },
       },
       secondaryButton: {
@@ -99,10 +90,18 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
       <BottomContainer>
         <CheckboxesContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptTerms} label={translate('terms_of_service_consent_terms_message')} />
+            <SSICheckbox
+              initialValue={props.route.params.context.termsConditionsAccepted}
+              onValueChange={onAcceptTerms}
+              label={translate('terms_of_service_consent_terms_message')}
+            />
           </CheckboxContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptPrivacy} label={translate('terms_of_service_consent_privacy_message')} />
+            <SSICheckbox
+              initialValue={props.route.params.context.privacyPolicyAccepted}
+              onValueChange={onAcceptPrivacy}
+              label={translate('terms_of_service_consent_privacy_message')}
+            />
           </CheckboxContainer>
         </CheckboxesContainer>
         <SSIButtonsContainer

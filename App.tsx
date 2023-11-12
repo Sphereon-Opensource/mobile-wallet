@@ -15,7 +15,6 @@ import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
-import {OnboardingMachine} from './src/machines/onboardingMachine';
 import AppNavigator from './src/navigation/navigation';
 import {navigationRef} from './src/navigation/rootNavigation';
 
@@ -65,6 +64,7 @@ export default function App() {
       try {
         // Enable the intent handler early, so we can get deeplinks on start or before login
         await IntentHandler.getInstance().enable();
+        await LockingHandler.getInstance().enableLocking();
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
@@ -83,8 +83,6 @@ export default function App() {
         // Load the redux store
         const actions = bindActionCreators({getUsers}, store.dispatch);
         actions.getUsers();
-
-        await LockingHandler.getInstance().enableLocking();
       } catch (e) {
         console.warn(e);
       } finally {
@@ -112,25 +110,8 @@ export default function App() {
     }
   }, [appIsReady, navigationIsReady]);
 
-  useEffect(() => {
-    if (!navigationIsReady || !appIsReady) {
-      debug(`app or navigation not ready yet`);
-      return;
-    }
-    debug(`app and navigation ready`);
-
-    // Existing instance is already created by the provider. So we make sure by requiring an existing instance
-    const onboardingInstance = OnboardingMachine.getInstance({requireExisting: true});
-    const snapshot = onboardingInstance.getSnapshot();
-    if (!snapshot || snapshot.done || snapshot.events.length === 0) {
-      debug(`ONBOARDING starting...`);
-      onboardingInstance.start();
-      debug(`ONBOARDING started`);
-    }
-  }, [appIsReady, navigationIsReady]);
-
   if (!appIsReady || !navigationRef) {
-    return null;
+    return <></>;
   }
 
   return (

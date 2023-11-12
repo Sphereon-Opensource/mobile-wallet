@@ -14,7 +14,6 @@ import {
   SSIPersonalDataScreenTextInputsContainerStyled as TextInputsContainer,
 } from '../../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../../types';
-import {IOnboardingPersonalData} from '../../../types/onboarding';
 
 type PersonalDataProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
@@ -73,8 +72,6 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
     props.route.params.onPersonalData(personalData);
   };
 
-  console.log(`PERSONAL DATA: ${JSON.stringify(personalData)}`);
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <Container>
@@ -84,6 +81,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
               <SSITextInputField
                 autoComplete={'name-given'}
                 autoFocus={true}
+                initialValue={personalData.firstName}
                 label={translate('first_name_label')}
                 maxLength={FIRST_NAME_MAX_LENGTH}
                 onChangeText={onFirstNameChange}
@@ -94,6 +92,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
             <TextInputContainer>
               <SSITextInputField
                 autoComplete={'name-family'}
+                initialValue={personalData.lastName}
                 label={translate('last_name_label')}
                 maxLength={LAST_NAME_MAX_LENGTH}
                 onChangeText={onLastNameChange}
@@ -103,6 +102,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
             </TextInputContainer>
             <SSITextInputField
               label={translate('email_address_label')}
+              initialValue={personalData.emailAddress}
               maxLength={EMAIL_ADDRESS_MAX_LENGTH}
               autoComplete={'email'}
               onChangeText={onEmailAddressChange}

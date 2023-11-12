@@ -32,7 +32,7 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
   showBackButton?: boolean;
   moreActions?: Array<IHeaderMenuButton>;
   showProfileIcon?: boolean;
-  onBack?: () => Promise<void>;
+  onBack?: () => void | Promise<void>;
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
@@ -43,7 +43,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
   const {showProfileMenu, setShowProfileMenu, showMoreMenu, setShowMoreMenu} = useContext(OnTouchContext);
 
   const onBack = async (): Promise<void> => {
-    props?.onBack && typeof props.onBack === 'function' ? await props.onBack() : props.navigation.goBack();
+    typeof props.onBack === 'function' ? await props.onBack() : props.navigation.goBack();
   };
 
   const onProfile = async (): Promise<void> => {

@@ -28,7 +28,7 @@ const SSIPinCodeVerifyScreen: FC<PinCodeVerifyProps> = (props: PinCodeVerifyProp
   return (
     <Container>
       <StatusBar />
-      <View style={{marginTop: 127}} id={PinCodeMode.CHOOSE_PIN}>
+      <View style={{marginTop: 127}} id={PinCodeMode.CONFIRM_PIN}>
         <SSIPinCode
           key={PinCodeMode.CONFIRM_PIN}
           length={PIN_CODE_LENGTH}

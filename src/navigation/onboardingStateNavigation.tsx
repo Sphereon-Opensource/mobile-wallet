@@ -1,7 +1,10 @@
 import Debug from 'debug';
+import React, {ReactNode} from 'react';
 import {State} from 'xstate';
 import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
+import {OnboardingContext, OnboardingMachine} from '../machines/onboardingMachine';
+import store from '../store';
 import {ScreenRoutesEnum} from '../types';
 import {
   IOnboardingMachineContext,
@@ -11,6 +14,7 @@ import {
   OnboardingInterpretType,
   OnboardingStates,
 } from '../types/onboarding';
+import {LOGIN_SUCCESS} from '../types/store/user.action.types';
 import RootNavigation from './rootNavigation';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
@@ -38,16 +42,7 @@ export const onboardingStateNavigationListener = (
     return;
   }
   if (state.matches(OnboardingStates.welcomeIntro)) {
-    nav.navigate(
-      ScreenRoutesEnum.WELCOME,
-      /*{
-        index: 0,
-        routes: [{name: ScreenRoutesEnum.WELCOME}],
-
-      },*/
-      {context, onNext},
-    );
-    // navigation.navigate(ScreenRoutesEnum.WELCOME, {step: 1});
+    nav.navigate(ScreenRoutesEnum.WELCOME, {context, onNext});
   } else if (state.matches(OnboardingStates.tosAgreement)) {
     nav.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {
       headerTitle: translate('terms_of_service_title'),
@@ -121,7 +116,20 @@ export const onboardingStateNavigationListener = (
       message: translate('action_onboarding_setup_message'),
       context,
     });
+  } else if (state.matches(OnboardingStates.onboardingDone)) {
+    // Cleans up the machine, triggering the main navigator
+    OnboardingMachine.stopInstance();
+    store.dispatch<any>({type: LOGIN_SUCCESS, payload: store.getState().user.activeUser}); // Yuck, but we need a rerender
   } else {
-    debug(`TODO navigation for ${JSON.stringify(state)}`);
+    throw Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
   }
+};
+
+export const OnboardingProvider = (props: {children?: ReactNode | undefined; customOnboardingInstance?: OnboardingInterpretType}): JSX.Element => {
+  return (
+    <OnboardingContext.Provider
+      value={{onboardingInstance: props.customOnboardingInstance ?? OnboardingMachine.getInstance({requireExisting: true})}}>
+      {props.children}
+    </OnboardingContext.Provider>
+  );
 };

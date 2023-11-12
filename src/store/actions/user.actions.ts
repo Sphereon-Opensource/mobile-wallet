@@ -38,7 +38,7 @@ import {getVerifiableCredentials} from './credential.actions';
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    return userServiceCreateUser(args)
+    return await userServiceCreateUser(args)
       .then((user: IUser) => {
         dispatch({type: CREATE_USER_SUCCESS, payload: user});
         return user;
@@ -87,14 +87,16 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
-          dispatch({type: LOGIN_SUCCESS, payload: user});
           const maxWaitTime = 5000;
           let startTime = Date.now();
+
+          dispatch({type: LOGIN_SUCCESS, payload: user});
           let userState: IUserState = getState().user;
           while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {
             await new Promise(resolve => setTimeout(resolve, 50));
             userState = getState().user;
           }
+
           await dispatch(getContacts());
           startTime = Date.now();
           let contactState: IContactState = getState().contact;
@@ -105,6 +107,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           }
           await dispatch(getVerifiableCredentials());
           LockingHandler.getInstance().isLocked = false;
+
           const intentHandler = IntentHandler.getInstance();
           await intentHandler.enable();
 

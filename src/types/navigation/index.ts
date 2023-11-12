@@ -12,6 +12,11 @@ interface IPersonalDataProps {
   onPersonalData: (personalData: IOnboardingPersonalData) => void;
 }
 
+export interface IOnboardingProps {
+  customOnboardingInstance?: OnboardingInterpretType;
+  // onBack?: () => void;
+}
+
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps;
@@ -27,14 +32,14 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps;
-  Onboarding: {customOnboardingInstance?: OnboardingInterpretType};
+  Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  Welcome: IOnboardingProps & IHasOnNextProps;
-  TermsOfService: IOnboardingProps & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
-  PersonalData: IOnboardingProps & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
-  PinCodeVerify: IPinCodeVerifyProps & IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
-  OnboardingSummary: IOnboardingProps & IHasOnBackProps & IHasOnNextProps;
+  Welcome: IHasOnboardingContext & IHasOnNextProps;
+  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
+  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
+  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
@@ -43,7 +48,7 @@ export type StackParamList = {
   Loading: ILoadingProps;
 };
 
-export interface IOnboardingProps {
+export interface IHasOnboardingContext {
   context: IOnboardingMachineContext;
 }
 

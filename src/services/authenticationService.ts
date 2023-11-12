@@ -2,6 +2,7 @@ import Debug from 'debug';
 import {useSelector} from 'react-redux';
 
 import {APP_ID} from '../@config/constants';
+import {OnboardingMachine} from '../machines/onboardingMachine';
 import RootNavigation from '../navigation/rootNavigation';
 import store from '../store';
 import {login as loginAction} from '../store/actions/user.actions';
@@ -27,14 +28,16 @@ export const login = async (): Promise<void> => {
 
 export const walletAuthLockState = (): WalletAuthLockState => {
   const userState: IUserState = useSelector((state: RootState) => state.user);
+  console.log(`User state: ${JSON.stringify(userState)}`);
   let lockState: WalletAuthLockState;
-  if (userState.users.size === 0) {
+  if (userState.users.size === 0 || OnboardingMachine.hasInstance()) {
     lockState = WalletAuthLockState.ONBOARDING;
   } else if (!userState.activeUser) {
     lockState = WalletAuthLockState.LOCKED;
   } else {
     lockState = WalletAuthLockState.AUTHENTICATED;
   }
-  debug(`Lock state: ${lockState}`);
+  console.log(`Lock state: ${lockState}`);
+
   return lockState;
 };

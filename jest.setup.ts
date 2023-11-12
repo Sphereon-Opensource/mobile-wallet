@@ -9,7 +9,6 @@ import {DataSource} from 'typeorm';
 import {SqliteConnectionOptions} from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import {TextDecoder, TextEncoder} from 'util';
 import Localization from './src/localization/Localization';
-import {IStorePinArgs} from './src/types';
 
 LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
@@ -17,6 +16,11 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
+
+/*jest.mock(
+  'react-native/Libraries/Utilities/BackHandler',
+  () => mockBackHandler,
+);*/
 jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
 
 jest.mock('@react-navigation/native/lib/commonjs/useLinking.native', () => ({
@@ -47,7 +51,7 @@ jest.doMock('./src/services/databaseService', () => ({
       migrationsRun: true, // We run migrations from code to ensure proper ordering with Redux
       synchronize: false, // We do not enable synchronize, as we use migrations from code
       migrationsTransactionMode: 'each', // protect every migration with a separate transaction
-      logging: 'all', // 'all' means to enable all logging
+      logging: ['warn'], // 'all' means to enable all logging
       logger: 'advanced-console',
     };
 
