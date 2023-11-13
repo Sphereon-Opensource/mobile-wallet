@@ -20,27 +20,27 @@
         <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> userService.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">56.52% </span>
+            <span class="strong">21.73% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">13/23</span>
+            <span class="fraction">5/23</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">50% </span>
+            <span class="strong">0% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">1/2</span>
+            <span class="fraction">0/2</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">36.36% </span>
+            <span class="strong">0% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">4/11</span>
+            <span class="fraction">0/11</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">61.9% </span>
+            <span class="strong">23.8% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">13/21</span>
+            <span class="fraction">5/21</span>
           </div>
         </div>
         <p class="quiet">
@@ -53,7 +53,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line medium"></div>
+      <div class="status-line low"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -121,28 +121,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -174,29 +174,29 @@ const debug: Debug.Debugger = Debug(`${APP_ID}:userService`);
 &nbsp;
 import {v4 as uuidv4} from 'uuid';
 &nbsp;
-export const createUser = async (args: BasicUser): Promise&lt;IUser&gt; =&gt; {
-  debug(`createUser(${JSON.stringify(args)})...`);
-  const user: IUser = {
+export const createUser = <span class="fstat-no" title="function not covered" >as</span>ync (args: BasicUser): Promise&lt;IUser&gt; =&gt; {
+<span class="cstat-no" title="statement not covered" >  debug(`createUser(${JSON.stringify(args)})...`);</span>
+  const user: IUser = <span class="cstat-no" title="statement not covered" >{</span>
     ...args,
     id: uuidv4(),
     identifiers: args.identifiers
-      ? args.identifiers.map((identifier: BasicUserIdentifier) =&gt; ({...identifier, createdAt: new Date(), lastUpdatedAt: new Date()}))
-      : <span class="branch-1 cbranch-no" title="branch not covered" >[],</span>
+      ? args.identifiers.map(<span class="fstat-no" title="function not covered" >(i</span>dentifier: BasicUserIdentifier) =&gt; (<span class="cstat-no" title="statement not covered" >{...identifier, createdAt: new Date(), lastUpdatedAt: new Date()})</span>)
+      : [],
     createdAt: new Date(),
     lastUpdatedAt: new Date(),
   };
 &nbsp;
-  return storagePersistUser({user})
-    .then(() =&gt; {
-      debug(`createUser(${JSON.stringify(args)}) succeeded`);
-      return user;
+<span class="cstat-no" title="statement not covered" >  return storagePersistUser({user})</span>
+    .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >      debug(`createUser(${JSON.stringify(args)}) succeeded`);</span>
+<span class="cstat-no" title="statement not covered" >      return user;</span>
     })
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(Error(`Unable to create user. Error: ${error}`)))</span>;
 };
 &nbsp;
-export const getUsers = async (): Promise&lt;Map&lt;string, IUser&gt;&gt; =&gt; {
-  debug(`getUsers...`);
-  return storageGetUsers().catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`)))</span>;
+export const getUsers = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;Map&lt;string, IUser&gt;&gt; =&gt; {
+<span class="cstat-no" title="statement not covered" >  debug(`getUsers...`);</span>
+<span class="cstat-no" title="statement not covered" >  return storageGetUsers().catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`)))</span>;</span>
 };
 &nbsp;
 export const updateUser = <span class="fstat-no" title="function not covered" >as</span>ync (args: IUser): Promise&lt;IUser&gt; =&gt; {
@@ -226,7 +226,7 @@ export const deleteUser = <span class="fstat-no" title="function not covered" >a
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-12T22:52:25.095Z
+      at 2023-11-13T20:21:44.842Z
     </div>
     <script src="../prettify.js"></script>
     <script>

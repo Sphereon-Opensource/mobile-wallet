@@ -15,22 +15,24 @@ import {
 } from '../../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type PersonalDataProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
-const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps): JSX.Element => {
+const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {onNext, onBack, context, onPersonalData, isDisabled} = props.route.params;
+  const personalData = {...context.personalData}; // shallow copy given we will manipulate the data
+
   useBackHandler(() => {
-    void props.route.params.onBack();
+    void onBack();
     // make sure event stops here
     return true;
   });
-  const personalData = {...props.route.params.context.personalData};
 
   const onFirstNameChange = async (value: string): Promise<void> => {
     personalData.firstName = value.trim();
   };
 
   const onFirstNameValidation = async (value: string): Promise<void> => {
-    onPersonalData();
+    handlePersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('first_name_invalid_message')));
     }
@@ -41,7 +43,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
   };
 
   const onLastNameValidation = async (value: string): Promise<void> => {
-    onPersonalData();
+    handlePersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('last_name_invalid_message')));
     }
@@ -49,27 +51,27 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
 
   const onEmailAddressChange = async (value: string): Promise<void> => {
     personalData.emailAddress = value.toLowerCase().trim();
-    onPersonalData(); // We are doing this on change, given the user otherwise need to tap outside of the input to trigger validation and enable the next button
+    handlePersonalData(); // We are doing this on change, given the user otherwise need to tap outside of the input to trigger validation and enable the next button
   };
 
   const onEmailAddressValidation = async (value: string): Promise<void> => {
-    onPersonalData();
+    handlePersonalData();
     if (!EMAIL_ADDRESS_VALIDATION_REGEX.test(value)) {
       return Promise.reject(Error(translate('email_address_invalid_message')));
     }
   };
 
-  const onNext = async (): Promise<void> => {
+  const handleNext = async (): Promise<void> => {
     Keyboard.dismiss();
-    props.route.params.onNext(personalData);
+    onNext(personalData);
   };
 
-  const isDisabled = (): boolean => {
-    return props.route.params.isDisabled(personalData);
+  const checkDisabled = (): boolean => {
+    return isDisabled(personalData);
   };
 
-  const onPersonalData = () => {
-    props.route.params.onPersonalData(personalData);
+  const handlePersonalData = () => {
+    onPersonalData(personalData);
   };
 
   return (
@@ -113,8 +115,8 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
           <SSIButtonsContainer
             primaryButton={{
               caption: translate('action_next_label'),
-              disabled: isDisabled(),
-              onPress: onNext,
+              disabled: checkDisabled(),
+              onPress: handleNext,
             }}
           />
         </SSIScrollView>

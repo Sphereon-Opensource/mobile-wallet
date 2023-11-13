@@ -9,18 +9,16 @@ import {translate} from '../../../localization/Localization';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../../styles/components';
 import {PinCodeMode, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type PinCodeSetProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
 
-const SSIPinCodeSetScreen: FC<PinCodeSetProps> = (props: PinCodeSetProps): JSX.Element => {
+const SSIPinCodeSetScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {onNext, onBack} = props.route.params;
+
   useBackHandler(() => {
-    void props.route.params.onBack();
+    void onBack();
     // make sure event stops here
     return true;
   });
-
-  const onVerification = async (value: string): Promise<void> => {
-    await props.route.params.onNext(value);
-  };
 
   // We use a UUID in the key to ensure we always refresh the pincode on the Set screen
   return (
@@ -33,7 +31,7 @@ const SSIPinCodeSetScreen: FC<PinCodeSetProps> = (props: PinCodeSetProps): JSX.E
           accessibilityLabel={translate('pin_code_accessibility_label')}
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
-          onVerification={onVerification}
+          onVerification={onNext}
         />
       </View>
     </Container>

@@ -9,20 +9,22 @@ import {translate} from '../../../localization/Localization';
 import {SSIBasicHorizontalCenterContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../../styles/components';
 import {PinCodeMode, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type PinCodeVerifyProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_VERIFY>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_VERIFY>;
 
-const SSIPinCodeVerifyScreen: FC<PinCodeVerifyProps> = (props: PinCodeVerifyProps): JSX.Element => {
+const SSIPinCodeVerifyScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {onNext, onBack, context} = props.route.params;
+
   useBackHandler(() => {
-    void props.route.params.onBack();
+    void onBack();
     // make sure event stops here
     return true;
   });
 
   const onVerification = async (value: string): Promise<void> => {
-    if (value !== props.route.params.context.pinCode) {
+    if (value !== context.pinCode) {
       return Promise.reject(Error('Invalid code'));
     }
-    await props.route.params.onNext(value);
+    await onNext(value);
   };
 
   return (

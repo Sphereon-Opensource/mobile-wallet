@@ -1,3 +1,4 @@
+import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 
@@ -11,16 +12,22 @@ import {backgrounds} from '../../../styles/colors';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type SummaryScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 
 enum SummaryTabRoutesEnum {
   INFO = 'info',
 }
 
-const SSIOnboardingSummaryScreen: FC<SummaryScreenProps> = (props: SummaryScreenProps): JSX.Element => {
-  const getProperties = (): Array<ICredentialDetailsRow> => {
-    const {personalData} = props.route.params.context;
+const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {context, onBack, onNext} = props.route.params;
+  const {personalData} = {...context};
 
+  useBackHandler(() => {
+    void onBack();
+    // make sure event stops here
+    return true;
+  });
+  const getProperties = (): Array<ICredentialDetailsRow> => {
     return [
       {
         id: uuidv4(),
@@ -56,7 +63,7 @@ const SSIOnboardingSummaryScreen: FC<SummaryScreenProps> = (props: SummaryScreen
         backgroundColor={backgrounds.secondaryDark}
         primaryButton={{
           caption: translate('onboard_summary_button_caption'),
-          onPress: props.route.params.onNext,
+          onPress: onNext,
         }}
       />
     </Container>

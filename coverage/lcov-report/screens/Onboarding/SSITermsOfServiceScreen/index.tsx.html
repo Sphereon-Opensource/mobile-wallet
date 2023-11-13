@@ -20,9 +20,9 @@
         <h1><a href="../../../index.html">All files</a> / <a href="index.html">screens/Onboarding/SSITermsOfServiceScreen</a> index.tsx</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">61.9% </span>
+            <span class="strong">56.25% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">13/21</span>
+            <span class="fraction">9/16</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">45.45% </span>
+            <span class="strong">37.5% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">5/11</span>
+            <span class="fraction">3/8</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">60% </span>
+            <span class="strong">53.33% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">12/20</span>
+            <span class="fraction">8/15</span>
           </div>
         </div>
         <p class="quiet">
@@ -168,9 +168,7 @@
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,17 +195,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -220,13 +220,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -247,15 +243,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,15 +301,17 @@ import {
 } from '../../../styles/components';
 import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 &nbsp;
-type TermsOfServiceProps = NativeStackScreenProps&lt;StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE&gt;;
+type Props = NativeStackScreenProps&lt;StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE&gt;;
 enum TermsTabRoutesEnum {
   TERMS = 'terms',
   PRIVACY = 'privacy',
 }
 &nbsp;
-const SSITermsOfServiceScreen: FC&lt;TermsOfServiceProps&gt; = (props: TermsOfServiceProps): JSX.Element =&gt; {
+const SSITermsOfServiceScreen: FC&lt;Props&gt; = (props: Props): JSX.Element =&gt; {
+  const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
+&nbsp;
   useBackHandler(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >    void props.route.params.onBack();</span>
+<span class="cstat-no" title="statement not covered" >    void onBack();</span>
     // make sure event stops here
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   });
@@ -337,11 +335,7 @@ const SSITermsOfServiceScreen: FC&lt;TermsOfServiceProps&gt; = (props: TermsOfSe
    */
   const memoTabView = useMemo(() =&gt; &lt;SSITabView routes={routes} /&gt;, []);
 &nbsp;
-  const onAccept = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >    await props.route.params.onNext();</span>
-  };
-&nbsp;
-  const onDecline = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {
+  const handleDecline = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {
 <span class="cstat-no" title="statement not covered" >    props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {</span>
       title: translate('terms_of_service_decline_title'),
       details: translate('terms_of_service_decline_message'),
@@ -350,7 +344,7 @@ const SSITermsOfServiceScreen: FC&lt;TermsOfServiceProps&gt; = (props: TermsOfSe
         onPress: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
           // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
 <span class="cstat-no" title="statement not covered" >          BackHandler.exitApp();</span>
-<span class="cstat-no" title="statement not covered" >          await props.route.params.onDecline();</span>
+<span class="cstat-no" title="statement not covered" >          await onDecline();</span>
         },
       },
       secondaryButton: {
@@ -362,14 +356,6 @@ const SSITermsOfServiceScreen: FC&lt;TermsOfServiceProps&gt; = (props: TermsOfSe
     });
   };
 &nbsp;
-  const onAcceptTerms = async (isChecked: boolean): Promise&lt;void&gt; =&gt; {
-    await props.route.params.onAcceptTerms(isChecked);
-  };
-&nbsp;
-  const onAcceptPrivacy = async (isChecked: boolean): Promise&lt;void&gt; =&gt; {
-    await props.route.params.onAcceptPrivacy(isChecked);
-  };
-&nbsp;
   return (
     &lt;Container&gt;
       &lt;StatusBar /&gt;
@@ -377,21 +363,29 @@ const SSITermsOfServiceScreen: FC&lt;TermsOfServiceProps&gt; = (props: TermsOfSe
       &lt;BottomContainer&gt;
         &lt;CheckboxesContainer&gt;
           &lt;CheckboxContainer&gt;
-            &lt;SSICheckbox initialValue={props.route.params.context.termsConditionsAccepted} onValueChange={onAcceptTerms} label={translate('terms_of_service_consent_terms_message')} /&gt;
+            &lt;SSICheckbox
+              initialValue={props.route.params.context.termsConditionsAccepted}
+              onValueChange={onAcceptTerms}
+              label={translate('terms_of_service_consent_terms_message')}
+            /&gt;
           &lt;/CheckboxContainer&gt;
           &lt;CheckboxContainer&gt;
-            &lt;SSICheckbox initialValue={props.route.params.context.privacyPolicyAccepted} onValueChange={onAcceptPrivacy} label={translate('terms_of_service_consent_privacy_message')} /&gt;
+            &lt;SSICheckbox
+              initialValue={props.route.params.context.privacyPolicyAccepted}
+              onValueChange={onAcceptPrivacy}
+              label={translate('terms_of_service_consent_privacy_message')}
+            /&gt;
           &lt;/CheckboxContainer&gt;
         &lt;/CheckboxesContainer&gt;
         &lt;SSIButtonsContainer
           secondaryButton={{
             caption: translate('action_decline_label'),
-            onPress: onDecline,
+            onPress: handleDecline,
           }}
           primaryButton={{
             caption: translate('action_accept_label'),
-            disabled: props.route.params.isDisabled(),
-            onPress: onAccept,
+            disabled: isDisabled(),
+            onPress: onNext,
           }}
         /&gt;
       &lt;/BottomContainer&gt;
@@ -409,7 +403,7 @@ export default SSITermsOfServiceScreen;
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-12T22:52:25.095Z
+      at 2023-11-13T20:21:44.842Z
     </div>
     <script src="../../../prettify.js"></script>
     <script>

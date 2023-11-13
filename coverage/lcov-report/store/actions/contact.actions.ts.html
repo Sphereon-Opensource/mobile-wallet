@@ -20,9 +20,9 @@
         <h1><a href="../../index.html">All files</a> / <a href="index.html">store/actions</a> contact.actions.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">34.78% </span>
+            <span class="strong">13.04% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">16/46</span>
+            <span class="fraction">6/46</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">26.08% </span>
+            <span class="strong">0% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">6/23</span>
+            <span class="fraction">0/23</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">34.78% </span>
+            <span class="strong">13.04% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">16/46</span>
+            <span class="fraction">6/46</span>
           </div>
         </div>
         <p class="quiet">
@@ -226,25 +226,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,6 +252,18 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -300,20 +300,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -362,12 +362,12 @@ import {
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 &nbsp;
-export const getContacts = (): ThunkAction&lt;Promise&lt;void&gt;, RootState, unknown, Action&gt; =&gt; {
-  return async (dispatch: ThunkDispatch&lt;RootState, unknown, Action&gt;) =&gt; {
-    dispatch({type: CONTACTS_LOADING});
-    await getUserContact().then((userContact: IContact) =&gt; {
-      getContactsFromStorage()
-        .then(async (contacts: Array&lt;IContact&gt;) =&gt; dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
+export const getContacts = <span class="fstat-no" title="function not covered" >()</span>: ThunkAction&lt;Promise&lt;void&gt;, RootState, unknown, Action&gt; =&gt; {
+<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >as</span>ync (dispatch: ThunkDispatch&lt;RootState, unknown, Action&gt;) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    dispatch({type: CONTACTS_LOADING});</span>
+<span class="cstat-no" title="statement not covered" >    await getUserContact().then(<span class="fstat-no" title="function not covered" >(u</span>serContact: IContact) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      getContactsFromStorage()</span>
+        .then(<span class="fstat-no" title="function not covered" >as</span>ync (contacts: Array&lt;IContact&gt;) =&gt; <span class="cstat-no" title="statement not covered" >dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))</span>
         .catch(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >dispatch({type: GET_CONTACTS_FAILED}))</span>;
     });
   };
@@ -436,21 +436,21 @@ export const deleteContact = <span class="fstat-no" title="function not covered"
   };
 };
 &nbsp;
-export const getUserContact = async (): Promise&lt;IContact&gt; =&gt; {
-  const userState = store.getState().user;
+export const getUserContact = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;IContact&gt; =&gt; {
+  const userState = <span class="cstat-no" title="statement not covered" >store.getState().user;</span>
   // TODO supporting only one user at the moment
-  const user: IUser = userState.activeUser!;
+  const user: IUser = <span class="cstat-no" title="statement not covered" >userState.activeUser!;</span>
 &nbsp;
-  const userFullName = `${user.firstName} ${user.lastName}`;
+  const userFullName = <span class="cstat-no" title="statement not covered" >`${user.firstName} ${user.lastName}`;</span>
 &nbsp;
-  return {
+<span class="cstat-no" title="statement not covered" >  return {</span>
     id: user.id,
     name: userFullName,
     alias: userFullName,
     uri: user.emailAddress,
     //todo: (WAL-545) handle this based on the identities available in the wallet
     roles: [IdentityRoleEnum.HOLDER],
-    identities: user.identifiers.map((identifier: IUserIdentifier) =&gt; ({
+    identities: user.identifiers.map(<span class="fstat-no" title="function not covered" >(i</span>dentifier: IUserIdentifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       id: uuidv4(),
       alias: identifier.did,
       roles: [IdentityRoleEnum.HOLDER],
@@ -475,7 +475,7 @@ export const getUserContact = async (): Promise&lt;IContact&gt; =&gt; {
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-12T22:52:25.095Z
+      at 2023-11-13T20:21:44.842Z
     </div>
     <script src="../../prettify.js"></script>
     <script>

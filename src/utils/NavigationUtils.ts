@@ -1,4 +1,4 @@
-import {ParamListBase, PartialRoute, Route} from '@react-navigation/native';
+import {Route} from '@react-navigation/native';
 import {CommonActions, NavigationState} from '@react-navigation/routers';
 import {navigationRef} from '../navigation/rootNavigation';
 

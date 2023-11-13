@@ -18,15 +18,17 @@ import {
 } from '../../../styles/components';
 import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type TermsOfServiceProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
 enum TermsTabRoutesEnum {
   TERMS = 'terms',
   PRIVACY = 'privacy',
 }
 
-const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceProps): JSX.Element => {
+const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
+
   useBackHandler(() => {
-    void props.route.params.onBack();
+    void onBack();
     // make sure event stops here
     return true;
   });
@@ -50,11 +52,7 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
    */
   const memoTabView = useMemo(() => <SSITabView routes={routes} />, []);
 
-  const onAccept = async (): Promise<void> => {
-    await props.route.params.onNext();
-  };
-
-  const onDecline = async (): Promise<void> => {
+  const handleDecline = async (): Promise<void> => {
     props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('terms_of_service_decline_title'),
       details: translate('terms_of_service_decline_message'),
@@ -63,7 +61,7 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
         onPress: async () => {
           // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
           BackHandler.exitApp();
-          await props.route.params.onDecline();
+          await onDecline();
         },
       },
       secondaryButton: {
@@ -73,14 +71,6 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
         },
       },
     });
-  };
-
-  const onAcceptTerms = async (isChecked: boolean): Promise<void> => {
-    await props.route.params.onAcceptTerms(isChecked);
-  };
-
-  const onAcceptPrivacy = async (isChecked: boolean): Promise<void> => {
-    await props.route.params.onAcceptPrivacy(isChecked);
   };
 
   return (
@@ -107,12 +97,12 @@ const SSITermsOfServiceScreen: FC<TermsOfServiceProps> = (props: TermsOfServiceP
         <SSIButtonsContainer
           secondaryButton={{
             caption: translate('action_decline_label'),
-            onPress: onDecline,
+            onPress: handleDecline,
           }}
           primaryButton={{
             caption: translate('action_accept_label'),
-            disabled: props.route.params.isDisabled(),
-            onPress: onAccept,
+            disabled: isDisabled(),
+            onPress: onNext,
           }}
         />
       </BottomContainer>

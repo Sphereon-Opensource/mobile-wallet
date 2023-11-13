@@ -13,7 +13,7 @@ import {
 } from '../../../styles/components';
 import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 
-type WelcomeScreenProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
+type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
 
 interface IState {
   body: string;
@@ -21,7 +21,7 @@ interface IState {
   step: number;
 }
 
-const SSIWelcomeScreen: FC<WelcomeScreenProps> = (props: WelcomeScreenProps): JSX.Element => {
+const SSIWelcomeScreen: FC<Props> = (props: Props): JSX.Element => {
   if (Platform.OS === PlatformsEnum.ANDROID) {
     StatusBar.setTranslucent(true);
     StatusBar.setBackgroundColor('transparent');

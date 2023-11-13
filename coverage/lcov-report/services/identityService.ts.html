@@ -20,27 +20,27 @@
         <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> identityService.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">62.5% </span>
+            <span class="strong">18.75% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">10/16</span>
+            <span class="fraction">3/16</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">68.75% </span>
+            <span class="strong">0% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">11/16</span>
+            <span class="fraction">0/16</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">28.57% </span>
+            <span class="strong">0% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">2/7</span>
+            <span class="fraction">0/7</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">66.66% </span>
+            <span class="strong">20% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">10/15</span>
+            <span class="fraction">3/15</span>
           </div>
         </div>
         <p class="quiet">
@@ -53,7 +53,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line medium"></div>
+      <div class="status-line low"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,36 +116,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {IIdentifier, IKey} from '@veramo/core';
 &nbsp;
@@ -161,15 +161,15 @@ export const getIdentifiers = <span class="fstat-no" title="function not covered
 <span class="cstat-no" title="statement not covered" >  return didManagerFind();</span>
 };
 &nbsp;
-export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise&lt;IIdentifier&gt; =&gt; {
-  const identifier = await didManagerCreate({
+export const createIdentifier = <span class="fstat-no" title="function not covered" >as</span>ync (args?: ICreateIdentifierArgs): Promise&lt;IIdentifier&gt; =&gt; {
+  const identifier = <span class="cstat-no" title="statement not covered" >await didManagerCreate({</span>
     kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
     ...(args?.method &amp;&amp; {provider: `${DID_PREFIX}:${args?.method}`}),
     alias: args?.createOpts?.alias || `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
     options: args?.createOpts?.options,
   });
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (store.getState().user.users.size &gt; 0) {
+<span class="cstat-no" title="statement not covered" >  if (store.getState().user.users.size &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >    await store.dispatch&lt;any&gt;(addIdentifier({did: identifier.did})).then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        store.dispatch&lt;any&gt;(getContacts());</span>
@@ -177,21 +177,21 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise&lt
     });
   }
 &nbsp;
-  return identifier;
+<span class="cstat-no" title="statement not covered" >  return identifier;</span>
 };
 &nbsp;
-export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise&lt;IIdentifier&gt; =&gt; {
-  const identifiers = (await didManagerFind(args?.method ? {provider: `${DID_PREFIX}:${args?.method}`} : <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>).filter(
+export const getOrCreatePrimaryIdentifier = <span class="fstat-no" title="function not covered" >as</span>ync (args?: ICreateOrGetIdentifierArgs): Promise&lt;IIdentifier&gt; =&gt; {
+  const identifiers = <span class="cstat-no" title="statement not covered" >(await didManagerFind(args?.method ? {provider: `${DID_PREFIX}:${args?.method}`} : {})).filter(</span>
 <span class="fstat-no" title="function not covered" >    (i</span>dentifier: IIdentifier) =&gt;
 <span class="cstat-no" title="statement not covered" >      args?.createOpts?.options?.type === undefined || identifier.keys.some(<span class="fstat-no" title="function not covered" >(k</span>ey: IKey) =&gt; <span class="cstat-no" title="statement not covered" >key.type === args?.createOpts?.options?.type)</span>,</span>
   );
 &nbsp;
-  console.log(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
+<span class="cstat-no" title="statement not covered" >  console.log(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);</span>
 &nbsp;
   // Currently we only support one identifier
-  const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : <span class="branch-1 cbranch-no" title="branch not covered" >identifiers[0];</span>
+  const identifier: IIdentifier = <span class="cstat-no" title="statement not covered" >!identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];</span>
 &nbsp;
-  return didManagerGet({did: identifier.did});
+<span class="cstat-no" title="statement not covered" >  return didManagerGet({did: identifier.did});</span>
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -202,7 +202,7 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-12T22:52:25.095Z
+      at 2023-11-13T20:21:44.842Z
     </div>
     <script src="../prettify.js"></script>
     <script>
