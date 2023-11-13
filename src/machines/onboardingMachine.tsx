@@ -73,7 +73,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
   return createMachine<IOnboardingMachineContext, OnboardingEventTypes>({
     id: opts?.machineId ?? 'Onboarding',
     predictableActionArguments: true,
-    initial: OnboardingStates.welcomeIntro,
+    initial: OnboardingStates.showIntro,
     schema: {
       events: {} as OnboardingEventTypes,
       guards: {} as
@@ -90,7 +90,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
             type: OnboardingGuards.onboardingPinCodeVerifyGuard;
           },
       services: {} as {
-        [OnboardingStates.walletSetup]: {
+        [OnboardingStates.setupWallet]: {
           data: WalletSetupServiceResult;
         };
       },
@@ -100,16 +100,16 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
     },
 
     states: {
-      [OnboardingStates.welcomeIntro]: {
+      [OnboardingStates.showIntro]: {
         on: {
           [OnboardingEvents.NEXT]: [
             {
-              target: OnboardingStates.tosAgreement,
+              target: OnboardingStates.acceptAgreement,
             },
           ],
         },
       },
-      [OnboardingStates.tosAgreement]: {
+      [OnboardingStates.acceptAgreement]: {
         on: {
           [OnboardingEvents.SET_POLICY]: {
             actions: assign({privacyPolicyAccepted: (_ctx, e: PrivacyPolicyEvent) => e.data}),
@@ -118,83 +118,83 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
             actions: assign({termsConditionsAccepted: (_ctx, e: TermsConditionsEvent) => e.data}),
           },
           [OnboardingEvents.DECLINE]: {
-            target: OnboardingStates.onboardingDeclined,
+            target: OnboardingStates.declineOnboarding,
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingToSAgreementGuard,
-            target: OnboardingStates.personalDetailsEntry,
+            target: OnboardingStates.enterPersonalDetails,
           },
-          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.welcomeIntro},
+          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.showIntro},
         },
       },
-      [OnboardingStates.personalDetailsEntry]: {
+      [OnboardingStates.enterPersonalDetails]: {
         on: {
           [OnboardingEvents.SET_PERSONAL_DATA]: {
             actions: assign({personalData: (_ctx, e: PersonalDataEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPersonalDataGuard,
-            target: OnboardingStates.pinEntry,
+            target: OnboardingStates.enterPin,
           },
-          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.tosAgreement},
+          [OnboardingEvents.PREVIOUS]: {target: OnboardingStates.acceptAgreement},
         },
       },
-      [OnboardingStates.pinEntry]: {
+      [OnboardingStates.enterPin]: {
         on: {
           [OnboardingEvents.SET_PIN]: {
             actions: assign({pinCode: (_ctx, e: PinSetEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPinCodeSetGuard,
-            target: OnboardingStates.pinVerify,
+            target: OnboardingStates.verifyPin,
           },
           [OnboardingEvents.PREVIOUS]: {
-            target: OnboardingStates.personalDetailsEntry,
+            target: OnboardingStates.enterPersonalDetails,
           },
         },
       },
-      [OnboardingStates.pinVerify]: {
+      [OnboardingStates.verifyPin]: {
         on: {
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPinCodeVerifyGuard,
-            target: OnboardingStates.personalDetailsVerify,
+            target: OnboardingStates.verifyPersonalDetails,
           },
           [OnboardingEvents.PREVIOUS]: {
-            target: OnboardingStates.pinEntry,
+            target: OnboardingStates.enterPin,
           },
         },
       },
-      [OnboardingStates.personalDetailsVerify]: {
+      [OnboardingStates.verifyPersonalDetails]: {
         on: {
           [OnboardingEvents.NEXT]: {
-            target: OnboardingStates.walletSetup,
+            target: OnboardingStates.setupWallet,
           },
           [OnboardingEvents.PREVIOUS]: {
-            target: OnboardingStates.pinEntry, // We are going back to pin entry and then verify
+            target: OnboardingStates.enterPin, // We are going back to pin entry and then verify
           },
         },
       },
-      [OnboardingStates.walletSetup]: {
+      [OnboardingStates.setupWallet]: {
         invoke: {
-          id: OnboardingStates.walletSetup,
-          src: OnboardingStates.walletSetup,
+          id: OnboardingStates.setupWallet,
+          src: OnboardingStates.setupWallet,
           onDone: {
-            target: OnboardingStates.onboardingDone,
+            target: OnboardingStates.finishOnboarding,
           },
           // todo: On Error
         },
       },
-      [OnboardingStates.onboardingDeclined]: {
-        id: OnboardingStates.onboardingDeclined,
-        always: OnboardingStates.welcomeIntro,
+      [OnboardingStates.declineOnboarding]: {
+        id: OnboardingStates.declineOnboarding,
+        always: OnboardingStates.showIntro,
         entry: assign({
           ...initialContext,
         }),
         // Since we are not allowed to exit an app by Apple/Google, we go back to the onboarding state when the user declines
       },
-      [OnboardingStates.onboardingDone]: {
+      [OnboardingStates.finishOnboarding]: {
         type: 'final',
-        id: OnboardingStates.onboardingDone,
+        id: OnboardingStates.finishOnboarding,
         entry: assign({
           pinCode: '',
           personalData: undefined,

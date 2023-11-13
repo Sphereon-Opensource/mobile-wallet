@@ -41,9 +41,9 @@ export const onboardingStateNavigationListener = (
     debug(`navigation not ready yet`);
     return;
   }
-  if (state.matches(OnboardingStates.welcomeIntro)) {
+  if (state.matches(OnboardingStates.showIntro)) {
     nav.navigate(ScreenRoutesEnum.WELCOME, {context, onNext});
-  } else if (state.matches(OnboardingStates.tosAgreement)) {
+  } else if (state.matches(OnboardingStates.acceptAgreement)) {
     nav.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {
       headerTitle: translate('terms_of_service_title'),
       context,
@@ -62,7 +62,7 @@ export const onboardingStateNavigationListener = (
         }),
       isDisabled: () => onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true,
     });
-  } else if (state.matches(OnboardingStates.personalDetailsEntry)) {
+  } else if (state.matches(OnboardingStates.enterPersonalDetails)) {
     nav.navigate(ScreenRoutesEnum.PERSONAL_DATA, {
       context,
       isDisabled: () => onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true,
@@ -82,7 +82,7 @@ export const onboardingStateNavigationListener = (
         ]);
       },
     });
-  } else if (state.matches(OnboardingStates.pinEntry)) {
+  } else if (state.matches(OnboardingStates.enterPin)) {
     nav.navigate(ScreenRoutesEnum.PIN_CODE_SET, {
       headerSubTitle: translate('pin_code_choose_pin_code_subtitle'),
       context,
@@ -97,7 +97,7 @@ export const onboardingStateNavigationListener = (
         ]);
       },
     });
-  } else if (state.matches(OnboardingStates.pinVerify)) {
+  } else if (state.matches(OnboardingStates.verifyPin)) {
     nav.navigate(ScreenRoutesEnum.PIN_CODE_VERIFY, {
       headerSubTitle: translate('pin_code_confirm_pin_code_subtitle'),
       context,
@@ -109,14 +109,14 @@ export const onboardingStateNavigationListener = (
         });
       },
     });
-  } else if (state.matches(OnboardingStates.personalDetailsVerify)) {
+  } else if (state.matches(OnboardingStates.verifyPersonalDetails)) {
     nav.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {context, onBack, onNext});
-  } else if (state.matches(OnboardingStates.walletSetup)) {
+  } else if (state.matches(OnboardingStates.setupWallet)) {
     nav.navigate(ScreenRoutesEnum.LOADING, {
       message: translate('action_onboarding_setup_message'),
       context,
     });
-  } else if (state.matches(OnboardingStates.onboardingDone)) {
+  } else if (state.matches(OnboardingStates.finishOnboarding)) {
     // Cleans up the machine, triggering the main navigator
     OnboardingMachine.stopInstance();
     store.dispatch<any>({type: LOGIN_SUCCESS, payload: store.getState().user.activeUser}); // Yuck, but we need a rerender

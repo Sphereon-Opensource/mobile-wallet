@@ -22,9 +22,6 @@ const SSIPinCodeSetScreen: FC<PinCodeSetProps> = (props: PinCodeSetProps): JSX.E
     await props.route.params.onNext(value);
   };
 
-  // We always set the pincode to an empty value for this screen
-  props.route.params.context.pinCode = '';
-
   // We use a UUID in the key to ensure we always refresh the pincode on the Set screen
   return (
     <Container>

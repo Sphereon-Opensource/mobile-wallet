@@ -25,15 +25,15 @@ export interface IOnboardingMachineContext {
 }
 
 export enum OnboardingStates {
-  welcomeIntro = 'welcomeIntro',
-  tosAgreement = 'tosAgreement',
-  personalDetailsEntry = 'personalDetailsEntry',
-  personalDetailsVerify = 'personalDetailsVerify',
-  onboardingDeclined = 'onboardingDeclined',
-  onboardingDone = 'onboardingDone',
-  pinEntry = 'pinEntry',
-  pinVerify = 'pinVerify',
-  walletSetup = 'walletSetup',
+  showIntro = 'showIntro',
+  acceptAgreement = 'acceptAgreement',
+  enterPersonalDetails = 'enterPersonalDetails',
+  verifyPersonalDetails = 'verifyPersonalDetails',
+  declineOnboarding = 'declineOnboarding',
+  finishOnboarding = 'finishOnboarding',
+  enterPin = 'enterPin',
+  verifyPin = 'verifyPin',
+  setupWallet = 'setupWallet',
 }
 
 export enum OnboardingEvents {

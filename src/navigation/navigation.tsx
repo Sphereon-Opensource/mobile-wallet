@@ -7,7 +7,7 @@ import Toast from 'react-native-toast-message';
 import {APP_ID} from '../@config/constants';
 
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
-import SSIHeaderBar, {HeaderBarProps} from '../components/bars/SSIHeaderBar';
+import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
@@ -35,6 +35,7 @@ import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
+import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
   HeaderMenuIconsEnum,
@@ -46,7 +47,7 @@ import {
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {OnboardingProvider, onboardingStateNavigationListener} from './onboardingStateNavigation';
+import {OnboardingProvider} from './onboardingStateNavigation';
 
 const debug = Debug(`${APP_ID}:navigation`);
 
@@ -87,7 +88,7 @@ const MainStackNavigator = (): JSX.Element => {
           presentation: 'transparentModal',
         }}
       />
-      {/*<Stack.Screen name="Veramo" component={Veramo} />*/}
+      <Stack.Screen name="Veramo" component={Veramo} />
     </Stack.Navigator>
   );
 };
@@ -432,12 +433,9 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
-export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element => {
-  // const {onBack} = props;
-  // const onBack = (): void => OnboardingMachine.getInstance({requireExisting: true}).send(OnboardingEvents.PREVIOUS)
+export const OnboardingStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      // initialRouteName={ScreenRoutesEnum.WELCOME}
       screenOptions={{
         animation: 'none',
       }}>
@@ -446,7 +444,6 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
         component={SSIWelcomeScreen}
         options={{
           headerShown: false,
-          // onNext
         }}
       />
       <Stack.Screen
@@ -454,7 +451,7 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
         component={SSITermsOfServiceScreen}
         options={({route}) => ({
           headerTitle: translate('terms_of_service_title'),
-          header: (props: HeaderBarProps) => (
+          header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
@@ -471,7 +468,7 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
         component={SSIPersonalDataScreen}
         options={({route}) => ({
           headerTitle: translate('personal_data_title'),
-          header: (props: HeaderBarProps) => (
+          header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
@@ -490,7 +487,7 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
-          header: (props: HeaderBarProps) => (
+          header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
@@ -509,7 +506,7 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_confirm_pin_code_title'),
-          header: (props: HeaderBarProps) => (
+          header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
@@ -526,7 +523,7 @@ export const OnboardingStack = (/*props: {onBack: () => void}*/): JSX.Element =>
         component={SSIOnboardingSummaryScreen}
         options={({route}) => ({
           headerTitle: translate('onboard_summary_title'),
-          header: (props: HeaderBarProps) => (
+          header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
@@ -583,7 +580,6 @@ export const OnboardingStackScreenWithContext = (props: IOnboardingProps): JSX.E
   return (
     <OnboardingProvider customOnboardingInstance={props?.customOnboardingInstance}>
       <OnboardingStack />
-      {/*<OnboardingStack onBack={props.onBack} />*/}
     </OnboardingProvider>
   );
 };

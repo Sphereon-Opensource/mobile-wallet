@@ -23,7 +23,7 @@ const SSIPersonalDataScreen: FC<PersonalDataProps> = (props: PersonalDataProps):
     // make sure event stops here
     return true;
   });
-  const personalData = props.route.params.context.personalData;
+  const personalData = {...props.route.params.context.personalData};
 
   const onFirstNameChange = async (value: string): Promise<void> => {
     personalData.firstName = value.trim();
