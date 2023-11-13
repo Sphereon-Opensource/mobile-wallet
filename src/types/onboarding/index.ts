@@ -1,7 +1,8 @@
-import {CredentialPayload, ProofFormat} from '@veramo/core';
+import {CredentialPayload, IIdentifier, ProofFormat, VerifiableCredential} from '@veramo/core';
 import {Interpreter} from 'xstate';
 import {SupportedDidMethodEnum} from '../did';
 import {ISetPersonalDataActionArgs} from '../store/onboarding.types';
+import {IUser} from '../user';
 
 export interface IOnboardingCredentialData {
   didMethod: SupportedDidMethodEnum;
@@ -66,6 +67,12 @@ export enum OnboardingGuards {
   onboardingPersonalDataGuard = 'onboardingPersonalDataGuard',
   onboardingPinCodeSetGuard = 'onboardingPinCodeSetGuard',
   onboardingPinCodeVerifyGuard = 'onboardingPinCodeVerifyGuard',
+}
+
+export interface WalletSetupServiceResult {
+  identifier: IIdentifier;
+  storedUser: IUser;
+  verifiableCredential: VerifiableCredential;
 }
 
 // We use this in class components, as there is no context available there. It is also used by default in the onboarding provider

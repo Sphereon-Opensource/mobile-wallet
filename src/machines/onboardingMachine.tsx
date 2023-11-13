@@ -21,6 +21,7 @@ import {
   PinSetEvent,
   PrivacyPolicyEvent,
   TermsConditionsEvent,
+  WalletSetupServiceResult,
 } from '../types/onboarding';
 
 const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
@@ -85,6 +86,11 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
         | {
             type: OnboardingGuards.onboardingPinCodeVerifyGuard;
           },
+      services: {} as {
+        [OnboardingStates.walletSetup]: {
+          data: WalletSetupServiceResult;
+        };
+      },
     },
     context: {
       ...initialContext,
@@ -230,7 +236,13 @@ export class OnboardingMachine {
     const newInst: OnboardingInterpretType = interpret(
       createOnboardingMachine(opts).withConfig({
         services: {walletSetup, ...opts?.services},
-        guards: {onboardingToSAgreementGuard, onboardingPersonalDataGuard, onboardingPinCodeSetGuard, onboardingPinCodeVerifyGuard, ...opts?.guards},
+        guards: {
+          onboardingToSAgreementGuard,
+          onboardingPersonalDataGuard,
+          onboardingPinCodeSetGuard,
+          onboardingPinCodeVerifyGuard,
+          ...opts?.guards,
+        },
       }),
     );
     if (typeof opts?.subscription === 'function') {

@@ -1,5 +1,4 @@
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
-import {IIdentifier, VerifiableCredential} from '@veramo/core';
 import {v4 as uuidv4} from 'uuid';
 
 import agent from '../agent';
@@ -7,14 +6,12 @@ import store from '../store';
 
 import {createUser, login} from '../store/actions/user.actions';
 import {IUser} from '../types';
-import {IOnboardingMachineContext} from '../types/onboarding';
+import {IOnboardingMachineContext, WalletSetupServiceResult} from '../types/onboarding';
 import {createVerifiableCredential, storeVerifiableCredential} from './credentialService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 import {storagePersistPin} from './storageService';
 
-export const walletSetup = async (
-  context: IOnboardingMachineContext,
-): Promise<{identifier: IIdentifier; storedUser: IUser; verifiableCredential: VerifiableCredential}> => {
+export const walletSetup = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const setup = await Promise.all([
     storagePersistPin({
       value: context.pinCode,
@@ -28,9 +25,7 @@ export const walletSetup = async (
   return setup[1];
 };
 
-const createUserAndIdentity = async (
-  context: IOnboardingMachineContext,
-): Promise<{identifier: IIdentifier; storedUser: IUser; verifiableCredential: VerifiableCredential}> => {
+const createUserAndIdentity = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const identifier = await getOrCreatePrimaryIdentifier({method: context.credentialData.didMethod});
 
   const personalData = context.personalData;
