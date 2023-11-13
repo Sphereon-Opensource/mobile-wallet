@@ -106,7 +106,7 @@ export default function App() {
     }
   }, [appIsReady, navigationIsReady]);
 
-  if (!appIsReady || !navigationRef) {
+  if (!appIsReady) {
     return null;
   }
 

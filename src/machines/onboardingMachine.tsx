@@ -2,7 +2,7 @@ import {CredentialPayload} from '@veramo/core';
 import {createContext} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
-import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
+import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/onboardingStateNavigation';
 import {walletSetup} from '../services/onboardingService';
 import {SupportedDidMethodEnum} from '../types';
@@ -23,6 +23,9 @@ import {
   TermsConditionsEvent,
   WalletSetupServiceResult,
 } from '../types/onboarding';
+
+import Debug from 'debug';
+const debug = Debug(`${APP_ID}:onboarding`);
 
 const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
   ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
@@ -222,13 +225,13 @@ export class OnboardingMachine {
   }
 
   static stopInstance() {
-    console.log(`Stop instance...`);
+    debug(`Stop instance...`);
     if (!OnboardingMachine.hasInstance()) {
       return;
     }
     OnboardingMachine.instance.stop();
     OnboardingMachine._instance = undefined;
-    console.log(`Stopped instance`);
+    debug(`Stopped instance`);
   }
 
   // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
@@ -249,7 +252,7 @@ export class OnboardingMachine {
       newInst.onTransition(opts.subscription);
     } else if (opts?.requireCustomNavigationHook !== true) {
       newInst.onTransition(snapshot => {
-        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
+        debug(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
         onboardingStateNavigationListener(newInst, snapshot);
       });
     }

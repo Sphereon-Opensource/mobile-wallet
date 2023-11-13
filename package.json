@@ -72,7 +72,6 @@
     "@veramo/did-resolver": "4.2.0",
     "@veramo/kms-local": "4.2.0",
     "@veramo/utils": "4.2.0",
-    "@xstate/react": "^3.2.2",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "assert": "^1.1.1",
