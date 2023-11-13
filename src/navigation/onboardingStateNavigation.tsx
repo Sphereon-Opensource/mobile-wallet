@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useState} from 'react';
 import {State} from 'xstate';
 import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
@@ -32,6 +32,10 @@ export const onboardingStateNavigationListener = (
   >,
   navigation?: any,
 ) => {
+  if (state._event.type === 'internal') {
+    // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
+    return;
+  }
   const onBack = () => onboardingMachine.send(OnboardingEvents.PREVIOUS);
   const onNext = () => onboardingMachine.send(OnboardingEvents.NEXT);
   const context = onboardingMachine.getSnapshot().context;
