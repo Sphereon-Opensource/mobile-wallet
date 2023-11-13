@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
 import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/onboardingStateNavigation';
-import {walletSetup} from '../services/onboardingService';
+import {setupWallet} from '../services/onboardingService';
 import {SupportedDidMethodEnum} from '../types';
 import {
   ICreateOnboardingMachineOpts,
@@ -238,7 +238,7 @@ export class OnboardingMachine {
   private static newInstance(opts?: IInstanceOnboardingMachineOpts): OnboardingInterpretType {
     const newInst: OnboardingInterpretType = interpret(
       createOnboardingMachine(opts).withConfig({
-        services: {walletSetup, ...opts?.services},
+        services: {setupWallet, ...opts?.services},
         guards: {
           onboardingToSAgreementGuard,
           onboardingPersonalDataGuard,
@@ -252,7 +252,7 @@ export class OnboardingMachine {
       newInst.onTransition(opts.subscription);
     } else if (opts?.requireCustomNavigationHook !== true) {
       newInst.onTransition(snapshot => {
-        debug(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
+        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
         onboardingStateNavigationListener(newInst, snapshot);
       });
     }

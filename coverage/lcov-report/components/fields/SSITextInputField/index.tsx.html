@@ -20,27 +20,27 @@
         <h1><a href="../../../index.html">All files</a> / <a href="index.html">components/fields/SSITextInputField</a> index.tsx</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">4.34% </span>
+            <span class="strong">43.47% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">1/23</span>
+            <span class="fraction">10/23</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">47.16% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">0/53</span>
+            <span class="fraction">25/53</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">11.11% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/9</span>
+            <span class="fraction">1/9</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">4.34% </span>
+            <span class="strong">43.47% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">1/23</span>
+            <span class="fraction">10/23</span>
           </div>
         </div>
         <p class="quiet">
@@ -350,21 +350,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -373,10 +365,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -384,7 +373,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -528,33 +528,33 @@ export interface IProps {
   showBorder?: boolean;
 }
 &nbsp;
-const SSITextInputField: FC&lt;IProps&gt; = <span class="fstat-no" title="function not covered" >(p</span>rops: IProps): JSX.Element =&gt; {
+const SSITextInputField: FC&lt;IProps&gt; = (props: IProps): JSX.Element =&gt; {
   const {
-    autoCapitalize = <span class="branch-0 cbranch-no" title="branch not covered" >undefined,</span>
+    autoCapitalize = undefined,
     autoComplete,
-    autoFocus = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
-    borderColor = <span class="branch-0 cbranch-no" title="branch not covered" >selectionElements.primaryBorderDark,</span>
-    disabled = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
-    editable = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
+    autoFocus = false,
+    borderColor = selectionElements.primaryBorderDark,
+    disabled = false,
+    editable = true,
     helperText,
     initialValue,
     label,
     labelColor,
-    keyboardType = <span class="branch-0 cbranch-no" title="branch not covered" >undefined,</span>
+    keyboardType = undefined,
     maxLength,
     onChangeText,
     onEndEditing,
     onFocus,
     placeholderValue,
-    secureTextEntry = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
-    showBorder = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
-  } = <span class="cstat-no" title="statement not covered" >props;</span>
+    secureTextEntry = false,
+    showBorder = true,
+  } = props;
 &nbsp;
-  const [value, setValue] = <span class="cstat-no" title="statement not covered" >React.useState(initialValue);</span>
-  const [error, setError] = <span class="cstat-no" title="statement not covered" >React.useState&lt;string&gt;();</span>
-  const [hasFocus, setHasFocus] = <span class="cstat-no" title="statement not covered" >React.useState(false);</span>
+  const [value, setValue] = React.useState(initialValue);
+  const [error, setError] = React.useState&lt;string&gt;();
+  const [hasFocus, setHasFocus] = React.useState(false);
 &nbsp;
-  const onChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (value: string): Promise&lt;void&gt; =&gt; {</span>
+  const onChange = <span class="fstat-no" title="function not covered" >as</span>ync (value: string): Promise&lt;void&gt; =&gt; {
 <span class="cstat-no" title="statement not covered" >    setValue(value);</span>
 <span class="cstat-no" title="statement not covered" >    if (onChangeText) {</span>
 <span class="cstat-no" title="statement not covered" >      onChangeText(value)</span>
@@ -563,7 +563,7 @@ const SSITextInputField: FC&lt;IProps&gt; = <span class="fstat-no" title="functi
     }
   };
 &nbsp;
-  const onEditingEnd = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (event: NativeSyntheticEvent&lt;TextInputEndEditingEventData&gt;): Promise&lt;void&gt; =&gt; {</span>
+  const onEditingEnd = <span class="fstat-no" title="function not covered" >as</span>ync (event: NativeSyntheticEvent&lt;TextInputEndEditingEventData&gt;): Promise&lt;void&gt; =&gt; {
 <span class="cstat-no" title="statement not covered" >    if (onEndEditing) {</span>
 <span class="cstat-no" title="statement not covered" >      onEndEditing(event.nativeEvent.text)</span>
         .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setError(undefined))</span>
@@ -571,22 +571,22 @@ const SSITextInputField: FC&lt;IProps&gt; = <span class="fstat-no" title="functi
     }
   };
 &nbsp;
-  const onBlur = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {</span>
+  const onBlur = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {
 <span class="cstat-no" title="statement not covered" >    setHasFocus(false);</span>
   };
 &nbsp;
-  const _onFocus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {</span>
+  const _onFocus = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;void&gt; =&gt; {
 <span class="cstat-no" title="statement not covered" >    setHasFocus(true);</span>
 <span class="cstat-no" title="statement not covered" >    if (onFocus) {</span>
 <span class="cstat-no" title="statement not covered" >      await onFocus();</span>
     }
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;Container&gt;
       {label ? (
         labelColor || error ? (
-          &lt;LabelCaption
+<span class="branch-0 cbranch-no" title="branch not covered" >          &lt;LabelCaption</span>
             style={{
               color: error ? statuses.error : labelColor,
               ...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED}),
@@ -594,11 +594,11 @@ const SSITextInputField: FC&lt;IProps&gt; = <span class="fstat-no" title="functi
             {label}
           &lt;/LabelCaption&gt;
         ) : (
-          &lt;LinearTextGradient style={{...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED})}}&gt;
+          &lt;LinearTextGradient style={{...(disabled &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{opacity: OpacityStyleEnum.DISABLED})</span>}}&gt;
             &lt;LabelCaption&gt;{label}&lt;/LabelCaption&gt;
           &lt;/LinearTextGradient&gt;
         )
-      ) : null}
+      ) : <span class="branch-1 cbranch-no" title="branch not covered" >null}</span>
       &lt;InputContainer&gt;
         &lt;TextInput
           secureTextEntry={secureTextEntry}
@@ -614,28 +614,28 @@ const SSITextInputField: FC&lt;IProps&gt; = <span class="fstat-no" title="functi
           onEndEditing={onEditingEnd}
           onFocus={_onFocus}
           value={value}
-          style={{...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED})}}
+          style={{...(disabled &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{opacity: OpacityStyleEnum.DISABLED})</span>}}
         /&gt;
         {secureTextEntry &amp;&amp; (
           // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc
-          &lt;IconContainer style={{...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED})}}&gt;
+<span class="branch-1 cbranch-no" title="branch not covered" >          &lt;IconContainer style={{...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED})}}&gt;</span>
             &lt;SSIEyeIcon /&gt;
           &lt;/IconContainer&gt;
         )}
       &lt;/InputContainer&gt;
-      {hasFocus &amp;&amp; !error ? (
-        &lt;UnderlineLinearGradient /&gt;
+      {hasFocus &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!error </span>? (
+<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;UnderlineLinearGradient /&gt;</span>
       ) : (
         &lt;Underline
           style={{
-            ...(showBorder &amp;&amp; {borderBottomWidth: 1, borderBottomColor: error ? statuses.error : borderColor}),
-            ...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED}),
+            ...(showBorder &amp;&amp; {borderBottomWidth: 1, borderBottomColor: error ? <span class="branch-0 cbranch-no" title="branch not covered" >statuses.error </span>: borderColor}),
+            ...(disabled &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{opacity: OpacityStyleEnum.DISABLED})</span>,
           }}
         /&gt;
       )}
       &lt;HelperContainer&gt;
         {(helperText || error) &amp;&amp; (
-          &lt;LabelCaption
+<span class="branch-2 cbranch-no" title="branch not covered" >          &lt;LabelCaption</span>
             style={{
               color: error ? statuses.error : inputs.placeholder,
               ...(disabled &amp;&amp; {opacity: OpacityStyleEnum.DISABLED}),
@@ -658,7 +658,7 @@ export default SSITextInputField;
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../../../prettify.js"></script>
     <script>

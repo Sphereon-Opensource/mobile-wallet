@@ -73,6 +73,14 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   };
 
+  const handleAcceptTerms = (value: boolean) => {
+    return Promise.resolve(onAcceptTerms(value));
+  };
+
+  const handleAcceptPrivacy = (value: boolean) => {
+    return Promise.resolve(onAcceptPrivacy(value));
+  };
+
   return (
     <Container>
       <StatusBar />
@@ -82,14 +90,14 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
           <CheckboxContainer>
             <SSICheckbox
               initialValue={props.route.params.context.termsConditionsAccepted}
-              onValueChange={onAcceptTerms}
+              onValueChange={handleAcceptTerms}
               label={translate('terms_of_service_consent_terms_message')}
             />
           </CheckboxContainer>
           <CheckboxContainer>
             <SSICheckbox
               initialValue={props.route.params.context.privacyPolicyAccepted}
-              onValueChange={onAcceptPrivacy}
+              onValueChange={handleAcceptPrivacy}
               label={translate('terms_of_service_consent_privacy_message')}
             />
           </CheckboxContainer>

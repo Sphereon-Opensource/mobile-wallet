@@ -29,10 +29,10 @@ const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onFirstNameChange = async (value: string): Promise<void> => {
     personalData.firstName = value.trim();
+    handlePersonalData();
   };
 
   const onFirstNameValidation = async (value: string): Promise<void> => {
-    handlePersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('first_name_invalid_message')));
     }
@@ -40,10 +40,10 @@ const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onLastNameChange = async (value: string): Promise<void> => {
     personalData.lastName = value.trim();
+    handlePersonalData();
   };
 
   const onLastNameValidation = async (value: string): Promise<void> => {
-    handlePersonalData();
     if (value.length === 0) {
       return Promise.reject(Error(translate('last_name_invalid_message')));
     }

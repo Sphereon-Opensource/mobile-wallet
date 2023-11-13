@@ -11,7 +11,7 @@ import {createVerifiableCredential, storeVerifiableCredential} from './credentia
 import {getOrCreatePrimaryIdentifier} from './identityService';
 import {storagePersistPin} from './storageService';
 
-export const walletSetup = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
+export const setupWallet = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const setup = await Promise.all([
     storagePersistPin({
       value: context.pinCode,

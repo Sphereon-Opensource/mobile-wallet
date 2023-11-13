@@ -20,6 +20,10 @@ const SSIPinCodeSetScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
+  const onVerification = async (value: string): Promise<void> => {
+    await onNext(value);
+  };
+
   // We use a UUID in the key to ensure we always refresh the pincode on the Set screen
   return (
     <Container>
@@ -31,7 +35,7 @@ const SSIPinCodeSetScreen: FC<Props> = (props: Props): JSX.Element => {
           accessibilityLabel={translate('pin_code_accessibility_label')}
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
-          onVerification={onNext}
+          onVerification={onVerification}
         />
       </View>
     </Container>

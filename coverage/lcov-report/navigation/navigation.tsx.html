@@ -20,9 +20,9 @@
         <h1><a href="../index.html">All files</a> / <a href="index.html">navigation</a> navigation.tsx</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">19.51% </span>
+            <span class="strong">29.26% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">16/82</span>
+            <span class="fraction">24/82</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">5.45% </span>
+            <span class="strong">20% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">3/55</span>
+            <span class="fraction">11/55</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">19.51% </span>
+            <span class="strong">29.26% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">16/82</span>
+            <span class="fraction">24/82</span>
           </div>
         </div>
         <p class="quiet">
@@ -1145,10 +1145,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1162,10 +1162,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1179,12 +1179,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1198,12 +1198,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1217,10 +1217,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1801,10 +1801,10 @@ export const OnboardingStack = (): JSX.Element =&gt; {
       &lt;Stack.Screen
         name={ScreenRoutesEnum.PERSONAL_DATA}
         component={SSIPersonalDataScreen}
-        options={<span class="fstat-no" title="function not covered" >({</span>route}) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        options={({route}) =&gt; ({
           headerTitle: translate('personal_data_title'),
-          header: <span class="fstat-no" title="function not covered" >(p</span>rops: NativeStackHeaderProps) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;SSIHeaderBar</span>
+          header: (props: NativeStackHeaderProps) =&gt; (
+            &lt;SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
@@ -1818,12 +1818,12 @@ export const OnboardingStack = (): JSX.Element =&gt; {
       &lt;Stack.Screen
         name={ScreenRoutesEnum.PIN_CODE_SET}
         component={SSIPinCodeSetScreen}
-        options={<span class="fstat-no" title="function not covered" >({</span>route}) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        options={({route}) =&gt; ({
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_choose_pin_code_title'),
-          header: <span class="fstat-no" title="function not covered" >(p</span>rops: NativeStackHeaderProps) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;SSIHeaderBar</span>
+          header: (props: NativeStackHeaderProps) =&gt; (
+            &lt;SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
@@ -1837,12 +1837,12 @@ export const OnboardingStack = (): JSX.Element =&gt; {
       &lt;Stack.Screen
         name={ScreenRoutesEnum.PIN_CODE_VERIFY}
         component={SSIPinCodeVerifyScreen}
-        options={<span class="fstat-no" title="function not covered" >({</span>route}) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        options={({route}) =&gt; ({
           // unmountOnBlur resets the screen back to initial state
           unmountOnBlur: true,
           headerTitle: translate('pin_code_confirm_pin_code_title'),
-          header: <span class="fstat-no" title="function not covered" >(p</span>rops: NativeStackHeaderProps) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;SSIHeaderBar</span>
+          header: (props: NativeStackHeaderProps) =&gt; (
+            &lt;SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
@@ -1856,10 +1856,10 @@ export const OnboardingStack = (): JSX.Element =&gt; {
       &lt;Stack.Screen
         name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
         component={SSIOnboardingSummaryScreen}
-        options={<span class="fstat-no" title="function not covered" >({</span>route}) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+        options={({route}) =&gt; ({
           headerTitle: translate('onboard_summary_title'),
-          header: <span class="fstat-no" title="function not covered" >(p</span>rops: NativeStackHeaderProps) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;SSIHeaderBar</span>
+          header: (props: NativeStackHeaderProps) =&gt; (
+            &lt;SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
@@ -1981,7 +1981,7 @@ export default AppNavigator;
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../prettify.js"></script>
     <script>

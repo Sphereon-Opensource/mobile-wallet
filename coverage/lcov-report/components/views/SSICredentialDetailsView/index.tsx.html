@@ -20,27 +20,27 @@
         <h1><a href="../../../index.html">All files</a> / <a href="index.html">components/views/SSICredentialDetailsView</a> index.tsx</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">11.11% </span>
+            <span class="strong">88.88% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">1/9</span>
+            <span class="fraction">8/9</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">50% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">0/4</span>
+            <span class="fraction">2/4</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/4</span>
+            <span class="fraction">4/4</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">11.11% </span>
+            <span class="strong">88.88% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">1/9</span>
+            <span class="fraction">8/9</span>
           </div>
         </div>
         <p class="quiet">
@@ -53,7 +53,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line low"></div>
+      <div class="status-line high"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -138,32 +138,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,19 +196,19 @@ export interface IProps {
 &nbsp;
 // TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 &nbsp;
-const SSICredentialDetailsView: FC&lt;IProps&gt; = <span class="fstat-no" title="function not covered" >(p</span>rops: IProps): JSX.Element =&gt; {
-  const renderItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>temInfo: ListRenderItemInfo&lt;ICredentialDetailsRow&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (itemInfo.item.imageSize) {</span>
+const SSICredentialDetailsView: FC&lt;IProps&gt; = (props: IProps): JSX.Element =&gt; {
+  const renderItem = (itemInfo: ListRenderItemInfo&lt;ICredentialDetailsRow&gt;) =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (itemInfo.item.imageSize) {
 <span class="cstat-no" title="statement not covered" >      return &lt;SSIImageField item={itemInfo.item} index={itemInfo.index} /&gt;;</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      return &lt;SSITextField item={itemInfo.item} index={itemInfo.index} /&gt;;</span>
+      return &lt;SSITextField item={itemInfo.item} index={itemInfo.index} /&gt;;
     }
   };
 &nbsp;
-  const renderFooter = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;FooterContainer&gt;</span>
+  const renderFooter = () =&gt; (
+    &lt;FooterContainer&gt;
       {props.issuer &amp;&amp; (
-        &lt;&gt;
+<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;&gt;</span>
           &lt;IssuedByLabel&gt;{translate('credential_details_view_issued_by')}&lt;/IssuedByLabel&gt;
           &lt;IssuedBy&gt;{props.issuer}&lt;/IssuedBy&gt;
         &lt;/&gt;
@@ -216,13 +216,13 @@ const SSICredentialDetailsView: FC&lt;IProps&gt; = <span class="fstat-no" title=
     &lt;/FooterContainer&gt;
   );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;Container&gt;
       &lt;DetailsList
         // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
         data={props.credentialProperties}
         renderItem={renderItem}
-        keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem: ICredentialDetailsRow) =&gt; <span class="cstat-no" title="statement not covered" >item.id}</span>
+        keyExtractor={(item: ICredentialDetailsRow) =&gt; item.id}
         initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
         removeClippedSubviews
         ListFooterComponent={renderFooter}
@@ -241,7 +241,7 @@ export default SSICredentialDetailsView;
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../../../prettify.js"></script>
     <script>

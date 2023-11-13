@@ -20,27 +20,27 @@
         <h1><a href="../../../index.html">All files</a> / <a href="index.html">screens/Onboarding/SSIPinCodeVerifyScreen</a> index.tsx</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">10% </span>
+            <span class="strong">80% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">1/10</span>
+            <span class="fraction">8/10</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">100% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">0/2</span>
+            <span class="fraction">2/2</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">66.66% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/3</span>
+            <span class="fraction">2/3</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">10% </span>
+            <span class="strong">80% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">1/10</span>
+            <span class="fraction">8/10</span>
           </div>
         </div>
         <p class="quiet">
@@ -53,7 +53,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line low"></div>
+      <div class="status-line high"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,22 +116,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,23 +162,23 @@ import {PinCodeMode, ScreenRoutesEnum, StackParamList} from '../../../types';
 &nbsp;
 type Props = NativeStackScreenProps&lt;StackParamList, ScreenRoutesEnum.PIN_CODE_VERIFY&gt;;
 &nbsp;
-const SSIPinCodeVerifyScreen: FC&lt;Props&gt; = <span class="fstat-no" title="function not covered" >(p</span>rops: Props): JSX.Element =&gt; {
-  const {onNext, onBack, context} = <span class="cstat-no" title="statement not covered" >props.route.params;</span>
+const SSIPinCodeVerifyScreen: FC&lt;Props&gt; = (props: Props): JSX.Element =&gt; {
+  const {onNext, onBack, context} = props.route.params;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useBackHandler(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  useBackHandler(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
 <span class="cstat-no" title="statement not covered" >    void onBack();</span>
     // make sure event stops here
 <span class="cstat-no" title="statement not covered" >    return true;</span>
   });
 &nbsp;
-  const onVerification = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (value: string): Promise&lt;void&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (value !== context.pinCode) {</span>
-<span class="cstat-no" title="statement not covered" >      return Promise.reject(Error('Invalid code'));</span>
+  const onVerification = async (value: string): Promise&lt;void&gt; =&gt; {
+    if (value !== context.pinCode) {
+      return Promise.reject(Error('Invalid code'));
     }
-<span class="cstat-no" title="statement not covered" >    await onNext(value);</span>
+    await onNext(value);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;Container&gt;
       &lt;StatusBar /&gt;
       &lt;View style={{marginTop: 127}} id={PinCodeMode.CONFIRM_PIN}&gt;
@@ -205,7 +205,7 @@ export default SSIPinCodeVerifyScreen;
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../../../prettify.js"></script>
     <script>

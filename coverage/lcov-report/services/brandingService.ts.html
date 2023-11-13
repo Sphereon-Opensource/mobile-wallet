@@ -20,27 +20,27 @@
         <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> brandingService.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">22.22% </span>
+            <span class="strong">61.11% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">4/18</span>
+            <span class="fraction">11/18</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">60% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">0/10</span>
+            <span class="fraction">6/10</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">16.66% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/6</span>
+            <span class="fraction">1/6</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">22.22% </span>
+            <span class="strong">61.11% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">4/18</span>
+            <span class="fraction">11/18</span>
           </div>
         </div>
         <p class="quiet">
@@ -53,7 +53,7 @@
           </div>
         </template>
       </div>
-      <div class="status-line low"></div>
+      <div class="status-line medium"></div>
       <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,27 +131,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {IBasicCredentialLocaleBranding, IBasicIssuerLocaleBranding, ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
 import {IDeletionResult} from '@sphereon/ssi-sdk.issuance-branding';
@@ -175,32 +175,32 @@ export const removeCredentialBranding = <span class="fstat-no" title="function n
 <span class="cstat-no" title="statement not covered" >  return ibRemoveCredentialBranding(args);</span>
 };
 &nbsp;
-export const selectAppLocaleBranding = <span class="fstat-no" title="function not covered" >as</span>ync (
+export const selectAppLocaleBranding = async (
   args: ISelectAppLocaleBrandingArgs,
 ): Promise&lt;IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined&gt; =&gt; {
   // We need to retrieve the locale of the app and select a matching branding or fallback on a branding without a locale
   // We search for a first match that starts with the app locale
-  const appLocale: string = <span class="cstat-no" title="statement not covered" >Localization.getLocale();</span>
-  const localeBranding: IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined = <span class="cstat-no" title="statement not covered" >args.localeBranding?.find(</span>
+  const appLocale: string = Localization.getLocale();
+  const localeBranding: IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding | undefined = args.localeBranding?.find(
 <span class="fstat-no" title="function not covered" >    (b</span>randing: IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding) =&gt;
 <span class="cstat-no" title="statement not covered" >      branding.locale?.startsWith(appLocale) || branding.locale === undefined,</span>
   );
 &nbsp;
-  const logo: string | undefined = <span class="cstat-no" title="statement not covered" >localeBranding?.logo?.dataUri || localeBranding?.logo?.uri;</span>
-<span class="cstat-no" title="statement not covered" >  if (logo) {</span>
+  const logo: string | undefined = localeBranding?.logo?.dataUri || localeBranding?.logo?.uri;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (logo) {
 <span class="cstat-no" title="statement not covered" >    preloadImage([{uri: logo}]).catch(<span class="fstat-no" title="function not covered" >()</span>: void =&gt; {</span>
       //ignore
     });
   }
 &nbsp;
-  const backgroundImage: string | undefined = <span class="cstat-no" title="statement not covered" >localeBranding?.background?.image?.dataUri || localeBranding?.background?.image?.uri;</span>
-<span class="cstat-no" title="statement not covered" >  if (backgroundImage) {</span>
+  const backgroundImage: string | undefined = localeBranding?.background?.image?.dataUri || localeBranding?.background?.image?.uri;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (backgroundImage) {
 <span class="cstat-no" title="statement not covered" >    preloadImage([{uri: backgroundImage}]).catch(<span class="fstat-no" title="function not covered" >()</span>: void =&gt; {</span>
       //ignore
     });
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return localeBranding;</span>
+  return localeBranding;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -211,7 +211,7 @@ export const selectAppLocaleBranding = <span class="fstat-no" title="function no
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../prettify.js"></script>
     <script>

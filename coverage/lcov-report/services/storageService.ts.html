@@ -20,27 +20,27 @@
         <h1><a href="../index.html">All files</a> / <a href="index.html">services</a> storageService.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
-            <span class="strong">16.36% </span>
+            <span class="strong">47.27% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">9/55</span>
+            <span class="fraction">26/55</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">46.15% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">0/13</span>
+            <span class="fraction">6/13</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">0% </span>
+            <span class="strong">35.29% </span>
             <span class="quiet">Functions</span>
-            <span class="fraction">0/17</span>
+            <span class="fraction">6/17</span>
           </div>
 
           <div class="fl pad1y space-right2">
-            <span class="strong">16.98% </span>
+            <span class="strong">49.05% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">9/53</span>
+            <span class="fraction">26/53</span>
           </div>
         </div>
         <p class="quiet">
@@ -164,16 +164,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -191,21 +191,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,8 +234,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -259,17 +259,17 @@ const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
 const STORAGE_PIN_KEY = 'pin';
 const STORAGE_USERS_KEY = 'users';
 &nbsp;
-export const storagePersistUser = <span class="fstat-no" title="function not covered" >as</span>ync ({user}: IStoreUserArgs): Promise&lt;void&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  debug(`storeUser(${JSON.stringify(user)})...`);</span>
+export const storagePersistUser = async ({user}: IStoreUserArgs): Promise&lt;void&gt; =&gt; {
+  debug(`storeUser(${JSON.stringify(user)})...`);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  await AsyncStorage.getItem(STORAGE_USERS_KEY)</span>
-    .then(<span class="fstat-no" title="function not covered" >(r</span>esult: string | null) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (!result || result === '{}') {</span>
-<span class="cstat-no" title="statement not covered" >        debug(`storeUser(${JSON.stringify(user)}) no users found`);</span>
-        const users = <span class="cstat-no" title="statement not covered" >new Map&lt;string, IUser&gt;();</span>
-<span class="cstat-no" title="statement not covered" >        users.set(user.id, user);</span>
+  await AsyncStorage.getItem(STORAGE_USERS_KEY)
+    .then((result: string | null) =&gt; {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!result || <span class="branch-1 cbranch-no" title="branch not covered" >result === '{}')</span> {
+        debug(`storeUser(${JSON.stringify(user)}) no users found`);
+        const users = new Map&lt;string, IUser&gt;();
+        users.set(user.id, user);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));</span>
+        return AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));
       }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      debug(`storeUser(${JSON.stringify(user)}) users found`);</span>
@@ -286,22 +286,22 @@ export const storagePersistUser = <span class="fstat-no" title="function not cov
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)))</span>;
 };
 &nbsp;
-export const storageGetUsers = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;Map&lt;string, IUser&gt;&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  debug(`getUsers...`);</span>
-<span class="cstat-no" title="statement not covered" >  return await AsyncStorage.getItem(STORAGE_USERS_KEY)</span>
-    .then(<span class="fstat-no" title="function not covered" >(r</span>esult: string | null) =&gt; {
-<span class="cstat-no" title="statement not covered" >      if (!result || result === '{}') {</span>
+export const storageGetUsers = async (): Promise&lt;Map&lt;string, IUser&gt;&gt; =&gt; {
+  debug(`getUsers...`);
+  return await AsyncStorage.getItem(STORAGE_USERS_KEY)
+    .then((result: string | null) =&gt; {
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (!result || result === '{}') {
 <span class="cstat-no" title="statement not covered" >        debug(`getUsers() no users found`);</span>
 <span class="cstat-no" title="statement not covered" >        return new Map&lt;string, IUser&gt;();</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      debug(`getUsers() users found`);</span>
-      const users: Map&lt;string, IUser&gt; = <span class="cstat-no" title="statement not covered" >new Map&lt;string, IUser&gt;();</span>
-<span class="cstat-no" title="statement not covered" >      JSON.parse(result).forEach(<span class="fstat-no" title="function not covered" >([</span>key, value]: [string, IUser]) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        users.set(key, value);</span>
+      debug(`getUsers() users found`);
+      const users: Map&lt;string, IUser&gt; = new Map&lt;string, IUser&gt;();
+      JSON.parse(result).forEach(([key, value]: [string, IUser]) =&gt; {
+        users.set(key, value);
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return users;</span>
+      return users;
     })
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(new Error(`Unable to retrieve value for key: ${STORAGE_USERS_KEY}. ${error.message}`)))</span>;
 };
@@ -329,9 +329,9 @@ export const storageDeleteUser = <span class="fstat-no" title="function not cove
     .catch(<span class="fstat-no" title="function not covered" >(e</span>rror: Error) =&gt; <span class="cstat-no" title="statement not covered" >Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)))</span>;
 };
 &nbsp;
-export const storagePersistPin = <span class="fstat-no" title="function not covered" >as</span>ync ({value, accessible = <span class="branch-0 cbranch-no" title="branch not covered" >ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY}</span>: IStorePinArgs): Promise&lt;any&gt; =&gt; {
-<span class="cstat-no" title="statement not covered" >  console.log(`storePin...`);</span>
-<span class="cstat-no" title="statement not covered" >  return RNSecureKeyStore.set(STORAGE_PIN_KEY, value, {accessible});</span>
+export const storagePersistPin = async ({value, accessible = ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY}: IStorePinArgs): Promise&lt;any&gt; =&gt; {
+  console.log(`storePin...`);
+  return RNSecureKeyStore.set(STORAGE_PIN_KEY, value, {accessible});
 };
 &nbsp;
 export const storageGetPin = <span class="fstat-no" title="function not covered" >as</span>ync (): Promise&lt;string&gt; =&gt; {
@@ -352,7 +352,7 @@ export const storageDeletePin = <span class="fstat-no" title="function not cover
     <div class="footer quiet pad2 space-top1 center small">
       Code coverage generated by
       <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-      at 2023-11-13T20:21:44.842Z
+      at 2023-11-13T21:56:33.075Z
     </div>
     <script src="../prettify.js"></script>
     <script>
