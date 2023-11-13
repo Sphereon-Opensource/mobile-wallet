@@ -68,4 +68,4 @@ dist/
 
 .yalc
 yalc.lock
-#/coverage/
+/coverage/
