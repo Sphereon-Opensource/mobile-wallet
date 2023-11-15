@@ -31,13 +31,18 @@ import {
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 
-export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const getContacts = (): ThunkAction<Promise<IContact[]>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
-    await getUserContact().then((userContact: IContact) => {
-      getContactsFromStorage()
-        .then(async (contacts: Array<IContact>) => dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
-        .catch(() => dispatch({type: GET_CONTACTS_FAILED}));
+    return getUserContact().then(async (userContact: IContact) => {
+      try {
+        const contacts = await getContactsFromStorage();
+        dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
+        return contacts;
+      } catch {
+        dispatch({type: GET_CONTACTS_FAILED});
+        return [];
+      }
     });
   };
 };
@@ -45,7 +50,7 @@ export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Ac
 export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
-    await storeContact(args)
+    storeContact(args)
       .then((contact: IContact) => {
         dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
@@ -57,7 +62,7 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<voi
 export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
-    await editContact(args)
+    editContact(args)
       .then((contact: IContact) => {
         dispatch({type: UPDATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
@@ -69,7 +74,7 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<voi
 export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
-    await identityAdd(args)
+    identityAdd(args)
       .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}}))
       .catch(error => {
         //FIXME:
@@ -88,7 +93,7 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
 
-    await removeContact({contactId: contactId})
+    removeContact({contactId: contactId})
       .then((isDeleted: boolean) => {
         if (isDeleted) {
           dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});

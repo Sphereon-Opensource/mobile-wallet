@@ -123,7 +123,8 @@ export const onboardingStateNavigationListener = (
   } else if (state.matches(OnboardingStates.finishOnboarding)) {
     // Cleans up the machine, triggering the main navigator
     OnboardingMachine.stopInstance();
-    store.dispatch<any>({type: LOGIN_SUCCESS, payload: store.getState().user.activeUser}); // Yuck, but we need a rerender
+    // Yuck, but we need a rerender. The retrieval of contacts etc is already done in the setupWallet service
+    store.dispatch<any>({type: LOGIN_SUCCESS});
   } else {
     throw Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
   }

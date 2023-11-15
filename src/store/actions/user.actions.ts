@@ -24,6 +24,7 @@ import {
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
+  LOGIN_SET_ACTIVE_USER,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   UPDATE_USER_FAILED,
@@ -38,7 +39,7 @@ import {getVerifiableCredentials} from './credential.actions';
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: USERS_LOADING});
-    return await userServiceCreateUser(args)
+    return userServiceCreateUser(args)
       .then((user: IUser) => {
         dispatch({type: CREATE_USER_SUCCESS, payload: user});
         return user;
@@ -87,16 +88,16 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
       .then(async (users: Map<string, IUser>) => {
         const user = users.get(userId);
         if (user) {
+          dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
+
+          // We do we need to use the while loop here? The above is a sync action that does not use a thunk, thus getState().user should be available already
           const maxWaitTime = 5000;
           let startTime = Date.now();
-
-          dispatch({type: LOGIN_SUCCESS, payload: user});
           let userState: IUserState = getState().user;
           while (!userState.activeUser && Date.now() - startTime < maxWaitTime) {
             await new Promise(resolve => setTimeout(resolve, 50));
             userState = getState().user;
           }
-
           await dispatch(getContacts());
           startTime = Date.now();
           let contactState: IContactState = getState().contact;
@@ -108,6 +109,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           await dispatch(getVerifiableCredentials());
           LockingHandler.getInstance().isLocked = false;
 
+          dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();
           await intentHandler.enable();
 

@@ -31,10 +31,10 @@ export const walletAuthLockState = (): WalletAuthLockState => {
   let lockState: WalletAuthLockState;
   if (userState.users.size === 0 || OnboardingMachine.hasInstance()) {
     lockState = WalletAuthLockState.ONBOARDING;
-  } else if (!userState.activeUser) {
-    lockState = WalletAuthLockState.LOCKED;
-  } else {
+  } else if (userState.activeUser?.id && !!userState.loginTime) {
     lockState = WalletAuthLockState.AUTHENTICATED;
+  } else {
+    lockState = WalletAuthLockState.LOCKED;
   }
   debug(`Lock state: ${lockState}`);
 

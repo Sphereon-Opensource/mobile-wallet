@@ -7,6 +7,7 @@ import {
   GET_USERS_FAILED,
   GET_USERS_SUCCESS,
   LOGIN_FAILED,
+  LOGIN_SET_ACTIVE_USER,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   UPDATE_USER_FAILED,
@@ -58,10 +59,17 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
         loading: false,
       };
     }
-    case LOGIN_SUCCESS: {
+    case LOGIN_SET_ACTIVE_USER: {
       return {
         ...state,
         activeUser: action.payload,
+        loading: true,
+      };
+    }
+    case LOGIN_SUCCESS: {
+      return {
+        ...state,
+        loginTime: +new Date(),
         loading: false,
       };
     }
@@ -69,12 +77,15 @@ const userReducer = (state: IUserState = initialState, action: UserActionTypes):
       return {
         ...state,
         activeUser: undefined,
+        loginTime: undefined,
         loading: false,
       };
     }
     case LOGIN_FAILED: {
       return {
         ...state,
+        activeUser: undefined,
+        loginTime: undefined,
         loading: false,
       };
     }
