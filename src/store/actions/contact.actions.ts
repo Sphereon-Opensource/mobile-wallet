@@ -31,13 +31,18 @@ import {
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 
-export const getContacts = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+export const getContacts = (): ThunkAction<Promise<IContact[]>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
     dispatch({type: CONTACTS_LOADING});
-    getUserContact().then((userContact: IContact) => {
-      getContactsFromStorage()
-        .then(async (contacts: Array<IContact>) => dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]}))
-        .catch(() => dispatch({type: GET_CONTACTS_FAILED}));
+    return getUserContact().then(async (userContact: IContact) => {
+      try {
+        const contacts = await getContactsFromStorage();
+        dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
+        return contacts;
+      } catch {
+        dispatch({type: GET_CONTACTS_FAILED});
+        return [];
+      }
     });
   };
 };

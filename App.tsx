@@ -4,9 +4,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
 import {LogBox, Platform, StatusBar} from 'react-native';
+import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
-import 'react-native-gesture-handler';
 import {bindActionCreators} from 'redux';
 
 import IntentHandler from './src/handlers/IntentHandler';
@@ -15,6 +15,7 @@ import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
 import AppNavigator from './src/navigation/navigation';
 import {navigationRef} from './src/navigation/rootNavigation';
+
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
@@ -59,6 +60,7 @@ export default function App() {
       try {
         // Enable the intent handler early, so we can get deeplinks on start or before login
         await IntentHandler.getInstance().enable();
+        await LockingHandler.getInstance().enableLocking();
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
@@ -77,8 +79,6 @@ export default function App() {
         // Load the redux store
         const actions = bindActionCreators({getUsers}, store.dispatch);
         actions.getUsers();
-
-        await LockingHandler.getInstance().enableLocking();
       } catch (e) {
         console.warn(e);
       } finally {
@@ -86,6 +86,7 @@ export default function App() {
         setAppIsReady(true);
       }
     }
+
     void prepare();
 
     return (): void => {

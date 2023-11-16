@@ -4,7 +4,7 @@ import React, {FC} from 'react';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
-import {getPin} from '../../services/storageService';
+import {storageGetPin} from '../../services/storageService';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
@@ -20,7 +20,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     const {onAuthenticate} = props.route.params;
 
     // TODO We are currently only supporting a single user right now
-    if (value !== (await getPin())) {
+    if (value !== (await storageGetPin())) {
       return Promise.reject('Invalid pin code');
     }
     await onAuthenticate();

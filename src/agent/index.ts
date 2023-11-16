@@ -1,6 +1,5 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
-import {IDidConnectionMode, LtoDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-lto';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
@@ -54,11 +53,6 @@ export const didProviders = {
     network: 'goerli',
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new KeyDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
-  }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_LTO}`]: new LtoDidProvider({
-    connectionMode: IDidConnectionMode.NODE,
-    sponsorPrivateKeyBase58: '5gqCU5NbwU4gc62be39LXDDALKj8opj1KZszx7ULJc2k33kk52prn8D1H2pPPwm6QVKvkuo72YJSoUhzzmAFmDH8',
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ION}`]: new IonDIDProvider({

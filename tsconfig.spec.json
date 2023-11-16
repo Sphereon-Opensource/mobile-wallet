@@ -1,0 +1,17 @@
+{
+  "extends": "tsconfig.json",
+  "types": ["node", "jest", "@testing-library/react-native"],
+  "compilerOptions": {
+    "jsx": "react",
+    // Only values not in expo/tsconfig.base
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    //    "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "strict": false /* Enable all strict type-checking options. */,
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
+    "removeComments": false /* Removes all comments. */,
+    "strictPropertyInitialization": false /* Disables the need to initialize every property */,
+    "allowJs": true,
+    "isolatedModules": true
+  }
+}

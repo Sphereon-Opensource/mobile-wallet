@@ -12,6 +12,8 @@ export const GET_USERS_FAILED = '[USER] GET_USERS_FAILED';
 export type GET_USERS_FAILED = typeof GET_USERS_FAILED;
 export const LOGIN_SUCCESS = '[USER] LOGIN_SUCCESS';
 export type LOGIN_SUCCESS = typeof LOGIN_SUCCESS;
+export const LOGIN_SET_ACTIVE_USER = '[USER] LOGIN_SET_ACTIVE_USER';
+export type LOGIN_SET_ACTIVE_USER = typeof LOGIN_SET_ACTIVE_USER;
 export const LOGIN_FAILED = '[USER] LOGIN_FAILED';
 export type LOGIN_FAILED = typeof LOGIN_FAILED;
 export const LOGOUT_SUCCESS = '[USER] LOGOUT_SUCCESS';
@@ -53,13 +55,16 @@ interface ILoginActionFailedAction {
 
 interface ILoginActionSuccessAction {
   type: LOGIN_SUCCESS;
+}
+
+interface ILoginSetActiveUserAction {
+  type: LOGIN_SET_ACTIVE_USER;
   payload: IUser;
 }
 
 interface ILogoutActionSuccessAction {
   type: LOGOUT_SUCCESS;
 }
-
 interface IUpdateUserActionSuccessAction {
   type: UPDATE_USER_SUCCESS;
   payload: IUser;
@@ -85,6 +90,7 @@ export type UserActionTypes =
   | ICreateUserActionSuccessAction
   | ICreateUserActionFailedAction
   | ILoginActionSuccessAction
+  | ILoginSetActiveUserAction
   | ILoginActionFailedAction
   | ILogoutActionSuccessAction
   | IUpdateUserActionSuccessAction

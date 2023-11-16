@@ -10,22 +10,7 @@ const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
 const STORAGE_PIN_KEY = 'pin';
 const STORAGE_USERS_KEY = 'users';
 
-export const storePin = async ({value, accessible = ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY}: IStorePinArgs): Promise<any> => {
-  debug(`storePin...`);
-  return RNSecureKeyStore.set(STORAGE_PIN_KEY, value, {accessible});
-};
-
-export const getPin = async (): Promise<string> => {
-  debug(`getPin...`);
-  return RNSecureKeyStore.get(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Value not found for key: ${STORAGE_PIN_KEY}`)));
-};
-
-export const deletePin = async (): Promise<void> => {
-  debug(`deletePin...`);
-  return RNSecureKeyStore.remove(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Unable to remove value for key: ${STORAGE_PIN_KEY}`)));
-};
-
-export const storeUser = async ({user}: IStoreUserArgs): Promise<void> => {
+export const storagePersistUser = async ({user}: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`);
 
   await AsyncStorage.getItem(STORAGE_USERS_KEY)
@@ -52,7 +37,7 @@ export const storeUser = async ({user}: IStoreUserArgs): Promise<void> => {
     .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
 };
 
-export const getUsers = async (): Promise<Map<string, IUser>> => {
+export const storageGetUsers = async (): Promise<Map<string, IUser>> => {
   debug(`getUsers...`);
   return await AsyncStorage.getItem(STORAGE_USERS_KEY)
     .then((result: string | null) => {
@@ -72,7 +57,7 @@ export const getUsers = async (): Promise<Map<string, IUser>> => {
     .catch((error: Error) => Promise.reject(new Error(`Unable to retrieve value for key: ${STORAGE_USERS_KEY}. ${error.message}`)));
 };
 
-export const deleteUser = async (userId: string): Promise<void> => {
+export const storageDeleteUser = async (userId: string): Promise<void> => {
   debug(`deleteUser(${userId})...`);
 
   await AsyncStorage.getItem(STORAGE_USERS_KEY)
@@ -93,4 +78,19 @@ export const deleteUser = async (userId: string): Promise<void> => {
       AsyncStorage.setItem(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));
     })
     .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
+};
+
+export const storagePersistPin = async ({value, accessible = ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY}: IStorePinArgs): Promise<any> => {
+  console.log(`storePin...`);
+  return RNSecureKeyStore.set(STORAGE_PIN_KEY, value, {accessible});
+};
+
+export const storageGetPin = async (): Promise<string> => {
+  debug(`getPin...`);
+  return RNSecureKeyStore.get(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Value not found for key: ${STORAGE_PIN_KEY}`)));
+};
+
+export const storageDeletePin = async (): Promise<void> => {
+  debug(`deletePin...`);
+  return RNSecureKeyStore.remove(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Unable to remove value for key: ${STORAGE_PIN_KEY}`)));
 };

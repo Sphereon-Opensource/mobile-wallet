@@ -4,6 +4,17 @@ import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 
 import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../onboarding';
+
+interface IPersonalDataProps {
+  isDisabled: (personalData: IOnboardingPersonalData) => boolean;
+  onNext: (personalData: IOnboardingPersonalData) => void;
+  onPersonalData: (personalData: IOnboardingPersonalData) => void;
+}
+
+export interface IOnboardingProps {
+  customOnboardingInstance?: OnboardingInterpretType;
+}
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -20,23 +31,45 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps;
-  Onboarding: Record<string, never>;
-  Welcome: Record<string, never>;
+  Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  TermsOfService: Record<string, never>;
-  PersonalData: Record<string, never>;
-  PinCodeSet: IPinCodeSetProps;
+  Welcome: IHasOnboardingContext & IHasOnNextProps;
+  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
+  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
+  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
-  OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
 };
 
+export interface IHasOnboardingContext {
+  context: IOnboardingMachineContext;
+}
+
 export interface ILoadingProps {
   message: string;
+}
+
+export interface IHasOnNextProps {
+  onNext: (data?: any) => Promise<void>;
+}
+
+export interface IHasOnBackProps {
+  onBack: () => Promise<void>;
+}
+
+export type IWelcomeProps = IHasOnNextProps;
+
+export interface ITermsOfServiceProps {
+  isDisabled: () => boolean;
+  onDecline: () => Promise<void>;
+  onAcceptTerms: (accept: boolean) => Promise<void>;
+  onAcceptPrivacy: (accept: boolean) => Promise<void>;
 }
 
 export interface ICredentialsSelectProps {
@@ -123,6 +156,14 @@ export interface IPinCodeSetProps {
   headerSubTitle: string;
 }
 
+export interface IPinCodeVerifyProps {
+  headerSubTitle: string;
+}
+
+export enum PinCodeMode {
+  CHOOSE_PIN = 'choose_pin',
+  CONFIRM_PIN = 'confirm_pin',
+}
 export interface ILockProps {
   onAuthenticate: () => Promise<void>;
 }
@@ -161,6 +202,7 @@ export enum ScreenRoutesEnum {
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
+  PIN_CODE_VERIFY = 'PinCodeVerify',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
