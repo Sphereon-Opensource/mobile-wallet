@@ -19,6 +19,7 @@ const RootNavigation: NavigationHelpersCommon<StackParamList, NavigationState> =
   getParent: (id?: string) => navigationRef.current?.getParent(id),
   getState: () => navigationRef.current?.getRootState() as NavigationState<StackParamList>,
   getCurrentRoute: () => navigationRef.current?.getCurrentRoute()?.name,
+  isReady: () => navigationRef.isReady(),
 };
 
 export default RootNavigation;

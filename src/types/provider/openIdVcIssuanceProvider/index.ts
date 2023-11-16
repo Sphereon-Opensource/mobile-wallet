@@ -40,7 +40,7 @@ export interface ICredentialFormatOpts {
 }
 */
 
-export enum Oidc4vciErrorEnum {
+export enum OID4VCIError {
   INVALID_REQUEST = 'invalid_request',
   INVALID_CLIENT = 'invalid_client',
   INVALID_GRANT = 'invalid_grant-vc',

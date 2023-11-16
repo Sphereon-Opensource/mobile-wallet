@@ -82,7 +82,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
                 // Scales the button based on presence of other button
                 width: primaryButton ? undefined : '100%',
               }}
-              title={secondaryButton.caption}
+              caption={secondaryButton.caption}
               onPress={secondaryButton.onPress}
             />
           )}
@@ -90,7 +90,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
             <SSIPrimaryButton
               // Scales the button based on presence of other button
               style={{height: 42, minWidth: 160, width: secondaryButton ? undefined : '100%'}}
-              title={primaryButton.caption}
+              caption={primaryButton.caption}
               onPress={primaryButton.onPress}
             />
           )}

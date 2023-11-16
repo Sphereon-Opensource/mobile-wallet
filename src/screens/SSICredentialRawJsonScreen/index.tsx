@@ -53,7 +53,7 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
         <SSIBasicHorizontalCenterContainerStyled>
           <SSIButtonBottomContainerStyled>
             <SSIPrimaryButton
-              title={'Share'} // TODO translation
+              caption={'Share'} // TODO translation
               onPress={async () => {
                 const base64VC = Buffer.from(JSON.stringify(rawCredential, null, 2), 'binary').toString('base64');
                 const base64Data = `data:application/json;base64,${base64VC}`;

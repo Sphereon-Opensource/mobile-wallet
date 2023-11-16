@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import { PEX, SelectResults, SubmissionRequirementMatch } from "@sphereon/pex";
+import {PEX, SelectResults, SubmissionRequirementMatch} from '@sphereon/pex';
 import {Status} from '@sphereon/pex/dist/main/lib/ConstraintUtils';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
@@ -8,7 +8,6 @@ import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
-
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {ibGetCredentialBranding} from '../../agent';
@@ -24,7 +23,7 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import { JSONPath } from "@astronautlabs/jsonpath/src/jsonpath";
+import {JSONPath} from '@astronautlabs/jsonpath/src/jsonpath';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -55,15 +54,17 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
           console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
         }
-        const matchedVCs: Array<UniqueVerifiableCredential> = selectResult.matches && selectResult.verifiableCredential
-          ? selectResult.matches.map((match: SubmissionRequirementMatch) => {
-            const matchedVC = JSONPath.query(selectResult, match.vc_path[0]) // TODO Can we have multiple vc_path elements for a single match?
-            if (matchedVC && matchedVC.length > 0) {
-              return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
-            }
-          })
-          .filter((matchedVC : UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
-          : [];
+        const matchedVCs: Array<UniqueVerifiableCredential> =
+          selectResult.matches && selectResult.verifiableCredential
+            ? selectResult.matches
+                .map((match: SubmissionRequirementMatch) => {
+                  const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
+                  if (matchedVC && matchedVC.length > 0) {
+                    return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
+                  }
+                })
+                .filter((matchedVC: UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
+            : [];
         availableVCs.set(inputDescriptor.id, matchedVCs);
       });
       setAvailableCredentials(availableVCs);
@@ -160,25 +161,30 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         ? undefined
         : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!, itemInfo.item.purpose);
 
-    const checkIsMatching = (itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
-                             selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>) : boolean => {
+    const checkIsMatching = (
+      itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
+      selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>,
+    ): boolean => {
       if (!selectedCredentials.has(itemInfo.item.id)) {
         return false;
       }
       const selectedCredential: Array<UniqueVerifiableCredential> | undefined = selectedCredentials.get(itemInfo.item.id);
-      if(!selectedCredential) {
-        return false
+      if (!selectedCredential) {
+        return false;
       }
 
-      const credentials : Array<OriginalVerifiableCredential> = selectedCredential.map((uniqueVC: UniqueVerifiableCredential) =>
-        getOriginalVerifiableCredential(uniqueVC.verifiableCredential));
-      return pex.evaluateCredentials(
-        {
-          id: itemInfo.item.id,
-          input_descriptors: [itemInfo.item]
-        },
-        credentials
-      ).areRequiredCredentialsPresent === Status.INFO;
+      const credentials: Array<OriginalVerifiableCredential> = selectedCredential.map((uniqueVC: UniqueVerifiableCredential) =>
+        getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
+      );
+      return (
+        pex.evaluateCredentials(
+          {
+            id: itemInfo.item.id,
+            input_descriptors: [itemInfo.item],
+          },
+          credentials,
+        ).areRequiredCredentialsPresent === Status.INFO
+      );
     };
 
     return (

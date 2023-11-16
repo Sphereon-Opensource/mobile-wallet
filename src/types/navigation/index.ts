@@ -3,23 +3,31 @@ import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 
-import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
+import {
+  IButton,
+  ICredentialSelection,
+  ICredentialSummary,
+  ICredentialTypeSelection,
+  OID4VCIMachineInterpreter,
+  PopupBadgesEnum,
+  PopupImagesEnum,
+} from '../index';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
-  CredentialDetails: ICredentialDetailsProps;
+  CredentialDetails: ICredentialDetailsProps & IHasOnBackProps;
   CredentialRawJson: ICredentialRawJsonProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
-  VerificationCode: IVerificationCodeProps;
+  VerificationCode: IVerificationCodeProps & IHasOnBackProps;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
-  Error: IPopupModalProps;
-  CredentialSelectType: ICredentialSelectTypeProps;
+  Error: IPopupModalProps & IHasOnBackProps;
+  CredentialSelectType: ICredentialSelectTypeProps & IHasOnBackProps;
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
-  ContactAdd: IContactAddProps;
+  ContactAdd: IContactAddProps & IHasOnBackProps;
   Onboarding: Record<string, never>;
   Welcome: Record<string, never>;
   Main: Record<string, never>;
@@ -33,7 +41,13 @@ export type StackParamList = {
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
+  OID4VCI: Record<string, never>; // TODO
+  OID4VCIStack: IOID4VCIProps; // TODO
 };
+
+export interface IHasOnBackProps {
+  onBack?: () => Promise<void>;
+}
 
 export interface ILoadingProps {
   message: string;
@@ -104,7 +118,9 @@ export interface IPopupModalProps {
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
+  onSelectType?: (credentialTypes: Array<string>) => Promise<void>;
   onSelect: (credentialTypes: Array<string>) => Promise<void>;
+  isSelectDisabled?: boolean | (() => boolean);
 }
 
 export interface IContactDetailsProps {
@@ -115,8 +131,12 @@ export interface IContactAddProps {
   name: string;
   uri?: string;
   identities?: Array<IBasicIdentity>;
+  onCreate: (contact: IContact) => Promise<void>;
   onDecline: () => Promise<void>;
-  onCreate: () => Promise<void>;
+  onConsentChange?: (hasConsent: boolean) => Promise<void>;
+  onAliasChange?: (alias: string) => Promise<void>;
+  hasConsent?: boolean;
+  isCreateDisabled?: boolean | (() => boolean);
 }
 
 export interface IPinCodeSetProps {
@@ -146,6 +166,10 @@ export enum NavigationBarRoutesEnum {
   CONTACTS = 'ContactsStack',
 }
 
+export enum QRRoutesEnum {
+  OID4VCI = 'OID4VCIStack',
+}
+
 export enum ScreenRoutesEnum {
   WELCOME = 'Welcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
@@ -167,4 +191,8 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
+}
+
+export interface IOID4VCIProps {
+  customOID4VCIInstance?: OID4VCIMachineInterpreter;
 }

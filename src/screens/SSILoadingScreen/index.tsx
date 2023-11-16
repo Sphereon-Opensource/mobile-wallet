@@ -1,7 +1,6 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PureComponent} from 'react';
 import {BackHandler, NativeEventSubscription} from 'react-native';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   SSILoadingScreenActivityCaptionStyled as ActivityCaption,
   SSILoadingScreenActivityIndicatorStyled as ActivityIndicator,

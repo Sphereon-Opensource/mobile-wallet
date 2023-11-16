@@ -31,7 +31,7 @@ import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
     dispatch({type: USERS_LOADING});
     return userCreate(args)
       .then((user: IUser) => {

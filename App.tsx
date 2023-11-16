@@ -8,7 +8,6 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import 'react-native-gesture-handler';
 import {bindActionCreators} from 'redux';
-
 import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';

@@ -15,7 +15,8 @@ import {toLocalDateTimeString} from '../../utils/DateUtils';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>;
 
 const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {route, navigation} = props;
+  const {navigation} = props;
+  const {pinLength, credentialName, onVerification} = props.route.params;
 
   const onMaxRetriesExceeded = async (): Promise<void> => {
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
@@ -41,11 +42,11 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
       <PinCodeContainer>
         <SSIPinCode
           maxRetries={VERIFICATION_CODE_MAX_RETRIES}
-          length={route.params.pinLength}
+          length={pinLength}
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}
           onMaxRetriesExceeded={onMaxRetriesExceeded}
-          onVerification={route.params.onVerification}
+          onVerification={onVerification}
           errorMessage={translate('verification_code_invalid_code_message')}
         />
       </PinCodeContainer>

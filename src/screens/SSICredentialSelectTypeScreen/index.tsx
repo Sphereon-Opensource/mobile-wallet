@@ -1,7 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-import {FlatList, ListRenderItemInfo} from 'react-native';
-
+import {FlatList, ListRenderItemInfo, ViewStyle} from 'react-native';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import SSICredentialSelectTypeViewItem from '../../components/views/SSICredentialSelectTypeViewItem';
@@ -18,38 +17,48 @@ import {ICredentialTypeSelection, ScreenRoutesEnum, StackParamList} from '../../
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE>;
 
 const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {isSelectDisabled} = props.route.params;
   const [credentialTypes, setCredentialTypes] = React.useState(props.route.params.credentialTypes);
 
-  const onPress = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>) => {
-    const selection = credentialTypes.map((credentialType: ICredentialTypeSelection) => {
+  const getSelectedCredentialTypes = (selection: Array<ICredentialTypeSelection>): Array<string> => {
+    return selection
+      .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
+      .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType);
+  };
+
+  const onSelectType = async (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): Promise<void> => {
+    const {onSelectType} = props.route.params;
+    const selection: Array<ICredentialTypeSelection> = credentialTypes.map((credentialType: ICredentialTypeSelection) => {
       credentialType.isSelected =
-        credentialType.id == itemInfo.item.id ? (credentialType.isSelected = !itemInfo.item.isSelected) : (credentialType.isSelected = false);
+        credentialType.id === itemInfo.item.id ? (credentialType.isSelected = !itemInfo.item.isSelected) : (credentialType.isSelected = false);
       return credentialType;
     });
-    // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
+    // // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
     setCredentialTypes([...selection]);
+    if (onSelectType) {
+      await onSelectType(getSelectedCredentialTypes(selection));
+    }
   };
 
   const onSelect = async (): Promise<void> => {
-    const selectedTypesOfCredentials = credentialTypes
-      .filter((credentialTypeSelection: ICredentialTypeSelection) => credentialTypeSelection.isSelected)
-      .map((credentialType: ICredentialTypeSelection) => credentialType.credentialType);
-    await props.route.params.onSelect(selectedTypesOfCredentials);
+    const {onSelect} = props.route.params;
+    const selection: Array<string> = getSelectedCredentialTypes(credentialTypes);
+    await onSelect(selection);
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
-    const backgroundStyle = {
+    const backgroundStyle: ViewStyle = {
       backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
     };
-    const style = {
+    const style: ViewStyle = {
       ...backgroundStyle,
       ...(itemInfo.index === credentialTypes.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
     };
 
     return (
-      <ItemContainer style={style} onPress={() => onPress(itemInfo)}>
+      <ItemContainer style={style} onPress={(): Promise<void> => onSelectType(itemInfo)}>
         <SSICredentialSelectTypeViewItem
-          onPress={async () => onPress(itemInfo)}
+          onPress={(): Promise<void> => onSelectType(itemInfo)}
           title={itemInfo.item.credentialAlias}
           isSelected={itemInfo.item.isSelected}
           style={backgroundStyle}
@@ -71,9 +80,9 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
       <ButtonContainer>
         <SSIPrimaryButton
           style={{height: 42, width: '100%'}}
-          title={translate('action_select_label')}
+          caption={translate('action_select_label')}
           onPress={onSelect}
-          disabled={!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
+          disabled={isSelectDisabled} //!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
         />
       </ButtonContainer>
     </Container>

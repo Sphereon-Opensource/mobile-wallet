@@ -1,6 +1,5 @@
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-
 import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
@@ -33,7 +32,7 @@ export interface IHeaderProps {
 export interface IButton {
   caption: string;
   onPress: () => Promise<void>;
-  disabled?: boolean;
+  disabled?: boolean | (() => boolean);
 }
 
 export interface IHeaderMenuButton extends IButton {

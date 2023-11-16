@@ -1,15 +1,14 @@
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
-import {ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {v4 as uuidv4} from 'uuid';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
+import {IBasicCredentialLocaleBranding, IContact} from '@sphereon/ssi-sdk.data-store';
+import {ICredential} from '@sphereon/ssi-types';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import {selectAppLocaleBranding} from '../../../services/brandingService';
 import {ICredentialDetailsRow, ICredentialSummary} from '../../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../../DateUtils';
 import {getImageSize, isImage} from '../../ImageUtils';
-
-const {v4: uuidv4} = require('uuid');
 
 const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICredentialDetailsRow[]> => {
   let rows: ICredentialDetailsRow[] = [];
@@ -48,7 +47,7 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
         continue;
       }
 
-      let label = key;
+      let label: string = key;
       if (key === 'id' && value.startsWith('did:')) {
         label = 'subject';
       }
@@ -74,10 +73,12 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
  * To be used whenever we need to show a credential summary on VCs we have not persisted
  * @param verifiableCredential
  * @param branding The branding for the credential
+ * @param contact Optional contact for issuer name
  */
 export const toNonPersistedCredentialSummary = (
   verifiableCredential: ICredential | VerifiableCredential,
   branding?: Array<IBasicCredentialLocaleBranding>,
+  contact?: IContact,
 ): Promise<ICredentialSummary> => {
   return toCredentialSummary(
     {
@@ -85,6 +86,7 @@ export const toNonPersistedCredentialSummary = (
       hash: verifiableCredential.id ?? computeEntryHash(verifiableCredential as VerifiableCredential),
     },
     branding,
+    contact,
   );
 };
 
@@ -93,18 +95,18 @@ export const toNonPersistedCredentialSummary = (
  * @param hash The hash of the unique verifiable credential
  * @param verifiableCredential The VC itself
  * @param branding The branding for the credential
+ * @param contact Optional contact for issuer name
  */
 export const toCredentialSummary = async (
   {hash, verifiableCredential}: UniqueVerifiableCredential,
   branding?: Array<IBasicCredentialLocaleBranding>,
+  contact?: IContact,
 ): Promise<ICredentialSummary> => {
   const expirationDate: number = verifiableCredential.expirationDate
     ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS
     : 0;
   const issueDate: number = new Date(verifiableCredential.issuanceDate).valueOf() / EPOCH_MILLISECONDS;
-
   const credentialStatus: CredentialStatus = getCredentialStatus(verifiableCredential);
-
   const title = verifiableCredential.name
     ? verifiableCredential.name
     : !verifiableCredential.type
@@ -112,22 +114,19 @@ export const toCredentialSummary = async (
     : typeof verifiableCredential.type === 'string'
     ? verifiableCredential.type
     : verifiableCredential.type.filter((value: string): boolean => value !== 'VerifiableCredential')[0];
-  console.log(`Credential Subject: ${JSON.stringify(verifiableCredential.credentialSubject)}`);
   const properties: Array<ICredentialDetailsRow> = await toCredentialDetailsRow(verifiableCredential.credentialSubject);
-
   const localeBranding: IBasicCredentialLocaleBranding | undefined = await selectAppLocaleBranding({localeBranding: branding});
-  const logo = getIssuerLogo(verifiableCredential, localeBranding);
+  const logo: string | undefined = getIssuerLogo(verifiableCredential, localeBranding);
   const url = typeof verifiableCredential.issuer !== 'string' ? verifiableCredential.issuer.url : undefined;
-
   const name: string =
     typeof verifiableCredential.issuer === 'string'
       ? verifiableCredential.issuer
       : verifiableCredential.issuer?.name ?? verifiableCredential.issuer?.id;
-
-  const issuerAlias: string =
-    typeof verifiableCredential.issuer === 'string'
-      ? translateCorrelationIdToName(verifiableCredential.issuer)
-      : translateCorrelationIdToName(verifiableCredential.issuer?.id);
+  const issuerAlias: string = contact
+    ? contact.alias
+    : typeof verifiableCredential.issuer === 'string'
+    ? translateCorrelationIdToName(verifiableCredential.issuer)
+    : translateCorrelationIdToName(verifiableCredential.issuer?.id);
 
   return {
     hash,

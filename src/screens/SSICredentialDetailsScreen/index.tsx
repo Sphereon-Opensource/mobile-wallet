@@ -92,7 +92,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             <ButtonContainerContent>
               {secondaryAction && (
                 <SSISecondaryButton
-                  title={secondaryAction.caption}
+                  caption={secondaryAction.caption}
                   onPress={secondaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
@@ -104,7 +104,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               )}
               {primaryAction && (
                 <SSIPrimaryButton
-                  title={primaryAction.caption}
+                  caption={primaryAction.caption}
                   onPress={primaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
