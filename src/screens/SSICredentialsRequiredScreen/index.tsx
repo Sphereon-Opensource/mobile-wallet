@@ -23,12 +23,12 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import {JSONPath} from '@astronautlabs/jsonpath/src/jsonpath';
+import {JSONPath} from '@astronautlabs/jsonpath';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {presentationDefinition, format, subjectSyntaxTypesSupported} = props.route.params;
+  const {presentationDefinition, format, subjectSyntaxTypesSupported, verifier} = props.route.params;
   const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const pex = new PEX();

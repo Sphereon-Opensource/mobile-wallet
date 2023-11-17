@@ -25,7 +25,7 @@ import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRout
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 
-interface Props extends NativeStackHeaderProps {
+export interface HeaderBarProps extends NativeStackHeaderProps {
   headerSubTitle?: string;
   showBorder?: boolean;
   showBackButton?: boolean;
@@ -35,7 +35,8 @@ interface Props extends NativeStackHeaderProps {
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
-const SSIHeaderBar: FC<Props> = (props: Props): JSX.Element => {
+// NK: Probably has todo with us passing in a new headerbar element via props on every screen, causing a rerender of the entire dom
+const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element => {
   const {showBorder = false, showBackButton = true, showProfileIcon = true, headerSubTitle, options, moreActions = [], navigation} = props;
   const dispatch = useDispatch();
   const {showProfileMenu, setShowProfileMenu, showMoreMenu, setShowMoreMenu} = useContext(OnTouchContext);

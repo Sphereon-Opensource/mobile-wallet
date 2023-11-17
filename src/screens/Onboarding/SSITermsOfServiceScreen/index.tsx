@@ -1,33 +1,37 @@
+import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import {BackHandler} from 'react-native';
 
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
-import SSICheckbox from '../../components/fields/SSICheckbox';
-import SSITabView from '../../components/views/SSITabView';
-import SSITermsOfServiceView from '../../components/views/SSITermsOfServiceView';
-import {translate} from '../../localization/Localization';
-import navigation from '../../navigation/navigation';
+import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
+import SSICheckbox from '../../../components/fields/SSICheckbox';
+import SSITabView from '../../../components/views/SSITabView';
+import SSITermsOfServiceView from '../../../components/views/SSITermsOfServiceView';
+import {translate} from '../../../localization/Localization';
 import {
+  SSIBasicContainerStyled as Container,
+  SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenBottomContainerStyled as BottomContainer,
   SSITermsOfServiceScreenCheckboxContainerStyled as CheckboxContainer,
   SSITermsOfServiceScreenCheckboxesContainerStyled as CheckboxesContainer,
-  SSIBasicContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar,
   SSITermsOfServiceScreenTabViewContainerStyled as TabViewContainer,
-} from '../../styles/components';
-import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
+} from '../../../styles/components';
+import {ITabViewRoute, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.TERMS_OF_SERVICE>;
-
 enum TermsTabRoutesEnum {
   TERMS = 'terms',
   PRIVACY = 'privacy',
 }
 
 const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
-  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
-  const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false);
+  const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
+
+  useBackHandler(() => {
+    void onBack();
+    // make sure event stops here
+    return true;
+  });
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -48,11 +52,7 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
    */
   const memoTabView = useMemo(() => <SSITabView routes={routes} />, []);
 
-  const onAccept = async (): Promise<void> => {
-    props.navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {});
-  };
-
-  const onDecline = async (): Promise<void> => {
+  const handleDecline = async (): Promise<void> => {
     props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('terms_of_service_decline_title'),
       details: translate('terms_of_service_decline_message'),
@@ -61,26 +61,24 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
         onPress: async () => {
           // Will only push it to the background, we are not allowed by Apple (and Google?) to shutdown apps. A user needs to do this.
           BackHandler.exitApp();
-          // Adding a reset back to the Welcome screen and to reset its state as it is active in the current stack
-          props.navigation.reset({
-            index: 0,
-            routes: [{name: ScreenRoutesEnum.WELCOME}],
-          });
+          await onDecline();
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => props.navigation.goBack(),
+        onPress: async () => {
+          props.navigation.goBack();
+        },
       },
     });
   };
 
-  const onAcceptTerms = async (isChecked: boolean): Promise<void> => {
-    setHasAcceptedTerms(isChecked);
+  const handleAcceptTerms = (value: boolean) => {
+    return Promise.resolve(onAcceptTerms(value));
   };
 
-  const onAcceptPrivacy = async (isChecked: boolean): Promise<void> => {
-    setHasAcceptedPrivacy(isChecked);
+  const handleAcceptPrivacy = (value: boolean) => {
+    return Promise.resolve(onAcceptPrivacy(value));
   };
 
   return (
@@ -90,21 +88,29 @@ const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
       <BottomContainer>
         <CheckboxesContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptTerms} label={translate('terms_of_service_consent_terms_message')} />
+            <SSICheckbox
+              initialValue={props.route.params.context.termsConditionsAccepted}
+              onValueChange={handleAcceptTerms}
+              label={translate('terms_of_service_consent_terms_message')}
+            />
           </CheckboxContainer>
           <CheckboxContainer>
-            <SSICheckbox onValueChange={onAcceptPrivacy} label={translate('terms_of_service_consent_privacy_message')} />
+            <SSICheckbox
+              initialValue={props.route.params.context.privacyPolicyAccepted}
+              onValueChange={handleAcceptPrivacy}
+              label={translate('terms_of_service_consent_privacy_message')}
+            />
           </CheckboxContainer>
         </CheckboxesContainer>
         <SSIButtonsContainer
           secondaryButton={{
             caption: translate('action_decline_label'),
-            onPress: onDecline,
+            onPress: handleDecline,
           }}
           primaryButton={{
             caption: translate('action_accept_label'),
-            disabled: !hasAcceptedTerms || !hasAcceptedPrivacy,
-            onPress: onAccept,
+            disabled: isDisabled(),
+            onPress: onNext,
           }}
         />
       </BottomContainer>

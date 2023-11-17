@@ -26,7 +26,6 @@ import {SimpleEventsOf} from 'xstate';
 import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
 import RootNavigation from './rootNavigation';
 import React, {Context, createContext} from 'react';
-import {OID4VCIMachine} from '../stateMachines/OID4VCIMachine';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIContextType);
@@ -177,8 +176,6 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
   const onDecline = async (): Promise<void> => {
     OID4VCIMachine.send(OID4VCIMachineEvents.DECLINE);
   };
-
-  console.log(`HALLOOOOO?????`);
 
   navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
     headerTitle: translate('credential_offer_title'),

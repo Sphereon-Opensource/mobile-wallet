@@ -1,13 +1,13 @@
 import Debug from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {BasicUser, BasicUserIdentifier, IUser, RootState} from '../types';
+import {BasicUser, BasicUserIdentifier, IUser} from '../types';
 
-import {getUsers as getUsersFromStorage, deleteUser as removeUser, storeUser} from './storageService';
+import {storageGetUsers, storageDeleteUser, storagePersistUser} from './storageService';
 
 const debug: Debug.Debugger = Debug(`${APP_ID}:userService`);
 
-const {v4: uuidv4} = require('uuid');
+import {v4 as uuidv4} from 'uuid';
 
 export const createUser = async (args: BasicUser): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`);
@@ -21,7 +21,7 @@ export const createUser = async (args: BasicUser): Promise<IUser> => {
     lastUpdatedAt: new Date(),
   };
 
-  return storeUser({user})
+  return storagePersistUser({user})
     .then(() => {
       debug(`createUser(${JSON.stringify(args)}) succeeded`);
       return user;
@@ -31,7 +31,7 @@ export const createUser = async (args: BasicUser): Promise<IUser> => {
 
 export const getUsers = async (): Promise<Map<string, IUser>> => {
   debug(`getUsers...`);
-  return getUsersFromStorage().catch((error: Error) => Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`)));
+  return storageGetUsers().catch((error: Error) => Promise.reject(Error(`Unable to retrieve users from storage. Error: ${error.message}`)));
 };
 
 export const updateUser = async (args: IUser): Promise<IUser> => {
@@ -41,7 +41,7 @@ export const updateUser = async (args: IUser): Promise<IUser> => {
     lastUpdatedAt: new Date(),
   };
 
-  return storeUser({user})
+  return storagePersistUser({user})
     .then(() => {
       debug(`updateUser(${JSON.stringify(args)}) succeeded`);
       return user;
@@ -50,5 +50,5 @@ export const updateUser = async (args: IUser): Promise<IUser> => {
 };
 
 export const deleteUser = async (userId: string): Promise<void> => {
-  removeUser(userId).catch((error: Error) => Promise.reject(Error(`Unable to delete user with id: ${userId}. Error: ${error}`)));
+  storageDeleteUser(userId).catch((error: Error) => Promise.reject(Error(`Unable to delete user with id: ${userId}. Error: ${error}`)));
 };

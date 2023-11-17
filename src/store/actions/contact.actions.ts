@@ -34,17 +34,17 @@ import {IUserState} from '../../types/store/user.types';
 export const getContacts = (): ThunkAction<Promise<Array<IContact>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<IContact>> => {
     dispatch({type: CONTACTS_LOADING});
-    return getUserContact().then((userContact: IContact) => {
-      return getContactsFromStorage()
-        .then((contacts: Array<IContact>): Array<IContact> => {
+    return getUserContact()
+      .then((userContact: IContact) => {
+        return getContactsFromStorage().then((contacts: Array<IContact>): Array<IContact> => {
           dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
           return [...contacts, userContact];
-        })
-        .catch((error: Error) => {
-          dispatch({type: GET_CONTACTS_FAILED});
-          return Promise.reject(error);
         });
-    });
+      })
+      .catch((error: Error) => {
+        dispatch({type: GET_CONTACTS_FAILED});
+        return Promise.reject(error);
+      });
   };
 };
 

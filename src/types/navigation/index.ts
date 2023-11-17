@@ -12,6 +12,7 @@ import {
   PopupBadgesEnum,
   PopupImagesEnum,
 } from '../index';
+import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../onboarding';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -28,16 +29,17 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & IHasOnBackProps;
-  Onboarding: Record<string, never>;
-  Welcome: Record<string, never>;
+  Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  TermsOfService: Record<string, never>;
-  PersonalData: Record<string, never>;
-  PinCodeSet: IPinCodeSetProps;
+  Welcome: IHasOnboardingContext & IHasOnNextProps;
+  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
+  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
+  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
-  OnboardingSummary: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
@@ -45,12 +47,37 @@ export type StackParamList = {
   OID4VCIStack: IOID4VCIProps; // TODO
 };
 
+interface IPersonalDataProps {
+  isDisabled: (personalData: IOnboardingPersonalData) => boolean;
+  onNext: (personalData: IOnboardingPersonalData) => void;
+  onPersonalData: (personalData: IOnboardingPersonalData) => void;
+}
+
+export interface IOnboardingProps {
+  customOnboardingInstance?: OnboardingInterpretType;
+}
+
+export interface IHasOnboardingContext {
+  context: IOnboardingMachineContext;
+}
+
 export interface IHasOnBackProps {
   onBack?: () => Promise<void>;
 }
 
 export interface ILoadingProps {
   message: string;
+}
+
+export interface IHasOnNextProps {
+  onNext: (data?: any) => Promise<void>;
+}
+
+export interface ITermsOfServiceProps {
+  isDisabled: () => boolean;
+  onDecline: () => Promise<void>;
+  onAcceptTerms: (accept: boolean) => Promise<void>;
+  onAcceptPrivacy: (accept: boolean) => Promise<void>;
 }
 
 export interface ICredentialsSelectProps {
@@ -143,6 +170,14 @@ export interface IPinCodeSetProps {
   headerSubTitle: string;
 }
 
+export interface IPinCodeVerifyProps {
+  headerSubTitle: string;
+}
+
+export enum PinCodeMode {
+  CHOOSE_PIN = 'choose_pin',
+  CONFIRM_PIN = 'confirm_pin',
+}
 export interface ILockProps {
   onAuthenticate: () => Promise<void>;
 }
@@ -185,6 +220,7 @@ export enum ScreenRoutesEnum {
   TERMS_OF_SERVICE = 'TermsOfService',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
+  PIN_CODE_VERIFY = 'PinCodeVerify',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',

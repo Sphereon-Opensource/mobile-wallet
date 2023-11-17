@@ -122,12 +122,23 @@ export const toCredentialSummary = async (
     typeof verifiableCredential.issuer === 'string'
       ? verifiableCredential.issuer
       : verifiableCredential.issuer?.name ?? verifiableCredential.issuer?.id;
-  const issuerAlias: string = contact
-    ? contact.alias
-    : typeof verifiableCredential.issuer === 'string'
-    ? translateCorrelationIdToName(verifiableCredential.issuer)
-    : translateCorrelationIdToName(verifiableCredential.issuer?.id);
 
+  let issuerAlias: string | undefined = undefined;
+  if (typeof verifiableCredential?.issuer === 'object' && verifiableCredential.issuer?.name) {
+    // if the name is part of the VC itself, always use that
+    // todo: Probably still wise to allow a user to override it
+    issuerAlias = verifiableCredential.issuer.name;
+  }
+  if (!issuerAlias) {
+    issuerAlias = contact
+      ? contact.alias
+      : typeof verifiableCredential.issuer === 'string'
+      ? translateCorrelationIdToName(verifiableCredential.issuer)
+      : translateCorrelationIdToName(verifiableCredential.issuer?.id);
+  }
+  if (!issuerAlias) {
+    throw Error(`Could not deduce issuer alias`);
+  }
   return {
     hash,
     id: verifiableCredential.id,
