@@ -1,5 +1,5 @@
 import {VerifiableCredential} from '@veramo/core';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';
 import ShareMenu, {ShareData, ShareListener} from 'react-native-share-menu';
 import {APP_ID} from '../../@config/constants';
@@ -14,7 +14,7 @@ import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import LockingHandler from '../LockingHandler';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
+const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class IntentHandler {
   private static instance: IntentHandler;

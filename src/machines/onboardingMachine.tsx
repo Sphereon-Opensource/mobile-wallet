@@ -1,10 +1,10 @@
 import {CredentialPayload} from '@veramo/core';
-import {createContext} from 'react';
+import {Context, createContext} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
 import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
-import {onboardingStateNavigationListener} from '../navigation/onboardingStateNavigation';
-import {setupWallet} from '../services/onboardingService';
+import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {setupWallet} from '../services/machines/onboardingMachineService';
 import {SupportedDidMethodEnum} from '../types';
 import {
   ICreateOnboardingMachineOpts,
@@ -22,10 +22,10 @@ import {
   PrivacyPolicyEvent,
   TermsConditionsEvent,
   WalletSetupServiceResult,
-} from '../types/onboarding';
+} from '../types/machines/onboarding';
 
-import Debug from 'debug';
-const debug = Debug(`${APP_ID}:onboarding`);
+import Debug, {Debugger} from 'debug';
+const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
   ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
@@ -62,7 +62,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       } as Partial<CredentialPayload>),
   };
 
-  const initialContext = {
+  const initialContext: IOnboardingMachineContext = {
     credentialData,
     termsConditionsAccepted: false,
     privacyPolicyAccepted: false,
@@ -112,10 +112,10 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.acceptAgreement]: {
         on: {
           [OnboardingEvents.SET_POLICY]: {
-            actions: assign({privacyPolicyAccepted: (_ctx, e: PrivacyPolicyEvent) => e.data}),
+            actions: assign({privacyPolicyAccepted: (_ctx: IOnboardingMachineContext, e: PrivacyPolicyEvent) => e.data}),
           },
           [OnboardingEvents.SET_TOC]: {
-            actions: assign({termsConditionsAccepted: (_ctx, e: TermsConditionsEvent) => e.data}),
+            actions: assign({termsConditionsAccepted: (_ctx: IOnboardingMachineContext, e: TermsConditionsEvent) => e.data}),
           },
           [OnboardingEvents.DECLINE]: {
             target: OnboardingStates.declineOnboarding,
@@ -130,7 +130,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.enterPersonalDetails]: {
         on: {
           [OnboardingEvents.SET_PERSONAL_DATA]: {
-            actions: assign({personalData: (_ctx, e: PersonalDataEvent) => e.data}),
+            actions: assign({personalData: (_ctx: IOnboardingMachineContext, e: PersonalDataEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPersonalDataGuard,
@@ -142,7 +142,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.enterPin]: {
         on: {
           [OnboardingEvents.SET_PIN]: {
-            actions: assign({pinCode: (_ctx, e: PinSetEvent) => e.data}),
+            actions: assign({pinCode: (_ctx: IOnboardingMachineContext, e: PinSetEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPinCodeSetGuard,
@@ -208,7 +208,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
 };
 
 export type CreateOnboardingMachineType = typeof createOnboardingMachine;
-export const OnboardingContext = createContext({} as OnboardingContextType);
+export const OnboardingContext: Context<OnboardingContextType> = createContext({} as OnboardingContextType);
 
 export class OnboardingMachine {
   private static _instance: OnboardingInterpretType | undefined;
@@ -224,7 +224,7 @@ export class OnboardingMachine {
     return this._instance;
   }
 
-  static stopInstance() {
+  static stopInstance(): void {
     debug(`Stop instance...`);
     if (!OnboardingMachine.hasInstance()) {
       return;

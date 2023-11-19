@@ -1,11 +1,11 @@
-import Debug from 'debug';
-import React, {ReactNode, useState} from 'react';
+import Debug, {Debugger} from 'debug';
+import React, {ReactNode} from 'react';
 import {State} from 'xstate';
-import {APP_ID} from '../@config/constants';
-import {translate} from '../localization/Localization';
-import {OnboardingContext, OnboardingMachine} from '../machines/onboardingMachine';
-import store from '../store';
-import {ScreenRoutesEnum} from '../types';
+import {APP_ID} from '../../@config/constants';
+import {translate} from '../../localization/Localization';
+import {OnboardingContext, OnboardingMachine} from '../../machines/onboardingMachine';
+import store from '../../store';
+import {ScreenRoutesEnum} from '../../types';
 import {
   IOnboardingMachineContext,
   IOnboardingPersonalData,
@@ -13,11 +13,12 @@ import {
   OnboardingEventTypes,
   OnboardingInterpretType,
   OnboardingStates,
-} from '../types/onboarding';
-import {LOGIN_SUCCESS} from '../types/store/user.action.types';
-import RootNavigation from './rootNavigation';
+} from '../../types/machines/onboarding';
+import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
+import RootNavigation from './../rootNavigation';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
+const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
+
 export const onboardingStateNavigationListener = (
   onboardingMachine: OnboardingInterpretType,
   state: State<
@@ -31,7 +32,7 @@ export const onboardingStateNavigationListener = (
     any
   >,
   navigation?: any,
-) => {
+): void => {
   if (state._event.type === 'internal') {
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
     return;

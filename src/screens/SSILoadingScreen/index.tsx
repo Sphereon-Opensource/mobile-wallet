@@ -16,14 +16,14 @@ class SSILoadingScreen extends PureComponent<Props> {
 
   componentDidMount = (): void => {
     // we add this listener to block the os back button from executing on the loading screen. returning true will not let the event bubble up.
-    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', () => true);
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', (): boolean => true);
   };
 
   componentWillUnmount = (): void => {
     this.hardwareBackPressListener.remove();
   };
 
-  render() {
+  render(): JSX.Element {
     const {message} = this.props.route.params;
     return (
       <Container>

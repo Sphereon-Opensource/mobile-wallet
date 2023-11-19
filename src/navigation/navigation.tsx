@@ -1,11 +1,9 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
-
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {APP_ID} from '../@config/constants';
-
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
@@ -37,7 +35,8 @@ import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
-import {OID4VCIProvider} from './oid4vciStateNavigation';
+import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
+import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {
   HeaderMenuIconsEnum,
   IOnboardingProps,
@@ -50,9 +49,10 @@ import {
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {OnboardingProvider} from './onboardingStateNavigation';
+import {createStackNavigator} from '@react-navigation/stack';
+import {OnboardingInterpretType} from '../types/machines/onboarding';
 
-const debug = Debug(`${APP_ID}:navigation`);
+const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const Tab = createBottomTabNavigator();
@@ -89,6 +89,13 @@ const MainStackNavigator = (): JSX.Element => {
         )}
         options={{
           presentation: 'transparentModal',
+        }}
+      />
+      <Stack.Screen
+        name={QRRoutesEnum.OID4VCI}
+        component={OID4VCIStackWithContext}
+        options={{
+          headerShown: false,
         }}
       />
       <Stack.Screen name="Veramo" component={Veramo} />
@@ -267,13 +274,13 @@ const QRStack = (): JSX.Element => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name={QRRoutesEnum.OID4VCI}
-        component={OID4VCIStackWithContext}
-        options={{
-          headerShown: false,
-        }}
-      />
+      {/*<Stack.Screen*/}
+      {/*  name={QRRoutesEnum.OID4VCI}*/}
+      {/*  component={OID4VCIStackWithContext}*/}
+      {/*  options={{*/}
+      {/*    headerShown: false*/}
+      {/*  }}*/}
+      {/*/>*/}
       <Stack.Screen
         name={ScreenRoutesEnum.VERIFICATION_CODE}
         component={SSIVerificationCodeScreen}
@@ -579,7 +586,9 @@ export const OnboardingStackScreenWithContext = (props: IOnboardingProps): JSX.E
   );
 };
 
-const OID4VCIStack = (): JSX.Element => {
+const PaymentAuthorizationStack = createStackNavigator();
+
+export const OID4VCIStack = (): JSX.Element => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -588,6 +597,7 @@ const OID4VCIStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.LOADING}
         component={SSILoadingScreen}
+        initialParams={{message: translate('action_getting_information_message')}}
         options={{
           headerShown: false,
         }}
@@ -715,7 +725,7 @@ export const OID4VCIStackWithContext = (props: IOID4VCIProps): JSX.Element => {
 const AppNavigator = (): JSX.Element => {
   const lockState: WalletAuthLockState = walletAuthLockState();
 
-  useEffect(() => {
+  useEffect((): void => {
     if (!RootNavigation.isReady() || lockState !== WalletAuthLockState.ONBOARDING) {
       debug(`app or navigation not ready (yet)`);
       return;
@@ -723,7 +733,7 @@ const AppNavigator = (): JSX.Element => {
     debug(`app and navigation ready`);
 
     // Existing instance is already created by the provider. So we make sure by requiring an existing instance
-    const onboardingInstance = OnboardingMachine.getInstance({requireExisting: true});
+    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({requireExisting: true});
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
       debug(`ONBOARDING starting...`);

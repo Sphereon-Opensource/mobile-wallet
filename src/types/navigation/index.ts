@@ -2,17 +2,10 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-
-import {
-  IButton,
-  ICredentialSelection,
-  ICredentialSummary,
-  ICredentialTypeSelection,
-  OID4VCIMachineInterpreter,
-  PopupBadgesEnum,
-  PopupImagesEnum,
-} from '../index';
-import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../onboarding';
+import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../machines/onboarding';
+import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
+import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
+import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;

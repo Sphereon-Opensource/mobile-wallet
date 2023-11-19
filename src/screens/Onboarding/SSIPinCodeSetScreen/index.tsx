@@ -14,8 +14,10 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SE
 const SSIPinCodeSetScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onNext, onBack} = props.route.params;
 
-  useBackHandler(() => {
-    void onBack();
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+    }
     // make sure event stops here
     return true;
   });

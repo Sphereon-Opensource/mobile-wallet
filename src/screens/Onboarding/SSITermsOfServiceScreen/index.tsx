@@ -27,8 +27,10 @@ enum TermsTabRoutesEnum {
 const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
 
-  useBackHandler(() => {
-    void onBack();
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+    }
     // make sure event stops here
     return true;
   });

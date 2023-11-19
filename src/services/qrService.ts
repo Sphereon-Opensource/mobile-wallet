@@ -1,5 +1,5 @@
 import {URL} from 'react-native-url-polyfill';
-import {Subscription} from 'xstate';
+import {State, Subscription} from 'xstate';
 import {v4 as uuidv4} from 'uuid';
 import Debug, {Debugger} from 'debug';
 import {VerifiableCredential} from '@veramo/core';
@@ -21,10 +21,10 @@ import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import {OID4VCIMachine} from '../stateMachines/OID4VCIMachine';
+import {OID4VCIMachine} from '../machines/oid4vciMachine';
 import store from '../store';
 import {addIdentity} from '../store/actions/contact.actions';
-import {oid4vciStateNavigationListener} from '../navigation/oid4vciStateNavigation';
+import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import {authenticate} from './authenticationService';
 import {getContacts} from './contactService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
@@ -42,9 +42,8 @@ import {
   QrTypesEnum,
   ScreenRoutesEnum,
   ToastTypeEnum,
-  OID4VCIMachineInterpreter,
-  OID4VCIMachineState,
 } from '../types';
+import {OID4VCIMachineInstanceOpts, OID4VCIMachineInterpreter, OID4VCIMachineState} from '../types/machines/oid4vci';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
@@ -390,10 +389,27 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 };
 
 const connectOID4VCIssuance = async (args: IQrDataArgs): Promise<void> => {
-  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData});
+  console.log(`QR DATA: ${JSON.stringify(args.qrData)}`);
+
+  const context: OID4VCIMachineInstanceOpts = {
+    context: {
+      requestData: args.qrData,
+      // supportedCredentials: [],
+      // contactAlias: '',
+      // selectedCredentials: [],
+      // credentialOffers: [],
+      // hasContactConsent: false
+    },
+  };
+
+  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance(context); //{requestData: args.qrData}
   const subscription: Subscription = OID4VCIInstance.subscribe((state: OID4VCIMachineState) =>
     oid4vciStateNavigationListener(OID4VCIInstance, state),
   );
+
+  // const persistedState = `{"value":"selectingCredentials","context":${JSON.stringify(context)}`;
+  // const deserializedState: State<any> = State.create(JSON.parse(persistedState));
+  //
   OID4VCIInstance.start();
   subscription.unsubscribe();
 };

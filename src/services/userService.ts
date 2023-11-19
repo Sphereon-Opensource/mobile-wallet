@@ -1,11 +1,11 @@
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
 import {BasicUser, BasicUserIdentifier, IUser} from '../types';
 
 import {storageGetUsers, storageDeleteUser, storagePersistUser} from './storageService';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:userService`);
+const debug: Debugger = Debug(`${APP_ID}:userService`);
 
 import {v4 as uuidv4} from 'uuid';
 

@@ -22,8 +22,10 @@ const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
   const {context, onBack, onNext} = props.route.params;
   const {personalData} = {...context};
 
-  useBackHandler(() => {
-    void onBack();
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+    }
     // make sure event stops here
     return true;
   });

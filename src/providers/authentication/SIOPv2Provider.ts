@@ -5,12 +5,12 @@ import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWi
 import {OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/dist/session/OID4VP';
 import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:authentication`);
+const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
 export const siopGetRequest = async (config: IDidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(

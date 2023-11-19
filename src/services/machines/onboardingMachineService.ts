@@ -1,15 +1,13 @@
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {v4 as uuidv4} from 'uuid';
-
-import agent from '../agent';
-import store from '../store';
-
-import {createUser, login} from '../store/actions/user.actions';
-import {IUser} from '../types';
-import {IOnboardingMachineContext, WalletSetupServiceResult} from '../types/onboarding';
-import {createVerifiableCredential, storeVerifiableCredential} from './credentialService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
-import {storagePersistPin} from './storageService';
+import agent from '../../agent';
+import store from '../../store';
+import {createUser, login} from '../../store/actions/user.actions';
+import {IUser} from '../../types';
+import {IOnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
+import {getOrCreatePrimaryIdentifier} from '../identityService';
+import {storagePersistPin} from '../storageService';
 
 export const setupWallet = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const setup = await Promise.all([

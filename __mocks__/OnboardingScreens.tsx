@@ -2,21 +2,25 @@ import {NavigationContainer} from '@react-navigation/native';
 import {fireEvent, render, screen} from '@testing-library/react-native';
 import React from 'react';
 import {Provider} from 'react-redux';
-import {act} from 'react-test-renderer';
+import {act, ReactTestInstance} from 'react-test-renderer';
 import {Interpreter} from 'xstate';
-import {OnboardingProvider} from '../src/navigation/onboardingStateNavigation';
+import {OnboardingProvider} from '../src/navigation/machines/onboardingStateNavigation';
 import {OnboardingMachine} from '../src/machines/onboardingMachine';
 import {OnboardingStack} from '../src/navigation/navigation';
-
 import {navigationRef} from '../src/navigation/rootNavigation';
 import OnTouchProvider from '../src/providers/touch/OnTouchProvider';
 import store from '../src/store';
-import {IOnboardingMachineContext, OnboardingEvents, OnboardingEventTypes, OnboardingStates} from '../src/types/onboarding';
+import {
+  IOnboardingMachineContext,
+  OnboardingEvents,
+  OnboardingEventTypes,
+  OnboardingInterpretType,
+  OnboardingStates,
+} from '../src/types/machines/onboarding';
 
-// @ts-ignore
 import BackHandler from 'react-native/Libraries/Utilities/__mocks__/BackHandler';
 
-export const mockPressBack = async (opts?: {onboardingInstance: any}) => {
+export const mockPressBack = async (opts?: {onboardingInstance: any}): Promise<void> => {
   typeof opts?.onboardingInstance === 'object'
     ? opts.onboardingInstance.send(OnboardingEvents.PREVIOUS)
     : await act(() => BackHandler.mockPressBack());
@@ -25,11 +29,11 @@ export const mockPressBack = async (opts?: {onboardingInstance: any}) => {
 jest.setTimeout(60 * 1000); // 60 seconds
 function createComponent(
   onboardingInstance: Interpreter<IOnboardingMachineContext, any, OnboardingEventTypes, {value: any; context: IOnboardingMachineContext}, any>,
-) {
-  const component = (
+): JSX.Element {
+  return (
     <Provider store={store}>
       <NavigationContainer
-        onReady={() => {
+        onReady={(): void => {
           onboardingInstance.start();
           console.log('Navigation is ready');
         }}
@@ -42,21 +46,20 @@ function createComponent(
       </NavigationContainer>
     </Provider>
   );
-  return component;
 }
 
-describe('Testing onboarding with regular machine, should ', () => {
-  test('result in fully onboarded user with credential', async () => {
-    const onboardingInstance = OnboardingMachine.getInstance({
+describe('Testing onboarding with regular machine, should ', (): void => {
+  test('result in fully onboarded user with credential', async (): Promise<void> => {
+    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
       requireCustomNavigationHook: false,
     });
-    const component = createComponent(onboardingInstance);
+    const component: JSX.Element = createComponent(onboardingInstance);
     render(component);
     // rendered.debug();
 
-    const header = await screen.findByText(/Welcome/);
-    const items = await screen.findAllByText(/Allows you/);
-    const nextButtonText = await screen.findByText(/Next|Go|Accept/);
+    const header: ReactTestInstance = await screen.findByText(/Welcome/);
+    const items: Array<ReactTestInstance> = await screen.findAllByText(/Allows you/);
+    const nextButtonText: ReactTestInstance = await screen.findByText(/Next|Go|Accept/);
 
     // Welcome screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.showIntro);
@@ -71,26 +74,28 @@ describe('Testing onboarding with regular machine, should ', () => {
     // TOS screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.acceptAgreement);
     expect(header).toBeOnTheScreen();
-    await act(async () => fireEvent.press(await screen.findByText(/accept the terms/)));
-    await act(async () => fireEvent.press(await screen.findByText(/accept the privacy/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the terms/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the privacy/)));
     await act(() => fireEvent.press(nextButtonText));
 
     // Personal Details screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
-    await act(async () => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
-    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
     await act(() => fireEvent.press(nextButtonText));
 
     // Pin entry and verification
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPin);
     // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPin);
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
 
     // Verification screen
@@ -105,20 +110,20 @@ describe('Testing onboarding with regular machine, should ', () => {
   });
 });
 
-describe('Testing onboarding ui without services, should ', () => {
-  test('result in onboarding happy flow to finish', async () => {
-    const onboardingInstance = OnboardingMachine.getInstance({
+describe('Testing onboarding ui without services, should ', (): void => {
+  test('result in onboarding happy flow to finish', async (): Promise<void> => {
+    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
       services: {
         [OnboardingStates.setupWallet]: () => Promise.resolve(console.log('done!')),
       },
       requireCustomNavigationHook: false,
     });
-    const component = createComponent(onboardingInstance);
+    const component: JSX.Element = createComponent(onboardingInstance);
     render(component);
 
-    const header = await screen.findByText(/Welcome/);
-    const items = await screen.findAllByText(/Allows you/);
-    const nextButtonText = await screen.findByText(/Next|Go|Accept/);
+    const header: ReactTestInstance = await screen.findByText(/Welcome/);
+    const items: Array<ReactTestInstance> = await screen.findAllByText(/Allows you/);
+    const nextButtonText: ReactTestInstance = await screen.findByText(/Next|Go|Accept/);
 
     // Welcome screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.showIntro);
@@ -133,26 +138,28 @@ describe('Testing onboarding ui without services, should ', () => {
     // TOS screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.acceptAgreement);
     expect(header).toBeOnTheScreen();
-    await act(async () => fireEvent.press(await screen.findByText(/accept the terms/)));
-    await act(async () => fireEvent.press(await screen.findByText(/accept the privacy/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the terms/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the privacy/)));
     await act(() => fireEvent.press(nextButtonText));
 
     // Personal Details screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
-    await act(async () => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
-    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
     await act(() => fireEvent.press(nextButtonText));
 
     // Pin entry and verification
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPin);
     // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPin);
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
 
     // Verification screen
@@ -166,19 +173,19 @@ describe('Testing onboarding ui without services, should ', () => {
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.finishOnboarding);
   });
 
-  test('have working guards and finish onboarding', async () => {
-    const onboardingInstance = OnboardingMachine.getInstance({
+  test('have working guards and finish onboarding', async (): Promise<void> => {
+    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
       services: {
         [OnboardingStates.setupWallet]: () => Promise.resolve(console.log('done!')),
       },
       requireCustomNavigationHook: false,
     });
-    const component = createComponent(onboardingInstance);
+    const component: JSX.Element = createComponent(onboardingInstance);
     render(component);
 
-    const header = await screen.findByText(/Welcome/);
-    const items = await screen.findAllByText(/Allows you/);
-    const nextButtonText = await screen.findByText(/Next|Go|Accept/);
+    const header: ReactTestInstance = await screen.findByText(/Welcome/);
+    const items: Array<ReactTestInstance> = await screen.findAllByText(/Allows you/);
+    const nextButtonText: ReactTestInstance = await screen.findByText(/Next|Go|Accept/);
 
     // Welcome screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.showIntro);
@@ -205,9 +212,9 @@ describe('Testing onboarding ui without services, should ', () => {
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.acceptAgreement);
 
     await act(() => fireEvent.press(nextButtonText)); // Does nothing as accept checkboxes are not pressed yet
-    await act(async () => fireEvent.press(await screen.findByText(/accept the terms/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the terms/)));
     await act(() => fireEvent.press(nextButtonText)); // Does nothing as accept checkboxes are not pressed yet
-    await act(async () => fireEvent.press(await screen.findByText(/accept the privacy/)));
+    await act(async (): Promise<void> => fireEvent.press(await screen.findByText(/accept the privacy/)));
     await act(() => fireEvent.press(nextButtonText));
 
     // Personal Details screen
@@ -225,34 +232,37 @@ describe('Testing onboarding ui without services, should ', () => {
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
     await act(() => fireEvent.press(nextButtonText));
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/First name/), 'Bob'));
     await act(() => fireEvent.press(nextButtonText));
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Last name/), 'the Builder'));
     await act(() => fireEvent.press(nextButtonText));
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Email address/), 'nou'));
     await act(() => fireEvent.press(nextButtonText));
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@'));
     await act(() => fireEvent.press(nextButtonText));
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPersonalDetails);
-    await act(async () => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
+    await act(async (): Promise<void> => fireEvent.changeText(await screen.findByText(/Email address/), 'nou@en.of'));
     await act(() => fireEvent.press(nextButtonText));
 
     // Pin entry and verification
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPin);
     // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '654321'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '654321'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPin);
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '000000'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '000000'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPin);
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '654321'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '654321'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPersonalDetails);
 
@@ -265,18 +275,20 @@ describe('Testing onboarding ui without services, should ', () => {
 
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.enterPin);
     // We need to find the hidden input text, as we are overlay an SVG. We also need to fire an event that would come from the keyboard
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[0], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPin);
-    await act(async () =>
-      fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
+    await act(
+      async (): Promise<void> =>
+        fireEvent((await screen.findAllByLabelText('Pin code', {hidden: true}))[1], 'submitEditing', {nativeEvent: {text: '123456'}}),
     );
 
     // Verification screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPersonalDetails);
 
-    const context = onboardingInstance.getSnapshot().context;
+    const context: IOnboardingMachineContext = onboardingInstance.getSnapshot().context;
     expect(context).toMatchObject({
       credentialData: {
         credential: {
@@ -309,7 +321,7 @@ describe('Testing onboarding ui without services, should ', () => {
     // Done
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.finishOnboarding);
 
-    const finalContext = onboardingInstance.getSnapshot().context;
+    const finalContext: IOnboardingMachineContext = onboardingInstance.getSnapshot().context;
     expect(finalContext).toEqual({
       pinCode: '',
       privacyPolicyAccepted: false,

@@ -1,20 +1,7 @@
-import {
-  CreateContactEvent,
-  NavigationBarRoutesEnum,
-  OID4VCIContext as OID4VCIContextType,
-  OID4VCIMachineEvents,
-  OID4VCIMachineInterpreter,
-  OID4VCIMachineNavigationArgs,
-  OID4VCIMachineState,
-  OID4VCIMachineStates,
-  OIDVCIProviderProps,
-  PopupImagesEnum,
-  QRRoutesEnum,
-  ScreenRoutesEnum,
-} from '../types';
-import {translate} from '../localization/Localization';
+import React, {Context, createContext} from 'react';
 import {URL} from 'react-native-url-polyfill';
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
+import {SimpleEventsOf} from 'xstate';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -22,11 +9,21 @@ import {
   IContact,
   IdentityRoleEnum,
 } from '@sphereon/ssi-sdk.data-store';
-import {SimpleEventsOf} from 'xstate';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
-import RootNavigation from './rootNavigation';
-import React, {Context, createContext} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import OpenId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssuanceProvider';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {translate} from '../../localization/Localization';
+import RootNavigation from './../rootNavigation';
+import {
+  CreateContactEvent,
+  OID4VCIContext as OID4VCIContextType,
+  OID4VCIMachineEvents,
+  OID4VCIMachineInterpreter,
+  OID4VCIMachineNavigationArgs,
+  OID4VCIMachineState,
+  OID4VCIMachineStates,
+  OIDVCIProviderProps,
+} from '../../types/machines/oid4vci';
+import {NavigationBarRoutesEnum, PopupImagesEnum, QRRoutesEnum, ScreenRoutesEnum} from '../../types';
 
 const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIContextType);
 

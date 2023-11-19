@@ -1,12 +1,12 @@
 import {IRemoveContactArgs} from '@sphereon/ssi-sdk.contact-manager';
 import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
 import {cmAddContact, cmAddIdentity, cmGetContacts, cmRemoveContact, cmUpdateContact} from '../agent';
 import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IUpdateContactArgs} from '../types';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:contactService`);
+const debug: Debugger = Debug(`${APP_ID}:contactService`);
 
 export const getContacts = async (args?: IGetContactsArgs): Promise<Array<IContact>> => {
   debug(`getContacts(${JSON.stringify(args)})...`);

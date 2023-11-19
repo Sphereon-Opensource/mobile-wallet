@@ -1,8 +1,8 @@
 import {CredentialPayload, IIdentifier, ProofFormat, VerifiableCredential} from '@veramo/core';
 import {Interpreter} from 'xstate';
-import {SupportedDidMethodEnum} from '../did';
-import {ISetPersonalDataActionArgs} from '../store/onboarding.types';
-import {IUser} from '../user';
+import {SupportedDidMethodEnum} from '../../did';
+import {ISetPersonalDataActionArgs} from '../../store/onboarding.types';
+import {IUser} from '../../user';
 
 export interface IOnboardingCredentialData {
   didMethod: SupportedDidMethodEnum;

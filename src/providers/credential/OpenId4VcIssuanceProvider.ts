@@ -1,4 +1,4 @@
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import {DIDDocument} from 'did-resolver';
 import {_ExtendedIKey} from '@veramo/utils';
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
@@ -40,7 +40,7 @@ import {
 } from '../../types';
 
 const {v4: uuidv4} = require('uuid');
-const debug: Debug.Debugger = Debug(`${APP_ID}:openid4vci`);
+const debug: Debugger = Debug(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc_json', 'jwt_vc', 'ldp_vc'];

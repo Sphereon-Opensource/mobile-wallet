@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import jwt_decode from 'jwt-decode';
 import {URL} from 'react-native-url-polyfill';
 
@@ -7,7 +7,7 @@ import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
 import {QrTypesEnum} from '../../types';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:jwt`);
+const debug: Debugger = Debug(`${APP_ID}:jwt`);
 
 class JwtVcPresentationProfileProvider {
   public getUrl = async (uri: string): Promise<string> => {

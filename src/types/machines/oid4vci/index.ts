@@ -17,15 +17,29 @@ export type MappedCredentialOffer = {
 };
 
 export type OID4VCIMachineContext = {
-  requestData: IQrData; // TODO fix type as this is not always a qr code (deeplink)
+  requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
   openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
-  supportedCredentials: Array<CredentialSupported>;
+  supportedCredentials?: Array<CredentialSupported>;
   contactAlias: string;
-  contact?: IContact;
+  contact: IContact;
   selectedCredentials: Array<string>;
   credentialOffers: Array<MappedCredentialOffer>;
   verificationCode?: string;
   hasContactConsent: boolean;
+  error?: ErrorDetails;
+};
+
+// TODO deduplicate
+export type OID4VCIMachineInstanceContextOpts = {
+  requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
+  openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
+  supportedCredentials?: Array<CredentialSupported>;
+  contactAlias?: string;
+  contact?: IContact;
+  selectedCredentials?: Array<string>;
+  credentialOffers?: Array<MappedCredentialOffer>;
+  verificationCode?: string;
+  hasContactConsent?: boolean;
   error?: ErrorDetails;
 };
 
@@ -74,7 +88,7 @@ export type OID4VCIStateMachine = StateMachine<
 >;
 
 export type CreateOID4VCIMachineOpts = {
-  requestData: IQrData;
+  //requestData: IQrData;
   machineId?: string;
 };
 
@@ -82,6 +96,7 @@ export type OID4VCIMachineInstanceOpts = {
   services?: any;
   guards?: any;
   subscription?: () => void;
+  context: OID4VCIMachineInstanceContextOpts;
   requireCustomNavigationHook?: boolean;
 } & CreateOID4VCIMachineOpts;
 
@@ -118,7 +133,7 @@ export enum OID4VCIMachineGuards {
   hasNotContactGuard = 'oid4vciHasNotContactGuard',
   selectCredentialsGuard = 'oid4vciSelectCredentialsGuard',
   authenticationGuard = 'oid4vciAuthenticationGuard',
-  contactIdentityGuard = 'oid4vciContactIdentityGuard',
+  contactHasNotIdentityGuard = 'oid4vciHasNotContactIdentityGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
   hasSelectedCredentialsGuard = 'oid4vciHasSelectedCredentialsGuard',
