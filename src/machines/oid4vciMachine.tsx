@@ -474,7 +474,7 @@ export class OID4VCIMachine {
         },
         guards: {
           oid4vciHasNoContactGuard,
-          oid4vciSupportedCredentialsGuard: oid4vciSelectCredentialsGuard,
+          oid4vciSelectCredentialsGuard,
           oid4vciRequirePinGuard,
           oid4vciHasNoContactIdentityGuard,
           oid4vciVerificationCodeGuard,

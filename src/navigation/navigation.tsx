@@ -274,13 +274,6 @@ const QRStack = (): JSX.Element => {
           headerShown: false,
         }}
       />
-      {/*<Stack.Screen*/}
-      {/*  name={QRRoutesEnum.OID4VCI}*/}
-      {/*  component={OID4VCIStackWithContext}*/}
-      {/*  options={{*/}
-      {/*    headerShown: false*/}
-      {/*  }}*/}
-      {/*/>*/}
       <Stack.Screen
         name={ScreenRoutesEnum.VERIFICATION_CODE}
         component={SSIVerificationCodeScreen}
@@ -585,8 +578,6 @@ export const OnboardingStackScreenWithContext = (props: IOnboardingProps): JSX.E
     </OnboardingProvider>
   );
 };
-
-const PaymentAuthorizationStack = createStackNavigator();
 
 export const OID4VCIStack = (): JSX.Element => {
   return (
