@@ -101,31 +101,6 @@ export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<IIdenti
   };
 };
 
-// export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-//   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
-//     dispatch({type: CONTACTS_LOADING});
-//     try {
-//       identityAdd(args)
-//         .then((identity: IIdentity) => {
-//           dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}})
-//         })
-//         .catch(error => {
-//           //FIXME:
-//           console.log(
-//             `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
-//               args.contactId
-//             }, ${JSON.stringify(args.identity)}`,
-//           );
-//           dispatch({type: ADD_IDENTITY_FAILED});
-//           return Promise.reject(error);
-//         });
-//     } catch (error: unknown) {
-//       dispatch({type: ADD_IDENTITY_FAILED});
-//       return Promise.reject(error);
-//     }
-//   };
-// };
-
 export const deleteContact = (contactId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CONTACTS_LOADING});
