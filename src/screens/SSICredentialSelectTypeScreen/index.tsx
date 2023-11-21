@@ -46,7 +46,7 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
         credentialType.id === itemInfo.item.id ? (credentialType.isSelected = !itemInfo.item.isSelected) : (credentialType.isSelected = false);
       return credentialType;
     });
-    // // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
+    // Creating a copy of the array as React-Native does not see a difference between the new and old array if a value is changed on one of the objects, and therefor will not trigger a rerender
     setCredentialTypes([...selection]);
     if (onSelectType) {
       await onSelectType(getSelectedCredentialTypes(selection));
