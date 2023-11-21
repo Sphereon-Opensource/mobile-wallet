@@ -22,7 +22,7 @@ import {addIdentity} from '../../store/actions/contact.actions';
 import {ICredentialTypeSelection, IVerificationResult} from '../../types/';
 import {MappedCredentialOffer, OID4VCIMachineContext} from '../../types/machines/oid4vci';
 
-export const initiating = async (context: OID4VCIMachineContext): Promise<OpenId4VcIssuanceProvider> => {
+export const initiateOpenId4VcIssuanceProvider = async (context: OID4VCIMachineContext): Promise<OpenId4VcIssuanceProvider> => {
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {

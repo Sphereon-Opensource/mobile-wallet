@@ -247,23 +247,23 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiating) ||
-    state.matches(OID4VCIMachineStates.creatingCredentialSelection) ||
-    state.matches(OID4VCIMachineStates.retrievingContact) ||
-    state.matches(OID4VCIMachineStates.transitioningFromSetup) ||
-    state.matches(OID4VCIMachineStates.transitioningFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.retrievingCredentialsOffers)
+    state.matches(OID4VCIMachineStates.initiate) ||
+    state.matches(OID4VCIMachineStates.createCredentialSelection) ||
+    state.matches(OID4VCIMachineStates.retrieveContact) ||
+    state.matches(OID4VCIMachineStates.transitionFromSetup) ||
+    state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
+    state.matches(OID4VCIMachineStates.retrieveCredentialsOffers)
   ) {
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.addingContact)) {
+  } else if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.selectingCredentials)) {
+  } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.authenticating)) {
+  } else if (state.matches(OID4VCIMachineStates.verifyPin)) {
     return navigateAuthentication({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.reviewingCredentials)) {
+  } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.showingError)) {
+  } else if (state.matches(OID4VCIMachineStates.showError)) {
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
     state.matches(OID4VCIMachineStates.done) ||

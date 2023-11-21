@@ -3,11 +3,13 @@ import {v4 as uuidv4} from 'uuid';
 import agent from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
-import {IUser} from '../../types';
-import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {BasicUser, IUser} from '../../types';
+import {OnboardingMachineContext, OnboardingPersonalData, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {storagePersistPin} from '../storageService';
+import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
+import {_ExtendedIKey} from '@veramo/utils';
 
 export const setupWallet = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const setup = await Promise.all([
@@ -24,13 +26,13 @@ export const setupWallet = async (context: OnboardingMachineContext): Promise<Wa
 };
 
 const createUserAndIdentity = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
-  const identifier = await getOrCreatePrimaryIdentifier({method: context.credentialData.didMethod});
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({method: context.credentialData.didMethod});
 
-  const personalData = context.personalData;
-  const cred = context.credentialData.credential;
+  const personalData: OnboardingPersonalData = context.personalData;
+  const cred: Partial<CredentialPayload> | undefined = context.credentialData.credential;
   const ctx = {...agent?.context, agent};
-  const key = await getFirstKeyWithRelation(identifier, ctx, 'authentication');
-  const verifiableCredential = await createVerifiableCredential({
+  const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation(identifier, ctx, 'authentication');
+  const verifiableCredential: VerifiableCredential = await createVerifiableCredential({
     credential: {
       ...cred,
       '@context': cred?.['@context'] ?? [
@@ -54,7 +56,7 @@ const createUserAndIdentity = async (context: OnboardingMachineContext): Promise
   });
   await storeVerifiableCredential({vc: verifiableCredential});
 
-  const user = {
+  const user: BasicUser = {
     ...personalData,
     identifiers: [{did: identifier.did}],
   };

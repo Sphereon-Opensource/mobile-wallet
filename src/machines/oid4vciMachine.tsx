@@ -6,7 +6,7 @@ import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuance
 import {
   addContactIdentity,
   createCredentialSelection,
-  initiating,
+  initiateOpenId4VcIssuanceProvider,
   retrieveContact,
   retrieveCredentialOffers,
   storeCredentialBranding,
@@ -94,7 +94,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
   return createMachine<OID4VCIMachineContext, OID4VCIMachineEventTypes>({
     id: opts?.machineId ?? 'OID4VCI',
     predictableActionArguments: true,
-    initial: OID4VCIMachineStates.initiating,
+    initial: OID4VCIMachineStates.initiate,
     schema: {
       events: {} as OID4VCIMachineEventTypes,
       guards: {} as
@@ -107,7 +107,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         | {type: OID4VCIMachineGuards.createContactGuard}
         | {type: OID4VCIMachineGuards.hasSelectedCredentialsGuard},
       services: {} as {
-        [OID4VCIMachineServices.initiating]: {
+        [OID4VCIMachineServices.initiate]: {
           data: OpenId4VcIssuanceProvider;
         };
         [OID4VCIMachineServices.createCredentialSelection]: {
@@ -135,16 +135,16 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
     },
     context: initialContext,
     states: {
-      [OID4VCIMachineStates.initiating]: {
-        id: OID4VCIMachineStates.initiating,
+      [OID4VCIMachineStates.initiate]: {
+        id: OID4VCIMachineStates.initiate,
         invoke: {
-          src: OID4VCIMachineServices.initiating,
+          src: OID4VCIMachineServices.initiate,
           onDone: {
-            target: OID4VCIMachineStates.creatingCredentialSelection,
+            target: OID4VCIMachineStates.createCredentialSelection,
             actions: assign({openId4VcIssuanceProvider: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_initiation_error_title'),
@@ -154,17 +154,17 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.creatingCredentialSelection]: {
-        id: OID4VCIMachineStates.creatingCredentialSelection,
+      [OID4VCIMachineStates.createCredentialSelection]: {
+        id: OID4VCIMachineStates.createCredentialSelection,
         invoke: {
           src: OID4VCIMachineServices.createCredentialSelection,
           onDone: {
-            target: OID4VCIMachineStates.retrievingContact,
+            target: OID4VCIMachineStates.retrieveContact,
             actions: assign({supportedCredentials: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
             // TODO add condition that we have at least 1 vc in the selection
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_credential_selection_error_title'),
@@ -174,16 +174,16 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.retrievingContact]: {
-        id: OID4VCIMachineStates.retrievingContact,
+      [OID4VCIMachineStates.retrieveContact]: {
+        id: OID4VCIMachineStates.retrieveContact,
         invoke: {
           src: OID4VCIMachineServices.retrieveContact,
           onDone: {
-            target: OID4VCIMachineStates.transitioningFromSetup,
+            target: OID4VCIMachineStates.transitionFromSetup,
             actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}), // TODO any and all others
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_retrieve_contact_error_title'),
@@ -193,28 +193,28 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.transitioningFromSetup]: {
-        id: OID4VCIMachineStates.transitioningFromSetup,
+      [OID4VCIMachineStates.transitionFromSetup]: {
+        id: OID4VCIMachineStates.transitionFromSetup,
         always: [
           {
-            target: OID4VCIMachineStates.addingContact,
+            target: OID4VCIMachineStates.addContact,
             cond: OID4VCIMachineGuards.hasNotContactGuard,
           },
           {
-            target: OID4VCIMachineStates.selectingCredentials,
+            target: OID4VCIMachineStates.selectCredentials,
             cond: OID4VCIMachineGuards.supportedCredentialsGuard,
           },
           {
-            target: OID4VCIMachineStates.authenticating,
+            target: OID4VCIMachineStates.verifyPin,
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentialsOffers,
           },
         ],
       },
-      [OID4VCIMachineStates.addingContact]: {
-        id: OID4VCIMachineStates.addingContact,
+      [OID4VCIMachineStates.addContact]: {
+        id: OID4VCIMachineStates.addContact,
         on: {
           [OID4VCIMachineEvents.SET_CONTACT_CONSENT]: {
             actions: assign({hasContactConsent: (_ctx: OID4VCIMachineContext, _event: ContactConsentEvent) => _event.data}),
@@ -234,35 +234,35 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             target: OID4VCIMachineStates.aborted,
           },
           [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.transitioningFromContactSetup,
+            target: OID4VCIMachineStates.transitionFromContactSetup,
             cond: OID4VCIMachineGuards.hasContactGuard,
           },
         },
       },
-      [OID4VCIMachineStates.transitioningFromContactSetup]: {
-        id: OID4VCIMachineStates.transitioningFromContactSetup,
+      [OID4VCIMachineStates.transitionFromContactSetup]: {
+        id: OID4VCIMachineStates.transitionFromContactSetup,
         always: [
           {
-            target: OID4VCIMachineStates.selectingCredentials,
+            target: OID4VCIMachineStates.selectCredentials,
             cond: OID4VCIMachineGuards.supportedCredentialsGuard,
           },
           {
-            target: OID4VCIMachineStates.authenticating,
+            target: OID4VCIMachineStates.verifyPin,
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentialsOffers,
           },
         ],
       },
-      [OID4VCIMachineStates.selectingCredentials]: {
-        id: OID4VCIMachineStates.selectingCredentials,
+      [OID4VCIMachineStates.selectCredentials]: {
+        id: OID4VCIMachineStates.selectCredentials,
         on: {
           [OID4VCIMachineEvents.SET_SELECTED_CREDENTIALS]: {
             actions: assign({selectedCredentials: (_ctx: OID4VCIMachineContext, _event: SelectCredentialsEvent) => _event.data}),
           },
           [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.transitioningFromSelectingCredentials,
+            target: OID4VCIMachineStates.transitionFromSelectingCredentials,
             cond: OID4VCIMachineGuards.hasSelectedCredentialsGuard,
           },
           [OID4VCIMachineEvents.PREVIOUS]: {
@@ -270,31 +270,31 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.transitioningFromSelectingCredentials]: {
-        id: OID4VCIMachineStates.transitioningFromSelectingCredentials,
+      [OID4VCIMachineStates.transitionFromSelectingCredentials]: {
+        id: OID4VCIMachineStates.transitionFromSelectingCredentials,
         always: [
           {
-            target: OID4VCIMachineStates.authenticating,
+            target: OID4VCIMachineStates.verifyPin,
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentialsOffers,
           },
         ],
       },
-      [OID4VCIMachineStates.authenticating]: {
-        id: OID4VCIMachineStates.authenticating,
+      [OID4VCIMachineStates.verifyPin]: {
+        id: OID4VCIMachineStates.verifyPin,
         on: {
           [OID4VCIMachineEvents.SET_VERIFICATION_CODE]: {
             actions: assign({verificationCode: (_ctx: OID4VCIMachineContext, _event: VerificationCodeEvent) => _event.data}),
           },
           [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.retrievingCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentialsOffers,
             cond: OID4VCIMachineGuards.verificationCodeGuard,
           },
           [OID4VCIMachineEvents.PREVIOUS]: [
             {
-              target: OID4VCIMachineStates.selectingCredentials,
+              target: OID4VCIMachineStates.selectCredentials,
               cond: OID4VCIMachineGuards.supportedCredentialsGuard,
             },
             {
@@ -303,16 +303,16 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           ],
         },
       },
-      [OID4VCIMachineStates.retrievingCredentialsOffers]: {
-        id: OID4VCIMachineStates.retrievingCredentialsOffers,
+      [OID4VCIMachineStates.retrieveCredentialsOffers]: {
+        id: OID4VCIMachineStates.retrieveCredentialsOffers,
         invoke: {
           src: OID4VCIMachineServices.retrieveCredentialOffers,
           onDone: {
-            target: OID4VCIMachineStates.verifyingCredentials,
+            target: OID4VCIMachineStates.verifyCredentials,
             actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_retrieve_credentials_error_title'),
@@ -323,15 +323,15 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         },
         exit: assign({verificationCode: undefined}),
       },
-      [OID4VCIMachineStates.verifyingCredentials]: {
-        id: OID4VCIMachineStates.verifyingCredentials,
+      [OID4VCIMachineStates.verifyCredentials]: {
+        id: OID4VCIMachineStates.verifyCredentials,
         invoke: {
           src: OID4VCIMachineServices.assertValidCredentials,
           onDone: {
-            target: OID4VCIMachineStates.transitioningFromWalletInput,
+            target: OID4VCIMachineStates.transitionFromWalletInput,
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_verify_credentials_error_title'),
@@ -341,30 +341,30 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.transitioningFromWalletInput]: {
-        id: OID4VCIMachineStates.transitioningFromWalletInput,
+      [OID4VCIMachineStates.transitionFromWalletInput]: {
+        id: OID4VCIMachineStates.transitionFromWalletInput,
         always: [
           {
-            target: OID4VCIMachineStates.addingContactIdentity,
+            target: OID4VCIMachineStates.addContactIdentity,
             cond: OID4VCIMachineGuards.contactHasNotIdentityGuard,
           },
           {
-            target: OID4VCIMachineStates.reviewingCredentials,
+            target: OID4VCIMachineStates.reviewCredentials,
           },
         ],
       },
-      [OID4VCIMachineStates.addingContactIdentity]: {
-        id: OID4VCIMachineStates.addingContactIdentity,
+      [OID4VCIMachineStates.addContactIdentity]: {
+        id: OID4VCIMachineStates.addContactIdentity,
         invoke: {
           src: OID4VCIMachineServices.addContactIdentity,
           onDone: {
-            target: OID4VCIMachineStates.reviewingCredentials,
+            target: OID4VCIMachineStates.reviewCredentials,
             actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>): void => {
               _ctx.contact?.identities.push(_event.data);
             },
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_add_contact_identity_error_title'),
@@ -374,11 +374,11 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.reviewingCredentials]: {
-        id: OID4VCIMachineStates.reviewingCredentials,
+      [OID4VCIMachineStates.reviewCredentials]: {
+        id: OID4VCIMachineStates.reviewCredentials,
         on: {
           [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.storingCredentialBranding,
+            target: OID4VCIMachineStates.storeCredentialBranding,
           },
           [OID4VCIMachineEvents.DECLINE]: {
             target: OID4VCIMachineStates.declined,
@@ -388,15 +388,15 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.storingCredentialBranding]: {
-        id: OID4VCIMachineStates.storingCredentialBranding,
+      [OID4VCIMachineStates.storeCredentialBranding]: {
+        id: OID4VCIMachineStates.storeCredentialBranding,
         invoke: {
           src: OID4VCIMachineServices.storeCredentialBranding,
           onDone: {
-            target: OID4VCIMachineStates.storingCredentials,
+            target: OID4VCIMachineStates.storeCredentials,
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_store_credential_branding_error_title'),
@@ -406,15 +406,15 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.storingCredentials]: {
-        id: OID4VCIMachineStates.storingCredentials,
+      [OID4VCIMachineStates.storeCredentials]: {
+        id: OID4VCIMachineStates.storeCredentials,
         invoke: {
           src: OID4VCIMachineServices.storeCredentials,
           onDone: {
             target: OID4VCIMachineStates.done,
           },
           onError: {
-            target: OID4VCIMachineStates.showingError,
+            target: OID4VCIMachineStates.showError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_store_credential_error_title'),
@@ -424,8 +424,8 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.showingError]: {
-        id: OID4VCIMachineStates.showingError,
+      [OID4VCIMachineStates.showError]: {
+        id: OID4VCIMachineStates.showError,
         on: {
           [OID4VCIMachineEvents.NEXT]: {
             target: OID4VCIMachineStates.error,
@@ -460,7 +460,7 @@ export class OID4VCIMachine {
     const instance: OID4VCIMachineInterpreter = interpret(
       createOID4VCIMachine(opts).withConfig({
         services: {
-          [OID4VCIMachineServices.initiating]: initiating,
+          [OID4VCIMachineServices.initiate]: initiateOpenId4VcIssuanceProvider,
           [OID4VCIMachineServices.createCredentialSelection]: createCredentialSelection,
           [OID4VCIMachineServices.retrieveContact]: retrieveContact,
           [OID4VCIMachineServices.retrieveCredentialOffers]: retrieveCredentialOffers,
