@@ -155,7 +155,6 @@ class OpenId4VcIssuanceProvider {
     this._client = client;
   }
 
-  // TODO move these to a util class or make them look at this class???
   private static determineClientId(issuer?: string): string {
     //FIXME: Remove. Needs to move to party/connection management. Crossword expects a certain clientID
     return issuer !== undefined && issuer.includes('identiproof') ? 'default-pre-auth-client' : APP_ID;
@@ -172,9 +171,7 @@ class OpenId4VcIssuanceProvider {
     );
   }
 
-  // TODO does not make sense to make this static, it's easier to use the metadata getter field and call it on the provider as 50% of the input comes from the provider anyways
   /**
-   * TODO should be moved to a more logical place
    * TODO check again when WAL-617 is done to replace how we get the issuer name.
    */
   public static getIssuerName(
@@ -191,7 +188,6 @@ class OpenId4VcIssuanceProvider {
     return url;
   }
 
-  // TODO think about these gets and maybe make them inline with the specific gets we already have
   get serverMetadata(): EndpointMetadataResult | undefined {
     return this._serverMetadata;
   }

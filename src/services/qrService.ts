@@ -389,10 +389,6 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 };
 
 const connectOID4VCIssuance = async (args: IQrDataArgs): Promise<void> => {
-  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData});
-  const subscription: Subscription = OID4VCIInstance.subscribe((state: OID4VCIMachineState) =>
-    oid4vciStateNavigationListener(OID4VCIInstance, state),
-  );
+  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData, requireCustomNavigationHook: false});
   OID4VCIInstance.start();
-  subscription.unsubscribe();
 };

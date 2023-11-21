@@ -250,8 +250,7 @@ export class OnboardingMachine {
       newInst.onTransition(opts.subscription);
     } else if (opts?.requireCustomNavigationHook !== true) {
       newInst.onTransition((snapshot: OnboardingMachineState): void => {
-        console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
-        onboardingStateNavigationListener(newInst, snapshot);
+        void onboardingStateNavigationListener(newInst, snapshot);
       });
     }
     return newInst;
