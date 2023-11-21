@@ -120,7 +120,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
 const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onNext, onBack} = args;
-  const {contact, supportedCredentials} = state.context;
+  const {contact, credentialSelection} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact'));
@@ -139,7 +139,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
 
   navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
     issuer: contact.alias,
-    credentialTypes: supportedCredentials,
+    credentialTypes: credentialSelection,
     onSelectType,
     onSelect: onNext,
     onBack,
@@ -167,11 +167,9 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
 };
 
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  // TODO rename without offers
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialOffers, contact} = state.context;
-  // TODO null ref // TODO supporting 1
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = state.context.openId4VcIssuanceProvider!.credentialBranding!.get(
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = state.context.openId4VcIssuanceProvider?.credentialBranding?.get(
     state.context.selectedCredentials[0],
   );
 
@@ -196,7 +194,13 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
 };
 
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation} = args;
+  const {navigation, oid4vciMachine} = args;
+
+  debug(`Stop oid4vci machine...`);
+  oid4vciMachine.stop();
+  debug(`Stopped oid4vci machine`);
+
+  oid4vciMachine.stop();
   navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
     screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
   });

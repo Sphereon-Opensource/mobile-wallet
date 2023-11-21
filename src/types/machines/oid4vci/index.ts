@@ -20,7 +20,7 @@ export type MappedCredentialOffer = {
 
 export type OID4VCIMachineContext = {
   requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
-  supportedCredentials: Array<ICredentialTypeSelection>; // CredentialSupported
+  credentialSelection: Array<ICredentialTypeSelection>;
   contactAlias: string;
   contact?: IContact;
   selectedCredentials: Array<string>;

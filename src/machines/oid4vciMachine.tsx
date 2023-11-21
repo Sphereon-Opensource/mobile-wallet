@@ -37,9 +37,6 @@ import {
 import {ErrorDetails, ICredentialTypeSelection} from '../types';
 import {translate} from '../localization/Localization';
 
-// todo debug something?
-const debug: Debugger = Debug(`${APP_ID}:oid4vciMachine`);
-
 const oid4vciHasNoContactGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contact} = _ctx;
   return contact === undefined;
@@ -50,9 +47,9 @@ const oid4vciHasContactGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMach
   return contact !== undefined;
 };
 
-const oid4vciSupportedCredentialsGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
-  const {supportedCredentials} = _ctx;
-  return supportedCredentials.length > 1;
+const oid4vciSelectCredentialsGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
+  const {credentialSelection} = _ctx;
+  return credentialSelection.length > 1;
 };
 
 const oid4vciRequirePinGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
@@ -84,7 +81,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
   const initialContext: OID4VCIMachineContext = {
     // TODO we need to store the data from OpenIdProvider here in the context and make sure we can restart the machine with it and init the OpenIdProvider
     requestData: opts?.requestData,
-    supportedCredentials: [],
+    credentialSelection: [],
     selectedCredentials: [],
     credentialOffers: [],
     hasContactConsent: true,
@@ -141,7 +138,9 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.initiate,
           onDone: {
             target: OID4VCIMachineStates.createCredentialSelection,
-            actions: assign({openId4VcIssuanceProvider: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
+            actions: assign({
+              openId4VcIssuanceProvider: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<OpenId4VcIssuanceProvider>) => _event.data,
+            }),
           },
           onError: {
             target: OID4VCIMachineStates.showError,
@@ -160,8 +159,11 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.createCredentialSelection,
           onDone: {
             target: OID4VCIMachineStates.retrieveContact,
-            actions: assign({supportedCredentials: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
-            // TODO add condition that we have at least 1 vc in the selection
+            actions: assign({
+              credentialSelection: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<ICredentialTypeSelection>>) => _event.data,
+            }),
+            // TODO would be nice if we can have guard that checks if we have at least 1 item in the selection. not sure if this can occur but it would be more defensive.
+            // Still cannot find a nice way to do this inside of an invoke besides adding another transition state
           },
           onError: {
             target: OID4VCIMachineStates.showError,
@@ -180,7 +182,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.retrieveContact,
           onDone: {
             target: OID4VCIMachineStates.transitionFromSetup,
-            actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}), // TODO any and all others
+            actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<IContact>) => _event.data}),
           },
           onError: {
             target: OID4VCIMachineStates.showError,
@@ -224,7 +226,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
           [OID4VCIMachineEvents.CREATE_CONTACT]: {
             cond: OID4VCIMachineGuards.createContactGuard,
-            // TODO check the next action stuff
+            // TODO we need a better approach of assigning a value and using guards to check the value
             actions: [assign({contact: (_ctx: OID4VCIMachineContext, _event: CreateContactEvent) => _event.data}), send(OID4VCIMachineEvents.NEXT)],
           },
           [OID4VCIMachineEvents.DECLINE]: {
@@ -309,7 +311,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.retrieveCredentialOffers,
           onDone: {
             target: OID4VCIMachineStates.verifyCredentials,
-            actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
+            actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<MappedCredentialOffer>>) => _event.data}),
           },
           onError: {
             target: OID4VCIMachineStates.showError,
@@ -359,7 +361,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.addContactIdentity,
           onDone: {
             target: OID4VCIMachineStates.reviewCredentials,
-            actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>): void => {
+            actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<IIdentity>): void => {
               _ctx.contact?.identities.push(_event.data);
             },
           },
@@ -472,7 +474,7 @@ export class OID4VCIMachine {
         },
         guards: {
           oid4vciHasNoContactGuard,
-          oid4vciSupportedCredentialsGuard,
+          oid4vciSupportedCredentialsGuard: oid4vciSelectCredentialsGuard,
           oid4vciRequirePinGuard,
           oid4vciHasNoContactIdentityGuard,
           oid4vciVerificationCodeGuard,

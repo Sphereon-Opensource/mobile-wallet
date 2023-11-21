@@ -59,7 +59,7 @@ export const createCredentialSelection = async (context: OID4VCIMachineContext):
     }),
   );
 
-  // TODO find better place to do this
+  // TODO find better place to do this, would be nice if the machine does this?
   if (credentialSelection.length === 1) {
     selectedCredentials.push(credentialSelection[0].credentialType);
   }
