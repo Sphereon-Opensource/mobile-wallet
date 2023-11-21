@@ -36,12 +36,15 @@ export const createCredentialSelection = async (context: OID4VCIMachineContext):
   const {openId4VcIssuanceProvider, selectedCredentials} = context;
 
   if (!openId4VcIssuanceProvider) {
-    return Promise.reject(Error('OpenId4VcIssuanceProvider not initiated'));
+    return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
   }
 
-  const credentialsSupported: Array<CredentialSupported> = openId4VcIssuanceProvider.credentialsSupported ?? [];
+  if (!openId4VcIssuanceProvider.credentialsSupported) {
+    return Promise.reject(Error('OID4VCI issuance provider has no supported credentials'));
+  }
+
   const credentialSelection: Array<ICredentialTypeSelection> = await Promise.all(
-    credentialsSupported.map(async (credentialMetadata: CredentialSupported): Promise<ICredentialTypeSelection> => {
+    openId4VcIssuanceProvider.credentialsSupported.map(async (credentialMetadata: CredentialSupported): Promise<ICredentialTypeSelection> => {
       // FIXME this allows for duplicate VerifiableCredential, which the user has no idea which ones those are and we also have a branding map with unique keys, so some branding will not match
       const credentialType: string =
         credentialMetadata.types.find((type: string): boolean => type !== 'VerifiableCredential') ?? 'VerifiableCredential';
@@ -49,7 +52,7 @@ export const createCredentialSelection = async (context: OID4VCIMachineContext):
         id: uuidv4(),
         credentialType,
         credentialAlias:
-          (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider.credentialBranding?.get(credentialType)}))?.alias ||
+          (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider?.credentialBranding?.get(credentialType)}))?.alias ||
           credentialType,
         isSelected: false,
       };
@@ -66,8 +69,16 @@ export const createCredentialSelection = async (context: OID4VCIMachineContext):
 
 export const retrieveContact = async (context: OID4VCIMachineContext): Promise<IContact | undefined> => {
   const {openId4VcIssuanceProvider} = context;
-  // TODO fix null ref
-  const correlationId: string = new URL(openId4VcIssuanceProvider!.serverMetadata!.issuer).hostname;
+
+  if (!openId4VcIssuanceProvider) {
+    return Promise.reject(Error('Missing OID4VCI issuance provider in context'));
+  }
+
+  if (!openId4VcIssuanceProvider.serverMetadata) {
+    return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
+  }
+
+  const correlationId: string = new URL(openId4VcIssuanceProvider.serverMetadata.issuer).hostname;
   return getContacts({
     filter: [
       {
@@ -115,6 +126,15 @@ export const retrieveCredentials = async (context: OID4VCIMachineContext): Promi
 
 export const addContactIdentity = async (context: OID4VCIMachineContext): Promise<void> => {
   const {credentialOffers, contact} = context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  if (credentialOffers === undefined || credentialOffers.length === 0) {
+    return Promise.reject(Error('Missing credential offers in context'));
+  }
+
   const correlationId: string = credentialOffers[0].correlationId;
   const identity: IBasicIdentity = {
     alias: correlationId,
@@ -124,16 +144,17 @@ export const addContactIdentity = async (context: OID4VCIMachineContext): Promis
       correlationId,
     },
   };
-  store.dispatch<any>(addIdentity({contactId: contact!.id, identity}));
+  return store.dispatch<any>(addIdentity({contactId: contact.id, identity}));
 };
 
-export const verifyCredentials = async (context: OID4VCIMachineContext): Promise<void> => {
+export const assertValidCredentials = async (context: OID4VCIMachineContext): Promise<void> => {
   const {credentialOffers, verificationCode} = context;
 
   await Promise.all(
     credentialOffers.map(async (offer: MappedCredentialOffer): Promise<void> => {
       const verificationResult: IVerificationResult = await verifyCredential({
-        credential: offer.credentialOffer.credentialResponse.credential as VerifiableCredential | CompactJWT, //origVC as VerifiableCredential | CompactJWT,
+        credential: offer.credentialOffer.credentialResponse.credential as VerifiableCredential | CompactJWT,
+        // TODO we might want to allow these types of options as part of the context, now we have state machines. Allows us to pre-determine whether these policies apply and whether remote context should be fetched
         fetchRemoteContexts: true,
         policies: {
           credentialStatus: false,
@@ -151,15 +172,26 @@ export const verifyCredentials = async (context: OID4VCIMachineContext): Promise
 
 export const storeCredentialBranding = async (context: OID4VCIMachineContext): Promise<void> => {
   const {openId4VcIssuanceProvider, selectedCredentials, credentialOffers} = context;
-  // TODO null refs
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider!.credentialBranding!.get(
-    selectedCredentials[0],
-  );
-  if (localeBranding && localeBranding?.length > 0) {
-    // TODO add guard for this?
+
+  // TODO look at credential branding in context
+
+  if (!openId4VcIssuanceProvider) {
+    return Promise.reject(Error('Missing OID4VCI issuance provider in context'));
+  }
+
+  if (!openId4VcIssuanceProvider.serverMetadata) {
+    return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
+  }
+
+  if (!openId4VcIssuanceProvider.credentialBranding) {
+    return Promise.reject(Error('OID4VCI issuance provider has no credential branding'));
+  }
+
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider.credentialBranding.get(selectedCredentials[0]);
+  if (localeBranding && localeBranding.length > 0) {
     await addCredentialBranding({
       vcHash: computeEntryHash(credentialOffers[0].rawVerifiableCredential),
-      issuerCorrelationId: new URL(openId4VcIssuanceProvider!.serverMetadata!.issuer).hostname, // TODO fix, use actual issuerCorrelationId // null refs
+      issuerCorrelationId: new URL(openId4VcIssuanceProvider.serverMetadata.issuer).hostname,
       localeBranding,
     });
   }
@@ -167,5 +199,5 @@ export const storeCredentialBranding = async (context: OID4VCIMachineContext): P
 
 export const storeCredentials = async (context: OID4VCIMachineContext): Promise<void> => {
   const {credentialOffers} = context;
-  store.dispatch<any>(storeVerifiableCredential(credentialOffers[0].rawVerifiableCredential)); // TODO void or await or nothing
+  store.dispatch<any>(storeVerifiableCredential(credentialOffers[0].rawVerifiableCredential));
 };

@@ -1,10 +1,10 @@
-import {CredentialPayload} from '@veramo/core';
 import {Context, createContext} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
-import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
-import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {v4 as uuidv4} from 'uuid';
+import {CredentialPayload} from '@veramo/core';
 import {setupWallet} from '../services/machines/onboardingMachineService';
+import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {SupportedDidMethodEnum} from '../types';
 import {
   ICreateOnboardingMachineOpts,

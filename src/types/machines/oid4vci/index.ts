@@ -1,13 +1,15 @@
 import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {VerifiableCredential} from '@veramo/core';
-import {CredentialSupported} from '@sphereon/oid4vci-common';
+import {CredentialSupported, EndpointMetadataResult, MetadataDisplay} from '@sphereon/oid4vci-common';
 import {IContact} from '@sphereon/ssi-sdk.data-store';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import OpenId4VcIssuanceProvider, {CredentialFromOffer} from '../../../providers/credential/OpenId4VcIssuanceProvider';
 import {ErrorDetails} from '../../error';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IQrData} from '../../qr';
+import {ICredentialTypeSelection} from '../../credential';
+import {IIssuanceOpts} from '../../provider';
 
 export type MappedCredentialOffer = {
   correlationId: string;
@@ -18,29 +20,21 @@ export type MappedCredentialOffer = {
 
 export type OID4VCIMachineContext = {
   requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
-  openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
-  supportedCredentials?: Array<CredentialSupported>;
+  supportedCredentials: Array<ICredentialTypeSelection>; // CredentialSupported
   contactAlias: string;
-  contact: IContact;
+  contact?: IContact;
   selectedCredentials: Array<string>;
   credentialOffers: Array<MappedCredentialOffer>;
   verificationCode?: string;
   hasContactConsent: boolean;
   error?: ErrorDetails;
-};
 
-// TODO deduplicate
-export type OID4VCIMachineInstanceContextOpts = {
-  requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
   openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
-  supportedCredentials?: Array<CredentialSupported>;
-  contactAlias?: string;
-  contact?: IContact;
-  selectedCredentials?: Array<string>;
-  credentialOffers?: Array<MappedCredentialOffer>;
-  verificationCode?: string;
-  hasContactConsent?: boolean;
-  error?: ErrorDetails;
+  issuerBranding?: Array<MetadataDisplay>;
+  serverMetadata?: EndpointMetadataResult;
+  credentialsSupported?: Array<CredentialSupported>;
+  issuanceOpts?: Array<IIssuanceOpts>;
+  credentialBranding?: Array<CredentialSupported>;
 };
 
 export enum OID4VCIMachineStates {
@@ -88,7 +82,7 @@ export type OID4VCIStateMachine = StateMachine<
 >;
 
 export type CreateOID4VCIMachineOpts = {
-  //requestData: IQrData;
+  requestData: IQrData;
   machineId?: string;
 };
 
@@ -96,7 +90,6 @@ export type OID4VCIMachineInstanceOpts = {
   services?: any;
   guards?: any;
   subscription?: () => void;
-  context: OID4VCIMachineInstanceContextOpts;
   requireCustomNavigationHook?: boolean;
 } & CreateOID4VCIMachineOpts;
 
@@ -130,13 +123,14 @@ export enum OID4VCIMachineEvents {
 
 export enum OID4VCIMachineGuards {
   hasContactGuard = 'oid4vciHasContactGuard',
-  hasNotContactGuard = 'oid4vciHasNotContactGuard',
-  selectCredentialsGuard = 'oid4vciSelectCredentialsGuard',
-  authenticationGuard = 'oid4vciAuthenticationGuard',
-  contactHasNotIdentityGuard = 'oid4vciHasNotContactIdentityGuard',
+  hasNotContactGuard = 'oid4vciHasNoContactGuard',
+  supportedCredentialsGuard = 'oid4vciSupportedCredentialsGuard',
+  requirePinGuard = 'oid4vciRequirePinGuard',
+  contactHasNotIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
   hasSelectedCredentialsGuard = 'oid4vciHasSelectedCredentialsGuard',
+  hasCredentialBrandingGuard = 'oid4vciHasCredentialBrandingGuard',
 }
 
 export enum OID4VCIMachineServices {
@@ -145,7 +139,7 @@ export enum OID4VCIMachineServices {
   addContactIdentity = 'addContactIdentity',
   createCredentialSelection = 'createCredentialSelection',
   retrieveCredentials = 'retrieveCredentials',
-  verifyCredentials = 'verifyCredentials',
+  assertValidCredentials = 'assertValidCredentials',
   storeCredentialBranding = 'storeCredentialBranding',
   storeCredentials = 'storeCredentials',
 }

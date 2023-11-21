@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IContact} from '@sphereon/ssi-sdk.data-store';
@@ -32,6 +32,7 @@ interface IState {
 }
 
 class SSIContactAddScreen extends PureComponent<IProps, IState> {
+  hardwareBackPressListener: NativeEventSubscription;
   state: IState = {
     contactAlias: this.props.route.params.name ?? '',
     hasConsent: this.props.route.params.hasConsent ?? true,
@@ -39,10 +40,24 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
 
   componentDidMount(): void {
     const {onAliasChange} = this.props.route.params;
+    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this.onBack);
     if (onAliasChange) {
       void onAliasChange(this.state.contactAlias);
     }
   }
+
+  onBack = (): boolean => {
+    const {navigation} = this.props;
+    const {onBack} = this.props.route.params;
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    navigation.goBack();
+    return false;
+  };
 
   onValidate = async (value: string): Promise<void> => {
     let contactAlias: string = value.trim();

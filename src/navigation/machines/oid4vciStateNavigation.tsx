@@ -163,6 +163,7 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
 };
 
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  // TODO rename without offers
   const {OID4VCIMachine, navigation, state, onBack, onNext} = args;
   const {credentialOffers, contact} = state.context;
   // TODO null ref // TODO supporting 1
@@ -240,7 +241,6 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
-  // TODO add all states
   if (
     state.matches(OID4VCIMachineStates.initiating) ||
     state.matches(OID4VCIMachineStates.creatingCredentialSelection) ||
@@ -252,7 +252,7 @@ export const oid4vciStateNavigationListener = async (
     return navigateLoading({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.addingContact)) {
     return navigateAddContact({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.addingContact)) {
+  } else if (state.matches(OID4VCIMachineStates.selectingCredentials)) {
     return navigateSelectCredentials({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.authenticating)) {
     return navigateAuthentication({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
@@ -273,8 +273,5 @@ export const oid4vciStateNavigationListener = async (
 export const OID4VCIProvider = (props: OIDVCIProviderProps): JSX.Element => {
   const {children, customOID4VCIInstance} = props;
 
-  return (
-    // ?? OID4VCIMachine.getInstance()
-    <OID4VCIContext.Provider value={{OID4VCIInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>
-  );
+  return <OID4VCIContext.Provider value={{OID4VCIInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;
 };

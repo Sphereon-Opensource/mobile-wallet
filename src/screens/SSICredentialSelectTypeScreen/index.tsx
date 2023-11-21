@@ -1,6 +1,7 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import {FlatList, ListRenderItemInfo, ViewStyle} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useBackHandler} from '@react-native-community/hooks';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import SSICredentialSelectTypeViewItem from '../../components/views/SSICredentialSelectTypeViewItem';
@@ -17,8 +18,20 @@ import {ICredentialTypeSelection, ScreenRoutesEnum, StackParamList} from '../../
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE>;
 
 const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {isSelectDisabled} = props.route.params;
+  const {navigation} = props;
+  const {isSelectDisabled, onBack} = props.route.params;
   const [credentialTypes, setCredentialTypes] = React.useState(props.route.params.credentialTypes);
+
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    navigation.goBack();
+    return false;
+  });
 
   const getSelectedCredentialTypes = (selection: Array<ICredentialTypeSelection>): Array<string> => {
     return selection
@@ -82,7 +95,7 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
           style={{height: 42, width: '100%'}}
           caption={translate('action_select_label')}
           onPress={onSelect}
-          disabled={isSelectDisabled} //!credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
+          disabled={isSelectDisabled || credentialTypes.some((credentialType: ICredentialTypeSelection) => credentialType.isSelected)}
         />
       </ButtonContainer>
     </Container>

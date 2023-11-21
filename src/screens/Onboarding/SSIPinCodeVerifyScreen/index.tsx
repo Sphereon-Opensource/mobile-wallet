@@ -12,14 +12,18 @@ import {PinCodeMode, ScreenRoutesEnum, StackParamList} from '../../../types';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_VERIFY>;
 
 const SSIPinCodeVerifyScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {onNext, onBack, context} = props.route.params;
 
   useBackHandler((): boolean => {
     if (onBack) {
       void onBack();
+      // make sure event stops here
+      return true;
     }
-    // make sure event stops here
-    return true;
+
+    navigation.goBack();
+    return false;
   });
 
   const onVerification = async (value: string): Promise<void> => {

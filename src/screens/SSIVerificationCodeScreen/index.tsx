@@ -1,22 +1,33 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useBackHandler} from '@react-native-community/hooks';
 import {VERIFICATION_CODE_MAX_RETRIES} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {translate} from '../../localization/Localization';
+import {toLocalDateTimeString} from '../../utils/DateUtils';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIVerificationCodeScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
-import {toLocalDateTimeString} from '../../utils/DateUtils';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATION_CODE>;
 
 const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
-  const {pinLength, credentialName, onVerification} = props.route.params;
+  const {pinLength, credentialName, onVerification, onBack} = props.route.params;
+
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    navigation.goBack();
+    return false;
+  });
 
   const onMaxRetriesExceeded = async (): Promise<void> => {
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
@@ -31,7 +42,7 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
       },
       primaryButton: {
         caption: translate('action_ok_label'),
-        onPress: async () => navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
+        onPress: async (): Promise<void> => navigation.navigate(ScreenRoutesEnum.QR_READER, {}),
       },
     });
   };

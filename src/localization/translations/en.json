@@ -143,5 +143,13 @@
   "profile_delete_wallet_action_caption": "Delete wallet",
   "profile_delete_wallet_action_title": "Are you sure you want to delete your wallet?",
   "profile_delete_wallet_action_subtitle": "Are you sure you want to delete your wallet: {{userName}}?",
-  "credential_status_never_expires_date_label": "Never expires"
+  "credential_status_never_expires_date_label": "Never expires",
+  "oid4vci_machine_initiation_error_title": "Initiation",
+  "oid4vci_machine_credential_selection_error_title": "Credential selection",
+  "oid4vci_machine_retrieve_contact_error_title": "Retrieve contact",
+  "oid4vci_machine_retrieve_credentials_error_title": "Retrieve credentials",
+  "oid4vci_machine_verify_credentials_error_title": "Verify credentials",
+  "oid4vci_machine_add_contact_identity_error_title": "Add contact identity",
+  "oid4vci_machine_store_credential_branding_error_title": "Store credential branding",
+  "oid4vci_machine_store_credential_error_title": "Store credential"
 }

@@ -19,6 +19,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
+import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -39,8 +40,9 @@ const getCredentialCardLogo = (credential: ICredentialSummary): ImageAttributes 
 };
 
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {credential, primaryAction, secondaryAction, showActivity = false} = props.route.params;
-  const issuer = credential.issuer.alias;
+  const {navigation} = props;
+  const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
+  const issuer: string = credential.issuer.alias;
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
 
   const routes: Array<ITabViewRoute> = [
@@ -59,6 +61,17 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         ]
       : []),
   ];
+
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    navigation.goBack();
+    return false;
+  });
 
   return (
     <Container>

@@ -28,7 +28,7 @@ export type StackParamList = {
   TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
   PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
   PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO this should not contain a whole context but only a pin code
   OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;

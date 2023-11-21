@@ -80,42 +80,51 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<ICo
   };
 };
 
-export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
+export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<IIdentity>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IIdentity> => {
     dispatch({type: CONTACTS_LOADING});
-    try {
-      identityAdd(args)
-        .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}}))
-        .catch(error => {
-          //FIXME:
-          console.log(
-            `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
-              args.contactId
-            }, ${JSON.stringify(args.identity)}`,
-          );
-          return Promise.reject(Error('cannot add identity'));
-          // console.log(error);
-          // dispatch({type: ADD_IDENTITY_FAILED});
-        });
-    } catch (e: any) {
-      console.log(e);
-      return Promise.reject(Error('cannot add identity'));
-      //dispatch({type: ADD_IDENTITY_FAILED});
-    }
-    // identityAdd(args)
-    //   .then((identity: IIdentity) => dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}}))
-    //   .catch(error => {
-    //     //FIXME:
-    //     console.log(
-    //       `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
-    //         args.contactId
-    //       }, ${JSON.stringify(args.identity)}`,
-    //     );
-    //     console.log(error);
-    //     dispatch({type: ADD_IDENTITY_FAILED});
-    //   });
+    return identityAdd(args)
+      .then((identity: IIdentity) => {
+        dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}});
+        return identity;
+      })
+      .catch(error => {
+        //FIXME:
+        console.log(
+          `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
+            args.contactId
+          }, ${JSON.stringify(args.identity)}`,
+        );
+        dispatch({type: ADD_IDENTITY_FAILED});
+        return Promise.reject(error);
+      });
   };
 };
+
+// export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+//   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
+//     dispatch({type: CONTACTS_LOADING});
+//     try {
+//       identityAdd(args)
+//         .then((identity: IIdentity) => {
+//           dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}})
+//         })
+//         .catch(error => {
+//           //FIXME:
+//           console.log(
+//             `FIXME: We had a constraint violation, because 2 distinct issuers shared the same DID. We only search for current issuer and then look whether it has the DID: ${
+//               args.contactId
+//             }, ${JSON.stringify(args.identity)}`,
+//           );
+//           dispatch({type: ADD_IDENTITY_FAILED});
+//           return Promise.reject(error);
+//         });
+//     } catch (error: unknown) {
+//       dispatch({type: ADD_IDENTITY_FAILED});
+//       return Promise.reject(error);
+//     }
+//   };
+// };
 
 export const deleteContact = (contactId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {

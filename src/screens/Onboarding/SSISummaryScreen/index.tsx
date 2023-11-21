@@ -19,16 +19,21 @@ enum SummaryTabRoutesEnum {
 }
 
 const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {context, onBack, onNext} = props.route.params;
   const {personalData} = {...context};
 
   useBackHandler((): boolean => {
     if (onBack) {
       void onBack();
+      // make sure event stops here
+      return true;
     }
-    // make sure event stops here
-    return true;
+
+    navigation.goBack();
+    return false;
   });
+
   const getProperties = (): Array<ICredentialDetailsRow> => {
     return [
       {

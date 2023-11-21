@@ -1,8 +1,8 @@
 import {URL} from 'react-native-url-polyfill';
-import {State, Subscription} from 'xstate';
+import {Subscription} from 'xstate';
 import {v4 as uuidv4} from 'uuid';
 import Debug, {Debugger} from 'debug';
-import {VerifiableCredential} from '@veramo/core';
+import {IIdentifier, VerifiableCredential} from '@veramo/core';
 import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CredentialOfferClient} from '@sphereon/oid4vci-client';
 import {Format} from '@sphereon/pex-models';
@@ -43,13 +43,13 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum,
 } from '../types';
-import {OID4VCIMachineInstanceOpts, OID4VCIMachineInterpreter, OID4VCIMachineState} from '../types/machines/oid4vci';
+import {OID4VCIMachineInterpreter, OID4VCIMachineState} from '../types/machines/oid4vci';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
-    .then((qrData: IQrData) => processQr({qrData: qrData, navigation: args.navigation}))
+    .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
     .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
 };
 
@@ -64,7 +64,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
   }
 
   try {
-    const param = new URL(qrData).searchParams.get('oob');
+    const param: string | null = new URL(qrData).searchParams.get('oob');
     if (param) {
       return {
         ...JSON.parse(Buffer.from(param, 'base64').toString('utf8')),
@@ -137,8 +137,8 @@ const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
 
 // TODO remove old flow
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
-  const identifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
-  const verifier = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+  const verifier: string = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
   const connection: IBasicConnection = {
     type: ConnectionTypeEnum.SIOPv2,
     config: {
@@ -389,27 +389,10 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 };
 
 const connectOID4VCIssuance = async (args: IQrDataArgs): Promise<void> => {
-  console.log(`QR DATA: ${JSON.stringify(args.qrData)}`);
-
-  const context: OID4VCIMachineInstanceOpts = {
-    context: {
-      requestData: args.qrData,
-      // supportedCredentials: [],
-      // contactAlias: '',
-      // selectedCredentials: [],
-      // credentialOffers: [],
-      // hasContactConsent: false
-    },
-  };
-
-  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance(context); //{requestData: args.qrData}
+  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData});
   const subscription: Subscription = OID4VCIInstance.subscribe((state: OID4VCIMachineState) =>
     oid4vciStateNavigationListener(OID4VCIInstance, state),
   );
-
-  // const persistedState = `{"value":"selectingCredentials","context":${JSON.stringify(context)}`;
-  // const deserializedState: State<any> = State.create(JSON.parse(persistedState));
-  //
   OID4VCIInstance.start();
   subscription.unsubscribe();
 };
