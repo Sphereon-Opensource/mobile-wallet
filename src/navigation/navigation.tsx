@@ -50,7 +50,7 @@ import {
   WalletAuthLockState,
 } from '../types';
 import {createStackNavigator} from '@react-navigation/stack';
-import {OnboardingInterpretType} from '../types/machines/onboarding';
+import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -733,7 +733,7 @@ const AppNavigator = (): JSX.Element => {
     debug(`app and navigation ready`);
 
     // Existing instance is already created by the provider. So we make sure by requiring an existing instance
-    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({requireExisting: true});
+    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance({requireExisting: true});
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
       debug(`ONBOARDING starting...`);

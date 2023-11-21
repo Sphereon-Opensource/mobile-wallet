@@ -7,15 +7,16 @@ import {onboardingStateNavigationListener} from '../navigation/machines/onboardi
 import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {SupportedDidMethodEnum} from '../types';
 import {
-  ICreateOnboardingMachineOpts,
-  IInstanceOnboardingMachineOpts,
-  IOnboardingMachineContext,
+  CreateOnboardingMachineOpts,
+  InstanceOnboardingMachineOpts,
+  OnboardingMachineContext,
   NextEvent,
-  OnboardingContextType,
+  OnboardingContext,
   OnboardingEvents,
   OnboardingEventTypes,
   OnboardingGuards,
-  OnboardingInterpretType,
+  OnboardingMachineInterpreter,
+  OnboardingMachineState,
   OnboardingStates,
   PersonalDataEvent,
   PinSetEvent,
@@ -27,24 +28,24 @@ import {
 import Debug, {Debugger} from 'debug';
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
-const onboardingToSAgreementGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) =>
+const onboardingToSAgreementGuard = (ctx: OnboardingMachineContext, _event: OnboardingEventTypes) =>
   ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
 
-const onboardingPersonalDataGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
+const onboardingPersonalDataGuard = (ctx: OnboardingMachineContext, _event: OnboardingEventTypes) => {
   const {firstName, lastName, emailAddress} = ctx.personalData;
   return firstName && firstName.length > 0 && lastName && lastName.length > 0 && emailAddress && EMAIL_ADDRESS_VALIDATION_REGEX.test(emailAddress);
 };
 
-const onboardingPinCodeSetGuard = (ctx: IOnboardingMachineContext, _event: OnboardingEventTypes) => {
+const onboardingPinCodeSetGuard = (ctx: OnboardingMachineContext, _event: OnboardingEventTypes) => {
   const {pinCode} = ctx;
   return pinCode && pinCode.length === 6;
 };
 
-const onboardingPinCodeVerifyGuard = (ctx: IOnboardingMachineContext, event: NextEvent) => {
+const onboardingPinCodeVerifyGuard = (ctx: OnboardingMachineContext, event: NextEvent) => {
   return onboardingPinCodeSetGuard(ctx, event) && ctx.pinCode === event.data;
 };
 
-const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
+const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const credentialData = {
     didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_KEY,
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
@@ -62,15 +63,15 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       } as Partial<CredentialPayload>),
   };
 
-  const initialContext: IOnboardingMachineContext = {
+  const initialContext: OnboardingMachineContext = {
     credentialData,
     termsConditionsAccepted: false,
     privacyPolicyAccepted: false,
     personalData: {},
     pinCode: '',
-  } as IOnboardingMachineContext;
+  } as OnboardingMachineContext;
 
-  return createMachine<IOnboardingMachineContext, OnboardingEventTypes>({
+  return createMachine<OnboardingMachineContext, OnboardingEventTypes>({
     id: opts?.machineId ?? 'Onboarding',
     predictableActionArguments: true,
     initial: OnboardingStates.showIntro,
@@ -112,10 +113,10 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.acceptAgreement]: {
         on: {
           [OnboardingEvents.SET_POLICY]: {
-            actions: assign({privacyPolicyAccepted: (_ctx: IOnboardingMachineContext, e: PrivacyPolicyEvent) => e.data}),
+            actions: assign({privacyPolicyAccepted: (_ctx: OnboardingMachineContext, e: PrivacyPolicyEvent) => e.data}),
           },
           [OnboardingEvents.SET_TOC]: {
-            actions: assign({termsConditionsAccepted: (_ctx: IOnboardingMachineContext, e: TermsConditionsEvent) => e.data}),
+            actions: assign({termsConditionsAccepted: (_ctx: OnboardingMachineContext, e: TermsConditionsEvent) => e.data}),
           },
           [OnboardingEvents.DECLINE]: {
             target: OnboardingStates.declineOnboarding,
@@ -130,7 +131,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.enterPersonalDetails]: {
         on: {
           [OnboardingEvents.SET_PERSONAL_DATA]: {
-            actions: assign({personalData: (_ctx: IOnboardingMachineContext, e: PersonalDataEvent) => e.data}),
+            actions: assign({personalData: (_ctx: OnboardingMachineContext, e: PersonalDataEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPersonalDataGuard,
@@ -142,7 +143,7 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
       [OnboardingStates.enterPin]: {
         on: {
           [OnboardingEvents.SET_PIN]: {
-            actions: assign({pinCode: (_ctx: IOnboardingMachineContext, e: PinSetEvent) => e.data}),
+            actions: assign({pinCode: (_ctx: OnboardingMachineContext, e: PinSetEvent) => e.data}),
           },
           [OnboardingEvents.NEXT]: {
             cond: OnboardingGuards.onboardingPinCodeSetGuard,
@@ -207,17 +208,14 @@ const createOnboardingMachine = (opts?: ICreateOnboardingMachineOpts) => {
   });
 };
 
-export type CreateOnboardingMachineType = typeof createOnboardingMachine;
-export const OnboardingContext: Context<OnboardingContextType> = createContext({} as OnboardingContextType);
-
 export class OnboardingMachine {
-  private static _instance: OnboardingInterpretType | undefined;
+  private static _instance: OnboardingMachineInterpreter | undefined;
 
   static hasInstance(): boolean {
     return !!OnboardingMachine._instance;
   }
 
-  static get instance(): OnboardingInterpretType {
+  static get instance(): OnboardingMachineInterpreter {
     if (!this._instance) {
       throw Error('Please initialize an onboarding machine first');
     }
@@ -235,8 +233,8 @@ export class OnboardingMachine {
   }
 
   // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
-  private static newInstance(opts?: IInstanceOnboardingMachineOpts): OnboardingInterpretType {
-    const newInst: OnboardingInterpretType = interpret(
+  private static newInstance(opts?: InstanceOnboardingMachineOpts): OnboardingMachineInterpreter {
+    const newInst: OnboardingMachineInterpreter = interpret(
       createOnboardingMachine(opts).withConfig({
         services: {setupWallet, ...opts?.services},
         guards: {
@@ -251,7 +249,7 @@ export class OnboardingMachine {
     if (typeof opts?.subscription === 'function') {
       newInst.onTransition(opts.subscription);
     } else if (opts?.requireCustomNavigationHook !== true) {
-      newInst.onTransition(snapshot => {
+      newInst.onTransition((snapshot: OnboardingMachineState): void => {
         console.log(`CURRENT STATE: ${JSON.stringify(snapshot.value)}: context: ${JSON.stringify(snapshot.context)}`);
         onboardingStateNavigationListener(newInst, snapshot);
       });
@@ -260,10 +258,10 @@ export class OnboardingMachine {
   }
 
   static getInstance(
-    opts?: IInstanceOnboardingMachineOpts & {
+    opts?: InstanceOnboardingMachineOpts & {
       requireExisting?: boolean;
     },
-  ): OnboardingInterpretType {
+  ): OnboardingMachineInterpreter {
     if (!OnboardingMachine._instance) {
       if (opts?.requireExisting === true) {
         throw Error(`Existing onboarding instance requested, but none was created at this point!`);

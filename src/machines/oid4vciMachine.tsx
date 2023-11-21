@@ -1,14 +1,14 @@
 import React from 'react';
 import {assign, createMachine, DoneInvokeEvent, interpret, send} from 'xstate';
 import Debug, {Debugger} from 'debug';
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
   addContactIdentity,
   createCredentialSelection,
   initiating,
   retrieveContact,
-  retrieveCredentials,
+  retrieveCredentialOffers,
   storeCredentialBranding,
   storeCredentials,
   assertValidCredentials,
@@ -21,7 +21,6 @@ import {
   CreateContactEvent,
   CreateOID4VCIMachineOpts,
   MappedCredentialOffer,
-  OID4VCIContext,
   OID4VCIMachineContext,
   OID4VCIMachineEvents,
   OID4VCIMachineEventTypes,
@@ -63,8 +62,7 @@ const oid4vciRequirePinGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMach
 
 const oid4vciHasNoContactIdentityGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contact, credentialOffers} = _ctx;
-  // TODO any / types
-  return !contact!.identities!.some((identity: any): boolean => identity.identifier.correlationId === credentialOffers[0].correlationId);
+  return !contact?.identities!.some((identity: IIdentity): boolean => identity.identifier.correlationId === credentialOffers[0].correlationId);
 };
 
 const oid4vciVerificationCodeGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
@@ -82,13 +80,6 @@ const oid4vciHasSelectedCredentialsGuard = (_ctx: OID4VCIMachineContext, _event:
   return selectedCredentials !== undefined && selectedCredentials.length > 0;
 };
 
-// const oid4vciHasCredentialBrandingGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
-//   // TODO refactor to look at credential branding
-//   const {openId4VcIssuanceProvider} = _ctx;
-//   return openId4VcIssuanceProvider !== undefined && openId4VcIssuanceProvider.credentialBranding !== undefined && openId4VcIssuanceProvider.credentialBranding.size > 0;
-// };
-
-// TODO rename as onboarding
 const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMachine => {
   const initialContext: OID4VCIMachineContext = {
     // TODO we need to store the data from OpenIdProvider here in the context and make sure we can restart the machine with it and init the OpenIdProvider
@@ -115,7 +106,6 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         | {type: OID4VCIMachineGuards.hasContactGuard}
         | {type: OID4VCIMachineGuards.createContactGuard}
         | {type: OID4VCIMachineGuards.hasSelectedCredentialsGuard},
-      // | {type: OID4VCIMachineGuards.hasCredentialBrandingGuard},
       services: {} as {
         [OID4VCIMachineServices.initiating]: {
           data: OpenId4VcIssuanceProvider;
@@ -126,7 +116,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         [OID4VCIMachineServices.retrieveContact]: {
           data: IContact | undefined;
         };
-        [OID4VCIMachineServices.retrieveCredentials]: {
+        [OID4VCIMachineServices.retrieveCredentialOffers]: {
           data: Array<MappedCredentialOffer> | undefined;
         };
         [OID4VCIMachineServices.addContactIdentity]: {
@@ -219,7 +209,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentials,
+            target: OID4VCIMachineStates.retrievingCredentialsOffers,
           },
         ],
       },
@@ -261,7 +251,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentials,
+            target: OID4VCIMachineStates.retrievingCredentialsOffers,
           },
         ],
       },
@@ -288,7 +278,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrievingCredentials,
+            target: OID4VCIMachineStates.retrievingCredentialsOffers,
           },
         ],
       },
@@ -299,7 +289,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({verificationCode: (_ctx: OID4VCIMachineContext, _event: VerificationCodeEvent) => _event.data}),
           },
           [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.retrievingCredentials,
+            target: OID4VCIMachineStates.retrievingCredentialsOffers,
             cond: OID4VCIMachineGuards.verificationCodeGuard,
           },
           [OID4VCIMachineEvents.PREVIOUS]: [
@@ -313,10 +303,10 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           ],
         },
       },
-      [OID4VCIMachineStates.retrievingCredentials]: {
-        id: OID4VCIMachineStates.retrievingCredentials,
+      [OID4VCIMachineStates.retrievingCredentialsOffers]: {
+        id: OID4VCIMachineStates.retrievingCredentialsOffers,
         invoke: {
-          src: OID4VCIMachineServices.retrieveCredentials,
+          src: OID4VCIMachineServices.retrieveCredentialOffers,
           onDone: {
             target: OID4VCIMachineStates.verifyingCredentials,
             actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>) => _event.data}),
@@ -359,7 +349,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.contactHasNotIdentityGuard,
           },
           {
-            target: OID4VCIMachineStates.reviewingCredentialOffers,
+            target: OID4VCIMachineStates.reviewingCredentials,
           },
         ],
       },
@@ -368,7 +358,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         invoke: {
           src: OID4VCIMachineServices.addContactIdentity,
           onDone: {
-            target: OID4VCIMachineStates.reviewingCredentialOffers,
+            target: OID4VCIMachineStates.reviewingCredentials,
             actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<any>): void => {
               _ctx.contact?.identities.push(_event.data);
             },
@@ -384,18 +374,9 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.reviewingCredentialOffers]: {
-        id: OID4VCIMachineStates.reviewingCredentialOffers,
+      [OID4VCIMachineStates.reviewingCredentials]: {
+        id: OID4VCIMachineStates.reviewingCredentials,
         on: {
-          // [OID4VCIMachineEvents.NEXT]: [
-          //   {
-          //     target: OID4VCIMachineStates.storingCredentialBranding,
-          //     cond: OID4VCIMachineGuards.hasCredentialBrandingGuard
-          //   },
-          //   {
-          //     target: OID4VCIMachineStates.storingCredentials
-          //   }
-          // ],
           [OID4VCIMachineEvents.NEXT]: {
             target: OID4VCIMachineStates.storingCredentialBranding,
           },
@@ -482,7 +463,7 @@ export class OID4VCIMachine {
           [OID4VCIMachineServices.initiating]: initiating,
           [OID4VCIMachineServices.createCredentialSelection]: createCredentialSelection,
           [OID4VCIMachineServices.retrieveContact]: retrieveContact,
-          [OID4VCIMachineServices.retrieveCredentials]: retrieveCredentials,
+          [OID4VCIMachineServices.retrieveCredentialOffers]: retrieveCredentialOffers,
           [OID4VCIMachineServices.addContactIdentity]: addContactIdentity,
           [OID4VCIMachineServices.assertValidCredentials]: assertValidCredentials,
           [OID4VCIMachineServices.storeCredentialBranding]: storeCredentialBranding,
@@ -498,7 +479,6 @@ export class OID4VCIMachine {
           oid4vciHasContactGuard,
           oid4vciCreateContactGuard,
           oid4vciHasSelectedCredentialsGuard,
-          // oid4vciHasCredentialBrandingGuard,
           ...opts?.guards,
         },
       }),

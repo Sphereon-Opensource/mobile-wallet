@@ -1,28 +1,30 @@
 import {CredentialPayload, IIdentifier, ProofFormat, VerifiableCredential} from '@veramo/core';
-import {Interpreter} from 'xstate';
+import {Interpreter, State} from 'xstate';
 import {SupportedDidMethodEnum} from '../../did';
 import {ISetPersonalDataActionArgs} from '../../store/onboarding.types';
 import {IUser} from '../../user';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {ReactNode} from 'react';
 
-export interface IOnboardingCredentialData {
+export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
   credential?: Partial<CredentialPayload>;
   proofFormat?: ProofFormat;
-}
+};
 
-export interface IOnboardingPersonalData {
+export type OnboardingPersonalData = {
   firstName: string;
   lastName: string;
   emailAddress: string;
-}
+};
 
-export interface IOnboardingMachineContext {
-  credentialData: IOnboardingCredentialData;
+export type OnboardingMachineContext = {
+  credentialData: OnboardingCredentialData;
   termsConditionsAccepted: boolean;
   privacyPolicyAccepted: boolean;
   pinCode: string;
-  personalData: IOnboardingPersonalData;
-}
+  personalData: OnboardingPersonalData;
+};
 
 export enum OnboardingStates {
   showIntro = 'showIntro',
@@ -69,37 +71,53 @@ export enum OnboardingGuards {
   onboardingPinCodeVerifyGuard = 'onboardingPinCodeVerifyGuard',
 }
 
-export interface WalletSetupServiceResult {
+export type WalletSetupServiceResult = {
   identifier: IIdentifier;
   storedUser: IUser;
   verifiableCredential: VerifiableCredential;
-}
+};
 
 // We use this in class components, as there is no context available there. It is also used by default in the onboarding provider
 
-export type OnboardingInterpretType = Interpreter<
-  IOnboardingMachineContext,
+export type OnboardingMachineInterpreter = Interpreter<
+  OnboardingMachineContext,
   any,
   OnboardingEventTypes,
   {
     value: any;
-    context: IOnboardingMachineContext;
+    context: OnboardingMachineContext;
   },
   any
 >;
 
-export interface OnboardingContextType {
-  onboardingInstance: OnboardingInterpretType;
-}
+export type OnboardingContext = {
+  onboardingInstance: OnboardingMachineInterpreter;
+};
 
-export interface ICreateOnboardingMachineOpts {
-  credentialData?: Partial<IOnboardingCredentialData>;
+export type CreateOnboardingMachineOpts = {
+  credentialData?: Partial<OnboardingCredentialData>;
   machineId?: string;
-}
+};
 
-export interface IInstanceOnboardingMachineOpts extends ICreateOnboardingMachineOpts {
+export type InstanceOnboardingMachineOpts = {
   services?: any;
   guards?: any;
   subscription?: () => void;
   requireCustomNavigationHook?: boolean;
-}
+} & CreateOnboardingMachineOpts;
+
+export type OnboardingMachineState = State<OnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: OnboardingMachineContext}, any>;
+
+export type OnboardingMachineNavigationArgs = {
+  onboardingMachine: OnboardingMachineInterpreter;
+  state: OnboardingMachineState;
+  navigation: NativeStackNavigationProp<any>;
+  context: OnboardingMachineContext;
+  onNext?: () => void;
+  onBack?: () => void;
+};
+
+export type OnboardingProviderProps = {
+  children?: ReactNode;
+  customOnboardingInstance?: OnboardingMachineInterpreter;
+};

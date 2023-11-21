@@ -24,6 +24,10 @@ import {
   OIDVCIProviderProps,
 } from '../../types/machines/oid4vci';
 import {NavigationBarRoutesEnum, PopupImagesEnum, QRRoutesEnum, ScreenRoutesEnum} from '../../types';
+import Debug, {Debugger} from 'debug';
+import {APP_ID} from '../../@config/constants';
+
+const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
 const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIContextType);
 
@@ -38,7 +42,7 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 };
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation, state, OID4VCIMachine, onBack} = args;
+  const {navigation, state, oid4vciMachine, onBack} = args;
   const {openId4VcIssuanceProvider, hasContactConsent} = state.context;
   const issuerUrl: URL = new URL(state.context.openId4VcIssuanceProvider!.serverMetadata!.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
@@ -72,32 +76,32 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   };
 
   const onCreate = async (contact: IContact): Promise<void> => {
-    OID4VCIMachine.send({
+    oid4vciMachine.send({
       type: OID4VCIMachineEvents.CREATE_CONTACT,
       data: contact,
     });
   };
 
   const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-    OID4VCIMachine.send({
+    oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_CONTACT_CONSENT,
       data: hasConsent,
     });
   };
 
   const onAliasChange = async (alias: string): Promise<void> => {
-    OID4VCIMachine.send({
+    oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_CONTACT_ALIAS,
       data: alias,
     });
   };
 
   const onDecline = async (): Promise<void> => {
-    OID4VCIMachine.send(OID4VCIMachineEvents.DECLINE);
+    oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
   const isCreateDisabled = (): boolean => {
-    return OID4VCIMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
+    return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
   navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
@@ -115,7 +119,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 };
 
 const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation, state, OID4VCIMachine, onNext, onBack} = args;
+  const {navigation, state, oid4vciMachine, onNext, onBack} = args;
   const {contact, supportedCredentials} = state.context;
 
   if (!contact) {
@@ -123,14 +127,14 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   }
 
   const onSelectType = async (selectedCredentials: Array<string>): Promise<void> => {
-    OID4VCIMachine.send({
+    oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
     });
   };
 
   const isSelectDisabled = (): boolean => {
-    return OID4VCIMachine.getSnapshot()?.can(OID4VCIMachineEvents.NEXT) !== true;
+    return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.NEXT) !== true;
   };
 
   navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
@@ -144,13 +148,13 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
 };
 
 const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation, state, OID4VCIMachine, onBack} = args;
+  const {navigation, state, oid4vciMachine, onBack} = args;
   const {selectedCredentials} = state.context;
   navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
     credentialName: selectedCredentials[0],
     credentialTypes: [],
     onVerification: async (pin: string): Promise<void> => {
-      OID4VCIMachine.send([
+      oid4vciMachine.send([
         {
           type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
           data: pin,
@@ -164,7 +168,7 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
 
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   // TODO rename without offers
-  const {OID4VCIMachine, navigation, state, onBack, onNext} = args;
+  const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialOffers, contact} = state.context;
   // TODO null ref // TODO supporting 1
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = state.context.openId4VcIssuanceProvider!.credentialBranding!.get(
@@ -172,7 +176,7 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
   );
 
   const onDecline = async (): Promise<void> => {
-    OID4VCIMachine.send(OID4VCIMachineEvents.DECLINE);
+    oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
   navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
@@ -238,6 +242,7 @@ export const oid4vciStateNavigationListener = async (
 
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
+    debug(`navigation not ready yet`);
     return;
   }
 
@@ -247,31 +252,33 @@ export const oid4vciStateNavigationListener = async (
     state.matches(OID4VCIMachineStates.retrievingContact) ||
     state.matches(OID4VCIMachineStates.transitioningFromSetup) ||
     state.matches(OID4VCIMachineStates.transitioningFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.retrievingCredentials)
+    state.matches(OID4VCIMachineStates.retrievingCredentialsOffers)
   ) {
-    return navigateLoading({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.addingContact)) {
-    return navigateAddContact({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectingCredentials)) {
-    return navigateSelectCredentials({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.authenticating)) {
-    return navigateAuthentication({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.reviewingCredentialOffers)) {
-    return navigateReviewCredentialOffers({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateAuthentication({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.reviewingCredentials)) {
+    return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.showingError)) {
-    return navigateError({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
     state.matches(OID4VCIMachineStates.done) ||
     state.matches(OID4VCIMachineStates.error) ||
     state.matches(OID4VCIMachineStates.aborted) ||
     state.matches(OID4VCIMachineStates.declined)
   ) {
-    return navigateFinal({OID4VCIMachine: oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateFinal({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else {
+    return Promise.reject(Error(`Navigation for ${JSON.stringify(state)} is not implemented!`)); // Should not happen, so we throw an error
   }
 };
 
 export const OID4VCIProvider = (props: OIDVCIProviderProps): JSX.Element => {
   const {children, customOID4VCIInstance} = props;
 
-  return <OID4VCIContext.Provider value={{OID4VCIInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;
+  return <OID4VCIContext.Provider value={{oid4vciInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;
 };

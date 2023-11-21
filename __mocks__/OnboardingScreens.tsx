@@ -11,10 +11,10 @@ import {navigationRef} from '../src/navigation/rootNavigation';
 import OnTouchProvider from '../src/providers/touch/OnTouchProvider';
 import store from '../src/store';
 import {
-  IOnboardingMachineContext,
+  OnboardingMachineContext,
   OnboardingEvents,
   OnboardingEventTypes,
-  OnboardingInterpretType,
+  OnboardingMachineInterpreter,
   OnboardingStates,
 } from '../src/types/machines/onboarding';
 
@@ -28,7 +28,7 @@ export const mockPressBack = async (opts?: {onboardingInstance: any}): Promise<v
 
 jest.setTimeout(60 * 1000); // 60 seconds
 function createComponent(
-  onboardingInstance: Interpreter<IOnboardingMachineContext, any, OnboardingEventTypes, {value: any; context: IOnboardingMachineContext}, any>,
+  onboardingInstance: Interpreter<OnboardingMachineContext, any, OnboardingEventTypes, {value: any; context: OnboardingMachineContext}, any>,
 ): JSX.Element {
   return (
     <Provider store={store}>
@@ -50,7 +50,7 @@ function createComponent(
 
 describe('Testing onboarding with regular machine, should ', (): void => {
   test('result in fully onboarded user with credential', async (): Promise<void> => {
-    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
+    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance({
       requireCustomNavigationHook: false,
     });
     const component: JSX.Element = createComponent(onboardingInstance);
@@ -112,7 +112,7 @@ describe('Testing onboarding with regular machine, should ', (): void => {
 
 describe('Testing onboarding ui without services, should ', (): void => {
   test('result in onboarding happy flow to finish', async (): Promise<void> => {
-    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
+    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance({
       services: {
         [OnboardingStates.setupWallet]: () => Promise.resolve(console.log('done!')),
       },
@@ -174,7 +174,7 @@ describe('Testing onboarding ui without services, should ', (): void => {
   });
 
   test('have working guards and finish onboarding', async (): Promise<void> => {
-    const onboardingInstance: OnboardingInterpretType = OnboardingMachine.getInstance({
+    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance({
       services: {
         [OnboardingStates.setupWallet]: () => Promise.resolve(console.log('done!')),
       },
@@ -288,7 +288,7 @@ describe('Testing onboarding ui without services, should ', (): void => {
     // Verification screen
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.verifyPersonalDetails);
 
-    const context: IOnboardingMachineContext = onboardingInstance.getSnapshot().context;
+    const context: OnboardingMachineContext = onboardingInstance.getSnapshot().context;
     expect(context).toMatchObject({
       credentialData: {
         credential: {
@@ -321,7 +321,7 @@ describe('Testing onboarding ui without services, should ', (): void => {
     // Done
     expect(onboardingInstance.getSnapshot().value).toBe(OnboardingStates.finishOnboarding);
 
-    const finalContext: IOnboardingMachineContext = onboardingInstance.getSnapshot().context;
+    const finalContext: OnboardingMachineContext = onboardingInstance.getSnapshot().context;
     expect(finalContext).toEqual({
       pinCode: '',
       privacyPolicyAccepted: false,

@@ -47,10 +47,10 @@ export enum OID4VCIMachineStates {
   selectingCredentials = 'selectingCredentials',
   transitioningFromSelectingCredentials = 'transitioningFromSelectingCredentials',
   authenticating = 'authenticating',
-  retrievingCredentials = 'retrievingCredentials',
+  retrievingCredentialsOffers = 'retrievingCredentialsOffers',
   transitioningFromWalletInput = 'transitioningFromWalletInput',
   addingContactIdentity = 'addingContactIdentity',
-  reviewingCredentialOffers = 'reviewingCredentialOffers',
+  reviewingCredentials = 'reviewingCredentials',
   verifyingCredentials = 'verifyingCredentials',
   storingCredentialBranding = 'storingCredentialBranding',
   storingCredentials = 'storingCredentials',
@@ -99,11 +99,11 @@ export type OIDVCIProviderProps = {
 };
 
 export type OID4VCIContext = {
-  OID4VCIInstance?: OID4VCIMachineInterpreter;
+  oid4vciInstance?: OID4VCIMachineInterpreter;
 };
 
 export type OID4VCIMachineNavigationArgs = {
-  OID4VCIMachine: OID4VCIMachineInterpreter;
+  oid4vciMachine: OID4VCIMachineInterpreter;
   state: OID4VCIMachineState;
   navigation: NativeStackNavigationProp<any>;
   onNext?: () => void;
@@ -130,7 +130,6 @@ export enum OID4VCIMachineGuards {
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
   hasSelectedCredentialsGuard = 'oid4vciHasSelectedCredentialsGuard',
-  hasCredentialBrandingGuard = 'oid4vciHasCredentialBrandingGuard',
 }
 
 export enum OID4VCIMachineServices {
@@ -138,7 +137,7 @@ export enum OID4VCIMachineServices {
   retrieveContact = 'retrieveContact',
   addContactIdentity = 'addContactIdentity',
   createCredentialSelection = 'createCredentialSelection',
-  retrieveCredentials = 'retrieveCredentials',
+  retrieveCredentialOffers = 'retrieveCredentialOffers',
   assertValidCredentials = 'assertValidCredentials',
   storeCredentialBranding = 'storeCredentialBranding',
   storeCredentials = 'storeCredentials',

@@ -92,7 +92,7 @@ export const retrieveContact = async (context: OID4VCIMachineContext): Promise<I
   }).then((contacts: Array<IContact>): IContact | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
-export const retrieveCredentials = async (context: OID4VCIMachineContext): Promise<Array<MappedCredentialOffer> | undefined> => {
+export const retrieveCredentialOffers = async (context: OID4VCIMachineContext): Promise<Array<MappedCredentialOffer> | undefined> => {
   const {openId4VcIssuanceProvider, verificationCode, selectedCredentials} = context;
   return openId4VcIssuanceProvider
     ?.getCredentialsFromIssuance({

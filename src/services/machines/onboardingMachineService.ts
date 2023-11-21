@@ -4,12 +4,12 @@ import agent from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {IUser} from '../../types';
-import {IOnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {storagePersistPin} from '../storageService';
 
-export const setupWallet = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
+export const setupWallet = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const setup = await Promise.all([
     storagePersistPin({
       value: context.pinCode,
@@ -23,7 +23,7 @@ export const setupWallet = async (context: IOnboardingMachineContext): Promise<W
   return setup[1];
 };
 
-const createUserAndIdentity = async (context: IOnboardingMachineContext): Promise<WalletSetupServiceResult> => {
+const createUserAndIdentity = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
   const identifier = await getOrCreatePrimaryIdentifier({method: context.credentialData.didMethod});
 
   const personalData = context.personalData;

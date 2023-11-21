@@ -2,7 +2,7 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../machines/onboarding';
+import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
 import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
@@ -41,17 +41,17 @@ export type StackParamList = {
 };
 
 interface IPersonalDataProps {
-  isDisabled: (personalData: IOnboardingPersonalData) => boolean;
-  onNext: (personalData: IOnboardingPersonalData) => void;
-  onPersonalData: (personalData: IOnboardingPersonalData) => void;
+  isDisabled: (personalData: OnboardingPersonalData) => boolean;
+  onNext: (personalData: OnboardingPersonalData) => void;
+  onPersonalData: (personalData: OnboardingPersonalData) => void;
 }
 
 export interface IOnboardingProps {
-  customOnboardingInstance?: OnboardingInterpretType;
+  customOnboardingInstance?: OnboardingMachineInterpreter;
 }
 
 export interface IHasOnboardingContext {
-  context: IOnboardingMachineContext;
+  context: OnboardingMachineContext;
 }
 
 export interface IHasOnBackProps {
