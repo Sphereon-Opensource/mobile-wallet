@@ -21,6 +21,7 @@ import {storeVerifiableCredential} from '../../store/actions/credential.actions'
 import {addIdentity} from '../../store/actions/contact.actions';
 import {ICredentialTypeSelection, IVerificationResult} from '../../types/';
 import {MappedCredentialOffer, OID4VCIMachineContext} from '../../types/machines/oid4vci';
+import {translate} from '../../localization/Localization';
 
 export const initiateOpenId4VcIssuanceProvider = async (context: OID4VCIMachineContext): Promise<OpenId4VcIssuanceProvider> => {
   const {requestData} = context;
@@ -164,7 +165,7 @@ export const assertValidCredentials = async (context: OID4VCIMachineContext): Pr
       });
 
       if (!verificationResult.result || verificationResult.error) {
-        return Promise.reject(Error(verificationResult.result ? verificationResult.error : 'verification error')); // TODO msg
+        return Promise.reject(Error(verificationResult.result ? verificationResult.error : translate('credential_verification_failed_message')));
       }
     }),
   );
