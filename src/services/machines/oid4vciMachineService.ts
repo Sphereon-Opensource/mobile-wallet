@@ -173,21 +173,13 @@ export const assertValidCredentials = async (context: OID4VCIMachineContext): Pr
 export const storeCredentialBranding = async (context: OID4VCIMachineContext): Promise<void> => {
   const {openId4VcIssuanceProvider, selectedCredentials, credentialOffers} = context;
 
-  // TODO look at credential branding in context
-
-  if (!openId4VcIssuanceProvider) {
-    return Promise.reject(Error('Missing OID4VCI issuance provider in context'));
-  }
-
-  if (!openId4VcIssuanceProvider.serverMetadata) {
+  if (!openId4VcIssuanceProvider?.serverMetadata) {
     return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
   }
 
-  if (!openId4VcIssuanceProvider.credentialBranding) {
-    return Promise.reject(Error('OID4VCI issuance provider has no credential branding'));
-  }
-
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider.credentialBranding.get(selectedCredentials[0]);
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider?.credentialBranding?.get(
+    selectedCredentials[0],
+  );
   if (localeBranding && localeBranding.length > 0) {
     await addCredentialBranding({
       vcHash: computeEntryHash(credentialOffers[0].rawVerifiableCredential),

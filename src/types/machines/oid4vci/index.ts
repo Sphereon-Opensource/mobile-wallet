@@ -1,7 +1,6 @@
 import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {VerifiableCredential} from '@veramo/core';
-import {CredentialSupported, EndpointMetadataResult, MetadataDisplay} from '@sphereon/oid4vci-common';
 import {IContact} from '@sphereon/ssi-sdk.data-store';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import OpenId4VcIssuanceProvider, {CredentialFromOffer} from '../../../providers/credential/OpenId4VcIssuanceProvider';
@@ -9,7 +8,6 @@ import {ErrorDetails} from '../../error';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IQrData} from '../../qr';
 import {ICredentialTypeSelection} from '../../credential';
-import {IIssuanceOpts} from '../../provider';
 
 export type MappedCredentialOffer = {
   correlationId: string;
@@ -28,13 +26,7 @@ export type OID4VCIMachineContext = {
   verificationCode?: string;
   hasContactConsent: boolean;
   error?: ErrorDetails;
-
   openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
-  issuerBranding?: Array<MetadataDisplay>;
-  serverMetadata?: EndpointMetadataResult;
-  credentialsSupported?: Array<CredentialSupported>;
-  issuanceOpts?: Array<IIssuanceOpts>;
-  credentialBranding?: Array<CredentialSupported>;
 };
 
 export enum OID4VCIMachineStates {
