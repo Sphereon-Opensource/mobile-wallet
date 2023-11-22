@@ -43,13 +43,11 @@ import {
   IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
-  QRRoutesEnum,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
-import {createStackNavigator} from '@react-navigation/stack';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
@@ -92,11 +90,13 @@ const MainStackNavigator = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={QRRoutesEnum.OID4VCI}
-        component={OID4VCIStackWithContext}
-        options={{
-          headerShown: false,
-        }}
+        name={MainRoutesEnum.OID4VCI}
+        children={() => (
+          <>
+            <OID4VCIStackWithContext />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
       />
       <Stack.Screen name="Veramo" component={Veramo} />
     </Stack.Navigator>

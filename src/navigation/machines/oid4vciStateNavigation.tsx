@@ -1,6 +1,7 @@
 import React, {Context, createContext} from 'react';
 import {URL} from 'react-native-url-polyfill';
 import {SimpleEventsOf} from 'xstate';
+import Debug, {Debugger} from 'debug';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionTypeEnum,
@@ -13,6 +14,7 @@ import OpenId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssua
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
+import {APP_ID} from '../../@config/constants';
 import {
   CreateContactEvent,
   OID4VCIContext as OID4VCIContextType,
@@ -23,9 +25,7 @@ import {
   OID4VCIMachineStates,
   OIDVCIProviderProps,
 } from '../../types/machines/oid4vci';
-import {NavigationBarRoutesEnum, PopupImagesEnum, QRRoutesEnum, ScreenRoutesEnum} from '../../types';
-import Debug, {Debugger} from 'debug';
-import {APP_ID} from '../../@config/constants';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -33,7 +33,7 @@ const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIC
 
 const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation} = args;
-  navigation.navigate(QRRoutesEnum.OID4VCI, {
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.LOADING,
     params: {
       message: translate('action_getting_information_message'),
@@ -104,17 +104,20 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  navigation.navigate(ScreenRoutesEnum.CONTACT_ADD, {
-    name: contact.name,
-    uri: contact.uri,
-    identities: contact.identities,
-    hasConsent: hasContactConsent,
-    onAliasChange,
-    onConsentChange,
-    onCreate,
-    onDecline,
-    onBack,
-    isCreateDisabled,
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.CONTACT_ADD,
+    params: {
+      name: contact.name,
+      uri: contact.uri,
+      identities: contact.identities,
+      hasConsent: hasContactConsent,
+      onAliasChange,
+      onConsentChange,
+      onCreate,
+      onDecline,
+      onBack,
+      isCreateDisabled,
+    },
   });
 };
 
@@ -123,7 +126,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {contact, credentialSelection} = state.context;
 
   if (!contact) {
-    return Promise.reject(Error('Missing contact'));
+    return Promise.reject(Error('Missing contact in context'));
   }
 
   const onSelectType = async (selectedCredentials: Array<string>): Promise<void> => {
@@ -137,32 +140,38 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.NEXT) !== true;
   };
 
-  navigation.navigate(ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE, {
-    issuer: contact.alias,
-    credentialTypes: credentialSelection,
-    onSelectType,
-    onSelect: onNext,
-    onBack,
-    isSelectDisabled,
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
+    params: {
+      issuer: contact.alias,
+      credentialTypes: credentialSelection,
+      onSelectType,
+      onSelect: onNext,
+      onBack,
+      isSelectDisabled,
+    },
   });
 };
 
 const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
   const {selectedCredentials} = state.context;
-  navigation.navigate(ScreenRoutesEnum.VERIFICATION_CODE, {
-    credentialName: selectedCredentials[0],
-    credentialTypes: [],
-    onVerification: async (pin: string): Promise<void> => {
-      oid4vciMachine.send([
-        {
-          type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
-          data: pin,
-        },
-        OID4VCIMachineEvents.NEXT,
-      ]);
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.VERIFICATION_CODE,
+    params: {
+      credentialName: selectedCredentials[0],
+      credentialTypes: [],
+      onVerification: async (pin: string): Promise<void> => {
+        oid4vciMachine.send([
+          {
+            type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
+            data: pin,
+          },
+          OID4VCIMachineEvents.NEXT,
+        ]);
+      },
+      onBack,
     },
-    onBack,
   });
 };
 
@@ -177,19 +186,22 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
-  navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-    headerTitle: translate('credential_offer_title'),
-    rawCredential: credentialOffers[0].rawVerifiableCredential,
-    credential: await toNonPersistedCredentialSummary(credentialOffers[0].uniformVerifiableCredential, localeBranding, contact),
-    primaryAction: {
-      caption: translate('action_accept_label'),
-      onPress: onNext,
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
+    params: {
+      headerTitle: translate('credential_offer_title'),
+      rawCredential: credentialOffers[0].rawVerifiableCredential,
+      credential: await toNonPersistedCredentialSummary(credentialOffers[0].uniformVerifiableCredential, localeBranding, contact),
+      primaryAction: {
+        caption: translate('action_accept_label'),
+        onPress: onNext,
+      },
+      secondaryAction: {
+        caption: translate('action_decline_label'),
+        onPress: onDecline,
+      },
+      onBack,
     },
-    secondaryAction: {
-      caption: translate('action_decline_label'),
-      onPress: onDecline,
-    },
-    onBack,
   });
 };
 
@@ -213,22 +225,25 @@ const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
     return;
   }
 
-  navigation.navigate(ScreenRoutesEnum.ERROR, {
-    image: PopupImagesEnum.WARNING,
-    title: error.title,
-    details: error.message,
-    ...(error.detailsMessage && {
-      detailsPopup: {
-        buttonCaption: translate('action_view_extra_details'),
-        title: error.detailsTitle,
-        details: error.detailsMessage,
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.ERROR,
+    params: {
+      image: PopupImagesEnum.WARNING,
+      title: error.title,
+      details: error.message,
+      ...(error.detailsMessage && {
+        detailsPopup: {
+          buttonCaption: translate('action_view_extra_details'),
+          title: error.detailsTitle,
+          details: error.detailsMessage,
+        },
+      }),
+      primaryButton: {
+        caption: translate('action_ok_label'),
+        onPress: onNext,
       },
-    }),
-    primaryButton: {
-      caption: translate('action_ok_label'),
-      onPress: onNext,
+      onBack,
     },
-    onBack,
   });
 };
 

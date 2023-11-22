@@ -96,7 +96,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
       events: {} as OID4VCIMachineEventTypes,
       guards: {} as
         | {type: OID4VCIMachineGuards.hasNotContactGuard}
-        | {type: OID4VCIMachineGuards.supportedCredentialsGuard}
+        | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
         | {type: OID4VCIMachineGuards.contactHasNotIdentityGuard}
         | {type: OID4VCIMachineGuards.verificationCodeGuard}
@@ -204,7 +204,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
           {
             target: OID4VCIMachineStates.selectCredentials,
-            cond: OID4VCIMachineGuards.supportedCredentialsGuard,
+            cond: OID4VCIMachineGuards.selectCredentialGuard,
           },
           {
             target: OID4VCIMachineStates.verifyPin,
@@ -246,7 +246,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         always: [
           {
             target: OID4VCIMachineStates.selectCredentials,
-            cond: OID4VCIMachineGuards.supportedCredentialsGuard,
+            cond: OID4VCIMachineGuards.selectCredentialGuard,
           },
           {
             target: OID4VCIMachineStates.verifyPin,
@@ -297,7 +297,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           [OID4VCIMachineEvents.PREVIOUS]: [
             {
               target: OID4VCIMachineStates.selectCredentials,
-              cond: OID4VCIMachineGuards.supportedCredentialsGuard,
+              cond: OID4VCIMachineGuards.selectCredentialGuard,
             },
             {
               target: OID4VCIMachineStates.aborted,

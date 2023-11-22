@@ -36,8 +36,7 @@ export type StackParamList = {
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
-  OID4VCI: Record<string, never>; // TODO
-  OID4VCIStack: IOID4VCIProps; // TODO
+  OID4VCI: IOID4VCIProps;
 };
 
 interface IPersonalDataProps {
@@ -185,6 +184,7 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  OID4VCI = 'OID4VCI',
 }
 
 export enum NavigationBarRoutesEnum {
@@ -192,10 +192,6 @@ export enum NavigationBarRoutesEnum {
   NOTIFICATIONS = 'NotificationsStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
-}
-
-export enum QRRoutesEnum {
-  OID4VCI = 'OID4VCIStack',
 }
 
 export enum ScreenRoutesEnum {

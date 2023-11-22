@@ -116,7 +116,7 @@ export enum OID4VCIMachineEvents {
 export enum OID4VCIMachineGuards {
   hasContactGuard = 'oid4vciHasContactGuard',
   hasNotContactGuard = 'oid4vciHasNoContactGuard',
-  supportedCredentialsGuard = 'oid4vciSupportedCredentialsGuard',
+  selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
   contactHasNotIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
