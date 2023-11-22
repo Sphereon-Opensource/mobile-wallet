@@ -1,6 +1,5 @@
 import React from 'react';
 import {assign, createMachine, DoneInvokeEvent, interpret, send} from 'xstate';
-import Debug, {Debugger} from 'debug';
 import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
@@ -14,7 +13,6 @@ import {
   assertValidCredentials,
 } from '../services/machines/oid4vciMachineService';
 import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
-import {APP_ID} from '../@config/constants';
 import {
   ContactAliasEvent,
   ContactConsentEvent,
