@@ -6,6 +6,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
+  IBasicContact,
   IBasicCredentialLocaleBranding,
   IContact,
   IdentityRoleEnum,
@@ -47,7 +48,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   const issuerUrl: URL = new URL(state.context.openId4VcIssuanceProvider!.serverMetadata!.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
 
-  const contact = {
+  const contact: Omit<IBasicContact, 'alias'> = {
     name: OpenId4VcIssuanceProvider.getIssuerName(correlationId, openId4VcIssuanceProvider!.serverMetadata!.credentialIssuerMetadata),
     uri: correlationId,
     identities: [
