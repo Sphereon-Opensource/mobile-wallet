@@ -301,8 +301,6 @@ export const oid4vciStateNavigationListener = async (
     state.matches(OID4VCIMachineStates.declined)
   ) {
     return navigateFinal({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else {
-    return Promise.reject(Error(`Navigation for ${JSON.stringify(state)} is not implemented!`)); // Should not happen, so we throw an error
   }
 };
 
