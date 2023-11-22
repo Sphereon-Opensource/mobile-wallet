@@ -118,7 +118,7 @@ export enum OID4VCIMachineGuards {
   hasNotContactGuard = 'oid4vciHasNoContactGuard',
   selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
-  contactHasNotIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
+  hasNoContactIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
   hasSelectedCredentialsGuard = 'oid4vciHasSelectedCredentialsGuard',

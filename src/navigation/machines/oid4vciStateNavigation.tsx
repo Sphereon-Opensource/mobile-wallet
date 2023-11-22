@@ -222,7 +222,6 @@ const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
   oid4vciMachine.stop();
   debug(`Stopped oid4vci machine`);
 
-  oid4vciMachine.stop();
   navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
     screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
   });

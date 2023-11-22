@@ -183,7 +183,7 @@ const CredentialsStack = (): JSX.Element => {
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
-                  onPress: async () =>
+                  onPress: async (): Promise<void> =>
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),
@@ -304,7 +304,7 @@ const QRStack = (): JSX.Element => {
               moreActions={[
                 {
                   caption: translate('show_raw_credential_button_caption'),
-                  onPress: async () =>
+                  onPress: async (): Promise<void> =>
                     RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
                       rawCredential: route.params.rawCredential,
                     }),

@@ -96,7 +96,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         | {type: OID4VCIMachineGuards.hasNotContactGuard}
         | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
-        | {type: OID4VCIMachineGuards.contactHasNotIdentityGuard}
+        | {type: OID4VCIMachineGuards.hasNoContactIdentityGuard}
         | {type: OID4VCIMachineGuards.verificationCodeGuard}
         | {type: OID4VCIMachineGuards.hasContactGuard}
         | {type: OID4VCIMachineGuards.createContactGuard}
@@ -346,7 +346,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         always: [
           {
             target: OID4VCIMachineStates.addContactIdentity,
-            cond: OID4VCIMachineGuards.contactHasNotIdentityGuard,
+            cond: OID4VCIMachineGuards.hasNoContactIdentityGuard,
           },
           {
             target: OID4VCIMachineStates.reviewCredentials,
