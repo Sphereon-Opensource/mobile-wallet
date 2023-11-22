@@ -155,7 +155,7 @@ export const assertValidCredentials = async (context: OID4VCIMachineContext): Pr
     credentialOffers.map(async (offer: MappedCredentialOffer): Promise<void> => {
       const verificationResult: IVerificationResult = await verifyCredential({
         credential: offer.credentialOffer.credentialResponse.credential as VerifiableCredential | CompactJWT,
-        // TODO we might want to allow these types of options as part of the context, now we have state machines. Allows us to pre-determine whether these policies apply and whether remote context should be fetched
+        // TODO WAL-675 we might want to allow these types of options as part of the context, now we have state machines. Allows us to pre-determine whether these policies apply and whether remote context should be fetched
         fetchRemoteContexts: true,
         policies: {
           credentialStatus: false,

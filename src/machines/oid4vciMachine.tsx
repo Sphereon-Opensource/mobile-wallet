@@ -77,7 +77,7 @@ const oid4vciHasSelectedCredentialsGuard = (_ctx: OID4VCIMachineContext, _event:
 
 const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMachine => {
   const initialContext: OID4VCIMachineContext = {
-    // TODO we need to store the data from OpenIdProvider here in the context and make sure we can restart the machine with it and init the OpenIdProvider
+    // TODO WAL-671 we need to store the data from OpenIdProvider here in the context and make sure we can restart the machine with it and init the OpenIdProvider
     requestData: opts?.requestData,
     credentialSelection: [],
     selectedCredentials: [],
@@ -160,7 +160,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({
               credentialSelection: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<ICredentialTypeSelection>>) => _event.data,
             }),
-            // TODO would be nice if we can have guard that checks if we have at least 1 item in the selection. not sure if this can occur but it would be more defensive.
+            // TODO WAL-670 would be nice if we can have guard that checks if we have at least 1 item in the selection. not sure if this can occur but it would be more defensive.
             // Still cannot find a nice way to do this inside of an invoke besides adding another transition state
           },
           onError: {
@@ -224,7 +224,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
           [OID4VCIMachineEvents.CREATE_CONTACT]: {
             cond: OID4VCIMachineGuards.createContactGuard,
-            // TODO we need a better approach of assigning a value and using guards to check the value
+            // TODO WAL-669 we need a better approach of assigning a value and using guards to check the value
             actions: [assign({contact: (_ctx: OID4VCIMachineContext, _event: CreateContactEvent) => _event.data}), send(OID4VCIMachineEvents.NEXT)],
           },
           [OID4VCIMachineEvents.DECLINE]: {

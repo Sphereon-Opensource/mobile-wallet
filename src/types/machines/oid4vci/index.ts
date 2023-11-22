@@ -17,12 +17,13 @@ export type MappedCredentialOffer = {
 };
 
 export type OID4VCIMachineContext = {
-  requestData?: IQrData; // TODO fix type as this is not always a qr code (deeplink)
+  requestData?: IQrData; // TODO WAL-673 fix type as this is not always a qr code (deeplink)
   credentialSelection: Array<ICredentialTypeSelection>;
   contactAlias: string;
   contact?: IContact;
   selectedCredentials: Array<string>;
   credentialOffers: Array<MappedCredentialOffer>;
+  // TODO WAL-672 refactor to not store verificationCode in the context
   verificationCode?: string;
   hasContactConsent: boolean;
   error?: ErrorDetails;
