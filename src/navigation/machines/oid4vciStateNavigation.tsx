@@ -231,8 +231,9 @@ const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
 const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, onBack, onNext} = args;
   const {error} = state.context;
-  if (error === undefined) {
-    return;
+
+  if (!error) {
+    return Promise.reject(Error('Missing error in context'));
   }
 
   navigation.navigate(MainRoutesEnum.OID4VCI, {
