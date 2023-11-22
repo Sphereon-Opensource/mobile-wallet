@@ -45,11 +45,20 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
   const {openId4VcIssuanceProvider, hasContactConsent} = state.context;
-  const issuerUrl: URL = new URL(state.context.openId4VcIssuanceProvider!.serverMetadata!.issuer);
+
+  if (!openId4VcIssuanceProvider) {
+    return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
+  }
+
+  if (!openId4VcIssuanceProvider.serverMetadata) {
+    return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
+  }
+
+  const issuerUrl: URL = new URL(openId4VcIssuanceProvider.serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
 
   const contact: Omit<IBasicContact, 'alias'> = {
-    name: OpenId4VcIssuanceProvider.getIssuerName(correlationId, openId4VcIssuanceProvider!.serverMetadata!.credentialIssuerMetadata),
+    name: OpenId4VcIssuanceProvider.getIssuerName(correlationId, openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata),
     uri: correlationId,
     identities: [
       {
@@ -178,8 +187,8 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
 
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
-  const {credentialOffers, contact} = state.context;
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = state.context.openId4VcIssuanceProvider?.credentialBranding?.get(
+  const {credentialOffers, contact, openId4VcIssuanceProvider} = state.context;
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider?.credentialBranding?.get(
     state.context.selectedCredentials[0],
   );
 
