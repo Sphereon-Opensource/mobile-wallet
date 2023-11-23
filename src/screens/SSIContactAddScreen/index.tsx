@@ -55,8 +55,9 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       return true;
     }
 
+    // FIXME for some reason returning false does not execute default behaviour
     navigation.goBack();
-    return false;
+    return true;
   };
 
   onValidate = async (value: string): Promise<void> => {

@@ -23,8 +23,9 @@ const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
       return true;
     }
 
+    // FIXME for some reason returning false does not execute default behaviour
     navigation.goBack();
-    return false;
+    return true;
   });
 
   const onShowExtraDetails = async (): Promise<void> => {

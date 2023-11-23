@@ -9,26 +9,26 @@ import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
-  CredentialDetails: ICredentialDetailsProps & IHasOnBackProps;
+  CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
-  VerificationCode: IVerificationCodeProps & IHasOnBackProps;
+  VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
-  Error: IPopupModalProps & IHasOnBackProps;
-  CredentialSelectType: ICredentialSelectTypeProps & IHasOnBackProps;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+  CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
-  ContactAdd: IContactAddProps & IHasOnBackProps;
+  ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   Welcome: IHasOnboardingContext & IHasOnNextProps;
   TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
   PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO this should not contain a whole context but only a pin code
+  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
   OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -54,7 +54,7 @@ export interface IHasOnboardingContext {
 }
 
 export interface IHasOnBackProps {
-  onBack?: () => Promise<void>;
+  onBack: () => Promise<void>;
 }
 
 export interface ILoadingProps {
