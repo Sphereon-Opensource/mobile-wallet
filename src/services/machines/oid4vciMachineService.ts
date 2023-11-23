@@ -24,7 +24,6 @@ import {MappedCredentialOffer, OID4VCIMachineContext} from '../../types/machines
 import {translate} from '../../localization/Localization';
 
 export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMachineContext, 'requestData'>): Promise<OpenId4VcIssuanceProvider> => {
-  // TODO add Pick
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {
