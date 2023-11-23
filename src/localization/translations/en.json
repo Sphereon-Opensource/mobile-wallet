@@ -144,7 +144,7 @@
   "profile_delete_wallet_action_title": "Are you sure you want to delete your wallet?",
   "profile_delete_wallet_action_subtitle": "Are you sure you want to delete your wallet: {{userName}}?",
   "credential_status_never_expires_date_label": "Never expires",
-  "oid4vci_machine_initiation_error_title": "Initiation",
+  "oid4vci_machine_initiation_error_title": "Initiate OID4VCI provider",
   "oid4vci_machine_credential_selection_error_title": "Credential selection",
   "oid4vci_machine_retrieve_contact_error_title": "Retrieve contact",
   "oid4vci_machine_retrieve_credentials_error_title": "Retrieve credentials",

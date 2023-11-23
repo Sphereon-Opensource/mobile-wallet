@@ -4,17 +4,20 @@ import agent from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
-import {OnboardingMachineContext, OnboardingPersonalData, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {storagePersistPin} from '../storageService';
 import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
 import {_ExtendedIKey} from '@veramo/utils';
 
-export const setupWallet = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
+export const setupWallet = async (
+  context: Pick<OnboardingMachineContext, 'pinCode' | 'personalData' | 'credentialData'>,
+): Promise<WalletSetupServiceResult> => {
+  const {pinCode} = context;
   const setup = await Promise.all([
     storagePersistPin({
-      value: context.pinCode,
+      value: pinCode,
     }),
     createUserAndIdentity(context),
     // Make sure we never finish before the timeout, to ensure the UI doesn't navigate too fast for a user between screens
@@ -25,11 +28,13 @@ export const setupWallet = async (context: OnboardingMachineContext): Promise<Wa
   return setup[1];
 };
 
-const createUserAndIdentity = async (context: OnboardingMachineContext): Promise<WalletSetupServiceResult> => {
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({method: context.credentialData.didMethod});
+const createUserAndIdentity = async (
+  context: Pick<OnboardingMachineContext, 'personalData' | 'credentialData'>,
+): Promise<WalletSetupServiceResult> => {
+  const {personalData, credentialData} = context;
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({method: credentialData.didMethod});
 
-  const personalData: OnboardingPersonalData = context.personalData;
-  const cred: Partial<CredentialPayload> | undefined = context.credentialData.credential;
+  const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};
   const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation(identifier, ctx, 'authentication');
   const verifiableCredential: VerifiableCredential = await createVerifiableCredential({
@@ -49,7 +54,7 @@ const createUserAndIdentity = async (context: OnboardingMachineContext): Promise
         ...personalData,
       },
     },
-    proofFormat: context.credentialData.proofFormat ?? 'jwt',
+    proofFormat: credentialData.proofFormat ?? 'jwt',
     header: {
       kid: key?.meta?.verificationMethod?.id,
     },

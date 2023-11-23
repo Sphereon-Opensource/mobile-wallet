@@ -23,7 +23,8 @@ import {ICredentialTypeSelection, IVerificationResult} from '../../types/';
 import {MappedCredentialOffer, OID4VCIMachineContext} from '../../types/machines/oid4vci';
 import {translate} from '../../localization/Localization';
 
-export const initiateOpenId4VcIssuanceProvider = async (context: OID4VCIMachineContext): Promise<OpenId4VcIssuanceProvider> => {
+export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMachineContext, 'requestData'>): Promise<OpenId4VcIssuanceProvider> => {
+  // TODO add Pick
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {
@@ -33,7 +34,9 @@ export const initiateOpenId4VcIssuanceProvider = async (context: OID4VCIMachineC
   return OpenId4VcIssuanceProvider.initiationFromUri({uri: requestData.uri});
 };
 
-export const createCredentialSelection = async (context: OID4VCIMachineContext): Promise<Array<ICredentialTypeSelection>> => {
+export const createCredentialSelection = async (
+  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'selectedCredentials'>,
+): Promise<Array<ICredentialTypeSelection>> => {
   const {openId4VcIssuanceProvider, selectedCredentials} = context;
 
   if (!openId4VcIssuanceProvider) {
@@ -68,7 +71,7 @@ export const createCredentialSelection = async (context: OID4VCIMachineContext):
   return credentialSelection;
 };
 
-export const retrieveContact = async (context: OID4VCIMachineContext): Promise<IContact | undefined> => {
+export const retrieveContact = async (context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider'>): Promise<IContact | undefined> => {
   const {openId4VcIssuanceProvider} = context;
 
   if (!openId4VcIssuanceProvider) {
@@ -93,7 +96,9 @@ export const retrieveContact = async (context: OID4VCIMachineContext): Promise<I
   }).then((contacts: Array<IContact>): IContact | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
-export const retrieveCredentialOffers = async (context: OID4VCIMachineContext): Promise<Array<MappedCredentialOffer> | undefined> => {
+export const retrieveCredentialOffers = async (
+  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'verificationCode' | 'selectedCredentials'>,
+): Promise<Array<MappedCredentialOffer> | undefined> => {
   const {openId4VcIssuanceProvider, verificationCode, selectedCredentials} = context;
   return openId4VcIssuanceProvider
     ?.getCredentialsFromIssuance({
@@ -125,7 +130,7 @@ export const retrieveCredentialOffers = async (context: OID4VCIMachineContext): 
     );
 };
 
-export const addContactIdentity = async (context: OID4VCIMachineContext): Promise<void> => {
+export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'credentialOffers' | 'contact'>): Promise<void> => {
   const {credentialOffers, contact} = context;
 
   if (!contact) {
@@ -148,8 +153,8 @@ export const addContactIdentity = async (context: OID4VCIMachineContext): Promis
   return store.dispatch<any>(addIdentity({contactId: contact.id, identity}));
 };
 
-export const assertValidCredentials = async (context: OID4VCIMachineContext): Promise<void> => {
-  const {credentialOffers, verificationCode} = context;
+export const assertValidCredentials = async (context: Pick<OID4VCIMachineContext, 'credentialOffers'>): Promise<void> => {
+  const {credentialOffers} = context;
 
   await Promise.all(
     credentialOffers.map(async (offer: MappedCredentialOffer): Promise<void> => {
@@ -171,7 +176,9 @@ export const assertValidCredentials = async (context: OID4VCIMachineContext): Pr
   );
 };
 
-export const storeCredentialBranding = async (context: OID4VCIMachineContext): Promise<void> => {
+export const storeCredentialBranding = async (
+  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'selectedCredentials' | 'credentialOffers'>,
+): Promise<void> => {
   const {openId4VcIssuanceProvider, selectedCredentials, credentialOffers} = context;
 
   if (!openId4VcIssuanceProvider?.serverMetadata) {
@@ -190,7 +197,7 @@ export const storeCredentialBranding = async (context: OID4VCIMachineContext): P
   }
 };
 
-export const storeCredentials = async (context: OID4VCIMachineContext): Promise<void> => {
+export const storeCredentials = async (context: Pick<OID4VCIMachineContext, 'credentialOffers'>): Promise<void> => {
   const {credentialOffers} = context;
   store.dispatch<any>(storeVerifiableCredential(credentialOffers[0].rawVerifiableCredential));
 };

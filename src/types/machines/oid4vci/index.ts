@@ -31,7 +31,7 @@ export type OID4VCIMachineContext = {
 };
 
 export enum OID4VCIMachineStates {
-  initiate = 'initiate',
+  initiateOID4VCIProvider = 'initiateOID4VCIProvider',
   createCredentialSelection = 'createCredentialSelection',
   retrieveContact = 'retrieveContact',
   transitionFromSetup = 'transitionFromSetup',
@@ -47,11 +47,21 @@ export enum OID4VCIMachineStates {
   verifyCredentials = 'verifyCredentials',
   storeCredentialBranding = 'storeCredentialBranding',
   storeCredentials = 'storeCredentials',
-  showError = 'showError',
+  handleError = 'handleError',
   aborted = 'aborted',
   declined = 'declined',
   error = 'error',
   done = 'done',
+}
+
+export enum OID4VCIMachineAddContactStates {
+  idle = 'idle',
+  next = 'next',
+}
+
+export enum OID4VCIMachineVerifyPinStates {
+  idle = 'idle',
+  next = 'next',
 }
 
 export type OID4VCIMachineInterpreter = Interpreter<

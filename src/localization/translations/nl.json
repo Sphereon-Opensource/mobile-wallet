@@ -144,7 +144,7 @@
   "profile_delete_wallet_action_caption": "Wallet verwijderen",
   "profile_delete_wallet_action_title": "Weet je zeker dat je de wallet wilt verwijderen?",
   "profile_delete_wallet_action_subtitle": "Weet je zeker dat je de wallet wilt verwijderen: {{userName}}?",
-  "oid4vci_machine_initiation_error_title": "Initiatie",
+  "oid4vci_machine_initiation_error_title": "Initiëren OID4VCI provider",
   "oid4vci_machine_credential_selection_error_title": "Credential selectie",
   "oid4vci_machine_retrieve_contact_error_title": "Ophalen contact",
   "oid4vci_machine_retrieve_credentials_error_title": "Ophalen credential",

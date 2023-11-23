@@ -172,13 +172,10 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
       credentialName: selectedCredentials[0],
       credentialTypes: [],
       onVerification: async (pin: string): Promise<void> => {
-        oid4vciMachine.send([
-          {
-            type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
-            data: pin,
-          },
-          OID4VCIMachineEvents.NEXT,
-        ]);
+        oid4vciMachine.send({
+          type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
+          data: pin,
+        });
       },
       onBack,
     },
@@ -276,7 +273,7 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiate) ||
+    state.matches(OID4VCIMachineStates.initiateOID4VCIProvider) ||
     state.matches(OID4VCIMachineStates.createCredentialSelection) ||
     state.matches(OID4VCIMachineStates.retrieveContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
@@ -292,7 +289,7 @@ export const oid4vciStateNavigationListener = async (
     return navigateAuthentication({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.showError)) {
+  } else if (state.matches(OID4VCIMachineStates.handleError)) {
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
     state.matches(OID4VCIMachineStates.done) ||

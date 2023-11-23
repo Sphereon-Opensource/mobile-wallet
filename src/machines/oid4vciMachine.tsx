@@ -1,5 +1,5 @@
 import React from 'react';
-import {assign, createMachine, DoneInvokeEvent, interpret, send} from 'xstate';
+import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
@@ -19,6 +19,7 @@ import {
   CreateContactEvent,
   CreateOID4VCIMachineOpts,
   MappedCredentialOffer,
+  OID4VCIMachineAddContactStates,
   OID4VCIMachineContext,
   OID4VCIMachineEvents,
   OID4VCIMachineEventTypes,
@@ -28,6 +29,7 @@ import {
   OID4VCIMachineServices,
   OID4VCIMachineState,
   OID4VCIMachineStates,
+  OID4VCIMachineVerifyPinStates,
   OID4VCIStateMachine,
   SelectCredentialsEvent,
   VerificationCodeEvent,
@@ -89,7 +91,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
   return createMachine<OID4VCIMachineContext, OID4VCIMachineEventTypes>({
     id: opts?.machineId ?? 'OID4VCI',
     predictableActionArguments: true,
-    initial: OID4VCIMachineStates.initiate,
+    initial: OID4VCIMachineStates.initiateOID4VCIProvider,
     schema: {
       events: {} as OID4VCIMachineEventTypes,
       guards: {} as
@@ -130,8 +132,8 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
     },
     context: initialContext,
     states: {
-      [OID4VCIMachineStates.initiate]: {
-        id: OID4VCIMachineStates.initiate,
+      [OID4VCIMachineStates.initiateOID4VCIProvider]: {
+        id: OID4VCIMachineStates.initiateOID4VCIProvider,
         invoke: {
           src: OID4VCIMachineServices.initiate,
           onDone: {
@@ -141,7 +143,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             }),
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_initiation_error_title'),
@@ -164,7 +166,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             // Still cannot find a nice way to do this inside of an invoke besides adding another transition state
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_credential_selection_error_title'),
@@ -183,7 +185,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<IContact>) => _event.data}),
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_retrieve_contact_error_title'),
@@ -215,6 +217,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
       },
       [OID4VCIMachineStates.addContact]: {
         id: OID4VCIMachineStates.addContact,
+        initial: OID4VCIMachineAddContactStates.idle,
         on: {
           [OID4VCIMachineEvents.SET_CONTACT_CONSENT]: {
             actions: assign({hasContactConsent: (_ctx: OID4VCIMachineContext, _event: ContactConsentEvent) => _event.data}),
@@ -223,9 +226,9 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({contactAlias: (_ctx: OID4VCIMachineContext, _event: ContactAliasEvent) => _event.data}),
           },
           [OID4VCIMachineEvents.CREATE_CONTACT]: {
+            target: `.${OID4VCIMachineAddContactStates.next}`,
+            actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: CreateContactEvent) => _event.data}),
             cond: OID4VCIMachineGuards.createContactGuard,
-            // TODO WAL-669 we need a better approach of assigning a value and using guards to check the value
-            actions: [assign({contact: (_ctx: OID4VCIMachineContext, _event: CreateContactEvent) => _event.data}), send(OID4VCIMachineEvents.NEXT)],
           },
           [OID4VCIMachineEvents.DECLINE]: {
             target: OID4VCIMachineStates.declined,
@@ -233,9 +236,14 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           [OID4VCIMachineEvents.PREVIOUS]: {
             target: OID4VCIMachineStates.aborted,
           },
-          [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.transitionFromContactSetup,
-            cond: OID4VCIMachineGuards.hasContactGuard,
+        },
+        states: {
+          [OID4VCIMachineAddContactStates.idle]: {},
+          [OID4VCIMachineAddContactStates.next]: {
+            always: {
+              target: `#${OID4VCIMachineStates.transitionFromContactSetup}`,
+              cond: OID4VCIMachineGuards.hasContactGuard,
+            },
           },
         },
       },
@@ -284,13 +292,11 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
       },
       [OID4VCIMachineStates.verifyPin]: {
         id: OID4VCIMachineStates.verifyPin,
+        initial: OID4VCIMachineVerifyPinStates.idle,
         on: {
           [OID4VCIMachineEvents.SET_VERIFICATION_CODE]: {
+            target: `.${OID4VCIMachineVerifyPinStates.next}`,
             actions: assign({verificationCode: (_ctx: OID4VCIMachineContext, _event: VerificationCodeEvent) => _event.data}),
-          },
-          [OID4VCIMachineEvents.NEXT]: {
-            target: OID4VCIMachineStates.retrieveCredentialsOffers,
-            cond: OID4VCIMachineGuards.verificationCodeGuard,
           },
           [OID4VCIMachineEvents.PREVIOUS]: [
             {
@@ -302,6 +308,15 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             },
           ],
         },
+        states: {
+          [OID4VCIMachineVerifyPinStates.idle]: {},
+          [OID4VCIMachineVerifyPinStates.next]: {
+            always: {
+              target: `#${OID4VCIMachineStates.retrieveCredentialsOffers}`,
+              cond: OID4VCIMachineGuards.verificationCodeGuard,
+            },
+          },
+        },
       },
       [OID4VCIMachineStates.retrieveCredentialsOffers]: {
         id: OID4VCIMachineStates.retrieveCredentialsOffers,
@@ -312,7 +327,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<MappedCredentialOffer>>) => _event.data}),
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_retrieve_credentials_error_title'),
@@ -331,7 +346,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             target: OID4VCIMachineStates.transitionFromWalletInput,
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_verify_credentials_error_title'),
@@ -364,7 +379,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             },
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_add_contact_identity_error_title'),
@@ -396,7 +411,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             target: OID4VCIMachineStates.storeCredentials,
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_store_credential_branding_error_title'),
@@ -414,7 +429,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             target: OID4VCIMachineStates.done,
           },
           onError: {
-            target: OID4VCIMachineStates.showError,
+            target: OID4VCIMachineStates.handleError,
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_store_credential_error_title'),
@@ -424,8 +439,8 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           },
         },
       },
-      [OID4VCIMachineStates.showError]: {
-        id: OID4VCIMachineStates.showError,
+      [OID4VCIMachineStates.handleError]: {
+        id: OID4VCIMachineStates.handleError,
         on: {
           [OID4VCIMachineEvents.NEXT]: {
             target: OID4VCIMachineStates.error,
