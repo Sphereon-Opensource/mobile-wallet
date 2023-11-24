@@ -4,8 +4,7 @@ import {UniqueVerifiableCredential} from '@veramo/core';
 import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import store from '../store';
-import {ICredentialSummary, IUserIdentifier} from '../types';
-
+import {ICredentialSummary, IUser, IUserIdentifier} from '../types';
 import {makeEpochMilli} from './DateUtils';
 
 /**
@@ -18,7 +17,7 @@ export const getCredentialTypeAsString = (credential: ICredential | VerifiableCr
   } else if (typeof credential.type === 'string') {
     return credential.type;
   }
-  return credential.type.filter(t => t !== 'VerifiableCredential').join(', ');
+  return credential.type.filter((type: string): boolean => type !== 'VerifiableCredential').join(', ');
 };
 
 /**
@@ -32,7 +31,7 @@ export const getMatchingUniqueVerifiableCredential = (
 ): UniqueVerifiableCredential | undefined => {
   // Since an ID is optional in a VC according to VCDM, and we really need the matches, we have a fallback match on something which is guaranteed to be unique for any VC (the proof(s))
   return uniqueVCs.find(
-    uniqueVC =>
+    (uniqueVC: UniqueVerifiableCredential) =>
       (typeof searchVC !== 'string' &&
         (uniqueVC.verifiableCredential.id === searchVC.id || uniqueVC.verifiableCredential.proof === searchVC.proof)) ||
       (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC),
@@ -83,23 +82,23 @@ export const isExpired = (value?: string | number): boolean => {
   if (!value) {
     return false;
   }
-  let expirationDate = typeof value === 'string' ? new Date(value).valueOf() : value;
+  let expirationDate: number = typeof value === 'string' ? new Date(value).valueOf() : value;
   expirationDate = makeEpochMilli(expirationDate);
   return expirationDate < Date.now();
 };
 
 export const translateCorrelationIdToName = (correlationId: string): string => {
-  const contacts = store.getState().contact.contacts;
-  const activeUser = store.getState().user.activeUser;
+  const contacts: Array<IContact> = store.getState().contact.contacts;
+  const activeUser: IUser | undefined = store.getState().user.activeUser;
 
-  const contact = contacts.find((contact: IContact) =>
-    contact.identities.some((identity: IIdentity) => identity.identifier.correlationId === correlationId),
+  const contact: IContact | undefined = contacts.find((contact: IContact) =>
+    contact.identities.some((identity: IIdentity): boolean => identity.identifier.correlationId === correlationId),
   );
   if (contact) {
     return contact.alias;
   }
 
-  if (activeUser && activeUser.identifiers.some((identifier: IUserIdentifier) => identifier.did === correlationId)) {
+  if (activeUser && activeUser.identifiers.some((identifier: IUserIdentifier): boolean => identifier.did === correlationId)) {
     return `${activeUser.firstName} ${activeUser.lastName}`;
   }
 

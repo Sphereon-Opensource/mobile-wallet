@@ -2,42 +2,33 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-
-import {IButton, ICredentialSelection, ICredentialSummary, ICredentialTypeSelection, PopupBadgesEnum, PopupImagesEnum} from '../index';
-import {IOnboardingMachineContext, IOnboardingPersonalData, OnboardingInterpretType} from '../onboarding';
-
-interface IPersonalDataProps {
-  isDisabled: (personalData: IOnboardingPersonalData) => boolean;
-  onNext: (personalData: IOnboardingPersonalData) => void;
-  onPersonalData: (personalData: IOnboardingPersonalData) => void;
-}
-
-export interface IOnboardingProps {
-  customOnboardingInstance?: OnboardingInterpretType;
-}
+import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
+import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
+import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
+import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
-  CredentialDetails: ICredentialDetailsProps;
+  CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
-  VerificationCode: IVerificationCodeProps;
+  VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
-  Error: IPopupModalProps;
-  CredentialSelectType: ICredentialSelectTypeProps;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+  CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
-  ContactAdd: IContactAddProps;
+  ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   Welcome: IHasOnboardingContext & IHasOnNextProps;
   TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
   PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
+  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
   OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -45,10 +36,25 @@ export type StackParamList = {
   CredentialsRequired: ICredentialsRequiredProps;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
+  OID4VCI: IOID4VCIProps;
 };
 
+interface IPersonalDataProps {
+  isDisabled: (personalData: OnboardingPersonalData) => boolean;
+  onNext: (personalData: OnboardingPersonalData) => void;
+  onPersonalData: (personalData: OnboardingPersonalData) => void;
+}
+
+export interface IOnboardingProps {
+  customOnboardingInstance?: OnboardingMachineInterpreter;
+}
+
 export interface IHasOnboardingContext {
-  context: IOnboardingMachineContext;
+  context: OnboardingMachineContext;
+}
+
+export interface IHasOnBackProps {
+  onBack: () => Promise<void>;
 }
 
 export interface ILoadingProps {
@@ -58,12 +64,6 @@ export interface ILoadingProps {
 export interface IHasOnNextProps {
   onNext: (data?: any) => Promise<void>;
 }
-
-export interface IHasOnBackProps {
-  onBack: () => Promise<void>;
-}
-
-export type IWelcomeProps = IHasOnNextProps;
 
 export interface ITermsOfServiceProps {
   isDisabled: () => boolean;
@@ -137,7 +137,9 @@ export interface IPopupModalProps {
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
+  onSelectType?: (credentialTypes: Array<string>) => Promise<void>;
   onSelect: (credentialTypes: Array<string>) => Promise<void>;
+  isSelectDisabled?: boolean | (() => boolean);
 }
 
 export interface IContactDetailsProps {
@@ -148,8 +150,12 @@ export interface IContactAddProps {
   name: string;
   uri?: string;
   identities?: Array<IBasicIdentity>;
+  onCreate: (contact: IContact) => Promise<void>;
   onDecline: () => Promise<void>;
-  onCreate: () => Promise<void>;
+  onConsentChange?: (hasConsent: boolean) => Promise<void>;
+  onAliasChange?: (alias: string) => Promise<void>;
+  hasConsent?: boolean;
+  isCreateDisabled?: boolean | (() => boolean);
 }
 
 export interface IPinCodeSetProps {
@@ -178,6 +184,7 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  OID4VCI = 'OID4VCI',
 }
 
 export enum NavigationBarRoutesEnum {
@@ -209,4 +216,8 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
+}
+
+export interface IOID4VCIProps {
+  customOID4VCIInstance?: OID4VCIMachineInterpreter;
 }

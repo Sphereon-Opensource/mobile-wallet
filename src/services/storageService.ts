@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
 
 import {APP_ID} from '../@config/constants';
 import {IStorePinArgs, IStoreUserArgs, IUser} from '../types';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:storageService`);
+const debug: Debugger = Debug(`${APP_ID}:storageService`);
 
 const STORAGE_PIN_KEY = 'pin';
 const STORAGE_USERS_KEY = 'users';

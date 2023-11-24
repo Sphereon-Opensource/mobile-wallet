@@ -2,7 +2,6 @@ import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC, useMemo} from 'react';
 import {BackHandler} from 'react-native';
-
 import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../../components/fields/SSICheckbox';
 import SSITabView from '../../../components/views/SSITabView';
@@ -25,11 +24,18 @@ enum TermsTabRoutesEnum {
 }
 
 const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
 
-  useBackHandler(() => {
-    void onBack();
-    // make sure event stops here
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
     return true;
   });
 

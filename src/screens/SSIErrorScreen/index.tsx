@@ -1,6 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup';
 import {
   SSIBasicContainerStyled as Container,
@@ -8,12 +7,34 @@ import {
   SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>;
 
 const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
+  const {navigation} = props;
+  const {onClose, onBack, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
+
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
+    return true;
+  });
+
+  const onShowExtraDetails = async (): Promise<void> => {
+    setShowExtraDetails(true);
+  };
+
+  const onHideExtraDetails = async (): Promise<void> => {
+    setShowExtraDetails(false);
+  };
 
   return (
     <Container>
@@ -21,7 +42,7 @@ const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
         {showExtraDetails && detailsPopup && (
           <ExtraDetailsContainer>
             <SSIPopup
-              onClose={async () => setShowExtraDetails(false)}
+              onClose={onHideExtraDetails}
               title={detailsPopup.title}
               details={detailsPopup.details}
               extraDetails={detailsPopup.extraDetails}
@@ -36,14 +57,12 @@ const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
           titleBadge={titleBadge}
           details={details}
           extraDetails={extraDetails}
-          detailsButton={
-            detailsPopup
-              ? {
-                  caption: detailsPopup.buttonCaption,
-                  onPress: async () => setShowExtraDetails(true),
-                }
-              : undefined
-          }
+          {...(detailsPopup && {
+            detailsButton: {
+              caption: detailsPopup.buttonCaption,
+              onPress: onShowExtraDetails,
+            },
+          })}
           primaryButton={primaryButton}
           secondaryButton={secondaryButton}
           darkMode

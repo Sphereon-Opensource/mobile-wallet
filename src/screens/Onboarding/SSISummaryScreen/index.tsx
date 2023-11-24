@@ -19,14 +19,22 @@ enum SummaryTabRoutesEnum {
 }
 
 const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {context, onBack, onNext} = props.route.params;
   const {personalData} = {...context};
 
-  useBackHandler(() => {
-    void onBack();
-    // make sure event stops here
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
     return true;
   });
+
   const getProperties = (): Array<ICredentialDetailsRow> => {
     return [
       {

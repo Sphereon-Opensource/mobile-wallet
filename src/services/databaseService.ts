@@ -1,10 +1,10 @@
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import {DataSource} from 'typeorm';
 
 import {APP_ID} from '../@config/constants';
 import {sqliteConfig} from '../@config/database';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:databaseService`);
+const debug: Debugger = Debug(`${APP_ID}:databaseService`);
 
 /**
  * Todo, move to a class

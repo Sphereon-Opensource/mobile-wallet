@@ -18,12 +18,19 @@ import {ScreenRoutesEnum, StackParamList} from '../../../types';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PERSONAL_DATA>;
 
 const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {onNext, onBack, context, onPersonalData, isDisabled} = props.route.params;
   const personalData = {...context.personalData}; // shallow copy given we will manipulate the data
 
-  useBackHandler(() => {
-    void onBack();
-    // make sure event stops here
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
     return true;
   });
 

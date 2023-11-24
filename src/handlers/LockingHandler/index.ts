@@ -1,4 +1,4 @@
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import {AppState, DeviceEventEmitter, EmitterSubscription, NativeEventSubscription, Platform} from 'react-native';
 
 import {APP_ID} from '../../@config/constants';
@@ -7,7 +7,7 @@ import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:LockingHandler`);
+const debug: Debugger = Debug(`${APP_ID}:LockingHandler`);
 
 class LockingHandler {
   private static instance: LockingHandler;

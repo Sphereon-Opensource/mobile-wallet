@@ -12,11 +12,18 @@ import {PinCodeMode, ScreenRoutesEnum, StackParamList} from '../../../types';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.PIN_CODE_SET>;
 
 const SSIPinCodeSetScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {onNext, onBack} = props.route.params;
 
-  useBackHandler(() => {
-    void onBack();
-    // make sure event stops here
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
     return true;
   });
 

@@ -19,6 +19,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
+import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -39,8 +40,9 @@ const getCredentialCardLogo = (credential: ICredentialSummary): ImageAttributes 
 };
 
 const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {credential, primaryAction, secondaryAction, showActivity = false} = props.route.params;
-  const issuer = credential.issuer.alias;
+  const {navigation} = props;
+  const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
+  const issuer: string = credential.issuer.alias;
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
 
   const routes: Array<ITabViewRoute> = [
@@ -59,6 +61,18 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         ]
       : []),
   ];
+
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
+    return true;
+  });
 
   return (
     <Container>
@@ -92,7 +106,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             <ButtonContainerContent>
               {secondaryAction && (
                 <SSISecondaryButton
-                  title={secondaryAction.caption}
+                  caption={secondaryAction.caption}
                   onPress={secondaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
@@ -104,7 +118,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               )}
               {primaryAction && (
                 <SSIPrimaryButton
-                  title={primaryAction.caption}
+                  caption={primaryAction.caption}
                   onPress={primaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{

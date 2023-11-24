@@ -3,7 +3,6 @@ import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-type
 import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-
 import {ibGetCredentialBranding} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {
@@ -28,10 +27,10 @@ import {showToast} from '../../utils/ToastUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
     getVerifiableCredentialsFromStorage()
-      .then(async (credentials: Array<UniqueVerifiableCredential>) => {
+      .then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
         const vcHashes: Array<{vcHash: string}> = credentials.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
           vcHash: uniqueCredential.hash,
         }));
@@ -39,7 +38,7 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
         const credentialSummaries: Array<ICredentialSummary> = await Promise.all(
           credentials.map(async (uniqueVC: UniqueVerifiableCredential): Promise<ICredentialSummary> => {
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
-              (branding: ICredentialBranding) => branding.vcHash === uniqueVC.hash,
+              (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
             return await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
           }),
@@ -51,28 +50,33 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
 };
 
 export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
-    const mappedVc = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
+    const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
-      .then(async (hash: string) => {
+      .then(async (hash: string): Promise<ICredentialSummary> => {
         const credentialBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
-        toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding).then((summary: ICredentialSummary) =>
-          dispatch({
-            type: STORE_CREDENTIAL_SUCCESS,
-            payload: summary,
-          }),
-        );
+        return toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding);
+      })
+      .then((summary: ICredentialSummary): void => {
+        dispatch({
+          type: STORE_CREDENTIAL_SUCCESS,
+          payload: summary,
+        });
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {
+          message: translate('credential_offer_accepted_toast'),
+          showBadge: false,
+        });
       })
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
 };
 
 export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
     deleteCredential({hash: credentialHash})
-      .then((isDeleted: boolean) => {
+      .then((isDeleted: boolean): void => {
         if (isDeleted) {
           dispatch({type: DELETE_CREDENTIAL_SUCCESS, payload: credentialHash});
           showToast(ToastTypeEnum.TOAST_SUCCESS, {
@@ -84,7 +88,7 @@ export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<
           showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credential_deleted_failed_toast')});
         }
       })
-      .catch(() => {
+      .catch((): void => {
         dispatch({type: DELETE_CREDENTIAL_FAILED});
         showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credential_deleted_failed_toast')});
       });
@@ -92,10 +96,10 @@ export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<
 };
 
 export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>) => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
     createCredential(args)
-      .then((vc: VerifiableCredential) => {
+      .then((vc: VerifiableCredential): void => {
         storeCredential({vc}).then((hash: string) =>
           toCredentialSummary({verifiableCredential: vc, hash}).then((summary: ICredentialSummary) =>
             // TODO fix mismatch in types
@@ -106,9 +110,6 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
           ),
         );
       })
-      .catch((error: Error) => {
-        console.log(error.message);
-        dispatch({type: CREATE_CREDENTIAL_FAILED});
-      });
+      .catch(() => dispatch({type: CREATE_CREDENTIAL_FAILED}));
   };
 };

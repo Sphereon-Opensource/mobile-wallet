@@ -1,8 +1,7 @@
 import {VerifiableCredential} from '@veramo/core';
-import Debug from 'debug';
+import Debug, {Debugger} from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';
 import ShareMenu, {ShareData, ShareListener} from 'react-native-share-menu';
-
 import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
 import RootNavigation from '../../navigation/rootNavigation';
@@ -15,7 +14,7 @@ import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import LockingHandler from '../LockingHandler';
 
-const debug: Debug.Debugger = Debug(`${APP_ID}:IntentHandler`);
+const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 
 class IntentHandler {
   private static instance: IntentHandler;
@@ -98,7 +97,7 @@ class IntentHandler {
   }
 
   private async storeInitialURLOnStart(): Promise<void> {
-    const url = await Linking.getInitialURL();
+    const url: string | null = await Linking.getInitialURL();
 
     // Added expo-development-client check because of how the expo works in development
     if (!url || url.includes('expo-development-client')) {
@@ -110,7 +109,7 @@ class IntentHandler {
   }
 
   private async handleSharedFileData(): Promise<void> {
-    ShareMenu.getSharedText((data?: ShareData) => {
+    ShareMenu.getSharedText((data?: ShareData): void => {
       if (!data || ((!data.data || data.data.length === 0) && !data.extraData)) {
         console.log('No shared data received');
         return;
@@ -131,7 +130,7 @@ class IntentHandler {
     this.openDeepLinkIfExistsAndAppUnlocked();
   };
 
-  public openDeepLinkIfExistsAndAppUnlocked() {
+  public openDeepLinkIfExistsAndAppUnlocked(): void {
     if (this.isEnabled() && this.hasDeepLink() && !LockingHandler.getInstance().isLocked) {
       void this.openDeepLink();
     } else {
@@ -140,7 +139,7 @@ class IntentHandler {
   }
 
   public hasDeepLink = (): boolean => {
-    const hasLink = !!this._initialUrl;
+    const hasLink: boolean = !!this._initialUrl;
     return hasLink;
   };
 
@@ -151,7 +150,7 @@ class IntentHandler {
 
   public openDeepLink = async (): Promise<void> => {
     debug(`Open deeplink for ${this._initialUrl}`);
-    const url = this._initialUrl;
+    const url: string | undefined = this._initialUrl;
     this._initialUrl = undefined;
     if (url) {
       // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
@@ -169,7 +168,7 @@ class IntentHandler {
     const file = typeof item.data === 'string' ? item.data : item.data[0];
 
     readFile({filePath: file})
-      .then(async (file: string) => {
+      .then(async (file: string): Promise<void> => {
         // Currently we only support receiving one credential, we are missing ui to display multiple
         const vc: VerifiableCredential = JSON.parse(file).credential?.data?.verifiableCredential[0];
         if (!vc) {
@@ -178,7 +177,7 @@ class IntentHandler {
         }
 
         // TODO fix the store not having the correct action types (should include ThunkAction)
-        const storeCredential = async (vc: VerifiableCredential) => await store.dispatch<any>(storeVerifiableCredential(vc));
+        const storeCredential = async (vc: VerifiableCredential): Promise<void> => await store.dispatch<any>(storeVerifiableCredential(vc));
 
         // We navigate to the QR stack as this is the stack for incoming credentials
         RootNavigation.navigate(NavigationBarRoutesEnum.QR, {
@@ -188,7 +187,7 @@ class IntentHandler {
             credential: await toNonPersistedCredentialSummary(vc),
             primaryAction: {
               caption: translate('action_accept_label'),
-              onPress: async () =>
+              onPress: async (): Promise<void> =>
                 storeCredential(vc)
                   .then(() =>
                     RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
@@ -205,7 +204,7 @@ class IntentHandler {
             },
             secondaryAction: {
               caption: translate('action_decline_label'),
-              onPress: async () =>
+              onPress: async (): Promise<void> =>
                 RootNavigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
                   screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
                 }),

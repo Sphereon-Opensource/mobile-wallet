@@ -8,15 +8,16 @@ import {
 } from '../../../styles/components';
 import {OpacityStyleEnum} from '../../../types';
 
-export interface Props extends PressableProps {
-  title: string; // TODO rename to caption
-  disabled?: boolean | undefined;
+export interface Props extends Omit<PressableProps, 'disabled'> {
+  caption: string;
+  disabled?: boolean | (() => boolean);
   onPress?: () => void;
   style?: ViewStyle;
 }
 
 const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
-  const {onPress, disabled, style, title} = props;
+  const {onPress, style, caption} = props;
+  const disabled = typeof props.disabled === 'function' ? props.disabled() : props.disabled;
 
   return (
     <Button
@@ -26,7 +27,7 @@ const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
         ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
       }}>
       <LinearGradient style={{...style}}>
-        <ButtonCaption>{title}</ButtonCaption>
+        <ButtonCaption>{caption}</ButtonCaption>
       </LinearGradient>
     </Button>
   );
