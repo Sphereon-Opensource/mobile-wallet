@@ -47,7 +47,7 @@ const onboardingPinCodeVerifyGuard = (ctx: OnboardingMachineContext, event: Next
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const credentialData = {
-    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_KEY,
+    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_OYD,
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
     credential:
       opts?.credentialData?.credential ??

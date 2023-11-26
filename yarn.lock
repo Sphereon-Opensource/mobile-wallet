@@ -2622,6 +2622,14 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@ownyourdata/did-provider-oyd@file:../veramo/packages/did-provider-oyd":
+  version "0.0.1"
+  dependencies:
+    "@veramo/core-types" "workspace:^"
+    "@veramo/did-manager" "workspace:^"
+    cross-fetch "^4.0.0"
+    debug "^4.3.3"
+
 "@peculiar/asn1-schema@^2.3.6":
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/@peculiar/asn1-schema/-/asn1-schema-2.3.6.tgz#3dd3c2ade7f702a9a94dfb395c192f5fa5d6b922"
@@ -4627,6 +4635,16 @@
     crypto-ld "^7.0.0"
     json-stringify-deterministic "^1.0.7"
 
+"@veramo/core-types@workspace:^":
+  version "5.5.4-next.24"
+  resolved "https://registry.yarnpkg.com/@veramo/core-types/-/core-types-5.5.4-next.24.tgz#9682499070a5cc0e7374da1984bacc5d9e0e833c"
+  integrity sha512-CTKmFSqVn/67hjH70GwRKCCtlQL7oy2m9l838AytOPTHTP5hn9+aYzqCkk2gHqaRB9zR9Vc4btSatNtVF+2BZg==
+  dependencies:
+    credential-status "^2.0.5"
+    debug "^4.3.3"
+    did-jwt-vc "^3.2.10"
+    did-resolver "^4.1.0"
+
 "@veramo/core@4.2.0", "@veramo/core@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@veramo/core/-/core-4.2.0.tgz#68e9db2ccb25fd00695e61f3e7de728736127f7d"
@@ -4749,7 +4767,7 @@
     did-jwt "^6.9.0"
     did-resolver "^4.0.1"
 
-"@veramo/did-manager@4.2.0", "@veramo/did-manager@^4.2.0":
+"@veramo/did-manager@4.2.0", "@veramo/did-manager@^4.2.0", "@veramo/did-manager@workspace:^":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@veramo/did-manager/-/did-manager-4.2.0.tgz#0cfeaf78a7cb063aa5b82af15dbcc12eda5c634d"
   integrity sha512-hkJvDcCWiVTD0QUo3THOT+F7McIAv0wB1HjzkauY4rk7cBUDH59S4QjDOZie4J4L0zcFmYlu9zVJl52JbFhJWQ==
@@ -7169,7 +7187,7 @@ did-context@^3.1.1:
   resolved "https://registry.yarnpkg.com/did-context/-/did-context-3.1.1.tgz#a7991b6b3b983f66760a9fc209af5794e5302a30"
   integrity sha512-iFpszgSxc7d1kNBJWC+PAzNTpe5LPalzsIunTMIpbG3O37Q7Zi7u4iIaedaM7UhziBhT+Agr9DyvAiXSUyfepQ==
 
-did-jwt-vc@3.1.3, did-jwt-vc@^3.1.0:
+did-jwt-vc@3.1.3, did-jwt-vc@^3.1.0, did-jwt-vc@^3.2.10:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/did-jwt-vc/-/did-jwt-vc-3.1.3.tgz#a5dabf2442752e1666f54ef2dbe01befcc83987f"
   integrity sha512-qB1FiQ0sT/FUR5+mQ//P5lS0Gllrtes2OxC3WVMOt8ND0LolF92ohozv50ukyOvB2zBzgfm5durcIPqQcoI+LA==

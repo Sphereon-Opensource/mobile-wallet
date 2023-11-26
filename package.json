@@ -69,6 +69,7 @@
     "@veramo/did-provider-ion": "4.2.0",
     "@veramo/did-provider-key": "4.2.0",
     "@veramo/did-provider-web": "4.2.0",
+    "@ownyourdata/did-provider-oyd": "file:../veramo/packages/did-provider-oyd/",
     "@veramo/did-resolver": "4.2.0",
     "@veramo/kms-local": "4.2.0",
     "@veramo/utils": "4.2.0",
