@@ -112,6 +112,7 @@
   "notifications_overview_empty_state_subtitle": "At the moment you don’t have any notifications.\nThe notifications will automatically appear here.",
   "lock_title": "Login to\nthe Sphereon Wallet",
   "lock_subtitle": "Enter your pin code.",
+  "lock_emergency_button_caption": "Emergency call",
   "show_raw_credential_button_caption": "Raw credential",
   "onboard_summary_title": "Your entered details",
   "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
@@ -151,5 +152,9 @@
   "oid4vci_machine_verify_credentials_error_title": "Verify credentials",
   "oid4vci_machine_add_contact_identity_error_title": "Add contact identity",
   "oid4vci_machine_store_credential_branding_error_title": "Store credential branding",
-  "oid4vci_machine_store_credential_error_title": "Store credential"
+  "oid4vci_machine_store_credential_error_title": "Store credential",
+  "emergency_send_button_caption": "Trigger now!",
+  "emergency_abort_button_caption": "Abort alarm",
+  "emergency_title": "Send emergency alert",
+  "emergency_subtitle": "Your distress call will be send in {{emergencyAlertDelay}} seconds, or you can trigger it immediately by clicking on the Trigger now! button."
 }

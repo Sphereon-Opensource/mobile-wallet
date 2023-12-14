@@ -11,13 +11,21 @@ import {OpacityStyleEnum} from '../../../types';
 export interface Props extends Omit<PressableProps, 'disabled'> {
   caption: string;
   disabled?: boolean | (() => boolean);
-  onPress?: () => void;
+  onPress: () => void;
   style?: ViewStyle;
+  backgroundColors?: Array<string>;
+  captionColor?: string;
 }
 
 const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
-  const {onPress, style, caption} = props;
+  // TODO color defaults?
+  const {captionColor, backgroundColors = [], onPress, style, caption} = props;
   const disabled = typeof props.disabled === 'function' ? props.disabled() : props.disabled;
+
+  // Setting minimal two colors for gradient
+  if (backgroundColors.length === 1) {
+    backgroundColors.push(backgroundColors[0]);
+  }
 
   return (
     <Button
@@ -26,8 +34,8 @@ const SSIPrimaryButton: FC<Props> = (props: Props): JSX.Element => {
       style={{
         ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
       }}>
-      <LinearGradient style={{...style}}>
-        <ButtonCaption>{caption}</ButtonCaption>
+      <LinearGradient {...(backgroundColors.length > 0 && {colors: backgroundColors})} style={{...style}}>
+        <ButtonCaption style={{...(captionColor && {color: captionColor})}}>{caption}</ButtonCaption>
       </LinearGradient>
     </Button>
   );

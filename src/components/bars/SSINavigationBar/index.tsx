@@ -4,7 +4,7 @@ import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
-import {backgrounds, fonts, highLightGradients} from '../../../styles/colors';
+import {fonts, highLightGradients} from '../../../styles/colors';
 import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container,

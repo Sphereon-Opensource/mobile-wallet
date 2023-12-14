@@ -33,3 +33,4 @@ export * from './SSICredentialRequiredViewItem';
 export * from './SSICredentialSelectViewItem';
 export * from './SSIToast';
 export * from './SSIImageField';
+export * from './BadgeButton';

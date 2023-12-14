@@ -2,23 +2,26 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import styled from 'styled-components/native';
 
-import {highLightGradients} from '../../colors';
+import {backgrounds, highLightGradients} from '../../colors';
 import {SSIRoundedEdgesCss} from '../css';
+import {StatusBar, StatusBarProps} from 'react-native';
+import {ThemedStyledProps} from 'styled-components';
+import {RefAttributes} from 'react';
 
-export const SSILinearGradientStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
+// export const SSILinearGradientStyled = styled(LinearGradient).attrs({
+//   //colors: props?.colors ?? [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
+//   start: {x: 1, y: 1},
+//   end: {x: 0, y: 0},
+// })``;
+
+export const SSILinearGradientStyled = styled(LinearGradient).attrs(props => ({
+  colors: props?.colors ?? [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
   start: {x: 1, y: 1},
   end: {x: 0, y: 0},
-})``;
+}))``;
 
 export const SSILinearGradientSecondaryStyled = styled(LinearGradient).attrs({
   colors: [highLightGradients['200'].secondaryColor, highLightGradients['200'].primaryColor],
-  start: {x: 1, y: 1},
-  end: {x: 0, y: 0},
-})``;
-
-export const SSILinearGradientWelcomeStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['300'].secondaryColor, highLightGradients['300'].primaryColor],
   start: {x: 1, y: 1},
   end: {x: 0, y: 0},
 })``;

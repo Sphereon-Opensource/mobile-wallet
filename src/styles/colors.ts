@@ -44,32 +44,7 @@ type GradientProperties = {
   secondaryColor: string;
 };
 
-type Gradient = 100 | 200 | 300 | 400 | 500;
-
-export const gradients: Record<Gradient, GradientProperties> = {
-  100: {
-    primaryColor: 'rgba(111,105,224,1)',
-    secondaryColor: 'rgba(69,64,164,1)',
-  },
-  200: {
-    primaryColor: 'rgba(250,182,81,1)',
-    secondaryColor: 'rgba(202,122,2,1)',
-  },
-  300: {
-    primaryColor: 'rgba(108,240,228,1)',
-    secondaryColor: 'rgba(0,169,153,1)',
-  },
-  400: {
-    primaryColor: 'rgba(50,156,245,1)',
-    secondaryColor: 'rgba(0,91,168,1)',
-  },
-  500: {
-    primaryColor: 'rgba(188,45,255,1)',
-    secondaryColor: 'rgba(122,3,177,1)',
-  },
-};
-
-type HighLightGradient = 100 | 200 | 300;
+type HighLightGradient = 100 | 200;
 
 export const highLightGradients: Record<HighLightGradient, GradientProperties> = {
   100: {
@@ -79,10 +54,6 @@ export const highLightGradients: Record<HighLightGradient, GradientProperties> =
   200: {
     primaryColor: 'rgba(255,153,0,1)',
     secondaryColor: 'rgba(238,83,9,1)',
-  },
-  300: {
-    primaryColor: 'rgba(67,71,225,1)',
-    secondaryColor: 'rgba(76,22,174,1)',
   },
 };
 

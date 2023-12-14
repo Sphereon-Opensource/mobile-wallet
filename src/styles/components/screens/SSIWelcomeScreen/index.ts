@@ -23,8 +23,3 @@ export const SSIWelcomeScreenIntroBackgroundContainerStyled = styled.View`
   top: 50%;
   margin-top: -457.5px;
 `;
-
-export const SSIWelcomeScreenBackgroundContainerStyled = styled(SSILinearGradientWelcomeStyled)`
-  flex: 1;
-  align-items: center;
-`;
