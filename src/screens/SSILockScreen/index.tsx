@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { FC } from 'react';
+import { Alert } from 'react-native';
 
 import { PIN_CODE_LENGTH } from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
@@ -58,7 +59,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           const conversation = agent?.createConversation('sip:144@app.staging.dec112.eu' || '', {});
           conversation.addMessageListener(console.log);
           conversation.addStateListener(console.log);
-          console.log("Trying to send start message");
+          console.log('Trying to send start message');
           const startMessage = conversation?.start({
             text: 'Silent Call from SSI Wallet',
             extraHeaders: [{ key: 'X-Dec112-Silent', value: 'True' }]
@@ -66,11 +67,21 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           startMessage?.promise
             .then(() => {
               console.info('Start message sent successful');
+              Alert.alert('Message sent', 'Start message sent successfully', [
+                {
+                  text: 'OK',
+                },
+              ]);
             })
             .catch(console.error);
         })
         .catch((error: unknown) => {
           console.error('SIP registration error', error);
+          Alert.alert('Error', 'Failed to connect to the call center', [
+            {
+              text: 'OK',
+            },
+          ]);
         });
 
     } catch (error) {
