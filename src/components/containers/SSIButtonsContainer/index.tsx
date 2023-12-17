@@ -1,9 +1,8 @@
 import React, {PureComponent} from 'react';
 import {ColorValue, EmitterSubscription, Keyboard} from 'react-native';
-import SSIPrimaryButton from '../../buttons/SSIPrimaryButton';
-import SSISecondaryButton from '../../buttons/SSISecondaryButton';
 import {SSIButtonBottomContainerStyled as ButtonContainer, SSIButtonsContainerSpacerStyled as Spacer} from '../../../styles/components';
 import {IButton} from '../../../types';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 export interface Props {
   primaryButton?: IButton;
@@ -47,22 +46,26 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
     return (
       <ButtonContainer style={{paddingBottom: keyboardVisible ? 18 : 36, ...(backgroundColor && {backgroundColor})}}>
         {secondaryButton && (
-          <SSISecondaryButton
+          <SecondaryButton
             caption={secondaryButton.caption}
             onPress={secondaryButton.onPress}
             disabled={secondaryButton.disabled}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{height: 42, minWidth: 145, width: primaryButton ? undefined : 300}}
+            style={{
+              height: 42,
+              minWidth: 145,
+              ...(!primaryButton && {width: 300}),
+            }}
           />
         )}
         <Spacer />
         {primaryButton && (
-          <SSIPrimaryButton
+          <PrimaryButton
             caption={primaryButton.caption}
             onPress={primaryButton.onPress}
             disabled={primaryButton.disabled}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{height: 42, minWidth: 145, width: secondaryButton ? undefined : 300}}
+            style={{height: 42, minWidth: 145, ...(!secondaryButton && {width: 300})}}
           />
         )}
       </ButtonContainer>

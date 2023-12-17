@@ -3,7 +3,6 @@ import {Animated, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {ONLY_ALLOW_NUMBERS_REGEX} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
-import {backgrounds, statuses} from '../../../styles/colors';
 import {
   SSIPinCodeAttemptsLeftTextStyled as AttemptsLeftText,
   SSIPinCodeContainerStyled as Container,
@@ -11,6 +10,7 @@ import {
   SSIPinCodeContainerAnimatedStyled as SegmentsContainer,
 } from '../../../styles/components';
 import SSIPinCodeSegment from '../SSIPinCodeSegment';
+import {backgroundColors, statusColors} from '@sphereon/ui-components.core';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -175,7 +175,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     const colorShiftAnimationStyle = {
       backgroundColor: colorShiftAnimation.interpolate({
         inputRange: [0, 1],
-        outputRange: [backgrounds.primaryLight, statuses.error],
+        outputRange: [backgroundColors.primaryLight, statusColors.error],
       }),
     };
 

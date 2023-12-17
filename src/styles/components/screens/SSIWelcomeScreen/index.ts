@@ -1,8 +1,6 @@
 import styled from 'styled-components/native';
-
-import {backgrounds} from '../../../colors';
 import {SSIBasicContainerStyled} from '../../containers';
-import {SSILinearGradientWelcomeStyled} from '../../gradients';
+import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const SSIWelcomeScreenContainerStyled = styled(SSIBasicContainerStyled)`
   overflow: hidden;
@@ -13,7 +11,7 @@ export const SSIWelcomeScreenWelcomeViewContainerStyled = styled.View`
 `;
 
 export const SSIWelcomeScreenIntroBackgroundContainerStyled = styled.View`
-  background-color: ${backgrounds.primaryDark};
+  background-color: ${backgroundColors.primaryDark};
   position: absolute;
   z-index: -1;
   width: 500px;

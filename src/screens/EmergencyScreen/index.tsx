@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {fontColors} from '@sphereon/ui-components.core';
+import {backgroundColors, fontColors, buttonColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {translate} from '../../localization/Localization';
 import {EMERGENCY_ALERT_DELAY} from '../../@config/constants';
 import {
-  SSIBasicHorizontalCenterContainerStyled as Container,
+  EmergencyScreenContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
   EmergencyScreenCountdownOuterContainerStyled as CountdownOuterContainer,
   EmergencyScreenCountdownMiddleContainerStyled as CountdownMiddleContainer,
@@ -22,9 +22,8 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const [countdown, setCountdown] = useState<number>(EMERGENCY_ALERT_DELAY);
 
-  // FIXME add colors to ui-components once we merge this functionality
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
-  void changeNavigationBarColor('#D74500');
+  void changeNavigationBarColor(backgroundColors.orange);
 
   useEffect(() => {
     const interval: NodeJS.Timeout = setInterval((): void => {
@@ -48,8 +47,8 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   return (
-    <Container style={{backgroundColor: '#D74500'}}>
-      <StatusBar backgroundColor={'#D74500'} />
+    <Container>
+      <StatusBar backgroundColor={backgroundColors.orange} />
       <CountdownOuterContainer>
         <CountdownMiddleContainer>
           <CountdownInnerContainer>
@@ -68,7 +67,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         <PrimaryButton
           style={{height: 42, width: 300}}
           caption={translate('emergency_send_button_caption')}
-          backgroundColors={['#8B1900']}
+          backgroundColors={[buttonColors[100]]}
           captionColor={fontColors.light}
           onPress={onSend}
         />

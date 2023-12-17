@@ -3,13 +3,13 @@ import styled from 'styled-components/native';
 
 import SSIIconButton from '../../../../components/buttons/SSIIconButton';
 import {IHeaderProps} from '../../../../types';
-import {borders} from '../../../colors';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
 import {SSITextH4LightStyled} from '../../fonts';
+import {borderColors} from '@sphereon/ui-components.core';
 
 export const SSIHeaderBarContainerStyled = styled.View`
   ${SSIBackgroundPrimaryDarkColorCss};
-  border-bottom-color: ${borders.dark};
+  border-bottom-color: ${borderColors.dark};
   border-bottom-width: ${(props: IHeaderProps) => (props.showBorder ? '1px' : '0px')};
   padding-right: 24px;
   padding-left: 24px;
@@ -20,12 +20,12 @@ export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
 `;
 
 export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`
-  margin: 7px 0px 15px auto;
+  margin: 7px 0 15px auto;
 `;
 
 // TODO move height to attributes of SSIIconButton
 export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
-  margintop: 2px;
+  margin-top: 2px;
   margin-left: auto;
   height: 36px;
   justify-content: center;

@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
-
-import {fonts} from '../../../../styles/colors';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   width?: number;
@@ -11,7 +10,7 @@ export interface IProps {
 }
 
 const SSIMoreIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {width = 20, height = 4, color = fonts.light} = props;
+  const {width = 20, height = 4, color = fontColors.light} = props;
 
   return (
     <View style={{width, height}}>

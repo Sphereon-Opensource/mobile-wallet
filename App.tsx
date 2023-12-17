@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import crypto from '@sphereon/isomorphic-webcrypto';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
@@ -14,11 +15,9 @@ import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
 import AppNavigator from './src/navigation/navigation';
 import {navigationRef} from './src/navigation/rootNavigation';
-
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
-import {backgrounds} from './src/styles/colors';
 import {PlatformsEnum} from './src/types';
 
 LogBox.ignoreLogs([
@@ -64,7 +63,7 @@ export default function App() {
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
         if (Platform.OS === PlatformsEnum.ANDROID) {
-          StatusBar.setBackgroundColor(backgrounds.primaryDark);
+          StatusBar.setBackgroundColor(backgroundColors.primaryDark);
           StatusBar.setTranslucent(false);
         }
 

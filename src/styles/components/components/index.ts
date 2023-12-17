@@ -18,7 +18,6 @@ export * from './SSIQRCustomMarker';
 export * from './SSIHeaderBar';
 export * from './SSIConnectionDetailsView';
 export * from './SSINavigationBar';
-export * from './SSISecondaryButton';
 export * from './SSISwipeDeleteButton';
 export * from './SSISwipeRowViewItem';
 export * from './SSIStatusBar';

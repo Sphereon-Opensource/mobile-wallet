@@ -1,22 +1,26 @@
 import styled from 'styled-components/native';
-import {backgroundColors} from '@sphereon/ui-components.core';
+import {backgroundColors, elementColors} from '@sphereon/ui-components.core';
+import {SSIBasicHorizontalCenterContainerStyled} from '../../containers';
+import {Text64Styled} from '@sphereon/ui-components.ssi-react-native';
 
-// FIXME add colors to ui-components once we merge this functionality
+export const EmergencyScreenContainerStyled = styled(SSIBasicHorizontalCenterContainerStyled)`
+  background-color: ${backgroundColors.orange};
+`;
+
 export const EmergencyScreenCountdownOuterContainerStyled = styled.View`
   width: 260px;
   height: 260px;
-  background-color: #f25409;
+  background-color: ${elementColors['100']};
   border-radius: 130px;
   align-items: center;
   justify-content: center;
   margin-top: 62px;
 `;
 
-// FIXME add colors to ui-components once we merge this functionality
 export const EmergencyScreenCountdownMiddleContainerStyled = styled.View`
   width: 206px;
   height: 206px;
-  background-color: #f78854;
+  background-color: ${elementColors['200']};
   border-radius: 103px;
   align-items: center;
   justify-content: center;
@@ -37,13 +41,8 @@ export const EmergencyScreenButtonContainerStyled = styled.View`
   margin-top: auto;
 `;
 
-// FIXME add to fonts when we want to merge this functionality
 // FIXME vertical center workaround with padding
-export const EmergencyScreenCountdownTextStyled = styled.Text`
-  font-family: 'Poppins-Regular';
-  font-size: 64px;
-  font-weight: 600;
+export const EmergencyScreenCountdownTextStyled = styled(Text64Styled)`
   padding-top: 14px;
-  height: 64px;
-  line-height: 64px;
 `;
+//height: 64px;

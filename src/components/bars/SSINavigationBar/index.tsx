@@ -4,7 +4,6 @@ import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
-import {fonts, highLightGradients} from '../../../styles/colors';
 import {
   SSINavigationBarButtonStyled as Button,
   SSINavigationBarContainerStyled as Container,
@@ -15,6 +14,7 @@ import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon';
 import SSIQRIcon from '../../assets/icons/SSIQRIcon';
+import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 
 interface IState {
   keyboardVisible: boolean;
@@ -97,29 +97,29 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
     case NavigationBarRoutesEnum.QR:
       return (
         <SSIQRIcon
-          primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}
-          secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
     case NavigationBarRoutesEnum.NOTIFICATIONS:
       return (
         <SSIBellIcon
-          primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}
-          secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
     case NavigationBarRoutesEnum.CREDENTIALS:
       return (
         <SSIHomeIcon
-          primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}
-          secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
     case NavigationBarRoutesEnum.CONTACTS:
       return (
         <SSIContactsIcon
-          primaryColor={isFocused ? highLightGradients['200'].primaryColor : fonts.light}
-          secondaryColor={isFocused ? highLightGradients['200'].secondaryColor : fonts.light}
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
     default:

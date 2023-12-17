@@ -1,8 +1,7 @@
 import {Animated} from 'react-native';
 import styled from 'styled-components/native';
-
-import {fonts, statuses} from '../../../colors';
 import {SSITextH4LightStyled} from '../../fonts';
+import {fontColors, statusColors} from '@sphereon/ui-components.core';
 
 export const SSIPinCodeContainerStyled = styled(Animated.View)`
   width: 100%;
@@ -18,12 +17,12 @@ export const SSIPinCodeContainerAnimatedStyled = styled(Animated.View)`
 export const SSIPinCodeErrorMessageTextStyled = styled(SSITextH4LightStyled)`
   text-align: center;
   font-size: 11px;
-  color: ${statuses.error};
+  color: ${statusColors.error};
   margin-bottom: 5px;
 `;
 
 export const SSIPinCodeAttemptsLeftTextStyled = styled(SSITextH4LightStyled)`
   text-align: center;
   font-size: 11px;
-  color: ${fonts.light};
+  color: ${fontColors.light};
 `;

@@ -1,9 +1,9 @@
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
-import {backgrounds, borders} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 export const SSINavigationBarButtonStyled = styled(TouchableOpacity)`
   flex: 1;
@@ -14,10 +14,10 @@ export const SSINavigationBarContainerStyled = styled(SSIFlexDirectionRowViewSty
   align-items: center;
   height: 53px;
   ${SSIBackgroundPrimaryDarkColorCss};
-  border-top-color: ${borders.dark};
+  border-top-color: ${borderColors.dark};
   border-top-width: 1px;
 `;
 
 export const SSINavigationBarSafeAreaContainerStyled = styled.View`
-  background-color: ${backgrounds.primaryDark};
+  background-color: ${backgroundColors.primaryDark};
 `;

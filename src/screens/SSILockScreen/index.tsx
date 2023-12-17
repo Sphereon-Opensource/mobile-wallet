@@ -51,12 +51,12 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           onVerification={onVerification}
         />
       </PinCodeContainer>
-      <BadgeButton
-        caption={translate('lock_emergency_button_caption')}
-        onPress={onEmergencyCall}
-        // FIXME would be nice if we could turn this into a styled components, but for some reason the styling is not working then when passed as a prop
-        style={{marginTop: 'auto', marginRight: 'auto', marginLeft: 26, marginBottom: 34}}
-      />
+      {/*<BadgeButton*/}
+      {/*  caption={translate('lock_emergency_button_caption')}*/}
+      {/*  onPress={onEmergencyCall}*/}
+      {/*  // FIXME would be nice if we could turn this into a styled components, but for some reason the styling is not working then when passed as a prop*/}
+      {/*  style={{marginTop: 'auto', marginRight: 'auto', marginLeft: 26, marginBottom: 34}}*/}
+      {/*/>*/}
     </Container>
   );
 };
