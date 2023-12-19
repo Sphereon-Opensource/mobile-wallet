@@ -3,10 +3,10 @@ import {ColorValue} from 'react-native';
 import {useSelector} from 'react-redux';
 import {connect} from 'react-redux';
 
-import {fonts, profiles} from '../../../../styles/colors';
 import {SSIProfileIconContainerStyled as Container, SSITextH2LightStyled as ProfileIconText} from '../../../../styles/components';
 import {RootState} from '../../../../types';
 import {getInitials} from '../../../../utils/UserUtils';
+import {fontColors, profileColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   fontColor?: ColorValue;
@@ -14,7 +14,7 @@ export interface IProps {
 }
 
 const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {fontColor = fonts.light, backgroundColor = profiles['100']} = props;
+  const {fontColor = fontColors.light, backgroundColor = profileColors['100']} = props;
   const {activeUser} = useSelector(mapStateToProps);
 
   return (

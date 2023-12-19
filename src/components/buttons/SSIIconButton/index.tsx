@@ -10,7 +10,7 @@ import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum;
   onPress: () => Promise<void>;
-  disabled?: boolean | undefined;
+  disabled?: boolean;
   style?: ViewStyle;
   iconSize?: number;
   iconColor?: ColorValue;

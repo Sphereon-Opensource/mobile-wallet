@@ -1,13 +1,13 @@
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
-import {borders} from '../../../colors';
 import {SSITextH3AnimatedLightStyled} from '../../fonts';
 import {SSILinearGradientStyled} from '../../gradients';
+import {borderColors} from '@sphereon/ui-components.core';
 
 export const SSITabViewHeaderContainerStyled = styled.View`
   flex-direction: row;
-  border-bottom-color: ${borders.dark};
+  border-bottom-color: ${borderColors.dark};
   border-bottom-width: 1px;
 `;
 

@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-
-import {fonts} from '../../../../styles/colors';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   size?: number;
@@ -10,7 +9,7 @@ export interface IProps {
 }
 
 const SSIEyeIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {size = 15, color = fonts.light} = props;
+  const {size = 15, color = fontColors.light} = props;
 
   return (
     <View style={{width: size, aspectRatio: 1}}>
