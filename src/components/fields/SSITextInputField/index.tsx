@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData} from 'react-native';
 
-import {inputs, selectionElements, statuses} from '../../../styles/colors';
+import {inputs} from '../../../styles/colors';
 import {
   SSITextInputFieldContainerStyled as Container,
   SSITextInputFieldHelperContainerStyled as HelperContainer,
@@ -15,6 +15,7 @@ import {
 } from '../../../styles/components';
 import {OpacityStyleEnum} from '../../../types';
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon';
+import {selectionElementColors, statusColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
@@ -80,7 +81,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     autoCapitalize = undefined,
     autoComplete,
     autoFocus = false,
-    borderColor = selectionElements.primaryBorderDark,
+    borderColor = selectionElementColors.primaryBorderDark,
     disabled = false,
     editable = true,
     helperText,
@@ -135,7 +136,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
         labelColor || error ? (
           <LabelCaption
             style={{
-              color: error ? statuses.error : labelColor,
+              color: error ? statusColors.error : labelColor,
               ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
             }}>
             {label}
@@ -175,7 +176,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
       ) : (
         <Underline
           style={{
-            ...(showBorder && {borderBottomWidth: 1, borderBottomColor: error ? statuses.error : borderColor}),
+            ...(showBorder && {borderBottomWidth: 1, borderBottomColor: error ? statusColors.error : borderColor}),
             ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
           }}
         />
@@ -184,7 +185,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
         {(helperText || error) && (
           <LabelCaption
             style={{
-              color: error ? statuses.error : inputs.placeholder,
+              color: error ? statusColors.error : inputs.placeholder,
               ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
             }}>
             {error ? error : helperText}

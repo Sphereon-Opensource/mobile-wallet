@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {ColorValue, TouchableOpacity} from 'react-native';
 
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
-import {fonts, selectionElements} from '../../../styles/colors';
 import {
   SSIFlexDirectionRowViewStyled as Container,
   SSICheckboxLabelContainerStyled as LabelCaption,
@@ -10,6 +9,7 @@ import {
   SSICheckboxUnselectedContainerStyled as UnselectedContainer,
 } from '../../../styles/components';
 import {OpacityStyleEnum} from '../../../types';
+import {fontColors, selectionElementColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   onValueChange?: (isChecked: boolean) => Promise<void>;
@@ -27,12 +27,12 @@ export interface IProps {
 const SSICheckbox: FC<IProps> = (props: IProps): JSX.Element => {
   const {
     backgroundColor,
-    borderColor = selectionElements.primaryBorderDark,
+    borderColor = selectionElementColors.primaryBorderDark,
     disabled = false,
     initialValue,
     label,
-    selectedColor = selectionElements.primaryDark,
-    labelColor = fonts.light,
+    selectedColor = selectionElementColors.primaryDark,
+    labelColor = fontColors.light,
   } = props;
   const [isChecked, setChecked] = React.useState(initialValue || false);
   const value = props.isChecked !== undefined ? props.isChecked : isChecked;

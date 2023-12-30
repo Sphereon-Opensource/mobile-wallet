@@ -2884,10 +2884,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-3.0.0.tgz#af5f2ca32eea59b792ce9e3d9a4cf0354f9b195f"
   integrity sha512-g2OyxXHfwIytXUJitBR6Z/ISoOfp0WKx5FOv+NqJ/CrWjRDcTw6zXE5I1C9axfuh30kJqzWchVfCDrkzZYTxqg==
 
-"@react-native-masked-view/masked-view@0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
-  integrity sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA==
+"@react-native-masked-view/masked-view@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.3.1.tgz#5bd76f17004a6ccbcec03856893777ee91f23d29"
+  integrity sha512-uVm8U6nwFIlUd1iDIB5cS+lDadApKR+l8k4k84d9hn+GN4lzAIJhUZ9syYX7c022MxNgAlbxoFLt0pqKoyaAGg==
 
 "@react-native/assets@1.0.0":
   version "1.0.0"
@@ -3471,22 +3471,24 @@
   dependencies:
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@0.1.3-next.16", "@sphereon/ui-components.core@0.1.3-next.16+40041e4":
-  version "0.1.3-next.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.1.3-next.16.tgz#fd77331024e9e69655c220b09e1b31770b762a64"
-  integrity sha512-chOe5yiFVrRq1uQ3q1h6+0cZGlA03KMNeQno/duLp168L1fyA+qFee81Iaw1XmL0M7RkcHgh0sv3YlJrE+qy5A==
+"@sphereon/ui-components.core@0.1.3-unstable.88", "@sphereon/ui-components.core@0.1.3-unstable.88+92d8e95":
+  version "0.1.3-unstable.88"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.1.3-unstable.88.tgz#20229591b830d3f0dd62c3e2a186adaa45a70904"
+  integrity sha512-6sMLA+bgTHauonM5tsJmnf99eQNuRILxgYsFEwlupicn/fZoVn5hzRlCMvY49LO7lgywH/NZ07s5c512x+Uo4w==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^5.3.3"
 
-"@sphereon/ui-components.ssi-react-native@0.1.3-next.16":
-  version "0.1.3-next.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.1.3-next.16.tgz#ed95fabf5842bf3b511d13ca00c190bf8f33a974"
-  integrity sha512-nMCeAp4qKa+KVhtvPa0sNv7a8LS3Vk0G2+TW7cHnHA7n0HEafyqwC3CmdycZ6vpED2QqomXdeqHKRLOVZi+MXA==
+"@sphereon/ui-components.ssi-react-native@0.1.3-unstable.88":
+  version "0.1.3-unstable.88"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.1.3-unstable.88.tgz#021d5e5e734597ef873ce5a35b08ef93fcd7b6aa"
+  integrity sha512-xZp5tiA2ADVVkdnx+VvZSrjZjyZhYhggDHeTYEH0G9QByOwjWX2FkD2LokVI0Js4izNPhQIuY8UyP4tR8VXp/Q==
   dependencies:
     "@react-native-community/blur" "^4.3.0"
-    "@sphereon/ui-components.core" "0.1.3-next.16+40041e4"
+    "@react-native-masked-view/masked-view" "^0.3.1"
+    "@sphereon/ui-components.core" "0.1.3-unstable.88+92d8e95"
+    expo-linear-gradient "~12.1.2"
     react-native-fast-image "^8.6.3"
     react-native-size-matters "^0.4.0"
     react-native-svg "13.4.0"
@@ -13056,6 +13058,11 @@ react-native-material-ripple@^0.9.1:
   integrity sha512-dHjARdKoGD3LXwPh2TkURabywM5BfdpKc/AHplJTfBMalhVZ2bc7iJoJmNhNnmT/TZ+B3szL6uV1mO7Pv8zNeA==
   dependencies:
     prop-types "^15.5.10"
+
+react-native-navigation-bar-color@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.2.tgz#2e14ca79a656d81d5b4b7433ae43966ef5206444"
+  integrity sha512-ZmpLWRocyme1au11e5ZuecMS/UCi57nlzgnioi03Q6ERMbeUOqqbWgNBaNB7SsCeqBV6fZPjo3+A64zEIpzw4w==
 
 react-native-os@^1.2.6:
   version "1.2.6"

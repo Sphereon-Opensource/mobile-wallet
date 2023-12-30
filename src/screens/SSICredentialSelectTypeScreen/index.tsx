@@ -3,10 +3,8 @@ import {FlatList, ListRenderItemInfo, ViewStyle} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useBackHandler} from '@react-native-community/hooks';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import SSICredentialSelectTypeViewItem from '../../components/views/SSICredentialSelectTypeViewItem';
 import {translate} from '../../localization/Localization';
-import {backgrounds, borders} from '../../styles/colors';
 import {
   SSICredentialSelectTypeScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
@@ -14,6 +12,8 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialTypeSelection, ScreenRoutesEnum, StackParamList} from '../../types';
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE>;
 
@@ -62,11 +62,11 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialTypeSelection>): JSX.Element => {
     const backgroundStyle: ViewStyle = {
-      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+      backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
     const style: ViewStyle = {
       ...backgroundStyle,
-      ...(itemInfo.index === credentialTypes.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+      ...(itemInfo.index === credentialTypes.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     return (
@@ -92,7 +92,7 @@ const SSICredentialSelectTypeScreen: FC<Props> = (props: Props): JSX.Element => 
         removeClippedSubviews
       />
       <ButtonContainer>
-        <SSIPrimaryButton
+        <PrimaryButton
           style={{height: 42, width: '100%'}}
           caption={translate('action_select_label')}
           onPress={onSelect}

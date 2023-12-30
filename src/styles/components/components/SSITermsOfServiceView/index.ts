@@ -1,14 +1,13 @@
 import {ScrollView} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-
-import {backgrounds} from '../../../colors';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import {SSIBasicContainerStyled} from '../../containers';
 import {SSITextH5LightStyled} from '../../fonts';
 
 export const TERMS_CONTENT_BOTTOM_MARGIN = 18;
 
 export const SSITermsOfServiceViewContainerStyled = styled(SSIBasicContainerStyled)`
-  background-color: ${backgrounds.primaryDark};
+  background-color: ${backgroundColors.primaryDark};
 `;
 
 export const SSITermsOfServiceViewScrollViewStyled = styled(ScrollView)`

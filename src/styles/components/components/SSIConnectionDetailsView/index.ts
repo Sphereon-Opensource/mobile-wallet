@@ -1,15 +1,15 @@
 import styled from 'styled-components/native';
 
-import {fonts} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundSecondaryDarkStyled} from '../../containers';
 import {SSITextH5LightSemiBoldStyled} from '../../fonts';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export const SSIConnectionDetailsViewCaptionDetailsStyled = styled(SSITextH5LightSemiBoldStyled)`
   margin-bottom: 9px;
 `;
 
 export const SSIConnectionDetailsViewValueCaptionStyled = styled(SSITextH5LightSemiBoldStyled)`
-  color: ${fonts.light};
+  color: ${fontColors.light};
   height: auto;
 `;
 
@@ -21,7 +21,7 @@ export const SSIConnectionDetailsViewRoundedContainerStyled = styled(SSIRoundedC
   max-height: 75%;
   width: 86.67%;
   margin-top: 10px;
-  padding: 16px 17px 0px 17px;
+  padding: 16px 17px 0 17px;
 `;
 
 export const SSIConnectionDetailsLabelsContainerStyled = styled.View`

@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-
-import {fonts} from '../../../../styles/colors';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   width?: number;
@@ -11,7 +10,7 @@ export interface IProps {
 }
 
 const SSIDeleteIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {width = 19, height = 21, color = fonts.light} = props;
+  const {width = 19, height = 21, color = fontColors.light} = props;
 
   return (
     <View style={{width, height}}>

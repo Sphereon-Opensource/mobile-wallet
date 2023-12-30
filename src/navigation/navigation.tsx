@@ -3,7 +3,7 @@ import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigat
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
-import {APP_ID} from '../@config/constants';
+import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
@@ -49,6 +49,7 @@ import {
   WalletAuthLockState,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
+import EmergencyScreen from '../screens/EmergencyScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -561,9 +562,29 @@ const AuthenticationStack = (): JSX.Element => {
         component={SSILockScreen}
         initialParams={{onAuthenticate: login}}
         options={{
+          // FIXME WAL-681 https://github.com/react-navigation/react-navigation/issues/11139
+          // navigationBarColor: '#202537',
           headerTitle: translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.EMERGENCY}
+        component={EmergencyScreen}
+        options={{
+          // FIXME WAL-681 https://github.com/react-navigation/react-navigation/issues/11139
+          // navigationBarColor: '#D74500',
+          headerTitle: translate('emergency_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // FIXME add colors to ui-components once we merge this functionality
+              backgroundColor={'#D74500'}
+              showProfileIcon={false}
+              headerSubTitle={translate('emergency_subtitle', {emergencyAlertDelay: EMERGENCY_ALERT_DELAY})}
+            />
           ),
         }}
       />

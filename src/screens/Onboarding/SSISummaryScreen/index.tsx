@@ -8,9 +8,9 @@ import SSIButtonsContainer from '../../../components/containers/SSIButtonsContai
 import SSICredentialDetailsView from '../../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../../components/views/SSITabView';
 import {translate} from '../../../localization/Localization';
-import {backgrounds} from '../../../styles/colors';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
 import {ICredentialDetailsRow, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {backgroundColors} from '@sphereon/ui-components.core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 
@@ -68,7 +68,7 @@ const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
     <Container>
       <SSITabView routes={routes} />
       <SSIButtonsContainer
-        backgroundColor={backgrounds.secondaryDark}
+        backgroundColor={backgroundColors.secondaryDark}
         primaryButton={{
           caption: translate('onboard_summary_button_caption'),
           onPress: onNext,

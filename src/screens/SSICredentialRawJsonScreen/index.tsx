@@ -6,13 +6,13 @@ import {ScrollView} from 'react-native-gesture-handler';
 import JSONTree from 'react-native-json-tree';
 import Share from 'react-native-share';
 
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIBasicHorizontalCenterContainerStyled,
   SSIButtonBottomContainerStyled,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>;
 
@@ -46,13 +46,13 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView>
         <JSONTree theme={theme} data={rawCredential} invertTheme={false} />
       </ScrollView>
       <View style={{backgroundColor: '#202537', height: 100, marginTop: 'auto', marginRight: 38, marginLeft: 38}}>
         <SSIBasicHorizontalCenterContainerStyled>
           <SSIButtonBottomContainerStyled>
-            <SSIPrimaryButton
+            <PrimaryButton
               caption={'Share'} // TODO translation
               onPress={async () => {
                 const base64VC = Buffer.from(JSON.stringify(rawCredential, null, 2), 'binary').toString('base64');

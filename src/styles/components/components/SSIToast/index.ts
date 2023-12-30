@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
 
-import {alerts} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerStyled} from '../../containers';
 import {SSITextH4DarkStyled} from '../../fonts';
+import {alertColors} from '@sphereon/ui-components.core';
 
 export const SSIToastContainerStyled = styled(SSIRoundedContainerStyled)`
   width: 96.8%;
-  background-color: ${alerts.secondaryLight};
+  background-color: ${alertColors.secondaryLight};
   border-radius: 8px;
   justify-content: center;
   padding: 18px 18px 15px 18px;
