@@ -1,22 +1,18 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useEffect} from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { FC, useEffect } from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import {backgroundColors} from '@sphereon/ui-components.core';
-import BadgeButton from '../../components/buttons/BadgeButton';
+import { backgroundColors } from '@sphereon/ui-components.core';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
-import {storageGetPin} from '../../services/storageService';
-import {translate} from '../../localization/Localization';
-import {PIN_CODE_LENGTH} from '../../@config/constants';
+import { storageGetPin } from '../../services/storageService';
+import { translate } from '../../localization/Localization';
+import { PIN_CODE_LENGTH } from '../../@config/constants';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import { ScreenRoutesEnum, StackParamList } from '../../types';
-import Share from 'react-native-share';
-import { CredentialMapper, OriginalVerifiableCredential } from '@sphereon/ssi-types';
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
-import { Agent, VCard, AgentState, Conversation, ConversationState, DEC112Specifics, EmergencyMessageType, Header } from 'ng112-js/dist/node';
+import BadgeButton from '../../components/buttons/BadgeButton';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -54,14 +50,12 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           errorMessage={translate('pin_code_invalid_code_message')}
           onVerification={onVerification}
         />
-
       </PinCodeContainer>
-      {/*<BadgeButton*/}
-      {/*  caption={translate('lock_emergency_button_caption')}*/}
-      {/*  onPress={onEmergencyCall}*/}
-      {/*  // FIXME would be nice if we could turn this into a styled components, but for some reason the styling is not working then when passed as a prop*/}
-      {/*  style={{marginTop: 'auto', marginRight: 'auto', marginLeft: 26, marginBottom: 34}}*/}
-      {/*/>*/}
+      <BadgeButton
+        caption={translate('lock_emergency_button_caption')}
+        onPress={onEmergencyCall}
+        style={{ marginRight: 'auto', marginLeft: 'auto', marginBottom: 34, marginTop: 40 }}
+      />
     </Container>
   );
 };

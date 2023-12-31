@@ -7,7 +7,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
@@ -24,6 +26,14 @@
       "eas": {
         "projectId": "76b1c6a4-d1d8-421e-8514-ee9db0b197b4"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow SSI Mobile Wallet to use your location."
+        }
+      ]
+    ]
   }
 }

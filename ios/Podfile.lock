@@ -16,7 +16,9 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.1.1):
     - ExpoModulesCore
-  - Expo (48.0.20):
+  - EXLocation (15.1.1):
+    - ExpoModulesCore
+  - Expo (48.0.21):
     - ExpoModulesCore
   - ExpoCrypto (12.2.2):
     - ExpoModulesCore
@@ -61,13 +63,13 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - Permission-AppTrackingTransparency (3.9.2):
+  - Permission-AppTrackingTransparency (3.10.1):
     - RNPermissions
-  - Permission-Camera (3.9.2):
+  - Permission-Camera (3.10.1):
     - RNPermissions
-  - Permission-FaceID (3.9.2):
+  - Permission-FaceID (3.10.1):
     - RNPermissions
-  - Permission-Notifications (3.9.2):
+  - Permission-Notifications (3.10.1):
     - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -411,7 +413,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
-  - RNCMaskedView (0.2.8):
+  - RNCMaskedView (0.3.1):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
@@ -423,7 +425,7 @@ PODS:
     - React-Core
   - RNOS (1.2.6):
     - React
-  - RNPermissions (3.9.2):
+  - RNPermissions (3.10.1):
     - React-Core
   - RNScreens (3.20.0):
     - React-Core
@@ -454,6 +456,7 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
+  - EXLocation (from `../node_modules/expo-location/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -550,6 +553,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
+  EXLocation:
+    :path: "../node_modules/expo-location/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoCrypto:
@@ -704,7 +709,8 @@ SPEC CHECKSUMS:
   EXConstants: f348da07e21b23d2b085e270d7b74f282df1a7d9
   EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
   EXFont: 6ea3800df746be7233208d80fe379b8ed74f4272
-  Expo: b7d2843b0a0027d0ce76121a63085764355a16ed
+  EXLocation: 74a0ba446f54fd585ea6cfcd19a25644bf22c30d
+  Expo: 0d9f112757acc6bf32103eabccf91267780bd580
   ExpoCrypto: 9105610a09cd6290b900bd82fc5d190e489125a3
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
   ExpoLinearGradient: 8eaab76b7f55c612ed8348c8be8c2a18a9b4529f
@@ -719,10 +725,10 @@ SPEC CHECKSUMS:
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  Permission-AppTrackingTransparency: f6d1b9f94b367863e8ae2e671caad73bbfba32ef
-  Permission-Camera: 72fc8bc495a13190eb00c9a54d94fb9c1a1095fd
-  Permission-FaceID: b7e0f30e79ce982572269966e28717a52f901ad0
-  Permission-Notifications: 1616a358a006cef437d8c7cfe81f3e038f5b0861
+  Permission-AppTrackingTransparency: 4cc82857ad23dfff007cf03757e56c5705259d56
+  Permission-Camera: 9b70902f34a83c10e198d2d01f0e453e58842776
+  Permission-FaceID: 86fb226a8ed2577db819299177a72cba54bb3327
+  Permission-Notifications: 817390e18898f34adad940cd4141e771e77086ea
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 8af6a32dfc2b65ec82193c2dee6e1011ff22ac2a
   RCTTypeSafety: bee9dd161c175896c680d47ef1d9eaacf2b587f4
@@ -763,12 +769,12 @@ SPEC CHECKSUMS:
   ReactCommon: 739352444061f8625428e6ff0620c30362c3d9af
   RNArgon2: 61a1dee972c3754d396ad3c07f47f90d8bb784fa
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
-  RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
+  RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNPermissions: 868c4e459921873df0c756f37450457a88bf037c
+  RNPermissions: 4e3714e18afe7141d000beae3755e5b5fb2f5e05
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: d82e10f6b7677f4b0048c23709bd04098d5aee6c
@@ -781,4 +787,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7330d68c7b31f7fef0a76e9ae64ee7fd0fdf9864
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0
