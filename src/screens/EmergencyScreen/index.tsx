@@ -1,38 +1,51 @@
 import React, { FC, useEffect, useState } from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { backgroundColors, fontColors, buttonColors } from '@sphereon/ui-components.core';
+import { backgroundColors, buttonColors, fontColors } from '@sphereon/ui-components.core';
 import { PrimaryButton, SecondaryButton } from '@sphereon/ui-components.ssi-react-native';
 import { translate } from '../../localization/Localization';
 import { EMERGENCY_ALERT_DELAY } from '../../@config/constants';
 import {
-  EmergencyScreenContainerStyled as Container,
-  SSIStatusBarDarkModeStyled as StatusBar,
-  EmergencyScreenCountdownOuterContainerStyled as CountdownOuterContainer,
-  EmergencyScreenCountdownMiddleContainerStyled as CountdownMiddleContainer,
-  EmergencyScreenCountdownInnerContainerStyled as CountdownInnerContainer,
   EmergencyScreenButtonContainerStyled as ButtonContainer,
+  EmergencyScreenContainerStyled as Container,
+  EmergencyScreenCountdownInnerContainerStyled as CountdownInnerContainer,
+  EmergencyScreenCountdownMiddleContainerStyled as CountdownMiddleContainer,
+  EmergencyScreenCountdownOuterContainerStyled as CountdownOuterContainer,
   EmergencyScreenCountdownTextStyled as CountdownText,
+  SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import { ScreenRoutesEnum, StackParamList } from '../../types';
-import { Agent, VCard, DEC112Specifics, SimpleLocation } from 'ng112-js/dist/node';
+import { Agent, DEC112Specifics, SimpleLocation, VCard } from 'ng112-js/dist/node';
 import { Alert } from 'react-native';
 import * as Location from 'expo-location';
-import { LocationObject } from 'expo-location';
+import { LocationAccuracy, LocationObject } from 'expo-location';
 import { LocationMethod } from 'pidf-lo';
+import { getVerifiableCredentialsFromStorage } from '../../services/credentialService';
+import { UniqueVerifiableCredential } from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.EMERGENCY>;
 
 const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   const { navigation } = props;
+  const [sipCredentials, setSipCredentials] = useState();
   const [countdown, setCountdown] = useState<number>(EMERGENCY_ALERT_DELAY);
   const [location, setLocation] = useState<LocationObject | null>(null);
+  let agent: Agent | null = null;
 
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
   void changeNavigationBarColor(backgroundColors.orange);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
+    getVerifiableCredentialsFromStorage()
+      .then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
+        const dec112Credential = credentials.find((c) => c.verifiableCredential.type && c.verifiableCredential.type.indexOf('DEC112Credential') > -1);
+        if (dec112Credential) {
+          const sipData = dec112Credential.verifiableCredential.credentialSubject['sip'];
+          const sipDataCredentials = sipData['sip_credentials'];
+          setSipCredentials(sipDataCredentials);
+        }
+      });
     Location.requestForegroundPermissionsAsync().then((status) => {
       if (status.status !== 'granted') {
         console.log('Permission to access location was denied');
@@ -50,6 +63,12 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           }
         }, 1000);
       });
+      Location.watchPositionAsync({timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation}, () => {
+        if(agent){
+          setLocation(location);
+          agent.updateLocation(createLocation());
+        }
+      }).catch(console.error);
     });
 
     return () => {
@@ -82,12 +101,14 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const requestEmergency = async () => {
     try {
-      const agent = new Agent({
+      const sipPassword = sipCredentials!['password'];
+      const sipUser = sipCredentials!['username'];
+      agent = new Agent({
         endpoint: 'wss://app.staging.dec112.eu:443',
         domain: 'app.staging.dec112.eu',
-        user: '8ea1b78ba4db367102cfd9a41e34fb39',
-        password: 'd7c1a156b1c9e1fc27870c514dfaf25a',
-        displayName: '0043555777777777',
+        user: sipUser,
+        password: sipPassword,
+        displayName: 'ASDF', //TODO: replace with ID Austria data
         namespaceSpecifics: new DEC112Specifics(undefined, '' || '', 'de'),
         debug: (_level: number, ...values: unknown[]): void => {
           console.debug(values);
@@ -106,8 +127,8 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           console.info('SIP registration successful');
           agent?.updateVCard(new VCard().addFullName('Sphereon MDM'));
           const conversation = agent?.createConversation('sip:144@app.staging.dec112.eu' || '', {});
-          conversation.addMessageListener(console.log);
-          conversation.addStateListener(console.log);
+          conversation?.addMessageListener(console.log);
+          conversation?.addStateListener(console.log);
           console.log('Trying to send start message');
           const startMessage = conversation?.start({
             text: 'Silent Call from SSI Wallet',
