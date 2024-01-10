@@ -13,10 +13,10 @@ import {
   Jwt,
   OpenId4VCIVersion,
   ProofOfPossessionCallbacks,
-  IssuerMetadataV1_0_08,
   AuthorizationServerMetadata,
   CredentialIssuerMetadata,
   MetadataDisplay,
+  GrantTypes,
 } from '@sphereon/oid4vci-common';
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
@@ -31,6 +31,7 @@ import {APP_ID} from '../../@config/constants';
 import {
   ErrorDetails,
   IGetCredentialsArgs,
+  IGetIssuanceInitiationFromIssuerArgs,
   IGetIssuanceInitiationFromUriArgs,
   IIssuanceOpts,
   IServerMetadataAndCryptoMatchingResponse,
@@ -38,6 +39,7 @@ import {
   QrTypesEnum,
   SupportedDidMethodEnum,
 } from '../../types';
+import {getTypesFromCredentialSupported} from '@sphereon/oid4vci-common/lib/functions/IssuerMetadataUtils';
 
 const {v4: uuidv4} = require('uuid');
 const debug: Debugger = Debug(`${APP_ID}:openid4vci`);
@@ -160,7 +162,7 @@ class OpenId4VcIssuanceProvider {
     return issuer !== undefined && issuer.includes('identiproof') ? 'default-pre-auth-client' : APP_ID;
   }
 
-  public static getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08, opts?: {prefLocales: string[]}): MetadataDisplay[] {
+  public static getIssuerDisplays(metadata: CredentialIssuerMetadata, opts?: {prefLocales: string[]}): MetadataDisplay[] {
     const matchedDisplays: Array<MetadataDisplay> =
       metadata.display?.filter(
         (display: MetadataDisplay) =>
@@ -174,10 +176,7 @@ class OpenId4VcIssuanceProvider {
   /**
    * TODO check again when WAL-617 is done to replace how we get the issuer name.
    */
-  public static getIssuerName(
-    url: string,
-    credentialIssuerMetadata?: Partial<AuthorizationServerMetadata> & (CredentialIssuerMetadata | IssuerMetadataV1_0_08),
-  ): string {
+  public static getIssuerName(url: string, credentialIssuerMetadata?: Partial<AuthorizationServerMetadata> & CredentialIssuerMetadata): string {
     const displays: Array<MetadataDisplay> = credentialIssuerMetadata ? OpenId4VcIssuanceProvider.getIssuerDisplays(credentialIssuerMetadata) : [];
     for (const display of displays) {
       if (display.name) {
@@ -220,17 +219,32 @@ class OpenId4VcIssuanceProvider {
     const provider: OpenId4VcIssuanceProvider = new OpenId4VcIssuanceProvider(
       await OpenID4VCIClient.fromURI({
         uri,
-        flowType: AuthzFlowType.PRE_AUTHORIZED_CODE_FLOW,
       }),
     );
 
-    await provider.getServerMetadataAndPerformCryptoMatching();
+    await provider.getServerMetadataAndPerformCryptoMatching(GrantTypes.PRE_AUTHORIZED_CODE);
+
+    return provider;
+  };
+
+  public static initiationFromIssuer = async ({
+    issuer: credentialIssuer,
+    clientId,
+  }: IGetIssuanceInitiationFromIssuerArgs): Promise<OpenId4VcIssuanceProvider> => {
+    const provider: OpenId4VcIssuanceProvider = new OpenId4VcIssuanceProvider(
+      await OpenID4VCIClient.fromCredentialIssuer({
+        credentialIssuer,
+        clientId: clientId,
+      }),
+    );
+
+    await provider.getServerMetadataAndPerformCryptoMatching(GrantTypes.AUTHORIZATION_CODE);
 
     return provider;
   };
 
   public getCredentialsFromIssuance = async ({pin, credentials}: IGetCredentialsArgs): Promise<Array<CredentialFromOffer>> => {
-    const matches: IServerMetadataAndCryptoMatchingResponse = await this.getServerMetadataAndPerformCryptoMatching();
+    const matches: IServerMetadataAndCryptoMatchingResponse = await this.getServerMetadataAndPerformCryptoMatching(GrantTypes.AUTHORIZATION_CODE);
     const credentialResponses: Array<CredentialFromOffer> = [];
     // const initTypes = this.client.getCredentialTypes();
     for (const issuanceOpt of matches.issuanceOpts) {
@@ -304,28 +318,32 @@ class OpenId4VcIssuanceProvider {
     }
   };
 
-  public getServerMetadataAndPerformCryptoMatching = async (): Promise<IServerMetadataAndCryptoMatchingResponse> => {
-    if (!this._serverMetadata) {
-      this._serverMetadata = await this._client.retrieveServerMetadata();
-    }
+  public getServerMetadataAndPerformCryptoMatching = async (grantType: GrantTypes): Promise<IServerMetadataAndCryptoMatchingResponse> => {
+    await this.getServerMetadata();
     if (!this._credentialsSupported || this._credentialsSupported.length === 0) {
-      // todo: remove format here. This is just a temp hack for V11+ issuance of only one credential. Having a single array with formats for multiple credentials will not work. This should be handled in VCI itself
       let format: string[] | undefined = undefined;
-      if (this._client.version() > OpenId4VCIVersion.VER_1_0_09 && typeof this._client.credentialOffer.credential_offer === 'object') {
-        format = this._client.credentialOffer.credential_offer.credentials
-          .filter((format: string | CredentialOfferFormat): boolean => typeof format !== 'string')
-          .map((format: string | CredentialOfferFormat) => (format as CredentialOfferFormat).format);
-        if (format.length === 0) {
-          format = undefined; // Otherwise we would match nothing
-        }
+      switch (grantType) {
+        case GrantTypes.PRE_AUTHORIZED_CODE: // todo: remove format here. This is just a temp hack for V11+ issuance of only one credential. Having a single array with formats for multiple credentials will not work. This should be handled in VCI itself
+          if (this._client.version() > OpenId4VCIVersion.VER_UNSUPPORTED && typeof this._client.credentialOffer?.credential_offer === 'object') {
+            format = this._client.credentialOffer.credential_offer.credentials
+              .filter((format: string | CredentialOfferFormat): boolean => typeof format !== 'string')
+              .map((format: string | CredentialOfferFormat) => (format as CredentialOfferFormat).format);
+            if (!format || format.length === 0) {
+              format = undefined; // Otherwise we would match nothing
+            }
+          }
+          this._credentialsSupported = await this.getPreferredCredentialFormats(this._client.getCredentialsSupported(true, format));
+          break;
+        case GrantTypes.AUTHORIZATION_CODE:
+          this._credentialsSupported = this._serverMetadata?.credentialIssuerMetadata?.credentials_supported;
+        // TODO throw error when not found?
       }
-      this._credentialsSupported = await this.getPreferredCredentialFormats(this._client.getCredentialsSupported(true, format));
     }
     if (!this._issuerBranding) {
       this._issuerBranding = this._serverMetadata.credentialIssuerMetadata?.display;
     }
 
-    if (!this._credentialBranding) {
+    if (!this._credentialBranding && this._credentialsSupported) {
       this._credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
       await Promise.all(
         this._credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
@@ -336,18 +354,29 @@ class OpenId4VcIssuanceProvider {
             ),
           );
 
+          const types = getTypesFromCredentialSupported(metadata);
           const credentialTypes: Array<string> =
-            metadata.types.length > 1
-              ? metadata.types.filter((type: string): boolean => type !== 'VerifiableCredential')
-              : metadata.types.length === 0
+            types.length > 1
+              ? types.filter((type: string): boolean => type !== 'VerifiableCredential')
+              : types.length === 0
               ? ['VerifiableCredential']
-              : metadata.types;
+              : types;
 
           if (this._credentialBranding) {
             this._credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
           }
         }),
       );
+    }
+
+    if (!this._serverMetadata) {
+      throw new Error(`Can't return IServerMetadataAndCryptoMatchingResponse because serverMetadata is undefined`);
+    }
+    if (!this._credentialsSupported) {
+      throw new Error(`Can't return IServerMetadataAndCryptoMatchingResponse because credentialsSupported is undefined`);
+    }
+    if (!this._credentialBranding) {
+      throw new Error(`Can't return IServerMetadataAndCryptoMatchingResponse because credentialBranding is undefined`);
     }
 
     return {
@@ -358,6 +387,12 @@ class OpenId4VcIssuanceProvider {
       credentialBranding: this._credentialBranding,
     };
   };
+
+  private async getServerMetadata() {
+    if (!this._serverMetadata) {
+      this._serverMetadata = await this._client.retrieveServerMetadata();
+    }
+  }
 
   public acquireAccessToken = async ({pin}: {pin?: string}): Promise<AccessTokenResponse> => {
     if (!this._accessTokenResponse) {

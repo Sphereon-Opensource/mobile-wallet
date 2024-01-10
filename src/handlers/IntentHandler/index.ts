@@ -13,6 +13,7 @@ import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../ty
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import LockingHandler from '../LockingHandler';
+import {handleESignetFlow} from '../../services/esignetTestService';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 
@@ -153,11 +154,45 @@ class IntentHandler {
     const url: string | undefined = this._initialUrl;
     this._initialUrl = undefined;
     if (url) {
-      // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
-      // TODO fix this type issue
-      await readQr({qrData: url, navigation: RootNavigation});
+      // POC code to handle MOSIP Signet flow
+      const queryParams = this.parseDeepLink(url);
+      if ('error' in queryParams) {
+        let message = queryParams.error;
+        if ('error_description' in queryParams) {
+          message += ': ' + queryParams.error_description;
+        }
+        throw new Error(message);
+      }
+      if ('code' in queryParams && 'nonce' in queryParams && (queryParams.nonce as string).startsWith('mosip')) {
+        await handleESignetFlow(queryParams.nonce as string, queryParams.code as string);
+      } else {
+        // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
+        // TODO fix this type issue
+        await readQr({qrData: url, navigation: RootNavigation});
+      }
     }
   };
+
+  // URL.search is not implemented in RN and query-string does not work on these kind of URLs, so own implementation then
+  private parseDeepLink(url: string): Record<string, any> {
+    const queryString = url.split('?')[1];
+    const parameters: Record<string, any> = {};
+
+    if (!queryString) {
+      return parameters;
+    }
+
+    const params = queryString.split('&');
+
+    params.forEach(param => {
+      const [key, value] = param.split('=');
+      if (key && value) {
+        parameters[key] = decodeURIComponent(value);
+      }
+    });
+
+    return parameters;
+  }
 
   private sharedFileDataAction(item?: ShareData): void {
     if (!item || !item.data) {

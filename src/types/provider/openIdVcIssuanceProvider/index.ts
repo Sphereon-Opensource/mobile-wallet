@@ -8,6 +8,10 @@ export interface IGetIssuanceInitiationFromUriArgs {
   uri: string;
 }
 
+export interface IGetIssuanceInitiationFromIssuerArgs {
+  issuer: string;
+  clientId: string;
+}
 export interface IGetCredentialArgs {
   credentialType: string;
   pin?: string;
