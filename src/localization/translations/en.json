@@ -151,5 +151,11 @@
   "oid4vci_machine_verify_credentials_error_title": "Verify credentials",
   "oid4vci_machine_add_contact_identity_error_title": "Add contact identity",
   "oid4vci_machine_store_credential_branding_error_title": "Store credential branding",
-  "oid4vci_machine_store_credential_error_title": "Store credential"
+  "oid4vci_machine_store_credential_error_title": "Store credential",
+  "siopV2_machine_identifier_error_title": "Getting identifier",
+  "siopV2_machine_create_config_error_title": "Creating siopV2 config",
+  "siopV2_machine_get_request_error_title": "Getting siopV2 request",
+  "siopV2_machine_retrieve_contact_error_title": "Retrieve contact",
+  "siopV2_machine_add_contact_identity_error_title": "Add contact identity",
+  "siopV2_machine_send_response_error_title": "Sending siopV2 response"
 }

@@ -24,7 +24,7 @@ import {
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
-  OIDVCIProviderProps,
+  OID4VCIProviderProps,
 } from '../../types/machines/oid4vci';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 
@@ -259,8 +259,9 @@ export const oid4vciStateNavigationListener = async (
   state: OID4VCIMachineState,
   navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
-  if (state._event.type === 'internal') {
+  if (state._event.type === 'internal' || !state.changed) {
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
+    // Make sure we do not navigate when state has not changed
     return;
   }
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
@@ -301,7 +302,7 @@ export const oid4vciStateNavigationListener = async (
   }
 };
 
-export const OID4VCIProvider = (props: OIDVCIProviderProps): JSX.Element => {
+export const OID4VCIProvider = (props: OID4VCIProviderProps): JSX.Element => {
   const {children, customOID4VCIInstance} = props;
 
   return <OID4VCIContext.Provider value={{oid4vciInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;

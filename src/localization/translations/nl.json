@@ -151,5 +151,11 @@
   "oid4vci_machine_verify_credentials_error_title": "Verifiëren credential",
   "oid4vci_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
   "oid4vci_machine_store_credential_branding_error_title": "Opslaan credential branding",
-  "oid4vci_machine_store_credential_error_title": "Opslaan credential"
+  "oid4vci_machine_store_credential_error_title": "Opslaan credential",
+  "siopV2_machine_identifier_error_title": "Identifier ophalen",
+  "siopV2_machine_create_config_error_title": "SiopV2 configuratie maken",
+  "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
+  "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
+  "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
+  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden"
 }

@@ -18,7 +18,19 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
 } from '../../styles/components';
-import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {
+  ICreateContactArgs,
+  IUpdateContactArgs,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum,
+  StackParamList,
+  SwitchRoutesEnum,
+  ToastTypeEnum,
+} from '../../types';
+import {NavigationState} from '@react-navigation/routers';
+import {navigationRef} from '../../navigation/rootNavigation';
+import {Route} from '@react-navigation/native';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => Promise<IContact>;
@@ -130,11 +142,12 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onDecline = async (): Promise<void> => {
-    const {onDecline} = this.props.route.params;
+    const {navigation} = this.props;
+    const {onDecline, onBack} = this.props.route.params;
 
     Keyboard.dismiss();
 
-    this.props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+    navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_add_cancel_title'),
       details: translate('contact_add_cancel_message'),
       primaryButton: {
@@ -144,7 +157,22 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       secondaryButton: {
         caption: translate('action_cancel_label'),
         // TODO WAL-541 fix navigation hierarchy
-        onPress: async (): Promise<void> => this.props.navigation.navigate(MainRoutesEnum.HOME, {}),
+        // FIXME added another hack to determine which stack we are in so that we can navigate back from the popup screen
+        onPress: async (): Promise<void> => {
+          const rootState: NavigationState | undefined = navigationRef.current?.getRootState();
+          if (!rootState?.routes) {
+            return;
+          }
+          const mainStack = rootState.routes.find((route: Route<string>) => route.name === 'Main')?.state;
+          if (!mainStack?.routes) {
+            return;
+          }
+          if (mainStack.routes.some((route: any): boolean => route.name === 'SIOPV2')) {
+            navigation.navigate(MainRoutesEnum.SIOPV2, {});
+          } else if (mainStack.routes.some((route: any): boolean => route.name === 'OID4VCI')) {
+            navigation.navigate(MainRoutesEnum.OID4VCI, {});
+          }
+        },
       },
     });
   };
