@@ -146,11 +146,13 @@ export const sendResponse = async (
 
   await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,
-    verifiableCredentialsWithDefinition: [
-      {
-        definition: authorizationRequestData.presentationDefinitions![0], // TODO 0 check, check siop only
-        credentials: selectedCredentials as Array<W3CVerifiableCredential>,
-      },
-    ],
+    ...(authorizationRequestData.presentationDefinitions !== undefined && {
+      verifiableCredentialsWithDefinition: [
+        {
+          definition: authorizationRequestData.presentationDefinitions![0], // TODO 0 check, check siop only
+          credentials: selectedCredentials as Array<W3CVerifiableCredential>,
+        },
+      ],
+    }),
   });
 };
