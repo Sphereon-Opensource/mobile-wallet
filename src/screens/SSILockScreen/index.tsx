@@ -1,20 +1,20 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { FC, useEffect, useState } from 'react';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import React, {FC, useEffect, useState} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import { backgroundColors } from '@sphereon/ui-components.core';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
-import { storageGetPin } from '../../services/storageService';
-import { translate } from '../../localization/Localization';
-import { PIN_CODE_LENGTH } from '../../@config/constants';
+import {storageGetPin} from '../../services/storageService';
+import {translate} from '../../localization/Localization';
+import {PIN_CODE_LENGTH} from '../../@config/constants';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import { ScreenRoutesEnum, StackParamList } from '../../types';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 import BadgeButton from '../../components/buttons/BadgeButton';
-import { getVerifiableCredentialsFromStorage } from '../../services/credentialService';
-import { UniqueVerifiableCredential } from '@veramo/core';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {UniqueVerifiableCredential} from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -26,17 +26,16 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     props.navigation.addListener('focus', (): void => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
-    getVerifiableCredentialsFromStorage()
-      .then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
-        const dec112Credential = credentials.find((c) => c.verifiableCredential.type && c.verifiableCredential.type.indexOf('DEC112Credential') > -1);
-        if (dec112Credential) {
-          setEmergencyButtonVisible(true);
-        }
-      });
+    getVerifiableCredentialsFromStorage().then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
+      const dec112Credential = credentials.find(c => c.verifiableCredential.type && c.verifiableCredential.type.indexOf('DEC112Credential') > -1);
+      if (dec112Credential) {
+        setEmergencyButtonVisible(true);
+      }
+    });
   }, []);
 
   const onVerification = async (value: string): Promise<void> => {
-    const { onAuthenticate } = props.route.params;
+    const {onAuthenticate} = props.route.params;
 
     // TODO We are currently only supporting a single user right now
     if (value !== (await storageGetPin())) {
@@ -51,7 +50,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <StatusBar/>
+      <StatusBar />
       <PinCodeContainer>
         <SSIPinCode
           length={PIN_CODE_LENGTH}
@@ -61,12 +60,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           onVerification={onVerification}
         />
       </PinCodeContainer>
-      {emergencyButtonVisible ?
+      {emergencyButtonVisible ? (
         <BadgeButton
           caption={translate('lock_emergency_button_caption')}
           onPress={onEmergencyCall}
-          style={{ marginRight: 'auto', marginLeft: 'auto', marginBottom: 34, marginTop: 40 }}
-        /> : null}
+          style={{marginRight: 'auto', marginLeft: 'auto', marginBottom: 34, marginTop: 40}}
+        />
+      ) : null}
     </Container>
   );
 };
