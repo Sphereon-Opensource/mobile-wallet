@@ -141,7 +141,7 @@ export const onboardingStateNavigationListener = async (
   state: OnboardingMachineState,
   navigation?: any,
 ): Promise<void> => {
-  if (state._event.type === 'internal' || !state.changed) {
+  if (state._event.type === 'internal') {
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
     // Make sure we do not navigate when state has not changed
     return;
