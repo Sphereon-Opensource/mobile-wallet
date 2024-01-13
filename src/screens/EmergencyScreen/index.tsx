@@ -128,7 +128,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         .initialize()
         .then(() => {
           console.info('SIP registration successful');
-          agent?.updateVCard(new VCard().addFullName('Sphereon MDM'));
+          agent?.updateVCard(new VCard().addFullName(displayName));
           const conversation = agent?.createConversation('sip:144@app.staging.dec112.eu' || '', {});
           conversation?.addMessageListener(console.log);
           conversation?.addStateListener(console.log);
