@@ -1,10 +1,10 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {backgroundColors, buttonColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {translate} from '../../localization/Localization';
-import {EMERGENCY_ALERT_DELAY} from '../../@config/constants';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { backgroundColors, buttonColors, fontColors } from '@sphereon/ui-components.core';
+import { PrimaryButton, SecondaryButton } from '@sphereon/ui-components.ssi-react-native';
+import { translate } from '../../localization/Localization';
+import { EMERGENCY_ALERT_DELAY } from '../../@config/constants';
 import {
   EmergencyScreenButtonContainerStyled as ButtonContainer,
   EmergencyScreenContainerStyled as Container,
@@ -14,39 +14,40 @@ import {
   EmergencyScreenCountdownTextStyled as CountdownText,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {Agent, DEC112Specifics, SimpleLocation, VCard} from 'ng112-js/dist/node';
-import {Alert} from 'react-native';
+import { ScreenRoutesEnum, StackParamList } from '../../types';
+import { Agent, DEC112Specifics, SimpleLocation, VCard } from 'ng112-js/dist/node';
+import { Alert } from 'react-native';
 import * as Location from 'expo-location';
-import {LocationAccuracy, LocationObject} from 'expo-location';
-import {LocationMethod} from 'pidf-lo';
-import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
-import {UniqueVerifiableCredential} from '@veramo/core';
+import { LocationAccuracy, LocationObject } from 'expo-location';
+import { LocationMethod } from 'pidf-lo';
+import { getVerifiableCredentialsFromStorage } from '../../services/credentialService';
+import { UniqueVerifiableCredential } from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.EMERGENCY>;
 
 const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {navigation} = props;
+  const { navigation } = props;
   const [sipCredentials, setSipCredentials] = useState();
+  const [idAustriaData, setIdAustriaData] = useState<any, any>();
   const [displayName, setDisplayName] = useState('');
   const [countdown, setCountdown] = useState<number>(EMERGENCY_ALERT_DELAY);
   const [location, setLocation] = useState<LocationObject | null>(null);
   let agent: Agent | null = null;
+  let interval: any = null;
 
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
   void changeNavigationBarColor(backgroundColors.orange);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
     getVerifiableCredentialsFromStorage().then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
       const dec112Credential = credentials.find(c => c.verifiableCredential.type && c.verifiableCredential.type.indexOf('DEC112Credential') > -1);
       if (dec112Credential) {
-        console.log(dec112Credential);
-        const idAustriaData = dec112Credential.verifiableCredential.credentialSubject['id_austria'];
+        const idAustria = dec112Credential.verifiableCredential.credentialSubject['id_austria'];
+        setIdAustriaData(idAustria);
         const sipData = dec112Credential.verifiableCredential.credentialSubject['sip'];
         const sipDataCredentials = sipData['sip_credentials'];
         setSipCredentials(sipDataCredentials);
-        setDisplayName(`${idAustriaData['vorname'] ?? ''} ${idAustriaData['vorname'] ?? ''}`);
+        setDisplayName(`${idAustria['vorname'] ?? ''} ${idAustria['vorname'] ?? ''}`);
       }
     });
     Location.requestForegroundPermissionsAsync().then(status => {
@@ -66,7 +67,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           }
         }, 1000);
       });
-      Location.watchPositionAsync({timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation}, () => {
+      Location.watchPositionAsync({ timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation }, () => {
         if (agent) {
           setLocation(location);
           agent.updateLocation(createLocation());
@@ -86,6 +87,8 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const onSend = async (): Promise<void> => {
+    clearInterval(interval);
+    setCountdown(0);
     requestEmergency();
   };
 
@@ -128,14 +131,20 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         .initialize()
         .then(() => {
           console.info('SIP registration successful');
-          agent?.updateVCard(new VCard().addFullName(displayName));
+          const vcard = new VCard()
+            .addFullName(displayName)
+            .addBirthday(idAustriaData?.geburtsdatum ?? '')
+            .addCode(idAustriaData?.adresse?.Postleitzahl ?? '')
+            .addLocality(idAustriaData?.adresse?.Ortschaft ?? '')
+            .addStreet(`$|idAustriaData?.adresse?.Strasse ?? ''} ${idAustriaData?.adresse?.Hausnummer ?? ''}`);
+          agent?.updateVCard(vcard);
           const conversation = agent?.createConversation('sip:144@app.staging.dec112.eu' || '', {});
           conversation?.addMessageListener(console.log);
           conversation?.addStateListener(console.log);
           console.log('Trying to send start message');
           const startMessage = conversation?.start({
             text: 'Silent Call from SSI Wallet',
-            extraHeaders: [{key: 'X-Dec112-Silent', value: 'True'}],
+            extraHeaders: [{ key: 'X-Dec112-Silent', value: 'True' }],
           });
           startMessage?.promise
             .then(() => {
@@ -163,7 +172,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <StatusBar backgroundColor={backgroundColors.orange} />
+      <StatusBar backgroundColor={backgroundColors.orange}/>
       <CountdownOuterContainer>
         <CountdownMiddleContainer>
           <CountdownInnerContainer>
@@ -173,14 +182,14 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
       </CountdownOuterContainer>
       <ButtonContainer>
         <SecondaryButton
-          style={{height: 42, width: 300}}
+          style={{ height: 42, width: 300 }}
           borderColors={[fontColors.light]}
           captionColor={fontColors.light}
           caption={translate('emergency_abort_button_caption')}
           onPress={onAbort}
         />
         <PrimaryButton
-          style={{height: 42, width: 300}}
+          style={{ height: 42, width: 300 }}
           caption={translate('emergency_send_button_caption')}
           backgroundColors={[buttonColors[100]]}
           captionColor={fontColors.light}
