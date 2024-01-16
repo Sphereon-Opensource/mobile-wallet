@@ -33,6 +33,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   const [countdown, setCountdown] = useState<number>(EMERGENCY_ALERT_DELAY);
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [loading, setLoading] = useState(true);
+  const [alarmTriggered, setAlarmTriggered] = useState(false);
   let agent: Agent | null = null;
   let interval: any = null;
 
@@ -48,7 +49,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         const sipData = dec112Credential.verifiableCredential.credentialSubject['sip'];
         const sipDataCredentials = sipData['sip_credentials'];
         setSipCredentials(sipDataCredentials);
-        setDisplayName(`${idAustria['vorname'] ?? ''} ${idAustria['vorname'] ?? ''}`);
+        setDisplayName(`${idAustria['vorname'] ?? ''} ${idAustria['nachname'] ?? ''}`);
       }
     });
     Location.requestForegroundPermissionsAsync().then(status => {
@@ -57,7 +58,6 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
       }
       Location.getCurrentPositionAsync({}).then(location => {
         setLocation(location);
-        setLoading(false);
       });
       Location.watchPositionAsync({ timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation }, () => {
         if (agent) {
@@ -69,7 +69,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (!loading && location && sipCredentials) {
+    if (sipCredentials) {
       interval = setInterval((): void => {
         if (countdown > 0) {
           setCountdown(countdown - 1);
@@ -86,7 +86,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         clearInterval(interval);
       }
     };
-  }, [countdown, loading, sipCredentials]);
+  }, [countdown, sipCredentials]);
 
   const onAbort = async (): Promise<void> => {
     navigation.goBack();
@@ -112,6 +112,10 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const requestEmergency = async () => {
+    if (alarmTriggered) {
+      return;
+    }
+    setAlarmTriggered(true);
     try {
       const sipPassword = sipCredentials!['password'];
       const sipUser = sipCredentials!['username'];
@@ -190,13 +194,15 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           caption={translate('emergency_abort_button_caption')}
           onPress={onAbort}
         />
-        <PrimaryButton
-          style={{ height: 42, width: 300 }}
-          caption={translate('emergency_send_button_caption')}
-          backgroundColors={[buttonColors[100]]}
-          captionColor={fontColors.light}
-          onPress={onSend}
-        />
+        {!alarmTriggered ?
+          <PrimaryButton
+            style={{ height: 42, width: 300 }}
+            caption={translate('emergency_send_button_caption')}
+            backgroundColors={[buttonColors[100]]}
+            captionColor={fontColors.light}
+            onPress={onSend}
+          />
+          : null}
       </ButtonContainer>
     </Container>
   );
