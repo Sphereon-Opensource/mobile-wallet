@@ -61,9 +61,9 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
             setCountdown(countdown - 1);
           } else {
             if (interval) {
+              onSend();
               clearInterval(interval);
             }
-            void onSend();
           }
         }, 1000);
       });
@@ -116,9 +116,6 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         password: sipPassword,
         displayName: displayName,
         namespaceSpecifics: new DEC112Specifics(undefined, '' || '', 'de'),
-        debug: (_level: number, ...values: unknown[]): void => {
-          console.debug(values);
-        },
         userAgentConfig: {
           connection_recovery_max_interval: 5,
           connection_recovery_min_interval: 2,
@@ -133,10 +130,9 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           console.info('SIP registration successful');
           const vcard = new VCard()
             .addFullName(displayName)
-            .addBirthday(idAustriaData?.geburtsdatum ?? '')
             .addCode(idAustriaData?.adresse?.Postleitzahl ?? '')
             .addLocality(idAustriaData?.adresse?.Ortschaft ?? '')
-            .addStreet(`$|idAustriaData?.adresse?.Strasse ?? ''} ${idAustriaData?.adresse?.Hausnummer ?? ''}`);
+            .addStreet(`${idAustriaData?.adresse?.Strasse ?? ''} ${idAustriaData?.adresse?.Hausnummer ?? ''}`);
           agent?.updateVCard(vcard);
           const conversation = agent?.createConversation('sip:144@app.staging.dec112.eu' || '', {});
           conversation?.addMessageListener(console.log);
