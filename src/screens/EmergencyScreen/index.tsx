@@ -28,10 +28,11 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.EMERGENCY>;
 const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
   const { navigation } = props;
   const [sipCredentials, setSipCredentials] = useState();
-  const [idAustriaData, setIdAustriaData] = useState<any, any>();
+  const [idAustriaData, setIdAustriaData] = useState<any>();
   const [displayName, setDisplayName] = useState('');
   const [countdown, setCountdown] = useState<number>(EMERGENCY_ALERT_DELAY);
   const [location, setLocation] = useState<LocationObject | null>(null);
+  const [loading, setLoading] = useState(true);
   let agent: Agent | null = null;
   let interval: any = null;
 
@@ -56,16 +57,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
       }
       Location.getCurrentPositionAsync({}).then(location => {
         setLocation(location);
-        interval = setInterval((): void => {
-          if (countdown > 0) {
-            setCountdown(countdown - 1);
-          } else {
-            if (interval) {
-              onSend();
-              clearInterval(interval);
-            }
-          }
-        }, 1000);
+        setLoading(false);
       });
       Location.watchPositionAsync({ timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation }, () => {
         if (agent) {
@@ -74,13 +66,27 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
         }
       }).catch(console.error);
     });
+  }, []);
 
+  useEffect(() => {
+    if (!loading && location && sipCredentials) {
+      interval = setInterval((): void => {
+        if (countdown > 0) {
+          setCountdown(countdown - 1);
+        } else {
+          if (interval) {
+            onSend();
+            clearInterval(interval);
+          }
+        }
+      }, 1000);
+    }
     return () => {
       if (interval) {
         clearInterval(interval);
       }
     };
-  }, [countdown]);
+  }, [countdown, loading, sipCredentials]);
 
   const onAbort = async (): Promise<void> => {
     navigation.goBack();
