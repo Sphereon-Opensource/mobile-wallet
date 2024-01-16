@@ -1,6 +1,6 @@
 import React from 'react';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
-import {IContact, IDidAuthConfig, IIdentity} from '@sphereon/ssi-sdk.data-store';
+import {Party, DidAuthConfig, Identity} from '@sphereon/ssi-sdk.data-store';
 import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {EvaluationResults, PEX, Status} from '@sphereon/pex';
 import {getSiopRequest, retrieveContact, addContactIdentity, sendResponse, createConfig} from '../services/machines/siopV2MachineService';
@@ -102,13 +102,13 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
         | {type: SiopV2MachineGuards.hasSelectedRequiredCredentialsGuard},
       services: {} as {
         [SiopV2MachineServices.createConfig]: {
-          data: IDidAuthConfig;
+          data: DidAuthConfig;
         };
         [SiopV2MachineServices.getSiopRequest]: {
           data: VerifiedAuthorizationRequest;
         };
         [SiopV2MachineServices.retrieveContact]: {
-          data: IContact | undefined;
+          data: Party | undefined;
         };
         [SiopV2MachineServices.addContactIdentity]: {
           data: void;
@@ -127,7 +127,7 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
           onDone: {
             target: SiopV2MachineStates.getSiopRequest,
             actions: assign({
-              didAuthConfig: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<IDidAuthConfig>) => _event.data,
+              didAuthConfig: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<DidAuthConfig>) => _event.data,
             }),
           },
           onError: {
@@ -168,7 +168,7 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
           src: SiopV2MachineServices.retrieveContact,
           onDone: {
             target: SiopV2MachineStates.transitionFromSetup,
-            actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<IContact>) => _event.data}),
+            actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
           },
           onError: {
             target: SiopV2MachineStates.handleError,
@@ -236,7 +236,7 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
           src: SiopV2MachineServices.addContactIdentity,
           onDone: {
             target: SiopV2MachineStates.selectCredentials,
-            actions: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<IIdentity>): void => {
+            actions: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Identity>): void => {
               _ctx.contact?.identities.push(_event.data);
             },
           },

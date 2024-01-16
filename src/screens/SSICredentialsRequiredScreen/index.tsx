@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useBackHandler} from '@react-native-community/hooks';
 import {PEX, SelectResults, SubmissionRequirementMatch, Status} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
@@ -23,7 +24,6 @@ import {ICredentialSummary, ScreenRoutesEnum, StackParamList} from '../../types'
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {JSONPath} from '@astronautlabs/jsonpath';
-import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 

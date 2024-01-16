@@ -1,4 +1,4 @@
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 import {SortOrder} from '../../types';
 import {
@@ -35,7 +35,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case GET_CONTACTS_SUCCESS: {
       return {
         ...state,
-        contacts: action.payload.sort(sortBy('alias', SortOrder.ASC)),
+        contacts: action.payload.sort(sortBy('contact.displayName', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -48,7 +48,7 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case CREATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: [...state.contacts, action.payload].sort(sortBy('alias', SortOrder.ASC)),
+        contacts: [...state.contacts, action.payload].sort(sortBy('contact.displayName', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -61,8 +61,8 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case UPDATE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: [...state.contacts.filter((contact: IContact) => contact.id !== action.payload.id), action.payload].sort(
-          sortBy('alias', SortOrder.ASC),
+        contacts: [...state.contacts.filter((contact: Party): boolean => contact.id !== action.payload.id), action.payload].sort(
+          sortBy('contact.displayName', SortOrder.ASC),
         ),
         loading: false,
       };
@@ -76,7 +76,9 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
     case DELETE_CONTACT_SUCCESS: {
       return {
         ...state,
-        contacts: state.contacts.filter((contact: IContact) => contact.id !== action.payload).sort(sortBy('alias', SortOrder.ASC)),
+        contacts: state.contacts
+          .filter((contact: Party): boolean => contact.id !== action.payload)
+          .sort(sortBy('contact.displayName', SortOrder.ASC)),
         loading: false,
       };
     }
@@ -90,10 +92,11 @@ const contactReducer = (state: IContactState = initialState, action: ContactActi
       return {
         ...state,
         contacts: state.contacts
-          .map((contact: IContact) =>
-            contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
+          .map(
+            (contact: Party): Party =>
+              contact.id === action.payload.contactId ? {...contact, identities: [...contact!.identities, action.payload.identity]} : contact,
           )
-          .sort(sortBy('alias', SortOrder.ASC)),
+          .sort(sortBy('contact.displayName', SortOrder.ASC)),
         loading: false,
       };
     }
