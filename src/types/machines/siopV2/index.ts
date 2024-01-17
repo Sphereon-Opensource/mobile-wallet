@@ -12,6 +12,7 @@ export type SiopV2AuthorizationRequestData = {
   correlationId: string;
   registrationMetadataPayload: RPRegistrationMetadataPayload;
   issuer?: string;
+  name?: string;
   uri?: URL;
   clientId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];

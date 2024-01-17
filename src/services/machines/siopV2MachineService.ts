@@ -40,7 +40,6 @@ export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestD
 export const getSiopRequest = async (
   context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'requestData'>,
 ): Promise<SiopV2AuthorizationRequestData> => {
-  //VerifiedAuthorizationRequest // TODO getSiopRequest
   const {didAuthConfig, requestData} = context;
 
   if (requestData?.uri === undefined) {
@@ -52,7 +51,7 @@ export const getSiopRequest = async (
   }
 
   const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest(didAuthConfig);
-  const name = verifiedAuthorizationRequest.registrationMetadataPayload?.registration?.client_name;
+  const name = verifiedAuthorizationRequest.registrationMetadataPayload?.client_name;
   const url =
     verifiedAuthorizationRequest.responseURI ??
     (requestData.uri.includes('request_uri')
@@ -72,6 +71,7 @@ export const getSiopRequest = async (
     correlationId,
     registrationMetadataPayload: verifiedAuthorizationRequest.registrationMetadataPayload,
     uri,
+    name,
     clientId,
     presentationDefinitions: verifiedAuthorizationRequest.presentationDefinitions,
   };

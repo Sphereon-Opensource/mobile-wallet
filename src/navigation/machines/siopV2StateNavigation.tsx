@@ -61,7 +61,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   }
 
   const contact: Omit<IBasicContact, 'alias'> = {
-    name: authorizationRequestData.correlationId,
+    name: authorizationRequestData.name ?? authorizationRequestData.correlationId,
     uri: authorizationRequestData.uri && `${authorizationRequestData.uri.protocol}//${authorizationRequestData.uri.hostname}`,
     identities: [
       {
