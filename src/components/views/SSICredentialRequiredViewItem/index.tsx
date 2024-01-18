@@ -3,7 +3,6 @@ import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
 
 import {translate} from '../../../localization/Localization';
-import {backgrounds, statuses} from '../../../styles/colors';
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
   SSIFullFlexDirectionRowViewStyled as ContentContainer,
@@ -21,6 +20,7 @@ import {
 } from '../../../styles/components';
 import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
+import {backgroundColors, statusColors} from '@sphereon/ui-components.core';
 
 export interface Props {
   id: string;
@@ -37,11 +37,14 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
   const {id, isMatching, selected, available, title, listIndex, purpose, onPress} = props;
 
   return (
-    <Container key={id} style={{backgroundColor: listIndex % 2 == 0 ? backgrounds.secondaryDark : backgrounds.primaryDark}} onPress={onPress}>
+    <Container
+      key={id}
+      style={{backgroundColor: listIndex % 2 == 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark}}
+      onPress={onPress}>
       <ContentContainer>
         {isMatching && (
           <IconContainer>
-            <SSICheckmarkIcon color={statuses.valid} />
+            <SSICheckmarkIcon color={statusColors.valid} />
           </IconContainer>
         )}
         <ContentContainer style={{...(!isMatching && {marginLeft: 29})}}>
@@ -60,7 +63,7 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
             )}
           </View>
           <MatchInfoContainer>
-            <MatchInfoCaption style={{...(isMatching && {color: statuses.valid})}}>
+            <MatchInfoCaption style={{...(isMatching && {color: statusColors.valid})}}>
               {selected.length > 0
                 ? `${selected.length} ${translate('credentials_required_selected_label')}`
                 : available
