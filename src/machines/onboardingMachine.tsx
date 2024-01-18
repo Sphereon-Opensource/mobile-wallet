@@ -223,7 +223,7 @@ export class OnboardingMachine {
   }
 
   static stopInstance(): void {
-    debug(`Stop instance...`);
+    debug(`Stopping instance...`);
     if (!OnboardingMachine.hasInstance()) {
       return;
     }

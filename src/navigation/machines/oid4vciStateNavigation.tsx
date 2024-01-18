@@ -215,7 +215,7 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
 
-  debug(`Stop oid4vci machine...`);
+  debug(`Stopping oid4vci machine...`);
   oid4vciMachine.stop();
   debug(`Stopped oid4vci machine`);
 

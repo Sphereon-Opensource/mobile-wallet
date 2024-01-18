@@ -199,7 +199,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
 const navigateFinal = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, siopV2Machine} = args;
 
-  debug(`Stop siopV2 machine...`);
+  debug(`Stopping siopV2 machine...`);
   siopV2Machine.stop();
   debug(`Stopped siopV2 machine`);
 
