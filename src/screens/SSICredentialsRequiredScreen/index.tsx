@@ -165,7 +165,6 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
       setSelectedCredentials(newSelection);
 
-      // TODO improve, can we not keep the originals in the state
       if (onSelect) {
         const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
         for (const uniqueVCs of newSelection.values()) {
