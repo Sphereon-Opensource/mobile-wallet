@@ -52,6 +52,7 @@ export const getSiopRequest = async (
 
   const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest(didAuthConfig);
   const name = verifiedAuthorizationRequest.registrationMetadataPayload?.client_name;
+  console.log(`NAME ${name}`);
   const url =
     verifiedAuthorizationRequest.responseURI ??
     (requestData.uri.includes('request_uri')

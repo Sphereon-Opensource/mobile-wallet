@@ -58,10 +58,11 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return Promise.reject(Error('Missing request data in context'));
   }
 
+  const contactName: string = authorizationRequestData.name ?? authorizationRequestData.correlationId;
   const contact: NonPersistedParty = {
     contact: {
-      displayName: authorizationRequestData.correlationId,
-      legalName: authorizationRequestData.correlationId,
+      displayName: contactName,
+      legalName: contactName,
     },
     // FIXME maybe its nicer if we can also just use the id only
     // TODO using the predefined party type from the contact migrations here
