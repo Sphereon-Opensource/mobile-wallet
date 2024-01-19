@@ -19,3 +19,13 @@ export const parseTextToElement = (text: string): JSX.Element => {
 
   return <Text>{items}</Text>;
 };
+
+export const base64UrlEncode = (input: Uint8Array): string => {
+  const base64 = Buffer.from(input).toString('base64');
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};
+
+export const base64UrlEncodeString = (input: string): string => {
+  const base64 = btoa(input);
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+};

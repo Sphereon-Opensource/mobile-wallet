@@ -1,19 +1,20 @@
-import React from 'react';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
   addContactIdentity,
+  assertValidCredentials,
+  authorizeInteractive,
   createCredentialSelection,
   initiateOpenId4VcIssuanceProvider,
   retrieveContact,
   retrieveCredentialOffers,
   storeCredentialBranding,
   storeCredentials,
-  assertValidCredentials,
 } from '../services/machines/oid4vciMachineService';
 import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import {
+  AuthCodeResponseEvent,
   ContactAliasEvent,
   ContactConsentEvent,
   CreateContactEvent,
@@ -34,8 +35,9 @@ import {
   SelectCredentialsEvent,
   VerificationCodeEvent,
 } from '../types/machines/oid4vci';
-import {ErrorDetails, ICredentialTypeSelection} from '../types';
+import {ErrorDetails, ICredentialTypeSelection, QrTypesEnum} from '../types';
 import {translate} from '../localization/Localization';
+import {AuthorizationRequestState} from '../types/service/authenticationService';
 
 const oid4vciHasNoContactGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -54,7 +56,19 @@ const oid4vciSelectCredentialsGuard = (_ctx: OID4VCIMachineContext, _event: OID4
 
 const oid4vciRequirePinGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {requestData} = _ctx;
+  if (requestData?.type == QrTypesEnum.OPENID_CONNECT_ISSUER) {
+    return false;
+  }
   return requestData?.credentialOffer.userPinRequired === true;
+};
+
+const oid4vciRequireAuthorize = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
+  const {requestData, authorizationCodeResponse} = _ctx;
+  return (
+    requestData !== undefined &&
+    requestData.type == QrTypesEnum.OPENID_CONNECT_ISSUER &&
+    (authorizationCodeResponse === undefined || !authorizationCodeResponse.code)
+  );
 };
 
 const oid4vciHasNoContactIdentityGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
@@ -98,6 +112,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         | {type: OID4VCIMachineGuards.hasNotContactGuard}
         | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
+        | {type: OID4VCIMachineGuards.requireAuthorize}
         | {type: OID4VCIMachineGuards.hasNoContactIdentityGuard}
         | {type: OID4VCIMachineGuards.verificationCodeGuard}
         | {type: OID4VCIMachineGuards.hasContactGuard}
@@ -118,6 +133,9 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         };
         [OID4VCIMachineServices.addContactIdentity]: {
           data: void;
+        };
+        [OID4VCIMachineServices.authorizeInteractive]: {
+          data: AuthorizationRequestState;
         };
         [OID4VCIMachineServices.assertValidCredentials]: {
           data: void;
@@ -207,6 +225,10 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.selectCredentialGuard,
           },
           {
+            target: OID4VCIMachineStates.authorizeInteractive,
+            cond: OID4VCIMachineGuards.requireAuthorize,
+          },
+          {
             target: OID4VCIMachineStates.verifyPin,
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
@@ -282,6 +304,22 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         id: OID4VCIMachineStates.transitionFromSelectingCredentials,
         always: [
           {
+            target: OID4VCIMachineStates.authorizeInteractive,
+            cond: OID4VCIMachineGuards.requireAuthorize,
+          },
+          {
+            target: OID4VCIMachineStates.verifyPin,
+            cond: OID4VCIMachineGuards.requirePinGuard,
+          },
+          {
+            target: OID4VCIMachineStates.retrieveCredentialsOffers,
+          },
+        ],
+      },
+      [OID4VCIMachineStates.transitionFromAuthorize]: {
+        id: OID4VCIMachineStates.transitionFromAuthorize,
+        always: [
+          {
             target: OID4VCIMachineStates.verifyPin,
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
@@ -315,6 +353,36 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
               target: `#${OID4VCIMachineStates.retrieveCredentialsOffers}`,
               cond: OID4VCIMachineGuards.verificationCodeGuard,
             },
+          },
+        },
+      },
+      [OID4VCIMachineStates.authorizeInteractive]: {
+        id: OID4VCIMachineStates.authorizeInteractive,
+        invoke: {
+          src: OID4VCIMachineServices.authorizeInteractive,
+          onDone: {
+            target: OID4VCIMachineStates.waitForAuthResponse,
+            actions: assign({
+              authorizationRequestState: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<AuthorizationRequestState>) => _event.data,
+            }),
+          },
+          onError: {
+            target: OID4VCIMachineStates.handleError,
+            actions: assign({
+              error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+                title: translate('oid4vci_machine_initiation_error_title'),
+                message: _event.data.message, // TODO: Do I need to fill the message or is the extracted from throw Error()?
+              }),
+            }),
+          },
+        },
+      },
+      [OID4VCIMachineStates.waitForAuthResponse]: {
+        id: OID4VCIMachineStates.waitForAuthResponse,
+        on: {
+          [OID4VCIMachineEvents.RECEIVED_AUTH_CODE_RESPONSE]: {
+            actions: assign({authorizationCodeResponse: (_ctx: OID4VCIMachineContext, _event: AuthCodeResponseEvent) => _event.data}),
+            target: OID4VCIMachineStates.transitionFromAuthorize,
           },
         },
       },
@@ -476,6 +544,7 @@ export class OID4VCIMachine {
       createOID4VCIMachine(opts).withConfig({
         services: {
           [OID4VCIMachineServices.initiate]: initiateOpenId4VcIssuanceProvider,
+          [OID4VCIMachineServices.authorizeInteractive]: authorizeInteractive,
           [OID4VCIMachineServices.createCredentialSelection]: createCredentialSelection,
           [OID4VCIMachineServices.retrieveContact]: retrieveContact,
           [OID4VCIMachineServices.retrieveCredentialOffers]: retrieveCredentialOffers,
@@ -489,6 +558,7 @@ export class OID4VCIMachine {
           oid4vciHasNoContactGuard,
           oid4vciSelectCredentialsGuard,
           oid4vciRequirePinGuard,
+          oid4vciRequireAuthorize,
           oid4vciHasNoContactIdentityGuard,
           oid4vciVerificationCodeGuard,
           oid4vciHasContactGuard,

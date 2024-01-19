@@ -8,6 +8,7 @@ import {ErrorDetails} from '../../error';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IQrData} from '../../qr';
 import {ICredentialTypeSelection} from '../../credential';
+import {AuthorizationCodeResponse, AuthorizationRequestState} from '../../service/authenticationService';
 
 export type MappedCredentialOffer = {
   correlationId: string;
@@ -28,15 +29,20 @@ export type OID4VCIMachineContext = {
   hasContactConsent: boolean;
   error?: ErrorDetails;
   openId4VcIssuanceProvider?: OpenId4VcIssuanceProvider;
+  authorizationRequestState?: AuthorizationRequestState;
+  authorizationCodeResponse?: AuthorizationCodeResponse;
 };
 
 export enum OID4VCIMachineStates {
   initiateOID4VCIProvider = 'initiateOID4VCIProvider',
+  authorizeInteractive = 'authorizeInteractive',
+  waitForAuthResponse = 'waitForAuthResponse',
   createCredentialSelection = 'createCredentialSelection',
   retrieveContact = 'retrieveContact',
   transitionFromSetup = 'transitionFromSetup',
   addContact = 'addContact',
   transitionFromContactSetup = 'transitionFromContactSetup',
+  transitionFromAuthorize = 'transitionFromAuthorize',
   selectCredentials = 'selectCredentials',
   transitionFromSelectingCredentials = 'transitionFromSelectingCredentials',
   verifyPin = 'verifyPin',
@@ -122,6 +128,7 @@ export enum OID4VCIMachineEvents {
   SET_CONTACT_ALIAS = 'SET_CONTACT_ALIAS',
   SET_CONTACT_CONSENT = 'SET_CONTACT_CONSENT',
   SET_SELECTED_CREDENTIALS = 'SET_SELECTED_CREDENTIALS',
+  RECEIVED_AUTH_CODE_RESPONSE = 'RECEIVED_AUTH_CODE_RESPONSE',
 }
 
 export enum OID4VCIMachineGuards {
@@ -129,6 +136,7 @@ export enum OID4VCIMachineGuards {
   hasNotContactGuard = 'oid4vciHasNoContactGuard',
   selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
+  requireAuthorize = 'oid4vciRequireAuthorize',
   hasNoContactIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
@@ -137,6 +145,7 @@ export enum OID4VCIMachineGuards {
 
 export enum OID4VCIMachineServices {
   initiate = 'initiate',
+  authorizeInteractive = 'authorizeInteractive',
   retrieveContact = 'retrieveContact',
   addContactIdentity = 'addContactIdentity',
   createCredentialSelection = 'createCredentialSelection',
@@ -154,6 +163,7 @@ export type SelectCredentialsEvent = {type: OID4VCIMachineEvents.SET_SELECTED_CR
 export type VerificationCodeEvent = {type: OID4VCIMachineEvents.SET_VERIFICATION_CODE; data: string};
 export type ContactConsentEvent = {type: OID4VCIMachineEvents.SET_CONTACT_CONSENT; data: boolean};
 export type ContactAliasEvent = {type: OID4VCIMachineEvents.SET_CONTACT_ALIAS; data: string};
+export type AuthCodeResponseEvent = {type: OID4VCIMachineEvents.RECEIVED_AUTH_CODE_RESPONSE; data: AuthorizationCodeResponse};
 export type OID4VCIMachineEventTypes =
   | NextEvent
   | PreviousEvent
@@ -162,4 +172,5 @@ export type OID4VCIMachineEventTypes =
   | SelectCredentialsEvent
   | VerificationCodeEvent
   | ContactConsentEvent
-  | ContactAliasEvent;
+  | ContactAliasEvent
+  | AuthCodeResponseEvent;

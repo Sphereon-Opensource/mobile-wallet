@@ -275,9 +275,12 @@ export const oid4vciStateNavigationListener = async (
   if (
     state.matches(OID4VCIMachineStates.initiateOID4VCIProvider) ||
     state.matches(OID4VCIMachineStates.createCredentialSelection) ||
+    state.matches(OID4VCIMachineStates.authorizeInteractive) ||
+    state.matches(OID4VCIMachineStates.waitForAuthResponse) ||
     state.matches(OID4VCIMachineStates.retrieveContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
+    state.matches(OID4VCIMachineStates.transitionFromAuthorize) ||
     state.matches(OID4VCIMachineStates.retrieveCredentialsOffers)
   ) {
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});

@@ -6,14 +6,15 @@ import {APP_ID} from '../../@config/constants';
 import {translate} from '../../localization/Localization';
 import RootNavigation from '../../navigation/rootNavigation';
 import {readFile} from '../../services/fileService';
-import {readQr} from '../../services/qrService';
+import {OID4VCIInstance, readQr} from '../../services/qrService';
 import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import LockingHandler from '../LockingHandler';
-import {handleESignetFlow} from '../../services/esignetTestService';
+import {AuthCodeResponseEvent, OID4VCIMachineEvents} from '../../types/machines/oid4vci';
+import {AuthorizationCodeResponse} from '../../types/service/authenticationService';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 
@@ -163,8 +164,14 @@ class IntentHandler {
         }
         throw new Error(message);
       }
-      if ('code' in queryParams && 'nonce' in queryParams && (queryParams.nonce as string).startsWith('mosip')) {
-        await handleESignetFlow(queryParams.nonce as string, queryParams.code as string);
+      if ('code' in queryParams && 'nonce' in queryParams && OID4VCIInstance !== undefined) {
+        OID4VCIInstance.send({
+          type: OID4VCIMachineEvents.RECEIVED_AUTH_CODE_RESPONSE,
+          data: {
+            code: queryParams.code,
+            nonce: queryParams.nonce,
+          } as AuthorizationCodeResponse,
+        });
       } else {
         // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
         // TODO fix this type issue

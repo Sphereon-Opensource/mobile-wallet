@@ -124,6 +124,7 @@ const agent = createAgent<
 });
 
 export const didManagerCreate = agent.didManagerCreate;
+export const didManagerImport = agent.didManagerImport;
 export const didManagerFind = agent.didManagerFind;
 export const cmGetContacts = agent.cmGetContacts;
 export const cmAddContact = agent.cmAddContact;

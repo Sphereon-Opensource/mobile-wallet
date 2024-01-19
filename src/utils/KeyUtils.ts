@@ -11,6 +11,8 @@ export const SignatureAlgorithmFromKeyType = (type: TKeyType) => {
       return SignatureAlgorithmEnum.ES256;
     case 'Secp256k1':
       return SignatureAlgorithmEnum.ES256K;
+    case 'RSA':
+      return SignatureAlgorithmEnum.PS256;
     default:
       throw new Error(`Key type '${type}' not supported`);
   }
@@ -34,6 +36,8 @@ export const KeyTypeFromCryptographicSuite = (suite: string): TKeyType => {
     case 'EcdsaSecp256k1Signature2019':
     case 'ES256K':
       return 'Secp256k1';
+    case 'RsaSignature2018':
+      return 'RSA';
     default:
       throw new Error(`Cryptographic suite '${suite}' not supported`);
   }

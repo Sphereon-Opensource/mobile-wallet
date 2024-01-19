@@ -11,7 +11,8 @@ export const signJWT = async (args: ISignJwtArgs): Promise<string> => {
     signer: getSigner(args.identifier),
   };
 
-  return createJWT(args.payload, options, args.header);
+  const jwt = createJWT(args.payload, options, args.header);
+  return jwt;
 };
 
 const getSigner = (identifier: IIdentifier): Signer => {

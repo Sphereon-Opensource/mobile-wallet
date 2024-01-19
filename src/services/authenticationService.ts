@@ -6,8 +6,10 @@ import {OnboardingMachine} from '../machines/onboardingMachine';
 import RootNavigation from '../navigation/rootNavigation';
 import store from '../store';
 import {login as loginAction} from '../store/actions/user.actions';
-import {RootState, ScreenRoutesEnum, WalletAuthLockState} from '../types';
+import {QrTypesEnum, RootState, ScreenRoutesEnum, WalletAuthLockState} from '../types';
 import {IUserState} from '../types/store/user.types';
+import {IssuerConnection} from '../types/service/authenticationService';
+import {convertURIToJsonObject} from '@sphereon/oid4vci-client/lib/functions';
 
 const debug: Debugger = Debug(`${APP_ID}:authenticationService`);
 
@@ -40,3 +42,21 @@ export const walletAuthLockState = (): WalletAuthLockState => {
 
   return lockState;
 };
+
+export function issuerConnectionFromURI(uri: string): IssuerConnection {
+  debug(`Issuer Connection URI: ${uri}`);
+  if (!uri.includes('?') || !uri.includes('://')) {
+    debug(`Invalid Issuer Connection URI: ${uri}`);
+    throw Error(`Invalid Issuer Connection Request`);
+  }
+
+  const jsonObject = convertURIToJsonObject(uri, {
+    requiredProperties: ['issuer_url', 'client_id', 'redirect_uri'],
+  }) as Record<string, string>;
+  return {
+    issuerUrl: jsonObject.issuer_url,
+    clientId: jsonObject.client_id,
+    redirectUri: jsonObject.redirect_uri,
+    proxyTokenUrl: jsonObject.proxy_token_url,
+  } as IssuerConnection;
+}

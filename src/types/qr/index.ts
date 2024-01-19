@@ -8,6 +8,7 @@ export enum QrTypesEnum {
   OPENID = 'openid',
   OPENID_INITIATE_ISSUANCE = 'openid-initiate-issuance',
   OPENID_CREDENTIAL_OFFER = 'openid-credential-offer',
+  OPENID_CONNECT_ISSUER = 'openid-connect-issuer',
 }
 
 export interface IQrData {

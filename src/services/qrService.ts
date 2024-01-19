@@ -25,7 +25,7 @@ import {OID4VCIMachine} from '../machines/oid4vciMachine';
 import store from '../store';
 import {addIdentity} from '../store/actions/contact.actions';
 import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
-import {authenticate} from './authenticationService';
+import {authenticate, issuerConnectionFromURI} from './authenticationService';
 import {getContacts} from './contactService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
 import {delay} from '../utils/AppUtils';
@@ -46,6 +46,8 @@ import {
 import {OID4VCIMachineInterpreter, OID4VCIMachineState} from '../types/machines/oid4vci';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
+
+export let OID4VCIInstance: OID4VCIMachineInterpreter | undefined;
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
   parseQr(args.qrData)
@@ -75,7 +77,11 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
     debug(`Unable to parse QR value as URL. Error: ${error}`);
   }
 
-  if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.startsWith(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
+  if (
+    qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE) ||
+    qrData.startsWith(QrTypesEnum.OPENID_CREDENTIAL_OFFER) ||
+    qrData.startsWith(QrTypesEnum.OPENID_CONNECT_ISSUER)
+  ) {
     return await parseOID4VCI(qrData).catch(error => {
       debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`);
       return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
@@ -104,6 +110,7 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
       return connectSiopV2(args);
     case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
     case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
+    case QrTypesEnum.OPENID_CONNECT_ISSUER:
       return connectOID4VCIssuance(args);
   }
 };
@@ -124,6 +131,12 @@ const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
     return Promise.resolve({
       type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
       credentialOffer: await CredentialOfferClient.fromURI(qrData),
+      uri: qrData,
+    });
+  } else if (qrData.includes(QrTypesEnum.OPENID_CONNECT_ISSUER)) {
+    return Promise.resolve({
+      type: QrTypesEnum.OPENID_CONNECT_ISSUER,
+      issuerConnection: issuerConnectionFromURI(qrData),
       uri: qrData,
     });
   } else {
@@ -389,6 +402,6 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 };
 
 const connectOID4VCIssuance = async (args: IQrDataArgs): Promise<void> => {
-  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData, requireCustomNavigationHook: false});
+  OID4VCIInstance = OID4VCIMachine.newInstance({requestData: args.qrData, requireCustomNavigationHook: false});
   OID4VCIInstance.start();
 };

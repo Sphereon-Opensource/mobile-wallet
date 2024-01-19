@@ -1,4 +1,4 @@
-import {CredentialSupported, EndpointMetadata, EndpointMetadataResult, MetadataDisplay} from '@sphereon/oid4vci-common';
+import {CredentialSupported, EndpointMetadata, EndpointMetadataResult, GrantTypes, MetadataDisplay} from '@sphereon/oid4vci-common';
 import {TKeyType} from '@veramo/core';
 
 import {SupportedDidMethodEnum} from '../../did';
@@ -18,13 +18,24 @@ export interface IGetCredentialArgs {
 }
 
 export interface IGetCredentialsArgs {
-  pin?: string;
+  grantType: GrantTypes;
   credentials?: Array<string>;
+  authenticationOptions?: IAuthenticationOpts;
+}
+
+export interface IAuthenticationOpts {
+  pin?: string;
+  clientId?: string;
+  redirectUri?: string;
+  code?: string;
+  codeVerifier?: string;
+  tokenProxyUrl?: string;
 }
 
 export type IIssuanceOpts = CredentialSupported & {
   didMethod: SupportedDidMethodEnum;
   keyType: TKeyType;
+  authenticationArgs?: IAuthenticationOpts;
 };
 
 export interface IGetVcIssuanceFormatArgs {

@@ -2,7 +2,7 @@ import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {CompactJWT, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
-import {CredentialResponse, CredentialSupported} from '@sphereon/oid4vci-common';
+import {CodeChallengeMethod, CredentialResponse, CredentialSupported, GrantTypes, ResponseType} from '@sphereon/oid4vci-common';
 import {CorrelationIdentifierEnum, IBasicCredentialLocaleBranding, IBasicIdentity, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk.data-store';
 import {
   CredentialMapper,
@@ -19,18 +19,104 @@ import {getContacts} from '../contactService';
 import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {ICredentialTypeSelection, IVerificationResult} from '../../types/';
+import {IAuthenticationOpts, ICredentialTypeSelection, IVerificationResult, QrTypesEnum} from '../../types/';
 import {MappedCredentialOffer, OID4VCIMachineContext} from '../../types/machines/oid4vci';
 import {translate} from '../../localization/Localization';
+import {getTypesFromCredentialSupported} from '@sphereon/oid4vci-common/lib/functions/IssuerMetadataUtils';
+import {getRandomBytes} from 'expo-crypto';
+import {AuthorizationRequest, AuthorizationRequestState, IssuerConnection} from '../../types/service/authenticationService';
+import {sha256} from '@noble/hashes/sha256';
+import {Linking} from 'react-native';
+import {base64UrlEncode} from '../../utils/TextUtils';
+
+const CODE_VERIFIER_LENGTH = 128;
+const NONCE_LENGTH = 32;
 
 export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMachineContext, 'requestData'>): Promise<OpenId4VcIssuanceProvider> => {
   const {requestData} = context;
 
-  if (requestData?.uri === undefined) {
-    return Promise.reject(Error('Missing request uri in context'));
+  if (requestData == undefined || requestData.type === undefined) {
+    return Promise.reject(Error('Missing request context'));
   }
 
-  return OpenId4VcIssuanceProvider.initiationFromUri({uri: requestData.uri});
+  switch (requestData.type) {
+    case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
+    case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
+      if (requestData.uri === undefined) {
+        return Promise.reject(Error('Missing request uri in context'));
+      }
+      return OpenId4VcIssuanceProvider.initiationFromUri({uri: requestData.uri});
+
+    case QrTypesEnum.OPENID_CONNECT_ISSUER:
+      const issuerConnection = requestData.issuerConnection as IssuerConnection;
+      if (issuerConnection == undefined) {
+        throw new Error('Could not get issuerConnection from QR data');
+      }
+      const issuerUrl = new URL(issuerConnection.issuerUrl);
+      return OpenId4VcIssuanceProvider.initiationFromIssuer({
+        issuer: `${issuerUrl.protocol}//${issuerUrl.host}`,
+        clientId: issuerConnection.clientId,
+      });
+  }
+  return Promise.reject(Error(`Can't initiate OpenId4VcIssuanceProvider for request type ${requestData.type}`));
+};
+
+const generateRandomString = (length: number) => {
+  return base64UrlEncode(getRandomBytes(length)).slice(0, length);
+};
+
+function determineScope(credentialsSupported: CredentialSupported[], selectedCredentials: Array<string>) {
+  let scope: string | undefined;
+  credentialsSupported
+    .filter(credentialSupported => credentialSupported.scope != undefined)
+    .map(credentialSupported => {
+      const types = getTypesFromCredentialSupported(credentialSupported);
+      if (types.some(type => selectedCredentials.includes(type))) {
+        scope = credentialSupported.scope!;
+      }
+    });
+  return scope;
+}
+
+export const authorizeInteractive = async (
+  context: Pick<OID4VCIMachineContext, 'requestData' | 'openId4VcIssuanceProvider' | 'selectedCredentials'>,
+): Promise<AuthorizationRequestState> => {
+  const {requestData, openId4VcIssuanceProvider, selectedCredentials} = context;
+  if (!requestData || !requestData.issuerConnection) {
+    return Promise.reject(Error('Could not get issuerConnection from QR data'));
+  }
+  if (!openId4VcIssuanceProvider || !openId4VcIssuanceProvider.serverMetadata) {
+    return Promise.reject(Error('Could not get serverMetadata'));
+  }
+  if (!openId4VcIssuanceProvider.serverMetadata.authorization_endpoint) {
+    return Promise.reject(Error('Could not get authorization_endpoint'));
+  }
+  if (!selectedCredentials || selectedCredentials.length == 0) {
+    // (This also implies that credentialIssuerMetadata.credentials_supported is defined)
+    return Promise.reject(Error(`Can't determine scope, no credential(s) selected`));
+  }
+  const issuerConnection = requestData.issuerConnection as IssuerConnection;
+  const codeVerifier = generateRandomString(CODE_VERIFIER_LENGTH);
+  const codeChallenge = base64UrlEncode(sha256(codeVerifier));
+  const authRequest = {
+    scope:
+      determineScope(openId4VcIssuanceProvider.serverMetadata!.credentialIssuerMetadata?.credentials_supported!, selectedCredentials) ?? 'openid',
+    response_type: ResponseType.AUTH_CODE,
+    client_id: issuerConnection.clientId,
+    redirect_uri: issuerConnection.redirectUri,
+    nonce: generateRandomString(NONCE_LENGTH),
+    code_challenge: codeChallenge,
+    code_challenge_method: CodeChallengeMethod.SHA256,
+  } as AuthorizationRequest;
+
+  const queryParams = new URLSearchParams(authRequest);
+  const url = `${openId4VcIssuanceProvider.serverMetadata.authorization_endpoint}?${queryParams}`;
+  await Linking.openURL(url);
+
+  return {
+    authorizationRequest: authRequest,
+    codeVerifier,
+  } as AuthorizationRequestState;
 };
 
 export const createCredentialSelection = async (
@@ -49,8 +135,8 @@ export const createCredentialSelection = async (
   const credentialSelection: Array<ICredentialTypeSelection> = await Promise.all(
     openId4VcIssuanceProvider.credentialsSupported.map(async (credentialMetadata: CredentialSupported): Promise<ICredentialTypeSelection> => {
       // FIXME this allows for duplicate VerifiableCredential, which the user has no idea which ones those are and we also have a branding map with unique keys, so some branding will not match
-      const credentialType: string =
-        credentialMetadata.types.find((type: string): boolean => type !== 'VerifiableCredential') ?? 'VerifiableCredential';
+      const types = getTypesFromCredentialSupported(credentialMetadata);
+      const credentialType: string = types.find((type: string): boolean => type !== 'VerifiableCredential') ?? 'VerifiableCredential';
       return {
         id: uuidv4(),
         credentialType,
@@ -96,13 +182,48 @@ export const retrieveContact = async (context: Pick<OID4VCIMachineContext, 'open
 };
 
 export const retrieveCredentialOffers = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'verificationCode' | 'selectedCredentials'>,
+  context: Pick<
+    OID4VCIMachineContext,
+    | 'openId4VcIssuanceProvider'
+    | 'verificationCode'
+    | 'selectedCredentials'
+    | 'requestData'
+    | 'authorizationRequestState'
+    | 'authorizationCodeResponse'
+  >,
 ): Promise<Array<MappedCredentialOffer> | undefined> => {
-  const {openId4VcIssuanceProvider, verificationCode, selectedCredentials} = context;
+  const {openId4VcIssuanceProvider, verificationCode, selectedCredentials, requestData, authorizationRequestState, authorizationCodeResponse} =
+    context;
+
+  let grantType: GrantTypes;
+  let authenticationOptions: IAuthenticationOpts;
+  if (requestData?.type === QrTypesEnum.OPENID_CONNECT_ISSUER) {
+    // FIXME requestData?.type is maybe not the nicest way to keep determining the flow
+    if (authorizationCodeResponse?.code == undefined) {
+      return Promise.reject(Error(`code is missing from the authorization response`));
+    }
+    const issuerConnection = requestData?.issuerConnection as IssuerConnection;
+    authenticationOptions = {
+      pin: verificationCode,
+      clientId: issuerConnection.clientId,
+      redirectUri: issuerConnection.redirectUri,
+      tokenProxyUrl: issuerConnection.proxyTokenUrl,
+      code: authorizationCodeResponse?.code,
+      codeVerifier: authorizationRequestState?.codeVerifier,
+    };
+    grantType = GrantTypes.AUTHORIZATION_CODE;
+  } else {
+    authenticationOptions = {
+      pin: verificationCode,
+    };
+    grantType = GrantTypes.PRE_AUTHORIZED_CODE;
+  }
+
   return openId4VcIssuanceProvider
     ?.getCredentialsFromIssuance({
       credentials: selectedCredentials,
-      pin: verificationCode,
+      authenticationOptions: authenticationOptions,
+      grantType: grantType,
     })
     .then(
       (credentialOffers: Array<CredentialFromOffer>): Array<MappedCredentialOffer> =>

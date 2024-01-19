@@ -1,0 +1,26 @@
+diff --git a/node_modules/@veramo/core/build/types/IIdentifier.d.ts b/node_modules/@veramo/core/build/types/IIdentifier.d.ts
+index ace5497..cdbc18d 100644
+--- a/node_modules/@veramo/core/build/types/IIdentifier.d.ts
++++ b/node_modules/@veramo/core/build/types/IIdentifier.d.ts
+@@ -43,7 +43,7 @@ export type MinimalImportableIdentifier = {
+  *
+  * @public
+  */
+-export type TKeyType = 'Ed25519' | 'Secp256k1' | 'Secp256r1' | 'X25519' | 'Bls12381G1' | 'Bls12381G2';
++export type TKeyType = 'Ed25519' | 'Secp256k1' | 'Secp256r1' | 'X25519' | 'Bls12381G1' | 'Bls12381G2' | 'RSA';
+ /**
+  * Cryptographic key
+  * @public
+diff --git a/node_modules/@veramo/core/src/types/IIdentifier.ts b/node_modules/@veramo/core/src/types/IIdentifier.ts
+index ee063bd..3002bb8 100644
+--- a/node_modules/@veramo/core/src/types/IIdentifier.ts
++++ b/node_modules/@veramo/core/src/types/IIdentifier.ts
+@@ -51,7 +51,7 @@ export type MinimalImportableIdentifier = {
+  *
+  * @public
+  */
+-export type TKeyType = 'Ed25519' | 'Secp256k1' | 'Secp256r1' | 'X25519' | 'Bls12381G1' | 'Bls12381G2'
++export type TKeyType = 'Ed25519' | 'Secp256k1' | 'Secp256r1' | 'X25519' | 'Bls12381G1' | 'Bls12381G2' | 'RSA'
+ 
+ /**
+  * Cryptographic key
