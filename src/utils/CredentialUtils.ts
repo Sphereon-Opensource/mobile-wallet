@@ -1,7 +1,6 @@
 import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential} from '@veramo/core';
-import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
+import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import store from '../store';
 import {ICredentialSummary, IUser, IUserIdentifier} from '../types';

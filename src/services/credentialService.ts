@@ -1,6 +1,5 @@
 import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
-import {IVerifyCredentialArgs} from '@veramo/core/src/types/ICredentialVerifier';
+import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential, IVerifyCredentialArgs} from '@veramo/core';
 
 import agent, {
   dataStoreDeleteVerifiableCredential,

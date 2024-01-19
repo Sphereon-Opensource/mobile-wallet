@@ -3,7 +3,14 @@ import {v4 as uuidv4} from 'uuid';
 import {CompactJWT, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
 import {CredentialResponse, CredentialSupported} from '@sphereon/oid4vci-common';
-import {CorrelationIdentifierEnum, IBasicCredentialLocaleBranding, IBasicIdentity, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk.data-store';
+import {
+  CorrelationIdentifierEnum,
+  IBasicCredentialLocaleBranding,
+  IBasicIdentity,
+  IContact,
+  IdentityRoleEnum,
+  IIdentity,
+} from '@sphereon/ssi-sdk.data-store';
 import {
   CredentialMapper,
   IIssuer,
@@ -129,7 +136,7 @@ export const retrieveCredentialOffers = async (
     );
 };
 
-export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'credentialOffers' | 'contact'>): Promise<void> => {
+export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'credentialOffers' | 'contact'>): Promise<IIdentity> => {
   const {credentialOffers, contact} = context;
 
   if (!contact) {

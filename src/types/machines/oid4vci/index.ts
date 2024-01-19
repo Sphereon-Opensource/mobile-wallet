@@ -96,7 +96,7 @@ export type OID4VCIMachineInstanceOpts = {
   requireCustomNavigationHook?: boolean;
 } & CreateOID4VCIMachineOpts;
 
-export type OIDVCIProviderProps = {
+export type OID4VCIProviderProps = {
   children?: ReactNode;
   customOID4VCIInstance?: OID4VCIMachineInterpreter;
 };
@@ -126,7 +126,7 @@ export enum OID4VCIMachineEvents {
 
 export enum OID4VCIMachineGuards {
   hasContactGuard = 'oid4vciHasContactGuard',
-  hasNotContactGuard = 'oid4vciHasNoContactGuard',
+  hasNoContactGuard = 'oid4vciHasNoContactGuard',
   selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
   hasNoContactIdentityGuard = 'oid4vciHasNoContactIdentityGuard',

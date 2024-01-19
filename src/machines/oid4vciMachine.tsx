@@ -95,7 +95,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
     schema: {
       events: {} as OID4VCIMachineEventTypes,
       guards: {} as
-        | {type: OID4VCIMachineGuards.hasNotContactGuard}
+        | {type: OID4VCIMachineGuards.hasNoContactGuard}
         | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
         | {type: OID4VCIMachineGuards.hasNoContactIdentityGuard}
@@ -200,7 +200,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         always: [
           {
             target: OID4VCIMachineStates.addContact,
-            cond: OID4VCIMachineGuards.hasNotContactGuard,
+            cond: OID4VCIMachineGuards.hasNoContactGuard,
           },
           {
             target: OID4VCIMachineStates.selectCredentials,
