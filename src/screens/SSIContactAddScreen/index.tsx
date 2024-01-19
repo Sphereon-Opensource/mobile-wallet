@@ -64,25 +64,9 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onValidate = async (value: string): Promise<void> => {
-    let contactAlias: string = value.trim();
-
-    if (contactAlias.length === 0) {
+    if (value.trim().length === 0) {
       this.setState({contactAlias: ''});
       return Promise.reject(Error(translate('contact_name_invalid_message')));
-    }
-
-    const contacts: Array<Party> = await getContacts({
-      filter: [
-        {
-          contact: {
-            displayName: contactAlias,
-          },
-        },
-      ],
-    });
-    if (contacts.length !== 0) {
-      this.setState({contactAlias: ''});
-      return Promise.reject(Error(translate('contact_name_unavailable_message')));
     }
   };
 
@@ -110,7 +94,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       filter: [
         {
           contact: {
-            displayName: name,
+            legalName: name,
           },
         },
       ],

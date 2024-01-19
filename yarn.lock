@@ -3306,11 +3306,11 @@
     url-parse "^1.5.10"
     yaml "^2.2.2"
 
-"@sphereon/ssi-sdk.contact-manager@file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk.contact-manager-0.18.0-bram.tgz":
-  version "0.18.0-bram"
-  resolved "file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk.contact-manager-0.18.0-bram.tgz#9e3924afe048bed3400663173ab23790eade2ed4"
+"@sphereon/ssi-sdk.contact-manager@file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk.contact-manager-0.686.0-bram.tgz":
+  version "0.686.0-bram"
+  resolved "file:../ssi-sdk/packages/contact-manager/sphereon-ssi-sdk.contact-manager-0.686.0-bram.tgz#5270ceb5d17b11b9f9c26b48689cd5ca68a3e7a5"
   dependencies:
-    "@sphereon/ssi-sdk.data-store" "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.18.0-bram.tgz"
+    "@sphereon/ssi-sdk.data-store" "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.686.0-bram.tgz"
     cross-fetch "^3.1.8"
     typeorm "^0.3.12"
 
@@ -3337,11 +3337,11 @@
     image-size "^1.0.2"
     uint8arrays "3.1.1"
 
-"@sphereon/ssi-sdk.core@file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.18.0-bram.tgz":
-  version "0.18.0-bram"
-  resolved "file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.18.0-bram.tgz#4500242ebe4b70af3750b0b7375610ca455ded15"
+"@sphereon/ssi-sdk.core@file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.686.0-bram.tgz":
+  version "0.686.0-bram"
+  resolved "file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.686.0-bram.tgz#1842f942e75f80f4fbd0cd1b49d27c3d4e3ec190"
   dependencies:
-    "@sphereon/ssi-types" "file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.18.0-bram.tgz"
+    "@sphereon/ssi-types" "file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.686.0-bram.tgz"
     "@veramo/core" "4.2.0"
     cross-fetch "^3.1.8"
     debug "^4.3.4"
@@ -3360,12 +3360,12 @@
     debug "^4.3.4"
     typeorm "^0.3.12"
 
-"@sphereon/ssi-sdk.data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.18.0-bram.tgz":
-  version "0.18.0-bram"
-  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.18.0-bram.tgz#e2765126833f4c9b56e86f5cb8dfc3dcf21dd066"
+"@sphereon/ssi-sdk.data-store@file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.686.0-bram.tgz":
+  version "0.686.0-bram"
+  resolved "file:../ssi-sdk/packages/data-store/sphereon-ssi-sdk.data-store-0.686.0-bram.tgz#55911593b7abfdddf4d2f8c3397bcc992a2110ff"
   dependencies:
-    "@sphereon/ssi-sdk.core" "file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.18.0-bram.tgz"
-    "@sphereon/ssi-types" "file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.18.0-bram.tgz"
+    "@sphereon/ssi-sdk.core" "file:../ssi-sdk/packages/ssi-sdk-core/sphereon-ssi-sdk.core-0.686.0-bram.tgz"
+    "@sphereon/ssi-types" "file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.686.0-bram.tgz"
     "@veramo/core" "4.2.0"
     class-validator "^0.14.0"
     debug "^4.3.4"
@@ -3502,10 +3502,17 @@
     debug "^4.3.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-types@0.17.1", "@sphereon/ssi-types@0.17.2", "@sphereon/ssi-types@0.18.0", "@sphereon/ssi-types@^0.17.5", "@sphereon/ssi-types@^0.9.0", "@sphereon/ssi-types@file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.18.0-bram.tgz":
+"@sphereon/ssi-types@0.17.1", "@sphereon/ssi-types@0.17.2", "@sphereon/ssi-types@0.18.0", "@sphereon/ssi-types@^0.17.5", "@sphereon/ssi-types@^0.9.0":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.18.0.tgz#b4f3a4a9e4e5b28719ce729b679d71d9d220cc26"
   integrity sha512-D2n42NAhHCwpL4K7BqQXO9dYQ8n3st/1eJQrLqokJ18B9r2gury3km4cp+ZdiIxfefUaP9RBCeuWaiRUvjZ94w==
+  dependencies:
+    "@sd-jwt/core" "0.1.2-alpha.0"
+    jwt-decode "^3.1.2"
+
+"@sphereon/ssi-types@file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.686.0-bram.tgz":
+  version "0.686.0-bram"
+  resolved "file:../ssi-sdk/packages/ssi-types/sphereon-ssi-types-0.686.0-bram.tgz#2bdee6410695e7aaeeaefa616ec8f7331ca88c07"
   dependencies:
     "@sd-jwt/core" "0.1.2-alpha.0"
     jwt-decode "^3.1.2"
