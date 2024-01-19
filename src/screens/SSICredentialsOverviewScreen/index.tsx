@@ -11,7 +11,6 @@ import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {backgrounds, borders} from '../../styles/colors';
 import {
   SSIBasicContainerStyled as Container,
   SSIRippleContainerStyled as ItemContainer,
@@ -19,6 +18,7 @@ import {
 } from '../../styles/components';
 import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
@@ -87,11 +87,12 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     );
 
     const backgroundStyle = {
-      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+      backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
     const style = {
       ...backgroundStyle,
-      ...(itemInfo.index === verifiableCredentials.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+      ...(itemInfo.index === verifiableCredentials.length - 1 &&
+        itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     return activeUser.identifiers.some(

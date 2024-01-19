@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-
-import {fonts} from '../../../../styles/colors';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   height?: number;
@@ -12,7 +11,7 @@ export interface IProps {
 
 // TODO use checkmark in checkmark badge
 const SSICheckmarkIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {height = 14, width = 17, color = fonts.light} = props;
+  const {height = 14, width = 17, color = fontColors.light} = props;
 
   return (
     <View style={{height, width}}>

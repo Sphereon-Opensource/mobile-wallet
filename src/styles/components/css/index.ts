@@ -1,21 +1,20 @@
 import {css} from 'styled-components/native';
-
-import {backgrounds} from '../../colors';
+import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const SSIRoundedEdgesCss = css`
   border-radius: 8px;
 `;
 
 export const SSIBackgroundPrimaryDarkColorCss = css`
-  background-color: ${backgrounds.primaryDark};
+  background-color: ${backgroundColors.primaryDark};
 `;
 
 export const SSIBackgroundSecondaryDarkColorCss = css`
-  background-color: ${backgrounds.secondaryDark};
+  background-color: ${backgroundColors.secondaryDark};
 `;
 
 export const SSIBackgroundPrimaryLightColorCss = css`
-  background-color: ${backgrounds.primaryLight};
+  background-color: ${backgroundColors.primaryLight};
 `;
 
 export const SSIButtonBottomContainerCss = css`

@@ -38,6 +38,7 @@ export type StackParamList = {
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
   OID4VCI: IOID4VCIProps;
+  Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
 };
 
@@ -221,6 +222,7 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
+  EMERGENCY = 'Emergency',
 }
 
 export interface IOID4VCIProps {

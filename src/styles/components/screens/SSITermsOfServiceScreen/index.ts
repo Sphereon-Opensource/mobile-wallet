@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-
-import {borders} from '../../../colors';
+import {borderColors} from '@sphereon/ui-components.core';
 
 export const SSITermsOfServiceScreenTabViewContainerStyled = styled.View`
   flex: 1;
@@ -10,7 +9,7 @@ export const SSITermsOfServiceScreenTabViewContainerStyled = styled.View`
 export const SSITermsOfServiceScreenBottomContainerStyled = styled.View`
   margin-top: auto;
   border-top-width: 1px;
-  border-top-color: ${borders.dark};
+  border-top-color: ${borderColors.dark};
 `;
 
 export const SSITermsOfServiceScreenCheckboxesContainerStyled = styled.View`

@@ -1,13 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import {ListRenderItemInfo, ViewStyle} from 'react-native';
+import {useBackHandler} from '@react-native-community/hooks';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem';
 import {translate} from '../../localization/Localization';
-import {backgrounds, borders} from '../../styles/colors';
 import {
   SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
@@ -15,7 +15,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSelection, ScreenRoutesEnum, StackParamList} from '../../types';
-import {useBackHandler} from '@react-native-community/hooks';
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_SELECT>;
 
@@ -63,11 +63,12 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => {
     const backgroundStyle: ViewStyle = {
-      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+      backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
     const style: ViewStyle = {
       ...backgroundStyle,
-      ...(itemInfo.index === credentialSelection.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+      ...(itemInfo.index === credentialSelection.length - 1 &&
+        itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
     return (
       <ItemContainer style={style} onPress={() => onItemPress(itemInfo.item)} onLongPress={() => onLongPress(itemInfo)}>

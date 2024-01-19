@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
-import {alerts} from '../../../colors';
 import {SSITouchableOpacityButtonFlexRowStyled} from '../../buttons';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerStyled} from '../../containers';
 import {SSITextH4DarkStyled} from '../../fonts';
+import {alertColors} from '@sphereon/ui-components.core';
 
 export const SSIAlertContainerStyled = styled(SSIRoundedContainerStyled)`
   margin-bottom: 10px;
@@ -12,7 +12,7 @@ export const SSIAlertContainerStyled = styled(SSIRoundedContainerStyled)`
 export const SSIAlertMessageContainerStyled = styled.View`
   justify-content: center;
   align-items: center;
-  background-color: ${alerts.primaryLight};
+  background-color: ${alertColors.primaryLight};
   padding-left: 28px;
   padding-right: 28px;
 `;
@@ -28,11 +28,11 @@ export const SSIAlertButtonContainerStyled = styled(SSIFlexDirectionRowViewStyle
   height: 48px;
   display: flex;
   flex-wrap: wrap;
-  background-color: ${alerts.secondaryLight};
+  background-color: ${alertColors.secondaryLight};
 `;
 
 export const SSIAlertButtonStyled = styled(SSITouchableOpacityButtonFlexRowStyled)`
-  background-color: ${alerts.secondaryLight};
+  background-color: ${alertColors.secondaryLight};
   flex: 1;
   height: 100%;
   justify-content: center;

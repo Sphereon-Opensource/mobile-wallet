@@ -1,5 +1,5 @@
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC} from 'react';
-
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
@@ -11,7 +11,6 @@ import {
   SSIWelcomeViewTitleTextStyled as TitleCaption,
 } from '../../../styles/components';
 import {IButton} from '../../../types';
-import SSIPrimaryButton from '../../buttons/SSIPrimaryButton';
 import SSIProgressIndicator from '../../indicators/SSIProgressIndicator';
 
 export interface IProps {
@@ -39,7 +38,7 @@ const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
         </BodyContainer>
       </ContentContainer>
       <ButtonContainer>
-        <SSIPrimaryButton
+        <PrimaryButton
           // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
           style={{height: 42, width: 300}}
           caption={action.caption}
