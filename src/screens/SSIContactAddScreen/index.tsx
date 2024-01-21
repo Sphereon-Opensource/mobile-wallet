@@ -94,6 +94,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
       filter: [
         {
           contact: {
+            // Searching on legalName as displayName is not unique, and we only support organizations for now
             legalName: name,
           },
         },
