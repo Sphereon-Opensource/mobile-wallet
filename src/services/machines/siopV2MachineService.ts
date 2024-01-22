@@ -3,10 +3,10 @@ import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
-  IBasicIdentity,
-  IContact,
+  NonPersistedIdentity,
+  Party,
   IdentityRoleEnum,
-  IDidAuthConfig,
+  DidAuthConfig,
 } from '@sphereon/ssi-sdk.data-store';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
@@ -19,7 +19,7 @@ import {IIdentifier} from '@veramo/core';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {translateCorrelationIdToName} from '../../utils/CredentialUtils';
 
-export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData' | 'identifier'>): Promise<IDidAuthConfig> => {
+export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData' | 'identifier'>): Promise<DidAuthConfig> => {
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {
@@ -79,7 +79,7 @@ export const getSiopRequest = async (
 
 export const retrieveContact = async (
   context: Pick<SiopV2MachineContext, 'requestData' | 'authorizationRequestData'>,
-): Promise<IContact | undefined> => {
+): Promise<Party | undefined> => {
   const {authorizationRequestData} = context;
 
   if (authorizationRequestData === undefined) {
@@ -96,7 +96,7 @@ export const retrieveContact = async (
         },
       },
     ],
-  }).then((contacts: Array<IContact>): IContact | undefined => (contacts.length === 1 ? contacts[0] : undefined));
+  }).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
 export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'contact' | 'authorizationRequestData'>): Promise<void> => {
@@ -119,7 +119,7 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
     : undefined;
 
   if (correlationId) {
-    const identity: IBasicIdentity = {
+    const identity: NonPersistedIdentity = {
       alias: correlationId,
       roles: [IdentityRoleEnum.ISSUER],
       identifier: {

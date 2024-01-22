@@ -1,5 +1,5 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
+import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
@@ -148,14 +148,14 @@ export interface ICredentialSelectTypeProps {
 }
 
 export interface IContactDetailsProps {
-  contact: IContact;
+  contact: Party;
 }
 
 export interface IContactAddProps {
   name: string;
   uri?: string;
-  identities?: Array<IBasicIdentity>;
-  onCreate: (contact: IContact) => Promise<void>;
+  identities?: Array<NonPersistedIdentity>;
+  onCreate: (contact: Party) => Promise<void>;
   onDecline: () => Promise<void>;
   onConsentChange?: (hasConsent: boolean) => Promise<void>;
   onAliasChange?: (alias: string) => Promise<void>;

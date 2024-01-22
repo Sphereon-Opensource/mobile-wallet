@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -16,7 +16,7 @@ import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
-  contacts: Array<IContact>;
+  contacts: Array<Party>;
   deleteContact: (contactId: string) => void;
   activeUser: IUser;
 }
@@ -35,12 +35,12 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  onDelete = async (contact: IContact): Promise<void> => {
+  onDelete = async (contact: Party): Promise<void> => {
     const {navigation, deleteContact} = this.props;
 
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
-      details: translate('contact_delete_message', {contactName: contact.alias}),
+      details: translate('contact_delete_message', {contactName: contact.contact.displayName}),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async (): Promise<void> => {
@@ -55,13 +55,13 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     });
   };
 
-  onItemPress = async (contact: IContact): Promise<void> => {
+  onItemPress = async (contact: Party): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact});
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => {
+  renderItem = (itemInfo: ListRenderItemInfo<Party>): JSX.Element => {
     const {activeUser, contacts} = this.props;
-    const contactItem = <SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
+    const contactItem = <SSIContactViewItem name={itemInfo.item.contact.displayName} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
     const backgroundStyle = {
       backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
@@ -90,7 +90,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: IContact) => itemInfo.id}
+          keyExtractor={(itemInfo: Party) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe

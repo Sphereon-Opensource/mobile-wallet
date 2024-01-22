@@ -4,7 +4,7 @@ import Debug, {Debugger} from 'debug';
 import {IIdentifier} from '@veramo/core';
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CredentialOfferClient} from '@sphereon/oid4vci-client';
-import {ConnectionTypeEnum, IBasicConnection, IDidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionTypeEnum, NonPersistedConnection, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
@@ -122,7 +122,7 @@ const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   const verifier: string = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
-  const connection: IBasicConnection = {
+  const connection: NonPersistedConnection = {
     type: ConnectionTypeEnum.SIOPv2,
     config: {
       identifier,
@@ -136,7 +136,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
     const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest({
       ...connection.config,
       id: uuidv4(),
-    } as IDidAuthConfig);
+    } as DidAuthConfig);
     args.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
       verifier,
       presentationDefinition: verifiedAuthorizationRequest.presentationDefinitions![0].definition,

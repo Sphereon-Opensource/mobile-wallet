@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
@@ -18,23 +18,14 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
   SSIContactAddScreenTextInputContainerStyled as TextInputContainer,
 } from '../../styles/components';
-import {
-  ICreateContactArgs,
-  IUpdateContactArgs,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum,
-  StackParamList,
-  SwitchRoutesEnum,
-  ToastTypeEnum,
-} from '../../types';
+import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {NavigationState} from '@react-navigation/routers';
 import {navigationRef} from '../../navigation/rootNavigation';
 import {Route} from '@react-navigation/native';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
-  createContact: (args: ICreateContactArgs) => Promise<IContact>;
-  updateContact: (args: IUpdateContactArgs) => Promise<IContact>;
+  createContact: (args: ICreateContactArgs) => Promise<Party>;
+  updateContact: (args: IUpdateContactArgs) => Promise<Party>;
   loading: boolean;
 }
 
@@ -73,17 +64,9 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   };
 
   onValidate = async (value: string): Promise<void> => {
-    let contactAlias: string = value.trim();
-
-    if (contactAlias.length === 0) {
+    if (value.trim().length === 0) {
       this.setState({contactAlias: ''});
       return Promise.reject(Error(translate('contact_name_invalid_message')));
-    }
-
-    const contacts: Array<IContact> = await getContacts({filter: [{alias: contactAlias}]});
-    if (contacts.length !== 0) {
-      this.setState({contactAlias: ''});
-      return Promise.reject(Error(translate('contact_name_unavailable_message')));
     }
   };
 
@@ -94,30 +77,46 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     Keyboard.dismiss();
 
     this.onValidate(contactAlias)
-      .then((): Promise<IContact> => this.upsert())
-      .then((contact: IContact): Promise<void> => onCreate(contact))
+      .then((): Promise<Party> => this.upsert())
+      .then((contact: Party): Promise<void> => onCreate(contact))
       .catch((): void => {
         // do nothing as the state is already handled by the validate function, and we do not want to create the contact
         // we might want to do something with other errors
       });
   };
 
-  private async upsert(): Promise<IContact> {
+  private async upsert(): Promise<Party> {
     const {createContact, updateContact} = this.props;
     const {identities, name, uri} = this.props.route.params;
     const {contactAlias} = this.state;
 
-    const contacts: Array<IContact> = await getContacts({filter: [{name: name}]});
+    const contacts: Array<Party> = await getContacts({
+      filter: [
+        {
+          contact: {
+            // Searching on legalName as displayName is not unique, and we only support organizations for now
+            legalName: name,
+          },
+        },
+      ],
+    });
     if (contacts.length !== 0) {
-      const contactToUpdate: IUpdateContactArgs = {contact: contacts[0]};
-      contactToUpdate.contact.alias = contactAlias;
-      return updateContact(contactToUpdate);
+      contacts[0].contact.displayName = contactAlias;
+      return updateContact({contact: contacts[0]});
     } else {
       return createContact({
-        name,
-        alias: contactAlias.trim(),
+        legalName: name,
+        displayName: contactAlias.trim(),
         uri,
         identities,
+        // FIXME maybe its nicer if we can also just use the id only
+        // TODO using the predefined party type from the contact migrations here
+        contactType: {
+          id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
+          type: PartyTypeEnum.ORGANIZATION,
+          name: 'Sphereon_default_type',
+          tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
+        },
       });
     }
   }

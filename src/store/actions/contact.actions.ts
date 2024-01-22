@@ -1,4 +1,4 @@
-import {CorrelationIdentifierEnum, IContact, IdentityRoleEnum, IIdentity} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierEnum, Party, IdentityRoleEnum, Identity, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -31,12 +31,12 @@ import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 
-export const getContacts = (): ThunkAction<Promise<Array<IContact>>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<IContact>> => {
+export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
     dispatch({type: CONTACTS_LOADING});
     return getUserContact()
-      .then((userContact: IContact) => {
-        return getContactsFromStorage().then((contacts: Array<IContact>): Array<IContact> => {
+      .then((userContact: Party) => {
+        return getContactsFromStorage().then((contacts: Array<Party>): Array<Party> => {
           dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
           return [...contacts, userContact];
         });
@@ -48,11 +48,11 @@ export const getContacts = (): ThunkAction<Promise<Array<IContact>>, RootState, 
   };
 };
 
-export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<IContact>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IContact> => {
+export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {
     dispatch({type: CONTACTS_LOADING});
     return storeContact(args)
-      .then((contact: IContact): IContact => {
+      .then((contact: Party): Party => {
         dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
         return contact;
@@ -64,11 +64,11 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<ICo
   };
 };
 
-export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<IContact>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IContact> => {
+export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {
     dispatch({type: CONTACTS_LOADING});
     return editContact(args)
-      .then((contact: IContact): IContact => {
+      .then((contact: Party): Party => {
         dispatch({type: UPDATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
         return contact;
@@ -80,11 +80,11 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<ICo
   };
 };
 
-export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<IIdentity>, RootState, unknown, Action> => {
-  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IIdentity> => {
+export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<Identity>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Identity> => {
     dispatch({type: CONTACTS_LOADING});
     return identityAdd(args)
-      .then((identity: IIdentity) => {
+      .then((identity: Identity) => {
         dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}});
         return identity;
       })
@@ -122,22 +122,44 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
   };
 };
 
-export const getUserContact = async (): Promise<IContact> => {
+export const getUserContact = async (): Promise<Party> => {
   const userState: IUserState = store.getState().user;
   // TODO supporting only one user at the moment
   const user: IUser = userState.activeUser!;
 
-  const userFullName: string = `${user.firstName} ${user.lastName}`;
-
   return {
     id: user.id,
-    name: userFullName,
-    alias: userFullName,
+    contact: {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      displayName: `${user.firstName} ${user.lastName}`,
+      createdAt: user.createdAt,
+      lastUpdatedAt: user.lastUpdatedAt,
+    },
+    partyType: {
+      id: user.id,
+      type: PartyTypeEnum.NATURAL_PERSON,
+      name: 'user_party',
+      tenantId: user.id,
+      createdAt: user.createdAt,
+      lastUpdatedAt: user.lastUpdatedAt,
+    },
+    electronicAddresses: [
+      {
+        id: user.id,
+        type: 'email',
+        electronicAddress: user.emailAddress,
+        createdAt: user.createdAt,
+        lastUpdatedAt: user.lastUpdatedAt,
+      },
+    ],
+    relationships: [],
     uri: user.emailAddress,
     //todo: (WAL-545) handle this based on the identities available in the wallet
     roles: [IdentityRoleEnum.HOLDER],
     identities: user.identifiers.map(
-      (identifier: IUserIdentifier): IIdentity => ({
+      (identifier: IUserIdentifier): Identity => ({
         id: uuidv4(),
         alias: identifier.did,
         roles: [IdentityRoleEnum.HOLDER],

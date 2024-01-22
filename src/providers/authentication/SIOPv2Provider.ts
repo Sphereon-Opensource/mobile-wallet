@@ -1,6 +1,6 @@
 import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
-import {ConnectionTypeEnum, IDidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
@@ -11,7 +11,7 @@ import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
-export const siopGetRequest = async (config: IDidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
+export const siopGetRequest = async (config: DidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(
     async () => await siopRegisterSession({requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId}),
   );

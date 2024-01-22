@@ -15,10 +15,8 @@ import {
 } from '../../types/machines/siopV2';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {CreateContactEvent, OID4VCIMachineEvents} from '../../types/machines/oid4vci';
-import {URL} from 'react-native-url-polyfill';
-import {ConnectionTypeEnum, CorrelationIdentifierEnum, IBasicContact, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionTypeEnum, CorrelationIdentifierEnum, NonPersistedParty, Party, IdentityRoleEnum, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
-import {translateCorrelationIdToName} from '../../utils/CredentialUtils';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {Format} from '@sphereon/pex-models';
@@ -60,8 +58,20 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return Promise.reject(Error('Missing request data in context'));
   }
 
-  const contact: Omit<IBasicContact, 'alias'> = {
-    name: authorizationRequestData.name ?? authorizationRequestData.correlationId,
+  const contactName: string = authorizationRequestData.name ?? authorizationRequestData.correlationId;
+  const contact: NonPersistedParty = {
+    contact: {
+      displayName: contactName,
+      legalName: contactName,
+    },
+    // FIXME maybe its nicer if we can also just use the id only
+    // TODO using the predefined party type from the contact migrations here
+    partyType: {
+      id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
+      type: PartyTypeEnum.ORGANIZATION,
+      name: 'Sphereon_default_type',
+      tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
+    },
     uri: authorizationRequestData.uri && `${authorizationRequestData.uri.protocol}//${authorizationRequestData.uri.hostname}`,
     identities: [
       {
@@ -88,7 +98,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     ],
   };
 
-  const onCreate = async (contact: IContact): Promise<void> => {
+  const onCreate = async (contact: Party): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.CREATE_CONTACT,
       data: contact,
@@ -120,7 +130,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.CONTACT_ADD,
     params: {
-      name: contact.name,
+      name: contact.contact.displayName,
       uri: contact.uri,
       identities: contact.identities,
       hasConsent: hasContactConsent,
@@ -183,7 +193,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
     params: {
-      verifierName: contact.alias,
+      verifierName: contact.contact.displayName,
       presentationDefinition: presentationDefinitionWithLocation.definition,
       format,
       subjectSyntaxTypesSupported,

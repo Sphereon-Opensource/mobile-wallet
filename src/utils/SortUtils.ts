@@ -1,11 +1,20 @@
 import {SortOrder} from '../types';
 
-export function sortBy<T>(key: keyof T, order: SortOrder) {
+export function sortBy<T>(key: string, order: SortOrder) {
   return function (a: T, b: T) {
-    return orderToNumberSign(order) * (a[key] as string).toLowerCase().localeCompare((b[key] as string).toLowerCase());
+    const keys: Array<string> = key.split('.');
+    let aValue: any = a;
+    let bValue: any = b;
+
+    for (const key of keys) {
+      aValue = aValue[key];
+      bValue = bValue[key];
+    }
+
+    return orderToNumber(order) * String(aValue).toLowerCase().localeCompare(String(bValue).toLowerCase());
   };
 
-  function orderToNumberSign(order: SortOrder) {
+  function orderToNumber(order: SortOrder): number {
     return order === SortOrder.ASC ? 1 : -1;
   }
 }
