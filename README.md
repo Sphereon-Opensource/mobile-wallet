@@ -340,3 +340,11 @@ you can choose `Product -> Archive`).
 It will take some time for the app to start. In some circumstances you might not get directly to the app. If that is the
 case lookup whether the Sphereon Wallet application can be found in you apps. If so start it from there. You should see
 the bundler starting.
+
+&nbsp;
+
+## About
+
+<img align="right" src="https://raw.githubusercontent.com/OwnYourData/dc-intermediary/main/res/logo-ngi-trustchain-positive.png" height="100">This project has received funding from the European Union’s Horizon 2020 research and innovation program through the [NGI TRUSTCHAIN program](https://trustchain.ngi.eu/) under cascade funding agreement No 101093274.
+
+<br clear="both" />

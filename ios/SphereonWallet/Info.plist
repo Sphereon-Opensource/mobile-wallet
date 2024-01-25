@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Need location</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need location</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need location</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -63,6 +57,12 @@
 	<string>Needed to scan QR codes</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Used as optional login method</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>

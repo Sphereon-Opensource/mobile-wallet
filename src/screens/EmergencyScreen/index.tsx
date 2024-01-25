@@ -1,10 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { backgroundColors, buttonColors, fontColors } from '@sphereon/ui-components.core';
-import { PrimaryButton, SecondaryButton } from '@sphereon/ui-components.ssi-react-native';
-import { translate } from '../../localization/Localization';
-import { EMERGENCY_ALERT_DELAY } from '../../@config/constants';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {backgroundColors, buttonColors, fontColors} from '@sphereon/ui-components.core';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {translate} from '../../localization/Localization';
+import {EMERGENCY_ALERT_DELAY} from '../../@config/constants';
 import {
   EmergencyScreenButtonContainerStyled as ButtonContainer,
   EmergencyScreenContainerStyled as Container,
@@ -14,19 +14,19 @@ import {
   EmergencyScreenCountdownTextStyled as CountdownText,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import { ScreenRoutesEnum, StackParamList } from '../../types';
-import { Agent, DEC112Specifics, SimpleLocation, VCard } from 'ng112-js/dist/node';
-import { Alert } from 'react-native';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {Agent, DEC112Specifics, SimpleLocation, VCard} from 'ng112-js/dist/node';
+import {Alert} from 'react-native';
 import * as Location from 'expo-location';
-import { LocationAccuracy, LocationObject } from 'expo-location';
-import { LocationMethod } from 'pidf-lo';
-import { getVerifiableCredentialsFromStorage } from '../../services/credentialService';
-import { UniqueVerifiableCredential } from '@veramo/core';
+import {LocationAccuracy, LocationObject} from 'expo-location';
+import {LocationMethod} from 'pidf-lo';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {UniqueVerifiableCredential} from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.EMERGENCY>;
 
 const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
-  const { navigation } = props;
+  const {navigation} = props;
   const [sipCredentials, setSipCredentials] = useState();
   const [idAustriaData, setIdAustriaData] = useState<any>();
   const [displayName, setDisplayName] = useState('');
@@ -59,7 +59,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
       Location.getCurrentPositionAsync({}).then(location => {
         setLocation(location);
       });
-      Location.watchPositionAsync({ timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation }, () => {
+      Location.watchPositionAsync({timeInterval: 60000, accuracy: LocationAccuracy.BestForNavigation}, () => {
         if (agent) {
           setLocation(location);
           agent.updateLocation(createLocation());
@@ -150,7 +150,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
           console.log('Trying to send start message');
           const startMessage = conversation?.start({
             text: 'Silent Call from SSI Wallet',
-            extraHeaders: [{ key: 'X-Dec112-Silent', value: 'True' }],
+            extraHeaders: [{key: 'X-Dec112-Silent', value: 'True'}],
           });
           startMessage?.promise
             .then(() => {
@@ -178,7 +178,7 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <StatusBar backgroundColor={backgroundColors.orange}/>
+      <StatusBar backgroundColor={backgroundColors.orange} />
       <CountdownOuterContainer>
         <CountdownMiddleContainer>
           <CountdownInnerContainer>
@@ -188,21 +188,21 @@ const EmergencyScreen: FC<Props> = (props: Props): JSX.Element => {
       </CountdownOuterContainer>
       <ButtonContainer>
         <SecondaryButton
-          style={{ height: 42, width: 300 }}
+          style={{height: 42, width: 300}}
           borderColors={[fontColors.light]}
           captionColor={fontColors.light}
           caption={translate('emergency_abort_button_caption')}
           onPress={onAbort}
         />
-        {!alarmTriggered ?
+        {!alarmTriggered ? (
           <PrimaryButton
-            style={{ height: 42, width: 300 }}
+            style={{height: 42, width: 300}}
             caption={translate('emergency_send_button_caption')}
             backgroundColors={[buttonColors[100]]}
             captionColor={fontColors.light}
             onPress={onSend}
           />
-          : null}
+        ) : null}
       </ButtonContainer>
     </Container>
   );
