@@ -3,7 +3,14 @@ import {v4 as uuidv4} from 'uuid';
 import {CompactJWT, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
 import {CredentialResponse, CredentialSupported} from '@sphereon/oid4vci-common';
-import {CorrelationIdentifierEnum, IBasicCredentialLocaleBranding, IBasicIdentity, IContact, IdentityRoleEnum} from '@sphereon/ssi-sdk.data-store';
+import {
+  CorrelationIdentifierEnum,
+  IBasicCredentialLocaleBranding,
+  NonPersistedIdentity,
+  Party,
+  IdentityRoleEnum,
+  Identity,
+} from '@sphereon/ssi-sdk.data-store';
 import {
   CredentialMapper,
   IIssuer,
@@ -70,7 +77,7 @@ export const createCredentialSelection = async (
   return credentialSelection;
 };
 
-export const retrieveContact = async (context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider'>): Promise<IContact | undefined> => {
+export const retrieveContact = async (context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider'>): Promise<Party | undefined> => {
   const {openId4VcIssuanceProvider} = context;
 
   if (!openId4VcIssuanceProvider) {
@@ -92,7 +99,7 @@ export const retrieveContact = async (context: Pick<OID4VCIMachineContext, 'open
         },
       },
     ],
-  }).then((contacts: Array<IContact>): IContact | undefined => (contacts.length === 1 ? contacts[0] : undefined));
+  }).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
 export const retrieveCredentialOffers = async (
@@ -112,7 +119,7 @@ export const retrieveCredentialOffers = async (
           const wrappedVerifiableCredential: WrappedVerifiableCredential = CredentialMapper.toWrappedVerifiableCredential(
             verifiableCredential as OriginalVerifiableCredential,
           );
-          const uniformVerifiableCredential: IVerifiableCredential = wrappedVerifiableCredential.credential;
+          const uniformVerifiableCredential: IVerifiableCredential = <IVerifiableCredential>wrappedVerifiableCredential.credential;
           const rawVerifiableCredential: VerifiableCredential = credentialResponse.credential as unknown as VerifiableCredential;
           const correlationId: string =
             typeof uniformVerifiableCredential.issuer === 'string'
@@ -129,7 +136,7 @@ export const retrieveCredentialOffers = async (
     );
 };
 
-export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'credentialOffers' | 'contact'>): Promise<void> => {
+export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'credentialOffers' | 'contact'>): Promise<Identity> => {
   const {credentialOffers, contact} = context;
 
   if (!contact) {
@@ -141,7 +148,7 @@ export const addContactIdentity = async (context: Pick<OID4VCIMachineContext, 'c
   }
 
   const correlationId: string = credentialOffers[0].correlationId;
-  const identity: IBasicIdentity = {
+  const identity: NonPersistedIdentity = {
     alias: correlationId,
     roles: [IdentityRoleEnum.ISSUER],
     identifier: {

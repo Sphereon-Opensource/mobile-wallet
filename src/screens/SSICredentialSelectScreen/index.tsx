@@ -1,6 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-import {ListRenderItemInfo} from 'react-native';
+import {ListRenderItemInfo, ViewStyle} from 'react-native';
+import {useBackHandler} from '@react-native-community/hooks';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
@@ -19,12 +20,19 @@ import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_SELECT>;
 
 const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
+  const {navigation} = props;
   const {onSelect} = props.route.params;
   const [credentialSelection, setCredentialSelection] = React.useState(props.route.params.credentialSelection);
 
+  useBackHandler((): boolean => {
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
+    return true;
+  });
+
   const setSelection = async (selection: ICredentialSelection, select?: boolean): Promise<void> => {
-    const newSelection = credentialSelection.map((credentialSelection: ICredentialSelection) => {
-      const isSelected = select === undefined ? !selection.isSelected : select;
+    const newSelection: Array<ICredentialSelection> = credentialSelection.map((credentialSelection: ICredentialSelection) => {
+      const isSelected: boolean = select === undefined ? !selection.isSelected : select;
       credentialSelection.isSelected =
         credentialSelection.hash == selection.hash ? (credentialSelection.isSelected = isSelected) : (credentialSelection.isSelected = false);
       return credentialSelection;
@@ -54,10 +62,10 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<ICredentialSelection>): JSX.Element => {
-    const backgroundStyle = {
+    const backgroundStyle: ViewStyle = {
       backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
-    const style = {
+    const style: ViewStyle = {
       ...backgroundStyle,
       ...(itemInfo.index === credentialSelection.length - 1 &&
         itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
@@ -72,6 +80,14 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
           onPress={() => onLongPress(itemInfo)}
         />
       </ItemContainer>
+    );
+  };
+
+  const onAccept = async (): Promise<void> => {
+    await onSelect(
+      credentialSelection
+        .filter((credentialSelection: ICredentialSelection) => credentialSelection.isSelected)
+        .map((credentialSelection: ICredentialSelection) => credentialSelection.hash),
     );
   };
 
@@ -93,14 +109,7 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
           primaryButton={{
             caption: translate('action_accept_label'),
             disabled: !credentialSelection.some((credentialSelection: ICredentialSelection) => credentialSelection.isSelected),
-            onPress: async () => {
-              await onSelect(
-                credentialSelection
-                  .filter((credentialSelection: ICredentialSelection) => credentialSelection.isSelected)
-                  .map((credentialSelection: ICredentialSelection) => credentialSelection.hash),
-              );
-              props.navigation.goBack();
-            },
+            onPress: onAccept,
           }}
         />
       </ButtonContainer>

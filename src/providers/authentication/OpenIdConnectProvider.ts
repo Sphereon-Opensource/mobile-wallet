@@ -1,4 +1,4 @@
-import {IOpenIdConfig} from '@sphereon/ssi-sdk.data-store';
+import {OpenIdConfig} from '@sphereon/ssi-sdk.data-store';
 import Debug, {Debugger} from 'debug';
 import jwt_decode from 'jwt-decode';
 import {
@@ -20,7 +20,7 @@ import {CustomJwtPayload, IOpenIdAuthentication} from '../../types';
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
 class OpenIdConnectProvider {
-  public authenticate = async (config: IOpenIdConfig): Promise<IOpenIdAuthentication> => {
+  public authenticate = async (config: OpenIdConfig): Promise<IOpenIdAuthentication> => {
     const authConfig = {
       ...config,
       additionalParameters: {

@@ -1,11 +1,12 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
+import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
 import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
+import {SiopV2MachineInterpreter} from '../machines/siopV2';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -33,11 +34,12 @@ export type StackParamList = {
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
-  CredentialsRequired: ICredentialsRequiredProps;
+  CredentialsRequired: ICredentialsRequiredProps & Partial<IHasOnBackProps>;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
   OID4VCI: IOID4VCIProps;
   Emergency: Record<string, never>;
+  SIOPV2: ISiopV2PProps;
 };
 
 interface IPersonalDataProps {
@@ -80,12 +82,14 @@ export interface ICredentialsSelectProps {
 }
 
 export interface ICredentialsRequiredProps {
-  verifier: string;
   format: Format | undefined;
   subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
   onDecline: () => Promise<void>;
+  onSelect?: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
+  isSendDisabled?: () => boolean | (() => boolean);
+  verifierName: string;
 }
 
 export interface ICredentialDetailsProps {
@@ -144,14 +148,14 @@ export interface ICredentialSelectTypeProps {
 }
 
 export interface IContactDetailsProps {
-  contact: IContact;
+  contact: Party;
 }
 
 export interface IContactAddProps {
   name: string;
   uri?: string;
-  identities?: Array<IBasicIdentity>;
-  onCreate: (contact: IContact) => Promise<void>;
+  identities?: Array<NonPersistedIdentity>;
+  onCreate: (contact: Party) => Promise<void>;
   onDecline: () => Promise<void>;
   onConsentChange?: (hasConsent: boolean) => Promise<void>;
   onAliasChange?: (alias: string) => Promise<void>;
@@ -186,6 +190,7 @@ export enum MainRoutesEnum {
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
   OID4VCI = 'OID4VCI',
+  SIOPV2 = 'SIOPV2',
 }
 
 export enum NavigationBarRoutesEnum {
@@ -222,4 +227,8 @@ export enum ScreenRoutesEnum {
 
 export interface IOID4VCIProps {
   customOID4VCIInstance?: OID4VCIMachineInterpreter;
+}
+
+export interface ISiopV2PProps {
+  customSiopV2Instance?: SiopV2MachineInterpreter;
 }

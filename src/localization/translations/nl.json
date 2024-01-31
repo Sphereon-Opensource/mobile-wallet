@@ -59,7 +59,6 @@
   "contact_name_label": "Contact Naam",
   "contact_name_placeholder": "Naam contact",
   "contact_name_invalid_message": "Vul een geldige contact naam in",
-  "contact_name_unavailable_message": "Deze naam bestaat al, vul een unieke contactnaam in",
   "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
   "contact_delete_title": "Verwijder contact",
   "contact_delete_message": "Weet u zeker dat u het contact wilt verwijderen: {{contactName}}?",
@@ -156,5 +155,11 @@
   "emergency_send_button_caption": "Activeer nu!",
   "emergency_abort_button_caption": "Alarm afbreken",
   "emergency_title": "Stuur een noodwaarschuwing",
-  "emergency_subtitle": "Uw noodoproep wordt over {{emergencyAlertDelay}} seconden verzonden, of u kunt deze onmiddellijk activeren door op de knop Activeer nu! te klikken."
+  "emergency_subtitle": "Uw noodoproep wordt over {{emergencyAlertDelay}} seconden verzonden, of u kunt deze onmiddellijk activeren door op de knop Activeer nu! te klikken.",
+  "siopV2_machine_identifier_error_title": "Identifier ophalen",
+  "siopV2_machine_create_config_error_title": "SiopV2 configuratie maken",
+  "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
+  "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
+  "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
+  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden"
 }

@@ -6,10 +6,11 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
-  IBasicContact,
   IBasicCredentialLocaleBranding,
-  IContact,
   IdentityRoleEnum,
+  NonPersistedParty,
+  Party,
+  PartyTypeEnum,
 } from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssuanceProvider';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
@@ -24,7 +25,7 @@ import {
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
-  OIDVCIProviderProps,
+  OID4VCIProviderProps,
 } from '../../types/machines/oid4vci';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 
@@ -56,9 +57,24 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
   const issuerUrl: URL = new URL(openId4VcIssuanceProvider.serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
+  const issuerName: string = OpenId4VcIssuanceProvider.getIssuerName(
+    correlationId,
+    openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata,
+  );
 
-  const contact: Omit<IBasicContact, 'alias'> = {
-    name: OpenId4VcIssuanceProvider.getIssuerName(correlationId, openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata),
+  const contact: NonPersistedParty = {
+    contact: {
+      displayName: issuerName,
+      legalName: issuerName,
+    },
+    // FIXME maybe its nicer if we can also just use the id only
+    // TODO using the predefined party type from the contact migrations here
+    partyType: {
+      id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
+      type: PartyTypeEnum.ORGANIZATION,
+      name: 'Sphereon_default_type',
+      tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
+    },
     uri: correlationId,
     identities: [
       {
@@ -85,7 +101,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     ],
   };
 
-  const onCreate = async (contact: IContact): Promise<void> => {
+  const onCreate = async (contact: Party): Promise<void> => {
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.CREATE_CONTACT,
       data: contact,
@@ -117,7 +133,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.CONTACT_ADD,
     params: {
-      name: contact.name,
+      name: contact.contact.displayName,
       uri: contact.uri,
       identities: contact.identities,
       hasConsent: hasContactConsent,
@@ -153,7 +169,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
     params: {
-      issuer: contact.alias,
+      issuer: contact.contact.displayName,
       credentialTypes: credentialSelection,
       onSelectType,
       onSelect: onNext,
@@ -215,7 +231,7 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
 
-  debug(`Stop oid4vci machine...`);
+  debug(`Stopping oid4vci machine...`);
   oid4vciMachine.stop();
   debug(`Stopped oid4vci machine`);
 
@@ -261,6 +277,7 @@ export const oid4vciStateNavigationListener = async (
 ): Promise<void> => {
   if (state._event.type === 'internal') {
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
+    // Make sure we do not navigate when state has not changed
     return;
   }
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
@@ -301,7 +318,7 @@ export const oid4vciStateNavigationListener = async (
   }
 };
 
-export const OID4VCIProvider = (props: OIDVCIProviderProps): JSX.Element => {
+export const OID4VCIProvider = (props: OID4VCIProviderProps): JSX.Element => {
   const {children, customOID4VCIInstance} = props;
 
   return <OID4VCIContext.Provider value={{oid4vciInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;

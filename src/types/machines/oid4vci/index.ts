@@ -1,7 +1,7 @@
 import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {VerifiableCredential} from '@veramo/core';
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import OpenId4VcIssuanceProvider, {CredentialFromOffer} from '../../../providers/credential/OpenId4VcIssuanceProvider';
 import {ErrorDetails} from '../../error';
@@ -20,7 +20,7 @@ export type OID4VCIMachineContext = {
   requestData?: IQrData; // TODO WAL-673 fix type as this is not always a qr code (deeplink)
   credentialSelection: Array<ICredentialTypeSelection>;
   contactAlias: string;
-  contact?: IContact;
+  contact?: Party;
   selectedCredentials: Array<string>;
   credentialOffers: Array<MappedCredentialOffer>;
   // TODO WAL-672 refactor to not store verificationCode in the context
@@ -96,7 +96,7 @@ export type OID4VCIMachineInstanceOpts = {
   requireCustomNavigationHook?: boolean;
 } & CreateOID4VCIMachineOpts;
 
-export type OIDVCIProviderProps = {
+export type OID4VCIProviderProps = {
   children?: ReactNode;
   customOID4VCIInstance?: OID4VCIMachineInterpreter;
 };
@@ -126,7 +126,7 @@ export enum OID4VCIMachineEvents {
 
 export enum OID4VCIMachineGuards {
   hasContactGuard = 'oid4vciHasContactGuard',
-  hasNotContactGuard = 'oid4vciHasNoContactGuard',
+  hasNoContactGuard = 'oid4vciHasNoContactGuard',
   selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
   hasNoContactIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
@@ -149,7 +149,7 @@ export enum OID4VCIMachineServices {
 export type NextEvent = {type: OID4VCIMachineEvents.NEXT};
 export type PreviousEvent = {type: OID4VCIMachineEvents.PREVIOUS};
 export type DeclineEvent = {type: OID4VCIMachineEvents.DECLINE};
-export type CreateContactEvent = {type: OID4VCIMachineEvents.CREATE_CONTACT; data: IContact};
+export type CreateContactEvent = {type: OID4VCIMachineEvents.CREATE_CONTACT; data: Party};
 export type SelectCredentialsEvent = {type: OID4VCIMachineEvents.SET_SELECTED_CREDENTIALS; data: Array<string>};
 export type VerificationCodeEvent = {type: OID4VCIMachineEvents.SET_VERIFICATION_CODE; data: string};
 export type ContactConsentEvent = {type: OID4VCIMachineEvents.SET_CONTACT_CONSENT; data: boolean};

@@ -1,4 +1,11 @@
-import {IBasicIdentity, IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
+import {
+  NonPersistedIdentity,
+  Party,
+  Identity,
+  NonPersistedParty,
+  NonPersistedContact,
+  NonPersistedPartyType as NonPersistedContactType,
+} from '@sphereon/ssi-sdk.data-store';
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING;
@@ -31,7 +38,7 @@ interface IContactsLoading {
 
 interface IGetContactsSuccessAction {
   type: GET_CONTACTS_SUCCESS;
-  payload: Array<IContact>;
+  payload: Array<Party>;
 }
 
 interface IGetContactsFailedAction {
@@ -40,7 +47,7 @@ interface IGetContactsFailedAction {
 
 interface ICreateContactSuccessAction {
   type: CREATE_CONTACT_SUCCESS;
-  payload: IContact;
+  payload: Party;
 }
 
 interface ICreateContactFailedAction {
@@ -49,7 +56,7 @@ interface ICreateContactFailedAction {
 
 interface IUpdateContactSuccessAction {
   type: UPDATE_CONTACT_SUCCESS;
-  payload: IContact;
+  payload: Party;
 }
 
 interface IUpdateContactFailedAction {
@@ -74,25 +81,23 @@ interface IAddIdentityFailedAction {
   type: ADD_IDENTITY_FAILED;
 }
 
-export interface ICreateContactArgs {
-  name: string;
-  alias: string;
-  uri?: string;
-  identities?: Array<IBasicIdentity>;
-}
+export type ICreateContactArgs = Omit<NonPersistedParty, 'contact' | 'partyType'> &
+  NonPersistedContact & {
+    contactType: NonPersistedContactType;
+  };
 
 export interface IUpdateContactArgs {
-  contact: IContact;
+  contact: Party;
 }
 
 export interface IAddIdentityArgs {
   contactId: string;
-  identity: IBasicIdentity;
+  identity: NonPersistedIdentity;
 }
 
 export interface IAddIdentitySuccessActionPayload {
   contactId: string;
-  identity: IIdentity;
+  identity: Identity;
 }
 
 interface IClearContactsAction {

@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {computeEntryHash} from '@veramo/utils';
-import {IBasicCredentialLocaleBranding, IContact} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {ICredential} from '@sphereon/ssi-types';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import {selectAppLocaleBranding} from '../../../services/brandingService';
@@ -78,7 +78,7 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
 export const toNonPersistedCredentialSummary = (
   verifiableCredential: ICredential | VerifiableCredential,
   branding?: Array<IBasicCredentialLocaleBranding>,
-  contact?: IContact,
+  contact?: Party,
 ): Promise<ICredentialSummary> => {
   return toCredentialSummary(
     {
@@ -100,7 +100,7 @@ export const toNonPersistedCredentialSummary = (
 export const toCredentialSummary = async (
   {hash, verifiableCredential}: UniqueVerifiableCredential,
   branding?: Array<IBasicCredentialLocaleBranding>,
-  contact?: IContact,
+  contact?: Party,
 ): Promise<ICredentialSummary> => {
   const expirationDate: number = verifiableCredential.expirationDate
     ? new Date(verifiableCredential.expirationDate).valueOf() / EPOCH_MILLISECONDS
@@ -131,7 +131,7 @@ export const toCredentialSummary = async (
   }
   if (!issuerAlias) {
     issuerAlias = contact
-      ? contact.alias
+      ? contact.contact.displayName
       : typeof verifiableCredential.issuer === 'string'
       ? translateCorrelationIdToName(verifiableCredential.issuer)
       : translateCorrelationIdToName(verifiableCredential.issuer?.id);

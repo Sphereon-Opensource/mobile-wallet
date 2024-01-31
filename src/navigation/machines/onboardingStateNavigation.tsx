@@ -9,10 +9,10 @@ import {
   OnboardingMachineContext,
   OnboardingPersonalData,
   OnboardingContext as OnboardingContextType,
-  OnboardingEvents,
+  OnboardingMachineEvents,
   OnboardingMachineInterpreter,
   OnboardingMachineState,
-  OnboardingStates,
+  OnboardingMachineStates,
   OnboardingMachineNavigationArgs,
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
@@ -32,7 +32,7 @@ const navigateTermsOfService = async (args: OnboardingMachineNavigationArgs): Pr
   const {onboardingMachine, navigation, onNext, onBack, context} = args;
 
   const isNextDisabled = (): boolean => {
-    return onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true;
+    return onboardingMachine.getSnapshot()?.can(OnboardingMachineEvents.NEXT) !== true;
   };
 
   navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {
@@ -40,15 +40,15 @@ const navigateTermsOfService = async (args: OnboardingMachineNavigationArgs): Pr
     context,
     onBack,
     onNext,
-    onDecline: () => onboardingMachine.send(OnboardingEvents.DECLINE),
+    onDecline: () => onboardingMachine.send(OnboardingMachineEvents.DECLINE),
     onAcceptTerms: (accept: boolean) =>
       onboardingMachine.send({
-        type: OnboardingEvents.SET_TOC,
+        type: OnboardingMachineEvents.SET_TOC,
         data: accept,
       }),
     onAcceptPrivacy: (accept: boolean) =>
       onboardingMachine.send({
-        type: OnboardingEvents.SET_POLICY,
+        type: OnboardingMachineEvents.SET_POLICY,
         data: accept,
       }),
     isDisabled: isNextDisabled,
@@ -59,7 +59,7 @@ const navigatePersonalDetails = async (args: OnboardingMachineNavigationArgs): P
   const {onboardingMachine, navigation, onBack, context} = args;
 
   const isNextDisabled = (): boolean => {
-    return onboardingMachine.getSnapshot()?.can(OnboardingEvents.NEXT) !== true;
+    return onboardingMachine.getSnapshot()?.can(OnboardingMachineEvents.NEXT) !== true;
   };
 
   navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {
@@ -67,17 +67,17 @@ const navigatePersonalDetails = async (args: OnboardingMachineNavigationArgs): P
     isDisabled: isNextDisabled,
     onPersonalData: (personalData: OnboardingPersonalData) =>
       onboardingMachine.send({
-        type: OnboardingEvents.SET_PERSONAL_DATA,
+        type: OnboardingMachineEvents.SET_PERSONAL_DATA,
         data: personalData,
       }),
     onBack,
     onNext: (personalData: OnboardingPersonalData): void => {
       onboardingMachine.send([
         {
-          type: OnboardingEvents.SET_PERSONAL_DATA,
+          type: OnboardingMachineEvents.SET_PERSONAL_DATA,
           data: personalData,
         },
-        OnboardingEvents.NEXT,
+        OnboardingMachineEvents.NEXT,
       ]);
     },
   });
@@ -92,10 +92,10 @@ const navigateEnterPin = async (args: OnboardingMachineNavigationArgs): Promise<
     onNext: (pinCode: string): void => {
       onboardingMachine.send([
         {
-          type: OnboardingEvents.SET_PIN,
+          type: OnboardingMachineEvents.SET_PIN,
           data: pinCode,
         },
-        OnboardingEvents.NEXT,
+        OnboardingMachineEvents.NEXT,
       ]);
     },
   });
@@ -109,7 +109,7 @@ const navigateVerifyPin = async (args: OnboardingMachineNavigationArgs): Promise
     onBack,
     onNext: (pinCode: string): void => {
       onboardingMachine.send({
-        type: OnboardingEvents.NEXT,
+        type: OnboardingMachineEvents.NEXT,
         data: pinCode,
       });
     },
@@ -143,11 +143,12 @@ export const onboardingStateNavigationListener = async (
 ): Promise<void> => {
   if (state._event.type === 'internal') {
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
+    // Make sure we do not navigate when state has not changed
     return;
   }
   const context: OnboardingMachineContext = onboardingMachine.getSnapshot().context;
-  const onBack = () => onboardingMachine.send(OnboardingEvents.PREVIOUS);
-  const onNext = () => onboardingMachine.send(OnboardingEvents.NEXT);
+  const onBack = () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS);
+  const onNext = () => onboardingMachine.send(OnboardingMachineEvents.NEXT);
 
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
@@ -155,21 +156,21 @@ export const onboardingStateNavigationListener = async (
     return;
   }
 
-  if (state.matches(OnboardingStates.showIntro)) {
+  if (state.matches(OnboardingMachineStates.showIntro)) {
     return navigateWelcome({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.acceptAgreement)) {
+  } else if (state.matches(OnboardingMachineStates.acceptAgreement)) {
     return navigateTermsOfService({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.enterPersonalDetails)) {
+  } else if (state.matches(OnboardingMachineStates.enterPersonalDetails)) {
     return navigatePersonalDetails({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.enterPin)) {
+  } else if (state.matches(OnboardingMachineStates.enterPin)) {
     return navigateEnterPin({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.verifyPin)) {
+  } else if (state.matches(OnboardingMachineStates.verifyPin)) {
     return navigateVerifyPin({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.verifyPersonalDetails)) {
+  } else if (state.matches(OnboardingMachineStates.verifyPersonalDetails)) {
     return navigateVerifyPersonalDetails({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.setupWallet)) {
+  } else if (state.matches(OnboardingMachineStates.setupWallet)) {
     return navigateSetupWallet({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingStates.finishOnboarding)) {
+  } else if (state.matches(OnboardingMachineStates.finishOnboarding)) {
     return navigateDone();
   } else {
     return Promise.reject(Error(`Navigation for ${JSON.stringify(state)} is not implemented!`)); // Should not happen, so we throw an error

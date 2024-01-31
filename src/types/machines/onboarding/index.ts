@@ -26,7 +26,7 @@ export type OnboardingMachineContext = {
   personalData: OnboardingPersonalData;
 };
 
-export enum OnboardingStates {
+export enum OnboardingMachineStates {
   showIntro = 'showIntro',
   acceptAgreement = 'acceptAgreement',
   enterPersonalDetails = 'enterPersonalDetails',
@@ -38,7 +38,7 @@ export enum OnboardingStates {
   setupWallet = 'setupWallet',
 }
 
-export enum OnboardingEvents {
+export enum OnboardingMachineEvents {
   NEXT = 'NEXT',
   PREVIOUS = 'PREVIOUS',
   DECLINE = 'DECLINE',
@@ -48,14 +48,14 @@ export enum OnboardingEvents {
   SET_PIN = 'SET_PIN',
 }
 
-export type NextEvent = {type: OnboardingEvents.NEXT; data?: any};
-export type PreviousEvent = {type: OnboardingEvents.PREVIOUS};
-export type PersonalDataEvent = {type: OnboardingEvents.SET_PERSONAL_DATA; data: ISetPersonalDataActionArgs};
-export type TermsConditionsEvent = {type: OnboardingEvents.SET_TOC; data: boolean};
-export type PrivacyPolicyEvent = {type: OnboardingEvents.SET_POLICY; data: boolean};
-export type PinSetEvent = {type: OnboardingEvents.SET_PIN; data: string};
-export type DeclineEvent = {type: OnboardingEvents.DECLINE};
-export type OnboardingEventTypes =
+export type NextEvent = {type: OnboardingMachineEvents.NEXT; data?: any};
+export type PreviousEvent = {type: OnboardingMachineEvents.PREVIOUS};
+export type PersonalDataEvent = {type: OnboardingMachineEvents.SET_PERSONAL_DATA; data: ISetPersonalDataActionArgs};
+export type TermsConditionsEvent = {type: OnboardingMachineEvents.SET_TOC; data: boolean};
+export type PrivacyPolicyEvent = {type: OnboardingMachineEvents.SET_POLICY; data: boolean};
+export type PinSetEvent = {type: OnboardingMachineEvents.SET_PIN; data: string};
+export type DeclineEvent = {type: OnboardingMachineEvents.DECLINE};
+export type OnboardingMachineEventTypes =
   | NextEvent
   | PreviousEvent
   | TermsConditionsEvent
@@ -64,7 +64,7 @@ export type OnboardingEventTypes =
   | PinSetEvent
   | DeclineEvent;
 
-export enum OnboardingGuards {
+export enum OnboardingMachineGuards {
   onboardingToSAgreementGuard = 'onboardingToSAgreementGuard',
   onboardingPersonalDataGuard = 'onboardingPersonalDataGuard',
   onboardingPinCodeSetGuard = 'onboardingPinCodeSetGuard',
@@ -82,7 +82,7 @@ export type WalletSetupServiceResult = {
 export type OnboardingMachineInterpreter = Interpreter<
   OnboardingMachineContext,
   any,
-  OnboardingEventTypes,
+  OnboardingMachineEventTypes,
   {
     value: any;
     context: OnboardingMachineContext;
@@ -106,7 +106,13 @@ export type InstanceOnboardingMachineOpts = {
   requireCustomNavigationHook?: boolean;
 } & CreateOnboardingMachineOpts;
 
-export type OnboardingMachineState = State<OnboardingMachineContext, OnboardingEventTypes, any, {value: any; context: OnboardingMachineContext}, any>;
+export type OnboardingMachineState = State<
+  OnboardingMachineContext,
+  OnboardingMachineEventTypes,
+  any,
+  {value: any; context: OnboardingMachineContext},
+  any
+>;
 
 export type OnboardingMachineNavigationArgs = {
   onboardingMachine: OnboardingMachineInterpreter;
