@@ -1,11 +1,30 @@
 import {IIdentifier, IKey} from '@veramo/core';
 
 import {DID_PREFIX} from '../@config/constants';
-import {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
+import {agentContext, didManagerCreate, didManagerFind, didManagerGet} from '../agent';
 import store from '../store';
 import {getContacts} from '../store/actions/contact.actions';
 import {addIdentifier} from '../store/actions/user.actions';
 import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum} from '../types';
+import {
+  ActionType,
+  DefaultActionSubType,
+  EventLogger,
+  EventLoggerBuilder,
+  InitiatorType,
+  LoggingEventType,
+  LogLevel,
+  SubSystem,
+  System,
+} from '@sphereon/ssi-sdk.core';
+
+const logger: EventLogger = new EventLoggerBuilder()
+  .withContext(agentContext)
+  .withLogLevel(LogLevel.INFO)
+  .withSystem(System.IDENTITY)
+  .withSubSystem(SubSystem.DID_PROVIDER)
+  .withInitiatorType(InitiatorType.SYSTEM)
+  .build();
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement
@@ -20,9 +39,20 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<II
     options: args?.createOpts?.options,
   });
 
+  await logger.logEvent({
+    type: LoggingEventType.AUDIT,
+    data: {
+      description: 'identifier created',
+      actionType: ActionType.CREATE,
+      actionSubType: DefaultActionSubType.DID_CREATION,
+      data: identifier,
+      diagnosticData: args,
+    },
+  });
+
   if (store.getState().user.users.size > 0) {
-    await store.dispatch<any>(addIdentifier({did: identifier.did})).then(() => {
-      setTimeout(() => {
+    await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
+      setTimeout((): void => {
         store.dispatch<any>(getContacts());
       }, 1000);
     });
