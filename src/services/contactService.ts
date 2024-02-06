@@ -9,7 +9,7 @@ const logger: EventLogger = new EventLoggerBuilder()
   .withLogLevel(LogLevel.INFO)
   .withSystem(System.CONTACT)
   .withSubSystem(SubSystem.CONTACT_MANAGER)
-  .withInitiatorType(InitiatorType.SYSTEM)
+  .withInitiatorType(InitiatorType.USER)
   .build();
 
 export const getContacts = async (args?: IGetContactsArgs): Promise<Array<Party>> => {
@@ -31,7 +31,6 @@ export const createContact = async (args: ICreateContactArgs): Promise<Party> =>
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'createContact function call',
       actionType: ActionType.CREATE,
       actionSubType: 'create contact',
@@ -45,7 +44,7 @@ export const createContact = async (args: ICreateContactArgs): Promise<Party> =>
       logger.logEvent({
         type: LoggingEventType.AUDIT,
         data: {
-          description: 'contact created',
+          description: `contact ${contact.contact.displayName} created`,
           actionType: ActionType.CREATE,
           actionSubType: 'create contact',
           initiatorType: InitiatorType.USER,
@@ -63,7 +62,6 @@ export const updateContact = async (args: IUpdateContactArgs): Promise<Party> =>
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'updateContact function call',
       actionType: ActionType.UPDATE,
       actionSubType: 'update contact',
@@ -77,7 +75,7 @@ export const updateContact = async (args: IUpdateContactArgs): Promise<Party> =>
       logger.logEvent({
         type: LoggingEventType.AUDIT,
         data: {
-          description: 'contact updated',
+          description: `contact ${contact.contact.displayName} updated`,
           actionType: ActionType.UPDATE,
           actionSubType: 'update contact',
           initiatorType: InitiatorType.USER,
@@ -95,7 +93,6 @@ export const removeContact = async (args: RemoveContactArgs): Promise<boolean> =
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'removeContact function call',
       actionType: ActionType.DELETE,
       actionSubType: 'remove contact',
@@ -109,7 +106,7 @@ export const removeContact = async (args: RemoveContactArgs): Promise<boolean> =
       logger.logEvent({
         type: LoggingEventType.AUDIT,
         data: {
-          description: isDeleted ? 'contact removed' : 'contact not removed',
+          description: isDeleted ? `contact removed` : 'contact not removed',
           actionType: ActionType.DELETE,
           actionSubType: 'remove contact',
           initiatorType: InitiatorType.USER,
@@ -127,7 +124,6 @@ export const addIdentity = async (args: IAddIdentityArgs): Promise<Identity> => 
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'addIdentity function call',
       actionType: ActionType.CREATE,
       actionSubType: 'add contact identity',

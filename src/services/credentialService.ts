@@ -55,7 +55,6 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'storeVerifiableCredential function call',
       actionType: ActionType.CREATE,
       actionSubType: 'store credential',
@@ -102,7 +101,6 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'deleteVerifiableCredential function call',
       actionType: ActionType.DELETE,
       actionSubType: 'removed credential',
@@ -134,7 +132,6 @@ export const createVerifiableCredential = async (args: ICreateVerifiableCredenti
   await logger.logEvent({
     type: LoggingEventType.AUDIT,
     data: {
-      level: LogLevel.TRACE,
       description: 'createVerifiableCredential function call',
       actionType: ActionType.CREATE,
       actionSubType: DefaultActionSubType.VC_ISSUE,
