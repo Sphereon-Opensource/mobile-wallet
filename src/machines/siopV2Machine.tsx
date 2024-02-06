@@ -54,11 +54,13 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
     throw Error('No presentation definitions present');
   }
 
-  const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+  // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway
+  return true;
+  /*const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
   const pex: PEX = new PEX();
   const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
 
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO;
+  return evaluationResults.areRequiredCredentialsPresent === Status.INFO;*/
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -68,6 +70,7 @@ const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machine
     throw new Error('Missing authorization request data in context');
   }
 
+  console.log(JSON.stringify(authorizationRequestData, null, 2));
   return authorizationRequestData.presentationDefinitions === undefined;
 };
 
@@ -234,12 +237,22 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
         id: SiopV2MachineStates.addContactIdentity,
         invoke: {
           src: SiopV2MachineServices.addContactIdentity,
-          onDone: {
-            target: SiopV2MachineStates.selectCredentials,
-            actions: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Identity>): void => {
-              _ctx.contact?.identities.push(_event.data);
+          onDone: [
+            {
+              target: SiopV2MachineStates.selectCredentials,
+              actions: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Identity>): void => {
+                _ctx.contact?.identities.push(_event.data);
+              },
+              cond: SiopV2MachineGuards.siopWithOID4VPGuard,
             },
-          },
+            {
+              target: SiopV2MachineStates.sendResponse,
+              actions: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Identity>): void => {
+                _ctx.contact?.identities.push(_event.data);
+              },
+              cond: SiopV2MachineGuards.siopOnlyGuard,
+            },
+          ],
           onError: {
             target: SiopV2MachineStates.handleError,
             actions: assign({
@@ -344,11 +357,15 @@ export class SiopV2Machine {
 
     if (typeof opts?.subscription === 'function') {
       instance.onTransition(opts.subscription);
-    } else if (opts?.requireCustomNavigationHook !== true) {
+    }
+    if (opts?.requireCustomNavigationHook !== true) {
       instance.onTransition((snapshot: SiopV2MachineState): void => {
         void siopV2StateNavigationListener(instance, snapshot);
       });
     }
+    instance.onTransition((snapshot: SiopV2MachineState): void => {
+      console.log(snapshot.value);
+    });
 
     return instance;
   }

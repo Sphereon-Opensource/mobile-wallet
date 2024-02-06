@@ -1,18 +1,16 @@
-import {URL} from 'react-native-url-polyfill';
-import {v4 as uuidv4} from 'uuid';
-import Debug, {Debugger} from 'debug';
-import {IIdentifier} from '@veramo/core';
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CredentialOfferClient} from '@sphereon/oid4vci-client';
-import {ConnectionTypeEnum, NonPersistedConnection, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
+import {IIdentifier} from '@veramo/core';
+import Debug, {Debugger} from 'debug';
+import {URL} from 'react-native-url-polyfill';
+import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
 import {translate} from '../localization/Localization';
+import {OID4VCIMachine} from '../machines/oid4vciMachine';
+import {SiopV2Machine} from '../machines/siopV2Machine';
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
-import {OID4VCIMachine} from '../machines/oid4vciMachine';
-import {authenticate} from './authenticationService';
-import {getOrCreatePrimaryIdentifier} from './identityService';
-import {showToast} from '../utils/ToastUtils';
 import {
   IQrAuthentication,
   IQrData,
@@ -24,13 +22,16 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum,
 } from '../types';
-import {OID4VCIMachineInterpreter} from '../types/machines/oid4vci';
+import {OID4VCIMachineEvents, OID4VCIMachineInterpreter} from '../types/machines/oid4vci';
 import {SiopV2MachineInterpreter} from '../types/machines/siopV2';
-import {SiopV2Machine} from '../machines/siopV2Machine';
+import {showToast} from '../utils';
+import {authenticate} from './authenticationService';
+import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
+  console.log(`args.qrData`, JSON.stringify(args.qrData));
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
     .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
@@ -103,19 +104,19 @@ const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
 };
 
 const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
-  if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
+  if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.includes(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
+    const hasCode = qrData.includes('code=');
+    const code = hasCode ? decodeURIComponent(qrData.split('code=')[1].split('&')[0]) : undefined;
+    console.log('code', code);
+
     return Promise.resolve({
-      type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
-      credentialOffer: await CredentialOfferClient.fromURI(qrData),
-      uri: qrData,
-    });
-  } else {
-    return Promise.resolve({
-      type: QrTypesEnum.OPENID_CREDENTIAL_OFFER,
-      credentialOffer: await CredentialOfferClient.fromURI(qrData),
+      type: qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) ? QrTypesEnum.OPENID_INITIATE_ISSUANCE : QrTypesEnum.OPENID_CREDENTIAL_OFFER,
+      ...(hasCode && {code}),
+      ...(!hasCode && {credentialOffer: await CredentialOfferClient.fromURI(qrData)}),
       uri: qrData,
     });
   }
+  throw Error(translate('qr_scanner_qr_not_supported_message'));
 };
 
 // TODO remove old flow
@@ -168,12 +169,20 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
   // TODO WAL-301 need to send a response when we do not need a pin code
 };
 
+export let OID4VCIInstance: OID4VCIMachineInterpreter | undefined;
+export let SiopV2Instance: SiopV2MachineInterpreter | undefined;
 const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
-  const OID4VCIInstance: OID4VCIMachineInterpreter = OID4VCIMachine.newInstance({requestData: args.qrData});
-  OID4VCIInstance.start();
+  console.log(`args.qrData`, args.qrData);
+  if (args.qrData.code && args.qrData.uri) {
+    OID4VCIInstance?.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
+    return;
+  } else {
+    OID4VCIInstance = OID4VCIMachine.newInstance({requestData: args.qrData});
+    OID4VCIInstance.start();
+  }
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  const SiopV2Instance: SiopV2MachineInterpreter = SiopV2Machine.newInstance({requestData: args.qrData});
+  SiopV2Instance = SiopV2Machine.newInstance({requestData: args.qrData});
   SiopV2Instance.start();
 };

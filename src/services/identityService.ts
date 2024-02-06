@@ -14,9 +14,9 @@ export const getIdentifiers = async (): Promise<IIdentifier[]> => {
 
 export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<IIdentifier> => {
   const identifier = await didManagerCreate({
-    kms: args?.createOpts?.kms || KeyManagementSystemEnum.LOCAL,
+    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.LOCAL,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
-    alias: args?.createOpts?.alias || `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
+    alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
     options: args?.createOpts?.options,
   });
 
@@ -42,5 +42,6 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
   // Currently we only support one identifier
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
+  console.log(`created identifier: ${JSON.stringify(identifier, null, 2)}`);
   return didManagerGet({did: identifier.did});
 };

@@ -51,9 +51,18 @@ export const siopSendAuthorizationResponse = async (
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
   const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
-  const identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
+  let identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
   if (!identifiers || identifiers.length === 0) {
     throw Error(`No DID methods found in agent that are supported by the relying party`);
+  }
+  const request = await session.getAuthorizationRequest();
+  const aud = await request.authorizationRequest.getMergedProperty<string>('aud');
+  if (aud && aud.startsWith('did:')) {
+    // The RP knows our did, so we can use it
+    if (!identifiers.some(id => id.did === aud)) {
+      throw Error(`The aud DID ${aud} is not in the supported identifiers ${identifiers.map(id => id.did)}`);
+    }
+    identifiers = [identifiers.find(id => id.did === aud) as IIdentifier];
   }
 
   // todo: This should be moved to code calling the sendAuthorizationResponse (this) method, as to allow the user to subselect and approve credentials!
@@ -62,7 +71,7 @@ export const siopSendAuthorizationResponse = async (
   let presentationSubmission: PresentationSubmission | undefined;
   if (await session.hasPresentationDefinitions()) {
     const oid4vp: OID4VP = await session.getOID4VP();
-    const request = await session.getAuthorizationRequest();
+
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
       : await oid4vp.filterCredentialsAgainstAllDefinitions();
@@ -73,6 +82,7 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+    console.log(`PRE CREATE VP ${new Date().toString()}`);
     presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {
       identifierOpts: {identifier},
       proofOpts: {
@@ -80,6 +90,7 @@ export const siopSendAuthorizationResponse = async (
         domain,
       },
     });
+    console.log(`POST CREATE VP ${new Date().toString()}`);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     } else if (presentationsAndDefs.length > 1) {
@@ -92,12 +103,14 @@ export const siopSendAuthorizationResponse = async (
   const kid: string = (await getKey(identifier, 'authentication', session.context)).kid;
 
   debug(`Definitions and locations: ${JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2)}`);
-  debug(`Presentation Submission: ${JSON.stringify(presentationSubmission, null, 2)}`);
+  console.log(`Presentation Submission: ${JSON.stringify(presentationSubmission, null, 2)}`);
+  console.log(`PRE SEND response ${new Date().toString()}`);
   const response = session.sendAuthorizationResponse({
-    verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation),
+    ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
     ...(presentationSubmission && {presentationSubmission}),
     responseSignerOpts: {identifier, kid},
   });
+  console.log(`POST SEND response ${new Date().toString()}`);
 
   return await response;
 };

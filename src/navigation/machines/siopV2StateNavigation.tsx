@@ -164,9 +164,9 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
   const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions![0];
-  const format: Format | undefined = authorizationRequestData.registrationMetadataPayload.registration?.vp_formats;
+  const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
   const subjectSyntaxTypesSupported: Array<string> | undefined =
-    authorizationRequestData.registrationMetadataPayload.registration?.subject_syntax_types_supported;
+    authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
 
   const onSelect = async (selectedCredentials: Array<OriginalVerifiableCredential>): Promise<void> => {
     siopV2Machine.send({

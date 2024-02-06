@@ -30,8 +30,11 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
-  const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
-  const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
+  const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueVerifiableCredential> | null>(null);
+  const [allOriginalCredentials, setAllOriginalCredentials] = useState<Array<OriginalVerifiableCredential>>([]);
+  const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
+  const [pexFilteredCredentials, setPexFilteredCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
+  const [matchingDescriptors, setMatchingDescriptors] = useState(new Map<InputDescriptorV1 | InputDescriptorV2, boolean>());
   const pex: PEX = new PEX();
 
   useBackHandler((): boolean => {
@@ -46,50 +49,82 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
-  useEffect((): void => {
-    // FIXME we need to have one source for these credentials as then all the data is always available
+  useEffect(() => {
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
-      const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
-        (uniqueVC: UniqueVerifiableCredential) =>
-          CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
-      );
-      const availableVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
-      presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
-        const presentationDefinition = {
-          id: inputDescriptor.id,
-          input_descriptors: [inputDescriptor],
-        };
-        const selectResult: SelectResults = pex.selectFrom(presentationDefinition, originalVcs, {
-          restrictToFormats: format,
-          restrictToDIDMethods: subjectSyntaxTypesSupported,
-        });
-        if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
-          console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
-        }
-        const matchedVCs: Array<UniqueVerifiableCredential> =
-          selectResult.matches && selectResult.verifiableCredential
-            ? selectResult.matches
-                .map((match: SubmissionRequirementMatch) => {
-                  const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
-                  if (matchedVC && matchedVC.length > 0) {
-                    return getMatchingUniqueVerifiableCredential(uniqueVCs, matchedVC[0]);
-                  }
-                })
-                .filter((matchedVC: UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
-            : [];
-        availableVCs.set(inputDescriptor.id, matchedVCs);
-      });
-      setAvailableCredentials(availableVCs);
+      setAllUniqueCredentials(uniqueVCs);
+      console.log(`unique creds length:` + uniqueVCs.length);
     });
+    setMatchingDescriptors(
+      new Map(
+        presentationDefinition.input_descriptors.map((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
+          return [inputDescriptor, false];
+        }),
+      ),
+    );
   }, []);
 
+  useEffect(() => {
+    if (!allUniqueCredentials) {
+      setAllOriginalCredentials([]);
+    } else {
+      setAllOriginalCredentials(
+        allUniqueCredentials.map(uniqueVC =>
+          CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.verifiableCredential as OriginalVerifiableCredential),
+        ),
+      );
+    }
+    console.log(`orig creds length:` + allOriginalCredentials.length);
+  }, [allUniqueCredentials]);
+
   useEffect((): void => {
-    const selectedVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
+    // FIXME we need to have one source for these credentials as then all the data is always available
+    // getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
+    //   // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
+    //   const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
+    //     (uniqueVC: UniqueVerifiableCredential) =>
+    //       CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
+    //   );
+    if (!allOriginalCredentials || !allUniqueCredentials || !presentationDefinition) {
+      return;
+    }
+    const pexMatchingVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
+    presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
+      const presentationDefinition = {
+        id: inputDescriptor.id,
+        input_descriptors: [inputDescriptor],
+      };
+      const selectResult: SelectResults = pex.selectFrom(presentationDefinition, allOriginalCredentials, {
+        restrictToFormats: format,
+        restrictToDIDMethods: subjectSyntaxTypesSupported,
+      });
+      if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
+        console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
+      }
+      const matchedVCs: Array<UniqueVerifiableCredential> =
+        selectResult.matches && selectResult.verifiableCredential
+          ? selectResult.matches
+              .map((match: SubmissionRequirementMatch) => {
+                const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
+                if (matchedVC && matchedVC.length > 0) {
+                  return getMatchingUniqueVerifiableCredential(allUniqueCredentials!, matchedVC[0]);
+                }
+              })
+              .filter((matchedVC: UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
+          : [];
+      pexMatchingVCs.set(inputDescriptor.id, matchedVCs);
+    });
+    setPexFilteredCredentials(pexMatchingVCs);
+    // });
+    console.log(`pex desc length:` + pexMatchingVCs.size);
+  }, [presentationDefinition, allUniqueCredentials, allOriginalCredentials]);
+
+  useEffect((): void => {
+    const selectedVCsPerDescriptor: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) =>
-      selectedVCs.set(inputDescriptor.id, []),
+      selectedVCsPerDescriptor.set(inputDescriptor.id, []),
     );
-    setSelectedCredentials(selectedVCs);
+    setUserSelectedCredentials(selectedVCsPerDescriptor);
   }, [presentationDefinition]);
 
   const onSend = async (): Promise<void> => {
@@ -101,7 +136,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const getSelectedCredentials = (): Array<UniqueVerifiableCredential> => {
     const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
-    for (const uniqueVCs of selectedCredentials.values()) {
+    for (const uniqueVCs of userSelectedCredentials.values()) {
       selectedVCs.push(uniqueVCs);
     }
 
@@ -109,6 +144,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   };
 
   const isMatchingPresentationDefinition = (): boolean => {
+    console.log(`is matching def=====================`);
     return (
       pex.evaluateCredentials(
         presentationDefinition,
@@ -117,26 +153,29 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     );
   };
 
+  const getDescriptorById = (inputDescriptorId: string): InputDescriptorV1 | InputDescriptorV2 => {
+    return [...matchingDescriptors.keys()].find(descriptor => descriptor.id === inputDescriptorId)!;
+  };
   const onItemPress = async (
     inputDescriptorId: string,
-    uniqueVCs: Array<UniqueVerifiableCredential>,
+    inputDescriptorVCs: Array<UniqueVerifiableCredential>,
     inputDescriptorPurpose?: string,
   ): Promise<void> => {
     // FIXME we need to have one source for these credentials as then all the data is always available
-    const vcHashes: Array<{vcHash: string}> = uniqueVCs.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
+    const vcHashes = inputDescriptorVCs.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
       vcHash: uniqueCredential.hash,
     }));
     const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
 
     const credentialSelection = await Promise.all(
-      uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
+      inputDescriptorVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
         // FIXME we need to have one source for these credentials as then all the data is always available
         const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
         const credentialSummary: ICredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
-        const rawCredential: OriginalVerifiableCredential = await getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
-        const isSelected: boolean = selectedCredentials
+        const rawCredential: OriginalVerifiableCredential = getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
+        const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
           .some(
             (matchedVC: UniqueVerifiableCredential) =>
@@ -148,22 +187,31 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           id: credentialSummary.id,
           credential: credentialSummary,
           rawCredential: rawCredential,
-          isSelected: isSelected,
+          isSelected,
         };
       }),
     );
 
     const onSelectCredential = async (hashes: Array<string>): Promise<void> => {
-      const selectedVCs: Array<UniqueVerifiableCredential> = availableCredentials
+      const uniquePEXFilteredVCs: Array<UniqueVerifiableCredential> = pexFilteredCredentials
         .get(inputDescriptorId)!
         .filter((vc: UniqueVerifiableCredential) => hashes.includes(vc.hash));
-      selectedCredentials.set(inputDescriptorId, selectedVCs);
-      const newSelection: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
-      for (const [key, value] of selectedCredentials) {
-        newSelection.set(key, value);
-      }
-
-      setSelectedCredentials(newSelection);
+      const newSelection = new Map(userSelectedCredentials.entries());
+      newSelection.set(inputDescriptorId, uniquePEXFilteredVCs);
+      const inputDescriptor = getDescriptorById(inputDescriptorId);
+      console.log(`input descriptor: ${inputDescriptor.id} pex.evaluate!!!!!`);
+      const evaluationResult =
+        pex.evaluateCredentials(
+          {
+            id: inputDescriptor.id,
+            input_descriptors: [inputDescriptor],
+          },
+          uniquePEXFilteredVCs.map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
+        ).areRequiredCredentialsPresent === Status.INFO;
+      const matchingDescriptorsCopy = new Map(matchingDescriptors);
+      matchingDescriptorsCopy.set(inputDescriptor, evaluationResult);
+      setMatchingDescriptors(matchingDescriptorsCopy);
+      setUserSelectedCredentials(newSelection);
 
       if (onSelect) {
         const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
@@ -185,10 +233,10 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   // TODO add support for multiple versions of pex, currently using V1
   const renderItem = (itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>): JSX.Element => {
+    console.log(`rendering item ${itemInfo.item.id}`);
+    const descriptorVCs = pexFilteredCredentials.get(itemInfo.item.id);
     const onPress =
-      !availableCredentials.has(itemInfo.item.id) || availableCredentials.get(itemInfo.item.id)!.length === 0
-        ? undefined
-        : () => onItemPress(itemInfo.item.id, availableCredentials.get(itemInfo.item.id)!, itemInfo.item.purpose);
+      !descriptorVCs || descriptorVCs.length === 0 ? undefined : () => onItemPress(itemInfo.item.id, descriptorVCs, itemInfo.item.purpose);
 
     const checkIsMatching = (
       itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
@@ -197,15 +245,16 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       if (!selectedCredentials.has(itemInfo.item.id)) {
         return false;
       }
-      const selectedCredential: Array<UniqueVerifiableCredential> | undefined = selectedCredentials.get(itemInfo.item.id);
-      if (!selectedCredential) {
+      const selectedDescriptorCredentials = selectedCredentials.get(itemInfo.item.id);
+      if (!selectedDescriptorCredentials) {
         return false;
       }
 
-      const credentials: Array<OriginalVerifiableCredential> = selectedCredential.map((uniqueVC: UniqueVerifiableCredential) =>
+      /*  const credentials = selectedDescriptorCredentials.map((uniqueVC: UniqueVerifiableCredential) =>
         getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
-      );
-      return (
+      );*/
+      return matchingDescriptors.get(itemInfo.item) ?? false;
+      /*return (
         pex.evaluateCredentials(
           {
             id: itemInfo.item.id,
@@ -213,7 +262,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           },
           credentials,
         ).areRequiredCredentialsPresent === Status.INFO
-      );
+      );*/
     };
 
     return (
@@ -221,9 +270,9 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         id={itemInfo.item.id}
         title={itemInfo.item.name || itemInfo.item.id}
         purpose={itemInfo.item.purpose}
-        available={availableCredentials.has(itemInfo.item.id) ? availableCredentials.get(itemInfo.item.id)! : undefined}
-        selected={selectedCredentials.has(itemInfo.item.id) ? selectedCredentials.get(itemInfo.item.id)! : []}
-        isMatching={checkIsMatching(itemInfo, selectedCredentials)}
+        available={pexFilteredCredentials.has(itemInfo.item.id) ? pexFilteredCredentials.get(itemInfo.item.id) : undefined}
+        selected={userSelectedCredentials.has(itemInfo.item.id) ? userSelectedCredentials.get(itemInfo.item.id)! : []}
+        isMatching={checkIsMatching(itemInfo, userSelectedCredentials)}
         listIndex={itemInfo.index}
         onPress={onPress}
       />
@@ -251,7 +300,9 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           }}
           primaryButton={{
             caption: translate('action_share_label'),
-            disabled: isSendDisabled ? isSendDisabled() : !isMatchingPresentationDefinition(),
+            // We do a quick check to see if any of the descriptors are not matching. The machine has a guard, doing a pex check anyway
+            disabled: [...matchingDescriptors.values()].includes(false),
+            // disabled: isSendDisabled ? isSendDisabled() : !isMatchingPresentationDefinition(),
             onPress: onSend,
           }}
         />

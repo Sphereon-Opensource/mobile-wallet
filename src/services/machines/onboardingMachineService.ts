@@ -32,7 +32,10 @@ const createUserAndIdentity = async (
   context: Pick<OnboardingMachineContext, 'personalData' | 'credentialData'>,
 ): Promise<WalletSetupServiceResult> => {
   const {personalData, credentialData} = context;
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({method: credentialData.didMethod});
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({
+    method: credentialData.didMethod,
+    createOpts: {options: credentialData.didOptions},
+  });
 
   const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};

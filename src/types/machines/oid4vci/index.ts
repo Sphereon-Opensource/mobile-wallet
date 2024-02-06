@@ -1,19 +1,21 @@
+import {AuthorizationResponse} from '@sphereon/oid4vci-common';
 import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {VerifiableCredential} from '@veramo/core';
 import {Party} from '@sphereon/ssi-sdk.data-store';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
-import OpenId4VcIssuanceProvider, {CredentialFromOffer} from '../../../providers/credential/OpenId4VcIssuanceProvider';
+import OpenId4VcIssuanceProvider, {CredentialToAccept} from '../../../providers/credential/OpenId4VcIssuanceProvider';
 import {ErrorDetails} from '../../error';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IQrData} from '../../qr';
 import {ICredentialTypeSelection} from '../../credential';
 
-export type MappedCredentialOffer = {
+export type MappedCredentialToAccept = {
   correlationId: string;
-  credentialOffer: CredentialFromOffer;
-  uniformVerifiableCredential: IVerifiableCredential;
-  rawVerifiableCredential: VerifiableCredential;
+  credential: CredentialToAccept;
+  transactionId?: string;
+  uniformVerifiableCredential?: IVerifiableCredential;
+  rawVerifiableCredential?: VerifiableCredential;
 };
 
 export type OID4VCIMachineContext = {
@@ -22,7 +24,9 @@ export type OID4VCIMachineContext = {
   contactAlias: string;
   contact?: Party;
   selectedCredentials: Array<string>;
-  credentialOffers: Array<MappedCredentialOffer>;
+  credentialsToAccept: Array<MappedCredentialToAccept>;
+  authorizationCodeURL?: string;
+  authorizationCodeResponse?: AuthorizationResponse;
   // TODO WAL-672 refactor to not store verificationCode in the context
   verificationCode?: string;
   hasContactConsent: boolean;
@@ -40,7 +44,9 @@ export enum OID4VCIMachineStates {
   selectCredentials = 'selectCredentials',
   transitionFromSelectingCredentials = 'transitionFromSelectingCredentials',
   verifyPin = 'verifyPin',
-  retrieveCredentialsOffers = 'retrieveCredentialsOffers',
+  initiateAuthorizationRequest = 'initiateAuthorizationRequest',
+  waitForAuthorizationResponse = 'waitForAuthorizationResponse',
+  retrieveCredentials = 'retrieveCredentials',
   transitionFromWalletInput = 'transitionFromWalletInput',
   addContactIdentity = 'addContactIdentity',
   reviewCredentials = 'reviewCredentials',
@@ -122,6 +128,9 @@ export enum OID4VCIMachineEvents {
   SET_CONTACT_ALIAS = 'SET_CONTACT_ALIAS',
   SET_CONTACT_CONSENT = 'SET_CONTACT_CONSENT',
   SET_SELECTED_CREDENTIALS = 'SET_SELECTED_CREDENTIALS',
+  SET_AUTHORIZATION_CODE_URL = 'SET_AUTHORIZATION_CODE_URL',
+  INVOKED_AUTHORIZATION_CODE_REQUEST = 'INVOKED_AUTHORIZATION_CODE_REQUEST',
+  PROVIDE_AUTHORIZATION_CODE_RESPONSE = 'PROVIDE_AUTHORIZATION_CODE_RESPONSE',
 }
 
 export enum OID4VCIMachineGuards {
@@ -130,6 +139,7 @@ export enum OID4VCIMachineGuards {
   selectCredentialGuard = 'oid4vciSelectCredentialsGuard',
   requirePinGuard = 'oid4vciRequirePinGuard',
   hasNoContactIdentityGuard = 'oid4vciHasNoContactIdentityGuard',
+  requireAuthorizationGuard = 'oid4vciRequireAuthorizationGuard',
   verificationCodeGuard = 'oid4vciVerificationCodeGuard',
   createContactGuard = 'oid4vciCreateContactGuard',
   hasSelectedCredentialsGuard = 'oid4vciHasSelectedCredentialsGuard',
@@ -140,7 +150,8 @@ export enum OID4VCIMachineServices {
   retrieveContact = 'retrieveContact',
   addContactIdentity = 'addContactIdentity',
   createCredentialSelection = 'createCredentialSelection',
-  retrieveCredentialOffers = 'retrieveCredentialOffers',
+  // invokeAuthorizationRequest = 'invokeAuthorizationRequest',
+  retrieveCredentials = 'retrieveCredentials',
   assertValidCredentials = 'assertValidCredentials',
   storeCredentialBranding = 'storeCredentialBranding',
   storeCredentials = 'storeCredentials',
@@ -154,12 +165,18 @@ export type SelectCredentialsEvent = {type: OID4VCIMachineEvents.SET_SELECTED_CR
 export type VerificationCodeEvent = {type: OID4VCIMachineEvents.SET_VERIFICATION_CODE; data: string};
 export type ContactConsentEvent = {type: OID4VCIMachineEvents.SET_CONTACT_CONSENT; data: boolean};
 export type ContactAliasEvent = {type: OID4VCIMachineEvents.SET_CONTACT_ALIAS; data: string};
+export type SetAuthorizationCodeURLEvent = {type: OID4VCIMachineEvents.SET_AUTHORIZATION_CODE_URL; data: string};
+export type InvokeAuthorizationRequestEvent = {type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST; data: string};
+export type AuthorizationResponseEvent = {type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE; data: string | AuthorizationResponse};
 export type OID4VCIMachineEventTypes =
+  | SetAuthorizationCodeURLEvent
   | NextEvent
   | PreviousEvent
   | DeclineEvent
   | CreateContactEvent
   | SelectCredentialsEvent
   | VerificationCodeEvent
+  | InvokeAuthorizationRequestEvent
+  | AuthorizationResponseEvent
   | ContactConsentEvent
   | ContactAliasEvent;

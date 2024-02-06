@@ -1,5 +1,6 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
+import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
@@ -21,7 +22,7 @@ import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@ver
 import {DIDManager} from '@veramo/did-manager';
 import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
-import {getDidKeyResolver, KeyDIDProvider} from '@veramo/did-provider-key';
+import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
@@ -39,6 +40,7 @@ export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
     resolveUrl: DIF_UNIRESOLVER_RESOLVE_URL,
   }),
+  ...getDidEbsiResolver(),
   ...getDidKeyResolver(),
   ...webDIDResolver(),
   ...getDidIonResolver(),
@@ -52,7 +54,7 @@ export const didProviders = {
     defaultKms: KeyManagementSystemEnum.LOCAL,
     network: 'goerli',
   }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new KeyDIDProvider({
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ION}`]: new IonDIDProvider({

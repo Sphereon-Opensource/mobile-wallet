@@ -1,3 +1,4 @@
+import {Linking} from 'react-native';
 import {v4 as uuidv4} from 'uuid';
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
@@ -8,6 +9,7 @@ import {
   IdentityRoleEnum,
   DidAuthConfig,
 } from '@sphereon/ssi-sdk.data-store';
+import IntentHandler from '../../handlers/IntentHandler';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {URL} from 'react-native-url-polyfill';
@@ -17,7 +19,7 @@ import {addIdentity} from '../../store/actions/contact.actions';
 import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {IIdentifier} from '@veramo/core';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
-import {translateCorrelationIdToName} from '../../utils/CredentialUtils';
+import {translateCorrelationIdToName} from '../../utils';
 
 export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData' | 'identifier'>): Promise<DidAuthConfig> => {
   const {requestData} = context;
@@ -73,7 +75,9 @@ export const getSiopRequest = async (
     uri,
     name,
     clientId,
-    presentationDefinitions: verifiedAuthorizationRequest.presentationDefinitions,
+    presentationDefinitions: (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token'))
+      ? verifiedAuthorizationRequest.presentationDefinitions
+      : undefined,
   };
 };
 
@@ -133,7 +137,7 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 
 export const sendResponse = async (
   context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials'>,
-): Promise<void> => {
+): Promise<Response> => {
   const {didAuthConfig, authorizationRequestData, selectedCredentials} = context;
 
   if (didAuthConfig === undefined) {
@@ -144,15 +148,22 @@ export const sendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
+  const response = await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,
     ...(authorizationRequestData.presentationDefinitions !== undefined && {
       verifiableCredentialsWithDefinition: [
         {
-          definition: authorizationRequestData.presentationDefinitions![0], // TODO 0 check, check siop only
+          definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
           credentials: selectedCredentials as Array<W3CVerifiableCredential>,
         },
       ],
     }),
   });
+  if (response.status === 302 && response.headers.has('location')) {
+    const url = response.headers.get('location') as string;
+    console.log(`Redirecting to: ${url}`);
+    Linking.emit('url', {url});
+  }
+
+  return response;
 };

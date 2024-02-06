@@ -1,24 +1,27 @@
-import React from 'react';
+import {AuthzFlowType, toAuthorizationResponsePayload} from '@sphereon/oid4vci-common';
+import {Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
-import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
+import {translate} from '../localization/Localization';
+import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
   addContactIdentity,
+  assertValidCredentials,
   createCredentialSelection,
   initiateOpenId4VcIssuanceProvider,
   retrieveContact,
-  retrieveCredentialOffers,
+  retrieveCredentials,
   storeCredentialBranding,
   storeCredentials,
-  assertValidCredentials,
 } from '../services/machines/oid4vciMachineService';
-import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
+import {ErrorDetails, ICredentialTypeSelection} from '../types';
 import {
+  AuthorizationResponseEvent,
   ContactAliasEvent,
   ContactConsentEvent,
   CreateContactEvent,
   CreateOID4VCIMachineOpts,
-  MappedCredentialOffer,
+  MappedCredentialToAccept,
   OID4VCIMachineAddContactStates,
   OID4VCIMachineContext,
   OID4VCIMachineEvents,
@@ -32,10 +35,9 @@ import {
   OID4VCIMachineVerifyPinStates,
   OID4VCIStateMachine,
   SelectCredentialsEvent,
+  SetAuthorizationCodeURLEvent,
   VerificationCodeEvent,
 } from '../types/machines/oid4vci';
-import {ErrorDetails, ICredentialTypeSelection} from '../types';
-import {translate} from '../localization/Localization';
 
 const oid4vciHasNoContactGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -54,12 +56,12 @@ const oid4vciSelectCredentialsGuard = (_ctx: OID4VCIMachineContext, _event: OID4
 
 const oid4vciRequirePinGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {requestData} = _ctx;
-  return requestData?.credentialOffer.userPinRequired === true;
+  return requestData?.credentialOffer?.userPinRequired === true;
 };
 
 const oid4vciHasNoContactIdentityGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
-  const {contact, credentialOffers} = _ctx;
-  return !contact?.identities!.some((identity: Identity): boolean => identity.identifier.correlationId === credentialOffers[0].correlationId);
+  const {contact, credentialsToAccept} = _ctx;
+  return !contact?.identities!.some((identity: Identity): boolean => identity.identifier.correlationId === credentialsToAccept[0].correlationId);
 };
 
 const oid4vciVerificationCodeGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
@@ -67,6 +69,25 @@ const oid4vciVerificationCodeGuard = (_ctx: OID4VCIMachineContext, _event: OID4V
   return verificationCode !== undefined && verificationCode.length > 0;
 };
 
+const oid4vciRequireAuthorizationGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
+  console.log('oid4vciRequireAuthorizationGuard start');
+  console.log(`has auth url: ${_ctx.openId4VcIssuanceProvider?.client.hasAuthorizationURL() === true}`);
+  if (!_ctx.openId4VcIssuanceProvider?.client.isFlowTypeSupported(AuthzFlowType.AUTHORIZATION_CODE_FLOW)) {
+    console.log('oid4vciRequireAuthorizationGuard end');
+    return false;
+  } else if (!_ctx.openId4VcIssuanceProvider?.client.hasAuthorizationURL()) {
+    console.log('oid4vciRequireAuthorizationGuard end');
+    return false;
+  }
+  // _ctx.authorizationCodeURL = _ctx?.openId4VcIssuanceProvider?.client.authorizationURL
+  console.log(`auth url client: ${_ctx?.openId4VcIssuanceProvider?.client.authorizationURL}`);
+
+  console.log(`auth url context: ${_ctx.authorizationCodeURL}`);
+
+  console.log(`has access token response: ${_ctx?.openId4VcIssuanceProvider?.client.hasAccessTokenResponse()}`);
+  console.log('oid4vciRequireAuthorizationGuard end');
+  return _ctx.openId4VcIssuanceProvider?.client.hasAccessTokenResponse() === false;
+};
 const oid4vciCreateContactGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contactAlias, hasContactConsent} = _ctx;
   return hasContactConsent && contactAlias !== undefined && contactAlias.length > 0;
@@ -82,8 +103,9 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
     // TODO WAL-671 we need to store the data from OpenIdProvider here in the context and make sure we can restart the machine with it and init the OpenIdProvider
     requestData: opts?.requestData,
     credentialSelection: [],
+    authorizationCodeURL: undefined,
     selectedCredentials: [],
-    credentialOffers: [],
+    credentialsToAccept: [],
     hasContactConsent: true,
     contactAlias: '',
   };
@@ -98,6 +120,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         | {type: OID4VCIMachineGuards.hasNoContactGuard}
         | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
+        | {type: OID4VCIMachineGuards.requireAuthorizationGuard}
         | {type: OID4VCIMachineGuards.hasNoContactIdentityGuard}
         | {type: OID4VCIMachineGuards.verificationCodeGuard}
         | {type: OID4VCIMachineGuards.hasContactGuard}
@@ -113,8 +136,8 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         [OID4VCIMachineServices.retrieveContact]: {
           data: Party | undefined;
         };
-        [OID4VCIMachineServices.retrieveCredentialOffers]: {
-          data: Array<MappedCredentialOffer> | undefined;
+        [OID4VCIMachineServices.retrieveCredentials]: {
+          data: Array<MappedCredentialToAccept> | undefined;
         };
         [OID4VCIMachineServices.addContactIdentity]: {
           data: void;
@@ -140,6 +163,8 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             target: OID4VCIMachineStates.createCredentialSelection,
             actions: assign({
               openId4VcIssuanceProvider: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<OpenId4VcIssuanceProvider>) => _event.data,
+              authorizationCodeURL: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<OpenId4VcIssuanceProvider>) =>
+                _event.data.client.authorizationURL,
             }),
           },
           onError: {
@@ -211,10 +236,20 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrieveCredentialsOffers,
+            target: OID4VCIMachineStates.initiateAuthorizationRequest,
+            cond: OID4VCIMachineGuards.requireAuthorizationGuard,
+          },
+          {
+            target: OID4VCIMachineStates.retrieveCredentials,
           },
         ],
+        on: {
+          [OID4VCIMachineEvents.SET_AUTHORIZATION_CODE_URL]: {
+            actions: assign({authorizationCodeURL: (_ctx: OID4VCIMachineContext, _event: SetAuthorizationCodeURLEvent) => _event.data}),
+          },
+        },
       },
+
       [OID4VCIMachineStates.addContact]: {
         id: OID4VCIMachineStates.addContact,
         initial: OID4VCIMachineAddContactStates.idle,
@@ -259,7 +294,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrieveCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentials,
           },
         ],
       },
@@ -286,9 +321,36 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             cond: OID4VCIMachineGuards.requirePinGuard,
           },
           {
-            target: OID4VCIMachineStates.retrieveCredentialsOffers,
+            target: OID4VCIMachineStates.retrieveCredentials,
           },
         ],
+      },
+      [OID4VCIMachineStates.initiateAuthorizationRequest]: {
+        id: OID4VCIMachineStates.initiateAuthorizationRequest,
+
+        on: {
+          [OID4VCIMachineEvents.PREVIOUS]: {
+            target: OID4VCIMachineStates.selectCredentials,
+          },
+          [OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST]: {
+            target: OID4VCIMachineStates.waitForAuthorizationResponse,
+          },
+        },
+      },
+      [OID4VCIMachineStates.waitForAuthorizationResponse]: {
+        id: OID4VCIMachineStates.waitForAuthorizationResponse,
+        on: {
+          [OID4VCIMachineEvents.PREVIOUS]: {
+            target: OID4VCIMachineStates.initiateAuthorizationRequest,
+          },
+          [OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE]: {
+            target: OID4VCIMachineStates.transitionFromSelectingCredentials,
+            actions: assign({
+              authorizationCodeResponse: (_ctx: OID4VCIMachineContext, _event: AuthorizationResponseEvent) =>
+                toAuthorizationResponsePayload(_event.data),
+            }),
+          },
+        },
       },
       [OID4VCIMachineStates.verifyPin]: {
         id: OID4VCIMachineStates.verifyPin,
@@ -312,19 +374,21 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           [OID4VCIMachineVerifyPinStates.idle]: {},
           [OID4VCIMachineVerifyPinStates.next]: {
             always: {
-              target: `#${OID4VCIMachineStates.retrieveCredentialsOffers}`,
+              target: `#${OID4VCIMachineStates.retrieveCredentials}`,
               cond: OID4VCIMachineGuards.verificationCodeGuard,
             },
           },
         },
       },
-      [OID4VCIMachineStates.retrieveCredentialsOffers]: {
-        id: OID4VCIMachineStates.retrieveCredentialsOffers,
+      [OID4VCIMachineStates.retrieveCredentials]: {
+        id: OID4VCIMachineStates.retrieveCredentials,
         invoke: {
-          src: OID4VCIMachineServices.retrieveCredentialOffers,
+          src: OID4VCIMachineServices.retrieveCredentials,
           onDone: {
             target: OID4VCIMachineStates.verifyCredentials,
-            actions: assign({credentialOffers: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<MappedCredentialOffer>>) => _event.data}),
+            actions: assign({
+              credentialsToAccept: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Array<MappedCredentialToAccept>>) => _event.data,
+            }),
           },
           onError: {
             target: OID4VCIMachineStates.handleError,
@@ -478,8 +542,9 @@ export class OID4VCIMachine {
           [OID4VCIMachineServices.initiate]: initiateOpenId4VcIssuanceProvider,
           [OID4VCIMachineServices.createCredentialSelection]: createCredentialSelection,
           [OID4VCIMachineServices.retrieveContact]: retrieveContact,
-          [OID4VCIMachineServices.retrieveCredentialOffers]: retrieveCredentialOffers,
+          [OID4VCIMachineServices.retrieveCredentials]: retrieveCredentials,
           [OID4VCIMachineServices.addContactIdentity]: addContactIdentity,
+          // [OID4VCIMachineServices.invokeAuthorizationRequest]: invokeAuthorizationRequest,
           [OID4VCIMachineServices.assertValidCredentials]: assertValidCredentials,
           [OID4VCIMachineServices.storeCredentialBranding]: storeCredentialBranding,
           [OID4VCIMachineServices.storeCredentials]: storeCredentials,
@@ -491,6 +556,7 @@ export class OID4VCIMachine {
           oid4vciRequirePinGuard,
           oid4vciHasNoContactIdentityGuard,
           oid4vciVerificationCodeGuard,
+          oid4vciRequireAuthorizationGuard,
           oid4vciHasContactGuard,
           oid4vciCreateContactGuard,
           oid4vciHasSelectedCredentialsGuard,
@@ -501,11 +567,19 @@ export class OID4VCIMachine {
 
     if (typeof opts?.subscription === 'function') {
       instance.onTransition(opts.subscription);
-    } else if (opts?.requireCustomNavigationHook !== true) {
-      instance.onTransition((snapshot: OID4VCIMachineState): void => {
+    }
+    if (opts?.requireCustomNavigationHook !== true) {
+      instance.onTransition(snapshot => {
         void oid4vciStateNavigationListener(instance, snapshot);
       });
     }
+
+    instance.subscribe(
+      state => console.log('==sub=> ' + state.value),
+      error => console.error('===sub==========' + error),
+      () => console.log('==sub=========completed'),
+    );
+    instance.onTransition(state => console.log('==trans=> ' + state.value));
 
     return instance;
   }

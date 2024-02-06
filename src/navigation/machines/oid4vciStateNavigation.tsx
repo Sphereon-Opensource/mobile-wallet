@@ -1,4 +1,5 @@
 import React, {Context, createContext} from 'react';
+import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {SimpleEventsOf} from 'xstate';
 import Debug, {Debugger} from 'debug';
@@ -179,7 +180,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   });
 };
 
-const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+const navigatePINVerification = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
   const {selectedCredentials} = state.context;
   navigation.navigate(MainRoutesEnum.OID4VCI, {
@@ -198,9 +199,38 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
   });
 };
 
+const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  const {navigation, state, oid4vciMachine, onBack} = args;
+  const url = state.context.authorizationCodeURL;
+  console.log('navigateAuthorizationCodeURL: ' + url);
+  if (!url) {
+    return Promise.reject(Error('Missing authorization URL in context'));
+  }
+  const onOpenAuthorizationUrl = async (url: string): Promise<void> => {
+    console.log('onOpenAuthorizationUrl before invoked: ' + url);
+    oid4vciMachine.send({
+      type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST,
+      data: url,
+    });
+    console.log('onOpenAuthorizationUrl after invoked, before openUrl: ' + url);
+    await Linking.openURL(url);
+    console.log('onOpenAuthorizationUrl after openUrl: ' + url);
+  };
+
+  console.log('pre navigate browser open: ' + url);
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.BROWSER_OPEN,
+    params: {
+      onNext: () => onOpenAuthorizationUrl(url),
+      url,
+      onBack,
+    },
+  });
+};
+
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
-  const {credentialOffers, contact, openId4VcIssuanceProvider} = state.context;
+  const {credentialsToAccept, contact, openId4VcIssuanceProvider} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider?.credentialBranding?.get(
     state.context.selectedCredentials[0],
   );
@@ -213,8 +243,8 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
     params: {
       headerTitle: translate('credential_offer_title'),
-      rawCredential: credentialOffers[0].rawVerifiableCredential,
-      credential: await toNonPersistedCredentialSummary(credentialOffers[0].uniformVerifiableCredential, localeBranding, contact),
+      rawCredential: credentialsToAccept[0].rawVerifiableCredential,
+      credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential!, localeBranding, contact),
       primaryAction: {
         caption: translate('action_accept_label'),
         onPress: onNext,
@@ -275,7 +305,10 @@ export const oid4vciStateNavigationListener = async (
   state: OID4VCIMachineState,
   navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
+  console.log('oid4vciStateNavigationListener: ' + state.value, state.value);
+  console.log('oid4vciStateNavigationListener: ' + JSON.stringify(state._event));
   if (state._event.type === 'internal') {
+    console.log('oid4vciStateNavigationListener: internal event');
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
     // Make sure we do not navigate when state has not changed
     return;
@@ -283,9 +316,10 @@ export const oid4vciStateNavigationListener = async (
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
   const onNext = () => oid4vciMachine.send(OID4VCIMachineEvents.NEXT);
 
+  console.log('pre navigate');
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
-    debug(`navigation not ready yet`);
+    console.log(`navigation not ready yet`);
     return;
   }
 
@@ -295,7 +329,8 @@ export const oid4vciStateNavigationListener = async (
     state.matches(OID4VCIMachineStates.retrieveContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.retrieveCredentialsOffers)
+    state.matches(OID4VCIMachineStates.retrieveCredentials) ||
+    state.matches(OID4VCIMachineStates.waitForAuthorizationResponse)
   ) {
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.addContact)) {
@@ -303,7 +338,9 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.verifyPin)) {
-    return navigateAuthentication({oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigatePINVerification({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.initiateAuthorizationRequest)) {
+    return navigateAuthorizationCodeURL({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {

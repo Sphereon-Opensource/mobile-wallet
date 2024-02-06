@@ -18,6 +18,7 @@ import SSIPinCodeVerifyScreen from '../screens/Onboarding/SSIPinCodeVerifyScreen
 import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
 import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
+import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
@@ -453,6 +454,7 @@ export const OnboardingStack = (): JSX.Element => {
           headerShown: false,
         }}
       />
+
       <Stack.Screen
         name={ScreenRoutesEnum.TERMS_OF_SERVICE}
         component={SSITermsOfServiceScreen}
@@ -624,6 +626,22 @@ export const OID4VCIStack = (): JSX.Element => {
         options={{
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.BROWSER_OPEN}
+        component={OpenBrowserScreen}
+        options={({route}) => ({
+          headerTitle: translate('browser_open_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              onBack={route.params.onBack}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('browser_open_subtitle')}
+            />
+          ),
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_ADD}
@@ -879,6 +897,12 @@ export const SiopV2StackWithContext = (props: ISiopV2PProps): JSX.Element => {
 const AppNavigator = (): JSX.Element => {
   const lockState: WalletAuthLockState = walletAuthLockState();
 
+  if (lockState === WalletAuthLockState.ONBOARDING) {
+    if (!OnboardingMachine.hasInstance()) {
+      OnboardingMachine.getInstance({requireCustomNavigationHook: false});
+    }
+  }
+
   useEffect((): void => {
     if (!RootNavigation.isReady() || lockState !== WalletAuthLockState.ONBOARDING) {
       debug(`app or navigation not ready (yet)`);
@@ -895,11 +919,6 @@ const AppNavigator = (): JSX.Element => {
       debug(`ONBOARDING started`);
     }
   }, []);
-  if (lockState === WalletAuthLockState.ONBOARDING) {
-    if (!OnboardingMachine.hasInstance()) {
-      OnboardingMachine.getInstance({requireCustomNavigationHook: false});
-    }
-  }
 
   return (
     <Stack.Navigator
