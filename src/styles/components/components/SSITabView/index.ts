@@ -1,9 +1,8 @@
 import styled from 'styled-components/native';
-
-import {backgrounds} from '../../../colors';
+import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const SSITabViewContainerStyled = styled.View`
   flex: 1;
   width: 100%;
-  backgroundcolor: ${backgrounds.primaryDark};
+  background-color: ${backgroundColors.primaryDark};
 `;

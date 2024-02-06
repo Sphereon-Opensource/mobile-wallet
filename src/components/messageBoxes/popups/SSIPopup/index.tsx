@@ -3,7 +3,6 @@ import {TouchableOpacity, View} from 'react-native';
 
 import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage';
 import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage';
-import {backgrounds, fonts} from '../../../../styles/colors';
 import {
   SSIPopupButtonsContainerStyled as ButtonsContainer,
   SSIPopupCloseButtonContainerStyled as CloseButtonContainer,
@@ -24,8 +23,8 @@ import {SSITextH2SemiBoldStyled as TitleCaption} from '../../../../styles/compon
 import {ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum} from '../../../../types';
 import {parseTextToElement} from '../../../../utils/TextUtils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
-import SSIPrimaryButton from '../../../buttons/SSIPrimaryButton';
-import SSISecondaryButton from '../../../buttons/SSISecondaryButton';
+import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 export interface IProps {
   onClose?: () => Promise<void>;
@@ -44,11 +43,11 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false} = props;
 
   return (
-    <Container style={{backgroundColor: darkMode ? backgrounds.primaryDark : backgrounds.primaryLight}}>
+    <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>
-            <SSIIconButton icon={ButtonIconsEnum.CLOSE} iconColor={darkMode ? fonts.light : undefined} onPress={onClose} />
+            <SSIIconButton icon={ButtonIconsEnum.CLOSE} iconColor={darkMode ? fontColors.light : undefined} onPress={onClose} />
           </CloseButtonContainer>
         )}
       </HeaderContainer>
@@ -57,10 +56,10 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         {title && (
           <TitleContainer>
             {titleBadge && <TitleBadgeContainer>{getBadge(titleBadge)}</TitleBadgeContainer>}
-            <TitleCaption style={{color: darkMode ? fonts.light : undefined}}>{title}</TitleCaption>
+            <TitleCaption style={{color: darkMode ? fontColors.light : undefined}}>{title}</TitleCaption>
           </TitleContainer>
         )}
-        {details && <DetailsText style={{color: darkMode ? fonts.light : undefined}}>{parseTextToElement(details)}</DetailsText>}
+        {details && <DetailsText style={{color: darkMode ? fontColors.light : undefined}}>{parseTextToElement(details)}</DetailsText>}
         {extraDetails && <ExtraDetailsText>{parseTextToElement(extraDetails)}</ExtraDetailsText>}
         {detailsButton && (
           <DetailsButtonContainer>
@@ -74,22 +73,25 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
       {(primaryButton || secondaryButton) && (
         <ButtonsContainer>
           {secondaryButton && (
-            <SSISecondaryButton
+            <SecondaryButton
               style={{
                 height: 42,
                 minWidth: 160,
-                backgroundColor: backgrounds.primaryLight,
                 // Scales the button based on presence of other button
-                width: primaryButton ? undefined : '100%',
+                ...(!primaryButton && {width: '100%'}),
               }}
               caption={secondaryButton.caption}
               onPress={secondaryButton.onPress}
             />
           )}
           {primaryButton && (
-            <SSIPrimaryButton
+            <PrimaryButton
               // Scales the button based on presence of other button
-              style={{height: 42, minWidth: 160, width: secondaryButton ? undefined : '100%'}}
+              style={{
+                height: 42,
+                minWidth: 160,
+                ...(!secondaryButton && {width: '100%'}),
+              }}
               caption={primaryButton.caption}
               onPress={primaryButton.onPress}
             />

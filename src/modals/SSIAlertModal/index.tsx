@@ -1,11 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 
-import SSISecondaryButton from '../../components/buttons/SSISecondaryButton';
 import SSIAlert from '../../components/messageBoxes/alerts/SSIAlert';
 import {translate} from '../../localization/Localization';
 import {SSIBasicModalContainerStyled as Container, SSIAlertModalContentContainerStyled as ModalContentContainer} from '../../styles/components';
 import {MainRoutesEnum, StackParamList} from '../../types';
+import {SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.ALERT_MODAL>;
 
@@ -21,7 +21,7 @@ const SSIAlertModal: FC<Props> = (props: Props): JSX.Element => {
       <ModalContentContainer>
         <SSIAlert message={message} buttons={buttons} />
         {showCancel ? (
-          <SSISecondaryButton
+          <SecondaryButton
             caption={translate('action_cancel_label')}
             onPress={onCancel}
             // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)

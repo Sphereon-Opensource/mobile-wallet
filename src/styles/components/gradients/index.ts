@@ -2,23 +2,17 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {LinearTextGradient} from 'react-native-text-gradient';
 import styled from 'styled-components/native';
 
-import {highLightGradients} from '../../colors';
 import {SSIRoundedEdgesCss} from '../css';
+import {gradientsColors} from '@sphereon/ui-components.core';
 
-export const SSILinearGradientStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
+export const SSILinearGradientStyled = styled(LinearGradient).attrs(props => ({
+  colors: props?.colors ?? [gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor],
   start: {x: 1, y: 1},
   end: {x: 0, y: 0},
-})``;
+}))``;
 
 export const SSILinearGradientSecondaryStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['200'].secondaryColor, highLightGradients['200'].primaryColor],
-  start: {x: 1, y: 1},
-  end: {x: 0, y: 0},
-})``;
-
-export const SSILinearGradientWelcomeStyled = styled(LinearGradient).attrs({
-  colors: [highLightGradients['300'].secondaryColor, highLightGradients['300'].primaryColor],
+  colors: [gradientsColors['200'].secondaryColor, gradientsColors['200'].primaryColor],
   start: {x: 1, y: 1},
   end: {x: 0, y: 0},
 })``;
@@ -29,7 +23,7 @@ export const SSIRoundedLinearGradient = styled(SSILinearGradientStyled)`
 
 export const SSITextFieldLinearTextGradientStyled = styled(LinearTextGradient).attrs({
   locations: [0, 1],
-  colors: [highLightGradients['100'].secondaryColor, highLightGradients['100'].primaryColor],
+  colors: [gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor],
   start: {x: 1, y: 1},
   end: {x: 0, y: 0},
 })``;

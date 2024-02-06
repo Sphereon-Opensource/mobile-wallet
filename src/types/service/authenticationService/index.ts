@@ -15,6 +15,7 @@ export interface AuthorizationRequest extends Record<string, string> {
   nonce: string;
   code_challenge: string;
   code_challenge_method: string;
+  acr_values: string;
 }
 
 export interface AuthorizationRequestState {

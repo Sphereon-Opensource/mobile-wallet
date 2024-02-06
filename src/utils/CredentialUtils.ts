@@ -1,7 +1,6 @@
-import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, ICredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential} from '@veramo/core';
-import {VerifiableCredential} from '@veramo/core/src/types/vc-data-model';
+import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
+import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
+import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import store from '../store';
 import {ICredentialSummary, IUser, IUserIdentifier} from '../types';
@@ -33,7 +32,8 @@ export const getMatchingUniqueVerifiableCredential = (
   return uniqueVCs.find(
     (uniqueVC: UniqueVerifiableCredential) =>
       (typeof searchVC !== 'string' &&
-        (uniqueVC.verifiableCredential.id === searchVC.id || uniqueVC.verifiableCredential.proof === searchVC.proof)) ||
+        (uniqueVC.verifiableCredential.id === (<IVerifiableCredential>searchVC).id ||
+          uniqueVC.verifiableCredential.proof === (<IVerifiableCredential>searchVC).proof)) ||
       (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC),
   );
 };
@@ -88,14 +88,14 @@ export const isExpired = (value?: string | number): boolean => {
 };
 
 export const translateCorrelationIdToName = (correlationId: string): string => {
-  const contacts: Array<IContact> = store.getState().contact.contacts;
+  const contacts: Array<Party> = store.getState().contact.contacts;
   const activeUser: IUser | undefined = store.getState().user.activeUser;
 
-  const contact: IContact | undefined = contacts.find((contact: IContact) =>
-    contact.identities.some((identity: IIdentity): boolean => identity.identifier.correlationId === correlationId),
+  const contact: Party | undefined = contacts.find((contact: Party) =>
+    contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === correlationId),
   );
   if (contact) {
-    return contact.alias;
+    return contact.contact.displayName;
   }
 
   if (activeUser && activeUser.identifiers.some((identifier: IUserIdentifier): boolean => identifier.did === correlationId)) {

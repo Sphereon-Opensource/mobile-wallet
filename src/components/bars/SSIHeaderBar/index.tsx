@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useContext} from 'react';
-import {GestureResponderEvent, View} from 'react-native';
+import {ColorValue, GestureResponderEvent, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import OnTouchContext from '../../../contexts/OnTouchContext';
@@ -32,12 +32,22 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
   moreActions?: Array<IHeaderMenuButton>;
   showProfileIcon?: boolean;
   onBack?: () => void | Promise<void>;
+  backgroundColor?: ColorValue;
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
 // NK: Probably has todo with us passing in a new headerbar element via props on every screen, causing a rerender of the entire dom
 const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element => {
-  const {showBorder = false, showBackButton = true, showProfileIcon = true, headerSubTitle, options, moreActions = [], navigation} = props;
+  const {
+    showBorder = false,
+    showBackButton = true,
+    showProfileIcon = true,
+    headerSubTitle,
+    options,
+    moreActions = [],
+    navigation,
+    backgroundColor,
+  } = props;
   const dispatch = useDispatch();
   const {showProfileMenu, setShowProfileMenu, showMoreMenu, setShowMoreMenu} = useContext(OnTouchContext);
 
@@ -87,7 +97,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
   };
 
   return (
-    <Container style={{paddingTop: useSafeAreaInsets().top}} showBorder={showBorder}>
+    <Container style={{paddingTop: useSafeAreaInsets().top, ...(backgroundColor && {backgroundColor})}} showBorder={showBorder}>
       <Row>
         <LeftColumn>
           {showBackButton && (

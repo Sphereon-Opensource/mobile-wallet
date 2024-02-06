@@ -233,12 +233,10 @@ class OpenId4VcIssuanceProvider {
 
   public static initiationFromIssuer = async ({
     issuer: credentialIssuer,
-    clientId,
   }: IGetIssuanceInitiationFromIssuerArgs): Promise<OpenId4VcIssuanceProvider> => {
     const provider: OpenId4VcIssuanceProvider = new OpenId4VcIssuanceProvider(
       await OpenID4VCIClient.fromCredentialIssuer({
         credentialIssuer,
-        clientId: clientId,
       }),
     );
 
@@ -290,30 +288,35 @@ class OpenId4VcIssuanceProvider {
     const key: _ExtendedIKey =
       (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
       ((await getFirstKeyWithRelation(identifier, agentContext, 'verificationMethod', true)) as _ExtendedIKey);
-    const kid: string = key.meta.verificationMethod.id;
+    // const kid: string = key.meta.verificationMethod.id
+    const kid: string = key.meta.verificationMethod.id.split('#')[0]; // TODO DELETE ME! MOSIP demo only
     const alg: SignatureAlgorithmEnum = SignatureAlgorithmFromKey(key);
 
     const callbacks: ProofOfPossessionCallbacks<DIDDocument> = {
       signCallback: (jwt: Jwt, kid?: string) => {
         console.log(`header: ${JSON.stringify({...jwt.header, kid})}`);
         console.log(`payload: ${JSON.stringify({...jwt.payload})}`);
-        let args = {
-          identifier,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          header: {...jwt.header, kid},
-          payload: {...jwt.payload},
-          // TODO fix non null assertion
-          options: {issuer: jwt.payload.iss!, expiresIn: jwt.payload.exp ?? jwt.payload.iat, canonicalize: false},
-        } as ISignJwtArgs;
-        return signJWT(args);
+        try {
+          let args = {
+            identifier,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            header: {...jwt.header, kid},
+            payload: {...jwt.payload},
+            // TODO fix non null assertion
+            options: {issuer: jwt.payload.iss!, expiresIn: jwt.payload.exp ?? jwt.payload.iat, canonicalize: false},
+          } as ISignJwtArgs;
+          return signJWT(args);
+        } catch (e) {
+          console.error(JSON.stringify(e));
+        }
       },
     };
 
     try {
       // We need to make sure we have acquired the access token
       await this.acquireAccessToken(authenticationOpts);
-      const types = getTypesFromCredentialSupported(issuanceOpt, {filterVerifiableCredential: true});
+      const types = getTypesFromCredentialSupported(issuanceOpt, {filterVerifiableCredential: false}); // TODO flipped true to fales for MOSIP
       console.log(`cred type: ${JSON.stringify(types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
       return await this._client.acquireCredentials({
         credentialTypes: types,
@@ -353,16 +356,22 @@ class OpenId4VcIssuanceProvider {
     if (!this._issuerBranding) {
       this._issuerBranding = this._serverMetadata?.credentialIssuerMetadata?.display;
     }
-
     if (!this._credentialBranding && this._credentialsSupported) {
       this._credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
       await Promise.all(
         this._credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
-          const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
-            (metadata.display ?? []).map(
-              async (display: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding> =>
-                await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)}),
-            ),
+          const optionalLocaleBranding: Array<IBasicCredentialLocaleBranding | undefined> = await Promise.all(
+            (metadata.display ?? []).map(async (display: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding | undefined> => {
+              try {
+                return await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)});
+              } catch (e) {
+                console.error(`Could not fetch branding. Branding data: ${JSON.stringify(display)}`);
+              }
+            }),
+          );
+
+          const localeBranding: Array<IBasicCredentialLocaleBranding> = optionalLocaleBranding.filter(
+            (branding): branding is IBasicCredentialLocaleBranding => branding !== undefined,
           );
 
           const types = getTypesFromCredentialSupported(metadata);

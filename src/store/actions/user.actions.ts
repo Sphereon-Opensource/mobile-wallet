@@ -120,7 +120,10 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           dispatch({type: LOGIN_FAILED});
         }
       })
-      .catch(() => dispatch({type: LOGIN_FAILED}));
+      .catch(e => {
+        console.error('login failed', JSON.stringify(e));
+        return dispatch({type: LOGIN_FAILED});
+      });
   };
 };
 

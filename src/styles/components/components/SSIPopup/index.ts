@@ -1,9 +1,9 @@
 import styled from 'styled-components/native';
 
 import {SSICheckmarkBadge, SSIExclamationMarkBadge} from '@sphereon/ui-components.ssi-react-native';
-import {elements, fonts} from '../../../colors';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundPrimaryLightStyled} from '../../containers';
 import {SSITextH4SemiBoldStyled, SSITextH5Styled} from '../../fonts';
+import {elementColors, fontColors} from '@sphereon/ui-components.core';
 
 export const SSIPopupContainerStyled = styled(SSIRoundedContainerBackgroundPrimaryLightStyled)`
   width: 100%;
@@ -47,12 +47,12 @@ export const SSIPopupDetailsTextStyled = styled(SSITextH5Styled)`
 export const SSIPopupExtraDetailsTextStyled = styled(SSITextH5Styled)`
   margin-bottom: 16px;
   flex-wrap: wrap;
-  color: ${fonts.greyedOut};
+  color: ${fontColors.greyedOut};
 `;
 
 export const SSIPopupDetailsButtonTextStyled = styled(SSITextH4SemiBoldStyled)`
   flex-wrap: wrap;
-  color: ${elements.blue};
+  color: ${elementColors.blue};
 `;
 
 export const SSIPopupCloseButtonContainerStyled = styled.View`

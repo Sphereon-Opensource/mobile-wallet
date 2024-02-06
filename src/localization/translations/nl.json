@@ -59,7 +59,6 @@
   "contact_name_label": "Contact Naam",
   "contact_name_placeholder": "Naam contact",
   "contact_name_invalid_message": "Vul een geldige contact naam in",
-  "contact_name_unavailable_message": "Deze naam bestaat al, vul een unieke contactnaam in",
   "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
   "contact_delete_title": "Verwijder contact",
   "contact_delete_message": "Weet u zeker dat u het contact wilt verwijderen: {{contactName}}?",
@@ -113,6 +112,7 @@
   "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch.",
   "lock_title": "Log in\nde Sphereon Wallet",
   "lock_subtitle": "Vul je pincode in.",
+  "lock_emergency_button_caption": "Noodoproep",
   "show_raw_credential_button_caption": "Ruwe credential",
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
@@ -151,5 +151,15 @@
   "oid4vci_machine_verify_credentials_error_title": "Verifiëren credential",
   "oid4vci_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
   "oid4vci_machine_store_credential_branding_error_title": "Opslaan credential branding",
-  "oid4vci_machine_store_credential_error_title": "Opslaan credential"
+  "oid4vci_machine_store_credential_error_title": "Opslaan credential",
+  "emergency_send_button_caption": "Activeer nu!",
+  "emergency_abort_button_caption": "Alarm afbreken",
+  "emergency_title": "Stuur een noodwaarschuwing",
+  "emergency_subtitle": "Uw noodoproep wordt over {{emergencyAlertDelay}} seconden verzonden, of u kunt deze onmiddellijk activeren door op de knop Activeer nu! te klikken.",
+  "siopV2_machine_identifier_error_title": "Identifier ophalen",
+  "siopV2_machine_create_config_error_title": "SiopV2 configuratie maken",
+  "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
+  "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
+  "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
+  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden"
 }

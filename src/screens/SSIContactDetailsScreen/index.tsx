@@ -42,7 +42,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <SSIContactViewItem name={contact.alias} uri={contact.uri} roles={contact.roles} />
+      <SSIContactViewItem name={contact.contact.displayName} uri={contact.uri} roles={contact.roles} />
       <SSITabView routes={routes} />
     </Container>
   );

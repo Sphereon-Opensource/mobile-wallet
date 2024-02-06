@@ -107,8 +107,8 @@ const agent = createAgent<
     new CredentialHandlerLDLocal({
       contextMaps: [LdContexts],
       suites: [
-        new SphereonEd25519Signature2018(),
-        new SphereonEd25519Signature2020(),
+        //new SphereonEd25519Signature2018(), // TODO revert after debug
+        //new SphereonEd25519Signature2020(), // TODO revert after debug
         // new SphereonBbsBlsSignature2020(),
         new SphereonJsonWebSignature2020(),
       ],

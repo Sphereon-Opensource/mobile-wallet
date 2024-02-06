@@ -1,5 +1,5 @@
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
-import {IContact, IIdentity} from '@sphereon/ssi-sdk.data-store';
+import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {
   addContactIdentity,
@@ -73,7 +73,7 @@ const oid4vciRequireAuthorize = (_ctx: OID4VCIMachineContext, _event: OID4VCIMac
 
 const oid4vciHasNoContactIdentityGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
   const {contact, credentialOffers} = _ctx;
-  return !contact?.identities!.some((identity: IIdentity): boolean => identity.identifier.correlationId === credentialOffers[0].correlationId);
+  return !contact?.identities!.some((identity: Identity): boolean => identity.identifier.correlationId === credentialOffers[0].correlationId);
 };
 
 const oid4vciVerificationCodeGuard = (_ctx: OID4VCIMachineContext, _event: OID4VCIMachineEventTypes): boolean => {
@@ -109,7 +109,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
     schema: {
       events: {} as OID4VCIMachineEventTypes,
       guards: {} as
-        | {type: OID4VCIMachineGuards.hasNotContactGuard}
+        | {type: OID4VCIMachineGuards.hasNoContactGuard}
         | {type: OID4VCIMachineGuards.selectCredentialGuard}
         | {type: OID4VCIMachineGuards.requirePinGuard}
         | {type: OID4VCIMachineGuards.requireAuthorize}
@@ -126,7 +126,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           data: Array<ICredentialTypeSelection>;
         };
         [OID4VCIMachineServices.retrieveContact]: {
-          data: IContact | undefined;
+          data: Party | undefined;
         };
         [OID4VCIMachineServices.retrieveCredentialOffers]: {
           data: Array<MappedCredentialOffer> | undefined;
@@ -200,7 +200,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.retrieveContact,
           onDone: {
             target: OID4VCIMachineStates.transitionFromSetup,
-            actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<IContact>) => _event.data}),
+            actions: assign({contact: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
           },
           onError: {
             target: OID4VCIMachineStates.handleError,
@@ -218,7 +218,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
         always: [
           {
             target: OID4VCIMachineStates.addContact,
-            cond: OID4VCIMachineGuards.hasNotContactGuard,
+            cond: OID4VCIMachineGuards.hasNoContactGuard,
           },
           {
             target: OID4VCIMachineStates.selectCredentials,
@@ -275,6 +275,10 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           {
             target: OID4VCIMachineStates.selectCredentials,
             cond: OID4VCIMachineGuards.selectCredentialGuard,
+          },
+          {
+            target: OID4VCIMachineStates.authorizeInteractive,
+            cond: OID4VCIMachineGuards.requireAuthorize,
           },
           {
             target: OID4VCIMachineStates.verifyPin,
@@ -442,7 +446,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
           src: OID4VCIMachineServices.addContactIdentity,
           onDone: {
             target: OID4VCIMachineStates.reviewCredentials,
-            actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<IIdentity>): void => {
+            actions: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Identity>): void => {
               _ctx.contact?.identities.push(_event.data);
             },
           },

@@ -3,7 +3,7 @@ import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigat
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
-import {APP_ID} from '../@config/constants';
+import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
@@ -37,6 +37,7 @@ import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
+import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import {
   HeaderMenuIconsEnum,
   IOnboardingProps,
@@ -47,8 +48,10 @@ import {
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
+  ISiopV2PProps,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
+import EmergencyScreen from '../screens/EmergencyScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -94,6 +97,15 @@ const MainStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <OID4VCIStackWithContext />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.SIOPV2}
+        children={() => (
+          <>
+            <SiopV2StackWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -354,7 +366,7 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier})} ${
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
                 route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
               }`}
             />
@@ -561,9 +573,29 @@ const AuthenticationStack = (): JSX.Element => {
         component={SSILockScreen}
         initialParams={{onAuthenticate: login}}
         options={{
+          // FIXME WAL-681 https://github.com/react-navigation/react-navigation/issues/11139
+          // navigationBarColor: '#202537',
           headerTitle: translate('lock_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar {...props} showBackButton={false} showProfileIcon={false} headerSubTitle={translate('lock_subtitle')} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.EMERGENCY}
+        component={EmergencyScreen}
+        options={{
+          // FIXME WAL-681 https://github.com/react-navigation/react-navigation/issues/11139
+          // navigationBarColor: '#D74500',
+          headerTitle: translate('emergency_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // FIXME add colors to ui-components once we merge this functionality
+              backgroundColor={'#D74500'}
+              showProfileIcon={false}
+              headerSubTitle={translate('emergency_subtitle', {emergencyAlertDelay: EMERGENCY_ALERT_DELAY})}
+            />
           ),
         }}
       />
@@ -706,6 +738,137 @@ export const OID4VCIStackWithContext = (props: IOID4VCIProps): JSX.Element => {
     <OID4VCIProvider customOID4VCIInstance={props.customOID4VCIInstance}>
       <OID4VCIStack />
     </OID4VCIProvider>
+  );
+};
+
+export const SiopV2Stack = (): JSX.Element => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        animation: 'none',
+      }}>
+      <Stack.Screen
+        name={ScreenRoutesEnum.LOADING}
+        component={SSILoadingScreen}
+        initialParams={{message: translate('action_getting_information_message')}}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ADD}
+        component={SSIContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('contact_add_new_contact_detected_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              onBack={route.params.onBack}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
+        component={SSICredentialsRequiredScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_required_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              onBack={route.params.onBack}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
+                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+              }`}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
+        component={SSICredentialRawJsonScreen}
+        options={{
+          headerTitle: translate('raw_credential_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIALS_SELECT}
+        component={SSICredentialsSelectScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_select_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={`${translate('credentials_select_subtitle')} ${route.params.purpose && `\n\n${route.params.purpose}`}`}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
+        component={SSICredentialDetailsScreen}
+        options={({route}) => ({
+          headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              onBack={route.params.onBack}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('credential_details_subtitle')}
+              // TODO create actions that can be passed in
+              moreActions={[
+                {
+                  caption: translate('show_raw_credential_button_caption'),
+                  onPress: async (): Promise<void> =>
+                    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
+                      rawCredential: route.params.rawCredential,
+                    }),
+                  icon: HeaderMenuIconsEnum.DOWNLOAD,
+                },
+              ]}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={({route}) => ({
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.LOCK}
+        component={SSILockScreen}
+        options={{
+          headerTitle: translate('authentication_pin_code_title'),
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const SiopV2StackWithContext = (props: ISiopV2PProps): JSX.Element => {
+  return (
+    <SiopV2Provider customSiopV2Instance={props.customSiopV2Instance}>
+      <SiopV2Stack />
+    </SiopV2Provider>
   );
 };
 

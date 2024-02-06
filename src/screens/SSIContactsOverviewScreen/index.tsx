@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {IContact} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -10,13 +10,13 @@ import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
 import {translate} from '../../localization/Localization';
 import {deleteContact, getContacts} from '../../store/actions/contact.actions';
-import {backgrounds, borders} from '../../styles/colors';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
-  contacts: Array<IContact>;
+  contacts: Array<Party>;
   deleteContact: (contactId: string) => void;
   activeUser: IUser;
 }
@@ -35,39 +35,39 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  onDelete = async (contact: IContact): Promise<void> => {
+  onDelete = async (contact: Party): Promise<void> => {
     const {navigation, deleteContact} = this.props;
 
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
-      details: translate('contact_delete_message', {contactName: contact.alias}),
+      details: translate('contact_delete_message', {contactName: contact.contact.displayName}),
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: async () => {
+        onPress: async (): Promise<void> => {
           deleteContact(contact.id);
           navigation.goBack();
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => navigation.goBack(),
+        onPress: async (): Promise<void> => navigation.goBack(),
       },
     });
   };
 
-  onItemPress = async (contact: IContact): Promise<void> => {
+  onItemPress = async (contact: Party): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact});
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<IContact>): JSX.Element => {
+  renderItem = (itemInfo: ListRenderItemInfo<Party>): JSX.Element => {
     const {activeUser, contacts} = this.props;
-    const contactItem = <SSIContactViewItem name={itemInfo.item.alias} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
+    const contactItem = <SSIContactViewItem name={itemInfo.item.contact.displayName} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
     const backgroundStyle = {
-      backgroundColor: itemInfo.index % 2 === 0 ? backgrounds.secondaryDark : backgrounds.primaryDark,
+      backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
     const style = {
       ...backgroundStyle,
-      ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borders.dark}),
+      ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     return itemInfo.item.id === activeUser.id ? (
@@ -85,12 +85,12 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     );
   };
 
-  render() {
+  render(): JSX.Element {
     return (
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: IContact) => itemInfo.id}
+          keyExtractor={(itemInfo: Party) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe

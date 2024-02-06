@@ -1,9 +1,7 @@
 import React, {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes} from '@sphereon/ui-components.core';
-import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
-import SSIPrimaryButton from '../../components/buttons/SSIPrimaryButton';
-import SSISecondaryButton from '../../components/buttons/SSISecondaryButton';
+import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
@@ -105,26 +103,26 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           <ButtonContainer>
             <ButtonContainerContent>
               {secondaryAction && (
-                <SSISecondaryButton
+                <SecondaryButton
                   caption={secondaryAction.caption}
                   onPress={secondaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
                     minWidth: 160.5,
-                    width: primaryAction ? undefined : '100%',
+                    ...(primaryAction && {width: '100%'}),
                   }}
                 />
               )}
               {primaryAction && (
-                <SSIPrimaryButton
+                <PrimaryButton
                   caption={primaryAction.caption}
                   onPress={primaryAction.onPress}
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
                     minWidth: 160.5,
-                    width: secondaryAction ? undefined : '100%',
+                    ...(secondaryAction && {width: '100%'}),
                   }}
                 />
               )}

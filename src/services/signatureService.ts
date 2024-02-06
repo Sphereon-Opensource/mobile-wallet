@@ -11,8 +11,11 @@ export const signJWT = async (args: ISignJwtArgs): Promise<string> => {
     signer: getSigner(args.identifier),
   };
 
-  const jwt = createJWT(args.payload, options, args.header);
-  return jwt;
+  try {
+    return createJWT(args.payload, options, args.header);
+  } catch (e) {
+    console.error(JSON.stringify(e));
+  }
 };
 
 const getSigner = (identifier: IIdentifier): Signer => {
@@ -24,10 +27,11 @@ const getSigner = (identifier: IIdentifier): Signer => {
   return async (data: string | Uint8Array): Promise<string> => {
     const input = data instanceof Object.getPrototypeOf(Uint8Array) ? new TextDecoder().decode(data as Uint8Array) : (data as string);
 
-    return await keyManagerSign({
+    let signature = await keyManagerSign({
       keyRef: key.kid,
       algorithm,
       data: input,
     });
+    return signature;
   };
 };
