@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {PEX, SelectResults, SubmissionRequirementMatch} from '@sphereon/pex';
-import {Status} from '@sphereon/pex/dist/main/lib/ConstraintUtils';
+import {useBackHandler} from '@react-native-community/hooks';
+import {PEX, SelectResults, SubmissionRequirementMatch, Status} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
@@ -20,7 +20,7 @@ import {
   SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {ICredentialSummary, ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {JSONPath} from '@astronautlabs/jsonpath';
@@ -28,20 +28,33 @@ import {JSONPath} from '@astronautlabs/jsonpath';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {presentationDefinition, format, subjectSyntaxTypesSupported, verifier} = props.route.params;
+  const {navigation} = props;
+  const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
   const [selectedCredentials, setSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
   const [availableCredentials, setAvailableCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
-  const pex = new PEX();
+  const pex: PEX = new PEX();
 
-  useEffect(() => {
-    // TODO we need to have one source for these credentials as then all the data is always available
+  useBackHandler((): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
+    }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    navigation.goBack();
+    return true;
+  });
+
+  useEffect((): void => {
+    // FIXME we need to have one source for these credentials as then all the data is always available
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
       const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
         (uniqueVC: UniqueVerifiableCredential) =>
           CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
       );
-      const availableVCs = new Map<string, Array<UniqueVerifiableCredential>>();
+      const availableVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
       presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
         const presentationDefinition = {
           id: inputDescriptor.id,
@@ -71,23 +84,19 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   }, []);
 
-  useEffect(() => {
-    const selectedVCs = new Map<string, Array<UniqueVerifiableCredential>>();
+  useEffect((): void => {
+    const selectedVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) =>
       selectedVCs.set(inputDescriptor.id, []),
     );
     setSelectedCredentials(selectedVCs);
   }, [presentationDefinition]);
 
-  const onDecline = async (): Promise<void> => {
-    props.navigation.goBack();
-  };
-
   const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
-    const selectedVCs = getSelectedCredentials();
+    const selectedVCs: Array<UniqueVerifiableCredential> = getSelectedCredentials();
 
-    await onSend(selectedVCs.map(uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)));
+    await onSend(selectedVCs.map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)));
   };
 
   const getSelectedCredentials = (): Array<UniqueVerifiableCredential> => {
@@ -103,54 +112,74 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     return (
       pex.evaluateCredentials(
         presentationDefinition,
-        getSelectedCredentials().map(uniqueVC => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
+        getSelectedCredentials().map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
       ).areRequiredCredentialsPresent === Status.INFO
     );
   };
 
-  const onItemPress = async (inputDescriptorId: string, uniqueVCs: Array<UniqueVerifiableCredential>, inputDescriptorPurpose?: string) => {
-    // TODO we need to have one source for these credentials as then all the data is always available
+  const onItemPress = async (
+    inputDescriptorId: string,
+    uniqueVCs: Array<UniqueVerifiableCredential>,
+    inputDescriptorPurpose?: string,
+  ): Promise<void> => {
+    // FIXME we need to have one source for these credentials as then all the data is always available
     const vcHashes: Array<{vcHash: string}> = uniqueVCs.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
       vcHash: uniqueCredential.hash,
     }));
     const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
 
-    props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
-      credentialSelection: await Promise.all(
-        uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
-          // TODO we need to have one source for these credentials as then all the data is always available
-          const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
-            (branding: ICredentialBranding) => branding.vcHash === uniqueVC.hash,
+    const credentialSelection = await Promise.all(
+      uniqueVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
+        // FIXME we need to have one source for these credentials as then all the data is always available
+        const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
+          (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
+        );
+        const credentialSummary: ICredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+        const rawCredential: OriginalVerifiableCredential = await getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
+        const isSelected: boolean = selectedCredentials
+          .get(inputDescriptorId)!
+          .some(
+            (matchedVC: UniqueVerifiableCredential) =>
+              matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
+              matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
           );
-          const credentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
-          const rawCredential = await getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
-          const isSelected = selectedCredentials
-            .get(inputDescriptorId)!
-            .some(
-              matchedVC =>
-                matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
-                matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
-            );
-          return {
-            hash: credentialSummary.hash,
-            id: credentialSummary.id,
-            credential: credentialSummary,
-            rawCredential: rawCredential,
-            isSelected: isSelected,
-          };
-        }),
-      ),
-      purpose: inputDescriptorPurpose,
-      // TODO move this to a function, would be nicer
-      onSelect: async (hashes: Array<string>) => {
-        const selectedVCs = availableCredentials.get(inputDescriptorId)!.filter(vc => hashes.includes(vc.hash));
-        selectedCredentials.set(inputDescriptorId, selectedVCs);
-        const newSelection = new Map<string, Array<UniqueVerifiableCredential>>();
-        for (const [key, value] of selectedCredentials) {
-          newSelection.set(key, value);
+        return {
+          hash: credentialSummary.hash,
+          id: credentialSummary.id,
+          credential: credentialSummary,
+          rawCredential: rawCredential,
+          isSelected: isSelected,
+        };
+      }),
+    );
+
+    const onSelectCredential = async (hashes: Array<string>): Promise<void> => {
+      const selectedVCs: Array<UniqueVerifiableCredential> = availableCredentials
+        .get(inputDescriptorId)!
+        .filter((vc: UniqueVerifiableCredential) => hashes.includes(vc.hash));
+      selectedCredentials.set(inputDescriptorId, selectedVCs);
+      const newSelection: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
+      for (const [key, value] of selectedCredentials) {
+        newSelection.set(key, value);
+      }
+
+      setSelectedCredentials(newSelection);
+
+      if (onSelect) {
+        const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
+        for (const uniqueVCs of newSelection.values()) {
+          selectedVCs.push(uniqueVCs);
         }
-        setSelectedCredentials(newSelection);
-      },
+        await onSelect(
+          selectedVCs.flat().map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
+        );
+      }
+    };
+
+    props.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_SELECT, {
+      credentialSelection,
+      purpose: inputDescriptorPurpose,
+      onSelect: onSelectCredential,
     });
   };
 
@@ -222,7 +251,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           }}
           primaryButton={{
             caption: translate('action_share_label'),
-            disabled: !isMatchingPresentationDefinition(),
+            disabled: isSendDisabled ? isSendDisabled() : !isMatchingPresentationDefinition(),
             onPress: onSend,
           }}
         />

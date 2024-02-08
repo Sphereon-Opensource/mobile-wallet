@@ -1,4 +1,4 @@
-import {IIdentity} from '@sphereon/ssi-sdk.data-store';
+import {Identity} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -9,7 +9,7 @@ import SSIIdentityViewItem from '../SSIIdentityViewItem';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
-  identities: Array<IIdentity>;
+  identities: Array<Identity>;
 }
 
 const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
@@ -20,7 +20,7 @@ const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
     setRefreshing(false);
   };
 
-  const renderItem = (itemInfo: ListRenderItemInfo<IIdentity>): JSX.Element => (
+  const renderItem = (itemInfo: ListRenderItemInfo<Identity>): JSX.Element => (
     <SSIIdentityViewItem
       style={{
         backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
@@ -35,7 +35,7 @@ const SSIIdentitiesView: FC<IProps> = (props: IProps): JSX.Element => {
     <Container>
       <SwipeListView
         data={identities}
-        keyExtractor={(itemInfo: IIdentity) => itemInfo.id}
+        keyExtractor={(itemInfo: Identity) => itemInfo.id}
         renderItem={renderItem}
         closeOnRowOpen
         closeOnRowBeginSwipe

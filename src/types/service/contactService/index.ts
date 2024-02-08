@@ -1,23 +1,29 @@
-import {FindContactArgs, FindIdentityArgs, IBasicIdentity, IContact} from '@sphereon/ssi-sdk.data-store';
+import {
+  FindPartyArgs,
+  FindIdentityArgs,
+  NonPersistedIdentity,
+  Party,
+  NonPersistedParty,
+  NonPersistedContact,
+  NonPersistedPartyType as NonPersistedContactType,
+} from '@sphereon/ssi-sdk.data-store';
 
-export interface ICreateContactArgs {
-  name: string;
-  alias: string;
-  uri?: string;
-  identities?: Array<IBasicIdentity>;
-}
+export type ICreateContactArgs = Omit<NonPersistedParty, 'contact' | 'partyType'> &
+  NonPersistedContact & {
+    contactType: NonPersistedContactType;
+  };
 
 export interface IUpdateContactArgs {
-  contact: IContact;
+  contact: Party;
 }
 
 export interface IAddIdentityArgs {
   contactId: string;
-  identity: IBasicIdentity;
+  identity: NonPersistedIdentity;
 }
 
 export interface IGetContactsArgs {
-  filter?: FindContactArgs;
+  filter?: FindPartyArgs;
 }
 
 export interface IGetIdentitiesArgs {

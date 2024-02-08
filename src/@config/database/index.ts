@@ -1,4 +1,4 @@
-import {DataStoreContactEntities, DataStoreIssuanceBrandingEntities, DataStoreMigrations} from '@sphereon/ssi-sdk.data-store';
+import {DataStoreEntities, DataStoreMigrations} from '@sphereon/ssi-sdk.data-store';
 import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store';
 import * as driver from 'expo-sqlite';
 import {ExpoConnectionOptions} from 'typeorm/driver/expo/ExpoConnectionOptions';
@@ -10,12 +10,12 @@ const sqliteConfig: ExpoConnectionOptions = {
   type: 'expo',
   database: 'sphereon-wallet.sqlite',
   driver,
-  entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities],
+  entities: [...VeramoDataStoreEntities, ...DataStoreEntities],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code
   migrationsTransactionMode: 'each', // protect every migration with a separate transaction
-  logging: 'all', // 'all' means to enable all logging
+  logging: ['info', 'warn'],
   logger: 'advanced-console',
 };
 
