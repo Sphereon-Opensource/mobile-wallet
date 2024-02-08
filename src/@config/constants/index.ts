@@ -27,5 +27,3 @@ export const IS_IMAGE_URI_REGEX = /^data:image\/(png|jpg|jpeg|bmp|gif|webp);base
 export const IS_IMAGE_URL_REGEX = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
 
 export const EMERGENCY_ALERT_DELAY = 15;
-
-export const EMERGENCY_ALERT_DELAY = 15;

@@ -62,6 +62,7 @@ export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMac
       const issuerUrl = new URL(issuerConnection.issuerUrl);
       return OpenId4VcIssuanceProvider.initiationFromIssuer({
         issuer: `${issuerUrl.protocol}//${issuerUrl.host}`,
+        clientId: issuerConnection.clientId,
       });
   }
   return Promise.reject(Error(`Can't initiate OpenId4VcIssuanceProvider for request type ${requestData.type}`));
@@ -108,6 +109,7 @@ export const authorizeInteractive = async (
     scope:
       determineScope(openId4VcIssuanceProvider.serverMetadata!.credentialIssuerMetadata?.credentials_supported!, selectedCredentials) ?? 'openid',
     response_type: ResponseType.AUTH_CODE,
+    client_id: issuerConnection.clientId,
     redirect_uri: issuerConnection.redirectUri,
     nonce: generateRandomString(NONCE_LENGTH),
     code_challenge: codeChallenge,
@@ -211,6 +213,7 @@ export const retrieveCredentialOffers = async (
     const issuerConnection = requestData?.issuerConnection as IssuerConnection;
     authenticationOptions = {
       pin: verificationCode,
+      clientId: issuerConnection.clientId,
       redirectUri: issuerConnection.redirectUri,
       tokenProxyUrl: issuerConnection.proxyTokenUrl,
       code: authorizationCodeResponse?.code,

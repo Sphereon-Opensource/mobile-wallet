@@ -233,10 +233,12 @@ class OpenId4VcIssuanceProvider {
 
   public static initiationFromIssuer = async ({
     issuer: credentialIssuer,
+    clientId,
   }: IGetIssuanceInitiationFromIssuerArgs): Promise<OpenId4VcIssuanceProvider> => {
     const provider: OpenId4VcIssuanceProvider = new OpenId4VcIssuanceProvider(
       await OpenID4VCIClient.fromCredentialIssuer({
         credentialIssuer,
+        clientId: clientId,
       }),
     );
 
