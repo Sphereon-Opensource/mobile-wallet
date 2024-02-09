@@ -1,6 +1,6 @@
 import {Linking} from 'react-native';
 import {v4 as uuidv4} from 'uuid';
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionLocation, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
@@ -75,9 +75,13 @@ export const getSiopRequest = async (
     uri,
     name,
     clientId,
-    presentationDefinitions: (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token'))
-      ? verifiedAuthorizationRequest.presentationDefinitions
-      : undefined,
+    presentationDefinitions:
+      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
+      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
+        verifiedAuthorizationRequest.presentationDefinitions &&
+        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
+        ? verifiedAuthorizationRequest.presentationDefinitions
+        : undefined,
   };
 };
 

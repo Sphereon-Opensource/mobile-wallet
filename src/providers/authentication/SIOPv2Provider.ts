@@ -2,7 +2,7 @@ import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from 
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
+import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 
@@ -82,6 +82,17 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+
+    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0]);
+    const holder = Array.isArray(firstVC.credentialSubject) ? firstVC.credentialSubject[0].id : firstVC.credentialSubject.id;
+    if (holder) {
+      try {
+        identifier = await session.context.agent.didManagerGet({did: holder});
+      } catch (e) {
+        debug(`Holder DID not found: ${holder}`);
+      }
+    }
+
     console.log(`PRE CREATE VP ${new Date().toString()}`);
     presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {
       identifierOpts: {identifier},

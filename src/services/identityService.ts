@@ -1,11 +1,14 @@
 import {IIdentifier, IKey} from '@veramo/core';
+import Debug, {Debugger} from 'debug';
 
-import {DID_PREFIX} from '../@config/constants';
+import {APP_ID, DID_PREFIX} from '../@config/constants';
 import {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
 import store from '../store';
 import {getContacts} from '../store/actions/contact.actions';
 import {addIdentifier} from '../store/actions/user.actions';
-import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum} from '../types';
+import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+
+const debug: Debugger = Debug(`${APP_ID}:identity`);
 
 export const getIdentifiers = async (): Promise<IIdentifier[]> => {
   // TODO fully implement
@@ -37,11 +40,17 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
       args?.createOpts?.options?.type === undefined || identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type),
   );
 
-  console.log(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
+  debug(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
 
   // Currently we only support one identifier
+
+  if (args?.method === SupportedDidMethodEnum.DID_KEY) {
+    const createOpts = args?.createOpts ?? {};
+    createOpts.options = {codecName: 'EBSI', type: 'Secp256r1', ...createOpts};
+    args.createOpts = createOpts;
+  }
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
-  console.log(`created identifier: ${JSON.stringify(identifier, null, 2)}`);
+  debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);
   return didManagerGet({did: identifier.did});
 };

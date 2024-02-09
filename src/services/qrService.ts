@@ -1,5 +1,5 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {CredentialOfferClient} from '@sphereon/oid4vci-client';
+import {convertURIToJsonObject, CredentialOfferClient} from '@sphereon/oid4vci-client';
 import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
@@ -105,9 +105,10 @@ const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
 
 const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
   if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.includes(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
-    const hasCode = qrData.includes('code=');
-    const code = hasCode ? decodeURIComponent(qrData.split('code=')[1].split('&')[0]) : undefined;
-    console.log('code', code);
+    const offerData = convertURIToJsonObject(qrData) as Record<string, unknown>;
+    const hasCode = 'code' in offerData && !!offerData.code && !('issuer' in offerData);
+    const code = hasCode ? offerData.code : undefined;
+    console.log('offer contained code: ', code);
 
     return Promise.resolve({
       type: qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) ? QrTypesEnum.OPENID_INITIATE_ISSUANCE : QrTypesEnum.OPENID_CREDENTIAL_OFFER,

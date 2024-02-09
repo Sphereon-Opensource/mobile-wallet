@@ -20,6 +20,7 @@ import {
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {IIdentifier} from '@veramo/core';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 import {JWTHeader} from 'did-jwt';
@@ -59,7 +60,7 @@ export enum LDPProofTypeEnum {
   JcsEd25519Signature2020 = 'JcsEd25519Signature2020',
 }
 
-export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_ION];
+export const didMethodPreferences = [SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_ION];
 
 export const jsonldCryptographicSuitePreferences = [
   'Ed25519Signature2018',
@@ -244,7 +245,6 @@ class OpenId4VcIssuanceProvider {
     const provider: OpenId4VcIssuanceProvider = new OpenId4VcIssuanceProvider(client);
 
     await provider.getServerMetadataAndPerformCryptoMatching();
-
     return provider;
   };
 
@@ -274,18 +274,29 @@ class OpenId4VcIssuanceProvider {
     return credentialResponses;
   };
 
-  public getCredential = async ({issuanceOpt, pin}: {pin?: string; issuanceOpt: IIssuanceOpts}): Promise<CredentialResponse> => {
-    if (!issuanceOpt) {
-      return Promise.reject(Error(`Cannot get credential issuance options`));
-    }
+  private getIdentifier = async ({issuanceOpt}: {issuanceOpt: IIssuanceOpts}) => {
     const identifier = await getOrCreatePrimaryIdentifier({
       method: issuanceOpt.didMethod,
       createOpts: {options: {type: issuanceOpt.keyType, use: KeyUse.Signature}},
     });
-    const key: _ExtendedIKey =
-      (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
-      ((await getFirstKeyWithRelation(identifier, agentContext, 'verificationMethod', true)) as _ExtendedIKey);
+    const key: _ExtendedIKey = await this.getAuthenticationKey(identifier);
     const kid: string = key.meta.verificationMethod.id;
+    return {identifier, key, kid};
+  };
+
+  private async getAuthenticationKey(identifier: IIdentifier) {
+    return (
+      (await getFirstKeyWithRelation(identifier, agentContext, 'authentication', false)) ||
+      ((await getFirstKeyWithRelation(identifier, agentContext, 'verificationMethod', true)) as _ExtendedIKey)
+    );
+  }
+
+  public getCredential = async ({issuanceOpt, pin}: {pin?: string; issuanceOpt: IIssuanceOpts}): Promise<CredentialResponse> => {
+    if (!issuanceOpt) {
+      return Promise.reject(Error(`Cannot get credential issuance options`));
+    }
+    const {identifier, kid} = issuanceOpt;
+    const key = await this.getAuthenticationKey(identifier);
     const alg: SignatureAlgorithmEnum = SignatureAlgorithmFromKey(key);
 
     const callbacks: ProofOfPossessionCallbacks<DIDDocument> = {
@@ -319,8 +330,10 @@ class OpenId4VcIssuanceProvider {
 
       console.log(`cred type: ${JSON.stringify(issuanceOpt.types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
 
+      // @ts-ignore
       return await this._client.acquireCredentials({
         credentialTypes: issuanceOpt.types /*.filter((type: string): boolean => type !== 'VerifiableCredential')*/,
+        ...('@context' in issuanceOpt && issuanceOpt['@context'] && {context: issuanceOpt['@context']}),
         proofCallbacks: callbacks,
         format: issuanceOpt.format,
         // TODO: We need to update the machine and add notifications support for actuall deferred credentials instead of just waiting/retrying
@@ -467,16 +480,21 @@ class OpenId4VcIssuanceProvider {
 
       const cryptographicSuite: string = await this.getIssuanceCryptoSuite({credentialSupported});
       const didMethod: SupportedDidMethodEnum = await this.getIssuanceDidMethod(credentialSupported);
-
-      issuanceOpts.push({
+      const issuanceOpt = {
         ...credentialSupported,
         didMethod,
         format: credentialSupported.format,
         keyType: KeyTypeFromCryptographicSuite(cryptographicSuite),
-      } as IIssuanceOpts);
+      } as IIssuanceOpts;
+      const identifierOpts = await this.getIdentifier({issuanceOpt});
+
+      issuanceOpts.push({...issuanceOpt, ...identifierOpts});
     }
 
     this._issuanceOpts = issuanceOpts;
+    if (!this.client.clientId) {
+      this.client.clientId = issuanceOpts[0].identifier.did;
+    }
     return this._issuanceOpts;
   };
 
@@ -486,11 +504,14 @@ class OpenId4VcIssuanceProvider {
         credentialSupported.types,
       )}', as no Server Metadata or no metadata match was present!`,
     );
-    return {
+    const issuanceOpt = {
       ...credentialSupported,
       didMethod: SupportedDidMethodEnum.DID_JWK,
       keyType: 'Secp256k1',
-    };
+    } as IIssuanceOpts;
+    const identifierOpts = this.getIdentifier(issuanceOpt);
+
+    return {...issuanceOpt, ...identifierOpts};
   }
 
   private getIssuanceCryptoSuite = async ({credentialSupported}: {credentialSupported: CredentialSupported}): Promise<string> => {

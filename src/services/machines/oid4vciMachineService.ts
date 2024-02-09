@@ -39,33 +39,6 @@ export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMac
   return OpenId4VcIssuanceProvider.initiationFromUri({uri: requestData.uri});
 };
 
-/*export const provideAuthorizationCodeResponse = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'authorizationCodeResponse'>,
-): Promise<AuthorizationResponse> => {
-  const {openId4VcIssuanceProvider} = context;
-  if (!openId4VcIssuanceProvider || !context.authorizationCodeResponse) {
-    throw Error('No authorization response received')
-  }
-  const authorizationResponse = toAuthorizationResponsePayload(context.authorizationCodeResponse)
-  openId4VcIssuanceProvider.authorizationCodeResponse = authorizationResponse;
-
-  return authorizationResponse
-}*/
-/*export const invokeAuthorizationRequest = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'authorizationCodeURL'>,
-): Promise<void> => {
-  const {openId4VcIssuanceProvider, authorizationCodeURL} = context;
-
-  console.log(`invoke auth request: ${authorizationCodeURL}`)
-  if (authorizationCodeURL) {
-    await Linking.openURL(authorizationCodeURL);
-  } else if (openId4VcIssuanceProvider?.client.authorizationURL) {
-    await Linking.openURL(openId4VcIssuanceProvider?.client.authorizationURL);
-  } else {
-    throw Error('NOT_AUTHORIZED');
-  }
-};*/
-
 export const createCredentialSelection = async (
   context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'selectedCredentials' | 'authorizationCodeResponse'>,
 ): Promise<Array<ICredentialTypeSelection>> => {
@@ -100,6 +73,10 @@ export const createCredentialSelection = async (
   if (credentialSelection.length === 1) {
     selectedCredentials.push(credentialSelection[0].credentialType);
   }
+
+  /*  if (!openId4VcIssuanceProvider.client.clientId) {
+    openId4VcIssuanceProvider.client.clientId = openId4VcIssuanceProvider.credentialsSupported[0]
+  }*/
 
   return credentialSelection;
 };
