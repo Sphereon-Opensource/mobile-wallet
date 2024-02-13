@@ -13,7 +13,7 @@ import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../ty
 import {showToast} from '../../utils/ToastUtils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import LockingHandler from '../LockingHandler';
-import {AuthCodeResponseEvent, OID4VCIMachineEvents} from '../../types/machines/oid4vci';
+import {OID4VCIMachineEvents} from '../../types/machines/oid4vci';
 import {AuthorizationCodeResponse} from '../../types/service/authenticationService';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
@@ -155,15 +155,10 @@ class IntentHandler {
     const url: string | undefined = this._initialUrl;
     this._initialUrl = undefined;
     if (url) {
-      // POC code to handle MOSIP Signet flow
       const queryParams = this.parseDeepLink(url);
-      if ('error' in queryParams) {
-        let message = queryParams.error;
-        if ('error_description' in queryParams) {
-          message += ': ' + queryParams.error_description;
-        }
-        throw new Error(message);
-      }
+      this.checkQueryParamsForErrors(queryParams);
+
+      // Check for authorization code flow response
       if ('code' in queryParams && 'nonce' in queryParams && OID4VCIInstance !== undefined) {
         OID4VCIInstance.send({
           type: OID4VCIMachineEvents.RECEIVED_AUTH_CODE_RESPONSE,
@@ -172,6 +167,7 @@ class IntentHandler {
             nonce: queryParams.nonce,
           } as AuthorizationCodeResponse,
         });
+        this._initialUrl = undefined;
       } else {
         // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
         // TODO fix this type issue
@@ -199,6 +195,23 @@ class IntentHandler {
     });
 
     return parameters;
+  }
+
+  private checkQueryParamsForErrors(
+    queryParams:
+      | Record<string, any>
+      | (Record<string, any> & {error: unknown})
+      | (Record<string, any> & {error: unknown} & {
+          error_description: unknown;
+        }),
+  ) {
+    if ('error' in queryParams) {
+      let message = queryParams.error;
+      if ('error_description' in queryParams) {
+        message += ': ' + queryParams.error_description;
+      }
+      throw new Error(message);
+    }
   }
 
   private sharedFileDataAction(item?: ShareData): void {

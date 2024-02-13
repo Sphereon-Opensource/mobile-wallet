@@ -375,7 +375,7 @@ const createOID4VCIMachine = (opts?: CreateOID4VCIMachineOpts): OID4VCIStateMach
             actions: assign({
               error: (_ctx: OID4VCIMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('oid4vci_machine_initiation_error_title'),
-                message: _event.data.message, // TODO: Do I need to fill the message or is the extracted from throw Error()?
+                message: _event.data.message,
               }),
             }),
           },
