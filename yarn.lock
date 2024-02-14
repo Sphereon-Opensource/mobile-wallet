@@ -3502,20 +3502,20 @@
     str2buf "^1.3.0"
     webcrypto-shim "^0.1.7"
 
-"@sphereon/oid4vci-client@0.8.2-unstable.72":
-  version "0.8.2-unstable.72"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.8.2-unstable.72.tgz#c3618597d2bc7f779eed3ccc896bb19e2a314ed4"
-  integrity sha512-iW56ZGYrR2jd3lqmqjLmnTD4l+1ajrzQ9qzOexKkIHx+elRZDxv9r2UCNZXC7mhvr+Z50pjYP+5putE23KS2Og==
+"@sphereon/oid4vci-client@0.8.2-unstable.75":
+  version "0.8.2-unstable.75"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.8.2-unstable.75.tgz#3d9f354dcdfa4c381ad9c59ead5627cb1d914a81"
+  integrity sha512-AKbYvv40vv5caGZtQdvf8Mh9MdoKX3EKJcDE9djZWEYskdVqOdqbbFxSqMba3JSryMeQydE/Xw1cZMaedq8OEw==
   dependencies:
-    "@sphereon/oid4vci-common" "0.8.2-unstable.72+dfb2280"
+    "@sphereon/oid4vci-common" "0.8.2-unstable.75+7a1afbc"
     "@sphereon/ssi-types" "^0.18.1"
     cross-fetch "^3.1.8"
     debug "^4.3.4"
 
-"@sphereon/oid4vci-common@0.8.2-unstable.72", "@sphereon/oid4vci-common@0.8.2-unstable.72+dfb2280":
-  version "0.8.2-unstable.72"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.8.2-unstable.72.tgz#3a68e26154fa1b704a1900dde979d87ca37e7def"
-  integrity sha512-S69+pDZ40waTg25FDVaoOk4ITewvXW0HEVH20bWg0hvztrUeQtAd0I+Ci48UNk1cB8G75XA/F0BB+NusFkMUPw==
+"@sphereon/oid4vci-common@0.8.2-unstable.75", "@sphereon/oid4vci-common@0.8.2-unstable.75+7a1afbc":
+  version "0.8.2-unstable.75"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.8.2-unstable.75.tgz#2e5c6c1a0a5b9a096e38b1fddd6a10878b462fee"
+  integrity sha512-Vy+RvE1BKDmXVfJ+nplGSWM3D+4aSkNif05SQHQLvdUkiF6rVimrkBihiyrVNh30ARIPXmxlAsqCrd2vfavlWg==
   dependencies:
     "@sphereon/ssi-types" "^0.18.1"
     cross-fetch "^3.1.8"

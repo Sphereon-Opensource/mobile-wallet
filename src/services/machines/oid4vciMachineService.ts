@@ -58,12 +58,13 @@ export const createCredentialSelection = async (
       // FIXME this allows for duplicate VerifiableCredential, which the user has no idea which ones those are and we also have a branding map with unique keys, so some branding will not match
       const credentialType: string =
         credentialMetadata.types.find((type: string): boolean => type !== 'VerifiableCredential') ?? 'VerifiableCredential';
+      const credentialAlias =
+        (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider?.credentialBranding?.get(credentialType)}))?.alias ??
+        credentialType;
       return {
         id: uuidv4(),
         credentialType,
-        credentialAlias:
-          (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider?.credentialBranding?.get(credentialType)}))?.alias ??
-          credentialType,
+        credentialAlias,
         isSelected: false,
       };
     }),
@@ -113,7 +114,6 @@ export const retrieveCredentials = async (
   if (!openId4VcIssuanceProvider) {
     throw Error('Missing OID4VCI issuance provider in context');
   }
-  console.log('MACHINE authorizationCodeResponse', authorizationCodeResponse);
   openId4VcIssuanceProvider.authorizationCodeResponse = authorizationCodeResponse;
   return openId4VcIssuanceProvider
     ?.getCredentials({
@@ -196,7 +196,7 @@ export const assertValidCredentials = async (context: Pick<OID4VCIMachineContext
       });
 
       if (!verificationResult.result || verificationResult.error) {
-        console.log(JSON.stringify(verificationResult));
+        console.log('Verification of credential failed', JSON.stringify(verificationResult));
         return Promise.reject(Error(verificationResult.result ? verificationResult.error : translate('credential_verification_failed_message')));
       }
     }),

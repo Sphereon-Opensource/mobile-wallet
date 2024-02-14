@@ -1,3 +1,4 @@
+import {getIssuerName, getSupportedCredential} from '@sphereon/oid4vci-common';
 import React, {Context, createContext} from 'react';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
@@ -58,10 +59,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
   const issuerUrl: URL = new URL(openId4VcIssuanceProvider.serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
-  const issuerName: string = OpenId4VcIssuanceProvider.getIssuerName(
-    correlationId,
-    openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata,
-  );
+  const issuerName: string = getIssuerName(correlationId, openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata);
 
   const contact: NonPersistedParty = {
     contact: {
@@ -157,6 +155,10 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   }
 
   const onSelectType = async (selectedCredentials: Array<string>): Promise<void> => {
+    const provider = state.context.openId4VcIssuanceProvider;
+    if (!provider) {
+      throw Error(`No provider present in context`);
+    }
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
@@ -202,22 +204,20 @@ const navigatePINVerification = async (args: OID4VCIMachineNavigationArgs): Prom
 const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
   const url = state.context.authorizationCodeURL;
-  console.log('navigateAuthorizationCodeURL: ' + url);
+  debug('navigateAuthorizationCodeURL: ', url);
   if (!url) {
     return Promise.reject(Error('Missing authorization URL in context'));
   }
   const onOpenAuthorizationUrl = async (url: string): Promise<void> => {
-    console.log('onOpenAuthorizationUrl before invoked: ' + url);
+    debug('onOpenAuthorizationUrl being invoked: ', url);
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST,
       data: url,
     });
-    console.log('onOpenAuthorizationUrl after invoked, before openUrl: ' + url);
     await Linking.openURL(url);
-    console.log('onOpenAuthorizationUrl after openUrl: ' + url);
+    debug('onOpenAuthorizationUrl after openUrl: ', url);
   };
 
-  console.log('pre navigate browser open: ' + url);
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.BROWSER_OPEN,
     params: {
@@ -305,10 +305,9 @@ export const oid4vciStateNavigationListener = async (
   state: OID4VCIMachineState,
   navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
-  console.log('oid4vciStateNavigationListener: ' + state.value, state.value);
-  console.log('oid4vciStateNavigationListener: ' + JSON.stringify(state._event));
+  debug('oid4vciStateNavigationListener: ', state.value);
   if (state._event.type === 'internal') {
-    console.log('oid4vciStateNavigationListener: internal event');
+    debug('oid4vciStateNavigationListener: internal event');
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
     // Make sure we do not navigate when state has not changed
     return;
@@ -316,7 +315,6 @@ export const oid4vciStateNavigationListener = async (
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
   const onNext = () => oid4vciMachine.send(OID4VCIMachineEvents.NEXT);
 
-  console.log('pre navigate');
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
     console.log(`navigation not ready yet`);

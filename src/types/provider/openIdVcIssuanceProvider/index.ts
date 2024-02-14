@@ -22,6 +22,7 @@ export interface IGetCredentialsArgs {
 export type IIssuanceOpts = CredentialSupported & {
   didMethod: SupportedDidMethodEnum;
   keyType: TKeyType;
+  codeName?: string;
   kid?: string;
   identifier: IIdentifier;
 };

@@ -52,5 +52,5 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
   debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);
-  return didManagerGet({did: identifier.did});
+  return await didManagerGet({did: identifier.did});
 };
