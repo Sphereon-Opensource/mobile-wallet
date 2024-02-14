@@ -250,7 +250,7 @@ class OpenId4VcIssuanceProvider {
   private getIdentifier = async ({issuanceOpt}: {issuanceOpt: IIssuanceOpts}) => {
     const identifier = await getOrCreatePrimaryIdentifier({
       method: issuanceOpt.didMethod,
-      createOpts: {options: {type: issuanceOpt.keyType, use: KeyUse.Signature, codecName: issuanceOpt.codeName}},
+      createOpts: {options: {type: issuanceOpt.keyType, use: KeyUse.Signature, codecName: issuanceOpt.codecName}},
     });
     const key: _ExtendedIKey = await this.getAuthenticationKey(identifier);
     const kid: string = key.meta.verificationMethod.id;
