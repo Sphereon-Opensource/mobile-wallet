@@ -3457,6 +3457,17 @@
     uint8arrays "^3.1.1"
     uuid "^9.0.0"
 
+"@sphereon/did-provider-oyd@0.16.1-next.5":
+  version "0.16.1-next.5"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.16.1-next.5.tgz#47c057cecd36f5e8c281c0cb2388906d8a6589c5"
+  integrity sha512-J0FYvzTcPiG7ysN3EoPKH5+w15cky6xHUGBgCIMhd3OF+JxvGDATveuzOX80EKXqiM4J56NkT6SEbAdHr7x7gw==
+  dependencies:
+    "@veramo/core" "4.2.0"
+    "@veramo/did-manager" "4.2.0"
+    cross-fetch "^4.0.0"
+    debug "^4.3.3"
+    did-resolver "^4.1.0"
+
 "@sphereon/did-uni-client@^0.6.0", "@sphereon/did-uni-client@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@sphereon/did-uni-client/-/did-uni-client-0.6.1.tgz#5fe7fa2b87c22f939c95d388b6fcf9e6e93c70a8"

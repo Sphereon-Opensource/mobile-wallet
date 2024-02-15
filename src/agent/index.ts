@@ -23,7 +23,7 @@ import {DIDManager} from '@veramo/did-manager';
 import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
-import {getDidOydResolver, OydDIDProvider} from '@ownyourdata/did-provider-oyd';
+import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
