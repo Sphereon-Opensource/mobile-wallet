@@ -1,8 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import BadgeButton from '../../components/buttons/BadgeButton';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
@@ -13,15 +12,25 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import BadgeButton from '../../components/buttons/BadgeButton';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {UniqueVerifiableCredential} from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
 // TODO This screen should be extended to do pin code or biometrics authentication
 const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
+  const [emergencyButtonVisible, setEmergencyButtonVisible] = useState(false);
   useEffect((): void => {
     props.navigation.addListener('focus', (): void => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
+    });
+    getVerifiableCredentialsFromStorage().then(async (credentials: Array<UniqueVerifiableCredential>): Promise<void> => {
+      const dec112Credential = credentials.find(c => c.verifiableCredential.type && c.verifiableCredential.type.indexOf('DEC112Credential') > -1);
+      if (dec112Credential) {
+        setEmergencyButtonVisible(true);
+      }
     });
   }, []);
 
@@ -51,12 +60,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           onVerification={onVerification}
         />
       </PinCodeContainer>
-      {/*<BadgeButton*/}
-      {/*  caption={translate('lock_emergency_button_caption')}*/}
-      {/*  onPress={onEmergencyCall}*/}
-      {/*  // FIXME would be nice if we could turn this into a styled components, but for some reason the styling is not working then when passed as a prop*/}
-      {/*  style={{marginTop: 'auto', marginRight: 'auto', marginLeft: 26, marginBottom: 34}}*/}
-      {/*/>*/}
+      {emergencyButtonVisible ? (
+        <BadgeButton
+          caption={translate('lock_emergency_button_caption')}
+          onPress={onEmergencyCall}
+          style={{marginRight: 'auto', marginLeft: 'auto', marginBottom: 34, marginTop: 40}}
+        />
+      ) : null}
     </Container>
   );
 };

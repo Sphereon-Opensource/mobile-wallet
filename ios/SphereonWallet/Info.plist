@@ -57,6 +57,12 @@
 	<string>Needed to scan QR codes</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Used as optional login method</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Need location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>
