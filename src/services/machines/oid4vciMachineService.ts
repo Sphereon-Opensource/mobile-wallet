@@ -28,6 +28,7 @@ import {MappedCredentialToAccept, OID4VCIMachineContext} from '../../types/machi
 import {addCredentialBranding, selectAppLocaleBranding} from '../brandingService';
 import {getContacts} from '../contactService';
 import {verifyCredential} from '../credentialService';
+import openId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssuanceProvider';
 
 export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMachineContext, 'requestData'>): Promise<OpenId4VcIssuanceProvider> => {
   const {requestData} = context;
@@ -67,9 +68,9 @@ export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMac
 };*/
 
 export const createCredentialSelection = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'selectedCredentials' | 'authorizationCodeResponse'>,
+  context: Pick<OID4VCIMachineContext, 'selectedCredentials' | 'authorizationCodeResponse'>,
 ): Promise<Array<ICredentialTypeSelection>> => {
-  const {openId4VcIssuanceProvider, selectedCredentials, authorizationCodeResponse} = context;
+  const {selectedCredentials, authorizationCodeResponse} = context;
 
   if (!openId4VcIssuanceProvider) {
     return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));

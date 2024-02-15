@@ -1,5 +1,5 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {CredentialOfferClient} from '@sphereon/oid4vci-client';
+import {CredentialOfferClient, OpenID4VCIClient, OpenID4VCIClientState} from '@sphereon/oid4vci-client';
 import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
@@ -27,6 +27,8 @@ import {SiopV2MachineInterpreter} from '../types/machines/siopV2';
 import {showToast} from '../utils';
 import {authenticate} from './authenticationService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
+import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
+import {oid4vciHolderGetMachineInterpreter} from '../agent';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
@@ -172,14 +174,234 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 export let OID4VCIInstance: OID4VCIMachineInterpreter | undefined;
 export let SiopV2Instance: SiopV2MachineInterpreter | undefined;
 const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
-  console.log(`args.qrData`, args.qrData);
-  if (args.qrData.code && args.qrData.uri) {
-    OID4VCIInstance?.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
-    return;
-  } else {
-    OID4VCIInstance = OID4VCIMachine.newInstance({requestData: args.qrData});
-    OID4VCIInstance.start();
-  }
+  // console.log(`args.qrData`, JSON.stringify(args.qrData));
+
+  await oid4vciHolderGetMachineInterpreter({
+    requestData: args.qrData,
+    navigation: oid4vciStateNavigationListener,
+  });
+
+  //const xx: OpenID4VCIClientState = {}
+
+  // const xx = {
+  //   "credentialIssuer":"https://launchpad.vii.electron.mattrlabs.io",
+  //   "credentialOffer":{
+  //     "scheme":"openid-credential-offer",
+  //     "baseUrl":"openid-credential-offer://",
+  //     "credential_offer":{
+  //       "credential_issuer":"https://launchpad.vii.electron.mattrlabs.io",
+  //       "credentials":[
+  //         {
+  //           "format":"ldp_vc",
+  //           "types":[
+  //             "OpenBadgeCredential"
+  //           ]
+  //         }
+  //       ],
+  //       "grants":{
+  //         "urn:ietf:params:oauth:grant-type:pre-authorized_code":{
+  //           "pre-authorized_code":"jQ-m14HCViS2AkbZjr9ut8SpbzHNlwE0gkyXuSCnUrp"
+  //         }
+  //       }
+  //     },
+  //     "original_credential_offer":{
+  //       "credential_issuer":"https://launchpad.vii.electron.mattrlabs.io",
+  //       "credentials":[
+  //         {
+  //           "format":"ldp_vc",
+  //           "types":[
+  //             "OpenBadgeCredential"
+  //           ]
+  //         }
+  //       ],
+  //       "grants":{
+  //         "urn:ietf:params:oauth:grant-type:pre-authorized_code":{
+  //           "pre-authorized_code":"jQ-m14HCViS2AkbZjr9ut8SpbzHNlwE0gkyXuSCnUrp"
+  //         }
+  //       }
+  //     },
+  //     "supportedFlows":[
+  //       "Pre-Authorized Code Flow"
+  //     ],
+  //     "version":1011,
+  //     "preAuthorizedCode":"jQ-m14HCViS2AkbZjr9ut8SpbzHNlwE0gkyXuSCnUrp",
+  //     "userPinRequired":false
+  //   },
+  //   "endpointMetadata":{
+  //     "issuer":"https://launchpad.vii.electron.mattrlabs.io",
+  //     "token_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/token",
+  //     "credential_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/credential",
+  //     "authorization_server":"https://launchpad.vii.electron.mattrlabs.io",
+  //     "authorization_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/authorize",
+  //     "authorizationServerType":"OID4VCI",
+  //     "credentialIssuerMetadata":{
+  //       "issuer":"https://launchpad.vii.electron.mattrlabs.io",
+  //       "authorization_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/authorize",
+  //       "token_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/token",
+  //       "jwks_uri":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/jwks",
+  //       "token_endpoint_auth_methods_supported":[
+  //         "none",
+  //         "client_secret_basic",
+  //         "client_secret_jwt",
+  //         "client_secret_post",
+  //         "private_key_jwt"
+  //       ],
+  //       "code_challenge_methods_supported":[
+  //         "S256"
+  //       ],
+  //       "grant_types_supported":[
+  //         "authorization_code",
+  //         "urn:ietf:params:oauth:grant-type:pre-authorized_code"
+  //       ],
+  //       "response_modes_supported":[
+  //         "form_post",
+  //         "fragment",
+  //         "query"
+  //       ],
+  //       "response_types_supported":[
+  //         "code id_token",
+  //         "code",
+  //         "id_token",
+  //         "none"
+  //       ],
+  //       "scopes_supported":[
+  //         "OpenBadgeCredential",
+  //         "Passport"
+  //       ],
+  //       "token_endpoint_auth_signing_alg_values_supported":[
+  //         "HS256",
+  //         "RS256",
+  //         "PS256",
+  //         "ES256",
+  //         "EdDSA"
+  //       ],
+  //       "credential_endpoint":"https://launchpad.vii.electron.mattrlabs.io/oidc/v1/auth/credential",
+  //       "credentials_supported":[
+  //         {
+  //           "id":"d2662472-891c-413d-b3c6-e2f0109001c5",
+  //           "format":"ldp_vc",
+  //           "types":[
+  //             "VerifiableCredential",
+  //             "OpenBadgeCredential"
+  //           ],
+  //           "cryptographic_binding_methods_supported":[
+  //             "did:key"
+  //           ],
+  //           "cryptographic_suites_supported":[
+  //             "Ed25519Signature2018"
+  //           ],
+  //           "display":[
+  //             {
+  //               "name":"Example University Degree",
+  //               "description":"JFF Plugfest 3 OpenBadge Credential",
+  //               "background_color":"#464c49",
+  //               "logo":{
+  //
+  //               }
+  //             }
+  //           ]
+  //         },
+  //         {
+  //           "id":"b4c4cdf5-ccc9-4945-8c19-9334558653b2",
+  //           "format":"ldp_vc",
+  //           "types":[
+  //             "VerifiableCredential",
+  //             "Passport"
+  //           ],
+  //           "cryptographic_binding_methods_supported":[
+  //             "did:key"
+  //           ],
+  //           "cryptographic_suites_supported":[
+  //             "Ed25519Signature2018"
+  //           ],
+  //           "display":[
+  //             {
+  //               "name":"Passport",
+  //               "description":"Passport of the Kingdom of Kākāpō",
+  //               "background_color":"#171717",
+  //               "logo":{
+  //                 "url":"https://static.mattr.global/credential-assets/government-of-kakapo/web/logo.svg"
+  //               }
+  //             }
+  //           ]
+  //         },
+  //         {
+  //           "id":"613ecbbb-0a4c-4041-bb78-c64943139d5f",
+  //           "format":"jwt_vc_json",
+  //           "types":[
+  //             "VerifiableCredential",
+  //             "OpenBadgeCredential"
+  //           ],
+  //           "cryptographic_binding_methods_supported":[
+  //             "did:key"
+  //           ],
+  //           "cryptographic_suites_supported":[
+  //             "EdDSA"
+  //           ],
+  //           "display":[
+  //             {
+  //               "name":"Example University Degree",
+  //               "description":"JFF Plugfest 3 OpenBadge Credential",
+  //               "background_color":"#464c49",
+  //               "logo":{
+  //
+  //               }
+  //             }
+  //           ]
+  //         },
+  //         {
+  //           "id":"c3db5513-ae2b-46e9-8a0d-fbfd0ce52b6a",
+  //           "format":"jwt_vc_json",
+  //           "types":[
+  //             "VerifiableCredential",
+  //             "Passport"
+  //           ],
+  //           "cryptographic_binding_methods_supported":[
+  //             "did:key"
+  //           ],
+  //           "cryptographic_suites_supported":[
+  //             "EdDSA"
+  //           ],
+  //           "display":[
+  //             {
+  //               "name":"Passport",
+  //               "description":"Passport of the Kingdom of Kākāpō",
+  //               "background_color":"#171717",
+  //               "logo":{
+  //                 "url":"https://static.mattr.global/credential-assets/government-of-kakapo/web/logo.svg"
+  //               }
+  //             }
+  //           ]
+  //         }
+  //       ]
+  //     }
+  //   },
+  //   "authorizationRequestOpts":{
+  //
+  //   },
+  //   "pkce":{
+  //     "disabled":false,
+  //     "codeChallengeMethod":"S256"
+  //   }
+  // }
+  // const yy = JSON.stringify({a: 'a'})
+  // // @ts-ignore
+  // const openID4VCIClient= await OpenID4VCIClient.fromState(yy)
+
+  // const openID4VCIClient= await OpenID4VCIClient.fromURI({
+  //   uri: args.qrData.uri,
+  //   //authorizationRequest: {redirectUri: `${DefaultURISchemes.CREDENTIAL_OFFER}://`},
+  // })
+  // console.log('CLIENT CREATED')
+  // await openID4VCIClient.exportState()
+
+  // if (args.qrData.code && args.qrData.uri) {
+  //   OID4VCIInstance?.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
+  //   return;
+  // } else {
+  //   OID4VCIInstance = OID4VCIMachine.newInstance({requestData: args.qrData});
+  //   OID4VCIInstance.start();
+  // }
 };
 
 const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {

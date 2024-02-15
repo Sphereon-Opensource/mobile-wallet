@@ -20,18 +20,17 @@ import {
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {GetCredentialsArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {_ExtendedIKey} from '@veramo/utils';
-import Debug, {Debugger} from 'debug';
 import {JWTHeader} from 'did-jwt';
 import {DIDDocument} from 'did-resolver';
-import {APP_ID} from '../../@config/constants';
+import {v4 as uuidv4} from 'uuid';
 import {agentContext, ibCredentialLocaleBrandingFrom} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
   ErrorDetails,
-  IGetCredentialsArgs,
   IGetIssuanceInitiationFromUriArgs,
   IIssuanceOpts,
   IServerMetadataAndCryptoMatchingResponse,
@@ -39,11 +38,8 @@ import {
   QrTypesEnum,
   SupportedDidMethodEnum,
 } from '../../types';
-import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils/KeyUtils';
+import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils';
 import {credentialLocaleBrandingFrom} from '../../utils/mappers/branding/OIDC4VCIBrandingMapper';
-
-const {v4: uuidv4} = require('uuid');
-const debug: Debugger = Debug(`${APP_ID}:openid4vci`);
 
 // TODO these preferences need to come from the user
 export const vcFormatPreferences = ['jwt_vc_json', 'jwt_vc', 'ldp_vc'];
@@ -153,16 +149,18 @@ class OpenId4VcIssuanceProvider {
   private _accessTokenResponse?: AccessTokenResponse;
   private _credentialBranding?: Map<string, Array<IBasicCredentialLocaleBranding>>;
   private _issuerBranding?: Array<MetadataDisplay>;
-
   private _authorizationCodeResponse?: AuthorizationResponse;
 
-  private constructor(client: OpenID4VCIClient) {
-    this._client = client;
+  public constructor(client?: OpenID4VCIClient) {
+    if (client) {
+      this._client = client;
+    }
   }
 
   get authorizationCodeResponse(): AuthorizationResponse | undefined {
     return this._authorizationCodeResponse;
   }
+
   set authorizationCodeResponse(value: AuthorizationResponse | string | undefined) {
     console.log('before setting authorizationCodeResponse', value);
     this._authorizationCodeResponse = typeof value === 'string' ? toAuthorizationResponsePayload(value) : value;
@@ -173,12 +171,7 @@ class OpenId4VcIssuanceProvider {
     return this._client;
   }
 
-  public static getIssuerDisplays(
-    metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08,
-    opts?: {
-      prefLocales: string[];
-    },
-  ): MetadataDisplay[] {
+  public static getIssuerDisplays(metadata: CredentialIssuerMetadata | IssuerMetadataV1_0_08, opts?: {prefLocales: string[]}): MetadataDisplay[] {
     const matchedDisplays: Array<MetadataDisplay> =
       metadata.display?.filter(
         (display: MetadataDisplay) =>
@@ -248,8 +241,17 @@ class OpenId4VcIssuanceProvider {
     return provider;
   };
 
-  public getCredentials = async ({pin, credentials}: IGetCredentialsArgs): Promise<Array<CredentialToAccept>> => {
-    const matches: IServerMetadataAndCryptoMatchingResponse = await this.getServerMetadataAndPerformCryptoMatching();
+  public getCredentials = async (args: GetCredentialsArgs): Promise<Array<CredentialToAccept>> => {
+    console.log('CALLING: getCredentials');
+    const {pin, credentials, openID4VCIClientState} = args;
+
+    const client = await OpenID4VCIClient.fromState({state: openID4VCIClientState});
+
+    if (client) {
+      console.log('CALLING: getCredentials HAS client');
+    }
+
+    const matches: IServerMetadataAndCryptoMatchingResponse = await this.getServerMetadataAndPerformCryptoMatching(client);
     const credentialResponses: Array<CredentialToAccept> = [];
     // const initTypes = this.client.getCredentialTypes();
     for (const issuanceOpt of matches.issuanceOpts) {
@@ -259,6 +261,7 @@ class OpenId4VcIssuanceProvider {
       const credentialResponse: CredentialResponse = await this.getCredential({
         issuanceOpt,
         pin,
+        client,
       });
       credentialResponses.push({
         id: issuanceOpt.id,
@@ -274,7 +277,22 @@ class OpenId4VcIssuanceProvider {
     return credentialResponses;
   };
 
-  public getCredential = async ({issuanceOpt, pin}: {pin?: string; issuanceOpt: IIssuanceOpts}): Promise<CredentialResponse> => {
+  public getCredential = async ({
+    issuanceOpt,
+    pin,
+    client,
+  }: {
+    pin?: string;
+    issuanceOpt: IIssuanceOpts;
+    client?: OpenID4VCIClient;
+  }): Promise<CredentialResponse> => {
+    console.log('CALLING: getCredential');
+    const clientInstance = client ?? this.client;
+
+    if (client) {
+      console.log('CALLING: getCredential HAS client');
+    }
+
     if (!issuanceOpt) {
       return Promise.reject(Error(`Cannot get credential issuance options`));
     }
@@ -315,15 +333,16 @@ class OpenId4VcIssuanceProvider {
 
     try {
       // We need to make sure we have acquired the access token
-      await this.acquireAccessToken({pin, authorizationResponse: this.authorizationCodeResponse});
-
+      await this.acquireAccessToken({pin, authorizationResponse: this.authorizationCodeResponse, client: clientInstance});
+      // @ts-ignore
       console.log(`cred type: ${JSON.stringify(issuanceOpt.types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
 
-      return await this._client.acquireCredentials({
+      return await clientInstance.acquireCredentials({
+        // @ts-ignore
         credentialTypes: issuanceOpt.types /*.filter((type: string): boolean => type !== 'VerifiableCredential')*/,
         proofCallbacks: callbacks,
         format: issuanceOpt.format,
-        // TODO: We need to update the machine and add notifications support for actuall deferred credentials instead of just waiting/retrying
+        // TODO: We need to update the machine and add notifications support for actual deferred credentials instead of just waiting/retrying
         deferredCredentialAwait: true,
         kid,
         alg,
@@ -335,15 +354,19 @@ class OpenId4VcIssuanceProvider {
     }
   };
 
-  public getServerMetadataAndPerformCryptoMatching = async (): Promise<IServerMetadataAndCryptoMatchingResponse> => {
+  // TODO object args
+  public getServerMetadataAndPerformCryptoMatching = async (client?: OpenID4VCIClient): Promise<IServerMetadataAndCryptoMatchingResponse> => {
+    const clientInstance = client ?? this.client; // TODO name
+
     if (!this._serverMetadata) {
-      this._serverMetadata = await this._client.retrieveServerMetadata();
+      this._serverMetadata = await clientInstance.retrieveServerMetadata();
     }
     if (!this._credentialsSupported || this._credentialsSupported.length === 0) {
       // todo: remove format here. This is just a temp hack for V11+ issuance of only one credential. Having a single array with formats for multiple credentials will not work. This should be handled in VCI itself
       let format: string[] | undefined = undefined;
-      if (this._client.version() > OpenId4VCIVersion.VER_1_0_09 && typeof this._client.credentialOffer?.credential_offer === 'object') {
-        format = this._client.credentialOffer.credential_offer.credentials
+      if (clientInstance.version() > OpenId4VCIVersion.VER_1_0_09 && typeof clientInstance.credentialOffer?.credential_offer === 'object') {
+        format = clientInstance
+          .credentialOffer!.credential_offer.credentials // TODO null ref
           .filter((format: string | CredentialOfferFormat): boolean => typeof format !== 'string')
           .map((format: string | CredentialOfferFormat) => (format as CredentialOfferFormat).format);
         if (format.length === 0) {
@@ -351,14 +374,15 @@ class OpenId4VcIssuanceProvider {
         }
       }
       this._credentialsSupported = await this.getPreferredCredentialFormats(
-        this._client.getCredentialsSupported(!!this._client.credentialOffer?.credential_offer, format),
+        clientInstance.getCredentialsSupported(!!clientInstance.credentialOffer?.credential_offer, format),
       );
       if (!this._credentialsSupported || this._credentialsSupported.length === 0) {
-        this._credentialsSupported = this._client.credentialOffer?.credential_offer.credentials
+        this._credentialsSupported = clientInstance.credentialOffer?.credential_offer.credentials
           .filter((format: string | CredentialOfferFormat): boolean => typeof format !== 'string')
           .map(cred => {
             return {
               format: (<CredentialOfferFormat>cred).format,
+              // @ts-ignore
               types: (<CredentialOfferFormat>cred).types,
             } as CredentialSupported;
           });
@@ -372,6 +396,7 @@ class OpenId4VcIssuanceProvider {
     if (!this._credentialBranding) {
       this._credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
       await Promise.all(
+        // @ts-ignore
         this._credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
           const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
             (metadata.display ?? []).map(
@@ -381,11 +406,15 @@ class OpenId4VcIssuanceProvider {
           );
 
           const credentialTypes: Array<string> =
+            // @ts-ignore
             metadata.types.length > 1
-              ? metadata.types.filter((type: string): boolean => type !== 'VerifiableCredential')
-              : metadata.types.length === 0
+              ? // @ts-ignore
+                metadata.types.filter((type: string): boolean => type !== 'VerifiableCredential')
+              : // @ts-ignore
+              metadata.types.length === 0
               ? ['VerifiableCredential']
-              : metadata.types;
+              : // @ts-ignore
+                metadata.types;
 
           if (this._credentialBranding) {
             this._credentialBranding.set(credentialTypes[0], localeBranding); // TODO for now taking the first type
@@ -397,6 +426,7 @@ class OpenId4VcIssuanceProvider {
     return {
       issuerBranding: this._issuerBranding,
       serverMetadata: this._serverMetadata,
+      // @ts-ignore
       credentialsSupported: this._credentialsSupported,
       issuanceOpts: await this.getIssuanceOpts(),
       credentialBranding: this._credentialBranding,
@@ -407,11 +437,21 @@ class OpenId4VcIssuanceProvider {
     pin?: string;
     clientId?: string;
     authorizationResponse?: AuthorizationResponse;
+    client?: OpenID4VCIClient;
   }): Promise<AccessTokenResponse> => {
-    const {pin} = opts;
+    console.log('CALLING: acquireAccessToken');
+
+    const {pin, client} = opts;
+
+    if (client) {
+      console.log('CALLING: acquireAccessToken HAS client');
+    }
+
+    const clientInstance = client ?? this.client;
     if (!this._accessTokenResponse) {
       const clientId: string | undefined = opts.clientId;
-      this._accessTokenResponse = await this._client.acquireAccessToken({
+      console.log('CALLING: acquireAccessToken ON CLIENT');
+      this._accessTokenResponse = await clientInstance.acquireAccessToken({
         pin,
         clientId,
         authorizationResponse: opts?.authorizationResponse ?? this.authorizationCodeResponse,
@@ -427,6 +467,7 @@ class OpenId4VcIssuanceProvider {
       // TODO any
       credentials
         .reduce(
+          // @ts-ignore
           (map: Map<any, any>, value: CredentialSupported) => map.set(value.types.toString(), [...(map.get(value.types.toString()) || []), value]),
           new Map(),
         )
@@ -483,6 +524,7 @@ class OpenId4VcIssuanceProvider {
   private defaultIssuanceOpts(credentialSupported: CredentialSupported): IIssuanceOpts {
     console.log(
       `WARNING: Reverting to default for key/signature suites for credential type '${JSON.stringify(
+        // @ts-ignore
         credentialSupported.types,
       )}', as no Server Metadata or no metadata match was present!`,
     );
@@ -498,6 +540,7 @@ class OpenId4VcIssuanceProvider {
 
     // TODO: Return array, so the wallet/user could choose
     switch (credentialSupported.format) {
+      // @ts-ignore
       case 'jwt':
       case 'jwt_vc_json':
       case 'jwt_vc': {
@@ -516,7 +559,9 @@ class OpenId4VcIssuanceProvider {
         console.log(`Warn: We could not determine the crypto suites from the server metadata, and will fallback to a default: ${fallback}`);
         return fallback;
       }
+      // @ts-ignore
       case 'ldp':
+      // @ts-ignore
       case 'jwt_vc_json_ld':
       case 'ldp_vc': {
         const supportedPreferences: Array<string> = jsonldCryptographicSuitePreferences.filter((suite: string) => suites_supported.includes(suite));
@@ -536,7 +581,7 @@ class OpenId4VcIssuanceProvider {
 
   private isEbsi() {
     if (
-      this._client.credentialOffer?.credential_offer.credentials.find(
+      this.client.credentialOffer?.credential_offer.credentials.find(
         // @ts-ignore
         cred => typeof cred !== 'string' && 'trust_framework' in cred && 'name' in cred.trust_framework && cred.trust_framework.name.includes('ebsi'),
       )

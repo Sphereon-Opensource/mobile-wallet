@@ -16,7 +16,7 @@ import {
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk.vc-handler-ld-local';
-import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
+import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver, VerifiableCredential} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -35,6 +35,8 @@ import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {getDbConnection} from '../services/databaseService';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+import {GetCredentialsArgs, IOID4VCIHolder, OID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
+import OpenId4VcIssuanceProvider, {CredentialToAccept} from '../providers/credential/OpenId4VcIssuanceProvider';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -79,7 +81,8 @@ const agent = createAgent<
     ICredentialPlugin &
     ICredentialIssuer &
     ICredentialHandlerLDLocal &
-    IIssuanceBranding
+    IIssuanceBranding &
+    IOID4VCIHolder
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -122,6 +125,13 @@ const agent = createAgent<
       ]),
       keyStore: privateKeyStore,
     }),
+    new OID4VCIHolder({
+      //oid4vciProvider: new OpenId4VcIssuanceProvider(),
+      onGetCredentials: new OpenId4VcIssuanceProvider().getCredentials,
+      //onGetCredentials: async (args: GetCredentialsArgs): Promise<Array<CredentialToAccept>> => new OpenId4VcIssuanceProvider().getCredentials(args),
+      onCredentialStored: async (credential: VerifiableCredential): Promise<void> => console.log('onCredentialStored'),
+      // TODO do we need a on contact created?
+    }),
   ],
 });
 
@@ -143,6 +153,7 @@ export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
 export const ibGetCredentialBranding = agent.ibGetCredentialBranding;
 export const ibCredentialLocaleBrandingFrom = agent.ibCredentialLocaleBrandingFrom;
 export const ibRemoveCredentialBranding = agent.ibRemoveCredentialBranding;
+export const oid4vciHolderGetMachineInterpreter = agent.oid4vciHolderGetMachineInterpreter;
 
 export default agent;
 

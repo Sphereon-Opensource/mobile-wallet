@@ -19,16 +19,24 @@ import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {
-  CreateContactEvent,
+  // CreateContactEvent,
   OID4VCIContext as OID4VCIContextType,
+  // OID4VCIMachineEvents,
+  // OID4VCIMachineInterpreter,
+
+  // OID4VCIMachineState,
+  // OID4VCIMachineStates,
+  OID4VCIProviderProps,
+} from '../../types/machines/oid4vci';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {
+  CreateContactEvent,
   OID4VCIMachineEvents,
   OID4VCIMachineInterpreter,
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
-  OID4VCIProviderProps,
-} from '../../types/machines/oid4vci';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+} from '@sphereon/ssi-sdk.oid4vci-holder/dist/types/IOID4VCIHolder';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -46,22 +54,19 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {openId4VcIssuanceProvider, hasContactConsent} = state.context;
+  const {hasContactConsent, serverMetadata} = state.context;
 
-  if (!openId4VcIssuanceProvider) {
-    return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
-  }
+  // if (!openId4VcIssuanceProvider) {
+  //   return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
+  // }
 
-  if (!openId4VcIssuanceProvider.serverMetadata) {
-    return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
-  }
+  // if (!openId4VcIssuanceProvider.serverMetadata) {
+  //   return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
+  // }
 
-  const issuerUrl: URL = new URL(openId4VcIssuanceProvider.serverMetadata.issuer);
+  const issuerUrl: URL = new URL(serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
-  const issuerName: string = OpenId4VcIssuanceProvider.getIssuerName(
-    correlationId,
-    openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata,
-  );
+  const issuerName: string = OpenId4VcIssuanceProvider.getIssuerName(correlationId, serverMetadata.credentialIssuerMetadata);
 
   const contact: NonPersistedParty = {
     contact: {
@@ -230,10 +235,8 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
 
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
-  const {credentialsToAccept, contact, openId4VcIssuanceProvider} = state.context;
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider?.credentialBranding?.get(
-    state.context.selectedCredentials[0],
-  );
+  const {credentialsToAccept, contact, credentialBranding} = state.context;
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.get(state.context.selectedCredentials[0]);
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);

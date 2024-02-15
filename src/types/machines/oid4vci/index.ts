@@ -111,7 +111,7 @@ export type OID4VCIContext = {
   oid4vciInstance?: OID4VCIMachineInterpreter;
 };
 
-export type OID4VCIMachineNavigationArgs = {
+export type OID4VCIMachineNavigationArgs2 = {
   oid4vciMachine: OID4VCIMachineInterpreter;
   state: OID4VCIMachineState;
   navigation: NativeStackNavigationProp<any>;
