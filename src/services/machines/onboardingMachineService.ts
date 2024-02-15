@@ -50,7 +50,7 @@ const createUserAndIdentity = async (
       issuanceDate: cred?.issuanceDate ?? new Date(),
       credentialSubject: {
         ...cred?.credentialSubject,
-        id: cred?.id ?? identifier.did,
+        id: cred?.credentialSubject?.id ?? identifier.did,
         ...personalData,
       },
     },
