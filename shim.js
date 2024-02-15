@@ -1,3 +1,4 @@
+import {DEBUG} from '@env';
 if (typeof __dirname === 'undefined') global.__dirname = '/';
 if (typeof __filename === 'undefined') global.__filename = '';
 if (typeof process === 'undefined') {
@@ -10,6 +11,7 @@ if (typeof process === 'undefined') {
     }
   }
 }
+const debug = require('debug');
 
 process.browser = false;
 if (typeof Buffer === 'undefined') global.Buffer = require('buffer').Buffer;
@@ -17,8 +19,22 @@ if (typeof Buffer === 'undefined') global.Buffer = require('buffer').Buffer;
 // global.location = global.location || { port: 80 }
 const isDev = typeof __DEV__ === 'boolean' && __DEV__;
 process.env['NODE_ENV'] = isDev ? 'development' : 'production';
-if (typeof localStorage !== 'undefined') {
-  localStorage.debug = isDev ? '*' : '';
+const level = isDev ? DEBUG ?? '*' : '';
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  process.type = 'renderer';
+  // @ts-ignore
+  window.localStorage = {
+    debug: level,
+    getItem: () => {
+      return level;
+    },
+  };
+}
+
+if (isDev) {
+  debug.log = console.info.bind(console);
+  debug.enable(level);
 }
 
 // If using the crypto shim, uncomment the following line to ensure

@@ -21,7 +21,7 @@ export type SiopV2AuthorizationRequestData = {
 export type SiopV2MachineContext = {
   requestData?: IQrData; // TODO WAL-673 fix type as this is not always a qr code (deeplink)
   identifier?: IIdentifier;
-  didAuthConfig?: DidAuthConfig;
+  didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
   verifiedAuthorizationRequest?: VerifiedAuthorizationRequest;
   contact?: Party;

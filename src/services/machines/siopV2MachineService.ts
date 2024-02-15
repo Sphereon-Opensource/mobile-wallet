@@ -1,41 +1,39 @@
-import {Linking} from 'react-native';
-import {v4 as uuidv4} from 'uuid';
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
+  DidAuthConfig,
+  IdentityRoleEnum,
   NonPersistedIdentity,
   Party,
-  IdentityRoleEnum,
-  DidAuthConfig,
 } from '@sphereon/ssi-sdk.data-store';
-import IntentHandler from '../../handlers/IntentHandler';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
-import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
+import {W3CVerifiableCredential} from '@sphereon/ssi-types';
+import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
-import {getContacts} from '../contactService';
+import {v4 as uuidv4} from 'uuid';
+import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types';
-import {IIdentifier} from '@veramo/core';
-import {getOrCreatePrimaryIdentifier} from '../identityService';
+import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
+import {getContacts} from '../contactService';
 
-export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData' | 'identifier'>): Promise<DidAuthConfig> => {
+export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData'>): Promise<Omit<DidAuthConfig, 'identifier'>> => {
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {
     return Promise.reject(Error('Missing request uri in context'));
   }
 
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier();
+  // FIXME: This can never work. At this point we do not know what type of identifier to create/get at all
+  // const identifier: IIdentifier = await getOrCreatePrimaryIdentifier();
   return {
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),
     redirectUrl: requestData.uri,
     stateId: requestData.state,
-    identifier,
+    // identifier,
   };
 };
 
@@ -75,9 +73,13 @@ export const getSiopRequest = async (
     uri,
     name,
     clientId,
-    presentationDefinitions: (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token'))
-      ? verifiedAuthorizationRequest.presentationDefinitions
-      : undefined,
+    presentationDefinitions:
+      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
+      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
+        verifiedAuthorizationRequest.presentationDefinitions &&
+        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
+        ? verifiedAuthorizationRequest.presentationDefinitions
+        : undefined,
   };
 };
 

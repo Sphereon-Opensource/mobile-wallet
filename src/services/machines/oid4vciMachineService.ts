@@ -40,33 +40,6 @@ export const initiateOpenId4VcIssuanceProvider = async (context: Pick<OID4VCIMac
   return OpenId4VcIssuanceProvider.initiationFromUri({uri: requestData.uri});
 };
 
-/*export const provideAuthorizationCodeResponse = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'authorizationCodeResponse'>,
-): Promise<AuthorizationResponse> => {
-  const {openId4VcIssuanceProvider} = context;
-  if (!openId4VcIssuanceProvider || !context.authorizationCodeResponse) {
-    throw Error('No authorization response received')
-  }
-  const authorizationResponse = toAuthorizationResponsePayload(context.authorizationCodeResponse)
-  openId4VcIssuanceProvider.authorizationCodeResponse = authorizationResponse;
-
-  return authorizationResponse
-}*/
-/*export const invokeAuthorizationRequest = async (
-  context: Pick<OID4VCIMachineContext, 'openId4VcIssuanceProvider' | 'authorizationCodeURL'>,
-): Promise<void> => {
-  const {openId4VcIssuanceProvider, authorizationCodeURL} = context;
-
-  console.log(`invoke auth request: ${authorizationCodeURL}`)
-  if (authorizationCodeURL) {
-    await Linking.openURL(authorizationCodeURL);
-  } else if (openId4VcIssuanceProvider?.client.authorizationURL) {
-    await Linking.openURL(openId4VcIssuanceProvider?.client.authorizationURL);
-  } else {
-    throw Error('NOT_AUTHORIZED');
-  }
-};*/
-
 export const createCredentialSelection = async (
   context: Pick<OID4VCIMachineContext, 'selectedCredentials' | 'authorizationCodeResponse'>,
 ): Promise<Array<ICredentialTypeSelection>> => {
@@ -86,12 +59,13 @@ export const createCredentialSelection = async (
       // FIXME this allows for duplicate VerifiableCredential, which the user has no idea which ones those are and we also have a branding map with unique keys, so some branding will not match
       const credentialType: string =
         credentialMetadata.types.find((type: string): boolean => type !== 'VerifiableCredential') ?? 'VerifiableCredential';
+      const credentialAlias =
+        (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider?.credentialBranding?.get(credentialType)}))?.alias ??
+        credentialType;
       return {
         id: uuidv4(),
         credentialType,
-        credentialAlias:
-          (await selectAppLocaleBranding({localeBranding: openId4VcIssuanceProvider?.credentialBranding?.get(credentialType)}))?.alias ??
-          credentialType,
+        credentialAlias,
         isSelected: false,
       };
     }),
@@ -101,6 +75,10 @@ export const createCredentialSelection = async (
   if (credentialSelection.length === 1) {
     selectedCredentials.push(credentialSelection[0].credentialType);
   }
+
+  /*  if (!openId4VcIssuanceProvider.client.clientId) {
+    openId4VcIssuanceProvider.client.clientId = openId4VcIssuanceProvider.credentialsSupported[0]
+  }*/
 
   return credentialSelection;
 };
@@ -137,7 +115,6 @@ export const retrieveCredentials = async (
   if (!openId4VcIssuanceProvider) {
     throw Error('Missing OID4VCI issuance provider in context');
   }
-  console.log('MACHINE authorizationCodeResponse', authorizationCodeResponse);
   openId4VcIssuanceProvider.authorizationCodeResponse = authorizationCodeResponse;
   return openId4VcIssuanceProvider
     ?.getCredentials({
@@ -220,7 +197,7 @@ export const assertValidCredentials = async (context: Pick<OID4VCIMachineContext
       });
 
       if (!verificationResult.result || verificationResult.error) {
-        console.log(JSON.stringify(verificationResult));
+        console.log('Verification of credential failed', JSON.stringify(verificationResult));
         return Promise.reject(Error(verificationResult.result ? verificationResult.error : translate('credential_verification_failed_message')));
       }
     }),

@@ -2,7 +2,7 @@ import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from 
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
+import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 
@@ -11,7 +11,7 @@ import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
-export const siopGetRequest = async (config: DidAuthConfig): Promise<VerifiedAuthorizationRequest> => {
+export const siopGetRequest = async (config: Omit<DidAuthConfig, 'identifier'>): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(
     async () => await siopRegisterSession({requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId}),
   );
@@ -57,6 +57,13 @@ export const siopSendAuthorizationResponse = async (
   }
   const request = await session.getAuthorizationRequest();
   const aud = await request.authorizationRequest.getMergedProperty<string>('aud');
+  console.log(`AUD: ${aud}`);
+  console.log(JSON.stringify(request.authorizationRequest));
+  const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
+  const redirectUri = await request.authorizationRequest.getMergedProperty<string>('redirect_uri');
+  if (clientId?.toLowerCase().includes('ebsi.eu') || redirectUri?.toLowerCase().includes('ebsi.eu')) {
+    identifiers = identifiers.filter(id => id.did.toLowerCase().startsWith('did:key:') || id.did.toLowerCase().startsWith('did:ebsi:'));
+  }
   if (aud && aud.startsWith('did:')) {
     // The RP knows our did, so we can use it
     if (!identifiers.some(id => id.did === aud)) {
@@ -82,7 +89,17 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
-    console.log(`PRE CREATE VP ${new Date().toString()}`);
+
+    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0]);
+    const holder = Array.isArray(firstVC.credentialSubject) ? firstVC.credentialSubject[0].id : firstVC.credentialSubject.id;
+    if (holder) {
+      try {
+        identifier = await session.context.agent.didManagerGet({did: holder});
+      } catch (e) {
+        debug(`Holder DID not found: ${holder}`);
+      }
+    }
+
     presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {
       identifierOpts: {identifier},
       proofOpts: {
@@ -90,7 +107,6 @@ export const siopSendAuthorizationResponse = async (
         domain,
       },
     });
-    console.log(`POST CREATE VP ${new Date().toString()}`);
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     } else if (presentationsAndDefs.length > 1) {
@@ -102,15 +118,14 @@ export const siopSendAuthorizationResponse = async (
   }
   const kid: string = (await getKey(identifier, 'authentication', session.context)).kid;
 
-  debug(`Definitions and locations: ${JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2)}`);
-  console.log(`Presentation Submission: ${JSON.stringify(presentationSubmission, null, 2)}`);
-  console.log(`PRE SEND response ${new Date().toString()}`);
+  debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
+  debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
   const response = session.sendAuthorizationResponse({
     ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
     ...(presentationSubmission && {presentationSubmission}),
     responseSignerOpts: {identifier, kid},
   });
-  console.log(`POST SEND response ${new Date().toString()}`);
+  debug(`Response: `, response);
 
   return await response;
 };
