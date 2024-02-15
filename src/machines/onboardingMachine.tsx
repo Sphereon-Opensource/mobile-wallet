@@ -46,8 +46,7 @@ const onboardingPinCodeVerifyGuard = (ctx: OnboardingMachineContext, event: Next
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const credentialData = {
-    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_JWK,
-    didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
+    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_OYD,
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
     credential:
       opts?.credentialData?.credential ??
