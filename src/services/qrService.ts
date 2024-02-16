@@ -1,14 +1,15 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {convertURIToJsonObject, CredentialOfferClient, OpenID4VCIClient, OpenID4VCIClientState} from '@sphereon/oid4vci-client';
+import {convertURIToJsonObject, CredentialOfferClient} from '@sphereon/oid4vci-client';
 import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
+import {oid4vciHolderGetMachineInterpreter} from '../agent';
 import {translate} from '../localization/Localization';
-import {OID4VCIMachine} from '../machines/oid4vciMachine';
 import {SiopV2Machine} from '../machines/siopV2Machine';
+import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
 import {
@@ -22,13 +23,11 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum,
 } from '../types';
-import {OID4VCIMachineEvents, OID4VCIMachineInterpreter} from '../types/machines/oid4vci';
+import {OID4VCIMachineInterpreter} from '../types/machines/oid4vci';
 import {SiopV2MachineInterpreter} from '../types/machines/siopV2';
 import {showToast} from '../utils';
 import {authenticate} from './authenticationService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
-import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
-import {oid4vciHolderGetMachineInterpreter} from '../agent';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
