@@ -94,23 +94,6 @@ export const dispatchVerifiableCredential = (
         });
       })
       .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
-
-    // storeCredential({vc: mappedVc})
-    //     .then(async (hash: string): Promise<ICredentialSummary> => {
-    //         const credentialBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
-    //         return toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding);
-    //     })
-    //     .then((summary: ICredentialSummary): void => {
-    //         dispatch({
-    //             type: STORE_CREDENTIAL_SUCCESS,
-    //             payload: summary,
-    //         });
-    //         showToast(ToastTypeEnum.TOAST_SUCCESS, {
-    //             message: translate('credential_offer_accepted_toast'),
-    //             showBadge: false,
-    //         });
-    //     })
-    //     .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
   };
 };
 
