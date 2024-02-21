@@ -1,6 +1,5 @@
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {
-  AccessTokenResponse,
   AuthorizationResponse,
   CredentialOfferFormat,
   CredentialOfferFormatJwtVcJson,
@@ -19,7 +18,6 @@ import {CredentialOfferFormatJwtVcJsonLdAndLdpVc} from '@sphereon/oid4vci-common
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
-import {GetCredentialsArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IIdentifier} from '@veramo/core';
 import {_ExtendedIKey} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
@@ -33,6 +31,7 @@ import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {signJWT} from '../../services/signatureService';
 import {
   ErrorDetails,
+  IGetCredentialsArgs,
   IGetIssuanceInitiationFromUriArgs,
   IIssuanceOpts,
   IServerMetadataAndCryptoMatchingResponse,
@@ -224,7 +223,7 @@ class OpenId4VcIssuanceProvider {
     return provider;
   };
 
-  public getCredentials = async (args: GetCredentialsArgs): Promise<Array<CredentialToAccept>> => {
+  public getCredentials = async (args: IGetCredentialsArgs): Promise<Array<CredentialToAccept>> => {
     console.log('CALLING: getCredentials');
     const {pin, credentials, openID4VCIClientState} = args;
 

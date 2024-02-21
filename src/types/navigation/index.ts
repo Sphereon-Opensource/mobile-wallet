@@ -5,8 +5,8 @@ import {VerifiableCredential} from '@veramo/core';
 import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
 import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
-import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {OID4VCIMachineInterpreter} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;

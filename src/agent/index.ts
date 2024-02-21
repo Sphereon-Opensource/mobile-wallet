@@ -5,7 +5,7 @@ import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
-import {ContactStore, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
+import {ContactStore, ICredentialBranding, Identity, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
@@ -34,9 +34,24 @@ import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_UR
 import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {getDbConnection} from '../services/databaseService';
-import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
-import {GetCredentialsArgs, IOID4VCIHolder, OID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {ICredentialSummary, KeyManagementSystemEnum, SupportedDidMethodEnum, ToastTypeEnum} from '../types';
+import {
+  GetCredentialsArgs,
+  IOID4VCIHolder,
+  OID4VCIHolder,
+  OnContactIdentityCreatedArgs,
+  OnCredentialStoredArgs,
+} from '@sphereon/ssi-sdk.oid4vci-holder';
 import OpenId4VcIssuanceProvider, {CredentialToAccept} from '../providers/credential/OpenId4VcIssuanceProvider';
+import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
+import store from '../store';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {toCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
+import {STORE_CREDENTIAL_SUCCESS} from '../types/store/credential.action.types';
+import {showToast} from '../utils';
+import {translate} from '../localization/Localization';
+import {addIdentity} from '../store/actions/contact.actions';
+import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -126,11 +141,14 @@ const agent = createAgent<
       keyStore: privateKeyStore,
     }),
     new OID4VCIHolder({
-      //oid4vciProvider: new OpenId4VcIssuanceProvider(),
       onGetCredentials: new OpenId4VcIssuanceProvider().getCredentials,
-      //onGetCredentials: async (args: GetCredentialsArgs): Promise<Array<CredentialToAccept>> => new OpenId4VcIssuanceProvider().getCredentials(args),
-      onCredentialStored: async (credential: VerifiableCredential): Promise<void> => console.log('onCredentialStored'),
-      // TODO do we need a on contact created?
+      onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
+        store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
+      },
+      onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
+        const {credential, vcHash} = args;
+        store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
+      },
     }),
   ],
 });

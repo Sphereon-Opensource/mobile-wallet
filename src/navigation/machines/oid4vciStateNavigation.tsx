@@ -1,4 +1,4 @@
-import {getIssuerName, getSupportedCredential} from '@sphereon/oid4vci-common';
+import {getIssuerName} from '@sphereon/oid4vci-common';
 import React, {Context, createContext} from 'react';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
@@ -14,22 +14,6 @@ import {
   Party,
   PartyTypeEnum,
 } from '@sphereon/ssi-sdk.data-store';
-import OpenId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssuanceProvider';
-import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import {translate} from '../../localization/Localization';
-import RootNavigation from './../rootNavigation';
-import {APP_ID} from '../../@config/constants';
-import {
-  // CreateContactEvent,
-  OID4VCIContext as OID4VCIContextType,
-  // OID4VCIMachineEvents,
-  // OID4VCIMachineInterpreter,
-
-  // OID4VCIMachineState,
-  // OID4VCIMachineStates,
-  OID4VCIProviderProps,
-} from '../../types/machines/oid4vci';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {
   CreateContactEvent,
   OID4VCIMachineEvents,
@@ -37,7 +21,14 @@ import {
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
-} from '@sphereon/ssi-sdk.oid4vci-holder/dist/types/IOID4VCIHolder';
+  OID4VCIProviderProps,
+  OID4VCIContext as OID4VCIContextType,
+} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {translate} from '../../localization/Localization';
+import RootNavigation from './../rootNavigation';
+import {APP_ID} from '../../@config/constants';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -57,13 +48,9 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   const {navigation, state, oid4vciMachine, onBack} = args;
   const {hasContactConsent, serverMetadata} = state.context;
 
-  // if (!openId4VcIssuanceProvider) {
-  //   return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
-  // }
-
-  // if (!openId4VcIssuanceProvider.serverMetadata) {
-  //   return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
-  // }
+  if (!serverMetadata) {
+    return Promise.reject(Error('Missing serverMetadata in context'));
+  }
 
   const issuerUrl: URL = new URL(serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
@@ -163,10 +150,6 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   }
 
   const onSelectType = async (selectedCredentials: Array<string>): Promise<void> => {
-    const provider = state.context.openId4VcIssuanceProvider;
-    if (!provider) {
-      throw Error(`No provider present in context`);
-    }
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
@@ -328,12 +311,12 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiateOID4VCIProvider) ||
+    state.matches(OID4VCIMachineStates.initiateOID4VCI) ||
     state.matches(OID4VCIMachineStates.createCredentialSelection) ||
-    state.matches(OID4VCIMachineStates.retrieveContact) ||
+    state.matches(OID4VCIMachineStates.getContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.retrieveCredentials) ||
+    state.matches(OID4VCIMachineStates.getCredentials) ||
     state.matches(OID4VCIMachineStates.waitForAuthorizationResponse)
   ) {
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});

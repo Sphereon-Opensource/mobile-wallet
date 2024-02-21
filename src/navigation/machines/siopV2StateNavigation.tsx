@@ -5,6 +5,7 @@ import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {
+  CreateContactEvent,
   SiopV2Context as SiopV2ContextType,
   SiopV2MachineEvents,
   SiopV2MachineInterpreter,
@@ -14,8 +15,7 @@ import {
   SiopV2ProviderProps,
 } from '../../types/machines/siopV2';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {CreateContactEvent, OID4VCIMachineEvents} from '../../types/machines/oid4vci';
-import {ConnectionTypeEnum, CorrelationIdentifierEnum, NonPersistedParty, Party, IdentityRoleEnum, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionTypeEnum, CorrelationIdentifierEnum, IdentityRoleEnum, NonPersistedParty, Party, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
@@ -124,7 +124,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   };
 
   const isCreateDisabled = (): boolean => {
-    return siopV2Machine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
+    return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
