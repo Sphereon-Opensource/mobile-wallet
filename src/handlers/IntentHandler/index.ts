@@ -10,8 +10,9 @@ import {readQr} from '../../services/qrService';
 import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
-import {showToast} from '../../utils/ToastUtils';
+import {parseDeepLink} from '../../utils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {showToast} from '../../utils/ToastUtils';
 import LockingHandler from '../LockingHandler';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
@@ -149,10 +150,26 @@ class IntentHandler {
   }
 
   public openDeepLink = async (): Promise<void> => {
-    debug(`Open deeplink for ${this._initialUrl}`);
+    console.log(`Open deeplink for ${this._initialUrl}`);
     const url: string | undefined = this._initialUrl;
     this._initialUrl = undefined;
     if (url) {
+      // TODO: create a deeplink parser/handler
+      const queryParams = parseDeepLink(url).params;
+      if ('error' in queryParams) {
+        let message = queryParams.error;
+        if ('error_description' in queryParams) {
+          message += ': ' + queryParams.error_description;
+        }
+        throw new Error(message);
+      }
+      /*if ('code' in queryParams && OID4VCIInstance !== undefined) {
+        OID4VCIInstance.send({
+          type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
+          data: url,
+        });
+        return
+      }*/
       // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
       // TODO fix this type issue
       await readQr({qrData: url, navigation: RootNavigation});

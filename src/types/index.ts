@@ -1,4 +1,3 @@
-export * from './agent';
 export * from './authentication';
 export * from './component';
 export * from './credential';

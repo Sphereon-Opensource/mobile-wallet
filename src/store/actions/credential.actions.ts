@@ -72,6 +72,31 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
   };
 };
 
+export const dispatchVerifiableCredential = (
+  credentialHash: string,
+  vc: VerifiableCredential,
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
+    dispatch({type: CREDENTIALS_LOADING});
+    const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
+    ibGetCredentialBranding({filter: [{vcHash: credentialHash}]})
+      .then((credentialBranding: Array<ICredentialBranding>) =>
+        toCredentialSummary({verifiableCredential: mappedVc, hash: credentialHash}, credentialBranding?.[0]?.localeBranding),
+      )
+      .then((summary: ICredentialSummary): void => {
+        dispatch({
+          type: STORE_CREDENTIAL_SUCCESS,
+          payload: summary,
+        });
+        showToast(ToastTypeEnum.TOAST_SUCCESS, {
+          message: translate('credential_offer_accepted_toast'),
+          showBadge: false,
+        });
+      })
+      .catch(() => dispatch({type: STORE_CREDENTIAL_FAILED}));
+  };
+};
+
 export const deleteVerifiableCredential = (credentialHash: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});

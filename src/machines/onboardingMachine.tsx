@@ -1,17 +1,17 @@
-import {Context, createContext} from 'react';
-import {assign, createMachine, interpret} from 'xstate';
-import {v4 as uuidv4} from 'uuid';
 import {CredentialPayload} from '@veramo/core';
-import {setupWallet} from '../services/machines/onboardingMachineService';
-import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+
+import Debug, {Debugger} from 'debug';
+import {v4 as uuidv4} from 'uuid';
+import {assign, createMachine, interpret} from 'xstate';
 import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
+import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {setupWallet} from '../services/machines/onboardingMachineService';
 import {SupportedDidMethodEnum} from '../types';
 import {
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
-  OnboardingMachineContext,
   NextEvent,
-  OnboardingContext,
+  OnboardingMachineContext,
   OnboardingMachineEvents,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
@@ -25,7 +25,6 @@ import {
   WalletSetupServiceResult,
 } from '../types/machines/onboarding';
 
-import Debug, {Debugger} from 'debug';
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const onboardingToSAgreementGuard = (ctx: OnboardingMachineContext, _event: OnboardingMachineEventTypes) =>
@@ -47,7 +46,8 @@ const onboardingPinCodeVerifyGuard = (ctx: OnboardingMachineContext, event: Next
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const credentialData = {
-    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_KEY,
+    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_JWK,
+    didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
     credential:
       opts?.credentialData?.credential ??

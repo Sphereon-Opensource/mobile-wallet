@@ -1,8 +1,10 @@
 import {CredentialSupported, EndpointMetadata, EndpointMetadataResult, MetadataDisplay} from '@sphereon/oid4vci-common';
-import {TKeyType} from '@veramo/core';
+import {IIdentifier, TKeyType} from '@veramo/core';
+import {Identifier} from '@veramo/data-store';
 
 import {SupportedDidMethodEnum} from '../../did';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {OpenID4VCIClientState} from '@sphereon/oid4vci-client';
 
 export interface IGetIssuanceInitiationFromUriArgs {
   uri: string;
@@ -16,11 +18,15 @@ export interface IGetCredentialArgs {
 export interface IGetCredentialsArgs {
   pin?: string;
   credentials?: Array<string>;
+  openID4VCIClientState: OpenID4VCIClientState;
 }
 
 export type IIssuanceOpts = CredentialSupported & {
   didMethod: SupportedDidMethodEnum;
   keyType: TKeyType;
+  codecName?: string;
+  kid?: string;
+  identifier: IIdentifier;
 };
 
 export interface IGetVcIssuanceFormatArgs {

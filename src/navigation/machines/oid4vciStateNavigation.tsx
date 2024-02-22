@@ -1,4 +1,6 @@
+import {getIssuerName} from '@sphereon/oid4vci-common';
 import React, {Context, createContext} from 'react';
+import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {SimpleEventsOf} from 'xstate';
 import Debug, {Debugger} from 'debug';
@@ -12,21 +14,20 @@ import {
   Party,
   PartyTypeEnum,
 } from '@sphereon/ssi-sdk.data-store';
-import OpenId4VcIssuanceProvider from '../../providers/credential/OpenId4VcIssuanceProvider';
-import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import {translate} from '../../localization/Localization';
-import RootNavigation from './../rootNavigation';
-import {APP_ID} from '../../@config/constants';
 import {
   CreateContactEvent,
-  OID4VCIContext as OID4VCIContextType,
   OID4VCIMachineEvents,
   OID4VCIMachineInterpreter,
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
   OID4VCIProviderProps,
-} from '../../types/machines/oid4vci';
+  OID4VCIContext as OID4VCIContextType,
+} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {translate} from '../../localization/Localization';
+import RootNavigation from './../rootNavigation';
+import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
@@ -45,22 +46,15 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {openId4VcIssuanceProvider, hasContactConsent} = state.context;
+  const {hasContactConsent, serverMetadata} = state.context;
 
-  if (!openId4VcIssuanceProvider) {
-    return Promise.reject(Error('Missing OpenId4VcIssuanceProvider in context'));
+  if (!serverMetadata) {
+    return Promise.reject(Error('Missing serverMetadata in context'));
   }
 
-  if (!openId4VcIssuanceProvider.serverMetadata) {
-    return Promise.reject(Error('OID4VCI issuance provider has no server metadata'));
-  }
-
-  const issuerUrl: URL = new URL(openId4VcIssuanceProvider.serverMetadata.issuer);
+  const issuerUrl: URL = new URL(serverMetadata.issuer);
   const correlationId: string = `${issuerUrl.protocol}//${issuerUrl.hostname}`;
-  const issuerName: string = OpenId4VcIssuanceProvider.getIssuerName(
-    correlationId,
-    openId4VcIssuanceProvider.serverMetadata.credentialIssuerMetadata,
-  );
+  const issuerName: string = getIssuerName(correlationId, serverMetadata.credentialIssuerMetadata);
 
   const contact: NonPersistedParty = {
     contact: {
@@ -179,7 +173,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   });
 };
 
-const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+const navigatePINVerification = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
   const {selectedCredentials} = state.context;
   navigation.navigate(MainRoutesEnum.OID4VCI, {
@@ -198,12 +192,37 @@ const navigateAuthentication = async (args: OID4VCIMachineNavigationArgs): Promi
   });
 };
 
+const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  const {navigation, state, oid4vciMachine, onBack} = args;
+  const url = state.context.authorizationCodeURL;
+  debug('navigateAuthorizationCodeURL: ', url);
+  if (!url) {
+    return Promise.reject(Error('Missing authorization URL in context'));
+  }
+  const onOpenAuthorizationUrl = async (url: string): Promise<void> => {
+    debug('onOpenAuthorizationUrl being invoked: ', url);
+    oid4vciMachine.send({
+      type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST,
+      data: url,
+    });
+    await Linking.openURL(url);
+    debug('onOpenAuthorizationUrl after openUrl: ', url);
+  };
+
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.BROWSER_OPEN,
+    params: {
+      onNext: () => onOpenAuthorizationUrl(url),
+      url,
+      onBack,
+    },
+  });
+};
+
 const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
-  const {credentialOffers, contact, openId4VcIssuanceProvider} = state.context;
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = openId4VcIssuanceProvider?.credentialBranding?.get(
-    state.context.selectedCredentials[0],
-  );
+  const {credentialsToAccept, contact, credentialBranding} = state.context;
+  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.get(state.context.selectedCredentials[0]);
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
@@ -213,8 +232,8 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
     params: {
       headerTitle: translate('credential_offer_title'),
-      rawCredential: credentialOffers[0].rawVerifiableCredential,
-      credential: await toNonPersistedCredentialSummary(credentialOffers[0].uniformVerifiableCredential, localeBranding, contact),
+      rawCredential: credentialsToAccept[0].rawVerifiableCredential,
+      credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential!, localeBranding, contact),
       primaryAction: {
         caption: translate('action_accept_label'),
         onPress: onNext,
@@ -275,7 +294,9 @@ export const oid4vciStateNavigationListener = async (
   state: OID4VCIMachineState,
   navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
+  debug('oid4vciStateNavigationListener: ', state.value);
   if (state._event.type === 'internal') {
+    debug('oid4vciStateNavigationListener: internal event');
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
     // Make sure we do not navigate when state has not changed
     return;
@@ -285,17 +306,18 @@ export const oid4vciStateNavigationListener = async (
 
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
-    debug(`navigation not ready yet`);
+    console.log(`navigation not ready yet`);
     return;
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiateOID4VCIProvider) ||
+    state.matches(OID4VCIMachineStates.initiateOID4VCI) ||
     state.matches(OID4VCIMachineStates.createCredentialSelection) ||
-    state.matches(OID4VCIMachineStates.retrieveContact) ||
+    state.matches(OID4VCIMachineStates.getContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.retrieveCredentialsOffers)
+    state.matches(OID4VCIMachineStates.getCredentials) ||
+    state.matches(OID4VCIMachineStates.waitForAuthorizationResponse)
   ) {
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.addContact)) {
@@ -303,7 +325,9 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.verifyPin)) {
-    return navigateAuthentication({oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigatePINVerification({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.initiateAuthorizationRequest)) {
+    return navigateAuthorizationCodeURL({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {

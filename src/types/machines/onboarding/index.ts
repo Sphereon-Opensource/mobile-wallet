@@ -8,6 +8,7 @@ import {ReactNode} from 'react';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
+  didOptions?: any;
   credential?: Partial<CredentialPayload>;
   proofFormat?: ProofFormat;
 };

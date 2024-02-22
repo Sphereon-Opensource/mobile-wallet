@@ -5,8 +5,8 @@ import {VerifiableCredential} from '@veramo/core';
 import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
 import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
-import {OID4VCIMachineInterpreter} from '../machines/oid4vci';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {OID4VCIMachineInterpreter} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -31,6 +31,7 @@ export type StackParamList = {
   PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
   PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
   OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
+  BrowserOpen: Record<string, never> & IHasOnBackProps & IHasOnNextProps;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
@@ -219,6 +220,7 @@ export enum ScreenRoutesEnum {
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   ONBOARDING_SUMMARY = 'OnboardingSummary',
+  BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',

@@ -1,39 +1,39 @@
-import {v4 as uuidv4} from 'uuid';
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionTypeEnum,
   CorrelationIdentifierEnum,
+  DidAuthConfig,
+  IdentityRoleEnum,
   NonPersistedIdentity,
   Party,
-  IdentityRoleEnum,
-  DidAuthConfig,
 } from '@sphereon/ssi-sdk.data-store';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
-import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
+import {W3CVerifiableCredential} from '@sphereon/ssi-types';
+import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
-import {getContacts} from '../contactService';
+import {v4 as uuidv4} from 'uuid';
+import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types';
-import {IIdentifier} from '@veramo/core';
-import {getOrCreatePrimaryIdentifier} from '../identityService';
-import {translateCorrelationIdToName} from '../../utils/CredentialUtils';
+import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
+import {translateCorrelationIdToName} from '../../utils';
+import {getContacts} from '../contactService';
 
-export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData' | 'identifier'>): Promise<DidAuthConfig> => {
+export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData'>): Promise<Omit<DidAuthConfig, 'identifier'>> => {
   const {requestData} = context;
 
   if (requestData?.uri === undefined) {
     return Promise.reject(Error('Missing request uri in context'));
   }
 
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier();
+  // FIXME: This can never work. At this point we do not know what type of identifier to create/get at all
+  // const identifier: IIdentifier = await getOrCreatePrimaryIdentifier();
   return {
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),
     redirectUrl: requestData.uri,
     stateId: requestData.state,
-    identifier,
+    // identifier,
   };
 };
 
@@ -73,7 +73,13 @@ export const getSiopRequest = async (
     uri,
     name,
     clientId,
-    presentationDefinitions: verifiedAuthorizationRequest.presentationDefinitions,
+    presentationDefinitions:
+      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
+      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
+        verifiedAuthorizationRequest.presentationDefinitions &&
+        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
+        ? verifiedAuthorizationRequest.presentationDefinitions
+        : undefined,
   };
 };
 
@@ -133,7 +139,7 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 
 export const sendResponse = async (
   context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials'>,
-): Promise<void> => {
+): Promise<Response> => {
   const {didAuthConfig, authorizationRequestData, selectedCredentials} = context;
 
   if (didAuthConfig === undefined) {
@@ -144,15 +150,22 @@ export const sendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
+  const response = await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,
     ...(authorizationRequestData.presentationDefinitions !== undefined && {
       verifiableCredentialsWithDefinition: [
         {
-          definition: authorizationRequestData.presentationDefinitions![0], // TODO 0 check, check siop only
+          definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
           credentials: selectedCredentials as Array<W3CVerifiableCredential>,
         },
       ],
     }),
   });
+  if (response.status === 302 && response.headers.has('location')) {
+    const url = response.headers.get('location') as string;
+    console.log(`Redirecting to: ${url}`);
+    Linking.emit('url', {url});
+  }
+
+  return response;
 };

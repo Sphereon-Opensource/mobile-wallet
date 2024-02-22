@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import crypto from '@sphereon/isomorphic-webcrypto';
 import {backgroundColors} from '@sphereon/ui-components.core';
+import debug from 'debug';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
