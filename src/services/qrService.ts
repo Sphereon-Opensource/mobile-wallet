@@ -177,7 +177,7 @@ const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
   if (args.qrData.code && args.qrData.uri) {
     oid4vciInstance?.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
   } else {
-    oid4vciInstance = await oid4vciHolderGetMachineInterpreter({
+    const oid4vciMachine = await oid4vciHolderGetMachineInterpreter({
       requestData: {
         credentialOffer: args.qrData.credentialOffer,
         uri: args.qrData.uri,
@@ -185,6 +185,7 @@ const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
       },
       stateNavigationListener: oid4vciStateNavigationListener,
     });
+    oid4vciInstance = oid4vciMachine.interpreter;
     oid4vciInstance.start();
   }
 };
