@@ -324,16 +324,22 @@ class OpenId4VcIssuanceProvider {
     if (!this._issuerBranding) {
       this._issuerBranding = this._serverMetadata.credentialIssuerMetadata?.display;
     }
-
     if (!this._credentialBranding) {
       this._credentialBranding = new Map<string, Array<IBasicCredentialLocaleBranding>>();
       await Promise.all(
         this._credentialsSupported.map(async (metadata: CredentialSupported): Promise<void> => {
-          const localeBranding: Array<IBasicCredentialLocaleBranding> = await Promise.all(
-            (metadata.display ?? []).map(
-              async (display: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding> =>
-                await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)}),
-            ),
+          const optionalLocaleBranding: Array<IBasicCredentialLocaleBranding | undefined> = await Promise.all(
+            (metadata.display ?? []).map(async (display: CredentialsSupportedDisplay): Promise<IBasicCredentialLocaleBranding | undefined> => {
+              try {
+                return await ibCredentialLocaleBrandingFrom({localeBranding: await credentialLocaleBrandingFrom(display)});
+              } catch (e) {
+                console.error(`Could not fetch branding. Branding data: ${JSON.stringify(display)}`);
+              }
+            }),
+          );
+
+          const localeBranding: Array<IBasicCredentialLocaleBranding> = optionalLocaleBranding.filter(
+            (branding): branding is IBasicCredentialLocaleBranding => branding !== undefined,
           );
 
           const credentialTypes: Array<string> =
