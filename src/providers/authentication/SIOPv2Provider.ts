@@ -1,4 +1,4 @@
-import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {AuthorizationResponse, CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
@@ -8,6 +8,7 @@ import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
+import {IOpsSendSiopAuthorizationResponseArgs} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/src/types/IDidAuthSiopOpAuthenticator';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -97,7 +98,7 @@ export const siopSendAuthorizationResponse = async (
     verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation),
     ...(presentationSubmission && {presentationSubmission}),
     responseSignerOpts: {identifier, kid},
-  });
+  } as IOpsSendSiopAuthorizationResponseArgs);
 
   return await response;
 };

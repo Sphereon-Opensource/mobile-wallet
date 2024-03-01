@@ -9,6 +9,7 @@ import {ICredentialDetailsRow, ICredentialSummary} from '../../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../../DateUtils';
 import {getImageSize, isImage} from '../../ImageUtils';
+import {mapLanguageValues} from "@sphereon/ssi-types";
 
 const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICredentialDetailsRow[]> => {
   let rows: ICredentialDetailsRow[] = [];
@@ -33,6 +34,12 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
       continue;
     }
 
+    if(Array.isArray(value) && value.length > 0 && 'language' in value[0]) {
+      value = mapLanguageValues(value)
+      if(Array.isArray(value) && value.length > 0) {
+        value = value[0]
+      }
+    }
     if (typeof value !== 'string') {
       // FIXME disabled this to not show keys of objects
       // rows.push({
@@ -40,7 +47,7 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
       //   label: key,
       //   value: undefined,
       // });
-      rows = rows.concat(await toCredentialDetailsRow(value));
+        rows = rows.concat(await toCredentialDetailsRow(value));
     } else {
       console.log(`==>${key}:${value}`);
       if (key === '0' || value === undefined) {

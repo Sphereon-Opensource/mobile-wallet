@@ -297,8 +297,7 @@ export const assertValidCredentials = async (context: Pick<OID4VCIMachineContext
         },
       });
 
-      if (!verificationResult.result /*|| verificationResult.error*/) {
-        // TODO REVERT
+      if (!verificationResult.result || verificationResult.error) {
         return Promise.reject(Error(verificationResult.result ? verificationResult.error : translate('credential_verification_failed_message')));
       }
     }),

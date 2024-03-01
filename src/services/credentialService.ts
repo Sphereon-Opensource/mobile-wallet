@@ -184,13 +184,10 @@ export const verifyCredential = async (args: IVerifyCredentialArgs): Promise<IVe
       subResults: [],
     };
   } else {
-    result.verified = true; // TODO DELETE ME
-    result.error = undefined; // TODO DELETE ME
-
     const subResults: IVerificationSubResult[] = [];
     let error: string | undefined;
     let errorDetails: string | undefined;
-    /*if (result.error) { // TODO REVERT
+    if (result.error) {
       error = result.error?.message ?? '';
       errorDetails = result.error?.details?.code ?? '';
       errorDetails = (errorDetails !== '' ? `${errorDetails}, ` : '') + (result.error?.details?.url ?? '');
@@ -201,7 +198,7 @@ export const verifyCredential = async (args: IVerifyCredentialArgs): Promise<IVe
           result.error?.errors?.map(error => (error?.details?.code ? `${error.details.code}, ` : '') + (error?.details?.url ?? '')).join(', ');
       }
     }
-*/
+
     const verificationResult: IVerificationResult = {
       source: CredentialMapper.toWrappedVerifiableCredential(args.credential as OriginalVerifiableCredential),
       result: result.verified,

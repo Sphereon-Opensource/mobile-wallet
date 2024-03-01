@@ -43,7 +43,6 @@ async function createRSAIdentifier(args: ICreateIdentifierArgs): Promise<IIdenti
     '30820122300d06092a864886f70d01010105000382010f003082010a0282010100cbc8d20857c692f501371a08efcc1d0b3404c12fbbcc5cae359433f0b4c6ec708585857287bf815a56bf25303a0175c589a386f6dc3446c4b499af85f32934c45d5e9f14eafae0ed21e3ce3f4934477d10aef8521528a7644512abd2e7f76c5751995ae7ff440903221eaf5d2bce0ee26764fd49ea89f77aee46adb420ab5838b6ea8544d674e0b9e109c466997cde239b099e3766835376e8ac2550af64dd20cfcd7413db4c10401b4ccdb8fee717c937952e416e8c6e3e8d2854fd77debe9bd53932fd18a9fc856ac211622868fbdddc6d1f36197c9cdfe9ec95494bbd7e7d905762dd92da5f8ddc8ca9ba1fa108ac75c231fffb50ac8454bc52f5881e56470203010001';
 
   const keyType = 'RSA';
-
   const use = jwkDetermineUse(keyType, JwkKeyUse.Signature);
   const jwk: JsonWebKey = toJwk(publicKeyHex, keyType, {use});
   const did = `did:jwk:${base64UrlEncodeString(JSON.stringify(jwk))}`;
@@ -56,7 +55,7 @@ async function createRSAIdentifier(args: ICreateIdentifierArgs): Promise<IIdenti
         type: keyType,
         privateKeyHex: privateKeyHex,
         publicKeyHex: publicKeyHex,
-        kms: 'local',
+        kms: KeyManagementSystemEnum.LOCAL,
       },
     ],
   });
