@@ -41,6 +41,7 @@ import {
   SupportedDidMethodEnum,
 } from '../../types';
 import {getTypesFromCredentialSupported} from '@sphereon/oid4vci-common/lib/functions/IssuerMetadataUtils';
+import {mapLanguageValues} from '@sphereon/ssi-types';
 
 const {v4: uuidv4} = require('uuid');
 const debug: Debugger = Debug(`${APP_ID}:openid4vci`);
@@ -181,7 +182,9 @@ class OpenId4VcIssuanceProvider {
    * TODO check again when WAL-617 is done to replace how we get the issuer name.
    */
   public static getIssuerName(url: string, credentialIssuerMetadata?: Partial<AuthorizationServerMetadata> & CredentialIssuerMetadata): string {
-    const displays: Array<MetadataDisplay> = credentialIssuerMetadata ? OpenId4VcIssuanceProvider.getIssuerDisplays(credentialIssuerMetadata) : [];
+    const displays: Array<MetadataDisplay> = mapLanguageValues(
+      credentialIssuerMetadata ? OpenId4VcIssuanceProvider.getIssuerDisplays(credentialIssuerMetadata) : [],
+    );
     for (const display of displays) {
       if (display.name) {
         return display.name;
