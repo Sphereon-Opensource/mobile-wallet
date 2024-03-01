@@ -81,6 +81,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
 };
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
+  console.log(`QR DATA: ${JSON.stringify(args.qrData)}`);
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
       if ((args.qrData as IQrAuthentication).mode === ConnectionTypeEnum.SIOPv2) {
