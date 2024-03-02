@@ -54,8 +54,8 @@ export const getSiopRequest = async (
   const name = verifiedAuthorizationRequest.registrationMetadataPayload?.client_name;
   const url =
     verifiedAuthorizationRequest.responseURI ??
-    (requestData.uri.includes('request_uri=')
-      ? decodeURIComponent(requestData.uri.split('request_uri=')[1].trim())
+    (requestData.uri.includes('request_uri')
+      ? decodeURIComponent(requestData.uri.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
   const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
   const correlationIdName = uri

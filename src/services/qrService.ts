@@ -33,6 +33,7 @@ const debug: Debugger = Debug(`${APP_ID}:qrService`);
 export let OID4VCIInstance: OID4VCIMachineInterpreter | undefined;
 
 export const readQr = async (args: IReadQrArgs): Promise<void> => {
+  console.log('****************sQR' + JSON.stringify(args, null, 2))
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
     .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
@@ -70,6 +71,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
       return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
     });
   } else if (qrData.startsWith(QrTypesEnum.OPENID_VC) || qrData.startsWith(QrTypesEnum.OPENID)) {
+    console.log('##############WARN: GENERAL OID QR or SIOP')
     try {
       return parseSIOPv2(qrData);
     } catch (error: unknown) {
