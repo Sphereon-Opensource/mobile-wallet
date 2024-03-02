@@ -2541,6 +2541,11 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
+"@mosip/secure-keystore@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@mosip/secure-keystore/-/secure-keystore-0.1.7.tgz#311c1380044b9b2fe1fc2766d5ac51b06e37aad2"
+  integrity sha512-Yo9pCj1do8mKkwMkhRVbnf0cqOQaD3EJlMgcM8OyEedvB/dA5qQKJ2nDt7SkA+Rjnl1XHmvv6qAmLD1xuOD8kQ==
+
 "@multiformats/base-x@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@multiformats/base-x/-/base-x-4.0.1.tgz#95ff0fa58711789d53aefb2590a8b7a4e715d121"
@@ -3536,10 +3541,10 @@
     debug "^4.3.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-types@0.17.1", "@sphereon/ssi-types@0.17.6-unstable.69", "@sphereon/ssi-types@0.18.1", "@sphereon/ssi-types@0.18.2-unstable.22", "@sphereon/ssi-types@0.18.2-unstable.22+16e70752", "@sphereon/ssi-types@^0.17.5", "@sphereon/ssi-types@^0.9.0":
-  version "0.18.2-unstable.22"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.18.2-unstable.22.tgz#7dc7bd4c416595f0aad0632e6d6a8fd3b28d1fc9"
-  integrity sha512-g0/89xcifxpqEd8ngcZRyc6KeQ0UpovVtF3YYfFjFCm3Dm52kTW0LKxK795/1RoYuJeFnTRRZKbSJs6i67aFPw==
+"@sphereon/ssi-types@0.17.1", "@sphereon/ssi-types@0.17.6-unstable.69", "@sphereon/ssi-types@0.18.1", "@sphereon/ssi-types@0.18.2-unstable.22+16e70752", "@sphereon/ssi-types@0.18.2-unstable.57", "@sphereon/ssi-types@^0.17.5", "@sphereon/ssi-types@^0.9.0":
+  version "0.18.2-unstable.57"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.18.2-unstable.57.tgz#daeaf2da17a66cdf1303eb923d5418cb5ce69a89"
+  integrity sha512-UhA8zCc3luxUKjR/fM62DBFiu1cKn9HhRCCnLXC5h8aXQAJriZD32SMjgrtC+J6u7Ffnk3aieh/YQzgo6ogXCQ==
   dependencies:
     "@sd-jwt/decode" "^0.2.0"
     jwt-decode "^3.1.2"
@@ -13136,6 +13141,11 @@ react-native-randombytes@^3.6.1:
   dependencies:
     buffer "^4.9.1"
     sjcl "^1.0.3"
+
+react-native-rsa-native@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-rsa-native/-/react-native-rsa-native-2.0.5.tgz#7db4aef49405bb5b5bcaea12b9dfd1b251c690ab"
+  integrity sha512-gwwvFSwGW5WKrpDyBQ/eTf1UrVABeAvMcT4YWemzPSUo6aHZs1kbBm2rXmwN5okhUzJsry5zjjz/qdx5GXRugQ==
 
 react-native-safe-area-context@4.5.0:
   version "4.5.0"
