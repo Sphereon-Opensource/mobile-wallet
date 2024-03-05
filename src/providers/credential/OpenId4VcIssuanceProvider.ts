@@ -40,7 +40,7 @@ import {
   SupportedDidMethodEnum,
 } from '../../types';
 // FIXME: This file needs a complete overhaul. Much needs to move the SDK and should be called by xstate
-import {KeyTypeFromCryptographicSuite, SignatureAlgorithmFromKey} from '../../utils';
+import {keyTypeFromCryptographicSuite, signatureAlgorithmFromKey} from '../../utils';
 import {credentialLocaleBrandingFrom} from '../../utils/mappers/branding/OIDC4VCIBrandingMapper';
 
 const debug: Debugger = Debug(`${APP_ID}:openid4vci`);
@@ -298,7 +298,7 @@ class OpenId4VcIssuanceProvider {
       return Promise.reject(Error(`Cannot get credential issuance options`));
     }
     const {identifier, key, kid} = await this.getIdentifier({issuanceOpt});
-    const alg: SignatureAlgorithmEnum = SignatureAlgorithmFromKey(key);
+    const alg: SignatureAlgorithmEnum = signatureAlgorithmFromKey(key);
 
     const callbacks: ProofOfPossessionCallbacks<DIDDocument> = {
       signCallback: (jwt: Jwt, kid?: string) => {
@@ -327,7 +327,10 @@ class OpenId4VcIssuanceProvider {
 
     try {
       // We need to make sure we have acquired the access token
-      await clientInstance.acquireAccessToken({pin, authorizationResponse: this.authorizationCodeResponse});
+      if (!clientInstance.clientId) {
+        clientInstance.clientId = issuanceOpt.identifier.did;
+      }
+      await clientInstance.acquireAccessToken({clientId: clientInstance.clientId, pin, authorizationResponse: this.authorizationCodeResponse});
       // @ts-ignore
       debug(`credential type: ${JSON.stringify(issuanceOpt.types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
 
@@ -519,7 +522,7 @@ class OpenId4VcIssuanceProvider {
         ...credentialSupported,
         didMethod,
         format: credentialSupported.format,
-        keyType: client.isEBSI() ? 'Secp256r1' : KeyTypeFromCryptographicSuite(cryptographicSuite),
+        keyType: client.isEBSI() ? 'Secp256r1' : keyTypeFromCryptographicSuite(cryptographicSuite),
         ...(client.isEBSI() && {codecName: 'EBSI'}),
       } as IIssuanceOpts;
       const identifierOpts = await this.getIdentifier({issuanceOpt});

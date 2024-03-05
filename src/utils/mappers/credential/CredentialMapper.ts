@@ -9,11 +9,13 @@ import {ICredentialDetailsRow, ICredentialSummary} from '../../../types';
 import {getCredentialStatus, translateCorrelationIdToName} from '../../CredentialUtils';
 import {EPOCH_MILLISECONDS} from '../../DateUtils';
 import {getImageSize, isImage} from '../../ImageUtils';
+import {mapLanguageValues} from '@sphereon/ssi-types';
 
 const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICredentialDetailsRow[]> => {
   let rows: ICredentialDetailsRow[] = [];
+  const mappedValues = mapLanguageValues(object);
   // eslint-disable-next-line prefer-const
-  for (let [key, value] of Object.entries(object)) {
+  for (let [key, value] of Object.entries(mappedValues)) {
     // TODO fix hacking together the image
     if (key.toLowerCase().includes('image')) {
       const image = typeof value === 'string' ? value : value.id;

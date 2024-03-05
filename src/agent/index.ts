@@ -41,6 +41,7 @@ import {
   OID4VCIHolder,
   OnContactIdentityCreatedArgs,
   OnCredentialStoredArgs,
+  OnGetCredentialsArgs,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import OpenId4VcIssuanceProvider, {CredentialToAccept} from '../providers/credential/OpenId4VcIssuanceProvider';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
@@ -141,7 +142,7 @@ const agent = createAgent<
       keyStore: privateKeyStore,
     }),
     new OID4VCIHolder({
-      onGetCredentials: new OpenId4VcIssuanceProvider().getCredentials,
+      onGetCredentials: async (args: OnGetCredentialsArgs) => new OpenId4VcIssuanceProvider().getCredentials(args),
       onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
         store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
       },

@@ -2,7 +2,7 @@ import {IKey, TKeyType} from '@veramo/core';
 
 import {SignatureAlgorithmEnum} from '../providers/credential/OpenId4VcIssuanceProvider';
 
-export const SignatureAlgorithmFromKeyType = (type: TKeyType) => {
+export const signatureAlgorithmFromKeyType = (type: TKeyType) => {
   switch (type) {
     case 'Ed25519':
     case 'X25519':
@@ -16,12 +16,12 @@ export const SignatureAlgorithmFromKeyType = (type: TKeyType) => {
   }
 };
 
-export const SignatureAlgorithmFromKey = (key: IKey) => {
-  return SignatureAlgorithmFromKeyType(key.type);
+export const signatureAlgorithmFromKey = (key: IKey) => {
+  return signatureAlgorithmFromKeyType(key.type);
 };
 
 // TODO improve this conversion for jwt and jsonld, not a fan of current structure
-export const KeyTypeFromCryptographicSuite = (suite: string): TKeyType => {
+export const keyTypeFromCryptographicSuite = (suite: string): TKeyType => {
   switch (suite) {
     case 'EdDSA':
     case 'Ed25519Signature2018':
