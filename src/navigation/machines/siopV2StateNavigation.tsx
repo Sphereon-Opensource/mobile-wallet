@@ -157,7 +157,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
   }
 
   if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    return Promise.reject(Error('No presentation definitions present'));
+    return Promise.reject(Error('No presentation definitions present2'));
   }
   // TODO currently only supporting 1 presentation definition
   if (authorizationRequestData.presentationDefinitions.length > 1) {

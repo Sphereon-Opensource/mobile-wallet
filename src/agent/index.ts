@@ -1,12 +1,20 @@
 import {getUniResolver} from '@sphereon/did-uni-client';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
+import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
-import {ContactStore, ICredentialBranding, Identity, IssuanceBrandingStore} from '@sphereon/ssi-sdk.data-store';
+import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
+import {
+  IOID4VCIHolder,
+  OID4VCIHolder,
+  OnContactIdentityCreatedArgs,
+  OnCredentialStoredArgs,
+  OnGetCredentialsArgs,
+} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
@@ -16,13 +24,13 @@ import {
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk.vc-handler-ld-local';
-import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver, VerifiableCredential} from '@veramo/core';
+import {IMachineStatePersistence, MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
+import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {EthrDIDProvider} from '@veramo/did-provider-ethr';
 import {getDidIonResolver, IonDIDProvider} from '@veramo/did-provider-ion';
-import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
@@ -30,29 +38,15 @@ import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 
-import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL, SPHEREON_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
+import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
+import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {getDbConnection} from '../services/databaseService';
-import {ICredentialSummary, KeyManagementSystemEnum, SupportedDidMethodEnum, ToastTypeEnum} from '../types';
-import {
-  GetCredentialsArgs,
-  IOID4VCIHolder,
-  OID4VCIHolder,
-  OnContactIdentityCreatedArgs,
-  OnCredentialStoredArgs,
-  OnGetCredentialsArgs,
-} from '@sphereon/ssi-sdk.oid4vci-holder';
-import OpenId4VcIssuanceProvider, {CredentialToAccept} from '../providers/credential/OpenId4VcIssuanceProvider';
-import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import store from '../store';
-import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {toCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
-import {STORE_CREDENTIAL_SUCCESS} from '../types/store/credential.action.types';
-import {showToast} from '../utils';
-import {translate} from '../localization/Localization';
-import {addIdentity} from '../store/actions/contact.actions';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -98,7 +92,8 @@ const agent = createAgent<
     ICredentialIssuer &
     ICredentialHandlerLDLocal &
     IIssuanceBranding &
-    IOID4VCIHolder
+    IOID4VCIHolder &
+    IMachineStatePersistence
 >({
   plugins: [
     new DataStore(dbConnection),
@@ -150,6 +145,10 @@ const agent = createAgent<
         const {credential, vcHash} = args;
         store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
       },
+    }),
+    new MachineStatePersistence({
+      store: new MachineStateStore(dbConnection),
+      eventTypes: [MachineStatePersistEventType.EVERY],
     }),
   ],
 });

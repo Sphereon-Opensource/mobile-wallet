@@ -753,7 +753,7 @@ export const OID4VCIStack = (): JSX.Element => {
 
 export const OID4VCIStackWithContext = (props: IOID4VCIProps): JSX.Element => {
   return (
-    <OID4VCIProvider customOID4VCIInstance={props.customOID4VCIInstance}>
+    <OID4VCIProvider>
       <OID4VCIStack />
     </OID4VCIProvider>
   );

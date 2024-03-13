@@ -51,7 +51,7 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
   }
 
   if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present');
+    throw Error('No presentation definitions present1');
   }
 
   // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway

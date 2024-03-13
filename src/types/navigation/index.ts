@@ -2,11 +2,10 @@ import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@spher
 import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
-import {OnboardingMachineContext, OnboardingPersonalData, OnboardingMachineInterpreter} from '../machines/onboarding';
-import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
+import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
+import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {OID4VCIMachineInterpreter} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -38,7 +37,6 @@ export type StackParamList = {
   CredentialsRequired: ICredentialsRequiredProps & Partial<IHasOnBackProps>;
   CredentialsSelect: ICredentialsSelectProps;
   Loading: ILoadingProps;
-  OID4VCI: IOID4VCIProps;
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
 };
@@ -225,10 +223,6 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
-}
-
-export interface IOID4VCIProps {
-  customOID4VCIInstance?: OID4VCIMachineInterpreter;
 }
 
 export interface ISiopV2PProps {

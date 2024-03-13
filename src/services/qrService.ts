@@ -1,12 +1,13 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {convertURIToJsonObject, CredentialOfferClient} from '@sphereon/oid4vci-client';
 import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
+import {interpreterStartOrResume} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
-import {oid4vciHolderGetMachineInterpreter} from '../agent';
+import {agentContext, oid4vciHolderGetMachineInterpreter} from '../agent';
 import {translate} from '../localization/Localization';
 import {SiopV2Machine} from '../machines/siopV2Machine';
 import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
@@ -174,19 +175,35 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
 export let oid4vciInstance: OID4VCIMachineInterpreter | undefined;
 export let SiopV2Instance: SiopV2MachineInterpreter | undefined;
 const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
+  const oid4vciMachine = await oid4vciHolderGetMachineInterpreter({
+    requestData: {
+      credentialOffer: args.qrData.credentialOffer,
+      uri: args.qrData.uri,
+      ...args.qrData,
+    },
+    stateNavigationListener: oid4vciStateNavigationListener,
+  });
+
+  const stateType = args.qrData.code ? 'existing' : 'new';
+  const interpreter = oid4vciMachine.interpreter;
+  interpreter.onEvent(listener => console.log(`@@ONEVENT: ${JSON.stringify(listener)}`));
+  interpreter.onChange((newContext, prevContext) =>
+    console.log(`%%ONCHANGE:\n auth response context: ${JSON.stringify(newContext.openID4VCIClientState?.authorizationCodeResponse)}`),
+  );
+  await interpreterStartOrResume({
+    stateType,
+    interpreter: oid4vciMachine.interpreter,
+    context: agentContext,
+    cleanupAllOtherInstances: true,
+    cleanupOnFinalState: true,
+    singletonCheck: true,
+  });
   if (args.qrData.code && args.qrData.uri) {
-    oid4vciInstance?.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
-  } else {
-    const oid4vciMachine = await oid4vciHolderGetMachineInterpreter({
-      requestData: {
-        credentialOffer: args.qrData.credentialOffer,
-        uri: args.qrData.uri,
-        ...args.qrData,
-      },
-      stateNavigationListener: oid4vciStateNavigationListener,
-    });
-    oid4vciInstance = oid4vciMachine.interpreter;
-    oid4vciInstance.start();
+    // console.log('WAIT 30 SECs')
+    // await new Promise((res) => setTimeout(res, 30000))
+    console.log('PRE SEND AUT CODE RESPONSE machine event from qrService');
+    interpreter.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
+    console.log('POST SEND AUT CODE RESPONSE machine event from qrService');
   }
 };
 

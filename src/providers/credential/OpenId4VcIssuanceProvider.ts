@@ -227,10 +227,13 @@ class OpenId4VcIssuanceProvider {
     console.log('CALLING: getCredentials');
     const {pin, credentials, openID4VCIClientState} = args;
 
+    console.log('###############STATE######################');
+    console.log(JSON.stringify(openID4VCIClientState.authorizationCodeResponse, null, 2));
+    console.log('###############STATE######################');
     const client = await OpenID4VCIClient.fromState({state: openID4VCIClientState});
 
     if (client) {
-      console.log('CALLING: getCredentials HAS client');
+      console.log('CALLING: getCredentials HAS client: ' + JSON.stringify(JSON.parse(await client.exportState()).authorizationCodeResponse));
     }
 
     const matches: IServerMetadataAndCryptoMatchingResponse = await this.getServerMetadataAndPerformCryptoMatching(client);
@@ -292,6 +295,7 @@ class OpenId4VcIssuanceProvider {
 
     if (client) {
       console.log('CALLING: getCredential HAS client');
+      console.log(JSON.stringify(JSON.parse(await client.exportState()).authorizationCodeResponse));
     }
 
     if (!issuanceOpt) {
@@ -330,7 +334,11 @@ class OpenId4VcIssuanceProvider {
       if (!clientInstance.clientId) {
         clientInstance.clientId = issuanceOpt.identifier.did;
       }
-      await clientInstance.acquireAccessToken({clientId: clientInstance.clientId, pin, authorizationResponse: this.authorizationCodeResponse});
+      await clientInstance.acquireAccessToken({
+        clientId: clientInstance.clientId,
+        pin,
+        authorizationResponse: JSON.parse(await clientInstance.exportState()).authorizationCodeResponse,
+      });
       // @ts-ignore
       debug(`credential type: ${JSON.stringify(issuanceOpt.types)}, format: ${issuanceOpt.format}, kid: ${kid}, alg: ${alg}`);
 
