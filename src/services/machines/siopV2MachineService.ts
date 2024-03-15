@@ -18,31 +18,25 @@ import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 
-export const createConfig = async (context: Pick<SiopV2MachineContext, 'requestData'>): Promise<Omit<DidAuthConfig, 'identifier'>> => {
-  const {requestData} = context;
+export const createConfig = async (context: Pick<SiopV2MachineContext, 'url'>): Promise<Omit<DidAuthConfig, 'stateId' | 'identifier'>> => {
+  const {url} = context;
 
-  if (requestData?.uri === undefined) {
+  if (!url) {
     return Promise.reject(Error('Missing request uri in context'));
   }
 
-  // FIXME: This can never work. At this point we do not know what type of identifier to create/get at all
-  // const identifier: IIdentifier = await getOrCreatePrimaryIdentifier();
   return {
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),
-    redirectUrl: requestData.uri,
-    stateId: requestData.state,
-    // identifier,
+    redirectUrl: url,
   };
 };
 
-export const getSiopRequest = async (
-  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'requestData'>,
-): Promise<SiopV2AuthorizationRequestData> => {
-  const {didAuthConfig, requestData} = context;
+export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'url'>): Promise<SiopV2AuthorizationRequestData> => {
+  const {didAuthConfig} = context;
 
-  if (requestData?.uri === undefined) {
+  if (context.url === undefined) {
     return Promise.reject(Error('Missing request uri in context'));
   }
 
@@ -54,8 +48,8 @@ export const getSiopRequest = async (
   const name = verifiedAuthorizationRequest.registrationMetadataPayload?.client_name;
   const url =
     verifiedAuthorizationRequest.responseURI ??
-    (requestData.uri.includes('request_uri')
-      ? decodeURIComponent(requestData.uri.split('?request_uri=')[1].trim())
+    (context.url.includes('request_uri')
+      ? decodeURIComponent(context.url.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
   const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
   const correlationIdName = uri
@@ -83,9 +77,7 @@ export const getSiopRequest = async (
   };
 };
 
-export const retrieveContact = async (
-  context: Pick<SiopV2MachineContext, 'requestData' | 'authorizationRequestData'>,
-): Promise<Party | undefined> => {
+export const retrieveContact = async (context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData'>): Promise<Party | undefined> => {
   const {authorizationRequestData} = context;
 
   if (authorizationRequestData === undefined) {

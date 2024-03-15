@@ -1,18 +1,19 @@
+import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
 import {VerifiableCredential} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {EmitterSubscription, Linking} from 'react-native';
 import ShareMenu, {ShareData, ShareListener} from 'react-native-share-menu';
 import {APP_ID} from '../../@config/constants';
+import {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
 import RootNavigation from '../../navigation/rootNavigation';
 import {readFile} from '../../services/fileService';
-import {readQr} from '../../services/qrService';
 import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {parseDeepLink} from '../../utils';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
-import {showToast} from '../../utils/ToastUtils';
+import {showToast} from '../../utils';
 import LockingHandler from '../LockingHandler';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
@@ -32,21 +33,21 @@ class IntentHandler {
   }
 
   public enable = async (): Promise<void> => {
-    debug(`Enable intenthandler... `);
+    debug(`Enable intent handler... `);
     if (this.isEnabled()) {
-      debug('intenthandler was already enabled');
+      debug('intent handler was already enabled');
     } else {
       this._enabled = true;
       try {
-        debug(`intenthandler was not enabled yet`);
+        debug(`intent handler was not enabled yet`);
         await this.handleLinksForStartingApp();
         await this.handleLinksForRunningApp();
       } catch (error) {
-        console.log('Enable intenthandler had an error:');
+        console.log('Enable intent handler had an error:');
         console.log(JSON.stringify(error));
         this._enabled = false;
       }
-      debug(`intenthandler enabled`);
+      debug(`intent handler enabled`);
     }
   };
 
@@ -65,7 +66,7 @@ class IntentHandler {
     try {
       await this.removeListeners();
     } catch (error) {
-      console.log('Disable intenthandler had an error:');
+      console.log('Disable intent handler had an error:');
       console.log(JSON.stringify(error));
     }
   };
@@ -163,16 +164,7 @@ class IntentHandler {
         }
         throw new Error(message);
       }
-      /*if ('code' in queryParams && OID4VCIInstance !== undefined) {
-        OID4VCIInstance.send({
-          type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
-          data: url,
-        });
-        return
-      }*/
-      // TODO this DeepLinkingProvider is now hard-coupled to assume the links are QR flows
-      // TODO fix this type issue
-      await readQr({qrData: url, navigation: RootNavigation});
+      await emitLinkHandlerURLEvent({source: 'IntentHandler', url}, agentContext);
     }
   };
 

@@ -2,7 +2,7 @@ import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
-import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
+import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, URI} from '@sphereon/did-auth-siop';
 import {Party, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
@@ -19,7 +19,7 @@ export type SiopV2AuthorizationRequestData = {
 };
 
 export type SiopV2MachineContext = {
-  requestData?: IQrData; // TODO WAL-673 fix type as this is not always a qr code (deeplink)
+  url: string;
   identifier?: IIdentifier;
   didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
@@ -60,7 +60,16 @@ export type SiopV2MachineInterpreter = Interpreter<
   any
 >;
 
-export type SiopV2MachineState = State<SiopV2MachineContext, SiopV2MachineEventTypes, any, {value: any; context: SiopV2MachineContext}, any>;
+export type SiopV2MachineState = State<
+  SiopV2MachineContext,
+  SiopV2MachineEventTypes,
+  any,
+  {
+    value: any;
+    context: SiopV2MachineContext;
+  },
+  any
+>;
 
 export type SiopV2StateMachine = StateMachine<
   SiopV2MachineContext,
@@ -73,7 +82,7 @@ export type SiopV2StateMachine = StateMachine<
 >;
 
 export type CreateSiopV2MachineOpts = {
-  requestData: IQrData;
+  url: string | URL;
   machineId?: string;
 };
 
@@ -134,7 +143,10 @@ export type DeclineEvent = {type: SiopV2MachineEvents.DECLINE};
 export type ContactConsentEvent = {type: SiopV2MachineEvents.SET_CONTACT_CONSENT; data: boolean};
 export type ContactAliasEvent = {type: SiopV2MachineEvents.SET_CONTACT_ALIAS; data: string};
 export type CreateContactEvent = {type: SiopV2MachineEvents.CREATE_CONTACT; data: Party};
-export type SelectCredentialsEvent = {type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS; data: Array<OriginalVerifiableCredential>};
+export type SelectCredentialsEvent = {
+  type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS;
+  data: Array<OriginalVerifiableCredential>;
+};
 
 export type SiopV2MachineEventTypes =
   | NextEvent

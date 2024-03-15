@@ -1,16 +1,13 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {convertURIToJsonObject, CredentialOfferClient} from '@sphereon/oid4vci-client';
+import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
 import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
-import {interpreterStartOrResume} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
-import {agentContext, oid4vciHolderGetMachineInterpreter} from '../agent';
+import {agentContext} from '../agent';
 import {translate} from '../localization/Localization';
-import {SiopV2Machine} from '../machines/siopV2Machine';
-import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import {siopGetRequest} from '../providers/authentication/SIOPv2Provider';
 import JwtVcPresentationProfileProvider from '../providers/credential/JwtVcPresentationProfileProvider';
 import {
@@ -24,11 +21,9 @@ import {
   ScreenRoutesEnum,
   ToastTypeEnum,
 } from '../types';
-import {SiopV2MachineInterpreter} from '../types/machines/siopV2';
 import {showToast} from '../utils';
 import {authenticate} from './authenticationService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
-import {OID4VCIMachineEvents, OID4VCIMachineInterpreter} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
@@ -61,20 +56,8 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
     debug(`Unable to parse QR value as URL. Error: ${error}`);
   }
 
-  if (qrData.startsWith(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.startsWith(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
-    return await parseOID4VCI(qrData).catch(error => {
-      debug(`Unable to parse QR value as openid-initiate-issuance. Error: ${error}`);
-      return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
-    });
-  } else if (qrData.startsWith(QrTypesEnum.OPENID_VC) || qrData.startsWith(QrTypesEnum.OPENID)) {
-    try {
-      return parseSIOPv2(qrData);
-    } catch (error: unknown) {
-      debug(`Unable to parse QR value as openid-vc. Error: ${error}`);
-    }
-  }
-
-  return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
+  // fixme: We are returning OID4VC for everything, since the linkhandler sort things out itself. To be removed once the old flows in this file are gone
+  return {type: QrTypesEnum.OPENID4VC, url: qrData};
 };
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
@@ -84,42 +67,11 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
         return connectDidAuth(args);
       }
       break;
-    case QrTypesEnum.SIOPV2:
-    case QrTypesEnum.OPENID_VC:
-    case QrTypesEnum.OPENID4VC:
-      return connectSiopV2(args);
-    case QrTypesEnum.OPENID_CREDENTIAL_OFFER:
-    case QrTypesEnum.OPENID_INITIATE_ISSUANCE:
-      return connectOID4VCI(args);
+    case QrTypesEnum.OPENID4VC: // todo: Only OID4VC will be passed no matter the actual protocol. The link handler takes care of everything, should be removed once the old flows are removed here
+      return await emitLinkHandlerURLEvent({source: 'QR', url: args.qrData.url}, agentContext);
+    default:
+      return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
   }
-};
-
-const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
-  try {
-    return Promise.resolve({
-      type: QrTypesEnum.OPENID_VC,
-      uri: qrData,
-    });
-  } catch (error: unknown) {
-    return Promise.reject(error);
-  }
-};
-
-const parseOID4VCI = async (qrData: string): Promise<IQrData> => {
-  if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) || qrData.includes(QrTypesEnum.OPENID_CREDENTIAL_OFFER)) {
-    const offerData = convertURIToJsonObject(qrData) as Record<string, unknown>;
-    const hasCode = 'code' in offerData && !!offerData.code && !('issuer' in offerData);
-    const code = hasCode ? offerData.code : undefined;
-    console.log('offer contained code: ', code);
-
-    return Promise.resolve({
-      type: qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE) ? QrTypesEnum.OPENID_INITIATE_ISSUANCE : QrTypesEnum.OPENID_CREDENTIAL_OFFER,
-      ...(hasCode && {code}),
-      ...(!hasCode && {credentialOffer: await CredentialOfferClient.fromURI(qrData)}),
-      uri: qrData,
-    });
-  }
-  throw Error(translate('qr_scanner_qr_not_supported_message'));
 };
 
 // TODO remove old flow
@@ -170,44 +122,4 @@ const connectJwtVcPresentationProfile = async (args: IQrDataArgs): Promise<void>
     });
   }
   // TODO WAL-301 need to send a response when we do not need a pin code
-};
-
-export let oid4vciInstance: OID4VCIMachineInterpreter | undefined;
-export let SiopV2Instance: SiopV2MachineInterpreter | undefined;
-const connectOID4VCI = async (args: IQrDataArgs): Promise<void> => {
-  const oid4vciMachine = await oid4vciHolderGetMachineInterpreter({
-    requestData: {
-      credentialOffer: args.qrData.credentialOffer,
-      uri: args.qrData.uri,
-      ...args.qrData,
-    },
-    stateNavigationListener: oid4vciStateNavigationListener,
-  });
-
-  const stateType = args.qrData.code ? 'existing' : 'new';
-  const interpreter = oid4vciMachine.interpreter;
-  interpreter.onEvent(listener => console.log(`@@ONEVENT: ${JSON.stringify(listener)}`));
-  interpreter.onChange((newContext, prevContext) =>
-    console.log(`%%ONCHANGE:\n auth response context: ${JSON.stringify(newContext.openID4VCIClientState?.authorizationCodeResponse)}`),
-  );
-  await interpreterStartOrResume({
-    stateType,
-    interpreter: oid4vciMachine.interpreter,
-    context: agentContext,
-    cleanupAllOtherInstances: true,
-    cleanupOnFinalState: true,
-    singletonCheck: true,
-  });
-  if (args.qrData.code && args.qrData.uri) {
-    // console.log('WAIT 30 SECs')
-    // await new Promise((res) => setTimeout(res, 30000))
-    console.log('PRE SEND AUT CODE RESPONSE machine event from qrService');
-    interpreter.send(OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE, {data: args.qrData.uri});
-    console.log('POST SEND AUT CODE RESPONSE machine event from qrService');
-  }
-};
-
-const connectSiopV2 = async (args: IQrDataArgs): Promise<void> => {
-  SiopV2Instance = SiopV2Machine.newInstance({requestData: args.qrData});
-  SiopV2Instance.start();
 };

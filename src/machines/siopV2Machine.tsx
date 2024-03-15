@@ -1,16 +1,17 @@
-import React from 'react';
+import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
-import {Party, DidAuthConfig, Identity} from '@sphereon/ssi-sdk.data-store';
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {EvaluationResults, PEX, Status} from '@sphereon/pex';
-import {getSiopRequest, retrieveContact, addContactIdentity, sendResponse, createConfig} from '../services/machines/siopV2MachineService';
-import {siopV2StateNavigationListener} from '../navigation/machines/siopV2StateNavigation';
 import {translate} from '../localization/Localization';
+import {siopV2StateNavigationListener} from '../navigation/machines/siopV2StateNavigation';
+import {addContactIdentity, createConfig, getSiopRequest, retrieveContact, sendResponse} from '../services/machines/siopV2MachineService';
+import {ErrorDetails} from '../types';
 import {
   ContactAliasEvent,
   ContactConsentEvent,
   CreateContactEvent,
   CreateSiopV2MachineOpts,
+  SelectCredentialsEvent,
+  SiopV2AuthorizationRequestData,
   SiopV2MachineAddContactStates,
   SiopV2MachineContext,
   SiopV2MachineEvents,
@@ -22,10 +23,7 @@ import {
   SiopV2MachineState,
   SiopV2MachineStates,
   SiopV2StateMachine,
-  SelectCredentialsEvent,
-  SiopV2AuthorizationRequestData,
 } from '../types/machines/siopV2';
-import {ErrorDetails} from '../types';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -51,7 +49,7 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
   }
 
   if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present1');
+    throw Error('No presentation definitions present');
   }
 
   // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway
@@ -70,7 +68,6 @@ const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machine
     throw new Error('Missing authorization request data in context');
   }
 
-  console.log(JSON.stringify(authorizationRequestData, null, 2));
   return authorizationRequestData.presentationDefinitions === undefined;
 };
 
@@ -84,9 +81,10 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
   return authorizationRequestData.presentationDefinitions !== undefined;
 };
 
-const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine => {
+const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
+  const {url} = opts;
   const initialContext: SiopV2MachineContext = {
-    requestData: opts?.requestData,
+    url: new URL(url).toString(),
     hasContactConsent: true,
     contactAlias: '',
     selectedCredentials: [],
@@ -332,7 +330,7 @@ const createSiopV2Machine = (opts?: CreateSiopV2MachineOpts): SiopV2StateMachine
 };
 
 export class SiopV2Machine {
-  static newInstance(opts?: SiopV2MachineInstanceOpts): SiopV2MachineInterpreter {
+  static newInstance(opts: SiopV2MachineInstanceOpts): SiopV2MachineInterpreter {
     const instance: SiopV2MachineInterpreter = interpret(
       createSiopV2Machine(opts).withConfig({
         services: {

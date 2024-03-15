@@ -6,6 +6,7 @@ import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
+import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
 import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {
@@ -15,6 +16,7 @@ import {
   OnCredentialStoredArgs,
   OnGetCredentialsArgs,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
+import {OID4VCIHolderLinkHandler} from '@sphereon/ssi-sdk.oid4vci-holder/dist/link-handler';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
@@ -41,11 +43,13 @@ import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
+import {addLinkListeners} from '../handlers/LinkHandlers';
+import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
 import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {getDbConnection} from '../services/databaseService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+import {KeyManagementSystemEnum, QrTypesEnum, SupportedDidMethodEnum} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 
 export const didResolver = new Resolver({
@@ -79,6 +83,8 @@ export const didProviders = {
 
 const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME);
 const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY));
+
+export const linkHandlers: LinkHandlers = new LinkHandlers().add(new LogLinkHandler());
 
 const agent = createAgent<
   IDIDManager &
@@ -150,6 +156,10 @@ const agent = createAgent<
       store: new MachineStateStore(dbConnection),
       eventTypes: [MachineStatePersistEventType.EVERY],
     }),
+    new LinkHandlerPlugin({
+      eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
+      handlers: linkHandlers,
+    }),
   ],
 });
 
@@ -176,3 +186,4 @@ export const oid4vciHolderGetMachineInterpreter = agent.oid4vciHolderGetMachineI
 export default agent;
 
 export const agentContext = {...agent.context, agent};
+addLinkListeners(linkHandlers);

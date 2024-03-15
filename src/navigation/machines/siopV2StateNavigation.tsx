@@ -48,13 +48,13 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {hasContactConsent, requestData, authorizationRequestData} = state.context;
+  const {hasContactConsent, url, authorizationRequestData} = state.context;
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  if (requestData === undefined) {
+  if (url === undefined) {
     return Promise.reject(Error('Missing request data in context'));
   }
 

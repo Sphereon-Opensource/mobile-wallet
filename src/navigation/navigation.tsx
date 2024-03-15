@@ -42,7 +42,7 @@ import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import {
   HeaderMenuIconsEnum,
   IOnboardingProps,
-  IOID4VCIProps,
+  // IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
   ScreenRoutesEnum,
@@ -751,7 +751,7 @@ export const OID4VCIStack = (): JSX.Element => {
   );
 };
 
-export const OID4VCIStackWithContext = (props: IOID4VCIProps): JSX.Element => {
+export const OID4VCIStackWithContext = (): JSX.Element => {
   return (
     <OID4VCIProvider>
       <OID4VCIStack />
