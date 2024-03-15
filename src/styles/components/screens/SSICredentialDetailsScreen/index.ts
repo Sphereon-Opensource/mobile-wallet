@@ -23,5 +23,4 @@ export const SSICredentialDetailsScreenButtonContainer = styled.View`
 export const SSICredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
   margin: auto auto;
   justify-content: space-between;
-  padding: 0 24px;
 `;
