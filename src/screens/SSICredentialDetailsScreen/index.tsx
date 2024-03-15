@@ -109,8 +109,8 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
-                    minWidth: 160.5,
-                    ...(primaryAction && {width: '100%'}),
+                    minWidth: 160,
+                    ...(!primaryAction && {width: '100%'}),
                   }}
                 />
               )}
@@ -121,8 +121,8 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                   // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
                   style={{
                     height: 42,
-                    minWidth: 160.5,
-                    ...(secondaryAction && {width: '100%'}),
+                    minWidth: 160,
+                    ...(!secondaryAction && {width: '100%'}),
                   }}
                 />
               )}
