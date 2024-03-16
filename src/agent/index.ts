@@ -16,7 +16,6 @@ import {
   OnCredentialStoredArgs,
   OnGetCredentialsArgs,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
-import {OID4VCIHolderLinkHandler} from '@sphereon/ssi-sdk.oid4vci-holder/dist/link-handler';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
@@ -186,4 +185,4 @@ export const oid4vciHolderGetMachineInterpreter = agent.oid4vciHolderGetMachineI
 export default agent;
 
 export const agentContext = {...agent.context, agent};
-addLinkListeners(linkHandlers);
+addLinkListeners(linkHandlers, agentContext);

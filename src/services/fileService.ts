@@ -1,7 +1,7 @@
-import * as RNFS from 'react-native-fs';
+import * as RNFS from 'expo-file-system';
 
 import {IReadFileArgs} from '../types';
 
 export const readFile = async ({filePath}: IReadFileArgs): Promise<string> => {
-  return RNFS.readFile(filePath);
+  return RNFS.readAsStringAsync(filePath);
 };

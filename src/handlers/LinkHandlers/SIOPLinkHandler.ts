@@ -17,14 +17,15 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
   async handle(url: string | URL): Promise<void> {
     debug(`handling SIOP link: ${url}`);
     const interpreter = SiopV2Machine.newInstance({url});
-    const init = await interpreterStartOrResume({
+    interpreter.start();
+    /*const init = await interpreterStartOrResume({
       stateType: 'new',
       interpreter,
       context: this.context,
       cleanupAllOtherInstances: true,
       cleanupOnFinalState: true,
       singletonCheck: true,
-    });
-    debug(`SIOP machine started for link: ${url}`, init);
+    });*/
+    // debug(`SIOP machine started for link: ${url}`, init);
   }
 }

@@ -1,0 +1,54 @@
+diff --git a/node_modules/rn-nodeify/browser-browserify.json b/node_modules/rn-nodeify/browser-browserify.json
+index 52fa68a..b9ef48b 100644
+--- a/node_modules/rn-nodeify/browser-browserify.json
++++ b/node_modules/rn-nodeify/browser-browserify.json
+@@ -11,7 +11,7 @@
+   "os": "os-browserify",
+   "path": "path-browserify",
+   "querystring": "querystring-es3",
+-  "fs": "react-native-level-fs",
++  "fs": "expo-fs",
+   "_stream_transform": "readable-stream/transform",
+   "_stream_readable": "readable-stream/readable",
+   "_stream_writable": "readable-stream/writable",
+diff --git a/node_modules/rn-nodeify/browser.json b/node_modules/rn-nodeify/browser.json
+index dad26ae..34c4c73 100644
+--- a/node_modules/rn-nodeify/browser.json
++++ b/node_modules/rn-nodeify/browser.json
+@@ -11,7 +11,7 @@
+   "os": "react-native-os",
+   "path": "path-browserify",
+   "querystring": "querystring-es3",
+-  "fs": "react-native-level-fs",
++  "fs": "expo-fs",
+   "_stream_transform": "readable-stream/transform",
+   "_stream_readable": "readable-stream/readable",
+   "_stream_writable": "readable-stream/writable",
+diff --git a/node_modules/rn-nodeify/shims-browserify.js b/node_modules/rn-nodeify/shims-browserify.js
+index 5952ae2..b1c22ac 100644
+--- a/node_modules/rn-nodeify/shims-browserify.js
++++ b/node_modules/rn-nodeify/shims-browserify.js
+@@ -16,7 +16,8 @@ module.exports = {
+   "process": "~0.11.0",
+   "punycode": "^1.3.2",
+   "querystring-es3": "~0.2.0",
+-  "react-native-level-fs": "^3.0.0",
++  // "react-native-level-fs": "^3.0.0",
++  "expo-fs": "^0.2.2",
+   "react-native-udp": "0.0.12",
+   // "readable-stream": "~1.0.33-1",
+   "readable-stream": "^2.0.2",
+diff --git a/node_modules/rn-nodeify/shims.js b/node_modules/rn-nodeify/shims.js
+index c0e00fa..6e3fdc4 100644
+--- a/node_modules/rn-nodeify/shims.js
++++ b/node_modules/rn-nodeify/shims.js
+@@ -17,7 +17,8 @@ module.exports = {
+   "process": "^0.11.0",
+   "punycode": "^1.2.4",
+   "querystring-es3": "~0.2.0",
+-  "react-native-level-fs": "^3.0.0",
++  // "react-native-level-fs": "^3.0.0",
++  "expo-fs": "^0.2.2",
+   "react-native-udp": "^2.1.0",
+   "readable-stream": "1.0.33",
+   // "stream-browserify": "substack/stream-browserify#fa56e68",
