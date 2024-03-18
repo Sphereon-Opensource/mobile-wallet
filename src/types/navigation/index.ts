@@ -30,7 +30,7 @@ export type StackParamList = {
   PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
   PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
   OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
-  BrowserOpen: Record<string, never> & IHasOnBackProps & IHasOnNextProps;
+  BrowserOpen: IBrowserOpen;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
@@ -39,7 +39,16 @@ export type StackParamList = {
   Loading: ILoadingProps;
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
+  OID4VCI: Record<string, never>;
 };
+
+export type IBrowserOpen = IHasOnBackProps &
+  IHasOnNextProps & {
+    headerCaptioni18n?: string;
+    titleCaptioni18n?: string;
+    bodyTexti18n?: string;
+    actionNextLabeli18n?: string;
+  };
 
 interface IPersonalDataProps {
   isDisabled: (personalData: OnboardingPersonalData) => boolean;

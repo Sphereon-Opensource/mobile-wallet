@@ -1,3 +1,4 @@
+import {OrPromise} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 import {DataSource} from 'typeorm';
 

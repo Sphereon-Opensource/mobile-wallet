@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useBackHandler} from '@react-native-community/hooks';
-import {PEX, SelectResults, SubmissionRequirementMatch, Status} from '@sphereon/pex';
+import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDefinition} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
@@ -90,8 +90,9 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     }
     const pexMatchingVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
-      const presentationDefinition = {
+      const presentationDefinition: IPresentationDefinition = {
         id: inputDescriptor.id,
+        // @ts-ignore
         input_descriptors: [inputDescriptor],
       };
       const selectResult: SelectResults = pex.selectFrom(presentationDefinition, allOriginalCredentials, {
@@ -204,6 +205,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         pex.evaluateCredentials(
           {
             id: inputDescriptor.id,
+            // @ts-ignore
             input_descriptors: [inputDescriptor],
           },
           uniquePEXFilteredVCs.map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),

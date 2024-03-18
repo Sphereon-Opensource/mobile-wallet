@@ -631,14 +631,12 @@ export const OID4VCIStack = (): JSX.Element => {
         name={ScreenRoutesEnum.BROWSER_OPEN}
         component={OpenBrowserScreen}
         options={({route}) => ({
-          headerTitle: translate('browser_open_title'),
+          // headerTitle: translate('browser_open_title'),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={translate('browser_open_subtitle')}
+              // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
         })}

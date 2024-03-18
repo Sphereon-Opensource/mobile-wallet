@@ -16,6 +16,10 @@ const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onClose, onBack, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
+  console.error(`ERROR Screen: ${JSON.stringify(details)}`);
+  if (extraDetails) {
+    console.error(`ERROR details:\n${JSON.stringify(extraDetails)}`);
+  }
   useBackHandler((): boolean => {
     if (onBack) {
       void onBack();

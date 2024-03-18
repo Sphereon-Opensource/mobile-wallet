@@ -225,7 +225,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           [SiopV2MachineAddContactStates.idle]: {},
           [SiopV2MachineAddContactStates.next]: {
             always: {
-              target: `#${SiopV2MachineStates.selectCredentials}`,
+              target: `#${SiopV2MachineStates.transitionFromSetup}`,
               cond: SiopV2MachineGuards.hasContactGuard,
             },
           },

@@ -18,14 +18,14 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
     debug(`handling SIOP link: ${url}`);
     const interpreter = SiopV2Machine.newInstance({url});
     interpreter.start();
-    /*const init = await interpreterStartOrResume({
+    const init = await interpreterStartOrResume({
       stateType: 'new',
       interpreter,
       context: this.context,
       cleanupAllOtherInstances: true,
       cleanupOnFinalState: true,
       singletonCheck: true,
-    });*/
-    // debug(`SIOP machine started for link: ${url}`, init);
+    });
+    debug(`SIOP machine started for link: ${url}`, init);
   }
 }

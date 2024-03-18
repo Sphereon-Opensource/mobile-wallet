@@ -36,7 +36,7 @@ export const walletAuthLockState = (): WalletAuthLockState => {
   } else {
     lockState = WalletAuthLockState.LOCKED;
   }
-  debug(`Lock state: ${lockState}`);
+  debug(`AUTH Lock state: ${lockState}`);
 
   return lockState;
 };

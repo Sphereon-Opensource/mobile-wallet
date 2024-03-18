@@ -107,7 +107,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             contactState = getState().contact;
           }
           await dispatch(getVerifiableCredentials());
-          LockingHandler.getInstance().isLocked = false;
+          (await LockingHandler.getInstance()).isLocked = false;
 
           dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();

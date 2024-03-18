@@ -1,13 +1,15 @@
 import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
-import {OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, OID4VP} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
+import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
+import {SupportedDidMethodEnum} from '../../types';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -61,8 +63,17 @@ export const siopSendAuthorizationResponse = async (
   console.log(JSON.stringify(request.authorizationRequest));
   const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
   const redirectUri = await request.authorizationRequest.getMergedProperty<string>('redirect_uri');
-  if (clientId?.toLowerCase().includes('ebsi.eu') || redirectUri?.toLowerCase().includes('ebsi.eu')) {
+  if (clientId?.toLowerCase().includes('.ebsi.eu') || redirectUri?.toLowerCase().includes('.ebsi.eu')) {
     identifiers = identifiers.filter(id => id.did.toLowerCase().startsWith('did:key:') || id.did.toLowerCase().startsWith('did:ebsi:'));
+    if (identifiers.length === 0) {
+      debug(`No EBSI key present yet. Creating a new one...`);
+      const identifier = await getOrCreatePrimaryIdentifier({
+        method: SupportedDidMethodEnum.DID_KEY,
+        createOpts: {options: {codecName: 'jwk_jcs-pub', type: 'Secp256r1'}},
+      });
+      debug(`EBSI key created: ${identifier.did}`);
+      identifiers = [identifier];
+    }
   }
   if (aud && aud.startsWith('did:')) {
     // The RP knows our did, so we can use it

@@ -154,6 +154,7 @@ export const getUserContact = async (): Promise<Party> => {
         lastUpdatedAt: user.lastUpdatedAt,
       },
     ],
+    physicalAddresses: [],
     relationships: [],
     uri: user.emailAddress,
     //todo: (WAL-545) handle this based on the identities available in the wallet

@@ -80,7 +80,7 @@ export const didProviders = {
   }),
 };
 
-const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME);
+const dbConnection: OrPromise<DataSource> = getDbConnection(DB_CONNECTION_NAME) as OrPromise<DataSource>;
 const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY));
 
 export const linkHandlers: LinkHandlers = new LinkHandlers().add(new LogLinkHandler());
