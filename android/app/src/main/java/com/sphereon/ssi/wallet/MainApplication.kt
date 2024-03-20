@@ -6,20 +6,25 @@ import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
+import com.facebook.react.ReactHost
+import com.facebook.react.config.ReactFeatureFlags
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
+import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
+import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
-import expo.modules.ApplicationLifecycleDispatcher
-import expo.modules.ReactNativeHostWrapper
 import java.util.List
 import java.lang.reflect.Field
 import android.database.CursorWindow
+
+import expo.modules.ApplicationLifecycleDispatcher
+import expo.modules.ReactNativeHostWrapper
 
 class MainApplication : Application(), ReactApplication {
     override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
             this,
             object : DefaultReactNativeHost(this) {
-                override fun getPackages(): List<ReactPackage> {
+                override fun getPackages(): ArrayList<ReactPackage> {
                     // Packages that cannot be autolinked yet can be added manually here, for example:
                     // packages.add(new MyReactNativePackage());
                     return PackageList(this).packages
@@ -62,7 +67,7 @@ class MainApplication : Application(), ReactApplication {
         ApplicationLifecycleDispatcher.onApplicationCreate(this)
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
     }

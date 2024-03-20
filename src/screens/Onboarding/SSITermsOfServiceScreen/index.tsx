@@ -23,7 +23,7 @@ enum TermsTabRoutesEnum {
   PRIVACY = 'privacy',
 }
 
-const SSITermsOfServiceScreen: FC<Props> = (props: Props): JSX.Element => {
+const SSITermsOfServiceScreen: FC<Props> = (props: Props): React.JSX.Element => {
   const {navigation} = props;
   const {onBack, onAcceptTerms, onAcceptPrivacy, onDecline, onNext, isDisabled} = props.route.params;
 

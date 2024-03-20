@@ -1,5 +1,5 @@
 import {LinearGradient} from 'expo-linear-gradient';
-import {LinearTextGradient} from 'react-native-text-gradient';
+import {LinearGradientText} from 'react-native-linear-gradient-text';
 import styled from 'styled-components/native';
 
 import {SSIRoundedEdgesCss} from '../css';
@@ -21,7 +21,7 @@ export const SSIRoundedLinearGradient = styled(SSILinearGradientStyled)`
   ${SSIRoundedEdgesCss}
 `;
 
-export const SSITextFieldLinearTextGradientStyled = styled(LinearTextGradient).attrs({
+export const SSITextFieldLinearTextGradientStyled = styled(LinearGradientText).attrs({
   locations: [0, 1],
   colors: [gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor],
   start: {x: 1, y: 1},

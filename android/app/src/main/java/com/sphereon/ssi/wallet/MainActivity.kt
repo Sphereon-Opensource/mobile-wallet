@@ -9,6 +9,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.ReactRootView
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactActivityDelegate
@@ -31,16 +32,16 @@ class MainActivity : ReactActivity() {
         // Set the theme to AppTheme BEFORE onCreate to support
         // coloring the background, status bar, and navigation bar.
         // This is required for expo-splash-screen.
-        setTheme(R.style.AppTheme)
+    setTheme(R.style.AppTheme);
         super.onCreate(null)
         // SplashScreen.show(...) has to be called after super.onCreate(...)
         SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView::class.java, false)
 
         // initiate background observer
-        initBackgroundObserver()
+//        initBackgroundObserver()
     }
 
-    private fun initBackgroundObserver() {
+    /*private fun initBackgroundObserver() {
         backgroundRunnable = object : Runnable() {
             @Override
             fun run() {
@@ -59,7 +60,7 @@ class MainActivity : ReactActivity() {
                 backgroundHandler.removeCallbacks(backgroundRunnable)
             }
         })
-    }
+    }*/
 
     /**
      * Returns the name of the main component registered from JavaScript. This is used to schedule
@@ -68,23 +69,25 @@ class MainActivity : ReactActivity() {
     override fun getMainComponentName(): String = "main"
 
     /**
-     * Returns the instance of the [ReactActivityDelegate]. Here we use a util class [ ] which allows you to easily enable Fabric and Concurrent React
-     * (aka React 18) with two boolean flags.
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
      */
     override fun createReactActivityDelegate(): ReactActivityDelegate {
-        return ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
+        return ReactActivityDelegateWrapper(
+                this,
+                BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
                 object : DefaultReactActivityDelegate(
                         this,
                         mainComponentName,
                         fabricEnabled
-                ))
+                ){})
     }
 
     /**
      * Align the back button behavior with Android S
      * where moving root activities to background instead of finishing activities.
-     * @see [](https://developer.android.com/reference/android/app/Activity.onBackPressed
-    ) */
+    * @see <a href="https://developer.android.com/reference/android/app/Activity#onBackPressed()">onBackPressed</a>
+    */
     override fun invokeDefaultOnBackPressed() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
             if (!moveTaskToBack(false)) {
@@ -95,16 +98,16 @@ class MainActivity : ReactActivity() {
         }
 
         // Use the default back button implementation on Android S
-        // because it's doing more than {@link Activity#moveTaskToBack} in fact.
+      // because it's doing more than [Activity.moveTaskToBack] in fact.
         super.invokeDefaultOnBackPressed()
     }
 
-    private fun sendAppInBackgroundEvent(eventName: String) {
+  /*  private fun sendAppInBackgroundEvent(eventName: String) {
         val reactContext: ReactContext = getReactInstanceManager().getCurrentReactContext()
         if (reactContext != null) {
             val params: WritableMap = Arguments.createMap()
             params.putString("event", eventName)
             reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java).emit("appStateChange", params)
         }
-    }
+    }*/
 }

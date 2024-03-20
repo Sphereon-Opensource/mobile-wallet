@@ -1,0 +1,46 @@
+diff --git a/node_modules/@peculiar/webcrypto/build/webcrypto.js b/node_modules/@peculiar/webcrypto/build/webcrypto.js
+index dba6ca1..68e9976 100644
+--- a/node_modules/@peculiar/webcrypto/build/webcrypto.js
++++ b/node_modules/@peculiar/webcrypto/build/webcrypto.js
+@@ -2250,9 +2250,11 @@ class SubtleCrypto extends core__namespace.SubtleCrypto {
+         this.providers.set(new AesCmacProvider());
+         this.providers.set(new AesKwProvider());
+         this.providers.set(new AesEcbProvider());
+-        const ciphers = crypto__namespace.getCiphers();
+-        if (ciphers.includes("des-cbc")) {
+-            this.providers.set(new DesCbcProvider());
++        if (typeof crypto__namespace.getCiphers !== 'undefined') {
++            const ciphers = crypto__namespace.getCiphers();
++            if (ciphers.includes("des-cbc")) {
++                this.providers.set(new DesCbcProvider());
++            }
+         }
+         this.providers.set(new DesEde3CbcProvider());
+         this.providers.set(new RsaSsaProvider());
+@@ -2273,15 +2275,17 @@ class SubtleCrypto extends core__namespace.SubtleCrypto {
+             this.providers.set(new Shake128Provider());
+             this.providers.set(new Shake256Provider());
+         }
+-        const hashes = crypto__namespace.getHashes();
+-        if (hashes.includes("sha3-256")) {
+-            this.providers.set(new Sha3256Provider());
+-        }
+-        if (hashes.includes("sha3-384")) {
+-            this.providers.set(new Sha3384Provider());
+-        }
+-        if (hashes.includes("sha3-512")) {
+-            this.providers.set(new Sha3512Provider());
++        if (typeof crypto__namespace.getHashes !== 'undefined') {
++            const hashes = crypto__namespace.getHashes();
++            if (true || hashes.includes("sha3-256")) {
++                this.providers.set(new Sha3256Provider());
++            }
++            if (true || hashes.includes("sha3-384")) {
++                this.providers.set(new Sha3384Provider());
++            }
++            if (true || hashes.includes("sha3-512")) {
++                this.providers.set(new Sha3512Provider());
++            }
+         }
+         if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 14) {
+             this.providers.set(new EdDsaProvider());
