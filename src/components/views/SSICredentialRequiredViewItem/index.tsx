@@ -1,3 +1,4 @@
+import {backgroundColors, gradientsColors, statusColors} from '@sphereon/ui-components.core';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
@@ -5,22 +6,22 @@ import {View} from 'react-native';
 import {translate} from '../../../localization/Localization';
 import {
   SSICredentialRequiredViewItemContainerStyled as Container,
-  SSIFullFlexDirectionRowViewStyled as ContentContainer,
   SSICredentialRequiredViewItemCredentialPurposeCaptionStyled as CredentialPurposeCaption,
-  SSICredentialRequiredViewItemSelectedCredentialsCaptionStyled as CredentialSelectedCaption,
-  SSITextH4Styled as CredentialSubtitleCaption,
   SSICredentialRequiredViewItemCredentialTitleCaptionStyled as CredentialTitleCaption,
   SSICredentialRequiredViewItemIconContainerStyled as IconContainer,
-  SSITextFieldLinearTextGradientStyled as LinearGradientTextContainer,
   SSICredentialRequiredViewItemMatchInfoCaptionStyled as MatchInfoCaption,
   SSICredentialRequiredViewItemMatchInfoContainerStyled as MatchInfoContainer,
   SSICredentialRequiredViewItemNoneAvailableCaptionStyled as NoneAvailableCaption,
+  SSICredentialRequiredViewItemSelectedCredentialsCaptionStyled as CredentialSelectedCaption,
   SSICredentialRequiredViewNoneAvailableContainerStyled as NoneAvailableContainer,
+  SSIFullFlexDirectionRowViewStyled as ContentContainer,
+  // SSITextH4Styled as CredentialSubtitleCaption,
   SSITextH5LightStyled as NoneAvailableSubCaption,
 } from '../../../styles/components';
-import {getCredentialTypeAsString} from '../../../utils/CredentialUtils';
+import {fontStyle} from '../../../styles/typography';
+import {getCredentialTypeAsString} from '../../../utils';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
-import {backgroundColors, statusColors} from '@sphereon/ui-components.core';
+import {LinearGradientText} from 'react-native-linear-gradient-text';
 
 export interface Props {
   id: string;
@@ -57,9 +58,13 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
             ) : available && available.length === 0 ? (
               <NoneAvailableCaption>{translate('credentials_required_no_available_label')}</NoneAvailableCaption>
             ) : (
-              <LinearGradientTextContainer>
-                <CredentialSubtitleCaption>{translate('credentials_required_credential_select_label')}</CredentialSubtitleCaption>
-              </LinearGradientTextContainer>
+              <LinearGradientText
+                text={translate('credentials_required_credential_select_label')}
+                colors={[gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor]}
+                start={{x: 1, y: 1}}
+                end={{x: 0, y: 0}}
+                textStyle={{...fontStyle.h4Regular}}
+              />
             )}
           </View>
           <MatchInfoContainer>

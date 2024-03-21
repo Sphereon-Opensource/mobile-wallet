@@ -24,10 +24,10 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
   'Require cycle:',
-  /*
+  /* /!*
     This warning comes from a dependency from what it looks like. As we already import AsyncStorage from @react-native-async-storage/async-storage
-  */
-  'AsyncStorage has been removed from react-native',
+  *!/
+  'AsyncStorage has been removed from react-native',*/
   /*
     TODO WAL-342
     Non-serializable values were found in the navigation state. Check:

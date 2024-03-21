@@ -1,8 +1,8 @@
 {
   "build": {
     "base": {
-      "node": "18.17.0",
-      "yarn": "1.22.19"
+      "node": "20.11.1",
+      "yarn": "1.22.22"
     },
     "preview": {
       "android": {

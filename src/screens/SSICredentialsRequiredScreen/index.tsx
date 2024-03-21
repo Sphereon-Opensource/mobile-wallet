@@ -21,7 +21,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, ScreenRoutesEnum, StackParamList} from '../../types';
-import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
+import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
 import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {JSONPath} from '@astronautlabs/jsonpath';
 
@@ -252,10 +252,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         return false;
       }
 
-      /*  const credentials = selectedDescriptorCredentials.map((uniqueVC: UniqueVerifiableCredential) =>
+      /*const credentials = selectedDescriptorCredentials.map((uniqueVC: UniqueVerifiableCredential) =>
         getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
       );*/
       return matchingDescriptors.get(itemInfo.item) ?? false;
+
       /*return (
         pex.evaluateCredentials(
           {
