@@ -27,7 +27,7 @@ import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
-export const readQr = async (args: IReadQrArgs): Promise<void> => {
+export const onQRScanned = async (args: IReadQrArgs): Promise<void> => {
   console.log(`args.qrData`, JSON.stringify(args.qrData));
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
