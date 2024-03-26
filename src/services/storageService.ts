@@ -1,7 +1,5 @@
-import {MMKVLoader} from 'react-native-mmkv-storage';
+import {MMKVLoader, IOSAccessibleStates} from 'react-native-mmkv-storage';
 import Debug, {Debugger} from 'debug';
-// TODO: Can be replaced with above MMKVLoader if we want, as it also supports keychains/encryption
-import RNSecureKeyStore, {ACCESSIBLE} from 'react-native-secure-key-store';
 
 import {APP_ID} from '../@config/constants';
 import {IStorePinArgs, IStoreUserArgs, IUser} from '../types';
@@ -12,7 +10,16 @@ const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'default_users';
 
-const userStorage = new MMKVLoader().withEncryption().withInstanceID('users').initialize();
+const userStorage = new MMKVLoader()
+  .withEncryption()
+  .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
+  .withInstanceID('users')
+  .initialize();
+const pinStorage = new MMKVLoader()
+  .withEncryption()
+  .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
+  .withInstanceID('pin')
+  .initialize();
 
 export const storagePersistUser = async ({user}: IStoreUserArgs): Promise<void> => {
   debug(`storeUser(${JSON.stringify(user)})...`);
@@ -87,17 +94,26 @@ export const storageDeleteUser = async (userId: string): Promise<void> => {
     .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
 };
 
-export const storagePersistPin = async ({value, accessible = ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY}: IStorePinArgs): Promise<any> => {
+export const storagePersistPin = async ({value}: IStorePinArgs): Promise<any> => {
   console.log(`storePin...`);
-  return RNSecureKeyStore.set(STORAGE_PIN_KEY, value, {accessible});
+  return await pinStorage.setStringAsync(STORAGE_PIN_KEY, value);
 };
 
 export const storageGetPin = async (): Promise<string> => {
   debug(`getPin...`);
-  return RNSecureKeyStore.get(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Value not found for key: ${STORAGE_PIN_KEY}`)));
+  const value = await pinStorage.getStringAsync(STORAGE_PIN_KEY);
+  if (!value) {
+    return Promise.reject(new Error(`Value not found for key: ${STORAGE_PIN_KEY}`));
+  }
+  return value;
 };
 
-export const storageDeletePin = async (): Promise<void> => {
+export const storageDeletePin = async (): Promise<boolean> => {
   debug(`deletePin...`);
-  return RNSecureKeyStore.remove(STORAGE_PIN_KEY).catch(() => Promise.reject(new Error(`Unable to remove value for key: ${STORAGE_PIN_KEY}`)));
+  return pinStorage.removeItem(STORAGE_PIN_KEY);
+};
+
+export const storageHasPin = async (): Promise<boolean> => {
+  debug(`hasPin...`);
+  return !!(await pinStorage.getItem(STORAGE_PIN_KEY));
 };
