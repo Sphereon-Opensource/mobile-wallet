@@ -5,7 +5,6 @@ const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceEx
 const defaultAssetExts = require('metro-config/src/defaults/defaults').assetExts;
 
 const defaultConfig = getDefaultConfig(__dirname);
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks');
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = {
@@ -41,7 +40,6 @@ const config = {
     },
   },
   resolver: {
-    resolveRequest: MetroSymlinksResolver(),
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
     extraNodeModules: {

@@ -46,8 +46,9 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<false/>
-        <key>NSAllowsLocalNetworking</key>
-	</dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+  </dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Needed to scan QR codes</string>
 	<key>NSFaceIDUsageDescription</key>

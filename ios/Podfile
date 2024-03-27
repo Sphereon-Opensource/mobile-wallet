@@ -4,6 +4,18 @@ require File.join(File.dirname(`node --print "require.resolve('react-native/pack
 require 'json'
 podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
+def node_require(script)
+   # Resolve script with node to allow for hoisting
+   require Pod::Executable.execute_command('node', ['-p',
+     "require.resolve(
+       '#{script}',
+       {paths: [process.argv[1]]},
+     )", __dir__]).strip
+ end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
 ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '1' : '0'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] = podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
 
@@ -36,7 +48,30 @@ elsif podfile_properties.key?('ios.flipper') then
     flipper_config = FlipperConfiguration.enabled(["Debug", "Release"], { 'Flipper' => podfile_properties['ios.flipper'] })
   end
 end
-
+#use_flipper!({ "Flipper-DoubleConversion" => "1.1.7" })
+# ⬇️ uncomment wanted permissions
+setup_permissions([
+  'AppTrackingTransparency',
+  # 'Bluetooth',
+  # 'Calendars',
+  # 'CalendarsWriteOnly',
+  'Camera',
+  # 'Contacts',
+  'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  # 'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  # 'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
 target 'SphereonWallet' do
   use_expo_modules!
   config = use_native_modules!
@@ -46,7 +81,8 @@ target 'SphereonWallet' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
+    :hermes_enabled => true,
+                    # podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
     # Note that if you have use_frameworks! enabled, Flipper will not work if enabled
@@ -54,28 +90,28 @@ target 'SphereonWallet' do
   )
 
 
-  permissions_path = '../node_modules/react-native-permissions/ios'
+#  permissions_path = '../node_modules/react-native-permissions/ios'
 
-    pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
+#    pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
 #    pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral"
 #    pod 'Permission-Calendars', :path => "#{permissions_path}/Calendars"
-    pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+#    pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 #    pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
-    pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
+#    pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
 #    pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
 #    pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
 #    pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 #    pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
 #    pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
 #    pod 'Permission-Motion', :path => "#{permissions_path}/Motion"
-    pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+#    pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 #    pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 #    pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
 #    pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders"
 #    pod 'Permission-Siri', :path => "#{permissions_path}/Siri"
 #    pod 'Permission-SpeechRecognition', :path => "#{permissions_path}/SpeechRecognition"
 #    pod 'Permission-StoreKit', :path => "#{permissions_path}/StoreKit"
-    pod 'CatCrypto', :git => 'https://github.com/Sphereon-Opensource/CatCrypto'
+#    pod 'CatCrypto', :git => 'https://github.com/Sphereon-Opensource/CatCrypto'
 
   post_install do |installer|
     react_native_post_install(
