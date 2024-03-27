@@ -52,7 +52,7 @@ Issuer and Verifier agents as well as mobile and web wallets.
 The wallet supports or soon (\*) will the following features:
 
 - [W3C JWT and LDP/JSON-LD](https://www.w3.org/TR/vc-data-model/) credentials
-- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr, lto, factom, accumulate <sup>_</sup>,
+- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr<sup>_</sup>,
   cheqd <sup>_</sup>, ebsi<sup>\*</sup>
 - Uniform rendering and representation library<sup>\*</sup>
 - Card/Graphical and textual views<sup>\*</sup>
@@ -144,7 +144,6 @@ These 4 links are Sphereon demo issuers, branded differently
 
 - [Sphereon (branded credentials)](https://ssi.sphereon.com/demo/issuer/)
 - [Dutch Blockchain Coalition (branded credentials)](https://ssi.dutchblockchaincoalition.org/demo/issuer/)
-- [Triall (branded credentials)](ssi.triall.io/demo/issuer/)
 - [Future Mobility Alliance (branded credentials)](https://ssi.future-mobility-alliance.org/demo/issuer/)
 
 Other issuers:
@@ -203,7 +202,6 @@ demo/testing purposes.
    - [Sphereon](https://ssi.sphereon.com/demo/verifier/) (needs the branded Sphereon credential from the Sphereon issuer)
    - [Dutch Blockchain Coalition](https://dutchblockchaincoalition.org/en/userlogin) (Use the login button/screen. It needs the branded DBC credential from the Dutch Blockchain Coalition issuer)
    - [Future Mobility Data Marketplace](https://marketplace.future-mobility-alliance.org/) (Use the login button top-right. It needs the branded FMDM credential from the Future Mobility Alliance issuer)
-   - [Triall Clinical Insights Exchange](https://cix.triall.io) (Use the login button top-right. It needs the branded Triall credential from the Triall issuer)
    - [Auth0](https://verifiablecredentials.dev/presentation) (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
 
    <br>
@@ -258,7 +256,7 @@ There are several other utility scripts that help with development.
 
 SSI Wallet uses Expo SDK v48 and React-Native v0.71.
 
-- Node v18.x.x
+- Node v20.x.x
 - Expo CLI v6.0.1 or above
 - Yarn
 
@@ -276,8 +274,8 @@ command prompt or powershell as administrator!
 Example:
 
 ```shell
-nvm install 18.17.0
-nvm use 18.17.0
+nvm install 20
+nvm use 20
 ```
 
 You can use the following command to check the node version.
