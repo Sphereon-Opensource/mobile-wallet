@@ -1,12 +1,6 @@
 {
   "images": [
     {
-      "fileName": "App-Icon-1024x1024.png",
-      "idiom": "universal",
-      "platform": "ios",
-      "size": "1024x1024"
-    },
-    {
       "filename": "App-Icon-40x40@1x.png",
       "idiom": "universal",
       "platform": "ios",
@@ -69,7 +63,6 @@
       "scale": "3x",
       "size": "60x60"
     },
-
     {
       "filename": "App-Icon-76x76@2x.png",
       "idiom": "universal",
@@ -85,10 +78,17 @@
       "size": "83.5x83.5"
     },
     {
-      "filename": "ItunesArtwork@2x.png",
+      "filename": "App-Icon-1024x1024.png",
       "idiom": "universal",
       "platform": "ios",
       "size": "1024x1024"
+    },
+    {
+      "filename": "ItunesArtwork@2x.png",
+      "idiom": "universal",
+      "platform": "ios",
+      "size": "1024x1024",
+      "unassigned": true
     }
   ],
   "info": {
