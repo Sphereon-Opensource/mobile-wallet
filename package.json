@@ -91,7 +91,6 @@
     "expo-crypto": "~12.8.1",
     "expo-file-system": "~16.0.8",
     "expo-fs": "^0.2.2",
-    "expo-image-picker": "^14.7.1",
     "expo-linear-gradient": "~12.7.2",
     "expo-localization": "~14.8.3",
     "expo-random": "~13.6.0",

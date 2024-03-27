@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 # [0.2.0](https://github.com/Sphereon-Opensource/SSI-SDK/compare/v0.19.0...v0.21.0) (2024-03-20)
 
-This release contains many improvements, including support for newer versions of the specification.
+This release contains many improvements, including support for newer versions of the OID4VC specifications and EBSI support.
 Be aware that we moved to a new secure store implementation, meaning you will have to onboard again.
 
 ### Improvements
