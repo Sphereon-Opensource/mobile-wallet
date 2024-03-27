@@ -16,7 +16,7 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-permissions', () => require('react-native-permissions/mock'));
 
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
-jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
+// jest.mock('@react-native-async-storage/async-storage', () => require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
 
 jest.mock('@react-navigation/native/lib/commonjs/useLinking.native', () => ({
   default: () => ({getInitialState: {then: jest.fn()}}),
@@ -47,13 +47,14 @@ jest.doMock('./src/services/databaseService', () => ({
 jest.mock('react-native-share', () => ({
   default: jest.fn(),
 }));
-jest.mock('@mattrglobal/bbs-signatures', () => {
+/*jest.mock('@mattrglobal/bbs-signatures', () => {
   return {
     blsSign: jest.fn(),
     generateBls12381G2KeyPair: jest.fn(),
   };
-});
+});*/
 
+/*
 const originalRNSecureKeyStore = jest.requireActual('react-native-secure-key-store');
 
 export const ACCESSIBLE = originalRNSecureKeyStore.ACCESSIBLE;
@@ -100,6 +101,7 @@ jest.mock('react-native-secure-key-store', () => ({
   ),
   remove: jest.fn((key: string) => mockRNSecureKeyStore.remove(key)),
 }));
+*/
 
 jest.mock('expo-crypto', () => ({
   getRandomBytesAsync: jest.fn((byteCount: number): Promise<Uint8Array> => {
