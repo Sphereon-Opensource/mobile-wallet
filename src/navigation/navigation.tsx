@@ -902,8 +902,11 @@ const AppNavigator = (): JSX.Element => {
   }
 
   useEffect((): void => {
-    if (!RootNavigation.isReady() || lockState !== WalletAuthLockState.ONBOARDING) {
+    if (!RootNavigation.isReady()) {
       debug(`app or navigation not ready (yet)`);
+      return;
+    } else if (lockState !== WalletAuthLockState.ONBOARDING) {
+      debug(`app is not in onboarding state`);
       return;
     }
     debug(`app and navigation ready`);

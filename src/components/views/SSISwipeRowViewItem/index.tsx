@@ -1,5 +1,5 @@
 import React, {FC, ForwardedRef} from 'react';
-import {ViewStyle} from 'react-native';
+import {View, ViewStyle} from 'react-native';
 import {SwipeRow} from 'react-native-swipe-list-view';
 
 import {
@@ -27,7 +27,7 @@ const SSISwipeRowViewItem: FC<IProps> = React.forwardRef((props: IProps, ref: Fo
         <SSISwipeDeleteButton onPress={onDelete} />
       </HiddenItemContainer>
       <ItemContainer style={style} onPress={onPress}>
-        {viewItem}
+        <View>{viewItem}</View>
       </ItemContainer>
     </SwipeRow>
   );

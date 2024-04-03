@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Party} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
-import {ListRenderItemInfo, RefreshControl} from 'react-native';
+import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
@@ -72,7 +72,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 
     return itemInfo.item.id === activeUser.id ? (
       <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
-        {contactItem}
+        <View>{contactItem}</View>
       </ItemContainer>
     ) : (
       <SSISwipeRowViewItem

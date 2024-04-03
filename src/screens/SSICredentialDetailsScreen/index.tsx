@@ -122,7 +122,7 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                   style={{
                     height: 42,
                     minWidth: 160,
-                    ...(!secondaryAction && {width: '100%'}),
+                    // ...(!secondaryAction && {width: '100%'}),
                   }}
                 />
               )}

@@ -15,6 +15,7 @@ import {
 } from '../../../styles/components';
 import {ICredentialSummary} from '../../../types';
 import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
+import {View} from 'react-native';
 
 // TODO fix to many properties
 export interface Props extends ICredentialSummary {
@@ -26,25 +27,27 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
   const {branding, credentialStatus, expirationDate, issueDate, issuer, showTime = false, title} = props;
   return (
     <Container>
-      <ContentTopContainer>
-        <TitleCaption numberOfLines={2}>{title}</TitleCaption>
-        <CredentialStatusContainer>
-          <SSIStatusLabel status={credentialStatus} />
-        </CredentialStatusContainer>
-      </ContentTopContainer>
-      <ContentMiddleContainer>
-        <IssuerCaption>{issuer.alias}</IssuerCaption>
-      </ContentMiddleContainer>
-      <ContentBottomContainer>
-        <IssueDateCaption>{showTime ? toLocalDateTimeString(issueDate) : toLocalDateString(issueDate)}</IssueDateCaption>
-        <ExpirationDateCaption>
-          {expirationDate
-            ? `${translate('credentials_view_item_expires_on')} ${
-                showTime ? toLocalDateTimeString(expirationDate) : toLocalDateString(expirationDate)
-              }`
-            : translate('credential_status_never_expires_date_label')}
-        </ExpirationDateCaption>
-      </ContentBottomContainer>
+      <View>
+        <ContentTopContainer>
+          <TitleCaption numberOfLines={2}>{title}</TitleCaption>
+          <CredentialStatusContainer>
+            <SSIStatusLabel status={credentialStatus} />
+          </CredentialStatusContainer>
+        </ContentTopContainer>
+        <ContentMiddleContainer>
+          <IssuerCaption>{issuer.alias}</IssuerCaption>
+        </ContentMiddleContainer>
+        <ContentBottomContainer>
+          <IssueDateCaption>{showTime ? toLocalDateTimeString(issueDate) : toLocalDateString(issueDate)}</IssueDateCaption>
+          <ExpirationDateCaption>
+            {expirationDate
+              ? `${translate('credentials_view_item_expires_on')} ${
+                  showTime ? toLocalDateTimeString(expirationDate) : toLocalDateString(expirationDate)
+                }`
+              : translate('credential_status_never_expires_date_label')}
+          </ExpirationDateCaption>
+        </ContentBottomContainer>
+      </View>
     </Container>
   );
 };

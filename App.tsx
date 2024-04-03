@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {DB_CONNECTION_NAME} from './src/@config/database';
 import IntentHandler from './src/handlers/IntentHandler';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
@@ -16,6 +17,7 @@ import Localization from './src/localization/Localization';
 import AppNavigator from './src/navigation/navigation';
 import {navigationRef} from './src/navigation/rootNavigation';
 import OnTouchProvider from './src/providers/touch/OnTouchProvider';
+import {getDbConnection} from './src/services/databaseService';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
@@ -60,6 +62,9 @@ export default function App() {
         // Enable the intent handler early, so we can get deeplinks on start or before login
         await IntentHandler.getInstance().enable();
         await LockingHandler.getInstance().enableLocking();
+        console.log('PRE DB connection');
+        await getDbConnection(DB_CONNECTION_NAME);
+        console.log('POST DB connection');
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);

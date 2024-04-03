@@ -212,28 +212,40 @@ export class OnboardingMachine {
   private static _instance: OnboardingMachineInterpreter | undefined;
 
   static hasInstance(): boolean {
-    return !!OnboardingMachine._instance;
+    return OnboardingMachine._instance !== undefined;
   }
 
   static get instance(): OnboardingMachineInterpreter {
-    if (!this._instance) {
+    if (!OnboardingMachine._instance) {
       throw Error('Please initialize an onboarding machine first');
     }
-    return this._instance;
+    return OnboardingMachine._instance;
+  }
+
+  static clearInstance(opts: {stop: boolean}) {
+    const {stop} = opts;
+    if (OnboardingMachine.hasInstance()) {
+      if (stop) {
+        this.stopInstance();
+      }
+    }
+    OnboardingMachine._instance = undefined;
   }
 
   static stopInstance(): void {
-    debug(`Stopping instance...`);
+    debug(`Stopping onboarding instance...`);
     if (!OnboardingMachine.hasInstance()) {
+      debug(`No onboarding instance present to stop`);
       return;
     }
     OnboardingMachine.instance.stop();
     OnboardingMachine._instance = undefined;
-    debug(`Stopped instance`);
+    debug(`Stopped onboarding instance`);
   }
 
   // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
   private static newInstance(opts?: InstanceOnboardingMachineOpts): OnboardingMachineInterpreter {
+    debug(`Creating new onboarding instance`, opts);
     const newInst: OnboardingMachineInterpreter = interpret(
       createOnboardingMachine(opts).withConfig({
         services: {setupWallet, ...opts?.services},
@@ -248,11 +260,14 @@ export class OnboardingMachine {
     );
     if (typeof opts?.subscription === 'function') {
       newInst.onTransition(opts.subscription);
-    } else if (opts?.requireCustomNavigationHook !== true) {
+    }
+    if (opts?.requireCustomNavigationHook !== true) {
+      debug(`Onboarding machine hookup state navigation listener`, opts);
       newInst.onTransition((snapshot: OnboardingMachineState): void => {
         void onboardingStateNavigationListener(newInst, snapshot);
       });
     }
+    debug(`New onboarding instance created`, opts);
     return newInst;
   }
 

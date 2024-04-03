@@ -4,6 +4,7 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
+import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {resetDatabase} from '../../services/databaseService';
 import {storageDeletePin} from '../../services/storageService';
 import {
@@ -139,15 +140,19 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
     dispatch({type: USERS_LOADING});
     // first delete the user (including redux store) then logout (remove active user). As then the switch navigator will navigate directly to the onboarding stack
     // without an active user the switch navigator will navigate to the login screen. So doing this first would flicker the login screen
+    OnboardingMachine.clearInstance({stop: true});
     userServiceDeleteUser(userId)
       .then(() => {
         dispatch({type: DELETE_USER_SUCCESS, payload: userId});
+
         dispatch({type: LOGOUT_SUCCESS});
         void resetDatabase(DB_CONNECTION_NAME);
         void storageDeletePin();
+
         // TODO would be nice if we have 1 action that deletes the content a user has
         dispatch({type: CLEAR_CREDENTIALS});
         dispatch({type: CLEAR_CONTACTS});
+        OnboardingMachine.getInstance().start();
       })
       .catch(() => {
         dispatch({type: DELETE_USER_FAILED});

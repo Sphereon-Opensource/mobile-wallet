@@ -1,8 +1,7 @@
 import {BlurView} from '@react-native-community/blur';
-import Ripple from 'react-native-material-ripple';
+import {TouchableHighlight} from 'react-native';
 import styled from 'styled-components/native';
 
-import {highlights} from '../../colors';
 import {
   SSIBackgroundPrimaryDarkColorCss,
   SSIBackgroundPrimaryLightColorCss,
@@ -10,6 +9,7 @@ import {
   SSIButtonBottomContainerCss,
   SSIRoundedEdgesCss,
 } from '../css';
+import {elementColors} from '@sphereon/ui-components.core';
 
 export const SSIBasicContainerSecondaryStyled = styled.View`
   flex: 1;
@@ -62,17 +62,8 @@ export const SSIRoundedContainerBackgroundPrimaryLightStyled = styled(SSIRounded
   ${SSIBackgroundPrimaryLightColorCss};
 `;
 
-export const SSIRippleContainerStyled = styled(Ripple).attrs({
-  // TODO fix react-native-material-ripple package to start ripple effect on PressIn. Currently it only starts the effect when you release.
-  // A fork was made to fix this (works) https://github.com/vjsingh/react-native-material-ripple
-  // this commit fixes it https://github.com/vjsingh/react-native-material-ripple/commit/12e8f8d872ee780caa94e7de8080701e67dc6a9a
-
-  // displayUntilPressOut: false, // TODO currently not implemented in latest version
-  pointerEvents: 'box-none',
-  rippleSequential: false,
-  rippleColor: highlights.dark,
-  rippleCentered: true,
-  rippleFades: false,
+export const SSIRippleContainerStyled = styled(TouchableHighlight).attrs({
+  underlayColor: elementColors.purple,
 })``;
 
 // TODO we should be able to merge these 2 justify-content: center;

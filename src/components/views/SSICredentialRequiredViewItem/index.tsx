@@ -42,47 +42,49 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
       key={id}
       style={{backgroundColor: listIndex % 2 == 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark}}
       onPress={onPress}>
-      <ContentContainer>
-        {isMatching && (
-          <IconContainer>
-            <SSICheckmarkIcon color={statusColors.valid} />
-          </IconContainer>
-        )}
-        <ContentContainer style={{...(!isMatching && {marginLeft: 29})}}>
-          <View>
-            <CredentialTitleCaption>{title}</CredentialTitleCaption>
-            {purpose && <CredentialPurposeCaption>{purpose}</CredentialPurposeCaption>}
-            {selected.length > 0 ? (
-              // TODO currently only supporting one selected credential, Also fix the naming
-              <CredentialSelectedCaption>{getCredentialTypeAsString(selected[0].verifiableCredential)}</CredentialSelectedCaption>
-            ) : available && available.length === 0 ? (
-              <NoneAvailableCaption>{translate('credentials_required_no_available_label')}</NoneAvailableCaption>
-            ) : (
-              <LinearGradientText
-                text={translate('credentials_required_credential_select_label')}
-                colors={[gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor]}
-                start={{x: 1, y: 1}}
-                end={{x: 0, y: 0}}
-                textStyle={{...fontStyle.h4Regular}}
-              />
-            )}
-          </View>
-          <MatchInfoContainer>
-            <MatchInfoCaption style={{...(isMatching && {color: statusColors.valid})}}>
-              {selected.length > 0
-                ? `${selected.length} ${translate('credentials_required_selected_label')}`
-                : available
-                ? `${available.length} ${translate('credentials_required_available_label')}`
-                : translate('credentials_required_checking_label')}
-            </MatchInfoCaption>
-          </MatchInfoContainer>
+      <View>
+        <ContentContainer>
+          {isMatching && (
+            <IconContainer>
+              <SSICheckmarkIcon color={statusColors.valid} />
+            </IconContainer>
+          )}
+          <ContentContainer style={{...(!isMatching && {marginLeft: 29})}}>
+            <View>
+              <CredentialTitleCaption>{title}</CredentialTitleCaption>
+              {purpose && <CredentialPurposeCaption>{purpose}</CredentialPurposeCaption>}
+              {selected.length > 0 ? (
+                // TODO currently only supporting one selected credential, Also fix the naming
+                <CredentialSelectedCaption>{getCredentialTypeAsString(selected[0].verifiableCredential)}</CredentialSelectedCaption>
+              ) : available && available.length === 0 ? (
+                <NoneAvailableCaption>{translate('credentials_required_no_available_label')}</NoneAvailableCaption>
+              ) : (
+                <LinearGradientText
+                  text={translate('credentials_required_credential_select_label')}
+                  colors={[gradientsColors['100'].secondaryColor, gradientsColors['100'].primaryColor]}
+                  start={{x: 1, y: 1}}
+                  end={{x: 0, y: 0}}
+                  textStyle={{...fontStyle.h4Regular}}
+                />
+              )}
+            </View>
+            <MatchInfoContainer>
+              <MatchInfoCaption style={{...(isMatching && {color: statusColors.valid})}}>
+                {selected.length > 0
+                  ? `${selected.length} ${translate('credentials_required_selected_label')}`
+                  : available
+                  ? `${available.length} ${translate('credentials_required_available_label')}`
+                  : translate('credentials_required_checking_label')}
+              </MatchInfoCaption>
+            </MatchInfoContainer>
+          </ContentContainer>
         </ContentContainer>
-      </ContentContainer>
-      {available && available.length === 0 && (
-        <NoneAvailableContainer>
-          <NoneAvailableSubCaption>{translate('credentials_required_no_available_additional_label')}</NoneAvailableSubCaption>
-        </NoneAvailableContainer>
-      )}
+        {available && available.length === 0 && (
+          <NoneAvailableContainer>
+            <NoneAvailableSubCaption>{translate('credentials_required_no_available_additional_label')}</NoneAvailableSubCaption>
+          </NoneAvailableContainer>
+        )}
+      </View>
     </Container>
   );
 });
