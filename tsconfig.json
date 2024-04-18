@@ -4,6 +4,7 @@
     // Only values not in expo/tsconfig.base
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
     "strict": true /* Enable all strict type-checking options. */,
     "baseUrl": "./" /* Base directory to resolve non-absolute module names. */,

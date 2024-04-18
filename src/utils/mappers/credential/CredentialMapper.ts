@@ -35,14 +35,21 @@ const toCredentialDetailsRow = async (object: Record<string, any>): Promise<ICre
       continue;
     }
 
-    if (typeof value !== 'string') {
-      // FIXME disabled this to not show keys of objects
-      // rows.push({
-      //   id: uuidv4(),
-      //   label: key,
-      //   value: undefined,
-      // });
+    if (typeof value === 'object') {
+      rows.push({
+        id: uuidv4(),
+        label: key,
+        value: undefined,
+      });
       rows = rows.concat(await toCredentialDetailsRow(value));
+    } else if (typeof value === 'number' || typeof value === 'boolean') {
+      console.log(`==>${key}:${value}`);
+      let label: string = key;
+      rows.push({
+        id: uuidv4(),
+        label, // TODO Human readable mapping
+        value,
+      });
     } else {
       console.log(`==>${key}:${value}`);
       if (key === '0' || value === undefined) {
