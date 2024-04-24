@@ -3,7 +3,7 @@ import {createJWT, Signer} from 'did-jwt';
 
 import {keyManagerSign} from '../agent';
 import {ISignJwtArgs} from '../types';
-import {signatureAlgorithmFromKey} from '../utils/KeyUtils';
+import {signatureAlgorithmFromKey} from '../utils';
 
 export const signJWT = async (args: ISignJwtArgs): Promise<string> => {
   const options = {

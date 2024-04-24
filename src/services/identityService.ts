@@ -24,8 +24,8 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<II
   });
 
   if (store.getState().user.users.size > 0) {
-    await store.dispatch<any>(addIdentifier({did: identifier.did})).then(() => {
-      setTimeout(() => {
+    await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
+      setTimeout((): void => {
         store.dispatch<any>(getContacts());
       }, 1000);
     });

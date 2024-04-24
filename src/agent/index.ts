@@ -9,13 +9,7 @@ import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager
 import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
 import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
-import {
-  IOID4VCIHolder,
-  OID4VCIHolder,
-  OnContactIdentityCreatedArgs,
-  OnCredentialStoredArgs,
-  OnGetCredentialsArgs,
-} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {IOID4VCIHolder, OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
@@ -38,18 +32,18 @@ import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
-
 import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {addLinkListeners} from '../handlers/LinkHandlers';
-import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {getDbConnection} from '../services/databaseService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {KeyManagementSystemEnum, QrTypesEnum, SupportedDidMethodEnum} from '../types';
+import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
+import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
+import {addIdentifier} from '../store/actions/user.actions';
+import {getContacts} from '../store/actions/contact.actions';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -142,13 +136,22 @@ const agent = createAgent<
       keyStore: privateKeyStore,
     }),
     new OID4VCIHolder({
-      onGetCredentials: async (args: OnGetCredentialsArgs) => new OpenId4VcIssuanceProvider().getCredentials(args),
       onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
         store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
       },
       onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
         const {credential, vcHash} = args;
         store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
+      },
+      onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
+        const {identifier} = args;
+        if (store.getState().user.users.size > 0) {
+          await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
+            setTimeout((): void => {
+              store.dispatch<any>(getContacts());
+            }, 1000);
+          });
+        }
       },
     }),
     new MachineStatePersistence({
@@ -180,7 +183,6 @@ export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
 export const ibGetCredentialBranding = agent.ibGetCredentialBranding;
 export const ibCredentialLocaleBrandingFrom = agent.ibCredentialLocaleBrandingFrom;
 export const ibRemoveCredentialBranding = agent.ibRemoveCredentialBranding;
-export const oid4vciHolderGetMachineInterpreter = agent.oid4vciHolderGetMachineInterpreter;
 
 export default agent;
 

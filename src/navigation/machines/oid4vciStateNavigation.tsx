@@ -63,6 +63,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     },
     // FIXME maybe its nicer if we can also just use the id only
     // TODO using the predefined party type from the contact migrations here
+    // TODO this is not used as the screen itself adds one, look at the params of the screen, this is not being passed in
     partyType: {
       id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
       type: PartyTypeEnum.ORGANIZATION,
@@ -250,9 +251,9 @@ const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
 
-  debug(`Stopping oid4vci machine...`);
+  debug('Stopping oid4vci machine...');
   oid4vciMachine.stop();
-  debug(`Stopped oid4vci machine`);
+  debug('Stopped oid4vci machine');
 
   navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
     screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
