@@ -39,11 +39,6 @@ PODS:
     - ReactCommon/turbomodule/core
   - ExpoRandom (13.6.0):
     - ExpoModulesCore
-  - ExpoSQLite (13.4.0):
-    - ExpoModulesCore
-    - sqlite3 (~> 3.42.0)
-    - sqlite3/fts (~> 3.42.0)
-    - sqlite3/fts5 (~> 3.42.0)
   - EXSplashScreen (0.26.4):
     - ExpoModulesCore
     - glog
@@ -976,6 +971,10 @@ PODS:
   - react-native-pure-jwt (3.0.2):
     - JWT (= 3.0.0-beta.12)
     - React
+  - react-native-quick-sqlite (8.0.6):
+    - React
+    - React-callinvoker
+    - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-safe-area-context (4.8.2):
@@ -1188,13 +1187,6 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
-  - sqlite3 (3.42.0):
-    - sqlite3/common (= 3.42.0)
-  - sqlite3/common (3.42.0)
-  - sqlite3/fts (3.42.0):
-    - sqlite3/common
-  - sqlite3/fts5 (3.42.0):
-    - sqlite3/common
   - Yoga (1.14.0)
   - ZXingObjC/Core (3.6.9)
   - ZXingObjC/OneD (3.6.9):
@@ -1217,7 +1209,6 @@ DEPENDENCIES:
   - ExpoLocalization (from `../node_modules/expo-localization/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
-  - ExpoSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -1255,6 +1246,7 @@ DEPENDENCIES:
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
+  - react-native-quick-sqlite (from `../node_modules/react-native-quick-sqlite`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1305,7 +1297,6 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
-    - sqlite3
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -1337,8 +1328,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-modules-core"
   ExpoRandom:
     :path: "../node_modules/expo-random/ios"
-  ExpoSQLite:
-    :path: "../node_modules/expo-sqlite/ios"
   EXSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
   FBLazyVector:
@@ -1408,6 +1397,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-pure-jwt:
     :path: "../node_modules/react-native-pure-jwt"
+  react-native-quick-sqlite:
+    :path: "../node_modules/react-native-quick-sqlite"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
@@ -1497,7 +1488,6 @@ SPEC CHECKSUMS:
   ExpoLocalization: f5f5d71dc0c9514d3d77b2771144f6fed6398d04
   ExpoModulesCore: 61dc57c6e2a35f2f84baf488146db624e03af4cd
   ExpoRandom: f0cd58e154e463d913462f3b445870b12d1c2f12
-  ExpoSQLite: 2c0f6267f9d7f41be9f40d59efc4ced3bfbec93b
   EXSplashScreen: 5538a51beec451bf1fcf5198e3062790e2534df3
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
@@ -1538,6 +1528,7 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
   react-native-pager-view: d5f3adb58a4e6e0d200055e9a4afdcda9b9022ce
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
+  react-native-quick-sqlite: e0e23b749382a85e4b57146f753de737a6c3a9e1
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
@@ -1575,7 +1566,6 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  sqlite3: f163dbbb7aa3339ad8fc622782c2d9d7b72f7e9c
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
