@@ -1,4 +1,4 @@
-import {CorrelationIdentifierEnum, Party, IdentityRoleEnum, Identity, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierEnum, Party, IdentityRoleEnum, Identity, PartyTypeEnum, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -139,6 +139,7 @@ export const getUserContact = async (): Promise<Party> => {
     },
     partyType: {
       id: user.id,
+      origin: PartyOrigin.internal,
       type: PartyTypeEnum.NATURAL_PERSON,
       name: 'user_party',
       tenantId: user.id,

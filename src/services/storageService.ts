@@ -8,17 +8,17 @@ const debug: Debugger = Debug(`${APP_ID}:storageService`);
 
 const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
-const STORAGE_USERS_KEY = 'default_users';
+const STORAGE_USERS_KEY = 'users';
 
 const userStorage = new MMKVLoader()
   .withEncryption()
   .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
-  .withInstanceID('users')
+  .withInstanceID('sphereon-wallet-users')
   .initialize();
 const pinStorage = new MMKVLoader()
   .withEncryption()
   .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
-  .withInstanceID('pin')
+  .withInstanceID('sphereon-wallet-pin')
   .initialize();
 
 export const storagePersistUser = async ({user}: IStoreUserArgs): Promise<void> => {

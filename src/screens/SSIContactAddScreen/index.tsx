@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyOrigin, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
@@ -116,6 +116,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
           type: PartyTypeEnum.ORGANIZATION,
           name: 'Sphereon_default_type',
           tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
+          origin: PartyOrigin.external,
         },
       });
     }
