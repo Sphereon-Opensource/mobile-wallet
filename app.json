@@ -2,7 +2,7 @@
   "expo": {
     "name": "SphereonWallet",
     "slug": "SphereonWallet",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "orientation": "portrait",
     "updates": {
       "fallbackToCacheTimeout": 0
