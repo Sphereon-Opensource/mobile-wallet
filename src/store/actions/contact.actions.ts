@@ -1,4 +1,4 @@
-import {CorrelationIdentifierEnum, Party, IdentityRoleEnum, Identity, PartyTypeEnum, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierType, Party, IdentityRole, Identity, PartyTypeType, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -139,8 +139,8 @@ export const getUserContact = async (): Promise<Party> => {
     },
     partyType: {
       id: user.id,
-      origin: PartyOrigin.internal,
-      type: PartyTypeEnum.NATURAL_PERSON,
+      origin: PartyOrigin.INTERNAL,
+      type: PartyTypeType.NATURAL_PERSON,
       name: 'user_party',
       tenantId: user.id,
       createdAt: user.createdAt,
@@ -159,15 +159,15 @@ export const getUserContact = async (): Promise<Party> => {
     relationships: [],
     uri: user.emailAddress,
     //todo: (WAL-545) handle this based on the identities available in the wallet
-    roles: [IdentityRoleEnum.HOLDER],
+    roles: [IdentityRole.HOLDER],
     identities: user.identifiers.map(
       (identifier: IUserIdentifier): Identity => ({
         id: uuidv4(),
         alias: identifier.did,
-        roles: [IdentityRoleEnum.HOLDER],
+        roles: [IdentityRole.HOLDER],
         identifier: {
           id: uuidv4(),
-          type: CorrelationIdentifierEnum.DID,
+          type: CorrelationIdentifierType.DID,
           correlationId: identifier.did,
         },
         createdAt: identifier.createdAt,

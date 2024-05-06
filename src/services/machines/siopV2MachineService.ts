@@ -1,12 +1,5 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {
-  ConnectionTypeEnum,
-  CorrelationIdentifierEnum,
-  DidAuthConfig,
-  IdentityRoleEnum,
-  NonPersistedIdentity,
-  Party,
-} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, CorrelationIdentifierType, DidAuthConfig, IdentityRole, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
@@ -119,9 +112,9 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
   if (correlationId) {
     const identity: NonPersistedIdentity = {
       alias: correlationId,
-      roles: [IdentityRoleEnum.ISSUER],
+      roles: [IdentityRole.ISSUER],
       identifier: {
-        type: CorrelationIdentifierEnum.DID,
+        type: CorrelationIdentifierType.DID,
         correlationId,
       },
     };
@@ -142,7 +135,7 @@ export const sendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const response = await siopSendAuthorizationResponse(ConnectionTypeEnum.SIOPv2_OpenID4VP, {
+  const response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,
     ...(authorizationRequestData.presentationDefinitions !== undefined && {
       verifiableCredentialsWithDefinition: [

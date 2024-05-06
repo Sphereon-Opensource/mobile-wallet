@@ -2,14 +2,14 @@ import React, {PureComponent} from 'react';
 import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party, PartyOrigin, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
 import {translate} from '../../localization/Localization';
 import {getContacts} from '../../services/contactService';
 import {updateContact as editContact, createContact as storeContact} from '../../store/actions/contact.actions';
-import {showToast} from '../../utils/ToastUtils';
+import {showToast} from '../../utils';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
 import {
   SSIContactAddScreenContainerStyled as Container,
@@ -113,10 +113,10 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
         // TODO using the predefined party type from the contact migrations here
         contactType: {
           id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
-          type: PartyTypeEnum.ORGANIZATION,
+          origin: PartyOrigin.EXTERNAL,
+          type: PartyTypeType.ORGANIZATION,
           name: 'Sphereon_default_type',
           tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
-          origin: PartyOrigin.external,
         },
       });
     }

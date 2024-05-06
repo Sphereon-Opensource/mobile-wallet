@@ -1,6 +1,6 @@
 import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
-import {ConnectionTypeEnum, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
@@ -43,13 +43,13 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
 };
 
 export const siopSendAuthorizationResponse = async (
-  connectionType: ConnectionTypeEnum,
+  connectionType: ConnectionType,
   args: {
     sessionId: string;
     verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[];
   },
 ) => {
-  if (connectionType !== ConnectionTypeEnum.SIOPv2_OpenID4VP) {
+  if (connectionType !== ConnectionType.SIOPv2_OpenID4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
   const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
