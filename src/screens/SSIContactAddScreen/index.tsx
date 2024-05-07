@@ -44,6 +44,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
   componentDidMount(): void {
     const {onAliasChange} = this.props.route.params;
     this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this.onBack);
+    // FIXME we should set the default name in the machine and pass that to the screen
     if (onAliasChange) {
       void onAliasChange(this.state.contactAlias);
     }

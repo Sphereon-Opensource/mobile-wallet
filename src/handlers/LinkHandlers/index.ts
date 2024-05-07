@@ -5,10 +5,10 @@ import {oid4vciStateNavigationListener} from '../../navigation/machines/oid4vciS
 import {QrTypesEnum} from '../../types';
 import {SIOPv2OID4VPLinkHandler} from './SIOPLinkHandler';
 
-export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentContext<any>) => {
+export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentContext<any>): void => {
   linkHandlers.add([
     new OID4VCIHolderLinkHandler({
-      protocols: [QrTypesEnum.OPENID_CREDENTIAL_OFFER + ':', QrTypesEnum.OPENID_INITIATE_ISSUANCE + ':'],
+      protocols: [`${QrTypesEnum.OPENID_CREDENTIAL_OFFER}:`, `${QrTypesEnum.OPENID_INITIATE_ISSUANCE}:`],
       stateNavigationListener: oid4vciStateNavigationListener,
       context,
     }),

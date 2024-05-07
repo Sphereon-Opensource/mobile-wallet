@@ -19,6 +19,10 @@ export interface ICreateIdentifierArgs {
   createOpts?: ICreateIdentifierOpts;
 }
 
+export interface IDispatchIdentifierArgs {
+  identifier: IIdentifier;
+}
+
 export interface ICreateOrGetIdentifierArgs {
   method: SupportedDidMethodEnum;
   createOpts?: ICreateIdentifierOpts;
