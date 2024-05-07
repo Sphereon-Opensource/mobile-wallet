@@ -6,7 +6,14 @@ import {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
 import store from '../store';
 import {getContacts} from '../store/actions/contact.actions';
 import {addIdentifier} from '../store/actions/user.actions';
-import {ICreateIdentifierArgs, ICreateOrGetIdentifierArgs, IdentifierAliasEnum, KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+import {
+  ICreateIdentifierArgs,
+  ICreateOrGetIdentifierArgs,
+  IdentifierAliasEnum,
+  IDispatchIdentifierArgs,
+  KeyManagementSystemEnum,
+  SupportedDidMethodEnum,
+} from '../types';
 
 const debug: Debugger = Debug(`${APP_ID}:identity`);
 
@@ -23,6 +30,13 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<II
     options: args?.createOpts?.options,
   });
 
+  await dispatchIdentifier({identifier});
+
+  return identifier;
+};
+
+export const dispatchIdentifier = async (args: IDispatchIdentifierArgs): Promise<void> => {
+  const {identifier} = args;
   if (store.getState().user.users.size > 0) {
     await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
       setTimeout((): void => {
@@ -30,8 +44,6 @@ export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<II
       }, 1000);
     });
   }
-
-  return identifier;
 };
 
 export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise<IIdentifier> => {

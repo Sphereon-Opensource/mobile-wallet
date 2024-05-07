@@ -7,6 +7,7 @@ import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
+import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
 import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {IOID4VCIHolder, OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
@@ -39,11 +40,10 @@ import {addLinkListeners} from '../handlers/LinkHandlers';
 import {getDbConnection} from '../services/databaseService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
-import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
-import {addIdentifier} from '../store/actions/user.actions';
-import {getContacts} from '../store/actions/contact.actions';
+import {KeyManagementSystemEnum, SupportedDidMethodEnum} from '../types';
+
+import {dispatchIdentifier} from '../services/identityService';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -145,13 +145,7 @@ const agent = createAgent<
       },
       onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
         const {identifier} = args;
-        if (store.getState().user.users.size > 0) {
-          await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
-            setTimeout((): void => {
-              store.dispatch<any>(getContacts());
-            }, 1000);
-          });
-        }
+        await dispatchIdentifier({identifier});
       },
     }),
     new MachineStatePersistence({
