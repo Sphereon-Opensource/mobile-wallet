@@ -1,6 +1,6 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
-import {ConnectionTypeEnum, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {URL} from 'react-native-url-polyfill';
@@ -63,7 +63,7 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
   switch (args.qrData.type) {
     case QrTypesEnum.AUTH:
-      if ((args.qrData as IQrAuthentication).mode === ConnectionTypeEnum.SIOPv2) {
+      if ((args.qrData as IQrAuthentication).mode === ConnectionType.SIOPv2) {
         return connectDidAuth(args);
       }
       break;
@@ -79,7 +79,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   const verifier: string = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
   const connection: NonPersistedConnection = {
-    type: ConnectionTypeEnum.SIOPv2,
+    type: ConnectionType.SIOPv2,
     config: {
       identifier,
       stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,

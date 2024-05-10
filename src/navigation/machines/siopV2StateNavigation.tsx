@@ -15,7 +15,15 @@ import {
   SiopV2ProviderProps,
 } from '../../types/machines/siopV2';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {ConnectionTypeEnum, CorrelationIdentifierEnum, IdentityRoleEnum, NonPersistedParty, Party, PartyTypeEnum} from '@sphereon/ssi-sdk.data-store';
+import {
+  ConnectionType,
+  CorrelationIdentifierType,
+  IdentityRole,
+  NonPersistedParty,
+  Party,
+  PartyOrigin,
+  PartyTypeType,
+} from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
@@ -68,7 +76,8 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     // TODO using the predefined party type from the contact migrations here
     partyType: {
       id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
-      type: PartyTypeEnum.ORGANIZATION,
+      origin: PartyOrigin.EXTERNAL,
+      type: PartyTypeType.ORGANIZATION,
       name: 'Sphereon_default_type',
       tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
     },
@@ -76,14 +85,14 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     identities: [
       {
         alias: authorizationRequestData.correlationId,
-        roles: [IdentityRoleEnum.ISSUER],
+        roles: [IdentityRole.ISSUER],
         identifier: {
-          type: CorrelationIdentifierEnum.URL,
+          type: CorrelationIdentifierType.URL,
           correlationId: authorizationRequestData.correlationId,
         },
         // TODO WAL-476 add support for correct connection
         connection: {
-          type: ConnectionTypeEnum.OPENID_CONNECT,
+          type: ConnectionType.OPENID_CONNECT,
           config: {
             clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
             clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
