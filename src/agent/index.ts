@@ -5,29 +5,23 @@ import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resol
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
-import {ContactManager, IContactManager} from '@sphereon/ssi-sdk.contact-manager';
+import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
+import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
 import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
-import {IIssuanceBranding, IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
-import {
-  IOID4VCIHolder,
-  OID4VCIHolder,
-  OnContactIdentityCreatedArgs,
-  OnCredentialStoredArgs,
-  OnGetCredentialsArgs,
-} from '@sphereon/ssi-sdk.oid4vci-holder';
-import {DidAuthSiopOpAuthenticator, IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
+import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialHandlerLDLocal,
-  ICredentialHandlerLDLocal,
   MethodNames,
   SphereonEd25519Signature2018,
   SphereonEd25519Signature2020,
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk.vc-handler-ld-local';
-import {IMachineStatePersistence, MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
-import {createAgent, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
-import {CredentialPlugin, ICredentialIssuer} from '@veramo/credential-w3c';
+import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
+import {createAgent, IAgentPlugin} from '@veramo/core';
+import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {EthrDIDProvider} from '@veramo/did-provider-ethr';
@@ -38,18 +32,16 @@ import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
-
 import {DID_PREFIX, DIF_UNIRESOLVER_RESOLVE_URL} from '../@config/constants';
 import {LdContexts} from '../@config/credentials';
 import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {addLinkListeners} from '../handlers/LinkHandlers';
-import {oid4vciStateNavigationListener} from '../navigation/machines/oid4vciStateNavigation';
-import OpenId4VcIssuanceProvider from '../providers/credential/OpenId4VcIssuanceProvider';
 import {getDbConnection} from '../services/databaseService';
+import {dispatchIdentifier} from '../services/identityService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {KeyManagementSystemEnum, QrTypesEnum, SupportedDidMethodEnum} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
+import {KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -85,81 +77,72 @@ const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new S
 
 export const linkHandlers: LinkHandlers = new LinkHandlers().add(new LogLinkHandler());
 
-const agent = createAgent<
-  IDIDManager &
-    IKeyManager &
-    IDataStore &
-    IDataStoreORM &
-    IResolver &
-    IDidAuthSiopOpAuthenticator &
-    IContactManager &
-    ICredentialPlugin &
-    ICredentialIssuer &
-    ICredentialHandlerLDLocal &
-    IIssuanceBranding &
-    IOID4VCIHolder &
-    IMachineStatePersistence
->({
-  plugins: [
-    new DataStore(dbConnection),
-    new DataStoreORM(dbConnection),
-    new SphereonKeyManager({
-      store: new KeyStore(dbConnection),
-      kms: {
-        local: new SphereonKeyManagementSystem(privateKeyStore),
-      },
-    }),
-    new DIDManager({
-      store: new DIDStore(dbConnection),
-      defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
-      providers: didProviders,
-    }),
-    new DIDResolverPlugin({
-      resolver: didResolver,
-    }),
-    new DidAuthSiopOpAuthenticator(),
-    new ContactManager({
-      store: new ContactStore(dbConnection),
-    }),
-    new IssuanceBranding({
-      store: new IssuanceBrandingStore(dbConnection),
-    }),
-    new CredentialPlugin(),
-    new CredentialHandlerLDLocal({
-      contextMaps: [LdContexts],
-      suites: [
-        new SphereonEd25519Signature2018(),
-        new SphereonEd25519Signature2020(),
-        // new SphereonBbsBlsSignature2020(),
-        new SphereonJsonWebSignature2020(),
-      ],
-      bindingOverrides: new Map([
-        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
-        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
-        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
-        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
-      ]),
-      keyStore: privateKeyStore,
-    }),
-    new OID4VCIHolder({
-      onGetCredentials: async (args: OnGetCredentialsArgs) => new OpenId4VcIssuanceProvider().getCredentials(args),
-      onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
-        store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
-      },
-      onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
-        const {credential, vcHash} = args;
-        store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
-      },
-    }),
-    new MachineStatePersistence({
-      store: new MachineStateStore(dbConnection),
-      eventTypes: [MachineStatePersistEventType.EVERY],
-    }),
-    new LinkHandlerPlugin({
-      eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
-      handlers: linkHandlers,
-    }),
-  ],
+const agentPlugins: Array<IAgentPlugin> = [
+  new DataStore(dbConnection),
+  new DataStoreORM(dbConnection),
+  new SphereonKeyManager({
+    store: new KeyStore(dbConnection),
+    kms: {
+      local: new SphereonKeyManagementSystem(privateKeyStore),
+    },
+  }),
+  new DIDManager({
+    store: new DIDStore(dbConnection),
+    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
+    providers: didProviders,
+  }),
+  new DIDResolverPlugin({
+    resolver: didResolver,
+  }),
+  new DidAuthSiopOpAuthenticator(),
+  new ContactManager({
+    store: new ContactStore(dbConnection),
+  }),
+  new IssuanceBranding({
+    store: new IssuanceBrandingStore(dbConnection),
+  }),
+  new CredentialPlugin(),
+  new CredentialHandlerLDLocal({
+    contextMaps: [LdContexts],
+    suites: [
+      new SphereonEd25519Signature2018(),
+      new SphereonEd25519Signature2020(),
+      // new SphereonBbsBlsSignature2020(),
+      new SphereonJsonWebSignature2020(),
+    ],
+    bindingOverrides: new Map([
+      ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+      ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
+      ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+      ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
+    ]),
+    keyStore: privateKeyStore,
+  }),
+  new OID4VCIHolder({
+    onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
+      store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
+    },
+    onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
+      const {credential, vcHash} = args;
+      store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
+    },
+    onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
+      const {identifier} = args;
+      await dispatchIdentifier({identifier});
+    },
+  }),
+  new MachineStatePersistence({
+    store: new MachineStateStore(dbConnection),
+    eventTypes: [MachineStatePersistEventType.EVERY],
+  }),
+  new LinkHandlerPlugin({
+    eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
+    handlers: linkHandlers,
+  }),
+];
+
+const agent = createAgent<TAgentTypes>({
+  plugins: agentPlugins,
 });
 
 export const didManagerCreate = agent.didManagerCreate;
@@ -180,7 +163,6 @@ export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
 export const ibGetCredentialBranding = agent.ibGetCredentialBranding;
 export const ibCredentialLocaleBrandingFrom = agent.ibCredentialLocaleBrandingFrom;
 export const ibRemoveCredentialBranding = agent.ibRemoveCredentialBranding;
-export const oid4vciHolderGetMachineInterpreter = agent.oid4vciHolderGetMachineInterpreter;
 
 export default agent;
 

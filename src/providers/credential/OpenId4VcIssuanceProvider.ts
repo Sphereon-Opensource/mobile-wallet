@@ -13,8 +13,8 @@ import {
   OpenId4VCIVersion,
   ProofOfPossessionCallbacks,
   toAuthorizationResponsePayload,
+  CredentialOfferFormatJwtVcJsonLdAndLdpVc,
 } from '@sphereon/oid4vci-common';
-import {CredentialOfferFormatJwtVcJsonLdAndLdpVc} from '@sphereon/oid4vci-common/lib/types/Generic.types';
 import {KeyUse} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
