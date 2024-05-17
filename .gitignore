@@ -69,3 +69,6 @@ dist/
 .yalc
 yalc.lock
 /coverage/
+
+out.log
+out.txt
