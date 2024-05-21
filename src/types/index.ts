@@ -7,7 +7,6 @@ export * from './error';
 export * from './identity';
 export * from './navigation';
 export * from './os';
-export * from './provider';
 export * from './qr';
 export * from './service';
 export * from './signature';
