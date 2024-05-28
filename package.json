@@ -1,7 +1,7 @@
 {
   "name": "@sphereon/sphereon-wallet",
-  "version": "0.2.1-unstable.0",
-  "license": "GPL-3.0",
+  "version": "0.3.0-unstable.0",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "start:dev": "expo start --dev-client",

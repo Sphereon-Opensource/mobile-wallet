@@ -239,9 +239,7 @@ demo/testing purposes.
 
 # License
 
-Please note that this wallet is licensed as GPLv3, meaning restrictions apply. Sphereon does offer commercial licenses
-without these restrictions. The wallet is mainly build around our SSI-SDK which is more liberal licensed. We chose this
-approach to protect the IP and designs of the wallet a bit more.
+Please note that this wallet is licensed as Apache2.0. Sphereon also offers commercial licenses.
 
 # Developers
 
