@@ -18,7 +18,7 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  IdentityRole,
+  CredentialRole,
   NonPersistedParty,
   Party,
   PartyOrigin,
@@ -85,7 +85,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     identities: [
       {
         alias: authorizationRequestData.correlationId,
-        roles: [IdentityRole.ISSUER],
+        roles: [CredentialRole.ISSUER],
         identifier: {
           type: CorrelationIdentifierType.URL,
           correlationId: authorizationRequestData.correlationId,

@@ -9,7 +9,7 @@ import {
   ConnectionType,
   CorrelationIdentifierType,
   IBasicCredentialLocaleBranding,
-  IdentityRole,
+  CredentialRole,
   NonPersistedParty,
   Party,
   PartyOrigin,
@@ -76,7 +76,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     identities: [
       {
         alias: correlationId,
-        roles: [IdentityRole.ISSUER],
+        roles: [CredentialRole.ISSUER],
         identifier: {
           type: CorrelationIdentifierType.URL,
           correlationId: issuerUrl.hostname,
