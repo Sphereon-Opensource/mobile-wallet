@@ -1,9 +1,8 @@
 import {IIdentifier} from '@veramo/core';
 import {createJWT, Signer} from 'did-jwt';
-
 import {keyManagerSign} from '../agent';
-import {ISignJwtArgs} from '../types';
 import {signatureAlgorithmFromKey} from '../utils';
+import {ISignJwtArgs} from '../types';
 
 export const signJWT = async (args: ISignJwtArgs): Promise<string> => {
   const options = {
@@ -29,4 +28,14 @@ const getSigner = (identifier: IIdentifier): Signer => {
       data: input,
     });
   };
+};
+
+export const verifySDJWTSignature = async <T>(data: string, signature: string, key: JsonWebKey): Promise<Awaited<Promise<boolean>>> => {
+  let {alg, crv} = key;
+  if (alg === 'ES256') alg = 'ECDSA';
+  const publicKey = await crypto.subtle.importKey('jwk', key, {name: alg, namedCurve: crv} as EcKeyImportParams, true, ['verify']);
+
+  return Promise.resolve(
+    crypto.subtle.verify({name: alg as string, hash: 'SHA-256'}, publicKey, Buffer.from(signature, 'base64'), Buffer.from(data)),
+  );
 };

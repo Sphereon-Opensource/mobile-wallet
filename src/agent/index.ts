@@ -20,6 +20,7 @@ import {
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk.vc-handler-ld-local';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
+import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {createAgent, IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
@@ -38,8 +39,10 @@ import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {addLinkListeners} from '../handlers/LinkHandlers';
 import {getDbConnection} from '../services/databaseService';
 import {dispatchIdentifier} from '../services/identityService';
+import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {generateSalt, generateDigest} from '../utils';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
 
@@ -138,6 +141,11 @@ const agentPlugins: Array<IAgentPlugin> = [
   new LinkHandlerPlugin({
     eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
     handlers: linkHandlers,
+  }),
+  new SDJwtPlugin({
+    hasher: generateDigest,
+    saltGenerator: generateSalt,
+    verifySignature: verifySDJWTSignature,
   }),
 ];
 
