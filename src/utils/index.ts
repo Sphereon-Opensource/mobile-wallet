@@ -1,6 +1,7 @@
 export * from './AppUtils';
 export * from './BiometricUtils';
 export * from './CredentialUtils';
+export * from './CryptoUtils';
 export * from './DateUtils';
 export * from './DeeplinkUtils';
 export * from './ImageUtils';
