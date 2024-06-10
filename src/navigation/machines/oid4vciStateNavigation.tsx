@@ -222,10 +222,12 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
   });
 };
 
-const navigateReviewCredentialOffers = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
+  state.context.
+  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
@@ -332,7 +334,7 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.initiateAuthorizationRequest)) {
     return navigateAuthorizationCodeURL({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
-    return navigateReviewCredentialOffers({oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
