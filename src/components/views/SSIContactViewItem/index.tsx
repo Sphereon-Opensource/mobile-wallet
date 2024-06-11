@@ -1,4 +1,4 @@
-import {IdentityRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {View} from 'react-native';
 
@@ -16,7 +16,7 @@ import {
 export interface Props {
   name: string;
   uri?: string;
-  roles: Array<IdentityRole>;
+  roles: Array<CredentialRole>;
 }
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {

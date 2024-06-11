@@ -1,4 +1,4 @@
-import {IdentityRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import React, {FC, ForwardedRef} from 'react';
 import {ViewStyle} from 'react-native';
 
@@ -11,7 +11,7 @@ import {
 
 export interface IProps {
   name: string;
-  roles: Array<IdentityRole>;
+  roles: Array<CredentialRole>;
   style?: ViewStyle;
 }
 
