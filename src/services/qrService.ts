@@ -24,6 +24,8 @@ import {
 import {showToast} from '../utils';
 import {authenticate} from './authenticationService';
 import {getOrCreatePrimaryIdentifier} from './identityService';
+import {getResolver as getOYDResolver} from '@sphereon/ssi-sdk-oyd-did-resolver';
+import {Resolver} from 'did-resolver';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
@@ -56,8 +58,54 @@ export const parseQr = async (qrData: string): Promise<IQrData> => {
     debug(`Unable to parse QR value as URL. Error: ${error}`);
   }
 
+  if (qrData.startsWith(QrTypesEnum.OYD)) {
+    try {
+      return parseOYDDid(qrData);
+    } catch (error: unknown) {
+      debug(`Unable to parse QR value as oyd. Error: ${error}`);
+    }
+  }
+
   // fixme: We are returning OID4VC for everything, since the linkhandler sort things out itself. To be removed once the old flows in this file are gone
   return {type: QrTypesEnum.OPENID4VC, url: qrData};
+};
+
+const parseOYDDid = async (qrData: string): Promise<IQrData> => {
+  try {
+    return Promise.resolve({
+      type: QrTypesEnum.OYD,
+      uri: qrData,
+    });
+  } catch (error: unknown) {
+    return Promise.reject(error);
+  }
+};
+
+const parseSIOPv2 = (qrData: string): Promise<IQrData> => {
+  try {
+    return Promise.resolve({
+      type: QrTypesEnum.OPENID_VC,
+      uri: qrData,
+    });
+  } catch (error: unknown) {
+    return Promise.reject(error);
+  }
+};
+
+const parseOpenID4VCI = async (qrData: string): Promise<IQrData> => {
+  if (qrData.includes(QrTypesEnum.OPENID_INITIATE_ISSUANCE)) {
+    return Promise.resolve({
+      type: QrTypesEnum.OPENID_INITIATE_ISSUANCE,
+      credentialOffer: await CredentialOfferClient.fromURI(qrData),
+      uri: qrData,
+    });
+  } else {
+    return Promise.resolve({
+      type: QrTypesEnum.OPENID_CREDENTIAL_OFFER,
+      credentialOffer: await CredentialOfferClient.fromURI(qrData),
+      uri: qrData,
+    });
+  }
 };
 
 export const processQr = async (args: IQrDataArgs): Promise<void> => {
@@ -71,7 +119,16 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
       return await emitLinkHandlerURLEvent({source: 'QR', url: args.qrData.url}, agentContext);
     default:
       return Promise.reject(Error(translate('qr_scanner_qr_not_supported_message')));
+    case QrTypesEnum.OYD:
+      return connectOydid(args);
   }
+};
+
+const connectOydid = async (args: IQrDataArgs): Promise<void> => {
+  const resolver = new Resolver({
+    ...getOYDResolver(),
+  });
+  resolver.resolve(args.qrData.uri).then(data => console.log(JSON.stringify(data, undefined, 2)));
 };
 
 // TODO remove old flow

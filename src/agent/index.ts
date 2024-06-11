@@ -12,6 +12,8 @@ import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {OydDIDProvider} from '@sphereon/ssi-sdk-oyd-did-provider';
+import {getResolver as getOYDResolver} from '@sphereon/ssi-sdk-oyd-did-resolver';
 import {
   CredentialHandlerLDLocal,
   MethodNames,
@@ -52,6 +54,7 @@ export const didResolver = new Resolver({
   ...webDIDResolver(),
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
+  ...getOYDResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
@@ -68,6 +71,9 @@ export const didProviders = {
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
+    defaultKms: KeyManagementSystemEnum.LOCAL,
+  }),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
 };
@@ -88,7 +94,7 @@ const agentPlugins: Array<IAgentPlugin> = [
   }),
   new DIDManager({
     store: new DIDStore(dbConnection),
-    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
+    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`,
     providers: didProviders,
   }),
   new DIDResolverPlugin({
