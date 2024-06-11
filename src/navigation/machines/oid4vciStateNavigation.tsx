@@ -8,8 +8,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionType,
   CorrelationIdentifierType,
+  CredentialRole,
   IBasicCredentialLocaleBranding,
-  IdentityRole,
+  IdentityOrigin,
   NonPersistedParty,
   Party,
   PartyOrigin,
@@ -76,7 +77,8 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     identities: [
       {
         alias: correlationId,
-        roles: [IdentityRole.ISSUER],
+        roles: [CredentialRole.ISSUER],
+        origin: IdentityOrigin.EXTERNAL,
         identifier: {
           type: CorrelationIdentifierType.URL,
           correlationId: issuerUrl.hostname,
@@ -226,8 +228,6 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  state.context.
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
