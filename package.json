@@ -1,7 +1,7 @@
 {
   "name": "@sphereon/sphereon-wallet",
-  "version": "0.2.1-unstable.0",
-  "license": "GPL-3.0",
+  "version": "0.3.0-unstable.0",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "start:dev": "expo start --dev-client",
@@ -64,6 +64,7 @@
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "0.23.5-next.22",
     "@sphereon/ssi-sdk.vc-handler-ld-local": "0.23.5-next.22",
     "@sphereon/ssi-sdk.xstate-machine-persistence": "0.23.5-next.22",
+    "@sphereon/ssi-sdk.sd-jwt": "0.24.1-unstable.47",
     "@sphereon/ssi-types": "0.23.5-next.22",
     "@sphereon/ui-components.core": "0.2.0",
     "@sphereon/ui-components.ssi-react-native": "0.2.0",

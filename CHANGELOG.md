@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.3.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (TBD)
+
+The license of the wallet has been made more permissive. We moved from GPLv3 to Apache2.
+
 # [0.2.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (2024-03-28)
 
 This release contains many improvements, including support for newer versions of the OID4VC specifications and EBSI support.
