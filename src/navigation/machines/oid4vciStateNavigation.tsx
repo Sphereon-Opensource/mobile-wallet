@@ -233,14 +233,16 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
+  const signingMode = credentialsToAccept.find(cred => !!cred.credential_subject_issuance);
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
     params: {
-      headerTitle: translate('credential_offer_title'),
+      headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
       credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential!, localeBranding, contact),
       primaryAction: {
-        caption: translate('action_accept_label'),
+        caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,
       },
       secondaryAction: {
