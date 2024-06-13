@@ -19,6 +19,7 @@ import {
   ConnectionType,
   CorrelationIdentifierType,
   CredentialRole,
+  IdentityOrigin,
   NonPersistedParty,
   Party,
   PartyOrigin,
@@ -85,6 +86,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     identities: [
       {
         alias: authorizationRequestData.correlationId,
+        origin: IdentityOrigin.INTERNAL,
         roles: [CredentialRole.ISSUER],
         identifier: {
           type: CorrelationIdentifierType.URL,

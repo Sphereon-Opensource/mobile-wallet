@@ -165,6 +165,7 @@ export const getUserContact = async (): Promise<Party> => {
         id: uuidv4(),
         alias: identifier.did,
         roles: [CredentialRole.HOLDER],
+        origin: IdentityOrigin.INTERNAL,
         identifier: {
           id: uuidv4(),
           type: CorrelationIdentifierType.DID,

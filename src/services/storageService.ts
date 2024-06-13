@@ -113,7 +113,9 @@ export const storageDeletePin = async (): Promise<boolean> => {
   return pinStorage.removeItem(STORAGE_PIN_KEY);
 };
 
-export const storageHasPin = async (): Promise<boolean> => {
+export const storageHasPin = (): boolean => {
   debug(`hasPin...`);
-  return !!(await pinStorage.getItem(STORAGE_PIN_KEY));
+  const result = !!pinStorage.getString(STORAGE_PIN_KEY);
+  debug(`hasPin: ${JSON.stringify(result)}`);
+  return result;
 };

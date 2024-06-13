@@ -8,8 +8,8 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  IBasicCredentialLocaleBranding,
   CredentialRole,
+  IBasicCredentialLocaleBranding,
   NonPersistedParty,
   Party,
   PartyOrigin,
@@ -77,6 +77,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       {
         alias: correlationId,
         roles: [CredentialRole.ISSUER],
+        origin: IdentityOrigin.EXTERNAL,
         identifier: {
           type: CorrelationIdentifierType.URL,
           correlationId: issuerUrl.hostname,
@@ -226,21 +227,22 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  state.context.
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject
+  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject;
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
+  const signingMode = credentialsToAccept.find(cred => !!cred.credential_subject_issuance);
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
     params: {
-      headerTitle: translate('credential_offer_title'),
+      headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
       credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential!, localeBranding, contact),
       primaryAction: {
-        caption: translate('action_accept_label'),
+        caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,
       },
       secondaryAction: {

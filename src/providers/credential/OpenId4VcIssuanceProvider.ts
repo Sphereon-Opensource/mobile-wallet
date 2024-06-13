@@ -59,7 +59,12 @@ export enum LDPProofTypeEnum {
   JcsEd25519Signature2020 = 'JcsEd25519Signature2020',
 }
 
-export const didMethodPreferences = [SupportedDidMethodEnum.DID_KEY, SupportedDidMethodEnum.DID_JWK, SupportedDidMethodEnum.DID_ION];
+export const didMethodPreferences = [
+  SupportedDidMethodEnum.DID_OYD,
+  SupportedDidMethodEnum.DID_KEY,
+  SupportedDidMethodEnum.DID_JWK,
+  SupportedDidMethodEnum.DID_ION,
+];
 
 export const jsonldCryptographicSuitePreferences = [
   'Ed25519Signature2018',
