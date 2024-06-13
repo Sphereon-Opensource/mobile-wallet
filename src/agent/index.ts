@@ -96,7 +96,7 @@ const agentPlugins: Array<IAgentPlugin> = [
   }),
   new DIDManager({
     store: new DIDStore(dbConnection),
-    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`,
+    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`,
     providers: didProviders,
   }),
   new DIDResolverPlugin({

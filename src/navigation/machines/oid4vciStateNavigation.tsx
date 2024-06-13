@@ -10,6 +10,7 @@ import {
   CorrelationIdentifierType,
   CredentialRole,
   IBasicCredentialLocaleBranding,
+  IdentityOrigin,
   NonPersistedParty,
   Party,
   PartyOrigin,

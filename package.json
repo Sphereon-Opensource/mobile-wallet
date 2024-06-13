@@ -56,6 +56,7 @@
     "@sphereon/ssi-sdk-ext.key-manager": "0.20.0",
     "@sphereon/ssi-sdk-ext.key-utils": "0.20.0",
     "@sphereon/ssi-sdk-ext.kms-local": "0.20.0",
+    "@sphereon/ssi-sdk.sd-jwt": "0.24.1-next.113",
     "@sphereon/ssi-sdk.contact-manager": "0.24.1-next.113",
     "@sphereon/ssi-sdk.core": "0.24.1-next.113",
     "@sphereon/ssi-sdk.data-store": "0.24.1-next.113",

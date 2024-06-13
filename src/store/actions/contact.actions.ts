@@ -1,4 +1,4 @@
-import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
