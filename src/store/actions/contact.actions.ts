@@ -1,4 +1,4 @@
-import {CorrelationIdentifierType, Party, IdentityRole, Identity, PartyTypeType, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -159,12 +159,13 @@ export const getUserContact = async (): Promise<Party> => {
     relationships: [],
     uri: user.emailAddress,
     //todo: (WAL-545) handle this based on the identities available in the wallet
-    roles: [IdentityRole.HOLDER],
+    roles: [CredentialRole.HOLDER],
     identities: user.identifiers.map(
       (identifier: IUserIdentifier): Identity => ({
         id: uuidv4(),
         alias: identifier.did,
-        roles: [IdentityRole.HOLDER],
+        roles: [CredentialRole.HOLDER],
+        origin: IdentityOrigin.INTERNAL,
         identifier: {
           id: uuidv4(),
           type: CorrelationIdentifierType.DID,

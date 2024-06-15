@@ -12,6 +12,7 @@ import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
 import {
   CredentialHandlerLDLocal,
   MethodNames,
@@ -20,6 +21,7 @@ import {
   SphereonJsonWebSignature2020,
 } from '@sphereon/ssi-sdk.vc-handler-ld-local';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
+import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {createAgent, IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
@@ -38,8 +40,10 @@ import {DB_CONNECTION_NAME, DB_ENCRYPTION_KEY} from '../@config/database';
 import {addLinkListeners} from '../handlers/LinkHandlers';
 import {getDbConnection} from '../services/databaseService';
 import {dispatchIdentifier} from '../services/identityService';
+import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {generateSalt, generateDigest} from '../utils';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
 
@@ -52,6 +56,7 @@ export const didResolver = new Resolver({
   ...webDIDResolver(),
   ...getDidIonResolver(),
   ...getDidJwkResolver(),
+  ...getDidOydResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
@@ -68,6 +73,9 @@ export const didProviders = {
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
+    defaultKms: KeyManagementSystemEnum.LOCAL,
+  }),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
     defaultKms: KeyManagementSystemEnum.LOCAL,
   }),
 };
@@ -88,7 +96,7 @@ const agentPlugins: Array<IAgentPlugin> = [
   }),
   new DIDManager({
     store: new DIDStore(dbConnection),
-    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`,
+    defaultProvider: `${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`,
     providers: didProviders,
   }),
   new DIDResolverPlugin({
@@ -138,6 +146,11 @@ const agentPlugins: Array<IAgentPlugin> = [
   new LinkHandlerPlugin({
     eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
     handlers: linkHandlers,
+  }),
+  new SDJwtPlugin({
+    hasher: generateDigest,
+    saltGenerator: generateSalt,
+    verifySignature: verifySDJWTSignature,
   }),
 ];
 

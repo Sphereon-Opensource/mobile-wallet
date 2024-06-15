@@ -39,7 +39,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -50,9 +50,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Needed to scan QR codes</string>
+	<string>To receive or send digital credential cross device using QR codes</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Used as optional login method</string>
+	<string>Used as optional login method next to the PIN code</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>
