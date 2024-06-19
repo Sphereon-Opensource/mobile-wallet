@@ -8,10 +8,10 @@ import {
   SSIImageFieldHeaderContainerStyled as HeaderContainer,
   SSITextH5LightStyled as HeaderLabel,
 } from '../../../styles/components';
-import {ICredentialDetailsRow} from '../../../types';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-mapper';
 
 export interface IProps {
-  item: ICredentialDetailsRow;
+  item: CredentialDetailsRow;
   index?: number;
 }
 

@@ -12,7 +12,7 @@ import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {parseDeepLink} from '../../utils';
-import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-mapper';
 import {showToast} from '../../utils';
 import LockingHandler from '../LockingHandler';
 

@@ -11,11 +11,11 @@ import {
   SSITextH5LightStyled as HeaderLabel,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
 } from '../../../styles/components';
-import {ICredentialDetailsRow} from '../../../types';
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-mapper';
 
 export interface IProps {
-  item: ICredentialDetailsRow;
+  item: CredentialDetailsRow;
   index?: number;
 }
 

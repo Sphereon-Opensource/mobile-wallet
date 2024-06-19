@@ -1,5 +1,13 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {ConnectionType, CorrelationIdentifierType, DidAuthConfig, CredentialRole, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {
+  ConnectionType,
+  CorrelationIdentifierType,
+  CredentialRole,
+  DidAuthConfig,
+  IdentityOrigin,
+  NonPersistedIdentity,
+  Party,
+} from '@sphereon/ssi-sdk.data-store';
 import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
@@ -111,6 +119,8 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 
   if (correlationId) {
     const identity: NonPersistedIdentity = {
+      //TODO: ask @bram about this
+      origin: IdentityOrigin.EXTERNAL,
       alias: correlationId,
       roles: [CredentialRole.ISSUER],
       identifier: {

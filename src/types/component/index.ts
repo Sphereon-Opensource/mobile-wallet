@@ -40,8 +40,6 @@ export interface IHeaderMenuButton extends IButton {
   fontColor?: ColorValue;
 }
 
-export type LabelStatus = CredentialStatus | IssuerStatus;
-
 export interface ITabRoute {
   key: string;
   title: string;
