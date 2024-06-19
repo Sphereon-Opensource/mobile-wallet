@@ -61,3 +61,9 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 
   return correlationId;
 };
+
+export const getCredentialIssuerContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  const contacts: Array<Party> = store.getState().contact.contacts;
+  const issuer: string = typeof vc.issuer === 'string' ? vc.issuer : vc.issuer?.id ?? vc.issuer?.name;
+  return contacts.find((contact: Party) => contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === issuer));
+};
