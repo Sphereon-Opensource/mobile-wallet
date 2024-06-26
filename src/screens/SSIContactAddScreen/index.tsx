@@ -101,7 +101,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
         },
       ],
     });
-    if (contacts.length !== 0) {
+    if (contacts.length > 0 && contacts[0]?.contact!!) {
       contacts[0].contact.displayName = contactAlias;
       return updateContact({contact: contacts[0]});
     } else {
