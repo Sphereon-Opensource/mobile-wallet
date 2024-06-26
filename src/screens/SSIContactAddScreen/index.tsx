@@ -182,7 +182,10 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     const {loading} = this.props;
     const {isCreateDisabled} = this.props.route.params;
     const {contactAlias, hasConsent} = this.state;
-
+    //TODO: !!!!!don't commit
+    /**
+     * Here we should alter the view to show the new contact's logo
+     */
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>

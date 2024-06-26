@@ -1,9 +1,9 @@
-import {IBasicCredentialLocaleBranding, IBasicIssuerLocaleBranding, ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
-import {IDeletionResult} from '@sphereon/ssi-sdk.issuance-branding';
+import {IBasicCredentialLocaleBranding, IBasicIssuerLocaleBranding, ICredentialBranding, IIssuerBranding} from '@sphereon/ssi-sdk.data-store';
+import {IDeletionResult, IGetIssuerBrandingArgs} from '@sphereon/ssi-sdk.issuance-branding';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {ibAddCredentialBranding, ibRemoveCredentialBranding} from '../agent';
+import {ibAddCredentialBranding, ibGetCredentialBranding, ibGetIssuerBranding, ibRemoveCredentialBranding} from '../agent';
 import Localization from '../localization/Localization';
 import {IAddCredentialBrandingArgs, IRemoveCredentialBrandingArgs, ISelectAppLocaleBrandingArgs} from '../types';
 import {preloadImage} from '../utils/ImageUtils';
@@ -46,4 +46,16 @@ export const selectAppLocaleBranding = async (
   }
 
   return localeBranding;
+};
+
+export const getIssuerBrandingFromStorage = async (args: IGetIssuerBrandingArgs): Promise<IIssuerBranding[]> => {
+  debug(`getBrandingFromStorage(${JSON.stringify(args)})...`);
+  try {
+    const branding = await ibGetIssuerBranding(args);
+    debug(`getBrandingFromStorage(${JSON.stringify(args)}), result: ${JSON.stringify(branding)}`);
+    return branding;
+  } catch (e) {
+    debug(`Error on getting the branding! ${e}`);
+    throw e;
+  }
 };

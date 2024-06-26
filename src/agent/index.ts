@@ -174,6 +174,7 @@ export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiab
 export const createVerifiableCredential = agent.createVerifiableCredential;
 export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
 export const ibGetCredentialBranding = agent.ibGetCredentialBranding;
+export const ibGetIssuerBranding = agent.ibGetIssuerBranding;
 export const ibCredentialLocaleBrandingFrom = agent.ibCredentialLocaleBrandingFrom;
 export const ibRemoveCredentialBranding = agent.ibRemoveCredentialBranding;
 

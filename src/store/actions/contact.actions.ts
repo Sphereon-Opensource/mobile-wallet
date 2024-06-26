@@ -30,21 +30,57 @@ import {
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
+import {getIssuerBrandingFromStorage} from '../../services/brandingService';
+import {PartyWithBranding} from '../../types/store/contact.types';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
-    dispatch({type: CONTACTS_LOADING});
-    return getUserContact()
-      .then((userContact: Party) => {
-        return getContactsFromStorage().then((contacts: Array<Party>): Array<Party> => {
-          dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
-          return [...contacts, userContact];
-        });
-      })
-      .catch((error: Error) => {
-        dispatch({type: GET_CONTACTS_FAILED});
-        return Promise.reject(error);
-      });
+    dispatch({type: 'CONTACTS_LOADING'});
+    try {
+      const userContact = await getUserContact();
+      const contacts: PartyWithBranding[] = await getContactsFromStorage();
+
+      const filledContacts = await Promise.all(
+        contacts.map(async contact => {
+          const correlationIds = contact.identities.map(identity => identity.identifier.correlationId);
+          const brandingPromises = correlationIds.map(async correlationId => {
+            return getIssuerBrandingFromStorage({
+              filter: [{issuerCorrelationId: correlationId}],
+            });
+          });
+          const brandingResults = await Promise.all(brandingPromises);
+          const flattenedBrandingResults = brandingResults.flat();
+
+          contact.branding = flattenedBrandingResults[0]?.localeBranding?.[0] ?? contact.branding;
+          /**
+           * TODO: ksadjad: Delete the manual assignment
+           */
+          if (contact.contact.displayName.indexOf('Belastingdienst') !== -1) {
+            contact.branding = {
+              logo: {id: 't5645654564', uri: 'https://i.ibb.co/pyZpF8m/Belastingdienst.png'},
+              id: '343543534',
+              createdAt: new Date(),
+              lastUpdatedAt: new Date(),
+            };
+          } else if (contact.contact.displayName.indexOf('sphereon') !== -1) {
+            contact.branding = {
+              logo: {id: '643654', uri: 'https://i.ibb.co/NWQQ9kt/sphereon-logo.png'},
+              id: '6756675',
+              createdAt: new Date(),
+              lastUpdatedAt: new Date(),
+            };
+          }
+          return contact;
+        }),
+      );
+
+      const allContacts = [...filledContacts, userContact];
+      dispatch({type: GET_CONTACTS_SUCCESS, payload: [...allContacts, userContact]});
+      return [...allContacts, userContact];
+    } catch (error) {
+      dispatch({type: GET_CONTACTS_FAILED});
+      return Promise.reject(error);
+    }
   };
 };
 
