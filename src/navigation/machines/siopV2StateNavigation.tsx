@@ -88,7 +88,6 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
         alias: authorizationRequestData.correlationId,
         origin: IdentityOrigin.INTERNAL,
         roles: [CredentialRole.ISSUER],
-        origin: IdentityOrigin.EXTERNAL,
         identifier: {
           type: CorrelationIdentifierType.URL,
           correlationId: authorizationRequestData.correlationId,

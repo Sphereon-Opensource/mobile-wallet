@@ -142,7 +142,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     return selectedVCs.flat();
   };
 
-  const isMatchingPresentationDefinition = async (): Promise<boolean> => {
+  const isMatchingPresentationDefinition = (): boolean => {
     console.log(`is matching def=====================`);
     const credentials = getSelectedCredentials().map((uniqueVC: UniqueVerifiableCredential) =>
       getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
