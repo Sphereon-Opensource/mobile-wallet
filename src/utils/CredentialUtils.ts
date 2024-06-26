@@ -34,7 +34,11 @@ export const getMatchingUniqueVerifiableCredential = (
       (typeof searchVC !== 'string' &&
         (uniqueVC.verifiableCredential.id === (<IVerifiableCredential>searchVC).id ||
           uniqueVC.verifiableCredential.proof === (<IVerifiableCredential>searchVC).proof)) ||
-      (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC),
+      (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC) ||
+      // We are ignoring the signature of the sd-jwt as PEX signs the vc again and it will not match anymore with the jwt in the proof of the stored jsonld vc
+      (typeof searchVC === 'string' &&
+        CredentialMapper.isSdJwtEncoded(searchVC) &&
+        uniqueVC.verifiableCredential?.proof?.jwt.split('.').slice(0, 2).join('.') === searchVC.split('.').slice(0, 2).join('.')),
   );
 };
 
@@ -43,7 +47,11 @@ export const getMatchingUniqueVerifiableCredential = (
  * @param vc The input VC
  */
 export const getOriginalVerifiableCredential = (vc: VerifiableCredential | ICredential) => {
-  return CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
+  // FIXME we need to start using one singular flow instead of making these sd-jwt checks. the difficulty is that we have multiple representations of a sd-jwt (sd-jwt and jsonld) and we do not need to decode the sd-jwt here for example. we just need the original which was a string
+  // TODO can we not call CredentialMapper.storedCredentialToOriginalFormat instead of using this function?
+  return CredentialMapper.isSdJwtEncoded(vc.proof.jwt)
+    ? vc.proof.jwt
+    : CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
 };
 
 export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary): CredentialStatus => {

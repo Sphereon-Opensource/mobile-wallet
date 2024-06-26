@@ -10,6 +10,7 @@ import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {SupportedDidMethodEnum} from '../../types';
+import {generateDigest} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -88,7 +89,7 @@ export const siopSendAuthorizationResponse = async (
   let identifier: IIdentifier = identifiers[0];
   let presentationSubmission: PresentationSubmission | undefined;
   if (await session.hasPresentationDefinitions()) {
-    const oid4vp: OID4VP = await session.getOID4VP();
+    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
@@ -101,8 +102,12 @@ export const siopSendAuthorizationResponse = async (
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
-    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0]);
-    const holder = Array.isArray(firstVC.credentialSubject) ? firstVC.credentialSubject[0].id : firstVC.credentialSubject.id;
+    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0], {hasher: generateDigest});
+    const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
+      ? firstVC.decodedPayload.sub ?? firstVC.decodedPayload.sub // TODO add cnf check
+      : Array.isArray(firstVC.credentialSubject)
+      ? firstVC.credentialSubject[0].id
+      : firstVC.credentialSubject.id;
     if (holder) {
       try {
         identifier = await session.context.agent.didManagerGet({did: holder});

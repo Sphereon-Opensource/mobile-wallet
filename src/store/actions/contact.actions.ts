@@ -1,14 +1,14 @@
-import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierType, CredentialRole, Identity, IdentityOrigin, Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
 import {translate} from '../../localization/Localization';
 import {
-  updateContact as editContact,
-  getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
-  removeContact,
   createContact as storeContact,
+  getContacts as getContactsFromStorage,
+  removeContact,
+  updateContact as editContact,
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
@@ -165,6 +165,7 @@ export const getUserContact = async (): Promise<Party> => {
         id: uuidv4(),
         alias: identifier.did,
         roles: [CredentialRole.HOLDER],
+        origin: IdentityOrigin.EXTERNAL,
         identifier: {
           id: uuidv4(),
           type: CorrelationIdentifierType.DID,

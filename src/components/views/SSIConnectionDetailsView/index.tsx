@@ -1,4 +1,4 @@
-import {Identity, MetadataItem} from '@sphereon/ssi-sdk.data-store';
+import {Identity, MetadataItem, MetadataTypes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 
@@ -23,14 +23,14 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   // TODO rename to identity?
   const {identity} = props;
 
-  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem>) => {
+  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem<MetadataTypes>>) => {
     return (
       <LabelRow>
         <Column>
           <DetailsItemLabelCaption>{itemInfo.item.label}</DetailsItemLabelCaption>
         </Column>
         <Column>
-          <DetailsItemValueCaption>{itemInfo.item.value}</DetailsItemValueCaption>
+          <DetailsItemValueCaption>{itemInfo.item.value?.toString()}</DetailsItemValueCaption>
         </Column>
       </LabelRow>
     );
@@ -51,7 +51,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
           data={identity.metadata}
           renderItem={renderItem}
-          keyExtractor={(item: MetadataItem) => item.id}
+          keyExtractor={(item: MetadataItem<MetadataTypes>) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
         />

@@ -4,7 +4,6 @@ import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
-
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
@@ -17,8 +16,9 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
+import {getOriginalVerifiableCredential} from '../../utils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
@@ -31,7 +31,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
+class CredentialsOverviewScreen extends PureComponent<IProps, IState> {
   state: IState = {
     refreshing: false,
   };
@@ -62,7 +62,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   onItemPress = async (credential: ICredentialSummary): Promise<void> => {
     getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: getOriginalVerifiableCredential(vc),
+        rawCredential: CredentialMapper.storedCredentialToOriginalFormat(vc as OriginalVerifiableCredential),
         credential,
         showActivity: false,
       }),
@@ -147,4 +147,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SSICredentialsOverviewScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CredentialsOverviewScreen);
