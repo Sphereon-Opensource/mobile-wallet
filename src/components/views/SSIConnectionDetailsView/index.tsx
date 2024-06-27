@@ -1,7 +1,7 @@
 import {Identity, MetadataItem, MetadataTypes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
-
+import {toLocalDateString} from '../../../utils';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
 import {
@@ -20,8 +20,22 @@ export interface IProps {
 }
 
 const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  // TODO rename to identity?
   const {identity} = props;
+
+  const parseValue = (value: MetadataTypes): string => {
+    // FIXME we need to check the MetadataTypes, i holds undefined but the value field of MetadataItem cannot be undefined.
+    // Besides that we might want rename the type to MetadataType
+    // And we need to check if the database can have the value null
+    if (!value) {
+      return '';
+    }
+
+    if (value instanceof Date) {
+      return toLocalDateString(value.getTime());
+    }
+
+    return value.toString();
+  };
 
   const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem<MetadataTypes>>) => {
     return (
@@ -30,7 +44,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           <DetailsItemLabelCaption>{itemInfo.item.label}</DetailsItemLabelCaption>
         </Column>
         <Column>
-          <DetailsItemValueCaption>{itemInfo.item.value?.toString()}</DetailsItemValueCaption>
+          <DetailsItemValueCaption>{parseValue(itemInfo.item.value)}</DetailsItemValueCaption>
         </Column>
       </LabelRow>
     );
