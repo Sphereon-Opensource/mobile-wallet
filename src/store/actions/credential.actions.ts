@@ -11,7 +11,7 @@ import {
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential,
 } from '../../services/credentialService';
-import {IUser, RootState, ToastTypeEnum} from '../../types';
+import {RootState, ToastTypeEnum} from '../../types';
 import {
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
