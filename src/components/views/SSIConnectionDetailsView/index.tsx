@@ -23,9 +23,9 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const {identity} = props;
 
   const parseValue = (value: MetadataTypes): string => {
-    // FIXME we need to check the MetadataTypes, i holds undefined but the value field of MetadataItem cannot be undefined.
-    // Besides that we might want rename the type to MetadataType
+    // FIXME we need to check the MetadataTypes, it holds undefined but the value field of MetadataItem cannot be undefined.
     // And we need to check if the database can have the value null
+    // Besides that we might want rename the type to MetadataType
     if (!value) {
       return '';
     }
