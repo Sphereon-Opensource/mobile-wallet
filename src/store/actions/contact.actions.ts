@@ -1,4 +1,4 @@
-import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
+import {CorrelationIdentifierType, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -31,14 +31,14 @@ import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
-import {PartyWithBranding} from '../../types/store/contact.types';
+import {Party} from '../../types/store/contact.types';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
     dispatch({type: 'CONTACTS_LOADING'});
     try {
       const userContact = await getUserContact();
-      const contacts: PartyWithBranding[] = await getContactsFromStorage();
+      const contacts: Party[] = await getContactsFromStorage();
 
       const filledContacts = await Promise.all(
         contacts.map(async contact => {
@@ -57,7 +57,7 @@ export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unk
            */
           if (contact.contact.displayName.indexOf('Belastingdienst') !== -1) {
             contact.branding = {
-              logo: {id: 't5645654564', uri: 'https://i.ibb.co/pyZpF8m/Belastingdienst.png'},
+              logo: {id: 't5645654564', uri: 'https://i.ibb.co/pyZpF8m/Belastingdienst.png', dimensions: {id: '43252345', height: 334, width: 600}},
               id: '343543534',
               createdAt: new Date(),
               lastUpdatedAt: new Date(),

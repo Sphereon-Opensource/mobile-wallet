@@ -28,12 +28,3 @@ export const SSIContactViewItemContactDetailsContainerStyled = styled.View`
 export const SSIContactViewItemContactUriCaptionStyled = styled(SSITextH5LightStyled)`
   opacity: 0.8;
 `;
-
-export const SSIContactViewItemPlaceholderLogoStyled = styled(SSIPlaceholderLogo).attrs({
-  size: 26,
-})``;
-
-export const SSIContactViewItemLogoStyled = styled(SSILogo).attrs({
-  size: 26,
-  width: 26,
-})``;

@@ -9,11 +9,11 @@ import {
   SSIContactViewItemContactUriCaptionStyled as ContactUriCaption,
   SSIContactViewItemContainerStyled as Container,
   SSIContactViewItemLogoContainerStyled as LogoContainer,
-  SSIContactViewItemLogoStyled as Logo,
   SSIContactViewItemNewStatusContainerStyled as StatusContainer,
 } from '../../../styles/components';
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../../@config/constants';
+import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
 
 const debug: Debugger = Debug(`${APP_ID}:SSIContactViewItem`);
 
@@ -31,7 +31,7 @@ const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
     <Container>
       <StatusContainer />
       <LogoContainer>
-        <Logo logo={logo} style={{width: 26}} />
+        <Logo logo={logo} />
       </LogoContainer>
       <View>
         <ContactDetailsContainer>
