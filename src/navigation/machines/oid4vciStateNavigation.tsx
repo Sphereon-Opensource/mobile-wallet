@@ -18,13 +18,13 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {
   CreateContactEvent,
+  OID4VCIContext as OID4VCIContextType,
   OID4VCIMachineEvents,
   OID4VCIMachineInterpreter,
   OID4VCIMachineNavigationArgs,
   OID4VCIMachineState,
   OID4VCIMachineStates,
   OID4VCIProviderProps,
-  OID4VCIContext as OID4VCIContextType,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {translate} from '../../localization/Localization';
@@ -241,7 +241,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
-      credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential!, localeBranding, contact),
+      credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential, localeBranding, contact),
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,

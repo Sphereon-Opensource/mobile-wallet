@@ -1,5 +1,5 @@
 import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {AsyncHasher, CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
@@ -11,6 +11,8 @@ import {
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential,
 } from '../../services/credentialService';
+import {showToast} from '../../utils';
+import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {ICredentialSummary, RootState, ToastTypeEnum} from '../../types';
 import {
   CREATE_CREDENTIAL_FAILED,
@@ -23,8 +25,6 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {

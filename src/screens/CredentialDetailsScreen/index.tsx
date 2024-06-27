@@ -5,15 +5,15 @@ import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/u
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
-import {getCredentialStatus} from '../../utils/CredentialUtils';
+import {getCredentialStatus} from '../../utils';
 import {getIssuerLogo} from '../../utils/mappers/credential/CredentialMapper';
 import {translate} from '../../localization/Localization';
 import {
-  SSICredentialDetailsScreenButtonContainer as ButtonContainer,
-  SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
-  SSICredentialDetailsScreenCredentialCardContainer as CardContainer,
+  CredentialDetailsScreenButtonContainer as ButtonContainer,
+  CredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
+  CredentialDetailsScreenCredentialCardContainer as CardContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSICredentialDetailsScreenContentContainer as ContentContainer,
+  CredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSummary, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
@@ -37,7 +37,7 @@ const getCredentialCardLogo = (credential: ICredentialSummary): ImageAttributes 
   }
 };
 
-const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
+const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
   const issuer: string = credential.issuer.alias;
@@ -134,4 +134,4 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-export default SSICredentialDetailsScreen;
+export default CredentialDetailsScreen;

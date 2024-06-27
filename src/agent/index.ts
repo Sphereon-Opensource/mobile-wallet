@@ -138,6 +138,7 @@ const agentPlugins: Array<IAgentPlugin> = [
       const {identifier} = args;
       await dispatchIdentifier({identifier});
     },
+    hasher: generateDigest,
   }),
   new MachineStatePersistence({
     store: new MachineStateStore(dbConnection),

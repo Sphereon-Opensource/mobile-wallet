@@ -9,9 +9,9 @@ import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer
 import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem';
 import {translate} from '../../localization/Localization';
 import {
-  SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
+  SSICredentialsSelectScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
-  SSICredentialSelectTypeScreenViewItemContainerStyled as ItemContainer,
+  SSICredentialSelectScreenViewItemContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSelection, ScreenRoutesEnum, StackParamList} from '../../types';

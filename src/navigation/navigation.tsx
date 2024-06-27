@@ -22,12 +22,12 @@ import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
-import SSICredentialDetailsScreen from '../screens/SSICredentialDetailsScreen';
+import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen';
 import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen';
-import SSICredentialsOverviewScreen from '../screens/SSICredentialsOverviewScreen';
-import SSICredentialsRequiredScreen from '../screens/SSICredentialsRequiredScreen';
+import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
+import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import SSIErrorScreen from '../screens/SSIErrorScreen';
 import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
@@ -176,7 +176,7 @@ const CredentialsStack = (): JSX.Element => {
       }}>
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_OVERVIEW}
-        component={SSICredentialsOverviewScreen}
+        component={CredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder showBackButton={false} />,
@@ -184,7 +184,7 @@ const CredentialsStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={SSICredentialDetailsScreen}
+        component={CredentialDetailsScreen}
         options={({route}) => ({
           headerTitle: translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -304,7 +304,7 @@ const QRStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={SSICredentialDetailsScreen}
+        component={CredentialDetailsScreen}
         options={({route}) => ({
           headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -359,7 +359,7 @@ const QRStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
-        component={SSICredentialsRequiredScreen}
+        component={CredentialsRequiredScreen}
         options={({route}) => ({
           headerTitle: translate('credentials_required_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -705,7 +705,7 @@ export const OID4VCIStack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={SSICredentialDetailsScreen}
+        component={CredentialDetailsScreen}
         options={({route}) => ({
           headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -789,7 +789,7 @@ export const SiopV2Stack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
-        component={SSICredentialsRequiredScreen}
+        component={CredentialsRequiredScreen}
         options={({route}) => ({
           headerTitle: translate('credentials_required_title'),
           header: (props: NativeStackHeaderProps) => (
@@ -836,7 +836,7 @@ export const SiopV2Stack = (): JSX.Element => {
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={SSICredentialDetailsScreen}
+        component={CredentialDetailsScreen}
         options={({route}) => ({
           headerTitle: route.params.headerTitle ? route.params.headerTitle : translate('credential_details_title'),
           header: (props: NativeStackHeaderProps) => (
