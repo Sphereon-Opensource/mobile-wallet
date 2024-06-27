@@ -19,7 +19,7 @@ import {
 import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;

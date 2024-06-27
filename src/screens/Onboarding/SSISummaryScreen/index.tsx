@@ -11,7 +11,7 @@ import {translate} from '../../../localization/Localization';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-representation';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 

@@ -8,7 +8,7 @@ import {
   SSIImageFieldHeaderContainerStyled as HeaderContainer,
   SSITextH5LightStyled as HeaderLabel,
 } from '../../../styles/components';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-representation';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 
 export interface IProps {
   item: CredentialDetailsRow;

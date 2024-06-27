@@ -12,7 +12,7 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {ICredentialState} from '../../types/store/credential.types';
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const initialState: ICredentialState = {
   loading: false,

@@ -10,7 +10,7 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-representation';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import SSIImageField from '../../fields/SSIImageField';
 import SSITextField from '../../fields/SSITextField';
 

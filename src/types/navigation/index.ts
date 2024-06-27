@@ -6,7 +6,7 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;

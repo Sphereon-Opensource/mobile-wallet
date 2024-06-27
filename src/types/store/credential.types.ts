@@ -1,4 +1,4 @@
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export interface ICredentialState {
   loading: boolean;

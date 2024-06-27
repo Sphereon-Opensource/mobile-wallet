@@ -24,7 +24,7 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {showToast} from '../../utils/ToastUtils';
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact} from '../../utils';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {

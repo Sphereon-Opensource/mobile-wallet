@@ -1,6 +1,6 @@
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export enum CredentialIssuanceStateEnum {
   OFFER = 'offer',

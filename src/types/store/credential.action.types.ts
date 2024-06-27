@@ -1,4 +1,4 @@
-import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export const CREDENTIALS_LOADING = '[CREDENTIAL] CREDENTIALS_LOADING';
 export type CREDENTIALS_LOADING = typeof CREDENTIALS_LOADING;

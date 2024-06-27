@@ -30,7 +30,7 @@ import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 

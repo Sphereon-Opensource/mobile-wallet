@@ -23,7 +23,7 @@ import {
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-representation';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
