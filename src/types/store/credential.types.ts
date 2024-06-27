@@ -1,4 +1,4 @@
-import {CredentialSummary} from '@sphereon/ui-components.credential-mapper';
+import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
 
 export interface ICredentialState {
   loading: boolean;

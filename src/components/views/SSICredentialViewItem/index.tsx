@@ -13,7 +13,7 @@ import {
   SSITextH4LightStyled as IssuerCaption,
   SSICredentialViewItemTitleCaptionStyled as TitleCaption,
 } from '../../../styles/components';
-import {CredentialSummary} from '@sphereon/ui-components.credential-mapper';
+import {CredentialSummary} from '@sphereon/ui-components.credential-representation';
 import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
 import {View} from 'react-native';
 

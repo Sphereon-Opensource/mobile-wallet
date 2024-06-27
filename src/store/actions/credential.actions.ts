@@ -24,7 +24,7 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {showToast} from '../../utils/ToastUtils';
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-mapper';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-representation';
 import {getCredentialIssuerContact} from '../../utils';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
@@ -57,7 +57,6 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     storeCredential({vc: mappedVc})
       .then(async (hash: string): Promise<CredentialSummary> => {
         const credentialBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
-        console.log('>>>>>>>>>>>>>>>>> mappedVc:', mappedVc);
         return toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding);
       })
       .then((summary: CredentialSummary): void => {

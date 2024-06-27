@@ -5,7 +5,7 @@ import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/u
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
-import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-mapper';
+import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-representation';
 import {translate} from '../../localization/Localization';
 import {
   SSICredentialDetailsScreenButtonContainer as ButtonContainer,

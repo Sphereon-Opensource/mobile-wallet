@@ -10,19 +10,19 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
-import {ICredentialDetailsRow} from '../../../types';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-representation';
 import SSIImageField from '../../fields/SSIImageField';
 import SSITextField from '../../fields/SSITextField';
 
 export interface IProps {
-  credentialProperties: Array<ICredentialDetailsRow>;
+  credentialProperties: Array<CredentialDetailsRow>;
   issuer?: string;
 }
 
 // TODO we are now using this for more than just credential information. Would be nice to refactor it to be a more general usage component
 
 const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  const renderItem = (itemInfo: ListRenderItemInfo<ICredentialDetailsRow>) => {
+  const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
       return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
     } else {
@@ -47,7 +47,7 @@ const SSICredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
         // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
         data={props.credentialProperties}
         renderItem={renderItem}
-        keyExtractor={(item: ICredentialDetailsRow) => item.id}
+        keyExtractor={(item: CredentialDetailsRow) => item.id}
         initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
         removeClippedSubviews
         ListFooterComponent={renderFooter}

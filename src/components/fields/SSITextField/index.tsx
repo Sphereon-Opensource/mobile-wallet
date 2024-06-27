@@ -12,7 +12,7 @@ import {
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
 } from '../../../styles/components';
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-mapper';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-representation';
 
 export interface IProps {
   item: CredentialDetailsRow;
