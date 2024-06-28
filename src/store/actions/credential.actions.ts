@@ -11,7 +11,7 @@ import {
   getVerifiableCredentialsFromStorage,
   storeVerifiableCredential as storeCredential,
 } from '../../services/credentialService';
-import {ICredentialSummary, RootState, ToastTypeEnum} from '../../types';
+import {RootState, ToastTypeEnum} from '../../types';
 import {
   CREATE_CREDENTIAL_FAILED,
   CREATE_CREDENTIAL_SUCCESS,
@@ -24,7 +24,8 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {showToast} from '../../utils/ToastUtils';
-import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {getCredentialIssuerContact} from '../../utils';
 
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
@@ -35,12 +36,12 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
           vcHash: uniqueCredential.hash,
         }));
         const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
-        const credentialSummaries: Array<ICredentialSummary> = await Promise.all(
-          credentials.map(async (uniqueVC: UniqueVerifiableCredential): Promise<ICredentialSummary> => {
+        const credentialSummaries: Array<CredentialSummary> = await Promise.all(
+          credentials.map(async (uniqueVC: UniqueVerifiableCredential): Promise<CredentialSummary> => {
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
               (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
-            return await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+            return await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding, getCredentialIssuerContact(uniqueVC.verifiableCredential));
           }),
         );
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
@@ -54,11 +55,11 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
     dispatch({type: CREDENTIALS_LOADING});
     const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     storeCredential({vc: mappedVc})
-      .then(async (hash: string): Promise<ICredentialSummary> => {
+      .then(async (hash: string): Promise<CredentialSummary> => {
         const credentialBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: [{vcHash: hash}]});
         return toCredentialSummary({verifiableCredential: mappedVc, hash}, credentialBranding?.[0]?.localeBranding);
       })
-      .then((summary: ICredentialSummary): void => {
+      .then((summary: CredentialSummary): void => {
         dispatch({
           type: STORE_CREDENTIAL_SUCCESS,
           payload: summary,
@@ -83,7 +84,7 @@ export const dispatchVerifiableCredential = (
       .then((credentialBranding: Array<ICredentialBranding>) =>
         toCredentialSummary({verifiableCredential: mappedVc, hash: credentialHash}, credentialBranding?.[0]?.localeBranding),
       )
-      .then((summary: ICredentialSummary): void => {
+      .then((summary: CredentialSummary): void => {
         dispatch({
           type: STORE_CREDENTIAL_SUCCESS,
           payload: summary,
@@ -126,7 +127,7 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
     createCredential(args)
       .then((vc: VerifiableCredential): void => {
         storeCredential({vc}).then((hash: string) =>
-          toCredentialSummary({verifiableCredential: vc, hash}).then((summary: ICredentialSummary) =>
+          toCredentialSummary({verifiableCredential: vc, hash}).then((summary: CredentialSummary) =>
             // TODO fix mismatch in types
             dispatch({
               type: CREATE_CREDENTIAL_SUCCESS,

@@ -26,11 +26,11 @@ import {
   OID4VCIProviderProps,
   OID4VCIContext as OID4VCIContextType,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
-import {toNonPersistedCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 

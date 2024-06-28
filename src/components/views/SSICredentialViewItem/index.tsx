@@ -13,12 +13,12 @@ import {
   SSITextH4LightStyled as IssuerCaption,
   SSICredentialViewItemTitleCaptionStyled as TitleCaption,
 } from '../../../styles/components';
-import {ICredentialSummary} from '../../../types';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
 import {View} from 'react-native';
 
 // TODO fix to many properties
-export interface Props extends ICredentialSummary {
+export interface Props extends CredentialSummary {
   // TODO should only contain info this screen needs, ICredentialSummary is to much
   showTime?: boolean;
 }

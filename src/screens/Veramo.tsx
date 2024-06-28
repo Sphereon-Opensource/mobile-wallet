@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 
 import {createIdentifier, getIdentifiers} from '../services/identityService';
 import {CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList} from '../types';
-import {toNonPersistedCredentialSummary} from '../utils/mappers/credential/CredentialMapper';
+import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 interface IProps extends NativeStackScreenProps<StackParamList, 'Veramo'> {
   contacts: Array<Party>;
