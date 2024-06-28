@@ -20,10 +20,10 @@ import {
   SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ICredentialSummary, ScreenRoutesEnum, StackParamList} from '../../types';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
-import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
 import {JSONPath} from '@astronautlabs/jsonpath';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -174,7 +174,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
-        const credentialSummary: ICredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+        const credentialSummary: CredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
         const rawCredential: OriginalVerifiableCredential = getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!

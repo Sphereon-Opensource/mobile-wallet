@@ -1,4 +1,4 @@
-import {ICredentialSummary} from '../credential';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export const CREDENTIALS_LOADING = '[CREDENTIAL] CREDENTIALS_LOADING';
 export type CREDENTIALS_LOADING = typeof CREDENTIALS_LOADING;
@@ -26,7 +26,7 @@ interface ICredentialsLoading {
 }
 
 interface IGetCredentialsSuccessAction {
-  payload: Array<ICredentialSummary>;
+  payload: Array<CredentialSummary>;
   type: GET_CREDENTIALS_SUCCESS;
 }
 
@@ -35,7 +35,7 @@ interface IGetCredentialsFailedAction {
 }
 
 interface IStoreCredentialsSuccessAction {
-  payload: ICredentialSummary;
+  payload: CredentialSummary;
   type: STORE_CREDENTIAL_SUCCESS;
 }
 
@@ -53,7 +53,7 @@ interface IDeleteCredentialsFailedAction {
 }
 
 interface ICreateCredentialsSuccessAction {
-  payload: ICredentialSummary;
+  payload: CredentialSummary;
   type: CREATE_CREDENTIAL_SUCCESS;
 }
 

@@ -16,14 +16,15 @@ import {
   SSIRippleContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ICredentialSummary, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
-  verifiableCredentials: Array<ICredentialSummary>;
+  verifiableCredentials: Array<CredentialSummary>;
   activeUser: IUser;
 }
 
@@ -59,7 +60,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     });
   };
 
-  onItemPress = async (credential: ICredentialSummary): Promise<void> => {
+  onItemPress = async (credential: CredentialSummary): Promise<void> => {
     getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: getOriginalVerifiableCredential(vc),
@@ -69,7 +70,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
     );
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<ICredentialSummary>): JSX.Element => {
+  renderItem = (itemInfo: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
     const {activeUser, verifiableCredentials} = this.props;
 
     const credentialItem = (
@@ -113,12 +114,13 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
+    console.log('this.props.verifiableCredentials:', this.props.verifiableCredentials);
     return (
       <Container>
         <StatusBar />
         <SwipeListView
           data={this.props.verifiableCredentials}
-          keyExtractor={(itemInfo: ICredentialSummary) => itemInfo.hash}
+          keyExtractor={(itemInfo: CredentialSummary) => itemInfo.hash}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe
