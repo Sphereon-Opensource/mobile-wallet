@@ -114,7 +114,6 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   render() {
-    console.log('this.props.verifiableCredentials:', this.props.verifiableCredentials);
     return (
       <Container>
         <StatusBar />

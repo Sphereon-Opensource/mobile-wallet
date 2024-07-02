@@ -1,7 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 
-import SSIActivityView from '../../components/views/SSIActivityView';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSIIdentitiesView from '../../components/views/SSIIdentitiesView';
 import SSITabView from '../../components/views/SSITabView';
@@ -42,7 +41,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <SSIContactViewItem name={contact.contact.displayName} uri={contact.uri} roles={contact.roles} />
+      <SSIContactViewItem name={contact.contact.displayName} uri={contact.uri} roles={contact.roles} logo={contact.branding?.logo} />
       <SSITabView routes={routes} />
     </Container>
   );
