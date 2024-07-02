@@ -1,5 +1,6 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {NonPersistedIdentity} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '../store/contact.types';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';

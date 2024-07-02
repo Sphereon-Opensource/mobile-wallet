@@ -1,4 +1,12 @@
-import {CorrelationIdentifierType, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
+import {
+  CorrelationIdentifierType,
+  CredentialRole,
+  Identity,
+  PartyTypeType,
+  PartyOrigin,
+  IdentityOrigin,
+  IIssuerBranding,
+} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -38,51 +46,28 @@ export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unk
     dispatch({type: 'CONTACTS_LOADING'});
     try {
       const userContact = await getUserContact();
-      const contacts: Party[] = await getContactsFromStorage();
+      let contacts = await getContactsFromStorage();
 
-      const filledContacts = await Promise.all(
-        contacts.map(async contact => {
-          const correlationIds = contact.identities.map(identity => identity.identifier.correlationId);
-          const brandingPromises = correlationIds.map(async correlationId => {
-            return getIssuerBrandingFromStorage({
-              filter: [{issuerCorrelationId: correlationId}],
-            });
-          });
-          const brandingResults = await Promise.all(brandingPromises);
-          const flattenedBrandingResults = brandingResults.flat();
+      contacts = await Promise.all(contacts.map(fetchBrandingForContact));
 
-          contact.branding = flattenedBrandingResults[0]?.localeBranding?.[0] ?? contact.branding;
-          /**
-           * TODO: ksadjad: Delete the manual assignment
-           */
-          if (contact.contact.displayName.indexOf('Belastingdienst') !== -1) {
-            contact.branding = {
-              logo: {id: 't5645654564', uri: 'https://i.ibb.co/pyZpF8m/Belastingdienst.png', dimensions: {id: '43252345', height: 334, width: 600}},
-              id: '343543534',
-              createdAt: new Date(),
-              lastUpdatedAt: new Date(),
-            };
-          } else if (contact.contact.displayName.indexOf('sphereon') !== -1) {
-            contact.branding = {
-              logo: {id: '643654', uri: 'https://i.ibb.co/NWQQ9kt/sphereon-logo.png'},
-              id: '6756675',
-              createdAt: new Date(),
-              lastUpdatedAt: new Date(),
-            };
-          }
-          return contact;
-        }),
-      );
-
-      const allContacts = [...filledContacts, userContact];
-      dispatch({type: GET_CONTACTS_SUCCESS, payload: [...allContacts, userContact]});
-      return [...allContacts, userContact];
+      const allContacts = [...contacts, userContact];
+      dispatch({type: GET_CONTACTS_SUCCESS, payload: allContacts});
+      return allContacts;
     } catch (error) {
       dispatch({type: GET_CONTACTS_FAILED});
       return Promise.reject(error);
     }
   };
 };
+
+async function fetchBrandingForContact(contact: Party): Promise<Party> {
+  const correlationIds = contact.identities.map(identity => identity.identifier.correlationId);
+  const brandingPromises = correlationIds.map(correlationId => getIssuerBrandingFromStorage({filter: [{issuerCorrelationId: correlationId}]}));
+  const brandingResults = await Promise.all(brandingPromises);
+  const flattenedBrandingResults: IIssuerBranding[] = brandingResults.flat();
+  contact.branding = flattenedBrandingResults[0]?.localeBranding?.[0] ?? contact.branding;
+  return contact;
+}
 
 export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {

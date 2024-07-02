@@ -12,10 +12,10 @@ import {
   IBasicCredentialLocaleBranding,
   IdentityOrigin,
   NonPersistedParty,
-  Party,
   PartyOrigin,
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
+import {Party} from '../../types/store/contact.types';
 import {
   CreateContactEvent,
   OID4VCIMachineEvents,
