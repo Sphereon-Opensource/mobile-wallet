@@ -252,6 +252,7 @@
     "@sphereon/ssi-sdk-ext.did-utils": "0.22.0",
     "@sphereon/ssi-types": "0.26.1-next.132",
     "@sphereon/ssi-sdk.core": "0.26.1-next.132",
+    "@sphereon/ssi-sdk.data-store": "0.26.1-next.132",
     "@sphereon/oid4vci-client": "0.13.0",
     "@sphereon/oid4vci-common": "0.13.0",
     "@sphereon/pex": "3.3.3",
