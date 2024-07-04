@@ -319,8 +319,8 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiateOID4VCI) ||
-    state.matches(OID4VCIMachineStates.createCredentialSelection) ||
+    state.matches(OID4VCIMachineStates.start) ||
+    state.matches(OID4VCIMachineStates.createCredentialsToSelectFrom) ||
     state.matches(OID4VCIMachineStates.getContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
