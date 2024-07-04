@@ -148,7 +148,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
 const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onNext, onBack} = args;
-  const {contact, credentialSelection} = state.context;
+  const {contact, selectedCredentials} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -169,7 +169,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
     params: {
       issuer: contact.contact.displayName,
-      credentialTypes: credentialSelection,
+      credentialTypes: selectedCredentials,
       onSelectType,
       onSelect: onNext,
       onBack,

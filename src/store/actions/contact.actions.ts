@@ -1,4 +1,12 @@
-import {CorrelationIdentifierType, Party, CredentialRole, Identity, PartyTypeType, PartyOrigin, IdentityOrigin} from '@sphereon/ssi-sdk.data-store';
+import {
+  CorrelationIdentifierType,
+  CredentialRole,
+  Identity,
+  PartyTypeType,
+  PartyOrigin,
+  IdentityOrigin,
+  IIssuerBranding,
+} from '@sphereon/ssi-sdk.data-store';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
@@ -30,23 +38,36 @@ import {
 import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
+import {getIssuerBrandingFromStorage} from '../../services/brandingService';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
-    dispatch({type: CONTACTS_LOADING});
-    return getUserContact()
-      .then((userContact: Party) => {
-        return getContactsFromStorage().then((contacts: Array<Party>): Array<Party> => {
-          dispatch({type: GET_CONTACTS_SUCCESS, payload: [...contacts, userContact]});
-          return [...contacts, userContact];
-        });
-      })
-      .catch((error: Error) => {
-        dispatch({type: GET_CONTACTS_FAILED});
-        return Promise.reject(error);
-      });
+    dispatch({type: 'CONTACTS_LOADING'});
+    try {
+      const userContact = await getUserContact();
+      let contacts = await getContactsFromStorage();
+
+      contacts = await Promise.all(contacts.map(fetchBrandingForContact));
+
+      const allContacts = [...contacts, userContact];
+      dispatch({type: GET_CONTACTS_SUCCESS, payload: allContacts});
+      return allContacts;
+    } catch (error) {
+      dispatch({type: GET_CONTACTS_FAILED});
+      return Promise.reject(error);
+    }
   };
 };
+
+async function fetchBrandingForContact(contact: Party): Promise<Party> {
+  const correlationIds: string[] = contact.identities.map(identity => identity.identifier.correlationId);
+  const brandingPromises = correlationIds.map(correlationId => getIssuerBrandingFromStorage({filter: [{issuerCorrelationId: correlationId}]}));
+  const brandingResults = await Promise.all(brandingPromises);
+  const flattenedBrandingResults: IIssuerBranding[] = brandingResults.flat();
+  contact.branding = flattenedBrandingResults[0]?.localeBranding?.[0] ?? contact.branding;
+  return contact;
+}
 
 export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {

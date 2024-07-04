@@ -23,7 +23,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   // TODO rename to identity?
   const {identity} = props;
 
-  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem>) => {
+  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem<any>>) => {
     return (
       <LabelRow>
         <Column>
@@ -51,7 +51,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
           data={identity.metadata}
           renderItem={renderItem}
-          keyExtractor={(item: MetadataItem) => item.id}
+          keyExtractor={(item: MetadataItem<any>) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
         />
