@@ -61,7 +61,7 @@ export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unk
 };
 
 async function fetchBrandingForContact(contact: Party): Promise<Party> {
-  const correlationIds = contact.identities.map(identity => identity.identifier.correlationId);
+  const correlationIds: string[] = contact.identities.map(identity => identity.identifier.correlationId);
   const brandingPromises = correlationIds.map(correlationId => getIssuerBrandingFromStorage({filter: [{issuerCorrelationId: correlationId}]}));
   const brandingResults = await Promise.all(brandingPromises);
   const flattenedBrandingResults: IIssuerBranding[] = brandingResults.flat();

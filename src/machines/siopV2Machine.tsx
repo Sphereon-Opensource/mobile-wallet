@@ -1,6 +1,5 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {DidAuthConfig, Identity} from '@sphereon/ssi-sdk.data-store';
-import {Party} from '../types/store/contact.types';
+import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
 import {siopV2StateNavigationListener} from '../navigation/machines/siopV2StateNavigation';

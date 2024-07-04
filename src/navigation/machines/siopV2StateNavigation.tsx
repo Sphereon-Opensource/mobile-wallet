@@ -21,10 +21,10 @@ import {
   CredentialRole,
   IdentityOrigin,
   NonPersistedParty,
+  Party,
   PartyOrigin,
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
-import {Party} from '../../types/store/contact.types';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';

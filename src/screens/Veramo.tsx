@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party} from '../types/store/contact.types';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {IIdentifier} from '@veramo/core';
 import React, {PureComponent} from 'react';

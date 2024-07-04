@@ -6,8 +6,8 @@ import {
   DidAuthConfig,
   IdentityOrigin,
   NonPersistedIdentity,
+  Party,
 } from '@sphereon/ssi-sdk.data-store';
-import {Party} from '../../types/store/contact.types';
 import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';

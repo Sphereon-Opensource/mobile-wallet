@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -12,11 +13,10 @@ import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
-import {PartyWithBranding} from '../../types/store/contact.types';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
-  contacts: Array<PartyWithBranding>;
+  contacts: Array<Party>;
   deleteContact: (contactId: string) => void;
   activeUser: IUser;
 }
@@ -35,7 +35,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     this.setState({refreshing: false});
   };
 
-  onDelete = async (contact: PartyWithBranding): Promise<void> => {
+  onDelete = async (contact: Party): Promise<void> => {
     const {navigation, deleteContact} = this.props;
 
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
@@ -55,11 +55,11 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     });
   };
 
-  onItemPress = async (contact: PartyWithBranding): Promise<void> => {
+  onItemPress = async (contact: Party): Promise<void> => {
     this.props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact});
   };
 
-  renderItem = (itemInfo: ListRenderItemInfo<PartyWithBranding>): JSX.Element => {
+  renderItem = (itemInfo: ListRenderItemInfo<Party>): JSX.Element => {
     const {activeUser, contacts} = this.props;
     const contactItem = (
       <SSIContactViewItem
@@ -97,7 +97,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       <Container>
         <SwipeListView
           data={this.props.contacts}
-          keyExtractor={(itemInfo: PartyWithBranding) => itemInfo.id}
+          keyExtractor={(itemInfo: Party) => itemInfo.id}
           renderItem={this.renderItem}
           closeOnRowOpen
           closeOnRowBeginSwipe

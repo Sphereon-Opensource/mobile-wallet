@@ -12,10 +12,10 @@ import {
   IBasicCredentialLocaleBranding,
   IdentityOrigin,
   NonPersistedParty,
+  Party,
   PartyOrigin,
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
-import {Party} from '../../types/store/contact.types';
 import {
   CreateContactEvent,
   OID4VCIMachineEvents,
@@ -148,7 +148,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
 const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onNext, onBack} = args;
-  const {contact, credentialSelection} = state.context;
+  const {contact, selectedCredentials} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -169,7 +169,7 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     screen: ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE,
     params: {
       issuer: contact.contact.displayName,
-      credentialTypes: credentialSelection,
+      credentialTypes: selectedCredentials,
       onSelectType,
       onSelect: onNext,
       onBack,
@@ -319,8 +319,8 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (
-    state.matches(OID4VCIMachineStates.initiateOID4VCI) ||
-    state.matches(OID4VCIMachineStates.createCredentialSelection) ||
+    state.matches(OID4VCIMachineStates.start) ||
+    state.matches(OID4VCIMachineStates.createCredentialsToSelectFrom) ||
     state.matches(OID4VCIMachineStates.getContact) ||
     state.matches(OID4VCIMachineStates.transitionFromSetup) ||
     state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
