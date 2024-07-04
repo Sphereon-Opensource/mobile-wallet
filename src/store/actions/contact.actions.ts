@@ -39,7 +39,7 @@ import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
-import {Party} from '../../types/store/contact.types';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {

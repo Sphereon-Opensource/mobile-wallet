@@ -1,4 +1,4 @@
-import {Party} from '../../types/store/contact.types';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 import {SortOrder} from '../../types';
 import {

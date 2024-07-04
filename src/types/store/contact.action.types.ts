@@ -4,8 +4,8 @@ import {
   NonPersistedParty,
   NonPersistedContact,
   NonPersistedPartyType as NonPersistedContactType,
+  Party,
 } from '@sphereon/ssi-sdk.data-store';
-import {Party} from './contact.types';
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
 export type CONTACTS_LOADING = typeof CONTACTS_LOADING;
