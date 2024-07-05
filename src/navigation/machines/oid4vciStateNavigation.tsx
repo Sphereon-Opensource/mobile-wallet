@@ -10,6 +10,7 @@ import {
   CorrelationIdentifierType,
   CredentialRole,
   IBasicCredentialLocaleBranding,
+  ICredentialBranding,
   IdentityOrigin,
   NonPersistedParty,
   Party,
@@ -29,8 +30,16 @@ import {
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, RootState, ScreenRoutesEnum} from '../../types';
+import {CredentialSummary, toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {CREDENTIALS_LOADING, GET_CREDENTIALS_FAILED, GET_CREDENTIALS_SUCCESS} from '../../types/store/credential.action.types';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {UniqueVerifiableCredential} from '@veramo/core';
+import {ibGetCredentialBranding} from '../../agent';
+import {getCredentialIssuerContact} from '../../utils';
+import {getVerifiableCredentials} from '../../store/actions/credential.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -261,7 +270,7 @@ const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
   debug('Stopping oid4vci machine...');
   oid4vciMachine.stop();
   debug('Stopped oid4vci machine');
-
+  await getVerifiableCredentials();
   navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
     screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,
   });
