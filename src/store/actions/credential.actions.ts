@@ -1,4 +1,4 @@
-import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
@@ -81,9 +81,10 @@ export const dispatchVerifiableCredential = (
     dispatch({type: CREDENTIALS_LOADING});
     const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
     ibGetCredentialBranding({filter: [{vcHash: credentialHash}]})
-      .then((credentialBranding: Array<ICredentialBranding>) =>
-        toCredentialSummary({verifiableCredential: mappedVc, hash: credentialHash}, credentialBranding?.[0]?.localeBranding),
-      )
+      .then((credentialBranding: Array<ICredentialBranding>) => {
+        const issuer: Party | undefined = getCredentialIssuerContact(mappedVc);
+        return toCredentialSummary({verifiableCredential: mappedVc, hash: credentialHash}, credentialBranding?.[0]?.localeBranding, issuer);
+      })
       .then((summary: CredentialSummary): void => {
         dispatch({
           type: STORE_CREDENTIAL_SUCCESS,
