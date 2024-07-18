@@ -26,6 +26,7 @@ export type StackParamList = {
   Main: Record<string, never>;
   Welcome: IHasOnboardingContext & IHasOnNextProps;
   TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
+  TermsOfServiceDetail: Record<string, never>;
   PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
   PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
   PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
@@ -82,6 +83,8 @@ export interface ITermsOfServiceProps {
   onAcceptTerms: (accept: boolean) => Promise<void>;
   onAcceptPrivacy: (accept: boolean) => Promise<void>;
 }
+
+export interface ITermsOfServiceDetailProps {}
 
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>;
@@ -221,6 +224,7 @@ export enum ScreenRoutesEnum {
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
   TERMS_OF_SERVICE = 'TermsOfService',
+  TERMS_OF_SERVICE_DETAIL = 'TermsOfServiceDetail',
   PERSONAL_DATA = 'PersonalData',
   PIN_CODE_SET = 'PinCodeSet',
   PIN_CODE_VERIFY = 'PinCodeVerify',

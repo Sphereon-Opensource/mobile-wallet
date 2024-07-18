@@ -17,6 +17,7 @@ import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
 import SSIPinCodeVerifyScreen from '../screens/Onboarding/SSIPinCodeVerifyScreen';
 import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
 import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
+import SSITermsOfServiceDetailScreen from '../screens/Onboarding/SSITermsOfServiceDetailScreen';
 import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
@@ -467,7 +468,22 @@ export const OnboardingStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               showProfileIcon={false}
-              headerSubTitle={translate('terms_of_service_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.TERMS_OF_SERVICE_DETAIL}
+        component={SSITermsOfServiceDetailScreen}
+        options={({route}) => ({
+          headerTitle: translate('terms_of_service_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // onBack={route.params.onBack}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              showProfileIcon={false}
             />
           ),
         })}
