@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useBackHandler} from '@react-native-community/hooks';
 import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDefinition} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
-import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
@@ -21,7 +21,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
+import {getCredentialIssuerContact, getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
@@ -174,7 +174,8 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
-        const credentialSummary: CredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+        const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.verifiableCredential);
+        const credentialSummary: CredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding, issuer);
         const rawCredential: OriginalVerifiableCredential = getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
