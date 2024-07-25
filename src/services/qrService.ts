@@ -81,7 +81,9 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
   const connection: NonPersistedConnection = {
     type: ConnectionType.SIOPv2,
     config: {
-      identifier,
+      idOpts: {
+        identifier,
+      },
       stateId: (args.qrData as IQrDidSiopAuthenticationRequest).state,
       redirectUrl: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl,
       sessionId: (args.qrData as IQrDidSiopAuthenticationRequest).redirectUrl + identifier.did,

@@ -39,7 +39,7 @@ const createUserAndIdentity = async (
 
   const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};
-  const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation(identifier, ctx, 'authentication');
+  const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation({identifier, vmRelationship: 'authentication'}, ctx);
   const verifiableCredential: VerifiableCredential = await createVerifiableCredential({
     credential: {
       ...cred,

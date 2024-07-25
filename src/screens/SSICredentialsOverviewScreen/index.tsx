@@ -17,7 +17,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {getOriginalVerifiableCredential} from '../../utils/CredentialUtils';
+import {getOriginalVerifiableCredential} from '../../utils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 

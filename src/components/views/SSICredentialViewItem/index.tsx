@@ -14,7 +14,7 @@ import {
   SSICredentialViewItemTitleCaptionStyled as TitleCaption,
 } from '../../../styles/components';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {toLocalDateString, toLocalDateTimeString} from '../../../utils/DateUtils';
+import {toLocalDateString, toLocalDateTimeString} from '../../../utils';
 import {View} from 'react-native';
 
 // TODO fix to many properties

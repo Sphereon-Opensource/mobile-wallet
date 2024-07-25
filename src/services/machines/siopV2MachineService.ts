@@ -19,14 +19,19 @@ import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 
-export const createConfig = async (context: Pick<SiopV2MachineContext, 'url'>): Promise<Omit<DidAuthConfig, 'stateId' | 'identifier'>> => {
-  const {url} = context;
+export const createConfig = async (
+  context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
+): Promise<Omit<DidAuthConfig, 'stateId' | 'identifier'>> => {
+  const {url, identifier} = context;
 
   if (!url) {
     return Promise.reject(Error('Missing request uri in context'));
   }
 
   return {
+    idOpts: {
+      identifier,
+    },
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
     sessionId: uuidv4(),

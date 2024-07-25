@@ -41,7 +41,11 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
               (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
-            return await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding, getCredentialIssuerContact(uniqueVC.verifiableCredential));
+            return await toCredentialSummary(
+              uniqueVC,
+              credentialBranding?.localeBranding,
+              await getCredentialIssuerContact(uniqueVC.verifiableCredential),
+            );
           }),
         );
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
