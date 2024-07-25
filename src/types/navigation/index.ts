@@ -3,9 +3,10 @@ import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
-import {ICredentialSelection, ICredentialSummary, ICredentialTypeSelection} from '../credential';
+import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -101,7 +102,7 @@ export interface ICredentialsRequiredProps {
 }
 
 export interface ICredentialDetailsProps {
-  credential: ICredentialSummary;
+  credential: CredentialSummary;
   primaryAction?: IButton;
   secondaryAction?: IButton;
   showActivity?: boolean;

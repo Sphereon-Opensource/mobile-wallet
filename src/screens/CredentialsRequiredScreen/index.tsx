@@ -1,28 +1,29 @@
-import React, {FC, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useBackHandler} from '@react-native-community/hooks';
 import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDefinition} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
-import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential} from '@veramo/core';
 import {JSONPath} from '@astronautlabs/jsonpath';
+import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
+
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {ibGetCredentialBranding} from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
-import {generateDigest, getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
-import {toCredentialSummary} from '../../utils/mappers/credential/CredentialMapper';
+import {generateDigest, getCredentialIssuerContact, getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
 import {
   CredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ICredentialSummary, ScreenRoutesEnum, StackParamList} from '../../types';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
@@ -52,6 +53,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
       setAllUniqueCredentials(uniqueVCs);
+      console.log(`unique creds length:` + uniqueVCs.length);
     });
     setMatchingDescriptors(
       new Map(
@@ -171,7 +173,8 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
-        const credentialSummary: ICredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding);
+        const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.verifiableCredential);
+        const credentialSummary: CredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding, issuer);
         const rawCredential: OriginalVerifiableCredential = getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!

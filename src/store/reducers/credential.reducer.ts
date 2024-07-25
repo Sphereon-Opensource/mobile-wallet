@@ -1,4 +1,3 @@
-import {ICredentialSummary} from '../../types';
 import {
   CLEAR_CREDENTIALS,
   CREATE_CREDENTIAL_FAILED,
@@ -13,6 +12,7 @@ import {
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
 import {ICredentialState} from '../../types/store/credential.types';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const initialState: ICredentialState = {
   loading: false,
@@ -58,7 +58,7 @@ const credentialReducer = (state: ICredentialState = initialState, action: Crede
     case DELETE_CREDENTIAL_SUCCESS: {
       return {
         ...state,
-        verifiableCredentials: state.verifiableCredentials.filter((vc: ICredentialSummary) => vc.hash !== action.payload),
+        verifiableCredentials: state.verifiableCredentials.filter((vc: CredentialSummary) => vc.hash !== action.payload),
         loading: false,
       };
     }

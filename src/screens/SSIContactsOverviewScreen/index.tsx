@@ -61,7 +61,14 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 
   renderItem = (itemInfo: ListRenderItemInfo<Party>): JSX.Element => {
     const {activeUser, contacts} = this.props;
-    const contactItem = <SSIContactViewItem name={itemInfo.item.contact.displayName} uri={itemInfo.item.uri} roles={itemInfo.item.roles} />;
+    const contactItem = (
+      <SSIContactViewItem
+        name={itemInfo.item.contact.displayName}
+        uri={itemInfo.item.uri}
+        roles={itemInfo.item.roles}
+        logo={itemInfo.item.branding?.logo}
+      />
+    );
     const backgroundStyle = {
       backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };

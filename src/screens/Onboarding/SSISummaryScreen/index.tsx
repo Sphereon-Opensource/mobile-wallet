@@ -9,8 +9,9 @@ import SSICredentialDetailsView from '../../../components/views/SSICredentialDet
 import SSITabView from '../../../components/views/SSITabView';
 import {translate} from '../../../localization/Localization';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
-import {ICredentialDetailsRow, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {backgroundColors} from '@sphereon/ui-components.core';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 
@@ -35,7 +36,7 @@ const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
-  const getProperties = (): Array<ICredentialDetailsRow> => {
+  const getProperties = (): Array<CredentialDetailsRow> => {
     return [
       {
         id: uuidv4(),

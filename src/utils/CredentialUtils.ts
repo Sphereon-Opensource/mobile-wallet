@@ -1,10 +1,8 @@
 import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
 import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
-import {CredentialStatus} from '@sphereon/ui-components.core';
 import store from '../store';
-import {ICredentialSummary, IUser, IUserIdentifier} from '../types';
-import {makeEpochMilli} from './DateUtils';
+import {IUser, IUserIdentifier} from '../types';
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -54,47 +52,6 @@ export const getOriginalVerifiableCredential = (vc: VerifiableCredential | ICred
     : CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
 };
 
-export const getCredentialStatus = (credential: ICredential | VerifiableCredential | ICredentialSummary): CredentialStatus => {
-  if (isRevoked()) {
-    return CredentialStatus.REVOKED;
-  } else if (isExpired(credential.expirationDate)) {
-    return CredentialStatus.EXPIRED;
-  }
-
-  return CredentialStatus.VALID;
-};
-
-/**
- * @return
- *  true means the credential is revoked.
- *  false means the credential is not revoked.
- */
-export const isRevoked = (): boolean => {
-  return false;
-  // TODO implement
-  // {
-  //  id: 'https://revocation-sphereon.sphereon.io/services/credentials/wallet-dev#2022021400',
-  //  type: 'RevocationList2022021401Status',
-  //  revocationListIndex: '2022021402',
-  //  revocationListCredential: 'https://revocation-sphereon.sphereon.io/services/credentials/wallet-dev#2022021400',
-  // }
-};
-
-/**
- * @param value The number of milliseconds between 1 January 1970 00:00:00 UTC and the given date or a formatted date required by Date(...)
- * @return
- *  true means the credential is expired.
- *  false means the credential is not expired.
- */
-export const isExpired = (value?: string | number): boolean => {
-  if (!value) {
-    return false;
-  }
-  let expirationDate: number = typeof value === 'string' ? new Date(value).valueOf() : value;
-  expirationDate = makeEpochMilli(expirationDate);
-  return expirationDate < Date.now();
-};
-
 export const translateCorrelationIdToName = (correlationId: string): string => {
   const contacts: Array<Party> = store.getState().contact.contacts;
   const activeUser: IUser | undefined = store.getState().user.activeUser;
@@ -111,4 +68,10 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
   }
 
   return correlationId;
+};
+
+export const getCredentialIssuerContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  const contacts: Array<Party> = store.getState().contact.contacts;
+  const issuer: string = typeof vc.issuer === 'string' ? vc.issuer : vc.issuer?.id ?? vc.issuer?.name;
+  return contacts.find((contact: Party) => contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === issuer));
 };

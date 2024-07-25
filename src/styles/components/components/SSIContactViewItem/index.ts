@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import {SSIPlaceholderLogo} from '@sphereon/ui-components.ssi-react-native';
+import {SSILogo, SSIPlaceholderLogo} from '@sphereon/ui-components.ssi-react-native';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {SSITextH5LightStyled} from '../../fonts';
 
@@ -28,7 +28,3 @@ export const SSIContactViewItemContactDetailsContainerStyled = styled.View`
 export const SSIContactViewItemContactUriCaptionStyled = styled(SSITextH5LightStyled)`
   opacity: 0.8;
 `;
-
-export const SSIContactViewItemPlaceholderLogoStyled = styled(SSIPlaceholderLogo).attrs({
-  size: 26,
-})``;

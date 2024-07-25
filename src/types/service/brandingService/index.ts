@@ -9,7 +9,3 @@ export interface IAddCredentialBrandingArgs {
 export interface IRemoveCredentialBrandingArgs {
   filter: FindCredentialBrandingArgs;
 }
-
-export interface ISelectAppLocaleBrandingArgs {
-  localeBranding?: Array<IBasicCredentialLocaleBranding | IBasicIssuerLocaleBranding>;
-}

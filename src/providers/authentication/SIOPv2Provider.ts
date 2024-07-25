@@ -1,5 +1,5 @@
 import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
+import {getIdentifier, getKey, determineKid} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
@@ -137,14 +137,16 @@ export const siopSendAuthorizationResponse = async (
     identifier = await getIdentifier(presentationsAndDefs[0].identifierOpts, agentContext);
     presentationSubmission = presentationsAndDefs[0].presentationSubmission;
   }
-  const kid: string = (await getKey(identifier, 'authentication', session.context)).kid;
+  const key = await getKey({identifier, vmRelationship: 'authentication'}, session.context);
+  const kmsKeyRef = key.kid;
+  const kid = await determineKid({key, idOpts: {identifier, kmsKeyRef, verificationMethodSection: 'authentication'}}, session.context);
 
   debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
   debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
   const response = session.sendAuthorizationResponse({
     ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
     ...(presentationSubmission && {presentationSubmission}),
-    responseSignerOpts: {identifier, kid},
+    responseSignerOpts: {identifier, kmsKeyRef, kid},
   });
   debug(`Response: `, response);
 

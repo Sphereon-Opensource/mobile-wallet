@@ -3,7 +3,7 @@ import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, St
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
 import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, URI} from '@sphereon/did-auth-siop';
-import {Party, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IQrData} from '../../qr';

@@ -182,7 +182,6 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     const {loading} = this.props;
     const {isCreateDisabled} = this.props.route.params;
     const {contactAlias, hasConsent} = this.state;
-
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Container>

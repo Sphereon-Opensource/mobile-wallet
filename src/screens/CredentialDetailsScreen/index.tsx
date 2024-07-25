@@ -5,8 +5,7 @@ import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/u
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
-import {getCredentialStatus} from '../../utils';
-import {getIssuerLogo} from '../../utils/mappers/credential/CredentialMapper';
+import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {translate} from '../../localization/Localization';
 import {
   CredentialDetailsScreenButtonContainer as ButtonContainer,
@@ -16,7 +15,7 @@ import {
   CredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ICredentialSummary, ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
+import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
 import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
@@ -26,7 +25,7 @@ enum CredentialTabRoutesEnum {
   ACTIVITY = 'activity',
 }
 
-const getCredentialCardLogo = (credential: ICredentialSummary): ImageAttributes | undefined => {
+const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes | undefined => {
   if (credential.branding?.logo?.uri || credential.branding?.logo?.dataUri) {
     return credential.branding.logo;
   }

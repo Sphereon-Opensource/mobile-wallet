@@ -1,10 +1,10 @@
 import {
   NonPersistedIdentity,
-  Party,
   Identity,
   NonPersistedParty,
   NonPersistedContact,
   NonPersistedPartyType as NonPersistedContactType,
+  Party,
 } from '@sphereon/ssi-sdk.data-store';
 
 export const CONTACTS_LOADING = '[CONTACT] CONTACTS_LOADING';
