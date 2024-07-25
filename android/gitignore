@@ -10,6 +10,18 @@ buck-out/
 *.keystore
 !debug.keystore
 
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+*.hprof
+.cxx/
+
+# Bundle artifacts
+*.jsbundle
 
 # Expo
 .expo/
