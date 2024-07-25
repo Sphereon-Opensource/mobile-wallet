@@ -1,4 +1,4 @@
-import {CameraView} from 'expo-camera/next';
+import {CameraView} from 'expo-camera';
 import styled from 'styled-components/native';
 
 export const SSIQRReaderScreenScannerStyled = styled(CameraView).attrs({

@@ -92,7 +92,7 @@ android {
         applicationId "com.sphereon.ssi.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
+        versionCode 16
         versionName "0.3.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
@@ -100,6 +100,9 @@ android {
         ]
     }
 
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
 
     signingConfigs {
         debug {
