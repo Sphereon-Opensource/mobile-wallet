@@ -245,6 +245,8 @@
     "metro": "~0.80.8",
     "metro-resolver": "~0.80.8",
     "metro-config": "~0.80.8",
+    "@expo/config-plugins": "~8.0.0",
+    "@expo/prebuild-config": "~7.0.0",
     "**/@types/react": "~18.2.79",
     "**/expo-random": "~14.0.1",
     "ajv": "^8.12.0",
