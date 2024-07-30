@@ -20,8 +20,6 @@ PODS:
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
-  - ExpoCrypto (13.0.2):
-    - ExpoModulesCore
   - ExpoFileSystem (17.0.1):
     - ExpoModulesCore
   - ExpoFont (12.0.9):
@@ -102,6 +100,7 @@ PODS:
   - MMKV (1.2.13):
     - MMKVCore (~> 1.2.13)
   - MMKVCore (1.2.16)
+  - OpenSSL-Universal (3.1.6000)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1056,8 +1055,6 @@ PODS:
     - Yoga
   - react-native-fingerprint-scanner (6.0.0):
     - React
-  - react-native-get-random-values (1.11.0):
-    - React-Core
   - react-native-linear-gradient-text (1.2.8):
     - DoubleConversion
     - glog
@@ -1106,6 +1103,29 @@ PODS:
   - react-native-pure-jwt (3.0.2):
     - JWT (= 3.0.0-beta.12)
     - React
+  - react-native-quick-crypto (0.7.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - OpenSSL-Universal
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-quick-sqlite (8.1.0):
     - DoubleConversion
     - glog
@@ -1437,8 +1457,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNSecureRandom (1.0.1):
-    - React
   - RNShare (10.2.1):
     - React-Core
   - RNShareMenu (6.0.0):
@@ -1471,7 +1489,6 @@ DEPENDENCIES:
   - Expo (from `../node_modules/expo`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
-  - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
@@ -1513,11 +1530,11 @@ DEPENDENCIES:
   - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-fingerprint-scanner (from `../node_modules/react-native-fingerprint-scanner`)
-  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-linear-gradient-text (from `../node_modules/react-native-linear-gradient-text`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
+  - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
   - react-native-quick-sqlite (from `../node_modules/react-native-quick-sqlite`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1552,7 +1569,6 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNSecureRandom (from `../node_modules/react-native-securerandom`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -1569,6 +1585,7 @@ SPEC REPOS:
     - libwebp
     - MMKV
     - MMKVCore
+    - OpenSSL-Universal
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
@@ -1589,8 +1606,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-asset/ios"
   ExpoCamera:
     :path: "../node_modules/expo-camera/ios"
-  ExpoCrypto:
-    :path: "../node_modules/expo-crypto/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
@@ -1670,8 +1685,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-fingerprint-scanner:
     :path: "../node_modules/react-native-fingerprint-scanner"
-  react-native-get-random-values:
-    :path: "../node_modules/react-native-get-random-values"
   react-native-linear-gradient-text:
     :path: "../node_modules/react-native-linear-gradient-text"
   react-native-mmkv-storage:
@@ -1680,6 +1693,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-pure-jwt:
     :path: "../node_modules/react-native-pure-jwt"
+  react-native-quick-crypto:
+    :path: "../node_modules/react-native-quick-crypto"
   react-native-quick-sqlite:
     :path: "../node_modules/react-native-quick-sqlite"
   react-native-randombytes:
@@ -1748,8 +1763,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSecureRandom:
-    :path: "../node_modules/react-native-securerandom"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNShareMenu:
@@ -1774,7 +1787,6 @@ SPEC CHECKSUMS:
   Expo: 8b7948e45627e848c2d7b6be7cf5851a505aef19
   ExpoAsset: 323700f291684f110fb55f0d4022a3362ea9f875
   ExpoCamera: a5d000b22cd7dfd2c5904ed960e549de42c96da0
-  ExpoCrypto: 156078f266bf28f80ecf5e2a9c3a0d6ffce07a1c
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: e7f2275c10ca8573c991e007329ad6bf98086485
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
@@ -1791,6 +1803,7 @@ SPEC CHECKSUMS:
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
   MMKVCore: 9cfef4c48c6c46f66226fc2e4634d78490206a48
+  OpenSSL-Universal: f8ff60e85501991636ffc3d184078d7526a27ff7
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4
   RCTRequired: d530a0f489699c8500e944fde963102c42dcd0c2
@@ -1818,11 +1831,11 @@ SPEC CHECKSUMS:
   react-native-app-auth: fd1eaa667c0bc014199456d14a6440cb74de814e
   react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
-  react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-linear-gradient-text: e5c4b82093a7c9858dc3ffc059a10be0ff8abf2d
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
+  react-native-quick-crypto: de56673e1647dbb9d67351c5e0afe7bd2327e94a
   react-native-quick-sqlite: 7bccedbaa812b3a154b1505d8d1db4c12842e60b
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
@@ -1857,7 +1870,6 @@ SPEC CHECKSUMS:
   RNPermissions: 2d80aab8cf15a2dcf5be697552bfdd6409c3e3d3
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
-  RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec

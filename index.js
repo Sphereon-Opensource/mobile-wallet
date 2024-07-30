@@ -1,6 +1,6 @@
 import './shim';
 import 'reflect-metadata'; // needed for migrations
-import 'react-native-get-random-values';
+//import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import 'fast-text-encoding';
 import 'react-native-gesture-handler';
