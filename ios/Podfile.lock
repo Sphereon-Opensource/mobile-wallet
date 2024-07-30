@@ -32,8 +32,29 @@ PODS:
     - ExpoModulesCore
   - ExpoLocalization (15.0.3):
     - ExpoModulesCore
-  - ExpoModulesCore (0.4.10):
+  - ExpoModulesCore (1.12.20):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTAppDelegate
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - ExpoRandom (14.0.1):
     - ExpoModulesCore
   - EXSplashScreen (0.27.5):
@@ -1456,7 +1477,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoLocalization (from `../node_modules/expo-localization/ios`)
-  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -1581,7 +1602,7 @@ EXTERNAL SOURCES:
   ExpoLocalization:
     :path: "../node_modules/expo-localization/ios"
   ExpoModulesCore:
-    :path: "../node_modules/expo-modules-core/ios"
+    :path: "../node_modules/expo-modules-core"
   ExpoRandom:
     :path: "../node_modules/expo-random/ios"
   EXSplashScreen:
@@ -1759,7 +1780,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
   ExpoLinearGradient: 8cec4a09426d8934c433e83cb36262d72c667fce
   ExpoLocalization: f04eeec2e35bed01ab61c72ee1768ec04d093d01
-  ExpoModulesCore: c9438f6add0fb7b04b7c64eb97a833d2752a7834
+  ExpoModulesCore: 5440e96a8ee014f4fd88e77264985fd0a65f5f8c
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
   EXSplashScreen: fbf0ec78e9cee911df188bf17b4fe51d15a84b87
   FBLazyVector: 7e977dd099937dc5458851233141583abba49ff2

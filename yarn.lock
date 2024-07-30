@@ -4490,6 +4490,7 @@ __metadata:
     expo-fs: "npm:^0.2.2"
     expo-linear-gradient: "npm:~13.0.2"
     expo-localization: "npm:~15.0.3"
+    expo-modules-core: "npm:~1.12.20"
     expo-random: "npm:~14.0.1"
     expo-splash-screen: "npm:~0.27.5"
     expo-status-bar: "npm:~1.12.1"
@@ -11005,6 +11006,15 @@ __metadata:
     compare-versions: "npm:^3.4.0"
     invariant: "npm:^2.2.4"
   checksum: 10c0/dfcc1a76ae103a4906698a539af8c8a37d9ec771b5c93c154754b614e7aeff0a72ab2bb639e646d915b81fb76300295c1cac0b20a36df62a25b1daef93561498
+  languageName: node
+  linkType: hard
+
+"expo-modules-core@npm:~1.12.20":
+  version: 1.12.20
+  resolution: "expo-modules-core@npm:1.12.20"
+  dependencies:
+    invariant: "npm:^2.2.4"
+  checksum: 10c0/f4b5a5c6b54b1fd8bd8ce896ffbbbc50cd0e25d7d55e16441c1c63da770f1f51aef16f7b9e4be745c921af48b99878d3ba14f9372cba6155119388060cce5351
   languageName: node
   linkType: hard
 

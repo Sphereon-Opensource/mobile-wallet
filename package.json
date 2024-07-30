@@ -96,6 +96,7 @@
     "expo-fs": "^0.2.2",
     "expo-linear-gradient": "~13.0.2",
     "expo-localization": "~15.0.3",
+    "expo-modules-core": "~1.12.20",
     "expo-random": "~14.0.1",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",

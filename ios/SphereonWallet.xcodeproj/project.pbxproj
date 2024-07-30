@@ -11,7 +11,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1FEBF9952AC8E56A000788CD /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		2826BDC0B91F47E2B6589CC9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14E6050A725749199DD4E393 /* Poppins-ThinItalic.ttf */; };
 		38B98A3725254470B3F184DD /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
@@ -31,9 +30,9 @@
 		CE59D921DD7844F4AA9943E3 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDC004113EFB4F998C415868 /* Poppins-SemiBold.ttf */; };
 		D2987F3EE8944F0C928F3EDD /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46404C6F56FA466B9D06B883 /* Poppins-Light.ttf */; };
 		D2F63BEDFEFD473D9C3A98D3 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */; };
-		DB5A4D9F03B4884822FE8A7A /* libPods-SphereonWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E96A50EA9E3C7A7EA6530787 /* libPods-SphereonWallet.a */; };
 		E365D3F86ECD4DA8836A484E /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21458FEC64BF492DB6D67A51 /* Poppins-ExtraLight.ttf */; };
 		EEEF7E5E8E854D3CA6A0280C /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4686824566EC48CDB402A94F /* Poppins-LightItalic.ttf */; };
+		F619DF660D49E5F06B66225F /* libPods-SphereonWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52C42AE9BD7B54924BB480E7 /* libPods-SphereonWallet.a */; };
 		F932577EF9A841469AFF3D14 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D6D6E89FD324595B1F599A8 /* Poppins-Regular.ttf */; };
 /* End PBXBuildFile section */
 
@@ -55,11 +54,10 @@
 		21458FEC64BF492DB6D67A51 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		26A4DF3554BA45199018E709 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		3315BB025A664F5D8B65D99C /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
-		43FCB47EF4155F01FBC4DC05 /* Pods-SphereonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.release.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.release.xcconfig"; sourceTree = "<group>"; };
-		45F4BF71632D289DC438D323 /* Pods-SphereonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.debug.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		46404C6F56FA466B9D06B883 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		4686824566EC48CDB402A94F /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		46F0421A11A5981FF2784C6B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SphereonWallet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		52C42AE9BD7B54924BB480E7 /* libPods-SphereonWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SphereonWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5674539E296F49AB8BD1A1DA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		56CBB080799F4E3EB87DEC65 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SphereonWallet/noop-file.swift"; sourceTree = "<group>"; };
 		5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -67,10 +65,11 @@
 		87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		8FD2B11C8F05446499AEB7E0 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = SphereonWallet/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B820A5EFF6B7B536C25DB7AA /* Pods-SphereonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.debug.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		CA4CEBC5AC92444CDCF9B6DB /* Pods-SphereonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.release.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.release.xcconfig"; sourceTree = "<group>"; };
 		D6BDFE0FD163426C8636F341 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		E563FB7DD4D041CD99944C2B /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
-		E96A50EA9E3C7A7EA6530787 /* libPods-SphereonWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SphereonWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-SphereonWallet/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		FD4AE482C461467BB0F43D71 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -82,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB5A4D9F03B4884822FE8A7A /* libPods-SphereonWallet.a in Frameworks */,
+				F619DF660D49E5F06B66225F /* libPods-SphereonWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +112,7 @@
 				1F6EB0CC2A576C670077011A /* libReact-RCTLinking.a */,
 				1F6EB0CA2A576BE90077011A /* node_modules */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E96A50EA9E3C7A7EA6530787 /* libPods-SphereonWallet.a */,
+				52C42AE9BD7B54924BB480E7 /* libPods-SphereonWallet.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,8 +168,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				45F4BF71632D289DC438D323 /* Pods-SphereonWallet.debug.xcconfig */,
-				43FCB47EF4155F01FBC4DC05 /* Pods-SphereonWallet.release.xcconfig */,
+				B820A5EFF6B7B536C25DB7AA /* Pods-SphereonWallet.debug.xcconfig */,
+				CA4CEBC5AC92444CDCF9B6DB /* Pods-SphereonWallet.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -215,14 +214,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SphereonWallet" */;
 			buildPhases = (
-				F922861396FF64D717CB4F4C /* [CP] Check Pods Manifest.lock */,
+				E82D8F3E681F0A18200D83B2 /* [CP] Check Pods Manifest.lock */,
 				0E87B95D25E799A23DB4C374 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				BC9D61A6BBCAF1BED2BA718D /* [CP] Embed Pods Frameworks */,
-				DCE2213BBFDAADBEACDB2781 /* [CP] Copy Pods Resources */,
+				82DDE1842B2F85164B00D4CF /* [CP] Embed Pods Frameworks */,
+				E6E58F5D072388C7FF686778 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -270,7 +269,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FEBF9952AC8E56A000788CD /* BuildFile in Resources */,
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
@@ -333,7 +331,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SphereonWallet/expo-configure-project.sh\"\n";
 		};
-		BC9D61A6BBCAF1BED2BA718D /* [CP] Embed Pods Frameworks */ = {
+		82DDE1842B2F85164B00D4CF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -350,7 +348,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DCE2213BBFDAADBEACDB2781 /* [CP] Copy Pods Resources */ = {
+		E6E58F5D072388C7FF686778 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -367,7 +365,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F922861396FF64D717CB4F4C /* [CP] Check Pods Manifest.lock */ = {
+		E82D8F3E681F0A18200D83B2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -408,7 +406,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 45F4BF71632D289DC438D323 /* Pods-SphereonWallet.debug.xcconfig */;
+			baseConfigurationReference = B820A5EFF6B7B536C25DB7AA /* Pods-SphereonWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -539,7 +537,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43FCB47EF4155F01FBC4DC05 /* Pods-SphereonWallet.release.xcconfig */;
+			baseConfigurationReference = CA4CEBC5AC92444CDCF9B6DB /* Pods-SphereonWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
