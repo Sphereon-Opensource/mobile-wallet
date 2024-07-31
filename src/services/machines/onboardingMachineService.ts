@@ -10,6 +10,8 @@ import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {storagePersistPin} from '../storageService';
 import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
 import {_ExtendedIKey} from '@veramo/utils';
+import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 
 export const setupWallet = async (
   context: Pick<OnboardingMachineContext, 'pinCode' | 'personalData' | 'credentialData'>,
@@ -62,7 +64,12 @@ const createUserAndIdentity = async (
       kid: key?.meta?.verificationMethod?.id,
     },
   });
-  await storeVerifiableCredential({vc: verifiableCredential});
+  await storeVerifiableCredential({
+    credentialRole: CredentialRole.ISSUER,
+    issuerCorrelationId: identifier.did,
+    issuerCorrelationType: CredentialCorrelationType.DID,
+    vc: verifiableCredential,
+  });
 
   const user: BasicUser = {
     ...personalData,

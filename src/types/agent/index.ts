@@ -7,6 +7,7 @@ import {IIssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {IOID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IMachineStatePersistence} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {ISDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
+import {ICredentialStore} from '@sphereon/ssi-sdk.credential-store';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
@@ -21,4 +22,5 @@ export type TAgentTypes = IDIDManager &
   IIssuanceBranding &
   IOID4VCIHolder &
   IMachineStatePersistence &
+  ICredentialStore &
   ISDJwtPlugin;

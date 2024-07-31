@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {IIdentifier} from '@veramo/core';
 import React, {PureComponent} from 'react';
@@ -129,7 +129,7 @@ class Veramo extends PureComponent<IProps, IState> {
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: verifiableCredential,
-                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
+                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential), CredentialRole.HOLDER),
               });
             }}
           />

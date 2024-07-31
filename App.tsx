@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {NavigationContainer} from '@react-navigation/native';
 // import crypto from '@sphereon/isomorphic-webcrypto';
 
