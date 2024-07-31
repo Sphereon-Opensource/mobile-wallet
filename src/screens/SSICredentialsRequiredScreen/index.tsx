@@ -4,7 +4,6 @@ import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDef
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -21,19 +20,21 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {getCredentialIssuerContact, getMatchingUniqueVerifiableCredential, getOriginalVerifiableCredential} from '../../utils';
+import {getCredentialIssuerContact, getMatchingUniqueDigitalCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {VerifiableCredential} from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
-  const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueVerifiableCredential> | null>(null);
+  const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueDigitalCredential> | null>(null);
   const [allOriginalCredentials, setAllOriginalCredentials] = useState<Array<OriginalVerifiableCredential>>([]);
-  const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
-  const [pexFilteredCredentials, setPexFilteredCredentials] = useState(new Map<string, Array<UniqueVerifiableCredential>>());
+  const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
+  const [pexFilteredCredentials, setPexFilteredCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
   const [matchingDescriptors, setMatchingDescriptors] = useState(new Map<InputDescriptorV1 | InputDescriptorV2, boolean>());
   const pex: PEX = new PEX();
 
@@ -50,7 +51,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   });
 
   useEffect(() => {
-    getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
+    getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueDigitalCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
       setAllUniqueCredentials(uniqueVCs);
       console.log(`unique creds length:` + uniqueVCs.length);
@@ -69,9 +70,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       setAllOriginalCredentials([]);
     } else {
       setAllOriginalCredentials(
-        allUniqueCredentials.map(uniqueVC =>
-          CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.verifiableCredential as OriginalVerifiableCredential),
-        ),
+        allUniqueCredentials.map(uniqueVC => CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.originalVerifiableCredential!)),
       );
     }
     console.log(`orig creds length:` + allOriginalCredentials.length);
@@ -79,16 +78,16 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   useEffect((): void => {
     // FIXME we need to have one source for these credentials as then all the data is always available
-    // getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueVerifiableCredential>) => {
+    // getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueDigitalCredential>) => {
     //   // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
     //   const originalVcs: Array<OriginalVerifiableCredential> = uniqueVCs.map(
-    //     (uniqueVC: UniqueVerifiableCredential) =>
+    //     (uniqueVC: UniqueDigitalCredential) =>
     //       CredentialMapper.toWrappedVerifiableCredential(uniqueVC.verifiableCredential as OriginalVerifiableCredential).original,
     //   );
     if (!allOriginalCredentials || !allUniqueCredentials || !presentationDefinition) {
       return;
     }
-    const pexMatchingVCs: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
+    const pexMatchingVCs: Map<string, Array<UniqueDigitalCredential>> = new Map<string, Array<UniqueDigitalCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
       const presentationDefinition: IPresentationDefinition = {
         id: inputDescriptor.id,
@@ -102,16 +101,16 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
         console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
       }
-      const matchedVCs: Array<UniqueVerifiableCredential> =
+      const matchedVCs: Array<UniqueDigitalCredential> =
         selectResult.matches && selectResult.verifiableCredential
           ? selectResult.matches
               .map((match: SubmissionRequirementMatch) => {
                 const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
                 if (matchedVC && matchedVC.length > 0) {
-                  return getMatchingUniqueVerifiableCredential(allUniqueCredentials!, matchedVC[0]);
+                  return getMatchingUniqueDigitalCredential(allUniqueCredentials!, matchedVC[0]);
                 }
               })
-              .filter((matchedVC: UniqueVerifiableCredential | undefined): matchedVC is UniqueVerifiableCredential => !!matchedVC) // filter out the undefined (should not happen)
+              .filter((matchedVC: UniqueDigitalCredential | undefined): matchedVC is UniqueDigitalCredential => !!matchedVC) // filter out the undefined (should not happen)
           : [];
       pexMatchingVCs.set(inputDescriptor.id, matchedVCs);
     });
@@ -121,7 +120,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   }, [presentationDefinition, allUniqueCredentials, allOriginalCredentials]);
 
   useEffect((): void => {
-    const selectedVCsPerDescriptor: Map<string, Array<UniqueVerifiableCredential>> = new Map<string, Array<UniqueVerifiableCredential>>();
+    const selectedVCsPerDescriptor: Map<string, Array<UniqueDigitalCredential>> = new Map<string, Array<UniqueDigitalCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) =>
       selectedVCsPerDescriptor.set(inputDescriptor.id, []),
     );
@@ -130,13 +129,13 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
-    const selectedVCs: Array<UniqueVerifiableCredential> = getSelectedCredentials();
+    const selectedVCs: Array<UniqueDigitalCredential> = getSelectedCredentials();
 
-    await onSend(selectedVCs.map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)));
+    await onSend(selectedVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
   };
 
-  const getSelectedCredentials = (): Array<UniqueVerifiableCredential> => {
-    const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
+  const getSelectedCredentials = (): Array<UniqueDigitalCredential> => {
+    const selectedVCs: Array<Array<UniqueDigitalCredential>> = [];
     for (const uniqueVCs of userSelectedCredentials.values()) {
       selectedVCs.push(uniqueVCs);
     }
@@ -149,7 +148,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     return (
       pex.evaluateCredentials(
         presentationDefinition,
-        getSelectedCredentials().map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
+        getSelectedCredentials().map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential as OriginalVerifiableCredential), // FIXME test uniqueVC.originalVerifiableCredential undefined
       ).areRequiredCredentialsPresent === Status.INFO
     );
   };
@@ -159,45 +158,51 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   };
   const onItemPress = async (
     inputDescriptorId: string,
-    inputDescriptorVCs: Array<UniqueVerifiableCredential>,
+    inputDescriptorVCs: Array<UniqueDigitalCredential>,
     inputDescriptorPurpose?: string,
   ): Promise<void> => {
     // FIXME we need to have one source for these credentials as then all the data is always available
-    const vcHashes = inputDescriptorVCs.map((uniqueCredential: UniqueVerifiableCredential): {vcHash: string} => ({
+    const vcHashes = inputDescriptorVCs.map((uniqueCredential: UniqueDigitalCredential): {vcHash: string} => ({
       vcHash: uniqueCredential.hash,
     }));
     const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
 
     const credentialSelection = await Promise.all(
-      inputDescriptorVCs.map(async (uniqueVC: UniqueVerifiableCredential) => {
+      inputDescriptorVCs.map(async (uniqueVC: UniqueDigitalCredential) => {
         // FIXME we need to have one source for these credentials as then all the data is always available
         const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
-        const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.verifiableCredential);
-        const credentialSummary: CredentialSummary = await toCredentialSummary(uniqueVC, credentialBranding?.localeBranding, issuer);
-        const rawCredential: OriginalVerifiableCredential = getOriginalVerifiableCredential(uniqueVC.verifiableCredential);
+        const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential);
+        const credentialSummary: CredentialSummary = await toCredentialSummary(
+          uniqueVC.originalVerifiableCredential as VerifiableCredential,
+          uniqueVC.hash,
+          uniqueVC.digitalCredential.credentialRole,
+          credentialBranding?.localeBranding,
+          issuer,
+        );
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
           .some(
-            (matchedVC: UniqueVerifiableCredential) =>
-              matchedVC.verifiableCredential.id === uniqueVC.verifiableCredential.id ||
-              matchedVC.verifiableCredential.proof === uniqueVC.verifiableCredential.proof,
+            (matchedVC: UniqueDigitalCredential) =>
+              matchedVC.id === uniqueVC.id ||
+              (matchedVC.originalVerifiableCredential as VerifiableCredential).proof ===
+                (uniqueVC.originalVerifiableCredential as VerifiableCredential).proof,
           );
         return {
           hash: credentialSummary.hash,
           id: credentialSummary.id,
           credential: credentialSummary,
-          rawCredential: rawCredential,
+          rawCredential: uniqueVC.originalVerifiableCredential!,
           isSelected,
         };
       }),
     );
 
     const onSelectCredential = async (hashes: Array<string>): Promise<void> => {
-      const uniquePEXFilteredVCs: Array<UniqueVerifiableCredential> = pexFilteredCredentials
+      const uniquePEXFilteredVCs: Array<UniqueDigitalCredential> = pexFilteredCredentials
         .get(inputDescriptorId)!
-        .filter((vc: UniqueVerifiableCredential) => hashes.includes(vc.hash));
+        .filter((vc: UniqueDigitalCredential) => hashes.includes(vc.hash));
       const newSelection = new Map(userSelectedCredentials.entries());
       newSelection.set(inputDescriptorId, uniquePEXFilteredVCs);
       const inputDescriptor = getDescriptorById(inputDescriptorId);
@@ -209,7 +214,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
             // @ts-ignore
             input_descriptors: [inputDescriptor],
           },
-          uniquePEXFilteredVCs.map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
+          uniquePEXFilteredVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential),
         ).areRequiredCredentialsPresent === Status.INFO;
       const matchingDescriptorsCopy = new Map(matchingDescriptors);
       matchingDescriptorsCopy.set(inputDescriptor, evaluationResult);
@@ -217,13 +222,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       setUserSelectedCredentials(newSelection);
 
       if (onSelect) {
-        const selectedVCs: Array<Array<UniqueVerifiableCredential>> = [];
+        const selectedVCs: Array<Array<UniqueDigitalCredential>> = [];
         for (const uniqueVCs of newSelection.values()) {
           selectedVCs.push(uniqueVCs);
         }
-        await onSelect(
-          selectedVCs.flat().map((uniqueVC: UniqueVerifiableCredential) => getOriginalVerifiableCredential(uniqueVC.verifiableCredential)),
-        );
+        await onSelect(selectedVCs.flat().map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
       }
     };
 
@@ -243,7 +246,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
 
     const checkIsMatching = (
       itemInfo: ListRenderItemInfo<InputDescriptorV1 | InputDescriptorV2>,
-      selectedCredentials: Map<string, Array<UniqueVerifiableCredential>>,
+      selectedCredentials: Map<string, Array<UniqueDigitalCredential>>,
     ): boolean => {
       if (!selectedCredentials.has(itemInfo.item.id)) {
         return false;
@@ -253,7 +256,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         return false;
       }
 
-      /*const credentials = selectedDescriptorCredentials.map((uniqueVC: UniqueVerifiableCredential) =>
+      /*const credentials = selectedDescriptorCredentials.map((uniqueVC: UniqueDigitalCredential) =>
         getOriginalVerifiableCredential(uniqueVC.verifiableCredential),
       );*/
       return matchingDescriptors.get(itemInfo.item) ?? false;

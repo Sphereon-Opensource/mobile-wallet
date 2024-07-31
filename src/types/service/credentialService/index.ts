@@ -1,12 +1,18 @@
 import {WrappedVerifiableCredential, WrappedVerifiablePresentation} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
+import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 
 export interface IStoreVerifiableCredentialArgs {
   vc: VerifiableCredential;
+  credentialRole: CredentialRole;
+  issuerCorrelationId: string;
+  issuerCorrelationType: CredentialCorrelationType;
 }
 
 export interface IGetVerifiableCredentialArgs {
   hash: string;
+  credentialRole: CredentialRole;
 }
 
 export interface IDeleteVerifiableCredentialArgs {

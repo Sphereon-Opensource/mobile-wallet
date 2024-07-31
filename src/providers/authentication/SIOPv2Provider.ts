@@ -1,6 +1,6 @@
 import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {getIdentifier, getKey, determineKid} from '@sphereon/ssi-sdk-ext.did-utils';
-import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {determineKid, getIdentifier, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
+import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
@@ -92,7 +92,7 @@ export const siopSendAuthorizationResponse = async (
 
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
-      : await oid4vp.filterCredentialsAgainstAllDefinitions();
+      : await oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER);
     const domain =
       ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
       request.issuer ??
@@ -111,7 +111,7 @@ export const siopSendAuthorizationResponse = async (
       }
     }
 
-    presentationsAndDefs = await oid4vp.createVerifiablePresentations(credentialsAndDefinitions, {
+    presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
       identifierOpts: {identifier},
       proofOpts: {
         nonce: session.nonce,

@@ -18,6 +18,7 @@ import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
+import {IIdentifier} from '@veramo/core';
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -30,7 +31,7 @@ export const createConfig = async (
 
   return {
     idOpts: {
-      identifier,
+      identifier: identifier as IIdentifier,
     },
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
