@@ -1,6 +1,4 @@
 import {NavigationContainer} from '@react-navigation/native';
-// import crypto from '@sphereon/isomorphic-webcrypto';
-
 import {backgroundColors} from '@sphereon/ui-components.core';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
@@ -65,17 +63,11 @@ export default function App() {
     async function prepare(): Promise<void> {
       try {
         addLinkListeners(linkHandlers, agentContext);
-        //   console.log('SECURING CRYPTO');
-        // // Needed for isomorphic-webcrypto. Must be removed if react-native-crypto is used instead
-        // await crypto.ensureSecure();
-        // console.log('CRYPTO secured');
 
         // Enable the intent handler early, so we can get deeplinks on start or before login
         await IntentHandler.getInstance().enable();
         await LockingHandler.getInstance().enableLocking();
-        console.log('PRE DB connection');
         await getDbConnection(DB_CONNECTION_NAME);
-        console.log('POST DB connection');
 
         // TODO create better implementation for this
         StatusBar.setBarStyle('light-content', true);
