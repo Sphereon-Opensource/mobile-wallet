@@ -12,7 +12,7 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXConstants (16.0.2):
     - ExpoModulesCore
-  - Expo (51.0.22):
+  - Expo (51.0.24):
     - ExpoModulesCore
   - ExpoAsset (10.0.10):
     - ExpoModulesCore
@@ -1103,7 +1103,7 @@ PODS:
   - react-native-pure-jwt (3.0.2):
     - JWT (= 3.0.0-beta.12)
     - React
-  - react-native-quick-crypto (0.7.2):
+  - react-native-quick-crypto (0.7.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1457,6 +1457,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSecureRandom (1.0.1):
+    - React
   - RNShare (10.2.1):
     - React-Core
   - RNShareMenu (6.0.0):
@@ -1470,10 +1472,6 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.7.0)
-  - UMCore (7.2.0):
-    - ExpoModulesCore
-  - UMReactNativeAdapter (6.5.0):
-    - ExpoModulesCore
   - Yoga (0.0.0)
   - ZXingObjC/Core (3.6.9)
   - ZXingObjC/OneD (3.6.9):
@@ -1569,11 +1567,10 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSecureRandom (from `../node_modules/react-native-securerandom`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - "UMCore (from `../node_modules/@unimodules/core/ios`)"
-  - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1763,16 +1760,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSecureRandom:
+    :path: "../node_modules/react-native-securerandom"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNShareMenu:
     :path: "../node_modules/react-native-share-menu"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  UMCore:
-    :path: "../node_modules/@unimodules/core/ios"
-  UMReactNativeAdapter:
-    :path: "../node_modules/@unimodules/react-native-adapter/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1784,7 +1779,7 @@ SPEC CHECKSUMS:
   CatCrypto: a477899b6be4954e75be4897e732da098cc0a5a8
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
-  Expo: 8b7948e45627e848c2d7b6be7cf5851a505aef19
+  Expo: 798848eae1daf13363d69790986146b08d0cf92f
   ExpoAsset: 323700f291684f110fb55f0d4022a3362ea9f875
   ExpoCamera: a5d000b22cd7dfd2c5904ed960e549de42c96da0
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
@@ -1835,7 +1830,7 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
-  react-native-quick-crypto: de56673e1647dbb9d67351c5e0afe7bd2327e94a
+  react-native-quick-crypto: d3457afaa680f961c7bcf6c382329aafe4abddcd
   react-native-quick-sqlite: 7bccedbaa812b3a154b1505d8d1db4c12842e60b
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
@@ -1870,14 +1865,13 @@ SPEC CHECKSUMS:
   RNPermissions: 2d80aab8cf15a2dcf5be697552bfdd6409c3e3d3
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
+  RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  UMCore: 2aa664ed1a9c9e31c67450aa307e9db9f83d1eeb
-  UMReactNativeAdapter: 25564671c9715a34d9de0fbba4e857d0e88d96be
   Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
