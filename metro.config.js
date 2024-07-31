@@ -7,7 +7,7 @@ const defaultAssetExts = require('metro-config/src/defaults/defaults').assetExts
 const defaultConfig = getDefaultConfig(__dirname);
 
 /** @type {import('expo/metro-config').MetroConfig} */
-let config = {
+const config = {
   transformer: {
     assetPlugins: ['expo-asset/tools/hashAssetFiles'],
     getTransformOptions: async () => ({
@@ -43,11 +43,13 @@ let config = {
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
     extraNodeModules: {
+      buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
-      // crypto: require.resolve('@sphereon/isomorphic-webcrypto'),
+      crypto: require.resolve('react-native-quick-crypto'),
     },
   },
 };
+/*
 config.resolver['resolveRequest'] = (context, moduleName, platform) => {
   if (moduleName === 'crypto') {
     // when importing crypto, resolve to react-native-quick-crypto
@@ -56,5 +58,6 @@ config.resolver['resolveRequest'] = (context, moduleName, platform) => {
   // otherwise chain to the standard Metro resolver.
   return context.resolveRequest(context, moduleName, platform);
 };
+*/
 
 module.exports = mergeConfig(defaultConfig, config);

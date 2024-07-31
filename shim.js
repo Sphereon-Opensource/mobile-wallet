@@ -1,5 +1,5 @@
 import {DEBUG} from '@env';
-import {install} from 'react-native-quick-crypto';
+
 if (typeof __dirname === 'undefined') global.__dirname = '/';
 if (typeof __filename === 'undefined') global.__filename = '';
 if (typeof process === 'undefined') {
@@ -15,7 +15,7 @@ if (typeof process === 'undefined') {
 const debug = require('debug');
 
 process.browser = false;
-if (typeof Buffer === 'undefined') global.Buffer = require('buffer').Buffer;
+// if (typeof Buffer === 'undefined') global.Buffer = require('buffer').Buffer;
 
 // global.location = global.location || { port: 80 }
 const isDev = typeof __DEV__ === 'boolean' && __DEV__;
@@ -40,8 +40,6 @@ if (isDev) {
   debug.log = console.info.bind(console);
   debug.enable(level);
 }
-
-install();
 
 // If using the crypto shim, uncomment the following line to ensure
 // crypto is loaded first, so it can populate global.crypto

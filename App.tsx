@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 // import crypto from '@sphereon/isomorphic-webcrypto';
+
 import {backgroundColors} from '@sphereon/ui-components.core';
 import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
@@ -22,6 +23,7 @@ import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {install as installCrypto} from 'react-native-quick-crypto';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -85,6 +87,7 @@ export default function App() {
         // Load the redux store
         const actions = bindActionCreators({getUsers}, store.dispatch);
         actions.getUsers();
+        installCrypto();
       } catch (e) {
         console.warn(e);
       } finally {

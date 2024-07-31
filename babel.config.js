@@ -12,6 +12,9 @@ module.exports = function (api) {
         {
           alias: {
             'react-native-sqlite-storage': 'react-native-quick-sqlite',
+            crypto: 'react-native-quick-crypto',
+            stream: 'readable-stream',
+            buffer: '@craftzdog/react-native-buffer',
           },
         },
       ],
