@@ -65,7 +65,7 @@ const createUserAndIdentity = async (
     },
   });
   await storeVerifiableCredential({
-    credentialRole: CredentialRole.ISSUER,
+    credentialRole: CredentialRole.HOLDER, // Here we are both ISSUER & HOLDER but has I think it to be HOLDER due to "oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER)"
     issuerCorrelationId: identifier.did,
     issuerCorrelationType: CredentialCorrelationType.DID,
     vc: verifiableCredential,
