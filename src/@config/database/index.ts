@@ -15,7 +15,7 @@ const DB_ENCRYPTION_KEY = '29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f
 
 const sqliteConfig: ReactNativeConnectionOptions = {
   type: 'react-native',
-  database: 'sphereon-mobile-wallet.sqlite',
+  database: 'sphereon-wallet-v0.3.sqlite',
   location: '.',
   driver: typeORMDriver,
   entities: [
