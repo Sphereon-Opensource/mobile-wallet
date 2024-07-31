@@ -16,10 +16,13 @@ import {
   SSIRippleContainerStyled as ItemContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {getOriginalVerifiableCredential} from '../../utils';
+import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {getOriginalVerifiableCredential, showToast} from '../../utils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {Loggers} from '@sphereon/ssi-types';
+
+export const logger = Loggers.DEFAULT.get('sphereon:screens');
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;
@@ -61,13 +64,19 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
   };
 
   onItemPress = async (credential: CredentialSummary): Promise<void> => {
-    getVerifiableCredential({hash: credential.hash}).then((vc: VerifiableCredential) =>
+    try {
+      const vc: VerifiableCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
+
       this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: getOriginalVerifiableCredential(vc),
         credential,
         showActivity: false,
-      }),
-    );
+      });
+    } catch (e) {
+      // onPress doesn't handle promise rejections, so log it for now.
+      logger.error('onItemPress failed', e);
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {message: (e as Error).message})});
+    }
   };
 
   renderItem = (itemInfo: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
@@ -84,6 +93,7 @@ class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
         expirationDate={itemInfo.item.expirationDate}
         credentialStatus={itemInfo.item.credentialStatus}
         properties={[]}
+        credentialRole={itemInfo.item.credentialRole}
       />
     );
 

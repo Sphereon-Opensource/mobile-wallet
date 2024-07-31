@@ -1,5 +1,4 @@
 import {backgroundColors, gradientsColors, statusColors} from '@sphereon/ui-components.core';
-import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, ForwardedRef} from 'react';
 import {View} from 'react-native';
 
@@ -22,12 +21,14 @@ import {fontStyle} from '../../../styles/typography';
 import {getCredentialTypeAsString} from '../../../utils';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 import {LinearGradientText} from 'react-native-linear-gradient-text';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {VerifiableCredential} from '@veramo/core';
 
 export interface Props {
   id: string;
   title: string;
-  selected: Array<UniqueVerifiableCredential>;
-  available?: Array<UniqueVerifiableCredential>;
+  selected: Array<UniqueDigitalCredential>;
+  available?: Array<UniqueDigitalCredential>;
   purpose?: string;
   isMatching: boolean;
   listIndex: number;
@@ -55,7 +56,9 @@ const SSICredentialRequiredViewItem: FC<Props> = React.forwardRef((props: Props,
               {purpose && <CredentialPurposeCaption>{purpose}</CredentialPurposeCaption>}
               {selected.length > 0 ? (
                 // TODO currently only supporting one selected credential, Also fix the naming
-                <CredentialSelectedCaption>{getCredentialTypeAsString(selected[0].verifiableCredential)}</CredentialSelectedCaption>
+                <CredentialSelectedCaption>
+                  {getCredentialTypeAsString(selected[0].originalVerifiableCredential as VerifiableCredential)}
+                </CredentialSelectedCaption>
               ) : available && available.length === 0 ? (
                 <NoneAvailableCaption>{translate('credentials_required_no_available_label')}</NoneAvailableCaption>
               ) : (

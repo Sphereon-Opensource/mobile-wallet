@@ -1,8 +1,9 @@
 import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {VerifiableCredential} from '@veramo/core';
 import store from '../store';
 import {IUser, IUserIdentifier} from '../types';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -22,17 +23,17 @@ export const getCredentialTypeAsString = (credential: ICredential | VerifiableCr
  * @param uniqueVCs The Unique VCs to search in
  * @param searchVC The VC to search for in the unique VCs array
  */
-export const getMatchingUniqueVerifiableCredential = (
-  uniqueVCs: UniqueVerifiableCredential[],
+export const getMatchingUniqueDigitalCredential = (
+  uniqueVCs: UniqueDigitalCredential[],
   searchVC: OriginalVerifiableCredential,
-): UniqueVerifiableCredential | undefined => {
+): UniqueDigitalCredential | undefined => {
   // Since an ID is optional in a VC according to VCDM, and we really need the matches, we have a fallback match on something which is guaranteed to be unique for any VC (the proof(s))
   return uniqueVCs.find(
-    (uniqueVC: UniqueVerifiableCredential) =>
+    (uniqueVC: UniqueDigitalCredential) =>
       (typeof searchVC !== 'string' &&
-        (uniqueVC.verifiableCredential.id === (<IVerifiableCredential>searchVC).id ||
-          uniqueVC.verifiableCredential.proof === (<IVerifiableCredential>searchVC).proof)) ||
-      (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC),
+        (uniqueVC.id === (<IVerifiableCredential>searchVC).id ||
+          (uniqueVC.originalVerifiableCredential as VerifiableCredential).proof === (<IVerifiableCredential>searchVC).proof)) ||
+      (typeof searchVC === 'string' && (uniqueVC.originalVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC),
   );
 };
 

@@ -1,5 +1,7 @@
 import {
   DataStoreContactEntities,
+  DataStoreDigitalCredentialEntities,
+  DataStoreDigitalCredentialMigrations,
   DataStoreIssuanceBrandingEntities,
   DataStoreMachineStateEntities,
   DataStoreMigrations,
@@ -16,7 +18,13 @@ const sqliteConfig: ReactNativeConnectionOptions = {
   database: 'sphereon-mobile-wallet.sqlite',
   location: '.',
   driver: typeORMDriver,
-  entities: [...VeramoDataStoreEntities, ...DataStoreContactEntities, ...DataStoreIssuanceBrandingEntities, ...DataStoreMachineStateEntities],
+  entities: [
+    ...VeramoDataStoreEntities,
+    ...DataStoreContactEntities,
+    ...DataStoreIssuanceBrandingEntities,
+    ...DataStoreMachineStateEntities,
+    ...DataStoreDigitalCredentialEntities,
+  ],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code

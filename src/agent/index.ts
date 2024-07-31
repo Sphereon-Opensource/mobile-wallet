@@ -8,7 +8,7 @@ import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
 import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
-import {ContactStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {ContactStore, DigitalCredentialStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
@@ -46,6 +46,7 @@ import {dispatchVerifiableCredential} from '../store/actions/credential.actions'
 import {generateSalt, generateDigest} from '../utils';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
+import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -126,6 +127,7 @@ const agentPlugins: Array<IAgentPlugin> = [
     ]),
     keyStore: privateKeyStore,
   }),
+  new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
   new OID4VCIHolder({
     onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
       store.dispatch({type: ADD_IDENTITY_SUCCESS, payload: args});
@@ -166,11 +168,11 @@ export const cmUpdateContact = agent.cmUpdateContact;
 export const cmRemoveContact = agent.cmRemoveContact;
 export const cmAddIdentity = agent.cmAddIdentity;
 export const didManagerGet = agent.didManagerGet;
-export const dataStoreORMGetVerifiableCredentials = agent.dataStoreORMGetVerifiableCredentials;
-export const dataStoreSaveVerifiableCredential = agent.dataStoreSaveVerifiableCredential;
 export const keyManagerSign = agent.keyManagerSign;
-export const dataStoreGetVerifiableCredential = agent.dataStoreGetVerifiableCredential;
-export const dataStoreDeleteVerifiableCredential = agent.dataStoreDeleteVerifiableCredential;
+export const credentialStoreGetVerifiableCredentials = agent.crsGetUniqueCredentials;
+export const credentialStoreGetVerifiableCredentialByIdOrHash = agent.crsGetUniqueCredentialByIdOrHash;
+export const credentialStoreAddCredential = agent.crsAddCredential;
+export const credentialStoreDeleteVerifiableCredential = agent.crsDeleteCredential;
 export const createVerifiableCredential = agent.createVerifiableCredential;
 export const ibAddCredentialBranding = agent.ibAddCredentialBranding;
 export const ibGetCredentialBranding = agent.ibGetCredentialBranding;

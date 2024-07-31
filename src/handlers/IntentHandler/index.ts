@@ -11,10 +11,10 @@ import {readFile} from '../../services/fileService';
 import store from '../../store';
 import {storeVerifiableCredential} from '../../store/actions/credential.actions';
 import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
-import {parseDeepLink} from '../../utils';
+import {parseDeepLink, showToast} from '../../utils';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {showToast} from '../../utils';
 import LockingHandler from '../LockingHandler';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 
@@ -193,7 +193,7 @@ class IntentHandler {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential: vc,
-            credential: await toNonPersistedCredentialSummary(vc),
+            credential: await toNonPersistedCredentialSummary(vc, CredentialRole.HOLDER),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async (): Promise<void> =>
