@@ -10,6 +10,7 @@ import {
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
+import {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {
   updateContact as editContact,
@@ -46,7 +47,7 @@ export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unk
     dispatch({type: 'CONTACTS_LOADING'});
     try {
       const userContact = await getUserContact();
-      let contacts = await getContactsFromStorage();
+      let contacts = await getContactsFromStorage({}, agentContext);
 
       contacts = await Promise.all(contacts.map(fetchBrandingForContact));
 
@@ -72,7 +73,7 @@ async function fetchBrandingForContact(contact: Party): Promise<Party> {
 export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {
     dispatch({type: CONTACTS_LOADING});
-    return storeContact(args)
+    return storeContact(args, agentContext)
       .then((contact: Party): Party => {
         dispatch({type: CREATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_add_success_toast'), showBadge: false});
@@ -88,7 +89,7 @@ export const createContact = (args: ICreateContactArgs): ThunkAction<Promise<Par
 export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<Party>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Party> => {
     dispatch({type: CONTACTS_LOADING});
-    return editContact(args)
+    return editContact(args, agentContext)
       .then((contact: Party): Party => {
         dispatch({type: UPDATE_CONTACT_SUCCESS, payload: contact});
         showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_update_success_toast'), showBadge: false});
@@ -104,7 +105,7 @@ export const updateContact = (args: IUpdateContactArgs): ThunkAction<Promise<Par
 export const addIdentity = (args: IAddIdentityArgs): ThunkAction<Promise<Identity>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Identity> => {
     dispatch({type: CONTACTS_LOADING});
-    return identityAdd(args)
+    return identityAdd(args, agentContext)
       .then((identity: Identity) => {
         dispatch({type: ADD_IDENTITY_SUCCESS, payload: {contactId: args.contactId, identity}});
         return identity;
@@ -126,7 +127,7 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CONTACTS_LOADING});
 
-    removeContact({contactId: contactId})
+    removeContact({contactId: contactId}, agentContext)
       .then((isDeleted: boolean): void => {
         if (isDeleted) {
           dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});

@@ -9,7 +9,7 @@ import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import {ibGetCredentialBranding} from '../../agent';
+import agent from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
@@ -165,7 +165,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     const vcHashes = inputDescriptorVCs.map((uniqueCredential: UniqueDigitalCredential): {vcHash: string} => ({
       vcHash: uniqueCredential.hash,
     }));
-    const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: vcHashes});
 
     const credentialSelection = await Promise.all(
       inputDescriptorVCs.map(async (uniqueVC: UniqueDigitalCredential) => {

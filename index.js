@@ -1,15 +1,14 @@
-import './shim';
 import {install as installCrypto} from 'react-native-quick-crypto';
-installCrypto();
+import 'reflect-metadata'; // needed for migrations
 
+installCrypto();
 if (!global.window.crypto) {
   global.window.crypto = global.crypto;
 }
 if (typeof self !== 'undefined') {
   self.crypto = global.crypto;
 }
-
-import 'reflect-metadata'; // needed for migrations
+import './shim';
 //import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import 'fast-text-encoding';

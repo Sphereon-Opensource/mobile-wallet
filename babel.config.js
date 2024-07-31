@@ -6,7 +6,9 @@ module.exports = function (api) {
     plugins: [
       '@babel/plugin-syntax-import-assertions',
       'module:react-native-dotenv',
+      'babel-plugin-transform-typescript-metadata',
       ['@babel/plugin-proposal-decorators', {legacy: true}],
+      ['@babel/plugin-proposal-class-properties', {loose: true}],
       [
         'module-resolver',
         {
@@ -15,6 +17,8 @@ module.exports = function (api) {
             crypto: 'react-native-quick-crypto',
             stream: 'readable-stream',
             buffer: '@craftzdog/react-native-buffer',
+            fs: 'expo-fs',
+            path: 'path-browserify',
           },
         },
       ],

@@ -1,12 +1,12 @@
 import {
   DataStoreContactEntities,
   DataStoreDigitalCredentialEntities,
-  DataStoreDigitalCredentialMigrations,
   DataStoreIssuanceBrandingEntities,
   DataStoreMachineStateEntities,
   DataStoreMigrations,
 } from '@sphereon/ssi-sdk.data-store';
 import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store';
+// @ts-ignore
 import {typeORMDriver} from 'react-native-quick-sqlite';
 import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
 

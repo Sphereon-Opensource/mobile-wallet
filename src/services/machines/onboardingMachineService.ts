@@ -1,6 +1,6 @@
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {v4 as uuidv4} from 'uuid';
-import agent from '../../agent';
+import agent, {agentContext} from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
@@ -34,10 +34,13 @@ const createUserAndIdentity = async (
   context: Pick<OnboardingMachineContext, 'personalData' | 'credentialData'>,
 ): Promise<WalletSetupServiceResult> => {
   const {personalData, credentialData} = context;
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({
-    method: credentialData.didMethod,
-    createOpts: {options: credentialData.didOptions},
-  });
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
+    {
+      method: credentialData.didMethod,
+      createOpts: {options: credentialData.didOptions},
+    },
+    agentContext,
+  );
 
   const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};

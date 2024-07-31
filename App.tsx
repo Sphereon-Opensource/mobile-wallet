@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import {NavigationContainer} from '@react-navigation/native';
 // import crypto from '@sphereon/isomorphic-webcrypto';
 
@@ -12,7 +11,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {DB_CONNECTION_NAME} from './src/@config/database';
+import {agentContext, linkHandlers} from './src/agent';
 import IntentHandler from './src/handlers/IntentHandler';
+import {addLinkListeners} from './src/handlers/LinkHandlers';
 import LockingHandler from './src/handlers/LockingHandler';
 import _loadFontsAsync from './src/hooks/useFonts';
 import Localization from './src/localization/Localization';
@@ -25,6 +26,7 @@ import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {install as installCrypto} from 'react-native-quick-crypto';
+import './src/agent/index';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -62,6 +64,7 @@ export default function App() {
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
+        addLinkListeners(linkHandlers, agentContext);
         //   console.log('SECURING CRYPTO');
         // // Needed for isomorphic-webcrypto. Must be removed if react-native-crypto is used instead
         // await crypto.ensureSecure();

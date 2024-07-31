@@ -1,6 +1,6 @@
 import {IIdentifier} from '@veramo/core';
 import {createJWT, Signer} from 'did-jwt';
-import {keyManagerSign} from '../agent';
+import agent from '../agent';
 import {signatureAlgorithmFromKey} from '../utils';
 import {ISignJwtArgs} from '../types';
 
@@ -22,7 +22,7 @@ const getSigner = (identifier: IIdentifier): Signer => {
   return async (data: string | Uint8Array): Promise<string> => {
     const input = data instanceof Object.getPrototypeOf(Uint8Array) ? new TextDecoder().decode(data as Uint8Array) : (data as string);
 
-    return await keyManagerSign({
+    return await agent.keyManagerSign({
       keyRef: key.kid,
       algorithm,
       data: input,

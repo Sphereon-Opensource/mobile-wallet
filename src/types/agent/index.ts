@@ -1,4 +1,4 @@
-import {ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
+import {IAgentContext, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {IContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {ICredentialIssuer} from '@veramo/credential-w3c';
@@ -24,3 +24,5 @@ export type TAgentTypes = IDIDManager &
   IMachineStatePersistence &
   ICredentialStore &
   ISDJwtPlugin;
+
+export type IRequiredContext = IAgentContext<TAgentTypes>;

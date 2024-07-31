@@ -46,6 +46,8 @@ const config = {
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
       crypto: require.resolve('react-native-quick-crypto'),
+      fs: require.resolve('expo-fs'),
+      path: require.resolve('path-browserify'),
     },
   },
 };
