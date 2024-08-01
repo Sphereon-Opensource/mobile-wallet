@@ -1,12 +1,12 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -25,7 +25,18 @@ export type StackParamList = {
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
+  // Onboarding
   Welcome: IHasOnboardingContext & IHasOnNextProps;
+  ShowProgress: OnboardingRouteParams;
+  EnterName: OnboardingRouteParams & IEnterNameProps;
+  EnterEmailAddress: OnboardingRouteParams;
+  EnterCountry: OnboardingRouteParams;
+  EnterPinCode: OnboardingRouteParams;
+  VerifyPinCode: OnboardingRouteParams;
+  EnableBiometrics: OnboardingRouteParams;
+  AcceptTerms: OnboardingRouteParams;
+  ReadTerms: OnboardingRouteParams;
+  //
   TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
   PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
   PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
@@ -43,6 +54,10 @@ export type StackParamList = {
   OID4VCI: Record<string, never>;
 };
 
+export type OnboardingRouteParams = IHasOnboardingContext & {
+  step: number;
+};
+
 export type IBrowserOpen = IHasOnBackProps &
   IHasOnNextProps & {
     headerCaptioni18n?: string;
@@ -50,13 +65,15 @@ export type IBrowserOpen = IHasOnBackProps &
     bodyTexti18n?: string;
     actionNextLabeli18n?: string;
   };
-
 interface IPersonalDataProps {
   isDisabled: (personalData: OnboardingPersonalData) => boolean;
   onNext: (personalData: OnboardingPersonalData) => void;
   onPersonalData: (personalData: OnboardingPersonalData) => void;
 }
 
+type IEnterNameProps = {
+  onChangeText: (value: string) => void;
+};
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingMachineInterpreter;
 }
@@ -65,7 +82,13 @@ export interface IHasOnboardingContext {
   context: OnboardingMachineContext;
 }
 
+export interface IHasOnboardingContext {
+  context: OnboardingMachineContext;
+  step: number;
+}
+
 export interface IHasOnBackProps {
+  onClick: () => {};
   onBack: () => Promise<void>;
 }
 
@@ -211,6 +234,15 @@ export enum NavigationBarRoutesEnum {
 
 export enum ScreenRoutesEnum {
   WELCOME = 'Welcome',
+  SHOW_PROGRESS = 'ShowProgress',
+  ENTER_NAME = 'EnterName',
+  ENTER_EMAIL_ADDRESS = 'EnterEmailAddress',
+  ENTER_COUNTRY = 'EnterCountry',
+  ENTER_PIN_CODE = 'EnterPinCode',
+  VERIFY_PIN_CODE = 'VerifyPinCode',
+  ENABLE_BIOMETRICS = 'EnableBiometrics',
+  ACCEPT_TERMS = 'AcceptTerms',
+  READ_TERMS = 'ReadTerms',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',

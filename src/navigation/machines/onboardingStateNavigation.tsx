@@ -1,139 +1,75 @@
 import Debug, {Debugger} from 'debug';
 import React, {Context, createContext} from 'react';
 import {APP_ID} from '../../@config/constants';
-import {translate} from '../../localization/Localization';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
-import store from '../../store';
 import {ScreenRoutesEnum} from '../../types';
 import {
-  OnboardingMachineContext,
-  OnboardingPersonalData,
   OnboardingContext as OnboardingContextType,
+  OnboardingMachineContext,
   OnboardingMachineEvents,
   OnboardingMachineInterpreter,
-  OnboardingMachineState,
-  OnboardingMachineStates,
   OnboardingMachineNavigationArgs,
+  OnboardingMachineState,
+  OnboardingMachineStateType,
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
-import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
 import RootNavigation from './../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
-const OnboardingContext: Context<OnboardingContextType> = createContext({} as OnboardingContextType);
+export const OnboardingContext: Context<OnboardingContextType> = createContext({} as OnboardingContextType);
 
 const navigateWelcome = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
   const {navigation, onNext, context} = args;
   navigation.navigate(ScreenRoutesEnum.WELCOME, {context, onNext});
 };
 
-const navigateTermsOfService = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
-  const {onboardingMachine, navigation, onNext, onBack, context} = args;
+const navigateShowProgress = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, context} = args;
+  navigation.navigate(ScreenRoutesEnum.SHOW_PROGRESS, {context, onNext});
+};
 
-  const isNextDisabled = (): boolean => {
-    return onboardingMachine.getSnapshot()?.can(OnboardingMachineEvents.NEXT) !== true;
+const navigateEnterName = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context, onboardingMachine} = args;
+  const onChangeText = (name: string) => {
+    onboardingMachine.send({type: OnboardingMachineEvents.SET_NAME, data: name});
   };
-
-  navigation.navigate(ScreenRoutesEnum.TERMS_OF_SERVICE, {
-    headerTitle: translate('terms_of_service_title'),
-    context,
-    onBack,
-    onNext,
-    onDecline: () => onboardingMachine.send(OnboardingMachineEvents.DECLINE),
-    onAcceptTerms: (accept: boolean) =>
-      onboardingMachine.send({
-        type: OnboardingMachineEvents.SET_TOC,
-        data: accept,
-      }),
-    onAcceptPrivacy: (accept: boolean) =>
-      onboardingMachine.send({
-        type: OnboardingMachineEvents.SET_POLICY,
-        data: accept,
-      }),
-    isDisabled: isNextDisabled,
-  });
+  navigation.navigate(ScreenRoutesEnum.ENTER_NAME, {context, onNext, onBack, onChangeText});
 };
 
-const navigatePersonalDetails = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
-  const {onboardingMachine, navigation, onBack, context} = args;
-
-  const isNextDisabled = (): boolean => {
-    return onboardingMachine.getSnapshot()?.can(OnboardingMachineEvents.NEXT) !== true;
-  };
-
-  navigation.navigate(ScreenRoutesEnum.PERSONAL_DATA, {
-    context,
-    isDisabled: isNextDisabled,
-    onPersonalData: (personalData: OnboardingPersonalData) =>
-      onboardingMachine.send({
-        type: OnboardingMachineEvents.SET_PERSONAL_DATA,
-        data: personalData,
-      }),
-    onBack,
-    onNext: (personalData: OnboardingPersonalData): void => {
-      onboardingMachine.send([
-        {
-          type: OnboardingMachineEvents.SET_PERSONAL_DATA,
-          data: personalData,
-        },
-        OnboardingMachineEvents.NEXT,
-      ]);
-    },
-  });
-};
-
-const navigateEnterPin = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
-  const {onboardingMachine, navigation, onNext, onBack, context} = args;
-  navigation.navigate(ScreenRoutesEnum.PIN_CODE_SET, {
-    headerSubTitle: translate('pin_code_choose_pin_code_subtitle'),
-    context,
-    onBack,
-    onNext: (pinCode: string): void => {
-      onboardingMachine.send([
-        {
-          type: OnboardingMachineEvents.SET_PIN,
-          data: pinCode,
-        },
-        OnboardingMachineEvents.NEXT,
-      ]);
-    },
-  });
-};
-
-const navigateVerifyPin = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
-  const {onboardingMachine, navigation, onBack, context} = args;
-  navigation.navigate(ScreenRoutesEnum.PIN_CODE_VERIFY, {
-    headerSubTitle: translate('pin_code_confirm_pin_code_subtitle'),
-    context,
-    onBack,
-    onNext: (pinCode: string): void => {
-      onboardingMachine.send({
-        type: OnboardingMachineEvents.NEXT,
-        data: pinCode,
-      });
-    },
-  });
-};
-
-const navigateVerifyPersonalDetails = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+const navigateEnterEmailAddress = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
   const {navigation, onNext, onBack, context} = args;
-  navigation.navigate(ScreenRoutesEnum.ONBOARDING_SUMMARY, {context, onBack, onNext});
+  navigation.navigate(ScreenRoutesEnum.ENTER_EMAIL_ADDRESS, {context, onNext, onBack});
 };
 
-const navigateSetupWallet = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
-  const {navigation, context} = args;
-  navigation.navigate(ScreenRoutesEnum.LOADING, {
-    message: translate('action_onboarding_setup_message'),
-    context,
-  });
+const navigateEnterCountry = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.ENTER_COUNTRY, {context, onNext, onBack});
 };
 
-const navigateDone = async (): Promise<void> => {
-  // Cleans up the machine, triggering the main navigator
-  OnboardingMachine.stopInstance();
-  // Yuck, but we need a rerender. The retrieval of contacts etc is already done in the setupWallet service
-  store.dispatch<any>({type: LOGIN_SUCCESS});
+const navigateEnterPinCode = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.ENTER_PIN_CODE, {context, onNext, onBack});
+};
+
+const navigateVerifyPinCode = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.VERIFY_PIN_CODE, {context, onNext, onBack});
+};
+
+const navigateEnableBiometrics = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.ENABLE_BIOMETRICS, {context, onNext, onBack});
+};
+
+const navigateAcceptTermsAndPrivacy = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.ACCEPT_TERMS, {context, onNext, onBack});
+};
+
+const navigateReadTermsAndPrivacy = async (args: OnboardingMachineNavigationArgs): Promise<void> => {
+  const {navigation, onNext, onBack, context} = args;
+  navigation.navigate(ScreenRoutesEnum.READ_TERMS, {context, onNext, onBack});
 };
 
 export const onboardingStateNavigationListener = async (
@@ -149,29 +85,31 @@ export const onboardingStateNavigationListener = async (
   const context: OnboardingMachineContext = onboardingMachine.getSnapshot().context;
   const onBack = () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS);
   const onNext = () => onboardingMachine.send(OnboardingMachineEvents.NEXT);
-
   const nav = navigation ?? RootNavigation;
   if (nav === undefined || !nav.isReady()) {
     debug(`navigation not ready yet`);
     return;
   }
-
-  if (state.matches(OnboardingMachineStates.showIntro)) {
+  if (state.matches(OnboardingMachineStateType.showIntro)) {
     return navigateWelcome({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.acceptAgreement)) {
-    return navigateTermsOfService({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.enterPersonalDetails)) {
-    return navigatePersonalDetails({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.enterPin)) {
-    return navigateEnterPin({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.verifyPin)) {
-    return navigateVerifyPin({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.verifyPersonalDetails)) {
-    return navigateVerifyPersonalDetails({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.setupWallet)) {
-    return navigateSetupWallet({onboardingMachine, state, navigation: nav, onNext, onBack, context});
-  } else if (state.matches(OnboardingMachineStates.finishOnboarding)) {
-    return navigateDone();
+  } else if (state.matches(OnboardingMachineStateType.showProgress)) {
+    return navigateShowProgress({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.enterName)) {
+    return navigateEnterName({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.enterEmailAddress)) {
+    return navigateEnterEmailAddress({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.enterCountry)) {
+    return navigateEnterCountry({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.enterPinCode)) {
+    return navigateEnterPinCode({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.verifyPinCode)) {
+    return navigateVerifyPinCode({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.enableBiometrics)) {
+    return navigateEnableBiometrics({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.acceptTermsAndPrivacy)) {
+    return navigateAcceptTermsAndPrivacy({onboardingMachine, state, navigation: nav, onNext, onBack, context});
+  } else if (state.matches(OnboardingMachineStateType.readTermsAndPrivacy)) {
+    return navigateReadTermsAndPrivacy({onboardingMachine, state, navigation: nav, onNext, onBack, context});
   } else {
     return Promise.reject(Error(`Navigation for ${JSON.stringify(state)} is not implemented!`)); // Should not happen, so we throw an error
   }

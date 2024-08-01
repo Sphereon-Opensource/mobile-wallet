@@ -1,6 +1,6 @@
+import {ImageAttributes} from '@sphereon/ui-components.core';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
