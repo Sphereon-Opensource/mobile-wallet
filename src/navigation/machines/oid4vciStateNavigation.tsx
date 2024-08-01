@@ -323,17 +323,7 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
-  if (
-    state.matches(OID4VCIMachineStates.start) ||
-    state.matches(OID4VCIMachineStates.createCredentialsToSelectFrom) ||
-    state.matches(OID4VCIMachineStates.getContact) ||
-    state.matches(OID4VCIMachineStates.transitionFromSetup) ||
-    state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.getCredentials) ||
-    state.matches(OID4VCIMachineStates.waitForAuthorizationResponse)
-  ) {
-    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.addContact)) {
+  if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
@@ -352,6 +342,8 @@ export const oid4vciStateNavigationListener = async (
     state.matches(OID4VCIMachineStates.declined)
   ) {
     return navigateFinal({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else {
+    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   }
 };
 
