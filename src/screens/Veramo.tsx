@@ -130,7 +130,10 @@ class Veramo extends PureComponent<IProps, IState> {
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: verifiableCredential,
-                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential), CredentialRole.HOLDER),
+                credential: await toNonPersistedCredentialSummary({
+                  verifiableCredential: CredentialMapper.toUniformCredential(verifiableCredential),
+                  credentialRole: CredentialRole.HOLDER,
+                }),
               });
             }}
           />

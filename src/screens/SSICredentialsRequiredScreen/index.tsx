@@ -20,7 +20,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {getCredentialIssuerContact, getMatchingUniqueDigitalCredential} from '../../utils';
+import {getCredentialIssuerContact, getCredentialSubjectContact, getMatchingUniqueDigitalCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -174,13 +174,14 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
         const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential);
-        const credentialSummary: CredentialSummary = await toCredentialSummary(
-          uniqueVC.originalVerifiableCredential as VerifiableCredential,
-          uniqueVC.hash,
-          uniqueVC.digitalCredential.credentialRole,
-          credentialBranding?.localeBranding,
+        const credentialSummary: CredentialSummary = await toCredentialSummary({
+          verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+          hash: uniqueVC.hash,
+          credentialRole: uniqueVC.digitalCredential.credentialRole,
+          branding: credentialBranding?.localeBranding,
           issuer,
-        );
+          subject: getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+        });
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
           .some(

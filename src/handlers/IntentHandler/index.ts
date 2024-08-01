@@ -193,7 +193,7 @@ class IntentHandler {
           screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
           params: {
             rawCredential: vc,
-            credential: await toNonPersistedCredentialSummary(vc, CredentialRole.HOLDER),
+            credential: await toNonPersistedCredentialSummary({verifiableCredential: vc, credentialRole: CredentialRole.HOLDER}),
             primaryAction: {
               caption: translate('action_accept_label'),
               onPress: async (): Promise<void> =>

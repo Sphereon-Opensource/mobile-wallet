@@ -31,6 +31,7 @@ import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {getCredentialSubjectContact} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -241,12 +242,13 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
-      credential: await toNonPersistedCredentialSummary(
-        credentialsToAccept[0].uniformVerifiableCredential!,
-        CredentialRole.HOLDER,
-        localeBranding,
-        contact,
-      ),
+      credential: await toNonPersistedCredentialSummary({
+        verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential!,
+        credentialRole: CredentialRole.HOLDER,
+        branding: localeBranding,
+        issuer: contact,
+        subject: getCredentialSubjectContact(credentialsToAccept[0].rawVerifiableCredential),
+      }),
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,
