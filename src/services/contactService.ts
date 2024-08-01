@@ -3,19 +3,19 @@ import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {cmAddContact, cmAddIdentity, cmGetContacts, cmRemoveContact, cmUpdateContact} from '../agent';
-import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IUpdateContactArgs} from '../types';
+import {IAddIdentityArgs, ICreateContactArgs, IGetContactsArgs, IRequiredContext, IUpdateContactArgs} from '../types';
 
 const debug: Debugger = Debug(`${APP_ID}:contactService`);
 
-export const getContacts = async (args?: IGetContactsArgs): Promise<Array<Party>> => {
+export const getContacts = async (args: IGetContactsArgs, context: IRequiredContext): Promise<Array<Party>> => {
   debug(`getContacts(${JSON.stringify(args)})...`);
-  return await cmGetContacts(args);
+  return await context.agent.cmGetContacts(args);
 };
 
-export const createContact = async (args: ICreateContactArgs): Promise<Party> => {
+export const createContact = async (args: ICreateContactArgs, context: IRequiredContext): Promise<Party> => {
   debug(`createContact(${JSON.stringify(args)})...`);
-  return cmAddContact(args)
+  return context.agent
+    .cmAddContact(args)
     .then((contact: Party) => {
       debug(`createContact(${JSON.stringify(args)}) succeeded`);
       return contact;
@@ -23,9 +23,10 @@ export const createContact = async (args: ICreateContactArgs): Promise<Party> =>
     .catch((error: Error) => Promise.reject(Error(`Unable to create contact. Error: ${error}`)));
 };
 
-export const updateContact = async (args: IUpdateContactArgs): Promise<Party> => {
+export const updateContact = async (args: IUpdateContactArgs, context: IRequiredContext): Promise<Party> => {
   debug(`updateContact(${JSON.stringify(args)})...`);
-  return cmUpdateContact(args)
+  return context.agent
+    .cmUpdateContact(args)
     .then((contact: Party) => {
       debug(`updateContact(${JSON.stringify(args)}) succeeded`);
       return contact;
@@ -33,9 +34,10 @@ export const updateContact = async (args: IUpdateContactArgs): Promise<Party> =>
     .catch((error: Error) => Promise.reject(Error(`Unable to update contact. Error: ${error}`)));
 };
 
-export const removeContact = async (args: RemoveContactArgs): Promise<boolean> => {
+export const removeContact = async (args: RemoveContactArgs, context: IRequiredContext): Promise<boolean> => {
   debug(`removeContact(${JSON.stringify(args)})...`);
-  return cmRemoveContact(args)
+  return context.agent
+    .cmRemoveContact(args)
     .then((isDeleted: boolean) => {
       debug(`removeContact(${JSON.stringify(args)}) succeeded`);
       return isDeleted;
@@ -43,9 +45,10 @@ export const removeContact = async (args: RemoveContactArgs): Promise<boolean> =
     .catch((error: Error) => Promise.reject(Error(`Unable to remove contact. Error: ${error}`)));
 };
 
-export const addIdentity = async (args: IAddIdentityArgs): Promise<Identity> => {
+export const addIdentity = async (args: IAddIdentityArgs, context: IRequiredContext): Promise<Identity> => {
   debug(`addIdentity(${JSON.stringify(args)})...`);
-  return cmAddIdentity({contactId: args.contactId, identity: args.identity})
+  return context.agent
+    .cmAddIdentity({contactId: args.contactId, identity: args.identity})
     .then((identity: Identity) => {
       debug(`addIdentity(${JSON.stringify(identity)}) succeeded`);
       return identity;

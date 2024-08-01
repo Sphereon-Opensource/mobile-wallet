@@ -12,6 +12,7 @@ import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
+import {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
@@ -91,17 +92,20 @@ export const retrieveContact = async (context: Pick<SiopV2MachineContext, 'url' 
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  return getContacts({
-    filter: [
-      {
-        identities: {
-          identifier: {
-            correlationId: authorizationRequestData.correlationId,
+  return getContacts(
+    {
+      filter: [
+        {
+          identities: {
+            identifier: {
+              correlationId: authorizationRequestData.correlationId,
+            },
           },
         },
-      },
-    ],
-  }).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
+      ],
+    },
+    agentContext,
+  ).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
 export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'contact' | 'authorizationRequestData'>): Promise<void> => {

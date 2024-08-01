@@ -67,10 +67,13 @@ export const siopSendAuthorizationResponse = async (
     identifiers = identifiers.filter(id => id.did.toLowerCase().startsWith('did:key:') || id.did.toLowerCase().startsWith('did:ebsi:'));
     if (identifiers.length === 0) {
       debug(`No EBSI key present yet. Creating a new one...`);
-      const identifier = await getOrCreatePrimaryIdentifier({
-        method: SupportedDidMethodEnum.DID_KEY,
-        createOpts: {options: {codecName: 'jwk_jcs-pub', type: 'Secp256r1'}},
-      });
+      const identifier = await getOrCreatePrimaryIdentifier(
+        {
+          method: SupportedDidMethodEnum.DID_KEY,
+          createOpts: {options: {codecName: 'jwk_jcs-pub', type: 'Secp256r1'}},
+        },
+        agentContext,
+      );
       debug(`EBSI key created: ${identifier.did}`);
       identifiers = [identifier];
     }

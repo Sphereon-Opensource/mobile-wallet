@@ -10,15 +10,15 @@ export const SSICredentialSelectViewItemLogoOuterContainerStyled = styled.View`
 `;
 
 export const SSICredentialSelectViewItemLogoCheckboxContainerStyled = styled.View`
-  height: 60px
-  width: 80px
-  justify-content: center
+  height: 60px;
+  width: 80px;
+  justify-content: center;
 `;
 
 export const SSICredentialSelectViewItemCheckboxContainerStyled = styled.View`
   position: absolute;
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
+  right: 0;
 `;
 
 export const SSICredentialSelectViewItemContentContainerStyled = styled.View`

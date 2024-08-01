@@ -2,9 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-# [0.3.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (TBD)
+# [0.3.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (2024-08-01)
 
 The license of the wallet has been made more permissive. We moved from GPLv3 to Apache2.
+
+### Improvements
+
+- Support for newer OID4VC specifications (OID4VP v20, OID4VCI v13/ID1, SIOP v13)
+- Add support for issuer branding (logo)
+- New faster database
+- New datastore allowing for storage of different types of credentials (SD-JWT, JWT, mDl/mdoc), presentations and future remote storage
+- New crypto implementation that is much faster
+- Update to latest expo (v51) and react-native (v0.74)
 
 # [0.2.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (2024-03-28)
 
@@ -13,7 +22,7 @@ Be aware that we moved to a new secure store implementation, meaning you will ha
 
 ### Improvements
 
-- Support for newer OID4VC specifications (OID4VP v13, OID4VCI v12, SIOP v18)
+- Support for newer OID4VC specifications (OID4VP v18, OID4VCI v12, SIOP v13)
 - Support for EBSI
 - Support for SIOP only flows
 - Better separation of logic and screens, using Xstate, allowing re-use between mobile and cloud wallet
