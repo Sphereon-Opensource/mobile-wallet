@@ -12,12 +12,14 @@ import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
+import {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
+import {IIdentifier} from '@veramo/core';
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -30,7 +32,7 @@ export const createConfig = async (
 
   return {
     idOpts: {
-      identifier,
+      identifier: identifier as IIdentifier,
     },
     id: uuidv4(),
     // FIXME: Update these values in SSI-SDK. Only the URI (not a redirectURI) would be available at this point
@@ -90,17 +92,20 @@ export const retrieveContact = async (context: Pick<SiopV2MachineContext, 'url' 
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  return getContacts({
-    filter: [
-      {
-        identities: {
-          identifier: {
-            correlationId: authorizationRequestData.correlationId,
+  return getContacts(
+    {
+      filter: [
+        {
+          identities: {
+            identifier: {
+              correlationId: authorizationRequestData.correlationId,
+            },
           },
         },
-      },
-    ],
-  }).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
+      ],
+    },
+    agentContext,
+  ).then((contacts: Array<Party>): Party | undefined => (contacts.length === 1 ? contacts[0] : undefined));
 };
 
 export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'contact' | 'authorizationRequestData'>): Promise<void> => {

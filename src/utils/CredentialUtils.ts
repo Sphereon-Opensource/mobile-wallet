@@ -1,8 +1,10 @@
 import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
+import {VerifiableCredential} from '@veramo/core';
 import store from '../store';
 import {IUser, IUserIdentifier} from '../types';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {asArray} from '@veramo/utils';
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -22,21 +24,21 @@ export const getCredentialTypeAsString = (credential: ICredential | VerifiableCr
  * @param uniqueVCs The Unique VCs to search in
  * @param searchVC The VC to search for in the unique VCs array
  */
-export const getMatchingUniqueVerifiableCredential = (
-  uniqueVCs: UniqueVerifiableCredential[],
+export const getMatchingUniqueDigitalCredential = (
+  uniqueVCs: UniqueDigitalCredential[],
   searchVC: OriginalVerifiableCredential,
-): UniqueVerifiableCredential | undefined => {
+): UniqueDigitalCredential | undefined => {
   // Since an ID is optional in a VC according to VCDM, and we really need the matches, we have a fallback match on something which is guaranteed to be unique for any VC (the proof(s))
   return uniqueVCs.find(
-    (uniqueVC: UniqueVerifiableCredential) =>
+    (uniqueVC: UniqueDigitalCredential) =>
       (typeof searchVC !== 'string' &&
-        (uniqueVC.verifiableCredential.id === (<IVerifiableCredential>searchVC).id ||
-          uniqueVC.verifiableCredential.proof === (<IVerifiableCredential>searchVC).proof)) ||
-      (typeof searchVC === 'string' && uniqueVC.verifiableCredential?.proof?.jwt === searchVC) ||
+        (uniqueVC.id === (<IVerifiableCredential>searchVC).id ||
+          (uniqueVC.originalVerifiableCredential as VerifiableCredential).proof === (<IVerifiableCredential>searchVC).proof)) ||
+      (typeof searchVC === 'string' && (uniqueVC.originalVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC) ||
       // We are ignoring the signature of the sd-jwt as PEX signs the vc again and it will not match anymore with the jwt in the proof of the stored jsonld vc
       (typeof searchVC === 'string' &&
         CredentialMapper.isSdJwtEncoded(searchVC) &&
-        uniqueVC.verifiableCredential?.proof?.jwt.split('.').slice(0, 2).join('.') === searchVC.split('.').slice(0, 2).join('.')),
+        uniqueVC.originalCredential?.proof?.jwt?.split('.')?.slice(0, 2)?.join('.') === searchVC.split('.')?.slice(0, 2)?.join('.')),
   );
 };
 
@@ -74,4 +76,14 @@ export const getCredentialIssuerContact = (vc: VerifiableCredential | ICredentia
   const contacts: Array<Party> = store.getState().contact.contacts;
   const issuer: string = typeof vc.issuer === 'string' ? vc.issuer : vc.issuer?.id ?? vc.issuer?.name;
   return contacts.find((contact: Party) => contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === issuer));
+};
+
+export const getCredentialSubjectContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  const contacts: Array<Party> = store.getState().contact.contacts;
+  const subjects: string[] = asArray(vc.credentialSubject)
+    .map(subject => subject.id)
+    .filter((id: string | undefined) => !!id) as string[];
+  return contacts.find((contact: Party) =>
+    contact.identities.some((identity: Identity): boolean => subjects.includes(identity.identifier.correlationId)),
+  );
 };

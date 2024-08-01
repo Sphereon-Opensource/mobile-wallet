@@ -1,6 +1,6 @@
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {v4 as uuidv4} from 'uuid';
-import agent from '../../agent';
+import agent, {agentContext} from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
@@ -10,6 +10,8 @@ import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {storagePersistPin} from '../storageService';
 import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
 import {_ExtendedIKey} from '@veramo/utils';
+import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 
 export const setupWallet = async (
   context: Pick<OnboardingMachineContext, 'pinCode' | 'personalData' | 'credentialData'>,
@@ -32,10 +34,13 @@ const createUserAndIdentity = async (
   context: Pick<OnboardingMachineContext, 'personalData' | 'credentialData'>,
 ): Promise<WalletSetupServiceResult> => {
   const {personalData, credentialData} = context;
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({
-    method: credentialData.didMethod,
-    createOpts: {options: credentialData.didOptions},
-  });
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
+    {
+      method: credentialData.didMethod,
+      createOpts: {options: credentialData.didOptions},
+    },
+    agentContext,
+  );
 
   const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};
@@ -62,7 +67,12 @@ const createUserAndIdentity = async (
       kid: key?.meta?.verificationMethod?.id,
     },
   });
-  await storeVerifiableCredential({vc: verifiableCredential});
+  await storeVerifiableCredential({
+    credentialRole: CredentialRole.HOLDER, // Here we are both ISSUER & HOLDER but has I think it to be HOLDER due to "oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER)"
+    issuerCorrelationId: identifier.did,
+    issuerCorrelationType: CredentialCorrelationType.DID,
+    vc: verifiableCredential,
+  });
 
   const user: BasicUser = {
     ...personalData,

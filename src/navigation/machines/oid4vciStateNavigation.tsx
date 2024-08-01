@@ -31,6 +31,7 @@ import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {getCredentialSubjectContact} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -241,7 +242,13 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
-      credential: await toNonPersistedCredentialSummary(credentialsToAccept[0].uniformVerifiableCredential, localeBranding, contact),
+      credential: await toNonPersistedCredentialSummary({
+        verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
+        credentialRole: CredentialRole.HOLDER,
+        branding: localeBranding,
+        issuer: contact,
+        subject: getCredentialSubjectContact(credentialsToAccept[0].rawVerifiableCredential),
+      }),
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,
@@ -318,17 +325,7 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
-  if (
-    state.matches(OID4VCIMachineStates.start) ||
-    state.matches(OID4VCIMachineStates.createCredentialsToSelectFrom) ||
-    state.matches(OID4VCIMachineStates.getContact) ||
-    state.matches(OID4VCIMachineStates.transitionFromSetup) ||
-    state.matches(OID4VCIMachineStates.transitionFromWalletInput) ||
-    state.matches(OID4VCIMachineStates.getCredentials) ||
-    state.matches(OID4VCIMachineStates.waitForAuthorizationResponse)
-  ) {
-    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.addContact)) {
+  if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
@@ -347,6 +344,8 @@ export const oid4vciStateNavigationListener = async (
     state.matches(OID4VCIMachineStates.declined)
   ) {
     return navigateFinal({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else {
+    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   }
 };
 

@@ -1,10 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {IIdentifier} from '@veramo/core';
 import React, {PureComponent} from 'react';
 import {Button, Text, View} from 'react-native';
 import {connect} from 'react-redux';
+import {agentContext} from '../agent';
 
 import {createIdentifier, getIdentifiers} from '../services/identityService';
 import {CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList} from '../types';
@@ -30,7 +31,7 @@ class Veramo extends PureComponent<IProps, IState> {
   };
 
   componentDidMount() {
-    getIdentifiers().then((identifiers: Array<IIdentifier>) => {
+    getIdentifiers(agentContext).then((identifiers: Array<IIdentifier>) => {
       console.log('identifiers:', identifiers);
       this.setState({identifiers});
     });
@@ -38,7 +39,7 @@ class Veramo extends PureComponent<IProps, IState> {
 
   createIdentifier = async () => {
     try {
-      await createIdentifier()
+      await createIdentifier({}, agentContext)
         .then((identifier: Identifier) => {
           // throw Error('test')
           const identifiers = [identifier, ...this.state.identifiers];
@@ -129,7 +130,10 @@ class Veramo extends PureComponent<IProps, IState> {
 
               this.props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
                 rawCredential: verifiableCredential,
-                credential: await toNonPersistedCredentialSummary(CredentialMapper.toUniformCredential(verifiableCredential)),
+                credential: await toNonPersistedCredentialSummary({
+                  verifiableCredential: CredentialMapper.toUniformCredential(verifiableCredential),
+                  credentialRole: CredentialRole.HOLDER,
+                }),
               });
             }}
           />

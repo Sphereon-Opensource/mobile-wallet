@@ -11,5 +11,5 @@ export const SSICredentialSelectTypeScreenButtonContainerStyled = styled.View`
   width: 100%;
   margin-top: auto;
   justify-content: center;
-  padding: 0px 38px 0px 38px;
+  padding: 0 38px 0 38px;
 `;

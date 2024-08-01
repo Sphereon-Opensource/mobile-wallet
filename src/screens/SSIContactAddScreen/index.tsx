@@ -3,6 +3,7 @@ import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
+import {agentContext} from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';
 import SSITextInputField from '../../components/fields/SSITextInputField';
@@ -91,16 +92,19 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     const {identities, name, uri} = this.props.route.params;
     const {contactAlias} = this.state;
 
-    const contacts: Array<Party> = await getContacts({
-      filter: [
-        {
-          contact: {
-            // Searching on legalName as displayName is not unique, and we only support organizations for now
-            legalName: name,
+    const contacts: Array<Party> = await getContacts(
+      {
+        filter: [
+          {
+            contact: {
+              // Searching on legalName as displayName is not unique, and we only support organizations for now
+              legalName: name,
+            },
           },
-        },
-      ],
-    });
+        ],
+      },
+      agentContext,
+    );
     if (contacts.length > 0 && contacts[0]?.contact!!) {
       contacts[0].contact.displayName = contactAlias;
       return updateContact({contact: contacts[0]});

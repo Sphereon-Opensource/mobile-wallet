@@ -43,8 +43,11 @@ const config = {
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
     extraNodeModules: {
+      buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
-      crypto: require.resolve('@sphereon/isomorphic-webcrypto'),
+      crypto: require.resolve('react-native-quick-crypto'),
+      fs: require.resolve('expo-fs'),
+      path: require.resolve('path-browserify'),
     },
   },
 };
