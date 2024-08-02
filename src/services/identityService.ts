@@ -24,7 +24,7 @@ export const getIdentifiers = async (): Promise<IIdentifier[]> => {
 
 export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<IIdentifier> => {
   const identifier = await didManagerCreate({
-    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.LOCAL,
+    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.MUSAP_TEE,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
     alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
     options: args?.createOpts?.options,
@@ -61,6 +61,7 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
     createOpts.options = {codecName: 'EBSI', type: 'Secp256r1', ...createOpts};
     args.createOpts = createOpts;
   }
+  console.log('createIdentifier', args);
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
 
   debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);

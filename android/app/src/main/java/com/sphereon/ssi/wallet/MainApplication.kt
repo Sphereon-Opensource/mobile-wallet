@@ -2,19 +2,20 @@ package com.sphereon.ssi.wallet
 
 import android.app.Application
 import android.content.res.Configuration
+import android.util.Log
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
+import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
-import com.facebook.react.ReactHost
 import com.facebook.react.config.ReactFeatureFlags
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
-import java.util.List
-
+import com.sphereon.musap.MusapModuleAndroid
+import com.sphereon.musap.MusapPackage
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 
@@ -22,10 +23,14 @@ class MainApplication : Application(), ReactApplication {
     override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
             this,
             object : DefaultReactNativeHost(this) {
-                override fun getPackages(): ArrayList<ReactPackage> {
-                    // Packages that cannot be autolinked yet can be added manually here, for example:
-                    // packages.add(new MyReactNativePackage());
-                    return PackageList(this).packages
+                override fun getPackages(): List<ReactPackage> {
+                    val packages = PackageList(this).packages.toMutableList()
+                    try {
+                        packages.add(MusapPackage())
+                    } catch (e: Exception) {
+                        Log.e("MWALL", "Failed to add MusapPackage", e)
+                    }
+                    return packages
                 }
 
                 override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"
@@ -42,6 +47,13 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+
+        try {
+            MusapModuleAndroid.init(this)
+        } catch (e: Throwable) {
+            Log.e("MWALL", "init failed", e) // To logcat
+            throw e
+        }
 
         SoLoader.init(this,  /* native exopackage */false)
         if (!BuildConfig.REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS) {

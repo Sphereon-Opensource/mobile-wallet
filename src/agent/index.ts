@@ -4,7 +4,6 @@ import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.d
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
-import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin, LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
 import {OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder/src/types/IOID4VCIHolder';
@@ -47,6 +46,9 @@ import {generateSalt, generateDigest} from '../utils';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
+//import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
+import {MusapModule} from '@sphereon/musap-react-native/dist/types/musap-types';
+import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 
 export const didResolver = new Resolver({
   ...getUniResolver(SupportedDidMethodEnum.DID_ETHR, {
@@ -64,20 +66,20 @@ export const didMethodsSupported = Object.keys(didResolver['registry']).map(meth
 
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ETHR}`]: new EthrDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
     network: 'goerli',
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_ION}`]: new IonDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
 };
 
@@ -92,7 +94,7 @@ const agentPlugins: Array<IAgentPlugin> = [
   new SphereonKeyManager({
     store: new KeyStore(dbConnection),
     kms: {
-      local: new SphereonKeyManagementSystem(privateKeyStore),
+      musapTee: new MusapKeyManagementSystem(MusapModule, 'TEE'), // TODO YubiKey as well
     },
   }),
   new DIDManager({
