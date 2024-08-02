@@ -4,7 +4,6 @@ import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDef
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {UniqueVerifiableCredential} from '@veramo/core';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
