@@ -4,6 +4,10 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - AusweisApp2 (2.1.2)
+  - AusweisSdk (0.0.1-alpha.6):
+    - AusweisApp2
+    - ExpoModulesCore
   - Base64 (1.1.2)
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
@@ -1195,6 +1199,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "AusweisSdk (from `../node_modules/@animo-id/expo-ausweis-sdk/ios`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -1286,6 +1291,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - AusweisApp2
     - Base64
     - CatCrypto
     - fmt
@@ -1300,6 +1306,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  AusweisSdk:
+    :path: "../node_modules/@animo-id/expo-ausweis-sdk/ios"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -1472,6 +1480,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AusweisApp2: 498000282064feb178b5c1ecf1b333cd85673358
+  AusweisSdk: 7331e366f14e9d5bd52b6f714b616b57062ca9ab
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
@@ -1566,7 +1576,7 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
+  Yoga: 805bf71192903b20fc14babe48080582fee65a80
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: a9f80fce18c5f479eb269f795608d1e46b240338

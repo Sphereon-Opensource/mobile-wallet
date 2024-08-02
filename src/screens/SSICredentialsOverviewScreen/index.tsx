@@ -20,6 +20,7 @@ import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, Sta
 import {getOriginalVerifiableCredential} from '../../utils';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {initializeSdk} from '@animo-id/expo-ausweis-sdk';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_OVERVIEW> {
   getVerifiableCredentials: () => void;

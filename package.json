@@ -26,6 +26,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@animo-id/expo-ausweis-sdk": "^0.0.1-alpha.6",
     "@astronautlabs/jsonpath": "^1.1.2",
     "@digitalbazaar/security-context": "^1.0.1",
     "@ethersproject/shims": "^5.7.0",
@@ -68,8 +69,8 @@
     "@sphereon/ssi-sdk.xstate-machine-persistence": "0.28.1-next.13",
     "@sphereon/ssi-types": "0.28.1-next.13",
     "@sphereon/ui-components.core": "0.2.1-next.85",
-    "@sphereon/ui-components.ssi-react-native": "0.2.1-next.85",
     "@sphereon/ui-components.credential-branding": "0.2.1-next.85",
+    "@sphereon/ui-components.ssi-react-native": "0.2.1-next.85",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
     "@veramo/data-store": "4.2.0",
@@ -90,6 +91,7 @@
     "did-resolver": "^4.1.0",
     "ethr-did-resolver": "^7.0.2",
     "expo": "^50.0.14",
+    "expo-build-properties": "~0.11.1",
     "expo-camera": "^14.1.1",
     "expo-crypto": "~12.8.1",
     "expo-file-system": "~16.0.8",
