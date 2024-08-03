@@ -3662,10 +3662,10 @@
     uint8arrays "^3.1.1"
     uuid "^9.0.0"
 
-"@sphereon/did-provider-oyd@0.24.1-unstable.45":
-  version "0.24.1-unstable.45"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.24.1-unstable.45.tgz#ebef91da1761e03c3ca87d26d7ec39faf9a814a1"
-  integrity sha512-BGU0DhDm6S6E3POpM7sWksV/y/zy/eHvEQG6Ds3Pr8KyFfo8QHC0C8RsvhxywpWVl3mkBYx6nBKvh+Frhj33JQ==
+"@sphereon/did-provider-oyd@0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.24.0.tgz#89911fd9c5b0e24a4acb9c8044e1fbd30396a6a6"
+  integrity sha512-5sSFv2kogErO+3PifysMerx2XchGL8ttzHlijc4l2E+Al1k0QHmDe3P1CsIz2WEk81nGLuGFFPBpiox2ShnJaw==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
