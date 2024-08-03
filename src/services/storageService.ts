@@ -13,12 +13,12 @@ const STORAGE_USERS_KEY = 'users';
 const userStorage = new MMKVLoader()
   .withEncryption()
   .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
-  .withInstanceID('sphereon-wallet-users')
+  .withInstanceID('sphereon-wallet-users-v0.3')
   .initialize();
 const pinStorage = new MMKVLoader()
   .withEncryption()
   .setAccessibleIOS(IOSAccessibleStates.WHEN_UNLOCKED_THIS_DEVICE_ONLY)
-  .withInstanceID('sphereon-wallet-pin')
+  .withInstanceID('sphereon-wallet-pin-v0.3')
   .initialize();
 
 export const storagePersistUser = async ({user}: IStoreUserArgs): Promise<void> => {

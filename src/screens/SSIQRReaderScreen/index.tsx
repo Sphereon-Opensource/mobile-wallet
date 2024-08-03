@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {BarcodeScanningResult, Camera} from 'expo-camera/next';
+import {BarcodeScanningResult, Camera} from 'expo-camera';
 import React, {FC, useEffect, useState} from 'react';
 import {Platform, StatusBar, Text} from 'react-native';
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker';

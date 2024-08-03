@@ -2,7 +2,7 @@ import {IIdentifier, IKey} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID, DID_PREFIX} from '../@config/constants';
-import {didManagerCreate, didManagerFind, didManagerGet} from '../agent';
+
 import store from '../store';
 import {getContacts} from '../store/actions/contact.actions';
 import {addIdentifier} from '../store/actions/user.actions';
@@ -11,19 +11,20 @@ import {
   ICreateOrGetIdentifierArgs,
   IdentifierAliasEnum,
   IDispatchIdentifierArgs,
+  IRequiredContext,
   KeyManagementSystemEnum,
   SupportedDidMethodEnum,
 } from '../types';
 
 const debug: Debugger = Debug(`${APP_ID}:identity`);
 
-export const getIdentifiers = async (): Promise<IIdentifier[]> => {
+export const getIdentifiers = async (context: IRequiredContext): Promise<IIdentifier[]> => {
   // TODO fully implement
-  return didManagerFind();
+  return context.agent.didManagerFind();
 };
 
-export const createIdentifier = async (args?: ICreateIdentifierArgs): Promise<IIdentifier> => {
-  const identifier = await didManagerCreate({
+export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRequiredContext): Promise<IIdentifier> => {
+  const identifier = await context.agent.didManagerCreate({
     kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.MUSAP_TEE,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
     alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
@@ -46,8 +47,8 @@ export const dispatchIdentifier = async (args: IDispatchIdentifierArgs): Promise
   }
 };
 
-export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifierArgs): Promise<IIdentifier> => {
-  const identifiers = (await didManagerFind(args?.method ? {provider: `${DID_PREFIX}:${args?.method}`} : {})).filter(
+export const getOrCreatePrimaryIdentifier = async (args: ICreateOrGetIdentifierArgs, context: IRequiredContext): Promise<IIdentifier> => {
+  const identifiers = (await context.agent.didManagerFind(args?.method ? {provider: `${DID_PREFIX}:${args?.method}`} : {})).filter(
     (identifier: IIdentifier) =>
       args?.createOpts?.options?.type === undefined || identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type),
   );
@@ -61,9 +62,8 @@ export const getOrCreatePrimaryIdentifier = async (args?: ICreateOrGetIdentifier
     createOpts.options = {codecName: 'EBSI', type: 'Secp256r1', ...createOpts};
     args.createOpts = createOpts;
   }
-  console.log('createIdentifier', args);
-  const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args) : identifiers[0];
+  const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args, context) : identifiers[0];
 
   debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);
-  return await didManagerGet({did: identifier.did});
+  return await context.agent.didManagerGet({did: identifier.did});
 };

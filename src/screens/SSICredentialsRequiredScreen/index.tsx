@@ -9,7 +9,7 @@ import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import {ibGetCredentialBranding} from '../../agent';
+import agent from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
@@ -20,7 +20,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {getCredentialIssuerContact, getMatchingUniqueDigitalCredential} from '../../utils';
+import {getCredentialIssuerContact, getCredentialSubjectContact, getMatchingUniqueDigitalCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -165,7 +165,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     const vcHashes = inputDescriptorVCs.map((uniqueCredential: UniqueDigitalCredential): {vcHash: string} => ({
       vcHash: uniqueCredential.hash,
     }));
-    const credentialsBranding: Array<ICredentialBranding> = await ibGetCredentialBranding({filter: vcHashes});
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: vcHashes});
 
     const credentialSelection = await Promise.all(
       inputDescriptorVCs.map(async (uniqueVC: UniqueDigitalCredential) => {
@@ -174,13 +174,14 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
         );
         const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential);
-        const credentialSummary: CredentialSummary = await toCredentialSummary(
-          uniqueVC.originalVerifiableCredential as VerifiableCredential,
-          uniqueVC.hash,
-          uniqueVC.digitalCredential.credentialRole,
-          credentialBranding?.localeBranding,
+        const credentialSummary: CredentialSummary = await toCredentialSummary({
+          verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+          hash: uniqueVC.hash,
+          credentialRole: uniqueVC.digitalCredential.credentialRole,
+          branding: credentialBranding?.localeBranding,
           issuer,
-        );
+          subject: getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+        });
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
           .some(

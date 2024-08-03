@@ -16,7 +16,7 @@ export interface IAddIdentifierArgs {
 }
 
 export interface ICreateIdentifierArgs {
-  method: SupportedDidMethodEnum;
+  method?: SupportedDidMethodEnum;
   createOpts?: ICreateIdentifierOpts;
 }
 
@@ -25,7 +25,7 @@ export interface IDispatchIdentifierArgs {
 }
 
 export interface ICreateOrGetIdentifierArgs {
-  method: SupportedDidMethodEnum;
+  method?: SupportedDidMethodEnum;
   createOpts?: ICreateIdentifierOpts;
 }
 

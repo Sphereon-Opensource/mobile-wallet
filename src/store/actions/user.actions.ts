@@ -5,7 +5,6 @@ import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
-import {resetDatabase} from '../../services/databaseService';
 import {storageDeletePin} from '../../services/storageService';
 import {
   getUsers as userServiceGetUsers,
@@ -36,6 +35,7 @@ import {IUserState} from '../../types/store/user.types';
 
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
+import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {

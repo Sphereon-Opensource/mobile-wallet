@@ -1,13 +1,7 @@
 import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
 
-import agent, {
-  createVerifiableCredential as issueVerifiableCredential,
-  credentialStoreAddCredential,
-  credentialStoreDeleteVerifiableCredential,
-  credentialStoreGetVerifiableCredentialByIdOrHash,
-  credentialStoreGetVerifiableCredentials,
-} from '../agent';
+import agent from '../agent';
 import {
   IDeleteVerifiableCredentialArgs,
   IGetVerifiableCredentialArgs,
@@ -21,7 +15,7 @@ import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credentia
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueDigitalCredential>> => {
-  return credentialStoreGetVerifiableCredentials({filter: [{documentType: DocumentType.VC}]});
+  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]});
 };
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
@@ -33,29 +27,30 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
     issuerCorrelationType: issuerCorrelationType,
     credentialRole: credentialRole,
   };
-  const digitalCredential = await credentialStoreAddCredential({credential: addCredential});
+  const digitalCredential = await agent.crsAddCredential({credential: addCredential});
   return digitalCredential.hash;
 };
 
 export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs): Promise<VerifiableCredential> => {
   const {credentialRole, hash} = args;
   try {
-    const uniqueCredential = await credentialStoreGetVerifiableCredentialByIdOrHash({credentialRole, idOrHash: hash});
+    const uniqueCredential = await agent.crsGetUniqueCredentialByIdOrHash({credentialRole, idOrHash: hash});
     if (uniqueCredential === undefined) {
       return Promise.reject(Error(`DigitalCredential with hash ${hash} was not found ${JSON.stringify(hash)}`));
     }
     return uniqueCredential.originalVerifiableCredential as VerifiableCredential;
   } catch (e) {
-    return Promise.reject(Error(`Fetching of credential with ${hash} and credential role ${credentialRole} was not found: ${e}`, {cause: e}));
+    // @ts-ignore
+    return Promise.reject(new Error(`Fetching of credential with ${hash} and credential role ${credentialRole} was not found: ${e}`, {cause: e}));
   }
 };
 
 export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredentialArgs): Promise<boolean> => {
-  return removeCredentialBranding({filter: [{vcHash: args.hash}]}).then(() => credentialStoreDeleteVerifiableCredential({hash: args.hash}));
+  return removeCredentialBranding({filter: [{vcHash: args.hash}]}).then(() => agent.crsDeleteCredential({hash: args.hash}));
 };
 
 export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredential> => {
-  return issueVerifiableCredential(args);
+  return agent.createVerifiableCredential(args);
 };
 
 export const verifyCredential = async (args: IVerifyCredentialArgs): Promise<IVerificationResult> => {

@@ -16,6 +16,7 @@ import {
   IQrDataArgs,
   IQrDidSiopAuthenticationRequest,
   IReadQrArgs,
+  IRequiredContext,
   NavigationBarRoutesEnum,
   QrTypesEnum,
   ScreenRoutesEnum,
@@ -76,7 +77,7 @@ export const processQr = async (args: IQrDataArgs): Promise<void> => {
 
 // TODO remove old flow
 const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
+  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier({}, agentContext); // TODO replace getOrCreatePrimaryIdentifier() when we have proper identities in place
   const verifier: string = decodeURIComponent(args.qrData.uri.split('?request_uri=')[1]);
   const connection: NonPersistedConnection = {
     type: ConnectionType.SIOPv2,

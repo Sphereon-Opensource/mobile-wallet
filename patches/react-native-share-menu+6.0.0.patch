@@ -15,12 +15,12 @@ index 9557fdb..cc6d464 100644
 +}
 +
  apply plugin: 'com.android.library'
- 
+
  android {
 -    compileSdkVersion 29
 -    buildToolsVersion "29.0.2"
 +    compileSdkVersion safeExtGet('compileSdkVersion', rnsmDefaultCompileSdkVersion)
- 
+
      defaultConfig {
 -        minSdkVersion 16
 -        targetSdkVersion 29
@@ -35,19 +35,19 @@ index 09abd7b..86e7bc7 100644
 +++ b/node_modules/react-native-share-menu/android/src/main/java/com/meedan/ShareMenuModule.java
 @@ -59,10 +59,6 @@ public class ShareMenuModule extends ReactContextBaseJavaModule implements Activ
      data.putString(MIME_TYPE_KEY, type);
- 
+
      if (Intent.ACTION_SEND.equals(action)) {
 -      if ("text/plain".equals(type)) {
 -        data.putString(DATA_KEY, intent.getStringExtra(Intent.EXTRA_TEXT));
 -        return data;
 -      }
- 
+
        Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
        if (fileUri != null) {
 @@ -112,6 +108,16 @@ public class ShareMenuModule extends ReactContextBaseJavaModule implements Activ
      clearSharedText();
    }
- 
+
 +    @ReactMethod
 +    public void addListener(String eventName) {
 +      // Required for RN built in Event Emitter Calls.
