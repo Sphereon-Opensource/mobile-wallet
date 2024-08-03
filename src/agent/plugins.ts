@@ -1,5 +1,4 @@
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
-import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
@@ -26,12 +25,13 @@ import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {DEFAULT_DID_PREFIX_AND_METHOD, SupportedDidMethodEnum} from '../types';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
+import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -60,7 +60,7 @@ export const createAgentPlugins = ({
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        local: new SphereonKeyManagementSystem(privateKeyStore),
+        musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
       },
     }),
     new DIDManager({
