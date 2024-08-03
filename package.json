@@ -1,6 +1,6 @@
 {
   "name": "@sphereon/sphereon-wallet",
-  "version": "0.3.0-unstable.0",
+  "version": "0.3.0-unstable.1",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
@@ -24,7 +24,8 @@
     "bundle:ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "postinstall": "patch-package && rn-nodeify --install fs,os,path,assert,process,vm --hack",
     "prepare": "husky install",
-    "android": "expo run:android"
+    "android": "expo run:android",
+    "expo-module": "expo-module"
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
@@ -89,6 +90,7 @@
     "did-resolver": "^4.1.0",
     "ethr-did-resolver": "^7.0.2",
     "expo": "~51.0.24",
+    "expo-build-properties": "^0.12.4",
     "expo-camera": "~15.0.14",
     "expo-file-system": "~17.0.1",
     "expo-fs": "^0.2.2",
@@ -113,7 +115,7 @@
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
     "react-native": "0.74.3",
-    "react-native-app-auth": "^6.4.3",
+    "react-native-app-auth": "^7.2.0",
     "react-native-dotenv": "^3.4.11",
     "react-native-fast-image": "^8.6.3",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git",
