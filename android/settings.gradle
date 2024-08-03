@@ -1,4 +1,4 @@
-rootProject.name = 'SphereonWallet'
+rootProject.name = 'Sphereon Wallet'
 
 dependencyResolutionManagement {
   versionCatalogs {

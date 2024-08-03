@@ -88,11 +88,9 @@ android {
         applicationId 'com.sphereon.ssi.wallet'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        manifestPlaceholders = [appAuthRedirectScheme: "com.sphereon.ssi.wallet"]
         versionCode 1
-        versionName "0.3.1"
-        manifestPlaceholders = [
-                appAuthRedirectScheme: "com.sphereon.ssi.wallet"
-        ]
+        versionName "0.3.0-unstable.1"
     }
     signingConfigs {
         debug {

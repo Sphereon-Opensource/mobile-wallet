@@ -40,6 +40,7 @@ const config = {
 
   plugins: [
     'expo-localization',
+    './plugin/appAuthPluginAndroid.js',
     [
       'expo-font',
       {
@@ -70,12 +71,10 @@ const config = {
       {
         android: {
           minSdkVersion: 28,
+          compileSdkVersion: 34,
+          targetSdkVersion: 34,
+          buildToolsVersion: '34.0.0',
           useLegacyPackaging: true,
-          defaultConfig: {
-            manifestPlaceHolders: {
-              appAuthRedirectScheme: 'com.sphereon.ssi.wallet',
-            },
-          },
         },
       },
     ],
