@@ -14,7 +14,7 @@ const {version: appVersion} = require('./package.json');
  * @type {import("@expo/config-types").ExpoConfig}
  */
 const config = {
-  owner: 'Sphereon International B.V.',
+  // owner: 'Sphereon International B.V.',
   name: 'Sphereon Wallet',
   slug: 'SphereonWallet',
   version: appVersion,
@@ -81,6 +81,7 @@ const config = {
   ],
   android: {
     package: 'com.sphereon.ssi.wallet',
+    useLegacyPackaging: true,
     intentFilters: [
       ...deeplinkSchemes.map(scheme => ({
         action: 'VIEW',

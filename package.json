@@ -28,6 +28,7 @@
     "expo-module": "expo-module"
   },
   "dependencies": {
+    "@animo-id/expo-ausweis-sdk": "^0.0.1-alpha.6",
     "@astronautlabs/jsonpath": "^1.1.2",
     "@craftzdog/react-native-buffer": "^6.0.5",
     "@digitalbazaar/security-context": "^1.0.1",
