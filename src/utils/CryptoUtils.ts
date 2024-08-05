@@ -1,13 +1,12 @@
-export const generateDigest = async (data: string, algorithm: string): Promise<Uint8Array> => {
-  return new Uint8Array(await crypto.subtle.digest(algorithm, await BufferSourceFrom(data)));
+import crypto from 'crypto';
+import {v4 as uuidv4} from 'uuid';
+
+export const generateDigest = (data: string, algorithm: string): Uint8Array => {
+  return new Uint8Array(crypto.createHash(algorithm).update(data).digest());
 };
 
-export const generateSalt = async (): Promise<string> => {
-  return crypto.randomUUID();
-};
-
-export const BufferSourceFrom = async (data: string): Promise<BufferSource> => {
-  return new TextEncoder().encode(data);
+export const generateSalt = (): string => {
+  return uuidv4();
 };
 
 export const getCryptoDigestAlgorithm = (algorithm: string): AlgorithmIdentifier => {

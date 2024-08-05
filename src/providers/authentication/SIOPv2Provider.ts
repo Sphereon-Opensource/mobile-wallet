@@ -10,6 +10,8 @@ import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {SupportedDidMethodEnum} from '../../types';
+import {generateDigest} from '../../utils';
+import {encodeJoseBlob} from '@veramo/utils';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -91,7 +93,7 @@ export const siopSendAuthorizationResponse = async (
   let identifier: IIdentifier = identifiers[0];
   let presentationSubmission: PresentationSubmission | undefined;
   if (await session.hasPresentationDefinitions()) {
-    const oid4vp: OID4VP = await session.getOID4VP();
+    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
@@ -104,8 +106,16 @@ export const siopSendAuthorizationResponse = async (
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
-    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0]);
-    const holder = Array.isArray(firstVC.credentialSubject) ? firstVC.credentialSubject[0].id : firstVC.credentialSubject.id;
+    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0], {hasher: generateDigest});
+    const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
+      ? firstVC.decodedPayload.cnf?.jwk
+        ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
+          //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
+          `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
+        : firstVC.decodedPayload.sub
+      : Array.isArray(firstVC.credentialSubject)
+      ? firstVC.credentialSubject[0].id
+      : firstVC.credentialSubject.id;
     if (holder) {
       try {
         identifier = await session.context.agent.didManagerGet({did: holder});
