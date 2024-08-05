@@ -45,6 +45,7 @@ export const oid4vciHolder = new OID4VCIHolder({
     const {identifier} = args;
     await dispatchIdentifier({identifier});
   },
+  hasher: generateDigest,
 });
 
 export const createAgentPlugins = ({

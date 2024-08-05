@@ -35,7 +35,7 @@ interface IState {
   refreshing: boolean;
 }
 
-class SSICredentialsOverviewScreen extends PureComponent<IProps, IState> {
+class CredentialsOverviewScreen extends PureComponent<IProps, IState> {
   state: IState = {
     refreshing: false,
   };
@@ -158,4 +158,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SSICredentialsOverviewScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CredentialsOverviewScreen);

@@ -3,23 +3,23 @@ import styled from 'styled-components/native';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {backgroundColors} from '@sphereon/ui-components.core';
 
-export const SSICredentialDetailsScreenContentContainer = styled.View`
+export const CredentialDetailsScreenContentContainer = styled.View`
   width: 100%;
   flex: 1;
 `;
 
-export const SSICredentialDetailsScreenCredentialCardContainer = styled.View`
+export const CredentialDetailsScreenCredentialCardContainer = styled.View`
   align-items: center;
   margin-bottom: 8px;
 `;
 
-export const SSICredentialDetailsScreenButtonContainer = styled.View`
+export const CredentialDetailsScreenButtonContainer = styled.View`
   height: 80px;
   width: 100%;
   margin-top: auto;
   background-color: ${backgroundColors.secondaryDark};
 `;
 
-export const SSICredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
+export const CredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
   justify-content: space-evenly;
 `;
