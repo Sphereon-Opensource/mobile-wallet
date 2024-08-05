@@ -123,7 +123,7 @@
     "react-native-level-fs": "^3.0.1",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-linear-gradient-text": "^1.2.8",
-    "react-native-mmkv-storage": "^0.9.1",
+    "react-native-mmkv-storage": "^0.10.2",
     "react-native-navigation-bar-color": "^2.0.2",
     "react-native-os": "^1.2.6",
     "react-native-pager-view": "6.3.0",
