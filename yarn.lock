@@ -4312,16 +4312,16 @@ __metadata:
     "@sphereon/oid4vci-common": "npm:0.15.1-next.9"
     "@sphereon/pex": "npm:4.0.1"
     "@sphereon/pex-models": "npm:^2.2.4"
-    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.24.1-unstable.49"
-    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.24.1-unstable.49"
+    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.24.1-unstable.51"
+    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.24.1-unstable.51"
     "@sphereon/ssi-sdk.agent-config": "npm:0.29.0"
     "@sphereon/ssi-sdk.contact-manager": "npm:0.29.0"
     "@sphereon/ssi-sdk.core": "npm:0.29.0"
@@ -4497,13 +4497,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.24.1-unstable.51"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.49+55dc32a"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.51+e2640e1"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@sphereon/ssi-types": "npm:0.28.0"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
@@ -4512,16 +4512,16 @@ __metadata:
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
-  checksum: 10c0/a54f4726dcd795d9a9073d9643d79ea69d7931db47e024c0863d587b4d176a758a05ca0f29172a2975acffd167cbefe6d8002d92c70ddfd91eba89578fabbadf
+  checksum: 10c0/4ffd922dd11e983775692341d06ff245648b14c7ad6b066fb38878b11cc8a4f5c3db893c41fc1a18f83da279903c65d2807b4b3de58e4b6bf20495b77d7ec8db
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.24.1-unstable.51"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.24.1-unstable.49+55dc32a"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.24.1-unstable.51+e2640e1"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@transmute/did-key-bls12381": "npm:0.3.0-unstable.10"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
@@ -4531,39 +4531,39 @@ __metadata:
     multibase: "npm:^4.0.6"
     multicodec: "npm:^3.2.1"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/f215fb4e24b2552120162b2e06dbea27eef4eb9294876943f56529244582eda696c7df13d8ada35f945b64092addd6e492fe914a7520e1398897a2245fffe8ec
+  checksum: 10c0/8c5e12e863d66231c8bedbeb0dd4f990205b7e88e9596f11dfdf552f9e06a3383479fba8ce3933604b608c73297137724faa960b911e33d60d24e1fa3fe28f4b
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.24.1-unstable.51"
   dependencies:
     cross-fetch: "npm:^3.1.8"
     did-resolver: "npm:^4.1.0"
     dotenv: "npm:^16.3.1"
-  checksum: 10c0/784301504b4832b1d9d8ade045c08f6b794d0f5ea768f5af6652707cc94e61fdd0ccc6a7ee2cd74426062bd846081247999f32c94e5fc1c147774642d3a385ce
+  checksum: 10c0/37d59bf1ed370c7ab1b434205bff6f76ed96dc84ccc24de68fb10430492b8be4f1c69690d790e5264ef2dd1a9db67a5d4d1d891e01243f248245bfcb7f7a0aff
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.24.1-unstable.51"
   dependencies:
     "@sphereon/ssi-types": "npm:0.28.0"
     base64url: "npm:^3.0.1"
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/589fe60a91696bf0168559b67d28a6d49ef9f9ef88fdeea9dbee55c1ca30604942d35384c33286bfa64f1441b1e8e5020487f2df5a95a7ff7bed7a77fedbadb0
+  checksum: 10c0/389ae25cda5bf6b85e30326f052ea928be4b812587c47e704dc3013f4c8765fd9c4a7609572d8499b6515d0db2c29cdbb64d1f3e5a901dad37e85027fffaa96c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.49, @sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.49+55dc32a":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.51, @sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.51+e2640e1":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.24.1-unstable.51"
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@stablelib/ed25519": "npm:^1.0.3"
     bigint-mod-arith: "npm:^3.3.1"
     did-resolver: "npm:^4.1.0"
@@ -4574,18 +4574,18 @@ __metadata:
     uint8arrays: "npm:^3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/962b726d09d9088645eed2a4d4a84e4adb9a3bd6725c4ea1def9897f5f24e511ca9faf07e8b819091292faed8c312c1a257bfe003d1d80a5098fb6be18a52b28
+  checksum: 10c0/678345c425d16a110e87ea47f6ed94281191992874008e7ddbed5366f960493f8dc6253636955a1c4996f02abb8f6ace9275fa47b365b504de839fa69a121c01
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-utils@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.did-utils@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.24.1-unstable.51"
   dependencies:
     "@ethersproject/networks": "npm:^5.7.1"
     "@ethersproject/transactions": "npm:^5.7.0"
     "@sphereon/did-uni-client": "npm:^0.6.3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@sphereon/ssi-sdk.core": "npm:0.28.0"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
@@ -4594,24 +4594,24 @@ __metadata:
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/624c739caa94564ccb6b1d8a6aa321cceb0941f3e9f15728d4bc7ee7c4d3875fbe914849474f3fe3aea55c347a58b6b6c2f8adff356f2c4d6992e44c2a79231a
+  checksum: 10c0/d3b4e15b84f08240591e6a094ab8f7c502d938aa4552a45cfc5f221224002fd352de575e79889b3c0cc0a7e007f91c83961642fb6681bf4e0363c66a922db98c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.key-manager@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.key-manager@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.24.1-unstable.51"
   dependencies:
-    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.24.1-unstable.51+e2640e1"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
-  checksum: 10c0/5dc817c95b28bca6f851bee76dc201216bde1da024862be6218c1948a6907fb3a3eb5dca59d2944b29bd6bce81a70906d7b2110a044b66a52d5ce8d3f208c786
+  checksum: 10c0/e80bc03310be16b4cabfa37ea9f98f1d83bc93f4d1df1cc85974e47473573884f60e6c42f994cf91b3ca2a0c43a09b6920f15dd87ed68ef8f7423ad96928d145
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.key-utils@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.key-utils@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.24.1-unstable.51"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
     "@sphereon/ssi-types": "npm:0.29.1-next.46"
@@ -4629,38 +4629,38 @@ __metadata:
     uint8arrays: "npm:^3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/426453e907cb515306bcd340670a1f131ba8eb96884aea9dfa3fbada4f71197a5943d63e281fac3af7580eca28a5289ce58727189772c53c7beab2f03f7f3dbe
+  checksum: 10c0/3788973487c611d02ecf520af35a64df67b4b04fc8a6313294f587d40c3b36b2cee3a78aa8a304f6a1fc97dbeba9e210894e8495f228bac78fb3861197aecfcf
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.49, @sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.49+55dc32a":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51, @sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51+e2640e1":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.49+55dc32a"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.24.1-unstable.51+e2640e1"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@trust/keyto": "npm:2.0.0-alpha1"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     "@veramo/kms-local": "npm:4.2.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/2d05553c852389144b3e0ba823649f10fae40f1aec061dfa289c00c373d4bdc3084c3f5dd4ccfd307ad746314376aa96d08cdec9487e560b039e7a3823bb5c29
+  checksum: 10c0/788f03116e9de901116494e15b0ec23cad47670d3808fea252fa82f09a54429f61b7e2624963f786964511907aa67a1332ad5f6fecf386991465564fa691c41d
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.24.1-unstable.49":
-  version: 0.24.1-unstable.49
-  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.24.1-unstable.49"
+"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.24.1-unstable.51"
   dependencies:
     "@sphereon/musap-react-native": "npm:0.0.1-next.154"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.49+55dc32a"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.24.1-unstable.51+e2640e1"
     "@sphereon/ssi-types": "npm:0.28.1-next.60"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     "@veramo/kms-local": "npm:4.2.0"
     text-encoding: "npm:^0.7.0"
-  checksum: 10c0/f09acc9bb830fcdd061e9d79899338db26b92e5135c6a7d2aa3cb077241e7754f6b25fef0752d6824c3bf9b635ea96bc1af21a4ef6a4e5c7469cd8f7fd60f2df
+  checksum: 10c0/a6ece2c8fe2d7c214a850cfffdb96eb926b264773a27c80e80b46f4152a9abd402af7067e52552a7ebde17440ab8d3501a6b273514a2381751192244b190a4d1
   languageName: node
   linkType: hard
 
