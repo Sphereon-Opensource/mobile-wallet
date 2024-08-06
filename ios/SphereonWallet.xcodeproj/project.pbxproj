@@ -523,7 +523,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sphereon.ssi.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.warp.ssi.wallet;
 				PRODUCT_NAME = SphereonWallet;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -640,7 +640,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sphereon.ssi.wallet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.warp.ssi.wallet;
 				PRODUCT_NAME = SphereonWallet;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
