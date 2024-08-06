@@ -447,7 +447,7 @@ const NotificationsStack = (): JSX.Element => {
 };
 
 type StackGroupConfig = {
-  title: string;
+  titleKey: string;
   screens: {
     name: ScreenRoutesEnum;
     component: React.FC<any>;
@@ -455,7 +455,7 @@ type StackGroupConfig = {
 };
 
 const step1GroupConfig: StackGroupConfig = {
-  title: 'Create Wallet',
+  titleKey: 'onboard_create_wallet_step_title',
   screens: [
     {
       name: ScreenRoutesEnum.ENTER_NAME,
@@ -473,7 +473,7 @@ const step1GroupConfig: StackGroupConfig = {
 };
 
 const step2GroupConfig: StackGroupConfig = {
-  title: 'Secure Wallet',
+  titleKey: 'onboard_secure_wallet_step_title',
   screens: [
     {
       name: ScreenRoutesEnum.ENTER_PIN_CODE,
@@ -506,11 +506,11 @@ export const OnboardingStack = (): JSX.Element => (
         header: props => <OnboardingHeader {...props} />,
       }}
     />
-    {stackGroupsConfig.map(({title, screens}, i) => (
+    {stackGroupsConfig.map(({titleKey, screens}, i) => (
       <Stack.Group
         key={i}
         screenOptions={{
-          header: (props: NativeStackHeaderProps) => <OnboardingHeader {...props} title={title} stepsNumber={screens.length} />,
+          header: (props: NativeStackHeaderProps) => <OnboardingHeader {...props} title={translate(titleKey)} stepsNumber={screens.length} />,
         }}>
         {screens.map((config, stepIndex) => (
           <Stack.Screen key={config.name} name={config.name} component={config.component} initialParams={{step: stepIndex + 1}} />

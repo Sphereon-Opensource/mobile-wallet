@@ -115,6 +115,8 @@
   "lock_subtitle": "Vul je pincode in.",
   "lock_emergency_button_caption": "Noodoproep",
   "show_raw_credential_button_caption": "Ruwe credential",
+  "onboard_create_wallet_step_title": "Creëer Wallet",
+  "onboard_secure_wallet_step_title": "Beveilig wallet",
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
   "onboard_summary_info_tab_header_label": "Uw gegevens",
