@@ -8,11 +8,11 @@ import SSITabView from '../../components/views/SSITabView';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {translate} from '../../localization/Localization';
 import {
-  SSICredentialDetailsScreenButtonContainer as ButtonContainer,
-  SSICredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
-  SSICredentialDetailsScreenCredentialCardContainer as CardContainer,
+  CredentialDetailsScreenButtonContainer as ButtonContainer,
+  CredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
+  CredentialDetailsScreenCredentialCardContainer as CardContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  SSICredentialDetailsScreenContentContainer as ContentContainer,
+  CredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
@@ -36,7 +36,7 @@ const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes |
   }
 };
 
-const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
+const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
   const issuer: string = credential.issuer.alias;
@@ -133,4 +133,4 @@ const SSICredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-export default SSICredentialDetailsScreen;
+export default CredentialDetailsScreen;

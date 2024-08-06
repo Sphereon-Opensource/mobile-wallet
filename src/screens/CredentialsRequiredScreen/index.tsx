@@ -14,13 +14,14 @@ import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {generateDigest, getCredentialIssuerContact, getOriginalVerifiableCredential} from '../../utils';
 import {
-  SSICredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
+  CredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {getCredentialIssuerContact, getCredentialSubjectContact, getMatchingUniqueDigitalCredential} from '../../utils';
+import {getCredentialSubjectContact, getMatchingUniqueDigitalCredential} from '../../utils';
 import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -28,7 +29,7 @@ import {VerifiableCredential} from '@veramo/core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
-const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
+const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
   const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueDigitalCredential> | null>(null);
@@ -36,7 +37,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
   const [pexFilteredCredentials, setPexFilteredCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
   const [matchingDescriptors, setMatchingDescriptors] = useState(new Map<InputDescriptorV1 | InputDescriptorV2, boolean>());
-  const pex: PEX = new PEX();
+  const pex: PEX = new PEX({hasher: generateDigest});
 
   useBackHandler((): boolean => {
     if (onBack) {
@@ -66,14 +67,11 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (!allUniqueCredentials) {
-      setAllOriginalCredentials([]);
-    } else {
-      setAllOriginalCredentials(
-        allUniqueCredentials.map(uniqueVC => CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.originalVerifiableCredential!)),
-      );
-    }
-    console.log(`orig creds length:` + allOriginalCredentials.length);
+    setAllOriginalCredentials(
+      !allUniqueCredentials
+        ? []
+        : allUniqueCredentials.map(uniqueVC => CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.originalVerifiableCredential!)),
+    );
   }, [allUniqueCredentials]);
 
   useEffect((): void => {
@@ -87,6 +85,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     if (!allOriginalCredentials || !allUniqueCredentials || !presentationDefinition) {
       return;
     }
+
     const pexMatchingVCs: Map<string, Array<UniqueDigitalCredential>> = new Map<string, Array<UniqueDigitalCredential>>();
     presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
       const presentationDefinition: IPresentationDefinition = {
@@ -94,10 +93,12 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         // @ts-ignore
         input_descriptors: [inputDescriptor],
       };
+
       const selectResult: SelectResults = pex.selectFrom(presentationDefinition, allOriginalCredentials, {
         restrictToFormats: format,
         restrictToDIDMethods: subjectSyntaxTypesSupported,
       });
+
       if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
         console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
       }
@@ -107,7 +108,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
               .map((match: SubmissionRequirementMatch) => {
                 const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
                 if (matchedVC && matchedVC.length > 0) {
-                  return getMatchingUniqueDigitalCredential(allUniqueCredentials!, matchedVC[0]);
+                  return getMatchingUniqueDigitalCredential(allUniqueCredentials ?? [], matchedVC[0]);
                 }
               })
               .filter((matchedVC: UniqueDigitalCredential | undefined): matchedVC is UniqueDigitalCredential => !!matchedVC) // filter out the undefined (should not happen)
@@ -130,8 +131,8 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
     const selectedVCs: Array<UniqueDigitalCredential> = getSelectedCredentials();
-
-    await onSend(selectedVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
+    const credentials = selectedVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!);
+    await onSend(credentials);
   };
 
   const getSelectedCredentials = (): Array<UniqueDigitalCredential> => {
@@ -156,6 +157,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const getDescriptorById = (inputDescriptorId: string): InputDescriptorV1 | InputDescriptorV2 => {
     return [...matchingDescriptors.keys()].find(descriptor => descriptor.id === inputDescriptorId)!;
   };
+
   const onItemPress = async (
     inputDescriptorId: string,
     inputDescriptorVCs: Array<UniqueDigitalCredential>,
@@ -279,7 +281,7 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         title={itemInfo.item.name || itemInfo.item.id}
         purpose={itemInfo.item.purpose}
         available={pexFilteredCredentials.has(itemInfo.item.id) ? pexFilteredCredentials.get(itemInfo.item.id) : undefined}
-        selected={userSelectedCredentials.has(itemInfo.item.id) ? userSelectedCredentials.get(itemInfo.item.id)! : []}
+        selected={userSelectedCredentials.has(itemInfo.item.id) ? userSelectedCredentials.get(itemInfo.item.id) ?? [] : []}
         isMatching={checkIsMatching(itemInfo, userSelectedCredentials)}
         listIndex={itemInfo.index}
         onPress={onPress}
@@ -319,4 +321,4 @@ const SSICredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   );
 };
 
-export default SSICredentialsRequiredScreen;
+export default CredentialsRequiredScreen;

@@ -1,5 +1,6 @@
 import {
   CorrelationIdentifierType,
+  Party,
   CredentialRole,
   Identity,
   PartyTypeType,
@@ -16,8 +17,8 @@ import {
   updateContact as editContact,
   getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
-  removeContact,
   createContact as storeContact,
+  removeContact,
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
@@ -40,11 +41,10 @@ import {showToast} from '../../utils/ToastUtils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
-import {Party} from '@sphereon/ssi-sdk.data-store';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
-    dispatch({type: 'CONTACTS_LOADING'});
+    dispatch({type: CONTACTS_LOADING});
     try {
       const userContact = await getUserContact();
       let contacts = await getContactsFromStorage({}, agentContext);

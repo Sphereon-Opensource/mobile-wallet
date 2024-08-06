@@ -243,7 +243,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
       credential: await toNonPersistedCredentialSummary({
-        verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential!,
+        verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
         credentialRole: CredentialRole.HOLDER,
         branding: localeBranding,
         issuer: contact,
