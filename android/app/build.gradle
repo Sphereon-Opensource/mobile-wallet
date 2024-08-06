@@ -153,6 +153,7 @@ android {
     }
 }
 
+// Access to MUSAP Maven artifacts
 repositories {
     maven {
         url "$rootDir/../node_modules/@sphereon/musap-native/android/maven"
