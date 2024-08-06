@@ -1,7 +1,15 @@
 import React, {useState} from 'react';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {SSIWelcomeViewTitleTextStyled as TitleCaption, SSIButtonBottomContainerStyled as ButtonContainer} from '../../../styles/components';
 
-const countryData = [
+type Country = {
+  key: string;
+  name: string;
+  flag: string;
+};
+
+const countryData: Country[] = [
   {key: 'DE', name: 'Germany', flag: 'https://flagcdn.com/w320/de.png'},
   {key: 'FR', name: 'France', flag: 'https://flagcdn.com/w320/fr.png'},
   {key: 'IT', name: 'Italy', flag: 'https://flagcdn.com/w320/it.png'},
@@ -10,28 +18,31 @@ const countryData = [
   {key: 'BE', name: 'Belgium', flag: 'https://flagcdn.com/w320/be.png'},
   {key: 'CH', name: 'Switzerland', flag: 'https://flagcdn.com/w320/ch.png'},
   {key: 'AT', name: 'Austria', flag: 'https://flagcdn.com/w320/at.png'},
+  {key: 'GR', name: 'Greece', flag: 'https://flagcdn.com/w320/gr.png'},
 ];
 
 const App = () => {
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: {item: Country}) => (
     <TouchableOpacity style={styles.item} onPress={() => setSelectedCountry(item.key)}>
       <Image source={{uri: item.flag}} style={styles.flag} />
       <Text style={styles.countryText}>{item.name}</Text>
-      <View style={selectedCountry === item.key ? styles.selectedCircle : styles.circle} />
+      <View style={selectedCountry === item.key ? styles.selectedCircle : styles.circle}>
+        {selectedCountry === item.key && <View style={styles.innerCircle} />}
+      </View>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Create Wallet</Text>
-      <Text style={styles.title}>Select country</Text>
+      <TitleCaption>Select Country</TitleCaption>
       <TextInput placeholder="Search" placeholderTextColor="#B0B0B0" style={styles.searchInput} />
       <FlatList data={countryData} renderItem={renderItem} keyExtractor={item => item.key} />
-      <TouchableOpacity style={styles.continueButton}>
-        <Text style={styles.continueText}>Continue</Text>
-      </TouchableOpacity>
+      <ButtonContainer>
+        <PrimaryButton style={{height: 42, width: 300}} caption="Continue" onPress={() => console.log('Continue')} />
+      </ButtonContainer>
     </View>
   );
 };
@@ -60,12 +71,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   searchInput: {
-    backgroundColor: '#2A3642',
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 16,
     color: 'white',
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#404D7A',
   },
   item: {
     flexDirection: 'row',
@@ -85,17 +97,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   circle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 18,
+    height: 18,
+    borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#2A3642',
+    borderColor: '#FBFBFB',
   },
   selectedCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#007AFF',
+    width: 18,
+    height: 18,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#FBFBFB',
+  },
+  innerCircle: {
+    width: 9,
+    height: 9,
+    borderRadius: 6,
+    backgroundColor: '#0B81FF',
   },
   continueButton: {
     backgroundColor: '#7C4DFF',
