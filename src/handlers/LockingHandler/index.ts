@@ -14,7 +14,7 @@ class LockingHandler {
   private static instance: LockingHandler;
   private _isLocked = true;
   // We initialize in the past making sure we have passed the threshold, to make sure we remain locked initially
-  private lastInteraction = new Date(Date.now() - 2 * IDLE_LOGOUT_AFTER);
+  private lastInteraction = new Date(Date.now()); //Removed  - 2 * IDLE_LOGOUT_AFTER for the biometrics to work on iOS.
 
   private lockingEventListener: NativeEventSubscription | EmitterSubscription;
   private constructor() {
