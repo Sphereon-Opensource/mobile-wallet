@@ -62,6 +62,7 @@
 		5674539E296F49AB8BD1A1DA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		56CBB080799F4E3EB87DEC65 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SphereonWallet/noop-file.swift"; sourceTree = "<group>"; };
 		5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
+		6E4DCDA47D76408B94298E9C /* SphereonWallet-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "SphereonWallet-Bridging-Header.h"; path = "SphereonWallet/SphereonWallet-Bridging-Header.h"; sourceTree = "<group>"; };
 		761410D9D96C4DE3922872B1 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		7DC93FAB7BDA7BF1EBBAFB5A /* libPods-SphereonWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SphereonWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				56CBB080799F4E3EB87DEC65 /* noop-file.swift */,
 				46F0421A11A5981FF2784C6B /* PrivacyInfo.xcprivacy */,
+				6E4DCDA47D76408B94298E9C /* SphereonWallet-Bridging-Header.h */,
 			);
 			name = SphereonWallet;
 			sourceTree = "<group>";
@@ -241,7 +243,6 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = DC49UZQT6X;
 						LastSwiftMigration = 1250;
 					};
 				};
@@ -413,7 +414,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SphereonWallet/SphereonWallet.entitlements;
 				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = DC49UZQT6X;
+				DEVELOPMENT_TEAM = VLLVL72AJ4;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -528,9 +529,10 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "SphereonWallet/SphereonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -544,7 +546,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SphereonWallet/SphereonWallet.entitlements;
 				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = DC49UZQT6X;
+				DEVELOPMENT_TEAM = VLLVL72AJ4;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -644,8 +646,9 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "SphereonWallet/SphereonWallet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

@@ -2,8 +2,10 @@ import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC, useState} from 'react';
 import {Platform, StatusBar} from 'react-native';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import WelcomeBackground from '../../../assets/images/welcomeIntroBackground.svg';
+import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
 import SSIWelcomeView from '../../../components/views/SSIWelcomeView';
 import {translate} from '../../../localization/Localization';
 import {
@@ -82,6 +84,32 @@ const SSIWelcomeScreen: FC<Props> = (props: Props): JSX.Element => {
   const {body, buttonCaption, step} = state;
   const MAX_WELCOME_STEPS = 3;
 
+  const authenticateBiometrically = async () => {
+    try {
+      const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+      if (!hasHardware || !isEnrolled) {
+        return false;
+      }
+
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: 'Authenticate',
+        cancelLabel: 'Cancel',
+        disableDeviceFallback: true,
+      });
+
+      return result.success;
+    } catch (error) {
+      console.log('Biometric authentication error:', error);
+      return false;
+    }
+  };
+
+  const skipBiometric = async (): Promise<void> => {
+    console.log('Biomtric skipped');
+  };
+
   return (
     <Container>
       {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
@@ -108,6 +136,18 @@ const SSIWelcomeScreen: FC<Props> = (props: Props): JSX.Element => {
           action={{
             caption: buttonCaption,
             onPress: onNext,
+          }}
+        />
+        <SSIButtonsContainer
+          primaryButton={{
+            caption: 'Enable Now',
+            onPress: authenticateBiometrically as unknown as () => Promise<void>,
+          }}
+        />
+        <SSIButtonsContainer
+          secondaryButton={{
+            caption: 'Maybe Later',
+            onPress: skipBiometric,
           }}
         />
       </WelcomeViewContainer>

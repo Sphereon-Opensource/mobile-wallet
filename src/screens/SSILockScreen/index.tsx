@@ -13,6 +13,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -23,7 +24,31 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     props.navigation.addListener('focus', (): void => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
+
+    // Attempt biometric authentication on screen focus
+    authenticateBiometrically();
   }, []);
+
+  const authenticateBiometrically = async (): Promise<void> => {
+    const {onAuthenticate} = props.route.params;
+    const hasHardware = await LocalAuthentication.hasHardwareAsync();
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+    console.log(`isEnrolled is ${isEnrolled}`);
+    const security = await LocalAuthentication.getEnrolledLevelAsync();
+    console.log(`security is ${security}`);
+
+    if (hasHardware && isEnrolled && security === 3) {
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: 'Authenticate',
+        cancelLabel: 'Cancel',
+        disableDeviceFallback: true,
+      });
+
+      if (result.success) {
+        await onAuthenticate();
+      }
+    }
+  };
 
   const onVerification = async (value: string): Promise<void> => {
     const {onAuthenticate} = props.route.params;

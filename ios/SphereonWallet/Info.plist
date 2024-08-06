@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Sphereon Wallet</string>
+	<string>SphereonWallet</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
@@ -30,16 +30,11 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.sphereon.ssi.wallet</string>
-				<string>openid</string>
-				<string>openid-vc</string>
-				<string>openid4vc</string>
-				<string>openid-initiate-issuance</string>
-				<string>openid-credential-offer</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5</string>
+	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -53,6 +48,8 @@
 	<string>To receive or send digital credential cross device using QR codes</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Used as optional login method next to the PIN code</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access your microphone</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>
@@ -93,6 +90,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>

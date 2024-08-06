@@ -93,6 +93,7 @@
     "expo-file-system": "~17.0.1",
     "expo-fs": "^0.2.2",
     "expo-linear-gradient": "~13.0.2",
+    "expo-local-authentication": "~14.0.1",
     "expo-localization": "~15.0.3",
     "expo-random": "~14.0.1",
     "expo-splash-screen": "~0.27.5",
