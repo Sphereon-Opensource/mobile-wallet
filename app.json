@@ -24,6 +24,17 @@
         "projectId": "76b1c6a4-d1d8-421e-8514-ee9db0b197b4"
       }
     },
-    "plugins": ["expo-localization"]
+    "plugins": [
+      "@animo-id/expo-ausweis-sdk",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26,
+            "useLegacyPackaging": true
+          }
+        }
+      ]
+    ]
   }
 }

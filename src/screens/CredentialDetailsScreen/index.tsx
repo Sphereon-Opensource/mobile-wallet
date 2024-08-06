@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
@@ -17,6 +17,8 @@ import {
 } from '../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
 import {useBackHandler} from '@react-native-community/hooks';
+import {addMessageListener, AusweisSdkMessage, initializeSdk} from '@animo-id/expo-ausweis-sdk';
+import {Text, View} from 'react-native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -41,6 +43,17 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
   const issuer: string = credential.issuer.alias;
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
+
+  const [isSdkInitialized, setIsSdkInitialized] = useState(false);
+
+  // Initialize SDK
+  useEffect(() => {
+    initializeSdk()
+      .then(() => setIsSdkInitialized(true))
+      .catch(e => {
+        console.log('error setting up', e);
+      });
+  }, []);
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -96,6 +109,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             }}
           />
         </CardContainer>
+        {isSdkInitialized ? <Text style={{color: 'white'}}>Initialized</Text> : <Text style={{color: 'white'}}>NOT Initialized</Text>}
         <SSITabView routes={routes} />
         {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
         {(primaryAction || secondaryAction) && (
