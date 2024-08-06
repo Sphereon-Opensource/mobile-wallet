@@ -96,9 +96,9 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - MMKV (1.2.13):
-    - MMKVCore (~> 1.2.13)
-  - MMKVCore (1.2.16)
+  - MMKV (1.3.9):
+    - MMKVCore (~> 1.3.9)
+  - MMKVCore (1.3.9)
   - OpenSSL-Universal (3.2.2000)
   - RCT-Folly (2024.01.01.00):
     - boost
@@ -1075,8 +1075,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-mmkv-storage (0.9.1):
-    - MMKV (= 1.2.13)
+  - react-native-mmkv-storage (0.10.2):
+    - MMKV (~> 1.3.1)
+    - React
     - React-Core
   - react-native-pager-view (6.3.0):
     - DoubleConversion
@@ -1782,15 +1783,15 @@ SPEC CHECKSUMS:
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
   EXSplashScreen: fbf0ec78e9cee911df188bf17b4fe51d15a84b87
   FBLazyVector: 7e977dd099937dc5458851233141583abba49ff2
-  fmt: 8083860262b879fc92bca720969c91bdb88ada93
-  glog: 77f46f3d5c779b34a09b51a92fa9e0fcab64df1c
-  hermes-engine: 04d892dbfd7ada26273bb526af2b2136395cf17e
+  fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
+  glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
+  hermes-engine: 1f547997900dd0752dc0cc0ae6dd16173c49e09b
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
-  MMKVCore: 9cfef4c48c6c46f66226fc2e4634d78490206a48
+  MMKV: 817ba1eea17421547e01e087285606eb270a8dcb
+  MMKVCore: af055b00e27d88cd92fad301c5fecd1ff9b26dd9
   OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
-  RCT-Folly: 0efc5cc427fdcf65cf631871e78fd40bcf9f9c9c
+  RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4
   RCTRequired: d530a0f489699c8500e944fde963102c42dcd0c2
   RCTTypeSafety: b20878506b094fa3d9007d7b9e4be0faa3562499
@@ -1818,7 +1819,7 @@ SPEC CHECKSUMS:
   react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
   react-native-linear-gradient-text: e5c4b82093a7c9858dc3ffc059a10be0ff8abf2d
-  react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
+  react-native-mmkv-storage: 3892853c11ab8a0c3a3f9ef3b0657aa9a5f616c9
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
   react-native-quick-crypto: d3457afaa680f961c7bcf6c382329aafe4abddcd
@@ -1862,7 +1863,7 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
+  Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
 PODFILE CHECKSUM: 0b7f6915c2c954f51ee0634c2c03d880758229e0

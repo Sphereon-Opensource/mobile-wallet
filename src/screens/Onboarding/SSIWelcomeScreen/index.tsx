@@ -1,118 +1,113 @@
-import {useBackHandler} from '@react-native-community/hooks';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useState} from 'react';
-import {Platform, StatusBar} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Image} from 'react-native';
 
-import WelcomeBackground from '../../../assets/images/welcomeIntroBackground.svg';
-import SSIWelcomeView from '../../../components/views/SSIWelcomeView';
-import {translate} from '../../../localization/Localization';
-import {
-  SSIWelcomeScreenContainerStyled as Container,
-  SSIWelcomeScreenIntroBackgroundContainerStyled as IntroBackgroundContainer,
-  SSIWelcomeScreenWelcomeViewContainerStyled as WelcomeViewContainer,
-} from '../../../styles/components';
-import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
+const countryData = [
+  {key: 'DE', name: 'Germany', flag: 'https://flagcdn.com/w320/de.png'},
+  {key: 'FR', name: 'France', flag: 'https://flagcdn.com/w320/fr.png'},
+  {key: 'IT', name: 'Italy', flag: 'https://flagcdn.com/w320/it.png'},
+  {key: 'ES', name: 'Spain', flag: 'https://flagcdn.com/w320/es.png'},
+  {key: 'NL', name: 'Netherlands', flag: 'https://flagcdn.com/w320/nl.png'},
+  {key: 'BE', name: 'Belgium', flag: 'https://flagcdn.com/w320/be.png'},
+  {key: 'CH', name: 'Switzerland', flag: 'https://flagcdn.com/w320/ch.png'},
+  {key: 'AT', name: 'Austria', flag: 'https://flagcdn.com/w320/at.png'},
+];
 
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.WELCOME>;
+const App = () => {
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
-interface IState {
-  body: string;
-  buttonCaption: string;
-  step: number;
-}
-
-const SSIWelcomeScreen: FC<Props> = (props: Props): JSX.Element => {
-  if (Platform.OS === PlatformsEnum.ANDROID) {
-    StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
-  }
-
-  const [state, setState] = useState<IState>({
-    body: translate('onboarding_welcome_intro_body'),
-    buttonCaption: translate('action_next_label'),
-    step: 1,
-  });
-
-  useBackHandler(() => {
-    const {step} = state;
-
-    /**
-     * When true is returned the event will not be bubbled up
-     * & no other back action will execute
-     */
-    switch (step) {
-      case 2:
-        setState({step: step - 1, body: translate('onboarding_welcome_intro_body'), buttonCaption: translate('action_next_label')});
-        return true;
-      case 3:
-        setState({
-          step: step - 1,
-          body: translate('onboarding_welcome_store_body'),
-          buttonCaption: translate('action_next_label'),
-        });
-        return true;
-      default:
-        /**
-         * Returning false will let the event bubble up & let other event listeners
-         * or the system's default back action to be executed.
-         */
-        return false;
-    }
-  });
-
-  const onNext = async (): Promise<void> => {
-    const {step} = state;
-
-    switch (step) {
-      case 1:
-        setState({step: step + 1, body: translate('onboarding_welcome_store_body'), buttonCaption: translate('action_next_label')});
-        break;
-      case 2:
-        setState({
-          step: step + 1,
-          body: translate('onboarding_welcome_share_body'),
-          buttonCaption: translate('action_go_label'),
-        });
-        break;
-      default:
-        await props.route.params.onNext();
-    }
-  };
-
-  const {body, buttonCaption, step} = state;
-  const MAX_WELCOME_STEPS = 3;
+  const renderItem = ({item}) => (
+    <TouchableOpacity style={styles.item} onPress={() => setSelectedCountry(item.key)}>
+      <Image source={{uri: item.flag}} style={styles.flag} />
+      <Text style={styles.countryText}>{item.name}</Text>
+      <View style={selectedCountry === item.key ? styles.selectedCircle : styles.circle} />
+    </TouchableOpacity>
+  );
 
   return (
-    <Container>
-      {/* TODO WAL-406 for now we show the svg background for all welcome steps */}
-      <IntroBackgroundContainer>
-        <WelcomeBackground />
-      </IntroBackgroundContainer>
-      {/*{step === 1 ? (*/}
-      {/*  <IntroBackgroundContainer>*/}
-      {/*    <WelcomeBackground />*/}
-      {/*  </IntroBackgroundContainer>*/}
-      {/*) : (*/}
-      {/*  <BackgroundContainer>*/}
-      {/*     TODO WAL-406 fix images not loading */}
-      {/*     <Image source={require('../../assets/images/test.png')} style={{ resizeMode: 'stretch', width: 290, height: 586, backgroundColor: 'red', marginTop: 80}}/>*/}
-      {/*  </BackgroundContainer>*/}
-      {/*)}*/}
-      <WelcomeViewContainer>
-        <SSIWelcomeView
-          step={step}
-          maxSteps={MAX_WELCOME_STEPS}
-          body={body}
-          header={translate('onboarding_welcome_header')}
-          title={translate('onboarding_welcome_title')}
-          action={{
-            caption: buttonCaption,
-            onPress: onNext,
-          }}
-        />
-      </WelcomeViewContainer>
-    </Container>
+    <View style={styles.container}>
+      <Text style={styles.headerText}>Create Wallet</Text>
+      <Text style={styles.title}>Select country</Text>
+      <TextInput placeholder="Search" placeholderTextColor="#B0B0B0" style={styles.searchInput} />
+      <FlatList data={countryData} renderItem={renderItem} keyExtractor={item => item.key} />
+      <TouchableOpacity style={styles.continueButton}>
+        <Text style={styles.continueText}>Continue</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
-export default SSIWelcomeScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#1E2630',
+  },
+  headerText: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  stepText: {
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'right',
+    marginVertical: 10,
+  },
+  title: {
+    fontSize: 24,
+    color: 'white',
+    marginBottom: 10,
+  },
+  searchInput: {
+    backgroundColor: '#2A3642',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    color: 'white',
+    marginBottom: 20,
+  },
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A3642',
+  },
+  flag: {
+    width: 17,
+    height: 12,
+    marginRight: 10,
+  },
+  countryText: {
+    flex: 1,
+    color: 'white',
+    fontSize: 16,
+  },
+  circle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#2A3642',
+  },
+  selectedCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#007AFF',
+  },
+  continueButton: {
+    backgroundColor: '#7C4DFF',
+    borderRadius: 10,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  continueText: {
+    color: 'white',
+    fontSize: 18,
+  },
+});
+
+export default App;
