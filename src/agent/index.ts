@@ -1,5 +1,4 @@
 import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
-import {getUniResolver} from '@sphereon/did-uni-client';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';

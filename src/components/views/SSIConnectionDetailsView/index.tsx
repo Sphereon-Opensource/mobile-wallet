@@ -1,7 +1,7 @@
-import {Identity, MetadataItem} from '@sphereon/ssi-sdk.data-store';
+import {Identity, MetadataItem, MetadataTypes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
-
+import {toLocalDateString} from '../../../utils';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
 import {
@@ -20,10 +20,24 @@ export interface IProps {
 }
 
 const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
-  // TODO rename to identity?
   const {identity} = props;
 
-  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem<any>>) => {
+  const parseValue = (value: MetadataTypes): string => {
+    // FIXME we need to check the MetadataTypes, it holds undefined but the value field of MetadataItem cannot be undefined.
+    // And we need to check if the database can have the value null
+    // Besides that we might want rename the type to MetadataType
+    if (!value) {
+      return '';
+    }
+
+    if (value instanceof Date) {
+      return toLocalDateString(value.getTime());
+    }
+
+    return value.toString();
+  };
+
+  const renderItem = (itemInfo: ListRenderItemInfo<MetadataItem<MetadataTypes>>) => {
     return (
       <LabelRow>
         <Column>
@@ -51,7 +65,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           // TODO has a ItemSeparatorComponent which is a bit nicer to use then the logic now with margins
           data={identity.metadata}
           renderItem={renderItem}
-          keyExtractor={(item: MetadataItem<any>) => item.id}
+          keyExtractor={(item: MetadataItem<MetadataTypes>) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
         />

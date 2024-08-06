@@ -23,7 +23,7 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {showToast} from '../../utils/ToastUtils';
+import {showToast} from '../../utils';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
 import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';

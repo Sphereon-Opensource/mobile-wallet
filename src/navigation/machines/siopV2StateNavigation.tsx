@@ -174,7 +174,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
   if (authorizationRequestData.presentationDefinitions.length > 1) {
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
-  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions![0];
+  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
   const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
   const subjectSyntaxTypesSupported: Array<string> | undefined =
     authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
