@@ -4148,16 +4148,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/did-provider-oyd@npm:0.24.0":
-  version: 0.24.0
-  resolution: "@sphereon/did-provider-oyd@npm:0.24.0"
+"@sphereon/did-provider-oyd@npm:0.24.1-next.3":
+  version: 0.24.1-next.3
+  resolution: "@sphereon/did-provider-oyd@npm:0.24.1-next.3"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
     cross-fetch: "npm:^4.0.0"
     debug: "npm:^4.3.3"
     did-resolver: "npm:^4.1.0"
-  checksum: 10c0/6a0b38d526ee805761761345b84c4090e59991f32a0bac1e71aac344e6fd563bc21f746fbe8e2ed281b15d20f90cc4d8cbc2b8afc641c1ac5796f4b5d9e5a495
+  checksum: 10c0/d871b3f69407e4fff3889e3c253ab35754b6d623ed4d44d89d0cad579245e8204e11b85b0807f45a6e850be45ea6b25953cec4c1841eccb05bd45ebd480591d7
   languageName: node
   linkType: hard
 
@@ -4305,8 +4305,10 @@ __metadata:
     "@react-navigation/stack": "npm:^6.4.1"
     "@reduxjs/toolkit": "npm:^1.9.7"
     "@scure/base": "npm:^1.1.7"
+    "@sd-jwt/sd-jwt-vc": "npm:^0.6.1"
+    "@sd-jwt/types": "npm:^0.6.1"
     "@sphereon/did-auth-siop": "npm:0.6.4"
-    "@sphereon/did-provider-oyd": "npm:0.24.0"
+    "@sphereon/did-provider-oyd": "npm:0.24.1-next.3"
     "@sphereon/isomorphic-webcrypto": "npm:2.5.0-unstable.0"
     "@sphereon/oid4vci-client": "npm:0.15.1-next.9"
     "@sphereon/oid4vci-common": "npm:0.15.1-next.9"
@@ -4420,7 +4422,7 @@ __metadata:
     react-native-level-fs: "npm:^3.0.1"
     react-native-linear-gradient: "npm:^2.8.3"
     react-native-linear-gradient-text: "npm:^1.2.8"
-    react-native-mmkv-storage: "npm:^0.9.1"
+    react-native-mmkv-storage: "npm:^0.10.2"
     react-native-navigation-bar-color: "npm:^2.0.2"
     react-native-os: "npm:^1.2.6"
     react-native-pager-view: "npm:6.3.0"
@@ -4633,7 +4635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51, @sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51+e2640e1":
+"@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51":
   version: 0.24.1-unstable.51
   resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.24.1-unstable.51"
   dependencies:
@@ -4678,15 +4680,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.contact-manager@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.29.0"
+"@sphereon/ssi-sdk.contact-manager@npm:0.24.1-unstable.51":
+  version: 0.24.1-unstable.51
+  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.24.1-unstable.51"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.29.0"
+    "@sphereon/ssi-sdk.data-store": "npm:0.24.1-unstable.51+9c64384b"
     cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
+    debug: "npm:^4.3.4"
     typeorm: "npm:^0.3.20"
-  checksum: 10c0/69d61dc792817fdce4f960490953d7aa9531ca697a88ae1212a35126bd1937f5ad1624d68222dd83a70b544d2a6decfb69bcbd6ce169441b593b4716e9362005
+  checksum: 10c0/425ba2ba6a910f1ab3d7af8d58bc4a61b18479ea3d374f8b15b8eafff30aa9e627ea550c487992d345c970af524a47bf6ccd9f6d27a539b72cae0ddf2bf4b0ec
   languageName: node
   linkType: hard
 
@@ -16747,14 +16749,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-mmkv-storage@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "react-native-mmkv-storage@npm:0.9.1"
+"react-native-mmkv-storage@npm:^0.10.2":
+  version: 0.10.2
+  resolution: "react-native-mmkv-storage@npm:0.10.2"
   peerDependencies:
     react-native: "*"
   bin:
     mmkv-link: autolink/postlink/run.js
-  checksum: 10c0/fe90039178c6be0935e5d205954e0b7e14dcbea67d22fbd486ecd59d6a6f5742f6d9dfbf23caef680743e2218cc4f8db987d92673d160719907418ccb065c394
+  checksum: 10c0/c11434fe2e0d9c8f4aaddfd6caecd683ef7dcfcfd03d5ce25185d3f294632bb0f46f7875e13c164500251e386f3a246f1c7c71a708eb6ee79ad88af692c8db28
   languageName: node
   linkType: hard
 
