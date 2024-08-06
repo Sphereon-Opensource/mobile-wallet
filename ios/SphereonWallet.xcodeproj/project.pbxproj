@@ -3,77 +3,74 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02113653D9474BD1BFE69A87 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3315BB025A664F5D8B65D99C /* Poppins-ExtraBoldItalic.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2826BDC0B91F47E2B6589CC9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14E6050A725749199DD4E393 /* Poppins-ThinItalic.ttf */; };
-		38B98A3725254470B3F184DD /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */; };
+		1B7F633ACFE5497FB18F25E1 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6408D36DE7C4BF69BD699DC /* Poppins-Thin.ttf */; };
+		1F37285B226D47379D85B807 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C124284B0E2745088E88870D /* Poppins-BlackItalic.ttf */; };
+		2C92E6E017014054BBB52C6A /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 643937BE59194066859AAA78 /* Poppins-MediumItalic.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		3E9DC430AB2A450688ECE5C6 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5674539E296F49AB8BD1A1DA /* Poppins-SemiBoldItalic.ttf */; };
-		3F6B2518359245DCAD5E27AD /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8FD2B11C8F05446499AEB7E0 /* Poppins-ExtraLightItalic.ttf */; };
-		4EE59167281F4208A3BC1FAF /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD4AE482C461467BB0F43D71 /* Poppins-ExtraBold.ttf */; };
-		551AA2A5387640F2A4CCC787 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6BDFE0FD163426C8636F341 /* Poppins-Medium.ttf */; };
-		64B361F617414351BF16EF44 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 761410D9D96C4DE3922872B1 /* Poppins-Italic.ttf */; };
-		914258F1530BA52391F703D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 46F0421A11A5981FF2784C6B /* PrivacyInfo.xcprivacy */; };
-		96DC2693AA5B4C7F864F6F88 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CC149FA7F02428A9036F996 /* Poppins-Bold.ttf */; };
-		9AC3A6B54D3542B6A0144797 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D7C476C2ABA459E86A44736 /* Poppins-BlackItalic.ttf */; };
-		9C2AEDF177804982A8BBB329 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E563FB7DD4D041CD99944C2B /* Poppins-Black.ttf */; };
+		4B636FA9710C4BE1B1BA38AC /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D58CD07FE4144692B4DAFC56 /* Poppins-SemiBoldItalic.ttf */; };
+		5692900EF2F142729B65F244 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1422539E5F9D4BCFA5E8A5CE /* Poppins-Regular.ttf */; };
+		6671D2A473AD4F42FAF0E9A3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0D048008BE221841BCC463F /* PrivacyInfo.xcprivacy */; };
+		757A4E700036404E891D7550 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3C0E548BF684852B074D366 /* Poppins-Italic.ttf */; };
+		773E02AD62FC4115A0E773E8 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6542E8C3368647049C53F953 /* Poppins-LightItalic.ttf */; };
+		7816257C3E7E4EAC83034174 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 543460C0EF6143B5B2414545 /* Poppins-Medium.ttf */; };
+		8940470B58D240AEAB2211D4 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0DC8F6A410FC46308608C726 /* Poppins-ExtraBoldItalic.ttf */; };
+		8C5796873CEC49C19BBD101A /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8178F3C72F43B9B10629E4 /* noop-file.swift */; };
+		90F13930F499455887B6ABBC /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC374BE32A984815BF8296C8 /* Poppins-SemiBold.ttf */; };
+		96905EF65AED1B983A6B3ABC /* libPods-SphereonWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SphereonWallet.a */; };
+		97AE775CA2F147ED903547DE /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A593BCECE6F94E8AA791AE68 /* Poppins-ExtraBold.ttf */; };
+		9822D75E5FA349A68A821E40 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22B77B06D39C47D99E064BD3 /* Poppins-Bold.ttf */; };
+		9B1C6C8FC0B045EBA2228F6E /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 543E0E67DC9044C684DCDA1E /* Poppins-ExtraLight.ttf */; };
+		9E0FC8AB51C34587AA79F3FE /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DB008620487417BB3395045 /* Poppins-ThinItalic.ttf */; };
+		A1EFCA944A96495C814756BE /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEE5F63DF8AD48358A3BC221 /* Poppins-BoldItalic.ttf */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
+		B70F43E19CFB495886EC415F /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B940CCB2EFC140B8B91A9B5A /* Poppins-Light.ttf */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		C5E1EFAA9545499085C09F00 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26A4DF3554BA45199018E709 /* Poppins-Thin.ttf */; };
-		CA23D7D700404D0B9980A799 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CBB080799F4E3EB87DEC65 /* noop-file.swift */; };
-		CE59D921DD7844F4AA9943E3 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDC004113EFB4F998C415868 /* Poppins-SemiBold.ttf */; };
-		D2987F3EE8944F0C928F3EDD /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46404C6F56FA466B9D06B883 /* Poppins-Light.ttf */; };
-		D2F63BEDFEFD473D9C3A98D3 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */; };
-		D4C40AD6D506B7DCF7155247 /* libPods-SphereonWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DC93FAB7BDA7BF1EBBAFB5A /* libPods-SphereonWallet.a */; };
-		E365D3F86ECD4DA8836A484E /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21458FEC64BF492DB6D67A51 /* Poppins-ExtraLight.ttf */; };
-		EEEF7E5E8E854D3CA6A0280C /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4686824566EC48CDB402A94F /* Poppins-LightItalic.ttf */; };
-		F932577EF9A841469AFF3D14 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D6D6E89FD324595B1F599A8 /* Poppins-Regular.ttf */; };
+		CC473521EFED490DA0C2613E /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7515D1E53EB4160851FA92D /* Poppins-ExtraLightItalic.ttf */; };
+		F72A312F25964D07BCD94955 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5D0EA243D05458DA22EB463 /* Poppins-Black.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D6D6E89FD324595B1F599A8 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
-		0D7C476C2ABA459E86A44736 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
-		0F902BB8D8D2EB9E7C415C7E /* Pods-SphereonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.debug.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		06675F17F20244B0B7578930 /* SphereonWallet-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "SphereonWallet-Bridging-Header.h"; path = "SphereonWallet/SphereonWallet-Bridging-Header.h"; sourceTree = "<group>"; };
+		0DC8F6A410FC46308608C726 /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* SphereonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SphereonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SphereonWallet/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SphereonWallet/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SphereonWallet/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SphereonWallet/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SphereonWallet/main.m; sourceTree = "<group>"; };
-		14E6050A725749199DD4E393 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
-		1CC149FA7F02428A9036F996 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		1F6EB0CA2A576BE90077011A /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node_modules; path = ../node_modules; sourceTree = "<group>"; };
-		1F6EB0CC2A576C670077011A /* libReact-RCTLinking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTLinking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F6EB0CE2A576CF20077011A /* Linking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Linking; path = "../node_modules/react-native/Libraries/Linking"; sourceTree = "<group>"; };
-		1F6EB0D02A576DA60077011A /* LinkingIOS */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LinkingIOS; path = "../node_modules/react-native/Libraries/LinkingIOS"; sourceTree = "<group>"; };
-		21458FEC64BF492DB6D67A51 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		26A4DF3554BA45199018E709 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
-		3315BB025A664F5D8B65D99C /* Poppins-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
-		46404C6F56FA466B9D06B883 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
-		4686824566EC48CDB402A94F /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
-		46F0421A11A5981FF2784C6B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = SphereonWallet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		497B8C8555EA4F08425EE1FE /* Pods-SphereonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.release.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.release.xcconfig"; sourceTree = "<group>"; };
-		5674539E296F49AB8BD1A1DA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		56CBB080799F4E3EB87DEC65 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SphereonWallet/noop-file.swift"; sourceTree = "<group>"; };
-		5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
-		761410D9D96C4DE3922872B1 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../src/assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
-		7DC93FAB7BDA7BF1EBBAFB5A /* libPods-SphereonWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SphereonWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../src/assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		8FD2B11C8F05446499AEB7E0 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		1422539E5F9D4BCFA5E8A5CE /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		22B77B06D39C47D99E064BD3 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		543460C0EF6143B5B2414545 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		543E0E67DC9044C684DCDA1E /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
+		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SphereonWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SphereonWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		643937BE59194066859AAA78 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
+		6542E8C3368647049C53F953 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
+		6C2E3173556A471DD304B334 /* Pods-SphereonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.debug.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.debug.xcconfig"; sourceTree = "<group>"; };
+		6DB008620487417BB3395045 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
+		7A4D352CD337FB3A3BF06240 /* Pods-SphereonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SphereonWallet.release.xcconfig"; path = "Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet.release.xcconfig"; sourceTree = "<group>"; };
+		A593BCECE6F94E8AA791AE68 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = SphereonWallet/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AC374BE32A984815BF8296C8 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		B940CCB2EFC140B8B91A9B5A /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		D6BDFE0FD163426C8636F341 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		E563FB7DD4D041CD99944C2B /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../src/assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
+		BEE5F63DF8AD48358A3BC221 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
+		C0D048008BE221841BCC463F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = SphereonWallet/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C124284B0E2745088E88870D /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
+		C6408D36DE7C4BF69BD699DC /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
+		D58CD07FE4144692B4DAFC56 /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		D7515D1E53EB4160851FA92D /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		DB8178F3C72F43B9B10629E4 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "SphereonWallet/noop-file.swift"; sourceTree = "<group>"; };
+		E5D0EA243D05458DA22EB463 /* Poppins-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Black.ttf"; path = "../assets/fonts/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F3C0E548BF684852B074D366 /* Poppins-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Italic.ttf"; path = "../assets/fonts/Poppins-Italic.ttf"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-SphereonWallet/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		FD4AE482C461467BB0F43D71 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		FDC004113EFB4F998C415868 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4C40AD6D506B7DCF7155247 /* libPods-SphereonWallet.a in Frameworks */,
+				96905EF65AED1B983A6B3ABC /* libPods-SphereonWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,8 +95,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				56CBB080799F4E3EB87DEC65 /* noop-file.swift */,
-				46F0421A11A5981FF2784C6B /* PrivacyInfo.xcprivacy */,
+				DB8178F3C72F43B9B10629E4 /* noop-file.swift */,
+				06675F17F20244B0B7578930 /* SphereonWallet-Bridging-Header.h */,
+				C0D048008BE221841BCC463F /* PrivacyInfo.xcprivacy */,
 			);
 			name = SphereonWallet;
 			sourceTree = "<group>";
@@ -107,14 +105,36 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1F6EB0D02A576DA60077011A /* LinkingIOS */,
-				1F6EB0CE2A576CF20077011A /* Linking */,
-				1F6EB0CC2A576C670077011A /* libReact-RCTLinking.a */,
-				1F6EB0CA2A576BE90077011A /* node_modules */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7DC93FAB7BDA7BF1EBBAFB5A /* libPods-SphereonWallet.a */,
+				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-SphereonWallet.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6555595ECD894041BFAF5C62 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E5D0EA243D05458DA22EB463 /* Poppins-Black.ttf */,
+				C124284B0E2745088E88870D /* Poppins-BlackItalic.ttf */,
+				22B77B06D39C47D99E064BD3 /* Poppins-Bold.ttf */,
+				BEE5F63DF8AD48358A3BC221 /* Poppins-BoldItalic.ttf */,
+				A593BCECE6F94E8AA791AE68 /* Poppins-ExtraBold.ttf */,
+				0DC8F6A410FC46308608C726 /* Poppins-ExtraBoldItalic.ttf */,
+				543E0E67DC9044C684DCDA1E /* Poppins-ExtraLight.ttf */,
+				D7515D1E53EB4160851FA92D /* Poppins-ExtraLightItalic.ttf */,
+				F3C0E548BF684852B074D366 /* Poppins-Italic.ttf */,
+				B940CCB2EFC140B8B91A9B5A /* Poppins-Light.ttf */,
+				6542E8C3368647049C53F953 /* Poppins-LightItalic.ttf */,
+				543460C0EF6143B5B2414545 /* Poppins-Medium.ttf */,
+				643937BE59194066859AAA78 /* Poppins-MediumItalic.ttf */,
+				1422539E5F9D4BCFA5E8A5CE /* Poppins-Regular.ttf */,
+				AC374BE32A984815BF8296C8 /* Poppins-SemiBold.ttf */,
+				D58CD07FE4144692B4DAFC56 /* Poppins-SemiBoldItalic.ttf */,
+				C6408D36DE7C4BF69BD699DC /* Poppins-Thin.ttf */,
+				6DB008620487417BB3395045 /* Poppins-ThinItalic.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -133,7 +153,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
-				E1EBC9FCCC42464CA951D266 /* Resources */,
+				6555595ECD894041BFAF5C62 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -168,8 +188,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0F902BB8D8D2EB9E7C415C7E /* Pods-SphereonWallet.debug.xcconfig */,
-				497B8C8555EA4F08425EE1FE /* Pods-SphereonWallet.release.xcconfig */,
+				6C2E3173556A471DD304B334 /* Pods-SphereonWallet.debug.xcconfig */,
+				7A4D352CD337FB3A3BF06240 /* Pods-SphereonWallet.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -182,31 +202,6 @@
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		E1EBC9FCCC42464CA951D266 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E563FB7DD4D041CD99944C2B /* Poppins-Black.ttf */,
-				0D7C476C2ABA459E86A44736 /* Poppins-BlackItalic.ttf */,
-				1CC149FA7F02428A9036F996 /* Poppins-Bold.ttf */,
-				5C51657A0F7547228C3E57BC /* Poppins-BoldItalic.ttf */,
-				FD4AE482C461467BB0F43D71 /* Poppins-ExtraBold.ttf */,
-				3315BB025A664F5D8B65D99C /* Poppins-ExtraBoldItalic.ttf */,
-				21458FEC64BF492DB6D67A51 /* Poppins-ExtraLight.ttf */,
-				8FD2B11C8F05446499AEB7E0 /* Poppins-ExtraLightItalic.ttf */,
-				761410D9D96C4DE3922872B1 /* Poppins-Italic.ttf */,
-				46404C6F56FA466B9D06B883 /* Poppins-Light.ttf */,
-				4686824566EC48CDB402A94F /* Poppins-LightItalic.ttf */,
-				D6BDFE0FD163426C8636F341 /* Poppins-Medium.ttf */,
-				87B1C56729164D2389F11C59 /* Poppins-MediumItalic.ttf */,
-				0D6D6E89FD324595B1F599A8 /* Poppins-Regular.ttf */,
-				FDC004113EFB4F998C415868 /* Poppins-SemiBold.ttf */,
-				5674539E296F49AB8BD1A1DA /* Poppins-SemiBoldItalic.ttf */,
-				26A4DF3554BA45199018E709 /* Poppins-Thin.ttf */,
-				14E6050A725749199DD4E393 /* Poppins-ThinItalic.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -214,14 +209,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SphereonWallet" */;
 			buildPhases = (
-				C0D0F7B249112B7A5D4A0754 /* [CP] Check Pods Manifest.lock */,
-				0E87B95D25E799A23DB4C374 /* [Expo] Configure project */,
+				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				1EF95F2788B1B0458FC1E11A /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				8026BD442BD02408DCDDD6F8 /* [CP] Embed Pods Frameworks */,
-				9CAD27000EEC80F960BD416B /* [CP] Copy Pods Resources */,
+				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
+				139991E75FB4E734FD1D3058 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,13 +236,12 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = DC49UZQT6X;
 						LastSwiftMigration = 1250;
 					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SphereonWallet" */;
-			compatibilityVersion = "Xcode 15.0";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -272,25 +266,25 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				9C2AEDF177804982A8BBB329 /* Poppins-Black.ttf in Resources */,
-				9AC3A6B54D3542B6A0144797 /* Poppins-BlackItalic.ttf in Resources */,
-				96DC2693AA5B4C7F864F6F88 /* Poppins-Bold.ttf in Resources */,
-				38B98A3725254470B3F184DD /* Poppins-BoldItalic.ttf in Resources */,
-				4EE59167281F4208A3BC1FAF /* Poppins-ExtraBold.ttf in Resources */,
-				02113653D9474BD1BFE69A87 /* Poppins-ExtraBoldItalic.ttf in Resources */,
-				E365D3F86ECD4DA8836A484E /* Poppins-ExtraLight.ttf in Resources */,
-				3F6B2518359245DCAD5E27AD /* Poppins-ExtraLightItalic.ttf in Resources */,
-				64B361F617414351BF16EF44 /* Poppins-Italic.ttf in Resources */,
-				D2987F3EE8944F0C928F3EDD /* Poppins-Light.ttf in Resources */,
-				EEEF7E5E8E854D3CA6A0280C /* Poppins-LightItalic.ttf in Resources */,
-				551AA2A5387640F2A4CCC787 /* Poppins-Medium.ttf in Resources */,
-				D2F63BEDFEFD473D9C3A98D3 /* Poppins-MediumItalic.ttf in Resources */,
-				F932577EF9A841469AFF3D14 /* Poppins-Regular.ttf in Resources */,
-				CE59D921DD7844F4AA9943E3 /* Poppins-SemiBold.ttf in Resources */,
-				3E9DC430AB2A450688ECE5C6 /* Poppins-SemiBoldItalic.ttf in Resources */,
-				C5E1EFAA9545499085C09F00 /* Poppins-Thin.ttf in Resources */,
-				2826BDC0B91F47E2B6589CC9 /* Poppins-ThinItalic.ttf in Resources */,
-				914258F1530BA52391F703D0 /* PrivacyInfo.xcprivacy in Resources */,
+				F72A312F25964D07BCD94955 /* Poppins-Black.ttf in Resources */,
+				1F37285B226D47379D85B807 /* Poppins-BlackItalic.ttf in Resources */,
+				9822D75E5FA349A68A821E40 /* Poppins-Bold.ttf in Resources */,
+				A1EFCA944A96495C814756BE /* Poppins-BoldItalic.ttf in Resources */,
+				97AE775CA2F147ED903547DE /* Poppins-ExtraBold.ttf in Resources */,
+				8940470B58D240AEAB2211D4 /* Poppins-ExtraBoldItalic.ttf in Resources */,
+				9B1C6C8FC0B045EBA2228F6E /* Poppins-ExtraLight.ttf in Resources */,
+				CC473521EFED490DA0C2613E /* Poppins-ExtraLightItalic.ttf in Resources */,
+				757A4E700036404E891D7550 /* Poppins-Italic.ttf in Resources */,
+				B70F43E19CFB495886EC415F /* Poppins-Light.ttf in Resources */,
+				773E02AD62FC4115A0E773E8 /* Poppins-LightItalic.ttf in Resources */,
+				7816257C3E7E4EAC83034174 /* Poppins-Medium.ttf in Resources */,
+				2C92E6E017014054BBB52C6A /* Poppins-MediumItalic.ttf in Resources */,
+				5692900EF2F142729B65F244 /* Poppins-Regular.ttf in Resources */,
+				90F13930F499455887B6ABBC /* Poppins-SemiBold.ttf in Resources */,
+				4B636FA9710C4BE1B1BA38AC /* Poppins-SemiBoldItalic.ttf in Resources */,
+				1B7F633ACFE5497FB18F25E1 /* Poppins-Thin.ttf in Resources */,
+				9E0FC8AB51C34587AA79F3FE /* Poppins-ThinItalic.ttf in Resources */,
+				6671D2A473AD4F42FAF0E9A3 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,60 +306,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
-		0E87B95D25E799A23DB4C374 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SphereonWallet/expo-configure-project.sh\"\n";
-		};
-		8026BD442BD02408DCDDD6F8 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9CAD27000EEC80F960BD416B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C0D0F7B249112B7A5D4A0754 /* [CP] Check Pods Manifest.lock */ = {
+		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -387,6 +328,77 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		139991E75FB4E734FD1D3058 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AusweisApp2/AusweisApp2.framework/AusweisApp2",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AusweisApp2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1EF95F2788B1B0458FC1E11A /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-SphereonWallet/expo-configure-project.sh\"\n";
+		};
+		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/AppAuth/AppAuthCore_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoLocalization/ExpoLocalization_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNPermissions/RNPermissionsPrivacyInfo.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/RCTI18nStrings.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppAuthCore_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoLocalization_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNPermissionsPrivacyInfo.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCTI18nStrings.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SphereonWallet/Pods-SphereonWallet-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -397,7 +409,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				CA23D7D700404D0B9980A799 /* noop-file.swift in Sources */,
+				8C5796873CEC49C19BBD101A /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,116 +418,21 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F902BB8D8D2EB9E7C415C7E /* Pods-SphereonWallet.debug.xcconfig */;
+			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-SphereonWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SphereonWallet/SphereonWallet.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = DC49UZQT6X;
+				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
-					"\"${PODS_ROOT}/Headers/Public/Base64\"",
-					"\"${PODS_ROOT}/Headers/Public/CatCrypto\"",
-					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
-					"\"${PODS_ROOT}/Headers/Public/EXApplication\"",
-					"\"${PODS_ROOT}/Headers/Public/EXConstants\"",
-					"\"${PODS_ROOT}/Headers/Public/EXFileSystem\"",
-					"\"${PODS_ROOT}/Headers/Public/EXFont\"",
-					"\"${PODS_ROOT}/Headers/Public/EXSQLite\"",
-					"\"${PODS_ROOT}/Headers/Public/EXSplashScreen\"",
-					"\"${PODS_ROOT}/Headers/Public/Expo\"",
-					"\"${PODS_ROOT}/Headers/Public/ExpoModulesCore\"",
-					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
-					"\"${PODS_ROOT}/Headers/Public/JWT\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-AppTrackingTransparency\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-Camera\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-FaceID\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-Notifications\"",
-					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
-					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
-					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
-					"\"${PODS_ROOT}/Headers/Public/RNArgon2\"",
-					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
-					"\"${PODS_ROOT}/Headers/Public/RNCMaskedView\"",
-					"\"${PODS_ROOT}/Headers/Public/RNFS\"",
-					"\"${PODS_ROOT}/Headers/Public/RNFastImage\"",
-					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
-					"\"${PODS_ROOT}/Headers/Public/RNOS\"",
-					"\"${PODS_ROOT}/Headers/Public/RNPermissions\"",
-					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
-					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
-					"\"${PODS_ROOT}/Headers/Public/RNSecureRandom\"",
-					"\"${PODS_ROOT}/Headers/Public/RNShare\"",
-					"\"${PODS_ROOT}/Headers/Public/RNShareMenu\"",
-					"\"${PODS_ROOT}/Headers/Public/RNTextGradientView\"",
-					"\"${PODS_ROOT}/Headers/Public/React-Codegen\"",
-					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
-					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
-					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsc\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
-					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
-					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
-					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
-					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
-					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
-					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
-					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
-					"\"${PODS_ROOT}/Headers/Public/fmt\"",
-					"\"${PODS_ROOT}/Headers/Public/glog\"",
-					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-app-auth\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-blur\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-camera\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-fingerprint-scanner\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-get-random-values\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-pager-view\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-pure-jwt\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-randombytes\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-secure-key-store\"",
-					"\"$(PODS_ROOT)/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ExpoModulesCore/Swift Compatibility Header\"",
-					"\"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging\"",
-					"\"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers\"",
-					"\"$(PODS_ROOT)/boost\"",
-					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
-					"\"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS\"/**",
-				);
 				INFOPLIST_FILE = SphereonWallet/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Sphereon Wallet";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 0.3.0;
-				OTHER_CFLAGS = (
-					"$(inherited)",
-					"-DFOLLY_NO_CONFIG",
-					"-DFOLLY_MOBILE=1",
-					"-DFOLLY_USE_LIBCPP=1",
-					"-Wno-comma",
-					"-Wno-shorten-64-to-32",
-					"-DREACT_NATIVE_MINOR_VERSION=73",
-					"-DREANIMATED_VERSION=3.6.3",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -523,129 +440,38 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sphereon.ssi.wallet;
-				PRODUCT_NAME = SphereonWallet;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				PRODUCT_NAME = "SphereonWallet";
+				SWIFT_OBJC_BRIDGING_HEADER = "SphereonWallet/SphereonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 497B8C8555EA4F08425EE1FE /* Pods-SphereonWallet.release.xcconfig */;
+			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-SphereonWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SphereonWallet/SphereonWallet.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
-				DEVELOPMENT_TEAM = DC49UZQT6X;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AppAuth\"",
-					"\"${PODS_ROOT}/Headers/Public/Base64\"",
-					"\"${PODS_ROOT}/Headers/Public/CatCrypto\"",
-					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
-					"\"${PODS_ROOT}/Headers/Public/EXApplication\"",
-					"\"${PODS_ROOT}/Headers/Public/EXConstants\"",
-					"\"${PODS_ROOT}/Headers/Public/EXFileSystem\"",
-					"\"${PODS_ROOT}/Headers/Public/EXFont\"",
-					"\"${PODS_ROOT}/Headers/Public/EXSQLite\"",
-					"\"${PODS_ROOT}/Headers/Public/EXSplashScreen\"",
-					"\"${PODS_ROOT}/Headers/Public/Expo\"",
-					"\"${PODS_ROOT}/Headers/Public/ExpoModulesCore\"",
-					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
-					"\"${PODS_ROOT}/Headers/Public/JWT\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-AppTrackingTransparency\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-Camera\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-FaceID\"",
-					"\"${PODS_ROOT}/Headers/Public/Permission-Notifications\"",
-					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
-					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
-					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
-					"\"${PODS_ROOT}/Headers/Public/RNArgon2\"",
-					"\"${PODS_ROOT}/Headers/Public/RNCAsyncStorage\"",
-					"\"${PODS_ROOT}/Headers/Public/RNCMaskedView\"",
-					"\"${PODS_ROOT}/Headers/Public/RNFS\"",
-					"\"${PODS_ROOT}/Headers/Public/RNFastImage\"",
-					"\"${PODS_ROOT}/Headers/Public/RNGestureHandler\"",
-					"\"${PODS_ROOT}/Headers/Public/RNOS\"",
-					"\"${PODS_ROOT}/Headers/Public/RNPermissions\"",
-					"\"${PODS_ROOT}/Headers/Public/RNSVG\"",
-					"\"${PODS_ROOT}/Headers/Public/RNScreens\"",
-					"\"${PODS_ROOT}/Headers/Public/RNSecureRandom\"",
-					"\"${PODS_ROOT}/Headers/Public/RNShare\"",
-					"\"${PODS_ROOT}/Headers/Public/RNShareMenu\"",
-					"\"${PODS_ROOT}/Headers/Public/RNTextGradientView\"",
-					"\"${PODS_ROOT}/Headers/Public/React-Codegen\"",
-					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
-					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
-					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
-					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsc\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
-					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
-					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
-					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
-					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
-					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
-					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
-					"\"${PODS_ROOT}/Headers/Public/SDWebImageWebPCoder\"",
-					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
-					"\"${PODS_ROOT}/Headers/Public/fmt\"",
-					"\"${PODS_ROOT}/Headers/Public/glog\"",
-					"\"${PODS_ROOT}/Headers/Public/libwebp\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-app-auth\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-blur\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-camera\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-fingerprint-scanner\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-get-random-values\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-pager-view\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-pure-jwt\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-randombytes\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-safe-area-context\"",
-					"\"${PODS_ROOT}/Headers/Public/react-native-secure-key-store\"",
-					"\"$(PODS_ROOT)/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ExpoModulesCore/Swift Compatibility Header\"",
-					"\"$(PODS_ROOT)/Headers/Private/React-bridging/react/bridging\"",
-					"\"$(PODS_CONFIGURATION_BUILD_DIR)/React-bridging/react_bridging.framework/Headers\"",
-					"\"$(PODS_ROOT)/boost\"",
-					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
-					"\"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS\"/**",
-				);
+				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = SphereonWallet/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Sphereon Wallet";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 0.3.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE -D EXPO_CONFIGURATION_DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sphereon.ssi.wallet;
-				PRODUCT_NAME = SphereonWallet;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				PRODUCT_NAME = "SphereonWallet";
+				SWIFT_OBJC_BRIDGING_HEADER = "SphereonWallet/SphereonWallet-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -684,7 +510,6 @@
 				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -703,15 +528,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD = "";
 				LDPLUSPLUS = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					" ",
@@ -756,7 +576,6 @@
 				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -768,14 +587,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD = "";
 				LDPLUSPLUS = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					" ",

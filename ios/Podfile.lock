@@ -1,9 +1,14 @@
 PODS:
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
+    - AppAuth/Core
+  - AusweisApp2 (2.1.2)
+  - AusweisSdk (0.0.1-alpha.6):
+    - AusweisApp2
+    - ExpoModulesCore
   - Base64 (1.1.2)
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
@@ -1028,8 +1033,8 @@ PODS:
   - React-Mapbuffer (0.74.3):
     - glog
     - React-debug
-  - react-native-app-auth (6.4.3):
-    - AppAuth (= 1.4.0)
+  - react-native-app-auth (7.2.0):
+    - AppAuth (>= 1.7.3)
     - React-Core
   - react-native-blur (4.4.0):
     - DoubleConversion
@@ -1476,6 +1481,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "AusweisSdk (from `../node_modules/@animo-id/expo-ausweis-sdk/ios`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -1569,8 +1575,9 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - AppAuth
+    - AusweisApp2
     - Base64
     - JWT
     - libwebp
@@ -1583,6 +1590,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  AusweisSdk:
+    :path: "../node_modules/@animo-id/expo-ausweis-sdk/ios"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -1764,7 +1773,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  AusweisApp2: 498000282064feb178b5c1ecf1b333cd85673358
+  AusweisSdk: 7331e366f14e9d5bd52b6f714b616b57062ca9ab
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
@@ -1782,15 +1793,15 @@ SPEC CHECKSUMS:
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
   EXSplashScreen: fbf0ec78e9cee911df188bf17b4fe51d15a84b87
   FBLazyVector: 7e977dd099937dc5458851233141583abba49ff2
-  fmt: 8083860262b879fc92bca720969c91bdb88ada93
-  glog: 77f46f3d5c779b34a09b51a92fa9e0fcab64df1c
-  hermes-engine: 04d892dbfd7ada26273bb526af2b2136395cf17e
+  fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
+  glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
+  hermes-engine: 1f547997900dd0752dc0cc0ae6dd16173c49e09b
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
   MMKVCore: 9cfef4c48c6c46f66226fc2e4634d78490206a48
   OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
-  RCT-Folly: 0efc5cc427fdcf65cf631871e78fd40bcf9f9c9c
+  RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4
   RCTRequired: d530a0f489699c8500e944fde963102c42dcd0c2
   RCTTypeSafety: b20878506b094fa3d9007d7b9e4be0faa3562499
@@ -1814,7 +1825,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 6b3c8c98313642140530f93c46f5a6ca4530b446
   React-logger: fa92ba4d3a5d39ac450f59be2a3cec7b099f0304
   React-Mapbuffer: 9f68550e7c6839d01411ac8896aea5c868eff63a
-  react-native-app-auth: fd1eaa667c0bc014199456d14a6440cb74de814e
+  react-native-app-auth: 63fa4e58c5bd29aeb974d3a06a23c5858322d533
   react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
   react-native-linear-gradient-text: e5c4b82093a7c9858dc3ffc059a10be0ff8abf2d
@@ -1865,6 +1876,6 @@ SPEC CHECKSUMS:
   Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 0b7f6915c2c954f51ee0634c2c03d880758229e0
+PODFILE CHECKSUM: b905083513d49c6e3b096ed2a11941dbe97ac973
 
 COCOAPODS: 1.15.2

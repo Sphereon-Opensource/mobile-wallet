@@ -284,18 +284,11 @@
     "react-native-permissions": "^4.1.5",
     "react-native-svg": "15.2.0",
     "expo-fs/expo-file-system": "~17.0.1",
-    "**/did-jwt": "6.11.6",
-    "**/did-jwt-vc": "3.1.3",
-    "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
-    "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
-    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "security-context": "link:./node_modules/@digitalbazaar/security-context",
     "@transmute/web-crypto-key-pair/@peculiar/webcrypto": "^1.1.6",
-    "**/typeorm": "0.3.20",
-    "@peculiar/webcrypto": "1.4.5",
-    "**/@peculiar/webcrypto": "1.4.5"
+    "@peculiar/webcrypto": "1.4.5"
   },
   "engines": {
     "node": ">=20.0.0"
