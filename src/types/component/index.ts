@@ -55,3 +55,14 @@ export type CredentialMiniCardDisplay = {
   logoColor: ColorValue;
   logo?: ImageAttributes;
 };
+
+export type StepState = 'current' | 'finished' | 'upcoming';
+
+export type StepContent = (stepState: StepState) => JSX.Element;
+
+export interface IStepIndicatorProps {
+  state: StepState;
+  isLastStep: boolean;
+  stepIndex: number;
+  ringColor: ColorValue;
+}
