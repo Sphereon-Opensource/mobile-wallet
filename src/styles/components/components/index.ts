@@ -35,3 +35,4 @@ export * from './SSITextField';
 export * from './SSITextInputField';
 export * from './SSIToast';
 export * from './SSIWelcomeView';
+export * from './StepperStepIndicator';
