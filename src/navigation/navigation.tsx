@@ -24,6 +24,7 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
@@ -499,7 +500,17 @@ const step2GroupConfig: StackGroupConfig = {
   ],
 };
 
-const stackGroupsConfig = [step1GroupConfig, step2GroupConfig];
+const step3GroupConfig: StackGroupConfig = {
+  titleKey: 'import_data_title',
+  screens: [
+    {
+      name: 'ImportPersonalData',
+      component: ImportPersonalDataScreen,
+    },
+  ],
+};
+
+const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig];
 
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>

@@ -22,6 +22,7 @@ const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isStepImportPersonalData = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -34,6 +35,7 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPersonalData},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -41,6 +43,11 @@ const states: OnboardingStatesConfig = {
           cond: OnboardingMachineGuards.isStepSecureWallet,
           target: OnboardingMachineStateType.enterCountry,
           actions: assign({currentStep: 1}),
+        },
+        {
+          cond: ({currentStep}) => currentStep === 3,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: 2}),
         },
       ],
     },
@@ -93,6 +100,10 @@ const states: OnboardingStatesConfig = {
       READ_TERMS: OnboardingMachineStateType.readTerms,
       READ_PRIVACY: OnboardingMachineStateType.readPrivacy,
       PREVIOUS: OnboardingMachineStateType.enableBiometrics,
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 3}),
+      },
     },
   },
   readTerms: {
@@ -103,6 +114,11 @@ const states: OnboardingStatesConfig = {
   readPrivacy: {
     on: {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  importPersonalData: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.showProgress,
     },
   },
 };
@@ -151,6 +167,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isStepSecureWallet;
+          }
+        | {
+            type: OnboardingMachineGuards.isStepImportPersonalData;
           },
     },
     states: states,
@@ -200,6 +219,7 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isStepImportPersonalData,
           ...opts?.guards,
         },
       }),

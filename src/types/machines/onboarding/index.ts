@@ -44,6 +44,7 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  importPersonalData = 'importPersonalData',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -86,6 +87,7 @@ export type OnboardingMachineEventTypes =
 export enum OnboardingMachineGuards {
   isStepCreateWallet = 'isStepCreateWallet',
   isStepSecureWallet = 'isStepSecureWallet',
+  isStepImportPersonalData = 'isStepImportPersonalData',
 }
 
 // States Config
