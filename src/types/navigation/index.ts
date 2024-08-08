@@ -41,7 +41,6 @@ export type StackParamList = {
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
-  CredentialCatalog: Record<string, never>;
 };
 
 export type IBrowserOpen = IHasOnBackProps &
@@ -234,7 +233,6 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
-  CREDENTIAL_CATALOG = 'CredentialCatalog',
 }
 
 export interface ISiopV2PProps {
