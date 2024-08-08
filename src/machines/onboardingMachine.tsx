@@ -8,6 +8,7 @@ import {SupportedDidMethodEnum} from '../types';
 import {
   Country,
   CreateOnboardingMachineOpts,
+  InstanceOnboardingMachineOpts,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
@@ -28,6 +29,7 @@ type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachin
 
 const isStepCreateWallet: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
 const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
 const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
 const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotNil()]).isValid;
@@ -46,6 +48,7 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPersonalData},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -53,6 +56,11 @@ const states: OnboardingStatesConfig = {
           cond: OnboardingMachineGuards.isStepSecureWallet,
           target: OnboardingMachineStateType.enterCountry,
           actions: assign({currentStep: 1}),
+        },
+        {
+          cond: ({currentStep}) => currentStep === 3,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: 2}),
         },
       ],
     },
@@ -120,6 +128,10 @@ const states: OnboardingStatesConfig = {
       READ_TERMS: OnboardingMachineStateType.readTerms,
       READ_PRIVACY: OnboardingMachineStateType.readPrivacy,
       PREVIOUS: OnboardingMachineStateType.enableBiometrics,
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 3}),
+      },
     },
   },
   readTerms: {
@@ -130,6 +142,11 @@ const states: OnboardingStatesConfig = {
   readPrivacy: {
     on: {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  importPersonalData: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.showProgress,
     },
   },
 };
@@ -175,26 +192,29 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       events: {} as OnboardingMachineEventTypes,
       guards: {} as
         | {
-            type: OnboardingMachineGuards.isStepCreateWallet;
-          }
+          type: OnboardingMachineGuards.isStepCreateWallet;
+        }
         | {
-            type: OnboardingMachineGuards.isStepSecureWallet;
-          }
+          type: OnboardingMachineGuards.isStepSecureWallet;
+        }
         | {
-            type: OnboardingMachineGuards.isNameValid;
-          }
+          type: OnboardingMachineGuards.isStepImportPersonalData;
+        }
         | {
-            type: OnboardingMachineGuards.isEmailValid;
-          }
+          type: OnboardingMachineGuards.isNameValid;
+        }
         | {
-            type: OnboardingMachineGuards.isCountryValid;
-          }
+          type: OnboardingMachineGuards.isEmailValid;
+        }
         | {
-            type: OnboardingMachineGuards.isPinCodeValid;
-          }
+          type: OnboardingMachineGuards.isCountryValid;
+        }
         | {
-            type: OnboardingMachineGuards.doPinsMatch;
-          },
+          type: OnboardingMachineGuards.isPinCodeValid;
+        }
+        | {
+          type: OnboardingMachineGuards.doPinsMatch;
+        },
     },
     states: states,
   });
@@ -243,6 +263,7 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isStepImportPersonalData,
           isNameValid,
           isEmailValid,
           isCountryValid,

@@ -47,6 +47,7 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  importPersonalData = 'importPersonalData',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -97,6 +98,7 @@ export enum OnboardingMachineGuards {
   isCountryValid = 'isCountryValid',
   isPinCodeValid = 'isPinCodeValid',
   doPinsMatch = 'doPinsMatch',
+  isStepImportPersonalData = 'isStepImportPersonalData',
 }
 
 // States Config

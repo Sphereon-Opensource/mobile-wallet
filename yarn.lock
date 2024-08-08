@@ -2568,6 +2568,11 @@
   dependencies:
     semver "^7.3.5"
 
+"@pakenfit/react-native-pin-input@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@pakenfit/react-native-pin-input/-/react-native-pin-input-1.4.0.tgz#23d0d55de136d39dea95f1d6ff57bd8bae397ba6"
+  integrity sha512-3+3M46PPW6XM0pUDjJrEK5OSwvVp2WS6/kXTDGUfWK5bBNewyuixYFc162I8ITeIavdzrMyd/hVtsI5jPIpyqA==
+
 "@peculiar/asn1-schema@^2.3.8":
   version "2.3.13"
   resolved "https://registry.yarnpkg.com/@peculiar/asn1-schema/-/asn1-schema-2.3.13.tgz#ec8509cdcbc0da3abe73fd7e690556b57a61b8f4"
@@ -8004,6 +8009,11 @@ expo-camera@~15.0.14:
   integrity sha512-O4uvVywGsQ3a89d0BX4lq6mDuGYGukx1PYY4QrC9zw1yzD2W9BVTl8lanFRPC5h4PRniekfeWUVH1a0jJmkLIw==
   dependencies:
     invariant "^2.2.4"
+
+expo-clipboard@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-6.0.3.tgz#dfea74d4a004dce59ecefd063d6fb9f1c356a03f"
+  integrity sha512-RIKDsuHkYfaspifbFpVC8sBVFKR05L7Pj7mU2/XkbrW9m01OBNvdpGraXEMsTFCx97xMGsZpEw9pPquL4j4xVg==
 
 expo-constants@~16.0.0:
   version "16.0.2"
