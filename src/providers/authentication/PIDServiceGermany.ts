@@ -5,7 +5,7 @@ import {createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions} from '@sphereon/
 import {AccessTokenClient, OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDGetAuthorizationCodeArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../types';
 
-class EIDProvider {
+class PIDServiceGermany {
   private readonly client: OpenID4VCIClient;
   private readonly tcTokenUrl: string;
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -34,7 +34,7 @@ class EIDProvider {
     this.handleStateChange({state: 'INITIALIZED'});
   }
 
-  public static async initialize(args: EIDInitializeArgs): Promise<EIDProvider> {
+  public static async initialize(args: EIDInitializeArgs): Promise<PIDServiceGermany> {
     const uri: string =
       'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const client = await OpenID4VCIClient.fromURI({
@@ -49,13 +49,13 @@ class EIDProvider {
     const authorizationRequestUrl = await client.createAuthorizationRequestUrl({
       authorizationRequest: {
         redirectUri: 'https://sphereon.com/redirect',
-        scope: 'pid', // TODO we need to determine the scopes using the metadata
+        scope: 'pid',
         //authorizationDetails: authDetails,
-        parMode: PARMode.AUTO,
+        parMode: PARMode.REQUIRE,
       },
     });
 
-    return new EIDProvider({...args, client, tcTokenUrl: authorizationRequestUrl});
+    return new PIDServiceGermany({...args, client, tcTokenUrl: authorizationRequestUrl});
   }
 
   public async start(): Promise<AusweisAuthFlow> {
@@ -177,4 +177,4 @@ class EIDProvider {
   }
 }
 
-export default EIDProvider;
+export default PIDServiceGermany;
