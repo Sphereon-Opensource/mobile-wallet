@@ -10,6 +10,7 @@ import {
   InstanceOnboardingMachineOpts,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
+  OnboardingMachineGuards,
   OnboardingMachineInterpreter,
   OnboardingMachineState,
   OnboardingMachineStateType,
@@ -17,6 +18,9 @@ import {
 } from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
+
+const isStep1 = (ctx: OnboardingMachineContext) => ctx.currentStep === 1;
+const isStep2 = (ctx: OnboardingMachineContext) => ctx.currentStep === 2;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -27,13 +31,13 @@ const states: OnboardingStatesConfig = {
   showProgress: {
     on: {
       NEXT: [
-        {cond: ({currentStep}) => currentStep === 1, target: OnboardingMachineStateType.enterName},
-        {cond: ({currentStep}) => currentStep === 2, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStep1, target: OnboardingMachineStateType.enterName},
+        {cond: OnboardingMachineGuards.isStep2, target: OnboardingMachineStateType.enterPinCode},
       ],
       PREVIOUS: [
-        {cond: ({currentStep}) => currentStep === 1, target: OnboardingMachineStateType.showIntro},
+        {cond: OnboardingMachineGuards.isStep1, target: OnboardingMachineStateType.showIntro},
         {
-          cond: ({currentStep}) => currentStep === 2,
+          cond: OnboardingMachineGuards.isStep2,
           target: OnboardingMachineStateType.enterCountry,
           actions: assign({currentStep: 1}),
         },
@@ -85,11 +89,17 @@ const states: OnboardingStatesConfig = {
   },
   acceptTermsAndPrivacy: {
     on: {
-      READ_TERMS: OnboardingMachineStateType.readTermsAndPrivacy,
+      READ_TERMS: OnboardingMachineStateType.readTerms,
+      READ_PRIVACY: OnboardingMachineStateType.readPrivacy,
       PREVIOUS: OnboardingMachineStateType.enableBiometrics,
     },
   },
-  readTermsAndPrivacy: {
+  readTerms: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  readPrivacy: {
     on: {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
     },
@@ -132,6 +142,16 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     predictableActionArguments: true,
     initial: OnboardingMachineStateType.showIntro,
     context: initialContext,
+    schema: {
+      events: {} as OnboardingMachineEventTypes,
+      guards: {} as
+        | {
+            type: OnboardingMachineGuards.isStep1;
+          }
+        | {
+            type: OnboardingMachineGuards.isStep2;
+          },
+    },
     states: states,
   });
 };
@@ -174,7 +194,15 @@ export class OnboardingMachine {
   // todo: Determine whether we need to make this public for the onboarding machine as there normally should only be 1
   private static newInstance(opts?: InstanceOnboardingMachineOpts): OnboardingMachineInterpreter {
     debug(`Creating new onboarding instance`, opts);
-    const newInst: OnboardingMachineInterpreter = interpret(createOnboardingMachine(opts));
+    const newInst: OnboardingMachineInterpreter = interpret(
+      createOnboardingMachine(opts).withConfig({
+        guards: {
+          isStep1,
+          isStep2,
+          ...opts?.guards,
+        },
+      }),
+    );
     if (typeof opts?.subscription === 'function') {
       newInst.onTransition(opts.subscription);
     }

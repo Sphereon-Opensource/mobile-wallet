@@ -1,4 +1,3 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {ReactElement, useContext} from 'react';
@@ -15,9 +14,8 @@ import {
   SSITextH2SemiBoldLightStyled,
   SSITextH3RegularLightStyled,
 } from '../../../styles/components';
-import {ScreenRoutesEnum, StackParamList, StepContent, StepState} from '../../../types';
+import {StepContent, StepState} from '../../../types';
 import {OnboardingMachineEvents, OnboardingMachineStep} from '../../../types/machines/onboarding';
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.SHOW_PROGRESS>;
 
 type BaseStepInformationProps = {
   title: string;
@@ -79,9 +77,9 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
   3: {titleKey: 'onboard_progress_pages.step3.title'},
 };
 
-const ShowProgressScreen = (props: Props) => {
+const ShowProgressScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {currentStep} = props.route.params.context;
+  const {currentStep} = onboardingInstance.getSnapshot().context;
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({
@@ -111,7 +109,7 @@ const ShowProgressScreen = (props: Props) => {
       </View>
       <PrimaryButton
         style={{height: 42, width: '100%'}}
-        caption="Next"
+        caption={translate('action_next_label')}
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />

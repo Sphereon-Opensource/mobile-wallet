@@ -75,6 +75,7 @@
   "onboarding_welcome_title": "Sphereon Wallet",
   "onboarding_welcome_intro_body": "Hiermee kunt u accreditaties, inloggegevens, badges en identiteitskenmerken ontvangen en delen.\n\nDeze zijn digitaal ondertekend en geattesteerd door externe uitgevende organisaties.",
   "action_next_label": "Volgende",
+  "action_back_label": "Terug",
   "action_go_label": "Gaan!",
   "onboarding_welcome_store_body": "Slaat credentials van derden in versleutelde vorm rechtstreeks op uw apparaat op. Alleen u heeft toegang tot uw gegevens.\n\nHet communiceert niet met Sphereon-servers, tenzij u zich bijvoorbeeld aanmeldt voor back-ups of zakelijke functies.",
   "onboarding_welcome_share_body": "Hiermee kunt u credentials presenteren aan externe verifierende partijen.\n\nAlleen de informatie waarmee u instemt, wordt gedeeld. Er wordt geen informatie automatisch gedeeld. Je bent altijd de baas.",
@@ -117,6 +118,16 @@
   "show_raw_credential_button_caption": "Ruwe credential",
   "onboard_create_wallet_step_title": "Creëer Wallet",
   "onboard_secure_wallet_step_title": "Beveilig wallet",
+  "onboard_progress_pages": {
+    "step1": {"title": "Getting started", "description": "Each section should take only a couple of minutes to complete."},
+    "step2": {"title": "You're halfway there", "description": null},
+    "step3": {"title": "Almost done, last section", "description": null}
+  },
+  "onboard_steps": {
+    "step1": {"title": "Create wallet", "description": "Set up an account with your name, email address and country of residence."},
+    "step2": {"title": "Secure wallet", "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login."},
+    "step3": {"title": "Import personal information", "description": "Scan your Ausweis eID-card. Keep the card and eID pin ready."}
+  },
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
   "onboard_summary_info_tab_header_label": "Uw gegevens",

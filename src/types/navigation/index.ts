@@ -5,7 +5,7 @@ import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
-import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
+import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
 
 export type StackParamList = {
@@ -25,23 +25,6 @@ export type StackParamList = {
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  // Onboarding
-  Welcome: IHasOnboardingContext & IHasOnNextProps;
-  ShowProgress: OnboardingRouteParams;
-  EnterName: OnboardingRouteParams & IEnterNameProps;
-  EnterEmailAddress: OnboardingRouteParams;
-  EnterCountry: OnboardingRouteParams;
-  EnterPinCode: OnboardingRouteParams;
-  VerifyPinCode: OnboardingRouteParams;
-  EnableBiometrics: OnboardingRouteParams;
-  AcceptTerms: OnboardingRouteParams;
-  ReadTerms: OnboardingRouteParams;
-  //
-  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
-  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
-  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   BrowserOpen: IBrowserOpen;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -54,9 +37,20 @@ export type StackParamList = {
   OID4VCI: Record<string, never>;
 };
 
-export type OnboardingRouteParams = IHasOnboardingContext & {
-  step: number;
+export type OnboardingStackParamsList = {
+  AcceptTermsAndPrivacy: Record<string, never>;
+  ReadTermsAndPrivacy: {document: 'terms' | 'privacy'};
+  EnableBiometrics: Record<string, never>;
+  EnterCountry: Record<string, never>;
+  EnterEmailAddress: Record<string, never>;
+  EnterName: Record<string, never>;
+  EnterPinCode: Record<string, never>;
+  ShowProgress: Record<string, never>;
+  VerifyPinCode: Record<string, never>;
+  Welcome: Record<string, never>;
 };
+
+export type OnboardingRoute = keyof OnboardingStackParamsList;
 
 export type IBrowserOpen = IHasOnBackProps &
   IHasOnNextProps & {
@@ -65,26 +59,9 @@ export type IBrowserOpen = IHasOnBackProps &
     bodyTexti18n?: string;
     actionNextLabeli18n?: string;
   };
-interface IPersonalDataProps {
-  isDisabled: (personalData: OnboardingPersonalData) => boolean;
-  onNext: (personalData: OnboardingPersonalData) => void;
-  onPersonalData: (personalData: OnboardingPersonalData) => void;
-}
 
-type IEnterNameProps = {
-  onChangeText: (value: string) => void;
-};
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingMachineInterpreter;
-}
-
-export interface IHasOnboardingContext {
-  context: OnboardingMachineContext;
-}
-
-export interface IHasOnboardingContext {
-  context: OnboardingMachineContext;
-  step: number;
 }
 
 export interface IHasOnBackProps {
@@ -231,18 +208,7 @@ export enum NavigationBarRoutesEnum {
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
 }
-
 export enum ScreenRoutesEnum {
-  WELCOME = 'Welcome',
-  SHOW_PROGRESS = 'ShowProgress',
-  ENTER_NAME = 'EnterName',
-  ENTER_EMAIL_ADDRESS = 'EnterEmailAddress',
-  ENTER_COUNTRY = 'EnterCountry',
-  ENTER_PIN_CODE = 'EnterPinCode',
-  VERIFY_PIN_CODE = 'VerifyPinCode',
-  ENABLE_BIOMETRICS = 'EnableBiometrics',
-  ACCEPT_TERMS = 'AcceptTerms',
-  READ_TERMS = 'ReadTerms',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
@@ -253,13 +219,8 @@ export enum ScreenRoutesEnum {
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
-  TERMS_OF_SERVICE = 'TermsOfService',
-  PERSONAL_DATA = 'PersonalData',
-  PIN_CODE_SET = 'PinCodeSet',
-  PIN_CODE_VERIFY = 'PinCodeVerify',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
-  ONBOARDING_SUMMARY = 'OnboardingSummary',
   BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',

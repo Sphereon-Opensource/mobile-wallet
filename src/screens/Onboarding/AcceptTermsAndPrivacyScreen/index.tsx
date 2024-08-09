@@ -6,11 +6,11 @@ import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 
-const EnterPinCodeScreen = () => {
+const AcceptTermsAndPrivacyScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   return (
-    <View>
-      <Text>Enter Pin code</Text>
+    <View style={{gap: 16}}>
+      <Text>Accept Terms And Privacy</Text>
       <PrimaryButton
         style={{height: 42, width: 300}}
         caption={translate('action_next_label')}
@@ -18,8 +18,24 @@ const EnterPinCodeScreen = () => {
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
+      <PrimaryButton
+        style={{height: 42, width: 300}}
+        // TODO: get from json files
+        caption="Read terms"
+        backgroundColors={[buttonColors[100]]}
+        captionColor={fontColors.light}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.READ_TERMS)}
+      />
+      <PrimaryButton
+        style={{height: 42, width: 300}}
+        // TODO: get from json files
+        caption="Read privacy"
+        backgroundColors={[buttonColors[100]]}
+        captionColor={fontColors.light}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.READ_PRIVACY)}
+      />
     </View>
   );
 };
 
-export default EnterPinCodeScreen;
+export default AcceptTermsAndPrivacyScreen;

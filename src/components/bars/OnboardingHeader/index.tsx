@@ -10,17 +10,19 @@ import {
   OnboardingHeaderRow as HeaderRow,
   SSITextH3LightStyled,
 } from '../../../styles/components';
-import {ButtonIconsEnum, OnboardingRouteParams} from '../../../types';
+import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 
 export interface HeaderBarProps extends NativeStackHeaderProps {
   title?: string;
-  stepsNumber?: number;
+  stepConfig?: {
+    total: number;
+    current: number;
+  };
 }
 
-const OnboardingHeader: FC<HeaderBarProps> = ({title, stepsNumber, route: {params}}: HeaderBarProps): JSX.Element => {
+const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
-  const {step} = params as OnboardingRouteParams;
   return (
     <Container
       style={{
@@ -34,18 +36,18 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepsNumber, route: {param
             onPress={() => new Promise(() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
           />
         </BackIconContainer>
-        {Boolean(title) && <SSITextH3LightStyled>{title as string}</SSITextH3LightStyled>}
-        {stepsNumber && (
+        {title && <SSITextH3LightStyled>{title as string}</SSITextH3LightStyled>}
+        {stepConfig && (
           <SSITextH3LightStyled
             style={{
               textAlign: 'right',
               flex: 1,
             }}>
-            {`${step}/${stepsNumber}`}
+            {`${stepConfig.current}/${stepConfig.total}`}
           </SSITextH3LightStyled>
         )}
       </HeaderRow>
-      {stepsNumber && <ProgressBarIndicator step={step} stepsNumber={stepsNumber} containerStyle={{marginVertical: 10}} />}
+      {stepConfig && <ProgressBarIndicator step={stepConfig.current} stepsNumber={stepConfig.total} containerStyle={{marginVertical: 10}} />}
     </Container>
   );
 };

@@ -2,6 +2,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {CredentialPayload, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
+import {OnboardingStackParamsList} from '../../../types/navigation';
 import {SupportedDidMethodEnum} from '../../did';
 
 export type OnboardingCredentialData = {
@@ -37,7 +38,8 @@ export enum OnboardingMachineStateType {
   verifyPinCode = 'verifyPinCode',
   enableBiometrics = 'enableBiometrics',
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
-  readTermsAndPrivacy = 'readTermsAndPrivacy',
+  readTerms = 'readTerms',
+  readPrivacy = 'readPrivacy',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -51,6 +53,7 @@ export enum OnboardingMachineEvents {
   SET_COUNTRY = 'SET_COUNTRY',
   SET_PIN_CODE = 'SET_PIN_CODE',
   READ_TERMS = 'READ_TERMS',
+  READ_PRIVACY = 'READ_PRIVACY',
   SKIP_IMPORT = 'SKIP_IMPORT',
 }
 
@@ -61,6 +64,7 @@ export type SetEmailAddressEvent = {type: OnboardingMachineEvents.SET_EMAIL_ADDR
 export type SetCountryEvent = {type: OnboardingMachineEvents.SET_COUNTRY; data: Country};
 export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data: string};
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
+export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 
 export type OnboardingMachineEventTypes =
@@ -71,7 +75,14 @@ export type OnboardingMachineEventTypes =
   | SetCountryEvent
   | SetPinCodeEvent
   | ReadTermsEvent
+  | ReadPrivacyEvent
   | SkipImportEvent;
+
+// Guards
+export enum OnboardingMachineGuards {
+  isStep1 = 'isStep1',
+  isStep2 = 'isStep2',
+}
 
 // States Config
 export type OnboardingStatesConfig = StatesConfig<OnboardingMachineContext, {states: OnboardingMachineStates}, OnboardingMachineEventTypes, any>;
@@ -114,12 +125,8 @@ export type OnboardingMachineState = State<
 >;
 
 export type OnboardingMachineNavigationArgs = {
-  onboardingMachine: OnboardingMachineInterpreter;
-  state: OnboardingMachineState;
-  navigation: NativeStackNavigationProp<any>;
+  navigation: NativeStackNavigationProp<OnboardingStackParamsList>;
   context: OnboardingMachineContext;
-  onNext?: () => void;
-  onBack?: () => void;
 };
 
 export type OnboardingProviderProps = {

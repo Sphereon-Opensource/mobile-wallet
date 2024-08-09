@@ -18,12 +18,13 @@ import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import EmergencyScreen from '../screens/EmergencyScreen';
 import {
-  AcceptTermsScreen,
+  AcceptTermsAndPrivacyScreen,
   EnableBiometricsScreen,
   EnterCountryScreen,
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
@@ -49,6 +50,8 @@ import {
   // IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
+  OnboardingRoute,
+  OnboardingStackParamsList,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
@@ -62,6 +65,8 @@ import {SiopV2Provider} from './machines/siopV2StateNavigation';
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
+const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
+
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = (): JSX.Element => {
@@ -449,7 +454,7 @@ const NotificationsStack = (): JSX.Element => {
 type StackGroupConfig = {
   titleKey: string;
   screens: {
-    name: ScreenRoutesEnum;
+    name: OnboardingRoute;
     component: React.FC<any>;
   }[];
 };
@@ -458,15 +463,15 @@ const step1GroupConfig: StackGroupConfig = {
   titleKey: 'onboard_create_wallet_step_title',
   screens: [
     {
-      name: ScreenRoutesEnum.ENTER_NAME,
+      name: 'EnterName',
       component: EnterNameScreen,
     },
     {
-      name: ScreenRoutesEnum.ENTER_EMAIL_ADDRESS,
+      name: 'EnterEmailAddress',
       component: EnterEmailScreen,
     },
     {
-      name: ScreenRoutesEnum.ENTER_COUNTRY,
+      name: 'EnterCountry',
       component: EnterCountryScreen,
     },
   ],
@@ -476,20 +481,20 @@ const step2GroupConfig: StackGroupConfig = {
   titleKey: 'onboard_secure_wallet_step_title',
   screens: [
     {
-      name: ScreenRoutesEnum.ENTER_PIN_CODE,
+      name: 'EnterPinCode',
       component: EnterPinCodeScreen,
     },
     {
-      name: ScreenRoutesEnum.VERIFY_PIN_CODE,
+      name: 'VerifyPinCode',
       component: VerifyPinCodeScreen,
     },
     {
-      name: ScreenRoutesEnum.ENABLE_BIOMETRICS,
+      name: 'EnableBiometrics',
       component: EnableBiometricsScreen,
     },
     {
-      name: ScreenRoutesEnum.ACCEPT_TERMS,
-      component: AcceptTermsScreen,
+      name: 'AcceptTermsAndPrivacy',
+      component: AcceptTermsAndPrivacyScreen,
     },
   ],
 };
@@ -497,27 +502,34 @@ const step2GroupConfig: StackGroupConfig = {
 const stackGroupsConfig = [step1GroupConfig, step2GroupConfig];
 
 export const OnboardingStack = (): JSX.Element => (
-  <Stack.Navigator screenOptions={{animation: 'none'}}>
-    <Stack.Screen name={ScreenRoutesEnum.WELCOME} component={WelcomeScreen} />
-    <Stack.Screen
-      name={ScreenRoutesEnum.SHOW_PROGRESS}
-      component={ShowProgressScreen}
-      options={{
-        header: props => <OnboardingHeader {...props} />,
-      }}
-    />
-    {stackGroupsConfig.map(({titleKey, screens}, i) => (
-      <Stack.Group
-        key={i}
-        screenOptions={{
-          header: (props: NativeStackHeaderProps) => <OnboardingHeader {...props} title={translate(titleKey)} stepsNumber={screens.length} />,
-        }}>
-        {screens.map((config, stepIndex) => (
-          <Stack.Screen key={config.name} name={config.name} component={config.component} initialParams={{step: stepIndex + 1}} />
+  <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} />
+    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
+    {stackGroupsConfig.map(group => (
+      <OnboardingBaseStack.Group key={group.titleKey}>
+        {group.screens.map(({name, component}, index) => (
+          <OnboardingBaseStack.Screen
+            key={name}
+            name={name}
+            component={component}
+            options={{
+              header: props => (
+                <OnboardingHeader
+                  {...props}
+                  title={translate(group.titleKey)}
+                  stepConfig={{
+                    current: index + 1,
+                    total: group.screens.length,
+                  }}
+                />
+              ),
+            }}
+          />
         ))}
-      </Stack.Group>
+      </OnboardingBaseStack.Group>
     ))}
-  </Stack.Navigator>
+  </OnboardingBaseStack.Navigator>
 );
 
 const AuthenticationStack = (): JSX.Element => {
