@@ -1,5 +1,6 @@
 package com.sphereon.ssi.wallet
 
+import id.animo.ausweissdk.AusweisSdkUtils
 import android.app.Application
 import android.content.res.Configuration
 import com.facebook.react.PackageList
@@ -39,6 +40,7 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+        if (AusweisSdkUtils.isAA2Process(this)) return
 
         SoLoader.init(this,  /* native exopackage */false)
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
