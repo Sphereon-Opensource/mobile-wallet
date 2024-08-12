@@ -1,8 +1,8 @@
 import {Animated, TextStyle} from 'react-native';
 import styled from 'styled-components/native';
 
-import {fontStyle} from '../../typography';
 import {fontColors} from '@sphereon/ui-components.core';
+import {fontStyle} from '../../typography';
 
 export const SSITextH0Styled = styled.Text`
   font-family: ${fontStyle.h0SemiBold.fontFamily};

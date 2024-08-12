@@ -31,7 +31,7 @@ export interface IHeaderProps {
 
 export interface IButton {
   caption: string;
-  onPress: () => Promise<void>;
+  onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean | (() => boolean);
 }
 

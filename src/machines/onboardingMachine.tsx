@@ -17,11 +17,13 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
+import {isNonEmptyString, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isNameValid = (ctx: OnboardingMachineContext) => validate(ctx.name, [isNonEmptyString()]).isValid;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -47,7 +49,7 @@ const states: OnboardingStatesConfig = {
   },
   enterName: {
     on: {
-      NEXT: OnboardingMachineStateType.enterEmailAddress,
+      NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_NAME: {actions: assign({name: (_, event) => event.data})},
     },
@@ -151,6 +153,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isStepSecureWallet;
+          }
+        | {
+            type: OnboardingMachineGuards.isNameValid;
           },
     },
     states: states,
@@ -200,6 +205,7 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isNameValid,
           ...opts?.guards,
         },
       }),

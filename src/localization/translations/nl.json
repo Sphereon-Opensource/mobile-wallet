@@ -14,6 +14,7 @@
   "qr_scanner_qr_no_longer_valid_message": "QR-code is niet meer geldig. Probeer een nieuwe QR-code te scannen.",
   "connection_details_view_details": "Details",
   "action_confirm_label": "Bevestigen",
+  "action_continue_label": "Continue",
   "action_cancel_label": "Annuleren",
   "action_decline_label": "Weigeren",
   "action_accept_label": "Accepteren",
@@ -134,6 +135,18 @@
       "description": {
         "default": "Import your personal information from your national eID provider.",
         "deutchland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+      }
+    }
+  },
+  "onboarding_pages": {
+    "enter_name": {
+      "title": "Enter your name",
+      "text_field": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "errors": {
+          "missing": "Please fill in a name"
+        }
       }
     }
   },

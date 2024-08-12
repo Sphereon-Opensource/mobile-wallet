@@ -86,6 +86,7 @@ export type OnboardingMachineEventTypes =
 export enum OnboardingMachineGuards {
   isStepCreateWallet = 'isStepCreateWallet',
   isStepSecureWallet = 'isStepSecureWallet',
+  isNameValid = 'isNameValid',
 }
 
 // States Config
