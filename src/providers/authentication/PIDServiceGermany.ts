@@ -1,14 +1,43 @@
 import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
-import {PARMode} from '@sphereon/oid4vci-common';
-import {createDPoP, CreateDPoPClientOpts, getCreateDPoPOptions} from '@sphereon/oid4vc-common';
-import {AccessTokenClient, OpenID4VCIClient} from '@sphereon/oid4vci-client';
+import {
+  CredentialIssuerMetadataV1_0_11,
+  CredentialIssuerMetadataV1_0_13,
+  CredentialResponse,
+  EndpointMetadataResult,
+  PARMode,
+  ProofOfPossessionCallbacks,
+} from '@sphereon/oid4vci-common';
+import {CreateDPoPClientOpts, getCreateDPoPOptions} from '@sphereon/oid4vc-common';
+import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
+import agent, {agentContext} from '../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDGetAuthorizationCodeArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../types';
+import {IIdentifier, IKey} from '@veramo/core';
+import {toJwk} from '@sphereon/ssi-sdk-ext.key-utils';
+import {signDidJWT} from '@sphereon/ssi-sdk-ext.did-utils';
+import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
+
+class DpopService {
+  async createDPoPOpts(
+    metadata: Pick<EndpointMetadataResult, 'authorizationServerMetadata'> & {
+      credentialIssuerMetadata: CredentialIssuerMetadataV1_0_11 | CredentialIssuerMetadataV1_0_13;
+    },
+  ) {
+    const dpopSigningAlgs =
+      metadata.authorizationServerMetadata?.dpop_signing_alg_values_supported ?? metadata.credentialIssuerMetadata.dpop_signing_alg_values_supported;
+
+    if (!dpopSigningAlgs || dpopSigningAlgs.length === 0) {
+      return;
+    }
+  }
+}
 
 class PIDServiceGermany {
   private readonly client: OpenID4VCIClient;
   private readonly tcTokenUrl: string;
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
+  private ephemeralDPoPKeyref?: string;
+  private removemeDPoPDid: IIdentifier; // tmp identifier, since signing function depends on a did
   private authFlow: AusweisAuthFlow;
   public currentState: EIDFlowState;
 
@@ -24,7 +53,7 @@ class PIDServiceGermany {
         this.handleError(error);
       },
       onSuccess: (options): void => {
-        this.getAuthorizationToken(options).then((authorizationCode: string) => this.getAccessToken({authorizationCode}));
+        this.getAuthorizationToken(options).then((authorizationCode: string) => this.getPid({authorizationCode}));
       },
       onInsertCard: (): void => {
         this.handleStateChange({state: 'INSERT_CARD'});
@@ -37,9 +66,12 @@ class PIDServiceGermany {
   public static async initialize(args: EIDInitializeArgs): Promise<PIDServiceGermany> {
     const uri: string =
       'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
+    // TODO: Move to fromCredentialIssuer
     const client = await OpenID4VCIClient.fromURI({
       uri,
-      resolveOfferUri: true,
+      // const client = await OpenID4VCIClient.fromCredentialIssuer({
+      //   credentialIssuer: "https://demo.pid-issuer.bundesdruckerei.de/c",
+      // resolveOfferUri: true,
       retrieveServerMetadata: true,
       clientId: 'bc11dd24-cbe9-4f13-890b-967e5f900222',
       // This is a separate call, so we don't fetch it here, however it may be easier to just construct it here?
@@ -48,9 +80,9 @@ class PIDServiceGermany {
 
     const authorizationRequestUrl = await client.createAuthorizationRequestUrl({
       authorizationRequest: {
-        redirectUri: 'https://sphereon.com/redirect',
+        redirectUri: 'https://sphereon.com/wallet',
         scope: 'pid',
-        //authorizationDetails: authDetails,
+        clientId: 'bc11dd24-cbe9-4f13-890b-967e5f900222',
         parMode: PARMode.REQUIRE,
       },
     });
@@ -59,6 +91,11 @@ class PIDServiceGermany {
   }
 
   public async start(): Promise<AusweisAuthFlow> {
+    if (this.ephemeralDPoPKeyref) {
+      // Cleanup old DPoP Key Ref if (re)started)
+      void agent.keyManagerDelete({kid: this.ephemeralDPoPKeyref}); // we do not await. Cleanup could also already have removed it
+      this.ephemeralDPoPKeyref = undefined;
+    }
     addMessageListener((message: AusweisSdkMessage): void => {
       if (message.msg === 'STATUS' && (this.currentState.state === 'READING_CARD' || this.currentState.state === 'INSERT_CARD')) {
         this.handleStateChange({state: 'READING_CARD', progress: message.progress});
@@ -113,7 +150,24 @@ class PIDServiceGermany {
     });
   }
 
-  private async getAccessToken(args: EIDGetAccessTokenArgs): Promise<string | void> {
+  private async getEphemeralDPoPKey() {
+    let key: IKey | undefined = undefined;
+    if (!this.ephemeralDPoPKeyref) {
+      // TODO: Determine both type and use ephemeral kms
+      // FIXME: We create d did:jwk as a workaround now as we require a did during signing.
+      this.removemeDPoPDid = await agent.didManagerCreate({provider: 'did:jwk', options: {key, type: 'Secp256r1'}});
+
+      // key = await agent.keyManagerCreate({type: 'Secp256r1', kms: 'local'});
+      key = this.removemeDPoPDid.keys[0];
+      this.ephemeralDPoPKeyref = key.kid;
+    }
+    if (!key) {
+      key = await agent.keyManagerGet({kid: this.ephemeralDPoPKeyref});
+    }
+    return key;
+  }
+
+  private async getPid(args: EIDGetAccessTokenArgs): Promise<CredentialResponse> {
     // TODO void
     const {authorizationCode} = args;
     this.handleStateChange({state: 'GETTING_ACCESS_TOKEN'});
@@ -123,35 +177,41 @@ class PIDServiceGermany {
     const metadata = await this.client.retrieveServerMetadata();
     console.log(`METADATA: ${JSON.stringify(metadata)}`);
 
-    const alg = 'HS256';
-    const jwk = {kty: 'Ed25519', crv: 'Ed25519', x: '123', y: '123'};
+    const alg = 'ES256';
+    const key = await this.getEphemeralDPoPKey();
+    const jwk = toJwk(key.publicKeyHex, key.type, {key});
     const jwtIssuer = {alg, jwk};
-    const htm = 'POST';
-    const htu = 'https://example.com/token';
-    const nonce = 'nonce';
+
+    console.log(`JWT Issuer: ${JSON.stringify(jwtIssuer, null, 2)}`);
     const createDPoPOpts: CreateDPoPClientOpts = {
-      jwtIssuer: jwtIssuer,
-      dPoPSigningAlgValuesSupported: [
-        'RS256',
-        'RS384',
-        'RS512',
-        'PS256',
-        'PS384',
-        'PS512',
-        'ES256',
-        'ES256K',
-        'ES384',
-        'ES512',
-        'EdDSA',
-        'Ed25519',
-        'Ed448',
-      ],
-      jwtPayloadProps: {htm, htu, nonce} as const,
-      createJwtCallback: async (dpopJwtIssuerWithContext, jwt) => {
-        return 'eyJhbGciOiJIUzI1NiIsImp3ayI6eyJrdHkiOiJFZDI1NTE5IiwiY3J2IjoiRWQyNTUxOSIsIngiOiIxMjMiLCJ5IjoiMTIzIn0sInR5cCI6ImRwb3Arand0In0.eyJodG0iOiJQT1NUIiwiaHR1IjoiaHR0cHM6Ly9leGFtcGxlLmNvbS90b2tlbiIsIm5vbmNlIjoibm9uY2UiLCJpYXQiOjE3MjIzMjcxOTQsImp0aSI6Ijk4OWNiZTc4LWI1ZTYtNDViYS1iYjMzLWQ0MGE4ZGEwZjFhYSJ9';
+      jwtIssuer,
+      dPoPSigningAlgValuesSupported: ['ES256'],
+      jwtPayloadProps: {},
+      createJwtCallback: async (jwtIssuer, jwt) => {
+        console.log(`JWT CALLBACK issuer: ${JSON.stringify(jwtIssuer)}`);
+        console.log(`JWT: ${JSON.stringify(jwt)}`);
+        const key = await this.getEphemeralDPoPKey();
+
+        const signedJwt = await signDidJWT({
+          options: {
+            issuer: jwk.kid!, // fixme: remove. Iss is not needed and only our did-jwt requires it. Replace with regular jwt package anyway
+          },
+          idOpts: {
+            identifier: this.removemeDPoPDid,
+            kmsKeyRef: key.kid,
+          },
+          // @ts-ignore
+          header: {...jwt.header, jwk: jwtIssuer.jwk, alg: jwtIssuer.alg},
+          payload: jwt.payload,
+
+          context: agentContext,
+        });
+        console.log(`Resulting JWT: ${signedJwt}`);
+
+        return signedJwt;
       },
     };
-    const dPoP = await createDPoP(getCreateDPoPOptions(createDPoPOpts, metadata.authorizationServerMetadata!.token_endpoint!)); // TODO
+    const dPoP = getCreateDPoPOptions(createDPoPOpts, this.client.getAccessTokenEndpoint());
 
     console.log(`DPOP: ${JSON.stringify(dPoP)}`);
 
@@ -160,20 +220,47 @@ class PIDServiceGermany {
     //
     // })
 
-    const accessTokenClient = new AccessTokenClient();
-
-    const accessTokenResponse = await accessTokenClient.acquireAccessToken({
-      metadata: metadata,
-      //credentialOffer: { credential_offer: credentialOfferRequestWithBaseUrl.credential_offer },
-      //pin: 'txCode',
+    const accessTokenResponse = await this.client.acquireAccessToken({
       code: authorizationCode,
-      codeVerifier: 'no idea',
-      redirectUri: 'https://sphereon.com',
-      // @ts-ignore // TODO why does this complain about not having this arg?
-      createDPoPOpts,
+      redirectUri: 'https://sphereon.com/wallet',
+      createDPoPOpts: dPoP,
     });
 
     console.log(`ACCESS TOKEN: ${JSON.stringify(accessTokenResponse)}`);
+
+    const callbacks: ProofOfPossessionCallbacks<never> = {
+      // @ts-ignore
+      signCallback: signCallback(this.client, {identifier: this.removemeDPoPDid, kmsKeyRef: key.kid}, agentContext),
+    };
+
+    const credDpop = getCreateDPoPOptions(
+      {
+        ...createDPoPOpts,
+        // @ts-ignore
+        jwtPayloadProps: {
+          ...createDPoPOpts?.jwtPayloadProps,
+          nonce: accessTokenResponse.params.dpop!.dpopNonce,
+          accessToken: accessTokenResponse.access_token,
+        },
+      },
+      this.client.getAccessTokenEndpoint(),
+      {accessToken: accessTokenResponse.access_token},
+    );
+
+    const credentialResponse = await this.client.acquireCredentials({
+      credentialTypes: 'urn:eu.europa.ec.eudi:pid:1',
+      // credentialTypes: 'eu.europa.ec.eudi.pid.1',
+      jwk,
+      alg: jwk.alg,
+      format: 'vc+sd-jwt',
+      // format: 'mso_mdoc',
+      // kid: key.kid,
+      proofCallbacks: callbacks,
+      createDPoPOpts: credDpop,
+    });
+
+    console.log(JSON.stringify(credentialResponse, null, 2));
+    return credentialResponse;
   }
 }
 
