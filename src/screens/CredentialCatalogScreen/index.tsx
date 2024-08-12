@@ -22,6 +22,7 @@ import {
   CredentialCatalogDiscoverCredentialsContainerStyled as DiscoverCredentialsContainer,
   CredentialCatalogScreenDiscoverCredentialsHeaderContainerStyled as DiscoverCredentialsHeaderContainer,
   CredentialCatalogCredentialListContainerStyled as CredentialListContainer,
+  CredentialCatalogScreenPreviewCredentialContentContainerStyled as PreviewCredentialContentContainer,
 } from '../../styles/components';
 import {MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
@@ -174,22 +175,24 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container>
       <PreviewCredentialContainer>
-        <SearchField />
-        <FilterBar />
-        <RelevantCredentialContainer>
-          <RelevantCredentialHeaderContainer>
-            <HeaderCaption>{Localization.translate('credential_catalog_most_relevant_header_label')}</HeaderCaption>
-            <ViewAllContainer>
-              <ViewAllText text={Localization.translate('action_view_all_label')} />
-            </ViewAllContainer>
-          </RelevantCredentialHeaderContainer>
-          <CredentialCardPreviewView
-            title={Localization.translate('ausweis_eid_preview_card_title')}
-            description={Localization.translate('ausweis_eid_preview_card_description')}
-            issuer={Localization.translate('ausweis_eid_preview_card_issuer')}
-            onPress={onPreview}
-          />
-        </RelevantCredentialContainer>
+        <PreviewCredentialContentContainer>
+          <SearchField />
+          <FilterBar />
+          <RelevantCredentialContainer>
+            <RelevantCredentialHeaderContainer>
+              <HeaderCaption>{Localization.translate('credential_catalog_most_relevant_header_label')}</HeaderCaption>
+              <ViewAllContainer>
+                <ViewAllText text={Localization.translate('action_view_all_label')} />
+              </ViewAllContainer>
+            </RelevantCredentialHeaderContainer>
+            <CredentialCardPreviewView
+              title={Localization.translate('ausweis_eid_preview_card_title')}
+              description={Localization.translate('ausweis_eid_preview_card_description')}
+              issuer={Localization.translate('ausweis_eid_preview_card_issuer')}
+              onPress={onPreview}
+            />
+          </RelevantCredentialContainer>
+        </PreviewCredentialContentContainer>
       </PreviewCredentialContainer>
       <DiscoverCredentialsContainer>
         <DiscoverCredentialsHeaderContainer>

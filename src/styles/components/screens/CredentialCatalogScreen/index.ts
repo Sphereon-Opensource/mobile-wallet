@@ -8,6 +8,10 @@ export const CredentialCatalogScreenPreviewCredentialContainerStyled = styled.Vi
   padding: 8px 0 28px;
 `;
 
+export const CredentialCatalogScreenPreviewCredentialContentContainerStyled = styled.View`
+  gap: 16px;
+`;
+
 export const CredentialCatalogScreenRelevantCredentialContainerStyled = styled.View`
   gap: 12px;
 `;
