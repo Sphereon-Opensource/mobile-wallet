@@ -3186,10 +3186,10 @@
     str2buf "^1.3.0"
     webcrypto-shim "^0.1.7"
 
-"@sphereon/oid4vc-common@0.16.1-next.7+5e06969":
-  version "0.16.1-next.7"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vc-common/-/oid4vc-common-0.16.1-next.7.tgz#a521abbf56372351fba1f9d251473c0492362633"
-  integrity sha512-kqS5youxv5aBN90gVyjQ1ZLHmeRaQekWQsxoFYGhNqwvSc4VpXF2YiMwM9FKr2Uf+/cGffl7oLYnNqlQwC2iGA==
+"@sphereon/oid4vc-common@0.16.1-next.8+6556cc0":
+  version "0.16.1-next.8"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vc-common/-/oid4vc-common-0.16.1-next.8.tgz#000d340adff2b4e5c521c1f0fa6f376c90734043"
+  integrity sha512-e/DPY0zbVrCSDN6sPQApkNHncgMn2hJBbiSnkFgkJFXvBpob3RgnUn/CebO/VzClGT6ua0EOkSs4jMe6MhRimw==
   dependencies:
     "@sphereon/ssi-types" "0.29.0"
     jwt-decode "^4.0.0"
@@ -3197,23 +3197,23 @@
     uint8arrays "3.1.1"
     uuid "^9.0.0"
 
-"@sphereon/oid4vci-client@0.16.1-next.7":
-  version "0.16.1-next.7"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.16.1-next.7.tgz#580368469f9afe0de81753480d06299b09e80e40"
-  integrity sha512-Pp5ZaHU+GHM1+N6S9G8jhP5FLyG7t36L+V6uFQj834TBYnSWIEDQM9BcMYNOCN3If2hBL4A42iW+r+HDht9Q1w==
+"@sphereon/oid4vci-client@0.16.1-next.7", "@sphereon/oid4vci-client@0.16.1-next.8":
+  version "0.16.1-next.8"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.16.1-next.8.tgz#722731c77ba289ff13325d1e3802c7a7d83f2d90"
+  integrity sha512-9cqlA3mLwhjS1ucTPEyXi/NmVcJk90z3Ock21gwQeSdGMzqAD2U6nUz6dbzOyaMyrLtQLtiQalYXY8BeTq16ug==
   dependencies:
-    "@sphereon/oid4vc-common" "0.16.1-next.7+5e06969"
-    "@sphereon/oid4vci-common" "0.16.1-next.7+5e06969"
+    "@sphereon/oid4vc-common" "0.16.1-next.8+6556cc0"
+    "@sphereon/oid4vci-common" "0.16.1-next.8+6556cc0"
     "@sphereon/ssi-types" "0.29.0"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
 
-"@sphereon/oid4vci-common@0.16.1-next.7", "@sphereon/oid4vci-common@0.16.1-next.7+5e06969":
-  version "0.16.1-next.7"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.16.1-next.7.tgz#93e395d9c328a63fcaae9cc511b7ff52df5aa9e5"
-  integrity sha512-Cl7W9KfySsWPS4I6eWwBedfKdT5LaAqRdSeLKITSGyd37jb4eEdz42CWOQUiB6V2FA+cQlQVwFKYcG8KT+rrLA==
+"@sphereon/oid4vci-common@0.16.1-next.7", "@sphereon/oid4vci-common@0.16.1-next.8", "@sphereon/oid4vci-common@0.16.1-next.8+6556cc0":
+  version "0.16.1-next.8"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.16.1-next.8.tgz#e520b80ef01575a15ccdb0840739d540fada6337"
+  integrity sha512-yQF22jfFHxHqGBYg+vngeaXWSj8wuky9OK/T/obwQDUUS8pRav+RNRsB0ydX0ZtNskReORWk4A/QpVv3RBkgqQ==
   dependencies:
-    "@sphereon/oid4vc-common" "0.16.1-next.7+5e06969"
+    "@sphereon/oid4vc-common" "0.16.1-next.8+6556cc0"
     "@sphereon/ssi-types" "0.29.0"
     cross-fetch "^3.1.8"
     jwt-decode "^4.0.0"

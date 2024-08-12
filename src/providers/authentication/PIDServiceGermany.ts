@@ -214,12 +214,6 @@ class PIDServiceGermany {
     const dPoP = getCreateDPoPOptions(createDPoPOpts, this.client.getAccessTokenEndpoint());
 
     console.log(`DPOP: ${JSON.stringify(dPoP)}`);
-
-    // const accessToken = await this.client.acquireAccessToken({
-    //     code: authorizationCode,
-    //
-    // })
-
     const accessTokenResponse = await this.client.acquireAccessToken({
       code: authorizationCode,
       redirectUri: 'https://sphereon.com/wallet',
@@ -229,17 +223,15 @@ class PIDServiceGermany {
     console.log(`ACCESS TOKEN: ${JSON.stringify(accessTokenResponse)}`);
 
     const callbacks: ProofOfPossessionCallbacks<never> = {
-      // @ts-ignore
       signCallback: signCallback(this.client, {identifier: this.removemeDPoPDid, kmsKeyRef: key.kid}, agentContext),
     };
 
     const credDpop = getCreateDPoPOptions(
       {
         ...createDPoPOpts,
-        // @ts-ignore
         jwtPayloadProps: {
           ...createDPoPOpts?.jwtPayloadProps,
-          nonce: accessTokenResponse.params.dpop!.dpopNonce,
+          nonce: accessTokenResponse.params?.dpop?.dpopNonce,
           accessToken: accessTokenResponse.access_token,
         },
       },
@@ -248,12 +240,12 @@ class PIDServiceGermany {
     );
 
     const credentialResponse = await this.client.acquireCredentials({
-      credentialTypes: 'urn:eu.europa.ec.eudi:pid:1',
-      // credentialTypes: 'eu.europa.ec.eudi.pid.1',
+      // credentialTypes: 'urn:eu.europa.ec.eudi:pid:1',
+      credentialTypes: 'eu.europa.ec.eudi.pid.1',
       jwk,
       alg: jwk.alg,
-      format: 'vc+sd-jwt',
-      // format: 'mso_mdoc',
+      // format: 'vc+sd-jwt',
+      format: 'mso_mdoc',
       // kid: key.kid,
       proofCallbacks: callbacks,
       createDPoPOpts: credDpop,
