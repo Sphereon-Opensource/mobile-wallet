@@ -85,7 +85,7 @@ const states: OnboardingStatesConfig = {
   enableBiometrics: {
     on: {
       NEXT: OnboardingMachineStateType.acceptTermsAndPrivacy,
-      PREVIOUS: OnboardingMachineStateType.verifyPinCode,
+      PREVIOUS: OnboardingMachineStateType.enterPinCode,
     },
   },
   acceptTermsAndPrivacy: {
