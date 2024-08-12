@@ -9,7 +9,7 @@ import {
   CredentialCardPreviewViewInformationContentContainerStyled as InformationContentContainer,
 } from '../../../styles/components';
 
-// TODO eventually we want to have a preview card for potential credentials a user get acquire. Now this component is just a hardcoded eID card preview
+// TODO eventually we want to have a preview card for potential credentials a user can acquire. Now this component is just a hardcoded eID card preview
 
 export type Props = {
   title: string;
