@@ -1,15 +1,11 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ScreenRoutesEnum, StackParamList} from 'src/types';
-import {ButtonContainer, Container, ContentContainer, Title, TitleContainer, Text} from '../components/styles';
-import {ScrollView, Image, View} from 'react-native';
-import styled from 'styled-components/native';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {fontColors} from '@sphereon/ui-components.core';
-import {OnboardingContext} from 'src/navigation/machines/onboardingStateNavigation';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
-import {OnboardingMachineEvents} from 'src/types/machines/onboarding';
-
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.IMPORT_DATA_CONSENT>;
+import {Image, ScrollView} from 'react-native';
+import styled from 'styled-components/native';
+import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {ButtonContainer, Container, ContentContainer, Text, Title, TitleContainer} from '../components/styles';
 
 const ScrollableContent = styled(ScrollView)`
   flex: 1;
@@ -133,7 +129,7 @@ const RequestedInformationLabel = styled.Text`
 
 const AusweisRequestedInfoSchema = ['given name', 'family name', 'also known as', 'gender', 'birth date', 'place of birth'] as const;
 
-const ImportDataConsentScreen = (props: Props) => {
+const ImportDataConsentScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   return (
     <Container>
