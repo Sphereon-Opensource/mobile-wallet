@@ -13,3 +13,4 @@ export * from './SSILockScreen';
 export * from './SSILoadingScreen';
 export * from './EmergencyScreen';
 export * from './SSICredentialsSelectScreen';
+export * from './CredentialCatalogScreen';

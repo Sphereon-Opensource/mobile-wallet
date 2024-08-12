@@ -53,6 +53,8 @@ import {
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 import EmergencyScreen from '../screens/EmergencyScreen';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
+import AusweisModal from '../modals/AusweisModal';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -91,6 +93,14 @@ const MainStackNavigator = (): JSX.Element => {
         )}
         options={{
           presentation: 'transparentModal',
+        }}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.AUSWEIS_MODAL}
+        component={AusweisModal}
+        options={{
+          presentation: 'transparentModal',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -150,6 +160,15 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <CredentialsStack />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Tab.Screen
+        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        children={() => (
+          <>
+            <CredentialCatalogStack />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -428,6 +447,32 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('notifications_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const CredentialCatalogStack = (): JSX.Element => {
+  return (
+    <Stack.Navigator
+      initialRouteName={ScreenRoutesEnum.CREDENTIAL_CATALOG}
+      screenOptions={{
+        animation: 'none',
+      }}>
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_CATALOG}
+        component={CredentialCatalogScreen}
+        options={{
+          headerTitle: 'Credential Catalog', // TODO
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} />,
         }}
       />
       <Stack.Screen

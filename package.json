@@ -42,6 +42,7 @@
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@scure/base": "^1.1.7",
+    "@sd-jwt/sd-jwt-vc": "^0.6.1",
     "@sphereon/did-auth-siop": "0.6.4",
     "@sphereon/did-provider-oyd": "0.24.1-next.3",
     "@sphereon/isomorphic-webcrypto": "2.5.0-unstable.0",
@@ -71,9 +72,9 @@
     "@sphereon/ssi-sdk.vc-handler-ld-local": "0.29.1-next.47",
     "@sphereon/ssi-sdk.xstate-machine-persistence": "0.29.1-next.47",
     "@sphereon/ssi-types": "0.29.1-next.47",
-    "@sphereon/ui-components.core": "^0.3.0",
-    "@sphereon/ui-components.credential-branding": "^0.3.0",
-    "@sphereon/ui-components.ssi-react-native": "^0.3.0",
+    "@sphereon/ui-components.core": "0.3.1-unstable.3",
+    "@sphereon/ui-components.credential-branding": "0.3.1-unstable.3",
+    "@sphereon/ui-components.ssi-react-native": "0.3.1-unstable.3",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
     "@veramo/data-store": "4.2.0",
@@ -159,8 +160,7 @@
     "uint8arrays": "^3.1.1",
     "vm-browserify": "^1.1.2",
     "web-did-resolver": "^2.0.23",
-    "xstate": "^4.38.3",
-    "@sd-jwt/sd-jwt-vc": "^0.6.1"
+    "xstate": "^4.38.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -173,6 +173,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/runtime": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
+    "@sd-jwt/types": "^0.6.1",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.3.1",
     "@tsconfig/react-native": "^2.0.2",
@@ -211,8 +212,7 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.3.3",
     "webpack": "^5.76.1",
-    "xmlhttprequest": "^1.8.0",
-    "@sd-jwt/types": "^0.6.1"
+    "xmlhttprequest": "^1.8.0"
   },
   "react-native": {
     "_stream_transform": "readable-stream/transform",

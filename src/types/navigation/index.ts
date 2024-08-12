@@ -18,6 +18,7 @@ export type StackParamList = {
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
+  AusweisModal: IAusweisModalProps;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -41,6 +42,7 @@ export type StackParamList = {
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
+  CredentialCatalog: Record<string, never>;
 };
 
 export type IBrowserOpen = IHasOnBackProps &
@@ -148,6 +150,11 @@ export interface IPopupModalProps {
   secondaryButton?: IButton;
 }
 
+export interface IAusweisModalProps {
+  onClose: () => Promise<void>;
+  onAccept: () => Promise<void>;
+}
+
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
@@ -198,6 +205,7 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  AUSWEIS_MODAL = 'AusweisModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
 }
@@ -207,6 +215,7 @@ export enum NavigationBarRoutesEnum {
   NOTIFICATIONS = 'NotificationsStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
+  CREDENTIAL_CATALOG = 'CredentialCatalogStack',
 }
 
 export enum ScreenRoutesEnum {
@@ -233,6 +242,7 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
+  CREDENTIAL_CATALOG = 'CredentialCatalog',
 }
 
 export interface ISiopV2PProps {

@@ -33,3 +33,8 @@ export * from './SSICredentialSelectViewItem';
 export * from './SSIToast';
 export * from './SSIImageField';
 export * from './BadgeButton';
+export * from './CredentialPreviewViewItem';
+export * from './CredentialCardPreviewView';
+export * from './AusweisModal';
+export * from './SearchField';
+export * from './FilterBar';

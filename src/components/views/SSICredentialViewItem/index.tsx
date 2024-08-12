@@ -1,4 +1,4 @@
-import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
+import {SSICredentialMiniCardView, SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC} from 'react';
 
 import {translate} from '../../../localization/Localization';
@@ -21,13 +21,20 @@ import {View} from 'react-native';
 export interface Props extends CredentialSummary {
   // TODO should only contain info this screen needs, ICredentialSummary is to much
   showTime?: boolean;
+  showCard?: boolean;
 }
 
 const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {branding, credentialStatus, expirationDate, issueDate, issuer, showTime = false, title} = props;
+  const {branding, credentialStatus, expirationDate, issueDate, issuer, showTime = false, showCard = true, title} = props;
+
   return (
     <Container>
-      <View>
+      {showCard && (
+        <View style={{justifyContent: 'center'}}>
+          <SSICredentialMiniCardView backgroundColor={branding?.background?.color} />
+        </View>
+      )}
+      <View style={{flex: 1}}>
         <ContentTopContainer>
           <TitleCaption numberOfLines={2}>{title}</TitleCaption>
           <CredentialStatusContainer>
