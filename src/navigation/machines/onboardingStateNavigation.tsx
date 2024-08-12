@@ -70,7 +70,7 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       onboardingNavigation.navigate('ImportPersonalData', {});
       break;
     case OnboardingMachineStateType.importDataConsent:
-      onboardingNavigation.navigate('PersonalData', {});
+      onboardingNavigation.navigate('ImportDataConsent', {});
       break;
     default:
       throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
