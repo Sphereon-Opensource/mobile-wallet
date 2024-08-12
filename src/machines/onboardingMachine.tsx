@@ -48,7 +48,7 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
-        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPersonalData},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importDataConsent},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -144,9 +144,15 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
     },
   },
-  importPersonalData: {
+  importDataConsent: {
     on: {
       PREVIOUS: OnboardingMachineStateType.showProgress,
+      NEXT: OnboardingMachineStateType.importPersonalData,
+    },
+  },
+  importPersonalData: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataConsent,
     },
   },
 };

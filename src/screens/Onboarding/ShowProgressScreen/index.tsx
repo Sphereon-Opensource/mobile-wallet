@@ -49,8 +49,8 @@ const StepInformation = ({title, description, Image, stepState}: StepInformation
 
 const renderStepContent =
   ({title, description, Image}: BaseStepInformationProps) =>
-  (stepState: StepState) =>
-    <StepInformation title={title} description={description} Image={Image} stepState={stepState} />;
+    (stepState: StepState) =>
+      <StepInformation title={title} description={description} Image={Image} stepState={stepState} />;
 
 type ScreenText = {
   titleKey: string;

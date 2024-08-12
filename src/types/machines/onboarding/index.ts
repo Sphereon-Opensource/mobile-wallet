@@ -47,6 +47,7 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  importDataConsent = 'importDataConsent',
   importPersonalData = 'importPersonalData',
 }
 
