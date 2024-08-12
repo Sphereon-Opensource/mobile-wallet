@@ -8,4 +8,5 @@ export {default as ReadTermsAndPrivacyScreen} from './ReadTermsAndPrivacyScreen'
 export {default as ShowProgressScreen} from './ShowProgressScreen';
 export {default as VerifyPinCodeScreen} from './VerifyPinCodeScreen';
 export {default as WelcomeScreen} from './WelcomeScreen';
-export {default as ImportPersonalDataScreen} from './ImportPersonalDataSCreen';
+export {default as ImportPersonalDataScreen} from './ImportPersonalDataScreen';
+export {default as ImportDataConsentScreen} from './ImportDataConsentScreen';

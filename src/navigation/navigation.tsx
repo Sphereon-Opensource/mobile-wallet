@@ -24,6 +24,7 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportDataConsentScreen,
   ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
@@ -226,8 +227,8 @@ const CredentialsStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}
@@ -347,8 +348,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}
@@ -378,9 +379,8 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+                }`}
             />
           ),
         })}
@@ -504,6 +504,10 @@ const step3GroupConfig: StackGroupConfig = {
   titleKey: 'import_data_title',
   screens: [
     {
+      name: 'ImportDataConsent',
+      component: ImportDataConsentScreen,
+    },
+    {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
     },
@@ -614,7 +618,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
-              // headerSubTitle={translate('browser_open_subtitle')}
+            // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
         })}
@@ -675,8 +679,8 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}
@@ -776,9 +780,8 @@ export const SiopV2Stack = (): JSX.Element => {
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+                }`}
             />
           ),
         })}
@@ -791,8 +794,8 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}

@@ -48,9 +48,8 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
-  TermsOfService: Record<string, never>;
-  PersonalData: Record<string, never>;
   ImportPersonalData: Record<string, never>;
+  ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
   PinCodeVerify: Record<string, never>;
 };

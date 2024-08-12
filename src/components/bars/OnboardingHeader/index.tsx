@@ -26,7 +26,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProp
   return (
     <Container
       style={{
-        marginTop: useSafeAreaInsets().top,
+        paddingTop: useSafeAreaInsets().top,
       }}>
       <HeaderRow>
         <BackIconContainer style={{flex: 1}}>
