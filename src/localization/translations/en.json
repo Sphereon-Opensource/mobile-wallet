@@ -152,6 +152,17 @@
           "missing": "Please fill in a name"
         }
       }
+    },
+    "enter_email_address": {
+      "title": "Enter your email address",
+      "text_field": {
+        "label": "Email address",
+        "placeholder": "Yout email address",
+        "errors": {
+          "missing": "Please fill in an email address",
+          "invalid": "Please fill in a valid email address"
+        }
+      }
     }
   },
   "onboard_summary_title": "Your entered details",

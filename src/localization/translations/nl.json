@@ -148,6 +148,17 @@
           "missing": "Please fill in a name"
         }
       }
+    },
+    "enter_email": {
+      "title": "Enter your email address",
+      "text_field": {
+        "label": "Email address",
+        "placeholder": "Your email address",
+        "errors": {
+          "missing": "Please fill in an email address",
+          "invalid": "Please fill in a valid email address"
+        }
+      }
     }
   },
   "onboard_summary_title": "Uw ingevulde gegevens",

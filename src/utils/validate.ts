@@ -1,3 +1,5 @@
+import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
+
 type Error = 'required' | 'invalid';
 
 const defaultErrorMessages: Record<Error, string> = {
@@ -13,6 +15,11 @@ type Validator<T> = {
 export const isNonEmptyString = (errorMessage?: string): Validator<string> => ({
   predicate: (value: string): boolean => value.length > 0,
   errorMessage: errorMessage ?? defaultErrorMessages.required,
+});
+
+export const IsValidEmail = (errorMessage?: string): Validator<string> => ({
+  predicate: (value: string): boolean => EMAIL_ADDRESS_VALIDATION_REGEX.test(value),
+  errorMessage: errorMessage ?? defaultErrorMessages.invalid,
 });
 
 type ValidationResult = {
