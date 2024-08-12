@@ -123,14 +123,23 @@
   "onboard_create_wallet_step_title": "Create wallet",
   "onboard_secure_wallet_step_title": "Secure wallet",
   "onboard_progress_pages": {
-    "step1": {"title": "Getting started", "description": "Each section should take only a couple of minutes to complete."},
-    "step2": {"title": "You're halfway there", "description": null},
-    "step3": {"title": "Almost done, last section", "description": null}
+    "create_wallet": {"title": "Getting started", "description": "Each section should take only a couple of minutes to complete."},
+    "secure_wallet": {"title": "You're halfway there", "description": null},
+    "import_personal_data": {"title": "Almost done, last section", "description": null}
   },
   "onboard_steps": {
-    "step1": {"title": "Create wallet", "description": "Set up an account with your name, email address and country of residence."},
-    "step2": {"title": "Secure wallet", "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login."},
-    "step3": {"title": "Import personal information", "description": "Scan your Ausweis eID-card. Keep the card and eID pin ready."}
+    "create_wallet": {"title": "Create wallet", "description": "Set up an account with your name, email address and country of residence."},
+    "secure_wallet": {
+      "title": "Secure wallet",
+      "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login."
+    },
+    "import_personal_data": {
+      "title": "Import personal information",
+      "description": {
+        "default": "Import your personal information from your national eID provider.",
+        "deutchland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+      }
+    }
   },
   "onboard_summary_title": "Your entered details",
   "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",

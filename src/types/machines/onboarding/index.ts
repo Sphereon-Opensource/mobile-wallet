@@ -14,7 +14,11 @@ export type OnboardingCredentialData = {
 
 export type Country = 'Deutschland';
 
-export type OnboardingMachineStep = 1 | 2 | 3;
+export enum OnboardingMachineStep {
+  CREATE_WALLET = 1,
+  SECURE_WALLET = 2,
+  IMPORT_PERSONAL_DATA = 3,
+}
 
 export type OnboardingMachineContext = {
   credentialData: OnboardingCredentialData;
@@ -80,8 +84,8 @@ export type OnboardingMachineEventTypes =
 
 // Guards
 export enum OnboardingMachineGuards {
-  isStep1 = 'isStep1',
-  isStep2 = 'isStep2',
+  isStepCreateWallet = 'isStepCreateWallet',
+  isStepSecureWallet = 'isStepSecureWallet',
 }
 
 // States Config

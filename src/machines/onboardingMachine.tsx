@@ -14,13 +14,14 @@ import {
   OnboardingMachineInterpreter,
   OnboardingMachineState,
   OnboardingMachineStateType,
+  OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
-const isStep1 = (ctx: OnboardingMachineContext) => ctx.currentStep === 1;
-const isStep2 = (ctx: OnboardingMachineContext) => ctx.currentStep === 2;
+const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
+const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -31,13 +32,13 @@ const states: OnboardingStatesConfig = {
   showProgress: {
     on: {
       NEXT: [
-        {cond: OnboardingMachineGuards.isStep1, target: OnboardingMachineStateType.enterName},
-        {cond: OnboardingMachineGuards.isStep2, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
+        {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
       ],
       PREVIOUS: [
-        {cond: OnboardingMachineGuards.isStep1, target: OnboardingMachineStateType.showIntro},
+        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
         {
-          cond: OnboardingMachineGuards.isStep2,
+          cond: OnboardingMachineGuards.isStepSecureWallet,
           target: OnboardingMachineStateType.enterCountry,
           actions: assign({currentStep: 1}),
         },
@@ -146,10 +147,10 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       events: {} as OnboardingMachineEventTypes,
       guards: {} as
         | {
-            type: OnboardingMachineGuards.isStep1;
+            type: OnboardingMachineGuards.isStepCreateWallet;
           }
         | {
-            type: OnboardingMachineGuards.isStep2;
+            type: OnboardingMachineGuards.isStepSecureWallet;
           },
     },
     states: states,
@@ -197,8 +198,8 @@ export class OnboardingMachine {
     const newInst: OnboardingMachineInterpreter = interpret(
       createOnboardingMachine(opts).withConfig({
         guards: {
-          isStep1,
-          isStep2,
+          isStepCreateWallet,
+          isStepSecureWallet,
           ...opts?.guards,
         },
       }),

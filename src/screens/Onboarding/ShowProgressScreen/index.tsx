@@ -1,6 +1,6 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {ReactElement, useContext} from 'react';
+import React, {ReactElement, useContext} from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 import EID_card from '../../../assets/images/EID_card.svg';
@@ -69,12 +69,12 @@ type ScreenText = {
 };
 
 const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
-  1: {
-    titleKey: 'onboard_progress_pages.step1.title',
-    descriptionKey: 'onboard_progress_pages.step1.description',
+  [OnboardingMachineStep.CREATE_WALLET]: {
+    titleKey: 'onboard_progress_pages.create_wallet.title',
+    descriptionKey: 'onboard_progress_pages.create_wallet.description',
   },
-  2: {titleKey: 'onboard_progress_pages.step2.title'},
-  3: {titleKey: 'onboard_progress_pages.step3.title'},
+  [OnboardingMachineStep.SECURE_WALLET]: {titleKey: 'onboard_progress_pages.secure_wallet.title'},
+  [OnboardingMachineStep.IMPORT_PERSONAL_DATA]: {titleKey: 'onboard_progress_pages.import_personal_data.title'},
 };
 
 const ShowProgressScreen = () => {
@@ -83,16 +83,20 @@ const ShowProgressScreen = () => {
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({
-      title: translate(`onboard_steps.step1.title`),
-      description: translate(`onboard_steps.step1.description`),
+      title: translate('onboard_steps.create_wallet.title'),
+      description: translate('onboard_steps.create_wallet.description'),
     }),
     renderStepContent({
-      title: translate(`onboard_steps.step2.title`),
-      description: translate(`onboard_steps.step2.description`),
+      title: translate('onboard_steps.secure_wallet.title'),
+      description: translate('onboard_steps.secure_wallet.description'),
     }),
     renderStepContent({
-      title: translate(`onboard_steps.step3.title`),
-      description: translate(`onboard_steps.step3.description`),
+      title: translate('onboard_steps.import_personal_data.title'),
+      // After the create wallet step, the description changes to a more specific one
+      description:
+        currentStep > OnboardingMachineStep.CREATE_WALLET
+          ? translate('onboard_steps.import_personal_data.description.deutchland')
+          : translate('onboard_steps.import_personal_data.description.default'),
       Image: (
         <View style={{marginTop: 24}}>
           <EID_card />
