@@ -4,13 +4,12 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
-import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {storageDeletePin} from '../../services/storageService';
 import {
-  getUsers as userServiceGetUsers,
-  deleteUser as userServiceDeleteUser,
-  updateUser as userServiceUpdateUser,
   createUser as userServiceCreateUser,
+  deleteUser as userServiceDeleteUser,
+  getUsers as userServiceGetUsers,
+  updateUser as userServiceUpdateUser,
 } from '../../services/userService';
 import {BasicUser, IAddIdentifierArgs, IUser, RootState} from '../../types';
 import {CLEAR_CONTACTS} from '../../types/store/contact.action.types';
@@ -33,9 +32,10 @@ import {
 } from '../../types/store/user.action.types';
 import {IUserState} from '../../types/store/user.types';
 
+import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
+import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
-import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {

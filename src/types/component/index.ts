@@ -1,6 +1,6 @@
+import {ImageAttributes} from '@sphereon/ui-components.core';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -55,3 +55,14 @@ export type CredentialMiniCardDisplay = {
   logoColor: ColorValue;
   logo?: ImageAttributes;
 };
+
+export type StepState = 'current' | 'finished' | 'upcoming';
+
+export type StepContent = (stepState: StepState) => JSX.Element;
+
+export interface IStepIndicatorProps {
+  state: StepState;
+  isLastStep: boolean;
+  stepIndex: number;
+  ringColor: ColorValue;
+}

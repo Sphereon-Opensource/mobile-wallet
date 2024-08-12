@@ -1,10 +1,9 @@
-import {CredentialPayload, IIdentifier, ProofFormat, VerifiableCredential} from '@veramo/core';
-import {Interpreter, State} from 'xstate';
-import {SupportedDidMethodEnum} from '../../did';
-import {ISetPersonalDataActionArgs} from '../../store/onboarding.types';
-import {IUser} from '../../user';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {CredentialPayload, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
+import {Interpreter, State, StatesConfig} from 'xstate';
+import {OnboardingStackParamsList} from '../../../types/navigation';
+import {SupportedDidMethodEnum} from '../../did';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -13,76 +12,90 @@ export type OnboardingCredentialData = {
   proofFormat?: ProofFormat;
 };
 
-export type OnboardingPersonalData = {
-  firstName: string;
-  lastName: string;
-  emailAddress: string;
-};
+export type Country = 'Deutschland';
+
+export enum OnboardingMachineStep {
+  CREATE_WALLET = 1,
+  SECURE_WALLET = 2,
+  IMPORT_PERSONAL_DATA = 3,
+}
 
 export type OnboardingMachineContext = {
   credentialData: OnboardingCredentialData;
-  termsConditionsAccepted: boolean;
-  privacyPolicyAccepted: boolean;
+  name: string;
+  emailAddress: string;
+  country?: Country;
   pinCode: string;
-  personalData: OnboardingPersonalData;
+  biometricsEnabled: boolean;
+  termsAndPrivacyAccepted: boolean;
+  currentStep: OnboardingMachineStep;
 };
 
-export enum OnboardingMachineStates {
+// States
+export enum OnboardingMachineStateType {
   showIntro = 'showIntro',
-  acceptAgreement = 'acceptAgreement',
-  enterPersonalDetails = 'enterPersonalDetails',
-  verifyPersonalDetails = 'verifyPersonalDetails',
-  declineOnboarding = 'declineOnboarding',
-  finishOnboarding = 'finishOnboarding',
-  enterPin = 'enterPin',
-  verifyPin = 'verifyPin',
-  setupWallet = 'setupWallet',
+  showProgress = 'showProgress',
+  enterName = 'enterName',
+  enterEmailAddress = 'enterEmailAddress',
+  enterCountry = 'enterCountry',
+  enterPinCode = 'enterPinCode',
+  verifyPinCode = 'verifyPinCode',
+  enableBiometrics = 'enableBiometrics',
+  acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
+  readTerms = 'readTerms',
+  readPrivacy = 'readPrivacy',
 }
 
+export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
+
+// Events
 export enum OnboardingMachineEvents {
   NEXT = 'NEXT',
   PREVIOUS = 'PREVIOUS',
-  DECLINE = 'DECLINE',
-  SET_TOC = 'SET_TOC',
-  SET_POLICY = 'SET_POLICY',
-  SET_PERSONAL_DATA = 'SET_PERSONAL_DATA',
-  SET_PIN = 'SET_PIN',
+  SET_NAME = 'SET_NAME',
+  SET_EMAIL_ADDRESS = 'SET_EMAIL_ADDRESS',
+  SET_COUNTRY = 'SET_COUNTRY',
+  SET_PIN_CODE = 'SET_PIN_CODE',
+  READ_TERMS = 'READ_TERMS',
+  READ_PRIVACY = 'READ_PRIVACY',
+  SKIP_IMPORT = 'SKIP_IMPORT',
 }
 
-export type NextEvent = {type: OnboardingMachineEvents.NEXT; data?: any};
+export type NextEvent = {type: OnboardingMachineEvents.NEXT};
 export type PreviousEvent = {type: OnboardingMachineEvents.PREVIOUS};
-export type PersonalDataEvent = {type: OnboardingMachineEvents.SET_PERSONAL_DATA; data: ISetPersonalDataActionArgs};
-export type TermsConditionsEvent = {type: OnboardingMachineEvents.SET_TOC; data: boolean};
-export type PrivacyPolicyEvent = {type: OnboardingMachineEvents.SET_POLICY; data: boolean};
-export type PinSetEvent = {type: OnboardingMachineEvents.SET_PIN; data: string};
-export type DeclineEvent = {type: OnboardingMachineEvents.DECLINE};
+export type SetNameEvent = {type: OnboardingMachineEvents.SET_NAME; data: string};
+export type SetEmailAddressEvent = {type: OnboardingMachineEvents.SET_EMAIL_ADDRESS; data: string};
+export type SetCountryEvent = {type: OnboardingMachineEvents.SET_COUNTRY; data: Country};
+export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data: string};
+export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
+export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
+export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
+
 export type OnboardingMachineEventTypes =
   | NextEvent
   | PreviousEvent
-  | TermsConditionsEvent
-  | PrivacyPolicyEvent
-  | PersonalDataEvent
-  | PinSetEvent
-  | DeclineEvent;
+  | SetNameEvent
+  | SetEmailAddressEvent
+  | SetCountryEvent
+  | SetPinCodeEvent
+  | ReadTermsEvent
+  | ReadPrivacyEvent
+  | SkipImportEvent;
 
+// Guards
 export enum OnboardingMachineGuards {
-  onboardingToSAgreementGuard = 'onboardingToSAgreementGuard',
-  onboardingPersonalDataGuard = 'onboardingPersonalDataGuard',
-  onboardingPinCodeSetGuard = 'onboardingPinCodeSetGuard',
-  onboardingPinCodeVerifyGuard = 'onboardingPinCodeVerifyGuard',
+  isStepCreateWallet = 'isStepCreateWallet',
+  isStepSecureWallet = 'isStepSecureWallet',
 }
 
-export type WalletSetupServiceResult = {
-  identifier: IIdentifier;
-  storedUser: IUser;
-  verifiableCredential: VerifiableCredential;
-};
+// States Config
+export type OnboardingStatesConfig = StatesConfig<OnboardingMachineContext, {states: OnboardingMachineStates}, OnboardingMachineEventTypes, any>;
 
 // We use this in class components, as there is no context available there. It is also used by default in the onboarding provider
 
 export type OnboardingMachineInterpreter = Interpreter<
   OnboardingMachineContext,
-  any,
+  {states: OnboardingMachineStates},
   OnboardingMachineEventTypes,
   {
     value: any;
@@ -95,8 +108,8 @@ export type OnboardingContext = {
   onboardingInstance: OnboardingMachineInterpreter;
 };
 
-export type CreateOnboardingMachineOpts = {
-  credentialData?: Partial<OnboardingCredentialData>;
+export type CreateOnboardingMachineOpts = Partial<OnboardingCredentialData> & {
+  credentialData?: OnboardingCredentialData;
   machineId?: string;
 };
 
@@ -110,18 +123,14 @@ export type InstanceOnboardingMachineOpts = {
 export type OnboardingMachineState = State<
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
-  any,
+  {states: OnboardingMachineStates},
   {value: any; context: OnboardingMachineContext},
   any
 >;
 
 export type OnboardingMachineNavigationArgs = {
-  onboardingMachine: OnboardingMachineInterpreter;
-  state: OnboardingMachineState;
-  navigation: NativeStackNavigationProp<any>;
+  navigation: NativeStackNavigationProp<OnboardingStackParamsList>;
   context: OnboardingMachineContext;
-  onNext?: () => void;
-  onBack?: () => void;
 };
 
 export type OnboardingProviderProps = {
