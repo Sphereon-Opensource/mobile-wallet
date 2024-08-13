@@ -19,3 +19,8 @@ export const parseTextToElement = (text: string): JSX.Element => {
 
   return <Text>{items}</Text>;
 };
+
+export const capitalize = (text: string): string => {
+  const lowerCaseText = text.toLowerCase();
+  return lowerCaseText.charAt(0).toUpperCase() + lowerCaseText.slice(1);
+};

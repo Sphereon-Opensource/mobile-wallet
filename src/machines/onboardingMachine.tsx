@@ -152,20 +152,20 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       events: {} as OnboardingMachineEventTypes,
       guards: {} as
         | {
-          type: OnboardingMachineGuards.isStepCreateWallet;
-        }
+            type: OnboardingMachineGuards.isStepCreateWallet;
+          }
         | {
-          type: OnboardingMachineGuards.isStepSecureWallet;
-        }
+            type: OnboardingMachineGuards.isStepSecureWallet;
+          }
         | {
-          type: OnboardingMachineGuards.isNameValid;
-        }
+            type: OnboardingMachineGuards.isNameValid;
+          }
         | {
-          type: OnboardingMachineGuards.isEmailValid;
-        }
+            type: OnboardingMachineGuards.isEmailValid;
+          }
         | {
-          type: OnboardingMachineGuards.isCountryValid;
-        },
+            type: OnboardingMachineGuards.isCountryValid;
+          },
     },
     states: states,
   });
