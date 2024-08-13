@@ -25,11 +25,14 @@ import {
   EnterNameScreen,
   EnterPinCodeScreen,
   ImportDataConsentScreen,
+  ImportDataLoaderScreen,
   ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
+  ImportDataAuthenticationScreen,
+  ImportDataFinalScreen,
 } from '../screens/Onboarding';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
@@ -556,6 +559,18 @@ const step3GroupConfig: StackGroupConfig = {
     {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
+    },
+    {
+      name: 'ImportDataAuthentication',
+      component: ImportDataAuthenticationScreen,
+    },
+    {
+      name: 'ImportDataLoader',
+      component: ImportDataLoaderScreen,
+    },
+    {
+      name: 'ImportDataFinal',
+      component: ImportDataFinalScreen,
     },
   ],
 };

@@ -54,6 +54,9 @@ export type OnboardingStackParamsList = {
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
   PinCodeVerify: Record<string, never>;
+  ImportDataAuthentication: Record<string, never>;
+  ImportDataLoader: Record<string, never>;
+  ImportDataFinal: Record<string, never>;
 };
 
 export type OnboardingRoute = keyof OnboardingStackParamsList;
