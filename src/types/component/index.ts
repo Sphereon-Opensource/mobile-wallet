@@ -6,6 +6,7 @@ export enum ButtonIconsEnum {
   BACK = 'back',
   MORE = 'more',
   CLOSE = 'close',
+  SEARCH = 'search',
 }
 
 export enum HeaderMenuIconsEnum {

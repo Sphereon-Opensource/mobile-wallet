@@ -6,10 +6,11 @@ import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
 import SSIMoreIcon from '../../../components/assets/icons/SSIMoreIcon';
 import {ButtonIconsEnum} from '../../../types';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
+import SearchIcon from '../../assets/icons/SearchIcon';
 
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum;
-  onPress: () => Promise<void>;
+  onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean;
   style?: ViewStyle;
   iconSize?: number;
@@ -42,6 +43,8 @@ const getIcon = (icon: ButtonIconsEnum, size?: number, color?: ColorValue): JSX.
       return <SSIMoreIcon />;
     case ButtonIconsEnum.CLOSE:
       return <SSICloseIcon size={size} color={color} />;
+    case ButtonIconsEnum.SEARCH:
+      return <SearchIcon size={size} color={color} />;
     default:
       return <View />;
   }
