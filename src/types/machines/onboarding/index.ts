@@ -90,6 +90,7 @@ export enum OnboardingMachineGuards {
   isStepSecureWallet = 'isStepSecureWallet',
   isNameValid = 'isNameValid',
   isEmailValid = 'isEmailValid',
+  isCountryValid = 'isCountryValid',
 }
 
 // States Config

@@ -12,6 +12,11 @@ type Validator<T> = {
   errorMessage: string;
 };
 
+export const isNotNil = <T>(errorMessage?: string): Validator<T> => ({
+  predicate: (value: T | undefined | null): boolean => value !== undefined && value !== null,
+  errorMessage: errorMessage ?? defaultErrorMessages.required,
+});
+
 export const isNonEmptyString = (errorMessage?: string): Validator<string> => ({
   predicate: (value: string): boolean => value.length > 0,
   errorMessage: errorMessage ?? defaultErrorMessages.required,

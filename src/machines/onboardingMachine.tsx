@@ -17,7 +17,7 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
-import {IsValidEmail, isNonEmptyString, validate} from '../utils/validate';
+import {IsValidEmail, isNonEmptyString, isNotNil, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -25,6 +25,7 @@ const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep ==
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
 const isNameValid = (ctx: OnboardingMachineContext) => validate(ctx.name, [isNonEmptyString()]).isValid;
 const isEmailValid = (ctx: OnboardingMachineContext) => validate(ctx.emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
+const isCountryValid = (ctx: OnboardingMachineContext) => validate(ctx.country, [isNotNil()]).isValid;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -65,6 +66,7 @@ const states: OnboardingStatesConfig = {
   enterCountry: {
     on: {
       NEXT: {
+        cond: OnboardingMachineGuards.isCountryValid,
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 2}),
       },
@@ -150,17 +152,20 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       events: {} as OnboardingMachineEventTypes,
       guards: {} as
         | {
-            type: OnboardingMachineGuards.isStepCreateWallet;
-          }
+          type: OnboardingMachineGuards.isStepCreateWallet;
+        }
         | {
-            type: OnboardingMachineGuards.isStepSecureWallet;
-          }
+          type: OnboardingMachineGuards.isStepSecureWallet;
+        }
         | {
-            type: OnboardingMachineGuards.isNameValid;
-          }
+          type: OnboardingMachineGuards.isNameValid;
+        }
         | {
-            type: OnboardingMachineGuards.isEmailValid;
-          },
+          type: OnboardingMachineGuards.isEmailValid;
+        }
+        | {
+          type: OnboardingMachineGuards.isCountryValid;
+        },
     },
     states: states,
   });
@@ -211,6 +216,7 @@ export class OnboardingMachine {
           isStepSecureWallet,
           isNameValid,
           isEmailValid,
+          isCountryValid,
           ...opts?.guards,
         },
       }),
