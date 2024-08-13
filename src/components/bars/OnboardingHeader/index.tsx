@@ -1,13 +1,14 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {OnboardingContext} from '../../..//navigation/machines/onboardingStateNavigation';
 import ProgressBarIndicator from '../../../components/indicators/ProgressBarIndicator';
+import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   OnboardingHeaderContainerStyled as Container,
   OnboardingHeaderRow as HeaderRow,
+  PROGRESS_BAR_HEIGHT,
   SSITextH3LightStyled,
 } from '../../../styles/components';
 import {ButtonIconsEnum} from '../../../types';
@@ -20,6 +21,10 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
     current: number;
   };
 }
+
+const PROGRESS_BAR_VERTICAL_MARGIN = 10;
+
+export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VERTICAL_MARGIN * 2;
 
 const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
@@ -44,7 +49,13 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProp
           </SSITextH3LightStyled>
         )}
       </HeaderRow>
-      {stepConfig && <ProgressBarIndicator step={stepConfig.current} stepsNumber={stepConfig.total} containerStyle={{marginVertical: 10}} />}
+      {stepConfig && (
+        <ProgressBarIndicator
+          step={stepConfig.current}
+          stepsNumber={stepConfig.total}
+          containerStyle={{marginVertical: PROGRESS_BAR_VERTICAL_MARGIN}}
+        />
+      )}
     </Container>
   );
 };

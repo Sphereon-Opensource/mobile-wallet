@@ -41,4 +41,3 @@ export * from './SSIToast';
 export * from './SSIWelcomeView';
 export * from './SearchField';
 export * from './StepperStepIndicator';
-

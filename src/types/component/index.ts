@@ -1,6 +1,7 @@
 import {ImageAttributes} from '@sphereon/ui-components.core';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
+import {Country} from '../machines/onboarding';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -67,3 +68,9 @@ export interface IStepIndicatorProps {
   stepIndex: number;
   ringColor: ColorValue;
 }
+
+export type CountryOption = {
+  name: Country;
+  flagURI: string;
+  selected: boolean;
+};

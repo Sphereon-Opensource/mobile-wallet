@@ -24,7 +24,7 @@ const StyledSearchField = styled(TextInputStyled)`
 
 const OnboardingSearchField = (props: TextInputProps) => (
   <Container>
-    <SSIIconButton icon={ButtonIconsEnum.SEARCH} iconColor={backgroundColors.primaryLight} iconSize={32} disabled onPress={() => { }} />
+    <SSIIconButton icon={ButtonIconsEnum.SEARCH} iconColor={backgroundColors.primaryLight} iconSize={32} disabled onPress={() => {}} />
     <StyledSearchField placeholder="Search" {...props} />
   </Container>
 );

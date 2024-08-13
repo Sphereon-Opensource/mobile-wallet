@@ -159,6 +159,20 @@
           "invalid": "Please fill in a valid email address"
         }
       }
+    },
+    "enter_country": {
+      "title": "Your country of residence",
+      "select": {
+        "label": "Country",
+        "placeholder": "You country of residence",
+        "errors": {
+          "missing": "Please select a country"
+        }
+      },
+      "modal": {
+        "title": "Select country",
+        "search_placeholder": "Search"
+      }
     }
   },
   "onboard_summary_title": "Uw ingevulde gegevens",
