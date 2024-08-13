@@ -68,7 +68,7 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
 
 const ShowProgressScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {currentStep} = onboardingInstance.getSnapshot().context;
+  const {currentStep, country} = onboardingInstance.getSnapshot().context;
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({
@@ -84,7 +84,7 @@ const ShowProgressScreen = () => {
       // After the create wallet step, the description changes to a more specific one
       description:
         currentStep > OnboardingMachineStep.CREATE_WALLET
-          ? translate('onboard_steps.import_personal_data.description.deutchland')
+          ? translate(`onboard_steps.import_personal_data.description.${country?.toLowerCase()}`)
           : translate('onboard_steps.import_personal_data.description.default'),
       Image: (
         <View style={{marginTop: 24}}>
