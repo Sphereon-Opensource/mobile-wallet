@@ -42,7 +42,7 @@ export const ContentContainer = styled.Pressable`
 export const ButtonContainer = styled(TitleContainer)`
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 10px;
 `;
 
 export const ModalTitle = styled(Text)`
@@ -94,4 +94,21 @@ export const ProgressItem = styled.View`
 
 export const ProgressItemActive = styled(ProgressItem)`
   background-color: slateblue;
+`;
+
+export const DataLoadingIndicator = styled.Image`
+  height: 80px;
+  width: 80px;
+`;
+
+export const DataLoadingScreenHeading = styled.Text`
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+`;
+
+export const DataLoadingScreenSubHeading = styled.Text`
+  color: white;
+  font-size: 12px;
 `;

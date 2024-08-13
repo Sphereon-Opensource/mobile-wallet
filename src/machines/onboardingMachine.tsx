@@ -49,6 +49,11 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.acceptTermsAndPrivacy,
           actions: assign({currentStep: 2}),
         },
+        {
+          cond: ({currentStep}) => currentStep === 4,
+          target: OnboardingMachineStateType.importDataConsent,
+          actions: assign({currentStep: 3}),
+        },
       ],
     },
   },
@@ -120,11 +125,34 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.showProgress,
       NEXT: OnboardingMachineStateType.importPersonalData,
+      SKIP_IMPORT: OnboardingMachineStateType.importDataLoader,
     },
   },
   importPersonalData: {
     on: {
       PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      NEXT: OnboardingMachineStateType.importDataAuthentication,
+    },
+  },
+  importDataAuthentication: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      NEXT: OnboardingMachineStateType.importDataLoader,
+    },
+  },
+  importDataLoader: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataAuthentication,
+      NEXT: OnboardingMachineStateType.importDataFinal,
+    },
+  },
+  importDataFinal: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataLoader,
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 4}),
+      },
     },
   },
 };

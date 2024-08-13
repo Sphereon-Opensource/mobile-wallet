@@ -52,6 +52,9 @@ export type OnboardingStackParamsList = {
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
   PinCodeVerify: Record<string, never>;
+  ImportDataAuthentication: Record<string, never>;
+  ImportDataLoader: Record<string, never>;
+  ImportDataFinal: Record<string, never>;
 };
 
 export type OnboardingRoute = keyof OnboardingStackParamsList;
@@ -230,6 +233,7 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
+  IMPORT_DATA = 'ImportPersonalData',
 }
 
 export interface ISiopV2PProps {

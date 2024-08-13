@@ -1,19 +1,16 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {ScreenRoutesEnum, StackParamList} from '../../../types';
 import {translate} from '../../../localization/Localization';
-import {Dimensions, Image, Keyboard} from 'react-native';
-import {useCallback, useState} from 'react';
+import {Image, Keyboard} from 'react-native';
+import {useCallback, useContext, useState} from 'react';
 import {Container, Title, TitleContainer, Text, ContentContainer, ButtonContainer} from '../components/styles';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
+import {OnboardingContext} from 'src/navigation/machines/onboardingStateNavigation';
+import {OnboardingMachineEvents} from 'src/types/machines/onboarding';
 
-const {width} = Dimensions.get('window');
-
-type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.IMPORT_DATA>;
-
-const ImportPersonalDataScreen = (props: Props) => {
+const ImportPersonalDataScreen = () => {
+  const {onboardingInstance} = useContext(OnboardingContext);
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
   const [scanning, setScanning] = useState(false);
@@ -60,7 +57,10 @@ const ImportPersonalDataScreen = (props: Props) => {
         onScan={() => console.log('scanning')}
         onCancel={() => setScanning(false)}
         visible={scanning}
-        onComplete={() => setScanning(false)}
+        onComplete={() => {
+          setScanning(false);
+          onboardingInstance.send(OnboardingMachineEvents.NEXT);
+        }}
       />
     </Container>
   );

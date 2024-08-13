@@ -94,6 +94,32 @@
   "terms_of_service_decline_action_caption": "Exit app",
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
+
+  "import_data_consent_title": "Do you want to add this information?",
+  "import_data_consent_subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+  "import_data_consent_pid_provider_title": "PID Provider",
+  "import_data_consent_pid_provider_subheading": "Personal Identification Data Provider",
+  "import_data_consent_offered_data_title": "PID Provider",
+  "import_data_consent_label_given_name": "Given name",
+  "import_data_consent_label_family_name": "Family name",
+  "import_data_consent_label_also_known_as": "Also known as",
+  "import_data_consent_label_gender": "Gender",
+  "import_data_consent_label_birthdate": "Birth date",
+  "import_data_consent_label_birthplace": "Place of birth",
+  "import_data_consent_label_nationality": "Nationality",
+  "import_data_consent_label_address": "Address",
+  "import_data_consent_button_accept": "Yes, I want to add this",
+  "import_data_consent_button_decline": "Decline",
+
+  "import_data_auth_step_title": "Enter your sphereon pin",
+
+  "import_data_loader_step_title": "One moment",
+  "import_data_loader_step_subtitle": "Getting your personal information.",
+
+  "import_data_final_step_title": "Your information is imported. Is it all correct?",
+
+  "import_data_setup_complete_title": "Setup complete",
+
   "import_data_title": "Import personal data",
   "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
   "scan_card_step_title": "Scan to import your data",

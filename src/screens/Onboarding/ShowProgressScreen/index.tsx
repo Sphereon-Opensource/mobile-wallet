@@ -75,6 +75,7 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
   },
   [OnboardingMachineStep.SECURE_WALLET]: {titleKey: 'onboard_progress_pages.secure_wallet.title'},
   [OnboardingMachineStep.IMPORT_PERSONAL_DATA]: {titleKey: 'onboard_progress_pages.import_personal_data.title'},
+  [OnboardingMachineStep.FINAL]: {titleKey: 'import_data_setup_complete_title'},
 };
 
 const ShowProgressScreen = () => {

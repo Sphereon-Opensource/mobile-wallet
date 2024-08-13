@@ -1,9 +1,11 @@
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Button, Dimensions, LayoutChangeEvent, Image} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {ButtonContainer, ContentContainer, IconContainer, ModalCard, ModalText, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {fontColors} from '@sphereon/ui-components.core';
+import {OnboardingContext} from 'src/navigation/machines/onboardingStateNavigation';
+import {OnboardingMachineEvents} from 'src/types/machines/onboarding';
 
 const {width} = Dimensions.get('window');
 
@@ -15,7 +17,7 @@ type AusweisScanModalProps = {
 };
 
 export const AusweisScanModal = (props: AusweisScanModalProps) => {
-  const {onComplete, onCancel, onScan, visible} = props;
+  const {onComplete, onCancel, visible} = props;
   const [containerHeight, setContainerHeight] = useState(200);
   // const [scanning, setScanning] = useState(false);
   const scanning = useSharedValue(false);
@@ -24,14 +26,6 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
 
   const onLayout = (e: LayoutChangeEvent) => {
     setContainerHeight(e.nativeEvent.layout.height);
-  };
-
-  const onChange = (progress: number) => {
-    if (progress >= 80) {
-      setTimeout(() => {
-        onComplete();
-      }, 400);
-    }
   };
 
   const transform = useAnimatedStyle(() => {
@@ -81,11 +75,11 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
         </ContentContainer>
         <ButtonContainer>
           <Button
-            title="start scan"
+            title={'end scan'}
             onPress={() => {
-              console.log('scan scan');
-              scanning.value = true;
-            }}></Button>
+              onComplete();
+            }}
+          />
           <PrimaryButton
             style={{height: 42, width: 300}}
             caption="Cancel"
