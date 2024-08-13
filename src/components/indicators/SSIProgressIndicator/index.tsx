@@ -1,7 +1,10 @@
 import React, {FC} from 'react';
 
-import {SSIProgressIndicatorLinearGradientSegment as LinearGradientSegment, SSIProgressIndicatorSegment as Segment} from '../../../styles/components';
-import {SSIFlexDirectionRowViewStyled as Container} from '../../../styles/components';
+import {
+  SSIFlexDirectionRowViewStyled as Container,
+  SSIProgressIndicatorLinearGradientSegment as LinearGradientSegment,
+  SSIProgressIndicatorSegment as Segment,
+} from '../../../styles/components';
 
 const {v4: uuidv4} = require('uuid');
 

@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {LinearGradientText} from 'react-native-linear-gradient-text';
 import {gradientsColors} from '@sphereon/ui-components.core';
+import {gradientsColors} from '@sphereon/ui-components.core';
 import {SSIRoundedEdgesCss} from '../css';
 
 export const SSILinearGradientStyled = styled(LinearGradient).attrs(props => ({

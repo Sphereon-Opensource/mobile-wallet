@@ -1,10 +1,11 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
+import OnboardingHeader from '../components/bars/OnboardingHeader';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
@@ -12,22 +13,29 @@ import {OnboardingMachine} from '../machines/onboardingMachine';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
-import SSIPersonalDataScreen from '../screens/Onboarding/SSIPersonalDataScreen';
-import SSIPinCodeSetScreen from '../screens/Onboarding/SSIPinCodeSetScreen';
-import SSIPinCodeVerifyScreen from '../screens/Onboarding/SSIPinCodeVerifyScreen';
-import SSIOnboardingSummaryScreen from '../screens/Onboarding/SSISummaryScreen';
-import SSITermsOfServiceScreen from '../screens/Onboarding/SSITermsOfServiceScreen';
-import SSIWelcomeScreen from '../screens/Onboarding/SSIWelcomeScreen';
+import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
+import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
+import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
+import EmergencyScreen from '../screens/EmergencyScreen';
+import {
+  AcceptTermsAndPrivacyScreen,
+  EnableBiometricsScreen,
+  EnterCountryScreen,
+  EnterEmailScreen,
+  EnterNameScreen,
+  EnterPinCodeScreen,
+  ReadTermsAndPrivacyScreen,
+  ShowProgressScreen,
+  VerifyPinCodeScreen,
+  WelcomeScreen,
+} from '../screens/Onboarding';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
-import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import SSICredentialRawJsonScreen from '../screens/SSICredentialRawJsonScreen';
 import SSICredentialsSelectScreen from '../screens/SSICredentialSelectScreen';
 import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScreen';
-import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
-import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import SSIErrorScreen from '../screens/SSIErrorScreen';
 import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
@@ -36,29 +44,31 @@ import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
-import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
-import {OnboardingProvider} from './machines/onboardingStateNavigation';
-import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import {
   HeaderMenuIconsEnum,
-  IOnboardingProps,
+  ISiopV2PProps,
   // IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
+  OnboardingRoute,
+  OnboardingStackParamsList,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
-  ISiopV2PProps,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
-import EmergencyScreen from '../screens/EmergencyScreen';
+import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
+import {OnboardingProvider} from './machines/onboardingStateNavigation';
+import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import AusweisModal from '../modals/AusweisModal';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
+const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
+
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = (): JSX.Element => {
@@ -460,6 +470,14 @@ const NotificationsStack = (): JSX.Element => {
   );
 };
 
+type StackGroupConfig = {
+  titleKey: string;
+  screens: {
+    name: OnboardingRoute;
+    component: React.FC<any>;
+  }[];
+};
+
 const CredentialCatalogStack = (): JSX.Element => {
   return (
     <Stack.Navigator
@@ -486,127 +504,78 @@ const CredentialCatalogStack = (): JSX.Element => {
   );
 };
 
-export const OnboardingStack = (): JSX.Element => {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        animation: 'none',
-      }}>
-      <Stack.Screen
-        name={ScreenRoutesEnum.WELCOME}
-        component={SSIWelcomeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
-        name={ScreenRoutesEnum.TERMS_OF_SERVICE}
-        component={SSITermsOfServiceScreen}
-        options={({route}) => ({
-          headerTitle: translate('terms_of_service_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('terms_of_service_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.PERSONAL_DATA}
-        component={SSIPersonalDataScreen}
-        options={({route}) => ({
-          headerTitle: translate('personal_data_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('personal_data_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.PIN_CODE_SET}
-        component={SSIPinCodeSetScreen}
-        options={({route}) => ({
-          // unmountOnBlur resets the screen back to initial state
-          unmountOnBlur: true,
-          headerTitle: translate('pin_code_choose_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('pin_code_choose_pin_code_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.PIN_CODE_VERIFY}
-        component={SSIPinCodeVerifyScreen}
-        options={({route}) => ({
-          // unmountOnBlur resets the screen back to initial state
-          unmountOnBlur: true,
-          headerTitle: translate('pin_code_confirm_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('pin_code_confirm_pin_code_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ONBOARDING_SUMMARY}
-        component={SSIOnboardingSummaryScreen}
-        options={({route}) => ({
-          headerTitle: translate('onboard_summary_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              onBack={route.params.onBack}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showProfileIcon={false}
-              headerSubTitle={translate('onboard_summary_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.LOADING}
-        component={SSILoadingScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.POPUP_MODAL}
-        component={SSIPopupModal}
-        options={{
-          presentation: 'transparentModal',
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
+const step1GroupConfig: StackGroupConfig = {
+  titleKey: 'onboard_create_wallet_step_title',
+  screens: [
+    {
+      name: 'EnterName',
+      component: EnterNameScreen,
+    },
+    {
+      name: 'EnterEmailAddress',
+      component: EnterEmailScreen,
+    },
+    {
+      name: 'EnterCountry',
+      component: EnterCountryScreen,
+    },
+  ],
 };
+
+const step2GroupConfig: StackGroupConfig = {
+  titleKey: 'onboard_secure_wallet_step_title',
+  screens: [
+    {
+      name: 'EnterPinCode',
+      component: EnterPinCodeScreen,
+    },
+    {
+      name: 'VerifyPinCode',
+      component: VerifyPinCodeScreen,
+    },
+    {
+      name: 'EnableBiometrics',
+      component: EnableBiometricsScreen,
+    },
+    {
+      name: 'AcceptTermsAndPrivacy',
+      component: AcceptTermsAndPrivacyScreen,
+    },
+  ],
+};
+
+const stackGroupsConfig = [step1GroupConfig, step2GroupConfig];
+
+export const OnboardingStack = (): JSX.Element => (
+  <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} />
+    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
+    {stackGroupsConfig.map(group => (
+      <OnboardingBaseStack.Group key={group.titleKey}>
+        {group.screens.map(({name, component}, index) => (
+          <OnboardingBaseStack.Screen
+            key={name}
+            name={name}
+            component={component}
+            options={{
+              header: props => (
+                <OnboardingHeader
+                  {...props}
+                  title={translate(group.titleKey)}
+                  stepConfig={{
+                    current: index + 1,
+                    total: group.screens.length,
+                  }}
+                />
+              ),
+            }}
+          />
+        ))}
+      </OnboardingBaseStack.Group>
+    ))}
+  </OnboardingBaseStack.Navigator>
+);
 
 const AuthenticationStack = (): JSX.Element => {
   return (
@@ -650,13 +619,11 @@ const AuthenticationStack = (): JSX.Element => {
   );
 };
 
-export const OnboardingStackScreenWithContext = (props: IOnboardingProps): JSX.Element => {
-  return (
-    <OnboardingProvider customOnboardingInstance={props?.customOnboardingInstance}>
-      <OnboardingStack />
-    </OnboardingProvider>
-  );
-};
+export const OnboardingStackScreenWithContext = (props: any): JSX.Element => (
+  <OnboardingProvider customOnboardingInstance={props?.params?.customOnboardingInstance}>
+    <OnboardingStack />
+  </OnboardingProvider>
+);
 
 export const OID4VCIStack = (): JSX.Element => {
   return (
