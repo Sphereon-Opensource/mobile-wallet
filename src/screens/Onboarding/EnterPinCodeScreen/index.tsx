@@ -27,15 +27,26 @@ const validatePin = (pin: string, validators: Validator<number>[]): ValidationRe
   return {isValid: hasCorrectLength && isValidNumber, error};
 };
 
+const getInvalidPinExample = (length: number, prefix: string, delimiter: string): string => {
+  const upSequence = Array.from({length}, (_, i) => i + 1).join('-');
+  const downSequence = Array.from({length}, (_, i) => length - i).join('-');
+  return `\n(${prefix}${upSequence}${delimiter}${downSequence})`;
+};
+
 const EnterPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const {
     context: {pinCode: pinCodeContext},
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_pin';
+  const invalidPinExample = getInvalidPinExample(
+    PIN_CODE_LENGTH,
+    translate(`${translationsPath}.requirements.invalid_example_prefix`),
+    translate(`${translationsPath}.requirements.invalid_example_delimiter`),
+  );
   const pinValueValidators = [
-    isNotSameDigits(translate(`${translationsPath}.requirements.not_same_digits`)),
-    isNotSequentialDigits(translate(`${translationsPath}.requirements.not_sequential_digits`)),
+    isNotSameDigits(`${PIN_CODE_LENGTH} ${translate(`${translationsPath}.requirements.not_same_digits`)}`),
+    isNotSequentialDigits(`${translate(`${translationsPath}.requirements.not_sequential_digits`)}${invalidPinExample}`),
   ];
   const [isPinValid, setIsPinValid] = useState(validatePin(pinCodeContext, []).isValid);
   const [pinCode, setPinCode] = useState(pinCodeContext);

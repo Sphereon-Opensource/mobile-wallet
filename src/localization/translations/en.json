@@ -182,8 +182,10 @@
       "title": "Set a new 6-digit Sphereon PIN",
       "requirements": {
         "title": "Your PIN should not contain:",
-        "not_same_digits": "6 similar digits",
-        "not_sequential_digits": "A consecutive sequence\n(Like: 1-2-3-4-5-6 or 8-7-6-5-4-3)"
+        "not_same_digits": "similar digits",
+        "not_sequential_digits": "A consecutive sequence",
+        "invalid_example_prefix": "Like: ",
+        "invalid_example_delimiter": " or "
       },
       "success": "That’s a strong PIN, note it down somewhere safe",
       "button_caption": "Set your PIN"
