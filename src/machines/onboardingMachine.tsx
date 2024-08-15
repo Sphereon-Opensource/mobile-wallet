@@ -2,7 +2,7 @@ import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {v4 as uuidv4} from 'uuid';
 import {assign, createMachine, interpret} from 'xstate';
-import {APP_ID} from '../@config/constants';
+import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
 import {
@@ -17,7 +17,7 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
-import {IsValidEmail, isNonEmptyString, isNotNil, validate} from '../utils/validate';
+import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -26,6 +26,9 @@ const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep ==
 const isNameValid = (ctx: OnboardingMachineContext) => validate(ctx.name, [isNonEmptyString()]).isValid;
 const isEmailValid = (ctx: OnboardingMachineContext) => validate(ctx.emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
 const isCountryValid = (ctx: OnboardingMachineContext) => validate(ctx.country, [isNotNil()]).isValid;
+const isPinCodeValid = (ctx: OnboardingMachineContext) =>
+  validate(ctx.pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid &&
+  validate(Number(ctx.pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -76,7 +79,10 @@ const states: OnboardingStatesConfig = {
   },
   enterPinCode: {
     on: {
-      NEXT: OnboardingMachineStateType.verifyPinCode,
+      NEXT: {
+        cond: OnboardingMachineGuards.isPinCodeValid,
+        target: OnboardingMachineStateType.verifyPinCode,
+      },
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_PIN_CODE: {actions: assign({pinCode: (_, event) => event.data})},
     },
@@ -165,6 +171,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isCountryValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isPinCodeValid;
           },
     },
     states: states,
@@ -217,6 +226,7 @@ export class OnboardingMachine {
           isNameValid,
           isEmailValid,
           isCountryValid,
+          isPinCodeValid,
           ...opts?.guards,
         },
       }),
