@@ -1,38 +1,62 @@
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 
-type Error = 'required' | 'invalid';
+export enum ValidatorType {
+  isNonEmptyString = 'isNonEmptyString',
+  isValidEmail = 'isValidEmail',
+  isNotNil = 'isNotNil',
+}
 
-const defaultErrorMessages: Record<Error, string> = {
-  required: 'This field is required',
-  invalid: 'Invalid value',
+const defaultErrorMessages: Record<ValidatorType, string> = {
+  isNonEmptyString: 'This field is required',
+  isValidEmail: 'Invalid email value',
+  isNotNil: 'This field is required',
 };
 
-type Validator<T> = {
+export type Validator<T> = {
+  key: ValidatorType;
   predicate: (value: T) => boolean;
   errorMessage: string;
 };
 
+export type ValidationError<T> = {
+  message: string;
+  validator: ValidatorType;
+  errorValue: T;
+};
+
+export type ValidationResult<T> = {
+  isValid: boolean;
+  error?: ValidationError<T>;
+};
+
 export const isNotNil = <T>(errorMessage?: string): Validator<T> => ({
-  predicate: (value: T | undefined | null): boolean => value !== undefined && value !== null,
-  errorMessage: errorMessage ?? defaultErrorMessages.required,
+  key: ValidatorType.isNotNil,
+  predicate: value => value !== undefined && value !== null,
+  errorMessage: errorMessage ?? defaultErrorMessages[ValidatorType.isNotNil],
 });
 
 export const isNonEmptyString = (errorMessage?: string): Validator<string> => ({
-  predicate: (value: string): boolean => value.length > 0,
-  errorMessage: errorMessage ?? defaultErrorMessages.required,
+  key: ValidatorType.isNonEmptyString,
+  predicate: str => str.length > 0,
+  errorMessage: errorMessage ?? defaultErrorMessages[ValidatorType.isNonEmptyString],
 });
 
 export const IsValidEmail = (errorMessage?: string): Validator<string> => ({
-  predicate: (value: string): boolean => EMAIL_ADDRESS_VALIDATION_REGEX.test(value),
-  errorMessage: errorMessage ?? defaultErrorMessages.invalid,
+  key: ValidatorType.isValidEmail,
+  predicate: str => EMAIL_ADDRESS_VALIDATION_REGEX.test(str),
+  errorMessage: errorMessage ?? defaultErrorMessages[ValidatorType.isValidEmail],
 });
 
-type ValidationResult = {
-  isValid: boolean;
-  errorMessage?: string;
+export const validate = <T>(value: T, validators: Validator<T>[]): ValidationResult<T> => {
+  const invalid = validators.find(validator => !validator.predicate(value));
+  return {
+    isValid: validators.every(validator => validator.predicate(value)),
+    error: invalid
+      ? {
+        message: invalid.errorMessage,
+        validator: invalid.key,
+        errorValue: value,
+      }
+      : undefined,
+  };
 };
-
-export const validate = <T>(value: T, validators: Validator<T>[]): ValidationResult => ({
-  isValid: validators.every(validator => validator.predicate(value)),
-  errorMessage: validators.find(validator => !validator.predicate(value))?.errorMessage,
-});

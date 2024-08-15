@@ -18,7 +18,7 @@ const EnterNameScreen = () => {
     context: {name},
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_name';
-  const {isValid, errorMessage} = validate(name, [isNonEmptyString(translate(`${translationsPath}.text_field.errors.missing`))]);
+  const {isValid, error} = validate(name, [isNonEmptyString(translate(`${translationsPath}.text_field.errors.missing`))]);
   return (
     <ScreenContainer>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
@@ -29,7 +29,7 @@ const EnterNameScreen = () => {
           autoFocus={true}
           value={name}
           label={translate(`${translationsPath}.text_field.label`)}
-          error={isDirty && !isValid ? errorMessage : undefined}
+          error={isDirty && !isValid ? error?.message : undefined}
           maxLength={NAME_MAX_LENGTH}
           onChangeText={v => {
             setIsDirty(true);
