@@ -68,11 +68,11 @@ export const isNotSequentialDigits = (errorMessage?: string): Validator<number> 
 
 export const isStringOfLength =
   (length: number) =>
-    (errorMessage?: string): Validator<string> => ({
-      key: ValidatorType.isStringOfLength,
-      predicate: s => s.length === length,
-      errorMessage: errorMessage ?? defaultErrorMessages[ValidatorType.isStringOfLength],
-    });
+  (errorMessage?: string): Validator<string> => ({
+    key: ValidatorType.isStringOfLength,
+    predicate: s => s.length === length,
+    errorMessage: errorMessage ?? defaultErrorMessages[ValidatorType.isStringOfLength],
+  });
 
 export const validate = <T>(value: T, validators: Validator<T>[]): ValidationResult<T> => {
   const invalid = validators.find(validator => !validator.predicate(value));
@@ -80,10 +80,10 @@ export const validate = <T>(value: T, validators: Validator<T>[]): ValidationRes
     isValid: validators.every(validator => validator.predicate(value)),
     error: invalid
       ? {
-        message: invalid.errorMessage,
-        validator: invalid.key,
-        errorValue: value,
-      }
+          message: invalid.errorMessage,
+          validator: invalid.key,
+          errorValue: value,
+        }
       : undefined,
   };
 };
