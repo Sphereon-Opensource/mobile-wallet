@@ -79,12 +79,19 @@ const states: OnboardingStatesConfig = {
   },
   enterPinCode: {
     on: {
-      NEXT: {
-        cond: OnboardingMachineGuards.isPinCodeValid,
-        target: OnboardingMachineStateType.verifyPinCode,
-      },
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.doPinsMatch,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isPinCodeValid,
+          target: OnboardingMachineStateType.verifyPinCode,
+        },
+      ],
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_PIN_CODE: {actions: assign({pinCode: (_, event) => event.data})},
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
     },
   },
   verifyPinCode: {
