@@ -36,3 +36,8 @@ export * from './SSITextInputField';
 export * from './SSIToast';
 export * from './SSIWelcomeView';
 export * from './StepperStepIndicator';
+export * from './CredentialPreviewViewItem';
+export * from './CredentialCardPreviewView';
+export * from './AusweisModal';
+export * from './SearchField';
+export * from './FilterBar';

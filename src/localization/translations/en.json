@@ -190,5 +190,19 @@
   "siopV2_machine_get_request_error_title": "Getting siopV2 request",
   "siopV2_machine_retrieve_contact_error_title": "Retrieve contact",
   "siopV2_machine_add_contact_identity_error_title": "Add contact identity",
-  "siopV2_machine_send_response_error_title": "Sending siopV2 response"
+  "siopV2_machine_send_response_error_title": "Sending siopV2 response",
+  "action_view_all_label": "View all",
+  "filter_all_label": "View all",
+  "filter_other_label": "Other",
+  "filter_new_label": "New",
+  "search_field_default_caption": "Search",
+  "credential_catalog_most_relevant_header_label": "Most relevant credentials",
+  "credential_catalog_discover_header_label": "Discover more credentials",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Your personal information from the the national eID provider Ausweis.",
+  "ausweis_eid_preview_card_issuer": "German Bundesdruckerei",
+  "ausweis_eid_modal_title": "Get the Ausweis eID data",
+  "ausweis_eid_modal_description": "The Person Identification Data is the basis of your wallet and therefore very important to be able to obtain other credentials.\n\nAre you sure you want this information in your wallet?",
+  "ausweis_eid_modal_accept_label": "Import personal information",
+  "action_maybe_later_label": "Maybe later"
 }

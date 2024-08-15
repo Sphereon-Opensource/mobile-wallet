@@ -189,5 +189,19 @@
   "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
   "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
   "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
-  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden"
+  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden",
+  "action_view_all_label": "Alles bekijken",
+  "filter_all_label": "Alles bekijken",
+  "filter_other_label": "Overige",
+  "filter_new_label": "Nieuw",
+  "search_field_default_caption": "Zoeken",
+  "credential_catalog_most_relevant_header_label": "Meest relevante certificaten",
+  "credential_catalog_discover_header_label": "Ontdek meer certificaten",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Uw persoonlijke gegevens van de nationale eID-provider Ausweis.",
+  "ausweis_eid_preview_card_issuer": "Duitse Bundesdruckerei",
+  "ausweis_eid_modal_title": "Verkrijg de Ausweis eID-gegevens",
+  "ausweis_eid_modal_description": "De Persoonsidentificatiegegevens vormen de basis van uw wallet en zijn daarom erg belangrijk om andere certificaten te kunnen verkrijgen.\n\nWeet u zeker dat u deze informatie in uw wallet wilt opslaan?",
+  "ausweis_eid_modal_accept_label": "Persoonlijke informatie importeren",
+  "action_maybe_later_label": "Misschien later"
 }
