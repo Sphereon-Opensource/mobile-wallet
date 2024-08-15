@@ -21,6 +21,7 @@ import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
+import crypto from 'crypto';
 import {LdContexts} from '../@config/credentials';
 import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
@@ -32,6 +33,8 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
+import {IdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -72,6 +75,8 @@ export const createAgentPlugins = ({
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
+    new IdentifierResolution({crypto: global.crypto}),
+    new JwtService(),
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection),

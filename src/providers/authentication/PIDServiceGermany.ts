@@ -1,5 +1,6 @@
-import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
+import {CreateDPoPClientOpts, getCreateDPoPOptions} from '@sphereon/oid4vc-common';
+import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {
   CredentialIssuerMetadataV1_0_11,
   CredentialIssuerMetadataV1_0_13,
@@ -8,14 +9,12 @@ import {
   PARMode,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
-import {CreateDPoPClientOpts, getCreateDPoPOptions} from '@sphereon/oid4vc-common';
-import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
+import {ManagedIdentifierJwkResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {IKey} from '@veramo/core';
+import {Dispatch, SetStateAction} from 'react';
 import agent, {agentContext} from '../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDGetAuthorizationCodeArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../types';
-import {IIdentifier, IKey} from '@veramo/core';
-import {toJwk} from '@sphereon/ssi-sdk-ext.key-utils';
-import {signDidJWT} from '@sphereon/ssi-sdk-ext.did-utils';
-import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 class DpopService {
   async createDPoPOpts(
@@ -36,8 +35,7 @@ class PIDServiceGermany {
   private readonly client: OpenID4VCIClient;
   private readonly tcTokenUrl: string;
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
-  private ephemeralDPoPKeyref?: string;
-  private removemeDPoPDid: IIdentifier; // tmp identifier, since signing function depends on a did
+  private ephemeralDPoPId?: ManagedIdentifierJwkResult;
   private authFlow: AusweisAuthFlow;
   public currentState: EIDFlowState;
 
@@ -53,7 +51,7 @@ class PIDServiceGermany {
         this.handleError(error);
       },
       onSuccess: (options): void => {
-        this.getAuthorizationToken(options).then((authorizationCode: string) => this.getPid({authorizationCode}));
+        this.getAuthorizationCode(options).then((authorizationCode: string) => this.getPid({authorizationCode}));
       },
       onInsertCard: (): void => {
         this.handleStateChange({state: 'INSERT_CARD'});
@@ -62,6 +60,8 @@ class PIDServiceGermany {
 
     this.handleStateChange({state: 'INITIALIZED'});
   }
+
+  private static readonly _clientId = 'bc11dd24-cbe9-4f13-890b-967e5f900222';
 
   public static async initialize(args: EIDInitializeArgs): Promise<PIDServiceGermany> {
     const uri: string =
@@ -73,7 +73,7 @@ class PIDServiceGermany {
       //   credentialIssuer: "https://demo.pid-issuer.bundesdruckerei.de/c",
       // resolveOfferUri: true,
       retrieveServerMetadata: true,
-      clientId: 'bc11dd24-cbe9-4f13-890b-967e5f900222',
+      clientId: this._clientId,
       // This is a separate call, so we don't fetch it here, however it may be easier to just construct it here?
       createAuthorizationRequestURL: false,
     });
@@ -91,10 +91,10 @@ class PIDServiceGermany {
   }
 
   public async start(): Promise<AusweisAuthFlow> {
-    if (this.ephemeralDPoPKeyref) {
+    if (this.ephemeralDPoPId) {
       // Cleanup old DPoP Key Ref if (re)started)
-      void agent.keyManagerDelete({kid: this.ephemeralDPoPKeyref}); // we do not await. Cleanup could also already have removed it
-      this.ephemeralDPoPKeyref = undefined;
+      void agent.keyManagerDelete({kid: this.ephemeralDPoPId.kmsKeyRef}); // we do not await. Cleanup could also already have removed it
+      this.ephemeralDPoPId = undefined;
     }
     addMessageListener((message: AusweisSdkMessage): void => {
       if (message.msg === 'STATUS' && (this.currentState.state === 'READING_CARD' || this.currentState.state === 'INSERT_CARD')) {
@@ -125,7 +125,7 @@ class PIDServiceGermany {
     this.onStateChange?.(state);
   }
 
-  private async getAuthorizationToken(args: EIDGetAuthorizationCodeArgs): Promise<string> {
+  private async getAuthorizationCode(args: EIDGetAuthorizationCodeArgs): Promise<string> {
     const {refreshUrl} = args;
     this.handleStateChange({state: 'GETTING_AUTHORIZATION_CODE'});
 
@@ -152,19 +152,21 @@ class PIDServiceGermany {
 
   private async getEphemeralDPoPKey() {
     let key: IKey | undefined = undefined;
-    if (!this.ephemeralDPoPKeyref) {
+    if (!this.ephemeralDPoPId) {
       // TODO: Determine both type and use ephemeral kms
-      // FIXME: We create d did:jwk as a workaround now as we require a did during signing.
-      this.removemeDPoPDid = await agent.didManagerCreate({provider: 'did:jwk', options: {key, type: 'Secp256r1'}});
+      key = await agent.keyManagerCreate({type: 'Secp256r1', kms: 'local'});
+      // Make sure we use our internal uniform identifier format
+      const keyId = await agent.identifierManagedGetByKey({identifier: key, issuer: PIDServiceGermany._clientId});
+      //fixme: We are doing this double resolution to move from a key based identifier to JWK
 
-      // key = await agent.keyManagerCreate({type: 'Secp256r1', kms: 'local'});
-      key = this.removemeDPoPDid.keys[0];
-      this.ephemeralDPoPKeyref = key.kid;
+      this.ephemeralDPoPId = await agent.identifierManagedGetByJwk({
+        method: 'jwk',
+        identifier: keyId.jwk,
+        kmsKeyRef: keyId.kmsKeyRef,
+        issuer: PIDServiceGermany._clientId,
+      });
     }
-    if (!key) {
-      key = await agent.keyManagerGet({kid: this.ephemeralDPoPKeyref});
-    }
-    return key;
+    return this.ephemeralDPoPId;
   }
 
   private async getPid(args: EIDGetAccessTokenArgs): Promise<CredentialResponse> {
@@ -178,8 +180,9 @@ class PIDServiceGermany {
     console.log(`METADATA: ${JSON.stringify(metadata)}`);
 
     const alg = 'ES256';
-    const key = await this.getEphemeralDPoPKey();
-    const jwk = toJwk(key.publicKeyHex, key.type, {key});
+    const issuer = await this.getEphemeralDPoPKey();
+    const jwk = issuer.jwk;
+
     const jwtIssuer = {alg, jwk};
 
     console.log(`JWT Issuer: ${JSON.stringify(jwtIssuer, null, 2)}`);
@@ -190,9 +193,18 @@ class PIDServiceGermany {
       createJwtCallback: async (jwtIssuer, jwt) => {
         console.log(`JWT CALLBACK issuer: ${JSON.stringify(jwtIssuer)}`);
         console.log(`JWT: ${JSON.stringify(jwt)}`);
-        const key = await this.getEphemeralDPoPKey();
 
-        const signedJwt = await signDidJWT({
+        console.log(`ID: ${JSON.stringify(issuer)}`);
+        const jwtResult = await agent.jwtCreateJwsCompactSignature({
+          issuer,
+          // @ts-ignore // VCI client allows jwk without kty. Should be fixed there, as it causes issues down below if this check is not there
+          protectedHeader: {...jwt.header, alg: jwtIssuer.alg},
+          payload: jwt.payload,
+        });
+
+        const signedJwt = jwtResult.jwt;
+
+        /*const signedJwt = await signDidJWT({
           options: {
             issuer: jwk.kid!, // fixme: remove. Iss is not needed and only our did-jwt requires it. Replace with regular jwt package anyway
           },
@@ -205,7 +217,7 @@ class PIDServiceGermany {
           payload: jwt.payload,
 
           context: agentContext,
-        });
+        });*/
         console.log(`Resulting JWT: ${signedJwt}`);
 
         return signedJwt;
@@ -221,9 +233,12 @@ class PIDServiceGermany {
     });
 
     console.log(`ACCESS TOKEN: ${JSON.stringify(accessTokenResponse)}`);
-
+    const identifier = await this.getEphemeralDPoPKey();
+    // @ts-ignore
+    // fixme
+    identifier.method = 'jwk';
     const callbacks: ProofOfPossessionCallbacks<never> = {
-      signCallback: signCallback(this.client, {identifier: this.removemeDPoPDid, kmsKeyRef: key.kid}, agentContext),
+      signCallback: signCallback(this.client, identifier, agentContext),
     };
 
     const credDpop = getCreateDPoPOptions(
@@ -243,7 +258,7 @@ class PIDServiceGermany {
       // credentialTypes: 'urn:eu.europa.ec.eudi:pid:1',
       credentialTypes: 'eu.europa.ec.eudi.pid.1',
       jwk,
-      alg: jwk.alg,
+      alg: jwk.alg as string,
       // format: 'vc+sd-jwt',
       format: 'mso_mdoc',
       // kid: key.kid,
