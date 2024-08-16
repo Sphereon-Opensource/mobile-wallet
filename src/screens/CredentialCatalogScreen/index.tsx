@@ -111,8 +111,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
       },
     },
     {
-      title: 'Rossmann Babywelt',
-      issuer: 'Rossmann GmbH',
+      title: 'Führerschein',
+      issuer: 'Strassenverkehrsamt',
       branding: {
         background: {
           color: '#F6F6F6',
