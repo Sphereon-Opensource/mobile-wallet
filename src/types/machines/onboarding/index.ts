@@ -20,13 +20,19 @@ export enum OnboardingMachineStep {
   IMPORT_PERSONAL_DATA = 3,
 }
 
+export enum OnboardingBiometricsStatus {
+  INDETERMINATE = 1,
+  ENABLED = 2,
+  DISABLED = 3,
+}
+
 export type OnboardingMachineContext = {
   credentialData: OnboardingCredentialData;
   name: string;
   emailAddress: string;
   country?: Country;
   pinCode: string;
-  biometricsEnabled: boolean;
+  biometricsEnabled: OnboardingBiometricsStatus;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
 };
@@ -59,6 +65,8 @@ export enum OnboardingMachineEvents {
   READ_TERMS = 'READ_TERMS',
   READ_PRIVACY = 'READ_PRIVACY',
   SKIP_IMPORT = 'SKIP_IMPORT',
+  SET_BIOMETRICS = 'SET_BIOMETRICS',
+  SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
 }
 
 export type NextEvent = {type: OnboardingMachineEvents.NEXT};
@@ -70,6 +78,8 @@ export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data:
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
 export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
+export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
+export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -80,12 +90,17 @@ export type OnboardingMachineEventTypes =
   | SetPinCodeEvent
   | ReadTermsEvent
   | ReadPrivacyEvent
-  | SkipImportEvent;
+  | SkipImportEvent
+  | SkipBiometricsEvent
+  | SetBiometricsEvent;
 
 // Guards
 export enum OnboardingMachineGuards {
   isStepCreateWallet = 'isStepCreateWallet',
   isStepSecureWallet = 'isStepSecureWallet',
+  isBiometricsEnabled = 'isBiometricsEnabled',
+  isBiometricsDisabled = 'isBiometricsDisabled',
+  isBiometricsUndetermined = 'isBiometricsUndetermined',
 }
 
 // States Config

@@ -4,10 +4,21 @@ import {useContext} from 'react';
 import {Text, View} from 'react-native';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {useHasStrongBiometrics} from '../EnableBiometricsScreen/use-biometrics';
 
 const VerifyPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+
+  useHasStrongBiometrics({
+    onBiometricsConfirmed: () => {
+      onboardingInstance.send({
+        type: OnboardingMachineEvents.SET_BIOMETRICS,
+        data: OnboardingBiometricsStatus.DISABLED,
+      });
+    },
+  });
+
   return (
     <View>
       <Text>Verify Pin code</Text>

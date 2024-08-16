@@ -8,6 +8,7 @@ import {SupportedDidMethodEnum} from '../types';
 import {
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
+  OnboardingBiometricsStatus,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
@@ -22,6 +23,9 @@ const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isBiometricsEnabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
+const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -78,21 +82,51 @@ const states: OnboardingStatesConfig = {
   },
   verifyPinCode: {
     on: {
-      NEXT: OnboardingMachineStateType.enableBiometrics,
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isBiometricsUndetermined,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsDisabled,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsEnabled,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+      ],
       PREVIOUS: OnboardingMachineStateType.enterPinCode,
+      SET_BIOMETRICS: {actions: assign({biometricsEnabled: (_, event) => event.data})},
     },
   },
   enableBiometrics: {
     on: {
-      NEXT: OnboardingMachineStateType.acceptTermsAndPrivacy,
+      NEXT: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({biometricsEnabled: OnboardingBiometricsStatus.ENABLED}),
+      },
       PREVIOUS: OnboardingMachineStateType.enterPinCode,
+      SKIP_BIOMETRICS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({biometricsEnabled: OnboardingBiometricsStatus.DISABLED}),
+      },
     },
   },
   acceptTermsAndPrivacy: {
     on: {
       READ_TERMS: OnboardingMachineStateType.readTerms,
       READ_PRIVACY: OnboardingMachineStateType.readPrivacy,
-      PREVIOUS: OnboardingMachineStateType.enableBiometrics,
+      PREVIOUS: [
+        {
+          cond: OnboardingMachineGuards.isBiometricsEnabled,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsDisabled,
+          target: OnboardingMachineStateType.enterPinCode,
+        },
+      ],
     },
   },
   readTerms: {
@@ -132,7 +166,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     emailAddress: '',
     country: undefined,
     pinCode: '',
-    biometricsEnabled: false,
+    biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     termsAndPrivacyAccepted: false,
     currentStep: 1,
   };
@@ -200,6 +234,9 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isBiometricsEnabled,
+          isBiometricsDisabled,
+          isBiometricsUndetermined,
           ...opts?.guards,
         },
       }),
