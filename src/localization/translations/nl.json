@@ -191,6 +191,26 @@
       "match": "Your PINs match. You're good to go!",
       "mismatch": "Oops! Your PINs don't match.\nLet's try again.",
       "button_caption": "Repeat your PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Terms & privacy",
+      "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
+      "features": {
+        "advanced_encryption": "Advanced encryption",
+        "two_factor_authentication": "Two-factor authentication",
+        "regular_security_audits": "Regular security audits",
+        "data_anonymization": "Data anonymization",
+        "strict_access_controls": "Strict access controls"
+      },
+      "footer": {
+        "prefix": "Want to read all the details? Check our",
+        "links": {
+          "terms": "Terms of Use",
+          "privacy": "Privacy Policy",
+          "delimiter": "and"
+        }
+      },
+      "button_caption": "Accept Terms & Privacy"
     }
   },
   "onboard_summary_title": "Uw ingevulde gegevens",
