@@ -94,6 +94,7 @@ const EnterPinCodeScreen = () => {
           const pinUpdated = pinCode !== pinCodeContext;
           if (pinUpdated) {
             onboardingInstance.send(OnboardingMachineEvents.SET_PIN_CODE, {data: pinCode});
+            onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: ''});
           }
           onboardingInstance.send(OnboardingMachineEvents.NEXT);
         }}

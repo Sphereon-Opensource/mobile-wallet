@@ -189,6 +189,12 @@
       },
       "success": "That’s a strong PIN, note it down somewhere safe",
       "button_caption": "Set your PIN"
+    },
+    "verify_pin": {
+      "title": "Repeat your Sphereon PIN",
+      "match": "Your PINs match. You're good to go!",
+      "mismatch": "Oops! Your PINs don't match.\nLet's try again.",
+      "button_caption": "Repeat your PIN"
     }
   },
   "onboard_summary_title": "Your entered details",

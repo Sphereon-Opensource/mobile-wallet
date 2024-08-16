@@ -29,6 +29,7 @@ const isCountryValid = (ctx: OnboardingMachineContext) => validate(ctx.country, 
 const isPinCodeValid = (ctx: OnboardingMachineContext) =>
   validate(ctx.pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid &&
   validate(Number(ctx.pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
+const doPinsMatch = (ctx: OnboardingMachineContext) => ctx.pinCode === ctx.verificationPinCode;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -96,8 +97,12 @@ const states: OnboardingStatesConfig = {
   },
   verifyPinCode: {
     on: {
-      NEXT: OnboardingMachineStateType.enableBiometrics,
+      NEXT: {
+        cond: OnboardingMachineGuards.doPinsMatch,
+        target: OnboardingMachineStateType.enableBiometrics,
+      },
       PREVIOUS: OnboardingMachineStateType.enterPinCode,
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
     },
   },
   enableBiometrics: {
@@ -150,6 +155,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     emailAddress: '',
     country: Country.DEUTSCHLAND,
     pinCode: '',
+    verificationPinCode: '',
     biometricsEnabled: false,
     termsAndPrivacyAccepted: false,
     currentStep: 1,
@@ -181,6 +187,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isPinCodeValid;
+          }
+        | {
+            type: OnboardingMachineGuards.doPinsMatch;
           },
     },
     states: states,
@@ -234,6 +243,7 @@ export class OnboardingMachine {
           isEmailValid,
           isCountryValid,
           isPinCodeValid,
+          doPinsMatch,
           ...opts?.guards,
         },
       }),
