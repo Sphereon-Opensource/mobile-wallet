@@ -1,7 +1,7 @@
 import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {v4 as uuidv4} from 'uuid';
-import {assign, createMachine, interpret} from 'xstate';
+import {GuardPredicate, assign, createMachine, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
@@ -21,15 +21,19 @@ import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequenti
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
-const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
-const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
-const isNameValid = (ctx: OnboardingMachineContext) => validate(ctx.name, [isNonEmptyString()]).isValid;
-const isEmailValid = (ctx: OnboardingMachineContext) => validate(ctx.emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
-const isCountryValid = (ctx: OnboardingMachineContext) => validate(ctx.country, [isNotNil()]).isValid;
-const isPinCodeValid = (ctx: OnboardingMachineContext) =>
-  validate(ctx.pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid &&
-  validate(Number(ctx.pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
-const doPinsMatch = (ctx: OnboardingMachineContext) => ctx.pinCode === ctx.verificationPinCode;
+const validatePinCode = (pinCode: string) =>
+  validate(pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid && validate(Number(pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
+
+type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachineEventTypes>['predicate'];
+
+const isStepCreateWallet: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.CREATE_WALLET;
+const isStepSecureWallet: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
+const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
+const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotNil()]).isValid;
+const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
+const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
+  validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
