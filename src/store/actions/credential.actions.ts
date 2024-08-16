@@ -47,6 +47,7 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             );
             // todo: we should get uniform from the store instead of having to map it. We store it for a reason
             const uniform = JSON.parse(uniqueVC.digitalCredential.uniformDocument) as VerifiableCredential;
+            console.log(JSON.stringify(uniform));
             console.log(`Pre to summary with\r\n:${JSON.stringify(uniform, null, 2)}`);
             return toCredentialSummary({
               verifiableCredential: uniform,
@@ -61,7 +62,10 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
         console.log('summaries', credentialSummaries);
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
-      .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
+      .catch(e => {
+        console.error(e);
+        dispatch({type: GET_CREDENTIALS_FAILED});
+      });
   };
 };
 

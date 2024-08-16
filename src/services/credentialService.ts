@@ -43,7 +43,11 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
     if (uniqueCredential === undefined) {
       return Promise.reject(Error(`DigitalCredential with hash ${hash} was not found ${JSON.stringify(hash)}`));
     }
-    return uniqueCredential.originalVerifiableCredential as VerifiableCredential;
+    if (typeof uniqueCredential.uniformVerifiableCredential === 'string') {
+      // fixme
+      uniqueCredential.uniformVerifiableCredential = JSON.parse(uniqueCredential.uniformVerifiableCredential);
+    }
+    return uniqueCredential.uniformVerifiableCredential as VerifiableCredential;
   } catch (e) {
     // @ts-ignore
     return Promise.reject(new Error(`Fetching of credential with ${hash} and credential role ${credentialRole} was not found: ${e}`, {cause: e}));
