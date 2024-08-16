@@ -13,14 +13,19 @@ import {
 import {removeCredentialBranding} from './brandingService';
 import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
+import {v4} from 'uuid';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueDigitalCredential>> => {
-  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]});
+  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
+    console.log(`===> ${creds.map(cred => cred.id).join(', ')}`);
+    return creds;
+  });
 };
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
   const {vc, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
   const rawDocument = JSON.stringify(vc);
+
   const addCredential: AddDigitalCredential = {
     rawDocument: rawDocument,
     issuerCorrelationId: issuerCorrelationId,

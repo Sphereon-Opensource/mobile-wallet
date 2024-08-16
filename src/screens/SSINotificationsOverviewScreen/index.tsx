@@ -3,7 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC, useState} from 'react';
 import {Button, View, Text} from 'react-native';
 import {translate} from '../../localization/Localization';
-import PIDServiceGermany from '../../providers/authentication/PIDServiceGermany';
+import PidServiceAusweisDE from '../../providers/authentication/PidServiceAusweisDE';
 import {
   SSIBasicContainerStyled as Container,
   SSINotificationsOverviewScreenEmptyStateContainerStyled as EmptyStateContainer,
@@ -18,10 +18,10 @@ const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element =>
   const [testMessage, setTestMessage] = useState<AusweisSdkMessage>();
 
   const [state, setState] = useState<EIDFlowState>();
-  const [provider, setProvider] = useState<PIDServiceGermany>();
+  const [provider, setProvider] = useState<PidServiceAusweisDE>();
 
   const initPIDService = async () => {
-    PIDServiceGermany.initialize({
+    PidServiceAusweisDE.initialize({
       onEnterPin: () => '654321',
       onAuthenticated: console.log,
       onStateChange: setState,

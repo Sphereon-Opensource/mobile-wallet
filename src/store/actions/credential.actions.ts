@@ -23,7 +23,7 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {showToast} from '../../utils';
+import {generateDigest, showToast} from '../../utils';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
 import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
@@ -45,16 +45,20 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
               (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
-            return await toCredentialSummary({
-              verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+            // todo: we should get uniform from the store instead of having to map it. We store it for a reason
+            const uniform = JSON.parse(uniqueVC.digitalCredential.uniformDocument) as VerifiableCredential;
+            console.log(`Pre to summary with\r\n:${JSON.stringify(uniform, null, 2)}`);
+            return toCredentialSummary({
+              verifiableCredential: uniform,
               hash: uniqueVC.hash,
               credentialRole: uniqueVC.digitalCredential.credentialRole,
               branding: credentialBranding?.localeBranding,
-              issuer: await getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
-              subject: await getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+              issuer: getCredentialIssuerContact(uniform),
+              subject: getCredentialSubjectContact(uniform),
             });
           }),
         );
+        console.log('summaries', credentialSummaries);
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
       .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
