@@ -143,6 +143,11 @@
     }
   },
   "onboarding_pages": {
+    "welcome": {
+      "title": "Welcome to your Sphereon Wallet",
+      "description": "Receive and share accreditations, credentials, badges and identity details.",
+      "button_caption": "Get started"
+    },
     "enter_name": {
       "title": "Enter your name",
       "text_field": {
