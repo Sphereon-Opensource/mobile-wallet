@@ -1,7 +1,7 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useState} from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import SSIIconButton from '../../../components/buttons/SSIIconButton';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -25,21 +25,26 @@ const EnterCountryScreen = () => {
   return (
     <ScreenContainer>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
-      <SSITextInputControlledField
-        value={country && capitalize(country)}
-        label={translate(`${translationsPath}.select.label`)}
-        placeholder={translate(`${translationsPath}.select.placeholder`)}
-        onPress={() => setIsModalOpen(true)}
-        endAdornment={
-          <SSIIconButton
-            icon={ButtonIconsEnum.CHEVRON}
-            iconColor={backgroundColors.primaryLight}
-            iconSize={16}
-            style={{marginRight: 8}}
-            onPress={() => setIsModalOpen(true)}
-          />
-        }
-      />
+      <TouchableOpacity onPress={() => setIsModalOpen(true)}>
+        <SSITextInputControlledField
+          autoFocus={false}
+          editable={false}
+          value={country && capitalize(country)}
+          label={translate(`${translationsPath}.select.label`)}
+          placeholder={translate(`${translationsPath}.select.placeholder`)}
+          onPress={() => setIsModalOpen(true)}
+          onPressIn={() => setIsModalOpen(true)}
+          endAdornment={
+            <SSIIconButton
+              icon={ButtonIconsEnum.CHEVRON}
+              iconColor={backgroundColors.primaryLight}
+              iconSize={16}
+              style={{marginRight: 8}}
+              onPress={() => setIsModalOpen(true)}
+            />
+          }
+        />
+      </TouchableOpacity>
       <CountrySelectionModal
         selected={country}
         open={isModalOpen}
@@ -48,6 +53,7 @@ const EnterCountryScreen = () => {
           onboardingInstance.send(OnboardingMachineEvents.SET_COUNTRY, {data: selectedCountry});
           setIsModalOpen(false);
         }}
+        onModalHide={reason => reason === 'select' && onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
       <View style={{marginTop: 'auto'}}>
         <PrimaryButton

@@ -6,8 +6,8 @@ import {APP_ID} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
 import {
+  Country,
   CreateOnboardingMachineOpts,
-  InstanceOnboardingMachineOpts,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
@@ -135,7 +135,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     credentialData,
     name: '',
     emailAddress: '',
-    country: undefined,
+    country: Country.DEUTSCHLAND,
     pinCode: '',
     biometricsEnabled: false,
     termsAndPrivacyAccepted: false,

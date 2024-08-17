@@ -8,6 +8,7 @@ export enum ButtonIconsEnum {
   MORE = 'more',
   CLOSE = 'close',
   SEARCH = 'search',
+  CHEVRON = 'chevron',
 }
 
 export enum HeaderMenuIconsEnum {
