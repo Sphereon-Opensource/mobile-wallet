@@ -26,6 +26,7 @@ export interface IProps extends TextInputProps {
   helperText?: string;
   borderColor?: string;
   showBorder?: boolean;
+  endAdornment?: JSX.Element;
 }
 
 const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => {
@@ -39,6 +40,7 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
     showBorder = true,
     value,
     secureTextEntry = false,
+    endAdornment,
     style: textInputStyle,
     ...TextInputProps
   } = props;
@@ -81,6 +83,7 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
             <SSIEyeIcon />
           </IconContainer>
         )}
+        {endAdornment && <IconContainer style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>{endAdornment}</IconContainer>}
       </InputContainer>
       {!error ? (
         <UnderlineLinearGradient />
