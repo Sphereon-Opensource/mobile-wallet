@@ -24,10 +24,7 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
 const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
   return (
-    <Container
-      style={{
-        marginTop: useSafeAreaInsets().top,
-      }}>
+    <Container style={{paddingTop: useSafeAreaInsets().top}}>
       <HeaderRow>
         <BackIconContainer style={{flex: 1}}>
           <BackIcon
