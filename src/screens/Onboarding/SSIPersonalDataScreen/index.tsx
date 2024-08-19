@@ -22,7 +22,6 @@ const SSIPersonalDataScreen: FC<Props> = (props: Props): JSX.Element => {
   const {onNext, onBack, context, onPersonalData, isDisabled} = props.route.params;
   const personalData = {...context.personalData}; // shallow copy given we will manipulate the data
 
-  console.log('personalData', context);
 
   useBackHandler((): boolean => {
     if (onBack) {
