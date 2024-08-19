@@ -548,7 +548,7 @@ const stackGroupsConfig = [step1GroupConfig, step2GroupConfig];
 
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
-    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} />
+    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
     <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
     <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
     {stackGroupsConfig.map(group => (
