@@ -10,3 +10,5 @@ export * from './SortUtils';
 export * from './TextUtils';
 export * from './ToastUtils';
 export * from './UserUtils';
+export * from './array';
+export * from './number';

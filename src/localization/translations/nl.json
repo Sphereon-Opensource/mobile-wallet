@@ -173,6 +173,18 @@
         "title": "Select country",
         "search_placeholder": "Search"
       }
+    },
+    "enter_pin": {
+      "title": "Set a new 6-digit Sphereon PIN",
+      "requirements": {
+        "title": "Your PIN should not contain:",
+        "not_same_digits": "similar digits",
+        "not_sequential_digits": "A consecutive sequence",
+        "invalid_example_prefix": "Like: ",
+        "invalid_example_delimiter": " or "
+      },
+      "success": "That’s a strong PIN, note it down somewhere safe",
+      "button_caption": "Set your PIN"
     }
   },
   "onboard_summary_title": "Uw ingevulde gegevens",

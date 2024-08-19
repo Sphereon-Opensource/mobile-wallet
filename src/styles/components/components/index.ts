@@ -4,6 +4,8 @@ export * from './CredentialCardPreviewView';
 export * from './CredentialPreviewViewItem';
 export * from './FilterBar';
 export * from './OnboardingHeader';
+export * from './OnboardingPinCode';
+export * from './OnboardingPinCodeSegment';
 export * from './ProgressBarIndicator';
 export * from './SSIAlert';
 export * from './SSIButtonsContainer';

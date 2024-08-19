@@ -19,7 +19,7 @@ const EnterEmailScreen = () => {
     context: {emailAddress},
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_email_address';
-  const {isValid, errorMessage} = validate(emailAddress, [
+  const {isValid, error} = validate(emailAddress, [
     isNonEmptyString(translate(`${translationsPath}.text_field.errors.missing`)),
     IsValidEmail(translate(`${translationsPath}.text_field.errors.invalid`)),
   ]);
@@ -33,7 +33,7 @@ const EnterEmailScreen = () => {
           autoFocus={true}
           value={emailAddress}
           label={translate(`${translationsPath}.text_field.label`)}
-          error={isDirty || showError ? errorMessage : undefined}
+          error={isDirty || showError ? error?.message : undefined}
           maxLength={EMAIL_ADDRESS_MAX_LENGTH}
           onChangeText={v => {
             setIsDirty(true);

@@ -91,6 +91,7 @@ export enum OnboardingMachineGuards {
   isNameValid = 'isNameValid',
   isEmailValid = 'isEmailValid',
   isCountryValid = 'isCountryValid',
+  isPinCodeValid = 'isPinCodeValid',
 }
 
 // States Config
