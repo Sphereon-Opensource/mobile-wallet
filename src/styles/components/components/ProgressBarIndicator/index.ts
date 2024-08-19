@@ -1,6 +1,8 @@
 import styled, {css} from 'styled-components/native';
 import {SSILinearGradientStyled} from '../../gradients';
 
+export const PROGRESS_BAR_HEIGHT = 4;
+
 export const ProgressBarIndicatorContainer = styled.View`
   flex-direction: row;
   justify-content: center;
@@ -8,7 +10,7 @@ export const ProgressBarIndicatorContainer = styled.View`
 `;
 
 const BaseProgressBar = css`
-  height: 4px;
+  height: ${PROGRESS_BAR_HEIGHT}px;
   border-radius: 2px;
 `;
 

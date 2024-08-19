@@ -6,8 +6,8 @@ import {APP_ID} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
 import {
+  Country,
   CreateOnboardingMachineOpts,
-  InstanceOnboardingMachineOpts,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
@@ -17,11 +17,15 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
+import {IsValidEmail, isNonEmptyString, isNotNil, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isNameValid = (ctx: OnboardingMachineContext) => validate(ctx.name, [isNonEmptyString()]).isValid;
+const isEmailValid = (ctx: OnboardingMachineContext) => validate(ctx.emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
+const isCountryValid = (ctx: OnboardingMachineContext) => validate(ctx.country, [isNotNil()]).isValid;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -47,14 +51,14 @@ const states: OnboardingStatesConfig = {
   },
   enterName: {
     on: {
-      NEXT: OnboardingMachineStateType.enterEmailAddress,
+      NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_NAME: {actions: assign({name: (_, event) => event.data})},
     },
   },
   enterEmailAddress: {
     on: {
-      NEXT: OnboardingMachineStateType.enterCountry,
+      NEXT: {cond: OnboardingMachineGuards.isEmailValid, target: OnboardingMachineStateType.enterCountry},
       PREVIOUS: OnboardingMachineStateType.enterName,
       SET_EMAIL_ADDRESS: {actions: assign({emailAddress: (_, event) => event.data})},
     },
@@ -62,6 +66,7 @@ const states: OnboardingStatesConfig = {
   enterCountry: {
     on: {
       NEXT: {
+        cond: OnboardingMachineGuards.isCountryValid,
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 2}),
       },
@@ -130,7 +135,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     credentialData,
     name: '',
     emailAddress: '',
-    country: undefined,
+    country: Country.DEUTSCHLAND,
     pinCode: '',
     biometricsEnabled: false,
     termsAndPrivacyAccepted: false,
@@ -151,6 +156,15 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isStepSecureWallet;
+          }
+        | {
+            type: OnboardingMachineGuards.isNameValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isEmailValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isCountryValid;
           },
     },
     states: states,
@@ -200,6 +214,9 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isNameValid,
+          isEmailValid,
+          isCountryValid,
           ...opts?.guards,
         },
       }),

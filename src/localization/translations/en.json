@@ -14,6 +14,7 @@
   "qr_scanner_qr_no_longer_valid_message": "QR code is no longer valid. Please try to scan a new QR code.",
   "connection_details_view_details": "Details",
   "action_confirm_label": "Confirm",
+  "action_continue_label": "Continue",
   "action_cancel_label": "Cancel",
   "action_decline_label": "Decline",
   "action_accept_label": "Accept",
@@ -137,7 +138,44 @@
       "title": "Import personal information",
       "description": {
         "default": "Import your personal information from your national eID provider.",
-        "deutchland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "deutschland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+      }
+    }
+  },
+  "onboarding_pages": {
+    "enter_name": {
+      "title": "Enter your name",
+      "text_field": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "errors": {
+          "missing": "Please fill in a name"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Enter your email address",
+      "text_field": {
+        "label": "Email address",
+        "placeholder": "Yout email address",
+        "errors": {
+          "missing": "Please fill in an email address",
+          "invalid": "Please fill in a valid email address"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Your country of residence",
+      "select": {
+        "label": "Country",
+        "placeholder": "You country of residence",
+        "errors": {
+          "missing": "Please select a country"
+        }
+      },
+      "modal": {
+        "title": "Select country",
+        "search_placeholder": "Search"
       }
     }
   },

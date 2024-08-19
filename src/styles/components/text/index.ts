@@ -1,9 +1,9 @@
 import {TextInput} from 'react-native';
 import styled from 'styled-components/native';
 
+import {fontColors} from '@sphereon/ui-components.core';
 import {inputs} from '../../colors';
 import {fontStyle} from '../../typography';
-import {fontColors} from '@sphereon/ui-components.core';
 
 export const TextInputStyled = styled(TextInput).attrs({
   placeholderTextColor: inputs.placeholder,

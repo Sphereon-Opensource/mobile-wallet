@@ -12,7 +12,9 @@ export type OnboardingCredentialData = {
   proofFormat?: ProofFormat;
 };
 
-export type Country = 'Deutschland';
+export enum Country {
+  DEUTSCHLAND = 'DEUTSCHLAND',
+}
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
@@ -86,6 +88,9 @@ export type OnboardingMachineEventTypes =
 export enum OnboardingMachineGuards {
   isStepCreateWallet = 'isStepCreateWallet',
   isStepSecureWallet = 'isStepSecureWallet',
+  isNameValid = 'isNameValid',
+  isEmailValid = 'isEmailValid',
+  isCountryValid = 'isCountryValid',
 }
 
 // States Config

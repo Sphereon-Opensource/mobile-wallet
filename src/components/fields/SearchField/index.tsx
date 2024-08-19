@@ -1,5 +1,5 @@
-import React, {FC, ReactElement} from 'react';
 import {SSITextH2LightStyled as SearchCaption} from '@sphereon/ui-components.ssi-react-native';
+import React, {FC, ReactElement} from 'react';
 import Localization from '../../../localization/Localization';
 import {SearchFieldContainerStyled as Container, SearchFieldMagnifyingGlassIconStyled as MagnifyingGlassIcon} from '../../../styles/components';
 
