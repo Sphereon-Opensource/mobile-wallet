@@ -23,7 +23,6 @@ const SSITermsOfServiceDetailScreen: FC<Props> = (props: Props): React.JSX.Eleme
     route: {params},
   } = props;
 
-  console.log('params', params);
 
   useBackHandler((): boolean => {
     if (canGoBack()) {
