@@ -94,8 +94,17 @@ const ShowProgressScreen = () => {
     }),
   ];
 
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate('action_next_label')}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+    />
+  );
+
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription
         title={translate(titleKey)}
         description={descriptionKey && translate(descriptionKey)}
@@ -105,12 +114,6 @@ const ShowProgressScreen = () => {
       <View style={{marginBottom: 'auto'}}>
         <Stepper activeStep={currentStep - 1} content={stepperContent} ringColor={backgroundColors.primaryDark} />
       </View>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate('action_next_label')}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
     </ScreenContainer>
   );
 };

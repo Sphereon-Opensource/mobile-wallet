@@ -19,8 +19,17 @@ const EnterNameScreen = () => {
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_name';
   const {isValid, error} = validate(name, [isNonEmptyString(translate(`${translationsPath}.text_field.errors.missing`))]);
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate('action_continue_label')}
+      disabled={!isValid}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+    />
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 'auto'}}>
         <SSITextInputControlledField
@@ -38,13 +47,6 @@ const EnterNameScreen = () => {
           placeholder={translate(`${translationsPath}.text_field.placeholder`)}
         />
       </View>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate('action_continue_label')}
-        disabled={!isValid}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
     </ScreenContainer>
   );
 };

@@ -23,8 +23,20 @@ const EnterEmailScreen = () => {
     isNonEmptyString(translate(`${translationsPath}.text_field.errors.missing`)),
     IsValidEmail(translate(`${translationsPath}.text_field.errors.invalid`)),
   ]);
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate('action_continue_label')}
+      disabled={!isValid}
+      captionColor={fontColors.light}
+      onPress={() => {
+        setShowError(true);
+        onboardingInstance.send(OnboardingMachineEvents.NEXT);
+      }}
+    />
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <TextInputContainer style={{marginBottom: 'auto'}}>
         <SSITextInputControlledField
@@ -42,16 +54,6 @@ const EnterEmailScreen = () => {
           placeholder={translate(`${translationsPath}.text_field.placeholder`)}
         />
       </TextInputContainer>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate('action_continue_label')}
-        disabled={!isValid}
-        captionColor={fontColors.light}
-        onPress={() => {
-          setShowError(true);
-          onboardingInstance.send(OnboardingMachineEvents.NEXT);
-        }}
-      />
     </ScreenContainer>
   );
 };
