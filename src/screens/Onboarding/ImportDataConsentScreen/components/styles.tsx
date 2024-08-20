@@ -1,10 +1,6 @@
-import {ScrollView} from 'react-native';
-import {Text} from '../../components/styles';
 import styled from 'styled-components/native';
-
-export const ScrollableContent = styled(ScrollView)`
-  flex: 1;
-`;
+import {SSITextH3Styled, SSITextH5LightStyled} from '../../../../styles/components';
+import {Text} from '../../components/styles';
 
 export const ProviderLabel = styled.Text`
   color: white;
@@ -16,9 +12,7 @@ export const ProviderLabel = styled.Text`
 
 export const SectionLabel = styled(ProviderLabel)``;
 
-export const ProviderTitle = styled(ProviderLabel)`
-  margin-bottom: 0px;
-`;
+export const ProviderTitle = SSITextH3Styled;
 
 export const SubTitle = styled(Text)`
   margin-bottom: 24px;
@@ -27,33 +21,31 @@ export const SubTitle = styled(Text)`
 export const ProviderContainer = styled.View`
   display: flex;
   flex-direction: row;
-  align-items: stretch;
-  padding: 20px;
-
-  gap: 5px;
-
+  padding: 16px;
+  gap: 16px;
   border: 1px solid #5d6990;
   border-radius: 8px;
-
   margin-top: 10px;
   margin-bottom: 24px;
+  width: 100%;
+  align-items: center;
+`;
 
+export const RequestedInformationContainer = styled.View`
+  border: 1px solid #5d6990;
+  border-radius: 8px;
+  background-color: #2c334b;
+  padding: 12px;
+  padding-bottom: 0px;
+  gap: 8px;
   width: 100%;
 `;
 
-export const RequestedInformationContainer = styled(ProviderContainer)`
-  background-color: #2c334b;
-  flex-direction: column;
-  padding: 24px;
-  gap: 15px;
-`;
-
 export const RequestedInformationRow = styled.View`
-  display: flex;
   flex-direction: row;
-  padding: 5px 0px;
+  padding: 0px;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 `;
 
 export const RequestedInformationDescriptionContainer = styled.View`
@@ -73,59 +65,42 @@ export const RequestedInformationValue = styled.Text`
   font-weight: 400;
 `;
 
-export const ProviderText = styled.Text`
-  color: white;
-  font-size: 12px;
-`;
-
-export const ProviderImageContainer = styled.View`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const ProviderImage = styled.Image`
-  width: 30px;
-  height: 30px;
+  width: 48px;
+  height: 48px;
 `;
 
-export const ProviderUrl = styled(ProviderText)`
+export const ProviderUrl = styled(SSITextH5LightStyled)`
   margin-top: 6px;
 `;
 
 export const ProviderDescription = styled.View`
-  flex: 4;
+  flex: 1;
   display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: 5px;
+  flex-direction: column;
 `;
 
-export const ProviderCardRow = styled(ProviderContainer)`
-  border-width: 0;
-  padding: 0px 0px 0px 0px;
-  gap: 12px;
-  display: flex;
-  align-items: stretch;
+export const ProviderCardRow = styled.View`
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+  gap: 16px;
 `;
 
 export const ProviderMiniCardImage = styled.View`
-  width: 60px;
   display: flex;
+  padding: 12px 24px;
   justify-content: center;
   align-items: center;
-
   border-radius: 10px;
   background-color: white;
-  padding: 10px 50px;
 `;
 
 export const InformationIconContainer = styled.View`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 10px;
+  padding: 16px;
 `;
 
 export const InformationIcon = styled.Image`

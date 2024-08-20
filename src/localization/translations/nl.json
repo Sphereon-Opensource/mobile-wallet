@@ -216,25 +216,27 @@
         }
       },
       "button_caption": "Accept Terms & Privacy"
+    },
+    "import_data_consent": {
+      "title": "Do you want to add this information?",
+      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "pid_provider_title": "PID Provider",
+      "pid_provider_subheading": "Personal Identification Data Provider",
+      "offered_data_title": "PID Provider",
+      "labels": {
+        "given_name": "Given name",
+        "family_name": "Family name",
+        "also_known_as": "Also known as",
+        "gender": "Gender",
+        "birthdate": "Birth date",
+        "birthplace": "Place of birth",
+        "nationality": "Nationality",
+        "address": "Address"
+      },
+      "button_accept": "Yes, I want to add this",
+      "button_decline": "Decline"
     }
   },
-
-  "import_data_consent_title": "Do you want to add this information?",
-  "import_data_consent_subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
-  "import_data_consent_pid_provider_title": "PID Provider",
-  "import_data_consent_pid_provider_subheading": "Personal Identification Data Provider",
-  "import_data_consent_offered_data_title": "PID Provider",
-  "import_data_consent_label_given_name": "Given name",
-  "import_data_consent_label_family_name": "Family name",
-  "import_data_consent_label_also_known_as": "Also known as",
-  "import_data_consent_label_gender": "Gender",
-  "import_data_consent_label_birthdate": "Birth date",
-  "import_data_consent_label_birthplace": "Place of birth",
-  "import_data_consent_label_nationality": "Nationality",
-  "import_data_consent_label_address": "Address",
-  "import_data_consent_button_accept": "Yes, I want to add this",
-  "import_data_consent_button_decline": "Decline",
-
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
   "onboard_summary_info_tab_header_label": "Uw gegevens",

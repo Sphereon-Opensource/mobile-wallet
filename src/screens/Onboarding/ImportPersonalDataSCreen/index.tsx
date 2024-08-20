@@ -1,13 +1,13 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {translate} from '../../../localization/Localization';
-import {Image, Keyboard} from 'react-native';
 import {useCallback, useContext, useState} from 'react';
-import {Container, Title, TitleContainer, Text, ContentContainer, ButtonContainer} from '../components/styles';
+import {Image, Keyboard} from 'react-native';
+import {translate} from '../../../localization/Localization';
+import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
-import {OnboardingContext} from 'src/navigation/machines/onboardingStateNavigation';
-import {OnboardingMachineEvents} from 'src/types/machines/onboarding';
+import {Container, ContentContainer, Text, Title, TitleContainer} from '../components/styles';
 
 const ImportPersonalDataScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -43,15 +43,13 @@ const ImportPersonalDataScreen = () => {
         }}>
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </ContentContainer>
-      <ButtonContainer>
-        <PrimaryButton
-          style={{height: 42, width: 300}}
-          caption="Next"
-          backgroundColors={['#7276F7', '#7C40E8']}
-          captionColor={fontColors.light}
-          onPress={() => transition()}
-        />
-      </ButtonContainer>
+      <PrimaryButton
+        style={{height: 42, width: 300}}
+        caption="Next"
+        backgroundColors={['#7276F7', '#7C40E8']}
+        captionColor={fontColors.light}
+        onPress={() => transition()}
+      />
       <AusweisEPinModal focusOnMount visible={showPin} onComplete={onCompletePin} />
       <AusweisScanModal
         onScan={() => console.log('scanning')}

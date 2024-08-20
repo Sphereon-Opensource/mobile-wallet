@@ -1,5 +1,3 @@
-import {translate} from '../../../localization/Localization';
-
 type Icon = 'person' | 'gender' | 'birthday' | 'nationality' | 'birthplace' | 'address';
 
 export const InfoSchemaImages = {
@@ -17,37 +15,37 @@ export type AusweisRequestedInfoItem = {
   data?: string;
 };
 
-export const AusweisRequestedInfoSchema = [
+export const AusweisRequestedInfoSchema: AusweisRequestedInfoItem[] = [
   {
-    label: translate('import_data_consent_label_given_name'),
+    label: 'given_name',
     icon: 'person',
   },
   {
-    label: translate('import_data_consent_label_family_name'),
+    label: 'family_name',
     icon: 'person',
   },
   {
-    label: translate('import_data_consent_label_also_known_as'),
+    label: 'also_known_as',
     icon: 'person',
   },
   {
-    label: translate('import_data_consent_label_gender'),
+    label: 'gender',
     icon: 'gender',
   },
   {
-    label: translate('import_data_consent_label_birthdate'),
+    label: 'birthdate',
     icon: 'birthday',
   },
   {
-    label: translate('import_data_consent_label_birthplace'),
+    label: 'birthplace',
     icon: 'birthplace',
   },
   {
-    label: translate('import_data_consent_label_nationality'),
+    label: 'nationality',
     icon: 'nationality',
   },
   {
-    label: translate('import_data_consent_label_address'),
+    label: 'address',
     icon: 'address',
   },
-] satisfies readonly {label: string; icon: Icon}[];
+];

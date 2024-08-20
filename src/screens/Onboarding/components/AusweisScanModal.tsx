@@ -1,11 +1,9 @@
-import {useContext, useEffect, useState} from 'react';
-import {Button, Dimensions, LayoutChangeEvent, Image} from 'react-native';
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
-import {ButtonContainer, ContentContainer, IconContainer, ModalCard, ModalText, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {fontColors} from '@sphereon/ui-components.core';
-import {OnboardingContext} from 'src/navigation/machines/onboardingStateNavigation';
-import {OnboardingMachineEvents} from 'src/types/machines/onboarding';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {useState} from 'react';
+import {Button, Dimensions, Image, LayoutChangeEvent} from 'react-native';
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import {ContentContainer, IconContainer, ModalCard, ModalText, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
 
 const {width} = Dimensions.get('window');
 
@@ -73,24 +71,22 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
             </ProgressRow>
           </Animated.View>
         </ContentContainer>
-        <ButtonContainer>
-          <Button
-            title={'end scan'}
-            onPress={() => {
-              onComplete();
-            }}
-          />
-          <PrimaryButton
-            style={{height: 42, width: 300}}
-            caption="Cancel"
-            backgroundColors={['#6f6f75']}
-            captionColor={fontColors.light}
-            onPress={() => {
-              scanning.value = false;
-              onCancel();
-            }}
-          />
-        </ButtonContainer>
+        <Button
+          title={'end scan'}
+          onPress={() => {
+            onComplete();
+          }}
+        />
+        <PrimaryButton
+          style={{height: 42, width: 300}}
+          caption="Cancel"
+          backgroundColors={['#6f6f75']}
+          captionColor={fontColors.light}
+          onPress={() => {
+            scanning.value = false;
+            onCancel();
+          }}
+        />
       </ModalCard>
     </Animated.View>
   );

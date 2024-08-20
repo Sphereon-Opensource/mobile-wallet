@@ -32,17 +32,7 @@ export const TitleContainer = styled.View`
 export const ContentContainer = styled.Pressable`
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 20px;
   background-color: transparent;
-  padding: 0px 20px;
-`;
-
-export const ButtonContainer = styled(TitleContainer)`
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
 `;
 
 export const ModalTitle = styled(Text)`

@@ -226,29 +226,29 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       events: {} as OnboardingMachineEventTypes,
       guards: {} as
         | {
-          type: OnboardingMachineGuards.isStepCreateWallet;
-        }
+            type: OnboardingMachineGuards.isStepCreateWallet;
+          }
         | {
-          type: OnboardingMachineGuards.isStepSecureWallet;
-        }
+            type: OnboardingMachineGuards.isStepSecureWallet;
+          }
         | {
-          type: OnboardingMachineGuards.isStepImportPersonalData;
-        }
+            type: OnboardingMachineGuards.isStepImportPersonalData;
+          }
         | {
-          type: OnboardingMachineGuards.isNameValid;
-        }
+            type: OnboardingMachineGuards.isNameValid;
+          }
         | {
-          type: OnboardingMachineGuards.isEmailValid;
-        }
+            type: OnboardingMachineGuards.isEmailValid;
+          }
         | {
-          type: OnboardingMachineGuards.isCountryValid;
-        }
+            type: OnboardingMachineGuards.isCountryValid;
+          }
         | {
-          type: OnboardingMachineGuards.isPinCodeValid;
-        }
+            type: OnboardingMachineGuards.isPinCodeValid;
+          }
         | {
-          type: OnboardingMachineGuards.doPinsMatch;
-        },
+            type: OnboardingMachineGuards.doPinsMatch;
+          },
     },
     states: states,
   });
