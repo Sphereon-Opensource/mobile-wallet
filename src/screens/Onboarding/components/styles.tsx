@@ -29,9 +29,10 @@ export const TitleContainer = styled.View`
   padding: 10px 20px;
 `;
 
-export const ContentContainer = styled.Pressable`
+export const ContentContainer = styled.View`
+  margin-top: 20px;
   flex: 1;
-  display: flex;
+  align-items: center;
   background-color: transparent;
 `;
 
@@ -49,13 +50,12 @@ export const ModalText = styled(Text)`
 `;
 
 export const ModalCard = styled.View`
-  padding: 20px;
+  padding-horizontal: 36px;
+  padding-vertical: 30px;
   border-radius: 20px;
-  box-shadow: 0px 0px 2px black;
-
   display: flex;
-  align-items: stretch;
-
+  gap: 36px;
+  align-items: center;
   background-color: white;
 `;
 
