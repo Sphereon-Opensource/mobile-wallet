@@ -285,5 +285,6 @@
   "ausweis_eid_modal_title": "Get the Ausweis eID data",
   "ausweis_eid_modal_description": "The Person Identification Data is the basis of your wallet and therefore very important to be able to obtain other credentials.\n\nAre you sure you want this information in your wallet?",
   "ausweis_eid_modal_accept_label": "Import personal information",
-  "action_maybe_later_label": "Maybe later"
+  "action_maybe_later_label": "Maybe later",
+  "item_not_yet_available_message": "This item is currently not yet available."
 }
