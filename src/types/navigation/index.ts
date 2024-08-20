@@ -1,3 +1,4 @@
+import {NavigationHelpers} from '@react-navigation/native';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
@@ -7,6 +8,9 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+
+export type ParamsList = Record<string, object | undefined>;
+export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -39,9 +43,11 @@ export type StackParamList = {
   CredentialCatalog: Record<string, never>;
 };
 
+export type Document = 'terms' | 'privacy';
+
 export type OnboardingStackParamsList = {
   AcceptTermsAndPrivacy: Record<string, never>;
-  ReadTermsAndPrivacy: {document: 'terms' | 'privacy'};
+  ReadTermsAndPrivacy: {document: Document};
   EnableBiometrics: Record<string, never>;
   EnterCountry: Record<string, never>;
   EnterEmailAddress: Record<string, never>;
@@ -58,6 +64,8 @@ export type OnboardingStackParamsList = {
   ImportDataLoader: Record<string, never>;
   ImportDataFinal: Record<string, never>;
 };
+
+export type ReadDocumentParamsList = Record<Document, {document: Document}>;
 
 export type OnboardingRoute = keyof OnboardingStackParamsList;
 

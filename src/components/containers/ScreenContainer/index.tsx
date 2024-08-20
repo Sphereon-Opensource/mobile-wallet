@@ -12,7 +12,6 @@ type Props = {
 
 const IOS_EXTRA_BOTTOM_PADDING = 16;
 
-
 export const contentContainerStyle: ViewStyle = {
   paddingHorizontal: 24,
   paddingTop: 0,
