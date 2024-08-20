@@ -22,8 +22,20 @@ const VerifyPinCodeScreen = () => {
 
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
 
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate(`${translationsPath}.button_caption`)}
+      disabled={!doPinsCompletelyMatch}
+      captionColor={fontColors.light}
+      onPress={() => {
+        onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: pinCode});
+        onboardingInstance.send(OnboardingMachineEvents.NEXT);
+      }}
+    />
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1, gap: 48}}>
         <PinCode
@@ -38,16 +50,6 @@ const VerifyPinCodeScreen = () => {
           {doPinsCompletelyMatch ? translate(`${translationsPath}.match`) : isComplete ? translate(`${translationsPath}.mismatch`) : ''}
         </SSITextH3RegularLightStyled>
       </View>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate(`${translationsPath}.button_caption`)}
-        disabled={!doPinsCompletelyMatch}
-        captionColor={fontColors.light}
-        onPress={() => {
-          onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: pinCode});
-          onboardingInstance.send(OnboardingMachineEvents.NEXT);
-        }}
-      />
     </ScreenContainer>
   );
 };

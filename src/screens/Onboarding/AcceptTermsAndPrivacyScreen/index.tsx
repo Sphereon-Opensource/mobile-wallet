@@ -11,8 +11,19 @@ import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 const AcceptTermsAndPrivacyScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const translationsPath = 'onboarding_pages.terms_and_privacy';
+  const footer = (
+    <>
+      <TermsAndPrivacyFooter style={{marginTop: 'auto', marginBottom: 24}} />
+      <PrimaryButton
+        style={{height: 42, width: '100%'}}
+        caption={translate(`${translationsPath}.button_caption`)}
+        captionColor={fontColors.light}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+      />
+    </>
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
       <TermsAndPrivacyFeatures
         style={{marginTop: 8}}
@@ -23,13 +34,6 @@ const AcceptTermsAndPrivacyScreen = () => {
           translate(`${translationsPath}.features.data_anonymization`),
           translate(`${translationsPath}.features.strict_access_controls`),
         ]}
-      />
-      <TermsAndPrivacyFooter style={{marginTop: 'auto', marginBottom: 24}} />
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate(`${translationsPath}.button_caption`)}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
     </ScreenContainer>
   );

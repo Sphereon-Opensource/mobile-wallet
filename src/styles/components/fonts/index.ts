@@ -24,6 +24,18 @@ export const SSITextH1Styled = styled.Text`
   height: auto;
 `;
 
+export const SSITextH1RegularStyled = styled.Text`
+  font-family: ${fontStyle.h1Regular.fontFamily};
+  font-size: ${fontStyle.h1Regular.fontSize}px;
+  font-weight: ${fontStyle.h1Regular.fontWeight};
+  line-height: ${fontStyle.h1Regular.lineHeight}px;
+  height: auto;
+`;
+
+export const SSITextH1RegularLightStyled = styled(SSITextH1RegularStyled)`
+  color: ${fontColors.light};
+`;
+
 export const SSITextH1LightStyled = styled(SSITextH1Styled)`
   color: ${fontColors.light};
 `;

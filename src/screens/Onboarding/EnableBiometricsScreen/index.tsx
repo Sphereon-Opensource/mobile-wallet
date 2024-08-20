@@ -9,16 +9,18 @@ import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 
 const EnableBiometricsScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: 300}}
+      caption={translate('action_next_label')}
+      backgroundColors={[buttonColors[100]]}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+    />
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title="Enable Biometrics" />
-      <PrimaryButton
-        style={{height: 42, width: 300}}
-        caption={translate('action_next_label')}
-        backgroundColors={[buttonColors[100]]}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
     </ScreenContainer>
   );
 };

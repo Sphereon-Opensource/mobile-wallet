@@ -22,8 +22,19 @@ const EnterCountryScreen = () => {
   const translationsPath = 'onboarding_pages.enter_country';
   const [isModalOpen, setIsModalOpen] = useState(country === undefined);
   const {isValid} = validate(country, [isNotNil(translate(`${translationsPath}.select.errors.missing`))]);
+  const footer = (
+    <View style={{marginTop: 'auto'}}>
+      <PrimaryButton
+        style={{height: 42, width: '100%'}}
+        caption={translate('action_continue_label')}
+        disabled={!isValid}
+        captionColor={fontColors.light}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+      />
+    </View>
+  );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <TouchableOpacity onPress={() => setIsModalOpen(true)}>
         <SSITextInputControlledField
@@ -55,15 +66,6 @@ const EnterCountryScreen = () => {
         }}
         onModalHide={reason => reason === 'select' && onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
-      <View style={{marginTop: 'auto'}}>
-        <PrimaryButton
-          style={{height: 42, width: '100%'}}
-          caption={translate('action_continue_label')}
-          disabled={!isValid}
-          captionColor={fontColors.light}
-          onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-        />
-      </View>
     </ScreenContainer>
   );
 };

@@ -64,6 +64,7 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
   },
   [OnboardingMachineStep.SECURE_WALLET]: {titleKey: 'onboard_progress_pages.secure_wallet.title'},
   [OnboardingMachineStep.IMPORT_PERSONAL_DATA]: {titleKey: 'onboard_progress_pages.import_personal_data.title'},
+  [OnboardingMachineStep.FINAL]: {titleKey: 'import_data_setup_complete_title'},
 };
 
 const ShowProgressScreen = () => {
@@ -94,8 +95,17 @@ const ShowProgressScreen = () => {
     }),
   ];
 
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate('action_next_label')}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+    />
+  );
+
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription
         title={translate(titleKey)}
         description={descriptionKey && translate(descriptionKey)}
@@ -105,12 +115,6 @@ const ShowProgressScreen = () => {
       <View style={{marginBottom: 'auto'}}>
         <Stepper activeStep={currentStep - 1} content={stepperContent} ringColor={backgroundColors.primaryDark} />
       </View>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate('action_next_label')}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
     </ScreenContainer>
   );
 };

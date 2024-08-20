@@ -20,6 +20,7 @@ export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
   SECURE_WALLET = 2,
   IMPORT_PERSONAL_DATA = 3,
+  FINAL = 4,
 }
 
 export type OnboardingMachineContext = {
@@ -47,6 +48,11 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  importDataConsent = 'importDataConsent',
+  importPersonalData = 'importPersonalData',
+  importDataAuthentication = 'importDataAuthentication',
+  importDataLoader = 'importDataLoader',
+  importDataFinal = 'importDataFinal',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -97,6 +103,7 @@ export enum OnboardingMachineGuards {
   isCountryValid = 'isCountryValid',
   isPinCodeValid = 'isPinCodeValid',
   doPinsMatch = 'doPinsMatch',
+  isStepImportPersonalData = 'isStepImportPersonalData',
 }
 
 // States Config

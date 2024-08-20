@@ -216,6 +216,30 @@
         }
       },
       "button_caption": "Accept Terms & Privacy"
+    },
+    "import_data_consent": {
+      "title": "Do you want to add this information?",
+      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "pid_provider_title": "PID Provider",
+      "pid_provider_subheading": "Personal Identification Data Provider",
+      "offered_data_title": "PID Provider",
+      "labels": {
+        "given_name": "Given name",
+        "family_name": "Family name",
+        "also_known_as": "Also known as",
+        "gender": "Gender",
+        "birthdate": "Birth date",
+        "birthplace": "Place of birth",
+        "nationality": "Nationality",
+        "address": "Address"
+      },
+      "button_accept": "Yes, I want to add this",
+      "button_decline": "Decline"
+    },
+    "import_scan_card": {
+      "title": "Have your Ausweis card ready for the next steps",
+      "description": "Enter the eID pin and scann your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading.",
+      "button_caption": "Start reading your card"
     }
   },
   "onboard_summary_title": "Uw ingevulde gegevens",

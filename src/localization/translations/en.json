@@ -95,6 +95,19 @@
   "terms_of_service_decline_action_caption": "Exit app",
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
+
+  "import_data_auth_step_title": "Enter your sphereon pin",
+
+  "import_data_loader_step_title": "One moment",
+  "import_data_loader_step_subtitle": "Getting your personal information.",
+
+  "import_data_final_step_title": "Your information is imported. Is it all correct?",
+
+  "import_data_setup_complete_title": "Setup complete",
+
+  "import_data_title": "Import personal data",
+  "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
+  "scan_card_step_title": "Scan to import your data",
   "personal_data_title": "Enter personal data",
   "personal_data_subtitle": "Personalize your wallet by providing your name and email address. We will create a self-asserted credential for you to use. The information you provide does not leave your device!",
   "first_name_label": "First name",
@@ -220,8 +233,33 @@
         }
       },
       "button_caption": "Accept Terms & Privacy"
+    },
+    "import_data_consent": {
+      "title": "Do you want to add this information?",
+      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "pid_provider_title": "PID Provider",
+      "pid_provider_subheading": "Personal Identification Data Provider",
+      "offered_data_title": "PID Provider",
+      "labels": {
+        "given_name": "Given name",
+        "family_name": "Family name",
+        "also_known_as": "Also known as",
+        "gender": "Gender",
+        "birthdate": "Birth date",
+        "birthplace": "Place of birth",
+        "nationality": "Nationality",
+        "address": "Address"
+      },
+      "button_accept": "Yes, I want to add this",
+      "button_decline": "Decline"
+    },
+    "import_scan_card": {
+      "title": "Have your Ausweis card ready for the next steps",
+      "description": "Enter the eID pin and scann your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading.",
+      "button_caption": "Start reading your card"
     }
   },
+
   "onboard_summary_title": "Your entered details",
   "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
   "onboard_summary_info_tab_header_label": "Your information",
