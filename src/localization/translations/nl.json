@@ -20,6 +20,7 @@
   "qr_scanner_qr_no_longer_valid_message": "QR-code is niet meer geldig. Probeer een nieuwe QR-code te scannen.",
   "connection_details_view_details": "Details",
   "action_confirm_label": "Bevestigen",
+  "action_continue_label": "Continue",
   "action_cancel_label": "Annuleren",
   "action_decline_label": "Weigeren",
   "action_accept_label": "Accepteren",
@@ -143,6 +144,110 @@
       }
     }
   },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Welcome to your Sphereon Wallet",
+      "description": "Receive and share accreditations, credentials, badges and identity details.",
+      "button_caption": "Get started"
+    },
+    "enter_name": {
+      "title": "Enter your name",
+      "text_field": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "errors": {
+          "missing": "Please fill in a name"
+        }
+      }
+    },
+    "enter_email": {
+      "title": "Enter your email address",
+      "text_field": {
+        "label": "Email address",
+        "placeholder": "Your email address",
+        "errors": {
+          "missing": "Please fill in an email address",
+          "invalid": "Please fill in a valid email address"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Your country of residence",
+      "select": {
+        "label": "Country",
+        "placeholder": "You country of residence",
+        "errors": {
+          "missing": "Please select a country"
+        }
+      },
+      "modal": {
+        "title": "Select country",
+        "search_placeholder": "Search"
+      }
+    },
+    "enter_pin": {
+      "title": "Set a new 6-digit Sphereon PIN",
+      "requirements": {
+        "title": "Your PIN should not contain:",
+        "not_same_digits": "similar digits",
+        "not_sequential_digits": "A consecutive sequence",
+        "invalid_example_prefix": "Like: ",
+        "invalid_example_delimiter": " or "
+      },
+      "success": "That’s a strong PIN, note it down somewhere safe",
+      "button_caption": "Set your PIN"
+    },
+    "verify_pin": {
+      "title": "Repeat your Sphereon PIN",
+      "match": "Your PINs match. You're good to go!",
+      "mismatch": "Oops! Your PINs don't match.\nLet's try again.",
+      "button_caption": "Repeat your PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Terms & privacy",
+      "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
+      "features": {
+        "advanced_encryption": "Advanced encryption",
+        "two_factor_authentication": "Two-factor authentication",
+        "regular_security_audits": "Regular security audits",
+        "data_anonymization": "Data anonymization",
+        "strict_access_controls": "Strict access controls"
+      },
+      "footer": {
+        "prefix": "Want to read all the details? Check our",
+        "links": {
+          "terms": "Terms of Use",
+          "privacy": "Privacy Policy",
+          "delimiter": "and"
+        }
+      },
+      "button_caption": "Accept Terms & Privacy"
+    },
+    "import_data_consent": {
+      "title": "Do you want to add this information?",
+      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "pid_provider_title": "PID Provider",
+      "pid_provider_subheading": "Personal Identification Data Provider",
+      "offered_data_title": "PID Provider",
+      "labels": {
+        "given_name": "Given name",
+        "family_name": "Family name",
+        "also_known_as": "Also known as",
+        "gender": "Gender",
+        "birthdate": "Birth date",
+        "birthplace": "Place of birth",
+        "nationality": "Nationality",
+        "address": "Address"
+      },
+      "button_accept": "Yes, I want to add this",
+      "button_decline": "Decline"
+    },
+    "import_scan_card": {
+      "title": "Have your Ausweis card ready for the next steps",
+      "description": "Enter the eID pin and scann your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading.",
+      "button_caption": "Start reading your card"
+    }
+  },
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
   "onboard_summary_info_tab_header_label": "Uw gegevens",
@@ -195,5 +300,19 @@
   "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
   "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
   "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
-  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden"
+  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden",
+  "action_view_all_label": "Alles bekijken",
+  "filter_all_label": "Alles bekijken",
+  "filter_other_label": "Overige",
+  "filter_new_label": "Nieuw",
+  "search_field_default_caption": "Zoeken",
+  "credential_catalog_most_relevant_header_label": "Meest relevante certificaten",
+  "credential_catalog_discover_header_label": "Ontdek meer certificaten",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Uw persoonlijke gegevens van de nationale eID-provider Ausweis.",
+  "ausweis_eid_preview_card_issuer": "Duitse Bundesdruckerei",
+  "ausweis_eid_modal_title": "Verkrijg de Ausweis eID-gegevens",
+  "ausweis_eid_modal_description": "De Persoonsidentificatiegegevens vormen de basis van uw wallet en zijn daarom erg belangrijk om andere certificaten te kunnen verkrijgen.\n\nWeet u zeker dat u deze informatie in uw wallet wilt opslaan?",
+  "ausweis_eid_modal_accept_label": "Persoonlijke informatie importeren",
+  "action_maybe_later_label": "Misschien later"
 }

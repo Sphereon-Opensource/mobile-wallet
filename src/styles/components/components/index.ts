@@ -1,5 +1,11 @@
+export * from './AusweisModal';
 export * from './BadgeButton';
+export * from './CredentialCardPreviewView';
+export * from './CredentialPreviewViewItem';
+export * from './FilterBar';
 export * from './OnboardingHeader';
+export * from './OnboardingPinCode';
+export * from './OnboardingPinCodeSegment';
 export * from './ProgressBarIndicator';
 export * from './SSIAlert';
 export * from './SSIButtonsContainer';
@@ -35,4 +41,5 @@ export * from './SSITextField';
 export * from './SSITextInputField';
 export * from './SSIToast';
 export * from './SSIWelcomeView';
+export * from './SearchField';
 export * from './StepperStepIndicator';

@@ -24,10 +24,15 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportDataConsentScreen,
+  ImportDataLoaderScreen,
+  ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
+  ImportDataAuthenticationScreen,
+  ImportDataFinalScreen,
 } from '../screens/Onboarding';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
@@ -61,6 +66,8 @@ import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
+import AusweisModal from '../modals/AusweisModal';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -101,6 +108,14 @@ const MainStackNavigator = (): JSX.Element => {
         )}
         options={{
           presentation: 'transparentModal',
+        }}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.AUSWEIS_MODAL}
+        component={AusweisModal}
+        options={{
+          presentation: 'transparentModal',
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -160,6 +175,15 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <CredentialsStack />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Tab.Screen
+        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        children={() => (
+          <>
+            <CredentialCatalogStack />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -459,6 +483,32 @@ type StackGroupConfig = {
   }[];
 };
 
+const CredentialCatalogStack = (): JSX.Element => {
+  return (
+    <Stack.Navigator
+      initialRouteName={ScreenRoutesEnum.CREDENTIAL_CATALOG}
+      screenOptions={{
+        animation: 'none',
+      }}>
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_CATALOG}
+        component={CredentialCatalogScreen}
+        options={{
+          headerTitle: 'Credential Catalog', // TODO
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ERROR}
+        component={SSIErrorScreen}
+        options={{
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const step1GroupConfig: StackGroupConfig = {
   titleKey: 'onboard_create_wallet_step_title',
   screens: [
@@ -499,11 +549,37 @@ const step2GroupConfig: StackGroupConfig = {
   ],
 };
 
-const stackGroupsConfig = [step1GroupConfig, step2GroupConfig];
+const step3GroupConfig: StackGroupConfig = {
+  titleKey: 'import_data_title',
+  screens: [
+    {
+      name: 'ImportDataConsent',
+      component: ImportDataConsentScreen,
+    },
+    {
+      name: 'ImportPersonalData',
+      component: ImportPersonalDataScreen,
+    },
+    {
+      name: 'ImportDataAuthentication',
+      component: ImportDataAuthenticationScreen,
+    },
+    {
+      name: 'ImportDataLoader',
+      component: ImportDataLoaderScreen,
+    },
+    {
+      name: 'ImportDataFinal',
+      component: ImportDataFinalScreen,
+    },
+  ],
+};
+
+const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig];
 
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
-    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} />
+    <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
     <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
     <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
     {stackGroupsConfig.map(group => (

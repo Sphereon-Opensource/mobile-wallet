@@ -2,6 +2,8 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {Dimensions} from 'react-native';
+import ScreenContainer from '../../../components/containers/ScreenContainer';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
@@ -30,25 +32,6 @@ const Footer = styled(Container)`
   gap: 10px;
 `;
 
-const Text = styled.Text`
-  color: white;
-  font-size: 16px;
-  line-height: 24px;
-`;
-
-const Title = styled(Text)`
-  font-size: 24px;
-  line-height: 36px;
-  margin-bottom: 12px;
-  font-weight: 600;
-`;
-
-const TitleSection = styled.View`
-  display: flex;
-  align-items: stretch;
-  padding: 20px;
-`;
-
 const Footnote = styled.Text`
   color: white;
   font-size: 11px;
@@ -66,30 +49,29 @@ const EnableBiometricsScreen = () => {
     if (success) onboardingInstance.send(OnboardingMachineEvents.NEXT);
     if (!success) alert('Strong biometrics not enabled or biometrics not enrolled');
   };
+  const footer = (
+    <Footer>
+      <Footnote>{translate('biometrics_description')}</Footnote>
+      <PrimaryButton
+        style={{height: 42, width: width - 40}}
+        caption={translate('biometrics_enable_text')}
+        captionColor={fontColors.light}
+        onPress={handleAuth}
+      />
+      <SecondaryButton
+        style={{height: 42, width: width - 40}}
+        caption={translate('biometrics_disallow')}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)}
+      />
+    </Footer>
+  );
   return (
-    <Container>
-      <TitleSection>
-        <Title>{translate('biometrics_title')}</Title>
-        <Text>{translate('biometrics_subtitle')}</Text>
-      </TitleSection>
+    <ScreenContainer>
+      <ScreenTitleAndDescription title={translate('biometrics_title')} description={translate('biometrics_subtitle')} />
       <Content>
         <CircleWithBorder size={200} backgroundColors={['#7276F799', '#7C40E899']} borderColors={['#7C40E899', '#7C40E866']} borderWidth={30} />
       </Content>
-      <Footer>
-        <Footnote>{translate('biometrics_description')}</Footnote>
-        <PrimaryButton
-          style={{height: 42, width: width - 40}}
-          caption={translate('biometrics_enable_text')}
-          captionColor={fontColors.light}
-          onPress={handleAuth}
-        />
-        <SecondaryButton
-          style={{height: 42, width: width - 40}}
-          caption={translate('biometrics_disallow')}
-          onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)}
-        />
-      </Footer>
-    </Container>
+    </ScreenContainer>
   );
 };
 

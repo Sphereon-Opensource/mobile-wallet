@@ -25,6 +25,7 @@ export interface Props extends CredentialSummary {
 
 const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
   const {branding, credentialStatus, expirationDate, issueDate, issuer, showTime = false, title} = props;
+
   return (
     <Container>
       <View>

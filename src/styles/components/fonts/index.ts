@@ -1,8 +1,8 @@
-import {Animated} from 'react-native';
+import {Animated, TextStyle} from 'react-native';
 import styled from 'styled-components/native';
 
-import {fontStyle} from '../../typography';
 import {fontColors} from '@sphereon/ui-components.core';
+import {fontStyle} from '../../typography';
 
 export const SSITextH0Styled = styled.Text`
   font-family: ${fontStyle.h0SemiBold.fontFamily};
@@ -22,6 +22,18 @@ export const SSITextH1Styled = styled.Text`
   font-weight: ${fontStyle.h1SemiBold.fontWeight};
   line-height: ${fontStyle.h1SemiBold.lineHeight}px;
   height: auto;
+`;
+
+export const SSITextH1RegularStyled = styled.Text`
+  font-family: ${fontStyle.h1Regular.fontFamily};
+  font-size: ${fontStyle.h1Regular.fontSize}px;
+  font-weight: ${fontStyle.h1Regular.fontWeight};
+  line-height: ${fontStyle.h1Regular.lineHeight}px;
+  height: auto;
+`;
+
+export const SSITextH1RegularLightStyled = styled(SSITextH1RegularStyled)`
+  color: ${fontColors.light};
 `;
 
 export const SSITextH1LightStyled = styled(SSITextH1Styled)`
@@ -125,6 +137,7 @@ export const SSITextH4SemiBoldLightStyled = styled(SSITextH4SemiBoldStyled)`
   color: ${fontColors.light};
 `;
 
+// Sync updates with SSITextH5StyleObject below
 export const SSITextH5Styled = styled.Text`
   font-family: ${fontStyle.h5Regular.fontFamily};
   font-size: ${fontStyle.h5Regular.fontSize}px;
@@ -132,6 +145,16 @@ export const SSITextH5Styled = styled.Text`
   line-height: ${fontStyle.h5Regular.lineHeight}px;
   height: auto;
 `;
+
+// Needed for gradient text
+// Sync updates with SSITextH5Styled above
+export const SSITextH5StyleObject: TextStyle = {
+  fontFamily: fontStyle.h5Regular.fontFamily,
+  fontSize: fontStyle.h5Regular.fontSize,
+  fontWeight: fontStyle.h5Regular.fontWeight,
+  lineHeight: fontStyle.h5Regular.lineHeight,
+  height: 'auto',
+};
 
 export const SSITextH5LightStyled = styled(SSITextH5Styled)`
   color: ${fontColors.light};

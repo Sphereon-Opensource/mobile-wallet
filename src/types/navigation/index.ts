@@ -18,6 +18,7 @@ export type StackParamList = {
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
+  AusweisModal: IAusweisModalProps;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -35,6 +36,7 @@ export type StackParamList = {
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
+  CredentialCatalog: Record<string, never>;
 };
 
 export type OnboardingStackParamsList = {
@@ -48,6 +50,13 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
+  ImportPersonalData: Record<string, never>;
+  ImportDataConsent: Record<string, never>;
+  PinCodeSet: Record<string, never>;
+  PinCodeVerify: Record<string, never>;
+  ImportDataAuthentication: Record<string, never>;
+  ImportDataLoader: Record<string, never>;
+  ImportDataFinal: Record<string, never>;
 };
 
 export type OnboardingRoute = keyof OnboardingStackParamsList;
@@ -148,6 +157,11 @@ export interface IPopupModalProps {
   secondaryButton?: IButton;
 }
 
+export interface IAusweisModalProps {
+  onClose: () => Promise<void>;
+  onAccept: () => Promise<void>;
+}
+
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
@@ -198,6 +212,7 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  AUSWEIS_MODAL = 'AusweisModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
 }
@@ -207,6 +222,7 @@ export enum NavigationBarRoutesEnum {
   NOTIFICATIONS = 'NotificationsStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
+  CREDENTIAL_CATALOG = 'CredentialCatalogStack',
 }
 export enum ScreenRoutesEnum {
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
@@ -226,6 +242,7 @@ export enum ScreenRoutesEnum {
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
+  CREDENTIAL_CATALOG = 'CredentialCatalog',
 }
 
 export interface ISiopV2PProps {

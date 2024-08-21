@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {ColorValue, KeyboardTypeOptions, NativeSyntheticEvent, TextInputEndEditingEventData} from 'react-native';
 
+import {selectionElementColors, statusColors} from '@sphereon/ui-components.core';
 import {inputs} from '../../../styles/colors';
 import {
   SSITextInputFieldContainerStyled as Container,
@@ -9,13 +10,13 @@ import {
   SSIFlexDirectionRowViewStyled as InputContainer,
   SSITextH5Styled as LabelCaption,
   SSITextFieldLinearTextGradientStyled as LinearTextGradient,
+  SSITextH5StyleObject,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
 } from '../../../styles/components';
 import {OpacityStyleEnum} from '../../../types';
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon';
-import {selectionElementColors, statusColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
@@ -142,9 +143,13 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
             {label}
           </LabelCaption>
         ) : (
-          <LinearTextGradient style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>
-            <LabelCaption>{label}</LabelCaption>
-          </LinearTextGradient>
+          <LinearTextGradient
+            text={label}
+            textStyle={{
+              ...SSITextH5StyleObject,
+              ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
+            }}
+          />
         )
       ) : null}
       <InputContainer>

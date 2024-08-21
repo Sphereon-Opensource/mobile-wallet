@@ -2,7 +2,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {buttonColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
-import {Text, View} from 'react-native';
+import ScreenContainer from '../../../components/containers/ScreenContainer';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingStackParamsList} from '../../../types';
@@ -17,8 +18,8 @@ const ReadTermsAndPrivacyScreen = ({
 }: Props) => {
   const {onboardingInstance} = useContext(OnboardingContext);
   return (
-    <View>
-      <Text>{`Reading ${document}`}</Text>
+    <ScreenContainer>
+      <ScreenTitleAndDescription title={document} />
       <PrimaryButton
         style={{height: 42, width: 300}}
         caption={translate('action_back_label')}
@@ -26,7 +27,7 @@ const ReadTermsAndPrivacyScreen = ({
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS)}
       />
-    </View>
+    </ScreenContainer>
   );
 };
 

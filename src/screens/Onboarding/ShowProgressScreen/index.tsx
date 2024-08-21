@@ -2,18 +2,13 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {ReactElement, useContext} from 'react';
 import {View} from 'react-native';
-import styled from 'styled-components/native';
 import EID_card from '../../../assets/images/EID_card.svg';
+import ScreenContainer from '../../../components/containers/ScreenContainer';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import Stepper from '../../../components/steppers/Stepper';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {
-  SSIBackgroundPrimaryDarkColorCss,
-  SSITextH0LightStyled,
-  SSITextH2LightStyled,
-  SSITextH2SemiBoldLightStyled,
-  SSITextH3RegularLightStyled,
-} from '../../../styles/components';
+import {SSITextH2SemiBoldLightStyled, SSITextH3RegularLightStyled} from '../../../styles/components';
 import {StepContent, StepState} from '../../../types';
 import {OnboardingMachineEvents, OnboardingMachineStep} from '../../../types/machines/onboarding';
 
@@ -57,12 +52,6 @@ const renderStepContent =
   (stepState: StepState) =>
     <StepInformation title={title} description={description} Image={Image} stepState={stepState} />;
 
-const Container = styled(View)`
-  ${SSIBackgroundPrimaryDarkColorCss};
-  flex: 1;
-  padding: 10px 24px 36px;
-`;
-
 type ScreenText = {
   titleKey: string;
   descriptionKey?: string;
@@ -75,11 +64,12 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
   },
   [OnboardingMachineStep.SECURE_WALLET]: {titleKey: 'onboard_progress_pages.secure_wallet.title'},
   [OnboardingMachineStep.IMPORT_PERSONAL_DATA]: {titleKey: 'onboard_progress_pages.import_personal_data.title'},
+  [OnboardingMachineStep.FINAL]: {titleKey: 'import_data_setup_complete_title'},
 };
 
 const ShowProgressScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {currentStep} = onboardingInstance.getSnapshot().context;
+  const {currentStep, country} = onboardingInstance.getSnapshot().context;
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({
@@ -95,7 +85,7 @@ const ShowProgressScreen = () => {
       // After the create wallet step, the description changes to a more specific one
       description:
         currentStep > OnboardingMachineStep.CREATE_WALLET
-          ? translate('onboard_steps.import_personal_data.description.deutchland')
+          ? translate(`onboard_steps.import_personal_data.description.${country?.toLowerCase()}`)
           : translate('onboard_steps.import_personal_data.description.default'),
       Image: (
         <View style={{marginTop: 24}}>
@@ -104,20 +94,28 @@ const ShowProgressScreen = () => {
       ),
     }),
   ];
+
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: '100%'}}
+      caption={translate('action_next_label')}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+    />
+  );
+
   return (
-    <Container>
-      <SSITextH0LightStyled>{translate(titleKey)}</SSITextH0LightStyled>
-      {descriptionKey && <SSITextH2LightStyled style={{opacity: 0.8, marginTop: 8}}>{translate(descriptionKey)}</SSITextH2LightStyled>}
-      <View style={{marginTop: 32, marginBottom: 'auto'}}>
+    <ScreenContainer footer={footer}>
+      <ScreenTitleAndDescription
+        title={translate(titleKey)}
+        description={descriptionKey && translate(descriptionKey)}
+        titleVariant="h0"
+        descriptionStyle={{opacity: 0.8}}
+      />
+      <View style={{marginBottom: 'auto'}}>
         <Stepper activeStep={currentStep - 1} content={stepperContent} ringColor={backgroundColors.primaryDark} />
       </View>
-      <PrimaryButton
-        style={{height: 42, width: '100%'}}
-        caption={translate('action_next_label')}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
-    </Container>
+    </ScreenContainer>
   );
 };
 

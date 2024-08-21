@@ -1,7 +1,6 @@
+import styled from 'styled-components/native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {LinearGradientText} from 'react-native-linear-gradient-text';
-import styled from 'styled-components/native';
-
 import {gradientsColors} from '@sphereon/ui-components.core';
 import {SSIRoundedEdgesCss} from '../css';
 

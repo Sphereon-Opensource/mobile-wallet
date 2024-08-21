@@ -1,11 +1,12 @@
 import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {v4 as uuidv4} from 'uuid';
-import {assign, createMachine, interpret} from 'xstate';
-import {APP_ID} from '../@config/constants';
+import {GuardPredicate, assign, createMachine, interpret} from 'xstate';
+import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
 import {
+  Country,
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
   OnboardingBiometricsStatus,
@@ -18,6 +19,7 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
+import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -26,6 +28,18 @@ const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep ==
 const isBiometricsEnabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
 const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
 const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
+const validatePinCode = (pinCode: string) =>
+  validate(pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid && validate(Number(pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
+
+type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachineEventTypes>['predicate'];
+
+const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
+const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
+const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
+const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotNil()]).isValid;
+const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
+const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
+  validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -38,6 +52,7 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importDataConsent},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -46,19 +61,29 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.enterCountry,
           actions: assign({currentStep: 1}),
         },
+        {
+          cond: ({currentStep}) => currentStep === 3,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: 2}),
+        },
+        {
+          cond: ({currentStep}) => currentStep === 4,
+          target: OnboardingMachineStateType.importDataConsent,
+          actions: assign({currentStep: 3}),
+        },
       ],
     },
   },
   enterName: {
     on: {
-      NEXT: OnboardingMachineStateType.enterEmailAddress,
+      NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_NAME: {actions: assign({name: (_, event) => event.data})},
     },
   },
   enterEmailAddress: {
     on: {
-      NEXT: OnboardingMachineStateType.enterCountry,
+      NEXT: {cond: OnboardingMachineGuards.isEmailValid, target: OnboardingMachineStateType.enterCountry},
       PREVIOUS: OnboardingMachineStateType.enterName,
       SET_EMAIL_ADDRESS: {actions: assign({emailAddress: (_, event) => event.data})},
     },
@@ -66,6 +91,7 @@ const states: OnboardingStatesConfig = {
   enterCountry: {
     on: {
       NEXT: {
+        cond: OnboardingMachineGuards.isCountryValid,
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 2}),
       },
@@ -75,9 +101,19 @@ const states: OnboardingStatesConfig = {
   },
   enterPinCode: {
     on: {
-      NEXT: OnboardingMachineStateType.verifyPinCode,
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.doPinsMatch,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isPinCodeValid,
+          target: OnboardingMachineStateType.verifyPinCode,
+        },
+      ],
       PREVIOUS: OnboardingMachineStateType.showProgress,
       SET_PIN_CODE: {actions: assign({pinCode: (_, event) => event.data})},
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
     },
   },
   verifyPinCode: {
@@ -98,6 +134,7 @@ const states: OnboardingStatesConfig = {
       ],
       PREVIOUS: OnboardingMachineStateType.enterPinCode,
       SET_BIOMETRICS: {actions: assign({biometricsEnabled: (_, event) => event.data})},
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
     },
   },
   enableBiometrics: {
@@ -127,6 +164,10 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.enterPinCode,
         },
       ],
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 3}),
+      },
     },
   },
   readTerms: {
@@ -137,6 +178,40 @@ const states: OnboardingStatesConfig = {
   readPrivacy: {
     on: {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  importDataConsent: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.showProgress,
+      NEXT: OnboardingMachineStateType.importPersonalData,
+      SKIP_IMPORT: OnboardingMachineStateType.importDataLoader,
+    },
+  },
+  importPersonalData: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      NEXT: OnboardingMachineStateType.importDataAuthentication,
+    },
+  },
+  importDataAuthentication: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      NEXT: OnboardingMachineStateType.importDataLoader,
+    },
+  },
+  importDataLoader: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataAuthentication,
+      NEXT: OnboardingMachineStateType.importDataFinal,
+    },
+  },
+  importDataFinal: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataLoader,
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 4}),
+      },
     },
   },
 };
@@ -164,9 +239,10 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     credentialData,
     name: '',
     emailAddress: '',
-    country: undefined,
+    country: Country.DEUTSCHLAND,
     pinCode: '',
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
+    verificationPinCode: '',
     termsAndPrivacyAccepted: false,
     currentStep: 1,
   };
@@ -175,7 +251,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
     id: 'Onboarding',
     predictableActionArguments: true,
-    initial: OnboardingMachineStateType.showIntro,
+    initial: OnboardingMachineStateType.importPersonalData,
     context: initialContext,
     schema: {
       events: {} as OnboardingMachineEventTypes,
@@ -185,6 +261,24 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.isStepSecureWallet;
+          }
+        | {
+            type: OnboardingMachineGuards.isStepImportPersonalData;
+          }
+        | {
+            type: OnboardingMachineGuards.isNameValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isEmailValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isCountryValid;
+          }
+        | {
+            type: OnboardingMachineGuards.isPinCodeValid;
+          }
+        | {
+            type: OnboardingMachineGuards.doPinsMatch;
           },
     },
     states: states,
@@ -237,6 +331,12 @@ export class OnboardingMachine {
           isBiometricsEnabled,
           isBiometricsDisabled,
           isBiometricsUndetermined,
+          isStepImportPersonalData,
+          isNameValid,
+          isEmailValid,
+          isCountryValid,
+          isPinCodeValid,
+          doPinsMatch,
           ...opts?.guards,
         },
       }),

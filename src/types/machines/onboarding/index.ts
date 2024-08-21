@@ -12,12 +12,15 @@ export type OnboardingCredentialData = {
   proofFormat?: ProofFormat;
 };
 
-export type Country = 'Deutschland';
+export enum Country {
+  DEUTSCHLAND = 'DEUTSCHLAND',
+}
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
   SECURE_WALLET = 2,
   IMPORT_PERSONAL_DATA = 3,
+  FINAL = 4,
 }
 
 export enum OnboardingBiometricsStatus {
@@ -33,6 +36,7 @@ export type OnboardingMachineContext = {
   country?: Country;
   pinCode: string;
   biometricsEnabled: OnboardingBiometricsStatus;
+  verificationPinCode: string;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
 };
@@ -50,6 +54,11 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  importDataConsent = 'importDataConsent',
+  importPersonalData = 'importPersonalData',
+  importDataAuthentication = 'importDataAuthentication',
+  importDataLoader = 'importDataLoader',
+  importDataFinal = 'importDataFinal',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -62,6 +71,7 @@ export enum OnboardingMachineEvents {
   SET_EMAIL_ADDRESS = 'SET_EMAIL_ADDRESS',
   SET_COUNTRY = 'SET_COUNTRY',
   SET_PIN_CODE = 'SET_PIN_CODE',
+  SET_VERIFICATION_PIN_CODE = 'SET_VERIFICATION_PIN_CODE',
   READ_TERMS = 'READ_TERMS',
   READ_PRIVACY = 'READ_PRIVACY',
   SKIP_IMPORT = 'SKIP_IMPORT',
@@ -75,6 +85,7 @@ export type SetNameEvent = {type: OnboardingMachineEvents.SET_NAME; data: string
 export type SetEmailAddressEvent = {type: OnboardingMachineEvents.SET_EMAIL_ADDRESS; data: string};
 export type SetCountryEvent = {type: OnboardingMachineEvents.SET_COUNTRY; data: Country};
 export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data: string};
+export type SetVerificationPinCodeEvent = {type: OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE; data: string};
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
 export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
@@ -88,6 +99,7 @@ export type OnboardingMachineEventTypes =
   | SetEmailAddressEvent
   | SetCountryEvent
   | SetPinCodeEvent
+  | SetVerificationPinCodeEvent
   | ReadTermsEvent
   | ReadPrivacyEvent
   | SkipImportEvent
@@ -101,6 +113,12 @@ export enum OnboardingMachineGuards {
   isBiometricsEnabled = 'isBiometricsEnabled',
   isBiometricsDisabled = 'isBiometricsDisabled',
   isBiometricsUndetermined = 'isBiometricsUndetermined',
+  isNameValid = 'isNameValid',
+  isEmailValid = 'isEmailValid',
+  isCountryValid = 'isCountryValid',
+  isPinCodeValid = 'isPinCodeValid',
+  doPinsMatch = 'doPinsMatch',
+  isStepImportPersonalData = 'isStepImportPersonalData',
 }
 
 // States Config

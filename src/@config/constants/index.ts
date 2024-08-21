@@ -13,8 +13,7 @@ export const APP_ID = 'sphereon:ssi-wallet';
 export const DID_PREFIX = 'did';
 
 export const CONTACT_ALIAS_MAX_LENGTH = 50;
-export const FIRST_NAME_MAX_LENGTH = 50;
-export const LAST_NAME_MAX_LENGTH = 50;
+export const NAME_MAX_LENGTH = 50;
 export const EMAIL_ADDRESS_MAX_LENGTH = 50;
 
 export const VERIFICATION_CODE_MAX_RETRIES = 3;
