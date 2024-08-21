@@ -3,7 +3,7 @@
   "compilerOptions": {
     // Only values not in expo/tsconfig.base
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true, // needed for reflect-metada/typeorm
     "skipLibCheck": true,
     "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
     "strict": true /* Enable all strict type-checking options. */,
