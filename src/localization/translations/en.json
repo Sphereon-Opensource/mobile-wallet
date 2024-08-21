@@ -5,7 +5,13 @@
   "credentials_view_item_expires_on": "Expires on",
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
-  "biometrics_title": "Authenticate with biometrics",
+
+  "biometrics_title": "Do you want to enable Face ID?",
+  "biometrics_subtitle": "Use biometric login en authentication with your face for faster and easier access to your account.",
+  "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
+  "biometrics_enable_text": "Enable now",
+  "biometrics_disallow": "Maybe later",
+
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
@@ -14,6 +20,7 @@
   "qr_scanner_qr_no_longer_valid_message": "QR code is no longer valid. Please try to scan a new QR code.",
   "connection_details_view_details": "Details",
   "action_confirm_label": "Confirm",
+  "action_continue_label": "Continue",
   "action_cancel_label": "Cancel",
   "action_decline_label": "Decline",
   "action_accept_label": "Accept",
@@ -79,6 +86,7 @@
   "browser_open_auth_body": "The relying party requires you to authenticate. Your default browser will be used for this action",
   "browser_open_action_next_label": "Open browser",
   "action_next_label": "Next",
+  "action_back_label": "Back",
   "action_go_label": "Go!",
   "onboarding_welcome_store_body": "Stores credentials issued by 3rd parties in an encrypted form and directly on your device. Only you will have access to your data.\n\nIt does not interact with any Sphereon servers unless you opt in for backups or enterprise features for instance.",
   "onboarding_welcome_share_body": "Allows you to present credentials to 3rd party verifiers.\n\nOnly the information you consent to will ever be shared. No automatic disclosure happens. You will always be in control.",
@@ -93,6 +101,19 @@
   "terms_of_service_decline_action_caption": "Exit app",
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
+
+  "import_data_auth_step_title": "Enter your sphereon pin",
+
+  "import_data_loader_step_title": "One moment",
+  "import_data_loader_step_subtitle": "Getting your personal information.",
+
+  "import_data_final_step_title": "Your information is imported. Is it all correct?",
+
+  "import_data_setup_complete_title": "Setup complete",
+
+  "import_data_title": "Import personal data",
+  "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
+  "scan_card_step_title": "Scan to import your data",
   "personal_data_title": "Enter personal data",
   "personal_data_subtitle": "Personalize your wallet by providing your name and email address. We will create a self-asserted credential for you to use. The information you provide does not leave your device!",
   "first_name_label": "First name",
@@ -119,6 +140,132 @@
   "lock_subtitle": "Enter your pin code.",
   "lock_emergency_button_caption": "Emergency call",
   "show_raw_credential_button_caption": "Raw credential",
+  "onboard_create_wallet_step_title": "Create wallet",
+  "onboard_secure_wallet_step_title": "Secure wallet",
+  "onboard_progress_pages": {
+    "create_wallet": {"title": "Getting started", "description": "Each section should take only a couple of minutes to complete."},
+    "secure_wallet": {"title": "You're halfway there", "description": null},
+    "import_personal_data": {"title": "Almost done, last section", "description": null}
+  },
+  "onboard_steps": {
+    "create_wallet": {"title": "Create wallet", "description": "Set up an account with your name, email address and country of residence."},
+    "secure_wallet": {
+      "title": "Secure wallet",
+      "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login."
+    },
+    "import_personal_data": {
+      "title": "Import personal information",
+      "description": {
+        "default": "Import your personal information from your national eID provider.",
+        "deutschland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Welcome to your Sphereon Wallet",
+      "description": "Receive and share accreditations, credentials, badges and identity details.",
+      "button_caption": "Get started"
+    },
+    "enter_name": {
+      "title": "Enter your name",
+      "text_field": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "errors": {
+          "missing": "Please fill in a name"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Enter your email address",
+      "text_field": {
+        "label": "Email address",
+        "placeholder": "Yout email address",
+        "errors": {
+          "missing": "Please fill in an email address",
+          "invalid": "Please fill in a valid email address"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Your country of residence",
+      "select": {
+        "label": "Country",
+        "placeholder": "You country of residence",
+        "errors": {
+          "missing": "Please select a country"
+        }
+      },
+      "modal": {
+        "title": "Select country",
+        "search_placeholder": "Search"
+      }
+    },
+    "enter_pin": {
+      "title": "Set a new 6-digit Sphereon PIN",
+      "requirements": {
+        "title": "Your PIN should not contain:",
+        "not_same_digits": "similar digits",
+        "not_sequential_digits": "A consecutive sequence",
+        "invalid_example_prefix": "Like: ",
+        "invalid_example_delimiter": " or "
+      },
+      "success": "That’s a strong PIN, note it down somewhere safe",
+      "button_caption": "Set your PIN"
+    },
+    "verify_pin": {
+      "title": "Repeat your Sphereon PIN",
+      "match": "Your PINs match. You're good to go!",
+      "mismatch": "Oops! Your PINs don't match.\nLet's try again.",
+      "button_caption": "Repeat your PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Terms & privacy",
+      "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
+      "features": {
+        "advanced_encryption": "Advanced encryption",
+        "two_factor_authentication": "Two-factor authentication",
+        "regular_security_audits": "Regular security audits",
+        "data_anonymization": "Data anonymization",
+        "strict_access_controls": "Strict access controls"
+      },
+      "footer": {
+        "prefix": "Want to read all the details? Check our",
+        "links": {
+          "terms": "Terms of Use",
+          "privacy": "Privacy Policy",
+          "delimiter": "and"
+        }
+      },
+      "button_caption": "Accept Terms & Privacy"
+    },
+    "import_data_consent": {
+      "title": "Do you want to add this information?",
+      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "pid_provider_title": "PID Provider",
+      "pid_provider_subheading": "Personal Identification Data Provider",
+      "offered_data_title": "PID Provider",
+      "labels": {
+        "given_name": "Given name",
+        "family_name": "Family name",
+        "also_known_as": "Also known as",
+        "gender": "Gender",
+        "birthdate": "Birth date",
+        "birthplace": "Place of birth",
+        "nationality": "Nationality",
+        "address": "Address"
+      },
+      "button_accept": "Yes, I want to add this",
+      "button_decline": "Decline"
+    },
+    "import_scan_card": {
+      "title": "Have your Ausweis card ready for the next steps",
+      "description": "Enter the eID pin and scann your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading.",
+      "button_caption": "Start reading your card"
+    }
+  },
+
   "onboard_summary_title": "Your entered details",
   "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
   "onboard_summary_info_tab_header_label": "Your information",
@@ -168,5 +315,20 @@
   "siopV2_machine_get_request_error_title": "Getting siopV2 request",
   "siopV2_machine_retrieve_contact_error_title": "Retrieve contact",
   "siopV2_machine_add_contact_identity_error_title": "Add contact identity",
-  "siopV2_machine_send_response_error_title": "Sending siopV2 response"
+  "siopV2_machine_send_response_error_title": "Sending siopV2 response",
+  "action_view_all_label": "View all",
+  "filter_all_label": "View all",
+  "filter_other_label": "Other",
+  "filter_new_label": "New",
+  "search_field_default_caption": "Search",
+  "credential_catalog_most_relevant_header_label": "Most relevant credentials",
+  "credential_catalog_discover_header_label": "Discover more credentials",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Your personal information from the the national eID provider Ausweis.",
+  "ausweis_eid_preview_card_issuer": "German Bundesdruckerei",
+  "ausweis_eid_modal_title": "Get the Ausweis eID data",
+  "ausweis_eid_modal_description": "The Person Identification Data is the basis of your wallet and therefore very important to be able to obtain other credentials.\n\nAre you sure you want this information in your wallet?",
+  "ausweis_eid_modal_accept_label": "Import personal information",
+  "action_maybe_later_label": "Maybe later",
+  "item_not_yet_available_message": "This item is currently not yet available."
 }

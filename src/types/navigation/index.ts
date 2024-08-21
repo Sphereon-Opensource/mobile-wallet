@@ -1,12 +1,12 @@
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
-import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
+import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
@@ -18,6 +18,7 @@ export type StackParamList = {
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
+  AusweisModal: IAusweisModalProps;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -25,12 +26,6 @@ export type StackParamList = {
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  Welcome: IHasOnboardingContext & IHasOnNextProps;
-  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
-  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
-  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   BrowserOpen: IBrowserOpen;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -41,7 +36,30 @@ export type StackParamList = {
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
+  CredentialCatalog: Record<string, never>;
 };
+
+export type OnboardingStackParamsList = {
+  AcceptTermsAndPrivacy: Record<string, never>;
+  ReadTermsAndPrivacy: {document: 'terms' | 'privacy'};
+  EnableBiometrics: Record<string, never>;
+  EnterCountry: Record<string, never>;
+  EnterEmailAddress: Record<string, never>;
+  EnterName: Record<string, never>;
+  EnterPinCode: Record<string, never>;
+  ShowProgress: Record<string, never>;
+  VerifyPinCode: Record<string, never>;
+  Welcome: Record<string, never>;
+  ImportPersonalData: Record<string, never>;
+  ImportDataConsent: Record<string, never>;
+  PinCodeSet: Record<string, never>;
+  PinCodeVerify: Record<string, never>;
+  ImportDataAuthentication: Record<string, never>;
+  ImportDataLoader: Record<string, never>;
+  ImportDataFinal: Record<string, never>;
+};
+
+export type OnboardingRoute = keyof OnboardingStackParamsList;
 
 export type IBrowserOpen = IHasOnBackProps &
   IHasOnNextProps & {
@@ -51,21 +69,12 @@ export type IBrowserOpen = IHasOnBackProps &
     actionNextLabeli18n?: string;
   };
 
-interface IPersonalDataProps {
-  isDisabled: (personalData: OnboardingPersonalData) => boolean;
-  onNext: (personalData: OnboardingPersonalData) => void;
-  onPersonalData: (personalData: OnboardingPersonalData) => void;
-}
-
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingMachineInterpreter;
 }
 
-export interface IHasOnboardingContext {
-  context: OnboardingMachineContext;
-}
-
 export interface IHasOnBackProps {
+  onClick: () => {};
   onBack: () => Promise<void>;
 }
 
@@ -148,6 +157,11 @@ export interface IPopupModalProps {
   secondaryButton?: IButton;
 }
 
+export interface IAusweisModalProps {
+  onClose: () => Promise<void>;
+  onAccept: () => Promise<void>;
+}
+
 export interface ICredentialSelectTypeProps {
   issuer: string;
   credentialTypes: Array<ICredentialTypeSelection>;
@@ -198,6 +212,7 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  AUSWEIS_MODAL = 'AusweisModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
 }
@@ -207,10 +222,9 @@ export enum NavigationBarRoutesEnum {
   NOTIFICATIONS = 'NotificationsStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
+  CREDENTIAL_CATALOG = 'CredentialCatalogStack',
 }
-
 export enum ScreenRoutesEnum {
-  WELCOME = 'Welcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
@@ -221,18 +235,14 @@ export enum ScreenRoutesEnum {
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
-  TERMS_OF_SERVICE = 'TermsOfService',
-  PERSONAL_DATA = 'PersonalData',
-  PIN_CODE_SET = 'PinCodeSet',
-  PIN_CODE_VERIFY = 'PinCodeVerify',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
-  ONBOARDING_SUMMARY = 'OnboardingSummary',
   BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
+  CREDENTIAL_CATALOG = 'CredentialCatalog',
 }
 
 export interface ISiopV2PProps {
