@@ -8,11 +8,20 @@ import ScreenTitleAndDescription from '../../../components/containers/ScreenTitl
 import PinCode from '../../../components/pinCodes/OnboardingPinCode';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {useHasStrongBiometrics} from '../EnableBiometricsScreen/use-biometrics';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
-import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 
 const VerifyPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  useHasStrongBiometrics({
+    onBiometricsConfirmed: () => {
+      onboardingInstance.send({
+        type: OnboardingMachineEvents.SET_BIOMETRICS,
+        data: OnboardingBiometricsStatus.DISABLED,
+      });
+    },
+  });
   const {
     context: {pinCode: pinCodeContext, verificationPinCode: verificationPinCodeContext},
   } = onboardingInstance.getSnapshot();

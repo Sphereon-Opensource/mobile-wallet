@@ -23,14 +23,20 @@ export enum OnboardingMachineStep {
   FINAL = 4,
 }
 
+export enum OnboardingBiometricsStatus {
+  INDETERMINATE = 1,
+  ENABLED = 2,
+  DISABLED = 3,
+}
+
 export type OnboardingMachineContext = {
   credentialData: OnboardingCredentialData;
   name: string;
   emailAddress: string;
   country?: Country;
   pinCode: string;
+  biometricsEnabled: OnboardingBiometricsStatus;
   verificationPinCode: string;
-  biometricsEnabled: boolean;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
 };
@@ -69,6 +75,8 @@ export enum OnboardingMachineEvents {
   READ_TERMS = 'READ_TERMS',
   READ_PRIVACY = 'READ_PRIVACY',
   SKIP_IMPORT = 'SKIP_IMPORT',
+  SET_BIOMETRICS = 'SET_BIOMETRICS',
+  SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
 }
 
 export type NextEvent = {type: OnboardingMachineEvents.NEXT};
@@ -81,6 +89,8 @@ export type SetVerificationPinCodeEvent = {type: OnboardingMachineEvents.SET_VER
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
 export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
+export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
+export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -92,12 +102,17 @@ export type OnboardingMachineEventTypes =
   | SetVerificationPinCodeEvent
   | ReadTermsEvent
   | ReadPrivacyEvent
-  | SkipImportEvent;
+  | SkipImportEvent
+  | SkipBiometricsEvent
+  | SetBiometricsEvent;
 
 // Guards
 export enum OnboardingMachineGuards {
   isStepCreateWallet = 'isStepCreateWallet',
   isStepSecureWallet = 'isStepSecureWallet',
+  isBiometricsEnabled = 'isBiometricsEnabled',
+  isBiometricsDisabled = 'isBiometricsDisabled',
+  isBiometricsUndetermined = 'isBiometricsUndetermined',
   isNameValid = 'isNameValid',
   isEmailValid = 'isEmailValid',
   isCountryValid = 'isCountryValid',
