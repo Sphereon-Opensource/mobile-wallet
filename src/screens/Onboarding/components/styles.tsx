@@ -50,11 +50,10 @@ export const ModalText = styled(Text)`
 `;
 
 export const ModalCard = styled.View`
-  padding-horizontal: 36px;
-  padding-vertical: 30px;
+  padding: 30px 36px;
   border-radius: 20px;
   display: flex;
-  gap: 36px;
+  gap: 10px;
   align-items: center;
   background-color: white;
 `;
@@ -63,7 +62,7 @@ export const IconContainer = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const ProgressRow = styled.View`

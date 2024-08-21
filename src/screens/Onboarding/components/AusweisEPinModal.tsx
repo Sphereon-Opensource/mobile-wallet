@@ -37,6 +37,7 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
       </View>
       <ContentContainer>
         <PinInput
+          inputProps={{placeholder: ''}}
           inputStyle={{
             height: 50,
             width: 40,
