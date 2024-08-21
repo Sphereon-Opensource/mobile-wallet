@@ -308,5 +308,6 @@
   "ausweis_eid_modal_title": "Verkrijg de Ausweis eID-gegevens",
   "ausweis_eid_modal_description": "De Persoonsidentificatiegegevens vormen de basis van uw wallet en zijn daarom erg belangrijk om andere certificaten te kunnen verkrijgen.\n\nWeet u zeker dat u deze informatie in uw wallet wilt opslaan?",
   "ausweis_eid_modal_accept_label": "Persoonlijke informatie importeren",
-  "action_maybe_later_label": "Misschien later"
+  "action_maybe_later_label": "Misschien later",
+  "item_not_yet_available_message": "Dit item is nog niet beschikbaar."
 }

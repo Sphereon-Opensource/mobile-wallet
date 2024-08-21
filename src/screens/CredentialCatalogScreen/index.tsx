@@ -1,5 +1,5 @@
 import React, {FC, ReactElement} from 'react';
-import {RefreshControl, ListRenderItemInfo} from 'react-native';
+import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
@@ -11,6 +11,7 @@ import FilterBar from '../../components/bars/FilterBar';
 import CredentialPreviewViewItem from '../../components/views/CredentialPreviewViewItem';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import Localization from '../../localization/Localization';
+import {showToast} from '../../utils';
 import {
   CredentialCatalogScreenPreviewCredentialContainerStyled as PreviewCredentialContainer,
   CredentialCatalogScreenRelevantCredentialContainerStyled as RelevantCredentialContainer,
@@ -24,7 +25,7 @@ import {
   CredentialCatalogCredentialListContainerStyled as CredentialListContainer,
   CredentialCatalogScreenPreviewCredentialContentContainerStyled as PreviewCredentialContentContainer,
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
+import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 
@@ -157,6 +158,13 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     setRefreshing(false);
   };
 
+  const showNotYetImplementedToast = async (): Promise<void> => {
+    showToast(ToastTypeEnum.TOAST_SUCCESS, {
+      message: Localization.translate('item_not_yet_available_message'),
+      showBadge: false,
+    });
+  };
+
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialPreview>): ReactElement => {
     const credentialItem = <CredentialPreviewViewItem branding={itemInfo.item.branding} title={itemInfo.item.title} issuer={itemInfo.item.issuer} />;
 
@@ -169,7 +177,11 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
         itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
-    return <ItemContainer style={style}>{credentialItem}</ItemContainer>;
+    return (
+      <ItemContainer onPress={showNotYetImplementedToast} style={style}>
+        {credentialItem}
+      </ItemContainer>
+    );
   };
 
   return (
@@ -181,9 +193,11 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           <RelevantCredentialContainer>
             <RelevantCredentialHeaderContainer>
               <HeaderCaption>{Localization.translate('credential_catalog_most_relevant_header_label')}</HeaderCaption>
-              <ViewAllContainer>
-                <ViewAllText text={Localization.translate('action_view_all_label')} />
-              </ViewAllContainer>
+              <TouchableWithoutFeedback onPress={showNotYetImplementedToast}>
+                <ViewAllContainer>
+                  <ViewAllText text={Localization.translate('action_view_all_label')} />
+                </ViewAllContainer>
+              </TouchableWithoutFeedback>
             </RelevantCredentialHeaderContainer>
             <CredentialCardPreviewView
               title={Localization.translate('ausweis_eid_preview_card_title')}
@@ -197,9 +211,11 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
       <DiscoverCredentialsContainer>
         <DiscoverCredentialsHeaderContainer>
           <HeaderCaption>{Localization.translate('credential_catalog_discover_header_label')}</HeaderCaption>
-          <ViewAllContainer>
-            <ViewAllText text={Localization.translate('action_view_all_label')} />
-          </ViewAllContainer>
+          <TouchableWithoutFeedback onPress={showNotYetImplementedToast}>
+            <ViewAllContainer>
+              <ViewAllText text={Localization.translate('action_view_all_label')} />
+            </ViewAllContainer>
+          </TouchableWithoutFeedback>
         </DiscoverCredentialsHeaderContainer>
         <CredentialListContainer>
           <SwipeListView
