@@ -1,6 +1,6 @@
 import {useHeaderHeight} from '@react-navigation/elements';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import {Platform, ScrollView, ScrollViewProps, StatusBar, View, ViewProps} from 'react-native';
+import {Platform, ScrollView, StatusBar, View, ViewProps, ViewStyle} from 'react-native';
 import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 
 const IOS_EXTRA_BOTTOM_PADDING = 16;
 
-export const contentContainerStyle: ScrollViewProps['contentContainerStyle'] = {
+export const contentContainerStyle: ViewStyle = {
   paddingHorizontal: 24,
   paddingTop: 0,
 };

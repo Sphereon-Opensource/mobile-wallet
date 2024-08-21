@@ -251,7 +251,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
     id: 'Onboarding',
     predictableActionArguments: true,
-    initial: OnboardingMachineStateType.importPersonalData,
+    initial: OnboardingMachineStateType.showIntro,
     context: initialContext,
     schema: {
       events: {} as OnboardingMachineEventTypes,
