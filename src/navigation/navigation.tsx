@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
@@ -10,9 +10,11 @@ import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
+import AusweisModal from '../modals/AusweisModal';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
@@ -24,16 +26,18 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportDataAuthenticationScreen,
   ImportDataConsentScreen,
+  ImportDataFinalScreen,
   ImportDataLoaderScreen,
   ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
-  ImportDataAuthenticationScreen,
-  ImportDataFinalScreen,
 } from '../screens/Onboarding';
+import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
+import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
@@ -47,6 +51,10 @@ import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
+import LoadingScreen from '../screens/Share/LoadingScreen';
+import ScanQrScreen from '../screens/Share/ScanQrScreen';
+import SelectCredentialsScreen from '../screens/Share/SelectCredentialsScreen';
+import ShareVerifyPinCodeScreen from '../screens/Share/VerifyPinCodeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
@@ -58,23 +66,23 @@ import {
   OnboardingRoute,
   OnboardingStackParamsList,
   ScreenRoutesEnum,
+  ShareStackParamsList,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
+import {ShareMachineEvents} from '../types/machines/share';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
+import {ShareContext, ShareProvider} from './machines/shareStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
-import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
-import AusweisModal from '../modals/AusweisModal';
-import IncorrectInformationScreen from 'src/screens/Onboarding/IncorrectInformationScreen';
-import CompleteOnboardingScreen from 'src/screens/Onboarding/CompleteOnboardingScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
+const ShareBaseStack = createNativeStackNavigator<ShareStackParamsList>();
 
 const Tab = createBottomTabNavigator();
 
@@ -143,6 +151,27 @@ const MainStackNavigator = (): JSX.Element => {
   );
 };
 
+export const ShareStack = (): JSX.Element => {
+  const {shareInstance} = useContext(ShareContext);
+  return (
+    <ShareBaseStack.Navigator
+      screenOptions={{
+        animation: 'none',
+        header: props => <SSIHeaderBar {...props} onBack={() => void shareInstance.send(ShareMachineEvents.PREVIOUS)} />,
+      }}>
+      <ShareBaseStack.Screen name="ScanQr" component={ScanQrScreen} options={{headerShown: false}} />
+      <ShareBaseStack.Screen name="SelectCredentials" component={SelectCredentialsScreen} />
+      <ShareBaseStack.Screen name="VerifyPinCode" component={ShareVerifyPinCodeScreen} />
+      <ShareBaseStack.Screen name="ShareLoading" component={LoadingScreen} options={{headerShown: false}} />
+      <ShareBaseStack.Screen name="QrLoading" component={LoadingScreen} options={{headerShown: false}} />
+    </ShareBaseStack.Navigator>
+  );
+};
+
+export const ShareStackScreenWithContext = (props: any): JSX.Element => {
+  return <ShareProvider />;
+};
+
 const TabStackNavigator = (): JSX.Element => {
   return (
     <Tab.Navigator
@@ -158,7 +187,7 @@ const TabStackNavigator = (): JSX.Element => {
         name={NavigationBarRoutesEnum.QR}
         children={() => (
           <>
-            <QRStack />
+            <ShareStackScreenWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -977,7 +1006,7 @@ const AppNavigator = (): JSX.Element => {
       {lockState === WalletAuthLockState.ONBOARDING ? (
         <Stack.Screen
           name={SwitchRoutesEnum.ONBOARDING}
-          component={OnboardingStackScreenWithContext}
+          component={MainStackNavigator}
           initialParams={{
             customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
           }}

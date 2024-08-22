@@ -7,7 +7,7 @@ import {ParamsList} from '../../../types';
 import Indicator from './Indicator';
 import Tab from './Tab';
 
-const DEFAULT_INDICATOR_PROPORTION_WIDTH = 1 / 2;
+const DEFAULT_INDICATOR_PROPORTION_WIDTH = 1;
 
 // The MaterialTopTabBarProps passed don't allow for generic ParamList type so
 // we have to apply the ParamsList type per usage explicitly by type shadowing.
@@ -18,12 +18,13 @@ const DEFAULT_INDICATOR_PROPORTION_WIDTH = 1 / 2;
 export type Props<T extends ParamsList> = Omit<MaterialTopTabBarProps, 'state' | 'navigation'> & {
   state: NavigationState<T>;
   navigation: NavigationHelpers<T, MaterialTopTabNavigationEventMap>;
-  labels: Record<keyof T, string>;
+  labels: Record<keyof T, (isFocused: boolean) => JSX.Element>;
   containerWidth: number;
   containerStyle?: Omit<ViewStyle, 'width' | 'paddingLeft' | 'paddingRight'> & {
     width?: number;
     paddingHorizontal?: number;
   };
+  renderIndicator?: JSX.Element;
   indicatorStyle?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>;
   indicatorProportionalWidth?: number;
 };
@@ -41,7 +42,8 @@ const Tabs = <T extends ParamsList>({
   labels,
   containerWidth,
   containerStyle = {},
-  indicatorStyle = {},
+  renderIndicator,
+  indicatorStyle,
   indicatorProportionalWidth = DEFAULT_INDICATOR_PROPORTION_WIDTH,
 }: Props<T>) => {
   const numberOfTabs = routes.length;
@@ -68,12 +70,12 @@ const Tabs = <T extends ParamsList>({
         <Tab
           key={route.name}
           routeName={route.name}
-          label={labels[route.name]}
+          renderLabel={labels[route.name]}
           isFocused={routeIndex === i}
           onPress={() => (navigation.navigate as any)(route.name, route.params)}
         />
       ))}
-      <Indicator left={indicatorLeft} width={indicatorWidth} style={indicatorStyle} />
+      <Indicator indicatorComponent={renderIndicator} left={indicatorLeft} width={indicatorWidth} style={indicatorStyle} />
     </View>
   );
 };

@@ -295,6 +295,13 @@
       "button_caption": "Start reading your card"
     }
   },
+  "share_pages": {
+    "select_credentials": {
+      "title": "Information request",
+      "description": "would like to receive the following information from you for verification.",
+      "requested_title": "Following information will be shared"
+    }
+  },
   "onboard_summary_title": "Your entered details",
   "onboard_summary_subtitle": "When you press on finalize, you accept the data you entered and you will proceed to the login screen. The personal data can be changed in the settings.",
   "onboard_summary_info_tab_header_label": "Your information",

@@ -7,13 +7,14 @@ import {VerifiableCredential} from '@veramo/core';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
+import {ShareMachineInterpreter} from '../machines/share';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
 
 export type StackParamList = {
-  CredentialsOverview: Record<string, never>;
+  CredentialsOverview: ISharedCredentials;
   CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
   QrReader: Record<string, never>;
@@ -29,7 +30,7 @@ export type StackParamList = {
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   Onboarding: IOnboardingProps;
-  Main: Record<string, never>;
+  Main: MainProps;
   BrowserOpen: IBrowserOpen;
   NotificationsOverview: Record<string, never>;
   Lock: ILockProps;
@@ -41,9 +42,14 @@ export type StackParamList = {
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
   CredentialCatalog: Record<string, never>;
-};
+} & OnboardingStackParamsList &
+  ShareStackParamsList;
 
 export type Document = 'terms' | 'privacy';
+
+export type MainProps = {
+  customShareInstance?: ShareMachineInterpreter;
+};
 
 export type OnboardingStackParamsList = {
   AcceptTermsAndPrivacy: Record<string, never>;
@@ -69,7 +75,24 @@ export type OnboardingStackParamsList = {
 
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;
 
-export type OnboardingRoute = keyof OnboardingStackParamsList;
+export type ShareStackParamsList = {
+  ScanQr: Record<string, never>;
+  QrLoading: LoadingProps;
+  SelectCredentials: Record<string, never>;
+  ShareLoading: LoadingProps;
+  VerifyPinCode: Record<string, never>;
+};
+
+export type ShareRoute = keyof ShareStackParamsList;
+
+export type NavigationBarRoute = 'QRStack' | 'NotificationsStack' | 'CredentialsStack' | 'ContactsStack' | 'CredentialCatalogStack';
+
+export type AllRouteParamsList = StackParamList & OnboardingStackParamsList & ShareStackParamsList;
+export type AllRoutes = keyof AllRouteParamsList | 'QRStack' | 'NotificationsStack' | 'CredentialsStack' | 'ContactsStack' | 'CredentialCatalogStack';
+
+export type LoadingProps = {
+  message: string;
+};
 
 export type IBrowserOpen = IHasOnBackProps &
   IHasOnNextProps & {
@@ -118,6 +141,13 @@ export interface ICredentialsRequiredProps {
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   isSendDisabled?: () => boolean | (() => boolean);
   verifierName: string;
+}
+
+export interface ISharedCredentials {
+  credentialsShared?: {
+    success: boolean;
+    relyingPartyName: string;
+  };
 }
 
 export interface ICredentialDetailsProps {

@@ -8,6 +8,7 @@ import ScreenTitleAndDescription from '../../../components/containers/ScreenTitl
 import {createTopBarNavigator} from '../../../components/navigators/TopBarNavigator';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {SSITextH2LightStyled, SSITextH2SemiBoldLightStyled} from '../../../styles/components';
 import {OnboardingStackParamsList, ReadDocumentParamsList} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import DocumentText from './DocumentText';
@@ -17,6 +18,11 @@ type Props = NativeStackScreenProps<OnboardingStackParamsList, 'ReadTermsAndPriv
 const DocumentTypeNav = createTopBarNavigator<ReadDocumentParamsList>();
 
 const SCREEN_CONTAINER_HORIZONTAL_PADDING = contentContainerStyle.paddingHorizontal;
+
+const renderLabel = (label: string) => (isFocused: boolean) => {
+  const TextComponent = isFocused ? SSITextH2SemiBoldLightStyled : SSITextH2LightStyled;
+  return <TextComponent>{translate(label)}</TextComponent>;
+};
 
 const ReadTermsAndPrivacyScreen = ({
   route: {
@@ -56,11 +62,12 @@ const ReadTermsAndPrivacyScreen = ({
             width: screenWidth,
           }}
           tapBarProps={{
-            indicatorProportionalWidth: 0.6,
+            indicatorStyle: {top: 0},
+            renderIndicator: <View style={{backgroundColor: 'red', height: '100%', opacity: 0.2}} />,
             containerStyle: {marginBottom: 16, paddingHorizontal: 16},
             labels: {
-              terms: translate(`${translationPath}.terms.tab_title`),
-              privacy: translate(`${translationPath}.privacy.tab_title`),
+              terms: renderLabel(`${translationPath}.terms.tab_title`),
+              privacy: renderLabel(`${translationPath}.privacy.tab_title`),
             },
           }}>
           <DocumentTypeNav.Screen name="terms" component={DocumentText} initialParams={{document: 'terms'}} />

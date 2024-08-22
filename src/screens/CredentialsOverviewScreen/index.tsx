@@ -123,6 +123,20 @@ class CredentialsOverviewScreen extends PureComponent<IProps, IState> {
     );
   };
 
+  componentDidMount() {
+    // couldnt get toast to appear, not really familiar with how it works
+    const credentialsShared = this.props.route.params?.credentialsShared;
+    if (credentialsShared !== undefined) {
+      const toastType = credentialsShared?.success ? ToastTypeEnum.TOAST_SUCCESS : ToastTypeEnum.TOAST_ERROR;
+      showToast(toastType, {
+        title: credentialsShared.success ? 'Succesfully shared' : 'Sharing credentials failed',
+        message: `You have ${credentialsShared.success ? 'succesfully' : 'not'} shared your selected credentials to ${
+          credentialsShared.relyingPartyName
+        }.`,
+      });
+    }
+  }
+
   render() {
     return (
       <Container>

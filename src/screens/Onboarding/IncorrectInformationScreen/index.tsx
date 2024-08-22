@@ -1,21 +1,14 @@
-import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  SSITextH2SemiBoldLightStyled,
-  SSITextH5LightStyled,
-  SSITextH6LightStyled,
-} from '@sphereon/ui-components.ssi-react-native';
+import {fontColors} from '@sphereon/ui-components.core';
+import {PrimaryButton, SSITextH2SemiBoldLightStyled, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions} from 'react-native';
+import styled from 'styled-components/native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {SSITextH3RegularLightStyled} from '../../../styles/components';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import styled from 'styled-components/native';
-import {SectionLabel} from '../ImportDataConsentScreen/components/styles';
-import {SSITextH3RegularLightStyled} from 'src/styles/components';
 const {width} = Dimensions.get('window');
 
 const Footer = styled.View`

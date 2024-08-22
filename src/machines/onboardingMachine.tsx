@@ -1,9 +1,10 @@
 import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {v4 as uuidv4} from 'uuid';
-import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
+import {DoneInvokeEvent, GuardPredicate, assign, createMachine, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {SupportedDidMethodEnum} from '../types';
 import {
   Country,
@@ -22,7 +23,6 @@ import {
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
-import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -323,7 +323,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
     id: 'Onboarding',
     predictableActionArguments: true,
-    initial: OnboardingMachineStateType.showIntro,
+    initial: OnboardingMachineStateType.readTerms,
     context: initialContext,
     schema: {
       events: {} as OnboardingMachineEventTypes,

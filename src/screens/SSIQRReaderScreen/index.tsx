@@ -5,7 +5,7 @@ import {Platform, StatusBar, Text} from 'react-native';
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker';
 import {translate} from '../../localization/Localization';
 import {onQRScanned} from '../../services/qrService';
-import {SSIBasicContainerStyled, SSIQRReaderScreenScannerStyled as QRScanner} from '../../styles/components';
+import {SSIQRReaderScreenScannerStyled as QRScanner, SSIBasicContainerStyled} from '../../styles/components';
 import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>;
@@ -13,6 +13,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>;
 const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
   const onBarcodeScanned = async (readEvent: BarcodeScanningResult): Promise<void> => {
     setScanned(true);
+    console.log(readEvent.data);
     await onQRScanned({qrData: readEvent.data, navigation: props.navigation});
   };
 

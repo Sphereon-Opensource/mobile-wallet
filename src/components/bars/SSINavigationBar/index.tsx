@@ -47,7 +47,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
   };
 
   render() {
-    return !this.state.keyboardVisible ? (
+    return (
       <SafeAreaContainer>
         <SafeAreaView edges={['bottom']}>
           <Container>
@@ -89,7 +89,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
           </Container>
         </SafeAreaView>
       </SafeAreaContainer>
-    ) : null;
+    );
   }
 }
 

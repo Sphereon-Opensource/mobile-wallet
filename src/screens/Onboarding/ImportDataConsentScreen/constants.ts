@@ -1,4 +1,4 @@
-type Icon = 'person' | 'gender' | 'birthday' | 'nationality' | 'birthplace' | 'address';
+export type Icon = 'person' | 'gender' | 'birthday' | 'nationality' | 'birthplace' | 'address';
 
 export const InfoSchemaImages = {
   person: require('../../../assets/images/person.png'),

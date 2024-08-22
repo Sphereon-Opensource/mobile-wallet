@@ -1,11 +1,11 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialPayload, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
-import {OnboardingStackParamsList} from '../../navigation';
-import {SupportedDidMethodEnum} from '../../did';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
-import {IVerifiableCredential} from '@sphereon/ssi-types';
+import {StackParamList} from '../../../types/navigation';
+import {SupportedDidMethodEnum} from '../../did';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -185,7 +185,7 @@ export type OnboardingMachineState = State<
 >;
 
 export type OnboardingMachineNavigationArgs = {
-  navigation: NativeStackNavigationProp<OnboardingStackParamsList>;
+  navigation: NativeStackNavigationProp<StackParamList>;
   context: OnboardingMachineContext;
 };
 
