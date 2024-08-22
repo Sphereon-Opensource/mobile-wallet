@@ -8,6 +8,7 @@ import {IOID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IMachineStatePersistence} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {ISDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {ICredentialStore} from '@sphereon/ssi-sdk.credential-store';
+import {IIdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
@@ -23,6 +24,7 @@ export type TAgentTypes = IDIDManager &
   IOID4VCIHolder &
   IMachineStatePersistence &
   ICredentialStore &
-  ISDJwtPlugin;
+  ISDJwtPlugin &
+  IIdentifierResolution;
 
 export type IRequiredContext = IAgentContext<TAgentTypes>;
