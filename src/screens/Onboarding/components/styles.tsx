@@ -70,13 +70,13 @@ export const ProgressRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10;
+  gap: 10px;
   margin-top: 10px;
 `;
 
 export const ProgressItem = styled.View`
-  width: 10;
-  height: 10;
+  width: 10px;
+  height: 10px;
   background-color: slategrey;
   border-radius: 5px;
 `;

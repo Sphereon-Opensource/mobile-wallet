@@ -40,6 +40,7 @@ const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotN
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
+const hasAusweisRefreshUrl: OnboardingGuard = ({ausweisRefreshUrl}) => ausweisRefreshUrl !== undefined;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -190,7 +191,8 @@ const states: OnboardingStatesConfig = {
   importPersonalData: {
     on: {
       PREVIOUS: OnboardingMachineStateType.importDataConsent,
-      NEXT: OnboardingMachineStateType.importDataAuthentication,
+      SET_AUSWEIS_REFRESH_URL: {actions: assign({ausweisRefreshUrl: (_, event) => event.data})},
+      NEXT: {cond: OnboardingMachineGuards.hasAusweisRefreshUrl, target: OnboardingMachineStateType.importDataAuthentication},
     },
   },
   importDataAuthentication: {
@@ -279,6 +281,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.doPinsMatch;
+          }
+        | {
+            type: OnboardingMachineGuards.hasAusweisRefreshUrl;
           },
     },
     states: states,
@@ -337,6 +342,7 @@ export class OnboardingMachine {
           isCountryValid,
           isPinCodeValid,
           doPinsMatch,
+          hasAusweisRefreshUrl,
           ...opts?.guards,
         },
       }),

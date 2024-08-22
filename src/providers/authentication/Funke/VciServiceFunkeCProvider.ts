@@ -1,15 +1,22 @@
+import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
 import {CredentialResponse, PARMode} from '@sphereon/oid4vci-common';
-import {Dispatch, SetStateAction} from 'react';
-import agent, {agentContext} from '../../agent';
-import {EIDFlowState, EIDGetAccessTokenArgs, EIDGetAuthorizationCodeArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../types';
-import {generateDigest} from '../../utils';
-import {PidIssuerService} from '../PidIssuerService';
 import {CredentialCorrelationType, CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
+import {PidIssuerService} from '../../PidIssuerService';
+import agent, {agentContext} from '../../../agent';
+import {generateDigest} from '../../../utils';
+import {
+  EIDFlowState,
+  EIDGetAccessTokenArgs,
+  EIDGetAuthorizationCodeArgs,
+  EIDHandleErrorArgs,
+  EIDInitializeArgs,
+  EIDProviderArgs,
+} from '../../../types';
 
-class PidServiceAusweisDE {
+class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
   private static readonly _funke_clientId = 'bc11dd24-cbe9-4f13-890b-967e5f900222';
 
@@ -30,29 +37,8 @@ class PidServiceAusweisDE {
         this.handleError(error);
       },
       onSuccess: (options): void => {
-        this.getAuthorizationCode(options)
-          .then((authorizationCode: string) => this.getPids({authorizationCode}))
-          .then(pidResponses => {
-            pidResponses.map(pidResponse => {
-              const credential = pidResponse.credential;
-              const rawDocument = typeof credential === 'string' ? credential : JSON.stringify(credential);
-              const uniform = CredentialMapper.toUniformCredential(rawDocument, {hasher: generateDigest});
-              agent
-                .crsAddCredential({
-                  credential: {
-                    rawDocument,
-                    credentialRole: CredentialRole.HOLDER,
-                    credentialId: uniform.id ?? computeEntryHash(rawDocument),
-                    issuerCorrelationType: CredentialCorrelationType.X509_CN,
-                    issuerCorrelationId: 'test', //typeof uniform.issuer === 'object' ? 'test', uniform.issuer.id : uniform.issuer,
-                  },
-                  opts: {hasher: generateDigest},
-                })
-                .then(digitalCredential => {
-                  console.log(`Digital credential stored: ${digitalCredential.id}`, digitalCredential);
-                });
-            });
-          });
+        this.handleStateChange({state: 'SUCCESS'});
+        onAuthenticated(options.refreshUrl);
       },
       onInsertCard: (): void => {
         this.handleStateChange({state: 'INSERT_CARD'});
@@ -62,15 +48,15 @@ class PidServiceAusweisDE {
     this.handleStateChange({state: 'INITIALIZED'});
   }
 
-  public static async initialize(args: EIDInitializeArgs): Promise<PidServiceAusweisDE> {
+  public static async initialize(args: EIDInitializeArgs): Promise<VciServiceFunkeCProvider> {
     const {pidProvider} = args;
     const credentialOffer =
       'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
-      {pidProvider, clientId: PidServiceAusweisDE._funke_clientId, credentialOffer: credentialOffer, kms: 'local'},
+      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: 'local'},
       agentContext,
     );
-    return new PidServiceAusweisDE({...args, pidService});
+    return new VciServiceFunkeCProvider({...args, pidService});
   }
 
   public async start(): Promise<AusweisAuthFlow> {
@@ -106,6 +92,8 @@ class PidServiceAusweisDE {
   }
 
   private handleStateChange(state: EIDFlowState): void {
+    console.log(`handleStateChange: ${JSON.stringify(state)}`);
+
     this.currentState = state;
     this.onStateChange?.(state);
   }
@@ -138,4 +126,4 @@ class PidServiceAusweisDE {
   }
 }
 
-export default PidServiceAusweisDE;
+export default VciServiceFunkeCProvider;

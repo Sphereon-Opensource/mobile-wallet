@@ -1,24 +1,25 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useMemo, useState} from 'react';
-import {Button, Dimensions, Image, LayoutChangeEvent} from 'react-native';
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import {Dimensions, Image, LayoutChangeEvent} from 'react-native';
+import Animated, {Easing, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {ContentContainer, IconContainer, ModalCard, ModalText, ModalTitle, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
+import {EIDFlowState} from '../../../types';
 
 const {width} = Dimensions.get('window');
 
-export enum ScanEvents {
-  READY = 'ready',
-  SCAN = 'scan',
-  COMPLETE = 'complete',
-  NONE = 'none',
-}
+// FIXME's
+// 1 this modal shows a cancel button on the success state. but the success state should just be an animation that plays and close the modal after. we need a cancel button on the ready and scanning state
+// 2 the design shows 2 progress balls per step not 1
+// 3 color of balls, currently it is very hard to see the difference between the purple and grey. design shows blue. but we have a purple app. so maybe discuss with maria what color we should use and make it more prominent
+// 4 overall design of modal. logo, text, balls, are mismatched in size and placing and design
+// 5 placing of the modal should be at the bottom of the screen, not the middle, also would hide the button which would break the scanning flow if pressed
 
 const STEPS = [20, 40, 60, 80, 100];
 
 type AusweisScanModalProps = {
-  state: ScanEvents;
-  progress: number;
+  state?: EIDFlowState; // FIXME in the future we need a general type for just NFC behavior
+  progress?: number;
   onCancel: () => void;
   onProgress?: () => void;
 };
@@ -32,7 +33,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   };
 
   const transform = useAnimatedStyle(() => {
-    const isVisible = state !== ScanEvents.NONE;
+    const isVisible = state?.state === 'INSERT_CARD' || state?.state === 'READING_CARD' || state?.state === 'STARTED';
     const bottom = withTiming(isVisible ? 20 : -containerHeight, {duration: 500, easing: Easing.ease});
     return {
       position: 'absolute',
@@ -43,7 +44,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   });
 
   const rowHeightTransform = useAnimatedStyle(() => {
-    const showDots = state === ScanEvents.SCAN || state === ScanEvents.COMPLETE;
+    const showDots = state?.progress;
     const height = withTiming(showDots ? 30 : 0, {duration: 300, easing: Easing.ease});
     return {
       display: 'flex',
@@ -53,7 +54,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   });
 
   const textStyle = useAnimatedStyle(() => {
-    const showText = state !== ScanEvents.COMPLETE;
+    const showText = state?.state === 'SUCCESS';
     return {
       height: withTiming(showText ? 70 : 0, {duration: 300}),
       display: 'flex',
@@ -63,7 +64,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
     };
   });
   const opacityStyle = useAnimatedStyle(() => {
-    const showButton = state !== ScanEvents.COMPLETE;
+    const showButton = state?.state === 'SUCCESS';
     return {
       opacity: withTiming(showButton ? 1 : 0, {duration: 300}),
       display: 'flex',
@@ -73,23 +74,23 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   });
 
   const progressItems = useMemo(() => {
-    if (state === ScanEvents.COMPLETE) return STEPS.map(_ => true);
-    return STEPS.map(step => step <= progress);
+    if (state?.state === 'SUCCESS') return STEPS.map(_ => true);
+    return STEPS.map(step => step <= (progress ?? 0));
   }, [state, progress]);
 
   const modalTitle = useMemo(() => {
-    if (state === ScanEvents.READY) return 'Ready to Scan';
-    if (state === ScanEvents.SCAN) return 'Scanning Document';
+    if (state?.state === 'INSERT_CARD' || state?.state === 'STARTED') return 'Ready to Scan'; //FIXME there is a small delay in the SDK starting and being ready for reading. i am not sure how we want to handle this in the UI.  //state === ScanEvents.READY // || state?.state === 'STARTED'
+    if (state?.state === 'READING_CARD') return 'Scanning Document';
     return '';
   }, [state]);
 
-  if (state === ScanEvents.NONE) return null;
+  if (!state) return null;
 
   return (
     <Animated.View onLayout={onLayout} style={transform}>
       <ModalCard>
         {!!modalTitle && <ModalTitle>{modalTitle}</ModalTitle>}
-        {state !== ScanEvents.COMPLETE && (
+        {state?.state !== 'SUCCESS' && (
           <IconContainer>
             <Image
               width={30}
@@ -100,7 +101,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
             />
           </IconContainer>
         )}
-        {state === ScanEvents.COMPLETE && (
+        {state?.state === 'SUCCESS' && (
           <IconContainer>
             <Image
               width={30}
@@ -116,7 +117,9 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
             <ModalText>Keep your phone on top of your card. Hold in place until the reading is done. </ModalText>
           </Animated.View>
           <Animated.View style={rowHeightTransform}>
-            <ProgressRow>{progressItems.map(active => (active ? <ProgressItemActive /> : <ProgressItem />))}</ProgressRow>
+            <ProgressRow>
+              {progressItems.map((active, index) => (active ? <ProgressItemActive key={index} /> : <ProgressItem key={index} />))}
+            </ProgressRow>
           </Animated.View>
         </ContentContainer>
         <Animated.View style={opacityStyle}>

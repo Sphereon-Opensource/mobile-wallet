@@ -10,6 +10,9 @@ type AusweisEPinModalProps = {
   onComplete: (pin: string) => void;
 };
 
+// FIXME's
+// 1 this modal opens without a keyboard present, you need press on an input to make the keyboard popup\
+
 export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinModalProps) => (
   <Modal
     isVisible={isVisible}

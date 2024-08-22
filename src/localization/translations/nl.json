@@ -256,7 +256,7 @@
     },
     "import_scan_card": {
       "title": "Have your Ausweis card ready for the next steps",
-      "description": "Enter the eID pin and scann your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading.",
+      "description": "Enter the eID pin and scan your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading your card.",
       "button_caption": "Start reading your card"
     }
   },
