@@ -247,7 +247,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
         credentialRole: CredentialRole.HOLDER,
         branding: localeBranding,
         issuer: contact,
-        subject: getCredentialSubjectContact(credentialsToAccept[0].rawVerifiableCredential),
+        subject: getCredentialSubjectContact(credentialsToAccept[0].uniformVerifiableCredential),
       }),
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
@@ -336,6 +336,7 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
+    console.error(state._event.data);
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
     state.matches(OID4VCIMachineStates.done) ||

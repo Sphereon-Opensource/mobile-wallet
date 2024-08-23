@@ -4,6 +4,7 @@ import agent from '../agent';
 import {signatureAlgorithmFromKey} from '../utils';
 import {ISignJwtArgs} from '../types';
 
+/*
 export const signJWT = async (args: ISignJwtArgs): Promise<string> => {
   const options = {
     ...args.options,
@@ -29,6 +30,7 @@ const getSigner = (identifier: IIdentifier): Signer => {
     });
   };
 };
+*/
 
 export const verifySDJWTSignature = async <T>(data: string, signature: string, key: JsonWebKey): Promise<Awaited<Promise<boolean>>> => {
   let {alg, crv} = key;

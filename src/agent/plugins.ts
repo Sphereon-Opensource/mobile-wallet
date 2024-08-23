@@ -32,6 +32,8 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
+import {IdentifierResolution, isManagedIdentifierDidResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -43,7 +45,9 @@ export const oid4vciHolder = new OID4VCIHolder({
   },
   onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
     const {identifier} = args;
-    await dispatchIdentifier({identifier});
+    if (isManagedIdentifierDidResult(identifier)) {
+      await dispatchIdentifier({identifier: identifier.identifier});
+    }
   },
   hasher: generateDigest,
 });
@@ -58,6 +62,8 @@ export const createAgentPlugins = ({
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
+    new IdentifierResolution(),
+    new JwtService(),
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {

@@ -40,11 +40,17 @@ export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRe
 export const dispatchIdentifier = async (args: IDispatchIdentifierArgs): Promise<void> => {
   const {identifier} = args;
   if (store.getState().user.users.size > 0) {
-    await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
+    if (identifier && 'did' in identifier) {
+      await store.dispatch<any>(addIdentifier({did: identifier.did})).then((): void => {
+        setTimeout((): void => {
+          store.dispatch<any>(getContacts());
+        }, 1000);
+      });
+    } else {
       setTimeout((): void => {
         store.dispatch<any>(getContacts());
       }, 1000);
-    });
+    }
   }
 };
 
