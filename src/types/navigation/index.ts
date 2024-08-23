@@ -63,6 +63,8 @@ export type OnboardingStackParamsList = {
   ImportDataAuthentication: Record<string, never>;
   ImportDataLoader: Record<string, never>;
   ImportDataFinal: Record<string, never>;
+  IncorrectPersonalData: Record<string, never>;
+  CompleteOnboarding: Record<string, never>;
 };
 
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;

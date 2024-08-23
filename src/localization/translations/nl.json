@@ -252,7 +252,7 @@
         "address": "Address"
       },
       "button_accept": "Yes, I want to add this",
-      "button_decline": "Decline"
+      "button_decline": "Not everything is correct"
     },
     "import_scan_card": {
       "title": "Have your Ausweis card ready for the next steps",
@@ -260,6 +260,32 @@
       "button_caption": "Start reading your card"
     }
   },
+
+  "import_data_auth_step_title": "Enter your sphereon pin",
+  "import_data_consent_button_accept": "Yes, that's me",
+  "import_data_consent_button_decline": "Not everything is correct",
+  "import_data_loader_step_title": "One moment",
+  "import_data_loader_step_subtitle": "Getting your personal information.",
+
+  "import_data_final_step_title": "Your information is imported. Is it all correct?",
+
+  "import_data_setup_complete_title": "Setup complete",
+
+  "incorrect_data_title": "Are some of your details incorrect?",
+  "incorrect_data_description": "If your personal information is incorrect, it can cause problems. Therefore do not add this data.",
+  "incorrect_data_bullet_content_heading": "What can you do",
+  "incorrect_data_bullet_content": "Contact your municipality to have your informaiton changed.\nWait for a message from your municipality confirming the update.\nTry to add the personal information again. You can find it in the catalog.",
+  "incorrect_data_back": "Back",
+  "incorrect_data_dont_add_info": "Don't add this information",
+  "incorrect_data_after_bullet_heading": "If it's not yours",
+  "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
+
+  "import_data_title": "Import personal data",
+
+  "onboarding_complete_title": "All done!",
+  "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
+  "onboarding_complete_next": "Start exploring my Wallet",
+
   "onboard_summary_title": "Uw ingevulde gegevens",
   "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
   "onboard_summary_info_tab_header_label": "Uw gegevens",

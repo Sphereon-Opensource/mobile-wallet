@@ -39,6 +39,7 @@ export type OnboardingMachineContext = {
   verificationPinCode: string;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
+  skipImport: boolean;
 };
 
 // States
@@ -59,6 +60,8 @@ export enum OnboardingMachineStateType {
   importDataAuthentication = 'importDataAuthentication',
   importDataLoader = 'importDataLoader',
   importDataFinal = 'importDataFinal',
+  incorrectPersonalData = 'incorrectPersonalData',
+  completeOnboarding = 'completeOnboarding',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -77,6 +80,7 @@ export enum OnboardingMachineEvents {
   SKIP_IMPORT = 'SKIP_IMPORT',
   SET_BIOMETRICS = 'SET_BIOMETRICS',
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
+  DECLINE_INFORMATION = 'DECLINE_INFORMATION',
 }
 
 export type NextEvent = {type: OnboardingMachineEvents.NEXT};
@@ -91,6 +95,7 @@ export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
+export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -104,7 +109,8 @@ export type OnboardingMachineEventTypes =
   | ReadPrivacyEvent
   | SkipImportEvent
   | SkipBiometricsEvent
-  | SetBiometricsEvent;
+  | SetBiometricsEvent
+  | DeclineInformation;
 
 // Guards
 export enum OnboardingMachineGuards {
@@ -119,6 +125,9 @@ export enum OnboardingMachineGuards {
   isPinCodeValid = 'isPinCodeValid',
   doPinsMatch = 'doPinsMatch',
   isStepImportPersonalData = 'isStepImportPersonalData',
+  isStepComplete = 'isStepComplete',
+  isSkipImport = 'isSkipImport',
+  isImportData = 'isImportData',
 }
 
 // States Config
