@@ -10,15 +10,16 @@ import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
 import {ContentContainer} from '../components/styles';
-import VciServiceFunkeCProvider from '../../../providers/authentication/Funke/VciServiceFunkeCProvider';
+import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {EIDFlowState} from '../../../types';
+import {delay} from '../../../utils';
 
 const ImportPersonalDataScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
   const [eIDFlowState, setEIDFlowState] = useState<EIDFlowState | undefined>();
-  const [vciServiceFunkeCProvider, setVciServiceFunkeCProvider] = useState<VciServiceFunkeCProvider | undefined>();
+  const [provider, setProvider] = useState<VciServiceFunkeCProvider | undefined>();
 
   const translationsPath = 'onboarding_pages.import_scan_card';
 
@@ -27,8 +28,10 @@ const ImportPersonalDataScreen = () => {
       return;
     }
 
-    const onAuthenticated = (refreshUrl: string): void => {
-      onboardingInstance.send(OnboardingMachineEvents.SET_AUSWEIS_REFRESH_URL, {data: refreshUrl});
+    const onAuthenticated = async (provider: VciServiceFunkeCProvider): Promise<void> => {
+      onboardingInstance.send(OnboardingMachineEvents.SET_FUNKE_PROVIDER, {data: provider});
+      // Adding a small delay to let the animation play
+      await delay(600);
       onboardingInstance.send(OnboardingMachineEvents.NEXT);
     };
 
@@ -41,8 +44,8 @@ const ImportPersonalDataScreen = () => {
       onAuthenticated,
       onStateChange: setEIDFlowState,
     }).then((provider: VciServiceFunkeCProvider): void => {
-      setVciServiceFunkeCProvider(provider);
-      void provider.start();
+      setProvider(provider);
+      void provider?.start();
     });
   }, [pin]);
 
@@ -67,7 +70,7 @@ const ImportPersonalDataScreen = () => {
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </ContentContainer>
       <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
-      <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => vciServiceFunkeCProvider?.cancel()} />
+      <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />
     </ScreenContainer>
   );
 };

@@ -1,6 +1,6 @@
 import {Dispatch, SetStateAction} from 'react';
-import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {PidIssuerService} from '../../../providers/PidIssuerService';
+import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 
 export type EIDGetAuthorizationCodeArgs = {refreshUrl: string};
 
@@ -20,13 +20,13 @@ export type EIDFlowState = {
 export type EIDProviderArgs = {
   pidService: PidIssuerService;
   onEnterPin: () => string;
-  onAuthenticated: (refreshUrl: string) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
 };
 
 export type EIDInitializeArgs = {
   onEnterPin: () => string;
-  onAuthenticated: (refreshUrl: string) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
   pidProvider?: string;
 };
