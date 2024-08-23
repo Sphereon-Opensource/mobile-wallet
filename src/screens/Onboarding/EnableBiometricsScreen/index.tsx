@@ -25,7 +25,7 @@ const Content = styled(Container)`
   justify-content: center;
 `;
 
-const Footer = styled(Container)`
+const Footer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,21 +52,12 @@ const EnableBiometricsScreen = () => {
   const footer = (
     <Footer>
       <Footnote>{translate('biometrics_description')}</Footnote>
-      <PrimaryButton
-        style={{height: 42, width: width - 40}}
-        caption={translate('biometrics_enable_text')}
-        captionColor={fontColors.light}
-        onPress={handleAuth}
-      />
-      <SecondaryButton
-        style={{height: 42, width: width - 40}}
-        caption={translate('biometrics_disallow')}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)}
-      />
+      <PrimaryButton caption={translate('biometrics_enable_text')} captionColor={fontColors.light} onPress={handleAuth} />
+      <SecondaryButton caption={translate('biometrics_disallow')} onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)} />
     </Footer>
   );
   return (
-    <ScreenContainer>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate('biometrics_title')} description={translate('biometrics_subtitle')} />
       <Content>
         <CircleWithBorder size={200} backgroundColors={['#7276F799', '#7C40E899']} borderColors={['#7C40E899', '#7C40E866']} borderWidth={30} />
