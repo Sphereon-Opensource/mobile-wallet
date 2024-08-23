@@ -2,7 +2,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
-import {translate} from 'i18n-js';
 import React, {useState} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -16,6 +15,7 @@ import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components
 import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
 import {getOriginalVerifiableCredential, showToast} from '../../utils';
 import {Loggers} from '@sphereon/ssi-types';
+import {translate} from '../../localization/Localization';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;

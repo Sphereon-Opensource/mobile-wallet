@@ -31,7 +31,7 @@ export interface Props extends CredentialSummary {
   showTime?: boolean;
 }
 
-const CredentialViewImage: React.FC<{branding: IBasicCredentialLocaleBranding}> = ({branding}) => {
+const CredentialViewImage = ({branding}: {branding: IBasicCredentialLocaleBranding}) => {
   const CARD_ASPECT_RATIO = 3 / 2;
   const backgroundURI = branding.background?.image?.uri;
   const backgroundColor = branding.background?.color ? branding.background.color : 'white';
@@ -70,7 +70,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
             </CredentialStatusContainer>
           </ContentTopContainer>
           <ContentMiddleContainer>
-            <IssuerCaption>{issuer.alias}</IssuerCaption>
+            <IssuerCaption>{issuer.name}</IssuerCaption>
           </ContentMiddleContainer>
           <ContentBottomContainer>
             <IssueDateCaption>{showTime ? toLocalDateTimeString(issueDate) : toLocalDateString(issueDate)}</IssueDateCaption>
