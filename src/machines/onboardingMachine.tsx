@@ -1,7 +1,7 @@
 import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {v4 as uuidv4} from 'uuid';
-import {GuardPredicate, assign, createMachine, interpret} from 'xstate';
+import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {SupportedDidMethodEnum} from '../types';
@@ -9,17 +9,20 @@ import {
   Country,
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
+  MappedCredential,
   OnboardingBiometricsStatus,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
   OnboardingMachineInterpreter,
+  OnboardingMachineServices,
   OnboardingMachineState,
   OnboardingMachineStateType,
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
+import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -43,6 +46,7 @@ const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
 const isSkipImport: OnboardingGuard = ({skipImport}) => !!skipImport;
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
+const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -202,24 +206,35 @@ const states: OnboardingStatesConfig = {
   importPersonalData: {
     on: {
       PREVIOUS: OnboardingMachineStateType.importDataConsent,
-      NEXT: OnboardingMachineStateType.importDataAuthentication,
+      SET_FUNKE_PROVIDER: {actions: assign({funkeProvider: (_, event) => event.data})},
+      NEXT: {cond: OnboardingMachineGuards.hasFunkeRefreshUrl, target: OnboardingMachineStateType.importDataAuthentication},
     },
   },
   importDataAuthentication: {
     on: {
       PREVIOUS: OnboardingMachineStateType.importDataConsent,
-      NEXT: OnboardingMachineStateType.importDataLoader,
+      NEXT: OnboardingMachineStateType.retrievePIDCredentials,
     },
   },
-  importDataLoader: {
-    on: {
-      PREVIOUS: OnboardingMachineStateType.importDataAuthentication,
-      NEXT: OnboardingMachineStateType.importDataFinal,
+  retrievePIDCredentials: {
+    invoke: {
+      src: OnboardingMachineServices.retrievePIDCredentials,
+      onDone: {
+        target: OnboardingMachineStateType.importDataFinal,
+        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
+      },
+      onError: {
+        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
+        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
+          console.log('Error occurred:', event.data);
+        },
+      },
     },
   },
   importDataFinal: {
+    // TODO call this something like reviewPIDData
     on: {
-      PREVIOUS: OnboardingMachineStateType.importDataLoader,
+      PREVIOUS: OnboardingMachineStateType.retrievePIDCredentials,
       DECLINE_INFORMATION: {
         target: OnboardingMachineStateType.incorrectPersonalData,
         actions: assign({skipImport: true}),
@@ -254,6 +269,21 @@ const states: OnboardingStatesConfig = {
       ],
     },
   },
+  storePIDCredentials: {
+    invoke: {
+      src: OnboardingMachineServices.storePIDCredentials,
+      onDone: {
+        target: OnboardingMachineStateType.importDataFinal,
+        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
+      },
+      onError: {
+        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
+        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
+          console.log('Error occurred:', event.data);
+        },
+      },
+    },
+  },
 };
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
@@ -286,6 +316,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     termsAndPrivacyAccepted: false,
     currentStep: 1,
     skipImport: false,
+    pidCredentials: [],
   };
 
   return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>({
@@ -320,6 +351,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
           }
         | {
             type: OnboardingMachineGuards.doPinsMatch;
+          }
+        | {
+            type: OnboardingMachineGuards.hasFunkeRefreshUrl;
           },
     },
     states: states,
@@ -366,6 +400,11 @@ export class OnboardingMachine {
     debug(`Creating new onboarding instance`, opts);
     const newInst: OnboardingMachineInterpreter = interpret(
       createOnboardingMachine(opts).withConfig({
+        services: {
+          [OnboardingMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
+          [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
+          ...opts?.services,
+        },
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
@@ -381,6 +420,7 @@ export class OnboardingMachine {
           doPinsMatch,
           isSkipImport,
           isImportData,
+          hasFunkeRefreshUrl,
           ...opts?.guards,
         },
       }),

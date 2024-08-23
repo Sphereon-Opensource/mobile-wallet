@@ -2,8 +2,10 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {CredentialPayload, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
-import {OnboardingStackParamsList} from '../../../types/navigation';
+import {OnboardingStackParamsList} from '../../navigation';
 import {SupportedDidMethodEnum} from '../../did';
+import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
+import {IVerifiableCredential} from '@sphereon/ssi-types';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -40,6 +42,8 @@ export type OnboardingMachineContext = {
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
   skipImport: boolean;
+  funkeProvider?: VciServiceFunkeCProvider;
+  pidCredentials: Array<MappedCredential>;
 };
 
 // States
@@ -58,10 +62,11 @@ export enum OnboardingMachineStateType {
   importDataConsent = 'importDataConsent',
   importPersonalData = 'importPersonalData',
   importDataAuthentication = 'importDataAuthentication',
-  importDataLoader = 'importDataLoader',
+  retrievePIDCredentials = 'retrievePIDCredentials',
   importDataFinal = 'importDataFinal',
   incorrectPersonalData = 'incorrectPersonalData',
   completeOnboarding = 'completeOnboarding',
+  storePIDCredentials = 'storePIDCredentials',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;
@@ -81,6 +86,7 @@ export enum OnboardingMachineEvents {
   SET_BIOMETRICS = 'SET_BIOMETRICS',
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
   DECLINE_INFORMATION = 'DECLINE_INFORMATION',
+  SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
 }
 
 export type NextEvent = {type: OnboardingMachineEvents.NEXT};
@@ -96,6 +102,7 @@ export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
+export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -110,7 +117,8 @@ export type OnboardingMachineEventTypes =
   | SkipImportEvent
   | SkipBiometricsEvent
   | SetBiometricsEvent
-  | DeclineInformation;
+  | DeclineInformation
+  | SetFunkeProvider;
 
 // Guards
 export enum OnboardingMachineGuards {
@@ -128,6 +136,12 @@ export enum OnboardingMachineGuards {
   isStepComplete = 'isStepComplete',
   isSkipImport = 'isSkipImport',
   isImportData = 'isImportData',
+  hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
+}
+
+export enum OnboardingMachineServices {
+  retrievePIDCredentials = 'retrievePIDCredentials',
+  storePIDCredentials = 'storePIDCredentials',
 }
 
 // States Config
@@ -178,4 +192,9 @@ export type OnboardingMachineNavigationArgs = {
 export type OnboardingProviderProps = {
   children?: ReactNode;
   customOnboardingInstance?: OnboardingMachineInterpreter;
+};
+
+export type MappedCredential = {
+  uniformCredential: IVerifiableCredential;
+  rawCredential: string;
 };

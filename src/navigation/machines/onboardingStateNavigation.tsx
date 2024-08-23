@@ -75,7 +75,7 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.importDataAuthentication:
       onboardingNavigation.navigate('ImportDataAuthentication', {});
       break;
-    case OnboardingMachineStateType.importDataLoader:
+    case OnboardingMachineStateType.retrievePIDCredentials:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
     case OnboardingMachineStateType.importDataFinal:

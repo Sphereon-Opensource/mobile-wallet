@@ -1,6 +1,6 @@
 import {Dispatch, SetStateAction} from 'react';
-import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {PidIssuerService} from '../../../providers/PidIssuerService';
+import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 
 export type EIDGetAuthorizationCodeArgs = {refreshUrl: string};
 
@@ -13,20 +13,30 @@ export type EIDHandleErrorArgs = {
 };
 
 export type EIDFlowState = {
-  state: 'INITIALIZED' | 'STARTED' | 'ERROR' | 'INSERT_CARD' | 'READING_CARD' | 'GETTING_AUTHORIZATION_CODE' | 'GETTING_ACCESS_TOKEN';
+  state: EIDState;
   progress?: number;
 } & Partial<EIDHandleErrorArgs>;
 
 export type EIDProviderArgs = {
   pidService: PidIssuerService;
   onEnterPin: () => string;
-  onAuthenticated: (authorizationCode: string) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
 };
 
 export type EIDInitializeArgs = {
   onEnterPin: () => string;
-  onAuthenticated: (authorizationCode: string) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
   pidProvider?: string;
 };
+
+export type EIDState =
+  | 'INITIALIZED'
+  | 'STARTED'
+  | 'ERROR'
+  | 'SUCCESS'
+  | 'INSERT_CARD'
+  | 'READING_CARD'
+  | 'GETTING_AUTHORIZATION_CODE'
+  | 'GETTING_ACCESS_TOKEN';
