@@ -65,6 +65,13 @@ export type OnboardingStackParamsList = {
   ImportDataFinal: Record<string, never>;
 };
 
+export type CreditOverviewStackParamsList = {
+  Card: Record<string, never>;
+  List: Record<string, never>;
+};
+
+export type CreditOverviewStackRoute = keyof CreditOverviewStackParamsList;
+
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;
 
 export type OnboardingRoute = keyof OnboardingStackParamsList;

@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SSITextH2LightStyled, SSITextH2SemiBoldLightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {View, useWindowDimensions} from 'react-native';
 import ScreenContainer, {contentContainerStyle} from '../../../components/containers/ScreenContainer';
@@ -15,6 +15,11 @@ import DocumentText from './DocumentText';
 type Props = NativeStackScreenProps<OnboardingStackParamsList, 'ReadTermsAndPrivacy'>;
 
 const DocumentTypeNav = createTopBarNavigator<ReadDocumentParamsList>();
+
+const renderLabel = (label: string) => (isFocused: boolean) => {
+  const TextComponent = isFocused ? SSITextH2SemiBoldLightStyled : SSITextH2LightStyled;
+  return <TextComponent>{translate(label)}</TextComponent>;
+};
 
 const SCREEN_CONTAINER_HORIZONTAL_PADDING = contentContainerStyle.paddingHorizontal;
 
@@ -59,8 +64,8 @@ const ReadTermsAndPrivacyScreen = ({
             indicatorProportionalWidth: 0.6,
             containerStyle: {marginBottom: 16, paddingHorizontal: 16},
             labels: {
-              terms: translate(`${translationPath}.terms.tab_title`),
-              privacy: translate(`${translationPath}.privacy.tab_title`),
+              terms: renderLabel(`${translationPath}.terms.tab_title`),
+              privacy: renderLabel(`${translationPath}.privacy.tab_title`),
             },
           }}>
           <DocumentTypeNav.Screen name="terms" component={DocumentText} initialParams={{document: 'terms'}} />
