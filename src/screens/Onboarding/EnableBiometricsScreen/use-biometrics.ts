@@ -1,14 +1,13 @@
 import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {OnboardingBiometricsStatus} from '../../../types/machines/onboarding';
 
 export const useBiometrics = () => {
-  const {hasHardware, isEnrollmentStrong, ...rest} = useHasStrongBiometrics();
-
   const authenticateBiometrically = async () => {
     try {
-      if (!hasHardware && !isEnrollmentStrong) {
+      const strongBiometricsSupported = await getStrongBiometricsSupport();
+      if (!strongBiometricsSupported) {
         return false;
       }
 
@@ -28,10 +27,24 @@ export const useBiometrics = () => {
 
   return {
     prompt: authenticateBiometrically,
-    hasHardware,
-    isEnrollmentStrong,
-    ...rest,
   };
+};
+
+export const useAuthEffect = (effect: (success: boolean) => void) => {
+  const {onboardingInstance} = useContext(OnboardingContext);
+  const biometricsEnabled = useMemo(
+    () => onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
+    [onboardingInstance],
+  );
+
+  const {prompt} = useBiometrics();
+
+  useEffect(() => {
+    if (biometricsEnabled) {
+      console.log('val', onboardingInstance.getSnapshot().value);
+      prompt().then(effect);
+    }
+  }, []);
 };
 
 const isHardwareSupported = (hasHardware: boolean, supported: Auth.AuthenticationType[]) => {
@@ -46,19 +59,41 @@ type UseHasStringBiometricsOptions = {
   onBiometricsConfirmed?: () => void;
 };
 
+const isEnrollmentStrong = (level: Auth.SecurityLevel) => {
+  return level === Auth.SecurityLevel.BIOMETRIC_STRONG;
+};
+
+const getStrongBiometricsSupport = async () => {
+  const {hardware, supported, level} = await getSupportedHardwareContext();
+  const hasHardware = isHardwareSupported(hardware, supported);
+  const isStrong = isEnrollmentStrong(level);
+
+  return hasHardware && isStrong;
+};
+
+const getSupportedHardwareContext = async () => {
+  const hardware = await Auth.hasHardwareAsync();
+  const supported = await Auth.supportedAuthenticationTypesAsync();
+  const enrolled = await Auth.isEnrolledAsync();
+  const level = await Auth.getEnrolledLevelAsync();
+
+  return {
+    hardware,
+    supported,
+    enrolled,
+    level,
+  };
+};
+
 export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = {}) => {
   const {onBiometricsConfirmed} = options;
   const [hasSupportedHardware, setHasSupportedHardware] = useState(false);
   const [isSecure, setIsSecure] = useState(false);
 
   const [enrolled, setEnrolled] = useState<boolean>(false);
-  const {onboardingInstance} = useContext(OnboardingContext);
 
   const loadSupported = useCallback(async () => {
-    const hardware = await Auth.hasHardwareAsync();
-    const supported = await Auth.supportedAuthenticationTypesAsync();
-    const enrolled = await Auth.isEnrolledAsync();
-    const level = await Auth.getEnrolledLevelAsync();
+    const {hardware, supported, enrolled, level} = await getSupportedHardwareContext();
 
     setEnrolled(enrolled);
     const hasSupportedHardware = isHardwareSupported(hardware, supported);

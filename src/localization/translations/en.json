@@ -102,6 +102,9 @@
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
 
+  "import_data_auth_title": "Enter your Sphereon PIN ",
+  "import_data_auth_next": "Continue",
+
   "import_data_auth_step_title": "Enter your sphereon pin",
   "import_data_consent_button_accept": "Yes, that's me",
   "import_data_consent_button_decline": "Not everything is correct",

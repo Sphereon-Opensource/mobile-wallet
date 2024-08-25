@@ -1,6 +1,6 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useCallback, useContext, useState} from 'react';
+import {useCallback, useContext, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
@@ -39,15 +39,22 @@ const EnterPinCodeScreen = () => {
     context: {pinCode: pinCodeContext},
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_pin';
-  const invalidPinExample = getInvalidPinExample(
-    PIN_CODE_LENGTH,
-    translate(`${translationsPath}.requirements.invalid_example_prefix`),
-    translate(`${translationsPath}.requirements.invalid_example_delimiter`),
+  const invalidPinExample = useMemo(
+    () =>
+      getInvalidPinExample(
+        PIN_CODE_LENGTH,
+        translate(`${translationsPath}.requirements.invalid_example_prefix`),
+        translate(`${translationsPath}.requirements.invalid_example_delimiter`),
+      ),
+    [],
   );
-  const pinValueValidators = [
-    isNotSameDigits(`${PIN_CODE_LENGTH} ${translate(`${translationsPath}.requirements.not_same_digits`)}`),
-    isNotSequentialDigits(`${translate(`${translationsPath}.requirements.not_sequential_digits`)}${invalidPinExample}`),
-  ];
+  const pinValueValidators = useMemo(
+    () => [
+      isNotSameDigits(`${PIN_CODE_LENGTH} ${translate(`${translationsPath}.requirements.not_same_digits`)}`),
+      isNotSequentialDigits(`${translate(`${translationsPath}.requirements.not_sequential_digits`)}${invalidPinExample}`),
+    ],
+    [invalidPinExample],
+  );
   const [isPinValid, setIsPinValid] = useState(validatePin(pinCodeContext, []).isValid);
   const [pinCode, setPinCode] = useState(pinCodeContext);
   const [erroniousValidator, setErroniousValidator] = useState<ValidatorType>();
@@ -62,7 +69,7 @@ const EnterPinCodeScreen = () => {
       setErroniousValidator(error?.validator);
       setPinCode(pin);
     },
-    [onboardingInstance, isPinValid],
+    [onboardingInstance, isPinValid, setShowFeedback, setIsPinValid, setErroniousValidator, setPinCode],
   );
 
   const footer = (
