@@ -22,11 +22,12 @@ import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@ver
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {LdContexts} from '../@config/credentials';
+import {animoFunkeCert, funkeTestCA, sphereonCA} from '../@config/trustanchors';
 import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {DEFAULT_DID_PREFIX_AND_METHOD, SupportedDidMethodEnum} from '../types';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
@@ -34,6 +35,7 @@ import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
 import {IdentifierResolution, isManagedIdentifierDidResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
+import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -63,6 +65,8 @@ export const createAgentPlugins = ({
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
     new IdentifierResolution(),
+    // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
+    new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
     new JwtService(),
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
