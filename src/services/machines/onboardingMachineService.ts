@@ -1,6 +1,6 @@
 import {MappedCredential, OnboardingMachineContext} from '../../types/machines/onboarding';
 import {CredentialMapper} from '@sphereon/ssi-types';
-import {CredentialCorrelationType, CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {computeEntryHash} from '@veramo/utils';
 import {generateDigest} from '../../utils';
 import agent from '../../agent';
@@ -29,10 +29,10 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
     });
 };
 
-export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<void> => {
+export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
   const {pidCredentials} = context;
 
-  pidCredentials.forEach((mappedCredential: MappedCredential) =>
+  const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
     agent.crsAddCredential({
       credential: {
         rawDocument: mappedCredential.rawCredential,
@@ -44,4 +44,19 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
       opts: {hasher: generateDigest},
     }),
   );
+
+  return Promise.all(storeCredentials);
+
+  // pidCredentials.forEach((mappedCredential: MappedCredential) =>
+  //   agent.crsAddCredential({
+  //     credential: {
+  //       rawDocument: mappedCredential.rawCredential,
+  //       credentialRole: CredentialRole.HOLDER,
+  //       credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
+  //       issuerCorrelationType: CredentialCorrelationType.X509_CN,
+  //       issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+  //     },
+  //     opts: {hasher: generateDigest},
+  //   }),
+  // );
 };

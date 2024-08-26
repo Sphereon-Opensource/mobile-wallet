@@ -15,6 +15,8 @@ import {
 import RootNavigation from './../rootNavigation';
 import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
+import store from '../../store';
+import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
@@ -115,6 +117,11 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
         onBack: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),
       });
       break;
+    }
+    case OnboardingMachineStateType.done: {
+      OnboardingMachine.clearInstance({stop: true});
+      // Yuck, but we need a rerender. The retrieval of contacts etc is already done in the setupWallet service
+      store.dispatch<any>({type: LOGIN_SUCCESS});
     }
     default:
       throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
