@@ -20,15 +20,7 @@ import {IUserState} from '../../types/store/user.types';
 const initialState: IUserState = {
   loading: false,
   users: new Map<string, IUser>(),
-  activeUser: {
-    id: 'id1234',
-    firstName: 'luuk',
-    lastName: 'schipperheijn',
-    emailAddress: 'luuk@wearereasonablepeople.com',
-    identifiers: [],
-    createdAt: new Date(2024, 8, 1),
-    lastUpdatedAt: new Date(2024, 8, 2),
-  },
+  activeUser: undefined,
 };
 
 const userReducer = (state: IUserState = initialState, action: UserActionTypes): IUserState => {
