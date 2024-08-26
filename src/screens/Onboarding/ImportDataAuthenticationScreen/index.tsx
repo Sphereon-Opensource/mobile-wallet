@@ -1,29 +1,44 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useContext} from 'react';
+import {useContext, useMemo, useState} from 'react';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {Container, ContentContainer, Text, Title, TitleContainer} from '../components/styles';
+import PinCode from '../../../components/pinCodes/OnboardingPinCode';
+import {PIN_CODE_LENGTH} from '../../../@config/constants';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
+import ScreenContainer from '../../../components/containers/ScreenContainer';
+import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
 
 const ImportDataAuthenticationScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  const {
+    context: {pinCode: pinCodeContext},
+  } = onboardingInstance.getSnapshot();
+  const [pinCode, setPinCode] = useState('');
+  const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
+
+  useAuthEffect((success: boolean) => {
+    if (!success) return;
+    onboardingInstance.send(OnboardingMachineEvents.NEXT);
+  });
+
+  const footer = (
+    <PrimaryButton
+      style={{height: 42, width: 300}}
+      caption="Next"
+      backgroundColors={['#7276F7', '#7C40E8']}
+      captionColor={fontColors.light}
+      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+      disabled={!doPinsCompletelyMatch}
+    />
+  );
+
   return (
-    <Container>
-      <TitleContainer>
-        <Title>{translate('import_data_auth_step_title')}</Title>
-      </TitleContainer>
-      <ContentContainer>
-        <Text>Placeholder for local authentication</Text>
-      </ContentContainer>
-      <PrimaryButton
-        style={{height: 42, width: 300}}
-        caption="Next"
-        backgroundColors={['#7276F7', '#7C40E8']}
-        captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-      />
-    </Container>
+    <ScreenContainer footer={footer}>
+      <ScreenTitleAndDescription title={translate('import_data_auth_title')} />
+      <PinCode pin={pinCode} onPinChange={setPinCode} length={PIN_CODE_LENGTH} validation={{isValid: doPinsCompletelyMatch}} />
+    </ScreenContainer>
   );
 };
 
