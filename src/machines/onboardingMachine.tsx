@@ -238,14 +238,13 @@ const states: OnboardingStatesConfig = {
   importDataFinal: {
     // TODO call this something like reviewPIDData
     on: {
-      PREVIOUS: OnboardingMachineStateType.retrievePIDCredentials,
+      PREVIOUS: OnboardingMachineStateType.importPersonalData,
       DECLINE_INFORMATION: {
         target: OnboardingMachineStateType.incorrectPersonalData,
         actions: assign({skipImport: true}),
       },
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 4}),
+        target: OnboardingMachineStateType.storePIDCredentials,
       },
     },
   },
@@ -277,8 +276,7 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storePIDCredentials,
       onDone: {
-        target: OnboardingMachineStateType.importDataFinal,
-        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
+        target: OnboardingMachineStateType.done,
       },
       onError: {
         target: OnboardingMachineStateType.handleError,
