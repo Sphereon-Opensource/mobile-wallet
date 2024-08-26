@@ -1,9 +1,11 @@
 import React, {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage';
 import {translate} from '../../localization/Localization';
 import {
   SSIBasicContainerStyled as Container,
   SSINotificationsOverviewScreenEmptyStateContainerStyled as EmptyStateContainer,
+  SSINotificationsOverviewScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
   SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText,
   SSITextH4LightStyled as SubTitleText,
 } from '../../styles/components';
@@ -16,6 +18,9 @@ const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element =>
     // This currently now only shows the empty state.
     <Container>
       <EmptyStateContainer>
+        <EmptyStateImageContainer>
+          <SSINotificationsImage />
+        </EmptyStateImageContainer>
         <TitleText>{translate('notifications_overview_empty_state_title')}</TitleText>
         <SubTitleText>{translate('notifications_overview_empty_state_subtitle')}</SubTitleText>
       </EmptyStateContainer>
