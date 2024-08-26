@@ -103,7 +103,8 @@
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
 
   "import_data_auth_step_title": "Enter your sphereon pin",
-
+  "import_data_consent_button_accept": "Yes, that's me",
+  "import_data_consent_button_decline": "Not everything is correct",
   "import_data_loader_step_title": "One moment",
   "import_data_loader_step_subtitle": "Getting your personal information.",
 
@@ -111,7 +112,21 @@
 
   "import_data_setup_complete_title": "Setup complete",
 
+  "incorrect_data_title": "Are some of your details incorrect?",
+  "incorrect_data_description": "If your personal information is incorrect, it can cause problems. Therefore do not add this data.",
+  "incorrect_data_bullet_content_heading": "What can you do",
+  "incorrect_data_bullet_content": "Contact your municipality to have your informaiton changed.\nWait for a message from your municipality confirming the update.\nTry to add the personal information again. You can find it in the catalog.",
+  "incorrect_data_back": "Back",
+  "incorrect_data_dont_add_info": "Don't add this information",
+  "incorrect_data_after_bullet_heading": "If it's not yours",
+  "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
+
   "import_data_title": "Import personal data",
+
+  "onboarding_complete_title": "All done!",
+  "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
+  "onboarding_complete_next": "Start exploring my Wallet",
+
   "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
   "scan_card_step_title": "Scan to import your data",
   "personal_data_title": "Enter personal data",

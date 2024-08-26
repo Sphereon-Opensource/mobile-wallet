@@ -13,3 +13,5 @@ export {default as WelcomeScreen} from './WelcomeScreen';
 export {default as ImportDataAuthenticationScreen} from './ImportDataAuthenticationScreen';
 export {default as ImportDataLoaderScreen} from './ImportDataLoaderScreen';
 export {default as ImportDataFinalScreen} from './ImportDataFinalScreen';
+export {default as IncorrectInformationScreen} from './IncorrectInformationScreen';
+export {default as CompleteOnboardingScreen} from './CompleteOnboardingScreen';

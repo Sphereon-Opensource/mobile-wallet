@@ -68,6 +68,8 @@ import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import AusweisModal from '../modals/AusweisModal';
+import IncorrectInformationScreen from 'src/screens/Onboarding/IncorrectInformationScreen';
+import CompleteOnboardingScreen from 'src/screens/Onboarding/CompleteOnboardingScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -582,6 +584,8 @@ export const OnboardingStack = (): JSX.Element => (
     <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
     <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
     <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
         {group.screens.map(({name, component}, index) => (
