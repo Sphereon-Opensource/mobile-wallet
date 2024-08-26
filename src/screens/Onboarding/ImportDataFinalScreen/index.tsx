@@ -6,15 +6,18 @@ import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {ImportInformationSummary} from '../ImportDataConsentScreen/components/ImportInformationSummary';
-import {AusweisRequestedInfoSchema} from '../ImportDataConsentScreen/constants';
+import {AusweisRequestedInfoSchema, PIDCredentialsMock} from '../ImportDataConsentScreen/constants';
 import {Container, ContentContainer, Title, TitleContainer} from '../components/styles';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
+import {convertFromPIDPayload} from '../ImportDataConsentScreen/util';
 
 const {width} = Dimensions.get('window');
 
 const ImportDataFinalScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const data = useMemo(() => AusweisRequestedInfoSchema.map(item => ({...item, data: 'placeholder'})), []);
+  const {pidCredentials} = onboardingInstance.getSnapshot().context;
+
+  const data = useMemo(() => convertFromPIDPayload(pidCredentials[0].uniformCredential.credentialSubject), []);
 
   const footer = (
     <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10}}>
