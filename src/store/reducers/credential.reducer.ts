@@ -13,11 +13,10 @@ import {
 } from '../../types/store/credential.action.types';
 import {ICredentialState} from '../../types/store/credential.types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {credentialSummaryMock} from '../../../__mocks__/credentialSummaryMock';
 
 const initialState: ICredentialState = {
   loading: false,
-  verifiableCredentials: [credentialSummaryMock],
+  verifiableCredentials: [],
 };
 
 const credentialReducer = (state: ICredentialState = initialState, action: CredentialActionTypes): ICredentialState => {
