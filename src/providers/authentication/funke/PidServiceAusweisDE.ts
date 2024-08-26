@@ -8,6 +8,7 @@ import {PidIssuerService} from '../PidIssuerService';
 import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
+import {KeyManagementSystemEnum} from '../../../types';
 
 class PidServiceAusweisDE {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -67,7 +68,7 @@ class PidServiceAusweisDE {
     const credentialOffer =
       'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
-      {pidProvider, clientId: PidServiceAusweisDE._funke_clientId, credentialOffer: credentialOffer, kms: 'local'},
+      {pidProvider, clientId: PidServiceAusweisDE._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
       agentContext,
     );
     return new PidServiceAusweisDE({...args, pidService});
