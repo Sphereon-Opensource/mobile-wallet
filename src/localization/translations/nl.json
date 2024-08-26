@@ -186,7 +186,7 @@
       }
     },
     "enter_pin": {
-      "title": "Set a new 6-digit Sphereon PIN",
+      "title": "Set a 6-digit Sphereon PIN",
       "requirements": {
         "title": "Your PIN should not contain:",
         "not_same_digits": "similar digits",
