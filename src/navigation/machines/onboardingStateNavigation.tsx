@@ -5,6 +5,7 @@ import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {
   OnboardingContext as OnboardingContextType,
   OnboardingMachineContext,
+  OnboardingMachineEvents,
   OnboardingMachineInterpreter,
   OnboardingMachineNavigationArgs,
   OnboardingMachineState,
@@ -12,6 +13,8 @@ import {
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
 import RootNavigation from './../rootNavigation';
+import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {translate} from '../../localization/Localization';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
@@ -81,6 +84,32 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.importDataFinal:
       onboardingNavigation.navigate('ImportDataFinal', {});
       break;
+    case OnboardingMachineStateType.handleError: {
+      const {error} = context;
+
+      if (!error) {
+        throw new Error(`Missing error in context`);
+      }
+
+      navigation.navigate(ScreenRoutesEnum.ERROR, {
+        image: PopupImagesEnum.WARNING,
+        title: error.title,
+        details: error.message,
+        ...(error.detailsMessage && {
+          detailsPopup: {
+            buttonCaption: translate('action_view_extra_details'),
+            title: error.detailsTitle,
+            details: error.detailsMessage,
+          },
+        }),
+        primaryButton: {
+          caption: translate('action_ok_label'),
+          onPress: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),
+        },
+        onBack: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),
+      });
+      break;
+    }
     default:
       throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
   }

@@ -63,6 +63,7 @@ export type OnboardingStackParamsList = {
   ImportDataAuthentication: Record<string, never>;
   ImportDataLoader: Record<string, never>;
   ImportDataFinal: Record<string, never>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;

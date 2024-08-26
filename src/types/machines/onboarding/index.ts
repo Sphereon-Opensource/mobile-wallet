@@ -6,6 +6,7 @@ import {OnboardingStackParamsList} from '../../navigation';
 import {SupportedDidMethodEnum} from '../../did';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
+import {ErrorDetails} from '../../error';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -43,6 +44,7 @@ export type OnboardingMachineContext = {
   currentStep: OnboardingMachineStep;
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
+  error?: ErrorDetails;
 };
 
 // States
@@ -64,6 +66,9 @@ export enum OnboardingMachineStateType {
   retrievePIDCredentials = 'retrievePIDCredentials',
   importDataFinal = 'importDataFinal',
   storePIDCredentials = 'storePIDCredentials',
+  handleError = 'handleError',
+  error = 'error',
+  done = 'done',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;

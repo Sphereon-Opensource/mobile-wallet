@@ -52,7 +52,6 @@ import {login, walletAuthLockState} from '../services/authenticationService';
 import {
   HeaderMenuIconsEnum,
   ISiopV2PProps,
-  // IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
   OnboardingRoute,
@@ -605,6 +604,13 @@ export const OnboardingStack = (): JSX.Element => (
         ))}
       </OnboardingBaseStack.Group>
     ))}
+    <OnboardingBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
   </OnboardingBaseStack.Navigator>
 );
 

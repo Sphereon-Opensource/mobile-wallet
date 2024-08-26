@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
-import {SupportedDidMethodEnum} from '../types';
+import {ErrorDetails, SupportedDidMethodEnum} from '../types';
 import {
   Country,
   CreateOnboardingMachineOpts,
@@ -23,6 +23,7 @@ import {
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
 import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import {translate} from '../localization/Localization';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -212,10 +213,13 @@ const states: OnboardingStatesConfig = {
         actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
       },
       onError: {
-        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
-        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
-          console.log('Error occurred:', event.data);
-        },
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_retrieve_credentials_error_title'),
+            message: _event.data.message,
+          }),
+        }),
       },
     },
   },
@@ -237,12 +241,31 @@ const states: OnboardingStatesConfig = {
         actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
       },
       onError: {
-        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
-        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
-          console.log('Error occurred:', event.data);
-        },
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
       },
     },
+  },
+  handleError: {
+    on: {
+      PREVIOUS: {
+        target: OnboardingMachineStateType.error,
+      },
+      NEXT: {
+        target: OnboardingMachineStateType.error,
+      },
+    },
+  },
+  error: {
+    type: 'final',
+  },
+  done: {
+    type: 'final',
   },
 };
 
