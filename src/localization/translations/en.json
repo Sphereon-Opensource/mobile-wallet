@@ -199,7 +199,7 @@
       "title": "Enter your email address",
       "text_field": {
         "label": "Email address",
-        "placeholder": "Yout email address",
+        "placeholder": "Your email address",
         "errors": {
           "missing": "Please fill in an email address",
           "invalid": "Please fill in a valid email address"
