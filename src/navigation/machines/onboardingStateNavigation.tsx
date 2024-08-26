@@ -84,6 +84,12 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.importDataFinal:
       onboardingNavigation.navigate('ImportDataFinal', {});
       break;
+    case OnboardingMachineStateType.incorrectPersonalData:
+      onboardingNavigation.navigate('IncorrectPersonalData', {});
+      break;
+    case OnboardingMachineStateType.completeOnboarding:
+      onboardingNavigation.navigate('CompleteOnboarding', {});
+      break;
     case OnboardingMachineStateType.handleError: {
       const {error} = context;
 

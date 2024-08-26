@@ -5,7 +5,10 @@ import {View, ViewStyle} from 'react-native';
 import {ParamsList} from '../../../types';
 import Tabs, {Props as TabsProps} from './Tabs';
 
-type TapBarProps<T extends ParamsList> = Pick<TabsProps<T>, 'containerStyle' | 'labels' | 'indicatorProportionalWidth' | 'indicatorStyle'>;
+type TapBarProps<T extends ParamsList> = Pick<
+  TabsProps<T>,
+  'containerStyle' | 'labels' | 'indicatorProportionalWidth' | 'indicatorStyle' | 'renderIndicator'
+>;
 
 type Props<T extends ParamsList> = {
   children: React.ReactNode;

@@ -29,6 +29,7 @@ const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isStepComplete: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.FINAL;
 const isBiometricsEnabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
 const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
 const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
@@ -44,6 +45,8 @@ const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotN
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
+const isSkipImport: OnboardingGuard = ({skipImport}) => !!skipImport;
+const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
 const states: OnboardingStatesConfig = {
@@ -58,6 +61,7 @@ const states: OnboardingStatesConfig = {
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
         {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importDataConsent},
+        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -72,7 +76,12 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: 2}),
         },
         {
-          cond: ({currentStep}) => currentStep === 4,
+          cond: ({currentStep, skipImport}) => currentStep === 4 && !skipImport,
+          target: OnboardingMachineStateType.importDataFinal,
+          actions: assign({currentStep: 3}),
+        },
+        {
+          cond: ({currentStep, skipImport}) => currentStep === 4 && skipImport,
           target: OnboardingMachineStateType.importDataConsent,
           actions: assign({currentStep: 3}),
         },
@@ -189,7 +198,10 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.showProgress,
       NEXT: OnboardingMachineStateType.importPersonalData,
-      SKIP_IMPORT: OnboardingMachineStateType.retrievePIDCredentials,
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 4, skipImport: true}),
+      },
     },
   },
   importPersonalData: {
@@ -227,10 +239,38 @@ const states: OnboardingStatesConfig = {
     // TODO call this something like reviewPIDData
     on: {
       PREVIOUS: OnboardingMachineStateType.retrievePIDCredentials,
+      DECLINE_INFORMATION: {
+        target: OnboardingMachineStateType.incorrectPersonalData,
+        actions: assign({skipImport: true}),
+      },
       NEXT: {
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 4}),
       },
+    },
+  },
+  incorrectPersonalData: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importDataFinal,
+      NEXT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 4, skipImport: true}),
+      },
+    },
+  },
+  completeOnboarding: {
+    on: {
+      PREVIOUS: [
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: 3}),
+        },
+        {
+          cond: OnboardingMachineGuards.isImportData,
+          target: OnboardingMachineStateType.importDataFinal,
+        },
+      ],
     },
   },
   storePIDCredentials: {
@@ -298,6 +338,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     verificationPinCode: '',
     termsAndPrivacyAccepted: false,
     currentStep: 1,
+    skipImport: false,
     pidCredentials: [],
   };
 
@@ -390,6 +431,7 @@ export class OnboardingMachine {
         guards: {
           isStepCreateWallet,
           isStepSecureWallet,
+          isStepComplete,
           isBiometricsEnabled,
           isBiometricsDisabled,
           isBiometricsUndetermined,
@@ -399,6 +441,8 @@ export class OnboardingMachine {
           isCountryValid,
           isPinCodeValid,
           doPinsMatch,
+          isSkipImport,
+          isImportData,
           hasFunkeRefreshUrl,
           ...opts?.guards,
         },

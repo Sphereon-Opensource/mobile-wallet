@@ -42,6 +42,7 @@ export type OnboardingMachineContext = {
   verificationPinCode: string;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
+  skipImport: boolean;
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
@@ -65,6 +66,8 @@ export enum OnboardingMachineStateType {
   importDataAuthentication = 'importDataAuthentication',
   retrievePIDCredentials = 'retrievePIDCredentials',
   importDataFinal = 'importDataFinal',
+  incorrectPersonalData = 'incorrectPersonalData',
+  completeOnboarding = 'completeOnboarding',
   storePIDCredentials = 'storePIDCredentials',
   handleError = 'handleError',
   error = 'error',
@@ -87,6 +90,7 @@ export enum OnboardingMachineEvents {
   SKIP_IMPORT = 'SKIP_IMPORT',
   SET_BIOMETRICS = 'SET_BIOMETRICS',
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
+  DECLINE_INFORMATION = 'DECLINE_INFORMATION',
   SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
 }
 
@@ -102,6 +106,7 @@ export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
+export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
 export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 
 export type OnboardingMachineEventTypes =
@@ -117,6 +122,7 @@ export type OnboardingMachineEventTypes =
   | SkipImportEvent
   | SkipBiometricsEvent
   | SetBiometricsEvent
+  | DeclineInformation
   | SetFunkeProvider;
 
 // Guards
@@ -132,6 +138,9 @@ export enum OnboardingMachineGuards {
   isPinCodeValid = 'isPinCodeValid',
   doPinsMatch = 'doPinsMatch',
   isStepImportPersonalData = 'isStepImportPersonalData',
+  isStepComplete = 'isStepComplete',
+  isSkipImport = 'isSkipImport',
+  isImportData = 'isImportData',
   hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
 }
 

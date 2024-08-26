@@ -8,7 +8,6 @@ type CircleWithBorderProps = {
   borderWidth: number;
   borderColors: string[];
   backgroundColors: string[];
-  icon?: React.ReactNode;
   style?: any;
 };
 
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 const CircleWithBorder = (props: CircleWithBorderProps) => {
-  const {size, borderWidth, borderColors, icon, backgroundColors} = props;
+  const {size, borderWidth, borderColors, backgroundColors} = props;
 
   const innerSize = useMemo(() => {
     return size - 2 * borderWidth;
@@ -37,14 +36,14 @@ const CircleWithBorder = (props: CircleWithBorderProps) => {
       }}
       colors={borderColors}>
       <Gradient
-        colors={backgroundColors}
+        colors={borderColors}
         style={{
           width: innerSize,
           height: innerSize,
           borderRadius: innerSize / 2,
           ...styles.center,
         }}>
-        {icon ?? <FaceIDIcon size={(2 * size) / 7} color="white" />}
+        <FaceIDIcon size={(2 * size) / 7} color="white" />
       </Gradient>
     </Gradient>
   );
