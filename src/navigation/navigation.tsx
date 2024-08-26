@@ -969,7 +969,7 @@ const AppNavigator = (): JSX.Element => {
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
       debug(`ONBOARDING starting...`);
-      //onboardingInstance.start();
+      onboardingInstance.start();
       debug(`ONBOARDING started`);
     }
   }, []);
@@ -983,11 +983,10 @@ const AppNavigator = (): JSX.Element => {
       {lockState === WalletAuthLockState.ONBOARDING ? (
         <Stack.Screen
           name={SwitchRoutesEnum.ONBOARDING}
-          component={MainStackNavigator}
-          // component={OnboardingStackScreenWithContext}
-          // initialParams={{
-          //   customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
-          // }}
+          component={OnboardingStackScreenWithContext}
+          initialParams={{
+            customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+          }}
         />
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />

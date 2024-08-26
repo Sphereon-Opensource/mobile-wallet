@@ -46,17 +46,4 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
   );
 
   return Promise.all(storeCredentials);
-
-  // pidCredentials.forEach((mappedCredential: MappedCredential) =>
-  //   agent.crsAddCredential({
-  //     credential: {
-  //       rawDocument: mappedCredential.rawCredential,
-  //       credentialRole: CredentialRole.HOLDER,
-  //       credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-  //       issuerCorrelationType: CredentialCorrelationType.X509_CN,
-  //       issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
-  //     },
-  //     opts: {hasher: generateDigest},
-  //   }),
-  // );
 };
