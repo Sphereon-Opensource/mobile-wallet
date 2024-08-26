@@ -62,7 +62,6 @@
     "@sphereon/ssi-sdk-ext.did-utils": "0.24.1-next.96",
     "@sphereon/ssi-sdk-ext.key-manager": "0.24.1-next.96",
     "@sphereon/ssi-sdk-ext.key-utils": "0.24.1-next.96",
-    "@sphereon/ssi-sdk-ext.kms-local": "0.24.1-next.96",
     "@sphereon/ssi-sdk-ext.kms-musap-rn": "0.24.1-next.96",
     "@sphereon/ssi-sdk.agent-config": "0.29.1-unstable.99",
     "@sphereon/ssi-sdk.contact-manager": "0.29.1-unstable.99",

@@ -51,13 +51,7 @@ export const oid4vciHolder = new OID4VCIHolder({
   hasher: generateDigest,
 });
 
-export const createAgentPlugins = ({
-  privateKeyStore,
-  dbConnection,
-}: {
-  privateKeyStore: PrivateKeyStore;
-  dbConnection: OrPromise<DataSource>;
-}): Array<IAgentPlugin> => {
+export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
@@ -99,7 +93,6 @@ export const createAgentPlugins = ({
         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
       ]),
-      keyStore: privateKeyStore,
     }),
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
