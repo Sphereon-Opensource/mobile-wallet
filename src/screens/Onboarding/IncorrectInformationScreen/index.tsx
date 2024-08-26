@@ -15,7 +15,7 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import styled from 'styled-components/native';
 import {SectionLabel} from '../ImportDataConsentScreen/components/styles';
-import {SSITextH3RegularLightStyled} from 'src/styles/components';
+import {SSITextH3RegularLightStyled} from '../../../styles/components';
 const {width} = Dimensions.get('window');
 
 const Footer = styled.View`

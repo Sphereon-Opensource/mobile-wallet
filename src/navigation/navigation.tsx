@@ -68,8 +68,8 @@ import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import AusweisModal from '../modals/AusweisModal';
-import IncorrectInformationScreen from 'src/screens/Onboarding/IncorrectInformationScreen';
-import CompleteOnboardingScreen from 'src/screens/Onboarding/CompleteOnboardingScreen';
+import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
+import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
