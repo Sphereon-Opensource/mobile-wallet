@@ -2,13 +2,13 @@ import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SSITextH2SemiBoldLightStyled, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {Dimensions} from 'react-native';
-import styled from 'styled-components/native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import styled from 'styled-components/native';
 const {width} = Dimensions.get('window');
 
 const Footer = styled.View`

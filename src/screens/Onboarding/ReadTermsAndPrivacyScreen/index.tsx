@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SSITextH2LightStyled, SSITextH2SemiBoldLightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {View, useWindowDimensions} from 'react-native';
 import ScreenContainer, {contentContainerStyle} from '../../../components/containers/ScreenContainer';
@@ -8,7 +8,6 @@ import ScreenTitleAndDescription from '../../../components/containers/ScreenTitl
 import {createTopBarNavigator} from '../../../components/navigators/TopBarNavigator';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {SSITextH2LightStyled, SSITextH2SemiBoldLightStyled} from '../../../styles/components';
 import {OnboardingStackParamsList, ReadDocumentParamsList} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import DocumentText from './DocumentText';

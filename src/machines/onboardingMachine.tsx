@@ -5,7 +5,7 @@ import {DoneInvokeEvent, GuardPredicate, assign, createMachine, interpret} from 
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
-import {SupportedDidMethodEnum} from '../types';
+import {ErrorDetails, SupportedDidMethodEnum} from '../types';
 import {
   Country,
   CreateOnboardingMachineOpts,
@@ -23,6 +23,7 @@ import {
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
+import {translate} from '../localization/Localization';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -224,24 +225,26 @@ const states: OnboardingStatesConfig = {
         actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
       },
       onError: {
-        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
-        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
-          console.log('Error occurred:', event.data);
-        },
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_retrieve_credentials_error_title'),
+            message: _event.data.message,
+          }),
+        }),
       },
     },
   },
   importDataFinal: {
     // TODO call this something like reviewPIDData
     on: {
-      PREVIOUS: OnboardingMachineStateType.retrievePIDCredentials,
+      PREVIOUS: OnboardingMachineStateType.importPersonalData,
       DECLINE_INFORMATION: {
         target: OnboardingMachineStateType.incorrectPersonalData,
         actions: assign({skipImport: true}),
       },
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 4}),
+        target: OnboardingMachineStateType.storePIDCredentials,
       },
     },
   },
@@ -273,16 +276,38 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storePIDCredentials,
       onDone: {
-        target: OnboardingMachineStateType.importDataFinal,
-        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
+        target: OnboardingMachineStateType.done,
+        actions: assign({
+          pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data,
+          currentStep: 4,
+        }),
       },
       onError: {
-        target: OnboardingMachineStateType.importDataConsent, // TODO we need to bring back the error state
-        actions: (context: OnboardingMachineContext, event: DoneInvokeEvent<Error>): void => {
-          console.log('Error occurred:', event.data);
-        },
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
       },
     },
+  },
+  handleError: {
+    on: {
+      PREVIOUS: {
+        target: OnboardingMachineStateType.error,
+      },
+      NEXT: {
+        target: OnboardingMachineStateType.error,
+      },
+    },
+  },
+  error: {
+    type: 'final',
+  },
+  done: {
+    type: 'final',
   },
 };
 

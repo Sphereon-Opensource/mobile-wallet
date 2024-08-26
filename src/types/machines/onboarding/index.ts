@@ -6,6 +6,7 @@ import {Interpreter, State, StatesConfig} from 'xstate';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {StackParamList} from '../../../types/navigation';
 import {SupportedDidMethodEnum} from '../../did';
+import {ErrorDetails} from '../../error';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -44,6 +45,7 @@ export type OnboardingMachineContext = {
   skipImport: boolean;
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
+  error?: ErrorDetails;
 };
 
 // States
@@ -67,6 +69,9 @@ export enum OnboardingMachineStateType {
   incorrectPersonalData = 'incorrectPersonalData',
   completeOnboarding = 'completeOnboarding',
   storePIDCredentials = 'storePIDCredentials',
+  handleError = 'handleError',
+  error = 'error',
+  done = 'done',
 }
 
 export type OnboardingMachineStates = Record<OnboardingMachineStateType, {}>;

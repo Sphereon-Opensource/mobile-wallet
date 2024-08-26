@@ -28,14 +28,12 @@ export type Props<T extends ParamsList> = Omit<MaterialTopTabBarProps, 'state' |
   indicatorStyle?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>;
   indicatorProportionalWidth?: number;
 };
-
 const defaultContainerStyle: ViewProps['style'] = {
   flexDirection: 'row',
   paddingVertical: 4,
   borderBottomColor: '#404D7A',
   borderBottomWidth: 1,
 };
-
 const Tabs = <T extends ParamsList>({
   state: {routes, index: routeIndex},
   navigation,
@@ -53,17 +51,14 @@ const Tabs = <T extends ParamsList>({
   const tabWidth = (containerWidth - tabsTotalGap - tabsHorizontalPadding * 2) / numberOfTabs;
   const indicatorWidth = tabWidth * indicatorProportionalWidth;
   const tabRemainingWidth = tabWidth - indicatorWidth;
-
   const getIndicatorLeft = useCallback(
     (i: number) => tabsHorizontalPadding + tabsGap * i + tabWidth * i + tabRemainingWidth / 2,
     [tabWidth, tabRemainingWidth],
   );
-
   const indicatorLeft = useSharedValue(getIndicatorLeft(routeIndex));
   useEffect(() => {
     indicatorLeft.value = withTiming(getIndicatorLeft(routeIndex), {duration: 200});
   }, [routeIndex, getIndicatorLeft]);
-
   return (
     <View style={[defaultContainerStyle, containerStyle]}>
       {routes.map((route, i) => (
@@ -79,5 +74,4 @@ const Tabs = <T extends ParamsList>({
     </View>
   );
 };
-
 export default Tabs;

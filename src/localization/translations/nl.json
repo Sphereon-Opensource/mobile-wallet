@@ -186,7 +186,7 @@
       }
     },
     "enter_pin": {
-      "title": "Set a new 6-digit Sphereon PIN",
+      "title": "Set a 6-digit Sphereon PIN",
       "requirements": {
         "title": "Your PIN should not contain:",
         "not_same_digits": "similar digits",
@@ -356,5 +356,7 @@
   "ausweis_eid_modal_description": "De Persoonsidentificatiegegevens vormen de basis van uw wallet en zijn daarom erg belangrijk om andere certificaten te kunnen verkrijgen.\n\nWeet u zeker dat u deze informatie in uw wallet wilt opslaan?",
   "ausweis_eid_modal_accept_label": "Persoonlijke informatie importeren",
   "action_maybe_later_label": "Misschien later",
-  "item_not_yet_available_message": "Dit item is nog niet beschikbaar."
+  "item_not_yet_available_message": "Dit item is nog niet beschikbaar.",
+  "onboarding_machine_store_credential_error_title": "Opslaan credential",
+  "onboarding_machine_retrieve_credentials_error_title": "Ophalen credentials"
 }

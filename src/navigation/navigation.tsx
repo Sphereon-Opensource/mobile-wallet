@@ -10,11 +10,9 @@ import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
-import AusweisModal from '../modals/AusweisModal';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
-import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
@@ -36,8 +34,6 @@ import {
   VerifyPinCodeScreen,
   WelcomeScreen,
 } from '../screens/Onboarding';
-import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
-import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
@@ -60,10 +56,8 @@ import {login, walletAuthLockState} from '../services/authenticationService';
 import {
   HeaderMenuIconsEnum,
   ISiopV2PProps,
-  // IOID4VCIProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
-  OnboardingRoute,
   OnboardingStackParamsList,
   ScreenRoutesEnum,
   ShareStackParamsList,
@@ -77,6 +71,10 @@ import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {ShareContext, ShareProvider} from './machines/shareStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
+import AusweisModal from '../modals/AusweisModal';
+import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
+import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -509,7 +507,7 @@ const NotificationsStack = (): JSX.Element => {
 type StackGroupConfig = {
   titleKey: string;
   screens: {
-    name: OnboardingRoute;
+    name: any;
     component: React.FC<any>;
   }[];
 };
@@ -638,6 +636,13 @@ export const OnboardingStack = (): JSX.Element => (
         ))}
       </OnboardingBaseStack.Group>
     ))}
+    <OnboardingBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
   </OnboardingBaseStack.Navigator>
 );
 
@@ -1006,7 +1011,7 @@ const AppNavigator = (): JSX.Element => {
       {lockState === WalletAuthLockState.ONBOARDING ? (
         <Stack.Screen
           name={SwitchRoutesEnum.ONBOARDING}
-          component={MainStackNavigator}
+          component={OnboardingStackScreenWithContext}
           initialParams={{
             customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
           }}
