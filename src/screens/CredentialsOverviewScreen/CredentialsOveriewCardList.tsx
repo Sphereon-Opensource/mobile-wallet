@@ -4,7 +4,7 @@ import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import React, {useState} from 'react';
 import {Image, ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
-import {CreditOverviewStackParamsList, RootState} from 'src/types';
+import {CreditOverviewStackParamsList, RootState} from '../../types';
 import {translate} from '../../localization/Localization';
 import {toLocalDateString} from '../../utils';
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
