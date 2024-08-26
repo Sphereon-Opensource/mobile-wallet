@@ -65,6 +65,7 @@ export type OnboardingStackParamsList = {
   ImportDataFinal: Record<string, never>;
   IncorrectPersonalData: Record<string, never>;
   CompleteOnboarding: Record<string, never>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
 export type CreditOverviewStackParamsList = {
