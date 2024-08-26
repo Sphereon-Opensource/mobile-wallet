@@ -15,6 +15,8 @@ import {
 import RootNavigation from './../rootNavigation';
 import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
+import store from '../../store';
+import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
@@ -69,22 +71,22 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.readPrivacy:
       onboardingNavigation.navigate('ReadTermsAndPrivacy', {document: 'privacy'});
       break;
-    case OnboardingMachineStateType.importPersonalData:
+    case OnboardingMachineStateType.importPIDDataNFC:
       onboardingNavigation.navigate('ImportPersonalData', {});
       break;
-    case OnboardingMachineStateType.importDataConsent:
+    case OnboardingMachineStateType.importPIDDataConsent:
       onboardingNavigation.navigate('ImportDataConsent', {});
       break;
-    case OnboardingMachineStateType.importDataAuthentication:
+    case OnboardingMachineStateType.importPIDDataAuthentication:
       onboardingNavigation.navigate('ImportDataAuthentication', {});
       break;
     case OnboardingMachineStateType.retrievePIDCredentials:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
-    case OnboardingMachineStateType.importDataFinal:
+    case OnboardingMachineStateType.reviewPIDCredentials:
       onboardingNavigation.navigate('ImportDataFinal', {});
       break;
-    case OnboardingMachineStateType.incorrectPersonalData:
+    case OnboardingMachineStateType.declinePIDCredentials:
       onboardingNavigation.navigate('IncorrectPersonalData', {});
       break;
     case OnboardingMachineStateType.completeOnboarding:
@@ -116,6 +118,15 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       });
       break;
     }
+    case OnboardingMachineStateType.done: {
+      OnboardingMachine.clearInstance({stop: true});
+      // Yuck, but we need a rerender. The retrieval of contacts etc is already done in the setupWallet service
+      store.dispatch<any>({type: LOGIN_SUCCESS});
+      break;
+    }
+    case OnboardingMachineStateType.storePIDCredentials:
+      onboardingNavigation.navigate('ImportDataLoader', {});
+      break;
     default:
       throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
   }

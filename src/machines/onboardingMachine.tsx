@@ -60,7 +60,7 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
-        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importDataConsent},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPIDDataConsent},
         {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
       ],
       PREVIOUS: [
@@ -77,12 +77,12 @@ const states: OnboardingStatesConfig = {
         },
         {
           cond: ({currentStep, skipImport}) => currentStep === 4 && !skipImport,
-          target: OnboardingMachineStateType.importDataFinal,
+          target: OnboardingMachineStateType.reviewPIDCredentials,
           actions: assign({currentStep: 3}),
         },
         {
           cond: ({currentStep, skipImport}) => currentStep === 4 && skipImport,
-          target: OnboardingMachineStateType.importDataConsent,
+          target: OnboardingMachineStateType.importPIDDataConsent,
           actions: assign({currentStep: 3}),
         },
       ],
@@ -194,26 +194,26 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
     },
   },
-  importDataConsent: {
+  importPIDDataConsent: {
     on: {
       PREVIOUS: OnboardingMachineStateType.showProgress,
-      NEXT: OnboardingMachineStateType.importPersonalData,
+      NEXT: OnboardingMachineStateType.importPIDDataNFC,
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 4, skipImport: true}),
       },
     },
   },
-  importPersonalData: {
+  importPIDDataNFC: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
       SET_FUNKE_PROVIDER: {actions: assign({funkeProvider: (_, event) => event.data})},
-      NEXT: {cond: OnboardingMachineGuards.hasFunkeRefreshUrl, target: OnboardingMachineStateType.importDataAuthentication},
+      NEXT: {cond: OnboardingMachineGuards.hasFunkeRefreshUrl, target: OnboardingMachineStateType.importPIDDataAuthentication},
     },
   },
-  importDataAuthentication: {
+  importPIDDataAuthentication: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.importDataConsent,
+      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
       NEXT: OnboardingMachineStateType.retrievePIDCredentials,
     },
   },
@@ -221,7 +221,7 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.retrievePIDCredentials,
       onDone: {
-        target: OnboardingMachineStateType.importDataFinal,
+        target: OnboardingMachineStateType.reviewPIDCredentials,
         actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
       },
       onError: {
@@ -235,26 +235,41 @@ const states: OnboardingStatesConfig = {
       },
     },
   },
-  importDataFinal: {
-    // TODO call this something like reviewPIDData
+  reviewPIDCredentials: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.retrievePIDCredentials,
+      PREVIOUS: OnboardingMachineStateType.importPIDDataNFC,
       DECLINE_INFORMATION: {
-        target: OnboardingMachineStateType.incorrectPersonalData,
+        target: OnboardingMachineStateType.declinePIDCredentials,
         actions: assign({skipImport: true}),
       },
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 4}),
+        target: OnboardingMachineStateType.storePIDCredentials,
       },
     },
   },
-  incorrectPersonalData: {
+  declinePIDCredentials: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.importDataFinal,
+      PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 4, skipImport: true}),
+      },
+    },
+  },
+  storePIDCredentials: {
+    invoke: {
+      src: OnboardingMachineServices.storePIDCredentials,
+      onDone: {
+        target: OnboardingMachineStateType.completeOnboarding,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
       },
     },
   },
@@ -268,27 +283,10 @@ const states: OnboardingStatesConfig = {
         },
         {
           cond: OnboardingMachineGuards.isImportData,
-          target: OnboardingMachineStateType.importDataFinal,
+          target: OnboardingMachineStateType.reviewPIDCredentials,
         },
       ],
-    },
-  },
-  storePIDCredentials: {
-    invoke: {
-      src: OnboardingMachineServices.storePIDCredentials,
-      onDone: {
-        target: OnboardingMachineStateType.importDataFinal,
-        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
-      },
-      onError: {
-        target: OnboardingMachineStateType.handleError,
-        actions: assign({
-          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
-            title: translate('onboarding_machine_store_credential_error_title'),
-            message: _event.data.message,
-          }),
-        }),
-      },
+      NEXT: OnboardingMachineStateType.done,
     },
   },
   handleError: {
