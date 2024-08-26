@@ -20,7 +20,7 @@ export const getVerifiableCredentialsFromStorage = async (): Promise<Array<Uniqu
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
   const {vc, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
-  const rawDocument = JSON.stringify(vc);
+  const rawDocument = typeof vc === 'string' ? vc : JSON.stringify(vc);
   const addCredential: AddDigitalCredential = {
     rawDocument: rawDocument,
     issuerCorrelationId: issuerCorrelationId,

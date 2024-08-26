@@ -1,5 +1,8 @@
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
 import {CredentialMapper, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ICreateVerifiableCredentialArgs, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
@@ -23,11 +26,7 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {showToast} from '../../utils';
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
-import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getCredentialIssuerContact, getCredentialSubjectContact, showToast} from '../../utils';
 
 export const logger = Loggers.DEFAULT.get('sphereon:store');
 
@@ -64,12 +63,14 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
 export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
+    console.log(`ORIG RAW VC: ${vc}`);
     const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
+    const issuer = typeof mappedVc.issuer === 'object' ? mappedVc.issuer.id : mappedVc.issuer;
     storeCredential({
       credentialRole: CredentialRole.HOLDER,
-      issuerCorrelationId: `${vc.issuer}`,
-      issuerCorrelationType: CredentialCorrelationType.DID,
-      vc: mappedVc,
+      issuerCorrelationId: `${issuer}`,
+      issuerCorrelationType: issuer && issuer.startsWith('did:') ? CredentialCorrelationType.DID : CredentialCorrelationType.URL,
+      vc: vc,
     } satisfies IStoreVerifiableCredentialArgs)
       .then(async (hash: string): Promise<CredentialSummary> => {
         const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: hash}]});
