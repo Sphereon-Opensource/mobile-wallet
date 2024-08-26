@@ -1,4 +1,6 @@
 package com.sphereon.ssi.wallet
+
+import id.animo.ausweissdk.AusweisSdkUtils
 import android.app.Application
 import android.content.res.Configuration
 import android.util.Log
@@ -43,6 +45,7 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+        if (AusweisSdkUtils.isAA2Process(this)) return
 
         try {
             MusapModuleAndroid.init(this)

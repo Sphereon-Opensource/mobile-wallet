@@ -53,6 +53,10 @@ setup_permissions([
 ])
 target 'SphereonWallet' do
   use_expo_modules!
+# @generated begin @animo-id/expo-ausweis-sdk - expo prebuild (DO NOT MODIFY) sync-f7defb8a7e68494511942d008678677bd68dc108
+source 'https://github.com/animo/expo-ausweis-sdk'
+source 'https://cdn.cocoapods.org'
+# @generated end @animo-id/expo-ausweis-sdk
   config = use_native_modules!
 
   use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']

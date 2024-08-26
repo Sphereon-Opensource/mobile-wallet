@@ -1,11 +1,14 @@
+import {ImageAttributes} from '@sphereon/ui-components.core';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
+import {Country} from '../machines/onboarding';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
   MORE = 'more',
   CLOSE = 'close',
+  SEARCH = 'search',
+  CHEVRON = 'chevron',
 }
 
 export enum HeaderMenuIconsEnum {
@@ -31,7 +34,7 @@ export interface IHeaderProps {
 
 export interface IButton {
   caption: string;
-  onPress: () => Promise<void>;
+  onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean | (() => boolean);
 }
 
@@ -54,4 +57,21 @@ export type CredentialMiniCardDisplay = {
   backgroundImage?: ImageAttributes;
   logoColor: ColorValue;
   logo?: ImageAttributes;
+};
+
+export type StepState = 'current' | 'finished' | 'upcoming';
+
+export type StepContent = (stepState: StepState) => JSX.Element;
+
+export interface IStepIndicatorProps {
+  state: StepState;
+  isLastStep: boolean;
+  stepIndex: number;
+  ringColor: ColorValue;
+}
+
+export type CountryOption = {
+  name: Country;
+  flagURI: string;
+  selected: boolean;
 };

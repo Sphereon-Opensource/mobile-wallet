@@ -1,5 +1,5 @@
+import 'reflect-metadata'; // needed for typeorm migrations
 import {install as installCrypto} from 'react-native-quick-crypto';
-import 'reflect-metadata'; // needed for migrations
 
 installCrypto();
 if (!global.window.crypto) {
