@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useState} from 'react';
-import {Image, Platform} from 'react-native';
+import {Image, Keyboard, Platform, View} from 'react-native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
@@ -9,10 +9,15 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
-import {ContentContainer} from '../components/styles';
+import {Container, ContentContainer} from '../components/styles';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {EIDFlowState} from '../../../types';
 import {delay} from '../../../utils';
+import styled from 'styled-components/native';
+
+const Content = styled(ContentContainer)`
+  padding: 10px 20px;
+`;
 
 const ImportPersonalDataScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -22,6 +27,13 @@ const ImportPersonalDataScreen = () => {
   const [provider, setProvider] = useState<VciServiceFunkeCProvider | undefined>();
 
   const translationsPath = 'onboarding_pages.import_scan_card';
+
+  const closeAll = () => {
+    setShowPin(false);
+    setPin('');
+    console.log('pressed');
+    Keyboard.dismiss();
+  };
 
   useEffect((): void => {
     if (pin.length === 0) {
@@ -50,28 +62,28 @@ const ImportPersonalDataScreen = () => {
   }, [pin]);
 
   const onCompletePin = (pin: string): void => {
+    console.log('here');
     setPin(pin);
     setShowPin(false);
   };
 
-  const footer = (
-    <PrimaryButton
-      style={{height: 42, width: '100%'}}
-      caption={translate(`${translationsPath}.button_caption`)}
-      captionColor={fontColors.light}
-      onPress={() => setShowPin(true)}
-    />
-  );
-
   return (
-    <ScreenContainer footer={footer}>
-      <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
-      <ContentContainer>
+    <Container>
+      <Content onPress={() => closeAll()}>
+        <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
-      </ContentContainer>
-      <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
+      </Content>
+      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10}}>
+        <PrimaryButton
+          style={{height: 42, width: '100%'}}
+          caption={translate(`${translationsPath}.button_caption`)}
+          captionColor={fontColors.light}
+          onPress={() => setShowPin(true)}
+        />
+      </View>
       {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
-    </ScreenContainer>
+      <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
+    </Container>
   );
 };
 

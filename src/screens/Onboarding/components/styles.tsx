@@ -29,7 +29,7 @@ export const TitleContainer = styled.View`
   padding: 10px 20px;
 `;
 
-export const ContentContainer = styled.View`
+export const ContentContainer = styled.Pressable`
   margin-top: 20px;
   flex: 1;
   align-items: center;
