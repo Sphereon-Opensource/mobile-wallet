@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
@@ -16,17 +16,34 @@ import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, R
 import {getOriginalVerifiableCredential, showToast} from '../../utils';
 import {Loggers} from '@sphereon/ssi-types';
 import {translate} from '../../localization/Localization';
+import {useFocusEffect} from '@react-navigation/native';
+import {setViewPreference} from '../../store/actions/user.actions';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;
   activeUser: IUser;
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
+  setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
 const logger = Loggers.DEFAULT.get('sphereon:screens');
-const CredentialsOverviewList = ({navigation, verifiableCredentials, activeUser, getVerifiableCredentials, deleteVerifiableCredential}: Props) => {
+const CredentialsOverviewList = ({
+  setViewPreference,
+  navigation,
+  verifiableCredentials,
+  activeUser,
+  getVerifiableCredentials,
+  deleteVerifiableCredential,
+}: Props) => {
   const [refreshing, setRefreshing] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.LIST);
+    }, []),
+  );
 
   const onRefresh = () => {
     getVerifiableCredentials();
@@ -131,6 +148,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
     deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash)),
+    setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => dispatch(setViewPreference(viewKey, preference)),
   };
 };
 
