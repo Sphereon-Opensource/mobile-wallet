@@ -98,7 +98,7 @@ const parseFullName = (fullName: string) => {
   }
 
   const firstName = nameParts[0];
-  const lastName = nameParts[nameParts.length - 1];
+  const lastName = nameParts.slice(1).join(' ');
 
   return {firstName, lastName};
 };
