@@ -5,14 +5,11 @@ import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resol
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
 import {createAgent} from '@veramo/core';
-import {PrivateKeyStore} from '@veramo/data-store';
-import {SecretBox} from '@veramo/kms-local';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
 import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
-import {DB_ENCRYPTION_KEY} from '../@config/database';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
 import {createAgentPlugins} from './plugins';
@@ -29,23 +26,22 @@ export const didMethodsSupported = Object.keys(didResolver['registry']).map(meth
 
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
-    defaultKms: KeyManagementSystemEnum.LOCAL,
+    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
 };
 
 const dbConnection: OrPromise<DataSource> = DEFAULT_DB_CONNECTION;
-const privateKeyStore: PrivateKeyStore = new PrivateKeyStore(dbConnection, new SecretBox(DB_ENCRYPTION_KEY));
 
 export const linkHandlers: LinkHandlers = new LinkHandlers().add(new LogLinkHandler());
 
 const agent = createAgent<TAgentTypes>({
-  plugins: createAgentPlugins({privateKeyStore, dbConnection}),
+  plugins: createAgentPlugins({dbConnection}),
 });
 
 export default agent;

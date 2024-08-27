@@ -153,11 +153,23 @@ android {
     }
 }
 
+// Access to MUSAP Maven artifacts
+repositories {
+    maven {
+        url "$rootDir/../node_modules/@sphereon/musap-native/android/maven"
+    }
+    maven {
+        url "$rootDir/../node_modules/@sphereon/musap-react-native/android/maven"
+    }
+}
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
     implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
+    implementation("com.sphereon.musap:musap-react-native:0.1.0")
+
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

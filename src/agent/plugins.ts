@@ -1,5 +1,4 @@
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
-import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
@@ -27,12 +26,13 @@ import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
-import {DEFAULT_DID_PREFIX_AND_METHOD, SupportedDidMethodEnum} from '../types';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
+import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {IdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 
@@ -51,20 +51,14 @@ export const oid4vciHolder = new OID4VCIHolder({
   hasher: generateDigest,
 });
 
-export const createAgentPlugins = ({
-  privateKeyStore,
-  dbConnection,
-}: {
-  privateKeyStore: PrivateKeyStore;
-  dbConnection: OrPromise<DataSource>;
-}): Array<IAgentPlugin> => {
+export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        local: new SphereonKeyManagementSystem(privateKeyStore),
+        musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
       },
     }),
     new DIDManager({
@@ -99,7 +93,6 @@ export const createAgentPlugins = ({
         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
       ]),
-      keyStore: privateKeyStore,
     }),
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
