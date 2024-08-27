@@ -283,8 +283,7 @@ const ContactsStack = (): JSX.Element => {
       }}>
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACTS_OVERVIEW}
-        // component={SSIContactsOverviewScreen}
-        component={CredentialOverviewShareScreen}
+        component={SSIContactsOverviewScreen}
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
