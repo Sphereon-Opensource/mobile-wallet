@@ -1,5 +1,5 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CredentialPayload, ProofFormat} from '@veramo/core';
+import {CredentialPayload, IIdentifier, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
 import {OnboardingStackParamsList} from '../../navigation';
@@ -7,6 +7,7 @@ import {SupportedDidMethodEnum} from '../../did';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
+import {IUser} from '../../user';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -69,6 +70,7 @@ export enum OnboardingMachineStateType {
   declinePIDCredentials = 'declinePIDCredentials',
   completeOnboarding = 'completeOnboarding',
   storePIDCredentials = 'storePIDCredentials',
+  setupWallet = 'setupWallet',
   handleError = 'handleError',
   error = 'error',
   done = 'done',
@@ -147,6 +149,7 @@ export enum OnboardingMachineGuards {
 export enum OnboardingMachineServices {
   retrievePIDCredentials = 'retrievePIDCredentials',
   storePIDCredentials = 'storePIDCredentials',
+  setupWallet = 'setupWallet',
 }
 
 // States Config
@@ -202,4 +205,8 @@ export type OnboardingProviderProps = {
 export type MappedCredential = {
   uniformCredential: IVerifiableCredential;
   rawCredential: string;
+};
+
+export type WalletSetupServiceResult = {
+  storedUser: IUser;
 };
