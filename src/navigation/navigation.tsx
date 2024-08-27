@@ -72,6 +72,7 @@ import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformati
 import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
 import {useSelector} from 'react-redux';
 import {ICredentialState} from '../types/store/credential.types';
+import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -282,7 +283,8 @@ const ContactsStack = (): JSX.Element => {
       }}>
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACTS_OVERVIEW}
-        component={SSIContactsOverviewScreen}
+        // component={SSIContactsOverviewScreen}
+        component={CredentialOverviewShareScreen}
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
