@@ -13,6 +13,8 @@ import {SSITextH1LightStyled as Title, SSITextH2SemiBoldLightStyled, SSITextH5St
 import {ProviderContainer, ProviderDescription, ProviderImage, ProviderUrl} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {SSIContactViewItemLogoContainerStyled as LogoContainer} from '../../styles/components';
+import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -52,7 +54,9 @@ const SelectOverviewShareScreen = (props: Props) => {
           </ProviderDescription>
         </ProviderContainer>
         <ProviderContainer>
-          <ProviderImage source={require('../../assets/images/PlaceholderLogo.png')} width={40} height={40} resizeMode="stretch" />
+          <LogoContainer>
+            <Logo logo={verifier.branding?.logo} />
+          </LogoContainer>
           <ProviderDescription>
             <SSITextH3LightStyled>{verifier.contact.displayName}</SSITextH3LightStyled>
           </ProviderDescription>
@@ -81,7 +85,9 @@ const SelectOverviewShareScreen = (props: Props) => {
                 backgroundColor: /*verifierName.contrastBackgroundColor ?? */ 'white',
               }}
               key={verifier.contact.displayName}>
-              {/*<Image style={{width: 32, height: 32}} source={verifierName.image} />*/}
+              <LogoContainer>
+                <Logo logo={verifier.branding?.logo} />
+              </LogoContainer>
               <Title>{verifier.contact.displayName}</Title>
             </View>
           </TouchableOpacity>
