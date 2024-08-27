@@ -22,7 +22,7 @@ import {
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
-import {retrievePIDCredentials, setupWallet, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
@@ -263,13 +263,30 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storePIDCredentials,
       onDone: {
-        target: OnboardingMachineStateType.setupWallet,
+        target: OnboardingMachineStateType.storeCredentialBranding,
       },
       onError: {
         target: OnboardingMachineStateType.handleError,
         actions: assign({
           error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
             title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  storeCredentialBranding: {
+    invoke: {
+      src: OnboardingMachineServices.storeCredentialBranding,
+      onDone: {
+        target: OnboardingMachineStateType.setupWallet,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_store_credential_branding_error_title'),
             message: _event.data.message,
           }),
         }),
@@ -454,6 +471,7 @@ export class OnboardingMachine {
         services: {
           [OnboardingMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
           [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
+          [OnboardingMachineServices.storeCredentialBranding]: storeCredentialBranding,
           [OnboardingMachineServices.setupWallet]: setupWallet,
           ...opts?.services,
         },
