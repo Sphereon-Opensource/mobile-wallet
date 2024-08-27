@@ -21,6 +21,11 @@ import {
   RequestedInformationRow,
 } from './components/styles';
 import {AusweisRequestedInfoSchema, InfoSchemaImages} from './constants';
+import styled from 'styled-components/native';
+
+const Label = styled(SSITextH2SemiBoldLightStyled)`
+  width: 100%;
+`;
 
 const ImportDataConsentScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -45,16 +50,16 @@ const ImportDataConsentScreen = () => {
     <ScreenContainer footer={footer} footerStyle={{gap: 12}}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.subtitle`)} />
       <ContentContainer>
-        <SSITextH2SemiBoldLightStyled>{translate(`${translationsPath}.pid_provider_title`)}</SSITextH2SemiBoldLightStyled>
+        <Label>{translate(`${translationsPath}.pid_provider_title`)}</Label>
         <ProviderContainer>
-          <ProviderImage source={require('../../../assets/images/PlaceholderLogo.png')} width={40} height={40} resizeMode="stretch" />
+          <ProviderImage source={require('../../../assets/images/bundesdruckerei.png')} width={48} height={48} resizeMode="stretch" />
           <ProviderDescription>
             <SSITextH3LightStyled>German Bundesdruckerei</SSITextH3LightStyled>
             <SSITextH4LightStyled>{translate(`${translationsPath}.pid_provider_subheading`)}</SSITextH4LightStyled>
             <ProviderUrl> www.personalausweisportal.de</ProviderUrl>
           </ProviderDescription>
         </ProviderContainer>
-        <SSITextH2SemiBoldLightStyled>Offered data</SSITextH2SemiBoldLightStyled>
+        <Label>Offered data</Label>
         <ProviderCardRow>
           <ProviderMiniCardImage>
             <Image style={{width: 32, height: 32}} source={require('../../../assets/images/ausweis_icon.png')} />
@@ -70,7 +75,7 @@ const ImportDataConsentScreen = () => {
               <InformationIconContainer>
                 <Image style={{height: 24, width: 24}} resizeMode="stretch" source={InfoSchemaImages[info.icon]} />
               </InformationIconContainer>
-              <SSITextH5LightStyled style={{opacity: 0.8}}>{translate(`${translationsPath}.labels.${info.label}`)}</SSITextH5LightStyled>
+              <SSITextH5LightStyled style={{opacity: 0.8}}>{info.label}</SSITextH5LightStyled>
             </RequestedInformationRow>
           ))}
         </RequestedInformationContainer>

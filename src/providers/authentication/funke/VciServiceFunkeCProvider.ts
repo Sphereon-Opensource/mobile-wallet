@@ -3,7 +3,7 @@ import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} fro
 import {CredentialResponse, PARMode} from '@sphereon/oid4vci-common';
 import {PidIssuerService} from '../../PidIssuerService';
 import {agentContext} from '../../../agent';
-import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../../types';
+import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -41,7 +41,7 @@ class VciServiceFunkeCProvider {
     const credentialOffer =
       'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
-      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: 'local'},
+      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
       agentContext,
     );
     return new VciServiceFunkeCProvider({...args, pidService});

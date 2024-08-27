@@ -56,6 +56,7 @@ import {
   NavigationBarRoutesEnum,
   OnboardingRoute,
   OnboardingStackParamsList,
+  RootState,
   ScreenRoutesEnum,
   StackParamList,
   SwitchRoutesEnum,
@@ -69,6 +70,8 @@ import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import AusweisModal from '../modals/AusweisModal';
 import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
+import {useSelector} from 'react-redux';
+import {ICredentialState} from '../types/store/credential.types';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -143,6 +146,7 @@ const MainStackNavigator = (): JSX.Element => {
 };
 
 const TabStackNavigator = (): JSX.Element => {
+  const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -151,7 +155,9 @@ const TabStackNavigator = (): JSX.Element => {
         unmountOnBlur: true,
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
-      initialRouteName={NavigationBarRoutesEnum.CREDENTIALS}
+      initialRouteName={
+        credentialState.verifiableCredentials.length === 0 ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG : NavigationBarRoutesEnum.CREDENTIALS
+      }
       backBehavior="none">
       <Tab.Screen
         name={NavigationBarRoutesEnum.QR}

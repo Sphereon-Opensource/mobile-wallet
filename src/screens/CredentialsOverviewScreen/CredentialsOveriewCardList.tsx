@@ -53,8 +53,8 @@ const CredentialViewCard = ({credential}: {credential: CredentialSummary}) => {
 const CredentialsOverviewCardList = ({verifiableCredentials}: Props) => {
   return (
     <View style={{backgroundColor: backgroundColors.primaryDark, flex: 1, paddingHorizontal: 24, alignItems: 'center'}}>
-      {verifiableCredentials.map(credential => (
-        <CredentialViewCard credential={credential} />
+      {verifiableCredentials.map((credential, index) => (
+        <CredentialViewCard key={index} credential={credential} />
       ))}
     </View>
   );

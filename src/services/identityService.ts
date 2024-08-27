@@ -7,7 +7,6 @@ import store from '../store';
 import {getContacts} from '../store/actions/contact.actions';
 import {addIdentifier} from '../store/actions/user.actions';
 import {
-  DEFAULT_DID_METHOD,
   ICreateIdentifierArgs,
   ICreateOrGetIdentifierArgs,
   IdentifierAliasEnum,
@@ -26,7 +25,7 @@ export const getIdentifiers = async (context: IRequiredContext): Promise<IIdenti
 
 export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRequiredContext): Promise<IIdentifier> => {
   const identifier = await context.agent.didManagerCreate({
-    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.LOCAL,
+    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.MUSAP_TEE,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
     alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
     options: args?.createOpts?.options,

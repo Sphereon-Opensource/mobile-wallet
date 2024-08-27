@@ -22,7 +22,7 @@ import {
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
-import {retrievePIDCredentials, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import {retrievePIDCredentials, setupWallet, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
@@ -86,6 +86,10 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: 3}),
         },
       ],
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true}),
+      },
     },
   },
   enterName: {
@@ -260,6 +264,23 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storePIDCredentials,
       onDone: {
+        target: OnboardingMachineStateType.setupWallet,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  setupWallet: {
+    invoke: {
+      src: OnboardingMachineServices.setupWallet,
+      onDone: {
         target: OnboardingMachineStateType.completeOnboarding,
       },
       onError: {
@@ -301,9 +322,19 @@ const states: OnboardingStatesConfig = {
   },
   error: {
     type: 'final',
+    entry: assign({
+      pinCode: '',
+      name: undefined,
+      emailAddress: undefined,
+    }),
   },
   done: {
     type: 'final',
+    entry: assign({
+      pinCode: '',
+      name: undefined,
+      emailAddress: undefined,
+    }),
   },
 };
 
@@ -424,6 +455,7 @@ export class OnboardingMachine {
         services: {
           [OnboardingMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
           [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
+          [OnboardingMachineServices.setupWallet]: setupWallet,
           ...opts?.services,
         },
         guards: {

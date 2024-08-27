@@ -127,6 +127,9 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.storePIDCredentials:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
+    case OnboardingMachineStateType.setupWallet:
+      onboardingNavigation.navigate('ImportDataLoader', {});
+      break;
     default:
       throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
   }
