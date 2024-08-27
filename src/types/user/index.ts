@@ -1,3 +1,5 @@
+import {IUserPreferences} from '../preferences';
+
 export interface IUser {
   id: string;
   firstName: string;
@@ -6,6 +8,7 @@ export interface IUser {
   identifiers: Array<IUserIdentifier>;
   createdAt: Date;
   lastUpdatedAt: Date;
+  preferences: IUserPreferences;
 }
 
 export interface BasicUser {

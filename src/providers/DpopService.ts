@@ -108,7 +108,15 @@ export class DpopService {
       const {method, kms, clientId} = this.opts;
 
       const {alg} = this.validateDpopSupport();
-      const key = await this.context.agent.keyManagerCreate({type: keyTypeFromCryptographicSuite(alg), kms});
+      const keyType = keyTypeFromCryptographicSuite(alg);
+      const key = await this.context.agent.keyManagerCreate({
+        type: keyType,
+        kms,
+        meta: {
+          algorithms: algorithmsFromKeyType(keyType),
+          keyAlias: `dpop-${new Date().getTime()}`, // Random alias for now
+        },
+      });
 
       const x5c = this.opts.x5c ?? key.meta?.x509?.x5c;
 
@@ -155,3 +163,5 @@ export class DpopService {
     }
   }
 }
+
+const algorithmsFromKeyType = (type: string): string[] => [type];

@@ -21,7 +21,7 @@ node_require('react-native-permissions/scripts/setup.rb')
 ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '1' : '0'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] = podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
 
-platform :ios, podfile_properties['ios.deploymentTarget'] || '13.4'
+platform :ios, podfile_properties['ios.deploymentTarget'] || '15.0'
 install! 'cocoapods',
   :deterministic_uuids => false
 
@@ -71,6 +71,9 @@ source 'https://cdn.cocoapods.org'
     :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
   )
 
+  pod 'musap-ios', :path => '../node_modules/@sphereon/musap-native'
+  pod 'musap-react-native', :path => '../node_modules/@sphereon/musap-react-native' # auto-linking not working on expo app for some reason
+  pod 'YubiKit', :modular_headers => true
 
 #  permissions_path = '../node_modules/react-native-permissions/ios'
 

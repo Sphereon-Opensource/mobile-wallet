@@ -36,6 +36,7 @@ import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
@@ -74,6 +75,34 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
     const user: IUser = {
       ...userSate.users.values().next().value,
       identifiers: [...userSate.users.values().next().value.identifiers, userIdentifier],
+    };
+
+    userServiceUpdateUser(user)
+      .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
+      .catch(() => dispatch({type: UPDATE_USER_FAILED}));
+  };
+};
+
+export const setViewPreference = (
+  viewKey: ConfigurableViewKey,
+  preference: ViewPreference,
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    const userState: IUserState = getState().user;
+    if (!userState.activeUser) {
+      return;
+    }
+
+    dispatch({type: USERS_LOADING});
+
+    // We are currently only supporting a single user right now
+    const views = {
+      ...userState.activeUser?.preferences.views,
+      [viewKey]: preference,
+    };
+    const user: IUser = {
+      ...userState.activeUser,
+      preferences: {...userState.activeUser?.preferences, views},
     };
 
     userServiceUpdateUser(user)

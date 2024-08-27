@@ -1,5 +1,5 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {ReactElement, useContext} from 'react';
 import {View} from 'react-native';
 import EID_card from '../../../assets/images/EID_card.svg';
@@ -96,12 +96,19 @@ const ShowProgressScreen = () => {
   ];
 
   const footer = (
-    <PrimaryButton
-      style={{height: 42, width: '100%'}}
-      caption={translate('action_next_label')}
-      captionColor={fontColors.light}
-      onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
-    />
+    <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12}}>
+      <PrimaryButton
+        caption={translate('action_next_label')}
+        captionColor={fontColors.light}
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+      />
+      {currentStep === 3 && (
+        <SecondaryButton
+          caption={translate('onboarding_skip_credential_import_step3_caption')}
+          onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)}
+        />
+      )}
+    </View>
   );
 
   return (

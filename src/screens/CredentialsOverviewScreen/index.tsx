@@ -1,13 +1,13 @@
 import React from 'react';
 import {Image, View} from 'react-native';
-
+import {connect} from 'react-redux';
 import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
-import {CreditOverviewStackParamsList} from '../../types';
+import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CredentialsOverviewImages} from './constants';
-import CredentialsOverviewList from './CredentialsOverviewList';
-import {buttonColors, elementColors, fontColors} from '@sphereon/ui-components.core';
 import CredentialsOveriewCardList from './CredentialsOveriewCardList';
+import CredentialsOverviewList from './CredentialsOverviewList';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
@@ -16,11 +16,17 @@ const renderLabel = (label: 'card' | 'list') => () => {
   return <Image source={source} />;
 };
 
-const CredentialsOverviewScreen = () => {
+type Props = {activeUser: IUser};
+
+const CredentialsOverviewScreen = ({activeUser}: Props) => {
+  const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
+  const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
+
   return (
     <Container>
       <StatusBar />
       <CredentialViewTypeNav.Navigator
+        initialRouteName={initialRouteName}
         tapBarProps={{
           containerStyle: {
             width: 74,
@@ -46,4 +52,10 @@ const CredentialsOverviewScreen = () => {
   );
 };
 
-export default CredentialsOverviewScreen;
+const mapStateToProps = (state: RootState) => {
+  return {
+    activeUser: state.user.activeUser!,
+  };
+};
+
+export default connect(mapStateToProps)(CredentialsOverviewScreen);
