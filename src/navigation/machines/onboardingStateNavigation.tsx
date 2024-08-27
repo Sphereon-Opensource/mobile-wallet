@@ -127,6 +127,9 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.storePIDCredentials:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
+    case OnboardingMachineStateType.storeCredentialBranding:
+      onboardingNavigation.navigate('ImportDataLoader', {});
+      break;
     case OnboardingMachineStateType.setupWallet:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
