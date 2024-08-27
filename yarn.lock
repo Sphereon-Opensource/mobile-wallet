@@ -15,6 +15,13 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@animo-id/expo-ausweis-sdk@0.0.1-alpha.6":
+  version "0.0.1-alpha.6"
+  resolved "https://registry.yarnpkg.com/@animo-id/expo-ausweis-sdk/-/expo-ausweis-sdk-0.0.1-alpha.6.tgz#e26c7c966733900bbbedf4b6e07256ce9b4b7b37"
+  integrity sha512-XkijcBkXHbu2jBKMol3Vy61ABP9qwY7EGu+vHPwSp130820I3LcpKneF92RAJVfIQIMMnN+v3DYjhRXtg6fQzQ==
+  dependencies:
+    "@expo/config-plugins" "^8.0.6"
+
 "@astronautlabs/jsonpath@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@astronautlabs/jsonpath/-/jsonpath-1.1.2.tgz#af19bb4a7d13dcfbc60c3c998ee1e73d7c2ddc38"
@@ -1954,7 +1961,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@8.0.8", "@expo/config-plugins@~8.0.0", "@expo/config-plugins@~8.0.8":
+"@expo/config-plugins@8.0.8", "@expo/config-plugins@^8.0.6", "@expo/config-plugins@~8.0.0", "@expo/config-plugins@~8.0.8":
   version "8.0.8"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-8.0.8.tgz#294a71905a498ea02c8b79bea950b5e37ab5d748"
   integrity sha512-Fvu6IO13EUw0R9WeqxUO37FkM62YJBNcZb9DyJAOgMz7Ez/vaKQGEjKt9cwT+Q6uirtCATMgaq6VWAW7YW8xXw==
@@ -2576,6 +2583,11 @@
   dependencies:
     semver "^7.3.5"
 
+"@pakenfit/react-native-pin-input@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@pakenfit/react-native-pin-input/-/react-native-pin-input-1.4.0.tgz#23d0d55de136d39dea95f1d6ff57bd8bae397ba6"
+  integrity sha512-3+3M46PPW6XM0pUDjJrEK5OSwvVp2WS6/kXTDGUfWK5bBNewyuixYFc162I8ITeIavdzrMyd/hVtsI5jPIpyqA==
+
 "@peculiar/asn1-schema@^2.3.8":
   version "2.3.13"
   resolved "https://registry.yarnpkg.com/@peculiar/asn1-schema/-/asn1-schema-2.3.13.tgz#ec8509cdcbc0da3abe73fd7e690556b57a61b8f4"
@@ -2977,6 +2989,14 @@
   resolved "https://registry.yarnpkg.com/@react-navigation/elements/-/elements-1.3.31.tgz#28dd802a0787bb03fc0e5be296daf1804dbebbcf"
   integrity sha512-bUzP4Awlljx5RKEExw8WYtif8EuQni2glDaieYROKTnaxsu9kEIA515sXQgUDZU4Ob12VoL7+z70uO3qrlfXcQ==
 
+"@react-navigation/material-top-tabs@^6.6.14":
+  version "6.6.14"
+  resolved "https://registry.yarnpkg.com/@react-navigation/material-top-tabs/-/material-top-tabs-6.6.14.tgz#48877ba5e1038d089439fede39ac5aab99c13c28"
+  integrity sha512-kfNQt3BInQusEc8A+PDWaKmRQNaCrSqngcOQwUe1uNizJdZJEFdfaInivtBFW2LcQqtzgIHK/am2TgK0Pos6og==
+  dependencies:
+    color "^4.2.3"
+    warn-once "^0.1.0"
+
 "@react-navigation/native-stack@^6.11.0":
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-6.11.0.tgz#a33f92cbd55dfe28fb0ba67df99aaa95240eb87c"
@@ -3220,6 +3240,18 @@
     "@js-joda/core" "5.6.3"
     "@js-joda/timezone" "2.3.0"
     format-util "^1.0.5"
+
+"@sphereon/musap-native@0.0.1-next.154+a8d7831":
+  version "0.0.1-next.154"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.0.1-next.154.tgz#2655c07f6b065947a2a3ff3dd9a072b2a5100e37"
+  integrity sha512-WNdL0bAYV+YnyAdruoHV9nvWh9gag2ELBhbkXYSvynBv5kLBv2sOQ670+GfiLzoAkgl5xyre58QHVM65zzY8Dw==
+
+"@sphereon/musap-react-native@0.0.1-next.154":
+  version "0.0.1-next.154"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.0.1-next.154.tgz#9256eeb0524daa80c744f85ec6eb8200fd82d67c"
+  integrity sha512-sj7k1Ikylm0540urv2hXc7MiBhwNUzgrrRaSl+VbOV1PpGkrydqQz0QTB4Dmsxl8+JddOb4DNV0Lr9VdYYAl9A==
+  dependencies:
+    "@sphereon/musap-native" "0.0.1-next.154+a8d7831"
 
 "@sphereon/oid4vc-common@0.16.1-next.13", "@sphereon/oid4vc-common@0.16.1-next.13+282e7a1":
   version "0.16.1-next.13"
@@ -3482,6 +3514,20 @@
     elliptic "^6.5.4"
     uint8arrays "3.1.1"
 
+"@sphereon/ssi-sdk-ext.kms-musap-rn@0.24.1-next.105":
+  version "0.24.1-next.105"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-musap-rn/-/ssi-sdk-ext.kms-musap-rn-0.24.1-next.105.tgz#635aad8e54ca60515208392cc97d324a09e8fa03"
+  integrity sha512-qS20y+uzeicvMnQco+b5Q6l3fvILx1Xi6DSf63OiJu1Ct/dvnTDP220FYggXNDfEQNZifhy48/S+6IEg2szPxQ==
+  dependencies:
+    "@sphereon/musap-react-native" "0.0.1-next.154"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.24.1-next.105+531a3b2"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.24.1-next.105+531a3b2"
+    "@sphereon/ssi-types" "0.28.1-next.60"
+    "@veramo/core" "4.2.0"
+    "@veramo/key-manager" "4.2.0"
+    "@veramo/kms-local" "4.2.0"
+    text-encoding "^0.7.0"
+
 "@sphereon/ssi-sdk-ext.x509-utils@0.24.1-next.105", "@sphereon/ssi-sdk-ext.x509-utils@0.24.1-next.105+531a3b2":
   version "0.24.1-next.105"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.x509-utils/-/ssi-sdk-ext.x509-utils-0.24.1-next.105.tgz#9a336ebf3159f43808e165c9fcdc60d0258c3cac"
@@ -3493,19 +3539,7 @@
     pkijs "^3.2.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk.agent-config@0.29.1-unstable.161":
-  version "0.29.1-unstable.161"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.29.1-unstable.161.tgz#d0ed0588a4959ca02926df56c41bb3997d953bc4"
-  integrity sha512-ZP/TjapF/Gv/AwnNr9e1U3rjyRwdLtAj4un9j1csnKcgYe9ff2fhYbe06y9mU4tfQilH69mAW4Tz1t6N5U7XbA==
-  dependencies:
-    "@veramo/core" "4.2.0"
-    debug "^4.3.5"
-    jsonpointer "^5.0.1"
-    typeorm "^0.3.20"
-    url-parse "^1.5.10"
-    yaml "^2.4.5"
-
-"@sphereon/ssi-sdk.agent-config@0.29.1-unstable.177", "@sphereon/ssi-sdk.agent-config@0.29.1-unstable.177+2436799e":
+"@sphereon/ssi-sdk.agent-config@0.29.1-unstable.161", "@sphereon/ssi-sdk.agent-config@0.29.1-unstable.177", "@sphereon/ssi-sdk.agent-config@0.29.1-unstable.177+2436799e":
   version "0.29.1-unstable.177"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.29.1-unstable.177.tgz#aa57c2418753db4435ed66974676df672a7bcc63"
   integrity sha512-oXh60ubkAXiPKlyLD6ShQFLZy+qVHHyeahYYb1BIkSaCgLtJfz5ilT8xUBUDFa/8JXjsFPVmHrhxMM3R6fWzPw==
@@ -3823,7 +3857,7 @@
     uuid "^9.0.1"
     xstate "^4.38.3"
 
-"@sphereon/ssi-types@0.22.0", "@sphereon/ssi-types@0.29.0", "@sphereon/ssi-types@0.29.1-unstable.161", "@sphereon/ssi-types@0.29.1-unstable.177", "@sphereon/ssi-types@0.29.1-unstable.177+2436799e", "@sphereon/ssi-types@^0.9.0":
+"@sphereon/ssi-types@0.22.0", "@sphereon/ssi-types@0.28.1-next.60", "@sphereon/ssi-types@0.29.0", "@sphereon/ssi-types@0.29.1-unstable.161", "@sphereon/ssi-types@0.29.1-unstable.177", "@sphereon/ssi-types@0.29.1-unstable.177+2436799e", "@sphereon/ssi-types@^0.9.0":
   version "0.29.1-unstable.177"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.29.1-unstable.177.tgz#6bce43edd86191fa7d8339cdc06e42f9125276e3"
   integrity sha512-5rfMHFkg9UGOiZmCGvVVoxgXUm5Pl2ryySZNC9fqfxGh54/6LfrQc3Lvm0aA/TqUOFNZJQvRmDgQ63cHVNgSIQ==
@@ -5520,7 +5554,7 @@ ajv-keywords@^3.5.2:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==
 
-ajv@^6.12.4, ajv@^6.12.5, ajv@^8.0.0, ajv@^8.12.0, ajv@^8.6.1:
+ajv@^6.12.4, ajv@^6.12.5, ajv@^8.0.0, ajv@^8.11.0, ajv@^8.12.0, ajv@^8.6.1:
   version "8.17.1"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.17.1.tgz#37d9a5c776af6bc92d7f4f9510eba4c0a60d11a6"
   integrity sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==
@@ -8086,12 +8120,25 @@ expo-asset@~10.0.10:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-build-properties@^0.12.3:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/expo-build-properties/-/expo-build-properties-0.12.5.tgz#4d6232389f00c846ba37ca5df2c0b5527c2d94ca"
+  integrity sha512-donC1le0PYfLKCPKRMGQoixuWuwDWCngzXSoQXUPsgHTDHQUKr8aw+lcWkTwZcItgNovcnk784I0dyfYDcxybA==
+  dependencies:
+    ajv "^8.11.0"
+    semver "^7.6.0"
+
 expo-camera@~15.0.14:
   version "15.0.14"
   resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-15.0.14.tgz#1fec9c0e650cfa5b85d34ce8267ae8a9854eee4a"
   integrity sha512-O4uvVywGsQ3a89d0BX4lq6mDuGYGukx1PYY4QrC9zw1yzD2W9BVTl8lanFRPC5h4PRniekfeWUVH1a0jJmkLIw==
   dependencies:
     invariant "^2.2.4"
+
+expo-clipboard@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-6.0.3.tgz#dfea74d4a004dce59ecefd063d6fb9f1c356a03f"
+  integrity sha512-RIKDsuHkYfaspifbFpVC8sBVFKR05L7Pj7mU2/XkbrW9m01OBNvdpGraXEMsTFCx97xMGsZpEw9pPquL4j4xVg==
 
 expo-constants@~16.0.0:
   version "16.0.2"
@@ -8131,6 +8178,13 @@ expo-linear-gradient@~13.0.2:
   version "13.0.2"
   resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-13.0.2.tgz#21bd7bc7c71ef4f7c089521daa16db729d2aec5f"
   integrity sha512-EDcILUjRKu4P1rtWcwciN6CSyGtH7Bq4ll3oTRV7h3h8oSzSilH1g6z7kTAMlacPBKvMnkkWOGzW6KtgMKEiTg==
+
+expo-local-authentication@~14.0.1:
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-14.0.1.tgz#0cad7f419d4694e1c205f589cdf355f2f2b3a2b4"
+  integrity sha512-kAwUD1wEqj1fhwQgIHlP4H/JV9AcX+NO3BJwhPM2HuCFS0kgx2wvcHisnKBSTRyl8u5Jt4odzMyQkDJystwUTg==
+  dependencies:
+    invariant "^2.2.4"
 
 expo-localization@~15.0.3:
   version "15.0.3"
@@ -12348,7 +12402,7 @@ prompts@^2.0.1, prompts@^2.2.1, prompts@^2.3.2, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -12561,6 +12615,13 @@ react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-animatable@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+  integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-app-auth@^6.4.3:
   version "6.4.3"
   resolved "https://registry.yarnpkg.com/react-native-app-auth/-/react-native-app-auth-6.4.3.tgz#14e6d0b66087c60fd72cd98cc0219f0420195071"
@@ -12636,6 +12697,14 @@ react-native-mmkv-storage@^0.10.2:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.10.2.tgz#976fff2f706a98479912e4e2e8a7e65ee921215e"
   integrity sha512-rdxfbZ/YTWn35n8P0c9V8S8BciC5pllcs4egXvH3ER3tYMwvbCTrob0uXumMTpL4kkJcCh3aokHFQw60Ya4oHw==
+
+react-native-modal@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-13.0.1.tgz#691f1e646abb96fa82c1788bf18a16d585da37cd"
+  integrity sha512-UB+mjmUtf+miaG/sDhOikRfBOv0gJdBU2ZE1HtFWp6UixW9jCk/bhGdHUgmZljbPpp0RaO/6YiMmQSSK3kkMaw==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "1.3.3"
 
 react-native-navigation-bar-color@^2.0.2:
   version "2.0.2"
