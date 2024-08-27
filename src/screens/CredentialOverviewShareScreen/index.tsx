@@ -26,9 +26,97 @@ const RequestedInformationContainer = styled.View`
   overflow: hidden;
 `;
 
+const credentials = {
+  '@context': ['https://www.w3.org/2018/credentials/v1', 'https://www.w3.org/2018/credentials/examples/v1'],
+  id: 'http://example.edu/credentials/1872',
+  type: ['VerifiableCredential', 'AlumniCredential'],
+  issuer: 'https://example.edu/issuers/565049',
+  issuanceDate: '2010-01-01T19:23:24Z',
+  credentialSubject: {
+    id: 'did:example:ebfeb1f712ebc6f1c276e12ec21',
+    alumniOf: {
+      id: 'did:example:c276e12ec21ebfeb1f712ebc6f1',
+      name: [
+        {
+          value: 'Example University',
+          lang: 'en',
+        },
+        {
+          value: "Exemple d'Université",
+          lang: 'fr',
+        },
+      ],
+    },
+  },
+  proof: {
+    type: 'RsaSignature2018',
+    created: '2017-06-18T21:19:10Z',
+    proofPurpose: 'assertionMethod',
+    verificationMethod: 'https://example.edu/issuers/565049#key-1',
+    jws: 'eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM',
+  },
+};
+
+const presentationDefinition = {
+  id: '56e001a9-c41f-49c5-9b12-440ad4861f58',
+  name: 'DIIP v3 compliance',
+  purpose: "Prove you're compliant with DIIP v3",
+  input_descriptors: [
+    {
+      id: 'b2a1f1d3-37ee-4494-98e2-ef9853b28197',
+      name: 'DIIP v3 compliance',
+      purpose: "Prove you're compliant with DIIP v3",
+      format: {
+        'vc+sd-jwt': {},
+      },
+      constraints: {
+        limit_disclosure: 'preferred',
+        fields: [
+          {
+            path: ['$.compliant'],
+            name: 'compliant',
+            filter: {
+              type: 'boolean',
+              const: true,
+            },
+          },
+          {
+            path: ['$.name'],
+            name: 'name',
+            filter: {
+              type: 'string',
+              const: 'name',
+            },
+          },
+          {
+            path: ['$.age'],
+            name: 'age',
+            filter: {
+              type: 'number',
+              const: 12,
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+
+const verifier = {
+  contact: {
+    displayName: 'Bundesdruckerei',
+  },
+  branding: {
+    logo: {
+      uri: 'https://picsum.photo/200/300',
+    },
+  },
+};
+
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
-  const {credential, verifier, presentationDefinition, onSend, onDecline} = props.route.params;
+  // const {credential, verifierName, presentationDefinition, onSend, onDecline} = props.route.params;
+
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
   const chevronRotation = useSharedValue(0);
@@ -102,7 +190,7 @@ const SelectOverviewShareScreen = (props: Props) => {
           </View>
         </TouchableOpacity>
         <View style={{flex: 1}}>
-          <Title>{JSON.stringify(credential)}</Title>
+          <Title>{JSON.stringify(credentials)}</Title>
         </View>
       </View>
     </ScreenContainer>
