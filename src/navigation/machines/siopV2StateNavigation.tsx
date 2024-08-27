@@ -30,6 +30,7 @@ import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
+import {getMatchingCredentials} from '../../services/pexService';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -175,6 +176,17 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
   const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+  const mathcingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  if (mathcingCredentials && mathcingCredentials.length === 1) {
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+      params: {
+        verifierName: contact.contact.displayName,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        credential: mathcingCredentials[0],
+      },
+    });
+  }
   const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
   const subjectSyntaxTypesSupported: Array<string> | undefined =
     authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;

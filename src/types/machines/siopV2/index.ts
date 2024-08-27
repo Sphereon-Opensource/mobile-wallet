@@ -39,6 +39,7 @@ export enum SiopV2MachineStates {
   addContact = 'addContact',
   addContactIdentity = 'addContactIdentity',
   selectCredentials = 'selectCredentials',
+  selectCredentialOverview = 'selectCredentialOverview',
   sendResponse = 'sendResponse',
   handleError = 'handleError',
   aborted = 'aborted',

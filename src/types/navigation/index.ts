@@ -244,6 +244,7 @@ export enum NavigationBarRoutesEnum {
 }
 export enum ScreenRoutesEnum {
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
+  CREDENTIAL_SHARE_OVERVIEW = 'CredentialShareOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
