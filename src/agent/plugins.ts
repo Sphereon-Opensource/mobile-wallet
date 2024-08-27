@@ -46,6 +46,8 @@ export const oid4vciHolder = new OID4VCIHolder({
   },
   onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
     const {identifier} = args;
+    //fixme: do we want to use ManagedIdentifierResult here?
+    //@ts-ignore
     await dispatchIdentifier({identifier});
   },
   hasher: generateDigest,

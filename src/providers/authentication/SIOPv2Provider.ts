@@ -12,6 +12,7 @@ import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {SupportedDidMethodEnum} from '../../types';
 import {generateDigest} from '../../utils';
 import {encodeJoseBlob} from '@veramo/utils';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -125,7 +126,7 @@ export const siopSendAuthorizationResponse = async (
     }
 
     presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
-      identifierOpts: {identifier},
+      idOpts: {identifier},
       proofOpts: {
         nonce: session.nonce,
         domain,
@@ -137,12 +138,12 @@ export const siopSendAuthorizationResponse = async (
       throw Error(`Only one verifiable presentation supported for now. Got ${presentationsAndDefs.length}`);
     }
 
-    identifier = await getIdentifier(presentationsAndDefs[0].identifierOpts, agentContext);
+    const managedIdentifierResult: ManagedIdentifierResult = await agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
     presentationSubmission = presentationsAndDefs[0].presentationSubmission;
   }
   const key = await getKey({identifier, vmRelationship: 'authentication'}, session.context);
   const kmsKeyRef = key.kid;
-  const kid = await determineKid({key, idOpts: {identifier, kmsKeyRef, verificationMethodSection: 'authentication'}}, session.context);
+  const kid = await determineKid({key, idOpts: {identifier, kmsKeyRef}}, session.context);
 
   debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
   debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
