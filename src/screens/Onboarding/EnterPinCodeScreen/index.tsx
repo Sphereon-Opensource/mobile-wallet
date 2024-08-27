@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useCallback, useContext, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import {useCallback, useContext, useMemo, useRef, useState} from 'react';
+import {Dimensions, ScrollView, View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -35,6 +35,7 @@ const getInvalidPinExample = (length: number, prefix: string, delimiter: string)
 
 const EnterPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  const scrollViewRef = useRef<ScrollView>(null);
   const {
     context: {pinCode: pinCodeContext},
   } = onboardingInstance.getSnapshot();
@@ -68,6 +69,11 @@ const EnterPinCodeScreen = () => {
       setIsPinValid(isValid);
       setErroniousValidator(error?.validator);
       setPinCode(pin);
+      if (!isValid && isComplete) {
+        if (scrollViewRef) {
+          scrollViewRef.current?.scrollTo(Dimensions.get('window').height);
+        }
+      }
     },
     [onboardingInstance, isPinValid, setShowFeedback, setIsPinValid, setErroniousValidator, setPinCode],
   );
@@ -90,7 +96,7 @@ const EnterPinCodeScreen = () => {
   );
 
   return (
-    <ScreenContainer footer={footer}>
+    <ScreenContainer footer={footer} scrollViewRef={scrollViewRef}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1}}>
         <PinCode pin={pinCode} onPinChange={onPinChange} length={PIN_CODE_LENGTH} validation={{isValid: isPinValid}} />
