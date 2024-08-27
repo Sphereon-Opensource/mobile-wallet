@@ -2,12 +2,14 @@ import {useHeaderHeight} from '@react-navigation/elements';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {Platform, ScrollView, StatusBar, View, ViewProps, ViewStyle} from 'react-native';
 import KeyboardAvoidingView from '../KeyboardAvoidingView';
+import {Ref} from 'react';
 
 type Props = {
   children: React.ReactNode;
   style?: ViewProps['style'];
   footer?: React.ReactNode;
   footerStyle?: ViewProps['style'];
+  scrollViewRef?: Ref<ScrollView>;
 };
 
 export const IOS_EXTRA_BOTTOM_PADDING = 16;
@@ -17,7 +19,7 @@ export const contentContainerStyle: ViewStyle = {
   paddingTop: 0,
 };
 
-const ScreenContainer = ({children, footer, style = {}, footerStyle = {}}: Props) => {
+const ScreenContainer = ({children, footer, style = {}, footerStyle = {}, scrollViewRef}: Props) => {
   const isAndroid = Platform.OS === 'android';
   const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
@@ -31,7 +33,11 @@ const ScreenContainer = ({children, footer, style = {}, footerStyle = {}}: Props
       }}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <KeyboardAvoidingView verticalOffset={verticalOffset} style={{flex: 1}}>
-        <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={[contentContainerStyle, style]}>
+        <ScrollView
+          ref={scrollViewRef}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={[contentContainerStyle, style]}>
           {children}
         </ScrollView>
         {footer && <View style={[{paddingHorizontal: 24, paddingTop: 24}, footerStyle]}>{footer}</View>}
