@@ -103,7 +103,10 @@ const ShowProgressScreen = () => {
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
       {currentStep === 3 && (
-        <SecondaryButton caption={'I’ll finish this section later'} onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)} />
+        <SecondaryButton
+          caption={translate('onboarding_skip_credential_import_step3_caption')}
+          onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)}
+        />
       )}
     </View>
   );
