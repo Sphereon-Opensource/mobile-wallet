@@ -4,7 +4,7 @@ import {useContext, useState} from 'react';
 import {LayoutChangeEvent, Platform, StatusBar, View} from 'react-native';
 import Svg from 'react-native-svg';
 import WelcomeBackground from '../../../assets/images/welcomeBackground.svg';
-import {contentContainerStyle} from '../../../components/containers/ScreenContainer';
+import {contentContainerStyle, IOS_EXTRA_BOTTOM_PADDING} from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
@@ -35,7 +35,13 @@ const WelcomeScreen = () => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor: backgroundColors.primaryDark, paddingBottom: 32}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: backgroundColors.primaryDark,
+        paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
+      }}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <View style={{flex: 1, overflow: 'hidden'}} onLayout={handleSVGContainerLayout}>
         {svgDimensions && (
