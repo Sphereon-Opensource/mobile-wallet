@@ -10,7 +10,7 @@ type Props = {
   footerStyle?: ViewProps['style'];
 };
 
-const IOS_EXTRA_BOTTOM_PADDING = 16;
+export const IOS_EXTRA_BOTTOM_PADDING = 16;
 
 export const contentContainerStyle: ViewStyle = {
   paddingHorizontal: 24,
@@ -21,13 +21,13 @@ const ScreenContainer = ({children, footer, style = {}, footerStyle = {}}: Props
   const isAndroid = Platform.OS === 'android';
   const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
-  const verticalOffset = isIos ? headerHeight + IOS_EXTRA_BOTTOM_PADDING : 0;
+  const verticalOffset = isIos ? headerHeight + 32 : 0;
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: backgroundColors.primaryDark,
-        paddingBottom: isIos ? 32 + IOS_EXTRA_BOTTOM_PADDING : 32,
+        paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
       }}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <KeyboardAvoidingView verticalOffset={verticalOffset} style={{flex: 1}}>
