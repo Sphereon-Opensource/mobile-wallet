@@ -94,7 +94,7 @@ const parseFullName = (fullName: string) => {
   }
 
   if (nameParts.length === 1) {
-    return {firstName: nameParts[0], lastName: ''}; // TODO lets see if the profile icon supports just 1 letter
+    return {firstName: nameParts[0], lastName: ''}; // Profile icon supports just 1 letter
   }
 
   const firstName = nameParts[0];

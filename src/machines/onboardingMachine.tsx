@@ -86,6 +86,10 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: 3}),
         },
       ],
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true}),
+      },
     },
   },
   enterName: {
