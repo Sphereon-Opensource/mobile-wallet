@@ -24,7 +24,7 @@ const RequestedInformationContainer = styled.View`
   overflow: hidden;
 `;
 
-const SelectCredentialsScreen = (props: Props) => {
+const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credential, verifierName, presentationDefinition, onSend, onDecline} = props.route.params;
   const ref = useRef<ScrollView>(null);
@@ -104,4 +104,4 @@ const SelectCredentialsScreen = (props: Props) => {
   );
 };
 
-export default SelectCredentialsScreen;
+export default SelectOverviewShareScreen;
