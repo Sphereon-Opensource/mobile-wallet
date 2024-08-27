@@ -34,7 +34,7 @@ export type MappableKeys = Keys | string;
 export const keyMappings: {
   [key: MappableKeys]: any;
 } = {
-  given_name: 'Given mame',
+  given_name: 'Given name',
   family_name: 'Family name',
   birth_family_name: 'Birth family name',
   age_birth_year: 'Birth year',
