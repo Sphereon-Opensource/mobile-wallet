@@ -1,7 +1,8 @@
 import {useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {LinearGradient as Gradient} from 'expo-linear-gradient';
 import FaceIDIcon from '../../../components/assets/icons/FaceIDIcon';
+import AndroidFingerprintIcon from '../../../components/assets/icons/AndroidFingerprintIcon';
 
 type CircleWithBorderProps = {
   size: number;
@@ -27,6 +28,8 @@ const CircleWithBorder = (props: CircleWithBorderProps) => {
     return size - 2 * borderWidth;
   }, [size, borderWidth]);
 
+  const isIos = Platform.OS === 'ios';
+
   return (
     <Gradient
       style={{
@@ -44,7 +47,7 @@ const CircleWithBorder = (props: CircleWithBorderProps) => {
           borderRadius: innerSize / 2,
           ...styles.center,
         }}>
-        {icon ?? <FaceIDIcon size={(2 * size) / 7} color="white" />}
+        {icon ?? isIos ? <FaceIDIcon size={(2 * size) / 7} color="white" /> : <AndroidFingerprintIcon size={(2 * size) / 7} color="white" />}
       </Gradient>
     </Gradient>
   );

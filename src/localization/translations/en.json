@@ -6,8 +6,12 @@
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
 
-  "biometrics_title": "Do you want to enable Face ID?",
-  "biometrics_subtitle": "Use biometric login en authentication with your face for faster and easier access to your account.",
+  "biometrics_title_ios": "Do you want to enable Face ID?",
+  "biometrics_subtitle_ios": "Use biometric login and authentication with your face for faster and easier access to your account.",
+
+  "biometrics_title_android": "Do you want to enable Fingerprint Unlock?",
+  "biometrics_subtitle_android": "Use biometric login and authentication with your fingerprint for faster and easier access to your account.",
+
   "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
   "biometrics_enable_text": "Enable now",
   "biometrics_disallow": "Maybe later",
