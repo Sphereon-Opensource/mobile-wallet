@@ -8,6 +8,7 @@ import VciServiceFunkeCProvider from '../../../providers/authentication/funke/Vc
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
+import {storeCredentialBranding} from '../../../services/machines/onboardingMachineService';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -70,6 +71,7 @@ export enum OnboardingMachineStateType {
   declinePIDCredentials = 'declinePIDCredentials',
   completeOnboarding = 'completeOnboarding',
   storePIDCredentials = 'storePIDCredentials',
+  storeCredentialBranding = 'storeCredentialBranding',
   setupWallet = 'setupWallet',
   handleError = 'handleError',
   error = 'error',
@@ -150,6 +152,7 @@ export enum OnboardingMachineServices {
   retrievePIDCredentials = 'retrievePIDCredentials',
   storePIDCredentials = 'storePIDCredentials',
   setupWallet = 'setupWallet',
+  storeCredentialBranding = 'storeCredentialBranding',
 }
 
 // States Config

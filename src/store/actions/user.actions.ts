@@ -37,6 +37,7 @@ import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {delay} from '../../utils';
 
 export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
@@ -137,6 +138,8 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             contactState = getState().contact;
           }
           await dispatch(getVerifiableCredentials());
+          // add small delay to make the conditional navigation working for the catalog
+          await delay(500);
           (await LockingHandler.getInstance()).isLocked = false;
 
           dispatch({type: LOGIN_SUCCESS});
