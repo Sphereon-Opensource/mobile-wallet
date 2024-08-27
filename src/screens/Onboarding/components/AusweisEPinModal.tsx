@@ -1,9 +1,8 @@
 import {PinInput, PinInputRef} from '@pakenfit/react-native-pin-input';
 import {Image, Platform, TextInput, View} from 'react-native';
-import Modal from 'react-native-modal';
 import {SSITextH1RegularStyled, SSITextH3RegularStyled} from '../../../styles/components';
 import {ContentContainer, IconContainer, ModalCard} from './styles';
-import {useEffect, useRef, useState} from 'react';
+import {useRef} from 'react';
 import Animated, {Easing, useAnimatedKeyboard, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
 type AusweisEPinModalProps = {
