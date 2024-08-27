@@ -18,7 +18,7 @@ export type StackParamList = {
   CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
   //fixme: changed the any to an actual type
-  CredentialShareOverview: ICredentialOverviewShahreProps;
+  CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
@@ -131,8 +131,8 @@ export interface ICredentialsRequiredProps {
   verifierName: string;
 }
 
-export interface ICredentialOverviewShahreProps {
-  verifierName: string;
+export interface ICredentialOverviewShareProps {
+  verifier: Party;
   presentationDefinition: IPresentationDefinition;
   credential: OriginalVerifiableCredential;
   onDecline: () => Promise<void>;

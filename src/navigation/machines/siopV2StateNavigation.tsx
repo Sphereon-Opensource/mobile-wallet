@@ -181,7 +181,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     navigation.navigate(MainRoutesEnum.SIOPV2, {
       screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
       params: {
-        verifierName: contact.contact.displayName,
+        verifier: contact,
         presentationDefinition: presentationDefinitionWithLocation.definition,
         credential: mathcingCredentials[0],
       },

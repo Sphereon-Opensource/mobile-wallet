@@ -1,7 +1,7 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {useRef} from 'react';
-import {Image, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import styled from 'styled-components/native';
@@ -26,7 +26,7 @@ const RequestedInformationContainer = styled.View`
 
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
-  const {credential, verifierName, presentationDefinition, onSend, onDecline} = props.route.params;
+  const {credential, verifier, presentationDefinition, onSend, onDecline} = props.route.params;
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
   const chevronRotation = useSharedValue(0);
@@ -54,7 +54,7 @@ const SelectOverviewShareScreen = (props: Props) => {
         <ProviderContainer>
           <ProviderImage source={require('../../assets/images/PlaceholderLogo.png')} width={40} height={40} resizeMode="stretch" />
           <ProviderDescription>
-            <SSITextH3LightStyled>{verifierName}</SSITextH3LightStyled>
+            <SSITextH3LightStyled>{verifier.contact.displayName}</SSITextH3LightStyled>
           </ProviderDescription>
         </ProviderContainer>
         <SSITextH2SemiBoldLightStyled>Following information will be shared</SSITextH2SemiBoldLightStyled>
@@ -68,7 +68,7 @@ const SelectOverviewShareScreen = (props: Props) => {
             padding: 8,
             marginBottom: 16,
           }}>
-          <TouchableOpacity key={verifierName}>
+          <TouchableOpacity key={verifier.contact.displayName}>
             <View
               style={{
                 width: 75,
@@ -80,15 +80,14 @@ const SelectOverviewShareScreen = (props: Props) => {
                 //fixme: add verifier branding to the object that we're passing
                 backgroundColor: /*verifierName.contrastBackgroundColor ?? */ 'white',
               }}
-              key={verifierName}>
-              //fixme: add verifier branding to the object that we're passing
+              key={verifier.contact.displayName}>
               {/*<Image style={{width: 32, height: 32}} source={verifierName.image} />*/}
-              <Title>{verifierName}</Title>
+              <Title>{verifier.contact.displayName}</Title>
             </View>
           </TouchableOpacity>
         </ScrollView>
         <TouchableOpacity onPress={onToggleAccordion} style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16}}>
-          <SSITextH3LightStyled>{verifierName}</SSITextH3LightStyled>
+          <SSITextH3LightStyled>{verifier.contact.displayName}</SSITextH3LightStyled>
           <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
             <SSITextH5Styled style={{color: '#0B81FF'}}>{/* Not sure where this "1" refers to */}1 selected</SSITextH5Styled>
             <Animated.View style={[chevronStyles, {marginTop: 1}]}>
