@@ -1,6 +1,5 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
-import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
+import {CredentialCorrelationType, CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ICreateVerifiableCredentialArgs, VerifiableCredential} from '@veramo/core';
@@ -44,19 +43,27 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
               (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
-            return await toCredentialSummary({
-              verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+            // todo: we should get uniform from the store instead of having to map it. We store it for a reason
+            const uniform = JSON.parse(uniqueVC.digitalCredential.uniformDocument) as VerifiableCredential;
+            console.log(JSON.stringify(uniform));
+            console.log(`Pre to summary with\r\n:${JSON.stringify(uniform, null, 2)}`);
+            return toCredentialSummary({
+              verifiableCredential: uniform,
               hash: uniqueVC.hash,
               credentialRole: uniqueVC.digitalCredential.credentialRole,
               branding: credentialBranding?.localeBranding,
-              issuer: await getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
-              subject: await getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+              issuer: getCredentialIssuerContact(uniform),
+              subject: getCredentialSubjectContact(uniform),
             });
           }),
         );
+        console.log('summaries', credentialSummaries);
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
-      .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
+      .catch(e => {
+        console.error(e);
+        dispatch({type: GET_CREDENTIALS_FAILED});
+      });
   };
 };
 

@@ -73,14 +73,16 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 };
 
 export const getCredentialIssuerContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  console.log(`getCredentialIssuerContact ${vc}`, vc);
   const contacts: Array<Party> = store.getState().contact.contacts;
   const issuer: string = typeof vc.issuer === 'string' ? vc.issuer : vc.issuer?.id ?? vc.issuer?.name;
   return contacts.find((contact: Party) => contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === issuer));
 };
 
 export const getCredentialSubjectContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  console.log(`getCredentialSubjectContact ${vc}`, vc);
   const contacts: Array<Party> = store.getState().contact.contacts;
-  const subjects: string[] = asArray(vc.credentialSubject)
+  const subjects: string[] = asArray('credentialSubject' in vc ? vc.credentialSubject : [])
     .map(subject => subject.id)
     .filter((id: string | undefined) => !!id) as string[];
   return contacts.find((contact: Party) =>

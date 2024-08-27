@@ -1,19 +1,19 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {getKey} from '@sphereon/ssi-sdk-ext.did-utils';
+import {determineKid, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
+import {encodeJoseBlob} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {SupportedDidMethodEnum} from '../../types';
-import {generateDigest} from '../../utils';
-import {encodeJoseBlob} from '@veramo/utils';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
-import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {generateDigest} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 

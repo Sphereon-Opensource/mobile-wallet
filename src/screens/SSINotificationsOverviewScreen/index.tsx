@@ -1,14 +1,13 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
-
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage';
 import {translate} from '../../localization/Localization';
 import {
   SSIBasicContainerStyled as Container,
   SSINotificationsOverviewScreenEmptyStateContainerStyled as EmptyStateContainer,
   SSINotificationsOverviewScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
-  SSITextH4LightStyled as SubTitleText,
   SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText,
+  SSITextH4LightStyled as SubTitleText,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 

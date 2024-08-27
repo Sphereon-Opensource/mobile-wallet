@@ -14,6 +14,7 @@ import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon';
 import SSIQRIcon from '../../assets/icons/SSIQRIcon';
+import CredentialCatalogIcon from '../../assets/icons/CredentialCatalogIcon';
 import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 
 interface IState {
@@ -118,6 +119,13 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
     case NavigationBarRoutesEnum.CONTACTS:
       return (
         <SSIContactsIcon
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
+        />
+      );
+    case NavigationBarRoutesEnum.CREDENTIAL_CATALOG:
+      return (
+        <CredentialCatalogIcon
           primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
           secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />

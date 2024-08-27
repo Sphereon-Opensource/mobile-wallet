@@ -13,9 +13,13 @@ import {
 import {removeCredentialBranding} from './brandingService';
 import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
+import {v4} from 'uuid';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueDigitalCredential>> => {
-  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]});
+  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
+    console.log(`===> ${creds.map(cred => cred.id).join(', ')}`);
+    return creds;
+  });
 };
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
@@ -38,7 +42,11 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
     if (uniqueCredential === undefined) {
       return Promise.reject(Error(`DigitalCredential with hash ${hash} was not found ${JSON.stringify(hash)}`));
     }
-    return uniqueCredential.originalVerifiableCredential as VerifiableCredential;
+    if (typeof uniqueCredential.uniformVerifiableCredential === 'string') {
+      // fixme
+      uniqueCredential.uniformVerifiableCredential = JSON.parse(uniqueCredential.uniformVerifiableCredential);
+    }
+    return uniqueCredential.uniformVerifiableCredential as VerifiableCredential;
   } catch (e) {
     // @ts-ignore
     return Promise.reject(new Error(`Fetching of credential with ${hash} and credential role ${credentialRole} was not found: ${e}`, {cause: e}));

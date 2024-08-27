@@ -21,6 +21,7 @@ import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore, PrivateKeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
+import crypto from 'crypto';
 import {LdContexts} from '../@config/credentials';
 import {animoFunkeCert, funkeTestCA, sphereonCA} from '../@config/trustanchors';
 import {dispatchIdentifier} from '../services/identityService';
@@ -82,6 +83,8 @@ export const createAgentPlugins = ({
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
+    new IdentifierResolution({crypto: global.crypto}),
+    new JwtService(),
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection),
