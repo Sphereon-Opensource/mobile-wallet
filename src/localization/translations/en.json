@@ -362,5 +362,6 @@
   "item_not_yet_available_message": "This item is currently not yet available.",
   "onboarding_machine_store_credential_error_title": "Store credential",
   "onboarding_machine_retrieve_credentials_error_title": "Retrieve credentials",
-  "onboarding_skip_credential_import_step3_caption": "I’ll finish this section later"
+  "onboarding_skip_credential_import_step3_caption": "I’ll finish this section later",
+  "onboarding_store_credential_branding_error_title": "Store credential branding"
 }

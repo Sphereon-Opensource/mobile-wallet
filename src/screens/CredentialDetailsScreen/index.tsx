@@ -78,7 +78,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         <CardContainer>
           <SSICredentialCardView
             header={{
-              credentialTitle: credential.title ?? credential.branding?.alias,
+              credentialTitle: credential.branding?.alias,
               credentialSubtitle: credential.branding?.description,
               logo: credentialCardLogo,
             }}
