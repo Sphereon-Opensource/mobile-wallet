@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {useContext, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {Dimensions, ScrollView, View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -28,8 +28,17 @@ const VerifyPinCodeScreen = () => {
   const [pinCode, setPinCode] = useState(verificationPinCodeContext);
   const isComplete = useMemo(() => pinCode.length === PIN_CODE_LENGTH, [pinCode]);
   const translationsPath = 'onboarding_pages.verify_pin';
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
+
+  useEffect(() => {
+    if (isComplete && !doPinsCompletelyMatch) {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo(Dimensions.get('window').height);
+      }
+    }
+  }, [isComplete, doPinsCompletelyMatch]);
 
   const footer = (
     <PrimaryButton
@@ -44,7 +53,7 @@ const VerifyPinCodeScreen = () => {
     />
   );
   return (
-    <ScreenContainer footer={footer}>
+    <ScreenContainer footer={footer} scrollViewRef={scrollViewRef}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1, gap: 48}}>
         <PinCode
