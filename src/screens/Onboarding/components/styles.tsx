@@ -77,12 +77,12 @@ export const ProgressRow = styled.View`
 export const ProgressItem = styled.View`
   width: 10px;
   height: 10px;
-  background-color: slategrey;
+  background-color: #98a3ae;
   border-radius: 5px;
 `;
 
 export const ProgressItemActive = styled(ProgressItem)`
-  background-color: slateblue;
+  background-color: #2707f8;
 `;
 
 export const DataLoadingIndicator = styled.Image`

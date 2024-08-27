@@ -16,7 +16,7 @@ import {delay} from '../../../utils';
 import styled from 'styled-components/native';
 
 const Content = styled(ContentContainer)`
-  padding: 10px 20px;
+  padding: 0px 20px 0px 20px;
 `;
 
 const ImportPersonalDataScreen = () => {
@@ -73,7 +73,7 @@ const ImportPersonalDataScreen = () => {
         <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </Content>
-      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10}}>
+      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20}}>
         <PrimaryButton
           style={{height: 42, width: '100%'}}
           caption={translate(`${translationsPath}.button_caption`)}
