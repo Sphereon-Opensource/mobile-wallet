@@ -37,6 +37,7 @@ import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {IdentifierResolution, isManagedIdentifierDidResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
+import {walletCrypto} from '../../index';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -56,10 +57,11 @@ export const oid4vciHolder = new OID4VCIHolder({
 });
 
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
+  global.crypto = walletCrypto;
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
-    new IdentifierResolution(),
+    new IdentifierResolution({crypto: walletCrypto}),
     // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
     new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
     new JwtService(),
@@ -77,7 +79,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
-    new IdentifierResolution({crypto: global.crypto}),
     new JwtService(),
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({

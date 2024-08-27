@@ -3,13 +3,11 @@ import {CredentialMapper} from '@sphereon/ssi-types';
 import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {computeEntryHash} from '@veramo/utils';
 import {generateDigest} from '../../utils';
-import agent, {agentContext} from '../../agent';
+import agent from '../../agent';
 import {storagePersistPin} from '../storageService';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
-import {BasicUser, IUser, SupportedDidMethodEnum} from '../../types';
-import {getOrCreatePrimaryIdentifier} from '../identityService';
-import {IIdentifier} from '@veramo/core';
+import {BasicUser, IUser} from '../../types';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -44,8 +42,10 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-        issuerCorrelationType: CredentialCorrelationType.X509_CN,
+        kmsKeyRef: 'FIXME', // FIXME Funke
+        identifierMethod: 'x5c', // FIXME Funke
         issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        issuerCorrelationType: CredentialCorrelationType.URL,
       },
       opts: {hasher: generateDigest},
     }),

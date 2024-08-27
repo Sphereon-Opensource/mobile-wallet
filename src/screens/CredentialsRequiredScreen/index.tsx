@@ -67,11 +67,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    setAllOriginalCredentials(
-      !allUniqueCredentials
-        ? []
-        : allUniqueCredentials.map(uniqueVC => CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.originalVerifiableCredential!)),
-    );
+    setAllOriginalCredentials(!allUniqueCredentials ? [] : allUniqueCredentials.map(uniqueVC => uniqueVC.originalVerifiableCredential!));
   }, [allUniqueCredentials]);
 
   useEffect((): void => {
@@ -182,7 +178,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           credentialRole: uniqueVC.digitalCredential.credentialRole,
           branding: credentialBranding?.localeBranding,
           issuer,
-          subject: getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+          subject: getCredentialSubjectContact(uniqueVC.uniformVerifiableCredential as VerifiableCredential),
         });
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
