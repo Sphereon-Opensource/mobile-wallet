@@ -85,6 +85,5 @@ export const storeCredentialBranding = async (context: Pick<GetPIDCredentialsMac
 };
 
 export const fetchVerifiableCredentials = async (context: GetPIDCredentialsMachineContext): Promise<void> => {
-  console.log('HELLO?????');
   store.dispatch<any>(getVerifiableCredentials());
 };
