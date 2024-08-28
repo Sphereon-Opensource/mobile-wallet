@@ -1,29 +1,21 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {ScrollView, View, Text} from 'react-native';
+import {PrimaryButton, SecondaryButton, SSILogo as Logo, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
+import React, {useMemo, useRef} from 'react';
+import {ScrollView, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import styled from 'styled-components/native';
-import ChevronIcon from '../../components/assets/icons/ChevronIcon';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 
-import {SSITextH1LightStyled as Title, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
+import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 
-import {ProviderContainer, ProviderDescription, ProviderImage, ProviderUrl} from '../Onboarding/ImportDataConsentScreen/components/styles';
+import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {SSIContactViewItemLogoContainerStyled as LogoContainer} from '../../styles/components';
-import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
-import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
-import {generateDigest} from 'src/utils';
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {translate} from '../../localization/Localization';
-import {Party} from '@sphereon/ssi-sdk.data-store';
-import {DeepPartial} from 'redux';
 import ScreenTitleAndDescription from '../../components/containers/ScreenTitleAndDescription';
-import {CredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -53,16 +45,9 @@ const RequestedInformationContainer = styled.View`
 
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
-  const {credential, verifier, presentationDefinition, onSend, onDecline} = props.route.params;
-  const uniformCredential = useMemo(
-    () =>
-      CredentialMapper.toUniformCredential(credential, {
-        hasher: generateDigest,
-      }),
-    [credential],
-  );
+  const {credential, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
 
-  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject), [uniformCredential]);
+  const data = useMemo(() => convertFromPIDPayload(credential.uniformVerifiableCredential!.credentialSubject), [credential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
@@ -95,7 +80,7 @@ const SelectOverviewShareScreen = (props: Props) => {
           style={{height: 42}}
           caption={translate('action_share_label')}
           captionColor={fontColors.light}
-          onPress={() => onSend(credential)}
+          onPress={() => onSelectAndSend(credential)}
         />
       </View>
     </>
