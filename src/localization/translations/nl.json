@@ -5,9 +5,9 @@
   "credentials_view_item_expires_on": "Vervalt op",
   "swipe_delete_button_caption": "Verwijderen",
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
-  "biometrics_title": "Authenticeren met biometrie",
+  "biometrics_title": "Do you want to enable Biometric login?",
 
-  "biometrics_subtitle": "Use biometric login en authentication with your face for faster and easier access to your account.",
+  "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
   "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
   "biometrics_enable_text": "Enable now",
   "biometrics_disallow": "Maybe later",
