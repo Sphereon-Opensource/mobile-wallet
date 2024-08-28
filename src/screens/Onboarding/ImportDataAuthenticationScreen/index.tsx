@@ -1,16 +1,17 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useContext, useMemo, useState} from 'react';
+import {useContext, useMemo, useRef, useState} from 'react';
+import {View} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
+import Animated, {useAnimatedKeyboard, useAnimatedStyle} from 'react-native-reanimated';
+import {PIN_CODE_LENGTH} from '../../../@config/constants';
+import ScreenContainer from '../../../components/containers/ScreenContainer';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
+import PinCode from '../../../components/pinCodes/OnboardingPinCode';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import PinCode from '../../../components/pinCodes/OnboardingPinCode';
-import {PIN_CODE_LENGTH} from '../../../@config/constants';
-import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
-import ScreenContainer from '../../../components/containers/ScreenContainer';
 import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
-import Animated, {useAnimatedKeyboard, useAnimatedStyle} from 'react-native-reanimated';
-import {View} from 'react-native';
 
 const ImportDataAuthenticationScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -19,13 +20,18 @@ const ImportDataAuthenticationScreen = () => {
   } = onboardingInstance.getSnapshot();
   const [pinCode, setPinCode] = useState('');
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
+  const keyboard = useAnimatedKeyboard();
+  const pinInputRef = useRef<TextInput>(null);
 
   useAuthEffect((success: boolean) => {
-    if (!success) return;
+    if (!success) {
+      if (pinInputRef.current) {
+        pinInputRef.current.focus();
+      }
+      return;
+    }
     onboardingInstance.send(OnboardingMachineEvents.NEXT);
   });
-
-  const keyboard = useAnimatedKeyboard();
 
   const style = useAnimatedStyle(() => {
     return {
@@ -55,7 +61,7 @@ const ImportDataAuthenticationScreen = () => {
   return (
     <ScreenContainer disableKeyboardAvoidingView={true} footer={footer}>
       <ScreenTitleAndDescription title={translate('import_data_auth_title')} />
-      <PinCode pin={pinCode} onPinChange={setPinCode} length={PIN_CODE_LENGTH} validation={{isValid: doPinsCompletelyMatch}} />
+      <PinCode inputRef={pinInputRef} pin={pinCode} onPinChange={setPinCode} length={PIN_CODE_LENGTH} validation={{isValid: doPinsCompletelyMatch}} />
     </ScreenContainer>
   );
 };
