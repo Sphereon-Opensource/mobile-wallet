@@ -28,7 +28,7 @@ export type SiopV2MachineContext = {
   contact?: Party;
   hasContactConsent: boolean;
   contactAlias: string;
-  selectedCredentials: Array<OriginalVerifiableCredential>;
+  selectedCredentials: Array<UniqueDigitalCredential>;
   error?: ErrorDetails;
 };
 
