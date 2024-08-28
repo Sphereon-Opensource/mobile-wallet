@@ -19,6 +19,7 @@ const renderLabel = (label: 'card' | 'list') => () => {
 type Props = {activeUser: IUser};
 
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
+  console.log('activeUser', activeUser);
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
 
