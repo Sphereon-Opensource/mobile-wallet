@@ -14,6 +14,7 @@ import {removeCredentialBranding} from './brandingService';
 import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
 import {v4} from 'uuid';
+import {DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 
 export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueDigitalCredential>> => {
   return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
@@ -24,19 +25,20 @@ export const getVerifiableCredentialsFromStorage = async (): Promise<Array<Uniqu
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
   const {vc, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
-  const rawDocument = JSON.stringify(vc);
-
+  const rawDocument = typeof vc === 'string' ? vc : JSON.stringify(vc);
   const addCredential: AddDigitalCredential = {
     rawDocument: rawDocument,
     issuerCorrelationId: issuerCorrelationId,
     issuerCorrelationType: issuerCorrelationType,
     credentialRole: credentialRole,
+    kmsKeyRef: 'FIXME', // FIXME Funke
+    identifierMethod: 'jwk', // FIXME Funke
   };
   const digitalCredential = await agent.crsAddCredential({credential: addCredential});
   return digitalCredential.hash;
 };
 
-export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs): Promise<VerifiableCredential> => {
+export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs): Promise<UniqueDigitalCredential> => {
   const {credentialRole, hash} = args;
   try {
     const uniqueCredential = await agent.crsGetUniqueCredentialByIdOrHash({credentialRole, idOrHash: hash});
@@ -47,7 +49,7 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
       // fixme
       uniqueCredential.uniformVerifiableCredential = JSON.parse(uniqueCredential.uniformVerifiableCredential);
     }
-    return uniqueCredential.uniformVerifiableCredential as VerifiableCredential;
+    return uniqueCredential;
   } catch (e) {
     // @ts-ignore
     return Promise.reject(new Error(`Fetching of credential with ${hash} and credential role ${credentialRole} was not found: ${e}`, {cause: e}));

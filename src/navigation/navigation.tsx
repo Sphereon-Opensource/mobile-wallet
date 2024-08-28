@@ -74,6 +74,7 @@ import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingSc
 import {useSelector} from 'react-redux';
 import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
+import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -1005,6 +1006,24 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
+                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+              }`}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW}
+        component={CredentialOverviewShareScreen}
+        options={({route}) => ({
+          headerTitle: translate('credentials_required_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              onBack={route.params.onDecline}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
                 route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
               }`}
             />

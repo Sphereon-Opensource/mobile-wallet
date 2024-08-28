@@ -79,7 +79,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           <SSICredentialCardView
             header={{
               credentialTitle: credential.branding?.alias,
-              credentialSubtitle: credential.branding?.description,
+              credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
               logo: credentialCardLogo,
             }}
             body={{

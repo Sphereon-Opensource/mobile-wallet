@@ -8,6 +8,8 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {IPresentationDefinition} from '@sphereon/pex';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -16,6 +18,8 @@ export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
+  //fixme: changed the any to an actual type
+  CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
@@ -136,10 +140,18 @@ export interface ICredentialsRequiredProps {
   subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
   onDecline: () => Promise<void>;
-  onSelect?: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
+  onSelect?: (credentials: Array<UniqueDigitalCredential>) => Promise<void>;
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   isSendDisabled?: () => boolean | (() => boolean);
   verifierName: string;
+}
+
+export interface ICredentialOverviewShareProps {
+  verifier: Party;
+  presentationDefinition: IPresentationDefinition;
+  credential: OriginalVerifiableCredential;
+  onDecline: () => Promise<void>;
+  onSend: (credential: OriginalVerifiableCredential) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {
@@ -153,6 +165,7 @@ export interface ICredentialDetailsProps {
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
   rawCredential?: OriginalVerifiableCredential;
+  uniqueDigitalCredential?: UniqueDigitalCredential;
   headerTitle?: string;
 }
 
@@ -259,6 +272,7 @@ export enum NavigationBarRoutesEnum {
 }
 export enum ScreenRoutesEnum {
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
+  CREDENTIAL_SHARE_OVERVIEW = 'CredentialShareOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',

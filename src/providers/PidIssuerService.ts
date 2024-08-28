@@ -1,5 +1,7 @@
 import {SigningAlgo} from '@sphereon/oid4vc-common';
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
+import {CredentialResponse, DPoPResponseParams, OpenId4VCIVersion, PARMode, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
+import {IIdentifierResolution, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {
   AuthorizationServerMetadata,
   CredentialIssuerMetadataV1_0_13,
@@ -31,6 +33,12 @@ interface PidIssuerServiceOpts {
 }
 
 type PidAgentContext = IAgentContext<IKeyManager & IDIDManager & IResolver & IIdentifierResolution & IJwtService>;
+
+export type PidResponse = CredentialResponse & {
+  params?: DPoPResponseParams;
+  access_token: string;
+  identifier: ManagedIdentifierResult;
+};
 
 interface PidRequestInfo {
   format: 'mso_mdoc' | 'vc+sd-jwt';
@@ -173,7 +181,7 @@ export class PidIssuerService {
     return accessTokenResponse;
   }
 
-  public async getPids({authorizationCode, pids}: {authorizationCode: string; pids: Array<PidRequestInfo>}) {
+  public async getPids({authorizationCode, pids}: {authorizationCode: string; pids: Array<PidRequestInfo>}): Promise<Array<PidResponse>> {
     if (!authorizationCode) {
       return Promise.reject(Error(`Cannot get a PID without authorization code`));
     } else if (pids.length === 0) {
@@ -194,13 +202,13 @@ export class PidIssuerService {
     for (const pidInfo of pids) {
       const identifier = await this.createPidKey(pidInfo);
       console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
-      // const identifier = await this.dpopService.getEphemeralDPoPIdentifier();
+      // const identifier: ManagedIdentifierResult = await this.dpopService.getEphemeralDPoPIdentifier();
       const jwk = identifier.jwk;
       const callbacks: ProofOfPossessionCallbacks<never> = {
         signCallback: signCallback(this.client, identifier, this.context, currentNonce),
       };
 
-      const credentialResponse = await this.client.acquireCredentials({
+      const credentialResponse: CredentialResponse & {params?: DPoPResponseParams; access_token: string} = await this.client.acquireCredentials({
         // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
         // 'eu.europa.ec.eudi.pid.1' // mdoc
         credentialTypes: pidInfo.type,
@@ -215,7 +223,7 @@ export class PidIssuerService {
       currentNonce = credentialResponse.c_nonce;
 
       console.log(JSON.stringify(credentialResponse));
-      responses.push(credentialResponse);
+      responses.push({...credentialResponse, identifier});
     }
     return responses;
   }
