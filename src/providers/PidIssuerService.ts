@@ -1,22 +1,16 @@
 import {SigningAlgo} from '@sphereon/oid4vc-common';
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
-import {CredentialResponse, DPoPResponseParams, OpenId4VCIVersion, PARMode, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
-import {IIdentifierResolution, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {
   AuthorizationServerMetadata,
   CredentialIssuerMetadataV1_0_13,
   CredentialResponse,
+  DPoPResponseParams,
   IssuerMetadataV1_0_13,
   OpenId4VCIVersion,
   PARMode,
   ProofOfPossessionCallbacks,
 } from '@sphereon/oid4vci-common';
-import {
-  IIdentifierResolution,
-  ManagedIdentifierJwkOpts,
-  ManagedIdentifierResult,
-  ManagedIdentifierX5cOpts,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {IIdentifierResolution, ManagedIdentifierJwkOpts, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {toJwk} from '@sphereon/ssi-sdk-ext.key-utils';
 import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
@@ -197,7 +191,7 @@ export class PidIssuerService {
     });
     let currentNonce: string | undefined = accessTokenResponse.c_nonce;
 
-    let responses: CredentialResponse[] = [];
+    let responses: (CredentialResponse & {params?: DPoPResponseParams; access_token: string; identifier: ManagedIdentifierResult})[] = [];
 
     for (const pidInfo of pids) {
       const identifier = await this.createPidKey(pidInfo);
