@@ -3276,30 +3276,12 @@
     uint8arrays "3.1.1"
     uuid "^9.0.0"
 
-"@sphereon/pex-models@2.2.4", "@sphereon/pex-models@^2.2.4", "@sphereon/pex-models@^2.3.1":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.2.4.tgz#0ce28e9858b38012fe1ff7d9fd12ec503473ee66"
-  integrity sha512-pGlp+wplneE1+Lk3U48/2htYKTbONMeG5/x7vhO6AnPUOsnOXeJdftPrBYWVSzz/JH5GJptAc6+pAyYE1zMu4Q==
+"@sphereon/pex-models@2.3.1", "@sphereon/pex-models@^2.2.4", "@sphereon/pex-models@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.3.1.tgz#54a5b81bf989846637170daf844e3564889d2d2a"
+  integrity sha512-SByU4cJ0XYA6VZQ/L6lsSiRcFtBPHbFioCeQ4GP7/W/jQ+PSBD7uK2oTnKQ9/0iEiMK/6JYqhKgLs4a9UX3UTQ==
 
-"@sphereon/pex@4.0.1", "@sphereon/pex@^3.3.2", "@sphereon/pex@^4.1.0":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-4.0.1.tgz#384342cb70d25b411b8b387470bb40fd78e4d2e3"
-  integrity sha512-3XnX/YJpxR8ueMO+qZLcn14dYFE4OHqi3i1qMLwPo/7jFFLrTb70uDG1++D+MqS7YTwYQbMtJA9KzzWcKTEg4w==
-  dependencies:
-    "@astronautlabs/jsonpath" "^1.1.2"
-    "@sd-jwt/decode" "^0.6.1"
-    "@sd-jwt/present" "^0.6.1"
-    "@sd-jwt/types" "^0.6.1"
-    "@sphereon/pex-models" "^2.2.4"
-    "@sphereon/ssi-types" "0.22.0"
-    ajv "^8.12.0"
-    ajv-formats "^2.1.1"
-    jwt-decode "^3.1.2"
-    nanoid "^3.3.7"
-    string.prototype.matchall "^4.0.10"
-    uint8arrays "^3.1.1"
-
-"@sphereon/pex@4.1.0":
+"@sphereon/pex@4.1.0", "@sphereon/pex@^3.3.2", "@sphereon/pex@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-4.1.0.tgz#79696f55c6b4012710bc3b4c4496cbbdd7d05a27"
   integrity sha512-FVaaStVW8ewiAVfbpLmjRuAmEA/7xwifY5m1r6RaignMpPLK3uBt+Urae/Y78lcuJttj7WvRMzddgNO3RtsO+Q==
@@ -3664,7 +3646,7 @@
     debug "^4.3.5"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.mdl-mdoc@0.29.1-unstable.190+138daac4":
+"@sphereon/ssi-sdk.mdl-mdoc@0.29.1-unstable.190", "@sphereon/ssi-sdk.mdl-mdoc@0.29.1-unstable.190+138daac4":
   version "0.29.1-unstable.190"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.mdl-mdoc/-/ssi-sdk.mdl-mdoc-0.29.1-unstable.190.tgz#dce377db90dfdb8726ecd5b5a0884489e9b6df46"
   integrity sha512-yf0wxyxraKOT3p+ufn/8eH+boiO19J3aEeLECXf5gZvJQTgrVyZcLuzLrSl0OIF+8+bhMRx1UyNOSbdpbUrerQ==
