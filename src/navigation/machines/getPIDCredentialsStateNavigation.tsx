@@ -4,8 +4,6 @@ import {APP_ID} from '../../@config/constants';
 import RootNavigation from './../rootNavigation';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
-import store from '../../store';
-import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
 import {GetPIDCredentialsMachine} from '../../machines/getPIDCredentialMachine';
 import {
   GetPIDCredentialsContextType,
@@ -17,9 +15,7 @@ import {
   GetPIDCredentialsMachineStateTypes,
   GetPIDCredentialsProviderProps,
 } from '../../types/machines/getPIDCredentialMachine';
-import {GetPIDCredentialsStack} from '../navigation';
 import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
-import {OnboardingMachineEvents} from '../../types/machines/onboarding';
 import {delay} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentialsStateNavigation`);
@@ -49,6 +45,7 @@ export const getPIDCredentialsStateNavigationListener = (
       navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {
         screen: 'ImportDataConsent',
         params: {
+          onBack: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
           onAccept: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.NEXT),
           onDecline: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
         },
@@ -58,6 +55,7 @@ export const getPIDCredentialsStateNavigationListener = (
       navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {
         screen: 'ImportPersonalData',
         params: {
+          onBack: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
           onAuth: async (provider: VciServiceFunkeCProvider) => {
             getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.SET_FUNKE_PROVIDER, {data: provider});
             // Adding a small delay to let the animation play
@@ -71,6 +69,7 @@ export const getPIDCredentialsStateNavigationListener = (
       navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {
         screen: 'ImportDataAuthentication',
         params: {
+          onBack: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
           onAccept: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.NEXT),
         },
       });
@@ -84,6 +83,7 @@ export const getPIDCredentialsStateNavigationListener = (
       navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {
         screen: 'ImportDataFinal',
         params: {
+          onBack: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
           onAccept: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.NEXT),
           onDecline: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.DECLINE_INFORMATION),
           credentials: context.pidCredentials,
@@ -91,7 +91,13 @@ export const getPIDCredentialsStateNavigationListener = (
       });
       break;
     case GetPIDCredentialsMachineStateTypes.declinePIDCredentials:
-      getPIDCredentialsNavigation.navigate('IncorrectPersonalData', {});
+      navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {
+        screen: 'IncorrectPersonalData',
+        params: {
+          onDecline: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.NEXT),
+          onBack: async () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
+        },
+      });
       break;
     case GetPIDCredentialsMachineStateTypes.storePIDCredentials:
       navigation.navigate(MainRoutesEnum.GET_PID_CREDENTIALS, {

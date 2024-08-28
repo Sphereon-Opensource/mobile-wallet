@@ -1,20 +1,13 @@
-import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  SSITextH2SemiBoldLightStyled,
-  SSITextH5LightStyled,
-  SSITextH6LightStyled,
-} from '@sphereon/ui-components.ssi-react-native';
+import {fontColors} from '@sphereon/ui-components.core';
+import {PrimaryButton, SecondaryButton, SSITextH2SemiBoldLightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
-import {Dimensions, Text, View} from 'react-native';
+import {Dimensions} from 'react-native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import styled from 'styled-components/native';
-import {SectionLabel} from '../ImportDataConsentScreen/components/styles';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
 const {width} = Dimensions.get('window');
 
@@ -29,7 +22,7 @@ const UnorderdItemContainer = styled.View`
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  margin: 5px 0px 0px 5px;
+  margin: 5px 0 0 5px;
 `;
 
 const UnorderedItemText = styled(SSITextH3RegularLightStyled)`
@@ -38,10 +31,11 @@ const UnorderedItemText = styled(SSITextH3RegularLightStyled)`
 `;
 
 const UnorderedItemBullet = styled(UnorderedItemText)`
-  margin: 0px 5px 0px 0px;
+  margin: 0 5px 0 0;
 `;
 
-const IncorrectInformationScreen = () => {
+const IncorrectInformationScreen = (props?: any) => {
+  const {onDecline, onBack} = props?.route?.params ?? {};
   const {onboardingInstance} = useContext(OnboardingContext);
 
   const footer = (
@@ -50,12 +44,12 @@ const IncorrectInformationScreen = () => {
         style={{height: 42, width: width - 40}}
         caption={translate('incorrect_data_dont_add_info')}
         captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+        onPress={() => (onDecline ? onDecline() : onboardingInstance.send(OnboardingMachineEvents.NEXT))}
       />
       <SecondaryButton
         style={{height: 42, width: width - 40}}
         caption={translate('incorrect_data_back')}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS)}
+        onPress={() => (onBack ? onBack() : onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
       />
     </Footer>
   );

@@ -20,13 +20,14 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
     total: number;
     current: number;
   };
+  onBack?: () => Promise<void>;
 }
 
 const PROGRESS_BAR_VERTICAL_MARGIN = 10;
 
 export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VERTICAL_MARGIN * 2;
 
-const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProps): JSX.Element => {
+const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
   return (
     <Container style={{paddingTop: useSafeAreaInsets().top}}>
@@ -35,7 +36,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig}: HeaderBarProp
           <BackIcon
             style={{marginTop: 0}}
             icon={ButtonIconsEnum.BACK}
-            onPress={() => new Promise(() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
+            onPress={() => (onBack ? onBack() : onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
           />
         </BackIconContainer>
         {title && <SSITextH3LightStyled>{title as string}</SSITextH3LightStyled>}

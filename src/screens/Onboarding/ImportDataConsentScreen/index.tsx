@@ -58,9 +58,9 @@ const ImportDataConsentScreen = (props?: any) => {
         <ProviderContainer>
           <ProviderImage source={require('../../../assets/images/bundesdruckerei.png')} width={48} height={48} resizeMode="stretch" />
           <ProviderDescription>
-            <SSITextH3LightStyled>German Bundesdruckerei</SSITextH3LightStyled>
-            <SSITextH4LightStyled>{translate(`${translationsPath}.pid_provider_subheading`)}</SSITextH4LightStyled>
-            <ProviderUrl> www.personalausweisportal.de</ProviderUrl>
+            <SSITextH3LightStyled>Bundesdruckerei GmbH</SSITextH3LightStyled>
+            <SSITextH4LightStyled>ISSUER</SSITextH4LightStyled>
+            <ProviderUrl>https://demo.pid-issuer.bundesdruckerei.de/c</ProviderUrl>
           </ProviderDescription>
         </ProviderContainer>
         <Label>Offered data</Label>

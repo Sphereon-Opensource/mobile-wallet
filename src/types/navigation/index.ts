@@ -70,19 +70,19 @@ export type OnboardingStackParamsList = {
 };
 
 export type GetPIDCredentialsStackParamsList = {
-  ImportDataConsent: IImportDataConsentProps;
-  ImportPersonalData: Record<string, never>;
-  ImportDataAuthentication: Record<string, never>;
-  ImportDataLoader: Record<string, never>;
-  ImportDataFinal: Record<string, never>;
-  IncorrectPersonalData: Record<string, never>;
-  ImportDataLoaderStore: Record<string, never>;
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
+  IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
-export interface IImportDataConsentProps {
-  onAccept?: () => Promise<void>;
-}
+// export interface IImportDataConsentProps {
+//   onAccept?: () => Promise<void>;
+// }
 
 export type CreditOverviewStackParamsList = {
   Card: Record<string, never>;

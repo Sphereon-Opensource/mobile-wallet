@@ -25,7 +25,6 @@ import {
   MappedCredential,
 } from '../types/machines/getPIDCredentialMachine';
 import {ErrorDetails} from '../types';
-import {getVerifiableCredentials} from '../store/actions/credential.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentials`);
 

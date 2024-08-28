@@ -641,10 +641,11 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
     <GetPIDCredentialsBaseStack.Screen
       name="ImportDataConsent"
       component={ImportDataConsentScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
+            onBack={route.params.onBack}
             title={translate('import_data_title')}
             stepConfig={{
               current: 1,
@@ -652,15 +653,16 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name="ImportPersonalData"
       component={ImportPersonalDataScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
+            onBack={route.params.onBack}
             title={translate('import_data_title')}
             stepConfig={{
               current: 2,
@@ -668,15 +670,16 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name="ImportDataAuthentication"
       component={ImportDataAuthenticationScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
+            onBack={route.params.onBack}
             title={translate('import_data_title')}
             stepConfig={{
               current: 3,
@@ -684,12 +687,12 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name="ImportDataLoader"
       component={ImportDataLoaderScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
@@ -700,15 +703,16 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name="ImportDataFinal"
       component={ImportDataFinalScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
+            onBack={route.params.onBack}
             title={translate('import_data_title')}
             stepConfig={{
               current: 4,
@@ -716,12 +720,29 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="IncorrectPersonalData"
+      component={IncorrectInformationScreen}
+      options={({route}) => ({
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            onBack={route.params.onBack}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 4,
+              total: 4,
+            }}
+          />
+        ),
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name="ImportDataLoaderStore"
       component={ImportDataLoaderScreen}
-      options={{
+      options={({route}) => ({
         header: props => (
           <OnboardingHeader
             {...props}
@@ -732,7 +753,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
             }}
           />
         ),
-      }}
+      })}
     />
     <GetPIDCredentialsBaseStack.Screen
       name={ScreenRoutesEnum.ERROR}
