@@ -23,6 +23,7 @@ type Props = TextInputProps & {
   length?: number;
   secureCode?: boolean;
   validation?: ValidationConfig;
+  inputRef?: React.RefObject<TextInput>;
 };
 
 const failureAnimationConfig = {
@@ -31,9 +32,16 @@ const failureAnimationConfig = {
   colorShiftDuration: 100,
 };
 
-const OnboardingPinCode = ({pin, onPinChange, length = 4, secureCode = true, validation, ...textInputProps}: Props) => {
+const OnboardingPinCode = ({
+  pin,
+  onPinChange,
+  length = 4,
+  secureCode = true,
+  validation,
+  inputRef = React.useRef<TextInput | null>(null),
+  ...textInputProps
+}: Props) => {
   const {isValid, maxRetries, onMaxRetriesExceeded, hideKeyboardOnValidAndComplete = false, triggerValidation = 'onComplete'} = validation ?? {};
-  const inputRef = React.useRef<TextInput | null>(null);
   const [retriesLeft, setRetriesLeft] = React.useState(maxRetries ?? Infinity);
   const shakeAnimation = useMemo(() => new Animated.Value(0), []);
   const colorShiftAnimation = useMemo(() => new Animated.Value(0), []);
