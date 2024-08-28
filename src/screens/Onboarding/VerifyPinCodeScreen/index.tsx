@@ -27,7 +27,7 @@ const VerifyPinCodeScreen = () => {
   const {
     context: {pinCode: pinCodeContext, verificationPinCode: verificationPinCodeContext},
   } = onboardingInstance.getSnapshot();
-  const [pinCode, setPinCode] = useState(verificationPinCodeContext);
+  const [pinCode, setPinCode] = useState('');
   const isComplete = useMemo(() => pinCode.length === PIN_CODE_LENGTH, [pinCode]);
   const translationsPath = 'onboarding_pages.verify_pin';
 
@@ -42,6 +42,7 @@ const VerifyPinCodeScreen = () => {
       onPress={() => {
         onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: pinCode});
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
+        setPinCode('');
       }}
     />
   );
