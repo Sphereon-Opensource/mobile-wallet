@@ -54,7 +54,6 @@ const RequestedInformationContainer = styled.View`
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credential, verifier, presentationDefinition, onSend, onDecline} = props.route.params;
-
   const uniformCredential = useMemo(
     () =>
       CredentialMapper.toUniformCredential(credential, {
