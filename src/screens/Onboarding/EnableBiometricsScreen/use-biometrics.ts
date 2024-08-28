@@ -41,7 +41,6 @@ export const useAuthEffect = (effect: (success: boolean) => void) => {
 
   useEffect(() => {
     if (biometricsEnabled) {
-      console.log('val', onboardingInstance.getSnapshot().value);
       prompt().then(effect);
     }
   }, []);
