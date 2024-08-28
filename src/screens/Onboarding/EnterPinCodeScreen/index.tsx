@@ -56,7 +56,7 @@ const EnterPinCodeScreen = () => {
     [invalidPinExample],
   );
   const [isPinValid, setIsPinValid] = useState(validatePin(pinCodeContext, []).isValid);
-  const [pinCode, setPinCode] = useState(pinCodeContext);
+  const [pinCode, setPinCode] = useState('');
   const [erroniousValidator, setErroniousValidator] = useState<ValidatorType>();
   const [showFeedback, setShowFeedback] = useState(false);
 
@@ -85,6 +85,7 @@ const EnterPinCodeScreen = () => {
           onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: ''});
         }
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
+        setPinCode('');
       }}
     />
   );
