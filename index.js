@@ -8,6 +8,8 @@ if (!global.window.crypto) {
 if (typeof self !== 'undefined') {
   self.crypto = global.crypto;
 }
+export const walletCrypto = global.crypto;
+
 import './shim';
 //import 'react-native-get-random-values';
 import '@ethersproject/shims';

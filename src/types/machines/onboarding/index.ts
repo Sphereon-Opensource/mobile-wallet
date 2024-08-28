@@ -5,7 +5,15 @@ import {OnboardingStackParamsList} from '../../navigation';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {MappedCredential} from '../getPIDCredentialMachine';
+
+export type OnboardingCredentialData = {
+  didMethod: SupportedDidMethodEnum;
+  didOptions?: any;
+  credential?: Partial<CredentialPayload>;
+  proofFormat?: ProofFormat;
+};
 
 export enum Country {
   DEUTSCHLAND = 'DEUTSCHLAND',
@@ -191,6 +199,12 @@ export type OnboardingMachineNavigationArgs = {
 export type OnboardingProviderProps = {
   children?: ReactNode;
   customOnboardingInstance?: OnboardingMachineInterpreter;
+};
+
+export type MappedCredential = {
+  uniformCredential: IVerifiableCredential;
+  rawCredential: string;
+  identifier: ManagedIdentifierResult;
 };
 
 export type WalletSetupServiceResult = {

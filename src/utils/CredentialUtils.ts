@@ -1,5 +1,5 @@
-import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
+import {Identity, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialMapper, ICredential, IVerifiableCredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import store from '../store';
 import {IUser, IUserIdentifier} from '../types';
@@ -38,7 +38,9 @@ export const getMatchingUniqueDigitalCredential = (
       // We are ignoring the signature of the sd-jwt as PEX signs the vc again and it will not match anymore with the jwt in the proof of the stored jsonld vc
       (typeof searchVC === 'string' &&
         CredentialMapper.isSdJwtEncoded(searchVC) &&
-        uniqueVC.originalCredential?.proof?.jwt?.split('.')?.slice(0, 2)?.join('.') === searchVC.split('.')?.slice(0, 2)?.join('.')),
+        uniqueVC.uniformVerifiableCredential?.proof &&
+        'jwt' in uniqueVC.uniformVerifiableCredential.proof &&
+        uniqueVC.uniformVerifiableCredential.proof.jwt?.split('.')?.slice(0, 2)?.join('.') === searchVC.split('.')?.slice(0, 2)?.join('.')),
   );
 };
 
@@ -85,7 +87,12 @@ export const getCredentialSubjectContact = (vc: VerifiableCredential | ICredenti
   const subjects: string[] = asArray('credentialSubject' in vc ? vc.credentialSubject : [])
     .map(subject => subject.id)
     .filter((id: string | undefined) => !!id) as string[];
-  return contacts.find((contact: Party) =>
+  const party = contacts.find((contact: Party) =>
     contact.identities.some((identity: Identity): boolean => subjects.includes(identity.identifier.correlationId)),
   );
+  if (!party) {
+    const contacts: Array<Party> = store.getState().contact.contacts;
+    return contacts[0];
+  }
+  return party;
 };

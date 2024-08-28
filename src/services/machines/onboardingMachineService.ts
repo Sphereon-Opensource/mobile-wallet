@@ -24,12 +24,14 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
     .then(pidResponses => {
       return pidResponses.map(pidResponse => {
         const credential = pidResponse.credential;
+        const identifier = pidResponse.identifier;
         const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
         const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
 
         return {
           uniformCredential,
           rawCredential,
+          identifier,
         };
       });
     });
@@ -44,8 +46,10 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-        issuerCorrelationType: CredentialCorrelationType.X509_CN,
+        kmsKeyRef: mappedCredential.identifier.kmsKeyRef,
+        identifierMethod: mappedCredential.identifier.method,
         issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        issuerCorrelationType: CredentialCorrelationType.URL,
       },
       opts: {hasher: generateDigest},
     }),

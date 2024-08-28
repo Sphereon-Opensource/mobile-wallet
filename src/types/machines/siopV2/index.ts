@@ -7,6 +7,7 @@ import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IQrData} from '../../qr';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -147,7 +148,7 @@ export type ContactAliasEvent = {type: SiopV2MachineEvents.SET_CONTACT_ALIAS; da
 export type CreateContactEvent = {type: SiopV2MachineEvents.CREATE_CONTACT; data: Party};
 export type SelectCredentialsEvent = {
   type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS;
-  data: Array<OriginalVerifiableCredential>;
+  data: Array<UniqueDigitalCredential>;
 };
 
 export type SiopV2MachineEventTypes =

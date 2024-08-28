@@ -1,19 +1,19 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {determineKid, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, OriginalVerifiableCredential, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
+import {encodeJoseBlob} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {getOrCreatePrimaryIdentifier} from '../../services/identityService';
 import {SupportedDidMethodEnum} from '../../types';
+import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {generateDigest} from '../../utils';
-import {encodeJoseBlob} from '@veramo/utils';
-import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -92,7 +92,9 @@ export const siopSendAuthorizationResponse = async (
 
   // todo: This should be moved to code calling the sendAuthorizationResponse (this) method, as to allow the user to subselect and approve credentials!
   let presentationsAndDefs: VerifiablePresentationWithDefinition[] | undefined;
+  //fixme: make these next two lines unifrom. they should return the same type
   let identifier: IIdentifier = identifiers[0];
+  let managedIdentifier: ManagedIdentifierResult | undefined;
   let presentationSubmission: PresentationSubmission | undefined;
   if (await session.hasPresentationDefinitions()) {
     const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
@@ -123,7 +125,7 @@ export const siopSendAuthorizationResponse = async (
       : firstVC.credentialSubject.id;
     if (holder) {
       try {
-        identifier = await session.context.agent.didManagerGet({did: holder});
+        managedIdentifier = await session.context.agent.identifierManagedGet({identifier: holder});
       } catch (e) {
         debug(`Holder DID not found: ${holder}`);
       }
@@ -142,12 +144,12 @@ export const siopSendAuthorizationResponse = async (
       throw Error(`Only one verifiable presentation supported for now. Got ${presentationsAndDefs.length}`);
     }
 
-    const managedIdentifierResult: ManagedIdentifierResult = await agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
+    managedIdentifier = await agentContext.agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
     presentationSubmission = presentationsAndDefs[0].presentationSubmission;
   }
   const key = await getKey({identifier, vmRelationship: 'authentication'}, session.context);
   const kmsKeyRef = key.kid;
-  const kid = await determineKid({key, idOpts: {identifier, kmsKeyRef}}, session.context);
+  const kid = managedIdentifier?.kid;
 
   debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
   debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));

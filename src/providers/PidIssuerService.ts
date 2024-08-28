@@ -1,6 +1,6 @@
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
-import {OpenId4VCIVersion, PARMode, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
-import {IIdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {CredentialResponse, DPoPResponseParams, OpenId4VCIVersion, PARMode, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
+import {IIdentifierResolution, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IAgentContext, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
@@ -15,6 +15,12 @@ interface PidIssuerServiceOpts {
 }
 
 type PidAgentContext = IAgentContext<IKeyManager & IDIDManager & IResolver & IIdentifierResolution & IJwtService>;
+
+export type PidResponse = CredentialResponse & {
+  params?: DPoPResponseParams;
+  access_token: string;
+  identifier: ManagedIdentifierResult;
+};
 
 export class PidIssuerService {
   private readonly pidProvider: string;
@@ -151,7 +157,7 @@ export class PidIssuerService {
       format: 'mso_mdoc' | 'vc+sd-jwt';
       type: 'eu.europa.ec.eudi.pid.1' | string;
     }>;
-  }) {
+  }): Promise<Array<PidResponse>> {
     if (!authorizationCode) {
       return Promise.reject(Error(`Cannot get a PID without authorization code`));
     } else if (pids.length === 0) {
@@ -170,13 +176,13 @@ export class PidIssuerService {
       pids.map(async pidInfo => {
         // todo: new credential keys here. We are now using the ephemeral key
         console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
-        const identifier = await this.dpopService.getEphemeralDPoPIdentifier();
+        const identifier: ManagedIdentifierResult = await this.dpopService.getEphemeralDPoPIdentifier();
         const jwk = identifier.jwk;
         const callbacks: ProofOfPossessionCallbacks<never> = {
           signCallback: signCallback(this.client, identifier, this.context),
         };
 
-        const credentialResponse = await this.client.acquireCredentials({
+        const credentialResponse: CredentialResponse & {params?: DPoPResponseParams; access_token: string} = await this.client.acquireCredentials({
           // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
           // 'eu.europa.ec.eudi.pid.1' // mdoc
           credentialTypes: pidInfo.type,
@@ -190,7 +196,10 @@ export class PidIssuerService {
         });
 
         console.log(JSON.stringify(credentialResponse));
-        return credentialResponse;
+        return {
+          ...credentialResponse,
+          identifier,
+        };
       }),
     );
   }
