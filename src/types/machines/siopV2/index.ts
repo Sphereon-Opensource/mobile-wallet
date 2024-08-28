@@ -126,6 +126,7 @@ export enum SiopV2MachineGuards {
   createContactGuard = 'siopV2CreateContactGuard',
   hasContactGuard = 'siopV2HasContactGuard',
   hasSelectedRequiredCredentialsGuard = 'siopV2HasSelectedRequiredCredentialsGuard',
+  hasJustOneMatchGuard = 'siopV2HasJustOneMatchGuard',
   siopOnlyGuard = 'siopV2IsSiopOnlyGuard',
   siopWithOID4VPGuard = 'siopV2IsSiopWithOID4VPGuard',
 }

@@ -1,4 +1,4 @@
-import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
@@ -24,6 +24,7 @@ import {
   SiopV2MachineStates,
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
+import {EvaluationResults, PEX, Status} from '@sphereon/pex';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -59,6 +60,25 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
   const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
 
   return evaluationResults.areRequiredCredentialsPresent === Status.INFO;*/
+};
+
+const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
+  const {selectedCredentials, authorizationRequestData} = _ctx;
+
+  if (authorizationRequestData === undefined) {
+    throw new Error('Missing authorization request data in context');
+  }
+
+  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
+    throw Error('No presentation definitions present');
+  }
+
+  const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+  const pex: PEX = new PEX();
+  const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
+
+  _ctx.selectedCredentials = evaluationResults.verifiableCredential;
+  return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -197,7 +217,26 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             target: SiopV2MachineStates.selectCredentials,
             cond: SiopV2MachineGuards.siopWithOID4VPGuard,
           },
+          {
+            target: SiopV2MachineStates.selectCredentialOverview,
+            cond: SiopV2MachineGuards.hasJustOneMatchGuard,
+          },
         ],
+      },
+      [SiopV2MachineStates.selectCredentialOverview]: {
+        id: SiopV2MachineStates.selectCredentialOverview,
+        on: {
+          [SiopV2MachineEvents.NEXT]: {
+            target: SiopV2MachineStates.sendResponse,
+            cond: SiopV2MachineGuards.hasSelectedRequiredCredentialsGuard,
+          },
+          [SiopV2MachineEvents.DECLINE]: {
+            target: SiopV2MachineStates.declined,
+          },
+          [SiopV2MachineEvents.PREVIOUS]: {
+            target: SiopV2MachineStates.aborted,
+          },
+        },
       },
       [SiopV2MachineStates.addContact]: {
         id: SiopV2MachineStates.addContact,
@@ -280,6 +319,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           },
         },
       },
+
       [SiopV2MachineStates.sendResponse]: {
         id: SiopV2MachineStates.sendResponse,
         invoke: {
@@ -347,6 +387,7 @@ export class SiopV2Machine {
           siopV2CreateContactGuard,
           siopV2HasSelectedRequiredCredentialsGuard,
           siopV2IsSiopOnlyGuard,
+          siopV2HasJustOneMatchGuard,
           siopV2IsSiopWithOID4VPGuard,
           ...opts?.guards,
         },
