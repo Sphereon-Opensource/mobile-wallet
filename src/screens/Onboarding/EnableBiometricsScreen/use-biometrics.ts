@@ -41,7 +41,9 @@ export const useAuthEffect = (effect: (success: boolean) => void) => {
 
   useEffect(() => {
     if (biometricsEnabled) {
-      prompt().then(effect);
+      setTimeout(() => {
+        prompt().then(effect);
+      }, 1000);
     }
   }, []);
 };
