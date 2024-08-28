@@ -3,6 +3,7 @@ import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
 import {
   AuthorizationServerMetadata,
   CredentialIssuerMetadataV1_0_13,
+  CredentialResponse,
   IssuerMetadataV1_0_13,
   OpenId4VCIVersion,
   PARMode,
@@ -186,45 +187,48 @@ export class PidIssuerService {
       },
       endPointUrl: this.client.getAccessTokenEndpoint(),
     });
+    let currentNonce: string | undefined = accessTokenResponse.c_nonce;
 
-    return await Promise.all(
-      pids.map(async pidInfo => {
-        // todo: new credential keys here. We are now using the ephemeral key
-        console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
-        const identifier = await this.dpopService.getEphemeralDPoPIdentifier();
-        const jwk = identifier.jwk;
-        const callbacks: ProofOfPossessionCallbacks<never> = {
-          signCallback: signCallback(this.client, identifier, this.context),
-        };
+    let responses: CredentialResponse[] = [];
 
-        const credentialResponse = await this.client.acquireCredentials({
-          // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
-          // 'eu.europa.ec.eudi.pid.1' // mdoc
-          credentialTypes: pidInfo.type,
-          jwk,
-          alg: jwk.alg as string,
-          // format: 'vc+sd-jwt',
-          // format: 'mso_mdoc',
-          format: pidInfo.format,
-          proofCallbacks: callbacks,
-          createDPoPOpts: issuerResourceDpop,
-        });
+    for (const pidInfo of pids) {
+      const identifier = await this.createPidKey(pidInfo);
+      console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
+      // const identifier = await this.dpopService.getEphemeralDPoPIdentifier();
+      const jwk = identifier.jwk;
+      const callbacks: ProofOfPossessionCallbacks<never> = {
+        signCallback: signCallback(this.client, identifier, this.context, currentNonce),
+      };
 
-        console.log(JSON.stringify(credentialResponse));
-        return credentialResponse;
-      }),
-    );
+      const credentialResponse = await this.client.acquireCredentials({
+        // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
+        // 'eu.europa.ec.eudi.pid.1' // mdoc
+        credentialTypes: pidInfo.type,
+        jwk,
+        alg: jwk.alg as string,
+        // format: 'vc+sd-jwt',
+        // format: 'mso_mdoc',
+        format: pidInfo.format,
+        proofCallbacks: callbacks,
+        createDPoPOpts: issuerResourceDpop,
+      });
+      currentNonce = credentialResponse.c_nonce;
+
+      console.log(JSON.stringify(credentialResponse));
+      responses.push(credentialResponse);
+    }
+    return responses;
   }
 
   async getIssuerSupportedProofAlgs(pidInfo: PidRequestInfo) {
     const metadata = await this.getCredentialIssuerMetadata();
-    const credConfig = metadata.credential_configurations_supported[pidInfo.type];
-    const algsSupported = credConfig.proof_types_supported?.jwt?.proof_signing_alg_values_supported;
+    const credConfig = Object.values(metadata.credential_configurations_supported).find(conf => conf.format === pidInfo.format);
+    const algsSupported = credConfig?.proof_types_supported?.jwt?.proof_signing_alg_values_supported;
     if (algsSupported && algsSupported.length > 0) {
       return algsSupported;
     }
     // We look at credential signing alg first. This acts as a fallback as we can use algs we know the issuer supports for its credentials
-    return credConfig.credential_signing_alg_values_supported ?? ['ES256'];
+    return credConfig?.credential_signing_alg_values_supported ?? ['ES256'];
   }
 
   async getClientSupportedProofAlg(pidInfo: PidRequestInfo) {
