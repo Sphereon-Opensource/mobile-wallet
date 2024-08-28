@@ -8,6 +8,7 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -122,7 +123,7 @@ export interface ICredentialsRequiredProps {
   subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
   onDecline: () => Promise<void>;
-  onSelect?: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
+  onSelect?: (credentials: Array<UniqueDigitalCredential>) => Promise<void>;
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   isSendDisabled?: () => boolean | (() => boolean);
   verifierName: string;
@@ -139,6 +140,7 @@ export interface ICredentialDetailsProps {
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
   rawCredential?: OriginalVerifiableCredential;
+  uniqueDigitalCredential?: UniqueDigitalCredential;
   headerTitle?: string;
 }
 

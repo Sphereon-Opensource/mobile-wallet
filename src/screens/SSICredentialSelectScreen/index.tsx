@@ -51,7 +51,8 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onItemPress = async (selection: ICredentialSelection): Promise<void> => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-      rawCredential: selection.rawCredential,
+      rawCredential: selection.uniqueDigitalCredential.originalVerifiableCredential,
+      uniqueDigitalCredential: selection.uniqueDigitalCredential,
       credential: selection.credential,
       showActivity: false,
       primaryAction: {

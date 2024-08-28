@@ -8,6 +8,7 @@ import VciServiceFunkeCProvider from '../../../providers/authentication/funke/Vc
 import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 export type OnboardingCredentialData = {
   didMethod: SupportedDidMethodEnum;
@@ -205,6 +206,7 @@ export type OnboardingProviderProps = {
 export type MappedCredential = {
   uniformCredential: IVerifiableCredential;
   rawCredential: string;
+  identifier: ManagedIdentifierResult;
 };
 
 export type WalletSetupServiceResult = {

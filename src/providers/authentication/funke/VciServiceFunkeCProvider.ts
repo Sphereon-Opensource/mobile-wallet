@@ -1,9 +1,10 @@
 import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
 import {CredentialResponse, PARMode} from '@sphereon/oid4vci-common';
-import {PidIssuerService} from '../../PidIssuerService';
+import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 import {agentContext} from '../../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -89,7 +90,7 @@ class VciServiceFunkeCProvider {
     return this.pidService.getAuthorizationCode({refreshUrl: this.refreshUrl});
   }
 
-  public async getPids(args: EIDGetAccessTokenArgs): Promise<Array<CredentialResponse>> {
+  public async getPids(args: EIDGetAccessTokenArgs): Promise<Array<PidResponse>> {
     const {authorizationCode} = args;
     this.handleStateChange({state: 'GETTING_ACCESS_TOKEN'});
 

@@ -9,6 +9,7 @@ import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sph
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {KeyManagementSystemEnum} from '../../../types';
+import {PidResponse} from '../../PidIssuerService';
 
 class PidServiceAusweisDE {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -116,7 +117,7 @@ class PidServiceAusweisDE {
     return this.pidService.getAuthorizationCode(args);
   }
 
-  private async getPids(args: EIDGetAccessTokenArgs): Promise<Array<CredentialResponse>> {
+  private async getPids(args: EIDGetAccessTokenArgs): Promise<Array<PidResponse>> {
     const {authorizationCode} = args;
     this.handleStateChange({state: 'GETTING_ACCESS_TOKEN'});
 

@@ -193,6 +193,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           id: credentialSummary.id,
           credential: credentialSummary,
           rawCredential: uniqueVC.originalVerifiableCredential!,
+          uniqueDigitalCredential: uniqueVC,
           isSelected,
         };
       }),
@@ -225,7 +226,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         for (const uniqueVCs of newSelection.values()) {
           selectedVCs.push(uniqueVCs);
         }
-        await onSelect(selectedVCs.flat().map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
+        await onSelect(selectedVCs.flat());
       }
     };
 

@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {VerifiableCredential} from '@veramo/core';
+import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import React, {useState} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -16,6 +16,8 @@ import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, R
 import {getOriginalVerifiableCredential, showToast} from '../../utils';
 import {Loggers} from '@sphereon/ssi-types';
 import {translate} from '../../localization/Localization';
+import {DigitalCredential} from '@sphereon/ssi-sdk.data-store';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -53,10 +55,11 @@ const CredentialsOverviewList = ({navigation, verifiableCredentials, activeUser,
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
     try {
-      const vc: VerifiableCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
+      const uniqueDigitalCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
 
       navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: getOriginalVerifiableCredential(vc),
+        rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
+        uniqueDigitalCredential,
         credential,
         showActivity: false,
       });

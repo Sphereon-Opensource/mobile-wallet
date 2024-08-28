@@ -27,9 +27,9 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -179,7 +179,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
   const subjectSyntaxTypesSupported: Array<string> | undefined =
     authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
 
-  const onSelect = async (selectedCredentials: Array<OriginalVerifiableCredential>): Promise<void> => {
+  const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
