@@ -1,8 +1,9 @@
-import {CheckLinkedDomain, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {determineKid, getKey} from '@sphereon/ssi-sdk-ext.did-utils';
 import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {CredentialMapper, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
+import {CredentialMapper, OriginalVerifiableCredential, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 
@@ -107,7 +108,10 @@ export const siopSendAuthorizationResponse = async (
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
-    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0], {hasher: generateDigest});
+    //fixme: remove the type cast
+    const firstVC = CredentialMapper.toUniformCredential(credentialsAndDefinitions[0].credentials[0] as OriginalVerifiableCredential, {
+      hasher: generateDigest,
+    });
     const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
       ? firstVC.decodedPayload.cnf?.jwk
         ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
