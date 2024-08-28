@@ -87,11 +87,16 @@ const SelectOverviewShareScreen = (props: Props) => {
           style={{height: 42}}
           caption={translate('action_decline_label')}
           captionColor={fontColors.secondaryButton}
-          onPress={() => onSend(credential)}
+          onPress={() => onDecline}
         />
       </View>
       <View style={{flex: 1}}>
-        <PrimaryButton style={{height: 42}} caption={translate('action_share_label')} captionColor={fontColors.light} onPress={() => onDecline()} />
+        <PrimaryButton
+          style={{height: 42}}
+          caption={translate('action_share_label')}
+          captionColor={fontColors.light}
+          onPress={() => onSend(credential)}
+        />
       </View>
     </>
   );

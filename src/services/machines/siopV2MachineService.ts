@@ -165,6 +165,9 @@ export const sendResponse = async (
       ],
     }),
   });
+  if (!response) {
+    return Promise.reject(Error('Missing SIOP authentication response'));
+  }
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
