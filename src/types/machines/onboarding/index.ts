@@ -1,20 +1,11 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CredentialPayload, IIdentifier, ProofFormat} from '@veramo/core';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
 import {OnboardingStackParamsList} from '../../navigation';
-import {SupportedDidMethodEnum} from '../../did';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
-import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
-
-export type OnboardingCredentialData = {
-  didMethod: SupportedDidMethodEnum;
-  didOptions?: any;
-  credential?: Partial<CredentialPayload>;
-  proofFormat?: ProofFormat;
-};
+import {MappedCredential} from '../getPIDCredentialMachine';
 
 export enum Country {
   DEUTSCHLAND = 'DEUTSCHLAND',
@@ -34,7 +25,6 @@ export enum OnboardingBiometricsStatus {
 }
 
 export type OnboardingMachineContext = {
-  credentialData: OnboardingCredentialData;
   name: string;
   emailAddress: string;
   country?: Country;
@@ -70,6 +60,7 @@ export enum OnboardingMachineStateType {
   declinePIDCredentials = 'declinePIDCredentials',
   completeOnboarding = 'completeOnboarding',
   storePIDCredentials = 'storePIDCredentials',
+  storeCredentialBranding = 'storeCredentialBranding',
   setupWallet = 'setupWallet',
   handleError = 'handleError',
   error = 'error',
@@ -150,6 +141,7 @@ export enum OnboardingMachineServices {
   retrievePIDCredentials = 'retrievePIDCredentials',
   storePIDCredentials = 'storePIDCredentials',
   setupWallet = 'setupWallet',
+  storeCredentialBranding = 'storeCredentialBranding',
 }
 
 // States Config
@@ -172,8 +164,7 @@ export type OnboardingContext = {
   onboardingInstance: OnboardingMachineInterpreter;
 };
 
-export type CreateOnboardingMachineOpts = Partial<OnboardingCredentialData> & {
-  credentialData?: OnboardingCredentialData;
+export type CreateOnboardingMachineOpts = {
   machineId?: string;
 };
 
@@ -200,11 +191,6 @@ export type OnboardingMachineNavigationArgs = {
 export type OnboardingProviderProps = {
   children?: ReactNode;
   customOnboardingInstance?: OnboardingMachineInterpreter;
-};
-
-export type MappedCredential = {
-  uniformCredential: IVerifiableCredential;
-  rawCredential: string;
 };
 
 export type WalletSetupServiceResult = {

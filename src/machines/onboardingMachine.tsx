@@ -1,15 +1,12 @@
-import {CredentialPayload} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
-import {v4 as uuidv4} from 'uuid';
 import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
-import {ErrorDetails, SupportedDidMethodEnum} from '../types';
+import {ErrorDetails} from '../types';
 import {
   Country,
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
-  MappedCredential,
   OnboardingBiometricsStatus,
   OnboardingMachineContext,
   OnboardingMachineEventTypes,
@@ -22,10 +19,13 @@ import {
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
 import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
-import {retrievePIDCredentials, setupWallet, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
+import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
+
+type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachineEventTypes>['predicate'];
 
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
@@ -38,9 +38,6 @@ const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEn
 const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
 const validatePinCode = (pinCode: string) =>
   validate(pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid && validate(Number(pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
-
-type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachineEventTypes>['predicate'];
-
 const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
 const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
 const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
@@ -263,13 +260,30 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storePIDCredentials,
       onDone: {
-        target: OnboardingMachineStateType.setupWallet,
+        target: OnboardingMachineStateType.storeCredentialBranding,
       },
       onError: {
         target: OnboardingMachineStateType.handleError,
         actions: assign({
           error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
             title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  storeCredentialBranding: {
+    invoke: {
+      src: OnboardingMachineServices.storeCredentialBranding,
+      onDone: {
+        target: OnboardingMachineStateType.setupWallet,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_store_credential_branding_error_title'),
             message: _event.data.message,
           }),
         }),
@@ -338,26 +352,7 @@ const states: OnboardingStatesConfig = {
 };
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
-  const credentialData = {
-    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_JWK,
-    didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
-    proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
-    credential:
-      opts?.credentialData?.credential ??
-      ({
-        '@context': [
-          'https://www.w3.org/2018/credentials/v1',
-          'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-        ],
-        id: `urn:uuid:${uuidv4()}`,
-        type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
-        issuanceDate: new Date(),
-        credentialSubject: {},
-      } as Partial<CredentialPayload>),
-  };
-
   const initialContext: OnboardingMachineContext = {
-    credentialData,
     name: '',
     emailAddress: '',
     country: Country.DEUTSCHLAND,
@@ -454,6 +449,7 @@ export class OnboardingMachine {
         services: {
           [OnboardingMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
           [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
+          [OnboardingMachineServices.storeCredentialBranding]: storeCredentialBranding,
           [OnboardingMachineServices.setupWallet]: setupWallet,
           ...opts?.services,
         },
