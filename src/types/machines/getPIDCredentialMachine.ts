@@ -15,6 +15,7 @@ import {IVerifiableCredential} from '@sphereon/ssi-types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {GetPIDCredentialsStackParamsList} from '../navigation';
 import {ReactNode} from 'react';
+import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 export type CreateGetPIDCredentialsMachineOpts = {
   machineId?: string;
@@ -119,6 +120,7 @@ export type GetPIDCredentialsMachineGuard = GuardPredicate<GetPIDCredentialsMach
 export type MappedCredential = {
   uniformCredential: IVerifiableCredential;
   rawCredential: string;
+  identifier: ManagedIdentifierResult;
 };
 
 export type GetPIDCredentialsContextType = {
