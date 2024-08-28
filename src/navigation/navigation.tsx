@@ -50,6 +50,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
+  GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
   ISiopV2PProps,
   MainRoutesEnum,
@@ -72,12 +73,13 @@ import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformati
 import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
 import {useSelector} from 'react-redux';
 import {ICredentialState} from '../types/store/credential.types';
-import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
+import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
+const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
 
 const Tab = createBottomTabNavigator();
 
@@ -137,6 +139,15 @@ const MainStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <SiopV2StackWithContext />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.GET_PID_CREDENTIALS}
+        children={() => (
+          <>
+            <GetPIDCredentialsStackScreenWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -623,6 +634,120 @@ export const OnboardingStack = (): JSX.Element => (
       })}
     />
   </OnboardingBaseStack.Navigator>
+);
+
+export const GetPIDCredentialsStack = (): JSX.Element => (
+  <GetPIDCredentialsBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportDataConsent"
+      component={ImportDataConsentScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 1,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportPersonalData"
+      component={ImportPersonalDataScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 2,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportDataAuthentication"
+      component={ImportDataAuthenticationScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 3,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportDataLoader"
+      component={ImportDataLoaderScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 3,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportDataFinal"
+      component={ImportDataFinalScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 4,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name="ImportDataLoaderStore"
+      component={ImportDataLoaderScreen}
+      options={{
+        header: props => (
+          <OnboardingHeader
+            {...props}
+            title={translate('import_data_title')}
+            stepConfig={{
+              current: 4,
+              total: 4,
+            }}
+          />
+        ),
+      }}
+    />
+    <GetPIDCredentialsBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+  </GetPIDCredentialsBaseStack.Navigator>
+);
+
+export const GetPIDCredentialsStackScreenWithContext = (props: any): JSX.Element => (
+  <GetPIDCredentialsProvider customGetPIDCredentialsInstance={props?.params?.customGetPIDCredentialsInstance}>
+    <GetPIDCredentialsStack />
+  </GetPIDCredentialsProvider>
 );
 
 const AuthenticationStack = (): JSX.Element => {

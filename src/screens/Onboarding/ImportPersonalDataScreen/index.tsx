@@ -14,7 +14,9 @@ import VciServiceFunkeCProvider from '../../../providers/authentication/funke/Vc
 import {EIDFlowState} from '../../../types';
 import {delay} from '../../../utils';
 
-const ImportPersonalDataScreen = () => {
+const ImportPersonalDataScreen = (props?: any) => {
+  const {onAuth} = props?.route?.params ?? {};
+
   const {onboardingInstance} = useContext(OnboardingContext);
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
@@ -41,7 +43,7 @@ const ImportPersonalDataScreen = () => {
 
     VciServiceFunkeCProvider.initialize({
       onEnterPin,
-      onAuthenticated,
+      onAuthenticated: onAuth ?? onAuthenticated,
       onStateChange: setEIDFlowState,
     }).then((provider: VciServiceFunkeCProvider): void => {
       setProvider(provider);
