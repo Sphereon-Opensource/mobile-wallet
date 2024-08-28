@@ -176,20 +176,6 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
   const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const mathcingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
-  if (mathcingCredentials && mathcingCredentials.length === 1) {
-    navigation.navigate(MainRoutesEnum.SIOPV2, {
-      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
-      params: {
-        verifier: contact,
-        presentationDefinition: presentationDefinitionWithLocation.definition,
-        credential: mathcingCredentials[0],
-      },
-    });
-  }
-  const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
-  const subjectSyntaxTypesSupported: Array<string> | undefined =
-    authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
 
   const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
@@ -213,20 +199,38 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     await authenticate(onAuthenticate);
   };
 
-  navigation.navigate(MainRoutesEnum.SIOPV2, {
-    screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
-    params: {
-      verifierName: contact.contact.displayName,
-      presentationDefinition: presentationDefinitionWithLocation.definition,
-      format,
-      subjectSyntaxTypesSupported,
-      onDecline,
-      onSelect,
-      onSend,
-      onBack,
-      isSendDisabled,
-    },
-  });
+  //fixme: we should pass the hasher function here from the RP
+  const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  if (matchingCredentials && matchingCredentials.length === 1) {
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+      params: {
+        verifier: contact,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        credential: matchingCredentials[0],
+        onDecline,
+        onSend,
+      },
+    });
+  } else {
+    const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
+    const subjectSyntaxTypesSupported: Array<string> | undefined =
+      authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+      params: {
+        verifierName: contact.contact.displayName,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        format,
+        subjectSyntaxTypesSupported,
+        onDecline,
+        onSelect,
+        onSend,
+        onBack,
+        isSendDisabled,
+      },
+    });
+  }
 };
 
 const navigateFinal = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
