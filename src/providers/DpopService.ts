@@ -164,4 +164,4 @@ export class DpopService {
   }
 }
 
-const algorithmsFromKeyType = (type: string): string[] => [type];
+export const algorithmsFromKeyType = (type: string): string[] => [type];
