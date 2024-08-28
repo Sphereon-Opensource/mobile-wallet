@@ -30,7 +30,10 @@ const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
 const isStepComplete: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.FINAL;
-const isBiometricsEnabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+const isBiometricsEnabled = (ctx: OnboardingMachineContext) => {
+  console.log('here');
+  return ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+};
 const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
 const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
 const validatePinCode = (pinCode: string) =>
@@ -120,10 +123,6 @@ const states: OnboardingStatesConfig = {
   enterPinCode: {
     on: {
       NEXT: [
-        {
-          cond: OnboardingMachineGuards.doPinsMatch,
-          target: OnboardingMachineStateType.enableBiometrics,
-        },
         {
           cond: OnboardingMachineGuards.isPinCodeValid,
           target: OnboardingMachineStateType.verifyPinCode,
