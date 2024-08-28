@@ -41,6 +41,7 @@ export type StackParamList = {
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
   CredentialCatalog: Record<string, never>;
+  GET_PID_CREDENTIALS: Record<string, never>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -68,12 +69,25 @@ export type OnboardingStackParamsList = {
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
+export type GetPIDCredentialsStackParamsList = {
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
+  IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+// export interface IImportDataConsentProps {
+//   onAccept?: () => Promise<void>;
+// }
+
 export type CreditOverviewStackParamsList = {
   Card: Record<string, never>;
   List: Record<string, never>;
 };
-
-export type CreditOverviewStackRoute = keyof CreditOverviewStackParamsList;
 
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;
 
@@ -233,6 +247,7 @@ export enum MainRoutesEnum {
   AUSWEIS_MODAL = 'AusweisModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
+  GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
 }
 
 export enum NavigationBarRoutesEnum {

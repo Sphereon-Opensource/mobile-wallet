@@ -33,7 +33,7 @@ export const useBiometrics = () => {
 export const useAuthEffect = (effect: (success: boolean) => void) => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const biometricsEnabled = useMemo(
-    () => onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
+    () => (onboardingInstance ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED : false), // TODO we need to store this biometrics option
     [onboardingInstance],
   );
 

@@ -1,6 +1,6 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useContext, useMemo, useRef, useState} from 'react';
+import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import Animated, {useAnimatedKeyboard, useAnimatedStyle} from 'react-native-reanimated';
@@ -12,13 +12,17 @@ import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
+import {storageGetPin} from '../../../services/storageService';
 
-const ImportDataAuthenticationScreen = () => {
+const ImportDataAuthenticationScreen = (props?: any) => {
+  const {onAccept} = props?.route?.params ?? {};
+
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {
-    context: {pinCode: pinCodeContext},
-  } = onboardingInstance.getSnapshot();
+  // const {
+  //   context: {pinCode: pinCodeContext},
+  // } = onboardingInstance.getSnapshot();
   const [pinCode, setPinCode] = useState('');
+  const [pinCodeContext, setPinCodeContext] = useState('');
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
   const keyboard = useAnimatedKeyboard();
   const pinInputRef = useRef<TextInput>(null);
@@ -30,8 +34,20 @@ const ImportDataAuthenticationScreen = () => {
       }
       return;
     }
-    onboardingInstance.send(OnboardingMachineEvents.NEXT);
+
+    onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT);
   });
+
+  useEffect(() => {
+    if (onAccept) {
+      storageGetPin().then(pin => setPinCodeContext(pin));
+    } else {
+      const {
+        context: {pinCode: pinCodeContext},
+      } = onboardingInstance.getSnapshot();
+      setPinCodeContext(pinCodeContext);
+    }
+  }, []);
 
   const style = useAnimatedStyle(() => {
     return {
@@ -51,7 +67,7 @@ const ImportDataAuthenticationScreen = () => {
           caption="Next"
           backgroundColors={['#7276F7', '#7C40E8']}
           captionColor={fontColors.light}
-          onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+          onPress={() => (onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT))}
           disabled={!doPinsCompletelyMatch}
         />
       </Animated.View>
