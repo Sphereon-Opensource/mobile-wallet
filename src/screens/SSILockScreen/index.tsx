@@ -13,6 +13,8 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {useAuthEffect} from '../Onboarding/EnableBiometricsScreen/use-biometrics';
+import {OnboardingMachineEvents} from '../../types/machines/onboarding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -24,6 +26,11 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
   }, []);
+
+  useAuthEffect((success: boolean) => {
+    const {onAuthenticate} = props.route.params;
+    void onAuthenticate();
+  });
 
   const onVerification = async (value: string): Promise<void> => {
     const {onAuthenticate} = props.route.params;

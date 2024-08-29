@@ -421,9 +421,9 @@ const QRStack = (): JSX.Element => {
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
+              /*headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
                 route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}
+              }`}*/
             />
           ),
         })}
@@ -1016,16 +1016,16 @@ export const SiopV2Stack = (): JSX.Element => {
         name={ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW}
         component={CredentialOverviewShareScreen}
         options={({route}) => ({
-          headerTitle: translate('credentials_required_title'),
+          headerTitle: 'Information request',
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
               onBack={route.params.onDecline}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
+              /* headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
                 route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}
+              }`}*/
             />
           ),
         })}

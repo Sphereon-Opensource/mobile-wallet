@@ -250,11 +250,12 @@
       "title": "Terms & privacy",
       "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
       "features": {
-        "advanced_encryption": "Advanced encryption",
-        "two_factor_authentication": "Two-factor authentication",
-        "regular_security_audits": "Regular security audits",
-        "data_anonymization": "Data anonymization",
-        "strict_access_controls": "Strict access controls"
+        "secure_data_storage": "Secure data storage",
+        "strict_access_control": "Strict access control",
+        "selective_data_sharing": "Selective data sharing",
+        "strong_privacy_compliance": "Strong privacy compliance",
+        "no_3rdparty_data_sharing": "No third-party data sharing",
+        "no_tracking_profiling": "No tracking or profiling"
       },
       "footer": {
         "prefix": "Want to read all the details? Check our",

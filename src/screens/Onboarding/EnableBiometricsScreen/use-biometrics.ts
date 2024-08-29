@@ -2,6 +2,9 @@ import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingBiometricsStatus} from '../../../types/machines/onboarding';
+import {IUserState} from '../../../types/store/user.types';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../types';
 
 export const useBiometrics = () => {
   const authenticateBiometrically = async () => {
@@ -31,9 +34,13 @@ export const useBiometrics = () => {
 };
 
 export const useAuthEffect = (effect: (success: boolean) => void) => {
+  const userState: IUserState = useSelector((state: RootState) => state.user);
   const {onboardingInstance} = useContext(OnboardingContext);
   const biometricsEnabled = useMemo(
-    () => (onboardingInstance ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED : false), // TODO we need to store this biometrics option
+    () =>
+      onboardingInstance
+        ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
+        : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
     [onboardingInstance],
   );
 
@@ -107,7 +114,7 @@ export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = 
   }, [setHasSupportedHardware, setIsSecure, setEnrolled]);
 
   useEffect(() => {
-    loadSupported();
+    void loadSupported();
   }, []);
 
   return {

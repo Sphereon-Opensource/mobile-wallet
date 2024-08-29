@@ -19,6 +19,15 @@ export const getMatchingCredentials = async ({
       hasher: generateDigest,
     };
   }
+
+  const format =
+    presentationDefinitionWithLocation.definition.format ??
+    presentationDefinitionWithLocation.definition.input_descriptors.some(pd => {
+      if ('format' in pd) {
+        return pd.format;
+      }
+    });
+
   const pex: PEX = new PEX(opts);
 
   const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
@@ -28,9 +37,24 @@ export const getMatchingCredentials = async ({
 
   const result: SelectResults = pex.selectFrom(
     presentationDefinitionWithLocation.definition,
-    credentials.map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
+    credentials
+      .filter(uniqueDC => uniqueDC.digitalCredential.documentFormat !== 'MSO_MDOC') // FIXME add MSO_MDOC selection
+      .map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
   );
 
+  if (result.vcIndexes && result.vcIndexes.length === result.verifiableCredential?.length) {
+    const subsetCredentials = [];
+    for (let i = 0; i < result.vcIndexes.length; i++) {
+      const index = result.vcIndexes[i];
+      if (index < 0 || index >= credentials.length) {
+        throw new Error(`Index ${index} at position ${i} is out of bounds. Valid range is 0 to ${credentials.length - 1}.`);
+      }
+      const credential = credentials[index];
+      credential.originalVerifiableCredential = result.verifiableCredential?.[i];
+      subsetCredentials.push(credential);
+    }
+    return subsetCredentials;
+  }
   return result.areRequiredCredentialsPresent !== 'error' && result.verifiableCredential
     ? result.verifiableCredential.map(vc => udcMap.get(vc)!)
     : [];

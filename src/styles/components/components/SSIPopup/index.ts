@@ -65,6 +65,7 @@ export const SSIPopupButtonsContainerStyled = styled(SSIFlexDirectionRowViewStyl
   margin-bottom: 16px;
   padding-left: 18px;
   padding-right: 18px;
+  gap: 12px;
 `;
 
 export const SSICheckmarkBadgeStyled = styled(SSICheckmarkBadge).attrs({

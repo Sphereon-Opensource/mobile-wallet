@@ -12,11 +12,12 @@ import {translate} from '../../localization/Localization';
 
 import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {showToast} from '../../utils';
+import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
+import {generateDigest, showToast} from '../../utils';
+import {CredentialMapper} from '@sphereon/ssi-types';
 
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
-import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -53,7 +54,8 @@ const SelectOverviewShareScreen = (props: Props) => {
     onDecline();
     return; // FIXME Funke, we need to go to an error / warn screen for this
   }
-  const data = useMemo(() => convertFromPIDPayload(credential.uniformVerifiableCredential!.credentialSubject), [credential]);
+  const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
+  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject), [credential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
@@ -94,10 +96,10 @@ const SelectOverviewShareScreen = (props: Props) => {
   return (
     <ScreenContainer footer={footer} footerStyle={{flexDirection: 'row', gap: 8}} style={{paddingHorizontal: 0}}>
       <View style={{paddingHorizontal: 20, paddingTop: 20}}>
-        <ScreenTitleAndDescription
+        {/* <ScreenTitleAndDescription
           title="Information request"
           description={verifier.contact?.displayName + ' would like to receive the following information from you for verification.'}
-        />
+        />*/}
       </View>
       <View style={{paddingHorizontal: 16}}>
         <ProviderContainer style={{marginBottom: 0}}>
@@ -117,7 +119,7 @@ const SelectOverviewShareScreen = (props: Props) => {
             {verifier?.uri && <SSITextH4LightStyled style={{color: 'white', marginTop: 4}}>{verifier?.uri}</SSITextH4LightStyled>}
           </ProviderDescription>
         </ProviderContainer>
-        <SSITextH2SemiBoldLightStyled>Following information will be shared</SSITextH2SemiBoldLightStyled>
+        <SSITextH2SemiBoldLightStyled>The following information will be shared</SSITextH2SemiBoldLightStyled>
       </View>
       <View style={{backgroundColor: backgroundColors.secondaryDark, padding: 24}}>
         <ScrollView

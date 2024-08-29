@@ -28,11 +28,12 @@ const AcceptTermsAndPrivacyScreen = () => {
       <TermsAndPrivacyFeatures
         style={{marginTop: 8}}
         features={[
-          translate(`${translationsPath}.features.advanced_encryption`),
-          translate(`${translationsPath}.features.two_factor_authentication`),
-          translate(`${translationsPath}.features.regular_security_audits`),
-          translate(`${translationsPath}.features.data_anonymization`),
-          translate(`${translationsPath}.features.strict_access_controls`),
+          translate(`${translationsPath}.features.secure_data_storage`),
+          // translate(`${translationsPath}.features.strict_access_control`),
+          translate(`${translationsPath}.features.selective_data_sharing`),
+          translate(`${translationsPath}.features.strong_privacy_compliance`),
+          translate(`${translationsPath}.features.no_3rdparty_data_sharing`),
+          translate(`${translationsPath}.features.no_tracking_profiling`),
         ]}
       />
     </ScreenContainer>
