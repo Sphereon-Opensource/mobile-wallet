@@ -1,9 +1,9 @@
-import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
-import {CredentialResponse, PARMode} from '@sphereon/oid4vci-common';
-import {PidIssuerService} from '../../PidIssuerService';
+import {PARMode} from '@sphereon/oid4vci-common';
+import {Dispatch, SetStateAction} from 'react';
 import {agentContext} from '../../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
+import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -89,19 +89,18 @@ class VciServiceFunkeCProvider {
     return this.pidService.getAuthorizationCode({refreshUrl: this.refreshUrl});
   }
 
-  public async getPids(args: EIDGetAccessTokenArgs): Promise<Array<CredentialResponse>> {
+  public async getPids(args: EIDGetAccessTokenArgs): Promise<Array<PidResponse>> {
     const {authorizationCode} = args;
     this.handleStateChange({state: 'GETTING_ACCESS_TOKEN'});
 
     const pids = this.pidService.getPids({
       authorizationCode,
-      //fixme: We cannot get 2 creds, as we need to use other keys and nonces. For now enable one of the 2
       pids: [
         {
           format: 'vc+sd-jwt',
           type: 'urn:eu.europa.ec.eudi:pid:1',
         },
-        /*{
+        /* {
           format: 'mso_mdoc',
           type: 'eu.europa.ec.eudi.pid.1',
         },*/

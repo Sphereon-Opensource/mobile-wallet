@@ -27,9 +27,10 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getMatchingCredentials} from '../../services/pexService';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -175,11 +176,8 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
   const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
-  const subjectSyntaxTypesSupported: Array<string> | undefined =
-    authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
 
-  const onSelect = async (selectedCredentials: Array<OriginalVerifiableCredential>): Promise<void> => {
+  const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
@@ -201,20 +199,46 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     await authenticate(onAuthenticate);
   };
 
-  navigation.navigate(MainRoutesEnum.SIOPV2, {
-    screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
-    params: {
-      verifierName: contact.contact.displayName,
-      presentationDefinition: presentationDefinitionWithLocation.definition,
-      format,
-      subjectSyntaxTypesSupported,
-      onDecline,
-      onSelect,
-      onSend,
-      onBack,
-      isSendDisabled,
-    },
-  });
+  const onSelectAndSend = async (credential: UniqueDigitalCredential): Promise<void> => {
+    await onSelect([credential]);
+    setTimeout(() => {
+      // FIXME Funke; wait for machine event, but we need to set a state somewhere that onSelectAndSend was used so we know to proceed to onSend()
+      onSend();
+    }, 600);
+  };
+
+  //fixme: we should pass the hasher function here from the RP
+  const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  if (matchingCredentials && matchingCredentials.length === 1) {
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+      params: {
+        verifier: contact,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        credential: matchingCredentials[0],
+        onDecline,
+        onSelectAndSend,
+      },
+    });
+  } else {
+    const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
+    const subjectSyntaxTypesSupported: Array<string> | undefined =
+      authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+      params: {
+        verifierName: contact.contact.displayName,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        format,
+        subjectSyntaxTypesSupported,
+        onDecline,
+        onSelect,
+        onSend,
+        onBack,
+        isSendDisabled,
+      },
+    });
+  }
 };
 
 const navigateFinal = async (args: SiopV2MachineNavigationArgs): Promise<void> => {

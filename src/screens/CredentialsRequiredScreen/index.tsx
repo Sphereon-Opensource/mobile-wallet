@@ -67,11 +67,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    setAllOriginalCredentials(
-      !allUniqueCredentials
-        ? []
-        : allUniqueCredentials.map(uniqueVC => CredentialMapper.storedCredentialToOriginalFormat(uniqueVC.originalVerifiableCredential!)),
-    );
+    setAllOriginalCredentials(!allUniqueCredentials ? [] : allUniqueCredentials.map(uniqueVC => uniqueVC.originalVerifiableCredential!));
   }, [allUniqueCredentials]);
 
   useEffect((): void => {
@@ -182,7 +178,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           credentialRole: uniqueVC.digitalCredential.credentialRole,
           branding: credentialBranding?.localeBranding,
           issuer,
-          subject: getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+          subject: getCredentialSubjectContact(uniqueVC.uniformVerifiableCredential as VerifiableCredential),
         });
         const isSelected: boolean = userSelectedCredentials
           .get(inputDescriptorId)!
@@ -197,6 +193,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
           id: credentialSummary.id,
           credential: credentialSummary,
           rawCredential: uniqueVC.originalVerifiableCredential!,
+          uniqueDigitalCredential: uniqueVC,
           isSelected,
         };
       }),
@@ -229,7 +226,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         for (const uniqueVCs of newSelection.values()) {
           selectedVCs.push(uniqueVCs);
         }
-        await onSelect(selectedVCs.flat().map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
+        await onSelect(selectedVCs.flat());
       }
     };
 

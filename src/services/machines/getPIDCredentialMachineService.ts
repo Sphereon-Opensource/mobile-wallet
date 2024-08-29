@@ -1,12 +1,18 @@
-import {CredentialCorrelationType, CredentialRole, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {
+  CredentialCorrelationType,
+  CredentialRole,
+  DigitalCredential,
+  IBasicCredentialLocaleBranding,
+  RegulationType,
+} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
-import {generateDigest} from '../../utils';
-import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {getVerifiableCredentialsFromStorage} from '../credentialService';
-import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import store from '../../store';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
+import {generateDigest} from '../../utils';
+import {getVerifiableCredentialsFromStorage} from '../credentialService';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -21,12 +27,14 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
     .then(pidResponses => {
       return pidResponses.map(pidResponse => {
         const credential = pidResponse.credential;
+        const identifier = pidResponse.identifier;
         const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
         const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
 
         return {
           uniformCredential,
           rawCredential,
+          identifier,
         };
       });
     });
@@ -35,25 +43,32 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
 export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
 
-  const deleteCredentials = (await getVerifiableCredentialsFromStorage()).map(credential =>
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(credential =>
     store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
   );
   await Promise.all(deleteCredentials);
-
-  const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
-    agent.crsAddCredential({
+  let parentId: string | undefined = undefined;
+  const storeCredentials: DigitalCredential[] = [];
+  for (const mappedCredential of pidCredentials) {
+    const digitalCredential = await agent.crsAddCredential({
       credential: {
+        parentId,
+        regulationType: RegulationType.PID, // FIXME FUNKE
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-        issuerCorrelationType: CredentialCorrelationType.X509_CN,
+        kmsKeyRef: mappedCredential.identifier.kmsKeyRef,
+        identifierMethod: mappedCredential.identifier.method,
         issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       },
       opts: {hasher: generateDigest},
-    }),
-  );
-
-  await Promise.all(storeCredentials);
+    });
+    if (!parentId) {
+      parentId = digitalCredential.id;
+    }
+    storeCredentials.push(digitalCredential);
+  }
 };
 
 export const storeCredentialBranding = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {

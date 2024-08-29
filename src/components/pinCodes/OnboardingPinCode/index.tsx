@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {RefObject, useCallback, useEffect, useMemo} from 'react';
 import {Animated, Keyboard, Platform, TextInput, TextInputProps, TouchableOpacity} from 'react-native';
 import {ONLY_ALLOW_NUMBERS_REGEX} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
@@ -23,7 +23,7 @@ type Props = TextInputProps & {
   length?: number;
   secureCode?: boolean;
   validation?: ValidationConfig;
-  inputRef?: React.RefObject<TextInput>;
+  inputRef?: RefObject<TextInput>;
 };
 
 const failureAnimationConfig = {

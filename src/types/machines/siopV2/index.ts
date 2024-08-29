@@ -7,6 +7,7 @@ import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
 import {IQrData} from '../../qr';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -27,7 +28,7 @@ export type SiopV2MachineContext = {
   contact?: Party;
   hasContactConsent: boolean;
   contactAlias: string;
-  selectedCredentials: Array<OriginalVerifiableCredential>;
+  selectedCredentials: Array<UniqueDigitalCredential>;
   error?: ErrorDetails;
 };
 
@@ -39,6 +40,7 @@ export enum SiopV2MachineStates {
   addContact = 'addContact',
   addContactIdentity = 'addContactIdentity',
   selectCredentials = 'selectCredentials',
+  selectCredentialOverview = 'selectCredentialOverview',
   sendResponse = 'sendResponse',
   handleError = 'handleError',
   aborted = 'aborted',
@@ -125,6 +127,7 @@ export enum SiopV2MachineGuards {
   createContactGuard = 'siopV2CreateContactGuard',
   hasContactGuard = 'siopV2HasContactGuard',
   hasSelectedRequiredCredentialsGuard = 'siopV2HasSelectedRequiredCredentialsGuard',
+  hasJustOneMatchGuard = 'siopV2HasJustOneMatchGuard',
   siopOnlyGuard = 'siopV2IsSiopOnlyGuard',
   siopWithOID4VPGuard = 'siopV2IsSiopWithOID4VPGuard',
 }
@@ -145,7 +148,7 @@ export type ContactAliasEvent = {type: SiopV2MachineEvents.SET_CONTACT_ALIAS; da
 export type CreateContactEvent = {type: SiopV2MachineEvents.CREATE_CONTACT; data: Party};
 export type SelectCredentialsEvent = {
   type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS;
-  data: Array<OriginalVerifiableCredential>;
+  data: Array<UniqueDigitalCredential>;
 };
 
 export type SiopV2MachineEventTypes =

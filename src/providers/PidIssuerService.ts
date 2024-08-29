@@ -1,11 +1,23 @@
+import {SigningAlgo} from '@sphereon/oid4vc-common';
 import {OpenID4VCIClient} from '@sphereon/oid4vci-client';
-import {OpenId4VCIVersion, PARMode, ProofOfPossessionCallbacks} from '@sphereon/oid4vci-common';
-import {IIdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {
+  AuthorizationServerMetadata,
+  CredentialIssuerMetadataV1_0_13,
+  CredentialResponse,
+  DPoPResponseParams,
+  IssuerMetadataV1_0_13,
+  OpenId4VCIVersion,
+  PARMode,
+  ProofOfPossessionCallbacks,
+} from '@sphereon/oid4vci-common';
+import {IIdentifierResolution, ManagedIdentifierJwkOpts, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
+import {toJwk} from '@sphereon/ssi-sdk-ext.key-utils';
 import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IAgentContext, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {EIDGetAuthorizationCodeArgs} from '../types';
-import {DpopService} from './DpopService';
+import {keyTypeFromCryptographicSuite} from '../utils';
+import {algorithmsFromKeyType, DpopService} from './DpopService';
 
 interface PidIssuerServiceOpts {
   credentialOffer?: string;
@@ -15,6 +27,17 @@ interface PidIssuerServiceOpts {
 }
 
 type PidAgentContext = IAgentContext<IKeyManager & IDIDManager & IResolver & IIdentifierResolution & IJwtService>;
+
+export type PidResponse = CredentialResponse & {
+  params?: DPoPResponseParams;
+  access_token: string;
+  identifier: ManagedIdentifierResult;
+};
+
+interface PidRequestInfo {
+  format: 'mso_mdoc' | 'vc+sd-jwt';
+  type: 'eu.europa.ec.eudi.pid.1' | string;
+}
 
 export class PidIssuerService {
   private readonly pidProvider: string;
@@ -65,12 +88,12 @@ export class PidIssuerService {
     if (this.client.version() < OpenId4VCIVersion.VER_1_0_13) {
       return Promise.reject(Error(`Only OpenID Version 13 and higher are supported for PIDs`));
     }
-
+    const metadata = await this.client.retrieveServerMetadata();
     this.dpopService = DpopService.newInstance(
       {
         required: true,
-        // @ts-ignore
-        metadata: await this.client.retrieveServerMetadata(),
+        // @ts-ignore // because of the versions/types we support
+        metadata,
         kms: this.kms,
         clientId: this.clientId,
       },
@@ -99,7 +122,16 @@ export class PidIssuerService {
   }
 
   public async getServerMetadata() {
+    // method is lazy anyway, so we are not constantly hitting the metadata endpoint
     return await this.client.retrieveServerMetadata();
+  }
+
+  public async getCredentialIssuerMetadata() {
+    const metadata = await this.getServerMetadata();
+    if (!metadata.credentialIssuerMetadata) {
+      return Promise.reject(Error(`Could not retrieve credential issuer metadata from PID provider`));
+    }
+    return metadata.credentialIssuerMetadata as Partial<AuthorizationServerMetadata> & IssuerMetadataV1_0_13;
   }
 
   public async getAuthorizationCode(args: EIDGetAuthorizationCodeArgs): Promise<string> {
@@ -142,16 +174,7 @@ export class PidIssuerService {
     return accessTokenResponse;
   }
 
-  public async getPids({
-    authorizationCode,
-    pids,
-  }: {
-    authorizationCode: string;
-    pids: Array<{
-      format: 'mso_mdoc' | 'vc+sd-jwt';
-      type: 'eu.europa.ec.eudi.pid.1' | string;
-    }>;
-  }) {
+  public async getPids({authorizationCode, pids}: {authorizationCode: string; pids: Array<PidRequestInfo>}): Promise<Array<PidResponse>> {
     if (!authorizationCode) {
       return Promise.reject(Error(`Cannot get a PID without authorization code`));
     } else if (pids.length === 0) {
@@ -165,34 +188,82 @@ export class PidIssuerService {
       },
       endPointUrl: this.client.getAccessTokenEndpoint(),
     });
+    let currentNonce: string | undefined = accessTokenResponse.c_nonce;
 
-    return await Promise.all(
-      pids.map(async pidInfo => {
-        // todo: new credential keys here. We are now using the ephemeral key
-        console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
-        const identifier = await this.dpopService.getEphemeralDPoPIdentifier();
-        const jwk = identifier.jwk;
-        const callbacks: ProofOfPossessionCallbacks<never> = {
-          signCallback: signCallback(this.client, identifier, this.context),
-        };
+    let responses: (CredentialResponse & {params?: DPoPResponseParams; access_token: string; identifier: ManagedIdentifierResult})[] = [];
 
-        const credentialResponse = await this.client.acquireCredentials({
-          // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
-          // 'eu.europa.ec.eudi.pid.1' // mdoc
-          credentialTypes: pidInfo.type,
-          jwk,
-          alg: jwk.alg as string,
-          // format: 'vc+sd-jwt',
-          // format: 'mso_mdoc',
-          format: pidInfo.format,
-          proofCallbacks: callbacks,
-          createDPoPOpts: issuerResourceDpop,
-        });
+    for (const pidInfo of pids) {
+      const identifier = await this.createPidKey(pidInfo);
+      console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
+      // const identifier: ManagedIdentifierResult = await this.dpopService.getEphemeralDPoPIdentifier();
+      const jwk = identifier.jwk;
+      const callbacks: ProofOfPossessionCallbacks<never> = {
+        signCallback: signCallback(this.client, identifier, this.context, currentNonce),
+      };
 
-        console.log(JSON.stringify(credentialResponse));
-        return credentialResponse;
-      }),
-    );
+      const credentialResponse: CredentialResponse & {params?: DPoPResponseParams; access_token: string} = await this.client.acquireCredentials({
+        // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
+        // 'eu.europa.ec.eudi.pid.1' // mdoc
+        credentialTypes: pidInfo.type,
+        jwk,
+        alg: jwk.alg as string,
+        // format: 'vc+sd-jwt',
+        // format: 'mso_mdoc',
+        format: pidInfo.format,
+        proofCallbacks: callbacks,
+        createDPoPOpts: issuerResourceDpop,
+      });
+      currentNonce = credentialResponse.c_nonce;
+
+      console.log(JSON.stringify(credentialResponse));
+      responses.push({...credentialResponse, identifier});
+    }
+    return responses;
+  }
+
+  async getIssuerSupportedProofAlgs(pidInfo: PidRequestInfo) {
+    const metadata = await this.getCredentialIssuerMetadata();
+    const credConfig = Object.values(metadata.credential_configurations_supported).find(conf => conf.format === pidInfo.format);
+    const algsSupported = credConfig?.proof_types_supported?.jwt?.proof_signing_alg_values_supported;
+    if (algsSupported && algsSupported.length > 0) {
+      return algsSupported;
+    }
+    // We look at credential signing alg first. This acts as a fallback as we can use algs we know the issuer supports for its credentials
+    return credConfig?.credential_signing_alg_values_supported ?? ['ES256'];
+  }
+
+  async getClientSupportedProofAlg(pidInfo: PidRequestInfo) {
+    const supported = await this.getIssuerSupportedProofAlgs(pidInfo);
+    const algos = supported.filter(alg => Object.values(SigningAlgo).includes(alg as SigningAlgo)).map(alg => alg as SigningAlgo);
+    return algos.length > 0 ? algos[0] : SigningAlgo.ES256;
+  }
+
+  async getKeyTypeAndAlgSupported(pidInfo: PidRequestInfo) {
+    const alg = await this.getClientSupportedProofAlg(pidInfo);
+    const keyType = keyTypeFromCryptographicSuite(alg);
+    return {alg, keyType};
+  }
+
+  async createPidKey(pidInfo: PidRequestInfo): Promise<ManagedIdentifierResult> {
+    const {keyType, alg} = await this.getKeyTypeAndAlgSupported(pidInfo);
+    const key = await this.context.agent.keyManagerCreate({
+      type: keyType,
+      kms: this.kms,
+      meta: {
+        primaryAlgorithm: alg,
+        algorithms: algorithmsFromKeyType(keyType),
+        keyAlias: `pid-${pidInfo.type}-${pidInfo.format}-${new Date().getTime()}`,
+      },
+    });
+
+    let opts: ManagedIdentifierJwkOpts = {
+      method: 'jwk',
+      identifier: toJwk(key.publicKeyHex, key.type, {key}),
+      issuer: this.clientId,
+      kmsKeyRef: key.kid,
+    };
+
+    return await this.context.agent.identifierManagedGet(opts);
   }
 
   public close() {
