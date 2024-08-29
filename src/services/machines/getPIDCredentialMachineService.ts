@@ -1,10 +1,11 @@
-import {CredentialCorrelationType, CredentialRole, DigitalCredential, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {CredentialCorrelationType, CredentialRole, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
-import {delay, generateDigest} from '../../utils';
+import {generateDigest} from '../../utils';
 import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {getVerifiableCredentialsFromStorage} from '../credentialService';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import store from '../../store';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
@@ -33,6 +34,11 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
 
 export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
+
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage()).map(credential =>
+    store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
+  );
+  await Promise.all(deleteCredentials);
 
   const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
     agent.crsAddCredential({
