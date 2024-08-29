@@ -100,6 +100,7 @@ const EnterPinCodeScreen = () => {
         }
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
         setPinCode('');
+        setIsPinValid(false);
       }}
     />
   );
