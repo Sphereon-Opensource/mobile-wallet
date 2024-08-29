@@ -8,11 +8,11 @@ import {
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
-import {generateDigest} from '../../utils';
-import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {getVerifiableCredentialsFromStorage} from '../credentialService';
-import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import store from '../../store';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
+import {generateDigest} from '../../utils';
+import {getVerifiableCredentialsFromStorage} from '../credentialService';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -43,7 +43,7 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
 export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
 
-  const deleteCredentials = (await getVerifiableCredentialsFromStorage()).map(credential =>
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(credential =>
     store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
   );
   await Promise.all(deleteCredentials);
