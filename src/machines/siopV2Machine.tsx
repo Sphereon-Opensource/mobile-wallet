@@ -25,6 +25,8 @@ import {
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
 import {EvaluationResults, PEX, Status} from '@sphereon/pex';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -73,11 +75,20 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     throw Error('No presentation definitions present');
   }
 
+  const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
+  selectedCredentials.forEach(credential => {
+    udcMap.set(credential.originalVerifiableCredential!, credential);
+  });
+
   const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
   const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
+  const evaluationResults: EvaluationResults = pex.evaluateCredentials(
+    definitionWithLocation.definition,
+    selectedCredentials.map(udc => udc.originalVerifiableCredential!),
+  );
 
-  _ctx.selectedCredentials = evaluationResults.verifiableCredential;
+  // @ts-ignore FIXME Funke
+  _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
   return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
 };
 

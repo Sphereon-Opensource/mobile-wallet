@@ -20,6 +20,7 @@ import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -160,11 +161,14 @@ export const sendResponse = async (
       verifiableCredentialsWithDefinition: [
         {
           definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
-          credentials: selectedCredentials as Array<W3CVerifiableCredential>,
+          credentials: selectedCredentials as Array<UniqueDigitalCredential>,
         },
       ],
     }),
   });
+  if (!response) {
+    return Promise.reject(Error('Missing SIOP authentication response'));
+  }
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
