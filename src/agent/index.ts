@@ -1,4 +1,3 @@
-import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
@@ -19,7 +18,7 @@ export const didResolver = new Resolver({
   ...getDidKeyResolver(),
   ...webDIDResolver(),
   ...getDidJwkResolver(),
-  ...getDidOydResolver(),
+  // ...getDidOydResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
@@ -31,9 +30,9 @@ export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
     defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
+  /*[`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
     defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
-  }),
+  }),*/
 };
 
 const dbConnection: OrPromise<DataSource> = DEFAULT_DB_CONNECTION;
