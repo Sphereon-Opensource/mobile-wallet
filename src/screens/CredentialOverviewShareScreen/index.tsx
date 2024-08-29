@@ -16,7 +16,8 @@ import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util'
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {translate} from '../../localization/Localization';
 import ScreenTitleAndDescription from '../../components/containers/ScreenTitleAndDescription';
-import {showToast} from '../../utils';
+import {generateDigest, showToast} from '../../utils';
+import {CredentialMapper} from '@sphereon/ssi-types';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -53,7 +54,8 @@ const SelectOverviewShareScreen = (props: Props) => {
     onDecline();
     return; // FIXME Funke, we need to go to an error / warn screen for this
   }
-  const data = useMemo(() => convertFromPIDPayload(credential.uniformVerifiableCredential!.credentialSubject), [credential]);
+  const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
+  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject), [credential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
