@@ -4,11 +4,12 @@ import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/u
 import React, {useCallback} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
-import {CreditOverviewStackParamsList, RootState} from '../../types';
+import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import {setViewPreference} from '../../store/actions/user.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {useFocusEffect} from '@react-navigation/native';
+import {getVerifiableCredential} from '../../services/credentialService';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'Card'> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -26,11 +27,12 @@ const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes |
   }
 };
 
-const CredentialViewCard = ({credential}: {credential: CredentialSummary}) => {
+const CredentialViewCard = ({credential, onPress}: {credential: CredentialSummary; onPress: () => Promise<void>}) => {
   const issuer: string = credential.issuer.alias;
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <SSICredentialCardView
         header={{
           credentialTitle: credential.branding?.alias,
@@ -54,17 +56,27 @@ const CredentialViewCard = ({credential}: {credential: CredentialSummary}) => {
   );
 };
 
-const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials}: Props) => {
+const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, navigation}: Props) => {
   useFocusEffect(
     useCallback(() => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.CARD);
     }, []),
   );
 
+  const onItemPress = async (credential: CredentialSummary): Promise<void> => {
+    const uniqueDigitalCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
+    navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+      rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
+      uniqueDigitalCredential,
+      credential,
+      showActivity: false,
+    });
+  };
+
   return (
     <View style={{backgroundColor: backgroundColors.primaryDark, flex: 1, paddingHorizontal: 24, alignItems: 'center'}}>
       {verifiableCredentials.map((credential, index) => (
-        <CredentialViewCard key={index} credential={credential} />
+        <CredentialViewCard key={index} credential={credential} onPress={() => onItemPress(credential)} />
       ))}
     </View>
   );
