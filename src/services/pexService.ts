@@ -14,6 +14,9 @@ export const getMatchingCredentials = async ({
   opts?: PEXOptions;
 }): Promise<Array<UniqueDigitalCredential>> => {
   const credentials = await getVerifiableCredentialsFromStorage();
+  return credentials;
+
+  /* FIXME ASAP
   if (!opts?.hasher) {
     opts = {
       hasher: generateDigest,
@@ -33,5 +36,5 @@ export const getMatchingCredentials = async ({
 
   return result.areRequiredCredentialsPresent !== 'error' && result.verifiableCredential
     ? result.verifiableCredential.map(vc => udcMap.get(vc)!)
-    : [];
+    : [];*/
 };
