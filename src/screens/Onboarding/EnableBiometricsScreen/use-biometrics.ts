@@ -34,8 +34,6 @@ export const useBiometrics = () => {
 };
 
 export const useAuthEffect = (effect: (success: boolean) => void) => {
-  console.log(`CALLING useAuthEffect`);
-
   const userState: IUserState = useSelector((state: RootState) => state.user);
   const {onboardingInstance} = useContext(OnboardingContext);
   const biometricsEnabled = useMemo(
@@ -45,8 +43,6 @@ export const useAuthEffect = (effect: (success: boolean) => void) => {
         : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
     [onboardingInstance],
   );
-
-  console.log(`BIOMETRICS enabled: ${biometricsEnabled}`);
 
   const {prompt} = useBiometrics();
 
