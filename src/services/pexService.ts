@@ -37,7 +37,9 @@ export const getMatchingCredentials = async ({
 
   const result: SelectResults = pex.selectFrom(
     presentationDefinitionWithLocation.definition,
-    credentials.map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
+    credentials
+      .filter(uniqueDC => uniqueDC.digitalCredential.documentFormat !== 'MSO_MDOC') // FIXME add MSO_MDOC selection
+      .map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
   );
 
   if (result.vcIndexes && result.vcIndexes.length === result.verifiableCredential?.length) {
