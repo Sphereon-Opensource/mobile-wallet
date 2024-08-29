@@ -16,15 +16,16 @@ import {
 import {removeCredentialBranding} from './brandingService';
 
 export const getVerifiableCredentialsFromStorage = async (opts?: {
-  regulationTypes: RegulationType[];
+  regulationTypes?: RegulationType[];
   parentsOnly?: boolean;
 }): Promise<Array<UniqueDigitalCredential>> => {
   const regulationTypes = opts?.regulationTypes;
   const parentsOnly = opts?.parentsOnly ?? true;
   return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
-    return creds
-      .filter(cred => !regulationTypes || !cred.digitalCredential.regulationType || cred.digitalCredential.regulationType in regulationTypes)
+    const filtered = creds
+      .filter(cred => !regulationTypes || !cred.digitalCredential.regulationType || regulationTypes.includes(cred.digitalCredential.regulationType))
       .filter(cred => !parentsOnly || cred.digitalCredential.parentId === null || cred.digitalCredential.parentId === undefined); // filter out any instances
+    return filtered;
   });
 };
 
