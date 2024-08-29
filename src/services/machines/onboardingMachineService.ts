@@ -91,8 +91,10 @@ export const setupWallet = async (
   return setup[1];
 };
 
-const storeUser = async (context: Pick<OnboardingMachineContext, 'emailAddress' | 'name'>): Promise<WalletSetupServiceResult> => {
-  const {emailAddress, name} = context;
+const storeUser = async (
+  context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled'>,
+): Promise<WalletSetupServiceResult> => {
+  const {emailAddress, name, biometricsEnabled} = context;
 
   const names = parseFullName(name);
 
@@ -100,6 +102,7 @@ const storeUser = async (context: Pick<OnboardingMachineContext, 'emailAddress' 
     firstName: names.firstName,
     lastName: names.lastName,
     emailAddress,
+    biometricsEnabled,
   };
 
   const storedUser: IUser = await store.dispatch<any>(createUser(user));
