@@ -11,11 +11,12 @@ import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBol
 
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {translate} from '../../localization/Localization';
 import ScreenTitleAndDescription from '../../components/containers/ScreenTitleAndDescription';
+import {showToast} from '../../utils';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -47,6 +48,11 @@ const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credential, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
 
+  if (credential === undefined) {
+    showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_required_no_available_label')}); // FIXME Funke
+    onDecline();
+    return; // FIXME Funke, we need to go to an error / warn screen for this
+  }
   const data = useMemo(() => convertFromPIDPayload(credential.uniformVerifiableCredential!.credentialSubject), [credential]);
 
   const ref = useRef<ScrollView>(null);
