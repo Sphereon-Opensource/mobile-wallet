@@ -1,7 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {UniqueVerifiableCredential, VerifiableCredential} from '@veramo/core';
 import React, {useCallback, useState} from 'react';
 import {ListRenderItemInfo, RefreshControl} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
@@ -13,14 +12,12 @@ import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
-import {getOriginalVerifiableCredential, showToast} from '../../utils';
+import {showToast} from '../../utils';
 import {Loggers} from '@sphereon/ssi-types';
 import {translate} from '../../localization/Localization';
 import {useFocusEffect} from '@react-navigation/native';
 import {setViewPreference} from '../../store/actions/user.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
-import {DigitalCredential} from '@sphereon/ssi-sdk.data-store';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;

@@ -1,3 +1,6 @@
+import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
+import {RegulationType} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
 
@@ -11,15 +14,18 @@ import {
 } from '../types';
 
 import {removeCredentialBranding} from './brandingService';
-import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
-import {v4} from 'uuid';
-import {DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 
-export const getVerifiableCredentialsFromStorage = async (): Promise<Array<UniqueDigitalCredential>> => {
+export const getVerifiableCredentialsFromStorage = async (opts?: {
+  regulationTypes?: RegulationType[];
+  parentsOnly?: boolean;
+}): Promise<Array<UniqueDigitalCredential>> => {
+  const regulationTypes = opts?.regulationTypes;
+  const parentsOnly = opts?.parentsOnly ?? true;
   return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
-    console.log(`===> ${creds.map(cred => cred.id).join(', ')}`);
-    return creds;
+    const filtered = creds
+      .filter(cred => !regulationTypes || !cred.digitalCredential.regulationType || regulationTypes.includes(cred.digitalCredential.regulationType))
+      .filter(cred => !parentsOnly || cred.digitalCredential.parentId === null || cred.digitalCredential.parentId === undefined); // filter out any instances
+    return filtered;
   });
 };
 

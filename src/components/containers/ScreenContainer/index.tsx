@@ -9,8 +9,8 @@ type Props = {
   style?: ViewProps['style'];
   footer?: React.ReactNode;
   footerStyle?: ViewProps['style'];
-  scrollViewRef?: Ref<ScrollView>;
   disableKeyboardAvoidingView?: boolean;
+  scrollViewRef?: Ref<ScrollView>;
 };
 
 export const IOS_EXTRA_BOTTOM_PADDING = 16;

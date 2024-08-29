@@ -23,16 +23,11 @@ const ImportDataFinalScreen = (props?: any) => {
   const footer = (
     <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10}}>
       <PrimaryButton
-        style={{height: 42, width: width - 80, alignSelf: 'center'}}
         caption={translate('import_data_consent_button_accept')}
-        backgroundColors={['#7276F7', '#7C40E8']}
-        captionColor={fontColors.light}
         onPress={() => (onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT))}
       />
       <SecondaryButton
-        style={{alignSelf: 'center', width: width - 40}}
         caption={translate('import_data_consent_button_decline')}
-        borderColors={['#7276F7', '#7C40E8']}
         onPress={() => (onDecline ? onDecline() : onboardingInstance.send(OnboardingMachineEvents.DECLINE_INFORMATION))}
       />
     </View>
