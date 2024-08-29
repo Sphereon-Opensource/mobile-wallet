@@ -12,6 +12,7 @@ import CredentialPreviewViewItem from '../../components/views/CredentialPreviewV
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import Localization from '../../localization/Localization';
 import {showToast} from '../../utils';
+import {GetPIDCredentialsMachine} from '../../machines/getPIDCredentialMachine';
 import {
   CredentialCatalogScreenPreviewCredentialContainerStyled as PreviewCredentialContainer,
   CredentialCatalogScreenRelevantCredentialContainerStyled as RelevantCredentialContainer,
@@ -147,10 +148,19 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     },
   ];
 
+  const onClose = async (): Promise<void> => {
+    props.navigation.goBack();
+  };
+
+  const onAccept = async (): Promise<void> => {
+    const interpreter = GetPIDCredentialsMachine.newInstance();
+    interpreter.start();
+  };
+
   const onPreview = async (): Promise<void> => {
     props.navigation.navigate(MainRoutesEnum.AUSWEIS_MODAL, {
-      onClose: async () => props.navigation.goBack(),
-      onAccept: async () => console.log('onAccept pressed'),
+      onClose,
+      onAccept,
     });
   };
 

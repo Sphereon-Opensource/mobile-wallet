@@ -11,6 +11,7 @@ import {
   SSITextH5Styled as LabelCaption,
   SSITextFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextH5StyleObject,
+  SSITextInputFieldUnderlineLightStyled,
   SSITextInputFieldTextInputStyled as TextInput,
   SSITextInputFieldUnderlineStyled as Underline,
   SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
@@ -86,7 +87,7 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
         {endAdornment && <IconContainer style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}>{endAdornment}</IconContainer>}
       </InputContainer>
       {!error ? (
-        <UnderlineLinearGradient />
+        <SSITextInputFieldUnderlineLightStyled />
       ) : (
         <Underline
           style={{

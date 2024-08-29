@@ -35,7 +35,7 @@ export const StepDotDefaultWrapper = styled.View`
 `;
 
 export const CurrentStepRing = styled(StepDotDefaultWrapper)`
-  width: 42px;r
+  width: 42px;
   height: 42px;
   border-radius: 21px;
   background-color: transparent;

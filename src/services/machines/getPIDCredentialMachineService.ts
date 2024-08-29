@@ -1,17 +1,14 @@
-import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {CredentialCorrelationType, CredentialRole, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
-import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {computeEntryHash} from '@veramo/utils';
-import {generateDigest} from '../../utils';
 import agent from '../../agent';
-import {storagePersistPin} from '../storageService';
+import {generateDigest} from '../../utils';
+import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
+import {getVerifiableCredentialsFromStorage} from '../credentialService';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import store from '../../store';
-import {createUser, login} from '../../store/actions/user.actions';
-import {BasicUser, IUser} from '../../types';
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store/src/types/issuanceBranding/issuanceBranding';
-import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 
-export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
+export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
 
   if (!funkeProvider?.refreshUrl) {
@@ -35,8 +32,13 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
     });
 };
 
-export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
+export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
+
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage()).map(credential =>
+    store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
+  );
+  await Promise.all(deleteCredentials);
 
   const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
     agent.crsAddCredential({
@@ -51,59 +53,10 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
     }),
   );
 
-  return Promise.all(storeCredentials);
+  await Promise.all(storeCredentials);
 };
 
-export const setupWallet = async (
-  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name'>,
-): Promise<WalletSetupServiceResult> => {
-  const {pinCode} = context;
-  const setup = await Promise.all([
-    storagePersistPin({
-      value: pinCode,
-    }),
-    storeUser(context),
-    // Make sure we never finish before the timeout, to ensure the UI doesn't navigate too fast for a user between screens
-    new Promise(resolve => setTimeout(() => resolve(true), 1000)),
-  ]);
-
-  await store.dispatch<any>(login(setup[1].storedUser.id));
-  return setup[1];
-};
-
-const storeUser = async (context: Pick<OnboardingMachineContext, 'emailAddress' | 'name'>): Promise<WalletSetupServiceResult> => {
-  const {emailAddress, name} = context;
-
-  const names = parseFullName(name);
-
-  const user: BasicUser = {
-    firstName: names.firstName,
-    lastName: names.lastName,
-    emailAddress,
-  };
-
-  const storedUser: IUser = await store.dispatch<any>(createUser(user));
-  return {storedUser};
-};
-
-const parseFullName = (fullName: string) => {
-  const nameParts = fullName.trim().split(/\s+/);
-
-  if (nameParts.length === 0) {
-    return {firstName: 'Unknown', lastName: 'Unknown'};
-  }
-
-  if (nameParts.length === 1) {
-    return {firstName: nameParts[0], lastName: ''}; // Profile icon supports just 1 letter
-  }
-
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(' ');
-
-  return {firstName, lastName};
-};
-
-export const storeCredentialBranding = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<void> => {
+export const storeCredentialBranding = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
 
   const branding: IBasicCredentialLocaleBranding = {
@@ -135,4 +88,8 @@ export const storeCredentialBranding = async (context: Pick<OnboardingMachineCon
   );
 
   await Promise.all(storeCredentials);
+};
+
+export const fetchVerifiableCredentials = async (context: GetPIDCredentialsMachineContext): Promise<void> => {
+  store.dispatch<any>(getVerifiableCredentials());
 };

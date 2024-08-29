@@ -18,7 +18,9 @@ const Content = styled(ContentContainer)`
   padding: 0px 20px 0px 20px;
 `;
 
-const ImportPersonalDataScreen = () => {
+const ImportPersonalDataScreen = (props?: any) => {
+  const {onAuth} = props?.route?.params ?? {};
+
   const {onboardingInstance} = useContext(OnboardingContext);
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
@@ -52,7 +54,7 @@ const ImportPersonalDataScreen = () => {
 
     VciServiceFunkeCProvider.initialize({
       onEnterPin,
-      onAuthenticated,
+      onAuthenticated: onAuth ?? onAuthenticated,
       onStateChange: setEIDFlowState,
     }).then((provider: VciServiceFunkeCProvider): void => {
       setProvider(provider);

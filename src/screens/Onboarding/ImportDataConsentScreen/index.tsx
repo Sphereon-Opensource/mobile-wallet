@@ -22,12 +22,16 @@ import {
 } from './components/styles';
 import {AusweisRequestedInfoSchema, InfoSchemaImages} from './constants';
 import styled from 'styled-components/native';
+import {GetPIDCredentialsStackParamsList, IImportDataConsentProps, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const Label = styled(SSITextH2SemiBoldLightStyled)`
   width: 100%;
 `;
 
-const ImportDataConsentScreen = () => {
+const ImportDataConsentScreen = (props?: any) => {
+  const {onAccept, onDecline} = props?.route?.params ?? {};
+
   const {onboardingInstance} = useContext(OnboardingContext);
   const translationsPath = 'onboarding_pages.import_data_consent';
   const footer = (
@@ -36,13 +40,13 @@ const ImportDataConsentScreen = () => {
         style={{height: 42, width: '100%'}}
         caption={translate(`${translationsPath}.button_accept`)}
         captionColor={fontColors.light}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
+        onPress={() => (onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT))}
       />
       <SecondaryButton
         style={{height: 42, width: '100%'}}
         caption={translate(`${translationsPath}.button_decline`)}
         borderColors={['#7276F7', '#7C40E8']}
-        onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)}
+        onPress={() => (onDecline ? onDecline() : onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT))}
       />
     </>
   );
@@ -54,9 +58,9 @@ const ImportDataConsentScreen = () => {
         <ProviderContainer>
           <ProviderImage source={require('../../../assets/images/bundesdruckerei.png')} width={48} height={48} resizeMode="stretch" />
           <ProviderDescription>
-            <SSITextH3LightStyled>German Bundesdruckerei</SSITextH3LightStyled>
-            <SSITextH4LightStyled>{translate(`${translationsPath}.pid_provider_subheading`)}</SSITextH4LightStyled>
-            <ProviderUrl> www.personalausweisportal.de</ProviderUrl>
+            <SSITextH3LightStyled>Bundesdruckerei GmbH</SSITextH3LightStyled>
+            <SSITextH4LightStyled>ISSUER</SSITextH4LightStyled>
+            <ProviderUrl>https://demo.pid-issuer.bundesdruckerei.de/c</ProviderUrl>
           </ProviderDescription>
         </ProviderContainer>
         <Label>Offered data</Label>
