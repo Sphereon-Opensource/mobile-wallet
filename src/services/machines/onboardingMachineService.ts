@@ -1,15 +1,15 @@
-import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {CredentialCorrelationType, CredentialRole, DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store/src/types/issuanceBranding/issuanceBranding';
 import {CredentialMapper} from '@sphereon/ssi-types';
-import {CredentialCorrelationType, CredentialRole, DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {computeEntryHash} from '@veramo/utils';
-import {generateDigest} from '../../utils';
 import agent from '../../agent';
-import {storagePersistPin} from '../storageService';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store/src/types/issuanceBranding/issuanceBranding';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
+import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {generateDigest} from '../../utils';
+import {storagePersistPin} from '../storageService';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -40,22 +40,31 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
 export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
   const {pidCredentials} = context;
 
-  const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
-    agent.crsAddCredential({
+  let parentId: string | undefined = undefined;
+
+  const storeCredentials: DigitalCredential[] = [];
+  for (const mappedCredential of pidCredentials) {
+    const digitalCredential = await agent.crsAddCredential({
       credential: {
+        parentId,
+        regulationType: RegulationType.PID, // FIXME FUNKE
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
         kmsKeyRef: mappedCredential.identifier.kmsKeyRef,
         identifierMethod: mappedCredential.identifier.method,
         issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
-        issuerCorrelationType: CredentialCorrelationType.URL,
+        issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       },
       opts: {hasher: generateDigest},
-    }),
-  );
+    });
+    if (!parentId) {
+      parentId = digitalCredential.id;
+    }
+    storeCredentials.push(digitalCredential);
+  }
 
-  return Promise.all(storeCredentials);
+  return storeCredentials;
 };
 
 export const setupWallet = async (

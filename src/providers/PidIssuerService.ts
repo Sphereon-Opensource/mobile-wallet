@@ -47,7 +47,6 @@ export class PidIssuerService {
   private dpopService: DpopService;
   private readonly kms: string;
   private context: PidAgentContext;
-  private issuerMetadata: CredentialIssuerMetadataV1_0_13;
 
   private constructor(opts: PidIssuerServiceOpts, context: PidAgentContext) {
     this.context = context;

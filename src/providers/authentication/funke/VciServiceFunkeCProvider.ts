@@ -1,10 +1,9 @@
-import {Dispatch, SetStateAction} from 'react';
 import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} from '@animo-id/expo-ausweis-sdk';
-import {CredentialResponse, PARMode} from '@sphereon/oid4vci-common';
-import {PidIssuerService, PidResponse} from '../../PidIssuerService';
+import {PARMode} from '@sphereon/oid4vci-common';
+import {Dispatch, SetStateAction} from 'react';
 import {agentContext} from '../../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
-import {ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -96,7 +95,6 @@ class VciServiceFunkeCProvider {
 
     const pids = this.pidService.getPids({
       authorizationCode,
-      //fixme: We cannot get 2 creds, as we need to use other keys and nonces. For now enable one of the 2
       pids: [
         {
           format: 'vc+sd-jwt',

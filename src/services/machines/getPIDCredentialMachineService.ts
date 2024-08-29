@@ -1,4 +1,10 @@
-import {CredentialCorrelationType, CredentialRole, DigitalCredential, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {
+  CredentialCorrelationType,
+  CredentialRole,
+  DigitalCredential,
+  IBasicCredentialLocaleBranding,
+  RegulationType,
+} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
@@ -36,22 +42,29 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
 export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
   const {pidCredentials} = context;
 
-  const storeCredentials = pidCredentials.map((mappedCredential: MappedCredential) =>
-    agent.crsAddCredential({
+  let parentId: string | undefined = undefined;
+
+  const storeCredentials: DigitalCredential[] = [];
+  for (const mappedCredential of pidCredentials) {
+    const digitalCredential = await agent.crsAddCredential({
       credential: {
+        parentId,
+        regulationType: RegulationType.PID, // FIXME FUNKE
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-        issuerCorrelationType: CredentialCorrelationType.X509_CN,
-        issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         kmsKeyRef: mappedCredential.identifier.kmsKeyRef,
         identifierMethod: mappedCredential.identifier.method,
+        issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       },
       opts: {hasher: generateDigest},
-    }),
-  );
-
-  await Promise.all(storeCredentials);
+    });
+    if (!parentId) {
+      parentId = digitalCredential.id;
+    }
+    storeCredentials.push(digitalCredential);
+  }
 };
 
 export const storeCredentialBranding = async (context: Pick<GetPIDCredentialsMachineContext, 'pidCredentials'>): Promise<void> => {
