@@ -160,7 +160,7 @@
         }
       }
     },
-    "enter_email": {
+    "enter_email_address": {
       "title": "Enter your email address",
       "text_field": {
         "label": "Email address",
