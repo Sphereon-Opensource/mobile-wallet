@@ -69,7 +69,7 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
 
 const ShowProgressScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {currentStep, country} = onboardingInstance.getSnapshot().context;
+  const {currentStep, country, skipImport} = onboardingInstance.getSnapshot().context;
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({
@@ -102,7 +102,7 @@ const ShowProgressScreen = () => {
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
-      {currentStep === 3 && (
+      {currentStep === 3 && !skipImport && (
         <SecondaryButton
           caption={translate('onboarding_skip_credential_import_step3_caption')}
           onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)}

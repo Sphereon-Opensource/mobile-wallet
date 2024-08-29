@@ -60,7 +60,14 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
-        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPIDDataConsent},
+        {
+          cond: ({skipImport, currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && !skipImport,
+          target: OnboardingMachineStateType.importPIDDataConsent,
+        },
+        {
+          cond: ({skipImport, currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && skipImport,
+          target: OnboardingMachineStateType.setupWallet,
+        },
         {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
       ],
       PREVIOUS: [
@@ -89,6 +96,9 @@ const states: OnboardingStatesConfig = {
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true}),
+      },
+      SET_SKIP_IMPORT: {
+        actions: assign({skipImport: (_, event) => event.data}),
       },
     },
   },

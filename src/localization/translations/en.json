@@ -12,6 +12,14 @@
   "biometrics_enable_text": "Enable now",
   "biometrics_disallow": "Maybe later",
 
+  "onboarding_pid_security_model_title": "What PID security model would you use?",
+  "onboarding_pid_security_model_subtitle": "Please note that this is a test/development option. You can not change it afterwards, without instantiating a new wallet.",
+  "onboarding_pid_security_model_secure_element": "Secure element on phone",
+  "onboarding_pid_security_model_remote_hardware": "Remote Hardware Security Module",
+  "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
+  "onboarding_pid_security_model_eid_presentation": "Use eID  card during presentation",
+  "onboarding_pid_security_model_select": "Select",
+
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
