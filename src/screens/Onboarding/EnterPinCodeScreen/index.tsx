@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useCallback, useContext, useMemo, useRef, useState} from 'react';
-import {Dimensions, ScrollView, View} from 'react-native';
+import {useCallback, useContext, useMemo, useRef, useEffect, useState} from 'react';
+import {Dimensions, ScrollView, View, TextInput} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -20,6 +20,7 @@ import {
   isStringOfLength,
   validate,
 } from '../../../utils/validate';
+import {useNavigation} from '@react-navigation/native';
 
 const validatePin = (pin: string, validators: Validator<number>[]): ValidationResult<number> => {
   const {isValid: hasCorrectLength} = validate(pin, [isStringOfLength(PIN_CODE_LENGTH)()]);
@@ -57,9 +58,22 @@ const EnterPinCodeScreen = () => {
     [invalidPinExample],
   );
   const [isPinValid, setIsPinValid] = useState(validatePin(pinCodeContext, []).isValid);
-  const [pinCode, setPinCode] = useState(pinCodeContext);
+  const [pinCode, setPinCode] = useState('');
   const [erroniousValidator, setErroniousValidator] = useState<ValidatorType>();
   const [showFeedback, setShowFeedback] = useState(false);
+
+  const navigation = useNavigation();
+
+  const PinCodeRef = useRef<TextInput | null>(null);
+
+  useEffect(() => {
+    if (PinCodeRef.current) {
+      const unsubscribe = navigation.addListener('focus', () => {
+        PinCodeRef.current?.focus();
+      });
+      return unsubscribe;
+    }
+  }, [navigation, PinCodeRef.current]);
 
   const onPinChange = useCallback(
     (pin: string) => {
@@ -91,6 +105,8 @@ const EnterPinCodeScreen = () => {
           onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: ''});
         }
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
+        setPinCode('');
+        setIsPinValid(false);
       }}
     />
   );
@@ -99,7 +115,7 @@ const EnterPinCodeScreen = () => {
     <ScreenContainer footer={footer} scrollViewRef={scrollViewRef}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1}}>
-        <PinCode pin={pinCode} onPinChange={onPinChange} length={PIN_CODE_LENGTH} validation={{isValid: isPinValid}} />
+        <PinCode inputRef={PinCodeRef} pin={pinCode} onPinChange={onPinChange} length={PIN_CODE_LENGTH} validation={{isValid: isPinValid}} />
         {!isPinValid ? (
           <PinCodeRequirements
             style={{marginTop: 48}}
