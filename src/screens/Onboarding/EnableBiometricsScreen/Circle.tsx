@@ -1,7 +1,7 @@
 import {useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {LinearGradient as Gradient} from 'expo-linear-gradient';
-import FaceIDIcon from '../../../components/assets/icons/FaceIDIcon';
+import BiometricsIcon from '../../../components/assets/icons/BiometricsIcon';
 
 type CircleWithBorderProps = {
   size: number;
@@ -44,7 +44,7 @@ const CircleWithBorder = (props: CircleWithBorderProps) => {
           borderRadius: innerSize / 2,
           ...styles.center,
         }}>
-        {icon ?? <FaceIDIcon size={(2 * size) / 7} color="white" />}
+        {icon ?? <BiometricsIcon size={(2 * size) / 7} color="white" />}
       </Gradient>
     </Gradient>
   );
