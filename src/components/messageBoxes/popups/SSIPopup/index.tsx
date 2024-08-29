@@ -73,28 +73,32 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
       {(primaryButton || secondaryButton) && (
         <ButtonsContainer>
           {secondaryButton && (
-            <SecondaryButton
-              style={{
-                height: 42,
-                minWidth: 160,
-                // Scales the button based on presence of other button
-                ...(!primaryButton && {width: '100%'}),
-              }}
-              caption={secondaryButton.caption}
-              onPress={secondaryButton.onPress}
-            />
+            <View style={{flex: 1, flexDirection: 'column'}}>
+              <SecondaryButton
+                style={{
+                  height: 42,
+                  minWidth: 160,
+                  // Scales the button based on presence of other button
+                  ...(!primaryButton && {width: '100%'}),
+                }}
+                caption={secondaryButton.caption}
+                onPress={secondaryButton.onPress}
+              />
+            </View>
           )}
           {primaryButton && (
-            <PrimaryButton
-              // Scales the button based on presence of other button
-              style={{
-                height: 42,
-                minWidth: 160,
-                ...(!secondaryButton && {width: '100%'}),
-              }}
-              caption={primaryButton.caption}
-              onPress={primaryButton.onPress}
-            />
+            <View style={{flex: 1, flexDirection: 'column'}}>
+              <PrimaryButton
+                // Scales the button based on presence of other button
+                style={{
+                  height: 42,
+                  minWidth: 160,
+                  ...(!secondaryButton && {width: '100%'}),
+                }}
+                caption={primaryButton.caption}
+                onPress={primaryButton.onPress}
+              />
+            </View>
           )}
         </ButtonsContainer>
       )}
