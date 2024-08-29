@@ -207,11 +207,11 @@
       "title": "Terms & privacy",
       "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
       "features": {
-        "advanced_encryption": "Advanced encryption",
-        "two_factor_authentication": "Two-factor authentication",
-        "regular_security_audits": "Regular security audits",
-        "data_anonymization": "Data anonymization",
-        "strict_access_controls": "Strict access controls"
+        "secure_data_storage": "Advanced encryption",
+        "strict_access_control": "Two-factor authentication",
+        "selective_data_sharing": "Regular security audits",
+        "no_3rdparty_data_sharing": "Data anonymization",
+        "no_tracking_profiling": "Strict access controls"
       },
       "footer": {
         "prefix": "Want to read all the details? Check our",
