@@ -14,14 +14,20 @@ export const getMatchingCredentials = async ({
   opts?: PEXOptions;
 }): Promise<Array<UniqueDigitalCredential>> => {
   const credentials = await getVerifiableCredentialsFromStorage();
-  return credentials;
-
-  /* FIXME ASAP
   if (!opts?.hasher) {
     opts = {
       hasher: generateDigest,
     };
   }
+
+  const format =
+    presentationDefinitionWithLocation.definition.format ??
+    presentationDefinitionWithLocation.definition.input_descriptors.some(pd => {
+      if ('format' in pd) {
+        return pd.format;
+      }
+    });
+
   const pex: PEX = new PEX(opts);
 
   const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
@@ -49,5 +55,5 @@ export const getMatchingCredentials = async ({
   }
   return result.areRequiredCredentialsPresent !== 'error' && result.verifiableCredential
     ? result.verifiableCredential.map(vc => udcMap.get(vc)!)
-    : [];*/
+    : [];
 };

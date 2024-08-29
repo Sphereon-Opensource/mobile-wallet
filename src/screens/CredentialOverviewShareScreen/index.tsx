@@ -12,11 +12,12 @@ import {translate} from '../../localization/Localization';
 
 import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {showToast} from '../../utils';
+import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
+import {generateDigest, showToast} from '../../utils';
+import {CredentialMapper} from '@sphereon/ssi-types';
 
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
-import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -53,7 +54,8 @@ const SelectOverviewShareScreen = (props: Props) => {
     onDecline();
     return; // FIXME Funke, we need to go to an error / warn screen for this
   }
-  const data = useMemo(() => convertFromPIDPayload(credential.uniformVerifiableCredential!.credentialSubject), [credential]);
+  const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
+  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject), [credential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
