@@ -14,12 +14,14 @@ import {SSITextH3RegularLightStyled} from '../../../styles/components';
 
 const VerifyPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  console.log('verify screen:', onboardingInstance.getSnapshot().context.biometricsEnabled);
   useHasStrongBiometrics({
-    onBiometricsConfirmed: () => {
-      onboardingInstance.send({
-        type: OnboardingMachineEvents.SET_BIOMETRICS,
-        data: OnboardingBiometricsStatus.DISABLED,
-      });
+    onBiometricsConfirmed: (isSecure: boolean) => {
+      if (!isSecure)
+        onboardingInstance.send({
+          type: OnboardingMachineEvents.SET_BIOMETRICS,
+          data: OnboardingBiometricsStatus.DISABLED,
+        });
     },
   });
   const {

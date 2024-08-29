@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {Animated, TextInput, TextInputProps, TouchableOpacity} from 'react-native';
+import {Animated, Keyboard, Platform, TextInput, TextInputProps, TouchableOpacity} from 'react-native';
 import {ONLY_ALLOW_NUMBERS_REGEX} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
 import {
@@ -91,6 +91,16 @@ const OnboardingPinCode = ({pin, onPinChange, length = 4, secureCode = true, val
     },
     [pin, onPinChange, isComplete, isValid],
   );
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    const onHide = () => {
+      if (inputRef?.current && inputRef?.current?.isFocused()) inputRef.current.blur();
+    };
+    Keyboard.addListener('keyboardDidHide', onHide);
+
+    return () => Keyboard.removeAllListeners('keyboardDidHide');
+  }, []);
   return (
     // TODO remove TouchableOpacity once we have a stable keyboard that does not hide
     <TouchableOpacity activeOpacity={1} onPress={showKeyboard}>

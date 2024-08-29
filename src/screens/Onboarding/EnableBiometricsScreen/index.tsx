@@ -42,6 +42,7 @@ const Footnote = styled.Text`
 
 const EnableBiometricsScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
+  console.log('enabled?', onboardingInstance.getSnapshot().context.biometricsEnabled);
   const {prompt} = useBiometrics();
 
   const handleAuth = async () => {

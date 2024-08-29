@@ -33,7 +33,7 @@ export const useBiometrics = () => {
 export const useAuthEffect = (effect: (success: boolean) => void) => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const biometricsEnabled = useMemo(
-    () => onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
+    () => (onboardingInstance ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED : false), // TODO we need to store this biometrics option
     [onboardingInstance],
   );
 
@@ -56,7 +56,7 @@ const isHardwareSupported = (hasHardware: boolean, supported: Auth.Authenticatio
 };
 
 type UseHasStringBiometricsOptions = {
-  onBiometricsConfirmed?: () => void;
+  onBiometricsConfirmed?: (isSecure: boolean) => void;
 };
 
 const isEnrollmentStrong = (level: Auth.SecurityLevel) => {
@@ -102,7 +102,7 @@ export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = 
     const isSecure = enrolled && hasSupportedHardware && isStrong;
     setIsSecure(isSecure);
 
-    if (!isSecure) onBiometricsConfirmed?.();
+    onBiometricsConfirmed?.(isSecure);
   }, [setHasSupportedHardware, setIsSecure, setEnrolled]);
 
   useEffect(() => {
