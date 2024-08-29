@@ -8,6 +8,7 @@ type Props = {
   style?: ViewProps['style'];
   footer?: React.ReactNode;
   footerStyle?: ViewProps['style'];
+  disableKeyboardAvoidingView?: boolean;
 };
 
 const IOS_EXTRA_BOTTOM_PADDING = 16;
@@ -17,7 +18,7 @@ export const contentContainerStyle: ViewStyle = {
   paddingTop: 0,
 };
 
-const ScreenContainer = ({children, footer, style = {}, footerStyle = {}}: Props) => {
+const ScreenContainer = ({children, footer, style = {}, footerStyle = {}, disableKeyboardAvoidingView = false}: Props) => {
   const isAndroid = Platform.OS === 'android';
   const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
@@ -30,7 +31,7 @@ const ScreenContainer = ({children, footer, style = {}, footerStyle = {}}: Props
         paddingBottom: isIos ? 32 + IOS_EXTRA_BOTTOM_PADDING : 32,
       }}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
-      <KeyboardAvoidingView verticalOffset={verticalOffset} style={{flex: 1}}>
+      <KeyboardAvoidingView enabled={!disableKeyboardAvoidingView} verticalOffset={verticalOffset} style={{flex: 1}}>
         <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={[contentContainerStyle, style]}>
           {children}
         </ScrollView>
