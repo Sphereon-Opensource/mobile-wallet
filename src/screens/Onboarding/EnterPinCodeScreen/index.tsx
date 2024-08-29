@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {useCallback, useContext, useMemo, useRef, useEffect, useState} from 'react';
 import {Dimensions, ScrollView, View, TextInput} from 'react-native';
-import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -106,6 +106,7 @@ const EnterPinCodeScreen = () => {
         }
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
         setPinCode('');
+        setIsPinValid(false);
       }}
     />
   );
