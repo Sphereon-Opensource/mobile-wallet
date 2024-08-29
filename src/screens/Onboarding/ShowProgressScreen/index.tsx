@@ -102,7 +102,7 @@ const ShowProgressScreen = () => {
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}
       />
-      {currentStep === 3 && !skipImport && (
+      {currentStep === 3 && (
         <SecondaryButton
           caption={translate('onboarding_skip_credential_import_step3_caption')}
           onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_IMPORT)}
