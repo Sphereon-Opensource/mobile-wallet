@@ -204,7 +204,7 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     setTimeout(() => {
       // FIXME Funke; wait for machine event, but we need to set a state somewhere that onSelectAndSend was used so we know to proceed to onSend()
       onSend();
-    }, 1000);
+    }, 600);
   };
 
   //fixme: we should pass the hasher function here from the RP

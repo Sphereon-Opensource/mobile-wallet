@@ -72,7 +72,7 @@ const SelectOverviewShareScreen = (props: Props) => {
           style={{height: 42}}
           caption={translate('action_decline_label')}
           captionColor={fontColors.secondaryButton}
-          onPress={() => onDecline}
+          onPress={() => onDecline()}
         />
       </View>
       <View style={{flex: 1}}>
