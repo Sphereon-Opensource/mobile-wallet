@@ -1,9 +1,10 @@
 import {AusweisRequestedInfoItem, IconMap, keyMappings, MappableKeys} from './constants';
-import {isValidNumber} from 'react-native-gesture-handler/lib/typescript/web_hammer/utils';
 
 export type MappablePayload = Record<MappableKeys, any>;
 
-export function convertFromPIDPayload(properties: MappablePayload): AusweisRequestedInfoItem[] {
+export type Mode = 'import' | 'disclose';
+
+export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): AusweisRequestedInfoItem[] {
   const humanReadablePayload: AusweisRequestedInfoItem[] = [];
   const {nationalities, country, locality, postal_code, street_address, address, ...objectToMap} = keyMappings;
   Object.entries(objectToMap).forEach(([k, label]) => {
@@ -21,11 +22,13 @@ export function convertFromPIDPayload(properties: MappablePayload): AusweisReque
   const hasNationalities = properties['nationalities'];
   if (!!hasNationalities) humanReadablePayload.push(extractNationalityFromPayload(hasNationalities));
   humanReadablePayload.push(extractAddressFromPayload(properties));
-  const ageEntries = Object.entries(properties).filter(([key, value]) => /^\d+$/.test(key) && typeof value === 'boolean');
 
-  ageEntries.forEach(([age, isOver]) => {
-    humanReadablePayload.push(extractAgeValuesFromPayload(age, isOver));
-  });
+  if (mode === 'disclose') {
+    const ageEntries = Object.entries(properties).filter(([key, value]) => /^\d+$/.test(key) && typeof value === 'boolean');
+    ageEntries.forEach(([age, isOver]) => {
+      humanReadablePayload.push(extractAgeValuesFromPayload(age, isOver));
+    });
+  }
 
   return humanReadablePayload;
 }
