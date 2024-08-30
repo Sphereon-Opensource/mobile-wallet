@@ -1,4 +1,5 @@
 import {AusweisRequestedInfoItem, IconMap, keyMappings, MappableKeys} from './constants';
+import {isValidNumber} from 'react-native-gesture-handler/lib/typescript/web_hammer/utils';
 
 export type MappablePayload = Record<MappableKeys, any>;
 
@@ -20,8 +21,21 @@ export function convertFromPIDPayload(properties: MappablePayload): AusweisReque
   const hasNationalities = properties['nationalities'];
   if (!!hasNationalities) humanReadablePayload.push(extractNationalityFromPayload(hasNationalities));
   humanReadablePayload.push(extractAddressFromPayload(properties));
+  const ageEntries = Object.entries(properties).filter(([key, value]) => /^\d+$/.test(key) && typeof value === 'boolean');
+
+  ageEntries.forEach(([age, isOver]) => {
+    humanReadablePayload.push(extractAgeValuesFromPayload(age, isOver));
+  });
 
   return humanReadablePayload;
+}
+
+function extractAgeValuesFromPayload(age: string, isOver: boolean): AusweisRequestedInfoItem {
+  return {
+    label: keyMappings['age_in_years'],
+    data: `Age over ${age}: ${isOver ? 'yes' : 'no'}`,
+    icon: IconMap['age_in_years'],
+  };
 }
 
 export function extractNationalityFromPayload(nationalities: string[]): AusweisRequestedInfoItem {
