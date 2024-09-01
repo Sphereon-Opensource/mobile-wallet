@@ -5,7 +5,7 @@ import {agentContext} from '../../../agent';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
 import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 
-class VciServiceFunkeCProvider {
+class VciServiceFunkeC2Provider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
   private static readonly _funke_clientId = 'bc11dd24-cbe9-4f13-890b-967e5f900222';
   private readonly pidService: PidIssuerService;
@@ -36,15 +36,15 @@ class VciServiceFunkeCProvider {
     this.handleStateChange({state: 'INITIALIZED'});
   }
 
-  public static async initialize(args: EIDInitializeArgs): Promise<VciServiceFunkeCProvider> {
+  public static async initialize(args: EIDInitializeArgs): Promise<VciServiceFunkeC2Provider> {
     const {pidProvider} = args;
     const credentialOffer =
-      'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
+      'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc2%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
-      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
+      {pidProvider, clientId: VciServiceFunkeC2Provider._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
       agentContext,
     );
-    return new VciServiceFunkeCProvider({...args, pidService});
+    return new VciServiceFunkeC2Provider({...args, pidService});
   }
 
   public async start(): Promise<AusweisAuthFlow> {
@@ -100,16 +100,16 @@ class VciServiceFunkeCProvider {
           format: 'vc+sd-jwt',
           type: 'urn:eu.europa.ec.eudi:pid:1',
         },
-        {
+        /*{
           format: 'mso_mdoc',
           type: 'eu.europa.ec.eudi.pid.1',
-        },
+        },*/
       ],
-      noCredentialRequestProof: false,
+      noCredentialRequestProof: true,
     });
     this.pidService.close();
     return pids;
   }
 }
 
-export default VciServiceFunkeCProvider;
+export default VciServiceFunkeC2Provider;

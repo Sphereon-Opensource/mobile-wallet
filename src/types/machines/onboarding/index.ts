@@ -1,6 +1,7 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
+import VciServiceFunkeC2Provider from '../../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import {OnboardingStackParamsList} from '../../navigation';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../../error';
@@ -100,7 +101,7 @@ export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
-export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
+export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider | VciServiceFunkeC2Provider};
 
 export type OnboardingMachineEventTypes =
   | NextEvent

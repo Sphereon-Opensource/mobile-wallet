@@ -21,6 +21,7 @@ import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {DataSource} from 'typeorm';
 import {walletCrypto} from '../../index';
 import {animoFunkeCert, funkeTestCA, sphereonCA} from '../@config/trustanchors';
+import {PIDIssuerPresentationSigning} from '../providers/authentication/funke/PIDIssuerPresentationSigning';
 import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
@@ -46,6 +47,8 @@ export const oid4vciHolder = new OID4VCIHolder({
   },
   hasher: generateDigest,
 });
+
+export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   global.crypto = walletCrypto;
@@ -90,6 +93,8 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       handlers: linkHandlers,
     }),
     new SDJwtPlugin({
+      // We hookup a custom signer for the C2 flow. IT delegates the KB signing to the PID Issuer
+      signers: {[funkeC2Issuer]: new PIDIssuerPresentationSigning(funkeC2Issuer).kbPresentationSigner},
       hasher: generateDigest,
       saltGenerator: generateSalt,
       verifySignature: verifySDJWTSignature,
