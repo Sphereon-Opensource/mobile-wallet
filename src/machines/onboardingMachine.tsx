@@ -90,6 +90,9 @@ const states: OnboardingStatesConfig = {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true}),
       },
+      SET_SKIP_IMPORT: {
+        actions: assign({skipImport: (_, event) => event.data}),
+      },
     },
   },
   enterName: {
@@ -178,10 +181,17 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.enterPinCode,
         },
       ],
-      NEXT: {
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 3}),
-      },
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.setupWallet,
+          actions: assign({currentStep: 4}),
+        },
+        {
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: 3}),
+        },
+      ],
     },
   },
   readTerms: {

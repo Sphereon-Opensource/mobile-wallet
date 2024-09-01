@@ -3,12 +3,21 @@ import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
 import {IStorePinArgs, IStoreUserArgs, IUser} from '../types';
+import {useSafeAreaFrame} from 'react-native-safe-area-context';
+
+export enum PIDSecurityModel {
+  SECURE_ELEMENT = 'secure element',
+  REMOTE_HARDWARE = 'remote hardware',
+  MOBILE_OPERATOR_ESIM = 'mobile operator esim',
+  EID_DURING_PRESENTATION = 'eid during presentation',
+}
 
 const debug: Debugger = Debug(`${APP_ID}:storageService`);
 
 const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'users';
+const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -92,6 +101,21 @@ export const storageDeleteUser = async (userId: string): Promise<void> => {
       userStorage.setString(STORAGE_USERS_KEY, JSON.stringify(Array.from(users)));
     })
     .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
+};
+
+export const storagePersistPIDSecurityModel = async (value: PIDSecurityModel) => {
+  debug(`storing user PID security model: ${value}`);
+  return userStorage
+    .setStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY, value)
+    .catch(() => new Error(`Failed to read PID security model for key: ${STORAGE_USER_PID_SECURITY_MODEL_KEY}`));
+};
+
+export const storageGetPIDSecurityModel = async () => {
+  debug('getPIDSecurityModel...');
+  const value = await userStorage.getStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY);
+  if (!value) return Promise.reject(new Error(`Value not found for key: ${STORAGE_USER_PID_SECURITY_MODEL_KEY}`));
+
+  return value as PIDSecurityModel;
 };
 
 export const storagePersistPin = async ({value}: IStorePinArgs): Promise<any> => {
