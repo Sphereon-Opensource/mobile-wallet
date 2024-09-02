@@ -31,6 +31,8 @@
         <array>
           <string>com.sphereon.ssi.wallet</string>
           <string>openid4vp</string>
+          <string>openid-credential-offer</string>
+          <string>openid-vc</string>
         </array>
       </dict>
     </array>
