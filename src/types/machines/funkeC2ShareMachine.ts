@@ -14,6 +14,7 @@ import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciS
 import {ErrorDetails} from '../error';
 import {GetPIDCredentialsMachineEvents, MappedCredential} from './getPIDCredentialMachine';
 import {SiopV2AuthorizationRequestData} from './siopV2';
+import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 export enum FunkeC2ShareMachineStateTypes {
   createConfig = 'createConfig',
@@ -36,7 +37,13 @@ export enum FunkeC2ShareMachineGuards {
   hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
 }
 
-export enum FunkeC2ShareMachineServices {}
+export enum FunkeC2ShareMachineServices {
+  createConfig = 'createConfig',
+  getSiopRequest = 'getSiopRequest',
+  retrieveContact = 'retrieveContact',
+  retrievePIDCredentials = 'retrievePIDCredentials',
+  sendResponse = 'sendResponse',
+}
 
 export enum FunkeC2ShareMachineEvents {
   NEXT = 'NEXT',
@@ -51,6 +58,8 @@ export type SetFunkeProvider = {type: GetPIDCredentialsMachineEvents.SET_FUNKE_P
 export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider;
 
 export type FunkeC2ShareMachineContext = {
+  url: string;
+  idOpts?: ManagedIdentifierOpts;
   funkeProvider?: VciServiceFunkeC2Provider;
   didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
@@ -71,6 +80,8 @@ export type FunkeC2ShareMachineStatesStatesConfig = StatesConfig<
 >;
 
 export type FunkeC2ShareMachineOpts = {
+  url: string | URL;
+  idOpts?: ManagedIdentifierOpts;
   machineId?: string;
 };
 

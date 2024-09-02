@@ -21,6 +21,14 @@ import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {ErrorDetails} from '../types';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
+import {CreateConfigResult, Siopv2AuthorizationRequestData, Siopv2AuthorizationResponseData} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {
+  retrievePIDCredentials,
+  siopCreateConfig,
+  siopGetSiopRequest,
+  siopRetrieveContact,
+  siopSendResponse,
+} from '../services/machines/funkeC2ShareMachineService';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeCShare`);
 
@@ -180,8 +188,12 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
   },
 };
 
-const createFunkeCShareMachine = (opts?: FunkeC2ShareMachineOpts): FunkeC2ShareStateMachine => {
+const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareStateMachine => {
+  const {url, idOpts} = opts;
+
   const initialContext: FunkeC2ShareMachineContext = {
+    url: new URL(url).toString(),
+    idOpts,
     pidCredentials: [],
   };
 
@@ -195,15 +207,21 @@ const createFunkeCShareMachine = (opts?: FunkeC2ShareMachineOpts): FunkeC2ShareS
         type: FunkeC2ShareMachineGuards.hasFunkeRefreshUrl;
       },
       services: {} as {
-        // [FunkeCShareMachineServices.retrievePIDCredentials]: {
-        //   data: Array<MappedCredential>;
-        // };
-        // [FunkeCShareMachineServices.storePIDCredentials]: {
-        //   data: void;
-        // };
-        // [FunkeCShareMachineServices.storeCredentialBranding]: {
-        //   data: void;
-        // };
+        [FunkeC2ShareMachineServices.createConfig]: {
+          data: CreateConfigResult;
+        };
+        [FunkeC2ShareMachineServices.getSiopRequest]: {
+          data: Siopv2AuthorizationRequestData;
+        };
+        [FunkeC2ShareMachineServices.retrieveContact]: {
+          data: Party | undefined;
+        };
+        [FunkeC2ShareMachineServices.retrievePIDCredentials]: {
+          data: Array<MappedCredential>;
+        };
+        [FunkeC2ShareMachineServices.sendResponse]: {
+          data: Siopv2AuthorizationResponseData;
+        };
       },
     },
     context: initialContext,
@@ -246,15 +264,16 @@ export class FunkeC2ShareMachine {
     debug(`Stopped funkeCShare instance`);
   }
 
-  public static newInstance(opts?: InstanceFunkeC2ShareMachineOpts): FunkeC2ShareMachineInterpreter {
+  public static newInstance(opts: InstanceFunkeC2ShareMachineOpts): FunkeC2ShareMachineInterpreter {
     debug(`Creating new funkeCShare instance`, opts);
     const newInst: FunkeC2ShareMachineInterpreter = interpret(
       createFunkeCShareMachine(opts).withConfig({
         services: {
-          // [GetPIDCredentialsMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
-          // [GetPIDCredentialsMachineServices.storePIDCredentials]: storePIDCredentials,
-          // [GetPIDCredentialsMachineServices.storeCredentialBranding]: storeCredentialBranding,
-          // [GetPIDCredentialsMachineServices.fetchCredentialsInStore]: fetchVerifiableCredentials,
+          [FunkeC2ShareMachineServices.createConfig]: siopCreateConfig,
+          [FunkeC2ShareMachineServices.getSiopRequest]: siopGetSiopRequest,
+          [FunkeC2ShareMachineServices.retrieveContact]: siopRetrieveContact,
+          [FunkeC2ShareMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
+          [FunkeC2ShareMachineServices.sendResponse]: siopSendResponse,
           ...opts?.services,
         },
         guards: {
@@ -277,7 +296,7 @@ export class FunkeC2ShareMachine {
   }
 
   static getInstance(
-    opts?: InstanceFunkeC2ShareMachineOpts & {
+    opts: InstanceFunkeC2ShareMachineOpts & {
       requireExisting?: boolean;
     },
   ): FunkeC2ShareMachineInterpreter {
