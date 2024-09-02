@@ -87,8 +87,8 @@ export type GetPIDCredentialsStackParamsList = {
 
 export type FunkeC2ShareStackParamsList = {
   Loading: ILoadingProps;
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
 
-  // ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;

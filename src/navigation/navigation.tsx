@@ -795,6 +795,24 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       }}
     />
     <FunkeC2ShareBaseStack.Screen
+      name="ImportDataConsent"
+      component={ImportDataConsentScreen}
+      options={({route}) => ({
+        header: props => (
+          <SSIHeaderBar {...props} onBack={route.params.onBack} />
+          // <OnboardingHeader
+          //   {...props}
+          //   onBack={route.params.onBack}
+          //   title={translate('import_data_title')}
+          //   stepConfig={{
+          //     current: 1,
+          //     total: 4,
+          //   }}
+          // />
+        ),
+      })}
+    />
+    <FunkeC2ShareBaseStack.Screen
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({
