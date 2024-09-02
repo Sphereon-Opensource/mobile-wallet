@@ -11,12 +11,12 @@ import React, {Context, createContext} from 'react';
 import RootNavigation from '../rootNavigation';
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
-import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum} from '../../types';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
-import {GetPIDCredentialsMachineEvents, GetPIDCredentialsMachineStateTypes} from '../../types/machines/getPIDCredentialMachine';
-import {GetPIDCredentialsMachine} from '../../machines/getPIDCredentialMachine';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
-import {OID4VCIMachineStates} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {delay} from '../../utils';
+import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciServiceFunkeC2Provider';
+import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
 
@@ -45,6 +45,74 @@ const navigateAcceptRequestInformation = async (args: any): Promise<void> => {
   });
 };
 
+const navigateAuthenticateAusweisEID = async (args: any): Promise<void> => {
+  const {navigation, machine} = args;
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: 'ImportPersonalData',
+    params: {
+      onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
+      onAuth: async (provider: VciServiceFunkeC2Provider) => {
+        machine.send(FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER, {data: provider});
+        // Adding a small delay to let the animation play
+        await delay(600);
+        machine.send(FunkeC2ShareMachineEvents.NEXT);
+      },
+    },
+  });
+};
+
+const navigateAuthenticate = async (args: any): Promise<void> => {
+  const {navigation, machine} = args;
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: 'ImportDataAuthentication',
+    params: {
+      onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
+      onAccept: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
+    },
+  });
+};
+
+const navigateAcceptShareCredential = async (args: any): Promise<void> => {
+  console.log(`HGELLOOOOO?????`);
+
+  const {navigation, machine, context} = args;
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: 'ImportDataFinal',
+    params: {
+      onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
+      onAccept: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
+      onDecline: async () => machine.send(FunkeC2ShareMachineEvents.DECLINE),
+      credentials: context.pidCredentials,
+    },
+  });
+};
+
+const navigateHandleError = async (args: any): Promise<void> => {
+  const {navigation, machine, context} = args;
+
+  if (!context.error) {
+    throw new Error(`Missing error in context`);
+  }
+
+  navigation.navigate(ScreenRoutesEnum.ERROR, {
+    image: PopupImagesEnum.WARNING,
+    title: context.error.title,
+    details: context.error.message,
+    ...(context.error.detailsMessage && {
+      detailsPopup: {
+        buttonCaption: translate('action_view_extra_details'),
+        title: context.error.detailsTitle,
+        details: context.error.detailsMessage,
+      },
+    }),
+    primaryButton: {
+      caption: translate('action_ok_label'),
+      onPress: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
+    },
+    onBack: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
+  });
+};
+
 const navigateFinal = async (args: any): Promise<void> => {
   const {navigation} = args;
   FunkeC2ShareMachine.clearInstance({stop: true});
@@ -66,34 +134,33 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     return;
   }
 
+  console.log(`STATE: ${state.value}`);
+
   if (
     state.matches(FunkeC2ShareMachineStateTypes.createConfig) ||
     state.matches(FunkeC2ShareMachineStateTypes.getSiopRequest) ||
-    state.matches(FunkeC2ShareMachineStateTypes.retrieveContact)
+    state.matches(FunkeC2ShareMachineStateTypes.retrieveContact) ||
+    state.matches(FunkeC2ShareMachineStateTypes.retrievePIDCredentials)
   ) {
     void navigateLoading({navigation, context, machine: funkeCShareMachine});
   } else if (state.matches(FunkeC2ShareMachineStateTypes.acceptRequestInformation)) {
     void navigateAcceptRequestInformation({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.authenticateAusweisEID)) {
+    void navigateAuthenticateAusweisEID({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.authenticate)) {
+    void navigateAuthenticate({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.acceptShareCredential)) {
+    void navigateAcceptShareCredential({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.handleError)) {
+    void navigateHandleError({navigation, context, machine: funkeCShareMachine});
   } else if (
-    state.matches(OID4VCIMachineStates.done) ||
-    state.matches(OID4VCIMachineStates.error) ||
-    state.matches(OID4VCIMachineStates.aborted) ||
-    state.matches(OID4VCIMachineStates.declined)
+    state.matches(FunkeC2ShareMachineStateTypes.done) ||
+    state.matches(FunkeC2ShareMachineStateTypes.error) ||
+    state.matches(FunkeC2ShareMachineStateTypes.aborted) ||
+    state.matches(FunkeC2ShareMachineStateTypes.declined)
   ) {
     void navigateFinal({navigation});
   }
-
-  // switch (state.value) {
-  //   case FunkeC2ShareMachineStateTypes.createConfig:
-  //     navigation.navigate(MainRoutesEnum.OID4VCI, { // TODO
-  //       screen: ScreenRoutesEnum.LOADING,
-  //       params: {
-  //         message: translate('action_getting_information_message'),
-  //       },
-  //     });
-  //   default:
-  //     throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`); // Should not happen, so we throw an error
-  // }
 };
 
 export const FunkeC2ShareProvider = (props: FunkeC2ShareProviderProps): JSX.Element => {

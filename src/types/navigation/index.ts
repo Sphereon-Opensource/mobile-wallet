@@ -88,11 +88,10 @@ export type GetPIDCredentialsStackParamsList = {
 export type FunkeC2ShareStackParamsList = {
   Loading: ILoadingProps;
   ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
 
-  // ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
-  // ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
-  // ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;
-  // ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
   // IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;

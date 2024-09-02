@@ -50,13 +50,15 @@ export enum FunkeC2ShareMachineEvents {
   NEXT = 'NEXT',
   PREVIOUS = 'PREVIOUS',
   SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
+  DECLINE = 'DECLINE',
 }
 
 export type NextEvent = {type: FunkeC2ShareMachineEvents.NEXT};
 export type PreviousEvent = {type: FunkeC2ShareMachineEvents.PREVIOUS};
 export type SetFunkeProvider = {type: FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeC2Provider};
+export type DeclineEvent = {type: FunkeC2ShareMachineEvents.DECLINE};
 
-export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider;
+export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider | DeclineEvent;
 
 export type FunkeC2ShareMachineContext = {
   url: string;
