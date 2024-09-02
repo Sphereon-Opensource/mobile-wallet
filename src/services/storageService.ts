@@ -113,7 +113,6 @@ export const storagePersistPIDSecurityModel = async (value: PIDSecurityModel) =>
 export const storageGetPIDSecurityModel = async () => {
   debug('getPIDSecurityModel...');
   const value = await userStorage.getStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY);
-  if (!value) return Promise.reject(new Error(`Value not found for key: ${STORAGE_USER_PID_SECURITY_MODEL_KEY}`));
 
   return value as PIDSecurityModel;
 };

@@ -9,14 +9,18 @@ import {
   SSITextH3LightStyled as DescriptionCaption,
 } from '@sphereon/ui-components.ssi-react-native';
 import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
-import Localization from '../../localization/Localization';
+import Localization, {translate} from '../../localization/Localization';
 import {
   SSIBasicModalContainerStyled as Container,
   AusweisModalButtonContainerStyled as ButtonContainer,
   AusweisModalIconButtonStyled as IconButton,
   AusweisModalAnimatedViewStyled as AnimatedView,
 } from '../../styles/components';
-import {MainRoutesEnum, StackParamList} from '../../types';
+import {MainRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
+import {showToast} from '../../utils';
+import Toast from 'react-native-toast-message';
+import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from 'src/@config/toasts';
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.AUSWEIS_MODAL>;
 
@@ -47,6 +51,20 @@ const AusweisModal: FC<Props> = (props: Props): ReactElement => {
     });
   };
 
+  const onPressImport = async () => {
+    const pidSecurityModel = await storageGetPIDSecurityModel();
+    if (pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
+      showToast(ToastTypeEnum.TOAST_SUCCESS, {
+        message: translate('pid_security_model_warning'),
+        showBadge: false,
+      });
+      return;
+    }
+
+    await slideOut().then(onClose);
+    await onAccept();
+  };
+
   useEffect((): void => {
     slideIn();
   }, []);
@@ -67,11 +85,12 @@ const AusweisModal: FC<Props> = (props: Props): ReactElement => {
               issuer={Localization.translate('ausweis_eid_preview_card_issuer')}
             />
             <ButtonContainer>
-              <PrimaryButton caption={Localization.translate('ausweis_eid_modal_accept_label')} onPress={onAccept} />
+              <PrimaryButton caption={Localization.translate('ausweis_eid_modal_accept_label')} onPress={onPressImport} />
               <SecondaryButton caption={Localization.translate('action_maybe_later_label')} onPress={() => slideOut().then(onClose)} />
             </ButtonContainer>
           </AnimatedView>
         </TouchableWithoutFeedback>
+        <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
       </Container>
     </TouchableWithoutFeedback>
   );

@@ -11,7 +11,7 @@ import {
   PROGRESS_BAR_HEIGHT,
   SSITextH3LightStyled,
 } from '../../../styles/components';
-import {ButtonIconsEnum} from '../../../types';
+import {ButtonIconsEnum, ToastTypeEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {Dimensions, Image, Pressable, Text, View} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
@@ -79,10 +79,15 @@ export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VE
 
 const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
-  const {currentStep, skipImport} = onboardingInstance.getSnapshot().context;
+
+  const {currentStep, skipImport} = useMemo(
+    () => (onboardingInstance ? onboardingInstance.getSnapshot().context : {currentStep: undefined, skipImport: undefined}),
+    [onboardingInstance],
+  );
 
   const showCogWheel = useMemo(() => {
     console.log('current step', currentStep);
+    if (!currentStep) return false;
     return currentStep < 4 && !stepConfig;
   }, [currentStep]);
 

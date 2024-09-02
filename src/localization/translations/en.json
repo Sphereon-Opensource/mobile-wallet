@@ -110,6 +110,8 @@
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
 
+  "pid_security_model_warning": "EID can will only loaded during presentation",
+
   "import_data_auth_title": "Enter your Sphereon PIN ",
   "import_data_auth_next": "Continue",
 

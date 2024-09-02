@@ -261,6 +261,8 @@
     }
   },
 
+  "pid_security_model_warning": "EID can will only loaded during presentation",
+
   "import_data_auth_title": "Enter your Sphereon PIN ",
   "import_data_auth_next": "Continue",
 
