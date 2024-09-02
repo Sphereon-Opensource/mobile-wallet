@@ -13,7 +13,7 @@ export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentCont
       context,
     }),
     new SIOPv2OID4VPLinkHandler({
-      protocols: [QrTypesEnum.OPENID4VC, QrTypesEnum.OPENID_VC, QrTypesEnum.SIOPV2, QrTypesEnum.OPENID],
+      protocols: [QrTypesEnum.OPENID4VP, QrTypesEnum.OPENID4VC, QrTypesEnum.OPENID_VC, QrTypesEnum.SIOPV2, QrTypesEnum.OPENID],
       context,
     }),
   ]);
