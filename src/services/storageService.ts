@@ -7,7 +7,7 @@ import {useSafeAreaFrame} from 'react-native-safe-area-context';
 
 export enum PIDSecurityModel {
   SECURE_ELEMENT = 'secure element',
-  REMOTE_HARDWARE = 'remote hardware',
+  REMOTE_HSM = 'remote HSM',
   MOBILE_OPERATOR_ESIM = 'mobile operator esim',
   EID_DURING_PRESENTATION = 'eid during presentation',
 }
@@ -108,6 +108,10 @@ export const storagePersistPIDSecurityModel = async (value: PIDSecurityModel) =>
   return userStorage
     .setStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY, value)
     .catch(() => new Error(`Failed to read PID security model for key: ${STORAGE_USER_PID_SECURITY_MODEL_KEY}`));
+};
+
+export const storageIsPIDSecurityModel = async (model: PIDSecurityModel) => {
+  return (await storageGetPIDSecurityModel()) === model;
 };
 
 export const storageGetPIDSecurityModel = async () => {

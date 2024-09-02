@@ -1,5 +1,4 @@
 import {Dispatch, SetStateAction} from 'react';
-import VciServiceFunkeC2Provider from '../../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import {PidIssuerService} from '../../../providers/PidIssuerService';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 
@@ -21,13 +20,13 @@ export type EIDFlowState = {
 export type EIDProviderArgs = {
   pidService: PidIssuerService;
   onEnterPin: () => string;
-  onAuthenticated?: (provider: VciServiceFunkeCProvider | VciServiceFunkeC2Provider) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
 };
 
 export type EIDInitializeArgs = {
   onEnterPin: () => string;
-  onAuthenticated?: (provider: VciServiceFunkeCProvider | VciServiceFunkeC2Provider) => void;
+  onAuthenticated?: (provider: VciServiceFunkeCProvider) => void;
   onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((state: EIDFlowState) => void);
   pidProvider?: string;
 };

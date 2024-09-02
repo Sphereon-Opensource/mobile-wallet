@@ -9,7 +9,6 @@ import {
   StatesConfig,
   TypegenDisabled,
 } from 'xstate';
-import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../error';
 import {IVerifiableCredential} from '@sphereon/ssi-types';
@@ -23,7 +22,7 @@ export type CreateGetPIDCredentialsMachineOpts = {
 };
 
 export type GetPIDCredentialsMachineContext = {
-  funkeProvider?: VciServiceFunkeCProvider | VciServiceFunkeC2Provider;
+  funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
 };

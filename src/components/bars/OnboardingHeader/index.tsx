@@ -19,7 +19,7 @@ import styled from 'styled-components/native';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
-import {Circle, SelectedCircle} from '../../../styles/components/modals/CountrySelectionModal';
+import {Circle, SelectedCircle} from '../../../styles/components';
 import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
@@ -188,8 +188,8 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
             />
             <SelectOption
               label={translate('onboarding_pid_security_model_remote_hardware')}
-              onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HARDWARE)}
-              selected={securityModel === PIDSecurityModel.REMOTE_HARDWARE}
+              onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
+              selected={securityModel === PIDSecurityModel.REMOTE_HSM}
               disabled
             />
             <SelectOption

@@ -8,6 +8,7 @@ import {
   SSITextH1SemiBoldLightStyled as TitleCaption,
   SSITextH3LightStyled as DescriptionCaption,
 } from '@sphereon/ui-components.ssi-react-native';
+import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../../@config/toasts';
 import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
 import Localization, {translate} from '../../localization/Localization';
 import {
@@ -20,7 +21,6 @@ import {MainRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
 import {showToast} from '../../utils';
 import Toast from 'react-native-toast-message';
-import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from 'src/@config/toasts';
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.AUSWEIS_MODAL>;
 

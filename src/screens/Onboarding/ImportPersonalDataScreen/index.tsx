@@ -5,7 +5,6 @@ import {Image, Keyboard, Platform, View} from 'react-native';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import VciServiceFunkeC2Provider from '../../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
@@ -26,7 +25,7 @@ const ImportPersonalDataScreen = (props?: any) => {
   const [showPin, setShowPin] = useState(false);
   const [pin, setPin] = useState('');
   const [eIDFlowState, setEIDFlowState] = useState<EIDFlowState | undefined>();
-  const [provider, setProvider] = useState<VciServiceFunkeCProvider | VciServiceFunkeC2Provider | undefined>();
+  const [provider, setProvider] = useState<VciServiceFunkeCProvider | undefined>();
 
   const translationsPath = 'onboarding_pages.import_scan_card';
 
@@ -42,7 +41,7 @@ const ImportPersonalDataScreen = (props?: any) => {
       return;
     }
 
-    const onAuthenticated = async (provider: VciServiceFunkeCProvider | VciServiceFunkeC2Provider): Promise<void> => {
+    const onAuthenticated = async (provider: VciServiceFunkeCProvider): Promise<void> => {
       onboardingInstance.send(OnboardingMachineEvents.SET_FUNKE_PROVIDER, {data: provider});
       // Adding a small delay to let the animation play
       await delay(600);
@@ -54,11 +53,11 @@ const ImportPersonalDataScreen = (props?: any) => {
     };
 
     // Fixme. Move back to C flow after integration into VP flow
-    VciServiceFunkeC2Provider.initialize({
+    VciServiceFunkeCProvider.initialize({
       onEnterPin,
       onAuthenticated: onAuth ?? onAuthenticated,
       onStateChange: setEIDFlowState,
-    }).then((provider: VciServiceFunkeC2Provider): void => {
+    }).then((provider: VciServiceFunkeCProvider): void => {
       setProvider(provider);
       void provider?.start();
     });

@@ -12,7 +12,7 @@ import {
 } from 'xstate';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution';
-import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciServiceFunkeC2Provider';
+import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../error';
 import {MappedCredential} from './getPIDCredentialMachine';
 import {SiopV2AuthorizationRequestData} from './siopV2';
@@ -55,7 +55,7 @@ export enum FunkeC2ShareMachineEvents {
 
 export type NextEvent = {type: FunkeC2ShareMachineEvents.NEXT};
 export type PreviousEvent = {type: FunkeC2ShareMachineEvents.PREVIOUS};
-export type SetFunkeProvider = {type: FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeC2Provider};
+export type SetFunkeProvider = {type: FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 export type DeclineEvent = {type: FunkeC2ShareMachineEvents.DECLINE};
 
 export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider | DeclineEvent;
@@ -63,7 +63,7 @@ export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunke
 export type FunkeC2ShareMachineContext = {
   url: string;
   idOpts?: ManagedIdentifierOpts;
-  funkeProvider?: VciServiceFunkeC2Provider;
+  funkeProvider?: VciServiceFunkeCProvider;
   didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
   contact?: Party;

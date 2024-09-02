@@ -1,3 +1,4 @@
+import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {
   FunkeC2ShareContextType,
   FunkeC2ShareMachineContext,
@@ -15,7 +16,6 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {translate} from '../../localization/Localization';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
 import {delay} from '../../utils';
-import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
@@ -51,7 +51,7 @@ const navigateAuthenticateAusweisEID = async (args: any): Promise<void> => {
     screen: 'ImportPersonalData',
     params: {
       onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
-      onAuth: async (provider: VciServiceFunkeC2Provider) => {
+      onAuth: async (provider: VciServiceFunkeCProvider) => {
         machine.send(FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER, {data: provider});
         // Adding a small delay to let the animation play
         await delay(600);
