@@ -18,7 +18,7 @@ const ImportDataFinalScreen = (props?: any) => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const {pidCredentials} = credentials ? {pidCredentials: credentials} : onboardingInstance.getSnapshot().context;
 
-  const data = useMemo(() => convertFromPIDPayload(pidCredentials[0].uniformCredential.credentialSubject), []);
+  const data = useMemo(() => convertFromPIDPayload(pidCredentials[0].uniformCredential.credentialSubject, 'import'), []);
 
   const footer = (
     <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 10}}>

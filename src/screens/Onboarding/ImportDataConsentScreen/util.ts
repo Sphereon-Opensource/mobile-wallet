@@ -2,7 +2,9 @@ import {AusweisRequestedInfoItem, IconMap, keyMappings, MappableKeys} from './co
 
 export type MappablePayload = Record<MappableKeys, any>;
 
-export function convertFromPIDPayload(properties: MappablePayload): AusweisRequestedInfoItem[] {
+export type Mode = 'import' | 'disclose';
+
+export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): AusweisRequestedInfoItem[] {
   const humanReadablePayload: AusweisRequestedInfoItem[] = [];
   const {nationalities, country, locality, postal_code, street_address, address, ...objectToMap} = keyMappings;
   Object.entries(objectToMap).forEach(([k, label]) => {
@@ -21,7 +23,22 @@ export function convertFromPIDPayload(properties: MappablePayload): AusweisReque
   if (!!hasNationalities) humanReadablePayload.push(extractNationalityFromPayload(hasNationalities));
   humanReadablePayload.push(extractAddressFromPayload(properties));
 
+  if (mode === 'disclose') {
+    const ageEntries = Object.entries(properties).filter(([key, value]) => /^\d+$/.test(key) && typeof value === 'boolean');
+    ageEntries.forEach(([age, isOver]) => {
+      humanReadablePayload.push(extractAgeValuesFromPayload(age, isOver));
+    });
+  }
+
   return humanReadablePayload;
+}
+
+function extractAgeValuesFromPayload(age: string, isOver: boolean): AusweisRequestedInfoItem {
+  return {
+    label: keyMappings['age_in_years'],
+    data: `Age over ${age}: ${isOver ? 'yes' : 'no'}`,
+    icon: IconMap['age_in_years'],
+  };
 }
 
 export function extractNationalityFromPayload(nationalities: string[]): AusweisRequestedInfoItem {

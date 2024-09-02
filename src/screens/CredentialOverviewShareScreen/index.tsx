@@ -55,7 +55,7 @@ const SelectOverviewShareScreen = (props: Props) => {
     return; // FIXME Funke, we need to go to an error / warn screen for this
   }
   const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
-  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject), [credential]);
+  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'), [credential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
