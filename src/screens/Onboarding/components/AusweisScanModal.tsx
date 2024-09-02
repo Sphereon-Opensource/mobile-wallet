@@ -79,6 +79,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   }, [state, progress]);
 
   const modalTitle = useMemo(() => {
+    console.log('STATE: ' + state?.state);
     if (state?.state === 'INSERT_CARD' || state?.state === 'STARTED') return 'Ready to Scan'; //FIXME there is a small delay in the SDK starting and being ready for reading. i am not sure how we want to handle this in the UI
     if (state?.state === 'READING_CARD') return 'Scanning Document';
     return '';

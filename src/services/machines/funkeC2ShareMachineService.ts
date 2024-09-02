@@ -6,6 +6,7 @@ import {
   VerifiableCredentialsWithDefinition,
 } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {v4 as uuidv4} from 'uuid';
+import {siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
 import agent from '../../agent';
 import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
@@ -159,7 +160,9 @@ export const siopSendResponse = async (
     ...(context.idOpts && {idOpts: context.idOpts}),
     ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
   });
-
+  if (!response) {
+    return Promise.reject(Error('Missing SIOP authentication response'));
+  }
   const contentType = response.headers.get('content-type') || '';
   let responseBody: any = null;
 
