@@ -1,4 +1,4 @@
-import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
+import {ReactNode} from 'react';
 import {
   BaseActionObject,
   GuardPredicate,
@@ -10,11 +10,12 @@ import {
   StatesConfig,
   TypegenDisabled,
 } from 'xstate';
+import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
+import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import VciServiceFunkeC2Provider from '../../providers/authentication/funke/VciServiceFunkeC2Provider';
 import {ErrorDetails} from '../error';
-import {GetPIDCredentialsMachineEvents, MappedCredential} from './getPIDCredentialMachine';
+import {MappedCredential} from './getPIDCredentialMachine';
 import {SiopV2AuthorizationRequestData} from './siopV2';
-import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 export enum FunkeC2ShareMachineStateTypes {
   createConfig = 'createConfig',
@@ -53,7 +54,7 @@ export enum FunkeC2ShareMachineEvents {
 
 export type NextEvent = {type: FunkeC2ShareMachineEvents.NEXT};
 export type PreviousEvent = {type: FunkeC2ShareMachineEvents.PREVIOUS};
-export type SetFunkeProvider = {type: GetPIDCredentialsMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeC2Provider};
+export type SetFunkeProvider = {type: FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeC2Provider};
 
 export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider;
 
@@ -128,3 +129,12 @@ export type FunkeC2ShareMachineState = State<
 >;
 
 export type FunkeC2ShareMachineGuard = GuardPredicate<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>['predicate'];
+
+export type FunkeC2ShareContextType = {
+  funkeC2ShareInstance?: FunkeC2ShareMachineInterpreter;
+};
+
+export type FunkeC2ShareProviderProps = {
+  children?: ReactNode;
+  customFunkeC2ShareInstance?: FunkeC2ShareMachineInterpreter;
+};

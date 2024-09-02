@@ -50,6 +50,7 @@ import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
+  FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
   ISiopV2PProps,
@@ -75,12 +76,14 @@ import {useSelector} from 'react-redux';
 import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
+import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
 const Stack = createNativeStackNavigator<StackParamList>();
 const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
 const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
+const FunkeC2ShareBaseStack = createNativeStackNavigator<FunkeC2ShareStackParamsList>();
 
 const Tab = createBottomTabNavigator();
 
@@ -149,6 +152,15 @@ const MainStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <GetPIDCredentialsStackScreenWithContext />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.FUNKE_C2_SHARE}
+        children={() => (
+          <>
+            <FunkeC2ShareStackScreenWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -770,6 +782,32 @@ export const GetPIDCredentialsStackScreenWithContext = (props: any): JSX.Element
   <GetPIDCredentialsProvider customGetPIDCredentialsInstance={props?.params?.customGetPIDCredentialsInstance}>
     <GetPIDCredentialsStack />
   </GetPIDCredentialsProvider>
+);
+
+export const FunkeC2ShareStack = (): JSX.Element => (
+  <FunkeC2ShareBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <Stack.Screen
+      name={ScreenRoutesEnum.LOADING}
+      component={SSILoadingScreen}
+      initialParams={{message: translate('action_getting_information_message')}}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <FunkeC2ShareBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+  </FunkeC2ShareBaseStack.Navigator>
+);
+
+export const FunkeC2ShareStackScreenWithContext = (props: any): JSX.Element => (
+  <FunkeC2ShareProvider customFunkeC2ShareInstance={props?.params?.customFunkeC2ShareInstance}>
+    <FunkeC2ShareStack />
+  </FunkeC2ShareProvider>
 );
 
 const AuthenticationStack = (): JSX.Element => {
