@@ -795,6 +795,34 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       }}
     />
     <FunkeC2ShareBaseStack.Screen
+      name="ImportDataConsent"
+      component={ImportDataConsentScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+    <FunkeC2ShareBaseStack.Screen
+      name="ImportPersonalData"
+      component={ImportPersonalDataScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+    <FunkeC2ShareBaseStack.Screen
+      name="ImportDataAuthentication"
+      component={ImportDataAuthenticationScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+    <FunkeC2ShareBaseStack.Screen
+      name="ImportDataFinal"
+      component={ImportDataFinalScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+    <FunkeC2ShareBaseStack.Screen
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({

@@ -144,6 +144,7 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
     on: {
       PREVIOUS: FunkeC2ShareMachineStateTypes.acceptRequestInformation,
       NEXT: FunkeC2ShareMachineStateTypes.retrievePIDCredentials,
+      DECLINE: FunkeC2ShareMachineStateTypes.declined,
     },
   },
   sendResponse: {
