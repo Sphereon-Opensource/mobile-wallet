@@ -12,11 +12,10 @@ import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNat
 import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact';
 
 const DB_CONNECTION_NAME = 'default';
-const DB_ENCRYPTION_KEY = '29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f86664aa830c';
 
 const sqliteConfig: ReactNativeConnectionOptions = {
   type: 'react-native',
-  database: 'sphereon-wallet-v0.3.sqlite',
+  database: 'funke-wallet-v0.4.sqlite',
   location: '.',
   driver: typeORMDriver,
   entities: [
@@ -35,4 +34,4 @@ const sqliteConfig: ReactNativeConnectionOptions = {
   relationLoadStrategy: 'query',
 };
 
-export {sqliteConfig, DB_CONNECTION_NAME, DB_ENCRYPTION_KEY};
+export {sqliteConfig, DB_CONNECTION_NAME};
