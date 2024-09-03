@@ -102,10 +102,10 @@ class VciServiceFunkeCProvider {
           format: 'vc+sd-jwt',
           type: 'urn:eu.europa.ec.eudi:pid:1',
         },
-        /*{
+        {
           format: 'mso_mdoc',
           type: 'eu.europa.ec.eudi.pid.1',
-        },*/
+        },
       ],
       noCredentialRequestProof: await storageIsPIDSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION),
     });
