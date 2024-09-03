@@ -198,7 +198,7 @@ export class PidIssuerService {
       // const identifier: ManagedIdentifierResult = await this.dpopService.getEphemeralDPoPIdentifier();
       const jwk = identifier.jwk;
       const callbacks: ProofOfPossessionCallbacks<never> = {
-        signCallback: signCallback(this.client, identifier, this.context, currentNonce),
+        signCallback: signCallback(identifier, this.context, currentNonce),
       };
 
       const credentialResponse: CredentialResponse & {params?: DPoPResponseParams; access_token: string} = await this.client.acquireCredentials({
