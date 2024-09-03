@@ -73,8 +73,8 @@ const createMDocPresentation = (
   vcWithDef: VerifiableCredentialsWithDefinition,
   identifier: ManagedIdentifierOptsOrResult,
 ): VerifiablePresentationWithDefinition => {
-  // @ts-ignore FIXME
   const presentationSubmission: Oid4VPPresentationSubmission = Oid4VPPresentationSubmission.Static.fromPresentationDefinition(
+    // @ts-ignore FIXME
     vcWithDef.definition.definition,
   );
   const defId = presentationSubmission.definition_id;

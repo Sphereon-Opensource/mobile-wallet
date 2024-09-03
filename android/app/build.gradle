@@ -168,7 +168,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
-    implementation("com.sphereon.musap:musap-react-native:0.1.0")
+    implementation("com.sphereon.musap:musap-react-native:0.1.2")
 
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";

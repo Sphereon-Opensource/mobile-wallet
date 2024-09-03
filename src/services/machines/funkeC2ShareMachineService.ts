@@ -13,8 +13,8 @@ import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
 import {generateDigest, translateCorrelationIdToName} from '../../utils';
 import {ConnectionType, Party} from '@sphereon/ssi-sdk.data-store';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {CredentialMapper, W3CVerifiableCredential} from '@sphereon/ssi-types';
-import {PEX, Status} from '@sphereon/pex';
+import {CredentialMapper} from '@sphereon/ssi-types';
+import {getMatchingCredentials, getMatchingPidCredentials} from '../pexService';
 
 export const siopCreateConfig = async (context: Pick<FunkeC2ShareMachineContext, 'url'>): Promise<CreateConfigResult> => {
   const {url} = context;
@@ -142,18 +142,23 @@ export const siopSendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const pex = new PEX();
   const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
 
-  authorizationRequestData.presentationDefinitions?.forEach(presentationDefinition => {
-    const {areRequiredCredentialsPresent, verifiableCredential} = pex.selectFrom(presentationDefinition.definition, pidCredentials); // TODO
-    if (areRequiredCredentialsPresent !== Status.ERROR) {
-      verifiableCredentialsWithDefinition.push({
-        definition: presentationDefinition,
-        credentials: verifiableCredential as Array<W3CVerifiableCredential>,
+  if (authorizationRequestData.presentationDefinitions) {
+    for (const presentationDefinition of authorizationRequestData.presentationDefinitions) {
+      const matchingCredentials = await getMatchingPidCredentials({
+        presentationDefinitionWithLocation: presentationDefinition,
+        pidCredentials,
+        issuerCorrelationId: authorizationRequestData.correlationId,
       });
+      if (matchingCredentials) {
+        verifiableCredentialsWithDefinition.push({
+          definition: presentationDefinition,
+          credentials: matchingCredentials,
+        });
+      }
     }
-  });
+  }
 
   const response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,

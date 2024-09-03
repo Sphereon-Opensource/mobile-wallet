@@ -143,7 +143,7 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
   acceptShareCredential: {
     on: {
       PREVIOUS: FunkeC2ShareMachineStateTypes.acceptRequestInformation,
-      NEXT: FunkeC2ShareMachineStateTypes.retrievePIDCredentials,
+      NEXT: FunkeC2ShareMachineStateTypes.sendResponse,
       DECLINE: FunkeC2ShareMachineStateTypes.declined,
     },
   },
