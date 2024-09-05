@@ -23,7 +23,6 @@ export * from './SSISwipeRowViewItem';
 export * from './SSIStatusBar';
 export * from './SSITextInputField';
 export * from './SSIWelcomeView';
-export * from './SSIButtonsContainer';
 export * from './SSITermsOfServiceView';
 export * from './SSIDropDownList';
 export * from './SSIDropDownListItem';

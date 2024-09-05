@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import {SSICheckmarkBadge, SSIExclamationMarkBadge} from '@sphereon/ui-components.ssi-react-native';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundPrimaryLightStyled} from '../../containers';
 import {SSITextH4SemiBoldStyled, SSITextH5Styled} from '../../fonts';
@@ -58,13 +57,6 @@ export const SSIPopupDetailsButtonTextStyled = styled(SSITextH4SemiBoldStyled)`
 export const SSIPopupCloseButtonContainerStyled = styled.View`
   margin-left: auto;
   margin-top: auto;
-`;
-
-export const SSIPopupButtonsContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
-  justify-content: space-between;
-  margin-bottom: 16px;
-  padding-left: 18px;
-  padding-right: 18px;
 `;
 
 export const SSICheckmarkBadgeStyled = styled(SSICheckmarkBadge).attrs({
