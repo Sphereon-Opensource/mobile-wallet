@@ -221,6 +221,8 @@ export const siopSendAuthorizationResponse = async (
         createMDocPresentation(vcWithDef, identifier),
       );
     } else {
+     //  const authRequest = await session.getAuthorizationRequest()
+     //  const vpFormats = authRequest.registrationMetadataPayload?.vp_formats
       presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
         idOpts: identifier,
         proofOpts: {
