@@ -81,7 +81,7 @@ const ImportPersonalDataScreen = (props?: any) => {
           onPress={() => setShowPin(true)}
         />
       </View>
-      {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
+      {Platform.OS === 'ios' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
       <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
     </Container>
   );
