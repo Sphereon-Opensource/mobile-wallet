@@ -63,7 +63,6 @@ const ImportPersonalDataScreen = (props?: any) => {
   }, [pin]);
 
   const onCompletePin = (pin: string): void => {
-    console.log('here');
     setPin(pin);
     setShowPin(false);
   };
