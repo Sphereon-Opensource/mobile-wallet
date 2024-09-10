@@ -1,17 +1,15 @@
+import React, {FC} from 'react';
+import {v4 as uuidv4} from 'uuid';
 import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC} from 'react';
-
-import {v4 as uuidv4} from 'uuid';
-
+import {backgroundColors} from '@sphereon/ui-components.core';
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import SSIButtonsContainer from '../../../components/containers/SSIButtonsContainer';
 import SSICredentialDetailsView from '../../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../../components/views/SSITabView';
 import {translate} from '../../../localization/Localization';
 import {SSIBasicHorizontalCenterContainerStyled as Container} from '../../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../../types';
-import {backgroundColors} from '@sphereon/ui-components.core';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ONBOARDING_SUMMARY>;
 
@@ -69,6 +67,7 @@ const SSIOnboardingSummaryScreen: FC<Props> = (props: Props): JSX.Element => {
     <Container>
       <SSITabView routes={routes} />
       <SSIButtonsContainer
+        style={{paddingRight: 24, paddingLeft: 24}} // FIXME fix styling so that padding is in a styling component
         backgroundColor={backgroundColors.secondaryDark}
         primaryButton={{
           caption: translate('onboard_summary_button_caption'),

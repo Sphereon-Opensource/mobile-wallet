@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react';
-import {ColorValue, EmitterSubscription, Keyboard} from 'react-native';
-import {SSIButtonBottomContainerStyled as ButtonContainer, SSIButtonsContainerSpacerStyled as Spacer} from '../../../styles/components';
+import React, {CSSProperties, PureComponent} from 'react';
+import {ColorValue, EmitterSubscription, Keyboard, View} from 'react-native';
+import {SSIButtonBottomContainerStyled as ButtonContainer} from '../../../styles/components';
 import {IButton} from '../../../types';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 
@@ -8,6 +8,7 @@ export interface Props {
   primaryButton?: IButton;
   secondaryButton?: IButton;
   backgroundColor?: ColorValue;
+  style?: CSSProperties;
 }
 
 interface IState {
@@ -40,33 +41,25 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
   };
 
   render() {
-    const {backgroundColor, primaryButton, secondaryButton} = this.props;
+    const {backgroundColor, primaryButton, secondaryButton, style} = this.props;
     const {keyboardVisible} = this.state;
 
     return (
-      <ButtonContainer style={{paddingBottom: keyboardVisible ? 18 : 36, ...(backgroundColor && {backgroundColor})}}>
+      <ButtonContainer
+        style={{
+          paddingBottom: keyboardVisible ? 18 : 36,
+          ...(backgroundColor && {backgroundColor}),
+          ...style,
+        }}>
         {secondaryButton && (
-          <SecondaryButton
-            caption={secondaryButton.caption}
-            onPress={secondaryButton.onPress}
-            disabled={secondaryButton.disabled}
-            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{
-              height: 42,
-              minWidth: 145,
-              ...(!primaryButton && {width: 300}),
-            }}
-          />
+          <View style={{flex: 1, flexDirection: 'column'}}>
+            <SecondaryButton caption={secondaryButton.caption} onPress={secondaryButton.onPress} disabled={secondaryButton.disabled} />
+          </View>
         )}
-        <Spacer />
         {primaryButton && (
-          <PrimaryButton
-            caption={primaryButton.caption}
-            onPress={primaryButton.onPress}
-            disabled={primaryButton.disabled}
-            // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-            style={{height: 42, minWidth: 145, ...(!secondaryButton && {width: 300})}}
-          />
+          <View style={{flex: 1, flexDirection: 'column'}}>
+            <PrimaryButton caption={primaryButton.caption} onPress={primaryButton.onPress} disabled={primaryButton.disabled} />
+          </View>
         )}
       </ButtonContainer>
     );
