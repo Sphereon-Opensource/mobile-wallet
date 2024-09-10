@@ -3791,7 +3791,16 @@
     events "^3.3.0"
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@0.3.1-next.9", "@sphereon/ui-components.core@0.3.1-next.9+89203cc":
+"@sphereon/ui-components.core@0.3.1-next.14":
+  version "0.3.1-next.14"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.14.tgz#706c9f75b7a97777fe28f6ab04ed5e87bcc73b24"
+  integrity sha512-E2KzbC1/g32HtKL+oWCsC9m1eUv9Ic2/KcLAlIOmEUkkBY259miEfBGYq1ExyBrYS2WHHmnzlt/xQ94ZqCarWA==
+  dependencies:
+    i18n-js "^3.8.0"
+    lodash.memoize "^4.1.2"
+    styled-components "^6.1.12"
+
+"@sphereon/ui-components.core@0.3.1-next.14+a2c5adf", "@sphereon/ui-components.core@0.3.1-next.9", "@sphereon/ui-components.core@0.3.1-next.9+89203cc":
   version "0.3.1-next.9"
   resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.9.tgz#8b19a50d0e73c41a44ed213995fc41375933aec4"
   integrity sha512-RMd6SwaadSmXATLP7eVqcNk+mQ8pIzWZmzaLOQju8FP9t/NFdbZolam1zwMbZhGkohkSpsuaMxu9HoYvCs0rwg==
@@ -3799,6 +3808,20 @@
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^6.1.12"
+
+"@sphereon/ui-components.credential-branding@0.3.1-next.14":
+  version "0.3.1-next.14"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.credential-branding/-/ui-components.credential-branding-0.3.1-next.14.tgz#5b332c451d42fb0b8f587292ee93e996a4d6631b"
+  integrity sha512-Cr5iOGOFiBvg+vLxYSOBcNQ7c2JfFeZW4drY9GTkHWXheycYa6STs1ZQrhwmTDr26ncBbc0fvSWj7q88a1hFaw==
+  dependencies:
+    "@sphereon/ssi-sdk.core" "0.29.0"
+    "@sphereon/ssi-sdk.data-store" "0.29.0"
+    "@sphereon/ssi-types" "0.29.0"
+    "@sphereon/ui-components.core" "0.3.1-next.14+a2c5adf"
+    "@veramo/core" "4.2.0"
+    "@veramo/utils" "4.2.0"
+    i18n-js "^3.8.0"
+    uuid "^9.0.1"
 
 "@sphereon/ui-components.credential-branding@0.3.1-next.9":
   version "0.3.1-next.9"
@@ -3813,6 +3836,20 @@
     "@veramo/utils" "4.2.0"
     i18n-js "^3.8.0"
     uuid "^9.0.1"
+
+"@sphereon/ui-components.ssi-react-native@0.3.1-next.14":
+  version "0.3.1-next.14"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-next.14.tgz#880da0b2df9e2df3d6746aea9fec8fe8f05d9659"
+  integrity sha512-zir9J+mvhFLBUvCd72Czth4wYnFigGsq10TJrMJSyBeVwgYr/FpkyhHl/f+6wkPZoU9G9q+RoXIBH3tV76MCIA==
+  dependencies:
+    "@react-native-community/blur" "^4.4.0"
+    "@react-native-masked-view/masked-view" "^0.3.1"
+    "@sphereon/ui-components.core" "0.3.1-next.14+a2c5adf"
+    expo-linear-gradient "~13.0.2"
+    react-native-fast-image "^8.6.3"
+    react-native-size-matters "^0.4.2"
+    react-native-svg "15.2.0"
+    styled-components "^6.1.12"
 
 "@sphereon/ui-components.ssi-react-native@0.3.1-next.9":
   version "0.3.1-next.9"
@@ -13652,16 +13689,7 @@ string-range@~1.2, string-range@~1.2.1:
   resolved "https://registry.yarnpkg.com/string-range/-/string-range-1.2.2.tgz#a893ed347e72299bc83befbbf2a692a8d239d5dd"
   integrity sha512-tYft6IFi8SjplJpxCUxyqisD3b+R2CSkomrtJYCkvuf1KuCAWgz7YXt4O0jip7efpfCemwHEzTEAO8EuOYgh3w==
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -13752,7 +13780,7 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -13765,13 +13793,6 @@ strip-ansi@^5.0.0, strip-ansi@^5.2.0:
   integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   dependencies:
     ansi-regex "^4.1.0"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.1.0"
@@ -14856,7 +14877,7 @@ word-wrap@^1.2.5, word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.5.tgz#d2c45c6dd4fbce621a66f136cbe328afd0410b34"
   integrity sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -14869,15 +14890,6 @@ wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
-  dependencies:
-    ansi-styles "^4.0.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
-
-wrap-ansi@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
-  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
