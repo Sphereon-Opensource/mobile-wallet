@@ -71,11 +71,10 @@ export const getMatchingCredentials = async ({
 
   const pex: PEX = new PEX(opts);
 
+  const filteredCredentials = credentials.filter(uniqueDC => uniqueDC.digitalCredential.documentFormat !== 'MSO_MDOC');
   const result: SelectResults = pex.selectFrom(
     presentationDefinitionWithLocation.definition,
-    credentials
-      .filter(uniqueDC => uniqueDC.digitalCredential.documentFormat !== 'MSO_MDOC')
-      .map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
+    filteredCredentials.map(c => c.originalVerifiableCredential as OriginalVerifiableCredential),
   );
 
   if (
@@ -86,12 +85,12 @@ export const getMatchingCredentials = async ({
   ) {
     for (let i = 0; i < result.vcIndexes.length; i++) {
       const index = result.vcIndexes[i];
-      if (index < 0 || index >= credentials.length) {
-        throw new Error(`Index ${index} at position ${i} is out of bounds. Valid range is 0 to ${credentials.length - 1}.`);
+      if (index < 0 || index >= filteredCredentials.length) {
+        throw new Error(`Index ${index} at position ${i} is out of bounds. Valid range is 0 to ${filteredCredentials.length - 1}.`);
       }
-      const credential = credentials[index];
-      credential.originalVerifiableCredential = result.verifiableCredential?.[i];
-      subsetCredentials.push(credential);
+      const selectedCredential = filteredCredentials[index];
+      selectedCredential.originalVerifiableCredential = result.verifiableCredential?.[i];
+      subsetCredentials.push(selectedCredential);
     }
   }
   return subsetCredentials;
