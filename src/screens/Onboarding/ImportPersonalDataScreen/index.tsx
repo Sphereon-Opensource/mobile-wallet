@@ -52,6 +52,7 @@ const ImportPersonalDataScreen = (props?: any) => {
       return pin;
     };
 
+    // Fixme. Move back to C flow after integration into VP flow
     VciServiceFunkeCProvider.initialize({
       onEnterPin,
       onAuthenticated: onAuth ?? onAuthenticated,

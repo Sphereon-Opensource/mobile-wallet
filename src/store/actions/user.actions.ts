@@ -39,10 +39,13 @@ import {getVerifiableCredentials} from './credential.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
 
-export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
+export const createUser = (
+  args: BasicUser,
+  options?: {credentialOverviewViewPreference?: ViewPreference},
+): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
     dispatch({type: USERS_LOADING});
-    return userServiceCreateUser(args)
+    return userServiceCreateUser(args, options)
       .then((user: IUser) => {
         dispatch({type: CREATE_USER_SUCCESS, payload: user});
         return user;

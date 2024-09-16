@@ -46,6 +46,7 @@ export type StackParamList = {
   OID4VCI: Record<string, never>;
   CredentialCatalog: Record<string, never>;
   GET_PID_CREDENTIALS: Record<string, never>;
+  FUNKE_C2_SHARE: Record<string, never>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -81,6 +82,18 @@ export type GetPIDCredentialsStackParamsList = {
   ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
   IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
   ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type FunkeC2ShareStackParamsList = {
+  Loading: ILoadingProps;
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
+
+  // IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  // ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
@@ -261,6 +274,7 @@ export enum MainRoutesEnum {
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
+  FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
 }
 
 export enum NavigationBarRoutesEnum {

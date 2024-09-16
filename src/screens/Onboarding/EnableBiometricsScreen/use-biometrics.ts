@@ -18,6 +18,7 @@ export const useBiometrics = () => {
         promptMessage: 'Authenticate',
         cancelLabel: 'Cancel',
         disableDeviceFallback: true,
+        fallbackLabel: 'Try again later',
         biometricsSecurityLevel: 'strong',
       });
 

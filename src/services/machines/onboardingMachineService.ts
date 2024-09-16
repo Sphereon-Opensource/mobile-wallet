@@ -12,6 +12,7 @@ import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/ma
 import {generateDigest} from '../../utils';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {storagePersistPin} from '../storageService';
+import {ViewPreference} from '../../types/preferences';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -58,8 +59,8 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
         credentialId: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
-        kmsKeyRef: mappedCredential.identifier.kmsKeyRef,
-        identifierMethod: mappedCredential.identifier.method,
+        kmsKeyRef: mappedCredential.identifier?.kmsKeyRef ?? 'FIXME',
+        identifierMethod: mappedCredential.identifier?.method ?? 'jwk',
         issuerCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       },
@@ -75,7 +76,7 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 };
 
 export const setupWallet = async (
-  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled'>,
+  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials'>,
 ): Promise<WalletSetupServiceResult> => {
   const {pinCode} = context;
   const setup = await Promise.all([
@@ -92,9 +93,9 @@ export const setupWallet = async (
 };
 
 const storeUser = async (
-  context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled'>,
+  context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials'>,
 ): Promise<WalletSetupServiceResult> => {
-  const {emailAddress, name, biometricsEnabled} = context;
+  const {emailAddress, name, biometricsEnabled, pidCredentials} = context;
 
   const names = parseFullName(name);
 
@@ -105,7 +106,9 @@ const storeUser = async (
     biometricsEnabled,
   };
 
-  const storedUser: IUser = await store.dispatch<any>(createUser(user));
+  const storedUser: IUser = await store.dispatch<any>(
+    createUser(user, {credentialOverviewViewPreference: pidCredentials.length > 0 ? ViewPreference.CARD : ViewPreference.LIST}),
+  );
   return {storedUser};
 };
 

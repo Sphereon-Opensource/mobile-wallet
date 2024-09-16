@@ -12,6 +12,14 @@
   "biometrics_enable_text": "Enable now",
   "biometrics_disallow": "Maybe later",
 
+  "onboarding_pid_security_model_title": "What PID security model would you use?",
+  "onboarding_pid_security_model_subtitle": "Please note that this is a test/development option. You can not change it afterwards, without instantiating a new wallet.",
+  "onboarding_pid_security_model_secure_element": "Secure element on phone",
+  "onboarding_pid_security_model_remote_hardware": "Remote Hardware Security Module",
+  "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
+  "onboarding_pid_security_model_eid_presentation": "Use eID  card during presentation",
+  "onboarding_pid_security_model_select": "Select",
+
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
@@ -102,8 +110,14 @@
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
 
+  "pid_security_model_warning": "EID can will only loaded during presentation",
+
   "import_data_auth_title": "Enter your Sphereon PIN ",
   "import_data_auth_next": "Continue",
+
+  "import_data_auth_biometrics_title": "Athenticate with Biometrics",
+  "import_data_auth_failure_title": "Biometric authentication has failed, we didn't recognize you",
+  "import_data_auth_failure_description": "You can’t continue at this point. The only way to finish the task you were doing, is by starting from the beginning. Close the app and reopen to restart the onboarding.",
 
   "import_data_auth_step_title": "Enter your sphereon pin",
   "import_data_consent_button_accept": "Yes, that's me",

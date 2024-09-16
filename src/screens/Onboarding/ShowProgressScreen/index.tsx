@@ -69,7 +69,7 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
 
 const ShowProgressScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const {currentStep, country} = onboardingInstance.getSnapshot().context;
+  const {currentStep, country, skipImport} = onboardingInstance.getSnapshot().context;
   const {titleKey, descriptionKey} = screenTextKeys[currentStep];
   const stepperContent: StepContent[] = [
     renderStepContent({

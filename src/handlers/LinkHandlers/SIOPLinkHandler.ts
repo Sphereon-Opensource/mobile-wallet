@@ -5,7 +5,10 @@ import {IMachineStatePersistence, interpreterStartOrResume} from '@sphereon/ssi-
 import {IAgentContext} from '@veramo/core';
 import Debug from 'debug';
 import {SiopV2Machine} from '../../machines/siopV2Machine';
+import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
+
 const debug = Debug(`sphereon:ssi-sdk:linkhandler:siop`);
+
 export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
   private readonly context: IAgentContext<IDidAuthSiopOpAuthenticator & IMachineStatePersistence>;
 
@@ -16,8 +19,13 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
 
   async handle(url: string | URL): Promise<void> {
     debug(`handling SIOP link: ${url}`);
-    const interpreter = SiopV2Machine.newInstance({url});
+    // const interpreter = SiopV2Machine.newInstance({url});
+    // interpreter.start();
+
+    // TODO we need to check what flow we are in
+    const interpreter = FunkeC2ShareMachine.newInstance({url});
     interpreter.start();
+
     const init = await interpreterStartOrResume({
       stateType: 'new',
       interpreter,
