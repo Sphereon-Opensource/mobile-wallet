@@ -290,7 +290,7 @@
     "@types/react": "~18.2.79",
     "react-native-permissions": "^4.1.5",
     "react-native-svg": "15.2.0",
-    "@sphereon/musap-react-native": "0.0.1-next.164",
+    "@sphereon/musap-react-native": "0.0.1-next.163",
     "expo-fs/expo-file-system": "~17.0.1",
     "**/did-jwt": "6.11.6",
     "**/did-jwt-vc": "3.1.3",
