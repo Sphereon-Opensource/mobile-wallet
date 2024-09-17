@@ -493,7 +493,7 @@ const NotificationsStack = (): JSX.Element => {
         component={SSINotificationsOverviewScreen}
         options={{
           headerTitle: translate('notifications_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder={false} />,
         }}
       />
       <Stack.Screen
