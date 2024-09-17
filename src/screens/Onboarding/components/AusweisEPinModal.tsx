@@ -4,6 +4,7 @@ import {SSITextH1RegularStyled, SSITextH3RegularStyled} from '../../../styles/co
 import {ContentContainer, IconContainer, ModalCard} from './styles';
 import {useRef} from 'react';
 import Animated, {Easing, useAnimatedKeyboard, useAnimatedStyle, withTiming} from 'react-native-reanimated';
+import AusweisIcon from '../../../components/assets/icons/AusweisIcon';
 
 type AusweisEPinModalProps = {
   isVisible: boolean;
@@ -39,13 +40,7 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
     <Animated.View style={style}>
       <ModalCard>
         <IconContainer>
-          <Image
-            width={20}
-            height={20}
-            resizeMode="stretch"
-            style={{width: 40, height: 40}}
-            source={require('../../../assets/images/ausweis_icon.png')}
-          />
+          <AusweisIcon />
         </IconContainer>
         <SSITextH1RegularStyled style={{color: '#8F8E94'}}>Enter Ausweis eID pin</SSITextH1RegularStyled>
         <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>

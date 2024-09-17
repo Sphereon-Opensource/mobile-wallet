@@ -5,6 +5,8 @@ import {Dimensions, Image, LayoutChangeEvent} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {ContentContainer, IconContainer, ModalCard, ModalText, ModalTitle, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
 import {EIDFlowState} from '../../../types';
+import ScanIcon from '../../../components/assets/icons/ScanIcon';
+import ScanSuccessIcon from '../../../components/assets/icons/ScanSuccessIcon';
 
 const {width} = Dimensions.get('window');
 
@@ -93,24 +95,12 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
         {!!modalTitle && <ModalTitle>{modalTitle}</ModalTitle>}
         {state?.state !== 'SUCCESS' && (
           <IconContainer>
-            <Image
-              width={30}
-              height={30}
-              resizeMode="stretch"
-              style={{width: 100, height: 100}}
-              source={require('../../../assets/images/scan_icon.png')}
-            />
+            <ScanIcon />
           </IconContainer>
         )}
         {state?.state === 'SUCCESS' && (
           <IconContainer>
-            <Image
-              width={30}
-              height={30}
-              resizeMode="stretch"
-              style={{width: 100, height: 100}}
-              source={require('../../../assets/images/scan-success.png')}
-            />
+            <ScanSuccessIcon />
           </IconContainer>
         )}
         <ContentContainer>

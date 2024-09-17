@@ -11,6 +11,7 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import styled from 'styled-components/native';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
+import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
 
 const ExitButtonContainer = styled.Pressable`
   position: absolute;
@@ -58,9 +59,7 @@ const CompleteOnboardingScreen = () => {
       </View>
       <ExitButtonContainer onPress={() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS)}>
         <CircleWithBorder
-          icon={
-            <Image style={{height: 15, width: 15}} source={require('../../../assets/images/exit.png')} width={20} height={20} resizeMode="stretch" />
-          }
+          icon={<SSICloseIcon size={15} color="white" />}
           size={40}
           borderWidth={0}
           backgroundColors={['#7276F7', '#7C40E8']}
