@@ -29,7 +29,7 @@ class VciServiceFunkeCProvider {
         this.handleStateChange({state: 'SUCCESS'});
         onAuthenticated?.(this);
       },
-      onInsertCard: (): void => {
+      onAttachCard: (): void => {
         this.handleStateChange({state: 'INSERT_CARD'});
       },
     });
@@ -78,6 +78,9 @@ class VciServiceFunkeCProvider {
       reason: error.reason,
       message: error.message,
     };
+
+    console.log(`Ausweis SDK error ${JSON.stringify(state)}`);
+
     this.handleStateChange(state);
   }
 
@@ -100,7 +103,7 @@ class VciServiceFunkeCProvider {
       pids: [
         {
           format: 'vc+sd-jwt',
-          type: 'urn:eu.europa.ec.eudi:pid:1',
+          type: 'urn:eu.europa.ec.eudi:pid:1', //'pid-sd-jwt'
         } /*,
         {
           format: 'mso_mdoc',
