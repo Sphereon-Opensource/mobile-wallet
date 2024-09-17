@@ -73,8 +73,6 @@ const navigateAuthenticate = async (args: any): Promise<void> => {
 };
 
 const navigateAcceptShareCredential = async (args: any): Promise<void> => {
-  console.log(`HGELLOOOOO?????`);
-
   const {navigation, machine, context} = args;
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: 'ImportDataFinal',
@@ -83,6 +81,7 @@ const navigateAcceptShareCredential = async (args: any): Promise<void> => {
       onAccept: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
       onDecline: async () => machine.send(FunkeC2ShareMachineEvents.DECLINE),
       credentials: context.pidCredentials,
+      isShareFlow: true,
     },
   });
 };

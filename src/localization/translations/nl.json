@@ -366,5 +366,6 @@
   "onboarding_machine_store_credential_error_title": "Opslaan credential",
   "onboarding_machine_retrieve_credentials_error_title": "Ophalen credentials",
   "onboarding_skip_credential_import_step3_caption": "Ik zal dit gedeelte later afmaken",
-  "onboarding_store_credential_branding_error_title": "Opslaan credential branding"
+  "onboarding_store_credential_branding_error_title": "Opslaan credential branding",
+  "share_credential_c2_flow_title": "The following information will be shared"
 }
