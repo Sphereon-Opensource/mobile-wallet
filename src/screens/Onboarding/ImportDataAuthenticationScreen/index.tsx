@@ -18,6 +18,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../types';
 import styled from 'styled-components/native';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
+import SSICloseIcon from 'src/components/assets/icons/SSICloseIcon';
 
 const Content = styled.View`
   flex: 1;
@@ -105,7 +106,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
       {(failed || biometricsEnabled) && (
         <Content style={{height: '100%'}}>
           <CircleWithBorder
-            icon={failed ? <Image source={require('../../../assets/images/exit.png')} height={40} width={40} /> : undefined}
+            icon={failed ? <SSICloseIcon color="white" size={40} /> : undefined}
             size={200}
             backgroundColors={['#7276F799', '#7C40E899']}
             borderColors={['#7C40E899', '#7C40E866']}

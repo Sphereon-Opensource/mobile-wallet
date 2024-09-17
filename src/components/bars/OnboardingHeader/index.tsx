@@ -23,6 +23,7 @@ import {Circle, SelectedCircle} from '../../../styles/components';
 import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
+import SSICloseIcon from 'src/components/assets/icons/SSICloseIcon';
 
 const {width, height} = Dimensions.get('window');
 
@@ -188,7 +189,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
           ]}>
           <SettingsModalContainer>
             <SettingsCloseContainer onPress={closeModal} style={({pressed}) => ({opacity: pressed ? 0.7 : 1})}>
-              <SettingsClose source={require('../../../assets/images/exit.png')} width={15} height={15} />
+              <SSICloseIcon color="white" size={15} />
             </SettingsCloseContainer>
             <ScreenTitleAndDescription
               title={translate('onboarding_pid_security_model_title')}
