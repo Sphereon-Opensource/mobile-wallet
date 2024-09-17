@@ -120,7 +120,7 @@ export type GetPIDCredentialsMachineGuard = GuardPredicate<GetPIDCredentialsMach
 export type MappedCredential = {
   uniformCredential: IVerifiableCredential;
   rawCredential: string;
-  identifier: ManagedIdentifierResult;
+  identifier?: ManagedIdentifierResult;
 };
 
 export type GetPIDCredentialsContextType = {

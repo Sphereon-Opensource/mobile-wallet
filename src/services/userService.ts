@@ -10,8 +10,10 @@ const debug: Debugger = Debug(`${APP_ID}:userService`);
 import {v4 as uuidv4} from 'uuid';
 import {ConfigurableViewKey, ViewPreference} from '../types/preferences';
 
-export const createUser = async (args: BasicUser): Promise<IUser> => {
+export const createUser = async (args: BasicUser, options?: {credentialOverviewViewPreference?: ViewPreference}): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`);
+  const {credentialOverviewViewPreference = ViewPreference.LIST} = options || {};
+
   const user: IUser = {
     ...args,
     id: uuidv4(),
@@ -22,7 +24,7 @@ export const createUser = async (args: BasicUser): Promise<IUser> => {
     lastUpdatedAt: new Date(),
     preferences: {
       views: {
-        [ConfigurableViewKey.CREDENTIAL_OVERVIEW]: ViewPreference.LIST,
+        [ConfigurableViewKey.CREDENTIAL_OVERVIEW]: credentialOverviewViewPreference,
       },
     },
   };

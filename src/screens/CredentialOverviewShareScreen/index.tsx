@@ -1,4 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {CredentialMapper} from '@sphereon/ssi-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton, SSILogo as Logo, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useRef} from 'react';
@@ -7,17 +8,15 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
-import ScreenTitleAndDescription from '../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../localization/Localization';
 
 import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
-import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {generateDigest, showToast} from '../../utils';
-import {CredentialMapper} from '@sphereon/ssi-types';
+import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
+import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 
 const MiniCard = styled.Pressable`
   height: 50px;

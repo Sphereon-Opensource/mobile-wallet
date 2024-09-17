@@ -2,6 +2,7 @@ import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} fro
 import {PARMode} from '@sphereon/oid4vci-common';
 import {Dispatch, SetStateAction} from 'react';
 import {agentContext} from '../../../agent';
+import {PIDSecurityModel, storageIsPIDSecurityModel} from '../../../services/storageService';
 import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs, KeyManagementSystemEnum} from '../../../types';
 import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 
@@ -28,7 +29,7 @@ class VciServiceFunkeCProvider {
         this.handleStateChange({state: 'SUCCESS'});
         onAuthenticated?.(this);
       },
-      onInsertCard: (): void => {
+      onAttachCard: (): void => {
         this.handleStateChange({state: 'INSERT_CARD'});
       },
     });
@@ -38,8 +39,9 @@ class VciServiceFunkeCProvider {
 
   public static async initialize(args: EIDInitializeArgs): Promise<VciServiceFunkeCProvider> {
     const {pidProvider} = args;
-    const credentialOffer =
-      'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
+    const credentialOffer = (await storageIsPIDSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION))
+      ? 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc2%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D'
+      : 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
       {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
       agentContext,
@@ -76,6 +78,9 @@ class VciServiceFunkeCProvider {
       reason: error.reason,
       message: error.message,
     };
+
+    console.log(`Ausweis SDK error ${JSON.stringify(state)}`);
+
     this.handleStateChange(state);
   }
 
@@ -93,18 +98,19 @@ class VciServiceFunkeCProvider {
     const {authorizationCode} = args;
     this.handleStateChange({state: 'GETTING_ACCESS_TOKEN'});
 
-    const pids = this.pidService.getPids({
+    const pids = await this.pidService.getPids({
       authorizationCode,
       pids: [
         {
           format: 'vc+sd-jwt',
-          type: 'urn:eu.europa.ec.eudi:pid:1',
-        },
-        /*{
+          type: 'urn:eu.europa.ec.eudi:pid:1', //'pid-sd-jwt'
+        } /*,
+        {
           format: 'mso_mdoc',
           type: 'eu.europa.ec.eudi.pid.1',
-        },*/
+        },*/,
       ],
+      noCredentialRequestProof: await storageIsPIDSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION),
     });
     this.pidService.close();
     return pids;

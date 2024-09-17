@@ -1,6 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
+import {Image} from 'react-native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
@@ -8,11 +9,11 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {SSITextH2SemiBoldLightStyled, SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5LightStyled} from '../../../styles/components';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {ContentContainer} from '../components/styles';
-import {ProviderCardRow, ProviderContainer, ProviderDescription, ProviderImage, ProviderMiniCardImage, ProviderUrl} from './components/styles';
-import {AusweisRequestedInfoSchema} from './constants';
 import styled from 'styled-components/native';
 import {ImportInformationSummary} from './components/ImportInformationSummary';
 import AusweisIcon from '../../../components/assets/icons/AusweisIcon';
+import {ProviderCardRow, ProviderContainer, ProviderDescription, ProviderImage, ProviderMiniCardImage, ProviderUrl} from './components/styles';
+import {AusweisRequestedInfoSchema} from './constants';
 
 const Label = styled(SSITextH2SemiBoldLightStyled)`
   width: 100%;

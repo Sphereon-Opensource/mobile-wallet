@@ -5,7 +5,11 @@ import {IMachineStatePersistence, interpreterStartOrResume} from '@sphereon/ssi-
 import {IAgentContext} from '@veramo/core';
 import Debug from 'debug';
 import {SiopV2Machine} from '../../machines/siopV2Machine';
+import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
+import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
+
 const debug = Debug(`sphereon:ssi-sdk:linkhandler:siop`);
+
 export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
   private readonly context: IAgentContext<IDidAuthSiopOpAuthenticator & IMachineStatePersistence>;
 
@@ -16,16 +20,34 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
 
   async handle(url: string | URL): Promise<void> {
     debug(`handling SIOP link: ${url}`);
-    const interpreter = SiopV2Machine.newInstance({url});
-    interpreter.start();
-    const init = await interpreterStartOrResume({
-      stateType: 'new',
-      interpreter,
-      context: this.context,
-      cleanupAllOtherInstances: true,
-      cleanupOnFinalState: true,
-      singletonCheck: true,
-    });
-    debug(`SIOP machine started for link: ${url}`, init);
+
+    const pidSecurityModel = await storageGetPIDSecurityModel();
+    if (pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
+      const interpreter = FunkeC2ShareMachine.newInstance({url});
+      interpreter.start();
+
+      const init = await interpreterStartOrResume({
+        stateType: 'new',
+        interpreter,
+        context: this.context,
+        cleanupAllOtherInstances: true,
+        cleanupOnFinalState: true,
+        singletonCheck: true,
+      });
+      debug(`FunkeC2Share machine started for link: ${url}`, init);
+    } else {
+      const interpreter = SiopV2Machine.newInstance({url});
+      interpreter.start();
+
+      const init = await interpreterStartOrResume({
+        stateType: 'new',
+        interpreter,
+        context: this.context,
+        cleanupAllOtherInstances: true,
+        cleanupOnFinalState: true,
+        singletonCheck: true,
+      });
+      debug(`SIOP machine started for link: ${url}`, init);
+    }
   }
 }

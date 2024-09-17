@@ -1,14 +1,19 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
-import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {generateDigest} from '../../utils';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
+import {com} from '@sphereon/kmp-mdl-mdoc';
+import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
+import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -40,6 +45,78 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
     requestJwtOrUri,
   });
 };
+
+// FIX Funke START of temp code
+const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWithDefinition[]): boolean => {
+  return credentialsAndDefinitions.some(vcWithDef =>
+    vcWithDef.credentials.some(
+      credential =>
+        (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
+        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
+    ),
+  );
+};
+
+const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | OriginalVerifiableCredential): credential is UniqueDigitalCredential => {
+  return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
+};
+
+const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
+  if ('id' in definition) {
+    return definition.id;
+  } else {
+    throw new Error('Invalid presentation definition: missing id');
+  }
+};
+
+const createMDocPresentation = (
+  vcWithDef: VerifiableCredentialsWithDefinition,
+  identifier: ManagedIdentifierOptsOrResult,
+): VerifiablePresentationWithDefinition => {
+  const presentationSubmission: Oid4VPPresentationSubmission = Oid4VPPresentationSubmission.Static.fromPresentationDefinition(
+    // @ts-ignore FIXME
+    vcWithDef.definition.definition,
+  );
+  const defId = presentationSubmission.definition_id;
+  const dm = presentationSubmission.descriptor_map;
+  const mDocCredentials: UniqueDigitalCredential[] = vcWithDef.credentials.filter(
+    (credential): credential is UniqueDigitalCredential =>
+      isUniqueDigitalCredential(credential) &&
+      credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
+      credential.digitalCredential.documentType === DocumentType.VC,
+  );
+
+  const originalCredentials: (OriginalVerifiableCredential | undefined)[] = mDocCredentials.map(
+    credential => credential.originalVerifiableCredential,
+  );
+  const originalPresentations: (OriginalVerifiablePresentation | undefined)[] = mDocCredentials.map(
+    credential => credential.originalVerifiablePresentation,
+  );
+
+  if (originalPresentations.length === 0) {
+    throw Error('No presentation found');
+  }
+
+  return {
+    definition: vcWithDef.definition,
+    verifiableCredentials: originalCredentials.filter((cred): cred is OriginalVerifiableCredential => cred !== undefined),
+    // @ts-ignore  FIXME Funke
+    verifiablePresentation: originalPresentations[0],
+    idOpts: identifier,
+    presentationSubmission: {
+      id: presentationSubmission.id,
+      definition_id: presentationSubmission.definition_id,
+      descriptor_map: presentationSubmission.descriptor_map.map(descriptor => {
+        return {
+          id: descriptor.id,
+          path: descriptor.path,
+          format: descriptor.format,
+        };
+      }),
+    },
+  };
+};
+// FIX Funke END of temp code
 
 export const siopSendAuthorizationResponse = async (
   connectionType: ConnectionType,
@@ -138,13 +215,22 @@ export const siopSendAuthorizationResponse = async (
       kmsKeyRef: firstUniqueDC.digitalCredential.kmsKeyRef,
     });
 
-    presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
-      idOpts: identifier,
-      proofOpts: {
-        nonce: session.nonce,
-        domain,
-      },
-    });
+    if (hasMDocCredentials(credentialsAndDefinitions)) {
+      // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
+      presentationsAndDefs = credentialsAndDefinitions.map((vcWithDef: VerifiableCredentialsWithDefinition) =>
+        createMDocPresentation(vcWithDef, identifier),
+      );
+    } else {
+      //  const authRequest = await session.getAuthorizationRequest()
+      //  const vpFormats = authRequest.registrationMetadataPayload?.vp_formats
+      presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
+        idOpts: identifier,
+        proofOpts: {
+          nonce: session.nonce,
+          domain,
+        },
+      });
+    }
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     } else if (presentationsAndDefs.length > 1) {

@@ -15,7 +15,7 @@ import {delay} from '../../../utils';
 import styled from 'styled-components/native';
 
 const Content = styled(ContentContainer)`
-  padding: 0px 20px 0px 20px;
+  padding: 0 20px 0 20px;
 `;
 
 const ImportPersonalDataScreen = (props?: any) => {
@@ -32,7 +32,6 @@ const ImportPersonalDataScreen = (props?: any) => {
   const closeAll = () => {
     setShowPin(false);
     setPin('');
-    console.log('pressed');
     Keyboard.dismiss();
   };
 
@@ -52,13 +51,14 @@ const ImportPersonalDataScreen = (props?: any) => {
       return pin;
     };
 
+    // Fixme. Move back to C flow after integration into VP flow
     VciServiceFunkeCProvider.initialize({
       onEnterPin,
       onAuthenticated: onAuth ?? onAuthenticated,
       onStateChange: setEIDFlowState,
     }).then((provider: VciServiceFunkeCProvider): void => {
       setProvider(provider);
-      void provider?.start();
+      void provider.start();
     });
   }, [pin]);
 

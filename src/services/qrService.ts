@@ -16,7 +16,6 @@ import {
   IQrDataArgs,
   IQrDidSiopAuthenticationRequest,
   IReadQrArgs,
-  IRequiredContext,
   NavigationBarRoutesEnum,
   QrTypesEnum,
   ScreenRoutesEnum,
