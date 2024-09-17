@@ -2,6 +2,7 @@ import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {Image} from 'react-native';
+import styled from 'styled-components/native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
@@ -21,9 +22,6 @@ import {
   RequestedInformationRow,
 } from './components/styles';
 import {AusweisRequestedInfoSchema, InfoSchemaImages} from './constants';
-import styled from 'styled-components/native';
-import {GetPIDCredentialsStackParamsList, IImportDataConsentProps, ScreenRoutesEnum, StackParamList} from '../../../types';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const Label = styled(SSITextH2SemiBoldLightStyled)`
   width: 100%;

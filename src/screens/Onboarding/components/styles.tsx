@@ -50,9 +50,10 @@ export const ModalText = styled(Text)`
 `;
 
 export const ModalCard = styled.View`
-  padding: 30px 36px;
+  padding: 20px;
   border-radius: 20px;
   display: flex;
+  flex-direction: column;
   gap: 10px;
   align-items: center;
   background-color: white;

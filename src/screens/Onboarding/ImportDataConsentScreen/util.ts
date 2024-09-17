@@ -24,7 +24,7 @@ export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): 
   humanReadablePayload.push(extractAddressFromPayload(properties));
 
   if (mode === 'disclose') {
-    const ageEntries = Object.entries(properties).filter(([key, value]) => /^\d+$/.test(key) && typeof value === 'boolean');
+    const ageEntries = Object.entries(properties).filter(([key, value]) => /^(\d+|age_over_\d+)$/.test(key) && typeof value === 'boolean');
     ageEntries.forEach(([age, isOver]) => {
       humanReadablePayload.push(extractAgeValuesFromPayload(age, isOver));
     });
@@ -36,7 +36,7 @@ export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): 
 function extractAgeValuesFromPayload(age: string, isOver: boolean): AusweisRequestedInfoItem {
   return {
     label: keyMappings['age_in_years'],
-    data: `Age over ${age}: ${isOver ? 'yes' : 'no'}`,
+    data: `Age over ${age.replace('age_over_', '')}: ${isOver ? 'yes' : 'no'}`,
     icon: IconMap['age_in_years'],
   };
 }
@@ -49,21 +49,25 @@ export function extractNationalityFromPayload(nationalities: string[]): AusweisR
   };
 }
 
-export function extractAddressFromPayload(properties: MappablePayload): AusweisRequestedInfoItem {
-  const country = properties['country'];
-  const locality = properties['locality'];
-  const street_address = properties['street_address'];
-  const postal_code = properties['postal_code'];
+type SdjwtAddressField = 'country' | 'locality' | 'street_address' | 'postal_code';
+type MdocAddressField = 'resident_country' | 'resident_city' | 'resident_street' | 'resident_postal_code';
 
-  let value = '';
-  if (street_address) value += street_address + ' ';
-  if (postal_code) value += postal_code + ' ';
-  if (locality) value += locality + ' ';
-  if (country) value += country + ' ';
+const sdjwtAddressFields: SdjwtAddressField[] = ['street_address', 'postal_code', 'locality', 'country'];
+const mdocAddressFields: MdocAddressField[] = ['resident_street', 'resident_postal_code', 'resident_city', 'resident_country'];
+
+export function extractAddressFromPayload(properties: MappablePayload): AusweisRequestedInfoItem {
+  const extractFields = (fields: (SdjwtAddressField | MdocAddressField)[]) => {
+    return fields
+      .map(field => properties[field])
+      .filter(Boolean)
+      .join(' ');
+  };
+
+  const value = [extractFields(sdjwtAddressFields), extractFields(mdocAddressFields)].filter(Boolean).join(' ');
 
   return {
     label: keyMappings['address'],
-    data: value,
+    data: value.trim(),
     icon: IconMap['address'],
   };
 }

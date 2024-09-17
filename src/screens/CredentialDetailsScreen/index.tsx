@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageAttributes} from '@sphereon/ui-components.core';
+import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
@@ -17,6 +17,7 @@ import {
 } from '../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
 import {useBackHandler} from '@react-native-community/hooks';
+import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -97,37 +98,22 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           />
         </CardContainer>
         <SSITabView routes={routes} />
-        {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
-        {(primaryAction || secondaryAction) && (
-          <ButtonContainer>
-            <ButtonContainerContent>
-              {secondaryAction && (
-                <SecondaryButton
-                  caption={secondaryAction.caption}
-                  onPress={secondaryAction.onPress}
-                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-                  style={{
-                    height: 42,
-                    minWidth: 160,
-                    ...(!primaryAction && {width: '100%'}),
-                  }}
-                />
-              )}
-              {primaryAction && (
-                <PrimaryButton
-                  caption={primaryAction.caption}
-                  onPress={primaryAction.onPress}
-                  // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-                  style={{
-                    height: 42,
-                    minWidth: 160,
-                    // ...(!secondaryAction && {width: '100%'}),
-                  }}
-                />
-              )}
-            </ButtonContainerContent>
-          </ButtonContainer>
-        )}
+        <SSIButtonsContainer
+          style={{paddingLeft: 24, paddingRight: 24}} // FIXME create a styling component for this or align design with other button placements
+          backgroundColor={backgroundColors.secondaryDark}
+          {...(secondaryAction && {
+            secondaryButton: {
+              caption: secondaryAction.caption,
+              onPress: secondaryAction.onPress,
+            },
+          })}
+          {...(primaryAction && {
+            primaryButton: {
+              caption: primaryAction.caption,
+              onPress: primaryAction.onPress,
+            },
+          })}
+        />
       </ContentContainer>
     </Container>
   );

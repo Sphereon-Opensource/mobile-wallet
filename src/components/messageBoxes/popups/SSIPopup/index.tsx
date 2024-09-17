@@ -21,10 +21,11 @@ import {
 } from '../../../../styles/components';
 import {SSITextH2SemiBoldStyled as TitleCaption} from '../../../../styles/components';
 import {ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum} from '../../../../types';
-import {parseTextToElement} from '../../../../utils/TextUtils';
+import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
 
 export interface IProps {
   onClose?: () => Promise<void>;
@@ -69,39 +70,21 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           </DetailsButtonContainer>
         )}
       </ContentContainer>
-      {/* TODO we use this 2 button structure a lot, we should make a component out of it */}
-      {(primaryButton || secondaryButton) && (
-        <ButtonsContainer>
-          {secondaryButton && (
-            <View style={{flex: 1, flexDirection: 'column'}}>
-              <SecondaryButton
-                style={{
-                  height: 42,
-                  minWidth: 160,
-                  // Scales the button based on presence of other button
-                  ...(!primaryButton && {width: '100%'}),
-                }}
-                caption={secondaryButton.caption}
-                onPress={secondaryButton.onPress}
-              />
-            </View>
-          )}
-          {primaryButton && (
-            <View style={{flex: 1, flexDirection: 'column'}}>
-              <PrimaryButton
-                // Scales the button based on presence of other button
-                style={{
-                  height: 42,
-                  minWidth: 160,
-                  ...(!secondaryButton && {width: '100%'}),
-                }}
-                caption={primaryButton.caption}
-                onPress={primaryButton.onPress}
-              />
-            </View>
-          )}
-        </ButtonsContainer>
-      )}
+      <SSIButtonsContainer
+        style={{paddingLeft: 18, paddingRight: 18, paddingBottom: 16}} // FIXME create a styling component for this or align design with other button placements
+        {...(secondaryButton && {
+          secondaryButton: {
+            caption: secondaryButton.caption,
+            onPress: secondaryButton.onPress,
+          },
+        })}
+        {...(primaryButton && {
+          primaryButton: {
+            caption: primaryButton.caption,
+            onPress: primaryButton.onPress,
+          },
+        })}
+      />
     </Container>
   );
 };
