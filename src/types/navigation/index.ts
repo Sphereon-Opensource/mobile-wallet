@@ -47,6 +47,8 @@ export type StackParamList = {
   CredentialCatalog: Record<string, never>;
   GET_PID_CREDENTIALS: Record<string, never>;
   FUNKE_C2_SHARE: Record<string, never>;
+  SETTINGS: Record<string, never>;
+  ACCOUNT: Record<string, never>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -275,6 +277,8 @@ export enum MainRoutesEnum {
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
   FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
+  SETTINGS = 'SETTINGS',
+  ACCOUNT = 'ACCOUNT',
 }
 
 export enum NavigationBarRoutesEnum {

@@ -24,6 +24,7 @@ import {
 import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
+import {CommonActions} from '@react-navigation/routers';
 
 export interface HeaderBarProps extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -62,6 +63,10 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
 
   const onProfileLong = async (): Promise<void> => {
     navigation.navigate('Veramo', {});
+  };
+
+  const onNavigateProfile = () => {
+    navigation.navigate(MainRoutesEnum.SETTINGS);
   };
 
   const onMore = async (): Promise<void> => {
@@ -127,6 +132,12 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
                     caption: translate('profile_logout_action_caption'),
                     onPress: onLogout,
                     icon: HeaderMenuIconsEnum.LOGOUT,
+                  },
+                  {
+                    // caption: translate('profile_logout_action_caption'),
+                    caption: 'Settings',
+                    onPress: onNavigateProfile,
+                    icon: HeaderMenuIconsEnum.SETTINGS,
                   },
                   {
                     caption: translate('profile_delete_wallet_action_caption'),

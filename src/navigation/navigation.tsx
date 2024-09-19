@@ -47,6 +47,8 @@ import SSILockScreen from '../screens/SSILockScreen';
 import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
+import SettingsScreen from '../screens/Settings/SettingsScreen';
+import AccountScreen from '../screens/Settings/AccountScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
@@ -166,6 +168,24 @@ const MainStackNavigator = (): JSX.Element => {
         )}
       />
       <Stack.Screen name="Veramo" component={Veramo} />
+      <Stack.Screen
+        name={MainRoutesEnum.SETTINGS}
+        children={() => (
+          <>
+            <SettingsScreen />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.ACCOUNT}
+        children={() => (
+          <>
+            <AccountScreen />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
     </Stack.Navigator>
   );
 };
