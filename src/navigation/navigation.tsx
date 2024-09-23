@@ -3,6 +3,7 @@ import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigat
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import OnboardingHeader from '../components/bars/OnboardingHeader';
@@ -10,10 +11,13 @@ import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
+import AusweisModal from '../modals/AusweisModal';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
+import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import EmergencyScreen from '../screens/EmergencyScreen';
@@ -24,16 +28,18 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportDataAuthenticationScreen,
   ImportDataConsentScreen,
+  ImportDataFinalScreen,
   ImportDataLoaderScreen,
   ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
-  ImportDataAuthenticationScreen,
-  ImportDataFinalScreen,
 } from '../screens/Onboarding';
+import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
+import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
@@ -65,18 +71,12 @@ import {
   WalletAuthLockState,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
+import {ICredentialState} from '../types/store/credential.types';
+import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
-import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
-import AusweisModal from '../modals/AusweisModal';
-import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
-import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
-import {useSelector} from 'react-redux';
-import {ICredentialState} from '../types/store/credential.types';
-import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
-import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
-import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -434,8 +434,8 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /*headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}*/
+              route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+            }`}*/
             />
           ),
         })}
@@ -610,7 +610,7 @@ const step3GroupConfig: StackGroupConfig = {
 const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig];
 
 export const OnboardingStack = (): JSX.Element => (
-  <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
+  <OnboardingBaseStack.Navigator screenOptions={{animation: 'none', presentation: 'modal'}}>
     <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
     <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
     <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
@@ -1090,8 +1090,8 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /* headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}*/
+              route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+            }`}*/
             />
           ),
         })}
@@ -1218,7 +1218,7 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      {lockState === WalletAuthLockState.ONBOARDING ? (
+      {lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen
           name={SwitchRoutesEnum.ONBOARDING}
           component={OnboardingStackScreenWithContext}
@@ -1226,7 +1226,7 @@ const AppNavigator = (): JSX.Element => {
             customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
           }}
         />
-      ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
+      ) : lockState === WalletAuthLockState.ONBOARDING ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (
         <Stack.Screen name={SwitchRoutesEnum.AUTHENTICATION} component={AuthenticationStack} />

@@ -3,6 +3,7 @@ import React, {PureComponent} from 'react';
 import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
 import {
   SSINavigationBarButtonStyled as Button,
@@ -10,12 +11,11 @@ import {
   SSINavigationBarSafeAreaContainerStyled as SafeAreaContainer,
 } from '../../../styles/components';
 import {NavigationBarRoutesEnum} from '../../../types';
+import CredentialCatalogIcon from '../../assets/icons/CredentialCatalogIcon';
 import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon';
 import SSIQRIcon from '../../assets/icons/SSIQRIcon';
-import CredentialCatalogIcon from '../../assets/icons/CredentialCatalogIcon';
-import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 
 interface IState {
   keyboardVisible: boolean;
