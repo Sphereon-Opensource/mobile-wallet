@@ -143,3 +143,70 @@ export const AccountUserInfoName = styled(SSITextH4SemiBoldStyled)`
 export const AccountType = styled(SSITextH4LightStyled)`
   color: white;
 `;
+
+export const MoreContainer = styled.View`
+  border-radius: 8px;
+  border: 1px solid #404d7a;
+  padding: 12px;
+
+  width: 100%;
+`;
+
+export const MoreText = styled.Text`
+  color: white;
+  font-size: 14px;
+`;
+
+export const MoreLabel = styled.Text`
+  color: #fbfbfbcc;
+  font-size: 11px;
+`;
+
+export const MoreTextRow = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+`;
+
+export const AgeDerivedClaimsText = styled.Text`
+  color: white;
+  font-size: 14px;
+`;
+
+export const AgeDerivedClaimsPreviewContainer = styled.View`
+  width: 100%;
+  gap: 5px;
+  flex: 1;
+  align-items: stretch;
+`;
+
+export const AgeDerivedClaimsLabel = styled.Text`
+  color: #fbfbfbcc;
+  font-size: 11px;
+`;
+
+export const AgeDerivedClaimsRow = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 60px;
+`;
+
+export const AgeDerivedClaimsContainer = styled.View`
+  border-radius: 8px;
+  border: 1px solid #404d7a;
+  padding: 12px;
+
+  gap: 7px;
+
+  width: 100%;
+`;
+
+export const AgeDerivedClaimsScreenDescription = styled.Text`
+  color: #fbfbfbcc;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 10px;
+`;

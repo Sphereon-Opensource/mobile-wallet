@@ -9,6 +9,18 @@
   "settings_title": "Settings",
   "account_title": "Account",
 
+  "account_personal_section_label": "Personal",
+  "account_general_section_label": "General",
+  "account_personal_information_label": "Personal information",
+  "account_login_and_security_label": "Login and security",
+  "account_biometric_login_label": "Biometric authentication",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Delete wallet",
+
+  "age_derived_claims_title": "Age derived claims",
+  "age_derived_claims_screen_title": "Age derived claims",
+  "age_dervived_claims_screen_description": "The age derived claims are there to proof your age to an other party without giving them your exact age to them.",
+
   "biometrics_title": "Do you want to enable Biometric login?",
   "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
   "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",

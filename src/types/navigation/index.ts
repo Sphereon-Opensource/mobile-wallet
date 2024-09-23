@@ -49,6 +49,7 @@ export type StackParamList = {
   FUNKE_C2_SHARE: Record<string, never>;
   SETTINGS: Record<string, never>;
   ACCOUNT: Record<string, never>;
+  AGE_DERIVED_CLAIMS: Record<string, never>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -279,6 +280,7 @@ export enum MainRoutesEnum {
   FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
   SETTINGS = 'SETTINGS',
   ACCOUNT = 'ACCOUNT',
+  AGE_DERIVED_CLAIMS = 'AGE_DERIVED_CLAIMS',
 }
 
 export enum NavigationBarRoutesEnum {

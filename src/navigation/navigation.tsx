@@ -49,6 +49,7 @@ import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import AccountScreen from '../screens/Settings/AccountScreen';
+import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedClaimsScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
@@ -182,6 +183,15 @@ const MainStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <AccountScreen />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
+      <Stack.Screen
+        name={MainRoutesEnum.AGE_DERIVED_CLAIMS}
+        children={() => (
+          <>
+            <AgeDerivedClaimsScreen />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
