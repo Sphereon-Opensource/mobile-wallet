@@ -68,7 +68,7 @@ const SettingsScreen = () => {
             </MenuItemRow>
           </SettingsSection>
 
-          <SectionTitle>Privacy Controls</SectionTitle>
+          <SectionTitle>{translate('settings_privacy_controls_section_label')}</SectionTitle>
           <Divider />
           <SettingsSection>
             <MenuItemRow>
@@ -81,7 +81,7 @@ const SettingsScreen = () => {
             </MenuItemRow>
           </SettingsSection>
 
-          <SectionTitle>Feedback</SectionTitle>
+          <SectionTitle>{translate('settings_feedback_controls_section_label')}</SectionTitle>
           <Divider />
           <SettingsSection>
             <MenuItemRow>
@@ -97,7 +97,7 @@ const SettingsScreen = () => {
       </ScrollView>
       <MenuItemRow onPress={() => logout()} style={({pressed}) => ({paddingLeft: 24, opacity: pressed ? 0.7 : 1})}>
         <SSIPersonIcon />
-        <MenuItemText>Log out</MenuItemText>
+        <MenuItemText>{translate('settings_logout_label')}</MenuItemText>
       </MenuItemRow>
     </SettingsScreenContainer>
   );

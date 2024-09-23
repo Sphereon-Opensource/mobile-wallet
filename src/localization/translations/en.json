@@ -9,6 +9,11 @@
   "settings_title": "Settings",
   "account_title": "Account",
 
+  "settings_general_section_label": "General",
+  "settings_privacy_controls_section_label": "Privacy Controls",
+  "settings_feedback_controls_section_label": "Privacy Controls",
+  "settings_logout_label": "Sign out",
+
   "account_personal_section_label": "Personal",
   "account_general_section_label": "General",
   "account_personal_information_label": "Personal information",

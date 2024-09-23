@@ -5,6 +5,27 @@
   "credentials_view_item_expires_on": "Vervalt op",
   "swipe_delete_button_caption": "Verwijderen",
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
+
+  "settings_title": "Settings",
+  "account_title": "Account",
+
+  "settings_general_section_label": "General",
+  "settings_privacy_controls_section_label": "Privacy Controls",
+  "settings_feedback_controls_section_label": "Privacy Controls",
+  "settings_logout_label": "Sign out",
+
+  "account_personal_section_label": "Personal",
+  "account_general_section_label": "General",
+  "account_personal_information_label": "Personal information",
+  "account_login_and_security_label": "Login and security",
+  "account_biometric_login_label": "Biometric authentication",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Delete wallet",
+
+  "age_derived_claims_title": "Age derived claims",
+  "age_derived_claims_screen_title": "Age derived claims",
+  "age_dervived_claims_screen_description": "The age derived claims are there to proof your age to an other party without giving them your exact age to them.",
+
   "biometrics_title": "Do you want to enable Biometric login?",
 
   "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
