@@ -8,7 +8,6 @@ import {
   NonPersistedIdentity,
   Party,
 } from '@sphereon/ssi-sdk.data-store';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
@@ -172,7 +171,14 @@ export const sendResponse = async (
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
-    Linking.emit('url', {url});
+    Linking.openURL(url);
+  } else if (response.status >= 200 && response.status < 300) {
+    const body: Record<string, unknown> = await response.json();
+    const redirectUri = body['redirect_uri'];
+    if (typeof redirectUri === 'string') {
+      console.log(`Redirecting to: ${redirectUri}`);
+      Linking.openURL(redirectUri);
+    }
   }
 
   return response;
