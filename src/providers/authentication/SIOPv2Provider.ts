@@ -5,7 +5,7 @@ import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresen
 import {OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
-import agent, {didMethodsSupported, didResolver} from '../../agent';
+import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {generateDigest} from '../../utils';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -241,7 +241,7 @@ export const siopSendAuthorizationResponse = async (
       throw Error(`Only one verifiable presentation supported for now. Got ${presentationsAndDefs.length}`);
     }
 
-    //managedIdentifier = await agentContext.agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
+    managedIdentifier = await agentContext.agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
     presentationSubmission = presentationsAndDefs[0].presentationSubmission;
 
     /*const key = await getKey({identifier, vmRelationship: 'authentication'}, session.context);
