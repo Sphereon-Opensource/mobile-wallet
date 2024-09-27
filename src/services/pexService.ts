@@ -103,7 +103,7 @@ export const getMatchingCredentials = async ({
 export const getMatchingPidCredentials = async ({
   presentationDefinitionWithLocation,
   pidCredentials,
-  issuerCorrelationId,
+  issuerCorrelationId, // FIXME this is not an issuer correlation id, in case of https://funke.demo.sphereon.com/ it is funke.demo.sphereon.com, which is a verifier
   opts,
 }: {
   presentationDefinitionWithLocation: PresentationDefinitionWithLocation;
@@ -123,7 +123,7 @@ export const getMatchingPidCredentials = async ({
   const credentials = pidCredentials.map(pidCredential => {
     const dc: NonPersistedDigitalCredential = nonPersistedDigitalCredentialEntityFromAddArgs({
       rawDocument: pidCredential.rawCredential,
-      kmsKeyRef: 'fixme', // FIXME
+      kmsKeyRef: 'https://demo.pid-issuer.bundesdruckerei.de/c2/.well-known/openid-credential-issuer',
       identifierMethod: 'x509_san_dns',
       issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       issuerCorrelationId: issuerCorrelationId,
