@@ -172,12 +172,15 @@ export const sendResponse = async (
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
     Linking.openURL(url);
-  } else if (response.status >= 200 && response.status < 300) {
-    const body: Record<string, unknown> = await response.json();
-    const redirectUri = body['redirect_uri'];
-    if (typeof redirectUri === 'string') {
-      console.log(`Redirecting to: ${redirectUri}`);
-      Linking.openURL(redirectUri);
+  } else if (response.status >= 200 && response.status < 300 && response.bodyUsed) {
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const body: Record<string, unknown> = await response.json();
+      const redirectUri = body['redirect_uri'];
+      if (typeof redirectUri === 'string') {
+        console.log(`Redirecting to: ${redirectUri}`);
+        Linking.openURL(redirectUri);
+      }
     }
   }
 
