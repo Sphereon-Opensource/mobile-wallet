@@ -1,10 +1,28 @@
 import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingBiometricsStatus} from '../../../types/machines/onboarding';
-import {IUserState} from '../../../types/store/user.types';
+import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
+import {OnboardingBiometricsStatus} from '../types/machines/onboarding';
+import {IUserState} from '../types/store/user.types';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../types';
+import {RootState} from '../types';
+
+export const useBiometricsEnabledContext = () => {
+  const {onboardingInstance} = useContext(OnboardingContext);
+  const userState: IUserState = useSelector((state: RootState) => state.user);
+
+  const enabled = useMemo(() => {
+    const walletBiometricsEnabled = userState.users.values().next().value.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+    console.log('user in biometrics', walletBiometricsEnabled);
+    return (
+      walletBiometricsEnabled ||
+      (onboardingInstance
+        ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
+        : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED)
+    );
+  }, [onboardingInstance, userState]);
+
+  return enabled;
+};
 
 export const useBiometrics = () => {
   const authenticateBiometrically = async () => {
@@ -34,24 +52,28 @@ export const useBiometrics = () => {
   };
 };
 
-export const useAuthEffect = (effect: (success: boolean) => void) => {
-  const userState: IUserState = useSelector((state: RootState) => state.user);
-  const {onboardingInstance} = useContext(OnboardingContext);
-  const biometricsEnabled = useMemo(
-    () =>
-      onboardingInstance
-        ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
-        : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
-    [onboardingInstance],
-  );
+type UseAuthEffectOptions = {
+  /**
+   * The number of milliseconds to delay the authorization
+   * prompt after the hook is mounted.
+   */
+  promptDelay?: number;
+};
+const DEFAULT_PROMPT_DELAY = 1000;
+type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => Promise<void>);
+export const useAuthEffect = (effect: AuthEffectCallback, options: UseAuthEffectOptions = {}) => {
+  const {promptDelay = DEFAULT_PROMPT_DELAY} = options;
+  const biometricsEnabled = useBiometricsEnabledContext();
 
   const {prompt} = useBiometrics();
 
   useEffect(() => {
     if (biometricsEnabled) {
       setTimeout(() => {
-        prompt().then(effect);
-      }, 1000);
+        prompt().then(async (result: boolean) => {
+          await effect(result);
+        });
+      }, promptDelay);
     }
   }, []);
 };

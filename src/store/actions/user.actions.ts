@@ -142,8 +142,10 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           }
           await dispatch(getVerifiableCredentials());
           // add small delay to make the conditional navigation working for the catalog
-          await delay(500);
-          (await LockingHandler.getInstance()).isLocked = false;
+          await delay(700);
+          const lockingHandler = await LockingHandler.getInstance();
+          lockingHandler.touchLastInteraction();
+          lockingHandler.isLocked = false;
 
           dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();

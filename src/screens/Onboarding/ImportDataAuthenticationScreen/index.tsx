@@ -11,7 +11,7 @@ import PinCode from '../../../components/pinCodes/OnboardingPinCode';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
+import {useAuthEffect, useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
 import {storageGetPin} from '../../../services/storageService';
 import {IUserState} from '../../../types/store/user.types';
 import {useSelector} from 'react-redux';
@@ -28,19 +28,6 @@ const Content = styled.View`
   padding: 20px;
   justify-content: center;
 `;
-
-const useBiometricsEnabledContext = () => {
-  const {onboardingInstance} = useContext(OnboardingContext);
-  const userState: IUserState = useSelector((state: RootState) => state.user);
-
-  const enabled = useMemo(() => {
-    return onboardingInstance
-      ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
-      : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
-  }, [onboardingInstance, userState]);
-
-  return enabled;
-};
 
 const ImportDataAuthenticationScreen = (props?: any) => {
   const {onAccept} = props?.route?.params ?? {};
