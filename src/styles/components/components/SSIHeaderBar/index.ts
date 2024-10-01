@@ -17,6 +17,7 @@ export const SSIHeaderBarContainerStyled = styled.View`
 
 export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
   margin-bottom: 14px;
+  font-size: 16px;
 `;
 
 export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`

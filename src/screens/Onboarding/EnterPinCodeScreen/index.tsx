@@ -57,7 +57,7 @@ const EnterPinCodeScreen = () => {
     ],
     [invalidPinExample],
   );
-  const [isPinValid, setIsPinValid] = useState(validatePin(pinCodeContext, []).isValid);
+  const [isPinValid, setIsPinValid] = useState(false);
   const [pinCode, setPinCode] = useState('');
   const [erroniousValidator, setErroniousValidator] = useState<ValidatorType>();
   const [showFeedback, setShowFeedback] = useState(false);
@@ -74,6 +74,24 @@ const EnterPinCodeScreen = () => {
       return unsubscribe;
     }
   }, [navigation, PinCodeRef.current]);
+
+  const onNext = () => {
+    const pinUpdated = pinCode !== pinCodeContext;
+    if (pinUpdated) {
+      onboardingInstance.send(OnboardingMachineEvents.SET_PIN_CODE, {data: pinCode});
+      onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: ''});
+    }
+    onboardingInstance.send(OnboardingMachineEvents.NEXT);
+    setPinCode('');
+    setIsPinValid(false);
+  };
+
+  useEffect(() => {
+    const isComplete = pinCode.length === PIN_CODE_LENGTH;
+    if (isPinValid && isComplete) {
+      setTimeout(() => onNext(), 600);
+    }
+  }, [pinCode, isPinValid]);
 
   const onPinChange = useCallback(
     (pin: string) => {
@@ -92,27 +110,8 @@ const EnterPinCodeScreen = () => {
     [onboardingInstance, isPinValid, setShowFeedback, setIsPinValid, setErroniousValidator, setPinCode],
   );
 
-  const footer = (
-    <PrimaryButton
-      style={{height: 42, width: '100%'}}
-      caption={translate(`${translationsPath}.button_caption`)}
-      disabled={!isPinValid}
-      captionColor={fontColors.light}
-      onPress={() => {
-        const pinUpdated = pinCode !== pinCodeContext;
-        if (pinUpdated) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_PIN_CODE, {data: pinCode});
-          onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: ''});
-        }
-        onboardingInstance.send(OnboardingMachineEvents.NEXT);
-        setPinCode('');
-        setIsPinValid(false);
-      }}
-    />
-  );
-
   return (
-    <ScreenContainer footer={footer} scrollViewRef={scrollViewRef}>
+    <ScreenContainer scrollViewRef={scrollViewRef}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1}}>
         <PinCode inputRef={PinCodeRef} pin={pinCode} onPinChange={onPinChange} length={PIN_CODE_LENGTH} validation={{isValid: isPinValid}} />
