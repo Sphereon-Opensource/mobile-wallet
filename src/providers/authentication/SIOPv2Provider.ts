@@ -1,10 +1,9 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
-
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
@@ -186,7 +185,7 @@ export const siopSendAuthorizationResponse = async (
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
     /*
-          const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;  
+          const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;
         const firstVC = firstUniqueDC.uniformVerifiableCredential;
         const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
         ? firstVC.decodedPayload.cnf?.jwk
@@ -210,10 +209,15 @@ export const siopSendAuthorizationResponse = async (
     if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
       return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
-    const identifier: ManagedIdentifierOptsOrResult = await session.context.agent.identifierManagedGetByKid({
-      identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
-      kmsKeyRef: firstUniqueDC.digitalCredential.kmsKeyRef,
-    });
+
+    const identifier = isOID4VCIssuerIdentifier(firstUniqueDC.digitalCredential.kmsKeyRef)
+      ? await session.context.agent.identifierManagedGetByOID4VCIssuer({
+          identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
+        })
+      : await session.context.agent.identifierManagedGetByKid({
+          identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
+          kmsKeyRef: firstUniqueDC.digitalCredential.kmsKeyRef,
+        });
 
     if (hasMDocCredentials(credentialsAndDefinitions)) {
       // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
@@ -246,14 +250,17 @@ export const siopSendAuthorizationResponse = async (
 
     debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
-    const response = session.sendAuthorizationResponse({
+
+    const response = await session.sendAuthorizationResponse({
       ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
       ...(presentationSubmission && {presentationSubmission}),
       responseSignerOpts: identifier,
     });
+
     debug(`Response: `, response);
 
-    return await response;
+    return response;
   }
+
   return undefined;
 };

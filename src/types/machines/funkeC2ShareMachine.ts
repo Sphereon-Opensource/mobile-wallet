@@ -26,7 +26,10 @@ export enum FunkeC2ShareMachineStateTypes {
   authenticate = 'authenticate',
   retrievePIDCredentials = 'retrievePIDCredentials',
   acceptShareCredential = 'acceptShareCredential',
+  storePIDCredentials = 'storePIDCredentials',
+  storeCredentialBranding = 'storeCredentialBranding',
   sendResponse = 'sendResponse',
+  fetchCredentialsInStore = 'fetchCredentialsInStore',
   handleError = 'handleError',
   declined = 'declined',
   aborted = 'aborted',
@@ -44,6 +47,9 @@ export enum FunkeC2ShareMachineServices {
   retrieveContact = 'retrieveContact',
   retrievePIDCredentials = 'retrievePIDCredentials',
   sendResponse = 'sendResponse',
+  storePIDCredentials = 'storePIDCredentials',
+  storeCredentialBranding = 'storeCredentialBranding',
+  fetchCredentialsInStore = 'fetchCredentialsInStore',
 }
 
 export enum FunkeC2ShareMachineEvents {
