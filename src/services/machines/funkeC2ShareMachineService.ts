@@ -28,7 +28,7 @@ import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/
 import {computeEntryHash} from '@veramo/utils';
 import {Linking} from 'react-native';
 
-const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
+const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
 export const siopCreateConfig = async (context: Pick<FunkeC2ShareMachineContext, 'url'>): Promise<CreateConfigResult> => {
   const {url} = context;
