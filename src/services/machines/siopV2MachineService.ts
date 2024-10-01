@@ -8,7 +8,6 @@ import {
   NonPersistedIdentity,
   Party,
 } from '@sphereon/ssi-sdk.data-store';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
@@ -21,6 +20,9 @@ import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {Loggers} from '@sphereon/ssi-types';
+
+const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -172,7 +174,17 @@ export const sendResponse = async (
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
-    Linking.emit('url', {url});
+    Linking.openURL(url);
+  } else if (response.status >= 200 && response.status < 300 && response.bodyUsed) {
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const body: Record<string, unknown> = await response.json();
+      const redirectUri = body['redirect_uri'];
+      if (typeof redirectUri === 'string') {
+        logger.info(`Redirecting to: ${redirectUri}`);
+        Linking.openURL(redirectUri);
+      }
+    }
   }
 
   return response;

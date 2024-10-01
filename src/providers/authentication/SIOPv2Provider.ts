@@ -1,4 +1,4 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {AuthorizationEvents, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
@@ -13,8 +13,11 @@ import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCreden
 import {com} from '@sphereon/kmp-mdl-mdoc';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {EventEmitter} from 'events';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
+
+export const siopEventEmitter = new EventEmitter();
 
 export const siopGetRequest = async (config: Omit<DidAuthConfig, 'identifier'>): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(
@@ -40,6 +43,7 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
         resolver: didResolver,
       },
       supportedDIDMethods: didMethodsSupported,
+      eventEmitter: siopEventEmitter,
     },
     requestJwtOrUri,
   });
@@ -128,7 +132,6 @@ export const siopSendAuthorizationResponse = async (
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
   const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
-
   /*
     let identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
     if (!identifiers || identifiers.length === 0) {
@@ -210,14 +213,28 @@ export const siopSendAuthorizationResponse = async (
       return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
 
-    const identifier = isOID4VCIssuerIdentifier(firstUniqueDC.digitalCredential.kmsKeyRef)
-      ? await session.context.agent.identifierManagedGetByOID4VCIssuer({
-          identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
-        })
-      : await session.context.agent.identifierManagedGetByKid({
-          identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
-          kmsKeyRef: firstUniqueDC.digitalCredential.kmsKeyRef,
-        });
+    let identifier: ManagedIdentifierOptsOrResult;
+    if (isOID4VCIssuerIdentifier(firstUniqueDC.digitalCredential.kmsKeyRef)) {
+      identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
+        identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
+      });
+    } else {
+      const digitalCredential = firstUniqueDC.digitalCredential;
+      switch (digitalCredential.subjectCorrelationType) {
+        case 'DID':
+          identifier = await session.context.agent.identifierManagedGetByDid({
+            identifier: digitalCredential.subjectCorrelationId,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+          break;
+        // TODO other implementations?
+        default:
+          identifier = await session.context.agent.identifierManagedGetByKid({
+            identifier: digitalCredential.kmsKeyRef,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+      }
+    }
 
     if (hasMDocCredentials(credentialsAndDefinitions)) {
       // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
