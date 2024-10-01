@@ -38,6 +38,7 @@ import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
+import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
 
 export const createUser = (
   args: BasicUser,
@@ -194,5 +195,20 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
       .catch(() => {
         dispatch({type: DELETE_USER_FAILED});
       });
+  };
+};
+
+export const setBiometrics = (status: OnboardingBiometricsStatus): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    dispatch({type: USERS_LOADING});
+    const {
+      user: {users},
+    } = await getState();
+    const user = users.values().next().value as IUser;
+
+    await userServiceUpdateUser({
+      ...user,
+      biometricsEnabled: status,
+    }).then(result => dispatch({type: UPDATE_USER_SUCCESS, payload: result}));
   };
 };

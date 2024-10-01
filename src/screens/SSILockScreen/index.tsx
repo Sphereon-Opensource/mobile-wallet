@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useEffect, useMemo} from 'react';
+import React, {FC, useEffect} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
@@ -11,38 +11,30 @@ import {
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {IUser, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {useAuthEffect} from '../../hooks/use-biometrics';
-import {Platform, Pressable, View} from 'react-native';
-import {useSelector} from 'react-redux';
-import {updateUser} from '../../services/userService';
+import {Platform} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
+import {setBiometrics} from 'src/store/actions/user.actions';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
-
-const disabledBiometrics = async (users: Map<string, IUser>) => {
-  const user = users.values().next().value as IUser;
-  return updateUser({
-    ...user,
-    biometricsEnabled: OnboardingBiometricsStatus.DISABLED,
-  });
-};
 
 // TODO This screen should be extended to do pin code or biometrics authentication
 const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
-  const {users} = useSelector((state: RootState) => state.user);
   useEffect((): void => {
     props.navigation.addListener('focus', (): void => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
   }, []);
 
+  const dispatch = useDispatch();
+
   useAuthEffect(
     async (success: boolean) => {
       if (!success) {
-        //todo: disable biometrics here and return
-        await disabledBiometrics(users);
+        dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
         return;
       }
       const {onAuthenticate} = props.route.params;

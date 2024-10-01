@@ -3,8 +3,9 @@ import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
 import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
 import {OnboardingBiometricsStatus} from '../types/machines/onboarding';
 import {IUserState} from '../types/store/user.types';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../types';
+import {setBiometrics} from '../store/actions/user.actions';
 
 export const useBiometricsEnabledContext = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -12,7 +13,6 @@ export const useBiometricsEnabledContext = () => {
 
   const enabled = useMemo(() => {
     const walletBiometricsEnabled = userState.users.values().next().value.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
-    console.log('user in biometrics', walletBiometricsEnabled);
     return (
       walletBiometricsEnabled ||
       (onboardingInstance
@@ -145,5 +145,35 @@ export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = 
     hasHardware: hasSupportedHardware,
     isEnrolled: enrolled,
     isEnrollmentStrong: isSecure,
+  };
+};
+
+export const useEnableBiometrics = () => {
+  const {prompt} = useBiometrics();
+  const {activeUser} = useSelector((state: RootState) => state.user);
+  const isEnabled = useMemo(() => {
+    if (!activeUser) return false;
+    const {biometricsEnabled} = activeUser;
+    return biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+  }, [activeUser]);
+  const dispatch = useDispatch();
+
+  const enable = async () => {
+    if (isEnabled) return console.log('biometrics already enabled!');
+    return prompt().then(success => {
+      if (success) return dispatch(setBiometrics(OnboardingBiometricsStatus.ENABLED));
+      console.log('failed to enable biometrics');
+    });
+  };
+
+  const disable = () => {
+    if (!isEnabled) return console.log('biometrics not enabled!');
+    dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
+  };
+
+  return {
+    disable,
+    enable,
+    isEnabled,
   };
 };

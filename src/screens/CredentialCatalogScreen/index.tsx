@@ -1,10 +1,10 @@
-import React, {FC, ReactElement} from 'react';
+import React, {FC, ReactElement, useMemo} from 'react';
 import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
-import {SSITextH2SemiBoldLightStyled as HeaderCaption} from '@sphereon/ui-components.ssi-react-native';
+import {SSITextH2SemiBoldLightStyled as HeaderCaption, PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
 import SearchField from '../../components/fields/SearchField';
 import FilterBar from '../../components/bars/FilterBar';
