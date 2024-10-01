@@ -202,7 +202,10 @@ export class PidIssuerService {
 
     let responses: (CredentialResponse & {params?: DPoPResponseParams; access_token: string; identifier?: ManagedIdentifierResult})[] = [];
 
-    store.dispatch<any>({type: CREATE_DPOP_SUCCESS, payload: {dpop, accessToken: accessTokenResponse.access_token}});
+    store.dispatch<any>({
+      type: CREATE_DPOP_SUCCESS,
+      payload: {dpop: accessTokenResponse.params?.dpop, accessToken: accessTokenResponse.access_token},
+    });
 
     for (const pidInfo of pids) {
       const {identifier, credentialResponse, nonce} = await this.getPid({pidInfo, issuerResourceDpop, currentNonce, noCredentialRequestProof});
