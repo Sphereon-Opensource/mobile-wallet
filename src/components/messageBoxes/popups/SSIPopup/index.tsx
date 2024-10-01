@@ -4,7 +4,6 @@ import {TouchableOpacity, View} from 'react-native';
 import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage';
 import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage';
 import {
-  SSIPopupButtonsContainerStyled as ButtonsContainer,
   SSIPopupCloseButtonContainerStyled as CloseButtonContainer,
   SSIPopupContainerStyled as Container,
   SSIPopupContentContainerStyled as ContentContainer,
@@ -24,7 +23,7 @@ import {ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum} from '../../
 import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
 import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
 
 export interface IProps {

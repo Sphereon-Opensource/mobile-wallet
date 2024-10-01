@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import {SSICheckmarkBadge, SSIExclamationMarkBadge} from '@sphereon/ui-components.ssi-react-native';
 import {SSIFlexDirectionRowViewStyled, SSIRoundedContainerBackgroundPrimaryLightStyled} from '../../containers';
 import {SSITextH4SemiBoldStyled, SSITextH5Styled} from '../../fonts';

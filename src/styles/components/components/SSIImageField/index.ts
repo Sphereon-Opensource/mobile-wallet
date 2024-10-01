@@ -17,4 +17,6 @@ export const SSIImageFieldContentContainerStyled = styled.View`
   padding: 10px;
   background-color: ${backgroundColors.primaryDark};
   border-radius: 10px;
+  justify-content: center;
+  align-items: center;
 `;
