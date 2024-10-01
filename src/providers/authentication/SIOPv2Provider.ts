@@ -212,21 +212,28 @@ export const siopSendAuthorizationResponse = async (
     if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
       return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
+
     let identifier: ManagedIdentifierOptsOrResult;
-    const digitalCredential = firstUniqueDC.digitalCredential;
-    switch (digitalCredential.subjectCorrelationType) {
-      case 'DID':
-        identifier = await session.context.agent.identifierManagedGetByDid({
-          identifier: digitalCredential.subjectCorrelationId,
-          kmsKeyRef: digitalCredential.kmsKeyRef,
-        });
-        break;
-      // TODO other implementations?
-      default:
-        identifier = await session.context.agent.identifierManagedGetByKid({
-          identifier: digitalCredential.kmsKeyRef,
-          kmsKeyRef: digitalCredential.kmsKeyRef,
-        });
+    if (isOID4VCIssuerIdentifier(firstUniqueDC.digitalCredential.kmsKeyRef)) {
+      identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
+        identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
+      });
+    } else {
+      const digitalCredential = firstUniqueDC.digitalCredential;
+      switch (digitalCredential.subjectCorrelationType) {
+        case 'DID':
+          identifier = await session.context.agent.identifierManagedGetByDid({
+            identifier: digitalCredential.subjectCorrelationId,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+          break;
+        // TODO other implementations?
+        default:
+          identifier = await session.context.agent.identifierManagedGetByKid({
+            identifier: digitalCredential.kmsKeyRef,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+      }
     }
 
     if (hasMDocCredentials(credentialsAndDefinitions)) {
