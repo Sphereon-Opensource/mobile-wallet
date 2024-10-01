@@ -20,6 +20,9 @@ import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {Loggers} from '@sphereon/ssi-types';
+
+const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -178,7 +181,7 @@ export const sendResponse = async (
       const body: Record<string, unknown> = await response.json();
       const redirectUri = body['redirect_uri'];
       if (typeof redirectUri === 'string') {
-        console.log(`Redirecting to: ${redirectUri}`);
+        logger.info(`Redirecting to: ${redirectUri}`);
         Linking.openURL(redirectUri);
       }
     }
