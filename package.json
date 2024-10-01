@@ -49,7 +49,7 @@
     "@sphereon/did-auth-siop-adapter": "0.16.1-unstable.91",
     "@sphereon/oid4vci-client": "0.16.1-unstable.91",
     "@sphereon/oid4vci-common": "0.16.1-unstable.91",
-    "@sphereon/pex": "5.0.0-unstable.9",
+    "@sphereon/pex": "5.0.0-unstable.10",
     "@sphereon/pex-models": "^2.3.1",
     "@sphereon/ssi-sdk-ext.did-provider-jwk": "0.24.1-unstable.130",
     "@sphereon/ssi-sdk-ext.did-provider-key": "0.24.1-unstable.130",
