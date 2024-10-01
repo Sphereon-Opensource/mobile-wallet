@@ -25,7 +25,6 @@ export const FunkeC2ShareContext: Context<FunkeC2ShareContextType> = createConte
 const navigateLoading = async (args: any): Promise<void> => {
   const {navigation} = args;
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
-    // TODO
     screen: ScreenRoutesEnum.LOADING,
     params: {
       message: translate('action_getting_information_message'),
@@ -132,8 +131,6 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     debug(`navigation not ready yet`);
     return;
   }
-
-  console.log(`STATE: ${state.value}`);
 
   if (
     state.matches(FunkeC2ShareMachineStateTypes.createConfig) ||
