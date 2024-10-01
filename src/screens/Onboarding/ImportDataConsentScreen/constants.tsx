@@ -1,13 +1,20 @@
+import SSIAddressIcon from '../../../components/assets/icons/SSIAddressIcon';
+import SSIBirthdayIcon from '../../../components/assets/icons/SSIBirthdayIcon';
+import SSIBirthplaceIcon from '../../../components/assets/icons/SSIBirthplaceIcon';
+import SSIGenderIcon from '../../../components/assets/icons/SSIGenderIcon';
+import SSINationalityIcon from '../../../components/assets/icons/SSINationalityIcon';
+import SSIPersonIcon from '../../../components/assets/icons/SSIPersonIcon';
+
 type Icon = 'person' | 'gender' | 'birthday' | 'nationality' | 'birthplace' | 'address';
 
-export const InfoSchemaImages = {
-  person: require('../../../assets/images/person.png'),
-  gender: require('../../../assets/images/gender.png'),
-  birthday: require('../../../assets/images/birthday.png'),
-  birthplace: require('../../../assets/images/birthplace.png'),
-  address: require('../../../assets/images/address.png'),
-  nationality: require('../../../assets/images/nationality.png'),
-} satisfies {[key in Icon]: string};
+export const InfoSchemaIcons = {
+  person: <SSIPersonIcon width={20} height={20} color="white" />,
+  gender: <SSIGenderIcon width={22} height={22} color="white" />,
+  birthday: <SSIBirthdayIcon width={20} height={20} color="white" />,
+  birthplace: <SSIBirthplaceIcon width={22} height={22} color="white" />,
+  address: <SSIAddressIcon width={22} height={22} color="white" />,
+  nationality: <SSINationalityIcon width={20} height={20} color="white" />,
+} satisfies {[key in Icon]: React.ReactNode};
 
 export type AusweisRequestedInfoItem = {
   label: string;

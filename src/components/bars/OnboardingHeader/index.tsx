@@ -23,6 +23,7 @@ import {Circle, SelectedCircle} from '../../../styles/components';
 import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
+import SSICloseIcon from 'src/components/assets/icons/SSICloseIcon';
 
 const {width, height} = Dimensions.get('window');
 
@@ -91,12 +92,25 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     return currentStep < 4 && !stepConfig;
   }, [currentStep]);
 
+  const [isVisible, setIsVisible] = useState(false);
   const show = useSharedValue(false);
+
+  const showModal = () => {
+    setIsVisible(true);
+    show.value = true;
+  };
+
+  const closeModal = () => {
+    show.value = false;
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 200);
+  };
 
   const [securityModel, setSecurityModel] = useState<PIDSecurityModel>(PIDSecurityModel.SECURE_ELEMENT);
 
   const modalStyle = useAnimatedStyle(() => {
-    const translateY = withTiming(show.value ? 0 : MODAL_HEIGHT + 10, {duration: 200, easing: Easing.ease});
+    const translateY = withTiming(show.value ? 0 : MODAL_HEIGHT, {duration: 200, easing: Easing.ease});
     return {
       transform: [
         {
@@ -114,7 +128,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     }
     if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
       onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
-      show.value = false;
+      closeModal();
       return;
     }
     if (skipImport) {
@@ -143,7 +157,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
           </SSITextH3LightStyled>
         )}
         {showCogWheel && (
-          <Pressable style={({pressed}) => ({opacity: pressed ? 0.7 : 1})} onPress={() => (show.value = !show.value)}>
+          <Pressable style={({pressed}) => ({opacity: pressed ? 0.7 : 1})} onPress={() => showModal()}>
             <Image
               style={{height: 22, width: 22}}
               source={require('../../../assets/images/cog-wheel.png')}
@@ -161,53 +175,55 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
           containerStyle={{marginVertical: PROGRESS_BAR_VERTICAL_MARGIN}}
         />
       )}
-      <Animated.View
-        style={[
-          {
-            width: MODAL_WIDTH,
-            height: MODAL_HEIGHT,
-            position: 'absolute',
-            left: 0,
-            top: height - MODAL_HEIGHT,
-          },
-          modalStyle,
-        ]}>
-        <SettingsModalContainer>
-          <SettingsCloseContainer onPress={() => (show.value = false)} style={({pressed}) => ({opacity: pressed ? 0.7 : 1})}>
-            <SettingsClose source={require('../../../assets/images/exit.png')} width={15} height={15} />
-          </SettingsCloseContainer>
-          <ScreenTitleAndDescription
-            title={translate('onboarding_pid_security_model_title')}
-            description={translate('onboarding_pid_security_model_subtitle')}
-          />
-          <OptionContainer>
-            <SelectOption
-              label={translate('onboarding_pid_security_model_secure_element')}
-              onPress={() => setSecurityModel(PIDSecurityModel.SECURE_ELEMENT)}
-              selected={securityModel === PIDSecurityModel.SECURE_ELEMENT}
+      {isVisible && (
+        <Animated.View
+          style={[
+            {
+              width: MODAL_WIDTH,
+              height: MODAL_HEIGHT,
+              position: 'absolute',
+              left: 0,
+              top: height - MODAL_HEIGHT,
+            },
+            modalStyle,
+          ]}>
+          <SettingsModalContainer>
+            <SettingsCloseContainer onPress={closeModal} style={({pressed}) => ({opacity: pressed ? 0.7 : 1})}>
+              <SSICloseIcon color="white" size={15} />
+            </SettingsCloseContainer>
+            <ScreenTitleAndDescription
+              title={translate('onboarding_pid_security_model_title')}
+              description={translate('onboarding_pid_security_model_subtitle')}
             />
-            <SelectOption
-              label={translate('onboarding_pid_security_model_remote_hardware')}
-              onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
-              selected={securityModel === PIDSecurityModel.REMOTE_HSM}
-              disabled
-            />
-            <SelectOption
-              label={translate('onboarding_pid_security_model_mobile_operator')}
-              onPress={() => setSecurityModel(PIDSecurityModel.MOBILE_OPERATOR_ESIM)}
-              selected={securityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM}
-              disabled
-            />
-            <SelectOption
-              label={translate('onboarding_pid_security_model_eid_presentation')}
-              onPress={() => setSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION)}
-              selected={securityModel === PIDSecurityModel.EID_DURING_PRESENTATION}
-            />
-          </OptionContainer>
+            <OptionContainer>
+              <SelectOption
+                label={translate('onboarding_pid_security_model_secure_element')}
+                onPress={() => setSecurityModel(PIDSecurityModel.SECURE_ELEMENT)}
+                selected={securityModel === PIDSecurityModel.SECURE_ELEMENT}
+              />
+              <SelectOption
+                label={translate('onboarding_pid_security_model_remote_hardware')}
+                onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
+                selected={securityModel === PIDSecurityModel.REMOTE_HSM}
+                disabled
+              />
+              <SelectOption
+                label={translate('onboarding_pid_security_model_mobile_operator')}
+                onPress={() => setSecurityModel(PIDSecurityModel.MOBILE_OPERATOR_ESIM)}
+                selected={securityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM}
+                disabled
+              />
+              <SelectOption
+                label={translate('onboarding_pid_security_model_eid_presentation')}
+                onPress={() => setSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION)}
+                selected={securityModel === PIDSecurityModel.EID_DURING_PRESENTATION}
+              />
+            </OptionContainer>
 
-          <PrimaryButton caption={translate('onboarding_pid_security_model_select')} onPress={() => onSelect()} />
-        </SettingsModalContainer>
-      </Animated.View>
+            <PrimaryButton caption={translate('onboarding_pid_security_model_select')} onPress={() => onSelect()} />
+          </SettingsModalContainer>
+        </Animated.View>
+      )}
     </Container>
   );
 };

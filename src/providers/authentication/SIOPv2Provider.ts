@@ -222,6 +222,7 @@ export const siopSendAuthorizationResponse = async (
           kmsKeyRef: digitalCredential.kmsKeyRef,
         });
         break;
+      // TODO other implementations?
       default:
         identifier = await session.context.agent.identifierManagedGetByKid({
           identifier: digitalCredential.kmsKeyRef,

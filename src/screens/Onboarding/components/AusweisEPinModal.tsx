@@ -4,6 +4,7 @@ import {SSITextH1RegularStyled, SSITextH3RegularStyled} from '../../../styles/co
 import {ContentContainer, IconContainer, ModalCard} from './styles';
 import {useRef} from 'react';
 import Animated, {Easing, useAnimatedKeyboard, useAnimatedStyle, withTiming} from 'react-native-reanimated';
+import AusweisIcon from '../../../components/assets/icons/AusweisIcon';
 
 type AusweisEPinModalProps = {
   isVisible: boolean;
@@ -17,11 +18,13 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
   const keyboard = useAnimatedKeyboard();
 
   const style = useAnimatedStyle(() => {
-    const bottom = withTiming(isVisible ? 0 : -250, {duration: 300, easing: Easing.ease});
-    console.log('bottom', bottom);
+    const bottom = withTiming(isVisible ? 15 : -250, {duration: 300, easing: Easing.ease});
     return {
       position: 'absolute',
       alignSelf: 'center',
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
       bottom,
       transform: [
         {
@@ -35,35 +38,25 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
 
   return (
     <Animated.View style={style}>
-      <ModalCard style={{width: '100%'}}>
+      <ModalCard>
         <IconContainer>
-          <Image
-            width={20}
-            height={20}
-            resizeMode="stretch"
-            style={{width: 40, height: 40}}
-            source={require('../../../assets/images/ausweis_icon.png')}
-          />
+          <AusweisIcon />
         </IconContainer>
-        <View style={{alignItems: 'center'}}>
-          <SSITextH1RegularStyled style={{color: '#8F8E94'}}>Enter Ausweis eID pin</SSITextH1RegularStyled>
-          <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>
-        </View>
-        <ContentContainer>
-          <PinInput
-            containerStyle={{marginBottom: 10}}
-            ref={ref}
-            inputProps={{placeholder: '', caretHidden: true, secureTextEntry: true}}
-            inputStyle={{
-              height: 50,
-              width: 40,
-              fontSize: 16,
-            }}
-            onFillEnded={onComplete}
-            length={6}
-            autoFocus={true}
-          />
-        </ContentContainer>
+        <SSITextH1RegularStyled style={{color: '#8F8E94'}}>Enter Ausweis eID pin</SSITextH1RegularStyled>
+        <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>
+        <PinInput
+          // containerStyle={{marginBottom: 10}}
+          ref={ref}
+          inputProps={{placeholder: '', caretHidden: true, secureTextEntry: true}}
+          inputStyle={{
+            height: 50,
+            width: 40,
+            fontSize: 16,
+          }}
+          onFillEnded={onComplete}
+          length={6}
+          autoFocus={true}
+        />
       </ModalCard>
     </Animated.View>
   );
