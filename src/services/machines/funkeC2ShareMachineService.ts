@@ -15,18 +15,20 @@ import {
   ConnectionType,
   CredentialCorrelationType,
   CredentialRole,
-  DigitalCredential,
   IBasicCredentialLocaleBranding,
   Party,
   RegulationType,
 } from '@sphereon/ssi-sdk.data-store';
-import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {CredentialMapper} from '@sphereon/ssi-types';
-import {getMatchingCredentials, getMatchingPidCredentials} from '../pexService';
+import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
+import {CredentialMapper, Loggers} from '@sphereon/ssi-types';
+import {getMatchingPidCredentials} from '../pexService';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import store from '../../store';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {computeEntryHash} from '@veramo/utils';
+import {Linking} from 'react-native';
+
+const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
 export const siopCreateConfig = async (context: Pick<FunkeC2ShareMachineContext, 'url'>): Promise<CreateConfigResult> => {
   const {url} = context;
@@ -195,7 +197,13 @@ export const siopSendResponse = async (
   if (text) {
     responseBody = contentType.includes('application/json') || text.startsWith('{') ? JSON.parse(text) : text;
   }
-
+  if (responseBody) {
+    const redirectUri = responseBody['redirect_uri']; // TODO move to separate machine step?
+    if (typeof redirectUri === 'string') {
+      logger.info(`Redirecting to: ${redirectUri}`);
+      Linking.openURL(redirectUri);
+    }
+  }
   return {
     body: responseBody,
     url: response.url,

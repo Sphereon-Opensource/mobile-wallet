@@ -208,9 +208,12 @@ export class PidIssuerService {
     });
 
     for (const pidInfo of pids) {
-      const {identifier, credentialResponse, nonce} = await this.getPid({pidInfo, issuerResourceDpop, currentNonce, noCredentialRequestProof});
-      currentNonce = nonce;
-      responses.push({...credentialResponse, identifier});
+      if (!noCredentialRequestProof || pidInfo.format !== 'mso_mdoc') {
+        // atow mdoc does not seem to work for mode EID_DURING_PRESENTATION
+        const {identifier, credentialResponse, nonce} = await this.getPid({pidInfo, issuerResourceDpop, currentNonce, noCredentialRequestProof});
+        currentNonce = nonce;
+        responses.push({...credentialResponse, identifier});
+      }
     }
     return responses;
   }
