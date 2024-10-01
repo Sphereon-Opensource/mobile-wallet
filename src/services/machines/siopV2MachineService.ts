@@ -175,7 +175,7 @@ export const sendResponse = async (
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
     Linking.openURL(url);
-  } else if (response.status >= 200 && response.status < 300 && response.bodyUsed) {
+  } else if (response.status >= 200 && response.status < 300) {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
       const body: Record<string, unknown> = await response.json();
