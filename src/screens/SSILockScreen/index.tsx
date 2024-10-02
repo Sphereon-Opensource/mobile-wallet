@@ -31,19 +31,14 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  useAuthEffect(
-    async (success: boolean) => {
-      if (!success) {
-        dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
-        return;
-      }
-      const {onAuthenticate} = props.route.params;
-      await onAuthenticate();
-    },
-    {
-      promptDelay: Platform.OS === 'ios' ? 1000 : 500,
-    },
-  );
+  useAuthEffect(async (success: boolean) => {
+    if (!success) {
+      dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
+      return;
+    }
+    const {onAuthenticate} = props.route.params;
+    await onAuthenticate();
+  });
 
   const onVerification = async (value: string): Promise<void> => {
     const {onAuthenticate} = props.route.params;

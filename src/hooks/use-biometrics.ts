@@ -59,21 +59,17 @@ type UseAuthEffectOptions = {
    */
   promptDelay?: number;
 };
-const DEFAULT_PROMPT_DELAY = 1000;
 type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => Promise<void>);
-export const useAuthEffect = (effect: AuthEffectCallback, options: UseAuthEffectOptions = {}) => {
-  const {promptDelay = DEFAULT_PROMPT_DELAY} = options;
+export const useAuthEffect = (effect: AuthEffectCallback) => {
   const biometricsEnabled = useBiometricsEnabledContext();
 
   const {prompt} = useBiometrics();
 
   useEffect(() => {
     if (biometricsEnabled) {
-      setTimeout(() => {
-        prompt().then(async (result: boolean) => {
-          await effect(result);
-        });
-      }, promptDelay);
+      prompt().then(async (result: boolean) => {
+        await effect(result);
+      });
     }
   }, []);
 };
