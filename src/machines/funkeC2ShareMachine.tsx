@@ -23,11 +23,14 @@ import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {CreateConfigResult, Siopv2AuthorizationRequestData, Siopv2AuthorizationResponseData} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
+  fetchVerifiableCredentials,
   retrievePIDCredentials,
   siopCreateConfig,
   siopGetSiopRequest,
   siopRetrieveContact,
   siopSendResponse,
+  storeCredentialBranding,
+  storePIDCredentials,
 } from '../services/machines/funkeC2ShareMachineService';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeCShare`);
@@ -152,13 +155,64 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
     invoke: {
       src: FunkeC2ShareMachineServices.sendResponse,
       onDone: {
-        target: FunkeC2ShareMachineStateTypes.done,
+        target: FunkeC2ShareMachineStateTypes.storePIDCredentials,
       },
       onError: {
         target: FunkeC2ShareMachineStateTypes.handleError,
         actions: assign({
           error: (_ctx: FunkeC2ShareMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
             title: translate('siopV2_machine_send_response_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  storePIDCredentials: {
+    invoke: {
+      src: FunkeC2ShareMachineServices.storePIDCredentials,
+      onDone: {
+        target: FunkeC2ShareMachineStateTypes.storeCredentialBranding,
+      },
+      onError: {
+        target: FunkeC2ShareMachineStateTypes.handleError,
+        actions: assign({
+          error: (_ctx: FunkeC2ShareMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  storeCredentialBranding: {
+    invoke: {
+      src: FunkeC2ShareMachineServices.storeCredentialBranding,
+      onDone: {
+        target: FunkeC2ShareMachineStateTypes.fetchCredentialsInStore,
+      },
+      onError: {
+        target: FunkeC2ShareMachineStateTypes.handleError,
+        actions: assign({
+          error: (_ctx: FunkeC2ShareMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_store_credential_branding_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  fetchCredentialsInStore: {
+    invoke: {
+      src: FunkeC2ShareMachineServices.fetchCredentialsInStore,
+      onDone: {
+        target: FunkeC2ShareMachineStateTypes.done,
+      },
+      onError: {
+        target: FunkeC2ShareMachineStateTypes.handleError,
+        actions: assign({
+          error: (_ctx: FunkeC2ShareMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: 'Fetch credential in store',
             message: _event.data.message,
           }),
         }),
@@ -199,7 +253,7 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
   };
 
   return createMachine<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>({
-    id: opts?.machineId ?? 'FunkeCShare',
+    id: opts?.machineId ?? 'FunkeC2Share',
     predictableActionArguments: true,
     initial: FunkeC2ShareMachineStateTypes.createConfig,
     schema: {
@@ -222,6 +276,15 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
         };
         [FunkeC2ShareMachineServices.sendResponse]: {
           data: Siopv2AuthorizationResponseData;
+        };
+        [FunkeC2ShareMachineServices.storePIDCredentials]: {
+          data: void;
+        };
+        [FunkeC2ShareMachineServices.storeCredentialBranding]: {
+          data: void;
+        };
+        [FunkeC2ShareMachineServices.fetchCredentialsInStore]: {
+          data: void;
         };
       },
     },
@@ -275,6 +338,9 @@ export class FunkeC2ShareMachine {
           [FunkeC2ShareMachineServices.retrieveContact]: siopRetrieveContact,
           [FunkeC2ShareMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
           [FunkeC2ShareMachineServices.sendResponse]: siopSendResponse,
+          [FunkeC2ShareMachineServices.storePIDCredentials]: storePIDCredentials,
+          [FunkeC2ShareMachineServices.storeCredentialBranding]: storeCredentialBranding,
+          [FunkeC2ShareMachineServices.fetchCredentialsInStore]: fetchVerifiableCredentials,
           ...opts?.services,
         },
         guards: {

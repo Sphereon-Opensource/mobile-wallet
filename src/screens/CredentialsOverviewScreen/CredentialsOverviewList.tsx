@@ -129,7 +129,7 @@ const CredentialsOverviewList = ({
 
   return (
     <SwipeListView
-      style={{backgroundColor: backgroundColors.primaryDark}}
+      style={{backgroundColor: backgroundColors.primaryDark, borderTopColor: '#404D7A', borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0}}
       data={verifiableCredentials}
       keyExtractor={(itemInfo: CredentialSummary) => itemInfo.hash}
       renderItem={renderItem}

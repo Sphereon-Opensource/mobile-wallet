@@ -29,7 +29,7 @@ const sqliteConfig: ReactNativeConnectionOptions = {
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code
   migrationsTransactionMode: 'each', // protect every migration with a separate transaction
-  logging: ['warn'], //['info', 'warn'],
+  logging: ['info', 'warn'],
   logger: 'advanced-console',
   relationLoadStrategy: 'query',
 };

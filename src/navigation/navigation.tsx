@@ -245,7 +245,7 @@ const CredentialsStack = (): JSX.Element => {
         component={CredentialsOverviewScreen}
         options={{
           headerTitle: translate('credentials_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder showBackButton={false} />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder={false} showBackButton={false} />,
         }}
       />
       <Stack.Screen
@@ -493,7 +493,7 @@ const NotificationsStack = (): JSX.Element => {
         component={SSINotificationsOverviewScreen}
         options={{
           headerTitle: translate('notifications_overview_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder={false} />,
         }}
       />
       <Stack.Screen

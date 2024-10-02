@@ -43,7 +43,7 @@ class VciServiceFunkeCProvider {
       ? 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc2%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D'
       : 'openid-credential-offer://?credential_offer=%7B%22credential_issuer%22%3A%22https%3A%2F%2Fdemo.pid-issuer.bundesdruckerei.de%2Fc%22%2C%22credential_configuration_ids%22%3A%5B%22pid-sd-jwt%22%5D%2C%22grants%22%3A%7B%22authorization_code%22%3A%7B%7D%7D%7D';
     const pidService = PidIssuerService.newInstance(
-      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer: credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
+      {pidProvider, clientId: VciServiceFunkeCProvider._funke_clientId, credentialOffer, kms: KeyManagementSystemEnum.MUSAP_TEE},
       agentContext,
     );
     return new VciServiceFunkeCProvider({...args, pidService});
@@ -104,11 +104,11 @@ class VciServiceFunkeCProvider {
         {
           format: 'vc+sd-jwt',
           type: 'urn:eu.europa.ec.eudi:pid:1', //'pid-sd-jwt'
-        } /*,
+        },
         {
           format: 'mso_mdoc',
           type: 'eu.europa.ec.eudi.pid.1',
-        },*/,
+        },
       ],
       noCredentialRequestProof: await storageIsPIDSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION),
     });

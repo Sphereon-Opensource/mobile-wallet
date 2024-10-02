@@ -1,4 +1,4 @@
-import {CreateDPoPJwtPayloadProps, CreateDPoPOpts, SigningAlgo} from '@sphereon/oid4vc-common';
+import {createDPoP, CreateDPoPJwtPayloadProps, CreateDPoPOpts, getCreateDPoPOptions, SigningAlgo} from '@sphereon/oid4vc-common';
 import {OpenID4VCIClientV1_0_13} from '@sphereon/oid4vci-client';
 import {
   AuthorizationServerMetadata,
@@ -17,6 +17,9 @@ import {IAgentContext, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
 import {EIDGetAuthorizationCodeArgs} from '../types';
 import {keyTypeFromCryptographicSuite} from '../utils';
 import {algorithmsFromKeyType, DpopService} from './DpopService';
+import store from '../store';
+import {LOGIN_SUCCESS} from '../types/store/user.action.types';
+import {CREATE_DPOP_SUCCESS} from '../types/store/dpop.action.types';
 
 interface PidIssuerServiceOpts {
   credentialOffer?: string;
@@ -199,10 +202,18 @@ export class PidIssuerService {
 
     let responses: (CredentialResponse & {params?: DPoPResponseParams; access_token: string; identifier?: ManagedIdentifierResult})[] = [];
 
+    store.dispatch<any>({
+      type: CREATE_DPOP_SUCCESS,
+      payload: {dpop: accessTokenResponse.params?.dpop, accessToken: accessTokenResponse.access_token},
+    });
+
     for (const pidInfo of pids) {
-      const {identifier, credentialResponse, nonce} = await this.getPid({pidInfo, issuerResourceDpop, currentNonce, noCredentialRequestProof});
-      currentNonce = nonce;
-      responses.push({...credentialResponse, identifier});
+      if (!noCredentialRequestProof || pidInfo.format !== 'mso_mdoc') {
+        // atow mdoc does not seem to work for mode EID_DURING_PRESENTATION
+        const {identifier, credentialResponse, nonce} = await this.getPid({pidInfo, issuerResourceDpop, currentNonce, noCredentialRequestProof});
+        currentNonce = nonce;
+        responses.push({...credentialResponse, identifier});
+      }
     }
     return responses;
   }

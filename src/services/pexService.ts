@@ -14,6 +14,7 @@ import encodeTo = com.sphereon.kmp.encodeTo;
 import Encoding = com.sphereon.kmp.Encoding;
 import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 import {createHash} from 'crypto';
+import {PIDSecurityModel, storageIsPIDSecurityModel} from './storageService';
 
 const logger = Loggers.DEFAULT.get('sphereon:pexService');
 
@@ -103,7 +104,7 @@ export const getMatchingCredentials = async ({
 export const getMatchingPidCredentials = async ({
   presentationDefinitionWithLocation,
   pidCredentials,
-  issuerCorrelationId,
+  issuerCorrelationId, // FIXME this is not an issuer correlation id, in case of https://funke.demo.sphereon.com/ it is funke.demo.sphereon.com, which is a verifier
   opts,
 }: {
   presentationDefinitionWithLocation: PresentationDefinitionWithLocation;
@@ -120,10 +121,12 @@ export const getMatchingPidCredentials = async ({
   const storeCredentials = await getVerifiableCredentialsFromStorage({parentsOnly: false});
   const subsetCredentials = [];
 
+  const isPIDSecurityModel = await storageIsPIDSecurityModel(PIDSecurityModel.EID_DURING_PRESENTATION);
+
   const credentials = pidCredentials.map(pidCredential => {
     const dc: NonPersistedDigitalCredential = nonPersistedDigitalCredentialEntityFromAddArgs({
       rawDocument: pidCredential.rawCredential,
-      kmsKeyRef: 'fixme', // FIXME
+      ...(isPIDSecurityModel && {kmsKeyRef: 'https://demo.pid-issuer.bundesdruckerei.de/c2/.well-known/openid-credential-issuer'}),
       identifierMethod: 'x509_san_dns',
       issuerCorrelationType: CredentialCorrelationType.X509_SAN,
       issuerCorrelationId: issuerCorrelationId,
