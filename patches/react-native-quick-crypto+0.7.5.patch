@@ -1,13 +1,17 @@
 diff --git a/node_modules/react-native-quick-crypto/lib/commonjs/Hashnames.js b/node_modules/react-native-quick-crypto/lib/commonjs/Hashnames.js
-index dcf9226..cd85d49 100644
+index e6e5541..3c1092c 100644
 --- a/node_modules/react-native-quick-crypto/lib/commonjs/Hashnames.js
 +++ b/node_modules/react-native-quick-crypto/lib/commonjs/Hashnames.js
-@@ -74,17 +74,23 @@ const kHashNames = {
+@@ -74,20 +74,24 @@ const kHashNames = {
      }
    }
  }
--function normalizeHashName(algo, context = HashContext.Node) {
++
+ function normalizeHashName(algo, context = HashContext.Node) {
 -  if (typeof algo !== 'undefined') {
+-    if (typeof algo === 'object') {
+-      algo = algo.name;
+-    }
 -    const normAlgo = algo.toString().toLowerCase();
 -    try {
 -      const alias = kHashNames[normAlgo][context];
@@ -16,14 +20,13 @@ index dcf9226..cd85d49 100644
 -    } catch (_e) {
 -      // ignore
 -    }
-+export function normalizeHashName(algo: string | { name?: string; toString?: () => string }, context = HashContext.Node): string {
 +  if (algo == null) {
 +    throw new Error('Invalid Hash Algorithm: undefined');
 +  }
 +
 +  const algoName = (typeof algo === 'string'
 +    ? algo.toLowerCase()
-+    : (algo.name?.toLowerCase() || algo.toString?.()?.toLowerCase() || ''));
++    : ((algo.name && algo.name.toLowerCase()) || (algo.toString && algo.toString().toLowerCase()) || ''));
 +
 +  const normAlgo = algoName.replace('-', '');
 +  const hashNameEntry = kHashNames[normAlgo];
@@ -57,19 +60,46 @@ index 729ac4d..1518774 100644
 +    "vm": "vm-browserify"
 +  }
 +}
-diff --git a/node_modules/react-native-quick-crypto/lib/module/Hashnames.js b/node_modules/react-native-quick-crypto/lib/module/Hashnames.js
-index 6999b0a..2c8c560 100644
---- a/node_modules/react-native-quick-crypto/lib/module/Hashnames.js
-+++ b/node_modules/react-native-quick-crypto/lib/module/Hashnames.js
-@@ -72,17 +72,23 @@ const kHashNames = {
-     }
+diff --git a/node_modules/react-native-quick-crypto/lib/module/package.json b/node_modules/react-native-quick-crypto/lib/module/package.json
+index 089153b..520622b 100644
+--- a/node_modules/react-native-quick-crypto/lib/module/package.json
++++ b/node_modules/react-native-quick-crypto/lib/module/package.json
+@@ -1 +1,15 @@
+-{"type":"module"}
++{
++  "type": "module",
++  "react-native": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  },
++  "browser": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  }
++}
+diff --git a/node_modules/react-native-quick-crypto/src/Hashnames.ts b/node_modules/react-native-quick-crypto/src/Hashnames.ts
+index 9708ed9..0d727af 100644
+--- a/node_modules/react-native-quick-crypto/src/Hashnames.ts
++++ b/node_modules/react-native-quick-crypto/src/Hashnames.ts
+@@ -78,22 +78,21 @@ const kHashNames: HashNames = {
    }
  }
--export function normalizeHashName(algo, context = HashContext.Node) {
+ 
+-export function normalizeHashName(
+-  algo: string | HashAlgorithm | SubtleAlgorithm | undefined,
+-  context: HashContext = HashContext.Node,
+-): HashAlgorithm {
 -  if (typeof algo !== 'undefined') {
+-    if (typeof algo === 'object') {
+-      algo = algo.name;
+-    }
 -    const normAlgo = algo.toString().toLowerCase();
 -    try {
--      const alias = kHashNames[normAlgo][context];
+-      const alias = kHashNames[normAlgo]![context] as HashAlgorithm;
 -      if (alias) return alias;
 -      // eslint-disable-next-line @typescript-eslint/no-unused-vars
 -    } catch (_e) {
@@ -93,26 +123,3 @@ index 6999b0a..2c8c560 100644
 +
    throw new Error(`Invalid Hash Algorithm: ${algo}`);
  }
-+
- //# sourceMappingURL=Hashnames.js.map
-diff --git a/node_modules/react-native-quick-crypto/lib/module/package.json b/node_modules/react-native-quick-crypto/lib/module/package.json
-index 089153b..520622b 100644
---- a/node_modules/react-native-quick-crypto/lib/module/package.json
-+++ b/node_modules/react-native-quick-crypto/lib/module/package.json
-@@ -1 +1,15 @@
--{"type":"module"}
-+{
-+  "type": "module",
-+  "react-native": {
-+    "os": "react-native-os",
-+    "path": "path-browserify",
-+    "fs": "expo-fs",
-+    "vm": "vm-browserify"
-+  },
-+  "browser": {
-+    "os": "react-native-os",
-+    "path": "path-browserify",
-+    "fs": "expo-fs",
-+    "vm": "vm-browserify"
-+  }
-+}

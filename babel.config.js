@@ -23,5 +23,6 @@ module.exports = function (api) {
         },
       ],
     ],
+    include: ['./node_modules/jose/**/*.js'],
   };
 };

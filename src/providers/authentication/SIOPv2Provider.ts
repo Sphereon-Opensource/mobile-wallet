@@ -269,15 +269,15 @@ export const siopSendAuthorizationResponse = async (
         createMDocPresentation(vcWithDef, identifier),
       );
     } else {
-      console.log(`NON MDOC`, JSON.stringify(credentialsAndDefinitions));
-      //  const authRequest = await session.getAuthorizationRequest()
-      //  const vpFormats = authRequest.registrationMetadataPayload?.vp_formats
+      const authRequest = await session.getAuthorizationRequest();
+      const vpFormats = authRequest.registrationMetadataPayload?.vp_formats;
       presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
         idOpts: identifier,
         proofOpts: {
           nonce: session.nonce,
           domain,
         },
+        restrictToFormats: vpFormats,
       });
       console.log(presentationsAndDefs);
     }
@@ -294,11 +294,11 @@ export const siopSendAuthorizationResponse = async (
     const kmsKeyRef = key.kid;
     const kid = managedIdentifier?.kid;*/
 
-    debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
+    debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentations, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
 
     const response = await session.sendAuthorizationResponse({
-      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
+      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations)}),
       ...(presentationSubmission && {presentationSubmission}),
       responseSignerOpts: identifier,
     });
