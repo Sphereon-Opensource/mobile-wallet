@@ -5,7 +5,7 @@ module.exports = function (api) {
 
     plugins: [
       '@babel/plugin-syntax-import-assertions',
-      'module:react-native-dotenv',
+      ['module:react-native-dotenv', {moduleName: 'react-native-dotenv'}],
       'babel-plugin-transform-typescript-metadata',
       ['@babel/plugin-proposal-decorators', {legacy: true}],
       ['@babel/plugin-proposal-class-properties', {loose: true}],
@@ -23,6 +23,5 @@ module.exports = function (api) {
         },
       ],
     ],
-    include: ['./node_modules/jose/**/*.js'],
   };
 };

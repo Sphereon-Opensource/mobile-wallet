@@ -120,7 +120,7 @@
     "react-is": "^18.2.0",
     "react-native": "0.74.3",
     "react-native-app-auth": "^6.4.3",
-    "react-native-dotenv": "3.4.11",
+
     "react-native-fast-image": "^8.6.3",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git",
     "react-native-gesture-handler": "~2.16.1",
@@ -177,6 +177,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/runtime": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
+    "react-native-dotenv": "^3.4.11",
     "@sd-jwt/types": "^0.7.2",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.3.1",
