@@ -2,16 +2,21 @@ import 'reflect-metadata'; // needed for typeorm migrations
 import {install as installCrypto} from 'react-native-quick-crypto';
 
 installCrypto();
+global.crypto['aa__THISONE'] = true; // FIXME DELETE
 if (!global.window.crypto) {
   global.window.crypto = global.crypto;
 }
 if (typeof self !== 'undefined') {
   self.crypto = global.crypto;
 }
+
 export const walletCrypto = global.crypto;
+global.CryptoKey = walletCrypto.CryptoKey; // FIXME DELETE?
+global.window.CryptoKey = walletCrypto.CryptoKey; // FIXME DELETE?
+console.log('global.crypto.subtle', global.crypto.webcrypto.subtle); // FIXME DELETE
+console.log('global.crypto.webcrypto.subtle', global.crypto.webcrypto.subtle); // FIXME DELETE
 
 import './shim';
-//import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import 'fast-text-encoding';
 import 'react-native-gesture-handler';
