@@ -2,7 +2,7 @@ import {AuthorizationEvents, SupportedVersion, VerifiedAuthorizationRequest} fro
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
@@ -14,6 +14,7 @@ import {com} from '@sphereon/kmp-mdl-mdoc';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {EventEmitter} from 'events';
+import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -186,9 +187,11 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+    console.log(`#########$$$$$$$$$$$$$$$#############`);
 
     /*
-          const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;
+
+        const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;
         const firstVC = firstUniqueDC.uniformVerifiableCredential;
         const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
         ? firstVC.decodedPayload.cnf?.jwk
@@ -214,27 +217,51 @@ export const siopSendAuthorizationResponse = async (
     }
 
     let identifier: ManagedIdentifierOptsOrResult;
-    if (isOID4VCIssuerIdentifier(firstUniqueDC.digitalCredential.kmsKeyRef)) {
+    const digitalCredential = firstUniqueDC.digitalCredential;
+    const firstVC = firstUniqueDC.uniformVerifiableCredential;
+    const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
+      ? firstVC.decodedPayload.cnf?.jwk
+        ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
+          //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
+          `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
+        : firstVC.decodedPayload.sub
+      : Array.isArray(firstVC.credentialSubject)
+      ? firstVC.credentialSubject[0].id
+      : firstVC.credentialSubject.id;
+    if (!digitalCredential.kmsKeyRef) {
+      // In case the store does not have the kmsKeyRef lets search for the holder
+
+      if (!holder) {
+        return Promise.reject(`No holder found and no kmsKeyRef in DB. Cannot determine identifier to use`);
+      }
+      try {
+        identifier = await session.context.agent.identifierManagedGet({identifier: holder});
+      } catch (e) {
+        debug(`Holder DID not found: ${holder}`);
+        throw e;
+      }
+    } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
       identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
         identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
       });
     } else {
-      const digitalCredential = firstUniqueDC.digitalCredential;
       switch (digitalCredential.subjectCorrelationType) {
         case 'DID':
           identifier = await session.context.agent.identifierManagedGetByDid({
-            identifier: digitalCredential.subjectCorrelationId,
+            identifier: digitalCredential.subjectCorrelationId ?? holder,
             kmsKeyRef: digitalCredential.kmsKeyRef,
           });
           break;
         // TODO other implementations?
         default:
+          // Since we are using the kmsKeyRef we will find the KID regardless of the identifier. We set it for later access though
           identifier = await session.context.agent.identifierManagedGetByKid({
-            identifier: digitalCredential.kmsKeyRef,
+            identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
             kmsKeyRef: digitalCredential.kmsKeyRef,
           });
       }
     }
+    console.log(`Identifier`, identifier);
 
     if (hasMDocCredentials(credentialsAndDefinitions)) {
       // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
@@ -242,6 +269,7 @@ export const siopSendAuthorizationResponse = async (
         createMDocPresentation(vcWithDef, identifier),
       );
     } else {
+      console.log(`NON MDOC`, JSON.stringify(credentialsAndDefinitions));
       //  const authRequest = await session.getAuthorizationRequest()
       //  const vpFormats = authRequest.registrationMetadataPayload?.vp_formats
       presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
@@ -251,6 +279,7 @@ export const siopSendAuthorizationResponse = async (
           domain,
         },
       });
+      console.log(presentationsAndDefs);
     }
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');

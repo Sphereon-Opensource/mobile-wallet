@@ -24,7 +24,6 @@ import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
-import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
 
 export interface IProps {
   onClose?: () => Promise<void>;
