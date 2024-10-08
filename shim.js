@@ -1,8 +1,6 @@
 import {DEBUG} from 'react-native-dotenv';
 import {install as installCrypto} from '@sphereon/react-native-quick-crypto';
 
-console.log('=== loading shim.js');
-
 if (typeof __dirname === 'undefined') global.__dirname = '/';
 if (typeof __filename === 'undefined') global.__filename = '';
 if (typeof process === 'undefined') {
@@ -44,9 +42,7 @@ if (isDev) {
   debug.enable(level);
 }
 
-console.log('=== installCrypto() index.js');
 installCrypto();
-global.crypto['aa__THISONE'] = true; // FIXME DELETE
 if (!global.window.crypto) {
   global.window.crypto = global.crypto;
 }
