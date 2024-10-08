@@ -135,7 +135,7 @@
     "react-native-pager-view": "6.3.0",
     "react-native-permissions": "^4.1.5",
     "react-native-pure-jwt": "^3.0.2",
-    "react-native-quick-crypto": "0.7.5",
+    "@sphereon/react-native-quick-crypto": "0.7.5-sph.2",
     "react-native-quick-sqlite": "github:margelo/react-native-quick-sqlite#99f34ebefa91698945f3ed26622e002bd79489e0",
     "react-native-randombytes": "^3.6.1",
     "react-native-reanimated": "~3.10.1",
