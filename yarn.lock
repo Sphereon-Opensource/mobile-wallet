@@ -3238,10 +3238,10 @@
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.3.1.tgz#54a5b81bf989846637170daf844e3564889d2d2a"
   integrity sha512-SByU4cJ0XYA6VZQ/L6lsSiRcFtBPHbFioCeQ4GP7/W/jQ+PSBD7uK2oTnKQ9/0iEiMK/6JYqhKgLs4a9UX3UTQ==
 
-"@sphereon/pex@5.0.0-unstable.14", "@sphereon/pex@5.0.0-unstable.16":
-  version "5.0.0-unstable.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-5.0.0-unstable.16.tgz#ab90ec21f95e1008977d9abc601c03a5fc0c9367"
-  integrity sha512-b5eOg7Tm2iV0GYCW4hj3Oko7i9hXzeGel8LsYKGuBL41vUpDra3U+3gz/CNQQWM2UfinIHPciijOHLHfAJhOqA==
+"@sphereon/pex@5.0.0-unstable.14", "@sphereon/pex@5.0.0-unstable.16", "@sphereon/pex@5.0.0-unstable.17":
+  version "5.0.0-unstable.17"
+  resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-5.0.0-unstable.17.tgz#5b3211a6ad2bd3d235942faf96ca46e63c3cdb7a"
+  integrity sha512-wriK0JGw/ONrISvYFbE//+ITVLZnvcPjPesFrMpZcDhxlOLf+TMOqVtUjjg2DHWy7HINM8WQ2eUKz1d96vyarw==
   dependencies:
     "@astronautlabs/jsonpath" "^1.1.2"
     "@sd-jwt/decode" "^0.7.2"
@@ -3253,7 +3253,6 @@
     ajv-formats "^2.1.1"
     jwt-decode "^3.1.2"
     nanoid "^3.3.7"
-    string.prototype.matchall "^4.0.10"
     uint8arrays "^3.1.1"
 
 "@sphereon/ssi-sdk-ext.did-provider-jwk@0.24.1-unstable.134":
@@ -13311,7 +13310,7 @@ string-width@^5.0.1, string-width@^5.1.2:
     emoji-regex "^9.2.2"
     strip-ansi "^7.0.1"
 
-string.prototype.matchall@^4.0.10, string.prototype.matchall@^4.0.11:
+string.prototype.matchall@^4.0.11:
   version "4.0.11"
   resolved "https://registry.yarnpkg.com/string.prototype.matchall/-/string.prototype.matchall-4.0.11.tgz#1092a72c59268d2abaad76582dccc687c0297e0a"
   integrity sha512-NUdh0aDavY2og7IbBPenWqR9exH+E26Sv8e0/eTe1tltDGZL+GtBkDAnnyBtmekfK6/Dq3MkcGtzXFEd1LQrtg==

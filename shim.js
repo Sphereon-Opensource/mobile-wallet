@@ -41,6 +41,7 @@ if (isDev) {
   debug.enable(level);
 }
 
+// require('string.prototype.matchall/shim');
 // If using the crypto shim, uncomment the following line to ensure
 // crypto is loaded first, so it can populate global.crypto
 // require('crypto')
