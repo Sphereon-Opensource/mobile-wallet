@@ -11,11 +11,13 @@ import {ICredentialStore} from '@sphereon/ssi-sdk.credential-store';
 import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {IIdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ImDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
+import {IEventLogger} from '@sphereon/ssi-sdk.event-logger';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
   IDataStore &
   IDataStoreORM &
+  IEventLogger &
   IResolver &
   IIdentifierResolution &
   IJwtService &

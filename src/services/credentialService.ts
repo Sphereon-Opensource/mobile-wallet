@@ -1,6 +1,6 @@
 import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
-import {RegulationType} from '@sphereon/ssi-sdk.data-store';
+import {DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
 
@@ -29,7 +29,7 @@ export const getVerifiableCredentialsFromStorage = async (opts?: {
   });
 };
 
-export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<string> => {
+export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<DigitalCredential> => {
   const {vc, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
   const rawDocument = typeof vc === 'string' ? vc : JSON.stringify(vc);
   const addCredential: AddDigitalCredential = {
@@ -40,8 +40,7 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
     kmsKeyRef: 'FIXME', // FIXME Funke
     identifierMethod: 'jwk', // FIXME Funke
   };
-  const digitalCredential = await agent.crsAddCredential({credential: addCredential});
-  return digitalCredential.hash;
+  return agent.crsAddCredential({credential: addCredential});
 };
 
 export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs): Promise<UniqueDigitalCredential> => {

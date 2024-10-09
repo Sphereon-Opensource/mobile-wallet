@@ -12,3 +12,4 @@ export * from './ToastUtils';
 export * from './UserUtils';
 export * from './array';
 export * from './number';
+export * from './mappers/ActivityLogMapper';
