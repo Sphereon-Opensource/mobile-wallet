@@ -6,6 +6,7 @@ import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
+import {setBiometrics} from '../../store/actions/user.actions';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
@@ -15,8 +16,7 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {useAuthEffect} from '../../hooks/use-biometrics';
 import {Platform} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
-import {setBiometrics} from 'src/store/actions/user.actions';
+import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 

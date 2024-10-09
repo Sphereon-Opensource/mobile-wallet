@@ -179,7 +179,7 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
     // first delete the user (including redux store) then logout (remove active user). As then the switch navigator will navigate directly to the onboarding stack
     // without an active user the switch navigator will navigate to the login screen. So doing this first would flicker the login screen
     OnboardingMachine.clearInstance({stop: true});
-    userServiceDeleteUser(userId)
+    await userServiceDeleteUser(userId)
       .then(() => {
         dispatch({type: DELETE_USER_SUCCESS, payload: userId});
 

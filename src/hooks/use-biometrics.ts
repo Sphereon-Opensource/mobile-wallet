@@ -11,17 +11,19 @@ export const useBiometricsEnabledContext = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const userState: IUserState = useSelector((state: RootState) => state.user);
 
-  const enabled = useMemo(() => {
-    const walletBiometricsEnabled = userState.users.values().next().value.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
-    return (
-      walletBiometricsEnabled ||
-      (onboardingInstance
-        ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
-        : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED)
-    );
+  return useMemo(() => {
+    let walletBiometricsEnabled: boolean = false;
+    if (onboardingInstance) {
+      walletBiometricsEnabled = onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+    } else {
+      if (userState.activeUser) {
+        walletBiometricsEnabled = userState.activeUser.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+      } else if (userState.users && userState.users.size > 0) {
+        walletBiometricsEnabled = userState.users.values().next()?.value?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+      }
+    }
+    return walletBiometricsEnabled;
   }, [onboardingInstance, userState]);
-
-  return enabled;
 };
 
 export const useBiometrics = () => {
