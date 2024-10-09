@@ -1,17 +1,6 @@
 import 'reflect-metadata'; // needed for typeorm migrations
-import {install as installCrypto} from 'react-native-quick-crypto';
-
-installCrypto();
-if (!global.window.crypto) {
-  global.window.crypto = global.crypto;
-}
-if (typeof self !== 'undefined') {
-  self.crypto = global.crypto;
-}
-export const walletCrypto = global.crypto;
 
 import './shim';
-//import 'react-native-get-random-values';
 import '@ethersproject/shims';
 import 'fast-text-encoding';
 import 'react-native-gesture-handler';

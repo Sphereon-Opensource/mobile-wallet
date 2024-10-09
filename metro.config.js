@@ -1,4 +1,5 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
+const path = require('path');
 const {getDefaultConfig} = require('expo/metro-config');
 const {mergeConfig} = require('metro-config');
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
@@ -43,9 +44,11 @@ const config = {
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
     extraNodeModules: {
+      // shim: path.resolve(__dirname, 'shim.js'),
+      'react-native-quick-crypto': require.resolve('@sphereon/react-native-quick-crypto'),
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
-      crypto: require.resolve('react-native-quick-crypto'),
+      crypto: require.resolve('@sphereon/react-native-quick-crypto'),
       fs: require.resolve('expo-fs'),
       path: require.resolve('path-browserify'),
     },

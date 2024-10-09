@@ -103,7 +103,7 @@ class VciServiceFunkeCProvider {
       pids: [
         {
           format: 'vc+sd-jwt',
-          type: 'urn:eu.europa.ec.eudi:pid:1', //'pid-sd-jwt'
+          type: 'https://example.bmi.bund.de/credential/pid/1.0', //'pid-sd-jwt'
         },
         {
           format: 'mso_mdoc',

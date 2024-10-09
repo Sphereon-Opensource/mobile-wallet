@@ -182,11 +182,17 @@ export const siopSendResponse = async (
     })}`,
   );
 
-  const response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
-    sessionId: didAuthConfig.sessionId,
-    ...(context.idOpts && {idOpts: context.idOpts}),
-    ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
-  });
+  let response: Response | undefined = undefined;
+  try {
+    response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
+      sessionId: didAuthConfig.sessionId,
+      ...(context.idOpts && {idOpts: context.idOpts}),
+      ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
+    });
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
   if (!response) {
     return Promise.reject(Error('Missing SIOP authentication response'));
   }
