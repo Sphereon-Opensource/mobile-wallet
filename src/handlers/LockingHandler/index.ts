@@ -64,9 +64,11 @@ class LockingHandler {
       case PlatformsEnum.IOS: {
         const handleAppStateChange = async (nextAppState: string): Promise<void> => {
           if (nextAppState === 'background') {
-            //FIXME: for now we are autolocking going into background, so that
-            //ios face id does not cause this handler to relock after login
-            this.lock();
+            if (this.isLockingRequiredForScreen()) {
+              //FIXME: for now we are autolocking going into background, so that
+              //ios face id does not cause this handler to relock after login
+              this.lock();
+            }
             if (Platform.OS === PlatformsEnum.IOS && this.isLockingRequiredForScreen()) {
               return this.checkInactive();
             } else {
