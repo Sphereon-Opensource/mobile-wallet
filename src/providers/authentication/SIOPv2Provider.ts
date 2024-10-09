@@ -1,19 +1,28 @@
-import {AuthorizationEvents, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {
+  ActionType,
+  DefaultActionSubType,
+  InitiatorType,
+  OriginalVerifiableCredential,
+  OriginalVerifiablePresentation,
+  PresentationSubmission,
+  SubSystem,
+  System,
+} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
-import {generateDigest} from '../../utils';
+import {activityLogFrom, generateDigest} from '../../utils';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
 import {com} from '@sphereon/kmp-mdl-mdoc';
-import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {EventEmitter} from 'events';
+import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -267,6 +276,22 @@ export const siopSendAuthorizationResponse = async (
 
     debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
+    for (const vcsWithDef of credentialsAndDefinitions) {
+      for (const credential of vcsWithDef.credentials) {
+        await agent.loggerLogActivityEvent(
+          activityLogFrom({
+            correlationId: args.sessionId,
+            actionType: ActionType.READ,
+            actionSubType: DefaultActionSubType.VC_VERIFY,
+            description: JSON.stringify(vcsWithDef.definition),
+            system: System.OID4VP,
+            initiatorType: InitiatorType.USER,
+            subSystemType: SubSystem.OID4VP_OP,
+            credential: typeof credential !== 'string' && 'digitalCredential' in credential ? credential.digitalCredential : credential,
+          }),
+        );
+      }
+    }
 
     const response = await session.sendAuthorizationResponse({
       ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),

@@ -31,7 +31,9 @@ import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialSubjectContact} from '../../utils';
+import {activityLogFrom, getCredentialSubjectContact} from '../../utils';
+import agent from '../../agent';
+import {ActionType, DefaultActionSubType, InitiatorType, SubSystem, System} from '@sphereon/ssi-types';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -262,6 +264,22 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   });
 };
 
+const vciStoreEventLog = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  const {state} = args;
+  await agent.loggerLogActivityEvent(
+    activityLogFrom({
+      credential: state.context.credentialsToAccept[0].uniformVerifiableCredential,
+      correlationId: state.context.credentialsToAccept[0].correlationId,
+      actionType: ActionType.CREATE,
+      actionSubType: DefaultActionSubType.VC_ISSUE,
+      description: state.context.contactAlias,
+      initiatorType: InitiatorType.USER,
+      system: System.OID4VCI,
+      subSystemType: SubSystem.OID4VCI_CLIENT,
+    }),
+  );
+};
+
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
 
@@ -335,6 +353,9 @@ export const oid4vciStateNavigationListener = async (
     return navigateAuthorizationCodeURL({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.storeCredentials)) {
+    vciStoreEventLog({navigation, oid4vciMachine, state});
+    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
     console.error(state._event.data);
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});

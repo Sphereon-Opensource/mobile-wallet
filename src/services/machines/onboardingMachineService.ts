@@ -1,6 +1,6 @@
 import {CredentialCorrelationType, CredentialRole, DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store/src/types/issuanceBranding/issuanceBranding';
-import {CredentialMapper} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
@@ -9,10 +9,11 @@ import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
-import {generateDigest} from '../../utils';
+import {activityLogFromDigitalCredential, generateDigest} from '../../utils';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {storagePersistPin} from '../storageService';
 import {ViewPreference} from '../../types/preferences';
+import {storeEventLog} from '../../store/actions/log.actions';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -43,12 +44,29 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
 export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
   const {pidCredentials} = context;
 
-  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(credential =>
-    store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(
+    credential => {
+      store.dispatch<any>(
+        storeEventLog(
+          activityLogFromDigitalCredential({
+            correlationId: credential.hash,
+            credential: credential.digitalCredential,
+            system: System.OID4VCI,
+            actionType: ActionType.DELETE,
+            actionSubType: DefaultActionSubType.VC_ISSUE,
+            subSystemType: SubSystem.OID4VCI_CLIENT,
+            initiatorType: InitiatorType.SYSTEM,
+            description: 'funkeC2',
+          }),
+        ),
+      );
+      store.dispatch<any>(deleteVerifiableCredential(credential.hash));
+    },
   );
   await Promise.all(deleteCredentials);
 
   let parentId: string | undefined = undefined;
+  let parentCredential: undefined | DigitalCredential = undefined;
 
   const storeCredentials: DigitalCredential[] = [];
   for (const mappedCredential of pidCredentials) {
@@ -68,10 +86,24 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
     });
     if (!parentId) {
       parentId = digitalCredential.id;
+      parentCredential = digitalCredential;
     }
     storeCredentials.push(digitalCredential);
   }
-
+  if (parentCredential) {
+    await agent.loggerLogActivityEvent(
+      activityLogFromDigitalCredential({
+        correlationId: parentId,
+        credential: parentCredential,
+        system: System.OID4VCI,
+        actionType: ActionType.CREATE,
+        actionSubType: DefaultActionSubType.VC_ISSUE,
+        subSystemType: SubSystem.OID4VCI_CLIENT,
+        initiatorType: InitiatorType.USER,
+        description: 'funkeC2',
+      }),
+    );
+  }
   return storeCredentials;
 };
 
