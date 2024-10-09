@@ -17,10 +17,10 @@ import ChevronIcon from '../../../components/assets/icons/ChevronIcon';
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import SSIProfileIcon from '../../../components/assets/icons/SSIProfileIcon';
-import {MainRoutesEnum, RootState} from 'src/types';
+import {MainRoutesEnum, RootState} from '../../../types';
 import {useSelector} from 'react-redux';
 import {SSITextH5LightStyled} from '@sphereon/ui-components.ssi-react-native';
-import SSIPersonIcon from 'src/components/assets/icons/SSIPersonIcon';
+import SSIPersonIcon from '../../../components/assets/icons/SSIPersonIcon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useLogout} from '../../../hooks/use-logout';
 

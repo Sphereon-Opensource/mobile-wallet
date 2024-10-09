@@ -1,8 +1,5 @@
-import ChevronIcon from 'src/components/assets/icons/ChevronIcon';
+import ChevronIcon from '../../../components/assets/icons/ChevronIcon';
 import {BackIconContainer, SettingsHeaderContainer, SettingsHeaderText} from './style';
-import {SSITextH3SemiBoldStyled} from '@sphereon/ui-components.ssi-react-native';
-import {translate} from '../../../localization/Localization';
-import {transform} from '@babel/core';
 
 type SettingsHeaderBarProps = {
   onBack: () => void;

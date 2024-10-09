@@ -1,4 +1,5 @@
 import {ParamListBase, useNavigation} from '@react-navigation/native';
+import ClaimTrueIcon from '../../../components/assets/icons/ClaimTrueIcon';
 import {
   AgeDerivedClaimsContainer,
   AgeDerivedClaimsLabel,
@@ -16,8 +17,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../types';
 import {translate} from '../../../localization/Localization';
 import {ScrollView} from 'react-native';
-import ClaimTrueIcon from 'src/components/assets/icons/ClaimTrueIcon';
-import ClaimFalseIcon from 'src/components/assets/icons/ClaimFalseIcon';
+import ClaimFalseIcon from '../../../components/assets/icons/ClaimFalseIcon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const AgeDerivedClaimsScreen = () => {
