@@ -7,7 +7,7 @@ interface Props {
 }
 
 const FaceIDIcon = (props: Props) => {
-  const {color, size} = props;
+  const {color = 'white', size = 40} = props;
   return (
     <View style={{width: size, aspectRatio: 1}}>
       <Svg width="100%" height="100%" viewBox="0 0 65 65" fill="none">

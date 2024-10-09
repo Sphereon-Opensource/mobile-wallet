@@ -83,7 +83,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
       details: translate('profile_delete_wallet_action_subtitle', {userName: `${activeUser.firstName} ${activeUser.lastName}`}),
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: async (): Promise<void> => dispatch<any>(deleteUser(activeUser.id)),
+        onPress: async (): Promise<void> => await dispatch<any>(deleteUser(activeUser.id)),
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),

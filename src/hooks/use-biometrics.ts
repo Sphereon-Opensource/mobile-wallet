@@ -1,10 +1,30 @@
 import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingBiometricsStatus} from '../../../types/machines/onboarding';
-import {IUserState} from '../../../types/store/user.types';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../types';
+import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
+import {OnboardingBiometricsStatus} from '../types/machines/onboarding';
+import {IUserState} from '../types/store/user.types';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../types';
+import {setBiometrics} from '../store/actions/user.actions';
+
+export const useBiometricsEnabledContext = () => {
+  const {onboardingInstance} = useContext(OnboardingContext);
+  const userState: IUserState = useSelector((state: RootState) => state.user);
+
+  return useMemo(() => {
+    let walletBiometricsEnabled: boolean = false;
+    if (onboardingInstance) {
+      walletBiometricsEnabled = onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+    } else {
+      if (userState.activeUser) {
+        walletBiometricsEnabled = userState.activeUser.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+      } else if (userState.users && userState.users.size > 0) {
+        walletBiometricsEnabled = userState.users.values().next()?.value?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+      }
+    }
+    return walletBiometricsEnabled;
+  }, [onboardingInstance, userState]);
+};
 
 export const useBiometrics = () => {
   const authenticateBiometrically = async () => {
@@ -34,24 +54,24 @@ export const useBiometrics = () => {
   };
 };
 
-export const useAuthEffect = (effect: (success: boolean) => void) => {
-  const userState: IUserState = useSelector((state: RootState) => state.user);
-  const {onboardingInstance} = useContext(OnboardingContext);
-  const biometricsEnabled = useMemo(
-    () =>
-      onboardingInstance
-        ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
-        : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED,
-    [onboardingInstance],
-  );
+type UseAuthEffectOptions = {
+  /**
+   * The number of milliseconds to delay the authorization
+   * prompt after the hook is mounted.
+   */
+  promptDelay?: number;
+};
+type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => Promise<void>);
+export const useAuthEffect = (effect: AuthEffectCallback) => {
+  const biometricsEnabled = useBiometricsEnabledContext();
 
   const {prompt} = useBiometrics();
 
   useEffect(() => {
     if (biometricsEnabled) {
-      setTimeout(() => {
-        prompt().then(effect);
-      }, 1000);
+      prompt().then(async (result: boolean) => {
+        await effect(result);
+      });
     }
   }, []);
 };
@@ -123,5 +143,35 @@ export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = 
     hasHardware: hasSupportedHardware,
     isEnrolled: enrolled,
     isEnrollmentStrong: isSecure,
+  };
+};
+
+export const useEnableBiometrics = () => {
+  const {prompt} = useBiometrics();
+  const {activeUser} = useSelector((state: RootState) => state.user);
+  const isEnabled = useMemo(() => {
+    if (!activeUser) return false;
+    const {biometricsEnabled} = activeUser;
+    return biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
+  }, [activeUser]);
+  const dispatch = useDispatch();
+
+  const enable = async () => {
+    if (isEnabled) return console.log('biometrics already enabled!');
+    return prompt().then(success => {
+      if (success) return dispatch(setBiometrics(OnboardingBiometricsStatus.ENABLED));
+      console.log('failed to enable biometrics');
+    });
+  };
+
+  const disable = () => {
+    if (!isEnabled) return console.log('biometrics not enabled!');
+    dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
+  };
+
+  return {
+    disable,
+    enable,
+    isEnabled,
   };
 };
