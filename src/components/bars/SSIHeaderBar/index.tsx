@@ -1,12 +1,10 @@
-import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {NativeStackHeaderProps, NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {FC, useContext} from 'react';
 import {ColorValue, GestureResponderEvent, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import OnTouchContext from '../../../contexts/OnTouchContext';
 import {translate} from '../../../localization/Localization';
-import store from '../../../store';
-import {deleteUser, logout} from '../../../store/actions/user.actions';
 import {
   SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
@@ -21,9 +19,11 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, StackParamList} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
+import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
+import {useLogout} from '../../../hooks/use-logout';
 
 export interface HeaderBarProps extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -64,32 +64,25 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
     navigation.navigate('Veramo', {});
   };
 
+  const onNavigateProfile = () => {
+    navigation.navigate(MainRoutesEnum.SETTINGS);
+  };
+
   const onMore = async (): Promise<void> => {
     setShowProfileMenu(false);
     setShowMoreMenu(!showMoreMenu);
   };
 
+  const logout = useLogout();
   const onLogout = async (): Promise<void> => {
     setShowProfileMenu(false);
-    dispatch<any>(logout());
+    logout();
   };
 
+  const promptDelete = useDeleteWallet();
   const onDeleteWallet = async (): Promise<void> => {
     setShowProfileMenu(false);
-    const activeUser: IUser = store.getState().user.activeUser!;
-
-    navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
-      title: translate('profile_delete_wallet_action_title'),
-      details: translate('profile_delete_wallet_action_subtitle', {userName: `${activeUser.firstName} ${activeUser.lastName}`}),
-      primaryButton: {
-        caption: translate('action_confirm_label'),
-        onPress: async (): Promise<void> => await dispatch<any>(deleteUser(activeUser.id)),
-      },
-      secondaryButton: {
-        caption: translate('action_cancel_label'),
-        onPress: async (): Promise<void> => navigation.goBack(),
-      },
-    });
+    promptDelete();
   };
 
   const onTouchStart = (event: GestureResponderEvent): void => {
@@ -124,14 +117,10 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
               <SSIDropDownList
                 buttons={[
                   {
-                    caption: translate('profile_logout_action_caption'),
-                    onPress: onLogout,
-                    icon: HeaderMenuIconsEnum.LOGOUT,
-                  },
-                  {
-                    caption: translate('profile_delete_wallet_action_caption'),
-                    onPress: onDeleteWallet,
-                    icon: HeaderMenuIconsEnum.DELETE,
+                    // caption: translate('profile_logout_action_caption'),
+                    caption: 'Settings',
+                    onPress: onNavigateProfile,
+                    icon: HeaderMenuIconsEnum.SETTINGS,
                   },
                 ]}
               />

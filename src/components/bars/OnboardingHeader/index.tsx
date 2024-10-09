@@ -24,6 +24,7 @@ import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
+import SettingsIcon from '../../assets/icons/SettingsIcon';
 
 const {width, height} = Dimensions.get('window');
 
@@ -158,13 +159,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
         )}
         {showCogWheel && (
           <Pressable style={({pressed}) => ({opacity: pressed ? 0.7 : 1})} onPress={() => showModal()}>
-            <Image
-              style={{height: 22, width: 22}}
-              source={require('../../../assets/images/cog-wheel.png')}
-              height={22}
-              width={22}
-              resizeMode="stretch"
-            />
+            <SettingsIcon color="white" width={22} height={22} />
           </Pressable>
         )}
       </HeaderRow>
