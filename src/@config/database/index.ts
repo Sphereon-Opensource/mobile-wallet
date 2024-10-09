@@ -1,6 +1,7 @@
 import {
   DataStoreContactEntities,
   DataStoreDigitalCredentialEntities,
+  DataStoreEventLoggerEntities,
   DataStoreIssuanceBrandingEntities,
   DataStoreMachineStateEntities,
   DataStoreMigrations,
@@ -24,6 +25,7 @@ const sqliteConfig: ReactNativeConnectionOptions = {
     ...DataStoreIssuanceBrandingEntities,
     ...DataStoreMachineStateEntities,
     ...DataStoreDigitalCredentialEntities,
+    ...DataStoreEventLoggerEntities,
   ],
   migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations, AddFunkeContact1724156944125],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux

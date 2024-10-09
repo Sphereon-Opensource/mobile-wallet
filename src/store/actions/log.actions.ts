@@ -9,3 +9,9 @@ export const storeEventLog = (event: LogActivityEventArgs): ThunkAction<Promise<
     await agent.loggerLogActivityEvent(event);
   };
 };
+
+export const getActivityLogs = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
+    await agent.loggerGetActivityEvents();
+  };
+};
