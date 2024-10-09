@@ -44,7 +44,8 @@ const config = {
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
     sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
     extraNodeModules: {
-      shim: path.resolve(__dirname, 'shim.js'),
+      // shim: path.resolve(__dirname, 'shim.js'),
+      'react-native-quick-crypto': require.resolve('@sphereon/react-native-quick-crypto'),
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
       crypto: require.resolve('@sphereon/react-native-quick-crypto'),
