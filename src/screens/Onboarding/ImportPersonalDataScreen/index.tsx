@@ -35,6 +35,10 @@ const ImportPersonalDataScreen = (props?: any) => {
     Keyboard.dismiss();
   };
 
+  useEffect(() => {
+    setShowPin(true);
+  }, []);
+
   useEffect((): void => {
     if (pin.length === 0) {
       return;
@@ -63,8 +67,8 @@ const ImportPersonalDataScreen = (props?: any) => {
   }, [pin]);
 
   const onCompletePin = (pin: string): void => {
-    setPin(pin);
     setShowPin(false);
+    setPin(pin);
   };
 
   return (
@@ -73,14 +77,6 @@ const ImportPersonalDataScreen = (props?: any) => {
         <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </Content>
-      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20}}>
-        <PrimaryButton
-          style={{height: 42, width: '100%'}}
-          caption={translate(`${translationsPath}.button_caption`)}
-          captionColor={fontColors.light}
-          onPress={() => setShowPin(true)}
-        />
-      </View>
       {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
       <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
     </Container>

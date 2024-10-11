@@ -62,8 +62,10 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
-  ImportPersonalData: Record<string, never>;
   ImportDataConsent: Record<string, never>;
+  ImportDataStart: Record<string, never>;
+  ImportDataEID: Record<string, never>;
+  ImportDataNFC: Record<string, never>;
   PinCodeSet: Record<string, never>;
   PinCodeVerify: Record<string, never>;
   ImportDataAuthentication: Record<string, never>;

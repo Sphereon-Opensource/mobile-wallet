@@ -77,6 +77,7 @@ import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+import ImportDataStart from 'src/screens/Onboarding/ImportDataStart';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -589,7 +590,11 @@ const step3GroupConfig: StackGroupConfig = {
       component: ImportDataConsentScreen,
     },
     {
-      name: 'ImportPersonalData',
+      name: 'ImportDataStart',
+      component: ImportDataStart,
+    },
+    {
+      name: 'ImportDataNFC',
       component: ImportPersonalDataScreen,
     },
     {

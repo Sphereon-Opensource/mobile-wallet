@@ -207,16 +207,22 @@ const states: OnboardingStatesConfig = {
   importPIDDataConsent: {
     on: {
       PREVIOUS: OnboardingMachineStateType.showProgress,
-      NEXT: OnboardingMachineStateType.importPIDDataNFC,
+      NEXT: OnboardingMachineStateType.importPIDDataStart,
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.showProgress,
         actions: assign({currentStep: 4, skipImport: true}),
       },
     },
   },
-  importPIDDataNFC: {
+  importPIDDataStart: {
     on: {
       PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
+      NEXT: OnboardingMachineStateType.importPIDDataNFC,
+    },
+  },
+  importPIDDataNFC: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importPIDDataStart,
       SET_FUNKE_PROVIDER: {actions: assign({funkeProvider: (_, event) => event.data})},
       NEXT: {cond: OnboardingMachineGuards.hasFunkeRefreshUrl, target: OnboardingMachineStateType.importPIDDataAuthentication},
     },

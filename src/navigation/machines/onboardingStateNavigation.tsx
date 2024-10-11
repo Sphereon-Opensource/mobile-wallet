@@ -71,15 +71,6 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.readPrivacy:
       onboardingNavigation.navigate('ReadTermsAndPrivacy', {document: 'privacy'});
       break;
-    case OnboardingMachineStateType.importPIDDataNFC:
-      onboardingNavigation.navigate('ImportPersonalData', {});
-      break;
-    case OnboardingMachineStateType.importPIDDataConsent:
-      onboardingNavigation.navigate('ImportDataConsent', {});
-      break;
-    case OnboardingMachineStateType.importPIDDataAuthentication:
-      onboardingNavigation.navigate('ImportDataAuthentication', {});
-      break;
     case OnboardingMachineStateType.retrievePIDCredentials:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
@@ -91,6 +82,18 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       break;
     case OnboardingMachineStateType.completeOnboarding:
       onboardingNavigation.navigate('CompleteOnboarding', {});
+      break;
+    case OnboardingMachineStateType.importPIDDataConsent:
+      onboardingNavigation.navigate('ImportDataConsent', {});
+      break;
+    case OnboardingMachineStateType.importPIDDataStart:
+      onboardingNavigation.navigate('ImportDataStart', {});
+      break;
+    case OnboardingMachineStateType.importPIDDataNFC:
+      onboardingNavigation.navigate('ImportDataNFC', {});
+      break;
+    case OnboardingMachineStateType.importPIDDataAuthentication:
+      onboardingNavigation.navigate('ImportDataAuthentication', {});
       break;
     case OnboardingMachineStateType.handleError: {
       const {error} = context;

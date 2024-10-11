@@ -53,6 +53,7 @@ export enum OnboardingMachineStateType {
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
   importPIDDataConsent = 'importPIDDataConsent',
+  importPIDDataStart = 'importPIDDataStart',
   importPIDDataNFC = 'importPIDDataNFC',
   importPIDDataAuthentication = 'importPIDDataAuthentication',
   retrievePIDCredentials = 'retrievePIDCredentials',
