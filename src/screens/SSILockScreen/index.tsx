@@ -32,12 +32,10 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
 
   useAuthEffect(async (success: boolean) => {
-    if (!success) {
-      dispatch(setBiometrics(OnboardingBiometricsStatus.DISABLED));
-      return;
+    if (success) {
+      const {onAuthenticate} = props.route.params;
+      await onAuthenticate();
     }
-    const {onAuthenticate} = props.route.params;
-    await onAuthenticate();
   });
 
   const onVerification = async (value: string): Promise<void> => {
