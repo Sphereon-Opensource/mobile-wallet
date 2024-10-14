@@ -7,7 +7,7 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
-import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
+import {CreditOverviewStackParamsList, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CardContainer} from './CardContainer';
 import {credentialSummaryMock} from './credentialMock';
@@ -33,7 +33,8 @@ const mocked: CredentialSummary[] = [
   credentialSummaryMock('13'),
 ];
 
-const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, navigation}: Props) => {
+const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, navigation, route}: Props) => {
+  const selected = route.params?.selected;
   useFocusEffect(
     useCallback(() => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.CARD);
@@ -52,7 +53,15 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
 
   return (
     <View style={{backgroundColor: backgroundColors.primaryDark, flex: 1, paddingHorizontal: 24, alignItems: 'center'}}>
-      <CardContainer credentials={mocked} onItemPressWhenSelected={onItemPress} />
+      <CardContainer
+        credentials={mocked}
+        onItemPressWhenSelected={onItemPress}
+        selected={selected}
+        onSelect={index =>
+          console.log('goiing', navigation.getParent()) ||
+          navigation.getParent()?.navigate(NavigationBarRoutesEnum.CREDENTIALS, {screen: 'List', params: {selected: index}})
+        }
+      />
     </View>
   );
 };

@@ -1,5 +1,7 @@
 import {NavigationHelpers} from '@react-navigation/native';
+import {IPresentationDefinition} from '@sphereon/pex';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
@@ -8,8 +10,6 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {IPresentationDefinition} from '@sphereon/pex';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -102,7 +102,9 @@ export type FunkeC2ShareStackParamsList = {
 // }
 
 export type CreditOverviewStackParamsList = {
-  Card: Record<string, never>;
+  Card: {
+    selected?: number;
+  };
   List: Record<string, never>;
 };
 

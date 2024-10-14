@@ -1,10 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 import React, {PureComponent} from 'react';
 import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
@@ -12,7 +13,36 @@ import {translate} from '../../localization/Localization';
 import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+
+const CONTACTS: Party[] = [
+  {
+    id: '1',
+    roles: [CredentialRole.ISSUER],
+    identities: [],
+    electronicAddresses: [],
+    physicalAddresses: [],
+    contact: {
+      id: 'contact',
+      firstName: 'Frixos',
+      lastName: 'Nikolaou',
+      displayName: 'Frixos Nikolaou',
+      createdAt: new Date(),
+      lastUpdatedAt: new Date(),
+    },
+    partyType: {
+      id: 'partyType',
+      type: PartyTypeType.NATURAL_PERSON,
+      origin: PartyOrigin.EXTERNAL,
+      name: 'Nikolawos',
+      tenantId: 'frixolaos',
+      createdAt: new Date(),
+      lastUpdatedAt: new Date(),
+    },
+    relationships: [],
+    createdAt: new Date(),
+    lastUpdatedAt: new Date(),
+  },
+];
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
@@ -77,7 +107,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
-    return itemInfo.item.id === activeUser.id ? (
+    return itemInfo.item.id === activeUser?.id ? (
       <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
         <View>{contactItem}</View>
       </ItemContainer>
@@ -120,7 +150,7 @@ const mapDispatchToProps = (dispatch: any) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    contacts: state.contact.contacts,
+    contacts: CONTACTS,
     activeUser: state.user.activeUser!,
   };
 };

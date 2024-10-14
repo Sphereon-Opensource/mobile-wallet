@@ -10,17 +10,19 @@ const MAX_CARDS_UNDER_SELECTED = 3;
 type Props = {
   credentials: CredentialSummary[];
   onItemPressWhenSelected: (credential: CredentialSummary) => Promise<void>;
+  selected?: number;
+  onSelect: (index?: number) => void;
 };
 
-export const CardContainer = ({credentials, onItemPressWhenSelected}: Props) => {
+export const CardContainer = ({credentials, onItemPressWhenSelected, selected, onSelect}: Props) => {
   const listRef = useRef<FlatList>(null);
   const yScroll = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => {
     yScroll.value = e.contentOffset.y;
   });
-  const [selected, setSelected] = useState<number>();
   const [listHeight, setListHeight] = useState<number>(0);
   const containerHeight = Math.max(listHeight, credentials.length * CARD_HEIGHT - (credentials.length - 1) * CARD_OVERLAY);
+  console.log({selected});
   return (
     <AnimatedFlatList
       ref={listRef}
@@ -48,7 +50,7 @@ export const CardContainer = ({credentials, onItemPressWhenSelected}: Props) => 
           index={index}
           listHeight={listHeight}
           selected={selected}
-          onSelect={() => setSelected(index === selected ? undefined : index)}
+          onSelect={() => onSelect(index === selected ? undefined : index)}
           onViewDetailsPress={() => onItemPressWhenSelected(item)}
         />
       )}
