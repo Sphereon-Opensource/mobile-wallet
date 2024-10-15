@@ -8,12 +8,13 @@ import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import PinCode from '../../../components/pinCodes/OnboardingPinCode';
-import {useAuthEffect, useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
+import {useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {storageGetPin} from '../../../services/storageService';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
+import {useAuthEffect} from '../../../hooks/use-biometrics';
 
 const Content = styled.View`
   flex: 1;

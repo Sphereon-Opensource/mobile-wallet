@@ -1,23 +1,21 @@
-import React, {FC} from 'react';
+import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton, SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
+import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
+import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
+import React, {FC} from 'react';
+import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 import SSITabView from '../../components/views/SSITabView';
-import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {translate} from '../../localization/Localization';
 import {
-  CredentialDetailsScreenButtonContainer as ButtonContainer,
-  CredentialDetailsScreenButtonContentContainer as ButtonContainerContent,
+  CredentialDetailsScreenContentContainer as ContentContainer,
   CredentialDetailsScreenCredentialCardContainer as CardContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
-  CredentialDetailsScreenContentContainer as ContentContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
-import {useBackHandler} from '@react-native-community/hooks';
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 

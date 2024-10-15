@@ -234,7 +234,7 @@ export class PidIssuerService {
     let identifier: ManagedIdentifierResult | undefined = undefined;
     if (noCredentialRequestProof) {
       const credentialRequestOpts = {
-        // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
+        // 'https://example.bmi.bund.de/credential/pid/1.0' //sd-jwt,
         // 'eu.europa.ec.eudi.pid.1' // mdoc
         credentialTypes: [pidInfo.type],
 
@@ -255,7 +255,7 @@ export class PidIssuerService {
       };
 
       const credentialRequestOpts = {
-        // 'urn:eu.europa.ec.eudi:pid:1' //sd-jwt,
+        // 'https://example.bmi.bund.de/credential/pid/1.0' //sd-jwt,
         // 'eu.europa.ec.eudi.pid.1' // mdoc
         credentialTypes: pidInfo.type,
         jwk,

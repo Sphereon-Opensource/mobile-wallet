@@ -8,6 +8,8 @@ export const SSIWelcomeViewContainerStyled = styled.View`
   border-top-color: ${borderColors.dark};
   background-color: ${backgroundColors.primaryDark};
   width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 export const SSIWelcomeViewHeaderTextStyled = styled(SSITextH2LightStyled)`
@@ -19,7 +21,7 @@ export const SSIWelcomeViewTitleTextStyled = styled(SSITextH1LightStyled)`
 `;
 
 export const SSIWelcomeViewContentContainerStyled = styled.View`
-  margin: 0 24px 14px 24px;
+  margin: 0 0 14px 0;
 `;
 
 export const SSIWelcomeViewBodyContainerStyled = styled.View`
