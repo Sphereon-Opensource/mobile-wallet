@@ -31,7 +31,6 @@ const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep ==
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
 const isStepComplete: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.FINAL;
 const isBiometricsEnabled = (ctx: OnboardingMachineContext) => {
-  console.log('here');
   return ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
 };
 const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;

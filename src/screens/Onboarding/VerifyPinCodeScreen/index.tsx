@@ -14,7 +14,6 @@ import {SSITextH3RegularLightStyled} from '../../../styles/components';
 
 const VerifyPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  console.log('verify screen:', onboardingInstance.getSnapshot().context.biometricsEnabled);
   useHasStrongBiometrics({
     onBiometricsConfirmed: (isSecure: boolean) => {
       if (!isSecure)
