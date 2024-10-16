@@ -120,8 +120,6 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     };
   });
 
-  console.log('securityModel', securityModel);
-
   const onSelect = async () => {
     try {
       await storagePersistPIDSecurityModel(securityModel);
