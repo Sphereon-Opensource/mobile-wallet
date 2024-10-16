@@ -9,7 +9,7 @@ import PinCode from '../../../components/pinCodes/OnboardingPinCode';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {useHasStrongBiometrics} from '../EnableBiometricsScreen/use-biometrics';
+import {useHasStrongBiometrics} from '../../../hooks/use-biometrics';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
 
 const VerifyPinCodeScreen = () => {

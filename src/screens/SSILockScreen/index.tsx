@@ -2,19 +2,21 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC, useEffect} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import BadgeButton from '../../components/buttons/BadgeButton';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
+import {setBiometrics} from '../../store/actions/user.actions';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useAuthEffect} from '../Onboarding/EnableBiometricsScreen/use-biometrics';
-import {OnboardingMachineEvents} from '../../types/machines/onboarding';
+import {useAuthEffect} from '../../hooks/use-biometrics';
+import {Platform} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -27,9 +29,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   }, []);
 
-  useAuthEffect((success: boolean) => {
-    const {onAuthenticate} = props.route.params;
-    void onAuthenticate();
+  const dispatch = useDispatch();
+
+  useAuthEffect(async (success: boolean) => {
+    if (success) {
+      const {onAuthenticate} = props.route.params;
+      await onAuthenticate();
+    }
   });
 
   const onVerification = async (value: string): Promise<void> => {

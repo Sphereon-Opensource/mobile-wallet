@@ -19,10 +19,10 @@ export const removeCredentialBranding = async (args: IRemoveCredentialBrandingAr
 };
 
 export const getIssuerBrandingFromStorage = async (args: IGetIssuerBrandingArgs): Promise<IIssuerBranding[]> => {
-  debug(`getBrandingFromStorage(${JSON.stringify(args)})...`);
+  // debug(`getBrandingFromStorage(${JSON.stringify(args)})...`);
   try {
     const branding = await agent.ibGetIssuerBranding(args);
-    debug(`getBrandingFromStorage(${JSON.stringify(args)}), result: ${JSON.stringify(branding)}`);
+    // debug(`getBrandingFromStorage(${JSON.stringify(args)}), result: ${JSON.stringify(branding)}`);
     return branding;
   } catch (e) {
     debug(`Error on getting the branding! ${e}`);
