@@ -7,7 +7,7 @@ import {View} from 'react-native';
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
-import {CreditOverviewStackParamsList, NavigationBarRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
+import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CardContainer} from './CardContainer';
 import {credentialSummaryMock} from './credentialMock';
@@ -27,10 +27,20 @@ const mocked: CredentialSummary[] = [
   credentialSummaryMock('7'),
   credentialSummaryMock('8'),
   credentialSummaryMock('9'),
-  credentialSummaryMock('10'),
-  credentialSummaryMock('11'),
-  credentialSummaryMock('12'),
-  credentialSummaryMock('13'),
+  // credentialSummaryMock('10'),
+  // credentialSummaryMock('11'),
+  // credentialSummaryMock('12'),
+  // credentialSummaryMock('13'),
+  // credentialSummaryMock('14'),
+  // credentialSummaryMock('15'),
+  // credentialSummaryMock('16'),
+  // credentialSummaryMock('17'),
+  // credentialSummaryMock('18'),
+  // credentialSummaryMock('19'),
+  // credentialSummaryMock('20'),
+  // credentialSummaryMock('21'),
+  // credentialSummaryMock('22'),
+  // credentialSummaryMock('23'),
 ];
 
 const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, navigation, route}: Props) => {
@@ -53,15 +63,7 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
 
   return (
     <View style={{backgroundColor: backgroundColors.primaryDark, flex: 1, paddingHorizontal: 24, alignItems: 'center'}}>
-      <CardContainer
-        credentials={mocked}
-        onItemPressWhenSelected={onItemPress}
-        selected={selected}
-        onSelect={index =>
-          console.log('goiing', navigation.getParent()) ||
-          navigation.getParent()?.navigate(NavigationBarRoutesEnum.CREDENTIALS, {screen: 'List', params: {selected: index}})
-        }
-      />
+      <CardContainer credentials={mocked} onItemPressWhenSelected={onItemPress} />
     </View>
   );
 };
