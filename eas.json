@@ -8,6 +8,7 @@
       "yarn": "1.22.22"
     },
     "preview": {
+      "extends": "base",
       "android": {
         "buildType": "apk"
       }
