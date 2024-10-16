@@ -120,6 +120,8 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     };
   });
 
+  console.log('securityModel', securityModel);
+
   const onSelect = async () => {
     try {
       await storagePersistPIDSecurityModel(securityModel);
@@ -128,12 +130,12 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     }
     if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
       onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
-      closeModal();
-      return;
+      return closeModal();
     }
     if (skipImport) {
       onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
     }
+    closeModal();
   };
 
   return (
