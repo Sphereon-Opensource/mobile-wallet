@@ -1,6 +1,6 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
@@ -33,21 +33,18 @@ const VerifyPinCodeScreen = () => {
 
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
 
-  const footer = (
-    <PrimaryButton
-      style={{height: 42, width: '100%'}}
-      caption={translate(`${translationsPath}.button_caption`)}
-      disabled={!doPinsCompletelyMatch}
-      captionColor={fontColors.light}
-      onPress={() => {
+  useEffect(() => {
+    if (isComplete && doPinsCompletelyMatch) {
+      setTimeout(() => {
         onboardingInstance.send(OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE, {data: pinCode});
         onboardingInstance.send(OnboardingMachineEvents.NEXT);
         setPinCode('');
-      }}
-    />
-  );
+      }, 500);
+    }
+  }, [isComplete, doPinsCompletelyMatch]);
+
   return (
-    <ScreenContainer footer={footer}>
+    <ScreenContainer>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
       <View style={{marginBottom: 32, flex: 1, gap: 48}}>
         <PinCode
