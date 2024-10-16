@@ -1,5 +1,3 @@
-import {fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
