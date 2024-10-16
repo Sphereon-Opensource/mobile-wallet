@@ -8,7 +8,7 @@ import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {MainRoutesEnum, PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
-const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER, MainRoutesEnum.FUNKE_C2_SHARE].map(k => [k, true]));
+const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER, 'ImportPersonalData'].map(k => [k, true]));
 
 const debug: Debugger = Debug(`${APP_ID}:LockingHandler`);
 const IDLE_LOGOUT_AFTER = 5 * 60 * 1000; // 5 minutes logout
