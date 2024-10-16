@@ -8,6 +8,8 @@ import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
+const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER].map(k => [k, true]));
+
 const debug: Debugger = Debug(`${APP_ID}:LockingHandler`);
 const IDLE_LOGOUT_AFTER = 5 * 60 * 1000; // 5 minutes logout
 class LockingHandler {
@@ -66,7 +68,9 @@ class LockingHandler {
           if (nextAppState === 'background') {
             //FIXME: for now we are autolocking going into background, so that
             //ios face id does not cause this handler to relock after login
-            this.lock();
+            if (this.isLockingRequiredForScreen()) {
+              this.lock();
+            }
             if (Platform.OS === PlatformsEnum.IOS && this.isLockingRequiredForScreen()) {
               return this.checkInactive();
             } else {
@@ -90,7 +94,9 @@ class LockingHandler {
 
   // TODO WAL-601, remove function when refactoring iOS locking mechanism
   private isLockingRequiredForScreen(): boolean {
-    return ScreenRoutesEnum.QR_READER !== navigationRef.current?.getCurrentRoute()?.name;
+    const screenName = navigationRef?.current?.getCurrentRoute()?.name;
+    if (!screenName) return true;
+    return !nonLockableScreens.has(screenName as ScreenRoutesEnum);
   }
 
   public disableLocking = async (): Promise<void> => {
