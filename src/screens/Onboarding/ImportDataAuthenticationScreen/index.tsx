@@ -1,24 +1,22 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SSITextH3LightStyled} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {View, Image} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import Animated, {useAnimatedKeyboard, useAnimatedStyle} from 'react-native-reanimated';
+import {useSelector} from 'react-redux';
+import styled from 'styled-components/native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
+import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import PinCode from '../../../components/pinCodes/OnboardingPinCode';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
 import {storageGetPin} from '../../../services/storageService';
-import {IUserState} from '../../../types/store/user.types';
-import {useSelector} from 'react-redux';
 import {RootState} from '../../../types';
-import styled from 'styled-components/native';
+import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import {IUserState} from '../../../types/store/user.types';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
-import SSICloseIcon from 'src/components/assets/icons/SSICloseIcon';
+import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
 
 const Content = styled.View`
   flex: 1;

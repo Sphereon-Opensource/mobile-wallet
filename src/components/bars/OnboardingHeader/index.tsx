@@ -23,7 +23,7 @@ import {Circle, SelectedCircle} from '../../../styles/components';
 import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
-import SSICloseIcon from 'src/components/assets/icons/SSICloseIcon';
+import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 
 const {width, height} = Dimensions.get('window');
 

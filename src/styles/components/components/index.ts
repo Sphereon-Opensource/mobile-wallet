@@ -8,7 +8,6 @@ export * from './OnboardingPinCode';
 export * from './OnboardingPinCodeSegment';
 export * from './ProgressBarIndicator';
 export * from './SSIAlert';
-export * from './SSIButtonsContainer';
 export * from './SSICheckbox';
 export * from './SSIConnectionDetailsView';
 export * from './SSIContactViewItem';

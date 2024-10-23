@@ -12,14 +12,3 @@ export const CredentialDetailsScreenCredentialCardContainer = styled.View`
   align-items: center;
   margin-bottom: 8px;
 `;
-
-export const CredentialDetailsScreenButtonContainer = styled.View`
-  height: 80px;
-  width: 100%;
-  margin-top: auto;
-  background-color: ${backgroundColors.secondaryDark};
-`;
-
-export const CredentialDetailsScreenButtonContentContainer = styled(SSIFlexDirectionRowViewStyled)`
-  justify-content: space-evenly;
-`;

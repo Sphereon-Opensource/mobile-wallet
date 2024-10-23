@@ -1,9 +1,10 @@
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC} from 'react';
+import SSIProgressIndicator from '../../indicators/SSIProgressIndicator';
+import SSIButtonsContainer from '../../containers/SSIButtonsContainer';
+import {translate} from '../../../localization/Localization';
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
-  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIWelcomeViewContainerStyled as Container,
   SSIWelcomeViewContentContainerStyled as ContentContainer,
   SSIWelcomeViewHeaderTextStyled as HeaderCaption,
@@ -11,7 +12,6 @@ import {
   SSIWelcomeViewTitleTextStyled as TitleCaption,
 } from '../../../styles/components';
 import {IButton} from '../../../types';
-import SSIProgressIndicator from '../../indicators/SSIProgressIndicator';
 
 export interface IProps {
   step: number;
@@ -37,14 +37,12 @@ const SSIWelcomeView: FC<IProps> = (props: IProps): JSX.Element => {
           <BodyText>{body}</BodyText>
         </BodyContainer>
       </ContentContainer>
-      <ButtonContainer>
-        <PrimaryButton
-          // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
-          style={{height: 42, width: 300}}
-          caption={action.caption}
-          onPress={action.onPress}
-        />
-      </ButtonContainer>
+      <SSIButtonsContainer
+        primaryButton={{
+          caption: translate('action_accept_label'),
+          onPress: action.onPress,
+        }}
+      />
     </Container>
   );
 };

@@ -76,7 +76,7 @@ export const AusweisRequestedInfoSchema: AusweisRequestedInfoItem[] = Object.key
 export const PIDCredentialsMock = [
   {
     uniformCredential: {
-      type: ['urn:eu.europa.ec.eudi:pid:1'],
+      type: ['https://example.bmi.bund.de/credential/pid/1.0'],
       '@context': [],
       credentialSubject: {
         '12': true,
