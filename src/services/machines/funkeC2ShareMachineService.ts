@@ -10,25 +10,25 @@ import {siopSendAuthorizationResponse} from '../../providers/authentication/SIOP
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
 import agent from '../../agent';
 import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
-import {activityLogFromDigitalCredential, generateDigest, translateCorrelationIdToName} from '../../utils';
+import {generateDigest, translateCorrelationIdToName} from '../../utils';
 import {
   ConnectionType,
   CredentialCorrelationType,
   CredentialRole,
-  DigitalCredential,
   IBasicCredentialLocaleBranding,
   Party,
   RegulationType,
 } from '@sphereon/ssi-sdk.data-store';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, Loggers, SubSystem, System} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {getMatchingPidCredentials} from '../pexService';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import store from '../../store';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {computeEntryHash} from '@veramo/utils';
 import {Linking} from 'react-native';
-import {storeEventLog} from '../../store/actions/log.actions';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
@@ -146,9 +146,9 @@ export const retrievePIDCredentials = async (context: Pick<FunkeC2ShareMachineCo
 };
 
 export const siopSendResponse = async (
-  context: Pick<FunkeC2ShareMachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'pidCredentials' | 'idOpts'>,
+  context: Pick<FunkeC2ShareMachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'pidCredentials' | 'idOpts' | 'contact'>,
 ): Promise<Siopv2AuthorizationResponseData> => {
-  const {didAuthConfig, authorizationRequestData, pidCredentials} = context;
+  const {didAuthConfig, authorizationRequestData, pidCredentials, contact} = context;
 
   if (didAuthConfig === undefined) {
     return Promise.reject(Error('Missing config in context'));
@@ -159,6 +159,7 @@ export const siopSendResponse = async (
   }
 
   const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
+  const sharedCredential = new Map<string, UniqueDigitalCredential>();
 
   if (authorizationRequestData.presentationDefinitions) {
     for (const presentationDefinition of authorizationRequestData.presentationDefinitions) {
@@ -168,6 +169,10 @@ export const siopSendResponse = async (
         issuerCorrelationId: authorizationRequestData.correlationId,
       });
       if (matchingCredentials) {
+        matchingCredentials.forEach(credential => {
+          sharedCredential.set(credential.hash, credential);
+        });
+
         verifiableCredentialsWithDefinition.push({
           definition: presentationDefinition,
           credentials: matchingCredentials,
@@ -175,6 +180,30 @@ export const siopSendResponse = async (
       }
     }
   }
+
+  sharedCredential.forEach(credential =>
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.TRACE,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'siopSendResponse function call',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    ),
+  );
 
   console.log(
     `siopSendResponse siopSendAuthorizationResponse ${JSON.stringify({
@@ -219,36 +248,17 @@ export const siopSendResponse = async (
   };
 };
 
-export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineContext, 'pidCredentials'>): Promise<void> => {
-  const {pidCredentials} = context;
+export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineContext, 'pidCredentials' | 'contact'>): Promise<void> => {
+  const {pidCredentials, contact} = context;
 
-  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(
-    credential => {
-      store.dispatch<any>(
-        storeEventLog(
-          activityLogFromDigitalCredential({
-            correlationId: credential.hash,
-            credential: credential.digitalCredential,
-            system: System.OID4VCI,
-            actionType: ActionType.DELETE,
-            actionSubType: DefaultActionSubType.VC_ISSUE,
-            subSystemType: SubSystem.OID4VCI_CLIENT,
-            initiatorType: InitiatorType.SYSTEM,
-            description: 'funkeC2',
-          }),
-        ),
-      );
-      store.dispatch<any>(deleteVerifiableCredential(credential.hash));
-    },
-  );
-  await Promise.all(deleteCredentials);
+  await deletePIDCredentials();
+
   let parentId: string | undefined = undefined;
-  let parentCredential: undefined | DigitalCredential = undefined;
-
+  let parentCredentialHash: string | undefined = undefined;
   for (const mappedCredential of pidCredentials) {
     const digitalCredential = await agent.crsAddCredential({
       credential: {
-        parentId,
+        parentId, // TODO FIXME
         regulationType: RegulationType.PID, // FIXME FUNKE
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
@@ -260,22 +270,31 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
       },
       opts: {hasher: generateDigest},
     });
+
     if (!parentId) {
       parentId = digitalCredential.id;
-      parentCredential = digitalCredential;
+      parentCredentialHash = digitalCredential.hash;
     }
-  }
-  if (parentCredential) {
-    await agent.loggerLogActivityEvent(
-      activityLogFromDigitalCredential({
-        correlationId: parentId,
-        credential: parentCredential,
+
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.TRACE,
         system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'storePIDCredentials function call',
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
-        subSystemType: SubSystem.OID4VCI_CLIENT,
-        initiatorType: InitiatorType.USER,
-        description: 'funkeC2',
+        // @ts-ignore
+        credentialType: digitalCredential.documentFormat, // TODO fix types
+        credentialHash: digitalCredential.hash,
+        ...(parentCredentialHash && {parentCredentialHash}),
+        originalCredential: JSON.stringify(digitalCredential),
+        diagnosticData: {digitalCredential},
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
       }),
     );
   }
@@ -334,4 +353,31 @@ const determineCorrelationId = async (uri: URL | undefined, verifiedAuthorizatio
   }
 
   throw new Error("Can't determine correlationId from request");
+};
+
+const deletePIDCredentials = async (): Promise<void> => {
+  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(
+    credential => {
+      store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
+        store.dispatch<any>(
+          storeActivityLogging({
+            level: LogLevel.TRACE,
+            system: System.CREDENTIALS,
+            subSystemType: SubSystem.OID4VP_OP,
+            initiatorType: InitiatorType.SYSTEM,
+            description: 'deletePIDCredentials function call',
+            actionType: ActionType.DELETE,
+            actionSubType: DefaultActionSubType.VC_DELETE,
+            // @ts-ignore
+            credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+            credentialHash: credential.hash,
+            originalCredential: JSON.stringify(credential.digitalCredential),
+            diagnosticData: credential,
+          }),
+        ),
+      );
+    },
+  );
+
+  await Promise.all(deleteCredentials);
 };

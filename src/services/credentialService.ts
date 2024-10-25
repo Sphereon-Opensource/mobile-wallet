@@ -1,9 +1,18 @@
 import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
 import {DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, IVerifyResult, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {
+  ActionType,
+  CredentialMapper,
+  DefaultActionSubType,
+  InitiatorType,
+  IVerifyResult,
+  LogLevel,
+  OriginalVerifiableCredential,
+  SubSystem,
+  System,
+} from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
-
 import agent from '../agent';
 import {
   IDeleteVerifiableCredentialArgs,
@@ -12,8 +21,9 @@ import {
   IVerificationResult,
   IVerificationSubResult,
 } from '../types';
-
 import {removeCredentialBranding} from './brandingService';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 
 export const getVerifiableCredentialsFromStorage = async (opts?: {
   regulationTypes?: RegulationType[];
@@ -62,7 +72,26 @@ export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs
 };
 
 export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredentialArgs): Promise<boolean> => {
-  return removeCredentialBranding({filter: [{vcHash: args.hash}]}).then(() => agent.crsDeleteCredential({hash: args.hash}));
+  const {hash} = args;
+
+  return removeCredentialBranding({filter: [{vcHash: hash}]})
+    .then(() => agent.crsDeleteCredential({hash}))
+    .then(deletionResult => {
+      store.dispatch<any>(
+        storeActivityLogging({
+          subSystemType: SubSystem.OID4VP_OP,
+          initiatorType: InitiatorType.SYSTEM,
+          level: LogLevel.TRACE,
+          system: System.CREDENTIALS,
+          description: 'deleteVerifiableCredential function call',
+          actionType: ActionType.DELETE,
+          actionSubType: DefaultActionSubType.VC_DELETE,
+          credentialHash: hash,
+          diagnosticData: args,
+        }),
+      );
+      return deletionResult;
+    });
 };
 
 export const createVerifiableCredential = async (args: ICreateVerifiableCredentialArgs): Promise<VerifiableCredential> => {

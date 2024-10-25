@@ -31,9 +31,7 @@ import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {activityLogFrom, getCredentialSubjectContact} from '../../utils';
-import agent from '../../agent';
-import {ActionType, DefaultActionSubType, InitiatorType, SubSystem, System} from '@sphereon/ssi-types';
+import {getCredentialSubjectContact} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -231,7 +229,6 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject;
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
@@ -262,22 +259,6 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
       onBack,
     },
   });
-};
-
-const vciStoreEventLog = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {state} = args;
-  await agent.loggerLogActivityEvent(
-    activityLogFrom({
-      credential: state.context.credentialsToAccept[0].uniformVerifiableCredential,
-      correlationId: state.context.credentialsToAccept[0].correlationId,
-      actionType: ActionType.CREATE,
-      actionSubType: DefaultActionSubType.VC_ISSUE,
-      description: state.context.contactAlias,
-      initiatorType: InitiatorType.USER,
-      system: System.OID4VCI,
-      subSystemType: SubSystem.OID4VCI_CLIENT,
-    }),
-  );
 };
 
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
@@ -354,7 +335,6 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.storeCredentials)) {
-    vciStoreEventLog({navigation, oid4vciMachine, state});
     return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
     console.error(state._event.data);

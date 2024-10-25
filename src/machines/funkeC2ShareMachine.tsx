@@ -32,8 +32,23 @@ import {
   storeCredentialBranding,
   storePIDCredentials,
 } from '../services/machines/funkeC2ShareMachineService';
+import {ActionType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import agent from '../agent';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getMatchingPidCredentials} from '../services/pexService';
+import store from '../store';
+import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeCShare`);
+
+// const logger = new EventLoggerBuilder()
+//   .withContext(agentContext)
+//   .withLogLevel(LogLevel.INFO)
+//   .withSystem(System.OID4VP)
+//   .withSubSystem(SubSystem.OID4VP_OP)
+//   .withInitiatorType(InitiatorType.SYSTEM)
+//   .build()
 
 const hasFunkeRefreshUrl: FunkeC2ShareMachineGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
@@ -233,6 +248,7 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
     type: 'final',
   },
   declined: {
+    entry: 'logDeclineShare',
     type: 'final',
   },
   aborted: {
@@ -252,45 +268,93 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
     pidCredentials: [],
   };
 
-  return createMachine<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>({
-    id: opts?.machineId ?? 'FunkeC2Share',
-    predictableActionArguments: true,
-    initial: FunkeC2ShareMachineStateTypes.createConfig,
-    schema: {
-      events: {} as FunkeC2ShareMachineEventTypes,
-      guards: {} as {
-        type: FunkeC2ShareMachineGuards.hasFunkeRefreshUrl;
+  return createMachine<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>(
+    {
+      id: opts?.machineId ?? 'FunkeC2Share',
+      predictableActionArguments: true,
+      initial: FunkeC2ShareMachineStateTypes.createConfig,
+      schema: {
+        events: {} as FunkeC2ShareMachineEventTypes,
+        guards: {} as {
+          type: FunkeC2ShareMachineGuards.hasFunkeRefreshUrl;
+        },
+        services: {} as {
+          [FunkeC2ShareMachineServices.createConfig]: {
+            data: CreateConfigResult;
+          };
+          [FunkeC2ShareMachineServices.getSiopRequest]: {
+            data: Siopv2AuthorizationRequestData;
+          };
+          [FunkeC2ShareMachineServices.retrieveContact]: {
+            data: Party | undefined;
+          };
+          [FunkeC2ShareMachineServices.retrievePIDCredentials]: {
+            data: Array<MappedCredential>;
+          };
+          [FunkeC2ShareMachineServices.sendResponse]: {
+            data: Siopv2AuthorizationResponseData;
+          };
+          [FunkeC2ShareMachineServices.storePIDCredentials]: {
+            data: void;
+          };
+          [FunkeC2ShareMachineServices.storeCredentialBranding]: {
+            data: void;
+          };
+          [FunkeC2ShareMachineServices.fetchCredentialsInStore]: {
+            data: void;
+          };
+        },
       },
-      services: {} as {
-        [FunkeC2ShareMachineServices.createConfig]: {
-          data: CreateConfigResult;
-        };
-        [FunkeC2ShareMachineServices.getSiopRequest]: {
-          data: Siopv2AuthorizationRequestData;
-        };
-        [FunkeC2ShareMachineServices.retrieveContact]: {
-          data: Party | undefined;
-        };
-        [FunkeC2ShareMachineServices.retrievePIDCredentials]: {
-          data: Array<MappedCredential>;
-        };
-        [FunkeC2ShareMachineServices.sendResponse]: {
-          data: Siopv2AuthorizationResponseData;
-        };
-        [FunkeC2ShareMachineServices.storePIDCredentials]: {
-          data: void;
-        };
-        [FunkeC2ShareMachineServices.storeCredentialBranding]: {
-          data: void;
-        };
-        [FunkeC2ShareMachineServices.fetchCredentialsInStore]: {
-          data: void;
-        };
+      context: initialContext,
+      states: funkeCShareMachineStates,
+    },
+    {
+      actions: {
+        logDeclineShare: async (context, event) => {
+          const sharedCredential = new Map<string, UniqueDigitalCredential>();
+
+          if (context.authorizationRequestData?.presentationDefinitions) {
+            for (const presentationDefinition of context.authorizationRequestData.presentationDefinitions) {
+              const matchingCredentials = await getMatchingPidCredentials({
+                presentationDefinitionWithLocation: presentationDefinition,
+                pidCredentials: context.pidCredentials,
+                issuerCorrelationId: context.authorizationRequestData.correlationId,
+              });
+              if (matchingCredentials) {
+                matchingCredentials.forEach(credential => {
+                  sharedCredential.set(credential.hash, credential);
+                });
+              }
+            }
+          }
+
+          sharedCredential.forEach(credential =>
+            store.dispatch<any>(
+              storeActivityLogging({
+                level: LogLevel.TRACE,
+                system: System.OID4VP,
+                subSystemType: SubSystem.OID4VP_OP,
+                initiatorType: InitiatorType.SYSTEM,
+                description: 'decline share credential',
+                actionType: ActionType.READ,
+                actionSubType: 'VC share decline',
+                correlationId: context.didAuthConfig?.sessionId,
+                // @ts-ignore
+                credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+                credentialHash: credential.hash,
+                originalCredential: JSON.stringify(credential.digitalCredential),
+                diagnosticData: context.authorizationRequestData?.presentationDefinitions,
+                // @ts-ignore
+                partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
+                partyCorrelationId: context.contact?.identities[0].identifier.correlationId,
+                partyAlias: context.contact?.contact.displayName,
+              }),
+            ),
+          );
+        },
       },
     },
-    context: initialContext,
-    states: funkeCShareMachineStates,
-  });
+  );
 };
 
 export class FunkeC2ShareMachine {

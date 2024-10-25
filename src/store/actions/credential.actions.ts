@@ -1,15 +1,6 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {CredentialCorrelationType, CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
-import {
-  ActionType,
-  CredentialMapper,
-  DefaultActionSubType,
-  InitiatorType,
-  Loggers,
-  OriginalVerifiableCredential,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+import {CredentialMapper, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ICreateVerifiableCredentialArgs, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
@@ -34,9 +25,7 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {activityLogFromDigitalCredential, getCredentialIssuerContact, getCredentialSubjectContact, showToast} from '../../utils';
-import store from '../index';
-import {storeEventLog} from './log.actions';
+import {getCredentialIssuerContact, getCredentialSubjectContact, showToast} from '../../utils';
 
 export const logger = Loggers.DEFAULT.get('sphereon:store');
 
@@ -91,20 +80,6 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
       vc: vc,
     } satisfies IStoreVerifiableCredentialArgs)
       .then(async (digitalCredential: DigitalCredential): Promise<CredentialSummary> => {
-        await store.dispatch<any>(
-          storeEventLog(
-            activityLogFromDigitalCredential({
-              correlationId: digitalCredential.hash,
-              credential: digitalCredential,
-              system: System.OID4VCI,
-              actionType: ActionType.DELETE,
-              actionSubType: DefaultActionSubType.VC_ISSUE,
-              subSystemType: SubSystem.OID4VCI_CLIENT,
-              initiatorType: InitiatorType.SYSTEM,
-              description: 'funkeC2',
-            }),
-          ),
-        );
         const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: digitalCredential.hash}]});
         return toCredentialSummary({
           verifiableCredential: mappedVc,

@@ -1,9 +1,9 @@
+import React, {FC} from 'react';
 import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC} from 'react';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSIActivityView from '../../components/views/SSIActivityView';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';

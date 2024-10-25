@@ -3,9 +3,9 @@ import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifi
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
-  ActionType,
-  DefaultActionSubType,
+  CredentialMapper,
   InitiatorType,
+  LogLevel,
   OriginalVerifiableCredential,
   OriginalVerifiablePresentation,
   PresentationSubmission,
@@ -16,13 +16,13 @@ import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
-import {activityLogFrom, generateDigest} from '../../utils';
+import {generateDigest} from '../../utils';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
 import {com} from '@sphereon/kmp-mdl-mdoc';
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {EventEmitter} from 'events';
-import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
+import {encodeJoseBlob, EventLoggerBuilder} from '@sphereon/ssi-sdk.core';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
@@ -221,6 +221,11 @@ export const siopSendAuthorizationResponse = async (
 
     const firstUniqueDC = credentialsAndDefinitions[0].credentials[0];
     // FIXME Funke EBSI needs to be fixed
+
+    if (!firstUniqueDC) {
+      return Promise.reject(Error('SiopMachine could not determine a credential'));
+    }
+
     if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
       return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
@@ -305,23 +310,6 @@ export const siopSendAuthorizationResponse = async (
 
     debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentations, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
-    for (const vcsWithDef of credentialsAndDefinitions) {
-      for (const credential of vcsWithDef.credentials) {
-        await agent.loggerLogActivityEvent(
-          activityLogFrom({
-            correlationId: args.sessionId,
-            actionType: ActionType.READ,
-            actionSubType: DefaultActionSubType.VC_VERIFY,
-            description: JSON.stringify(vcsWithDef.definition),
-            system: System.OID4VP,
-            initiatorType: InitiatorType.USER,
-            subSystemType: SubSystem.OID4VP_OP,
-            credential: typeof credential !== 'string' && 'digitalCredential' in credential ? credential.digitalCredential : credential,
-          }),
-        );
-      }
-    }
-
     const response = await session.sendAuthorizationResponse({
       ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations)}),
       ...(presentationSubmission && {presentationSubmission}),
