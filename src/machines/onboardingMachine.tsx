@@ -1,5 +1,5 @@
 import Debug, {Debugger} from 'debug';
-import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
+import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {ErrorDetails} from '../types';
@@ -18,12 +18,11 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
-import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
+import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
 import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
-import agent from '../agent';
-import {ActionType, CredentialMapper, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 import {computeEntryHash} from '@veramo/utils';
 import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
@@ -450,7 +449,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
                 initiatorType: InitiatorType.SYSTEM,
                 description: 'decline credential',
                 actionType: ActionType.READ,
-                actionSubType: 'VC decline', //TODO
+                actionSubType: DefaultActionSubType.VC_DECLINE,
                 // @ts-ignore
                 credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
                 credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),

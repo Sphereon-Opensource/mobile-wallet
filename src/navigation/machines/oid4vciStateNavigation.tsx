@@ -334,8 +334,6 @@ export const oid4vciStateNavigationListener = async (
     return navigateAuthorizationCodeURL({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
-  } else if (state.matches(OID4VCIMachineStates.storeCredentials)) {
-    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
     console.error(state._event.data);
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});

@@ -33,22 +33,12 @@ import {
   storePIDCredentials,
 } from '../services/machines/funkeC2ShareMachineService';
 import {ActionType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import agent from '../agent';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {getMatchingPidCredentials} from '../services/pexService';
 import store from '../store';
-import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeCShare`);
-
-// const logger = new EventLoggerBuilder()
-//   .withContext(agentContext)
-//   .withLogLevel(LogLevel.INFO)
-//   .withSystem(System.OID4VP)
-//   .withSubSystem(SubSystem.OID4VP_OP)
-//   .withInitiatorType(InitiatorType.SYSTEM)
-//   .build()
 
 const hasFunkeRefreshUrl: FunkeC2ShareMachineGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 

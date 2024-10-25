@@ -20,16 +20,6 @@ export const storeActivityLogging = (args: NonPersistedActivityLoggingEvent): Th
     loggingServiceStoreActivityLogging(args)
       .then(activityLogging => dispatch({type: STORE_ACTIVITY_LOGGING_SUCCESS, payload: activityLogging}))
       .catch(() => dispatch({type: STORE_ACTIVITY_LOGGING_FAILED}));
-
-    // return loggingServiceStoreActivityLogging(args)
-    //   .then((activityLogging) => {
-    //     dispatch({type: STORE_ACTIVITY_LOGGING_SUCCESS, payload: activityLogging});
-    //     return activityLogging;
-    //   })
-    //   .catch((error: Error) => {
-    //     dispatch({type: STORE_ACTIVITY_LOGGING_FAILED});
-    //     return Promise.reject(error);
-    //   });
   };
 };
 

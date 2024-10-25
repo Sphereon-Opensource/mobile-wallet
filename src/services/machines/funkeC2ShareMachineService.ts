@@ -258,7 +258,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
   for (const mappedCredential of pidCredentials) {
     const digitalCredential = await agent.crsAddCredential({
       credential: {
-        parentId, // TODO FIXME
+        parentId,
         regulationType: RegulationType.PID, // FIXME FUNKE
         rawDocument: mappedCredential.rawCredential,
         credentialRole: CredentialRole.HOLDER,
