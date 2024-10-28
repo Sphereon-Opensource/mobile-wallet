@@ -188,7 +188,7 @@ export const siopSendResponse = async (
         system: System.OID4VP,
         subSystemType: SubSystem.OID4VP_OP,
         initiatorType: InitiatorType.SYSTEM,
-        description: 'siopSendResponse function call',
+        description: 'Credential shared by user',
         actionType: ActionType.READ,
         actionSubType: DefaultActionSubType.VC_SHARE,
         correlationId: didAuthConfig.sessionId,
