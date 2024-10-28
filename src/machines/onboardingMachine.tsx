@@ -267,7 +267,7 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
+        target: OnboardingMachineStateType.setupWallet,
         actions: ['logDeclinePID', assign({currentStep: 4, skipImport: true})],
       },
     },
