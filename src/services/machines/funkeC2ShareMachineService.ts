@@ -28,7 +28,7 @@ import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/
 import {computeEntryHash} from '@veramo/utils';
 import {Linking} from 'react-native';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
 
 const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
@@ -184,7 +184,7 @@ export const siopSendResponse = async (
   sharedCredential.forEach(credential =>
     store.dispatch<any>(
       storeActivityLogging({
-        level: LogLevel.TRACE,
+        level: LogLevel.INFO,
         system: System.OID4VP,
         subSystemType: SubSystem.OID4VP_OP,
         initiatorType: InitiatorType.SYSTEM,
@@ -277,7 +277,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
     }
 
     store.dispatch<any>(
-      storeActivityLogging({
+      storeAuditLogging({
         level: LogLevel.TRACE,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
@@ -285,16 +285,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         description: 'storePIDCredentials function call',
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
-        // @ts-ignore
-        credentialType: digitalCredential.documentFormat, // TODO fix types
-        credentialHash: digitalCredential.hash,
-        ...(parentCredentialHash && {parentCredentialHash}),
-        originalCredential: JSON.stringify(digitalCredential),
         diagnosticData: {digitalCredential},
-        // @ts-ignore
-        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
-        partyCorrelationId: contact?.identities[0].identifier.correlationId,
-        partyAlias: contact?.contact.displayName,
       }),
     );
   }
@@ -361,11 +352,11 @@ const deletePIDCredentials = async (): Promise<void> => {
       store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
         store.dispatch<any>(
           storeActivityLogging({
-            level: LogLevel.TRACE,
+            level: LogLevel.INFO,
             system: System.CREDENTIALS,
             subSystemType: SubSystem.OID4VP_OP,
             initiatorType: InitiatorType.SYSTEM,
-            description: 'deletePIDCredentials function call',
+            description: 'Credential was deleted by user',
             actionType: ActionType.DELETE,
             actionSubType: DefaultActionSubType.VC_DELETE,
             // @ts-ignore

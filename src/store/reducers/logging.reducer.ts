@@ -6,11 +6,16 @@ import {
   GET_ACTIVITY_LOGGING_SUCCESS,
   LOGGING_LOADING,
   LoggingActionTypes,
+  GET_AUDIT_LOGGING_SUCCESS,
+  GET_AUDIT_LOGGING_FAILED,
+  STORE_AUDIT_LOGGING_SUCCESS,
+  STORE_AUDIT_LOGGING_FAILED,
 } from '../../types/store/logging.action.types';
 
 const initialState: ILoggingState = {
   loading: false,
   activityLogging: [],
+  auditLogging: [],
 };
 
 const loggingReducer = (state: ILoggingState = initialState, action: LoggingActionTypes): ILoggingState => {
@@ -42,6 +47,32 @@ const loggingReducer = (state: ILoggingState = initialState, action: LoggingActi
       };
     }
     case STORE_ACTIVITY_LOGGING_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case GET_AUDIT_LOGGING_SUCCESS: {
+      return {
+        ...state,
+        auditLogging: action.payload,
+        loading: false,
+      };
+    }
+    case GET_AUDIT_LOGGING_FAILED: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case STORE_AUDIT_LOGGING_SUCCESS: {
+      return {
+        ...state,
+        auditLogging: [...state.auditLogging, action.payload],
+        loading: false,
+      };
+    }
+    case STORE_AUDIT_LOGGING_FAILED: {
       return {
         ...state,
         loading: false,

@@ -443,7 +443,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
 
             store.dispatch<any>(
               storeActivityLogging({
-                level: LogLevel.TRACE,
+                level: LogLevel.INFO,
                 system: System.OID4VCI,
                 subSystemType: SubSystem.VC_ISSUER,
                 initiatorType: InitiatorType.SYSTEM,

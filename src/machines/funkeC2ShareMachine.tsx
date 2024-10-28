@@ -321,11 +321,11 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
           sharedCredential.forEach(credential =>
             store.dispatch<any>(
               storeActivityLogging({
-                level: LogLevel.TRACE,
+                level: LogLevel.INFO,
                 system: System.OID4VP,
                 subSystemType: SubSystem.OID4VP_OP,
-                initiatorType: InitiatorType.SYSTEM,
-                description: 'decline share credential',
+                initiatorType: InitiatorType.USER,
+                description: 'Credential was declined by the user',
                 actionType: ActionType.READ,
                 actionSubType: 'VC share decline',
                 correlationId: context.didAuthConfig?.sessionId,

@@ -8,7 +8,7 @@ import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/mac
 import {generateDigest} from '../../utils';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -65,7 +65,7 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
     }
 
     store.dispatch<any>(
-      storeActivityLogging({
+      storeAuditLogging({
         level: LogLevel.TRACE,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
@@ -73,15 +73,7 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
         description: 'storePIDCredentials function call',
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
-        // @ts-ignore
-        credentialType: digitalCredential.documentFormat, // TODO fix types
-        credentialHash: digitalCredential.hash,
-        ...(parentCredentialHash && {parentCredentialHash}),
-        originalCredential: JSON.stringify(digitalCredential),
         diagnosticData: {digitalCredential},
-        partyCorrelationType: PartyCorrelationType.URL,
-        partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
-        partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
   }
@@ -93,11 +85,11 @@ const deletePIDCredentials = async (): Promise<void> => {
       store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
         store.dispatch<any>(
           storeActivityLogging({
-            level: LogLevel.TRACE,
+            level: LogLevel.INFO,
             system: System.CREDENTIALS,
             subSystemType: SubSystem.OID4VP_OP,
             initiatorType: InitiatorType.SYSTEM,
-            description: 'deletePIDCredentials function call',
+            description: 'Credential was deleted by user',
             actionType: ActionType.DELETE,
             actionSubType: DefaultActionSubType.VC_DELETE,
             // @ts-ignore

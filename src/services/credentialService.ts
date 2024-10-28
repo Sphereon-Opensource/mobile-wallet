@@ -81,9 +81,9 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
         storeActivityLogging({
           subSystemType: SubSystem.OID4VP_OP,
           initiatorType: InitiatorType.SYSTEM,
-          level: LogLevel.TRACE,
+          level: LogLevel.INFO,
           system: System.CREDENTIALS,
-          description: 'deleteVerifiableCredential function call',
+          description: 'Credential was deleted by the user',
           actionType: ActionType.DELETE,
           actionSubType: DefaultActionSubType.VC_DELETE,
           credentialHash: hash,
