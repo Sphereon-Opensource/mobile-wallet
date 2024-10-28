@@ -261,7 +261,7 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
+        target: OnboardingMachineStateType.setupWallet,
         actions: assign({currentStep: 4, skipImport: true}),
       },
     },
