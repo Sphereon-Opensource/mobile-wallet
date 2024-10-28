@@ -286,6 +286,10 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
         diagnosticData: {digitalCredential},
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
       }),
     );
   }

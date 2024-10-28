@@ -74,6 +74,9 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
         diagnosticData: {digitalCredential},
+        partyCorrelationType: PartyCorrelationType.URL,
+        partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
   }
