@@ -120,20 +120,20 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
     };
   });
 
-  const onSelect = async () => {
-    try {
-      await storagePersistPIDSecurityModel(securityModel);
-    } catch (e) {
-      console.log('failed to persist PID security model');
-    }
-    if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
-      onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
-      closeModal();
-      return;
-    }
-    if (skipImport) {
-      onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
-    }
+  const onClose = async (): Promise<void> => {
+    storagePersistPIDSecurityModel(securityModel)
+      .then((): void => {
+        if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
+          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
+        }
+
+        if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {
+          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
+        }
+
+        closeModal();
+      })
+      .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
   };
 
   return (
@@ -220,7 +220,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
               />
             </OptionContainer>
 
-            <PrimaryButton caption={translate('onboarding_pid_security_model_select')} onPress={() => onSelect()} />
+            <PrimaryButton caption={translate('onboarding_pid_security_model_select')} onPress={() => onClose()} />
           </SettingsModalContainer>
         </Animated.View>
       )}
