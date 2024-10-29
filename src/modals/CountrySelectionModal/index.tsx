@@ -35,7 +35,6 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
     return Object.values(countryOptions).filter(({label}) => label.toLowerCase().includes(searchTerm));
   }, [search]);
 
-  console.log('---- selectedCountry', selectedCountry);
   return (
     <Modal
       isVisible={open}
@@ -81,7 +80,6 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
             onPress={() => {
               if (selectedCountry) {
                 setHideReason('select');
-                console.log('====== selectedCountry', selectedCountry);
                 onSelect(selectedCountry);
               }
             }}
