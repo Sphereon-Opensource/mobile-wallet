@@ -1,5 +1,6 @@
 import {IUserPreferences} from '../preferences';
 import {OnboardingBiometricsStatus} from '../machines/onboarding';
+import {Country} from '../countries';
 
 export interface IUser {
   id: string;
@@ -11,6 +12,7 @@ export interface IUser {
   lastUpdatedAt: Date;
   preferences: IUserPreferences;
   biometricsEnabled: OnboardingBiometricsStatus;
+  country: Country;
 }
 
 export interface BasicUser {
@@ -19,6 +21,7 @@ export interface BasicUser {
   emailAddress: string;
   identifiers?: Array<BasicUserIdentifier>;
   biometricsEnabled: OnboardingBiometricsStatus;
+  country: Country;
 }
 
 export interface IUserIdentifier {

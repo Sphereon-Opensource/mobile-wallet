@@ -13,6 +13,7 @@ import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {capitalize} from '../../../utils';
 import {isNotNil, validate} from '../../../utils/validate';
+import {countryOptions} from '../../../types/countries';
 
 const EnterCountryScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -33,6 +34,7 @@ const EnterCountryScreen = () => {
       />
     </View>
   );
+
   return (
     <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
@@ -40,7 +42,7 @@ const EnterCountryScreen = () => {
         <SSITextInputControlledField
           autoFocus={false}
           editable={false}
-          value={country && capitalize(country)}
+          value={country && countryOptions[country].label}
           label={translate(`${translationsPath}.select.label`)}
           placeholder={translate(`${translationsPath}.select.placeholder`)}
           onPress={() => setIsModalOpen(true)}

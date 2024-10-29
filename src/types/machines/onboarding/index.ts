@@ -6,10 +6,7 @@ import VciServiceFunkeCProvider from '../../../providers/authentication/funke/Vc
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
 import {MappedCredential} from '../getPIDCredentialMachine';
-
-export enum Country {
-  DEUTSCHLAND = 'DEUTSCHLAND',
-}
+import {Country} from '../../countries';
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
@@ -27,7 +24,7 @@ export enum OnboardingBiometricsStatus {
 export type OnboardingMachineContext = {
   name: string;
   emailAddress: string;
-  country?: Country;
+  country: Country;
   pinCode: string;
   biometricsEnabled: OnboardingBiometricsStatus;
   verificationPinCode: string;

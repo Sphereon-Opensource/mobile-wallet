@@ -1,0 +1,313 @@
+import {CountryOption} from '../component';
+
+export enum Country {
+  UNITED_STATES = 'UNITED_STATES',
+  CANADA = 'CANADA',
+  GERMANY = 'GERMANY',
+  UNITED_KINGDOM = 'UNITED_KINGDOM',
+  FRANCE = 'FRANCE',
+  AUSTRALIA = 'AUSTRALIA',
+  NEW_ZEALAND = 'NEW_ZEALAND',
+  NORWAY = 'NORWAY',
+  SWEDEN = 'SWEDEN',
+  FINLAND = 'FINLAND',
+  DENMARK = 'DENMARK',
+  ICELAND = 'ICELAND',
+  NETHERLANDS = 'NETHERLANDS',
+  BELGIUM = 'BELGIUM',
+  SWITZERLAND = 'SWITZERLAND',
+  JAPAN = 'JAPAN',
+  SOUTH_KOREA = 'SOUTH_KOREA',
+  IRELAND = 'IRELAND',
+  PORTUGAL = 'PORTUGAL',
+  SPAIN = 'SPAIN',
+  AUSTRIA = 'AUSTRIA',
+  LUXEMBOURG = 'LUXEMBOURG',
+  ITALY = 'ITALY',
+  GREECE = 'GREECE',
+  CZECH_REPUBLIC = 'CZECH_REPUBLIC',
+  SLOVENIA = 'SLOVENIA',
+  ESTONIA = 'ESTONIA',
+  LATVIA = 'LATVIA',
+  LITHUANIA = 'LITHUANIA',
+  MALTA = 'MALTA',
+  POLAND = 'POLAND',
+  SLOVAKIA = 'SLOVAKIA',
+  HUNGARY = 'HUNGARY',
+  BRAZIL = 'BRAZIL',
+  ARGENTINA = 'ARGENTINA',
+  CHILE = 'CHILE',
+  COSTA_RICA = 'COSTA_RICA',
+  URUGUAY = 'URUGUAY',
+  INDIA = 'INDIA',
+  ISRAEL = 'ISRAEL',
+  SOUTH_AFRICA = 'SOUTH_AFRICA',
+  MAURITIUS = 'MAURITIUS',
+}
+
+export const countryNameLookup: Record<Country, {native: string; english: string}> = {
+  [Country.UNITED_STATES]: {native: 'United States', english: 'United States'},
+  [Country.CANADA]: {native: 'Canada', english: 'Canada'},
+  [Country.GERMANY]: {native: 'Deutschland', english: 'Germany'},
+  [Country.UNITED_KINGDOM]: {native: 'United Kingdom', english: 'United Kingdom'},
+  [Country.FRANCE]: {native: 'France', english: 'France'},
+  [Country.AUSTRALIA]: {native: 'Australia', english: 'Australia'},
+  [Country.NEW_ZEALAND]: {native: 'New Zealand', english: 'New Zealand'},
+  [Country.NORWAY]: {native: 'Norge', english: 'Norway'},
+  [Country.SWEDEN]: {native: 'Sverige', english: 'Sweden'},
+  [Country.FINLAND]: {native: 'Suomi', english: 'Finland'},
+  [Country.DENMARK]: {native: 'Danmark', english: 'Denmark'},
+  [Country.ICELAND]: {native: 'Ísland', english: 'Iceland'},
+  [Country.NETHERLANDS]: {native: 'Nederland', english: 'Netherlands'},
+  [Country.BELGIUM]: {native: 'België', english: 'Belgium'},
+  [Country.SWITZERLAND]: {native: 'Schweiz', english: 'Switzerland'},
+  [Country.JAPAN]: {native: '日本', english: 'Japan'},
+  [Country.SOUTH_KOREA]: {native: '대한민국', english: 'South Korea'},
+  [Country.IRELAND]: {native: 'Éire', english: 'Ireland'},
+  [Country.PORTUGAL]: {native: 'Portugal', english: 'Portugal'},
+  [Country.SPAIN]: {native: 'España', english: 'Spain'},
+  [Country.AUSTRIA]: {native: 'Österreich', english: 'Austria'},
+  [Country.LUXEMBOURG]: {native: 'Luxembourg', english: 'Luxembourg'},
+  [Country.ITALY]: {native: 'Italia', english: 'Italy'},
+  [Country.GREECE]: {native: 'Ελλάδα', english: 'Greece'},
+  [Country.CZECH_REPUBLIC]: {native: 'Česká republika', english: 'Czech Republic'},
+  [Country.SLOVENIA]: {native: 'Slovenija', english: 'Slovenia'},
+  [Country.ESTONIA]: {native: 'Eesti', english: 'Estonia'},
+  [Country.LATVIA]: {native: 'Latvija', english: 'Latvia'},
+  [Country.LITHUANIA]: {native: 'Lietuva', english: 'Lithuania'},
+  [Country.MALTA]: {native: 'Malta', english: 'Malta'},
+  [Country.POLAND]: {native: 'Polska', english: 'Poland'},
+  [Country.SLOVAKIA]: {native: 'Slovensko', english: 'Slovakia'},
+  [Country.HUNGARY]: {native: 'Magyarország', english: 'Hungary'},
+  [Country.BRAZIL]: {native: 'Brasil', english: 'Brazil'},
+  [Country.ARGENTINA]: {native: 'Argentina', english: 'Argentina'},
+  [Country.CHILE]: {native: 'Chile', english: 'Chile'},
+  [Country.COSTA_RICA]: {native: 'Costa Rica', english: 'Costa Rica'},
+  [Country.URUGUAY]: {native: 'Uruguay', english: 'Uruguay'},
+  [Country.INDIA]: {native: 'भारत', english: 'India'},
+  [Country.ISRAEL]: {native: 'ישראל', english: 'Israel'},
+  [Country.SOUTH_AFRICA]: {native: 'South Africa', english: 'South Africa'},
+  [Country.MAURITIUS]: {native: 'Maurice', english: 'Mauritius'},
+};
+
+const buildCountryLabel = (country: Country) => {
+  const countryLabels = countryNameLookup[country];
+  if (countryLabels.native !== countryLabels.english) {
+    return `${countryLabels.native} / ${countryLabels.english}`;
+  } else {
+    return `${countryLabels.native}`;
+  }
+};
+
+export const countryOptions: Record<Country, Omit<CountryOption, 'selected'>> = {
+  [Country.UNITED_STATES]: {
+    country: Country.UNITED_STATES,
+    label: buildCountryLabel(Country.UNITED_STATES),
+    flagURI: 'https://flagcdn.com/w40/us.png',
+  },
+  [Country.CANADA]: {
+    country: Country.CANADA,
+    label: buildCountryLabel(Country.CANADA),
+    flagURI: 'https://flagcdn.com/w40/ca.png',
+  },
+  [Country.GERMANY]: {
+    country: Country.GERMANY,
+    label: buildCountryLabel(Country.GERMANY),
+    flagURI: 'https://flagcdn.com/w40/de.png',
+  },
+  [Country.UNITED_KINGDOM]: {
+    country: Country.UNITED_KINGDOM,
+    label: buildCountryLabel(Country.UNITED_KINGDOM),
+    flagURI: 'https://flagcdn.com/w40/gb.png',
+  },
+  [Country.FRANCE]: {
+    country: Country.FRANCE,
+    label: buildCountryLabel(Country.FRANCE),
+    flagURI: 'https://flagcdn.com/w40/fr.png',
+  },
+  [Country.AUSTRALIA]: {
+    country: Country.AUSTRALIA,
+    label: buildCountryLabel(Country.AUSTRALIA),
+    flagURI: 'https://flagcdn.com/w40/au.png',
+  },
+  [Country.NEW_ZEALAND]: {
+    country: Country.NEW_ZEALAND,
+    label: buildCountryLabel(Country.NEW_ZEALAND),
+    flagURI: 'https://flagcdn.com/w40/nz.png',
+  },
+  [Country.NORWAY]: {
+    country: Country.NORWAY,
+    label: buildCountryLabel(Country.NORWAY),
+    flagURI: 'https://flagcdn.com/w40/no.png',
+  },
+  [Country.SWEDEN]: {
+    country: Country.SWEDEN,
+    label: buildCountryLabel(Country.SWEDEN),
+    flagURI: 'https://flagcdn.com/w40/se.png',
+  },
+  [Country.FINLAND]: {
+    country: Country.FINLAND,
+    label: buildCountryLabel(Country.FINLAND),
+    flagURI: 'https://flagcdn.com/w40/fi.png',
+  },
+  [Country.DENMARK]: {
+    country: Country.DENMARK,
+    label: buildCountryLabel(Country.DENMARK),
+    flagURI: 'https://flagcdn.com/w40/dk.png',
+  },
+  [Country.ICELAND]: {
+    country: Country.ICELAND,
+    label: buildCountryLabel(Country.ICELAND),
+    flagURI: 'https://flagcdn.com/w40/is.png',
+  },
+  [Country.NETHERLANDS]: {
+    country: Country.NETHERLANDS,
+    label: buildCountryLabel(Country.NETHERLANDS),
+    flagURI: 'https://flagcdn.com/w40/nl.png',
+  },
+  [Country.BELGIUM]: {
+    country: Country.BELGIUM,
+    label: buildCountryLabel(Country.BELGIUM),
+    flagURI: 'https://flagcdn.com/w40/be.png',
+  },
+  [Country.SWITZERLAND]: {
+    country: Country.SWITZERLAND,
+    label: buildCountryLabel(Country.SWITZERLAND),
+    flagURI: 'https://flagcdn.com/w40/ch.png',
+  },
+  [Country.JAPAN]: {
+    country: Country.JAPAN,
+    label: buildCountryLabel(Country.JAPAN),
+    flagURI: 'https://flagcdn.com/w40/jp.png',
+  },
+  [Country.SOUTH_KOREA]: {
+    country: Country.SOUTH_KOREA,
+    label: buildCountryLabel(Country.SOUTH_KOREA),
+    flagURI: 'https://flagcdn.com/w40/kr.png',
+  },
+  [Country.IRELAND]: {
+    country: Country.IRELAND,
+    label: buildCountryLabel(Country.IRELAND),
+    flagURI: 'https://flagcdn.com/w40/ie.png',
+  },
+  [Country.PORTUGAL]: {
+    country: Country.PORTUGAL,
+    label: buildCountryLabel(Country.PORTUGAL),
+    flagURI: 'https://flagcdn.com/w40/pt.png',
+  },
+  [Country.SPAIN]: {
+    country: Country.SPAIN,
+    label: buildCountryLabel(Country.SPAIN),
+    flagURI: 'https://flagcdn.com/w40/es.png',
+  },
+  [Country.AUSTRIA]: {
+    country: Country.AUSTRIA,
+    label: buildCountryLabel(Country.AUSTRIA),
+    flagURI: 'https://flagcdn.com/w40/at.png',
+  },
+  [Country.LUXEMBOURG]: {
+    country: Country.LUXEMBOURG,
+    label: buildCountryLabel(Country.LUXEMBOURG),
+    flagURI: 'https://flagcdn.com/w40/lu.png',
+  },
+  [Country.ITALY]: {
+    country: Country.ITALY,
+    label: buildCountryLabel(Country.ITALY),
+    flagURI: 'https://flagcdn.com/w40/it.png',
+  },
+  [Country.GREECE]: {
+    country: Country.GREECE,
+    label: buildCountryLabel(Country.GREECE),
+    flagURI: 'https://flagcdn.com/w40/gr.png',
+  },
+  [Country.CZECH_REPUBLIC]: {
+    country: Country.CZECH_REPUBLIC,
+    label: buildCountryLabel(Country.CZECH_REPUBLIC),
+    flagURI: 'https://flagcdn.com/w40/cz.png',
+  },
+  [Country.SLOVENIA]: {
+    country: Country.SLOVENIA,
+    label: buildCountryLabel(Country.SLOVENIA),
+    flagURI: 'https://flagcdn.com/w40/si.png',
+  },
+  [Country.ESTONIA]: {
+    country: Country.ESTONIA,
+    label: buildCountryLabel(Country.ESTONIA),
+    flagURI: 'https://flagcdn.com/w40/ee.png',
+  },
+  [Country.LATVIA]: {
+    country: Country.LATVIA,
+    label: buildCountryLabel(Country.LATVIA),
+    flagURI: 'https://flagcdn.com/w40/lv.png',
+  },
+  [Country.LITHUANIA]: {
+    country: Country.LITHUANIA,
+    label: buildCountryLabel(Country.LITHUANIA),
+    flagURI: 'https://flagcdn.com/w40/lt.png',
+  },
+  [Country.MALTA]: {
+    country: Country.MALTA,
+    label: buildCountryLabel(Country.MALTA),
+    flagURI: 'https://flagcdn.com/w40/mt.png',
+  },
+  [Country.POLAND]: {
+    country: Country.POLAND,
+    label: buildCountryLabel(Country.POLAND),
+    flagURI: 'https://flagcdn.com/w40/pl.png',
+  },
+  [Country.SLOVAKIA]: {
+    country: Country.SLOVAKIA,
+    label: buildCountryLabel(Country.SLOVAKIA),
+    flagURI: 'https://flagcdn.com/w40/sk.png',
+  },
+  [Country.HUNGARY]: {
+    country: Country.HUNGARY,
+    label: buildCountryLabel(Country.HUNGARY),
+    flagURI: 'https://flagcdn.com/w40/hu.png',
+  },
+  [Country.BRAZIL]: {
+    country: Country.BRAZIL,
+    label: buildCountryLabel(Country.BRAZIL),
+    flagURI: 'https://flagcdn.com/w40/br.png',
+  },
+  [Country.ARGENTINA]: {
+    country: Country.ARGENTINA,
+    label: buildCountryLabel(Country.ARGENTINA),
+    flagURI: 'https://flagcdn.com/w40/ar.png',
+  },
+  [Country.CHILE]: {
+    country: Country.CHILE,
+    label: buildCountryLabel(Country.CHILE),
+    flagURI: 'https://flagcdn.com/w40/cl.png',
+  },
+  [Country.COSTA_RICA]: {
+    country: Country.COSTA_RICA,
+    label: buildCountryLabel(Country.COSTA_RICA),
+    flagURI: 'https://flagcdn.com/w40/cr.png',
+  },
+  [Country.URUGUAY]: {
+    country: Country.URUGUAY,
+    label: buildCountryLabel(Country.URUGUAY),
+    flagURI: 'https://flagcdn.com/w40/uy.png',
+  },
+  [Country.INDIA]: {
+    country: Country.INDIA,
+    label: buildCountryLabel(Country.INDIA),
+    flagURI: 'https://flagcdn.com/w40/in.png',
+  },
+  [Country.ISRAEL]: {
+    country: Country.ISRAEL,
+    label: buildCountryLabel(Country.ISRAEL),
+    flagURI: 'https://flagcdn.com/w40/il.png',
+  },
+  [Country.SOUTH_AFRICA]: {
+    country: Country.SOUTH_AFRICA,
+    label: buildCountryLabel(Country.SOUTH_AFRICA),
+    flagURI: 'https://flagcdn.com/w40/za.png',
+  },
+  [Country.MAURITIUS]: {
+    country: Country.MAURITIUS,
+    label: buildCountryLabel(Country.MAURITIUS),
+    flagURI: 'https://flagcdn.com/w40/mu.png',
+  },
+};

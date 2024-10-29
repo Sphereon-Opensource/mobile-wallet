@@ -4,7 +4,6 @@ import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {ErrorDetails} from '../types';
 import {
-  Country,
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
   OnboardingBiometricsStatus,
@@ -22,6 +21,7 @@ import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequenti
 import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
+import {Country} from '../types/countries';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -45,7 +45,7 @@ const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotN
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
-const isSkipImport: OnboardingGuard = ({skipImport}) => !!skipImport;
+const isSkipImport: OnboardingGuard = ({skipImport, country}) => !!skipImport || country !== Country.GERMANY; // Do not import PID for other countries
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
@@ -365,7 +365,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const initialContext: OnboardingMachineContext = {
     name: '',
     emailAddress: '',
-    country: Country.DEUTSCHLAND,
+    country: Country.GERMANY,
     pinCode: '',
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     verificationPinCode: '',
