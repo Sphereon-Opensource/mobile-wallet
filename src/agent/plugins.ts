@@ -19,7 +19,6 @@ import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {DataSource} from 'typeorm';
-import {walletCrypto} from '../../index';
 import {animoFunkeCert, funkeTestCA, sphereonCA} from '../@config/trustanchors';
 import {PIDIssuerPresentationSigning} from '../providers/authentication/funke/PIDIssuerPresentationSigning';
 import {dispatchIdentifier} from '../services/identityService';
@@ -51,11 +50,10 @@ export const oid4vciHolder = new OID4VCIHolder({
 export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
-  global.crypto = walletCrypto;
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
-    new IdentifierResolution({crypto: walletCrypto}),
+    new IdentifierResolution({crypto: global.crypto}),
     // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
     new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
     new JwtService(),

@@ -5,6 +5,8 @@ import {Dimensions, Image, LayoutChangeEvent} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {ContentContainer, IconContainer, ModalCard, ModalText, ModalTitle, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
 import {EIDFlowState} from '../../../types';
+import ScanIcon from '../../../components/assets/icons/ScanIcon';
+import ScanSuccessIcon from '../../../components/assets/icons/ScanSuccessIcon';
 
 const {width} = Dimensions.get('window');
 
@@ -15,7 +17,7 @@ const {width} = Dimensions.get('window');
 // 4 overall design of modal. logo, text, balls, are mismatched in size and placing and design
 // 5 placing of the modal should be at the bottom of the screen, not the middle, also would hide the button which would break the scanning flow if pressed
 
-const STEPS = [20, 40, 60, 80, 100];
+const STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
 type AusweisScanModalProps = {
   state?: EIDFlowState; // FIXME in the future we need a general type for just NFC behavior
@@ -25,7 +27,7 @@ type AusweisScanModalProps = {
 };
 
 export const AusweisScanModal = (props: AusweisScanModalProps) => {
-  const {state, progress, onCancel} = props;
+  const {progress, onCancel, state} = props;
   const [containerHeight, setContainerHeight] = useState(200);
 
   const onLayout = (e: LayoutChangeEvent) => {
@@ -34,7 +36,7 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
 
   const transform = useAnimatedStyle(() => {
     const isVisible = state?.state === 'INSERT_CARD' || state?.state === 'READING_CARD' || state?.state === 'STARTED';
-    const bottom = withTiming(isVisible ? 20 : -containerHeight, {duration: 500, easing: Easing.ease});
+    const bottom = withTiming(isVisible ? 15 : -containerHeight, {duration: 500, easing: Easing.ease});
     return {
       position: 'absolute',
       paddingHorizontal: 20,
@@ -93,24 +95,12 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
         {!!modalTitle && <ModalTitle>{modalTitle}</ModalTitle>}
         {state?.state !== 'SUCCESS' && (
           <IconContainer>
-            <Image
-              width={30}
-              height={30}
-              resizeMode="stretch"
-              style={{width: 100, height: 100}}
-              source={require('../../../assets/images/scan_icon.png')}
-            />
+            <ScanIcon />
           </IconContainer>
         )}
         {state?.state === 'SUCCESS' && (
           <IconContainer>
-            <Image
-              width={30}
-              height={30}
-              resizeMode="stretch"
-              style={{width: 100, height: 100}}
-              source={require('../../../assets/images/scan-success.png')}
-            />
+            <ScanSuccessIcon />
           </IconContainer>
         )}
         <ContentContainer>

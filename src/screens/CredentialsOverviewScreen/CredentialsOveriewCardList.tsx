@@ -74,7 +74,15 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
   };
 
   return (
-    <View style={{backgroundColor: backgroundColors.primaryDark, flex: 1, paddingHorizontal: 24, alignItems: 'center'}}>
+    <View
+      style={{
+        backgroundColor: backgroundColors.primaryDark,
+        flex: 1,
+        paddingHorizontal: 24,
+        alignItems: 'center',
+        borderTopColor: '#404D7A',
+        borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0,
+      }}>
       {verifiableCredentials.map((credential, index) => (
         <CredentialViewCard key={index} credential={credential} onPress={() => onItemPress(credential)} />
       ))}

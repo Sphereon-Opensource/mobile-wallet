@@ -14,9 +14,12 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW>;
 
 const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element => {
+  //FIXME - replace below with evaluation of list length when notifications are included
+  const showTopBorder = 1 > 0;
+  const borderTopWidth = showTopBorder ? 1 : 0;
   return (
     // This currently now only shows the empty state.
-    <Container>
+    <Container style={{borderTopWidth, borderTopColor: '#404D7A'}}>
       <EmptyStateContainer>
         <EmptyStateImageContainer>
           <SSINotificationsImage />

@@ -1,16 +1,24 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
-import {ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
-import {ConnectionType, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {AuthorizationEvents, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
-
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {generateDigest} from '../../utils';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
+import {com} from '@sphereon/kmp-mdl-mdoc';
+import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
+import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {EventEmitter} from 'events';
+import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
+
+export const siopEventEmitter = new EventEmitter();
 
 export const siopGetRequest = async (config: Omit<DidAuthConfig, 'identifier'>): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(
@@ -36,10 +44,83 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
         resolver: didResolver,
       },
       supportedDIDMethods: didMethodsSupported,
+      eventEmitter: siopEventEmitter,
     },
     requestJwtOrUri,
   });
 };
+
+// FIX Funke START of temp code
+const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWithDefinition[]): boolean => {
+  return credentialsAndDefinitions.some(vcWithDef =>
+    vcWithDef.credentials.some(
+      credential =>
+        (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
+        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
+    ),
+  );
+};
+
+const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | OriginalVerifiableCredential): credential is UniqueDigitalCredential => {
+  return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
+};
+
+const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
+  if ('id' in definition) {
+    return definition.id;
+  } else {
+    throw new Error('Invalid presentation definition: missing id');
+  }
+};
+
+const createMDocPresentation = (
+  vcWithDef: VerifiableCredentialsWithDefinition,
+  identifier: ManagedIdentifierOptsOrResult,
+): VerifiablePresentationWithDefinition => {
+  const presentationSubmission: Oid4VPPresentationSubmission = Oid4VPPresentationSubmission.Static.fromPresentationDefinition(
+    // @ts-ignore FIXME
+    vcWithDef.definition.definition,
+  );
+  const defId = presentationSubmission.definition_id;
+  const dm = presentationSubmission.descriptor_map;
+  const mDocCredentials: UniqueDigitalCredential[] = vcWithDef.credentials.filter(
+    (credential): credential is UniqueDigitalCredential =>
+      isUniqueDigitalCredential(credential) &&
+      credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
+      credential.digitalCredential.documentType === DocumentType.VC,
+  );
+
+  const originalCredentials: (OriginalVerifiableCredential | undefined)[] = mDocCredentials.map(
+    credential => credential.originalVerifiableCredential,
+  );
+  const originalPresentations: (OriginalVerifiablePresentation | undefined)[] = mDocCredentials.map(
+    credential => credential.originalVerifiablePresentation,
+  );
+
+  if (originalPresentations.length === 0) {
+    throw Error('No presentation found');
+  }
+
+  return {
+    definition: vcWithDef.definition,
+    verifiableCredentials: originalCredentials.filter((cred): cred is OriginalVerifiableCredential => cred !== undefined),
+    // @ts-ignore  FIXME Funke
+    verifiablePresentation: originalPresentations[0],
+    idOpts: identifier,
+    presentationSubmission: {
+      id: presentationSubmission.id,
+      definition_id: presentationSubmission.definition_id,
+      descriptor_map: presentationSubmission.descriptor_map.map(descriptor => {
+        return {
+          id: descriptor.id,
+          path: descriptor.path,
+          format: descriptor.format,
+        };
+      }),
+    },
+  };
+};
+// FIX Funke END of temp code
 
 export const siopSendAuthorizationResponse = async (
   connectionType: ConnectionType,
@@ -52,7 +133,6 @@ export const siopSendAuthorizationResponse = async (
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
   const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
-
   /*
     let identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
     if (!identifiers || identifiers.length === 0) {
@@ -107,9 +187,11 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+    console.log(`#########$$$$$$$$$$$$$$$#############`);
 
     /*
-          const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;  
+
+        const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;
         const firstVC = firstUniqueDC.uniformVerifiableCredential;
         const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
         ? firstVC.decodedPayload.cnf?.jwk
@@ -133,18 +215,72 @@ export const siopSendAuthorizationResponse = async (
     if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
       return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
-    const identifier: ManagedIdentifierOptsOrResult = await session.context.agent.identifierManagedGetByKid({
-      identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
-      kmsKeyRef: firstUniqueDC.digitalCredential.kmsKeyRef,
-    });
 
-    presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
-      idOpts: identifier,
-      proofOpts: {
-        nonce: session.nonce,
-        domain,
-      },
-    });
+    let identifier: ManagedIdentifierOptsOrResult;
+    const digitalCredential = firstUniqueDC.digitalCredential;
+    const firstVC = firstUniqueDC.uniformVerifiableCredential;
+    const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
+      ? firstVC.decodedPayload.cnf?.jwk
+        ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
+          //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
+          `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
+        : firstVC.decodedPayload.sub
+      : Array.isArray(firstVC.credentialSubject)
+      ? firstVC.credentialSubject[0].id
+      : firstVC.credentialSubject.id;
+    if (!digitalCredential.kmsKeyRef) {
+      // In case the store does not have the kmsKeyRef lets search for the holder
+
+      if (!holder) {
+        return Promise.reject(`No holder found and no kmsKeyRef in DB. Cannot determine identifier to use`);
+      }
+      try {
+        identifier = await session.context.agent.identifierManagedGet({identifier: holder});
+      } catch (e) {
+        debug(`Holder DID not found: ${holder}`);
+        throw e;
+      }
+    } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
+      identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
+        identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
+      });
+    } else {
+      switch (digitalCredential.subjectCorrelationType) {
+        case 'DID':
+          identifier = await session.context.agent.identifierManagedGetByDid({
+            identifier: digitalCredential.subjectCorrelationId ?? holder,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+          break;
+        // TODO other implementations?
+        default:
+          // Since we are using the kmsKeyRef we will find the KID regardless of the identifier. We set it for later access though
+          identifier = await session.context.agent.identifierManagedGetByKid({
+            identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
+            kmsKeyRef: digitalCredential.kmsKeyRef,
+          });
+      }
+    }
+    console.log(`Identifier`, identifier);
+
+    if (hasMDocCredentials(credentialsAndDefinitions)) {
+      // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
+      presentationsAndDefs = credentialsAndDefinitions.map((vcWithDef: VerifiableCredentialsWithDefinition) =>
+        createMDocPresentation(vcWithDef, identifier),
+      );
+    } else {
+      const authRequest = await session.getAuthorizationRequest();
+      const vpFormats = authRequest.registrationMetadataPayload?.vp_formats;
+      presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
+        idOpts: identifier,
+        proofOpts: {
+          nonce: session.nonce,
+          domain,
+        },
+        restrictToFormats: vpFormats,
+      });
+      console.log(presentationsAndDefs);
+    }
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
       throw Error('No verifiable presentations could be created');
     } else if (presentationsAndDefs.length > 1) {
@@ -158,16 +294,19 @@ export const siopSendAuthorizationResponse = async (
     const kmsKeyRef = key.kid;
     const kid = managedIdentifier?.kid;*/
 
-    debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentation, null, 2));
+    debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentations, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
-    const response = session.sendAuthorizationResponse({
-      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.map(pd => pd.verifiablePresentation)}),
+
+    const response = await session.sendAuthorizationResponse({
+      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations)}),
       ...(presentationSubmission && {presentationSubmission}),
       responseSignerOpts: identifier,
     });
+
     debug(`Response: `, response);
 
-    return await response;
+    return response;
   }
+
   return undefined;
 };

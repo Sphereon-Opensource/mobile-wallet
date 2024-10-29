@@ -48,7 +48,6 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
   );
   await Promise.all(deleteCredentials);
   let parentId: string | undefined = undefined;
-  const storeCredentials: DigitalCredential[] = [];
   for (const mappedCredential of pidCredentials) {
     const digitalCredential = await agent.crsAddCredential({
       credential: {
@@ -67,7 +66,6 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
     if (!parentId) {
       parentId = digitalCredential.id;
     }
-    storeCredentials.push(digitalCredential);
   }
 };
 

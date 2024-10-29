@@ -1,23 +1,20 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SSITextH3LightStyled} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useMemo, useRef, useState} from 'react';
-import {View, Image} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import Animated, {useAnimatedKeyboard, useAnimatedStyle} from 'react-native-reanimated';
+import styled from 'styled-components/native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
+import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import PinCode from '../../../components/pinCodes/OnboardingPinCode';
+import {useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {useAuthEffect} from '../EnableBiometricsScreen/use-biometrics';
 import {storageGetPin} from '../../../services/storageService';
-import {IUserState} from '../../../types/store/user.types';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../types';
-import styled from 'styled-components/native';
+import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
+import {useAuthEffect} from '../../../hooks/use-biometrics';
 
 const Content = styled.View`
   flex: 1;
@@ -27,19 +24,6 @@ const Content = styled.View`
   padding: 20px;
   justify-content: center;
 `;
-
-const useBiometricsEnabledContext = () => {
-  const {onboardingInstance} = useContext(OnboardingContext);
-  const userState: IUserState = useSelector((state: RootState) => state.user);
-
-  const enabled = useMemo(() => {
-    return onboardingInstance
-      ? onboardingInstance.getSnapshot()?.context?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED
-      : userState.activeUser?.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
-  }, [onboardingInstance, userState]);
-
-  return enabled;
-};
 
 const ImportDataAuthenticationScreen = (props?: any) => {
   const {onAccept} = props?.route?.params ?? {};
@@ -105,7 +89,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
       {(failed || biometricsEnabled) && (
         <Content style={{height: '100%'}}>
           <CircleWithBorder
-            icon={failed ? <Image source={require('../../../assets/images/exit.png')} height={40} width={40} /> : undefined}
+            icon={failed ? <SSICloseIcon color="white" size={40} /> : undefined}
             size={200}
             backgroundColors={['#7276F799', '#7C40E899']}
             borderColors={['#7C40E899', '#7C40E866']}

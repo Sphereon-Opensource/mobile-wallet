@@ -9,7 +9,7 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import styled from 'styled-components/native';
 
-import {useBiometrics} from './use-biometrics';
+import {useBiometrics} from '../../../hooks/use-biometrics';
 import {CircleWithBorder} from './Circle';
 const {width} = Dimensions.get('window');
 

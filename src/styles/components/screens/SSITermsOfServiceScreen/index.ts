@@ -10,10 +10,12 @@ export const SSITermsOfServiceScreenBottomContainerStyled = styled.View`
   margin-top: auto;
   border-top-width: 1px;
   border-top-color: ${borderColors.dark};
+  padding-right: 24px;
+  padding-left: 24px;
 `;
 
 export const SSITermsOfServiceScreenCheckboxesContainerStyled = styled.View`
-  margin: 16px 24px 16px 24px;
+  margin: 16px 0 16px 0;
 `;
 
 export const SSITermsOfServiceScreenCheckboxContainerStyled = styled.View`

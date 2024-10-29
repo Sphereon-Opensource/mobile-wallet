@@ -2,7 +2,6 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {ReactElement, useContext} from 'react';
 import {View} from 'react-native';
-import EID_card from '../../../assets/images/EID_card.svg';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import Stepper from '../../../components/steppers/Stepper';
@@ -11,6 +10,7 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {SSITextH2SemiBoldLightStyled, SSITextH3RegularLightStyled} from '../../../styles/components';
 import {StepContent, StepState} from '../../../types';
 import {OnboardingMachineEvents, OnboardingMachineStep} from '../../../types/machines/onboarding';
+import EIDPinCardIcon from '../../../components/assets/icons/EIDPinCardIcon';
 
 type BaseStepInformationProps = {
   title: string;
@@ -89,7 +89,7 @@ const ShowProgressScreen = () => {
           : translate('onboard_steps.import_personal_data.description.default'),
       Image: (
         <View style={{marginTop: 24}}>
-          <EID_card />
+          <EIDPinCardIcon />
         </View>
       ),
     }),

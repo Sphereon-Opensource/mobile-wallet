@@ -1,5 +1,5 @@
 import {Image} from 'react-native';
-import {AusweisRequestedInfoItem, InfoSchemaImages} from '../constants';
+import {AusweisRequestedInfoItem, InfoSchemaIcons} from '../constants';
 import {
   InformationIconContainer,
   RequestedInformationContainer,
@@ -17,9 +17,7 @@ const ImportInformationSummary = ({data}: ImportInformationSummaryProps) => (
   <RequestedInformationContainer>
     {data.map(info => (
       <RequestedInformationRow key={info.label}>
-        <InformationIconContainer>
-          <Image style={{height: 20, width: 20}} resizeMode="stretch" source={InfoSchemaImages[info.icon]} width={20} height={20} />
-        </InformationIconContainer>
+        <InformationIconContainer>{InfoSchemaIcons[info.icon]}</InformationIconContainer>
         <RequestedInformationDescriptionContainer>
           <RequestedInformationLabel>{info.label}</RequestedInformationLabel>
           {info.data && <RequestedInformationValue>{info.data}</RequestedInformationValue>}

@@ -25,7 +25,6 @@ export const FunkeC2ShareContext: Context<FunkeC2ShareContextType> = createConte
 const navigateLoading = async (args: any): Promise<void> => {
   const {navigation} = args;
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
-    // TODO
     screen: ScreenRoutesEnum.LOADING,
     params: {
       message: translate('action_getting_information_message'),
@@ -73,8 +72,6 @@ const navigateAuthenticate = async (args: any): Promise<void> => {
 };
 
 const navigateAcceptShareCredential = async (args: any): Promise<void> => {
-  console.log(`HGELLOOOOO?????`);
-
   const {navigation, machine, context} = args;
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: 'ImportDataFinal',
@@ -83,6 +80,7 @@ const navigateAcceptShareCredential = async (args: any): Promise<void> => {
       onAccept: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
       onDecline: async () => machine.send(FunkeC2ShareMachineEvents.DECLINE),
       credentials: context.pidCredentials,
+      isShareFlow: true,
     },
   });
 };
@@ -133,8 +131,6 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     debug(`navigation not ready yet`);
     return;
   }
-
-  console.log(`STATE: ${state.value}`);
 
   if (
     state.matches(FunkeC2ShareMachineStateTypes.createConfig) ||

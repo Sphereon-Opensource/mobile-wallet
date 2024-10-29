@@ -6,7 +6,7 @@
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
 
-  "biometrics_title": "Do you want to enable Biometric login?",
+  "biometrics_title": "Do you want to enable Biometric authentication?",
   "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
   "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
   "biometrics_enable_text": "Enable now",
@@ -378,5 +378,6 @@
   "onboarding_machine_store_credential_error_title": "Store credential",
   "onboarding_machine_retrieve_credentials_error_title": "Retrieve credentials",
   "onboarding_skip_credential_import_step3_caption": "I’ll finish this section later",
-  "onboarding_store_credential_branding_error_title": "Store credential branding"
+  "onboarding_store_credential_branding_error_title": "Store credential branding",
+  "share_credential_c2_flow_title": "The following information will be shared"
 }
