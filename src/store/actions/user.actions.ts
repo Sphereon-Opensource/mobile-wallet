@@ -39,6 +39,7 @@ import {getVerifiableCredentials} from './credential.actions';
 import {getActivityLogging} from './logging.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
+import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
 
 export const createUser = (
   args: BasicUser,
@@ -144,8 +145,10 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           await dispatch(getActivityLogging());
           await dispatch(getVerifiableCredentials());
           // add small delay to make the conditional navigation working for the catalog
-          await delay(500);
-          (await LockingHandler.getInstance()).isLocked = false;
+          await delay(700);
+          const lockingHandler = await LockingHandler.getInstance();
+          lockingHandler.touchLastInteraction();
+          lockingHandler.isLocked = false;
 
           dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();
@@ -178,7 +181,7 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
     // first delete the user (including redux store) then logout (remove active user). As then the switch navigator will navigate directly to the onboarding stack
     // without an active user the switch navigator will navigate to the login screen. So doing this first would flicker the login screen
     OnboardingMachine.clearInstance({stop: true});
-    userServiceDeleteUser(userId)
+    await userServiceDeleteUser(userId)
       .then(() => {
         dispatch({type: DELETE_USER_SUCCESS, payload: userId});
 
@@ -194,5 +197,20 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
       .catch(() => {
         dispatch({type: DELETE_USER_FAILED});
       });
+  };
+};
+
+export const setBiometrics = (status: OnboardingBiometricsStatus): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    dispatch({type: USERS_LOADING});
+    const {
+      user: {users},
+    } = await getState();
+    const user = users.values().next().value as IUser;
+
+    await userServiceUpdateUser({
+      ...user,
+      biometricsEnabled: status,
+    }).then(result => dispatch({type: UPDATE_USER_SUCCESS, payload: result}));
   };
 };
