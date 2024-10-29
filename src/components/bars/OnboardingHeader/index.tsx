@@ -4,22 +4,23 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ProgressBarIndicator from '../../../components/indicators/ProgressBarIndicator';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {
-  SSIHeaderBarBackIconStyled as BackIcon,
-  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
+  Circle,
   OnboardingHeaderContainerStyled as Container,
   OnboardingHeaderRow as HeaderRow,
   PROGRESS_BAR_HEIGHT,
+  SelectedCircle,
+  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
+  SSIHeaderBarBackIconStyled as BackIcon,
   SSITextH3LightStyled,
+  SSITextH3RegularLightStyled,
 } from '../../../styles/components';
-import {ButtonIconsEnum, ToastTypeEnum} from '../../../types';
+import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {Dimensions, Image, Pressable, Text, View} from 'react-native';
+import {Dimensions, Pressable} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
-import {SSITextH3RegularLightStyled} from '../../../styles/components';
-import {Circle, SelectedCircle} from '../../../styles/components';
 import {capitalize} from '../../../utils';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
