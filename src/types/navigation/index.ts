@@ -1,6 +1,6 @@
 import {NavigationHelpers} from '@react-navigation/native';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
@@ -32,6 +32,8 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
+  ContactIdentities: IContactIdentitiesProps;
+  ContactActivity: IContactActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   BrowserOpen: IBrowserOpen;
@@ -232,6 +234,14 @@ export interface IContactDetailsProps {
   contact: Party;
 }
 
+export interface IContactIdentitiesProps {
+  identities: Party['identities'];
+}
+
+export interface IContactActivityProps {
+  contact: Party;
+}
+
 export interface IContactAddProps {
   name: string;
   uri?: string;
@@ -296,6 +306,8 @@ export enum ScreenRoutesEnum {
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
+  CONTACT_IDENTITIES = 'ContactIdentities',
+  CONTACT_ACTIVITY = 'ContactActivity',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   BROWSER_OPEN = 'BrowserOpen',
