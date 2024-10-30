@@ -6,7 +6,7 @@ import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as Stat
 import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CredentialsOverviewImages} from './constants';
-import CredentialsOveriewCardList from './CredentialsOveriewCardList';
+import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 import CredentialsOverviewList from './CredentialsOverviewList';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
@@ -46,7 +46,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
           renderIndicator: <View style={{height: '100%', backgroundColor: 'white', opacity: 0.1, borderRadius: 4}} />,
         }}>
         <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} options={{swipeEnabled: false}} />
-        <CredentialViewTypeNav.Screen name="Card" component={CredentialsOveriewCardList} />
+        <CredentialViewTypeNav.Screen name="Card" component={CredentialsOverviewCardList} />
       </CredentialViewTypeNav.Navigator>
     </Container>
   );
