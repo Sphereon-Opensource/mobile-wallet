@@ -5,9 +5,10 @@ import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
-import OnboardingHeader from '../components/bars/OnboardingHeader';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
+import OnboardingDefaultHeader from '../components/bars/onboarding/OnboardingDefaultHeader';
+import OnboardingStepHeader from '../components/bars/onboarding/OnboardingStepHeader';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
 import SSIAlertModal from '../modals/SSIAlertModal';
@@ -721,9 +722,9 @@ const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig]
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
     <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
-    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
-    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingDefaultHeader}} />
+    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingDefaultHeader}} />
+    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingDefaultHeader}} />
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
@@ -739,7 +740,7 @@ export const OnboardingStack = (): JSX.Element => (
             options={({route}) => ({
               headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
               header: props => (
-                <OnboardingHeader
+                <OnboardingStepHeader
                   {...props}
                   title={translate(group.titleKey)}
                   headerSubTitle={(route.params as IOnboardingHasTitleAndSubtitle)?.subtitle}
@@ -771,7 +772,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataConsentScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -793,7 +794,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       options={({route}) => ({
         headerTitle: route.params.title,
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -811,7 +812,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataAuthenticationScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -828,7 +829,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataLoaderScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             title={translate('import_data_title')}
             stepConfig={{
@@ -844,7 +845,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataFinalScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -861,7 +862,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={IncorrectInformationScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -878,7 +879,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataLoaderScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             title={translate('import_data_title')}
             stepConfig={{

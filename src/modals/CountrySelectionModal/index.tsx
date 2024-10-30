@@ -3,7 +3,7 @@ import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo} from 'react';
 import {Keyboard, View, useWindowDimensions} from 'react-native';
 import Modal from 'react-native-modal';
-import {PROGRESS_BAR_LAYOUT_HEIGHT} from '../../components/bars/OnboardingHeader';
+import {PROGRESS_BAR_LAYOUT_HEIGHT} from '../../components/bars/onboarding';
 import KeyboardAvoidingView from '../../components/containers/KeyboardAvoidingView';
 import CountrySelectOption from '../../components/fields/CountrySelectOption';
 import OnboardingSearchField from '../../components/fields/OnboardingSearchField';
