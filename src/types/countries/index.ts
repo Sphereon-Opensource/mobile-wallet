@@ -43,6 +43,7 @@ export enum Country {
   ISRAEL = 'ISRAEL',
   SOUTH_AFRICA = 'SOUTH_AFRICA',
   MAURITIUS = 'MAURITIUS',
+  UKRAINE = 'UKRAINE',
 }
 
 export const countryNameLookup: Record<Country, {native: string; english: string}> = {
@@ -88,6 +89,7 @@ export const countryNameLookup: Record<Country, {native: string; english: string
   [Country.ISRAEL]: {native: 'ישראל', english: 'Israel'},
   [Country.SOUTH_AFRICA]: {native: 'South Africa', english: 'South Africa'},
   [Country.MAURITIUS]: {native: 'Maurice', english: 'Mauritius'},
+  [Country.UKRAINE]: {native: 'Україна', english: 'Ukraine'},
 };
 
 const buildCountryLabel = (country: Country) => {
@@ -309,5 +311,10 @@ export const countryOptions: Record<Country, Omit<CountryOption, 'selected'>> = 
     country: Country.MAURITIUS,
     label: buildCountryLabel(Country.MAURITIUS),
     flagURI: 'https://flagcdn.com/w40/mu.png',
+  },
+  [Country.UKRAINE]: {
+    country: Country.UKRAINE,
+    label: buildCountryLabel(Country.UKRAINE),
+    flagURI: 'https://flagcdn.com/w40/ua.png',
   },
 };
