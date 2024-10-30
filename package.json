@@ -90,6 +90,7 @@
     "ajv-formats": "^2.1.1",
     "assert": "^1.1.1",
     "buffer": "^4.9.1",
+    "countries-list": "^3.1.1",
     "debug": "^4.3.5",
     "did-jwt": "6.11.6",
     "did-resolver": "^4.1.0",

@@ -81,7 +81,6 @@ import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNaviga
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
 import store from '../store';
-import {Country} from '../types/countries';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -215,7 +214,7 @@ const TabStackNavigator = (): JSX.Element => {
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={
         // FIXME remove GERMANY check when we have a working federation screen besides PID import
-        credentialState.verifiableCredentials.length === 0 && activeUser?.country === Country.GERMANY
+        credentialState.verifiableCredentials.length === 0 && activeUser?.countryCode === 'DE'
           ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG
           : NavigationBarRoutesEnum.CREDENTIALS
       }
@@ -247,7 +246,7 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      {!activeUser || activeUser.country === Country.GERMANY ? ( // FIXME remove when we have a working federation screen besides PID import
+      {!activeUser || activeUser.countryCode === 'DE' ? ( // FIXME remove when we have a working federation screen besides PID import
         <Tab.Screen
           name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
           children={() => (

@@ -1,161 +1,69 @@
 import {CountryOption} from '../component';
+import {countries, ICountry, TCountryCode} from 'countries-list';
 
-export enum Country {
-  ARGENTINA = 'ARGENTINA',
-  AUSTRALIA = 'AUSTRALIA',
-  AUSTRIA = 'AUSTRIA',
-  BELGIUM = 'BELGIUM',
-  BRAZIL = 'BRAZIL',
-  CANADA = 'CANADA',
-  CHILE = 'CHILE',
-  COSTA_RICA = 'COSTA_RICA',
-  CZECH_REPUBLIC = 'CZECH_REPUBLIC',
-  DENMARK = 'DENMARK',
-  ESTONIA = 'ESTONIA',
-  FINLAND = 'FINLAND',
-  FRANCE = 'FRANCE',
-  GERMANY = 'GERMANY',
-  GREECE = 'GREECE',
-  HUNGARY = 'HUNGARY',
-  ICELAND = 'ICELAND',
-  INDIA = 'INDIA',
-  IRELAND = 'IRELAND',
-  ISRAEL = 'ISRAEL',
-  ITALY = 'ITALY',
-  JAPAN = 'JAPAN',
-  LATVIA = 'LATVIA',
-  LITHUANIA = 'LITHUANIA',
-  LUXEMBOURG = 'LUXEMBOURG',
-  MALTA = 'MALTA',
-  MAURITIUS = 'MAURITIUS',
-  NETHERLANDS = 'NETHERLANDS',
-  NEW_ZEALAND = 'NEW_ZEALAND',
-  NORWAY = 'NORWAY',
-  POLAND = 'POLAND',
-  PORTUGAL = 'PORTUGAL',
-  SLOVAKIA = 'SLOVAKIA',
-  SLOVENIA = 'SLOVENIA',
-  SOUTH_AFRICA = 'SOUTH_AFRICA',
-  SOUTH_KOREA = 'SOUTH_KOREA',
-  SPAIN = 'SPAIN',
-  SWEDEN = 'SWEDEN',
-  SWITZERLAND = 'SWITZERLAND',
-  UKRAINE = 'UKRAINE',
-  UNITED_KINGDOM = 'UNITED_KINGDOM',
-  UNITED_STATES = 'UNITED_STATES',
-  URUGUAY = 'URUGUAY',
-}
+const excludedCountries: TCountryCode[] = ['RU', 'IR', 'KP', 'CN', 'SY', 'SA', 'VE', 'CU', 'BY', 'SD', 'ZW', 'MM', 'ER', 'LY', 'IQ', 'AF', 'PK'];
 
-const countryCodes: Record<Country, string> = {
-  [Country.ARGENTINA]: 'ar',
-  [Country.AUSTRALIA]: 'au',
-  [Country.AUSTRIA]: 'at',
-  [Country.BELGIUM]: 'be',
-  [Country.BRAZIL]: 'br',
-  [Country.CANADA]: 'ca',
-  [Country.CHILE]: 'cl',
-  [Country.COSTA_RICA]: 'cr',
-  [Country.CZECH_REPUBLIC]: 'cz',
-  [Country.DENMARK]: 'dk',
-  [Country.ESTONIA]: 'ee',
-  [Country.FINLAND]: 'fi',
-  [Country.FRANCE]: 'fr',
-  [Country.GERMANY]: 'de',
-  [Country.GREECE]: 'gr',
-  [Country.HUNGARY]: 'hu',
-  [Country.ICELAND]: 'is',
-  [Country.INDIA]: 'in',
-  [Country.IRELAND]: 'ie',
-  [Country.ISRAEL]: 'il',
-  [Country.ITALY]: 'it',
-  [Country.JAPAN]: 'jp',
-  [Country.LATVIA]: 'lv',
-  [Country.LITHUANIA]: 'lt',
-  [Country.LUXEMBOURG]: 'lu',
-  [Country.MALTA]: 'mt',
-  [Country.MAURITIUS]: 'mu',
-  [Country.NETHERLANDS]: 'nl',
-  [Country.NEW_ZEALAND]: 'nz',
-  [Country.NORWAY]: 'no',
-  [Country.POLAND]: 'pl',
-  [Country.PORTUGAL]: 'pt',
-  [Country.SLOVAKIA]: 'sk',
-  [Country.SLOVENIA]: 'si',
-  [Country.SOUTH_AFRICA]: 'za',
-  [Country.SOUTH_KOREA]: 'kr',
-  [Country.SPAIN]: 'es',
-  [Country.SWEDEN]: 'se',
-  [Country.SWITZERLAND]: 'ch',
-  [Country.UKRAINE]: 'ua',
-  [Country.UNITED_KINGDOM]: 'gb',
-  [Country.UNITED_STATES]: 'us',
-  [Country.URUGUAY]: 'uy',
-};
+export const countryList = Object.fromEntries(
+  Object.entries(countries)
+    .filter(([code]) => !excludedCountries.includes(code as TCountryCode))
+    .map(([code, country]) => [code, country]),
+) as Record<TCountryCode, ICountry>;
 
-export const countryNameLookup: Record<Country, {native: string; english: string}> = {
-  [Country.ARGENTINA]: {native: 'Argentina', english: 'Argentina'},
-  [Country.AUSTRALIA]: {native: 'Australia', english: 'Australia'},
-  [Country.AUSTRIA]: {native: 'Österreich', english: 'Austria'},
-  [Country.BELGIUM]: {native: 'België', english: 'Belgium'},
-  [Country.BRAZIL]: {native: 'Brasil', english: 'Brazil'},
-  [Country.CANADA]: {native: 'Canada', english: 'Canada'},
-  [Country.CHILE]: {native: 'Chile', english: 'Chile'},
-  [Country.COSTA_RICA]: {native: 'Costa Rica', english: 'Costa Rica'},
-  [Country.CZECH_REPUBLIC]: {native: 'Česká republika', english: 'Czech Republic'},
-  [Country.DENMARK]: {native: 'Danmark', english: 'Denmark'},
-  [Country.ESTONIA]: {native: 'Eesti', english: 'Estonia'},
-  [Country.FINLAND]: {native: 'Suomi', english: 'Finland'},
-  [Country.FRANCE]: {native: 'France', english: 'France'},
-  [Country.GERMANY]: {native: 'Deutschland', english: 'Germany'},
-  [Country.GREECE]: {native: 'Ελλάδα', english: 'Greece'},
-  [Country.HUNGARY]: {native: 'Magyarország', english: 'Hungary'},
-  [Country.ICELAND]: {native: 'Ísland', english: 'Iceland'},
-  [Country.INDIA]: {native: 'भारत', english: 'India'},
-  [Country.IRELAND]: {native: 'Éire', english: 'Ireland'},
-  [Country.ISRAEL]: {native: 'ישראל', english: 'Israel'},
-  [Country.ITALY]: {native: 'Italia', english: 'Italy'},
-  [Country.JAPAN]: {native: '日本', english: 'Japan'},
-  [Country.LATVIA]: {native: 'Latvija', english: 'Latvia'},
-  [Country.LITHUANIA]: {native: 'Lietuva', english: 'Lithuania'},
-  [Country.LUXEMBOURG]: {native: 'Luxembourg', english: 'Luxembourg'},
-  [Country.MALTA]: {native: 'Malta', english: 'Malta'},
-  [Country.MAURITIUS]: {native: 'Maurice', english: 'Mauritius'},
-  [Country.NETHERLANDS]: {native: 'Nederland', english: 'Netherlands'},
-  [Country.NEW_ZEALAND]: {native: 'New Zealand', english: 'New Zealand'},
-  [Country.NORWAY]: {native: 'Norge', english: 'Norway'},
-  [Country.POLAND]: {native: 'Polska', english: 'Poland'},
-  [Country.PORTUGAL]: {native: 'Portugal', english: 'Portugal'},
-  [Country.SLOVAKIA]: {native: 'Slovensko', english: 'Slovakia'},
-  [Country.SLOVENIA]: {native: 'Slovenija', english: 'Slovenia'},
-  [Country.SOUTH_AFRICA]: {native: 'South Africa', english: 'South Africa'},
-  [Country.SOUTH_KOREA]: {native: '대한민국', english: 'South Korea'},
-  [Country.SPAIN]: {native: 'España', english: 'Spain'},
-  [Country.SWEDEN]: {native: 'Sverige', english: 'Sweden'},
-  [Country.SWITZERLAND]: {native: 'Schweiz', english: 'Switzerland'},
-  [Country.UKRAINE]: {native: 'Україна', english: 'Ukraine'},
-  [Country.UNITED_KINGDOM]: {native: 'United Kingdom', english: 'United Kingdom'},
-  [Country.UNITED_STATES]: {native: 'United States', english: 'United States'},
-  [Country.URUGUAY]: {native: 'Uruguay', english: 'Uruguay'},
-};
+export const countryNameLookup = Object.fromEntries(
+  Object.entries(countryList).map(([code, country]) => [
+    code as TCountryCode,
+    {
+      native: country.native,
+      english: country.name,
+    },
+  ]),
+) as Record<TCountryCode, {native: string; english: string}>;
 
-const buildCountryLabel = (country: Country) => {
-  const countryLabels = countryNameLookup[country];
-  if (countryLabels.native !== countryLabels.english) {
-    return `${countryLabels.native} / ${countryLabels.english}`;
-  } else {
-    return `${countryLabels.native}`;
+const buildCountryLabel = (countryCode: TCountryCode) => {
+  const countryLabels = countryNameLookup[countryCode];
+  const {native, english} = countryLabels;
+
+  if (native === english) {
+    return native;
   }
+
+  // Special case for RTL languages
+  const isRTL = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(native);
+  const separator = isRTL ? ' \u200F/\u200F ' : ' / ';
+
+  const maxChars = 33;
+
+  const breakText = (text: string): string => {
+    if (text.length <= maxChars) return text;
+    const breakPoint = text.lastIndexOf(' ', maxChars);
+    return breakPoint === -1 ? text : `${text.slice(0, breakPoint)}\n${breakText(text.slice(breakPoint + 1))}`;
+  };
+
+  if (native.length + separator.length + english.length <= maxChars) {
+    return isRTL ? `${english}${separator}${native}` : `${native}${separator}${english}`;
+  }
+
+  return isRTL ? `${english}${separator}\n${breakText(native)}` : `${native}${separator}\n${breakText(english)}`;
 };
 
-const createCountryOption = (country: Country): CountryOption => {
+const getCountryFlagEmoji = (countryCode: TCountryCode) => {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+};
+
+const createCountryOption = (countryCode: TCountryCode): CountryOption => {
+  const flag = getCountryFlagEmoji(countryCode);
   return {
-    country,
-    label: buildCountryLabel(country),
-    flagURI: `https://flagcdn.com/w40/${countryCodes[country]}.png`,
+    countryCode,
+    label: buildCountryLabel(countryCode),
     selected: false,
+    flag: flag,
   };
 };
 
-export const countryOptions: Record<Country, CountryOption> = Object.fromEntries(
-  Object.values(Country).map(country => [country, createCountryOption(country)]),
-) as Record<Country, CountryOption>;
+export const countryOptions = Object.fromEntries(
+  Object.entries(countryList).map(([code]) => [code as TCountryCode, createCountryOption(code as TCountryCode)]),
+) as Record<TCountryCode, CountryOption>;

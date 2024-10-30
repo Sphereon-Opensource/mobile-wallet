@@ -21,7 +21,6 @@ import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequenti
 import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
-import {Country} from '../types/countries';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -40,11 +39,11 @@ const validatePinCode = (pinCode: string) =>
 const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
 const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
 const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
-const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotNil()]).isValid;
+const isCountryValid: OnboardingGuard = ({countryCode}) => validate(countryCode, [isNotNil()]).isValid;
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
-const isSkipImport: OnboardingGuard = ({skipImport, country}) => !!skipImport || country !== Country.GERMANY; // Do not import PID for other countries
+const isSkipImport: OnboardingGuard = ({skipImport, countryCode}) => !!skipImport || countryCode !== 'DE'; // Do not import PID for other countries
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
@@ -116,7 +115,7 @@ const states: OnboardingStatesConfig = {
         actions: assign({currentStep: 2}),
       },
       PREVIOUS: OnboardingMachineStateType.enterEmailAddress,
-      SET_COUNTRY: {actions: assign({country: (_, event) => event.data})},
+      SET_COUNTRY: {actions: assign({countryCode: (_, event) => event.data})},
     },
   },
   enterPinCode: {
@@ -364,7 +363,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const initialContext: OnboardingMachineContext = {
     name: '',
     emailAddress: '',
-    country: Country.GERMANY,
+    countryCode: 'DE',
     pinCode: '',
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     verificationPinCode: '',

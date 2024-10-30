@@ -9,6 +9,7 @@ export * from './navigation';
 export * from './os';
 export * from './qr';
 export * from './service';
+export * from './countries';
 export * from './signature';
 export * from './style';
 export * from './user';

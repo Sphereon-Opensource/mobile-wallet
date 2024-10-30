@@ -10,23 +10,24 @@ import OnboardingSearchField from '../../components/fields/OnboardingSearchField
 import {translate} from '../../localization/Localization';
 import {SSITextH1LightStyled} from '../../styles/components';
 import {CloseIcon, ModalContentContainer} from '../../styles/components/modals';
-import {Country, countryOptions} from '../../types/countries';
+import {countryOptions} from '../../types/countries';
 import {ScrollView} from 'react-native-gesture-handler';
+import {TCountryCode} from 'countries-list';
 
 type HideReason = 'close' | 'select';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSelect: (selectedCountry: Country) => void;
+  onSelect: (selectedCountry: TCountryCode) => void;
   onModalHide?: (reason?: HideReason) => void;
-  selected?: Country;
+  selected?: TCountryCode;
 };
 
 const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}: Props) => {
   const {height: screenHeight} = useWindowDimensions();
   const [hideReason, setHideReason] = React.useState<HideReason>();
-  const [selectedCountry, setSelectedCountry] = React.useState<Country | undefined>(selected);
+  const [selectedCountry, setSelectedCountry] = React.useState<TCountryCode | undefined>(selected);
   const [search, setSearch] = React.useState('');
   const headerHeight = useHeaderHeight();
   const translationsPath = 'onboarding_pages.enter_country.modal';
@@ -66,8 +67,8 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
             <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
               {filteredOptions.map(option => (
                 <CountrySelectOption
-                  key={option.country}
-                  option={{...option, selected: option.country === selectedCountry}}
+                  key={option.countryCode}
+                  option={{...option, selected: option.countryCode === selectedCountry}}
                   onSelect={setSelectedCountry}
                 />
               ))}
