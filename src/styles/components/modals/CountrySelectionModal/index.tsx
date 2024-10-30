@@ -1,6 +1,6 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import styled from 'styled-components/native';
-import SSIIconButton from '../../../../components/buttons/SSIIconButton';
+import SSIIconButton, {Props} from '../../../../components/buttons/SSIIconButton';
 import {ButtonIconsEnum} from '../../../../types';
 import {View} from 'react-native';
 
@@ -30,18 +30,21 @@ export const SelectedCircle = styled.View`
   background-color: #0b81ff;
 `;
 
-export const CloseIcon = styled(SSIIconButton).attrs({
-  // FIXME while using this styled component it is complaining about required properties not being present even if we set it here
-  iconColor: fontColors.light,
-  icon: ButtonIconsEnum.CLOSE,
-  iconSize: 15,
-})`
-  width: 32px;
-  height: 32px;
-  justify-content: center;
-  align-items: center;
-  margin-left: auto;
-`;
+export const CloseIcon = ({...otherProps}: Omit<Props, 'icon'>) => (
+  <SSIIconButton
+    iconColor={fontColors.light}
+    icon={ButtonIconsEnum.CLOSE}
+    iconSize={15}
+    style={{
+      width: 32,
+      height: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 'auto',
+    }}
+    {...otherProps}
+  />
+);
 
 export const ModalContentContainer = styled.View`
   border-top-left-radius: 32px;
