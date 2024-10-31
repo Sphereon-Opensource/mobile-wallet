@@ -9,9 +9,10 @@ import SSITextInputControlledField from '../../../components/fields/SSITextInput
 import {translate} from '../../../localization/Localization';
 import CountrySelectionModal from '../../../modals/CountrySelectionModal';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {ButtonIconsEnum, countryOptions} from '../../../types';
+import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {isNotNil, validate} from '../../../utils/validate';
+import {countryOptions} from '../../../utils';
 
 const EnterCountryScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);

@@ -9,10 +9,10 @@ import CountrySelectOption from '../../components/fields/CountrySelectOption';
 import OnboardingSearchField from '../../components/fields/OnboardingSearchField';
 import {translate} from '../../localization/Localization';
 import {SSITextH1LightStyled} from '../../styles/components';
-import {CloseIcon, ModalContentContainer} from '../../styles/components/modals';
-import {countryOptions} from '../../types/countries';
+import {CloseIcon, ModalContentContainer} from '../../styles/components';
 import {ScrollView} from 'react-native-gesture-handler';
 import {TCountryCode} from 'countries-list';
+import {countryOptions} from '../../utils';
 
 type HideReason = 'close' | 'select';
 
