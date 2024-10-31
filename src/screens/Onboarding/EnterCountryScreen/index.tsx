@@ -11,17 +11,17 @@ import CountrySelectionModal from '../../../modals/CountrySelectionModal';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {capitalize} from '../../../utils';
 import {isNotNil, validate} from '../../../utils/validate';
+import {countryOptions} from '../../../utils';
 
 const EnterCountryScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const {
-    context: {country},
+    context: {countryCode},
   } = onboardingInstance.getSnapshot();
   const translationsPath = 'onboarding_pages.enter_country';
-  const [isModalOpen, setIsModalOpen] = useState(country === undefined);
-  const {isValid} = validate(country, [isNotNil(translate(`${translationsPath}.select.errors.missing`))]);
+  const [isModalOpen, setIsModalOpen] = useState(countryCode === undefined);
+  const {isValid} = validate(countryCode, [isNotNil(translate(`${translationsPath}.select.errors.missing`))]);
   const footer = (
     <View style={{marginTop: 'auto'}}>
       <PrimaryButton
@@ -33,6 +33,7 @@ const EnterCountryScreen = () => {
       />
     </View>
   );
+
   return (
     <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} />
@@ -40,7 +41,7 @@ const EnterCountryScreen = () => {
         <SSITextInputControlledField
           autoFocus={false}
           editable={false}
-          value={country && capitalize(country)}
+          value={countryCode && countryOptions[countryCode].label}
           label={translate(`${translationsPath}.select.label`)}
           placeholder={translate(`${translationsPath}.select.placeholder`)}
           onPress={() => setIsModalOpen(true)}
@@ -57,11 +58,11 @@ const EnterCountryScreen = () => {
         />
       </TouchableOpacity>
       <CountrySelectionModal
-        selected={country}
+        selected={countryCode}
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSelect={selectedCountry => {
-          onboardingInstance.send(OnboardingMachineEvents.SET_COUNTRY, {data: selectedCountry});
+        onSelect={selectedCountryCode => {
+          onboardingInstance.send(OnboardingMachineEvents.SET_COUNTRY, {data: selectedCountryCode});
           setIsModalOpen(false);
         }}
         onModalHide={reason => reason === 'select' && onboardingInstance.send(OnboardingMachineEvents.NEXT)}
