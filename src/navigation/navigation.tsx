@@ -335,7 +335,7 @@ const ContactsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CONTACT_IDENTITIES}
         component={ContactIdentitiesScreen}
         options={{
-          headerTitle: translate('contact_details_title'),
+          headerTitle: translate('contact_identities_title'),
           header: props => <ContactsHeader {...props} />,
         }}
       />
@@ -344,7 +344,7 @@ const ContactsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CONTACT_ACTIVITY}
         component={ContactActivityScreen}
         options={{
-          headerTitle: translate('contact_details_title'),
+          headerTitle: translate('contact_activities_title'),
           header: props => <ContactsHeader {...props} />,
         }}
       />

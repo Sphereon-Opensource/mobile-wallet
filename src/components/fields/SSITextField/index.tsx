@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 
 import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
 import {
@@ -22,6 +22,8 @@ export interface IProps {
 const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
   const {item, index} = props;
 
+  const valueIsArray = Array.isArray(item.value);
+
   return (
     <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10}}>
       <HeaderContainer>
@@ -32,7 +34,7 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
           </StatusLabelContainer>
         )}
       </HeaderContainer>
-      <ContentContainer>
+      <ContentContainer style={valueIsArray ? {flexDirection: 'column'} : undefined}>
         <ContentBadgeContainer>
           {item.isEditable && (
             <EditBadgeContainer>
@@ -40,7 +42,8 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
             </EditBadgeContainer>
           )}
         </ContentBadgeContainer>
-        <ContentText>{item.value}</ContentText>
+        {valueIsArray && item.value.map((v: string) => <ContentText style={{marginLeft: 25}}>{v}</ContentText>)}
+        {!valueIsArray && <ContentText>{item.value}</ContentText>}
       </ContentContainer>
     </Container>
   );
