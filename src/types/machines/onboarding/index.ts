@@ -6,10 +6,7 @@ import VciServiceFunkeCProvider from '../../../providers/authentication/funke/Vc
 import {ErrorDetails} from '../../error';
 import {IUser} from '../../user';
 import {MappedCredential} from '../getPIDCredentialMachine';
-
-export enum Country {
-  DEUTSCHLAND = 'DEUTSCHLAND',
-}
+import {TCountryCode} from 'countries-list';
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
@@ -27,7 +24,7 @@ export enum OnboardingBiometricsStatus {
 export type OnboardingMachineContext = {
   name: string;
   emailAddress: string;
-  country?: Country;
+  countryCode: TCountryCode;
   pinCode: string;
   biometricsEnabled: OnboardingBiometricsStatus;
   verificationPinCode: string;
@@ -92,7 +89,7 @@ export type NextEvent = {type: OnboardingMachineEvents.NEXT};
 export type PreviousEvent = {type: OnboardingMachineEvents.PREVIOUS};
 export type SetNameEvent = {type: OnboardingMachineEvents.SET_NAME; data: string};
 export type SetEmailAddressEvent = {type: OnboardingMachineEvents.SET_EMAIL_ADDRESS; data: string};
-export type SetCountryEvent = {type: OnboardingMachineEvents.SET_COUNTRY; data: Country};
+export type SetCountryEvent = {type: OnboardingMachineEvents.SET_COUNTRY; data: TCountryCode};
 export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data: string};
 export type SetVerificationPinCodeEvent = {type: OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE; data: string};
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};

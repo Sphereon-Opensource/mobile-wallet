@@ -1,5 +1,5 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
@@ -24,15 +24,15 @@ import {
   EnterEmailScreen,
   EnterNameScreen,
   EnterPinCodeScreen,
+  ImportDataAuthenticationScreen,
   ImportDataConsentScreen,
+  ImportDataFinalScreen,
   ImportDataLoaderScreen,
   ImportPersonalDataScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
-  ImportDataAuthenticationScreen,
-  ImportDataFinalScreen,
 } from '../screens/Onboarding';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
@@ -80,6 +80,7 @@ import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+import store from '../store';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -202,6 +203,7 @@ const MainStackNavigator = (): JSX.Element => {
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
+  const activeUser = store.getState().user.activeUser;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -211,7 +213,10 @@ const TabStackNavigator = (): JSX.Element => {
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={
-        credentialState.verifiableCredentials.length === 0 ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG : NavigationBarRoutesEnum.CREDENTIALS
+        // FIXME remove GERMANY check when we have a working federation screen besides PID import
+        credentialState.verifiableCredentials.length === 0 && activeUser?.countryCode === 'DE'
+          ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG
+          : NavigationBarRoutesEnum.CREDENTIALS
       }
       backBehavior="none">
       <Tab.Screen
@@ -241,15 +246,17 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      <Tab.Screen
-        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
-        children={() => (
-          <>
-            <CredentialCatalogStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
+      {!activeUser || activeUser.countryCode === 'DE' ? ( // FIXME remove when we have a working federation screen besides PID import
+        <Tab.Screen
+          name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+          children={() => (
+            <>
+              <CredentialCatalogStack />
+              <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+            </>
+          )}
+        />
+      ) : null}
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
         children={() => (

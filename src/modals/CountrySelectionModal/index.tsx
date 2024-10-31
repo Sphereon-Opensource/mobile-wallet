@@ -9,37 +9,31 @@ import CountrySelectOption from '../../components/fields/CountrySelectOption';
 import OnboardingSearchField from '../../components/fields/OnboardingSearchField';
 import {translate} from '../../localization/Localization';
 import {SSITextH1LightStyled} from '../../styles/components';
-import {CloseIcon, ModalContentContainer} from '../../styles/components/modals';
-import {CountryOption} from '../../types';
-import {Country} from '../../types/machines/onboarding';
+import {CloseIcon, ModalContentContainer} from '../../styles/components';
+import {ScrollView} from 'react-native-gesture-handler';
+import {TCountryCode} from 'countries-list';
+import {countryOptions} from '../../utils';
 
 type HideReason = 'close' | 'select';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSelect: (selectedCountry: Country) => void;
+  onSelect: (selectedCountry: TCountryCode) => void;
   onModalHide?: (reason?: HideReason) => void;
-  selected?: Country;
-};
-
-const countryOptions: Record<Country, Omit<CountryOption, 'selected'>> = {
-  [Country.DEUTSCHLAND]: {
-    name: Country.DEUTSCHLAND,
-    flagURI: 'https://flagcdn.com/w40/de.png',
-  },
+  selected?: TCountryCode;
 };
 
 const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}: Props) => {
   const {height: screenHeight} = useWindowDimensions();
   const [hideReason, setHideReason] = React.useState<HideReason>();
-  const [selectedCountry, setSelectedCountry] = React.useState<Country | undefined>(selected);
+  const [selectedCountry, setSelectedCountry] = React.useState<TCountryCode | undefined>(selected);
   const [search, setSearch] = React.useState('');
   const headerHeight = useHeaderHeight();
   const translationsPath = 'onboarding_pages.enter_country.modal';
   const filteredOptions = useMemo(() => {
     const searchTerm = search.trim().toLowerCase();
-    return Object.values(countryOptions).filter(({name}) => name.toLowerCase().includes(searchTerm));
+    return Object.values(countryOptions).filter(({label}) => label.toLowerCase().includes(searchTerm));
   }, [search]);
 
   return (
@@ -70,9 +64,15 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
           <View style={{gap: 24, flex: 1}}>
             <SSITextH1LightStyled>{translate(`${translationsPath}.title`)}</SSITextH1LightStyled>
             <OnboardingSearchField value={search} onChangeText={setSearch} autoFocus={false} />
-            {filteredOptions.map(option => (
-              <CountrySelectOption key={option.name} option={{...option, selected: option.name === selectedCountry}} onSelect={setSelectedCountry} />
-            ))}
+            <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+              {filteredOptions.map(option => (
+                <CountrySelectOption
+                  key={option.countryCode}
+                  option={{...option, selected: option.countryCode === selectedCountry}}
+                  onSelect={setSelectedCountry}
+                />
+              ))}
+            </ScrollView>
           </View>
           <PrimaryButton
             style={{marginTop: 24, width: '100%'}}

@@ -2,17 +2,12 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import styled from 'styled-components/native';
 import SSIIconButton from '../../../../components/buttons/SSIIconButton';
 import {ButtonIconsEnum} from '../../../../types';
+import {View} from 'react-native';
 
 export const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: 12px;
-`;
-
-export const Flag = styled.Image`
-  width: 17px;
-  height: 12px;
-  margin-right: 10px;
 `;
 
 export const Circle = styled.View`
