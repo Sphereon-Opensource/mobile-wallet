@@ -4,7 +4,6 @@ import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {ErrorDetails} from '../types';
 import {
-  Country,
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
   OnboardingBiometricsStatus,
@@ -31,7 +30,6 @@ const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep ==
 const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
 const isStepComplete: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.FINAL;
 const isBiometricsEnabled = (ctx: OnboardingMachineContext) => {
-  console.log('here');
   return ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
 };
 const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
@@ -41,11 +39,11 @@ const validatePinCode = (pinCode: string) =>
 const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
 const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
 const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
-const isCountryValid: OnboardingGuard = ({country}) => validate(country, [isNotNil()]).isValid;
+const isCountryValid: OnboardingGuard = ({countryCode}) => validate(countryCode, [isNotNil()]).isValid;
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
-const isSkipImport: OnboardingGuard = ({skipImport}) => !!skipImport;
+const isSkipImport: OnboardingGuard = ({skipImport, countryCode}) => !!skipImport || countryCode !== 'DE'; // Do not import PID for other countries
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
@@ -117,7 +115,7 @@ const states: OnboardingStatesConfig = {
         actions: assign({currentStep: 2}),
       },
       PREVIOUS: OnboardingMachineStateType.enterEmailAddress,
-      SET_COUNTRY: {actions: assign({country: (_, event) => event.data})},
+      SET_COUNTRY: {actions: assign({countryCode: (_, event) => event.data})},
     },
   },
   enterPinCode: {
@@ -261,7 +259,7 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
-        target: OnboardingMachineStateType.showProgress,
+        target: OnboardingMachineStateType.setupWallet,
         actions: assign({currentStep: 4, skipImport: true}),
       },
     },
@@ -365,7 +363,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
   const initialContext: OnboardingMachineContext = {
     name: '',
     emailAddress: '',
-    country: Country.DEUTSCHLAND,
+    countryCode: 'DE',
     pinCode: '',
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     verificationPinCode: '',
