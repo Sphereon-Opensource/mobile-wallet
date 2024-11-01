@@ -29,6 +29,7 @@ import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
+import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -97,5 +98,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       saltGenerator: generateSalt,
       verifySignature: verifySDJWTSignature,
     }),
+    new OIDFClient(),
   ];
 };
