@@ -1,14 +1,14 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useState} from 'react';
 import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
+import React, {FC, useState} from 'react';
 
-import {SSIBasicContainerSecondaryStyled as SSIContainer, SSITextH3LightStyled, SSITextH4LightStyled, TextInputStyled} from '../../styles/components';
+import {SSITextH3LightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 import {ScrollView} from 'react-native';
 import SearchIcon from '../../components/assets/icons/SearchIcon';
-import {Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ActivitySearchContainer, ActivitySearchInput, IssuerBrandingContainer} from '../../styles/components/screens/ContactActivityScreen';
+import {Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ACTIVITY>;
 
