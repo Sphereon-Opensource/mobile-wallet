@@ -67,6 +67,7 @@
     "@sphereon/ssi-sdk.contact-manager": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.core": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.credential-store": "0.30.2-fix.138",
+    "@sphereon/ssi-sdk.credential-validation": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.data-store": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.event-logger": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.issuance-branding": "0.30.2-fix.138",
@@ -75,7 +76,6 @@
     "@sphereon/ssi-sdk.sd-jwt": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.vc-handler-ld-local": "0.30.2-fix.138",
-    "@sphereon/ssi-sdk.credential-validation": "0.30.2-fix.138",
     "@sphereon/ssi-sdk.xstate-machine-persistence": "0.30.2-fix.138",
     "@sphereon/ssi-types": "0.30.2-fix.138",
     "@sphereon/ui-components.core": "0.3.1-unstable.18",
@@ -295,20 +295,13 @@
     "react-native-svg": "15.2.0",
     "@sphereon/musap-react-native": "0.0.1-next.154",
     "expo-fs/expo-file-system": "~17.0.1",
-    "**/did-jwt": "6.11.6",
-    "**/did-jwt-vc": "3.1.3",
-    "**/jsonld": "link:./node_modules/@digitalcredentials/jsonld",
-    "**/crypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
-    "**/isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "security-context": "link:./node_modules/@digitalbazaar/security-context",
     "@transmute/web-crypto-key-pair/@peculiar/webcrypto": "^1.1.6",
-    "**/typeorm": "0.3.20",
     "@peculiar/webcrypto": "1.4.5",
-    "**/@peculiar/webcrypto": "1.4.5",
     "crypto": "link:./node_modules/@sphereon/react-native-quick-crypto",
-    "react-native-quick-crypto": "link:./node_modules/@sphereon/react-native-quick-crypto"
+    "@sphereon/react-native-quick-crypto": "0.7.5-sph.2"
   },
   "engines": {
     "node": ">=20.0.0"
