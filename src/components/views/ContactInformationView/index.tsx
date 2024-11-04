@@ -18,7 +18,6 @@ export interface IProps {
 
 export const ContactDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
-    console.log('isArray', Array.isArray(itemInfo.item.value));
     if (itemInfo.item.imageSize) {
       return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
     } else {

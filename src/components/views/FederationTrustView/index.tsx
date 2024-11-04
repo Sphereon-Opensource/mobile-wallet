@@ -2,7 +2,7 @@ import React, {FC, ReactElement} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
 import ShieldIcon from '../../assets/icons/ShieldIcon';
 import Localization from '../../../localization/Localization';
-import {IImageAttributes} from '@sphereon/ssi-sdk.data-store';
+import {IImageAttributes, Party} from '@sphereon/ssi-sdk.data-store';
 import {SSICheckmarkBadge, SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {
   FederationTrustViewContainerStyled as Container,
@@ -13,6 +13,9 @@ import {
   FederationTrustViewDescriptionTextStyled as DescriptionText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
+import {ScreenRoutesEnum, StackParamList} from '../../../types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
 
 // TODO move
 export type Federation = {
@@ -23,25 +26,27 @@ export type Federation = {
 
 export type Props = {
   partyName: string;
-  federations?: Array<Federation>;
+  federations?: Array<Party>;
   style?: ViewStyle;
 };
 
 const FederationTrustView: FC<Props> = (props: Props): ReactElement => {
   const {partyName, federations = [], style} = props;
+  const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
   const isTrusted = federations.length > 0;
 
-  const onPress = async (federationId: string): Promise<void> => {
-    console.log(`Show federation details pressed with id: ${federationId}`);
+  const onPress = async (federation: Party): Promise<void> => {
+    navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: federation});
   };
 
+  // TODO should be it's own component later
   const getTrustedFederationElements = (): Array<ReactElement> => {
     return federations.map((federation, index) => (
-      <TouchableOpacity key={index} style={{height: 42, alignItems: 'center', flexDirection: 'row'}} onPress={() => onPress(federation.id)}>
+      <TouchableOpacity key={index} style={{height: 42, alignItems: 'center', flexDirection: 'row'}} onPress={() => onPress(federation)}>
         <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
-          <Logo logo={federation.logo} size={22} />
+          {federation.branding && <Logo logo={federation.branding.logo} size={22} />}
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-            <SSITextH7LightStyled>{federation.name}</SSITextH7LightStyled>
+            <SSITextH7LightStyled>{federation.contact.displayName}</SSITextH7LightStyled>
             <SSICheckmarkBadge />
           </View>
         </View>

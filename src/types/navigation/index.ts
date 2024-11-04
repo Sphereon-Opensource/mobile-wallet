@@ -150,7 +150,8 @@ export interface ITermsOfServiceProps {
 
 export interface INewContactAddProps {
   partyName: string;
-  isFederationTrusted?: boolean;
+  //isFederationTrusted?: boolean;
+  federations?: Array<Party>;
 }
 
 export interface ICredentialsSelectProps {
