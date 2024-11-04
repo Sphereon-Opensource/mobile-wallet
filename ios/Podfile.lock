@@ -4,9 +4,9 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - AusweisApp2 (2.1.2)
-  - AusweisSdk (0.0.1-alpha.6):
-    - AusweisApp2
+  - AusweisApp2 (2.2.1)
+  - AusweisSdk (0.0.1-alpha.14):
+    - AusweisApp2 (= 2.2.1)
     - ExpoModulesCore
   - Base64 (1.1.2)
   - boost (1.83.0)
@@ -131,7 +131,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - OpenSSL-Universal (3.2.2000)
+  - OpenSSL-Universal (3.3.2000)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1135,7 +1135,7 @@ PODS:
   - react-native-pure-jwt (3.0.2):
     - JWT (= 3.0.0-beta.12)
     - React
-  - react-native-quick-crypto (0.7.1):
+  - react-native-quick-crypto (0.7.5-sph.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1567,7 +1567,7 @@ DEPENDENCIES:
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
-  - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
+  - "react-native-quick-crypto (from `../node_modules/@sphereon/react-native-quick-crypto`)"
   - react-native-quick-sqlite (from `../node_modules/react-native-quick-sqlite`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1609,9 +1609,10 @@ DEPENDENCIES:
   - YubiKit
 
 SPEC REPOS:
+  https://github.com/animo/expo-ausweis-sdk:
+    - AusweisApp2
   https://github.com/CocoaPods/Specs.git:
     - AppAuth
-    - AusweisApp2
     - Base64
     - JWT
     - libwebp
@@ -1737,7 +1738,7 @@ EXTERNAL SOURCES:
   react-native-pure-jwt:
     :path: "../node_modules/react-native-pure-jwt"
   react-native-quick-crypto:
-    :path: "../node_modules/react-native-quick-crypto"
+    :path: "../node_modules/@sphereon/react-native-quick-crypto"
   react-native-quick-sqlite:
     :path: "../node_modules/react-native-quick-sqlite"
   react-native-randombytes:
@@ -1817,8 +1818,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  AusweisApp2: 498000282064feb178b5c1ecf1b333cd85673358
-  AusweisSdk: 7331e366f14e9d5bd52b6f714b616b57062ca9ab
+  AusweisApp2: b138d3d9d88e84f6100b43844b26f31126545733
+  AusweisSdk: f489485343795df4b9f735c52306c42605029abe
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
@@ -1847,7 +1848,7 @@ SPEC CHECKSUMS:
   MMKVCore: af055b00e27d88cd92fad301c5fecd1ff9b26dd9
   musap-ios: d1f24632d1cbb24ccf79e5ac6876d6b1356621d1
   musap-react-native: 5476322acb15cebd6ae16cb0c3be761228b53e0c
-  OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
+  OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4
   RCTRequired: d530a0f489699c8500e944fde963102c42dcd0c2
@@ -1879,7 +1880,7 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: 3892853c11ab8a0c3a3f9ef3b0657aa9a5f616c9
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
-  react-native-quick-crypto: d3457afaa680f961c7bcf6c382329aafe4abddcd
+  react-native-quick-crypto: 26195fe5231ca5ff25c3490b3c9a1abde0a3af32
   react-native-quick-sqlite: 7bccedbaa812b3a154b1505d8d1db4c12842e60b
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
@@ -1920,10 +1921,10 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
+  Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
   YubiKit: 390e7733942f9518f9b3f5890c60914f7b8d74c8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 633b7d367f32b50be198bb8d6f68946d9403cd41
+PODFILE CHECKSUM: 0ae0a4505380b658ebc567ffdeeeebfbd64e7893
 
 COCOAPODS: 1.15.2
