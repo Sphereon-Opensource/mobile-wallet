@@ -42,6 +42,7 @@ export const oid4vciHolder = new OID4VCIHolder({
   onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
     const {identifier} = args;
     if (isManagedIdentifierDidResult(identifier)) {
+      console.log('dispatchIdentifier', identifier);
       await dispatchIdentifier({identifier: identifier.identifier});
     }
   },
