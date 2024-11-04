@@ -4,22 +4,59 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {navigationRef} from '../../navigation/rootNavigation';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {NavigationButton} from './components/NavigationButton';
-import {ContactDetailsNavigationSection, Container, Divider} from './style';
+import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>;
 
-enum ContactTabRoutesEnum {
-  INFO = 'info',
-  IDENTITIES = 'identities',
-  ACTIVITY = 'activity',
-}
-
 const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {contact} = props.route.params;
+  const contactDetails = [
+    {
+      id: 'Name',
+      label: 'Name',
+      value: contact.contact.displayName,
+    },
+    {
+      id: 'alias',
+      label: 'Alias name',
+      value: contact.branding?.alias,
+    },
+    {
+      id: 'website',
+      label: 'Website',
+      value: contact.branding?.clientUri,
+    },
+    {
+      id: 'description',
+      label: 'Description',
+      value: contact.branding?.description,
+    },
+    {
+      id: 'tos_url',
+      label: 'Terms of Service',
+      value: contact.branding?.tosUri,
+    },
+    {
+      id: 'privacy_url',
+      label: 'Privacy Policy',
+      value: contact.branding?.policyUri,
+    },
+    {
+      id: 'contacts',
+      label: 'Contacts',
+      value: contact.branding?.contacts,
+    },
+  ];
 
   return (
     <Container>
-      <ContactInformationView contact={contact} />
+      <ContactInformationView
+        properties={contactDetails}
+        name={contact.contact.displayName}
+        roles={contact.roles}
+        logo={contact.branding?.logo}
+        verified
+      />
       <ContactDetailsNavigationSection>
         <NavigationButton label="Identities" onPress={() => navigationRef.navigate('ContactIdentities', {identities: contact.identities})} />
         <Divider />

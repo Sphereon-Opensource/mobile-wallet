@@ -8,7 +8,7 @@ import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {IdentitiesContainer} from './style';
-import {Divider} from '../SSIContactDetailsScreen/style';
+import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {NewContactViewItem} from '../../components/views/NewContactViewItem';
 
 const Container = styled(SSIContainer)`
@@ -37,7 +37,6 @@ const ContactIdentitiesScreen: FC<Props> = (props: Props): JSX.Element => {
           ))}
         </IdentitiesContainer>
       </ScrollView>
-      {/* <SSITabView routes={routes} /> */}
     </Container>
   );
 };

@@ -7,16 +7,10 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 import {ScrollView} from 'react-native';
 import SearchIcon from 'src/components/assets/icons/SearchIcon';
-import {Container, Divider} from '../SSIContactDetailsScreen/style';
-import {ActivitySearchContainer, ActivitySearchInput, IssuerBrandingContainer} from './style';
+import {Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {ActivitySearchContainer, ActivitySearchInput, IssuerBrandingContainer} from '../../styles/components/screens/ContactActivityScreen';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ACTIVITY>;
-
-enum ContactTabRoutesEnum {
-  INFO = 'info',
-  IDENTITIES = 'identities',
-  ACTIVITY = 'activity',
-}
 
 const ContactActivityScreen: FC<Props> = (props: Props): JSX.Element => {
   const {contact} = props.route.params;
