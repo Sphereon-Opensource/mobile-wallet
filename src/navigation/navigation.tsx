@@ -81,6 +81,7 @@ import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNaviga
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
 import store from '../store';
+import NewContactAddScreen from '../screens/NewContactAddScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -532,6 +533,21 @@ const NotificationsStack = (): JSX.Element => {
           headerTitle: translate('notifications_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder={false} />,
         }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.partyName}),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}

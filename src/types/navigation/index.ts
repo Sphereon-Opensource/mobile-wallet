@@ -50,6 +50,7 @@ export type StackParamList = {
   SETTINGS: Record<string, never>;
   ACCOUNT: Record<string, never>;
   AGE_DERIVED_CLAIMS: Record<string, never>;
+  NewContactAdd: INewContactAddProps;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -143,6 +144,11 @@ export interface ITermsOfServiceProps {
   onDecline: () => Promise<void>;
   onAcceptTerms: (accept: boolean) => Promise<void>;
   onAcceptPrivacy: (accept: boolean) => Promise<void>;
+}
+
+export interface INewContactAddProps {
+  partyName: string;
+  isFederationTrusted?: boolean;
 }
 
 export interface ICredentialsSelectProps {
@@ -310,6 +316,7 @@ export enum ScreenRoutesEnum {
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
+  NEW_CONTACT_ADD = 'NewContactAdd',
 }
 
 export interface ISiopV2PProps {

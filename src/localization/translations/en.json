@@ -399,5 +399,11 @@
   "onboarding_machine_retrieve_credentials_error_title": "Retrieve credentials",
   "onboarding_skip_credential_import_step3_caption": "I’ll finish this section later",
   "onboarding_store_credential_branding_error_title": "Store credential branding",
-  "share_credential_c2_flow_title": "The following information will be shared"
+  "share_credential_c2_flow_title": "The following information will be shared",
+  "new_contact_add_new_contact_detected_title": "Do you recognize {{partyName}}",
+  "new_contact_add_new_contact_detected_subtitle": "This is a first interaction with this party. Do you want to continue?",
+  "federation_view_untrusted_title": "{{partyName}} has a low level of trust",
+  "federation_view_trusted_title": "{{partyName}} has a high  level of trust",
+  "federation_view_untrusted_description": "The party is not part of a federation that is trusted by the wallet",
+  "federation_view_trusted_description": "The party is part of a federation that is trusted by the wallet"
 }
