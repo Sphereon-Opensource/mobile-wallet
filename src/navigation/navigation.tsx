@@ -96,6 +96,7 @@ import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import {formatDateTime} from '../utils';
+import ChatButton from '../components/chat/ChatButton';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -155,6 +156,7 @@ const MainStackNavigator = (): JSX.Element => {
           <>
             <OID4VCIStackWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+            <ChatButton style={{bottom: 100}} />
           </>
         )}
       />
@@ -239,6 +241,7 @@ const TabStackNavigator = (): JSX.Element => {
           <>
             <QRStack />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+            <ChatButton />
           </>
         )}
       />

@@ -24,6 +24,7 @@ import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import './src/agent/index';
+import {ChatProvider} from './src/providers/chat/chatProvider';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -118,9 +119,11 @@ export default function App() {
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
-            <GestureHandlerRootView style={{flex: 1}}>
-              <AppNavigator />
-            </GestureHandlerRootView>
+            <ChatProvider>
+              <GestureHandlerRootView style={{flex: 1}}>
+                <AppNavigator />
+              </GestureHandlerRootView>
+            </ChatProvider>
           </OnTouchProvider>
         </NavigationContainer>
       </SafeAreaProvider>
