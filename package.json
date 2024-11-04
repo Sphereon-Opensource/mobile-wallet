@@ -79,7 +79,7 @@
     "@sphereon/ssi-types": "0.30.2-feature.SPRIND.77.134",
     "@sphereon/ui-components.core": "0.3.1-next.19",
     "@sphereon/ui-components.credential-branding": "0.3.1-next.19",
-    "@sphereon/ui-components.ssi-react-native": "0.3.1-next.19",
+    "@sphereon/ui-components.ssi-react-native": "file://C:\\Git\\Sphereon-Opensource\\UI-Components\\packages\\ssi-react-native\\sphereon-ui-components.ssi-react-native-0.3.666-bram.tgz",
     "@veramo/core": "4.2.0",
     "@veramo/credential-w3c": "4.2.0",
     "@veramo/data-store": "4.2.0",

@@ -3834,19 +3834,19 @@
     events "^3.3.0"
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@0.3.1-next.19":
-  version "0.3.1-next.19"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.19.tgz#0922596ee0b1cca68032bbee2b9f88e4eb07b8bb"
-  integrity sha512-0FceohvxpUxOiZtTyIgxpexc1TVM+jYL2WXWY9AK7EeKT2/NQlJV8vupe7b1SIWnzaGawetqg5QzPNsehS0OrA==
+"@sphereon/ui-components.core@0.3.0", "@sphereon/ui-components.core@0.3.1-next.19+36d5111", "@sphereon/ui-components.core@0.3.1-next.9", "@sphereon/ui-components.core@0.3.1-next.9+89203cc":
+  version "0.3.1-next.9"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.9.tgz#8b19a50d0e73c41a44ed213995fc41375933aec4"
+  integrity sha512-RMd6SwaadSmXATLP7eVqcNk+mQ8pIzWZmzaLOQju8FP9t/NFdbZolam1zwMbZhGkohkSpsuaMxu9HoYvCs0rwg==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^6.1.12"
 
-"@sphereon/ui-components.core@0.3.1-next.19+36d5111", "@sphereon/ui-components.core@0.3.1-next.9", "@sphereon/ui-components.core@0.3.1-next.9+89203cc":
-  version "0.3.1-next.9"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.9.tgz#8b19a50d0e73c41a44ed213995fc41375933aec4"
-  integrity sha512-RMd6SwaadSmXATLP7eVqcNk+mQ8pIzWZmzaLOQju8FP9t/NFdbZolam1zwMbZhGkohkSpsuaMxu9HoYvCs0rwg==
+"@sphereon/ui-components.core@0.3.1-next.19":
+  version "0.3.1-next.19"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.19.tgz#0922596ee0b1cca68032bbee2b9f88e4eb07b8bb"
+  integrity sha512-0FceohvxpUxOiZtTyIgxpexc1TVM+jYL2WXWY9AK7EeKT2/NQlJV8vupe7b1SIWnzaGawetqg5QzPNsehS0OrA==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
@@ -3880,20 +3880,6 @@
     i18n-js "^3.8.0"
     uuid "^9.0.1"
 
-"@sphereon/ui-components.ssi-react-native@0.3.1-next.19":
-  version "0.3.1-next.19"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-next.19.tgz#b4b32113af9cf7a7bcaae2774d58a1477beed74d"
-  integrity sha512-Mdz3xsRSDzZVdw9/j8SmBFHgYOOURTythYvw38rWGq99MpImwPAZPDQrpHH/hUzHby7RvfDYSDvyBMVr52BEzg==
-  dependencies:
-    "@react-native-community/blur" "^4.4.0"
-    "@react-native-masked-view/masked-view" "^0.3.1"
-    "@sphereon/ui-components.core" "0.3.1-next.19+36d5111"
-    expo-linear-gradient "~13.0.2"
-    react-native-fast-image "^8.6.3"
-    react-native-size-matters "^0.4.2"
-    react-native-svg "15.2.0"
-    styled-components "^6.1.12"
-
 "@sphereon/ui-components.ssi-react-native@0.3.1-next.9":
   version "0.3.1-next.9"
   resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-next.9.tgz#21852dd776d8b34d4ee6563b67ea7d8c863c4ae0"
@@ -3902,6 +3888,19 @@
     "@react-native-community/blur" "^4.4.0"
     "@react-native-masked-view/masked-view" "^0.3.1"
     "@sphereon/ui-components.core" "0.3.1-next.9+89203cc"
+    expo-linear-gradient "~13.0.2"
+    react-native-fast-image "^8.6.3"
+    react-native-size-matters "^0.4.2"
+    react-native-svg "15.2.0"
+    styled-components "^6.1.12"
+
+"@sphereon/ui-components.ssi-react-native@file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.3.666-bram.tgz":
+  version "0.3.666-bram"
+  resolved "file:../UI-Components/packages/ssi-react-native/sphereon-ui-components.ssi-react-native-0.3.666-bram.tgz#d5f4938f3c4a1db5eb4e896b3be0639917530ceb"
+  dependencies:
+    "@react-native-community/blur" "^4.4.0"
+    "@react-native-masked-view/masked-view" "^0.3.1"
+    "@sphereon/ui-components.core" "0.3.0"
     expo-linear-gradient "~13.0.2"
     react-native-fast-image "^8.6.3"
     react-native-size-matters "^0.4.2"
