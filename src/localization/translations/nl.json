@@ -388,5 +388,11 @@
   "onboarding_machine_retrieve_credentials_error_title": "Ophalen credentials",
   "onboarding_skip_credential_import_step3_caption": "Ik zal dit gedeelte later afmaken",
   "onboarding_store_credential_branding_error_title": "Opslaan credential branding",
-  "share_credential_c2_flow_title": "The following information will be shared"
+  "share_credential_c2_flow_title": "The following information will be shared",
+  "new_contact_add_new_contact_detected_title": "Herken je {{partyName}}?",
+  "new_contact_add_new_contact_detected_subtitle": "Dit is de eerste interactie met deze partij. Wil je doorgaan?",
+  "federation_view_untrusted_title": "{{partyName}} heeft een laag vertrouwensniveau",
+  "federation_view_trusted_title": "{{partyName}} heeft een hoog vertrouwensniveau",
+  "federation_view_untrusted_description": "De partij maakt geen deel uit van een federatie die door de wallet wordt vertrouwd",
+  "federation_view_trusted_description": "De partij maakt deel uit van een federatie die door de wallet wordt vertrouwd"
 }

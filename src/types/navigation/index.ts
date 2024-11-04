@@ -1,6 +1,6 @@
 import {NavigationHelpers} from '@react-navigation/native';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
@@ -32,6 +32,8 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
+  ContactIdentities: IContactIdentitiesProps;
+  ContactActivity: IContactActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   BrowserOpen: IBrowserOpen;
@@ -50,6 +52,7 @@ export type StackParamList = {
   SETTINGS: Record<string, never>;
   ACCOUNT: Record<string, never>;
   AGE_DERIVED_CLAIMS: Record<string, never>;
+  NewContactAdd: INewContactAddProps;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -145,6 +148,12 @@ export interface ITermsOfServiceProps {
   onAcceptPrivacy: (accept: boolean) => Promise<void>;
 }
 
+export interface INewContactAddProps {
+  partyName: string;
+  //isFederationTrusted?: boolean;
+  federations?: Array<Party>;
+}
+
 export interface ICredentialsSelectProps {
   credentialSelection: Array<ICredentialSelection>;
   purpose?: string;
@@ -235,6 +244,14 @@ export interface IContactDetailsProps {
   contact: Party;
 }
 
+export interface IContactIdentitiesProps {
+  identities: Party['identities'];
+}
+
+export interface IContactActivityProps {
+  contact: Party;
+}
+
 export interface IContactAddProps {
   name: string;
   uri?: string;
@@ -302,6 +319,8 @@ export enum ScreenRoutesEnum {
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
+  CONTACT_IDENTITIES = 'ContactIdentities',
+  CONTACT_ACTIVITY = 'ContactActivity',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   BROWSER_OPEN = 'BrowserOpen',
@@ -310,6 +329,7 @@ export enum ScreenRoutesEnum {
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
+  NEW_CONTACT_ADD = 'NewContactAdd',
 }
 
 export interface ISiopV2PProps {

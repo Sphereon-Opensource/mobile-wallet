@@ -63,6 +63,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     const {activeUser, contacts} = this.props;
     const contactItem = (
       <SSIContactViewItem
+        showArrow
         name={itemInfo.item.contact.displayName}
         uri={itemInfo.item.uri}
         roles={itemInfo.item.roles}
@@ -74,7 +75,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     };
     const style = {
       ...backgroundStyle,
-      ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
+      // ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     return itemInfo.item.id === activeUser.id ? (
