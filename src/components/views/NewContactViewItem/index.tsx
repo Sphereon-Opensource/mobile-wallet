@@ -1,5 +1,5 @@
 import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
-import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
+import {backgroundColors, ImageAttributes, IssuerStatus, LabelStatus} from '@sphereon/ui-components.core';
 import {useMemo} from 'react';
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
@@ -14,20 +14,20 @@ import {
 } from '../../../styles/components/components/NewContactViewItem';
 import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
 import {StyleProp, View, ViewStyle} from 'react-native';
-import {VerifiedLabel} from '../../../components/assets/badges/VerifiedLabel';
+import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 
 export type NewContactViewItemProps = {
   name: string;
   logo?: ImageAttributes;
   roles?: Array<CredentialRole>;
-  verified?: boolean;
   background?: 'light' | 'dark';
   style?: StyleProp<ViewStyle>;
   logoSize?: number;
+  status?: LabelStatus;
 };
 
 export const NewContactViewItem = (props: NewContactViewItemProps) => {
-  const {name, roles, logo, verified = false, background = 'dark', logoSize = 55, style} = props;
+  const {name, roles, logo, status, background = 'dark', logoSize = 55, style} = props;
   const backgroundColor = useMemo(() => {
     return background === 'light' ? '#2C334B' : backgroundColors.primaryDark;
   }, [background]);
@@ -41,7 +41,7 @@ export const NewContactViewItem = (props: NewContactViewItemProps) => {
           <NewContactViewItemNameCaption>{name}</NewContactViewItemNameCaption>
           {(roles?.length ?? 0) > 0 && <NewContactViewItemRolesCaption>{roles?.join(', ')}</NewContactViewItemRolesCaption>}
         </ContactDetailsContainer>
-        {verified && <VerifiedLabel />}
+        {status && <SSIStatusLabel status={status} showIcon />}
       </View>
     </Container>
   );

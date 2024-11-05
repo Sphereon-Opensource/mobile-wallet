@@ -6,7 +6,7 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 import {ScrollView, View} from 'react-native';
 import styled from 'styled-components/native';
-import {backgroundColors} from '@sphereon/ui-components.core';
+import {backgroundColors, IssuerStatus} from '@sphereon/ui-components.core';
 import {IdentitiesContainer} from './style';
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {NewContactViewItem} from '../../components/views/NewContactViewItem';
@@ -31,7 +31,6 @@ const ContactIdentitiesScreen: FC<Props> = (props: Props): JSX.Element => {
               logoSize={45}
               background={idx % 2 === 0 ? 'light' : 'dark'}
               key={item.id}
-              verified={false}
               name={item.alias}
               roles={item.roles}
               style={{paddingVertical: 15, paddingLeft: 24, gap: 20}}

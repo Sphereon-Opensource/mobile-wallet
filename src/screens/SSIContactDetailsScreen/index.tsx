@@ -5,6 +5,7 @@ import {navigationRef} from '../../navigation/rootNavigation';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {NavigationButton} from './components/NavigationButton';
 import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {IssuerStatus} from '@sphereon/ui-components.core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>;
 
@@ -55,8 +56,8 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         name={contact.contact.displayName}
         roles={contact.roles}
         logo={contact.branding?.logo}
-        verified
         style={{marginTop: 10}}
+        status={IssuerStatus.VERIFIED}
       />
       <ContactDetailsNavigationSection>
         <NavigationButton label="Identities" onPress={() => navigationRef.navigate('ContactIdentities', {identities: contact.identities})} />

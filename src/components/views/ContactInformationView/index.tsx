@@ -11,7 +11,7 @@ export interface ContactInformationProps extends Omit<NewContactViewItemProps, '
 }
 
 export const ContactInformationView = (props: ContactInformationProps) => {
-  const {name, logo, roles, verified, properties, style} = props;
+  const {name, logo, roles, status, properties, style} = props;
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -23,7 +23,7 @@ export const ContactInformationView = (props: ContactInformationProps) => {
   return (
     <View style={[{flex: 1}, style]}>
       <ContactDetailsHeaderSection>
-        <NewContactViewItem name={name} roles={roles} logo={logo} verified={verified} logoSize={60} />
+        <NewContactViewItem name={name} roles={roles} logo={logo} status={status} logoSize={60} />
       </ContactDetailsHeaderSection>
       <SSITabView routes={routes} />
     </View>
