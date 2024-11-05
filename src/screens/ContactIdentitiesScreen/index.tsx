@@ -4,9 +4,9 @@ import React, {FC} from 'react';
 import {SSIBasicContainerSecondaryStyled as SSIContainer, SSITextH3LightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 
-import {ScrollView, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
-import {backgroundColors, IssuerStatus} from '@sphereon/ui-components.core';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import {IdentitiesContainer} from './style';
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {NewContactViewItem} from '../../components/views/NewContactViewItem';

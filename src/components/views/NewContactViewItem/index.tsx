@@ -1,11 +1,7 @@
 import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
-import {backgroundColors, ImageAttributes, IssuerStatus, LabelStatus} from '@sphereon/ui-components.core';
+import {backgroundColors, ImageAttributes, LabelStatus} from '@sphereon/ui-components.core';
 import {useMemo} from 'react';
-import {
-  SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
-  SSITextH3LightStyled as ContactNameCaption,
-  SSITextH4LightStyled as ContactRolesCaption,
-} from '../../../styles/components';
+import {SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer} from '../../../styles/components';
 import {
   NewContactViewItemContainer as Container,
   NewContactViewItemLogoContainer,
