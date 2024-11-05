@@ -9,9 +9,11 @@ export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentCont
   linkHandlers.add([
     new OID4VCIHolderLinkHandler({
       protocols: [`${QrTypesEnum.OPENID_CREDENTIAL_OFFER}:`, `${QrTypesEnum.OPENID_INITIATE_ISSUANCE}:`],
-      partialIssuanceOpt: {
-        kms: KeyManagementSystemEnum.MUSAP_TEE,
-      },
+      // FIXME partialIssuanceOpt param does not exist
+      // partialIssuanceOpt: {
+      //   kms: KeyManagementSystemEnum.MUSAP_TEE,
+      // },
+      trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
       stateNavigationListener: oid4vciStateNavigationListener,
       context,
     }),

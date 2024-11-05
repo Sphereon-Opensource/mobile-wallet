@@ -560,7 +560,7 @@ const NotificationsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.NEW_CONTACT_ADD}
         component={NewContactAddScreen}
         options={({route}) => ({
-          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.partyName}),
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}

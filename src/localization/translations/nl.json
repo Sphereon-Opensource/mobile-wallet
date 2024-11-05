@@ -44,6 +44,7 @@
   "action_continue_label": "Continue",
   "action_cancel_label": "Annuleren",
   "action_decline_label": "Weigeren",
+  "action_abort_label": "Afbreken",
   "action_accept_label": "Accepteren",
   "action_sign_label": "Ondertekenen",
   "verification_code_title": "Voer uw\nverificatie code in",

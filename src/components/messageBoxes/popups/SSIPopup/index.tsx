@@ -24,12 +24,24 @@ import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
+import {translate} from '../../../../localization/Localization';
+import {CONTACT_ALIAS_MAX_LENGTH} from '../../../../@config/constants';
+import SSITextInputField from '../../../fields/SSITextInputField';
 
 export interface IProps {
   onClose?: () => Promise<void>;
   image?: PopupImagesEnum;
   title?: string;
   titleBadge?: PopupBadgesEnum;
+  input?: {
+    // TODO temp solution to support input on the modal
+    label?: string;
+    initialValue?: string;
+    placeHolder?: string;
+    maxLength?: number;
+    onEndEditing?: (value: string) => Promise<void>;
+    onValueChange?: (value: string) => Promise<void>;
+  };
   details?: string;
   extraDetails?: string;
   detailsButton?: IButton;
@@ -39,7 +51,7 @@ export interface IProps {
 }
 
 const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
-  const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false} = props;
+  const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false, input} = props;
 
   return (
     <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
@@ -66,6 +78,18 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
               <DetailsButtonText>{detailsButton.caption}</DetailsButtonText>
             </TouchableOpacity>
           </DetailsButtonContainer>
+        )}
+        {input && (
+          <SSITextInputField
+            textColor={fontColors.dark}
+            autoFocus={true}
+            label={input.label}
+            maxLength={input.maxLength}
+            onChangeText={input.onValueChange}
+            onEndEditing={input.onEndEditing}
+            placeholderValue={input.placeHolder}
+            initialValue={input.initialValue}
+          />
         )}
       </ContentContainer>
       <SSIButtonsContainer
