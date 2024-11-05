@@ -2439,6 +2439,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@js-joda/core@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@js-joda/core/-/core-3.2.0.tgz#3e61e21b7b2b8a6be746df1335cf91d70db2a273"
+  integrity sha512-PMqgJ0sw5B7FKb2d5bWYIoxjri+QlW/Pys7+Rw82jSH0QN3rB05jZ/VrrsUdh1w4+i2kw9JOejXGq/KhDOX7Kg==
+
 "@js-joda/core@5.6.3":
   version "5.6.3"
   resolved "https://registry.yarnpkg.com/@js-joda/core/-/core-5.6.3.tgz#41ae1c07de1ebe0f6dde1abcbc9700a09b9c6056"
@@ -3181,38 +3186,26 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@sphereon/did-auth-siop-adapter@0.16.1-feature.jarm.sdk.146":
-  version "0.16.1-feature.jarm.sdk.146"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop-adapter/-/did-auth-siop-adapter-0.16.1-feature.jarm.sdk.146.tgz#90d73279be3c077c55d5be4b234b9a333864bf85"
-  integrity sha512-bgjnhqeye9Uv+edA8pO5dQ17XZBXNeRtFYZK0b5oAYVXAn9MIl9bwyYDQjz5zQ9OS1l6xD50t3RE4eCTwczs4Q==
+"@sphereon/did-auth-siop-adapter@0.16.1-feature.SDK.39.well.known.oidf.187":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop-adapter/-/did-auth-siop-adapter-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#55c9ae6f5af990bd9cd0345736f463d4c7927b2e"
+  integrity sha512-qRry48DkTKV8PPGWPYyBlXlLiNtwyndYHL0JG5XPUYL3VfObJCJsOpLjMtMvWc1OWU6ZY/VeE16w8maIJUvPlQ==
   dependencies:
-    "@sphereon/did-auth-siop" "0.16.1-feature.jarm.sdk.146+b3acdfb"
+    "@sphereon/did-auth-siop" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     "@sphereon/did-uni-client" "^0.6.2"
-    "@sphereon/oid4vc-common" "0.16.1-feature.jarm.sdk.146+b3acdfb"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     "@sphereon/wellknown-dids-client" "^0.1.3"
     did-jwt "6.11.6"
     did-resolver "^4.1.0"
 
-"@sphereon/did-auth-siop-adapter@0.16.1-fix.173":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop-adapter/-/did-auth-siop-adapter-0.16.1-fix.173.tgz#8d0263ea284b050fec08ceadc8b98ef9b75bbd6c"
-  integrity sha512-cS2Bw3IDQD4J8VuXEO2CVppwd1UG1JJPEXa45iKNjjkqTLGJ97ELbwiVBk1KpjojvAi/+adoJnKA8OEcp6zsnA==
-  dependencies:
-    "@sphereon/did-auth-siop" "0.16.1-fix.173+086f910"
-    "@sphereon/did-uni-client" "^0.6.2"
-    "@sphereon/oid4vc-common" "0.16.1-fix.173+086f910"
-    "@sphereon/wellknown-dids-client" "^0.1.3"
-    did-jwt "6.11.6"
-    did-resolver "^4.1.0"
-
-"@sphereon/did-auth-siop@0.16.1-feature.jarm.sdk.146", "@sphereon/did-auth-siop@0.16.1-feature.jarm.sdk.146+b3acdfb", "@sphereon/did-auth-siop@0.16.1-fix.173", "@sphereon/did-auth-siop@0.16.1-fix.173+086f910":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.16.1-fix.173.tgz#14de220099e39c8769d650dccaae73804c4a378e"
-  integrity sha512-BurhxcEfd91y2o2zy0VAZ9STHRuWRNx/FwhR0jRSG8D7gJPspqiR2cJtdvAvLrKNaznpQSANQHniCgCiDRtjfA==
+"@sphereon/did-auth-siop@0.16.1-feature.SDK.39.well.known.oidf.187", "@sphereon/did-auth-siop@0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-auth-siop/-/did-auth-siop-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#4f3765cdfc9978c4c04bba8da77fb1347bc47800"
+  integrity sha512-R991fpQ+4B6w8+yih/jFBF1VxjPnbZ/v2r27UxgQWdJsF77J7bKf9Y7kKVPOkO0QAS5dCobFniD9LbBdaIRvJg==
   dependencies:
     "@astronautlabs/jsonpath" "^1.1.2"
-    "@sphereon/jarm" "0.16.1-fix.173+086f910"
-    "@sphereon/oid4vc-common" "0.16.1-fix.173+086f910"
+    "@sphereon/jarm" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     "@sphereon/pex" "5.0.0-unstable.24"
     "@sphereon/pex-models" "^2.3.1"
     "@sphereon/ssi-types" "0.30.2-next.129"
@@ -3233,12 +3226,12 @@
     cross-fetch "^3.1.8"
     did-resolver "^4.1.0"
 
-"@sphereon/jarm@0.16.1-fix.173+086f910":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/jarm/-/jarm-0.16.1-fix.173.tgz#5c70456d3d3daf0262e2a647abddc464eb45ff94"
-  integrity sha512-VYNuNLV+x7hKKcynC8yOJymkXPrtBRQA/Gqj50Wfhl6kx6IoRsx39s/i6xGGYPwyrNTaVGFssKzg0IDcQfxToA==
+"@sphereon/jarm@0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/jarm/-/jarm-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#d198e0cfb896da6cdb2536c96bad85f30d431e80"
+  integrity sha512-0b/pdjeDh2+OTbhSqkeNdIO6XsWNNbHKtvRtwDJh7xuyX+LMzX4/wZkBB+r0BQzvvRMEN7MuY3omxgil9Ahc6g==
   dependencies:
-    "@sphereon/oid4vc-common" "0.16.1-fix.173+086f910"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     valibot "^0.42.1"
 
 "@sphereon/kmp-mdl-mdoc@0.2.0-SNAPSHOT.22":
@@ -3262,10 +3255,10 @@
   dependencies:
     "@sphereon/musap-native" "0.0.1-next.154+a8d7831"
 
-"@sphereon/oid4vc-common@0.16.1-feature.jarm.sdk.146", "@sphereon/oid4vc-common@0.16.1-feature.jarm.sdk.146+b3acdfb":
-  version "0.16.1-feature.jarm.sdk.146"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vc-common/-/oid4vc-common-0.16.1-feature.jarm.sdk.146.tgz#6d694c61ccb97335d64c15cdd6ed831655bf047d"
-  integrity sha512-bdFnwB9YabcnbaQCe3+Ozr5pR1xXd9kTxq+CIK7n2kkIKShnF8yk7zKwmwvD1qOIMPaRMrB5k98XGmCxtPpbrw==
+"@sphereon/oid4vc-common@0.16.1-feature.SDK.39.well.known.oidf.187", "@sphereon/oid4vc-common@0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vc-common/-/oid4vc-common-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#889ffc991ab0bdcd87f92432725083fedc6124c2"
+  integrity sha512-AoRed7rnqRTWZ84eKvZru7X/GCivqXHnM/UvxlAYBJeilFjY7ox+ePfcy7Zi8SKvrPIfaTPaOYwlL1SqZSIBRQ==
   dependencies:
     "@sphereon/ssi-types" "0.30.1"
     jwt-decode "^4.0.0"
@@ -3273,47 +3266,69 @@
     uint8arrays "3.1.1"
     uuid "^9.0.0"
 
-"@sphereon/oid4vc-common@0.16.1-fix.173+086f910":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vc-common/-/oid4vc-common-0.16.1-fix.173.tgz#da141385c0b91f7de02471358474cb5edd6d63fb"
-  integrity sha512-+AAUvEEFs0vzz1mrgjSgvDkcBtr18d2XEVgJex7QlAqxCKVGfjzZlqL2Q2vOLKYVaXsazhD5LnYiY6B5WMTC3Q==
+"@sphereon/oid4vci-client@0.16.1-feature.SDK.39.well.known.oidf.187":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#8d880bf29d9180bce5158b7cce90c0b9b1ec593e"
+  integrity sha512-MEsj0T7eD2DSoyy1SfVnJSU5o/Az/O+4jAHmBY6k7Qkz49crjFPunYPC89V9sFBWq4urbZzbY5hT64WJFh+HGg==
   dependencies:
-    "@sphereon/ssi-types" "0.30.1"
-    jwt-decode "^4.0.0"
-    sha.js "^2.4.11"
-    uint8arrays "3.1.1"
-    uuid "^9.0.0"
-
-"@sphereon/oid4vci-client@0.16.1-feature.jarm.sdk.146", "@sphereon/oid4vci-client@0.16.1-fix.173":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-client/-/oid4vci-client-0.16.1-fix.173.tgz#41a9d5f369303ace77496f0663c654279420dd0a"
-  integrity sha512-t7i+iZwDHTQKeTq+u9NufXoE5Qsrt9bvspSD6uWYjwidQBAtD4LZHuGyHbygOyVAIX+LUMmZA3A2/ciL29Ra9w==
-  dependencies:
-    "@sphereon/oid4vc-common" "0.16.1-fix.173+086f910"
-    "@sphereon/oid4vci-common" "0.16.1-fix.173+086f910"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
+    "@sphereon/oid4vci-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     "@sphereon/ssi-types" "0.30.1"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
 
-"@sphereon/oid4vci-common@0.16.1-feature.jarm.sdk.146", "@sphereon/oid4vci-common@0.16.1-fix.173", "@sphereon/oid4vci-common@0.16.1-fix.173+086f910":
-  version "0.16.1-fix.173"
-  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.16.1-fix.173.tgz#9087a1588246ce68d2e335c1af5214b12ea35ea3"
-  integrity sha512-nSjOoR1SxF5+S10qjHHLG21bWx8MVbDjERag1zWb7ADlZDO8GXgPqzzEvm1BodW7yci5ugiKOyjIdbPMpg9aFQ==
+"@sphereon/oid4vci-common@0.16.1-feature.SDK.39.well.known.oidf.187", "@sphereon/oid4vci-common@0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8":
+  version "0.16.1-feature.SDK.39.well.known.oidf.187"
+  resolved "https://registry.yarnpkg.com/@sphereon/oid4vci-common/-/oid4vci-common-0.16.1-feature.SDK.39.well.known.oidf.187.tgz#2d8f15f87dbce73ad6474138a480ac0552420103"
+  integrity sha512-sRDksbUrjY+vncYehZBfsOMreOjciE4uQJJC+QhAKcRl+QCN6ISnqDuFXrKrnnHaTJF4UdXrXAX8ItJ8DPBd/g==
   dependencies:
-    "@sphereon/oid4vc-common" "0.16.1-fix.173+086f910"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187+0d791c8"
     "@sphereon/ssi-types" "0.30.1"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
     jwt-decode "^4.0.0"
     uint8arrays "3.1.1"
     uuid "^9.0.0"
+
+"@sphereon/openid-federation-client@0.1.0-unstable.d8421f6":
+  version "0.1.0-unstable.d8421f6"
+  resolved "https://registry.yarnpkg.com/@sphereon/openid-federation-client/-/openid-federation-client-0.1.0-unstable.d8421f6.tgz#bc58b55f7c50c95e50d3db30409f9226d4ca1de5"
+  integrity sha512-curfKYSn08zmMrOmRNhs+0ubtSMiX1blNjOpGsr7jrLg56RKgATHAuJQRPu0+28oIavrgjUqXEUnlJZi/mdjpw==
+  dependencies:
+    "@js-joda/core" "3.2.0"
+    abort-controller "3.0.0"
+    format-util "^1.0.5"
+    jose "5.9.4"
+    node-fetch "2.6.7"
+    ws "8.5.0"
+
+"@sphereon/openid-federation-common@0.1.0-unstable.d8421f6":
+  version "0.1.0-unstable.d8421f6"
+  resolved "https://registry.yarnpkg.com/@sphereon/openid-federation-common/-/openid-federation-common-0.1.0-unstable.d8421f6.tgz#87ce3bd02603e5f0ce2bb071b69b6be058c4f34b"
+  integrity sha512-ybCgk8iiRfHbyiANCrca577KL2b2JD+OLya56gpcetHXdJlW8eMlde/nkDa0fIwWUDl+lhp97NgFLuZ4tkGMfA==
+  dependencies:
+    abort-controller "3.0.0"
+    format-util "^1.0.5"
+    node-fetch "2.6.7"
+    typescript "5.5.3"
+    ws "8.5.0"
+
+"@sphereon/openid-federation-open-api@0.1.0-unstable.d8421f6":
+  version "0.1.0-unstable.d8421f6"
+  resolved "https://registry.yarnpkg.com/@sphereon/openid-federation-open-api/-/openid-federation-open-api-0.1.0-unstable.d8421f6.tgz#4db77c9f5228da23c3c3bc334370c24b08616163"
+  integrity sha512-BoY0WKnxF/O2504Xw0HKA8C6bfPCnF1Nsj0/pMs6OZv+firszpqxlO5wIxbetEfJ449Q32GpUNrp76W3p5uvvw==
+  dependencies:
+    abort-controller "3.0.0"
+    format-util "^1.0.5"
+    node-fetch "2.6.7"
+    ws "8.5.0"
 
 "@sphereon/pex-models@^2.3.1":
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.3.1.tgz#54a5b81bf989846637170daf844e3564889d2d2a"
   integrity sha512-SByU4cJ0XYA6VZQ/L6lsSiRcFtBPHbFioCeQ4GP7/W/jQ+PSBD7uK2oTnKQ9/0iEiMK/6JYqhKgLs4a9UX3UTQ==
 
-"@sphereon/pex@5.0.0-unstable.24", "@sphereon/pex@5.0.0-unstable.26", "@sphereon/pex@5.0.0-unstable.27":
+"@sphereon/pex@5.0.0-unstable.24", "@sphereon/pex@5.0.0-unstable.27", "@sphereon/pex@5.0.0-unstable.9":
   version "5.0.0-unstable.27"
   resolved "https://registry.yarnpkg.com/@sphereon/pex/-/pex-5.0.0-unstable.27.tgz#b97e73fc2cbeb813591bc8fcc0b5259eefc4cd54"
   integrity sha512-N8Suaf7o/qiRurj3jiqXOCy8IYDu8iJ2SFsMqn/ksBIL/oTvJJJlmYT2705q94r67KkMN2PMPIh08ZqYWJOe1g==
@@ -3574,10 +3589,10 @@
     pkijs "^3.2.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk.agent-config@0.30.1", "@sphereon/ssi-sdk.agent-config@0.30.2-fix.139", "@sphereon/ssi-sdk.agent-config@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.30.2-fix.139.tgz#1a66fdab083147e1d5dd636eded0b08a19d230fd"
-  integrity sha512-mZzA5ca7oHBLAlk6xLLZ6VZL0sjGjc86HDL/U+ZRhRoLJze+r2Zb/K4Ecn0xkXxmhZaWPGsdMDmUtpOFfeUSCQ==
+"@sphereon/ssi-sdk.agent-config@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.agent-config@0.30.1", "@sphereon/ssi-sdk.agent-config@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.30.2-feature.FIDES.integration.223.tgz#f2055302fcf24c59258df45336895be93e2e35be"
+  integrity sha512-avTmRZZPsoiL3j4r7B41LzgvPH45Abofq8W8q2md+9y29ZspytTW1ZA3ZMXhdCCx/LQYIcAOr+G6Z+8+L6g1Og==
   dependencies:
     "@veramo/core" "4.2.0"
     debug "^4.3.5"
@@ -3586,52 +3601,52 @@
     url-parse "^1.5.10"
     yaml "^2.4.5"
 
-"@sphereon/ssi-sdk.contact-manager@0.30.2-fix.139", "@sphereon/ssi-sdk.contact-manager@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.contact-manager/-/ssi-sdk.contact-manager-0.30.2-fix.139.tgz#edfebbdaff51dc1b99ffcd91c2c47734f0ec72dc"
-  integrity sha512-OariXstoiMbE8DHMP6VrL+Orv3vxLcc8C/+jTpUjoqeDIr784wUb9sp0q9pQr+wGrcNkBI9R7FEuxrLoAjtjgA==
+"@sphereon/ssi-sdk.contact-manager@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.contact-manager@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.contact-manager/-/ssi-sdk.contact-manager-0.30.2-feature.FIDES.integration.223.tgz#613dc8db458abb57c1ab10045bdeed98b8275a49"
+  integrity sha512-MmPfFdwxYqfKKdA1IRR3OFBBW7+ygmmKte3dFA82YWxPe6u5aDGaoGH5Bg5KFq/I2qfjJBNsOooABPt0pruqvQ==
   dependencies:
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.core@0.29.0", "@sphereon/ssi-sdk.core@0.30.1", "@sphereon/ssi-sdk.core@0.30.2-fix.139", "@sphereon/ssi-sdk.core@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.core/-/ssi-sdk.core-0.30.2-fix.139.tgz#2be7413a990c3b9a034bdf16325896f58e82f6cb"
-  integrity sha512-IvBPqCYU/vtyL/D/7epX4Lo6mpgopYLGv0OhKQFabDfRMnFVNLKKNFXpJf2t1y+Arir5ujbsocniOBetF4B7nA==
+"@sphereon/ssi-sdk.core@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.core@0.29.0", "@sphereon/ssi-sdk.core@0.30.1", "@sphereon/ssi-sdk.core@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.core/-/ssi-sdk.core-0.30.2-feature.FIDES.integration.223.tgz#66b6642950a5438473ecb957013c702c5db273ae"
+  integrity sha512-h1U23RJ4vaE3iaEKKb36nvxADjuBQeDYZ/ytzxjq8EDT+FPHWT4jy1hXiXvnx1NYkSB5pM9L9A66s2qfgTI0hA==
   dependencies:
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
     image-size "2.0.0-beta.2"
     uint8arrays "3.1.1"
 
-"@sphereon/ssi-sdk.credential-store@0.30.2-fix.139", "@sphereon/ssi-sdk.credential-store@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.credential-store/-/ssi-sdk.credential-store-0.30.2-fix.139.tgz#fced16166558a0447f155c8cc97faf7814875472"
-  integrity sha512-nuDeIkEr4USXAi+aBws0MgcsqGXqlWvhmV1x9NpZ0msMJimJeSj3YJiXcKQTtppQHY99Moy7IpKMsFpx4+lfng==
+"@sphereon/ssi-sdk.credential-store@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.credential-store@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.credential-store/-/ssi-sdk.credential-store-0.30.2-feature.FIDES.integration.223.tgz#345661f3242f7f869ec8f9d2a1a798aefc1b6e91"
+  integrity sha512-gzsEPhJkoN6Y9bg8+e/WHPTV2ijkdhxC9T7G9b5plgu5dQQnLSeg6UBuNYHe44iMD/yWmxFJL16m39PjFAQrgw==
   dependencies:
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/pex" "5.0.0-unstable.27"
     "@sphereon/pex-models" "^2.3.1"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     cross-fetch "^3.1.8"
     debug "^4.3.4"
     typeorm "^0.3.20"
     uuid "^9.0.1"
 
-"@sphereon/ssi-sdk.credential-validation@0.30.2-fix.139", "@sphereon/ssi-sdk.credential-validation@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.credential-validation/-/ssi-sdk.credential-validation-0.30.2-fix.139.tgz#a99f661a39d84ee88b06e89014353be94785fcb8"
-  integrity sha512-eaZRheCRIl3tLjd6nX9oKfE8NFfrb+pgtV9LMrdTSvNEtNqibrQLxSxs+IZC1I8gmKyLuTppFszUUjq3NLLTmw==
+"@sphereon/ssi-sdk.credential-validation@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.credential-validation@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.credential-validation/-/ssi-sdk.credential-validation-0.30.2-feature.FIDES.integration.223.tgz#3823ead80d1a08dff6b61d64e3cc4d5368e02e08"
+  integrity sha512-3/Tk8oE1pGt7PLuYvdNdmnoFcnRLTh9HhYR8AMECvJ7jMHmYinxscdPAeWXFLjBRVCbbo0zpL2TvnLPnNrSqZA==
   dependencies:
     "@sphereon/kmp-mdl-mdoc" "0.2.0-SNAPSHOT.22"
-    "@sphereon/ssi-sdk.agent-config" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
     ajv "^8.17.1"
@@ -3640,18 +3655,18 @@
     debug "^4.3.5"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.data-store@0.29.0", "@sphereon/ssi-sdk.data-store@0.30.2-fix.139", "@sphereon/ssi-sdk.data-store@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.data-store/-/ssi-sdk.data-store-0.30.2-fix.139.tgz#8e9abcf85532b481a697ad4c2785c72bb64fa016"
-  integrity sha512-ElmrlN37IXV5bkkNZYJs/d3GGxmLwRQ5vhyjWT3E0m4dzFfapwJGe0pcoop4urbwSkzpLngZZL/NCl4g+6tR4Q==
+"@sphereon/ssi-sdk.data-store@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.data-store@0.29.0", "@sphereon/ssi-sdk.data-store@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.data-store/-/ssi-sdk.data-store-0.30.2-feature.FIDES.integration.223.tgz#3c6dd89fd5188e3c1e10cf86e6fc7d5c46013f39"
+  integrity sha512-93IYFym4k9EWR090x/vJH97wPoVn2n9lfR4z509QwHeeiXwDeiprsaXQWauEOP7PkPft9Gg0bsEXv/fYUeFSfw==
   dependencies:
     "@sphereon/kmp-mdl-mdoc" "0.2.0-SNAPSHOT.22"
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/pex" "5.0.0-unstable.27"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
-    "@sphereon/ssi-sdk.agent-config" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
     blakejs "^1.2.1"
@@ -3660,39 +3675,39 @@
     sha.js "^2.4.11"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.event-logger@0.30.2-fix.139":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.event-logger/-/ssi-sdk.event-logger-0.30.2-fix.139.tgz#13a79405f9a0c4d08302a71549d4fab4619c1573"
-  integrity sha512-UHhZcClBUZwrSeG72vGPwGj13raptc/A3H1DW/KtNFchkIjhn7FOOg5FrXsw79807BAV4ygtvHTiDMpSgawDAQ==
+"@sphereon/ssi-sdk.event-logger@ 0.30.2-feature.FIDES.integration.223":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.event-logger/-/ssi-sdk.event-logger-0.30.2-feature.FIDES.integration.223.tgz#547f235938a9ac6daf006f0b3e3bef66aa11966e"
+  integrity sha512-D9xutTr+o+OauxBvTTZZaajBicNXfeXVO4E4Sc4NemPvWOGenFnq9n47WxxgA7WrSzos6f+dOF7GxvPaE/8qdw==
   dependencies:
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     uuid "^9.0.1"
 
-"@sphereon/ssi-sdk.issuance-branding@0.30.2-fix.139", "@sphereon/ssi-sdk.issuance-branding@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.issuance-branding/-/ssi-sdk.issuance-branding-0.30.2-fix.139.tgz#9b8b119737593b28fd74ae2e57819797bb231777"
-  integrity sha512-M6mXMvC9t4z3KrV/cLZJ48JdccsrGV+0+DvtKarlIQUhRtHHreVDJ1vIQ/EbTDHwDCP+XmV4jK1F9JJD7ry/dg==
+"@sphereon/ssi-sdk.issuance-branding@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.issuance-branding@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.issuance-branding/-/ssi-sdk.issuance-branding-0.30.2-feature.FIDES.integration.223.tgz#63f9af78bcc6693c71b1317808db4b6703e72380"
+  integrity sha512-Eevdw/nKWQNQDWiz2xpwAjunYF4DJFl2GkK0P6N44nSuXVlhS3myPv410vTyE9PuPzLMsywt2ClZKQOxK4Utyw==
   dependencies:
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     debug "^4.3.5"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.mdl-mdoc@0.30.2-fix.139", "@sphereon/ssi-sdk.mdl-mdoc@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.mdl-mdoc/-/ssi-sdk.mdl-mdoc-0.30.2-fix.139.tgz#23896ce27a34fe963ffdd41804113bff032a9626"
-  integrity sha512-E8m/ZZRO3sYsPYOIXSaDhSdcC2RvTQids0j0Xsqh1U/ipdtisOvuJkGMuVAlaCBwmZQl5uSVh3a1al0/oj8WzA==
+"@sphereon/ssi-sdk.mdl-mdoc@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.mdl-mdoc@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.mdl-mdoc/-/ssi-sdk.mdl-mdoc-0.30.2-feature.FIDES.integration.223.tgz#a9e1e7ea0e896c891813df41dc01dbb6c8b59b86"
+  integrity sha512-fNcq41epzuAipig7qInPfH8PcZwc8yir//ZtaP74XCtvXptVO51iJFlRv8c3IujvbK832zXKmCNLQ+wBc5zBeA==
   dependencies:
-    "@sphereon/did-auth-siop" "0.16.1-feature.jarm.sdk.146"
+    "@sphereon/did-auth-siop" "0.16.1-feature.SDK.39.well.known.oidf.187"
     "@sphereon/kmp-mdl-mdoc" "0.2.0-SNAPSHOT.22"
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/pex" "5.0.0-unstable.27"
     "@sphereon/pex-models" "^2.3.1"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.key-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.x509-utils" "0.25.0"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
     "@veramo/utils" "4.2.0"
@@ -3704,28 +3719,29 @@
     uint8arrays "^3.1.1"
     uuid "^9.0.1"
 
-"@sphereon/ssi-sdk.oid4vci-holder@0.30.2-fix.139":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.oid4vci-holder/-/ssi-sdk.oid4vci-holder-0.30.2-fix.139.tgz#19255f03d31be346c16c2538353ebbff93265b47"
-  integrity sha512-stIcLWlHi2WWt3LZDl/3uo/MO5E9yZiqbqtapsXt/28epfKj7mGRyJ7V3MOu+TERQ1K7UyaF2WDurnq5auquGw==
+"@sphereon/ssi-sdk.oid4vci-holder@ 0.30.2-feature.FIDES.integration.223":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.oid4vci-holder/-/ssi-sdk.oid4vci-holder-0.30.2-feature.FIDES.integration.223.tgz#44a7ff025a071eb973e975859eaddbb89f391a31"
+  integrity sha512-+7hiob6FC4+IaQjD2MfEbK60KP2L8jCTytwaJZ9Bf76l2MYPz9TkArBjoRLMHlCHkcNYsc3GFrj1J+KHNJi3Pw==
   dependencies:
     "@sphereon/kmp-mdl-mdoc" "0.2.0-SNAPSHOT.22"
-    "@sphereon/oid4vci-client" "0.16.1-feature.jarm.sdk.146"
-    "@sphereon/oid4vci-common" "0.16.1-feature.jarm.sdk.146"
+    "@sphereon/oid4vci-client" "0.16.1-feature.SDK.39.well.known.oidf.187"
+    "@sphereon/oid4vci-common" "0.16.1-feature.SDK.39.well.known.oidf.187"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
     "@sphereon/ssi-sdk-ext.jwt-service" "0.25.0"
     "@sphereon/ssi-sdk-ext.key-utils" "0.25.0"
-    "@sphereon/ssi-sdk.contact-manager" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.credential-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.credential-validation" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.issuance-branding" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.xstate-machine-persistence" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.contact-manager" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.credential-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.credential-validation" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.issuance-branding" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.oidf-client" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.xstate-machine-persistence" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     "@veramo/data-store" "4.2.0"
     "@veramo/utils" "4.2.0"
@@ -3736,38 +3752,49 @@
     uuid "^9.0.1"
     xstate "^4.38.3"
 
-"@sphereon/ssi-sdk.pd-manager@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.pd-manager/-/ssi-sdk.pd-manager-0.30.2-fix.139.tgz#2c7c437d1453dc3bab49e30f6afdbb24db28bb5e"
-  integrity sha512-JJb3ll6soBxf8I9FJ+AOgkfJLc8W9I38Fu/X2MUwNxRpwzqg6tapGkqU2bNUQ5oo6nJ/6/9sr4X0uVXIR3yE7g==
+"@sphereon/ssi-sdk.oidf-client@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.oidf-client/-/ssi-sdk.oidf-client-0.30.2-feature.FIDES.integration.223.tgz#8ebb7b99defeb0b86e190af7aa34ca1d7fe885a3"
+  integrity sha512-I7dSalq81A40HD5OWC3MlSzgBi5Z5+jS20NSoOiU3CdQl/4JtHr2FsaWDeDpMcQCOi8RPtSxYfHniib+B3NL+g==
   dependencies:
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/openid-federation-client" "0.1.0-unstable.d8421f6"
+    "@sphereon/openid-federation-common" "0.1.0-unstable.d8421f6"
+    "@sphereon/openid-federation-open-api" "0.1.0-unstable.d8421f6"
+    "@sphereon/ssi-sdk-ext.jwt-service" "0.25.0"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+
+"@sphereon/ssi-sdk.pd-manager@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.pd-manager/-/ssi-sdk.pd-manager-0.30.2-feature.FIDES.integration.223.tgz#b5ef1466c8e82e0c60ec4dd670b7654024027785"
+  integrity sha512-O92BxV7NUJjBgrOKtDiSdhVyslF5g1Knet+0ALRDN48NuF+AkShXBhZlMWmve8CWqSaMDpZrzy0hWoFrFTGkFw==
+  dependencies:
+    "@sphereon/pex" "5.0.0-unstable.27"
     "@sphereon/pex-models" "^2.3.1"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     cross-fetch "^3.1.8"
     debug "^4.3.5"
     semver "^7.6.3"
     typeorm "^0.3.20"
 
-"@sphereon/ssi-sdk.presentation-exchange@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.presentation-exchange/-/ssi-sdk.presentation-exchange-0.30.2-fix.139.tgz#35660adedb932b6af84eb60ca9843a57e7795672"
-  integrity sha512-E4L0h/KBBPb5WklsnicNFbw0I9obQiuJmZhrxB7/pAP+LLB3zmSj5noQc0P2ZRaM39FkLX5LTsPMk6aHTmK4RA==
+"@sphereon/ssi-sdk.presentation-exchange@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.presentation-exchange/-/ssi-sdk.presentation-exchange-0.30.2-feature.FIDES.integration.223.tgz#f66537d282a7142236aacc046b8f937fa9d5e894"
+  integrity sha512-ap99tDIlTZ8mpHumrfNMyJJVXKWAQh5u0/8mKHx8Y31c+tdMYIKs7QGX08TuwMXNTjgTfwWL6goY9cRp2BX81A==
   dependencies:
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/pex" "5.0.0-unstable.27"
     "@sphereon/pex-models" "^2.3.1"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
-    "@sphereon/ssi-sdk.credential-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.credential-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk.sd-jwt@0.30.2-fix.139", "@sphereon/ssi-sdk.sd-jwt@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.sd-jwt/-/ssi-sdk.sd-jwt-0.30.2-fix.139.tgz#e7966e57f379bb9376e21a5e143e9c3e41934e06"
-  integrity sha512-iIdo1l9GTjF8Fz6ZSp+9fd9E/2n5P6ciA9xsturSumHlDUllikkkJDq+FUFZHh9FiyX/CWxyYZd3AROVmg2z+A==
+"@sphereon/ssi-sdk.sd-jwt@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.sd-jwt@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.sd-jwt/-/ssi-sdk.sd-jwt-0.30.2-feature.FIDES.integration.223.tgz#c408953b8f715850213511e516e519a09968dc63"
+  integrity sha512-8uOYhzVxkjtiOT9UjNftyP09iKxixu4twbyxPkjtv9JA40oyqYKnF2ZUmeCKc7OcsJo80XZkJWAi+FwB6ZGrrQ==
   dependencies:
     "@sd-jwt/core" "^0.7.2"
     "@sd-jwt/sd-jwt-vc" "^0.7.2"
@@ -3775,49 +3802,49 @@
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
     "@sphereon/ssi-sdk-ext.jwt-service" "0.25.0"
     "@sphereon/ssi-sdk-ext.key-utils" "0.25.0"
-    "@sphereon/ssi-sdk.agent-config" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.mdl-mdoc" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/utils" "4.2.0"
     debug "^4.3.5"
     uint8arrays "3.1.1"
     uuid "^9.0.1"
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-common@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.siopv2-oid4vp-common/-/ssi-sdk.siopv2-oid4vp-common-0.30.2-fix.139.tgz#bf164e271bb2aaad734a6674ed54cff30dc8b8ed"
-  integrity sha512-/35qciv8LnJCSrzzDkHpemfKOgynVo6PGWfRVKTcO0QBJK0b6YeBkcpjkgR1m99UleEpXfKvP+erwma38yP6Dg==
+"@sphereon/ssi-sdk.siopv2-oid4vp-common@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.siopv2-oid4vp-common/-/ssi-sdk.siopv2-oid4vp-common-0.30.2-feature.FIDES.integration.223.tgz#0535eab76085f964dc405c14cabea6da3da411e7"
+  integrity sha512-TTBNfMOjtAotl/Hs0zn6MI+g6EU7nZ3KiEtYbZxdIFNTVoctvs2+lR484ZSzMIu7JiQ+xAmrEYnLEHLa6WHbYg==
   dependencies:
-    "@sphereon/did-auth-siop" "0.16.1-feature.jarm.sdk.146"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/did-auth-siop" "0.16.1-feature.SDK.39.well.known.oidf.187"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     uint8arrays "3.1.1"
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@0.30.2-fix.139":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/-/ssi-sdk.siopv2-oid4vp-op-auth-0.30.2-fix.139.tgz#154b9ef8c0b1dc83eca8d9eb43b34abf927d6694"
-  integrity sha512-sgEoZLyZ/YwMvtlSDQJQvlB8U1PIzljHHoVZtRD3BH6P3xeBuQp7ojueZvYoJ1xbTa8rCLplBBf8e3B8IDxyIg==
+"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@ 0.30.2-feature.FIDES.integration.223":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.siopv2-oid4vp-op-auth/-/ssi-sdk.siopv2-oid4vp-op-auth-0.30.2-feature.FIDES.integration.223.tgz#d3442ad1fcbdeef44dd62716a9ef57bb136773e1"
+  integrity sha512-S0b6AOyjhp5iTH0iM7HD55p8yxHR+yvfMfLHEbP2JNPYrhc38HLE6SmRaw4cciGVNUONspXwJoozurXBCifldw==
   dependencies:
-    "@sphereon/did-auth-siop" "0.16.1-feature.jarm.sdk.146"
-    "@sphereon/did-auth-siop-adapter" "0.16.1-feature.jarm.sdk.146"
-    "@sphereon/oid4vc-common" "0.16.1-feature.jarm.sdk.146"
-    "@sphereon/pex" "5.0.0-unstable.26"
+    "@sphereon/did-auth-siop" "0.16.1-feature.SDK.39.well.known.oidf.187"
+    "@sphereon/did-auth-siop-adapter" "0.16.1-feature.SDK.39.well.known.oidf.187"
+    "@sphereon/oid4vc-common" "0.16.1-feature.SDK.39.well.known.oidf.187"
+    "@sphereon/pex" "5.0.0-unstable.9"
     "@sphereon/pex-models" "^2.3.1"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
     "@sphereon/ssi-sdk-ext.jwt-service" "0.25.0"
-    "@sphereon/ssi-sdk.contact-manager" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.credential-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.credential-validation" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.issuance-branding" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.pd-manager" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.presentation-exchange" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-common" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.xstate-machine-persistence" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.contact-manager" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.credential-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.credential-validation" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.issuance-branding" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.pd-manager" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.presentation-exchange" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.sd-jwt" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.xstate-machine-persistence" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@sphereon/wellknown-dids-client" "^0.1.3"
     "@veramo/core" "4.2.0"
     "@veramo/credential-w3c" "4.2.0"
@@ -3828,10 +3855,10 @@
     uuid "^9.0.1"
     xstate "^4.38.3"
 
-"@sphereon/ssi-sdk.vc-handler-ld-local@0.30.2-fix.139":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.vc-handler-ld-local/-/ssi-sdk.vc-handler-ld-local-0.30.2-fix.139.tgz#8f50f0c6b6e989e500464e9b99365a9ab7f0b968"
-  integrity sha512-6ycnTsEB2uTYvPzRiDwmKrWR7QhoPNR/cVjU2N+W9chfVevWxYh92+ojhCCpWz8dp9p+klJuuGiu4T0n5LUl2A==
+"@sphereon/ssi-sdk.vc-handler-ld-local@ 0.30.2-feature.FIDES.integration.223":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.vc-handler-ld-local/-/ssi-sdk.vc-handler-ld-local-0.30.2-feature.FIDES.integration.223.tgz#63c713c9ce44a51abca17341036458d9c5ffa097"
+  integrity sha512-zCRaM6rJJtf+BAAC09GHoEdaG/LiXse6Ra0t31Wa2Wc/DBT1pEQc7jVNzEAov5oINOdYIT2McUuH0Y/lhd2sdg==
   dependencies:
     "@digitalcredentials/ed25519-signature-2020" "~3.0.2"
     "@digitalcredentials/ed25519-verification-key-2020" "^4.0.0"
@@ -3843,11 +3870,11 @@
     "@noble/hashes" "1.2.0"
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.key-utils" "0.25.0"
-    "@sphereon/ssi-sdk.agent-config" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.core" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-sdk.vc-status-list" "0.30.2-fix.139+dff50875"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.core" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-sdk.vc-status-list" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@transmute/credentials-context" "0.7.0-unstable.82"
     "@transmute/ed25519-key-pair" "0.7.0-unstable.81"
     "@transmute/ed25519-signature-2018" "0.7.0-unstable.82"
@@ -3871,14 +3898,14 @@
     jsonld "^4.0.1"
     jsonld-signatures "^7.0.0"
 
-"@sphereon/ssi-sdk.vc-status-list@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.vc-status-list/-/ssi-sdk.vc-status-list-0.30.2-fix.139.tgz#ebdff46b2dd2c9d3cd6c8a077700fc26d37b7613"
-  integrity sha512-e6Dn57uA9zc1AYr20qRlNaK4g3i/AzDegIds6x4Jq4LCKJrnwxAzhDRYICBwVykTBf9NFh3SVR0SCiK4GUD89A==
+"@sphereon/ssi-sdk.vc-status-list@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.vc-status-list/-/ssi-sdk.vc-status-list-0.30.2-feature.FIDES.integration.223.tgz#e5b83e4b158e98de89f51a7dd31895853a2bbd99"
+  integrity sha512-vj+fyqfLgw41tTBSOnz9X5C1HCGEVBUV99NNFlti6L7o8wZqhrEqAi+vGH3HrEwSkQFgsM0ISGCXVIbKLautEg==
   dependencies:
     "@sphereon/ssi-sdk-ext.did-utils" "0.25.0"
     "@sphereon/ssi-sdk-ext.identifier-resolution" "0.25.0"
-    "@sphereon/ssi-types" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-types" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@sphereon/vc-status-list" "7.0.0-next.0"
     "@veramo/core" "4.2.0"
     "@veramo/credential-status" "4.2.0"
@@ -3887,21 +3914,21 @@
     typeorm "^0.3.20"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk.xstate-machine-persistence@0.30.2-fix.139", "@sphereon/ssi-sdk.xstate-machine-persistence@0.30.2-fix.139+dff50875":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.xstate-machine-persistence/-/ssi-sdk.xstate-machine-persistence-0.30.2-fix.139.tgz#6d65bda98a2fba8db984fa969411034857d7c239"
-  integrity sha512-IFytOs0I+cPP9eUU7K9ZmrTfmoFnCE1eicc6nCWv9dsI4zmBZoERuJiddzmQl+R6K4uQV11LScNa1bMCZjs+LQ==
+"@sphereon/ssi-sdk.xstate-machine-persistence@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-sdk.xstate-machine-persistence@0.30.2-feature.FIDES.integration.223+f1d96b7c":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.xstate-machine-persistence/-/ssi-sdk.xstate-machine-persistence-0.30.2-feature.FIDES.integration.223.tgz#7bd702f18d7dd2977e402459dc4b4fbc6ea3e174"
+  integrity sha512-Tvq6OQ6YKls0QCRzZWctw0kXhr72QCZgz3Kde1Y/bhvkL3GFcOLcA7eCz16z4OC05D3W7SgBEOpHquYp9rAUag==
   dependencies:
-    "@sphereon/ssi-sdk.data-store" "0.30.2-fix.139+dff50875"
+    "@sphereon/ssi-sdk.data-store" "0.30.2-feature.FIDES.integration.223+f1d96b7c"
     "@veramo/core" "4.2.0"
     debug "^4.3.5"
     uuid "^9.0.1"
     xstate "^4.38.3"
 
-"@sphereon/ssi-types@0.29.0", "@sphereon/ssi-types@0.30.1", "@sphereon/ssi-types@0.30.2-fix.139", "@sphereon/ssi-types@0.30.2-fix.139+dff50875", "@sphereon/ssi-types@0.30.2-next.129", "@sphereon/ssi-types@0.30.2-next.135", "@sphereon/ssi-types@^0.9.0":
-  version "0.30.2-fix.139"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.30.2-fix.139.tgz#e0ccc5bfe6f088684d95f373ecfc8cbfc6f2323c"
-  integrity sha512-sFEVX71vaqwaZS5IZhLvL/lsBJYzS7mHeUbdIuXJ5OpQGFsXUj++RQBthsmuOd7o9/QKjfP72oMkavqtfMiwYg==
+"@sphereon/ssi-types@ 0.30.2-feature.FIDES.integration.223", "@sphereon/ssi-types@0.29.0", "@sphereon/ssi-types@0.30.1", "@sphereon/ssi-types@0.30.2-feature.FIDES.integration.223+f1d96b7c", "@sphereon/ssi-types@0.30.2-next.129", "@sphereon/ssi-types@0.30.2-next.135", "@sphereon/ssi-types@^0.9.0":
+  version "0.30.2-feature.FIDES.integration.223"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-types/-/ssi-types-0.30.2-feature.FIDES.integration.223.tgz#ded240628664a205c35eae29fb8e155b20118f51"
+  integrity sha512-x8a9EVHOX/TJyxKjEvbwfIq8Uu3mnoxY/ZR7DX4mVHWGRR9aZYU+T3v03OErHUQTQ698F4662hKQVQiwrdauvA==
   dependencies:
     "@sd-jwt/decode" "^0.7.2"
     "@sphereon/kmp-mdl-mdoc" "0.2.0-SNAPSHOT.22"
@@ -5518,7 +5545,7 @@ abab@^2.0.6:
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
   integrity sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==
 
-abort-controller@^3.0.0:
+abort-controller@3.0.0, abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
   integrity sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==
@@ -9895,7 +9922,7 @@ join-component@^1.1.0:
   resolved "https://registry.yarnpkg.com/join-component/-/join-component-1.1.0.tgz#b8417b750661a392bee2c2537c68b2a9d4977cd5"
   integrity sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==
 
-jose@^4.3.8, jose@^5.9.3:
+jose@5.9.4, jose@^4.3.8, jose@^5.9.3:
   version "5.9.6"
   resolved "https://registry.yarnpkg.com/jose/-/jose-5.9.6.tgz#77f1f901d88ebdc405e57cce08d2a91f47521883"
   integrity sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==
@@ -11332,6 +11359,13 @@ node-dir@^0.1.17:
   integrity sha512-tmPX422rYgofd4epzrNoOXiE8XFZYOcCq1vD7MAXCDO+O+zndlA2ztdKKMa+EeuBG5tHETpr4ml4RGgpqDCCAg==
   dependencies:
     minimatch "^3.0.2"
+
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-fetch@3.0.0-beta.9:
   version "3.0.0-beta.9"
@@ -14159,6 +14193,11 @@ typeorm@0.3.20, typeorm@^0.3.10, typeorm@^0.3.20:
     uuid "^9.0.0"
     yargs "^17.6.2"
 
+typescript@5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.5.3.tgz#e1b0a3c394190838a0b168e771b0ad56a0af0faa"
+  integrity sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==
+
 typescript@~5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
@@ -14713,6 +14752,11 @@ write-file-atomic@^4.0.2:
   dependencies:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
+
+ws@8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.5.0.tgz#bfb4be96600757fe5382de12c670dab984a1ed4f"
+  integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
 
 ws@^6.2.2:
   version "6.2.3"
