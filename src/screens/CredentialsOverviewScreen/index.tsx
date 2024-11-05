@@ -6,8 +6,8 @@ import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as Stat
 import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CredentialsOverviewImages} from './constants';
-import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 import CredentialsOverviewList from './CredentialsOverviewList';
+import CredentialsOverviewCardList from './CredentialsOveriewCardList';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 

@@ -326,6 +326,7 @@ export const oid4vciStateNavigationListener = async (
   }
 
   if (state.matches(OID4VCIMachineStates.addContact)) {
+    console.log('==> trustedAnchors', state.context.trustedAnchors); // FIXME DELETEME
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});

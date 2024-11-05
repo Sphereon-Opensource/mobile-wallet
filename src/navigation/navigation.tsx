@@ -218,10 +218,7 @@ const TabStackNavigator = (): JSX.Element => {
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={
-        // FIXME remove GERMANY check when we have a working federation screen besides PID import
-        credentialState.verifiableCredentials.length === 0 && activeUser?.countryCode === 'DE'
-          ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG
-          : NavigationBarRoutesEnum.CREDENTIALS
+        credentialState.verifiableCredentials.length === 0 ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG : NavigationBarRoutesEnum.CREDENTIALS
       }
       backBehavior="none">
       <Tab.Screen
@@ -251,17 +248,15 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      {!activeUser || activeUser.countryCode === 'DE' ? ( // FIXME remove when we have a working federation screen besides PID import
-        <Tab.Screen
-          name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
-          children={() => (
-            <>
-              <CredentialCatalogStack />
-              <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            </>
-          )}
-        />
-      ) : null}
+      <Tab.Screen
+        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        children={() => (
+          <>
+            <CredentialCatalogStack />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
         children={() => (

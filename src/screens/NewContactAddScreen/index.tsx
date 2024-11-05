@@ -11,10 +11,11 @@ import {PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
-  const {isFederationTrusted, partyName, federations} = props.route.params;
+  const {partyName, federations} = props.route.params;
 
   return (
     <Container>
+      {/*
       {isFederationTrusted !== undefined && (
         <FederationTrustView
           partyName={partyName}
@@ -22,6 +23,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}}
         />
       )}
+*/}
       <ContactInformationView
         contact={{
           id: '96ef563c-419d-464f-a0f1-9fe1c46767b7',
