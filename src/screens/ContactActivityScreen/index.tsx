@@ -6,7 +6,7 @@ import {SSIBasicContainerSecondaryStyled as SSIContainer, SSITextH3LightStyled, 
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 import {ScrollView} from 'react-native';
-import SearchIcon from 'src/components/assets/icons/SearchIcon';
+import SearchIcon from '../../components/assets/icons/SearchIcon';
 import {Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ActivitySearchContainer, ActivitySearchInput, IssuerBrandingContainer} from '../../styles/components/screens/ContactActivityScreen';
 
