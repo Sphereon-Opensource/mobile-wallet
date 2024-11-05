@@ -32,7 +32,7 @@ export const NewContactViewItem = (props: NewContactViewItemProps) => {
     return background === 'light' ? '#2C334B' : backgroundColors.primaryDark;
   }, [background]);
   return (
-    <Container style={[{backgroundColor, paddingLeft: 0, gap: 15}, style]}>
+    <Container style={[{backgroundColor, paddingLeft: 0, gap: 16}, style]}>
       <NewContactViewItemLogoContainer style={{display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
         <Logo logo={logo} size={logoSize} />
       </NewContactViewItemLogoContainer>
