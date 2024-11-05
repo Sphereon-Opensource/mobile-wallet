@@ -10,6 +10,7 @@ import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrat
 import {typeORMDriver} from 'react-native-quick-sqlite';
 import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
 import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact';
+import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts';
 
 const DB_CONNECTION_NAME = 'default';
 
@@ -25,7 +26,7 @@ const sqliteConfig: ReactNativeConnectionOptions = {
     ...DataStoreMachineStateEntities,
     ...DataStoreDigitalCredentialEntities,
   ],
-  migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations, AddFunkeContact1724156944125],
+  migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations, AddFunkeContact1724156944125, AddTrustAnchorContacts1730209599556],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code
   migrationsTransactionMode: 'each', // protect every migration with a separate transaction
