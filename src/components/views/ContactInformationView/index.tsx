@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {StyleProp, View, ViewStyle} from 'react-native';
 import {ContactDetailsHeaderSection} from '../../../styles/components/components/ContactInformationView';
 import {ITabViewRoute} from '../../../types';
 import {translate} from '../../../localization/Localization';
@@ -6,10 +6,12 @@ import SSITabView from '../../../components/views/SSITabView';
 import {NewContactViewItem, NewContactViewItemProps} from '../NewContactViewItem';
 import {ContactDetailsView, IContactDetailsViewProps} from '../ContactDetailsView';
 
-export interface ContactInformationProps extends Omit<NewContactViewItemProps, 'background'>, IContactDetailsViewProps {}
+export interface ContactInformationProps extends Omit<NewContactViewItemProps, 'background'>, IContactDetailsViewProps {
+  style?: StyleProp<ViewStyle>;
+}
 
 export const ContactInformationView = (props: ContactInformationProps) => {
-  const {name, logo, roles, verified, properties} = props;
+  const {name, logo, roles, verified, properties, style} = props;
 
   const routes: Array<ITabViewRoute> = [
     {
@@ -19,9 +21,9 @@ export const ContactInformationView = (props: ContactInformationProps) => {
     },
   ];
   return (
-    <View style={{flex: 1}}>
+    <View style={[{flex: 1}, style]}>
       <ContactDetailsHeaderSection>
-        <NewContactViewItem name={name} roles={roles} logo={logo} verified={verified} />
+        <NewContactViewItem name={name} roles={roles} logo={logo} verified={verified} logoSize={60} />
       </ContactDetailsHeaderSection>
       <SSITabView routes={routes} />
     </View>

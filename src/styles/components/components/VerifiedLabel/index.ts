@@ -1,8 +1,8 @@
 import {styled} from 'styled-components/native';
 
 export const VerifiedLabelContainer = styled.View`
-  padding: 0px 10px 0px 0px;
-  border: 1px solid green;
+  padding: 0px 8px 0px 0px;
+  border: 1px solid #00c249;
   display: flex;
   flex-direction: row;
   align-items: stretch;

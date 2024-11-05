@@ -56,6 +56,7 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         roles={contact.roles}
         logo={contact.branding?.logo}
         verified
+        style={{marginTop: 10}}
       />
       <ContactDetailsNavigationSection>
         <NavigationButton label="Identities" onPress={() => navigationRef.navigate('ContactIdentities', {identities: contact.identities})} />
