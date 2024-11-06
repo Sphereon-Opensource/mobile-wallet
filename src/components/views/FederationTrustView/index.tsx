@@ -36,12 +36,8 @@ const FederationTrustView: FC<Props> = (props: Props): ReactElement => {
   const isTrusted = federations.length > 0;
 
   const onPress = async (federation: Party): Promise<void> => {
-    // @ts-ignore
-    navigation.navigate(MainRoutesEnum.OID4VCI, {screen: ScreenRoutesEnum.CONTACT_DETAILS, params: {contact: federation}});
+    navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: federation});
   };
-  //     ScreenRoutesEnum.CONTACT_DETAILS
-  //   }, {contact: federation});
-  // };
 
   // TODO should be it's own component later
   const getTrustedFederationElements = (): Array<ReactElement> => {
