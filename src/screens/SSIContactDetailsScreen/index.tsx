@@ -25,17 +25,20 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     {
       id: 'website',
       label: 'Website',
-      value: contact.branding?.clientUri,
+      // value: contact.branding?.clientUri,
+      value: 'google.com',
     },
     {
       id: 'description',
       label: 'Description',
-      value: contact.branding?.description,
+      // value: contact.branding?.description,
+      value: 'blob://Users/username/Documents/report.pdf',
     },
     {
       id: 'tos_url',
       label: 'Terms of Service',
-      value: contact.branding?.tosUri,
+      // value: contact.branding?.tosUri,
+      value: 'www.google.com',
     },
     {
       id: 'privacy_url',

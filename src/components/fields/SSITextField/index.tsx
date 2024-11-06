@@ -14,7 +14,7 @@ import {
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {Linking} from 'react-native';
-import {parseValidURL} from 'src/utils';
+import {checkAndAddHTTPPrefix, parseValidURL} from 'src/utils';
 
 export interface IProps {
   item: CredentialDetailsRow;
@@ -26,15 +26,16 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
 
   const valueIsArray = Array.isArray(item.value);
 
-  const validURL = useMemo(() => parseValidURL(item.value), [item]);
+  const validURL = useMemo(() => parseValidURL(item.value), [item.value]);
 
   const onPressLink = () => {
     if (!validURL) return;
-    return Linking.canOpenURL(validURL.href)
+    const valueWithPrefix = checkAndAddHTTPPrefix(item.value);
+    return Linking.canOpenURL(valueWithPrefix)
       .then(canOpen => {
-        if (canOpen) Linking.openURL(validURL.href);
+        if (canOpen) Linking.openURL(valueWithPrefix).catch(e => console.log('Failed to open: ' + item.value));
       })
-      .catch(e => console.log('SSITextField: unable to open weblink ' + validURL.href));
+      .catch(e => console.log('SSITextField: unable to open weblink ' + item.value));
   };
 
   return (
@@ -58,7 +59,7 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
         {valueIsArray && item.value.map((v: string) => <ContentText style={{marginLeft: 25}}>{v}</ContentText>)}
         {!valueIsArray && (
           <ContentText onPress={onPressLink} style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
-            {validURL ? validURL.host : item.value}
+            {item.value}
           </ContentText>
         )}
       </ContentContainer>
