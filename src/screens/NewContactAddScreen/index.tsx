@@ -169,6 +169,36 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
             value: name,
             isEditable: true,
           },
+          {
+            id: '6',
+            label: 'test url1',
+            value: 'www.google.com',
+            isEditable: true,
+          },
+          {
+            id: '7',
+            label: 'test url2',
+            value: 'http://www.google.com',
+            isEditable: true,
+          },
+          {
+            id: '8',
+            label: 'test url3',
+            value: 'https://www.google.com',
+            isEditable: true,
+          },
+          {
+            id: '9',
+            label: 'test url4',
+            value: 'file:///C:/Users/username/Documents/report.pdf',
+            isEditable: true,
+          },
+          {
+            id: '10',
+            label: 'test url5',
+            value: 'google.com',
+            isEditable: true,
+          },
           ...(clientUri
             ? [
                 {

@@ -1,17 +1,17 @@
 import Debug, {Debugger} from 'debug';
 import moment from 'moment';
-import {AppState, DeviceEventEmitter, EmitterSubscription, NativeEventSubscription, Platform} from 'react-native';
-
+import {AppState, EmitterSubscription, NativeEventSubscription, Platform} from 'react-native';
 import {APP_ID} from '../../@config/constants';
 import {navigationRef} from '../../navigation/rootNavigation';
 import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
-import {MainRoutesEnum, PlatformsEnum, ScreenRoutesEnum} from '../../types';
+import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
-const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER, 'ImportPersonalData'].map(k => [k, true]));
+const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER, 'ImportPersonalData', ScreenRoutesEnum.NEW_CONTACT_ADD].map(k => [k, true]));
 
 const debug: Debugger = Debug(`${APP_ID}:LockingHandler`);
 const IDLE_LOGOUT_AFTER = 5 * 60 * 1000; // 5 minutes logout
+
 class LockingHandler {
   private static instance: LockingHandler;
   private _isLocked = true;
