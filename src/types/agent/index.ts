@@ -11,6 +11,7 @@ import {ICredentialStore} from '@sphereon/ssi-sdk.credential-store';
 import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {IIdentifierResolution} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ImDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
+import {IOIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
@@ -29,6 +30,7 @@ export type TAgentTypes = IDIDManager &
   IMachineStatePersistence &
   ICredentialStore &
   ImDLMdoc &
-  ISDJwtPlugin;
+  ISDJwtPlugin &
+  IOIDFClient;
 
 export type IRequiredContext = IAgentContext<TAgentTypes>;
