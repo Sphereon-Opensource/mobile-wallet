@@ -32,6 +32,7 @@ import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialSubjectContact} from '../../utils';
+import agent from '../../agent';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -49,7 +50,7 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {hasContactConsent, serverMetadata} = state.context;
+  const {serverMetadata, trustedAnchors} = state.context;
 
   if (!serverMetadata) {
     return Promise.reject(Error('Missing serverMetadata in context'));
@@ -108,13 +109,6 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     });
   };
 
-  const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-    oid4vciMachine.send({
-      type: OID4VCIMachineEvents.SET_CONTACT_CONSENT,
-      data: hasConsent,
-    });
-  };
-
   const onAliasChange = async (alias: string): Promise<void> => {
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_CONTACT_ALIAS,
@@ -130,15 +124,19 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
-    screen: ScreenRoutesEnum.CONTACT_ADD,
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
+      federations: federationParties,
       uri: contact.uri,
-      identities: contact.identities,
-      hasConsent: hasContactConsent,
+      roles: [CredentialRole.ISSUER],
       onAliasChange,
-      onConsentChange,
       onCreate,
       onDecline,
       onBack,
@@ -316,6 +314,12 @@ export const oid4vciStateNavigationListener = async (
     // Make sure we do not navigate when state has not changed
     return;
   }
+
+  // FIXME quick hack to stop the navigation from resetting as the add contact screen now uses a modal which is another screen
+  if (state._event.name === 'SET_CONTACT_ALIAS') {
+    return;
+  }
+
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
   const onNext = () => oid4vciMachine.send(OID4VCIMachineEvents.NEXT);
 
@@ -325,8 +329,10 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
+  console.log(`STATE: ${JSON.stringify(state.value)}`);
+
   if (state.matches(OID4VCIMachineStates.addContact)) {
-    console.log('==> trustedAnchors', state.context.trustedAnchors); // FIXME DELETEME
+    console.debug(`going for addContact`);
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
