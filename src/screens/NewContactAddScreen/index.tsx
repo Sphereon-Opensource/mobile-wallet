@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useCallback, useEffect, useState} from 'react';
 import {BackHandler, Keyboard} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
@@ -12,12 +12,27 @@ import {agentContext} from '../../agent';
 import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
 import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
+import {useFocusEffect} from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
-  const {name, uri, roles, description, clientUri, tosUri, policyUri, identities, federations, onCreate, onDecline, onAliasChange, isCreateDisabled} =
-    props.route.params;
+  const {
+    name,
+    uri,
+    roles,
+    description,
+    clientUri,
+    tosUri,
+    policyUri,
+    identities,
+    federations,
+    onCreate,
+    onDecline,
+    onAliasChange,
+    isCreateDisabled,
+    onBack,
+  } = props.route.params;
   const [contactAlias, setContactAlias] = useState(name);
   const dispatch = useDispatch();
   const contactState = useSelector((state: RootState) => state.contact);
@@ -36,7 +51,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     void onAliasChange?.(name);
   }, []);
 
-  const onBack = (): boolean => {
+  const onBackPress = (): boolean => {
     if (onBack) {
       void onBack();
       // make sure event stops here
@@ -48,10 +63,12 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     return true;
   };
 
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', onBack);
-  //   return () => backHandler.remove();
-  // }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => backHandler.remove();
+    }, [onBackPress]),
+  );
 
   const onValidate = async (value: string): Promise<void> => {
     if (value.trim().length === 0) {
@@ -162,6 +179,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           partyName={name}
           federations={brandedFederations}
           style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}}
+          onPress={async () => props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: federations[0]})}
         />
       )}
       <ContactInformationView

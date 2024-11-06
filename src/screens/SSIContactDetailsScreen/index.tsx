@@ -62,10 +62,10 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       <ContactDetailsNavigationSection>
         <NavigationButton
           label="Identities"
-          onPress={() => navigationRef.navigate(ScreenRoutesEnum.CONTACT_IDENTITIES, {identities: contact.identities})}
+          onPress={() => props.navigation.navigate(ScreenRoutesEnum.CONTACT_IDENTITIES, {identities: contact.identities})}
         />
         <Divider />
-        <NavigationButton label="Contact Activities" onPress={() => navigationRef.navigate(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact})} />
+        <NavigationButton label="Contact Activities" onPress={() => props.navigation.navigate(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact})} />
       </ContactDetailsNavigationSection>
     </Container>
   );
