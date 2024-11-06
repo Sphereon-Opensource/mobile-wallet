@@ -1,6 +1,6 @@
 import {NavigationHelpers} from '@react-navigation/native';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
@@ -52,6 +52,7 @@ export type StackParamList = {
   SETTINGS: Record<string, never>;
   ACCOUNT: Record<string, never>;
   AGE_DERIVED_CLAIMS: Record<string, never>;
+  NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -208,6 +209,15 @@ export interface IPopupModalProps {
   image?: PopupImagesEnum;
   title?: string;
   titleBadge?: PopupBadgesEnum;
+  input?: {
+    // TODO temp solution to support input on the modal
+    label?: string;
+    initialValue?: string;
+    placeHolder?: string;
+    maxLength?: number;
+    onEndEditing?: (value: string) => Promise<void>;
+    onValueChange?: (value: string) => Promise<void>;
+  };
   details?: string;
   extraDetails?: string;
   detailsPopup?: {
@@ -254,6 +264,22 @@ export interface IContactAddProps {
   onConsentChange?: (hasConsent: boolean) => Promise<void>;
   onAliasChange?: (alias: string) => Promise<void>;
   hasConsent?: boolean;
+  isCreateDisabled?: boolean | (() => boolean);
+}
+
+export interface INewContactAddProps {
+  name: string;
+  uri?: string;
+  description?: string;
+  clientUri?: string;
+  tosUri?: string;
+  policyUri?: string;
+  federations?: Array<Party>;
+  roles?: Array<CredentialRole>;
+  identities?: Array<NonPersistedIdentity>; // TODO we do not do this anymore?
+  onCreate: (contact: Party) => Promise<void>;
+  onDecline: () => Promise<void>;
+  onAliasChange?: (alias: string) => Promise<void>; // TODO we do not do this anymore?
   isCreateDisabled?: boolean | (() => boolean);
 }
 
@@ -322,6 +348,7 @@ export enum ScreenRoutesEnum {
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
+  NEW_CONTACT_ADD = 'NewContactAdd',
 }
 
 export interface ISiopV2PProps {
