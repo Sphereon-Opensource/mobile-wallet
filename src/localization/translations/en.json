@@ -327,7 +327,8 @@
     "import_scan_card": {
       "title": "Have your Ausweis card ready for the next steps",
       "description": "Start by entering the eID pin of your Ausweis card.\n\nThen hold the card to the back of the phone.",
-      "button_caption": "Start entering eID PIN"
+      "button_caption": "Start entering eID PIN",
+      "nfc_caption": "The NFC scanner will soon be activated..."
     }
   },
   "onboard_summary_title": "Your entered details",
