@@ -34,8 +34,7 @@ export const checkAndAddHTTPPrefix = (url: string) => {
 export function parseValidURL(url: string) {
   // since some values that aren't valid web url could
   // pass the checks for URL lib, we also use a regex here
-  const reg = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,63})(\/[^\s]*)?$/;
-  const valid = reg.test(url);
+  const valid = URL_VALIDATION_REGEX.test(url);
   if (!valid) return false;
   try {
     const formattedUrl = url.startsWith('http://') ? url : `http://${url}`;
