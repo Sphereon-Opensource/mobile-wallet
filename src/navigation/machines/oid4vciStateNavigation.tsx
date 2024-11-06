@@ -134,6 +134,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     params: {
       name: contact.contact.displayName,
       federations: federationParties,
+      uri: contact.uri,
       roles: [CredentialRole.ISSUER],
       onAliasChange,
       onCreate,
