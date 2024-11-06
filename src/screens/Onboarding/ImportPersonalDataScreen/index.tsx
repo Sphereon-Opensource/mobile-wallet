@@ -1,7 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useState} from 'react';
-import {Image, Keyboard, Platform, View} from 'react-native';
+import {Image, Keyboard, Platform, View, Text} from 'react-native';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
@@ -74,12 +74,15 @@ const ImportPersonalDataScreen = (props?: any) => {
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </Content>
       <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20}}>
-        <PrimaryButton
-          style={{height: 42, width: '100%'}}
-          caption={translate(`${translationsPath}.button_caption`)}
-          captionColor={fontColors.light}
-          onPress={() => setShowPin(true)}
-        />
+        {!pin && (
+          <PrimaryButton
+            style={{height: 42, width: '100%'}}
+            caption={translate(`${translationsPath}.button_caption`)}
+            captionColor={fontColors.light}
+            onPress={() => setShowPin(true)}
+          />
+        )}
+        {!!pin && <Text style={{color: '#FBFBFB', fontSize: 12, marginBottom: 10}}>{translate(`${translationsPath}.nfc_caption`)}</Text>}
       </View>
       {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
       <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
