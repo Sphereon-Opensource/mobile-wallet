@@ -1033,17 +1033,16 @@ export const OID4VCIStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_DETAILS}
         component={SSIContactDetailsScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
+            <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
+              //onBack={route.params.onBack}
+              // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.NEW_CONTACT_ADD}
@@ -1053,6 +1052,7 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}

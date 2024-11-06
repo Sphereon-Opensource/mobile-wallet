@@ -48,11 +48,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     return true;
   };
 
-  /* FIXME
-  useEffect((): void => {
-    BackHandler.addEventListener('hardwareBackPress', onBack);
-  }, []);
-*/
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener('hardwareBackPress', onBack);
+  //   return () => backHandler.remove();
+  // }, []);
 
   const onValidate = async (value: string): Promise<void> => {
     if (value.trim().length === 0) {
