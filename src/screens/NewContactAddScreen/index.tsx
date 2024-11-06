@@ -150,7 +150,6 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       {federations !== undefined && (
         <FederationTrustView partyName={name} federations={federations} style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}} />
       )}
-*/}
       <ContactInformationView
         name={name}
         roles={roles}

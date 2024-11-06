@@ -7,7 +7,7 @@ import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CredentialsOverviewImages} from './constants';
 import CredentialsOverviewList from './CredentialsOverviewList';
-import CredentialsOverviewCardList from './CredentialsOveriewCardList';
+import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 

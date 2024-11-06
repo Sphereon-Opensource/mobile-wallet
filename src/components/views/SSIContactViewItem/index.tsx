@@ -15,7 +15,7 @@ import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../../@config/constants';
 import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
 import styled from 'styled-components/native';
-import SSIBackIcon from 'src/components/assets/icons/SSIBackIcon';
+import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
 import {transform} from 'typescript';
 
 const debug: Debugger = Debug(`${APP_ID}:SSIContactViewItem`);

@@ -20,6 +20,7 @@ export const VERIFICATION_CODE_MAX_RETRIES = 3;
 export const PIN_CODE_LENGTH = 6;
 
 export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+export const URL_VALIDATION_REGEX = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 export const ONLY_ALLOW_NUMBERS_REGEX = /^\d+$/;
 // TODO probably not supporting all mime variants
 export const IS_IMAGE_URI_REGEX = /^data:image\/(png|jpg|jpeg|bmp|gif|webp);base64,/;

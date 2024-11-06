@@ -6,11 +6,11 @@ import {IImageAttributes, Party} from '@sphereon/ssi-sdk.data-store';
 import {SSICheckmarkBadge, SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {
   FederationTrustViewContainerStyled as Container,
-  FederationTrustViewIconContainerStyled as IconContainer,
   FederationTrustViewContentContainerStyled as ContentContainer,
-  FederationTrustViewHeaderContainerStyled as HeaderContainer,
-  FederationTrustViewTitleTextStyled as TitleText,
   FederationTrustViewDescriptionTextStyled as DescriptionText,
+  FederationTrustViewHeaderContainerStyled as HeaderContainer,
+  FederationTrustViewIconContainerStyled as IconContainer,
+  FederationTrustViewTitleTextStyled as TitleText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
 import {ScreenRoutesEnum, StackParamList} from '../../../types';

@@ -11,7 +11,7 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW>;
 
@@ -22,7 +22,9 @@ const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element =>
 
   const onPress = async () => {
     props.navigation.navigate(ScreenRoutesEnum.NEW_CONTACT_ADD, {
-      partyName: 'Bram ten Cate',
+      onCreate: async () => console.log('on create prop pressed'),
+      onDecline: async () => console.log('on decline prop pressed'),
+      name: 'Bram ten Cate',
       federations: [
         {
           id: '96ef563c-419d-464f-a0f1-9fe1c46767b7',
