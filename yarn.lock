@@ -3537,19 +3537,7 @@
     pkijs "^3.2.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk.agent-config@0.30.1", "@sphereon/ssi-sdk.agent-config@0.30.2-fix.48", "@sphereon/ssi-sdk.agent-config@0.30.2-next.191+e02b30ba":
-  version "0.30.2-fix.48"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.30.2-fix.48.tgz#c4d2f9a565a82af0d2f63ad0acb05379a6156337"
-  integrity sha512-QfW9HCyTxD48BJ2YlPc3PD9FqO7qGLmAGd+Iv+8yji4ky67SZRb33KtjTMfB1B2W6Pf67dr6ovR2jToJ1R9sQA==
-  dependencies:
-    "@veramo/core" "4.2.0"
-    debug "^4.3.5"
-    jsonpointer "^5.0.1"
-    typeorm "^0.3.20"
-    url-parse "^1.5.10"
-    yaml "^2.4.5"
-
-"@sphereon/ssi-sdk.agent-config@0.30.2-next.191":
+"@sphereon/ssi-sdk.agent-config@0.30.1", "@sphereon/ssi-sdk.agent-config@0.30.2-next.191", "@sphereon/ssi-sdk.agent-config@0.30.2-next.191+e02b30ba":
   version "0.30.2-next.191"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.agent-config/-/ssi-sdk.agent-config-0.30.2-next.191.tgz#d9de0c0943362527cd1858e643a9962bd3d9e87b"
   integrity sha512-geGPzn4aunRWzr8lpw7jWsK7UcDajiqHbb/2PvsqBajct6DoBtxoEBXyDBk7Vp0NwM/G2uZKa77OmOi/oPyPEw==

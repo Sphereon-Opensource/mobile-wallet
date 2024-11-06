@@ -4,7 +4,7 @@ import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {SSITextH5LightStyled} from '../../fonts';
 
 export const SSIContactViewItemContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
-  padding: 16px 24px 18px 7px;
+  padding: 16px 20px 18px 0px;
 `;
 
 export const SSIContactViewItemNewStatusContainerStyled = styled.View`

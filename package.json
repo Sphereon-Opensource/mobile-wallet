@@ -257,7 +257,7 @@
     "@sphereon/ssi-sdk-ext.key-utils": "0.24.1-unstable.136",
     "@sphereon/ssi-sdk-ext.did-utils": "0.24.1-unstable.136",
     "@sphereon/ssi-sdk-ext.key-manager": "0.24.1-unstable.136",
-    "@sphereon/ssi-sdk.agent-config": "0.30.2-fix.48",
+    "@sphereon/ssi-sdk.agent-config": "0.30.2-next.191",
     "@sphereon/ssi-types": "0.30.2-next.191",
     "@sphereon/ssi-sdk.core": "0.30.2-next.191",
     "@sphereon/ssi-sdk.contact-manager": "0.30.2-next.191",

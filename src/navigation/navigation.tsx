@@ -80,7 +80,11 @@ import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+
 import store from '../store';
+import ContactsHeader from '../components/bars/ContactsHeader';
+import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import ContactActivityScreen from '../screens/ContactActivityScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -356,15 +360,33 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
+            <ContactsHeader
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showBorder
+              // showBackButton={false}
             />
           ),
         }}
       />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          headerTitle: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          headerTitle: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
