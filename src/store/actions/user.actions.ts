@@ -38,7 +38,7 @@ import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
-import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
+import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
 export const createUser = (
   args: BasicUser,

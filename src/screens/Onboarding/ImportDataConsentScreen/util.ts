@@ -56,18 +56,21 @@ const sdjwtAddressFields: SdjwtAddressField[] = ['street_address', 'postal_code'
 const mdocAddressFields: MdocAddressField[] = ['resident_street', 'resident_postal_code', 'resident_city', 'resident_country'];
 
 export function extractAddressFromPayload(properties: MappablePayload): AusweisRequestedInfoItem {
-  const extractFields = (fields: (SdjwtAddressField | MdocAddressField)[]) => {
+  const extractFields = (properties: MappablePayload, fields: (SdjwtAddressField | MdocAddressField)[]) => {
     return fields
       .map(field => properties[field])
       .filter(Boolean)
-      .join(' ');
+      .join(', ');
   };
 
-  const value = [extractFields(sdjwtAddressFields), extractFields(mdocAddressFields)].filter(Boolean).join(' ');
+  const values = [extractFields(properties, sdjwtAddressFields), extractFields(properties, mdocAddressFields)].filter(Boolean);
+  if (values.length === 0 && 'address' in properties) {
+    values.push(extractFields(properties['address'], sdjwtAddressFields));
+  }
 
   return {
     label: keyMappings['address'],
-    data: value.trim(),
+    data: values.join(' ').trim(),
     icon: IconMap['address'],
   };
 }
