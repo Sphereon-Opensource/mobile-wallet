@@ -1,33 +1,46 @@
 import React, {FC, ReactElement, useEffect, useState} from 'react';
-import {Keyboard, View} from 'react-native';
+import {BackHandler, Keyboard} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import FederationTrustView from '../../components/views/FederationTrustView';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
-import {translate} from '../../localization/Localization';
+import Localization, {translate} from '../../localization/Localization';
 import {getContacts} from '../../services/contactService';
 import {agentContext} from '../../agent';
-import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
 import {createContact, updateContact} from '../../store/actions/contact.actions';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
-  const {name, uri, roles, identities, federations, onCreate, onDecline, onAliasChange, isCreateDisabled} = props.route.params;
+  const {name, uri, roles, description, clientUri, tosUri, policyUri, identities, federations, onCreate, onDecline, onAliasChange, isCreateDisabled} =
+    props.route.params;
   const [contactAlias, setContactAlias] = useState(name);
   const dispatch = useDispatch();
   const contactState = useSelector((state: RootState) => state.contact);
 
   useEffect((): void => {
     // FIXME we should set the default name in the machine and pass that to the screen
-    if (onAliasChange) {
-      void onAliasChange(name);
+    void onAliasChange?.(name);
+  }, []);
+
+  const onBack = (): boolean => {
+    if (onBack) {
+      void onBack();
+      // make sure event stops here
+      return true;
     }
+
+    // FIXME for some reason returning false does not execute default behaviour
+    props.navigation.goBack();
+    return true;
+  };
+
+  useEffect((): void => {
+    BackHandler.addEventListener('hardwareBackPress', onBack);
   }, []);
 
   const onValidate = async (value: string): Promise<void> => {
@@ -101,6 +114,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     });
   };
 
+  const isConfirmDisabled = (): boolean => {
+    return contactAlias === undefined || contactAlias.length === 0 || contactState.loading;
+  };
+
   const onContinuePressed = async (): Promise<void> => {
     props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('new_contact_add_new_contact_create_title'),
@@ -111,12 +128,15 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         placeHolder: translate('contact_name_placeholder'),
         maxLength: CONTACT_ALIAS_MAX_LENGTH,
         onEndEditing: async value => onValidate(value),
-        onValueChange: async value => setContactAlias(value),
+        onValueChange: async value => {
+          setContactAlias(value);
+          void onAliasChange?.(value);
+        },
       },
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: onCreatePressed,
-        disabled: isCreateDisabled || contactState.loading,
+        disabled: isCreateDisabled || contactState.loading, //isConfirmDisabled//!contactAlias || contactAlias.length === 0 || contactState.loading, ////isCreateDisabled
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
@@ -131,41 +151,62 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         <FederationTrustView partyName={name} federations={federations} style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}} />
       )}
       <ContactInformationView
-        contact={{
-          id: '96ef563c-419d-464f-a0f1-9fe1c46767b7',
-          uri: 'example.com',
-          roles: [],
-          identities: [],
-          electronicAddresses: [],
-          physicalAddresses: [],
-          relationships: [],
-          partyType: {
-            id: 'cf7e12c8-f5d4-44f2-8027-7cd0de54da28',
-            type: PartyTypeType.NATURAL_PERSON,
-            origin: PartyOrigin.EXTERNAL,
-            name: 'example_name',
-            tenantId: '0605761c-4113-4ce5-a6b2-9cbae2f9d289',
-            createdAt: new Date(),
-            lastUpdatedAt: new Date(),
+        name={name}
+        roles={roles}
+        properties={[
+          ...(description
+            ? [
+                {
+                  id: '1',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_description_label'),
+                  value: description,
+                },
+              ]
+            : []),
+          {
+            id: '2',
+            label: Localization.translate('new_contact_add_new_contact_contact_details_name_label'),
+            value: name,
+            isEditable: true,
           },
-          contact: {
-            id: '37bb6e0f-2fb6-4940-babc-8d26baa0e842',
-            firstName: 'example_first_name',
-            middleName: 'example_middle_name',
-            lastName: 'example_last_name',
-            displayName: 'example_display_name',
-            metadata: [],
-            createdAt: new Date(),
-            lastUpdatedAt: new Date(),
-          },
-          createdAt: new Date(),
-          lastUpdatedAt: new Date(),
+          ...(clientUri
+            ? [
+                {
+                  id: '1',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_website_label'),
+                  value: clientUri,
+                },
+              ]
+            : []),
+          ...(tosUri
+            ? [
+                {
+                  id: '1',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_tos_label'),
+                  value: tosUri,
+                },
+              ]
+            : []),
+          ...(policyUri
+            ? [
+                {
+                  id: '1',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_policy_label'),
+                  value: policyUri,
+                },
+              ]
+            : []),
+        ]}
+        primaryButton={{
+          caption: translate('new_contact_add_new_contact_continue_caption'),
+          onPress: onContinuePressed,
         }}
+        secondaryButton={{
+          caption: translate('action_abort_label'),
+          onPress: onDeclinePressed,
+        }}
+        // logo={}
       />
-      <View style={{paddingTop: 36, paddingBottom: 36, paddingLeft: 24, paddingRight: 24, marginTop: 'auto', gap: 12}}>
-        <PrimaryButton caption={translate('new_contact_add_new_contact_continue_caption')} onPress={onContinuePressed} />
-        <SecondaryButton caption={translate('action_abort_label')} onPress={onDeclinePressed} />
-      </View>
     </Container>
   );
 };

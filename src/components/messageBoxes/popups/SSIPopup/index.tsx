@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 
 import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage';
@@ -52,6 +52,12 @@ export interface IProps {
 
 const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false, input} = props;
+  const [value, setValue] = useState<string | undefined>();
+
+  // FIXME quick hack to make sure the disabled state is recalculated because the component is not getting rerendered
+  const isDisabled = useMemo(() => {
+    return typeof primaryButton?.disabled === 'function' ? primaryButton.disabled() : primaryButton?.disabled;
+  }, [value]); // Add dependencies here
 
   return (
     <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
@@ -85,7 +91,11 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
             autoFocus={true}
             label={input.label}
             maxLength={input.maxLength}
-            onChangeText={input.onValueChange}
+            onChangeText={async value => {
+              // FIXME quick hack to make sure the disabled state is recalculated because the component is not getting rerendered
+              setValue(value);
+              input?.onValueChange?.(value);
+            }}
             onEndEditing={input.onEndEditing}
             placeholderValue={input.placeHolder}
             initialValue={input.initialValue}
@@ -98,12 +108,15 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
           secondaryButton: {
             caption: secondaryButton.caption,
             onPress: secondaryButton.onPress,
+            disabled: secondaryButton.disabled,
           },
         })}
         {...(primaryButton && {
           primaryButton: {
             caption: primaryButton.caption,
             onPress: primaryButton.onPress,
+            // FIXME quick hack to make sure the disabled state is recalculated because the component is not getting rerendered
+            disabled: isDisabled, //primaryButton.disabled
           },
         })}
       />

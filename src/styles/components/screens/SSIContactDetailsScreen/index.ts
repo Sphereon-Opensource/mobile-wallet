@@ -1,5 +1,5 @@
 import {styled} from 'styled-components/native';
-import {SSIBasicContainerSecondaryStyled as SSIContainer} from '../../styles/components';
+import {SSIBasicContainerSecondaryStyled as SSIContainer} from '../../../../styles/components';
 import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const Container = styled(SSIContainer)`

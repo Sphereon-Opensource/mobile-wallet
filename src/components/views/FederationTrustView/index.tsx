@@ -13,9 +13,10 @@ import {
   FederationTrustViewDescriptionTextStyled as DescriptionText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
-import {ScreenRoutesEnum, StackParamList} from '../../../types';
+import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import RootNavigation from '../../../navigation/rootNavigation';
 
 // TODO move
 export type Federation = {

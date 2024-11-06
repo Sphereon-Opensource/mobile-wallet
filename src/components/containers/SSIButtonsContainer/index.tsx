@@ -58,7 +58,11 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
         )}
         {primaryButton && (
           <View style={{flex: 1, flexDirection: 'column'}}>
-            <PrimaryButton caption={primaryButton.caption} onPress={primaryButton.onPress} disabled={primaryButton.disabled} />
+            <PrimaryButton
+              caption={primaryButton.caption}
+              onPress={primaryButton.onPress}
+              disabled={typeof primaryButton.disabled === 'function' ? primaryButton.disabled() : primaryButton.disabled}
+            />
           </View>
         )}
       </ButtonContainer>
