@@ -50,7 +50,7 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {serverMetadata, trustedAnchors} = state.context; //hasContactConsent
+  const {serverMetadata, trustedAnchors} = state.context;
 
   if (!serverMetadata) {
     return Promise.reject(Error('Missing serverMetadata in context'));
@@ -109,13 +109,6 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     });
   };
 
-  // const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-  //   oid4vciMachine.send({
-  //     type: OID4VCIMachineEvents.SET_CONTACT_CONSENT,
-  //     data: hasConsent,
-  //   });
-  // };
-
   const onAliasChange = async (alias: string): Promise<void> => {
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_CONTACT_ALIAS,
@@ -134,8 +127,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   const getContactsArgs = {
     filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
-  //const federationParties = (Array.isArray(trustedAnchors) && trustedAnchors.length > 0) ? await agent.cmGetContacts(getContactsArgs) : []
-  const federationParties = await agent.cmGetContacts(getContactsArgs);
+  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -143,9 +135,6 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       name: contact.contact.displayName,
       federations: federationParties,
       roles: [CredentialRole.ISSUER],
-      //uri: contact.uri,
-      //identities: contact.identities,
-      //hasConsent: hasContactConsent,
       onAliasChange,
       onCreate,
       onDecline,
@@ -153,22 +142,6 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       isCreateDisabled,
     },
   });
-
-  // navigation.navigate(MainRoutesEnum.OID4VCI, {
-  //   screen: ScreenRoutesEnum.CONTACT_ADD,
-  //   params: {
-  //     name: contact.contact.displayName,
-  //     uri: contact.uri,
-  //     identities: contact.identities,
-  //     hasConsent: hasContactConsent,
-  //     onAliasChange,
-  //     onConsentChange,
-  //     onCreate,
-  //     onDecline,
-  //     onBack,
-  //     isCreateDisabled,
-  //   },
-  // });
 };
 
 const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
@@ -334,9 +307,6 @@ export const oid4vciStateNavigationListener = async (
   navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
   debug('oid4vciStateNavigationListener: ', state.value);
-
-  console.log(`EVENT: ${JSON.stringify(state._event)}`);
-
   if (state._event.type === 'internal') {
     debug('oid4vciStateNavigationListener: internal event');
     // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen

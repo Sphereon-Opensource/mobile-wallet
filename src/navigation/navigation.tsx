@@ -1211,21 +1211,6 @@ export const SiopV2Stack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
-        component={NewContactAddScreen}
-        options={({route}) => ({
-          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
         component={CredentialsRequiredScreen}
         options={({route}) => ({
