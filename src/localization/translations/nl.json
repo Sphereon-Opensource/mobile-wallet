@@ -402,5 +402,10 @@
   "new_contact_add_new_contact_create_title": "Contact aliasnaam",
   "new_contact_add_new_contact_create_description": "Je kunt een aliasnaam voor het contact aanmaken door een nieuwe naam in het tekstveld hieronder in te voeren.",
   "new_contact_add_new_contact_abort_title": "Weet je zeker dat je wilt stoppen?",
-  "new_contact_add_new_contact_abort_description": "Als je stopt, betekent dit dat je het interactieproces met {{partyName}} zal beëindigen."
+  "new_contact_add_new_contact_abort_description": "Als je stopt, betekent dit dat je het interactieproces met {{partyName}} zal beëindigen.",
+  "new_contact_add_new_contact_contact_details_description_label": "Beschrijving",
+  "new_contact_add_new_contact_contact_details_name_label": "Naam",
+  "new_contact_add_new_contact_contact_details_website_label": "Website",
+  "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
+  "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid"
 }

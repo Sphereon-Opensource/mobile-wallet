@@ -416,7 +416,6 @@
   "new_contact_add_new_contact_create_description": "You can create an alias contact name by typing in a new name in the text field below.",
   "new_contact_add_new_contact_abort_title": "Are you sure you want to abort?",
   "new_contact_add_new_contact_abort_description": "If you abort it means you will stop the interaction process with {{partyName}}.",
-
   "new_contact_add_new_contact_contact_details_description_label": "Description",
   "new_contact_add_new_contact_contact_details_name_label": "Name",
   "new_contact_add_new_contact_contact_details_website_label": "Website",
