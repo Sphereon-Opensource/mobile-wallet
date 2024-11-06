@@ -37,7 +37,7 @@ import {
   UPDATE_CONTACT_FAILED,
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
-import {showToast} from '../../utils/ToastUtils';
+import {showToast} from '../../utils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
