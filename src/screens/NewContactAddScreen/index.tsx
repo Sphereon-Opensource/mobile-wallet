@@ -179,7 +179,6 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           partyName={name}
           federations={brandedFederations}
           style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}}
-          onPress={async () => props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: federations[0]})}
         />
       )}
       <ContactInformationView
