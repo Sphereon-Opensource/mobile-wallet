@@ -13,7 +13,7 @@ import {
   FederationTrustViewTitleTextStyled as TitleText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
-import {ScreenRoutesEnum, StackParamList} from '../../../types';
+import {MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 
