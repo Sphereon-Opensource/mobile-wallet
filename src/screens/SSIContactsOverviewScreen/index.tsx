@@ -63,6 +63,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     const {activeUser, contacts} = this.props;
     const contactItem = (
       <SSIContactViewItem
+        showArrow
         name={itemInfo.item.contact.displayName}
         uri={itemInfo.item.uri}
         roles={itemInfo.item.roles}

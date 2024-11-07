@@ -67,6 +67,7 @@ export interface IProps {
   initialValue?: string;
   label?: string;
   labelColor?: ColorValue;
+  textColor?: ColorValue;
   keyboardType?: KeyboardTypeOptions | undefined;
   maxLength?: number;
   onChangeText?: (value: string) => Promise<void>;
@@ -89,6 +90,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
     initialValue,
     label,
     labelColor,
+    textColor,
     keyboardType = undefined,
     maxLength,
     onChangeText,
@@ -167,7 +169,7 @@ const SSITextInputField: FC<IProps> = (props: IProps): JSX.Element => {
           onEndEditing={onEditingEnd}
           onFocus={_onFocus}
           value={value}
-          style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED})}}
+          style={{...(disabled && {opacity: OpacityStyleEnum.DISABLED}), ...(textColor && {color: textColor})}}
         />
         {secureTextEntry && (
           // TODO pressing the icon should reveal the input. Will be implemented when we start using this for sensitive data etc

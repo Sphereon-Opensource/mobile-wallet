@@ -14,6 +14,9 @@ import {
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../../@config/constants';
 import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
+import styled from 'styled-components/native';
+import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
+import {transform} from 'typescript';
 
 const debug: Debugger = Debug(`${APP_ID}:SSIContactViewItem`);
 
@@ -22,10 +25,18 @@ export interface Props {
   uri?: string;
   logo?: IImageAttributes;
   roles: Array<CredentialRole>;
+  showArrow?: boolean;
 }
 
+const ChevronRight = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 5px;
+`;
+
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {name, uri, roles, logo} = props;
+  const {name, uri, roles, logo, showArrow = false} = props;
   debug(`logo: ${logo ? JSON.stringify(logo) : ''}`);
   return (
     <Container>
@@ -33,13 +44,27 @@ const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
       <LogoContainer>
         <Logo logo={logo} />
       </LogoContainer>
-      <View>
+      <View style={{flex: 1}}>
         <ContactDetailsContainer>
           <ContactNameCaption>{name}</ContactNameCaption>
           <ContactRolesCaption>{roles.join(', ')}</ContactRolesCaption>
         </ContactDetailsContainer>
         <ContactUriCaption>{uri}</ContactUriCaption>
       </View>
+      {showArrow && (
+        <ChevronRight>
+          <SSIBackIcon
+            color="white"
+            style={{
+              transform: [
+                {
+                  rotate: '180deg',
+                },
+              ],
+            }}
+          />
+        </ChevronRight>
+      )}
     </Container>
   );
 };

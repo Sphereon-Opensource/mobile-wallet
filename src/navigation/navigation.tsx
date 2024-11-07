@@ -80,7 +80,12 @@ import {ICredentialState} from '../types/store/credential.types';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+
 import store from '../store';
+import ContactsHeader from '../components/bars/ContactsHeader';
+import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import ContactActivityScreen from '../screens/ContactActivityScreen';
+import NewContactAddScreen from '../screens/NewContactAddScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -356,15 +361,33 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
+            <ContactsHeader
               {...props}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              showBorder
+              // showBackButton={false}
             />
           ),
         }}
       />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          headerTitle: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          headerTitle: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
@@ -461,6 +484,21 @@ const QRStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
         component={CredentialsRequiredScreen}
         options={({route}) => ({
@@ -531,6 +569,36 @@ const NotificationsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('notifications_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder={false} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          headerTitle: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <ContactsHeader
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // showBackButton={false}
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -968,6 +1036,36 @@ export const OID4VCIStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          headerTitle: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <ContactsHeader
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // showBackButton={false}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE}
         component={SSICredentialSelectTypeScreen}
         options={({route}) => ({
@@ -1093,6 +1191,21 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+          header: (props: NativeStackHeaderProps) => (
+            <SSIHeaderBar
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
             />
           ),
         })}

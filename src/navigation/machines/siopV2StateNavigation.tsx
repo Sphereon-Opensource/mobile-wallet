@@ -58,7 +58,7 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {hasContactConsent, url, authorizationRequestData} = state.context;
+  const {url, authorizationRequestData} = state.context;
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
@@ -117,13 +117,6 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     });
   };
 
-  const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-    siopV2Machine.send({
-      type: SiopV2MachineEvents.SET_CONTACT_CONSENT,
-      data: hasConsent,
-    });
-  };
-
   const onAliasChange = async (alias: string): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.SET_CONTACT_ALIAS,
@@ -140,14 +133,12 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   };
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
-    screen: ScreenRoutesEnum.CONTACT_ADD,
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
+      roles: [CredentialRole.VERIFIER],
       uri: contact.uri,
-      identities: contact.identities,
-      hasConsent: hasContactConsent,
       onAliasChange,
-      onConsentChange,
       onCreate,
       onDecline,
       onBack,
