@@ -21,6 +21,7 @@ export type StackParamList = {
   //fixme: changed the any to an actual type
   CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
+  QrPresentation: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
@@ -332,6 +333,7 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
+  QR_PRESENTATION = 'QrPresentation',
   VERIFICATION_CODE = 'VerificationCode',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',

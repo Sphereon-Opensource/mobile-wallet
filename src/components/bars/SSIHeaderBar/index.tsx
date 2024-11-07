@@ -19,7 +19,7 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, StackParamList} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
@@ -66,6 +66,10 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
 
   const onNavigateProfile = () => {
     navigation.navigate(MainRoutesEnum.SETTINGS);
+  };
+
+  const onNavigateQrPresentation = () => {
+    navigation.navigate(ScreenRoutesEnum.QR_PRESENTATION);
   };
 
   const onMore = async (): Promise<void> => {
@@ -121,6 +125,11 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
                     caption: 'Settings',
                     onPress: onNavigateProfile,
                     icon: HeaderMenuIconsEnum.SETTINGS,
+                  },
+                  {
+                    caption: 'Present QR code',
+                    onPress: onNavigateQrPresentation,
+                    // icon: HeaderMenuIconsEnum.
                   },
                 ]}
               />
