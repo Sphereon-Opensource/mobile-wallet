@@ -1,20 +1,7 @@
-import React, {Context, createContext} from 'react';
-import Debug, {Debugger} from 'debug';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {translate} from '../../localization/Localization';
-import RootNavigation from './../rootNavigation';
-import {APP_ID} from '../../@config/constants';
-import {
-  CreateContactEvent,
-  SiopV2Context as SiopV2ContextType,
-  SiopV2MachineEvents,
-  SiopV2MachineInterpreter,
-  SiopV2MachineNavigationArgs,
-  SiopV2MachineState,
-  SiopV2MachineStates,
-  SiopV2ProviderProps,
-} from '../../types/machines/siopV2';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
+import {Format} from '@sphereon/pex-models';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -25,13 +12,26 @@ import {
   PartyOrigin,
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
+import Debug, {Debugger} from 'debug';
+import React, {Context, createContext} from 'react';
 import {SimpleEventsOf} from 'xstate';
-import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {Format} from '@sphereon/pex-models';
-import {authenticate} from '../../services/authenticationService';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {getMatchingCredentials} from '../../services/pexService';
+import {APP_ID} from '../../@config/constants';
 import agent from '../../agent';
+import {translate} from '../../localization/Localization';
+import {authenticate} from '../../services/authenticationService';
+import {getMatchingCredentials} from '../../services/pexService';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {
+  CreateContactEvent,
+  SiopV2Context as SiopV2ContextType,
+  SiopV2MachineEvents,
+  SiopV2MachineInterpreter,
+  SiopV2MachineNavigationArgs,
+  SiopV2MachineState,
+  SiopV2MachineStates,
+  SiopV2ProviderProps,
+} from '../../types/machines/siopV2';
+import RootNavigation from './../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -301,6 +301,7 @@ const navigateError = async (args: SiopV2MachineNavigationArgs): Promise<void> =
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,

@@ -1,10 +1,5 @@
-import {getIssuerName} from '@sphereon/oid4vci-common';
-import React, {Context, createContext} from 'react';
-import {Linking} from 'react-native';
-import {URL} from 'react-native-url-polyfill';
-import {SimpleEventsOf} from 'xstate';
-import Debug, {Debugger} from 'debug';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {getIssuerName} from '@sphereon/oid4vci-common';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -27,18 +22,22 @@ import {
   OID4VCIMachineStates,
   OID4VCIProviderProps,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
-import {translate} from '../../localization/Localization';
-import RootNavigation from './../rootNavigation';
-import {APP_ID} from '../../@config/constants';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialSubjectContact} from '../../utils';
+import {computeEntryHash} from '@veramo/utils';
+import Debug, {Debugger} from 'debug';
+import React, {Context, createContext} from 'react';
+import {Linking} from 'react-native';
+import {URL} from 'react-native-url-polyfill';
+import {SimpleEventsOf} from 'xstate';
+import {APP_ID} from '../../@config/constants';
 import agent from '../../agent';
+import {translate} from '../../localization/Localization';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {computeEntryHash} from '@veramo/utils';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {getCredentialSubjectContact} from '../../utils';
+import RootNavigation from './../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -380,6 +379,7 @@ const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,

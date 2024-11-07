@@ -1,12 +1,12 @@
+import {useNavigation} from '@react-navigation/native';
 import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
+import {setBiometrics} from '../store/actions/user.actions';
+import {RootState} from '../types';
 import {OnboardingBiometricsStatus} from '../types/machines/onboarding';
 import {IUserState} from '../types/store/user.types';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../types';
-import {setBiometrics} from '../store/actions/user.actions';
-import {useNavigation} from '@react-navigation/native';
 
 export const useBiometricsEnabledContext = () => {
   const {onboardingInstance} = useContext(OnboardingContext);

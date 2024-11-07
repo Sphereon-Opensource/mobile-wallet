@@ -74,6 +74,8 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
 
   return (
     <View
+      accessibilityRole="list"
+      accessibilityLabel="Card list"
       style={{
         backgroundColor: backgroundColors.primaryDark,
         flex: 1,

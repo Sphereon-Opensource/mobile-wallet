@@ -2,12 +2,12 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext} from 'react';
 import {Dimensions} from 'react-native';
+import styled from 'styled-components/native';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import styled from 'styled-components/native';
 
 import {useBiometrics} from '../../../hooks/use-biometrics';
 import {CircleWithBorder} from './Circle';
@@ -51,13 +51,17 @@ const EnableBiometricsScreen = () => {
   const footer = (
     <Footer>
       <Footnote>{translate('biometrics_description')}</Footnote>
-      <PrimaryButton caption={translate('biometrics_enable_text')} captionColor={fontColors.light} onPress={handleAuth} />
-      <SecondaryButton caption={translate('biometrics_disallow')} onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)} />
+      <PrimaryButton accessibilityRole="button" caption={translate('biometrics_enable_text')} captionColor={fontColors.light} onPress={handleAuth} />
+      <SecondaryButton
+        caption={translate('biometrics_disallow')}
+        accessibilityRole="button"
+        onPress={() => onboardingInstance.send(OnboardingMachineEvents.SKIP_BIOMETRICS)}
+      />
     </Footer>
   );
   return (
     <ScreenContainer footer={footer}>
-      <ScreenTitleAndDescription title={translate('biometrics_title')} description={translate('biometrics_subtitle')} />
+      <ScreenTitleAndDescription title={translate('biometrics_title')} description={translate('biometrics_subtitle')} accessibilityFocusOnTitle />
       <Content>
         <CircleWithBorder size={200} backgroundColors={['#7276F799', '#7C40E899']} borderColors={['#7C40E899', '#7C40E866']} borderWidth={30} />
       </Content>

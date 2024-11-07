@@ -58,6 +58,7 @@ export type Props = {
 
 const Info = ({header, info, onPress, showValues = false}: Props) => {
   const itemsShared = Object.entries(info);
+  const disabled = !onPress || itemsShared.length === 0;
   return (
     <SharedInfoContainer>
       {header && (
@@ -72,8 +73,14 @@ const Info = ({header, info, onPress, showValues = false}: Props) => {
           <Divider />
         </>
       )}
-      <SharedInfoBody onPress={onPress} disabled={!onPress}>
-        <SharedInfoItemList style={{gap: showValues ? 24 : 12}}>
+      <SharedInfoBody
+        onPress={onPress}
+        disabled={disabled}
+        accessibilityState={{disabled}}
+        accessibilityRole="list"
+        accessibilityLabel="Shared information"
+        accessibilityHint={disabled ? 'No information shared' : ''}>
+        <SharedInfoItemList importantForAccessibility="no" style={{gap: showValues ? 24 : 12}}>
           {itemsShared.map(([key, value]) => (
             <View key={key}>
               <SharedInfoItemKey>{key}</SharedInfoItemKey>

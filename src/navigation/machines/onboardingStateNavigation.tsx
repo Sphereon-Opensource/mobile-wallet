@@ -1,7 +1,10 @@
 import Debug, {Debugger} from 'debug';
 import React, {Context, createContext} from 'react';
 import {APP_ID} from '../../@config/constants';
+import {translate} from '../../localization/Localization';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
+import store from '../../store';
+import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {
   OnboardingContext as OnboardingContextType,
   OnboardingMachineContext,
@@ -12,11 +15,8 @@ import {
   OnboardingMachineStateType,
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
-import RootNavigation from './../rootNavigation';
-import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {translate} from '../../localization/Localization';
-import store from '../../store';
 import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
+import RootNavigation from './../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
@@ -117,6 +117,7 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
         }),
         primaryButton: {
           caption: translate('action_ok_label'),
+          accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
           onPress: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),
         },
         onBack: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),

@@ -1,10 +1,10 @@
 import Debug, {Debugger} from 'debug';
 import React, {Context, createContext} from 'react';
 import {APP_ID} from '../../@config/constants';
-import RootNavigation from './../rootNavigation';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import {GetPIDCredentialsMachine} from '../../machines/getPIDCredentialMachine';
+import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {
   GetPIDCredentialsContextType,
   GetPIDCredentialsMachineContext,
@@ -14,8 +14,8 @@ import {
   GetPIDCredentialsMachineStateTypes,
   GetPIDCredentialsProviderProps,
 } from '../../types/machines/getPIDCredentialMachine';
-import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {delay} from '../../utils';
+import RootNavigation from './../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentialsStateNavigation`);
 
@@ -137,6 +137,7 @@ export const getPIDCredentialsStateNavigationListener = (
         }),
         primaryButton: {
           caption: translate('action_ok_label'),
+          accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
           onPress: () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
         },
         onBack: () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),

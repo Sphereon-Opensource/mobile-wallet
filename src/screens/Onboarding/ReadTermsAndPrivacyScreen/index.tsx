@@ -64,8 +64,8 @@ const ReadTermsAndPrivacyScreen = ({
             indicatorProportionalWidth: 0.6,
             containerStyle: {marginBottom: 16, paddingHorizontal: 16},
             labels: {
-              terms: renderLabel(`${translationPath}.terms.tab_title`),
-              privacy: renderLabel(`${translationPath}.privacy.tab_title`),
+              terms: {render: renderLabel(`${translationPath}.terms.tab_title`), accessibilityLabel: 'Terms and conditions'},
+              privacy: {render: renderLabel(`${translationPath}.privacy.tab_title`), accessibilityLabel: 'Privacy policy'},
             },
           }}>
           <DocumentTypeNav.Screen name="terms" component={DocumentText} initialParams={{document: 'terms'}} />

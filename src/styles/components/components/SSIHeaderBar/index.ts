@@ -20,9 +20,7 @@ export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
   font-size: 16px;
 `;
 
-export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`
-  margin: 7px 0 15px auto;
-`;
+export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)``;
 
 // TODO move height to attributes of SSIIconButton
 export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
@@ -39,7 +37,6 @@ export const SSIHeaderBarBackIconContainerStyled = styled.View`
 // TODO move width to attributes of SSIIconButton
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin-top: 18px;
-  width: 20px;
 `;
 
 export const SSIHeaderBarMoreMenuContainerStyled = styled.View`

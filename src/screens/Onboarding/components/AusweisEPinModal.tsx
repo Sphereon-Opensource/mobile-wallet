@@ -1,10 +1,11 @@
-import {PinInput, PinInputRef} from '@pakenfit/react-native-pin-input';
-import {Image, Platform, TextInput, View} from 'react-native';
-import {SSITextH1RegularStyled, SSITextH3RegularStyled} from '../../../styles/components';
-import {ContentContainer, IconContainer, ModalCard} from './styles';
-import {useRef} from 'react';
+import {PinInput} from '@pakenfit/react-native-pin-input';
+import {useCallback, useEffect, useRef} from 'react';
+import {TextInput} from 'react-native';
 import Animated, {Easing, useAnimatedKeyboard, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import AusweisIcon from '../../../components/assets/icons/AusweisIcon';
+import {useAccessibility} from '../../../hooks/useAccessibility';
+import {SSITextH1RegularStyled, SSITextH3RegularStyled} from '../../../styles/components';
+import {IconContainer, ModalCard} from './styles';
 
 type AusweisEPinModalProps = {
   isVisible: boolean;
@@ -33,7 +34,16 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
       ],
     };
   });
-
+  const titleRef = useRef(null);
+  const {setFocus} = useAccessibility();
+  const focusOnTitle = useCallback(() => {
+    if (titleRef.current) setFocus(titleRef);
+  }, [titleRef.current]);
+  useEffect(() => {
+    if (isVisible) {
+      focusOnTitle();
+    }
+  }, [isVisible]);
   if (!isVisible) return null;
 
   return (
@@ -42,7 +52,9 @@ export const AusweisEPinModal = ({isVisible, onClose, onComplete}: AusweisEPinMo
         <IconContainer>
           <AusweisIcon />
         </IconContainer>
-        <SSITextH1RegularStyled style={{color: '#8F8E94'}}>Enter Ausweis eID pin</SSITextH1RegularStyled>
+        <SSITextH1RegularStyled ref={titleRef} style={{color: '#8F8E94'}}>
+          Enter Ausweis eID pin
+        </SSITextH1RegularStyled>
         <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>
         <PinInput
           // containerStyle={{marginBottom: 10}}

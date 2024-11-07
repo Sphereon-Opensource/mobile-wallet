@@ -60,6 +60,7 @@ import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedC
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
+import store from '../store';
 import {
   FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
@@ -84,6 +85,7 @@ import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNaviga
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
+
 import ContactsHeader from '../components/bars/ContactsHeader';
 import OnboardingHeader from '../components/bars/OnboardingHeader';
 import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
@@ -116,6 +118,85 @@ const MainStackNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       <Stack.Screen name={MainRoutesEnum.HOME} component={TabStackNavigator} />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
+        component={ActivityDetailScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
+          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
+          return {
+            headerShown: true,
+            title,
+            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
+        component={ActivityRevealedInfoScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
+          return {
+            headerShown: true,
+            title,
+            header: props => <ActivityRevealedInfoHeader {...props} />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          headerShown: true,
+          title: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <ContactsHeader
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // showBackButton={false}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          headerShown: true,
+          title: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          headerShown: true,
+          title: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
+        component={CredentialDetailsScreen}
+        options={({route}) => ({
+          title: route.params.credential.title,
+          headerShown: true,
+          header: props => <CredentialDetailHeader {...props} />,
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_ACTIVITY}
+        component={CredentialActivityScreen}
+        options={{
+          headerShown: true,
+          title: translate('credential_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
       <Stack.Screen
         name={MainRoutesEnum.ALERT_MODAL}
         children={({navigation, route}) => (
@@ -220,7 +301,7 @@ const MainStackNavigator = (): JSX.Element => {
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
-
+  const activeUser = store.getState().user.activeUser;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -235,6 +316,9 @@ const TabStackNavigator = (): JSX.Element => {
       backBehavior="none">
       <Tab.Screen
         name={NavigationBarRoutesEnum.QR}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.qr'),
+        }}
         children={() => (
           <>
             <QRStack />
@@ -244,6 +328,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.ACTIVITIES}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.activities'),
+        }}
         children={() => (
           <>
             <ActivitiesStack />
@@ -253,6 +340,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CREDENTIALS}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.home'),
+        }}
         children={() => (
           <>
             <CredentialsStack />
@@ -262,6 +352,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.credential_catalog'),
+        }}
         children={() => (
           <>
             <CredentialCatalogStack />
@@ -271,6 +364,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.contacts'),
+        }}
         children={() => (
           <>
             <ContactsStack />
@@ -298,22 +394,6 @@ const CredentialsStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={CredentialDetailsScreen}
-        options={({route}) => ({
-          title: route.params.credential.branding?.alias ?? route.params.credential.title,
-          header: props => <CredentialDetailHeader {...props} />,
-        })}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CREDENTIAL_ACTIVITY}
-        component={CredentialActivityScreen}
-        options={{
-          title: translate('credential_activities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
         component={SSICredentialRawJsonScreen}
         options={{
@@ -325,62 +405,6 @@ const CredentialsStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_DETAILS}
-        component={SSIContactDetailsScreen}
-        options={{
-          title: translate('contact_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
-        component={ContactIdentitiesScreen}
-        options={{
-          title: translate('contact_identities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
-        component={ContactActivityScreen}
-        options={{
-          title: translate('contact_activities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
-        component={ActivityDetailScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
-          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
-          return {
-            title,
-            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
-          };
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
-        component={ActivityRevealedInfoScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
-          return {
-            title,
-            header: props => <ActivityRevealedInfoHeader {...props} />,
-          };
         }}
       />
       <Stack.Screen
@@ -407,62 +431,6 @@ const ContactsStack = (): JSX.Element => {
         options={{
           headerTitle: translate('contacts_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_DETAILS}
-        component={SSIContactDetailsScreen}
-        options={{
-          title: translate('contact_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
-            />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
-        component={ContactIdentitiesScreen}
-        options={{
-          title: translate('contact_identities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
-        component={ContactActivityScreen}
-        options={{
-          title: translate('contact_activities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
-        component={ActivityDetailScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
-          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
-          return {
-            title,
-            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
-          };
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
-        component={ActivityRevealedInfoScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
-          return {
-            title,
-            header: props => <ActivityRevealedInfoHeader {...props} />,
-          };
         }}
       />
       <Stack.Screen
@@ -513,6 +481,7 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -525,6 +494,7 @@ const QRStack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />
@@ -568,6 +538,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -586,8 +558,8 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /*headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-    }`}*/
+  route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+}`}*/
             />
           ),
         })}
@@ -649,60 +621,21 @@ const ActivitiesStack = (): JSX.Element => {
         }}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
-        component={ActivityDetailScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
-          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
-          return {
-            title,
-            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
-          };
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
-        component={ActivityRevealedInfoScreen}
-        options={({route}) => {
-          const {activity} = route.params;
-          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
-          return {
-            title,
-            header: props => <ActivityRevealedInfoHeader {...props} />,
-          };
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_DETAILS}
-        component={SSIContactDetailsScreen}
-        options={{
-          title: translate('contact_details_title'),
+        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+        component={NewContactAddScreen}
+        options={({route}) => ({
+          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
           header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
+            <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
+              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
             />
           ),
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
-        component={ContactIdentitiesScreen}
-        options={{
-          title: translate('contact_identities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
-        component={ContactActivityScreen}
-        options={{
-          title: translate('contact_activities_title'),
-          header: props => <ContactsHeader {...props} />,
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
@@ -918,7 +851,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       options={({route}) => ({
         headerTitle: route.params.title,
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -1080,22 +1013,6 @@ export const FunkeC2ShareStack = (): JSX.Element => (
         header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
       })}
     />
-    <Stack.Screen
-      name={ScreenRoutesEnum.NEW_CONTACT_ADD}
-      component={NewContactAddScreen}
-      options={({route}) => ({
-        headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
-        header: (props: NativeStackHeaderProps) => (
-          <SSIHeaderBar
-            {...props}
-            onBack={route.params.onBack}
-            // TODO rethink back button visibility for Android
-            //showBackButton={Platform.OS === PlatformsEnum.IOS}
-            headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
-          />
-        ),
-      })}
-    />
   </FunkeC2ShareBaseStack.Navigator>
 );
 
@@ -1235,6 +1152,8 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -1313,6 +1232,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -1325,6 +1245,7 @@ export const OID4VCIStack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />
@@ -1396,6 +1317,8 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -1433,8 +1356,8 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /* headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
-      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-    }`}*/
+  route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+}`}*/
             />
           ),
         })}
@@ -1477,6 +1400,7 @@ export const SiopV2Stack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -1489,6 +1413,7 @@ export const SiopV2Stack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />

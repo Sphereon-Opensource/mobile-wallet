@@ -1,23 +1,3 @@
-import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
-import {
-  CreateContactEvent,
-  FunkeC2ShareContextType,
-  FunkeC2ShareMachineContext,
-  FunkeC2ShareMachineEvents,
-  FunkeC2ShareMachineInterpreter,
-  FunkeC2ShareMachineState,
-  FunkeC2ShareMachineStateTypes,
-  FunkeC2ShareProviderProps,
-} from '../../types/machines/funkeC2ShareMachine';
-import React, {Context, createContext} from 'react';
-import RootNavigation from '../rootNavigation';
-import Debug, {Debugger} from 'debug';
-import {APP_ID} from '../../@config/constants';
-import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {translate} from '../../localization/Localization';
-import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
-import {delay} from '../../utils';
-import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -28,9 +8,29 @@ import {
   PartyOrigin,
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
+import Debug, {Debugger} from 'debug';
+import React, {Context, createContext} from 'react';
 import {SimpleEventsOf} from 'xstate';
+import {APP_ID} from '../../@config/constants';
 import agent from '../../agent';
-import {SiopV2MachineEvents, SiopV2MachineNavigationArgs} from '../../types/machines/siopV2';
+import {translate} from '../../localization/Localization';
+import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
+import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
+import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {
+  CreateContactEvent,
+  FunkeC2ShareContextType,
+  FunkeC2ShareMachineContext,
+  FunkeC2ShareMachineEvents,
+  FunkeC2ShareMachineInterpreter,
+  FunkeC2ShareMachineState,
+  FunkeC2ShareMachineStateTypes,
+  FunkeC2ShareProviderProps,
+} from '../../types/machines/funkeC2ShareMachine';
+import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
+import {SiopV2MachineEvents} from '../../types/machines/siopV2';
+import {delay} from '../../utils';
+import RootNavigation from '../rootNavigation';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
 
@@ -253,6 +253,7 @@ const navigateHandleError = async (args: any): Promise<void> => {
     }),
     primaryButton: {
       caption: translate('action_ok_label'),
+      accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
       onPress: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
     },
     onBack: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),

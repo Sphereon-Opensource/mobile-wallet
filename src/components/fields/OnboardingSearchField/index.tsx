@@ -28,12 +28,21 @@ export type Props = TextInputProps & {
 };
 
 const OnboardingSearchField = ({onClear, containerStyle = {}, ...inputProps}: Props) => (
-  <Container style={containerStyle}>
-    <SSIIconButton icon={ButtonIconsEnum.SEARCH} iconColor={backgroundColors.primaryLight} iconSize={32} disabled onPress={() => {}} />
+  <Container accessibilityRole="search" style={containerStyle} importantForAccessibility="no">
+    <SSIIconButton
+      icon={ButtonIconsEnum.SEARCH}
+      iconColor={backgroundColors.primaryLight}
+      iconSize={32}
+      disabled
+      onPress={() => {}}
+      importantForAccessibility="no"
+    />
     <StyledSearchField placeholder="Search" {...inputProps} />
     {inputProps.value && onClear && (
       <SSIIconButton
-        style={{marginLeft: 'auto'}}
+        accessibilityRole="button"
+        accessibilityLabel="Clear search"
+        style={{marginLeft: 'auto', padding: 8}}
         icon={ButtonIconsEnum.CLOSE}
         iconColor={backgroundColors.primaryLight}
         iconSize={12}

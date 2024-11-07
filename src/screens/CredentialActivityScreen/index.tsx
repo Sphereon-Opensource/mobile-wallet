@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
 import {backgroundColors} from '@sphereon/ui-components.core';
@@ -7,6 +8,7 @@ import {View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import ActivityList from '../../components/activity/ActivityList';
 import {CredentialViewImage} from '../../components/views/SSICredentialViewItem/CredentailViewImage';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {getActivityLogging} from '../../store/actions/logging.actions';
@@ -33,6 +35,7 @@ const filterForCredential = (credential?: CredentialSummary) => (activity: Activ
 };
 const CredentialActivityScreen = ({route, navigation}: Props) => {
   const {credential} = route.params;
+  const {announce} = useAccessibility();
   const dispatch = useDispatch();
   const getActivityLog = () => dispatch(getActivityLogging());
   const {activityLogging, verifiableCredentials} = useAppSelector(({logging: {activityLogging}, credential: {verifiableCredentials}}) => ({
@@ -55,6 +58,8 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
         .filter(filterForCredential(credential)),
     [activityLogging, verifiableCredentials, credential],
   );
+
+  useFocusEffect(() => announce({message: `Activity feed for ${credential?.branding?.alias ?? credential?.title}`, delay: 1000}));
 
   return (
     <Container style={{backgroundColor: backgroundColors.primaryDark}}>

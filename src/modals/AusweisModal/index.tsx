@@ -1,26 +1,27 @@
-import React, {FC, ReactElement, useEffect} from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
-import {runOnJS, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
+  SSITextH3LightStyled as DescriptionCaption,
   PrimaryButton,
   SecondaryButton,
   SSITextH1SemiBoldLightStyled as TitleCaption,
-  SSITextH3LightStyled as DescriptionCaption,
 } from '@sphereon/ui-components.ssi-react-native';
+import React, {FC, ReactElement, useEffect} from 'react';
+import {TouchableWithoutFeedback, View} from 'react-native';
+import {runOnJS, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../../@config/toasts';
 import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import Localization, {translate} from '../../localization/Localization';
+import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
 import {
-  SSIBasicModalContainerStyled as Container,
-  AusweisModalButtonContainerStyled as ButtonContainer,
-  AusweisModalIconButtonStyled as IconButton,
   AusweisModalAnimatedViewStyled as AnimatedView,
+  AusweisModalButtonContainerStyled as ButtonContainer,
+  SSIBasicModalContainerStyled as Container,
+  AusweisModalIconButtonStyled as IconButton,
 } from '../../styles/components';
 import {MainRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
 import {showToast} from '../../utils';
-import Toast from 'react-native-toast-message';
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.AUSWEIS_MODAL>;
 
@@ -65,20 +66,34 @@ const AusweisModal: FC<Props> = (props: Props): ReactElement => {
     await onAccept();
   };
 
+  const {setFocus, announce} = useAccessibility();
   useEffect((): void => {
     slideIn();
   }, []);
 
+  // const titleRef = useRef(null);
+  // useEffect(() => {
+  //   if (titleRef.current) {
+  //     setFocus(titleRef);
+  //   }
+  // }, [titleRef.current]);
   return (
-    <TouchableWithoutFeedback onPress={() => slideOut().then(onClose)}>
+    <TouchableWithoutFeedback onPress={() => slideOut().then(onClose)} importantForAccessibility="no">
       <Container>
-        <TouchableWithoutFeedback onPress={e => e.preventDefault()}>
-          <AnimatedView style={animatedStyle}>
-            <View>
-              <IconButton onPress={() => slideOut().then(onClose)} />
-              <TitleCaption>{Localization.translate('ausweis_eid_modal_title')}</TitleCaption>
-              <DescriptionCaption>{Localization.translate('ausweis_eid_modal_description')}</DescriptionCaption>
+        <TouchableWithoutFeedback onPress={e => e.preventDefault()} importantForAccessibility="no">
+          <AnimatedView style={animatedStyle} importantForAccessibility="no">
+            <View style={{flexDirection: 'row'}}>
+              <View
+                accessibilityRole="header"
+                accessibilityLabel={Localization.translate('ausweis_eid_modal_title')}
+                accessibilityHint="title of the modal"
+                // ref={titleRef}
+                style={{marginTop: 36}}>
+                <TitleCaption importantForAccessibility="no">{Localization.translate('ausweis_eid_modal_title')}</TitleCaption>
+              </View>
+              <IconButton accessibilityRole="button" accessibilityLabel={'Closes the modal'} onPress={() => slideOut().then(onClose)} />
             </View>
+            <DescriptionCaption>{Localization.translate('ausweis_eid_modal_description')}</DescriptionCaption>
             <CredentialCardPreviewView
               title={Localization.translate('ausweis_eid_preview_card_title')}
               description={Localization.translate('ausweis_eid_preview_card_description')}

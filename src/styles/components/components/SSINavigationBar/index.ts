@@ -1,12 +1,14 @@
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {SSIFlexDirectionRowViewStyled} from '../../containers';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 export const SSINavigationBarButtonStyled = styled(TouchableOpacity)`
   flex: 1;
+  height: 100%;
+  justify-content: center;
   align-items: center;
 `;
 
