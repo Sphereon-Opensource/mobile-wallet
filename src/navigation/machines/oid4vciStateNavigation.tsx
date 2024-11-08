@@ -50,7 +50,7 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {serverMetadata, trustedAnchors} = state.context;
+  const {serverMetadata, trustedAnchors, issuerBranding} = state.context;
 
   if (!serverMetadata) {
     return Promise.reject(Error('Missing serverMetadata in context'));
@@ -135,6 +135,11 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       name: contact.contact.displayName,
       federations: federationParties,
       uri: contact.uri,
+      identities: contact.identities,
+      description: issuerBranding?.[0].description,
+      clientUri: issuerBranding?.[0].clientUri,
+      tosUri: issuerBranding?.[0].tosUri,
+      policyUri: issuerBranding?.[0].policyUri,
       roles: [CredentialRole.ISSUER],
       onAliasChange,
       onCreate,
@@ -329,10 +334,7 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
-  console.log(`STATE: ${JSON.stringify(state.value)}`);
-
   if (state.matches(OID4VCIMachineStates.addContact)) {
-    console.debug(`going for addContact`);
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
