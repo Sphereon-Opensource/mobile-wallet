@@ -212,7 +212,7 @@
       "title": "Import personal information",
       "description": {
         "default": "Import your personal information from your national eID provider.",
-        "deutschland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "de": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
       }
     }
   },
