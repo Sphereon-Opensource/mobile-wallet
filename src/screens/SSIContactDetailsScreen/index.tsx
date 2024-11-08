@@ -1,10 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {IssuerStatus} from '@sphereon/ui-components.core';
 import React from 'react';
 import {NavigationButton} from '../../components/NavigationButton';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>;
 
@@ -60,7 +61,18 @@ const SSIContactDetailsScreen = ({route, navigation}: Props) => {
       <ContactDetailsNavigationSection>
         <NavigationButton label="Identities" onPress={() => navigation.push(ScreenRoutesEnum.CONTACT_IDENTITIES, {identities: contact.identities})} />
         <Divider />
-        <NavigationButton label="Contact Activities" onPress={() => navigation.push(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact})} />
+        <NavigationButton
+          label="Contact Activities"
+          onPress={() => {
+            if (contact.roles.includes(CredentialRole.HOLDER)) {
+              navigation.getParent()?.navigate(MainRoutesEnum.HOME, {
+                screen: NavigationBarRoutesEnum.ACTIVITIES,
+              });
+            } else {
+              navigation.push(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact});
+            }
+          }}
+        />
       </ContactDetailsNavigationSection>
     </Container>
   );
