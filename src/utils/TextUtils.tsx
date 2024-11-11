@@ -32,8 +32,10 @@ export const checkAndAddHTTPPrefix = (url: string) => {
 };
 
 export function parseValidURL(url: string) {
-  const invalidProtocols = ['file://', 'ftp://', 'mailto:', 'tel:', 'data:', 'javascript:', 'ws://', 'wss://', 'sms:', 'irc://', 'sftp://', 'blob:'];
-  if (invalidProtocols.some(p => url.startsWith(p))) return false;
+  // since some values that aren't valid web url could
+  // pass the checks for URL lib, we also use a regex here
+  const valid = URL_VALIDATION_REGEX.test(url);
+  if (!valid) return false;
   try {
     const formattedUrl = url.startsWith('http://') ? url : `http://${url}`;
     const parsedUrl = new URL(formattedUrl);
