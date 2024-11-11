@@ -9,14 +9,21 @@ const {width} = Dimensions.get('screen');
 
 type QRPresentationScreenProps = {};
 
+/* FIXME: Replace this with some result once back end for holder
+ * presentations is complete.
+ */
+const mockURI = 'some_uri_content';
+
 const QRPresentationScreen: FC<QRPresentationScreenProps> = (props: QRPresentationScreenProps) => {
   const [qrElement, setQrElement] = useState<React.ReactElement | null>(null);
   const delegate = async () => {
     const uriElementArgs: CreateElementArgs<QRType.URI, string> = {
       data: {
         type: QRType.URI,
-        object: 'something',
-        id: 'something',
+        object: mockURI,
+        //FIXME: determine if the id field should be necessary on a URI
+        //element
+        id: '',
       },
       renderingProps: {
         bgColor: 'white',
