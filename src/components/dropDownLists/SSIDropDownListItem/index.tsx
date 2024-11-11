@@ -14,6 +14,7 @@ import SSIDownloadIcon from '../../assets/icons/SSIDownloadIcon';
 import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
 import {borderColors, fontColors} from '@sphereon/ui-components.core';
 import SettingsIcon from '../../../components/assets/icons/SettingsIcon';
+import SSIQRIcon from '../../../components/assets/icons/SSIQRIcon';
 
 export interface IProps {
   caption: string;
@@ -45,6 +46,8 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
         return <SSIDownloadIcon color={fontColor} />;
       case HeaderMenuIconsEnum.SETTINGS:
         return <SettingsIcon color={fontColor} />;
+      case HeaderMenuIconsEnum.QR:
+        return <SSIQRIcon primaryColor={fontColor.toString()} secondaryColor={fontColor.toString()} />;
       default:
         return <View />;
     }

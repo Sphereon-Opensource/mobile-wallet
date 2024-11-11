@@ -129,7 +129,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
                   {
                     caption: 'Present QR code',
                     onPress: onNavigateQrPresentation,
-                    // icon: HeaderMenuIconsEnum.
+                    icon: HeaderMenuIconsEnum.QR,
                   },
                 ]}
               />
