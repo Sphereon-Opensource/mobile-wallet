@@ -30,6 +30,7 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
+import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -99,5 +100,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       verifySignature: verifySDJWTSignature,
     }),
     new OIDFClient(),
+    new QrCodeProvider(),
   ];
 };

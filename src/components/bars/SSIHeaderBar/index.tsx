@@ -69,7 +69,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
   };
 
   const onNavigateQrPresentation = () => {
-    navigation.navigate(ScreenRoutesEnum.QR_PRESENTATION);
+    navigation.navigate(MainRoutesEnum.SHARE);
   };
 
   const onMore = async (): Promise<void> => {

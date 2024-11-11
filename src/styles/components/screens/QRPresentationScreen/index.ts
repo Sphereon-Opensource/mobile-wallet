@@ -1,16 +1,16 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {styled} from 'styled-components/native';
 
-export const QRPlaceholderViewContainer = styled.View`
+export const QRPresentationViewContainer = styled.View`
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  background-color: ${backgroundColors.primaryDark};
+  padding: 100px 10px;
 `;
 
-export const QRPlaceholderView = styled.View`
-  width: 400px;
-  height: 400px;
-  border-radius: 5px;
-  background-color: ${backgroundColors.secondaryDark};
+export const QRContainer = styled.View`
+  padding: 10px;
+  background-color: white;
 `;
