@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useCallback, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useCallback, useEffect, useRef, useState} from 'react';
 import {BackHandler, Keyboard} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
@@ -33,23 +33,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     isCreateDisabled,
     onBack,
   } = props.route.params;
-  const [contactAlias, setContactAlias] = useState(name);
   const dispatch = useDispatch();
   const contactState = useSelector((state: RootState) => state.contact);
   const [brandedFederations, setBrandedFederations] = useState<Array<Party>>([]);
-
-  useEffect((): void => {
-    if (!federations) {
-      return;
-    }
-    const branded = federations.map(federation => fetchBrandingForContact(federation));
-    Promise.all(branded).then(result => setBrandedFederations(result));
-  }, []);
-
-  useEffect((): void => {
-    // FIXME we should set the default name in the machine and pass that to the screen
-    void onAliasChange?.(name);
-  }, []);
+  const contactAliasRef = useRef(name);
 
   const onBackPress = (): boolean => {
     if (onBack) {
@@ -70,9 +57,31 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     }, [onBackPress]),
   );
 
+  useEffect((): void => {
+    if (!federations) {
+      return;
+    }
+    const branded = federations.map(federation => fetchBrandingForContact(federation));
+    Promise.all(branded).then(result => setBrandedFederations(result));
+  }, []);
+
+  useEffect((): void => {
+    // FIXME we should set the default name in the machine and pass that to the screen
+    void onAliasChange?.(name);
+  }, []);
+
+  const onUpdateContactAliasRef = useCallback(async (value: string): Promise<void> => {
+    contactAliasRef.current = value;
+  }, []);
+
+  const onContactAliasChange = useCallback((): void => {
+    void onAliasChange?.(contactAliasRef.current);
+    props.navigation.setParams({name: contactAliasRef.current});
+  }, []);
+
   const onValidate = async (value: string): Promise<void> => {
     if (value.trim().length === 0) {
-      setContactAlias('');
+      contactAliasRef.current = '';
       return Promise.reject(Error(translate('contact_name_invalid_message')));
     }
   };
@@ -92,13 +101,13 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       agentContext,
     );
     if (contacts.length > 0 && contacts[0]?.contact!!) {
-      contacts[0].contact.displayName = contactAlias;
+      contacts[0].contact.displayName = contactAliasRef.current;
       return dispatch<any>(updateContact({contact: contacts[0]}));
     } else {
       return dispatch<any>(
         createContact({
           legalName: name,
-          displayName: contactAlias.trim(),
+          displayName: contactAliasRef.current.trim(),
           uri,
           identities,
           // FIXME maybe its nicer if we can also just use the id only
@@ -117,7 +126,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
 
   const onCreatePressed = async (): Promise<void> => {
     Keyboard.dismiss();
-    onValidate(contactAlias)
+    onValidate(contactAliasRef.current)
       .then((): Promise<Party> => upsert())
       .then((contact: Party): Promise<void> => onCreate(contact))
       .catch((): void => {
@@ -142,32 +151,34 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   };
 
   const isConfirmDisabled = (): boolean => {
-    return contactAlias === undefined || contactAlias.length === 0 || contactState.loading;
+    return contactAliasRef.current === undefined || contactAliasRef.current.trim().length === 0 || contactState.loading;
   };
 
-  const onContinuePressed = async (): Promise<void> => {
+  const onEditAlias = async (): Promise<void> => {
     props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('new_contact_add_new_contact_create_title'),
       details: translate('new_contact_add_new_contact_create_description'),
       input: {
         label: translate('contact_name_label'),
-        initialValue: contactAlias,
+        initialValue: contactAliasRef.current,
         placeHolder: translate('contact_name_placeholder'),
         maxLength: CONTACT_ALIAS_MAX_LENGTH,
-        onEndEditing: async value => onValidate(value),
-        onValueChange: async value => {
-          setContactAlias(value);
-          void onAliasChange?.(value);
-        },
+        onValueChange: onUpdateContactAliasRef,
       },
       primaryButton: {
         caption: translate('action_confirm_label'),
-        onPress: onCreatePressed,
-        disabled: isCreateDisabled || contactState.loading, //isConfirmDisabled//!contactAlias || contactAlias.length === 0 || contactState.loading, ////isCreateDisabled
+        onPress: async (): Promise<void> => {
+          void onContactAliasChange();
+          props.navigation.getParent()?.goBack();
+        },
+        disabled: isConfirmDisabled,
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async (): Promise<void> => props.navigation.getParent()?.goBack(),
+        onPress: async (): Promise<void> => {
+          contactAliasRef.current = name;
+          props.navigation.getParent()?.goBack();
+        },
       },
     });
   };
@@ -197,13 +208,14 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           {
             id: '2',
             label: Localization.translate('new_contact_add_new_contact_contact_details_name_label'),
-            value: name,
+            value: contactAliasRef.current,
             isEditable: true,
+            onPress: onEditAlias,
           },
           ...(clientUri
             ? [
                 {
-                  id: '1',
+                  id: '3',
                   label: Localization.translate('new_contact_add_new_contact_contact_details_website_label'),
                   value: clientUri,
                 },
@@ -212,7 +224,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           ...(tosUri
             ? [
                 {
-                  id: '1',
+                  id: '4',
                   label: Localization.translate('new_contact_add_new_contact_contact_details_tos_label'),
                   value: tosUri,
                 },
@@ -221,7 +233,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           ...(policyUri
             ? [
                 {
-                  id: '1',
+                  id: '5',
                   label: Localization.translate('new_contact_add_new_contact_contact_details_policy_label'),
                   value: policyUri,
                 },
@@ -230,7 +242,8 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         ]}
         primaryButton={{
           caption: translate('new_contact_add_new_contact_continue_caption'),
-          onPress: onContinuePressed,
+          onPress: onCreatePressed,
+          disabled: isCreateDisabled,
         }}
         secondaryButton={{
           caption: translate('action_abort_label'),

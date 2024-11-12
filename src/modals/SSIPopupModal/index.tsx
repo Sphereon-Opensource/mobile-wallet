@@ -45,14 +45,12 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
           details={details}
           input={input}
           extraDetails={extraDetails}
-          detailsButton={
-            detailsPopup
-              ? {
-                  caption: detailsPopup.buttonCaption,
-                  onPress: onShowExtraDetails,
-                }
-              : undefined
-          }
+          {...(detailsPopup && {
+            detailsPopup: {
+              caption: detailsPopup.buttonCaption,
+              onPress: onShowExtraDetails,
+            },
+          })}
           primaryButton={primaryButton}
           secondaryButton={secondaryButton}
         />
