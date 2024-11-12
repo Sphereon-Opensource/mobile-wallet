@@ -34,7 +34,7 @@ export const getMatchingUniqueDigitalCredential = (
       (typeof searchVC !== 'string' &&
         (uniqueVC.id === (<IVerifiableCredential>searchVC).id ||
           (uniqueVC.originalVerifiableCredential as VerifiableCredential).proof === (<IVerifiableCredential>searchVC).proof)) ||
-      (typeof searchVC === 'string' && (uniqueVC.originalVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC) ||
+      (typeof searchVC === 'string' && (uniqueVC.uniformVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC) ||
       // We are ignoring the signature of the sd-jwt as PEX signs the vc again and it will not match anymore with the jwt in the proof of the stored jsonld vc
       (typeof searchVC === 'string' &&
         CredentialMapper.isSdJwtEncoded(searchVC) &&

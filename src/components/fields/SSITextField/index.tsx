@@ -4,8 +4,8 @@ import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
 import {
   SSITextFieldContainerStyled as Container,
   SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
-  SSIFlexDirectionRowViewStyled as ContentContainer,
-  SSITextFieldContentTextStyled as ContentText,
+  SSITextFieldContentContainerStyled as ContentContainer,
+  SSITextH7SemiBoldLightStyled as ContentText,
   SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
   SSITextFieldHeaderContainerStyled as HeaderContainer,
   SSITextH5LightStyled as HeaderLabel,
@@ -15,6 +15,7 @@ import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {Linking} from 'react-native';
 import {checkAndAddHTTPPrefix, parseValidURL} from 'src/utils';
+import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   item: CredentialDetailsRow;
@@ -48,20 +49,23 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
           </StatusLabelContainer>
         )}
       </HeaderContainer>
-      <ContentContainer style={valueIsArray ? {flexDirection: 'column'} : undefined}>
-        <ContentBadgeContainer>
-          {item.isEditable && (
-            <EditBadgeContainer>
-              <SSIEditIcon />
-            </EditBadgeContainer>
-          )}
-        </ContentBadgeContainer>
+      <ContentContainer
+        disabled={!item.isEditable}
+        style={{...(valueIsArray && {flexDirection: 'column'})}}
+        {...(item.onPress && {onPress: item.onPress})}>
         {valueIsArray && item.value.map((v: string) => <ContentText style={{marginLeft: 25}}>{v}</ContentText>)}
         {!valueIsArray && (
           <ContentText onPress={onPressLink} style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
             {item.value}
           </ContentText>
         )}
+        <ContentBadgeContainer>
+          {item.isEditable && (
+            <EditBadgeContainer>
+              <SSIEditIcon color={fontColors.light} />
+            </EditBadgeContainer>
+          )}
+        </ContentBadgeContainer>
       </ContentContainer>
     </Container>
   );

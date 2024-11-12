@@ -50,7 +50,7 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {serverMetadata, trustedAnchors} = state.context;
+  const {serverMetadata, trustedAnchors, issuerBranding} = state.context;
 
   if (!serverMetadata) {
     return Promise.reject(Error('Missing serverMetadata in context'));
@@ -129,12 +129,18 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   };
   const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
+  const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       federations: federationParties,
       uri: contact.uri,
+      identities: contact.identities,
+      description: branding.description,
+      clientUri: branding.clientUri,
+      tosUri: branding.tosUri,
+      policyUri: branding.policyUri,
       roles: [CredentialRole.ISSUER],
       onAliasChange,
       onCreate,
@@ -227,7 +233,6 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject;
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
@@ -329,10 +334,7 @@ export const oid4vciStateNavigationListener = async (
     return;
   }
 
-  console.log(`STATE: ${JSON.stringify(state.value)}`);
-
   if (state.matches(OID4VCIMachineStates.addContact)) {
-    console.log(`going for addContact`);
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});

@@ -14,3 +14,4 @@ export * from './SSIQRReaderScreen';
 export * from './SSITermsOfServiceScreen';
 export * from './SSIVerificationCodeScreen';
 export * from './SSIWelcomeScreen';
+export * from './QRPresentationScreen';

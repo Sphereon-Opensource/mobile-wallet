@@ -6,6 +6,7 @@
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
 
+  "settings_dropdown_item_text": "Settings",
   "settings_title": "Settings",
   "account_title": "Account",
 
@@ -212,7 +213,7 @@
       "title": "Import personal information",
       "description": {
         "default": "Import your personal information from your national eID provider.",
-        "deutschland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "de": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
       }
     }
   },
@@ -421,5 +422,9 @@
   "new_contact_add_new_contact_contact_details_name_label": "Name",
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Terms of Service",
-  "new_contact_add_new_contact_contact_details_policy_label": "Privacy policy"
+  "new_contact_add_new_contact_contact_details_policy_label": "Privacy policy",
+
+  "present_qr_code_screen_header_title": "Present QR code",
+  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",
+  "present_qr_code_dropdown_item_text": "Present QR code"
 }

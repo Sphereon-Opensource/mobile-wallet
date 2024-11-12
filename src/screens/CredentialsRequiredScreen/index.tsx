@@ -3,18 +3,17 @@ import {useBackHandler} from '@react-native-community/hooks';
 import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDefinition} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
-
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import agent from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
-import {generateDigest, getCredentialIssuerContact, getOriginalVerifiableCredential} from '../../utils';
+import {generateDigest, getCredentialIssuerContact} from '../../utils';
 import {
   CredentialsRequiredScreenButtonContainerStyled as ButtonContainer,
   SSIBasicContainerStyled as Container,
@@ -173,7 +172,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         );
         const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential);
         const credentialSummary: CredentialSummary = await toCredentialSummary({
-          verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+          verifiableCredential: uniqueVC.uniformVerifiableCredential as VerifiableCredential,
           hash: uniqueVC.hash,
           credentialRole: uniqueVC.digitalCredential.credentialRole,
           branding: credentialBranding?.localeBranding,

@@ -19,7 +19,7 @@ import {
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, StackParamList} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
 import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
@@ -66,6 +66,10 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
 
   const onNavigateProfile = () => {
     navigation.navigate(MainRoutesEnum.SETTINGS);
+  };
+
+  const onNavigateQrPresentation = () => {
+    navigation.navigate(MainRoutesEnum.SHARE);
   };
 
   const onMore = async (): Promise<void> => {
@@ -117,10 +121,14 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
               <SSIDropDownList
                 buttons={[
                   {
-                    // caption: translate('profile_logout_action_caption'),
-                    caption: 'Settings',
+                    caption: translate('settings_dropdown_item_text'),
                     onPress: onNavigateProfile,
                     icon: HeaderMenuIconsEnum.SETTINGS,
+                  },
+                  {
+                    caption: translate('present_qr_code_dropdown_item_text'),
+                    onPress: onNavigateQrPresentation,
+                    icon: HeaderMenuIconsEnum.QR,
                   },
                 ]}
               />

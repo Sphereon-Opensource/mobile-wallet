@@ -63,6 +63,7 @@ import {
   OnboardingStackParamsList,
   RootState,
   ScreenRoutesEnum,
+  ShareStackParamList,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
@@ -86,6 +87,7 @@ import ContactsHeader from '../components/bars/ContactsHeader';
 import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
 import ContactActivityScreen from '../screens/ContactActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
+import QRPresentationScreen from '../screens/QRPresentationScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -93,6 +95,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
 const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
 const FunkeC2ShareBaseStack = createNativeStackNavigator<FunkeC2ShareStackParamsList>();
+const ShareBaseStack = createNativeStackNavigator<ShareStackParamList>();
 
 const Tab = createBottomTabNavigator();
 
@@ -184,6 +187,7 @@ const MainStackNavigator = (): JSX.Element => {
           </>
         )}
       />
+      <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
       <Stack.Screen
         name={MainRoutesEnum.ACCOUNT}
         children={() => (
@@ -218,10 +222,7 @@ const TabStackNavigator = (): JSX.Element => {
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={
-        // FIXME remove GERMANY check when we have a working federation screen besides PID import
-        credentialState.verifiableCredentials.length === 0 && activeUser?.countryCode === 'DE'
-          ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG
-          : NavigationBarRoutesEnum.CREDENTIALS
+        credentialState.verifiableCredentials.length === 0 ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG : NavigationBarRoutesEnum.CREDENTIALS
       }
       backBehavior="none">
       <Tab.Screen
@@ -251,17 +252,15 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      {!activeUser || activeUser.countryCode === 'DE' ? ( // FIXME remove when we have a working federation screen besides PID import
-        <Tab.Screen
-          name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
-          children={() => (
-            <>
-              <CredentialCatalogStack />
-              <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            </>
-          )}
-        />
-      ) : null}
+      <Tab.Screen
+        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        children={() => (
+          <>
+            <CredentialCatalogStack />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
         children={() => (
@@ -943,6 +942,21 @@ export const FunkeC2ShareStackScreenWithContext = (props: any): JSX.Element => (
   </FunkeC2ShareProvider>
 );
 
+const ShareStack = (): JSX.Element => {
+  return (
+    <ShareBaseStack.Navigator screenOptions={{animation: 'none'}} initialRouteName={ScreenRoutesEnum.QR_PRESENTATION}>
+      <ShareBaseStack.Screen
+        name={ScreenRoutesEnum.QR_PRESENTATION}
+        component={QRPresentationScreen}
+        options={{
+          header: props => <SSIHeaderBar headerSubTitle={translate('present_qr_code_screen_subtitle')} {...props} />,
+          headerTitle: translate('present_qr_code_screen_header_title'),
+        }}
+      />
+    </ShareBaseStack.Navigator>
+  );
+};
+
 const AuthenticationStack = (): JSX.Element => {
   return (
     <Stack.Navigator
@@ -1038,17 +1052,16 @@ export const OID4VCIStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_DETAILS}
         component={SSIContactDetailsScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
+            <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
+              //onBack={route.params.onBack}
+              // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.NEW_CONTACT_ADD}
@@ -1058,12 +1071,29 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
             />
           ),
         })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          headerTitle: translate('contact_identities_title'),
+          header: props => <SSIHeaderBar {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          headerTitle: translate('contact_activities_title'),
+          header: props => <SSIHeaderBar {...props} />,
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE}

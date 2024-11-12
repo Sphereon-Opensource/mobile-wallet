@@ -24,8 +24,6 @@ import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
-import {translate} from '../../../../localization/Localization';
-import {CONTACT_ALIAS_MAX_LENGTH} from '../../../../@config/constants';
 import SSITextInputField from '../../../fields/SSITextInputField';
 
 export interface IProps {

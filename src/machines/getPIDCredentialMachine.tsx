@@ -25,6 +25,13 @@ import {
   MappedCredential,
 } from '../types/machines/getPIDCredentialMachine';
 import {ErrorDetails} from '../types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
+import {computeEntryHash} from '@veramo/utils';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {OnboardingMachineStateType} from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentials`);
 
@@ -84,6 +91,7 @@ const getPIDCredentialMachineStates: GetPIDCredentialsMachineStatesConfig = {
       PREVIOUS: GetPIDCredentialsMachineStateTypes.reviewPIDCredentials,
       NEXT: {
         target: GetPIDCredentialsMachineStateTypes.declined,
+        actions: ['logDeclinePID'],
       },
     },
   },
@@ -167,28 +175,72 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
     pidCredentials: [],
   };
 
-  return createMachine<GetPIDCredentialsMachineContext, GetPIDCredentialsMachineEventTypes>({
-    id: opts?.machineId ?? 'GetPIDCredentials',
-    predictableActionArguments: true,
-    initial: GetPIDCredentialsMachineStateTypes.consentToAddPIDCredentials,
-    schema: {
-      events: {} as GetPIDCredentialsMachineEventTypes,
-      guards: {} as {type: GetPIDCredentialsMachineGuards.hasFunkeRefreshUrl},
-      services: {} as {
-        [GetPIDCredentialsMachineServices.retrievePIDCredentials]: {
-          data: Array<MappedCredential>;
-        };
-        [GetPIDCredentialsMachineServices.storePIDCredentials]: {
-          data: void;
-        };
-        [GetPIDCredentialsMachineServices.storeCredentialBranding]: {
-          data: void;
-        };
+  return createMachine<GetPIDCredentialsMachineContext, GetPIDCredentialsMachineEventTypes>(
+    {
+      id: opts?.machineId ?? 'GetPIDCredentials',
+      predictableActionArguments: true,
+      initial: GetPIDCredentialsMachineStateTypes.consentToAddPIDCredentials,
+      schema: {
+        events: {} as GetPIDCredentialsMachineEventTypes,
+        guards: {} as {type: GetPIDCredentialsMachineGuards.hasFunkeRefreshUrl},
+        services: {} as {
+          [GetPIDCredentialsMachineServices.retrievePIDCredentials]: {
+            data: Array<MappedCredential>;
+          };
+          [GetPIDCredentialsMachineServices.storePIDCredentials]: {
+            data: void;
+          };
+          [GetPIDCredentialsMachineServices.storeCredentialBranding]: {
+            data: void;
+          };
+        },
+      },
+      context: initialContext,
+      states: getPIDCredentialMachineStates,
+    },
+    {
+      actions: {
+        logDeclinePID: async (context, event): Promise<void> => {
+          context.pidCredentials.forEach(mappedCredential => {
+            // FIXME function is not exposed in SSI-SDK, for now made a copy here
+            function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
+              switch (documentFormat) {
+                case DocumentFormat.JSONLD:
+                  return CredentialDocumentFormat.JSON_LD;
+                case DocumentFormat.JWT:
+                  return CredentialDocumentFormat.JWT;
+                case DocumentFormat.SD_JWT_VC:
+                  return CredentialDocumentFormat.SD_JWT;
+                case DocumentFormat.MSO_MDOC:
+                  return CredentialDocumentFormat.MSO_MDOC;
+                default:
+                  throw new Error(`Not supported document format: ${documentFormat}`);
+              }
+            }
+
+            store.dispatch<any>(
+              storeActivityLogging({
+                level: LogLevel.INFO,
+                system: System.OID4VCI,
+                subSystemType: SubSystem.VC_ISSUER,
+                initiatorType: InitiatorType.SYSTEM,
+                description: 'decline credential',
+                actionType: ActionType.READ,
+                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+                // @ts-ignore
+                credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
+                credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
+                originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                partyCorrelationType: PartyCorrelationType.URL,
+                partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+                partyAlias: 'Bundesdruckerei GmbH',
+              }),
+            );
+          });
+        },
       },
     },
-    context: initialContext,
-    states: getPIDCredentialMachineStates,
-  });
+  );
 };
 
 export class GetPIDCredentialsMachine {

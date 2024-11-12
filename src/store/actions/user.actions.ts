@@ -36,6 +36,7 @@ import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
+import {getActivityLogging} from './logging.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
 import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
@@ -141,6 +142,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             await new Promise(resolve => setTimeout(resolve, 50));
             contactState = getState().contact;
           }
+          await dispatch(getActivityLogging());
           await dispatch(getVerifiableCredentials());
           // add small delay to make the conditional navigation working for the catalog
           await delay(700);
