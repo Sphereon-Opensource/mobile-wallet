@@ -3739,10 +3739,10 @@
     "@sphereon/ssi-types" "0.30.2-next.191+e02b30ba"
     "@veramo/core" "4.2.0"
 
-"@sphereon/ssi-sdk.qr-code-generator@^0.30.1":
-  version "0.30.1"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.qr-code-generator/-/ssi-sdk.qr-code-generator-0.30.1.tgz#d63658c85e815c706f5e1579f46b2ec306c669e5"
-  integrity sha512-MZUhW81BGZSk5vSmTf06S/dFjhTslWDBVO9Yjitug67SXb0F0fgo8c8bltrxtChCAgmv/QSph8wGn+hc6hu2dA==
+"@sphereon/ssi-sdk.qr-code-generator@0.30.2-next.191":
+  version "0.30.2-next.191"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk.qr-code-generator/-/ssi-sdk.qr-code-generator-0.30.2-next.191.tgz#916c591f5d4230201635dd960b43174d8fcb23af"
+  integrity sha512-SoANoNOuOM6pZO070FPFG5AASLQAyMuhbbNUaR9ZLCwFkTzLiRN6C3cSfdiWE9oN8QSnhzbzlqMHXNgb2fJbYg==
   dependencies:
     "@veramo/core" "4.2.0"
     base64url "^3.0.1"
