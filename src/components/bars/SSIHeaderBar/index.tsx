@@ -121,13 +121,12 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
               <SSIDropDownList
                 buttons={[
                   {
-                    // caption: translate('profile_logout_action_caption'),
-                    caption: 'Settings',
+                    caption: translate('settings_dropdown_item_text'),
                     onPress: onNavigateProfile,
                     icon: HeaderMenuIconsEnum.SETTINGS,
                   },
                   {
-                    caption: 'Present QR code',
+                    caption: translate('present_qr_code_dropdown_item_text'),
                     onPress: onNavigateQrPresentation,
                     icon: HeaderMenuIconsEnum.QR,
                   },
