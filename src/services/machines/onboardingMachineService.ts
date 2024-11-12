@@ -1,18 +1,23 @@
-import {CredentialCorrelationType, CredentialRole, DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store/src/types/issuanceBranding/issuanceBranding';
-import {CredentialMapper} from '@sphereon/ssi-types';
+import {
+  CredentialCorrelationType,
+  CredentialRole,
+  DigitalCredential,
+  IBasicCredentialLocaleBranding,
+  RegulationType,
+} from '@sphereon/ssi-sdk.data-store';
+import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
-import {deleteVerifiableCredential} from '../../store/actions/credential.actions';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {generateDigest} from '../../utils';
-import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {storagePersistPin} from '../storageService';
 import {ViewPreference} from '../../types/preferences';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -43,13 +48,8 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
 export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
   const {pidCredentials} = context;
 
-  const deleteCredentials = (await getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: false})).map(credential =>
-    store.dispatch<any>(deleteVerifiableCredential(credential.hash)),
-  );
-  await Promise.all(deleteCredentials);
-
   let parentId: string | undefined = undefined;
-
+  let parentCredentialHash: string | undefined = undefined;
   const storeCredentials: DigitalCredential[] = [];
   for (const mappedCredential of pidCredentials) {
     const digitalCredential = await agent.crsAddCredential({
@@ -66,10 +66,29 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
       },
       opts: {hasher: generateDigest},
     });
+
+    storeCredentials.push(digitalCredential);
+
     if (!parentId) {
       parentId = digitalCredential.id;
+      parentCredentialHash = digitalCredential.hash;
     }
-    storeCredentials.push(digitalCredential);
+
+    store.dispatch<any>(
+      storeAuditLogging({
+        level: LogLevel.TRACE,
+        system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'storePIDCredentials function call',
+        actionType: ActionType.CREATE,
+        actionSubType: DefaultActionSubType.VC_ISSUE,
+        diagnosticData: {digitalCredential},
+        partyCorrelationType: PartyCorrelationType.URL,
+        partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        partyAlias: 'Bundesdruckerei GmbH',
+      }),
+    );
   }
 
   return storeCredentials;

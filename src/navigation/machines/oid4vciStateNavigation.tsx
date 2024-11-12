@@ -227,7 +227,6 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject;
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);

@@ -3,18 +3,18 @@ import Debug, {Debugger} from 'debug';
 import {funkeC2ShareStateNavigationListener} from '../navigation/machines/funkeC2ShareStateNavigation';
 import {APP_ID} from '../@config/constants';
 import {
-  FunkeC2ShareStateMachine,
   FunkeC2ShareMachineContext,
   FunkeC2ShareMachineEventTypes,
-  FunkeC2ShareMachineOpts,
-  FunkeC2ShareMachineStatesStatesConfig,
-  FunkeC2ShareMachineStateTypes,
-  FunkeC2ShareMachineServices,
+  FunkeC2ShareMachineGuard,
   FunkeC2ShareMachineGuards,
   FunkeC2ShareMachineInterpreter,
-  InstanceFunkeC2ShareMachineOpts,
+  FunkeC2ShareMachineOpts,
+  FunkeC2ShareMachineServices,
   FunkeC2ShareMachineState,
-  FunkeC2ShareMachineGuard,
+  FunkeC2ShareMachineStatesStatesConfig,
+  FunkeC2ShareMachineStateTypes,
+  FunkeC2ShareStateMachine,
+  InstanceFunkeC2ShareMachineOpts,
 } from '../types/machines/funkeC2ShareMachine';
 import {SiopV2AuthorizationRequestData} from '../types/machines/siopV2';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
@@ -32,6 +32,11 @@ import {
   storeCredentialBranding,
   storePIDCredentials,
 } from '../services/machines/funkeC2ShareMachineService';
+import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getMatchingPidCredentials} from '../services/pexService';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeCShare`);
 
@@ -147,7 +152,7 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
     on: {
       PREVIOUS: FunkeC2ShareMachineStateTypes.acceptRequestInformation,
       NEXT: FunkeC2ShareMachineStateTypes.sendResponse,
-      DECLINE: FunkeC2ShareMachineStateTypes.declined,
+      DECLINE: ['logDeclineShare', FunkeC2ShareMachineStateTypes.declined],
     },
   },
   sendResponse: {
@@ -252,45 +257,93 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
     pidCredentials: [],
   };
 
-  return createMachine<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>({
-    id: opts?.machineId ?? 'FunkeC2Share',
-    predictableActionArguments: true,
-    initial: FunkeC2ShareMachineStateTypes.createConfig,
-    schema: {
-      events: {} as FunkeC2ShareMachineEventTypes,
-      guards: {} as {
-        type: FunkeC2ShareMachineGuards.hasFunkeRefreshUrl;
+  return createMachine<FunkeC2ShareMachineContext, FunkeC2ShareMachineEventTypes>(
+    {
+      id: opts?.machineId ?? 'FunkeC2Share',
+      predictableActionArguments: true,
+      initial: FunkeC2ShareMachineStateTypes.createConfig,
+      schema: {
+        events: {} as FunkeC2ShareMachineEventTypes,
+        guards: {} as {
+          type: FunkeC2ShareMachineGuards.hasFunkeRefreshUrl;
+        },
+        services: {} as {
+          [FunkeC2ShareMachineServices.createConfig]: {
+            data: CreateConfigResult;
+          };
+          [FunkeC2ShareMachineServices.getSiopRequest]: {
+            data: Siopv2AuthorizationRequestData;
+          };
+          [FunkeC2ShareMachineServices.retrieveContact]: {
+            data: Party | undefined;
+          };
+          [FunkeC2ShareMachineServices.retrievePIDCredentials]: {
+            data: Array<MappedCredential>;
+          };
+          [FunkeC2ShareMachineServices.sendResponse]: {
+            data: Siopv2AuthorizationResponseData;
+          };
+          [FunkeC2ShareMachineServices.storePIDCredentials]: {
+            data: void;
+          };
+          [FunkeC2ShareMachineServices.storeCredentialBranding]: {
+            data: void;
+          };
+          [FunkeC2ShareMachineServices.fetchCredentialsInStore]: {
+            data: void;
+          };
+        },
       },
-      services: {} as {
-        [FunkeC2ShareMachineServices.createConfig]: {
-          data: CreateConfigResult;
-        };
-        [FunkeC2ShareMachineServices.getSiopRequest]: {
-          data: Siopv2AuthorizationRequestData;
-        };
-        [FunkeC2ShareMachineServices.retrieveContact]: {
-          data: Party | undefined;
-        };
-        [FunkeC2ShareMachineServices.retrievePIDCredentials]: {
-          data: Array<MappedCredential>;
-        };
-        [FunkeC2ShareMachineServices.sendResponse]: {
-          data: Siopv2AuthorizationResponseData;
-        };
-        [FunkeC2ShareMachineServices.storePIDCredentials]: {
-          data: void;
-        };
-        [FunkeC2ShareMachineServices.storeCredentialBranding]: {
-          data: void;
-        };
-        [FunkeC2ShareMachineServices.fetchCredentialsInStore]: {
-          data: void;
-        };
+      context: initialContext,
+      states: funkeCShareMachineStates,
+    },
+    {
+      actions: {
+        logDeclineShare: async (context, event) => {
+          const sharedCredential = new Map<string, UniqueDigitalCredential>();
+
+          if (context.authorizationRequestData?.presentationDefinitions) {
+            for (const presentationDefinition of context.authorizationRequestData.presentationDefinitions) {
+              const matchingCredentials = await getMatchingPidCredentials({
+                presentationDefinitionWithLocation: presentationDefinition,
+                pidCredentials: context.pidCredentials,
+                issuerCorrelationId: context.authorizationRequestData.correlationId,
+              });
+              if (matchingCredentials) {
+                matchingCredentials.forEach(credential => {
+                  sharedCredential.set(credential.hash, credential);
+                });
+              }
+            }
+          }
+
+          sharedCredential.forEach(credential =>
+            store.dispatch<any>(
+              storeActivityLogging({
+                level: LogLevel.INFO,
+                system: System.OID4VP,
+                subSystemType: SubSystem.OID4VP_OP,
+                initiatorType: InitiatorType.USER,
+                description: 'Credential was declined by the user',
+                actionType: ActionType.READ,
+                actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
+                correlationId: context.didAuthConfig?.sessionId,
+                // @ts-ignore
+                credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+                credentialHash: credential.hash,
+                originalCredential: JSON.stringify(credential.digitalCredential),
+                diagnosticData: context.authorizationRequestData?.presentationDefinitions,
+                // @ts-ignore
+                partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
+                partyCorrelationId: context.contact?.identities[0].identifier.correlationId,
+                partyAlias: context.contact?.contact.displayName,
+              }),
+            ),
+          );
+        },
       },
     },
-    context: initialContext,
-    states: funkeCShareMachineStates,
-  });
+  );
 };
 
 export class FunkeC2ShareMachine {
