@@ -25,7 +25,7 @@ const QRPresentationScreen: FC = () => {
       },
       renderingProps: {
         bgColor: 'white',
-        fgColor: '#352575',
+        fgColor: 'black',
         level: 'Q',
         size: (3 * width) / 4,
         title: 'Presentation',
