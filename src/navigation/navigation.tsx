@@ -63,6 +63,7 @@ import {
   OnboardingStackParamsList,
   RootState,
   ScreenRoutesEnum,
+  ShareStackParamList,
   StackParamList,
   SwitchRoutesEnum,
   WalletAuthLockState,
@@ -86,6 +87,7 @@ import ContactsHeader from '../components/bars/ContactsHeader';
 import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
 import ContactActivityScreen from '../screens/ContactActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
+import QRPresentationScreen from '../screens/QRPresentationScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -93,6 +95,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList>();
 const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
 const FunkeC2ShareBaseStack = createNativeStackNavigator<FunkeC2ShareStackParamsList>();
+const ShareBaseStack = createNativeStackNavigator<ShareStackParamList>();
 
 const Tab = createBottomTabNavigator();
 
@@ -184,6 +187,7 @@ const MainStackNavigator = (): JSX.Element => {
           </>
         )}
       />
+      <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
       <Stack.Screen
         name={MainRoutesEnum.ACCOUNT}
         children={() => (
@@ -942,6 +946,21 @@ export const FunkeC2ShareStackScreenWithContext = (props: any): JSX.Element => (
     <FunkeC2ShareStack />
   </FunkeC2ShareProvider>
 );
+
+const ShareStack = (): JSX.Element => {
+  return (
+    <ShareBaseStack.Navigator screenOptions={{animation: 'none'}} initialRouteName={ScreenRoutesEnum.QR_PRESENTATION}>
+      <ShareBaseStack.Screen
+        name={ScreenRoutesEnum.QR_PRESENTATION}
+        component={QRPresentationScreen}
+        options={{
+          header: props => <SSIHeaderBar headerSubTitle={translate('present_qr_code_screen_subtitle')} {...props} />,
+          headerTitle: translate('present_qr_code_screen_header_title'),
+        }}
+      />
+    </ShareBaseStack.Navigator>
+  );
+};
 
 const AuthenticationStack = (): JSX.Element => {
   return (
