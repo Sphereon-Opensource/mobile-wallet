@@ -72,6 +72,7 @@
     "@sphereon/ssi-sdk.issuance-branding": "0.30.2-next.191",
     "@sphereon/ssi-sdk.mdl-mdoc": "0.30.2-next.191",
     "@sphereon/ssi-sdk.oid4vci-holder": "0.30.2-next.191",
+    "@sphereon/ssi-sdk.qr-code-generator": "0.30.2-next.191",
     "@sphereon/ssi-sdk.sd-jwt": "0.30.2-next.191",
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "0.30.2-next.191",
     "@sphereon/ssi-sdk.vc-handler-ld-local": "0.30.2-next.191",
