@@ -47,7 +47,7 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
       case HeaderMenuIconsEnum.SETTINGS:
         return <SettingsIcon color={fontColor} />;
       case HeaderMenuIconsEnum.QR:
-        return <SSIQRIcon primaryColor={fontColor.toString()} secondaryColor={fontColor.toString()} />;
+        return <SSIQRIcon primaryColor={fontColor} secondaryColor={fontColor} />;
       default:
         return <View />;
     }
