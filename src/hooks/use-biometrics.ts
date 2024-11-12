@@ -6,6 +6,7 @@ import {IUserState} from '../types/store/user.types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../types';
 import {setBiometrics} from '../store/actions/user.actions';
+import {useNavigation} from '@react-navigation/native';
 
 export const useBiometricsEnabledContext = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -28,12 +29,16 @@ export const useBiometricsEnabledContext = () => {
 
 export const useBiometrics = () => {
   const authenticateBiometrically = async () => {
+    console.log('in biometrics prompt');
     try {
       const strongBiometricsSupported = await getStrongBiometricsSupport();
+      console.log('check strong biometrics');
       if (!strongBiometricsSupported) {
+        console.log('strong bio not found. returning false....');
         return false;
       }
 
+      console.log('strong bio found. prompting user...');
       const result = await Auth.authenticateAsync({
         promptMessage: 'Authenticate',
         cancelLabel: 'Cancel',
@@ -41,6 +46,8 @@ export const useBiometrics = () => {
         fallbackLabel: 'Try again later',
         biometricsSecurityLevel: 'strong',
       });
+
+      console.log('user prompted. returning ....');
 
       return result.success;
     } catch (error) {
@@ -68,11 +75,40 @@ export const useAuthEffect = (effect: AuthEffectCallback) => {
   const {prompt} = useBiometrics();
 
   useEffect(() => {
+    console.log('in useEffect');
     if (biometricsEnabled) {
+      console.log('found bio enabled. prompting....');
       prompt().then(async (result: boolean) => {
         await effect(result);
       });
     }
+  }, []);
+};
+
+export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
+  const navigation = useNavigation();
+  const biometricsEnabled = useBiometricsEnabledContext();
+
+  const {prompt} = useBiometrics();
+
+  useEffect(() => {
+    console.log('in useEffect');
+    const handleFocus = () => {
+      console.log('running listener');
+      if (biometricsEnabled) {
+        console.log('found biometrics enabled');
+        prompt().then((result: boolean) => {
+          void effect(result);
+        });
+      }
+    };
+    navigation.addListener('focus', handleFocus);
+
+    return () => {
+      console.log('unmounting');
+      navigation.removeListener('focus', handleFocus);
+      // removeListener();
+    };
   }, []);
 };
 

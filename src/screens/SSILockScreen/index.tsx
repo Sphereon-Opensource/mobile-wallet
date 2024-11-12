@@ -6,17 +6,13 @@ import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
-import {setBiometrics} from '../../store/actions/user.actions';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useAuthEffect} from '../../hooks/use-biometrics';
-import {Platform} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
+import {useAuthEffect, useAuthFocusEffect, useBiometricsEnabledContext} from '../../hooks/use-biometrics';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -29,10 +25,21 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   }, []);
 
-  const dispatch = useDispatch();
+  const biometricsEnabled = useBiometricsEnabledContext();
 
-  useAuthEffect(async (success: boolean) => {
+  // useAuthEffect(async (success: boolean) => {
+  //   console.log('effect');
+  //   if (success) {
+  //     console.log('found success');
+  //     const {onAuthenticate} = props.route.params;
+  //     await onAuthenticate();
+  //   }
+  // });
+
+  useAuthFocusEffect(async (success: boolean) => {
+    console.log('effect');
     if (success) {
+      console.log('found success');
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
     }
@@ -56,13 +63,15 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     <Container>
       <StatusBar />
       <PinCodeContainer>
-        <SSIPinCode
-          length={PIN_CODE_LENGTH}
-          accessibilityLabel={translate('pin_code_accessibility_label')}
-          accessibilityHint={translate('pin_code_accessibility_hint')}
-          errorMessage={translate('pin_code_invalid_code_message')}
-          onVerification={onVerification}
-        />
+        {!biometricsEnabled && (
+          <SSIPinCode
+            length={PIN_CODE_LENGTH}
+            accessibilityLabel={translate('pin_code_accessibility_label')}
+            accessibilityHint={translate('pin_code_accessibility_hint')}
+            errorMessage={translate('pin_code_invalid_code_message')}
+            onVerification={onVerification}
+          />
+        )}
       </PinCodeContainer>
       {/*<BadgeButton*/}
       {/*  caption={translate('lock_emergency_button_caption')}*/}
