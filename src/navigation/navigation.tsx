@@ -963,7 +963,6 @@ const ShareStack = (): JSX.Element => {
         options={{
           header: props => <SSIHeaderBar headerSubTitle={translate('present_qr_code_screen_subtitle')} {...props} />,
           headerTitle: translate('present_qr_code_screen_header_title'),
-          headerShown: true,
         }}
       />
     </ShareBaseStack.Navigator>
