@@ -447,7 +447,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
                 initiatorType: InitiatorType.SYSTEM,
                 description: 'decline credential',
                 actionType: ActionType.READ,
-                actionSubType: DefaultActionSubType.VC_DECLINE,
+                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
                 // @ts-ignore
                 credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
                 credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
