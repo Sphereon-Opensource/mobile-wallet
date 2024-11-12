@@ -129,6 +129,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   };
   const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
+  const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
@@ -136,10 +137,10 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       federations: federationParties,
       uri: contact.uri,
       identities: contact.identities,
-      description: issuerBranding?.[0]?.description,
-      clientUri: issuerBranding?.[0]?.clientUri,
-      tosUri: issuerBranding?.[0]?.tosUri,
-      policyUri: issuerBranding?.[0]?.policyUri,
+      description: branding.description,
+      clientUri: branding.clientUri,
+      tosUri: branding.tosUri,
+      policyUri: branding.policyUri,
       roles: [CredentialRole.ISSUER],
       onAliasChange,
       onCreate,
