@@ -407,5 +407,8 @@
   "new_contact_add_new_contact_contact_details_name_label": "Naam",
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
-  "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid"
+  "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid",
+
+  "present_qr_code_screen_header_title": "Present QR code",
+  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code."
 }

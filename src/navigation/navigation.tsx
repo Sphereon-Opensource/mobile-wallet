@@ -961,8 +961,8 @@ const ShareStack = (): JSX.Element => {
         name={ScreenRoutesEnum.QR_PRESENTATION}
         component={QRPresentationScreen}
         options={{
-          header: props => <SSIHeaderBar headerSubTitle="Show the QR code to the party of interest. So they can scan your QR code." {...props} />,
-          headerTitle: 'Present QR code',
+          header: props => <SSIHeaderBar headerSubTitle={translate('present_qr_code_screen_subtitle')} {...props} />,
+          headerTitle: translate('present_qr_code_screen_header_title'),
           headerShown: true,
         }}
       />
