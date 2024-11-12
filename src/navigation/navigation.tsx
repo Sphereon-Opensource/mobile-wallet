@@ -187,14 +187,7 @@ const MainStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      <Stack.Screen
-        name={MainRoutesEnum.SHARE}
-        children={() => (
-          <>
-            <ShareStack />
-          </>
-        )}
-      />
+      <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
       <Stack.Screen
         name={MainRoutesEnum.ACCOUNT}
         children={() => (
