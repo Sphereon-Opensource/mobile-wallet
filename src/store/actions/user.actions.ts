@@ -39,7 +39,7 @@ import {getVerifiableCredentials} from './credential.actions';
 import {getActivityLogging} from './logging.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
-import {OnboardingBiometricsStatus} from 'src/types/machines/onboarding';
+import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
 export const createUser = (
   args: BasicUser,

@@ -4,9 +4,21 @@ export type MappablePayload = Record<MappableKeys, any>;
 
 export type Mode = 'import' | 'disclose';
 
+function formatValue(value: any): string {
+  if (typeof value === 'object' && value !== null) {
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    }
+    // Handle nested objects by taking their values
+    return Object.values(value).join(', ');
+  }
+  return String(value);
+}
+
 export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): AusweisRequestedInfoItem[] {
   const humanReadablePayload: AusweisRequestedInfoItem[] = [];
   const {nationalities, country, locality, postal_code, street_address, address, ...objectToMap} = keyMappings;
+
   Object.entries(objectToMap).forEach(([k, label]) => {
     const mappedValue = properties[k];
     const hasValue = !!mappedValue;
@@ -14,7 +26,7 @@ export function convertFromPIDPayload(properties: MappablePayload, mode: Mode): 
       humanReadablePayload.push({
         label: label,
         icon: IconMap[k],
-        data: mappedValue,
+        data: formatValue(mappedValue),
       });
     }
   });
@@ -56,18 +68,25 @@ const sdjwtAddressFields: SdjwtAddressField[] = ['street_address', 'postal_code'
 const mdocAddressFields: MdocAddressField[] = ['resident_street', 'resident_postal_code', 'resident_city', 'resident_country'];
 
 export function extractAddressFromPayload(properties: MappablePayload): AusweisRequestedInfoItem {
-  const extractFields = (fields: (SdjwtAddressField | MdocAddressField)[]) => {
+  const extractFields = (properties: MappablePayload, fields: (SdjwtAddressField | MdocAddressField)[]) => {
     return fields
-      .map(field => properties[field])
+      .map(field => {
+        const value = properties[field];
+        return value ? formatValue(value) : '';
+      })
       .filter(Boolean)
-      .join(' ');
+      .join(', ');
   };
 
-  const value = [extractFields(sdjwtAddressFields), extractFields(mdocAddressFields)].filter(Boolean).join(' ');
+  const values = [extractFields(properties, sdjwtAddressFields), extractFields(properties, mdocAddressFields)].filter(Boolean);
+
+  if (values.length === 0 && 'address' in properties) {
+    values.push(extractFields(properties['address'], sdjwtAddressFields));
+  }
 
   return {
     label: keyMappings['address'],
-    data: value.trim(),
+    data: values.join(' ').trim(),
     icon: IconMap['address'],
   };
 }

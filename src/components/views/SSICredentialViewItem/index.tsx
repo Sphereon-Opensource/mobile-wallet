@@ -70,7 +70,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
             </CredentialStatusContainer>
           </ContentTopContainer>
           <ContentMiddleContainer>
-            <IssuerCaption>{issuer.name}</IssuerCaption>
+            <IssuerCaption>{issuer.alias ?? issuer.name}</IssuerCaption>
           </ContentMiddleContainer>
           <ContentBottomContainer>
             <IssueDateCaption>{showTime ? toLocalDateTimeString(issueDate) : toLocalDateString(issueDate)}</IssueDateCaption>

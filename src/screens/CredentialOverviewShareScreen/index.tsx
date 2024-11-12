@@ -2,13 +2,15 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton, SSILogo as Logo, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
-import React, {useMemo, useRef} from 'react';
+import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import {translate} from '../../localization/Localization';
+import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
 
 import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
@@ -17,6 +19,7 @@ import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/co
 
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
+import {AusweisRequestedInfoItem} from '../Onboarding/ImportDataConsentScreen/constants';
 
 const MiniCard = styled.Pressable`
   height: 50px;
@@ -47,6 +50,7 @@ const RequestedInformationContainer = styled.View`
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credential, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
+  const [credentialContent, setCredentialContent] = useState<AusweisRequestedInfoItem[] | CredentialDetailsRow[]>([]);
 
   if (credential === undefined) {
     showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_required_no_available_label')}); // FIXME Funke
@@ -54,7 +58,25 @@ const SelectOverviewShareScreen = (props: Props) => {
     return; // FIXME Funke, we need to go to an error / warn screen for this
   }
   const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
-  const data = useMemo(() => convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'), [credential]);
+  const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
+
+  useEffect(() => {
+    if (!credential) return;
+
+    const loadContent = async () => {
+      if (isPIDCredential) {
+        setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
+      } else {
+        setCredentialContent(
+          await toCredentialDetailsRow({
+            object: {...uniformCredential.credentialSubject},
+          }),
+        );
+      }
+    };
+
+    void loadContent();
+  }, [credential, isPIDCredential]);
 
   const ref = useRef<ScrollView>(null);
   const accordionExpanded = useSharedValue(false);
@@ -159,7 +181,11 @@ const SelectOverviewShareScreen = (props: Props) => {
           </View>
         </View>
         <View style={{flex: 1}}>
-          <ImportInformationSummary data={data} />
+          {isPIDCredential ? (
+            <ImportInformationSummary data={credentialContent as Array<AusweisRequestedInfoItem>} />
+          ) : (
+            <SSICredentialDetailsView credentialProperties={credentialContent as Array<CredentialDetailsRow>} />
+          )}
         </View>
       </View>
     </ScreenContainer>

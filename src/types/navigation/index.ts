@@ -1,6 +1,6 @@
 import {NavigationHelpers} from '@react-navigation/native';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
@@ -21,6 +21,7 @@ export type StackParamList = {
   //fixme: changed the any to an actual type
   CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
+  SHARE: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
@@ -32,6 +33,8 @@ export type StackParamList = {
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
+  ContactIdentities: IContactIdentitiesProps;
+  ContactActivity: IContactActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   BrowserOpen: IBrowserOpen;
@@ -47,6 +50,10 @@ export type StackParamList = {
   CredentialCatalog: Record<string, never>;
   GET_PID_CREDENTIALS: Record<string, never>;
   FUNKE_C2_SHARE: Record<string, never>;
+  SETTINGS: Record<string, never>;
+  ACCOUNT: Record<string, never>;
+  AGE_DERIVED_CLAIMS: Record<string, never>;
+  NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -95,6 +102,10 @@ export type FunkeC2ShareStackParamsList = {
   // IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type ShareStackParamList = {
+  QrPresentation: Record<string, never>;
 };
 
 // export interface IImportDataConsentProps {
@@ -203,6 +214,15 @@ export interface IPopupModalProps {
   image?: PopupImagesEnum;
   title?: string;
   titleBadge?: PopupBadgesEnum;
+  input?: {
+    // TODO temp solution to support input on the modal
+    label?: string;
+    initialValue?: string;
+    placeHolder?: string;
+    maxLength?: number;
+    onEndEditing?: (value: string) => Promise<void>;
+    onValueChange?: (value: string) => Promise<void>;
+  };
   details?: string;
   extraDetails?: string;
   detailsPopup?: {
@@ -232,6 +252,14 @@ export interface IContactDetailsProps {
   contact: Party;
 }
 
+export interface IContactIdentitiesProps {
+  identities: Party['identities'];
+}
+
+export interface IContactActivityProps {
+  contact: Party;
+}
+
 export interface IContactAddProps {
   name: string;
   uri?: string;
@@ -241,6 +269,22 @@ export interface IContactAddProps {
   onConsentChange?: (hasConsent: boolean) => Promise<void>;
   onAliasChange?: (alias: string) => Promise<void>;
   hasConsent?: boolean;
+  isCreateDisabled?: boolean | (() => boolean);
+}
+
+export interface INewContactAddProps {
+  name: string;
+  uri?: string;
+  description?: string;
+  clientUri?: string;
+  tosUri?: string;
+  policyUri?: string;
+  federations?: Array<Party>;
+  roles?: Array<CredentialRole>;
+  identities?: Array<NonPersistedIdentity>; // TODO we do not do this anymore?
+  onCreate: (contact: Party) => Promise<void>;
+  onDecline: () => Promise<void>;
+  onAliasChange?: (alias: string) => Promise<void>; // TODO we do not do this anymore?
   isCreateDisabled?: boolean | (() => boolean);
 }
 
@@ -275,6 +319,10 @@ export enum MainRoutesEnum {
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
   FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
+  SHARE = 'SHARE',
+  SETTINGS = 'SETTINGS',
+  ACCOUNT = 'ACCOUNT',
+  AGE_DERIVED_CLAIMS = 'AGE_DERIVED_CLAIMS',
 }
 
 export enum NavigationBarRoutesEnum {
@@ -290,12 +338,15 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
+  QR_PRESENTATION = 'QrPresentation',
   VERIFICATION_CODE = 'VerificationCode',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
+  CONTACT_IDENTITIES = 'ContactIdentities',
+  CONTACT_ACTIVITY = 'ContactActivity',
   NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
   LOCK = 'Lock',
   BROWSER_OPEN = 'BrowserOpen',
@@ -304,6 +355,7 @@ export enum ScreenRoutesEnum {
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
+  NEW_CONTACT_ADD = 'NewContactAdd',
 }
 
 export interface ISiopV2PProps {

@@ -5,6 +5,28 @@
   "credentials_view_item_expires_on": "Vervalt op",
   "swipe_delete_button_caption": "Verwijderen",
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
+
+  "settings_dropdown_item_text": "Settings",
+  "settings_title": "Settings",
+  "account_title": "Account",
+
+  "settings_general_section_label": "General",
+  "settings_privacy_controls_section_label": "Privacy Controls",
+  "settings_feedback_controls_section_label": "Privacy Controls",
+  "settings_logout_label": "Sign out",
+
+  "account_personal_section_label": "Personal",
+  "account_general_section_label": "General",
+  "account_personal_information_label": "Personal information",
+  "account_login_and_security_label": "Login and security",
+  "account_biometric_login_label": "Biometric authentication",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Delete wallet",
+
+  "age_derived_claims_title": "Age derived claims",
+  "age_derived_claims_screen_title": "Age derived claims",
+  "age_dervived_claims_screen_description": "The age derived claims are there to proof your age to an other party without giving them your exact age to them.",
+
   "biometrics_title": "Do you want to enable Biometric login?",
 
   "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
@@ -23,6 +45,7 @@
   "action_continue_label": "Continue",
   "action_cancel_label": "Annuleren",
   "action_decline_label": "Weigeren",
+  "action_abort_label": "Afbreken",
   "action_accept_label": "Accepteren",
   "action_sign_label": "Ondertekenen",
   "verification_code_title": "Voer uw\nverificatie code in",
@@ -367,5 +390,27 @@
   "onboarding_machine_retrieve_credentials_error_title": "Ophalen credentials",
   "onboarding_skip_credential_import_step3_caption": "Ik zal dit gedeelte later afmaken",
   "onboarding_store_credential_branding_error_title": "Opslaan credential branding",
-  "share_credential_c2_flow_title": "The following information will be shared"
+  "share_credential_c2_flow_title": "The following information will be shared",
+  "new_contact_add_new_contact_detected_title": "Herken je {{partyName}}?",
+  "new_contact_add_new_contact_detected_subtitle": "Dit is de eerste interactie met deze partij. Wil je doorgaan?",
+  "federation_view_untrusted_title": "{{partyName}} heeft een laag vertrouwensniveau",
+  "federation_view_trusted_title": "{{partyName}} heeft een hoog vertrouwensniveau",
+  "federation_view_untrusted_description": "De partij maakt geen deel uit van een federatie die door de wallet wordt vertrouwd",
+  "federation_view_trusted_description": "De partij maakt deel uit van een federatie die door de wallet wordt vertrouwd",
+  "new_contact_add_new_contact_continue_caption": "Ja, doorgaan",
+  "new_contact_add_new_contact_abort_cancel_caption": "Nee, annuleren",
+  "new_contact_add_new_contact_abort_continue_caption": "Ja, ik wil stoppen",
+  "new_contact_add_new_contact_create_title": "Contact aliasnaam",
+  "new_contact_add_new_contact_create_description": "Je kunt een aliasnaam voor het contact aanmaken door een nieuwe naam in het tekstveld hieronder in te voeren.",
+  "new_contact_add_new_contact_abort_title": "Weet je zeker dat je wilt stoppen?",
+  "new_contact_add_new_contact_abort_description": "Als je stopt, betekent dit dat je het interactieproces met {{partyName}} zal beëindigen.",
+  "new_contact_add_new_contact_contact_details_description_label": "Beschrijving",
+  "new_contact_add_new_contact_contact_details_name_label": "Naam",
+  "new_contact_add_new_contact_contact_details_website_label": "Website",
+  "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
+  "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid",
+
+  "present_qr_code_screen_header_title": "Present QR code",
+  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",
+  "present_qr_code_dropdown_item_text": "Present QR code"
 }

@@ -82,6 +82,8 @@ export const SSITextH3RegularStyled = styled.Text`
 
 export const SSITextH3RegularLightStyled = styled(SSITextH3RegularStyled)`
   color: ${fontColors.light};
+  padding-right: 8px;
+  margin-right: 8px;
 `;
 
 // TODO name semibold
