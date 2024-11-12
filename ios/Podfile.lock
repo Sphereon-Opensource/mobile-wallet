@@ -1619,11 +1619,12 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - OpenSSL-Universal
-    - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
     - YubiKit
     - ZXingObjC
+  trunk:
+    - SDWebImage
 
 EXTERNAL SOURCES:
   AusweisSdk:

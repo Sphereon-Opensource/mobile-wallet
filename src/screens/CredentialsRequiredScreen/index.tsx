@@ -173,7 +173,7 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
         );
         const issuer: Party | undefined = getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential);
         const credentialSummary: CredentialSummary = await toCredentialSummary({
-          verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+          verifiableCredential: uniqueVC.uniformVerifiableCredential as VerifiableCredential,
           hash: uniqueVC.hash,
           credentialRole: uniqueVC.digitalCredential.credentialRole,
           branding: credentialBranding?.localeBranding,
