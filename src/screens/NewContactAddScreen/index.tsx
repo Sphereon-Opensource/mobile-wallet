@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useCallback, useEffect, useState} from 'react';
 import {BackHandler, Keyboard} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
@@ -11,23 +11,47 @@ import {getContacts} from '../../services/contactService';
 import {agentContext} from '../../agent';
 import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
-import {createContact, updateContact} from '../../store/actions/contact.actions';
+import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
+import {useFocusEffect} from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
-  const {name, uri, roles, description, clientUri, tosUri, policyUri, identities, federations, onCreate, onDecline, onAliasChange, isCreateDisabled} =
-    props.route.params;
+  const {
+    name,
+    uri,
+    roles,
+    description,
+    clientUri,
+    tosUri,
+    policyUri,
+    identities,
+    federations,
+    onCreate,
+    onDecline,
+    onAliasChange,
+    isCreateDisabled,
+    onBack,
+  } = props.route.params;
   const [contactAlias, setContactAlias] = useState(name);
   const dispatch = useDispatch();
   const contactState = useSelector((state: RootState) => state.contact);
+  const [brandedFederations, setBrandedFederations] = useState<Array<Party>>([]);
+
+  useEffect((): void => {
+    if (!federations) {
+      return;
+    }
+    const branded = federations.map(federation => fetchBrandingForContact(federation));
+    Promise.all(branded).then(result => setBrandedFederations(result));
+  }, []);
 
   useEffect((): void => {
     // FIXME we should set the default name in the machine and pass that to the screen
     void onAliasChange?.(name);
   }, []);
 
-  const onBack = (): boolean => {
+  const onBackPress = (): boolean => {
     if (onBack) {
       void onBack();
       // make sure event stops here
@@ -39,9 +63,12 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     return true;
   };
 
-  useEffect((): void => {
-    BackHandler.addEventListener('hardwareBackPress', onBack);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => backHandler.remove();
+    }, [onBackPress]),
+  );
 
   const onValidate = async (value: string): Promise<void> => {
     if (value.trim().length === 0) {
@@ -148,7 +175,11 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container>
       {federations !== undefined && (
-        <FederationTrustView partyName={name} federations={federations} style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}} />
+        <FederationTrustView
+          partyName={name}
+          federations={brandedFederations}
+          style={{marginTop: 12, marginBottom: 24, marginRight: 24, marginLeft: 24}}
+        />
       )}
       <ContactInformationView
         name={name}

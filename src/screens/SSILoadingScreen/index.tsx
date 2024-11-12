@@ -1,5 +1,6 @@
-import {PureComponent} from 'react';
-import {BackHandler, NativeEventSubscription} from 'react-native';
+import {FC, ReactElement, useCallback} from 'react';
+import {BackHandler} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   SSILoadingScreenActivityCaptionStyled as ActivityCaption,
@@ -11,29 +12,24 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOADING>;
 
-class SSILoadingScreen extends PureComponent<Props> {
-  hardwareBackPressListener: NativeEventSubscription;
+const SSILoadingScreen: FC<Props> = (props: Props): ReactElement => {
+  const {message} = props.route.params;
 
-  componentDidMount = (): void => {
-    // we add this listener to block the os back button from executing on the loading screen. returning true will not let the event bubble up.
-    this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', (): boolean => true);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', (): boolean => true);
+      return () => backHandler.remove();
+    }, []),
+  );
 
-  componentWillUnmount = (): void => {
-    this.hardwareBackPressListener.remove();
-  };
-
-  render(): JSX.Element {
-    const {message} = this.props.route.params;
-    return (
-      <Container>
-        <ActivityIndicatorContainer>
-          <ActivityIndicator />
-        </ActivityIndicatorContainer>
-        <ActivityCaption>{message}</ActivityCaption>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <ActivityIndicatorContainer>
+        <ActivityIndicator />
+      </ActivityIndicatorContainer>
+      <ActivityCaption>{message}</ActivityCaption>
+    </Container>
+  );
+};
 
 export default SSILoadingScreen;

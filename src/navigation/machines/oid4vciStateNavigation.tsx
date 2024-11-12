@@ -331,7 +331,7 @@ export const oid4vciStateNavigationListener = async (
   console.log(`STATE: ${JSON.stringify(state.value)}`);
 
   if (state.matches(OID4VCIMachineStates.addContact)) {
-    console.log(`going for addContact`);
+    console.debug(`going for addContact`);
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});

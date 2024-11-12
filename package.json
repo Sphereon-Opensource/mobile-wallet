@@ -302,7 +302,10 @@
     "@transmute/web-crypto-key-pair/@peculiar/webcrypto": "^1.1.6",
     "@peculiar/webcrypto": "1.4.5",
     "crypto": "link:./node_modules/@sphereon/react-native-quick-crypto",
-    "@sphereon/react-native-quick-crypto": "0.7.5-sph.2"
+    "@sphereon/react-native-quick-crypto": "0.7.5-sph.2",
+    "@sphereon/openid-federation-open-api": "0.1.0-unstable.8663d94",
+    "@sphereon/openid-federation-client": "0.1.0-unstable.8663d94",
+    "@sphereon/openid-federation-common": "0.1.0-unstable.8663d94"
   },
   "engines": {
     "node": ">=20.0.0"
