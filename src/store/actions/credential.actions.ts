@@ -79,11 +79,11 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
       issuerCorrelationType: issuer && issuer.startsWith('did:') ? CredentialCorrelationType.DID : CredentialCorrelationType.URL,
       vc: vc,
     } satisfies IStoreVerifiableCredentialArgs)
-      .then(async (hash: string): Promise<CredentialSummary> => {
-        const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: hash}]});
+      .then(async (digitalCredential: DigitalCredential): Promise<CredentialSummary> => {
+        const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: digitalCredential.hash}]});
         return toCredentialSummary({
           verifiableCredential: mappedVc,
-          hash,
+          hash: digitalCredential.hash,
           credentialRole: CredentialRole.HOLDER,
           branding: credentialBranding?.[0]?.localeBranding,
           issuer: getCredentialIssuerContact(mappedVc),
@@ -175,10 +175,10 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
           issuerCorrelationId: `${vc.issuer}`,
           issuerCorrelationType: CredentialCorrelationType.DID,
           vc,
-        } satisfies IStoreVerifiableCredentialArgs).then((hash: string) =>
+        } satisfies IStoreVerifiableCredentialArgs).then((digitalCredential: DigitalCredential) =>
           toCredentialSummary({
             verifiableCredential: vc,
-            hash,
+            hash: digitalCredential.hash,
             credentialRole: CredentialRole.HOLDER,
             issuer: getCredentialIssuerContact(vc),
             subject: getCredentialSubjectContact(vc),

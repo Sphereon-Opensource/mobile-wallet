@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
+import {ColorValue} from 'react-native';
 import Svg, {Defs, LinearGradient, Path, Stop} from 'react-native-svg';
 
 export interface IProps {
-  primaryColor: string;
-  secondaryColor: string;
+  primaryColor: ColorValue;
+  secondaryColor: ColorValue;
 }
 
 const SSIQRIcon: FC<IProps> = (props: IProps): JSX.Element => {

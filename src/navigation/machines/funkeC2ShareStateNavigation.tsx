@@ -85,6 +85,16 @@ const navigateAcceptShareCredential = async (args: any): Promise<void> => {
   });
 };
 
+const navigateSendingCredentials = async (args: any): Promise<void> => {
+  const {navigation} = args;
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: ScreenRoutesEnum.LOADING,
+    params: {
+      message: translate('action_sharing_credentials_message'),
+    },
+  });
+};
+
 const navigateHandleError = async (args: any): Promise<void> => {
   const {navigation, machine, context} = args;
 
@@ -139,6 +149,13 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     state.matches(FunkeC2ShareMachineStateTypes.retrievePIDCredentials)
   ) {
     void navigateLoading({navigation, context, machine: funkeCShareMachine});
+  } else if (
+    state.matches(FunkeC2ShareMachineStateTypes.sendResponse) ||
+    state.matches(FunkeC2ShareMachineStateTypes.storePIDCredentials) ||
+    state.matches(FunkeC2ShareMachineStateTypes.storeCredentialBranding) ||
+    state.matches(FunkeC2ShareMachineStateTypes.fetchCredentialsInStore)
+  ) {
+    void navigateSendingCredentials({navigation, context, machine: funkeCShareMachine});
   } else if (state.matches(FunkeC2ShareMachineStateTypes.acceptRequestInformation)) {
     void navigateAcceptRequestInformation({navigation, context, machine: funkeCShareMachine});
   } else if (state.matches(FunkeC2ShareMachineStateTypes.authenticateAusweisEID)) {

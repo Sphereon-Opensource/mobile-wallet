@@ -5,14 +5,15 @@ import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
-import {ContactStore, DigitalCredentialStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {ContactStore, DigitalCredentialStore, EventLoggerStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs, OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
-import {OrPromise} from '@sphereon/ssi-types';
+import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
+import {LoggingEventType, OrPromise} from '@sphereon/ssi-types';
 import {IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
@@ -30,6 +31,7 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
+import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 
 export const oid4vciHolder = new OID4VCIHolder({
@@ -59,6 +61,10 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
     new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
     new JwtService(),
+    new EventLogger({
+      store: new EventLoggerStore(dbConnection),
+      eventTypes: [LoggingEventType.ACTIVITY, LoggingEventType.GENERAL, LoggingEventType.AUDIT],
+    }),
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {
@@ -101,5 +107,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     }),
     new CredentialValidation(),
     new OIDFClient(),
+    new QrCodeProvider(),
   ];
 };

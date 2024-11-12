@@ -17,6 +17,7 @@ export enum HeaderMenuIconsEnum {
   LOGOUT = 'logout',
   DOWNLOAD = 'download',
   SETTINGS = 'settings',
+  QR = 'qr',
 }
 
 export enum PopupImagesEnum {

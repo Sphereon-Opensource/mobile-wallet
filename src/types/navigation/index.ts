@@ -21,6 +21,7 @@ export type StackParamList = {
   //fixme: changed the any to an actual type
   CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
+  SHARE: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
@@ -101,6 +102,10 @@ export type FunkeC2ShareStackParamsList = {
   // IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
   // ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type ShareStackParamList = {
+  QrPresentation: Record<string, never>;
 };
 
 // export interface IImportDataConsentProps {
@@ -314,6 +319,7 @@ export enum MainRoutesEnum {
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
   FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
+  SHARE = 'SHARE',
   SETTINGS = 'SETTINGS',
   ACCOUNT = 'ACCOUNT',
   AGE_DERIVED_CLAIMS = 'AGE_DERIVED_CLAIMS',
@@ -332,6 +338,7 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
+  QR_PRESENTATION = 'QrPresentation',
   VERIFICATION_CODE = 'VerificationCode',
   ERROR = 'Error',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
