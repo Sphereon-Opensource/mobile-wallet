@@ -3946,74 +3946,37 @@
     events "^3.3.0"
     jwt-decode "^3.1.2"
 
-"@sphereon/ui-components.core@0.3.1-next.22":
-  version "0.3.1-next.22"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.22.tgz#365f51a83a6375604e8c5f9a8d470bd33572ce3b"
-  integrity sha512-Pr3R7DExcHqvHEVqVN3jQ1ejpZ5DUfE1JIgItybUqQAPSOvWmmL4jBZnmXFIQb6gdyA9n4T9nmmpDqYLO9f5jw==
+"@sphereon/ui-components.core@0.3.1-next.21", "@sphereon/ui-components.core@0.3.1-next.21+2c28dd9":
+  version "0.3.1-next.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-next.21.tgz#6faa3ac6f908c8e2c9732e9e472d973c853ccacc"
+  integrity sha512-t0K7oSscvn5jtAqmxu3caVoG9Jc0JHtOLWcxdVzXUg6MosOlUaOxn3s72EdLKwkT6OwwZoJRhRfCrwvaL33fjA==
   dependencies:
     i18n-js "^3.8.0"
     lodash.memoize "^4.1.2"
     styled-components "^6.1.12"
 
-"@sphereon/ui-components.core@0.3.1-next.22+1e546b3", "@sphereon/ui-components.core@0.3.1-unstable.20", "@sphereon/ui-components.core@0.3.1-unstable.20+b2ea3fd":
-  version "0.3.1-unstable.20"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.core/-/ui-components.core-0.3.1-unstable.20.tgz#6bd00622b41ded0258eb4e80c43df51dff4cfbe4"
-  integrity sha512-qxewGdgtltSZMjNA7FdO0wkuWlQ21nba9sOSu0GOXFm8Mr9mFVxNaHJ15xJcOGgMijEN0YAIwM8ia3ixaMVq1w==
-  dependencies:
-    i18n-js "^3.8.0"
-    lodash.memoize "^4.1.2"
-    styled-components "^6.1.12"
-
-"@sphereon/ui-components.credential-branding@0.3.1-next.22":
-  version "0.3.1-next.22"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.credential-branding/-/ui-components.credential-branding-0.3.1-next.22.tgz#610b44456c2eba263b506ea9807c39ec8d76d0a7"
-  integrity sha512-og9xIci1MbNCSEsYOpTZO8K2prvTCLdZwiQEcIqfJhDcVjGm/hO2MofkAaphACxSxLJeX6mEtI0G1JOMwOj8pQ==
+"@sphereon/ui-components.credential-branding@0.3.1-next.21":
+  version "0.3.1-next.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.credential-branding/-/ui-components.credential-branding-0.3.1-next.21.tgz#a3b15c78db4fbf8dd89e5429a8799e8cafb55a91"
+  integrity sha512-doedW/6l9lj11E7dKadPWJKgh7JLa7v8TA+yIZm+DLZqH7cjpzUeHwOa/Td71zOGI0wwHrKzBeD7UZRSQl0H2A==
   dependencies:
     "@sphereon/ssi-sdk.core" "0.29.0"
     "@sphereon/ssi-sdk.data-store" "0.29.0"
     "@sphereon/ssi-types" "0.29.0"
-    "@sphereon/ui-components.core" "0.3.1-next.22+1e546b3"
+    "@sphereon/ui-components.core" "0.3.1-next.21+2c28dd9"
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
     i18n-js "^3.8.0"
     uuid "^9.0.1"
 
-"@sphereon/ui-components.credential-branding@0.3.1-unstable.20":
-  version "0.3.1-unstable.20"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.credential-branding/-/ui-components.credential-branding-0.3.1-unstable.20.tgz#b433d1770aa03bbaec4f1d958d57f8be167150b6"
-  integrity sha512-gg5HPFDDCFNPvbBxCTr6wtP9x1EDoFGnAo7vTtWC6s13rIPk699Qy0jVq2y2I6UtAD+WixWAqG+QaaW0QnJZ9A==
-  dependencies:
-    "@sphereon/ssi-sdk.core" "0.29.0"
-    "@sphereon/ssi-sdk.data-store" "0.29.0"
-    "@sphereon/ssi-types" "0.29.0"
-    "@sphereon/ui-components.core" "0.3.1-unstable.20+b2ea3fd"
-    "@veramo/core" "4.2.0"
-    "@veramo/utils" "4.2.0"
-    i18n-js "^3.8.0"
-    uuid "^9.0.1"
-
-"@sphereon/ui-components.ssi-react-native@0.3.1-next.22":
-  version "0.3.1-next.22"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-next.22.tgz#eafb7d5b2e58b856b5a1aabc6138b3c1b698b903"
-  integrity sha512-Yz5GY2V5ve4/TgaeyWBOdEwLBgr1mdhD4LX5/RReKhxYucCyfQ5Fy40H0qw2XU4G8IwUFNKuVAfylm6rnuSoLQ==
+"@sphereon/ui-components.ssi-react-native@0.3.1-next.21":
+  version "0.3.1-next.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-next.21.tgz#15e394e929e489ec4c7edee3b66d135a14c67d31"
+  integrity sha512-e00Ygo+m+mvc2F7uXhvFviPzp08x90NVGxt459Y1+2g/352dkB4TSo9u+pJBKN61V6MrrPLKiZdoUVlg+hnbNQ==
   dependencies:
     "@react-native-community/blur" "^4.4.0"
     "@react-native-masked-view/masked-view" "^0.3.1"
-    "@sphereon/ui-components.core" "0.3.1-next.22+1e546b3"
-    expo-linear-gradient "~13.0.2"
-    react-native-fast-image "^8.6.3"
-    react-native-size-matters "^0.4.2"
-    react-native-svg "15.2.0"
-    styled-components "^6.1.12"
-
-"@sphereon/ui-components.ssi-react-native@0.3.1-unstable.20":
-  version "0.3.1-unstable.20"
-  resolved "https://registry.yarnpkg.com/@sphereon/ui-components.ssi-react-native/-/ui-components.ssi-react-native-0.3.1-unstable.20.tgz#de7ef66b8267d367c24d8c3dd5d4b9dfbcf47b63"
-  integrity sha512-yy3TmPgJgaPREYVa8lXIeg0Eomo2PbOope1tHc7I2Ezm5xaG/mie8Krntaq7D2HdaLCiuKHRX5yS+Img0eU4jg==
-  dependencies:
-    "@react-native-community/blur" "^4.4.0"
-    "@react-native-masked-view/masked-view" "^0.3.1"
-    "@sphereon/ui-components.core" "0.3.1-unstable.20+b2ea3fd"
+    "@sphereon/ui-components.core" "0.3.1-next.21+2c28dd9"
     expo-linear-gradient "~13.0.2"
     react-native-fast-image "^8.6.3"
     react-native-size-matters "^0.4.2"
