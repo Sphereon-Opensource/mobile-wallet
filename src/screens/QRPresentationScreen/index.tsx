@@ -4,6 +4,7 @@ import {SSIBasicContainerSecondaryStyled as SSIContainer} from '../../styles/com
 import {QRContainer, QRPresentationViewContainer} from 'src/styles/components/screens/QRPresentationScreen';
 import {CreateElementArgs, QRType} from '@sphereon/ssi-sdk.qr-code-generator';
 import {agentContext} from '../../agent';
+import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 
 const {width} = Dimensions.get('screen');
 
@@ -24,8 +25,8 @@ const QRPresentationScreen: FC = () => {
         id: '',
       },
       renderingProps: {
-        bgColor: 'white',
-        fgColor: 'black',
+        bgColor: backgroundColors.primaryLight,
+        fgColor: fontColors.dark,
         level: 'Q',
         size: (3 * width) / 4,
         title: 'Presentation',
