@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState, ReactElement} from 'react';
 import {Dimensions} from 'react-native';
 import {SSIBasicContainerSecondaryStyled as SSIContainer} from '../../styles/components';
 import {QRContainer, QRPresentationViewContainer} from 'src/styles/components/screens/QRPresentationScreen';
@@ -7,15 +7,13 @@ import {agentContext} from '../../agent';
 
 const {width} = Dimensions.get('screen');
 
-type QRPresentationScreenProps = {};
-
 /* FIXME: Replace this with some result once back end for holder
  * presentations is complete.
  */
 const mockURI = 'some_uri_content';
 
-const QRPresentationScreen: FC<QRPresentationScreenProps> = (props: QRPresentationScreenProps) => {
-  const [qrElement, setQrElement] = useState<React.ReactElement | null>(null);
+const QRPresentationScreen: FC = () => {
+  const [qrElement, setQrElement] = useState<ReactElement | null>(null);
   const delegate = async () => {
     const uriElementArgs: CreateElementArgs<QRType.URI, string> = {
       data: {
@@ -38,7 +36,7 @@ const QRPresentationScreen: FC<QRPresentationScreenProps> = (props: QRPresentati
   };
 
   useEffect(() => {
-    delegate();
+    void delegate();
   }, []);
 
   return (
