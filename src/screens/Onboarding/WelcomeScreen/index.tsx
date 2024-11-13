@@ -9,6 +9,7 @@ import ScreenTitleAndDescription from '../../../components/containers/ScreenTitl
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
+import ChatButton from '../../../components/chat/ChatButton';
 
 // Size of the assets/images/fitted.svg file
 const SVG_ASSET_WIDTH = 375;
@@ -66,6 +67,7 @@ const WelcomeScreen = () => {
           />
         </View>
       </View>
+      <ChatButton style={{bottom: 100}} />
     </View>
   );
 };

@@ -8,7 +8,6 @@ import {ButtonIconsEnum} from '../../../types';
 import ChevronIcon from '../../assets/icons/ChevronIcon';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 import SearchIcon from '../../assets/icons/SearchIcon';
-import ChatIcon from '../../assets/icons/ChatIcon';
 
 export interface Props extends PressableProps {
   icon: ButtonIconsEnum;
@@ -49,8 +48,6 @@ const getIcon = (icon: ButtonIconsEnum, size?: number, color?: ColorValue): JSX.
       return <SearchIcon size={size} color={color} />;
     case ButtonIconsEnum.CHEVRON:
       return <ChevronIcon size={size} color={color} />;
-    case ButtonIconsEnum.CHAT:
-      return <ChatIcon size={size} color={color} />;
     default:
       return <View />;
   }

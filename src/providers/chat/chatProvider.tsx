@@ -1,9 +1,11 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
-import React, {createContext, useContext, useEffect, useState} from 'react';
-import {Button, Keyboard, Modal, View} from 'react-native';
+import React, {createContext, useCallback, useContext, useEffect, useState} from 'react';
+import {Button, Keyboard, Modal, View, Text} from 'react-native';
 import {GiftedChat, IMessage} from 'react-native-gifted-chat';
 import ChatInputToolbar from '../../components/chat/ChatInputToolbar';
 import useAIAssistant from '../../hooks/useAIAssistant';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import WavStreamPlayer from 'src/utils/wavtools/WavStreamPlayer';
 
 type ModalContextType = {
   isConnected: boolean;
@@ -33,9 +35,22 @@ export const ChatProvider = ({children}: {children: any}) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
   };
 
-  const {isConnected, sendPrompt, updateSession, updateFunctions} = useAIAssistant({onResponse: onSendMessage});
+  const {isConnected, sendPrompt, updateSession, updateFunctions, connectConversation, disconnectConversation, items, wavStreamPlayer} =
+    useAIAssistant({
+      onResponse: onSendMessage,
+    });
 
-  useEffect((): void => {
+  const parsePatterns = useCallback(() => {
+    return [
+      {
+        pattern: /\[Audio Available\]/, // looks for string [Audio Available]
+        style: {textDecorationLine: 'underline', color: 'darkorange'},
+        onPress: (e: any, ...args: any) => console.log('clicked on [Audio Available]', e, args),
+      },
+    ];
+  }, []);
+
+  useEffect(() => {
     setMessages([
       {
         _id: 1,
@@ -48,7 +63,54 @@ export const ChatProvider = ({children}: {children: any}) => {
         },
       },
     ]);
+    connectConversation();
+    return () => {
+      disconnectConversation();
+    };
   }, []);
+
+  useEffect(() => {
+    // console.log('items', '\n', JSON.stringify(items, null, 2));
+
+    const updatedMessages = items.map(item => {
+      let messageText = '';
+
+      // Check if it's a tool message
+      if (item.formatted.tool) {
+        messageText = `${item.formatted.tool.name} (${item.formatted.tool.arguments})`;
+      }
+      // Check if it's a user message without a tool
+      else if (item.role === 'user') {
+        if (item.formatted.transcript) {
+          messageText = item.formatted.transcript;
+        } else if (item.formatted.audio?.length) {
+          messageText = '(awaiting transcript)';
+        } else {
+          messageText = item.formatted.text || '(item sent)';
+        }
+      }
+      // Check if it's an assistant message without a tool
+      else if (item.role === 'assistant') {
+        if (item.formatted.transcript) {
+          messageText = item.formatted.transcript;
+        } else {
+          messageText = item.formatted.text || '(truncated)';
+        }
+      }
+      // Check if there's a file
+      if (item.formatted.file) {
+        messageText = `${messageText} [Audio Available]`; // Optionally add a marker for audio
+      }
+
+      return {
+        _id: item.id,
+        text: messageText,
+        createdAt: new Date(),
+        user: {_id: item.role === 'user' ? 1 : 2}, // Assuming _id 1 for user and 2 for assistant
+      };
+    });
+    setMessages(updatedMessages);
+  }, [items]);
 
   const openModal = (): void => {
     setIsVisible(true);
@@ -59,10 +121,21 @@ export const ChatProvider = ({children}: {children: any}) => {
   };
 
   const renderInputToolbar = (props: any) => {
-    console.log('props', props);
     //Add the extra styles via containerStyle
     return <ChatInputToolbar {...props} />;
   };
+
+  const handleLongPress = useCallback(
+    (context: unknown, currentMessage: any) => {
+      console.log('long press', currentMessage);
+      // find item with id and use wavplayerrecorder.playpcmarray with formatted.file
+
+      const item = items.find(({id}) => id === currentMessage._id);
+      console.log('item', item?.id);
+      wavStreamPlayer.playWavBase64String(item?.formatted.file);
+    },
+    [items],
+  );
 
   return (
     <ModalContext.Provider value={{openModal, closeModal, updateSession, isConnected, updateFunctions}}>
@@ -93,6 +166,8 @@ export const ChatProvider = ({children}: {children: any}) => {
                 _id: 1,
               }}
               renderInputToolbar={renderInputToolbar}
+              parsePatterns={parsePatterns}
+              onLongPress={handleLongPress}
             />
             <View
               style={{

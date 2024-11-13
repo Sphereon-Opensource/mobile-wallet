@@ -9,7 +9,6 @@ export enum ButtonIconsEnum {
   CLOSE = 'close',
   SEARCH = 'search',
   CHEVRON = 'chevron',
-  CHAT = 'chat',
 }
 
 export enum HeaderMenuIconsEnum {
