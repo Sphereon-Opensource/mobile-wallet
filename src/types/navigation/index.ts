@@ -10,6 +10,7 @@ import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {IPresentationDefinition} from '@sphereon/pex';
+import {ImageAttributes} from '@sphereon/ui-components.core';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -279,12 +280,14 @@ export interface INewContactAddProps {
   clientUri?: string;
   tosUri?: string;
   policyUri?: string;
+  logo?: ImageAttributes;
   federations?: Array<Party>;
   roles?: Array<CredentialRole>;
-  identities?: Array<NonPersistedIdentity>; // TODO we do not do this anymore?
-  onCreate: (contact: Party) => Promise<void>;
+  identities?: Array<NonPersistedIdentity>;
+  onCreate?: (contact: Party) => Promise<void>;
+  onContinue?: () => Promise<void>; // TODO we need to restructure this prop, so that there is only one to continue with create or not
   onDecline: () => Promise<void>;
-  onAliasChange?: (alias: string) => Promise<void>; // TODO we do not do this anymore?
+  onAliasChange?: (alias: string) => Promise<void>;
   isCreateDisabled?: boolean | (() => boolean);
 }
 

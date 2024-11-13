@@ -41,6 +41,7 @@ export enum SiopV2MachineStates {
   transitionFromSetup = 'transitionFromSetup',
   getFederationTrust = 'getFederationTrust',
   addContact = 'addContact',
+  reviewContact = 'reviewContact',
   addContactIdentity = 'addContactIdentity',
   selectCredentials = 'selectCredentials',
   selectCredentialOverview = 'selectCredentialOverview',
@@ -135,6 +136,7 @@ export enum SiopV2MachineGuards {
   siopOnlyGuard = 'siopV2IsSiopOnlyGuard',
   siopWithOID4VPGuard = 'siopV2IsSiopWithOID4VPGuard',
   isOIDFOriginGuard = 'siopV2IsOIDFOriginGuard',
+  contactHasLowTrustGuard = 'siopV2ContactHasLowTrustGuard',
 }
 
 export enum SiopV2MachineServices {

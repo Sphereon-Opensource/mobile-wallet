@@ -78,6 +78,8 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
       style={{
         backgroundColor: backgroundColors.primaryDark,
         flex: 1,
+        paddingTop: 24,
+        gap: 12,
         paddingHorizontal: 24,
         alignItems: 'center',
         borderTopColor: '#404D7A',
