@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useCallback, useEffect, useRef, useState} from 'react';
-import {BackHandler, Keyboard} from 'react-native';
+import {BackHandler} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
@@ -21,6 +21,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     name,
     uri,
     roles,
+    logo,
     description,
     clientUri,
     tosUri,
@@ -28,6 +29,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     identities,
     federations,
     onCreate,
+    onContinue,
     onDecline,
     onAliasChange,
     isCreateDisabled,
@@ -124,15 +126,37 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     }
   };
 
-  const onCreatePressed = async (): Promise<void> => {
-    Keyboard.dismiss();
-    onValidate(contactAliasRef.current)
-      .then((): Promise<Party> => upsert())
-      .then((contact: Party): Promise<void> => onCreate(contact))
-      .catch((): void => {
-        // do nothing as the state is already handled by the validate function, and we do not want to create the contact
-        // we might want to do something with other errors
+  const onContinuePressed = async (): Promise<void> => {
+    const onPress = async (): Promise<void> => {
+      if (onCreate) {
+        onValidate(contactAliasRef.current)
+          .then((): Promise<Party> => upsert())
+          .then((contact: Party): Promise<void> => onCreate(contact))
+          .catch((): void => {
+            // do nothing as the state is already handled by the validate function, and we do not want to create the contact
+            // we might want to do something with other errors
+          });
+      } else if (onContinue) {
+        void onContinue();
+      }
+    };
+
+    if (federations !== undefined && federations.length === 0) {
+      props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+        title: translate('new_contact_add_new_contact_low_level_trust_title'),
+        details: translate('new_contact_add_new_contact_low_level_trust_description'),
+        primaryButton: {
+          caption: translate('new_contact_add_new_contact_continue_caption'),
+          onPress: onPress,
+        },
+        secondaryButton: {
+          caption: translate('new_contact_add_new_contact_abort_caption'),
+          onPress: onDecline,
+        },
       });
+    } else {
+      void onPress();
+    }
   };
 
   const onDeclinePressed = async (): Promise<void> => {
@@ -209,8 +233,8 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
             id: '2',
             label: Localization.translate('new_contact_add_new_contact_contact_details_name_label'),
             value: contactAliasRef.current,
-            isEditable: true,
-            onPress: onEditAlias,
+            ...(onAliasChange && {isEditable: true}),
+            ...(onAliasChange && {onPress: onEditAlias}),
           },
           ...(clientUri
             ? [
@@ -242,14 +266,14 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         ]}
         primaryButton={{
           caption: translate('new_contact_add_new_contact_continue_caption'),
-          onPress: onCreatePressed,
+          onPress: onContinuePressed,
           disabled: isCreateDisabled,
         }}
         secondaryButton={{
           caption: translate('action_abort_label'),
           onPress: onDeclinePressed,
         }}
-        // logo={}
+        logo={logo}
       />
     </Container>
   );

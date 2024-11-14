@@ -53,7 +53,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
   const {serverMetadata, trustedAnchors, issuerBranding} = state.context;
 
   if (!serverMetadata) {
-    return Promise.reject(Error('Missing serverMetadata in context'));
+    return Promise.reject(Error('Missing server metadata in context'));
   }
 
   const issuerUrl: URL = new URL(serverMetadata.issuer);
@@ -137,6 +137,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       federations: federationParties,
       uri: contact.uri,
       identities: contact.identities,
+      logo: branding.logo,
       description: branding.description,
       clientUri: branding.clientUri,
       tosUri: branding.tosUri,
@@ -147,6 +148,38 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       onDecline,
       onBack,
       isCreateDisabled,
+    },
+  });
+};
+
+const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  const {navigation, state, oid4vciMachine, onBack, onNext} = args;
+  const {contact, issuerBranding} = state.context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  const onDecline = async (): Promise<void> => {
+    oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
+  };
+
+  const branding = issuerBranding?.[0] ?? {};
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      federations: [],
+      uri: contact.uri,
+      logo: branding.logo,
+      description: branding.description,
+      clientUri: branding.clientUri,
+      tosUri: branding.tosUri,
+      policyUri: branding.policyUri,
+      roles: contact.roles,
+      onContinue: onNext,
+      onDecline,
+      onBack,
     },
   });
 };
@@ -336,6 +369,8 @@ export const oid4vciStateNavigationListener = async (
 
   if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.reviewContact)) {
+    return navigateReviewContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.verifyPin)) {
