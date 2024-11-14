@@ -89,9 +89,11 @@ import {SiopV2Provider} from './machines/siopV2StateNavigation';
 import ContactsHeader from '../components/bars/ContactsHeader';
 import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
 import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
+import CredentialDetailHeader from '../components/bars/credential/CredentialDetailHeader';
 import ActivityRevealedInfoScreen from '../screens/ActivityRevealedInfoScreen';
 import ContactActivityScreen from '../screens/ContactActivityScreen';
 import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import {formatDateTime} from '../utils';
@@ -173,6 +175,24 @@ const MainStackNavigator = (): JSX.Element => {
         options={{
           headerShown: true,
           title: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
+        component={CredentialDetailsScreen}
+        options={({route}) => ({
+          title: route.params.credential.title,
+          headerShown: true,
+          header: props => <CredentialDetailHeader {...props} />,
+        })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_ACTIVITY}
+        component={CredentialActivityScreen}
+        options={{
+          headerShown: true,
+          title: translate('credential_activities_title'),
           header: props => <ContactsHeader {...props} />,
         }}
       />
@@ -356,31 +376,6 @@ const CredentialsStack = (): JSX.Element => {
           headerTitle: translate('credentials_overview_title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBorder={false} showBackButton={false} />,
         }}
-      />
-      <Stack.Screen
-        name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
-        component={CredentialDetailsScreen}
-        options={({route}) => ({
-          headerTitle: translate('credential_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // TODO create actions that can be passed in
-              moreActions={[
-                {
-                  caption: translate('show_raw_credential_button_caption'),
-                  onPress: async (): Promise<void> =>
-                    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                      rawCredential: route.params.rawCredential,
-                    }),
-                  icon: HeaderMenuIconsEnum.DOWNLOAD,
-                },
-              ]}
-            />
-          ),
-        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}

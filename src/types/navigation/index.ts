@@ -39,6 +39,7 @@ export type StackParamList = {
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   ContactIdentities: IContactIdentitiesProps;
   ContactActivity: IContactActivityProps;
+  CredentialActivity: ICredentialActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   BrowserOpen: IBrowserOpen;
@@ -64,6 +65,10 @@ export type Document = 'terms' | 'privacy';
 
 export type IActivityDetailsProps = {
   activity?: Activity;
+};
+
+export type ICredentialActivityProps = {
+  credential?: CredentialSummary;
 };
 
 export type OnboardingStackParamsList = {
@@ -195,7 +200,7 @@ export interface ICredentialDetailsProps {
   credential: CredentialSummary;
   primaryAction?: IButton;
   secondaryAction?: IButton;
-  showActivity?: boolean;
+  hideLinks?: boolean;
   /*
    TODO WAL-340
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
@@ -369,6 +374,7 @@ export enum ScreenRoutesEnum {
   BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  CREDENTIAL_ACTIVITY = 'CredentialActivity',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',

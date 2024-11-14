@@ -29,6 +29,13 @@
         "search_placeholder": "Search for card or status"
       }
     },
+    "credential": {
+      "list": {
+        "title": "All activities from",
+        "loading": "Loading activities for",
+        "search_placeholder": "Search for contact or status"
+      }
+    },
     "VC share": {
       "revealed_info_title": "Shared information",
       "info_header": {
@@ -72,6 +79,8 @@
       "issued_information": "Issued information"
     },
     "contact_link": "About",
+    "credential_activities_link": "Card activities",
+    "credential_claims_link": "My claims",
     "support_link": "Something wrong?"
   },
   "credential_details_title": "Credential details",
@@ -165,6 +174,7 @@
   "contact_details_activity_tab_header_label": "Activity",
   "contact_details_identities_tab_header_label": "Identities",
   "intent_share_file_unable_to_receive_message": "Unable to receive the credential",
+  "credential_activities_title": "Card activities",
   "credential_delete_title": "Delete credential",
   "credential_delete_message": "Are you sure you want to delete the credential: {{credentialName}}?",
   "credential_deleted_success_toast": "Credential successfully deleted",
