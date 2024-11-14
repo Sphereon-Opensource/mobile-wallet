@@ -102,7 +102,7 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
           secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
-    case NavigationBarRoutesEnum.NOTIFICATIONS:
+    case NavigationBarRoutesEnum.ACTIVITIES:
       return (
         <SSIBellIcon
           primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
