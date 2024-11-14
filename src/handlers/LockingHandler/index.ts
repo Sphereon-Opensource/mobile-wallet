@@ -65,18 +65,40 @@ class LockingHandler {
       case PlatformsEnum.ANDROID:
       case PlatformsEnum.IOS: {
         const handleAppStateChange = async (nextAppState: string): Promise<void> => {
-          if (nextAppState === 'background') {
-            //FIXME: for now we are autolocking going into background, so that
-            //ios face id does not cause this handler to relock after login
-            if (this.isLockingRequiredForScreen()) {
-              this.lock();
+          if (nextAppState === 'background' || nextAppState === 'active') {
+            if (Platform.OS === PlatformsEnum.IOS) {
+              if (nextAppState === 'active') return;
+              if (nextAppState === 'background' && this.isInactive() && this.isLockingRequiredForScreen()) {
+                return this.lock();
+              }
             }
-            if (Platform.OS === PlatformsEnum.IOS && this.isLockingRequiredForScreen()) {
-              return this.checkInactive();
-            } else {
-              return this.checkInactive();
+
+            if (Platform.OS === PlatformsEnum.ANDROID) {
+              if (nextAppState === 'background') return;
+              if (nextAppState === 'active') return this.checkInactive();
             }
+            // if (Platform.OS === PlatformsEnum.IOS && this.isLockingRequiredForScreen()) {
+            //   return this.checkInactive();
+            // } else {
+            return this.checkInactive();
+            // }
+          } else if (this.isInactive()) {
+            return this.lock();
           }
+          this.touchLastInteraction();
+          this.isLocked = false;
+          // if (nextAppState === 'background') {
+          //   //FIXME: for now we are autolocking going into background, so that
+          //   //ios face id does not cause this handler to relock after login
+          //   if (this.isLockingRequiredForScreen()) {
+          //     this.lock();
+          //   }
+          //   if (Platform.OS === PlatformsEnum.IOS && this.isLockingRequiredForScreen()) {
+          //     return this.checkInactive();
+          //   } else {
+          //     return this.checkInactive();
+          //   }
+          // }
           this.touchLastInteraction();
           this.isLocked = false;
         };
