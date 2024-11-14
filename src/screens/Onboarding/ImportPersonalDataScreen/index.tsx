@@ -1,22 +1,21 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useState} from 'react';
-import {Image, Keyboard, Platform, View} from 'react-native';
-import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
+import {Image, Keyboard, Platform, View, Text} from 'react-native';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {AusweisEPinModal} from '../components/AusweisEPinModal';
 import {AusweisScanModal} from '../components/AusweisScanModal';
-import {Container, ContentContainer} from '../components/styles';
+import {
+  ImportPersonalDataContainer as Container,
+  ImportPersonalDataContentContainer as Content,
+  ImportPersonalDataFooter,
+  ImportPersonalDataNFCCaptionText,
+} from '../../../styles/components';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {EIDFlowState} from '../../../types';
 import {delay} from '../../../utils';
-import styled from 'styled-components/native';
-
-const Content = styled(ContentContainer)`
-  padding: 0 20px 0 20px;
-`;
 
 const ImportPersonalDataScreen = (props?: any) => {
   const {onAuth} = props?.route?.params ?? {};
@@ -65,22 +64,29 @@ const ImportPersonalDataScreen = (props?: any) => {
   const onCompletePin = (pin: string): void => {
     setPin(pin);
     setShowPin(false);
+    props?.navigation?.setParams({title: translate(`${translationsPath}.nfc_step_title`), subtitle: ''});
   };
 
   return (
     <Container>
-      <Content onPress={() => closeAll()}>
-        <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
+      <Content style={{flex: 1, justifyContent: 'center', paddingTop: pin ? 32 : 0}} onPress={() => closeAll()}>
         <Image source={require('../../../assets/images/scan_card.png')} height={200} width={100} style={{height: 300, width: 200}} />
       </Content>
-      <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20}}>
-        <PrimaryButton
-          style={{height: 42, width: '100%'}}
-          caption={translate(`${translationsPath}.button_caption`)}
-          captionColor={fontColors.light}
-          onPress={() => setShowPin(true)}
-        />
-      </View>
+      <ImportPersonalDataFooter style={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingVertical: 10, paddingHorizontal: 20}}>
+        {/** Conditionally swapping this button with the text below it
+         * for ios since the Ausweis native modal can
+         * take a few seconds to show.
+         */}
+        {!pin && (
+          <PrimaryButton
+            style={{height: 42, width: '100%'}}
+            caption={translate(`${translationsPath}.button_caption`)}
+            captionColor={fontColors.light}
+            onPress={() => setShowPin(true)}
+          />
+        )}
+        {!!pin && <ImportPersonalDataNFCCaptionText>{translate(`${translationsPath}.nfc_caption`)}</ImportPersonalDataNFCCaptionText>}
+      </ImportPersonalDataFooter>
       {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
       <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
     </Container>

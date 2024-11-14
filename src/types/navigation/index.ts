@@ -69,7 +69,7 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
-  ImportPersonalData: Record<string, never>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle;
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
   PinCodeVerify: Record<string, never>;
@@ -83,7 +83,7 @@ export type OnboardingStackParamsList = {
 
 export type GetPIDCredentialsStackParamsList = {
   ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
-  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle & Partial<IHasOnBackProps>;
   ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
   ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;
   ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
@@ -95,7 +95,7 @@ export type GetPIDCredentialsStackParamsList = {
 export type FunkeC2ShareStackParamsList = {
   Loading: ILoadingProps;
   ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
-  ImportPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle & Partial<IHasOnBackProps>;
   ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
   ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
 
@@ -131,6 +131,11 @@ export type IBrowserOpen = IHasOnBackProps &
 
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingMachineInterpreter;
+}
+
+export interface IOnboardingHasTitleAndSubtitle {
+  title?: string;
+  subtitle?: string;
 }
 
 export interface IHasOnBackProps {
