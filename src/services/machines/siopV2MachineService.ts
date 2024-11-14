@@ -193,25 +193,17 @@ export const sendResponse = async (
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
 ): Promise<Array<string>> => {
-  const {url, authorizationRequestData, trustAnchors} = context;
+  const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
     return Promise.reject(Error('No trust anchors found'));
   }
 
-  if (!url) {
-    return Promise.reject(Error('Missing request url in context'));
+  if (!authorizationRequestData) {
+    return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  if (!authorizationRequestData?.uri) {
-    return Promise.reject(Error('Missing authorization request data  uri in context'));
-  }
-
-  const parsedUrl = new URL(url);
-  const params = new URLSearchParams(parsedUrl.search);
-  const openidFederation = params.get('openid_federation');
-
-  const entityIdentifier = openidFederation ?? authorizationRequestData.clientId;
+  const entityIdentifier = authorizationRequestData.entityId;
 
   if (!entityIdentifier) {
     return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
