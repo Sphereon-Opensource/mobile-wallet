@@ -1,13 +1,13 @@
-import React, {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import SSINotificationsImage from '../../components/assets/images/SSINotificationsImage';
+import React, {FC} from 'react';
+import ActivitiesImage from '../../components/assets/images/ActivitiesImage';
 import {translate} from '../../localization/Localization';
 import {
   SSIBasicContainerStyled as Container,
   SSINotificationsOverviewScreenEmptyStateContainerStyled as EmptyStateContainer,
   SSINotificationsOverviewScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
-  SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText,
   SSITextH4LightStyled as SubTitleText,
+  SSINotificationsOverviewScreenEmptyStateTitleTextStyled as TitleText,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 
@@ -23,7 +23,7 @@ const SSINotificationsOverviewScreen: FC<Props> = (props: Props): JSX.Element =>
     <Container style={{borderTopWidth, borderTopColor: '#404D7A'}}>
       <EmptyStateContainer>
         <EmptyStateImageContainer>
-          <SSINotificationsImage />
+          <ActivitiesImage />
         </EmptyStateImageContainer>
         <TitleText>{translate('notifications_overview_empty_state_title')}</TitleText>
         <SubTitleText>{translate('notifications_overview_empty_state_subtitle')}</SubTitleText>
