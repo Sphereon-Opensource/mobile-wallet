@@ -132,6 +132,11 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     return;
   }
 
+  // FIXME quick hack to stop the navigation from resetting as the ImportPersonalDataScreen uses params to set new header text
+  if (state._event.name === 'SET_FUNKE_PROVIDER') {
+    return;
+  }
+
   if (
     state.matches(FunkeC2ShareMachineStateTypes.createConfig) ||
     state.matches(FunkeC2ShareMachineStateTypes.getSiopRequest) ||

@@ -10,7 +10,6 @@ import {
   GetPIDCredentialsMachineContext,
   GetPIDCredentialsMachineEvents,
   GetPIDCredentialsMachineInterpreter,
-  GetPIDCredentialsMachineNavigationArgs,
   GetPIDCredentialsMachineState,
   GetPIDCredentialsMachineStateTypes,
   GetPIDCredentialsProviderProps,
@@ -31,14 +30,18 @@ export const getPIDCredentialsStateNavigationListener = (
     // Make sure we do not navigate when state has not changed
     return;
   }
+
   const context: GetPIDCredentialsMachineContext = getPIDCredentialsMachine.getSnapshot().context;
   const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {
     debug(`navigation not ready yet`);
     return;
   }
-  // TODO: Fix type casting, properly get access to the navigation object
-  const getPIDCredentialsNavigation = navigation as GetPIDCredentialsMachineNavigationArgs['navigation'];
+
+  // FIXME quick hack to stop the navigation from resetting as the ImportPersonalDataScreen uses params to set new header text
+  if (state._event.name === 'SET_FUNKE_PROVIDER') {
+    return;
+  }
 
   switch (state.value) {
     case GetPIDCredentialsMachineStateTypes.consentToAddPIDCredentials:
