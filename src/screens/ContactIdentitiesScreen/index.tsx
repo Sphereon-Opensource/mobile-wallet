@@ -21,7 +21,7 @@ const ContactIdentitiesScreen: FC<Props> = (props: Props): JSX.Element => {
   const {identities} = props.route.params;
 
   return (
-    <Container>
+    <Container style={{paddingTop: 24}}>
       <ScrollView style={{flex: 1}}>
         <SSITextH3LightStyled style={{paddingLeft: 24, marginTop: 10}}>All related identities</SSITextH3LightStyled>
         <Divider />

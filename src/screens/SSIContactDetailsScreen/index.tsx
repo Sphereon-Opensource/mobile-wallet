@@ -49,7 +49,7 @@ const SSIContactDetailsScreen = ({route, navigation}: Props) => {
     },
   ];
   return (
-    <Container>
+    <Container style={{paddingTop: 24}}>
       <ContactInformationView
         properties={contactDetails}
         name={contact.contact.displayName}

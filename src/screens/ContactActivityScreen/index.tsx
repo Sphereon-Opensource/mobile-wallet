@@ -1,5 +1,4 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {backgroundColors} from '@sphereon/ui-components.core';
 import {SSILogo} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo} from 'react';
 import {useDispatch} from 'react-redux';
@@ -38,8 +37,8 @@ const ContactActivityScreen = ({route, navigation}: Props) => {
   );
 
   return (
-    <Container style={{backgroundColor: backgroundColors.primaryDark}}>
-      <SSILogo logo={contact.branding?.logo} size={40} style={{marginHorizontal: 'auto', marginBottom: 48}} />
+    <Container>
+      <SSILogo logo={contact.branding?.logo} size={40} style={{marginHorizontal: 'auto', marginBottom: 24}} />
       <ActivityList
         listTitle={`${translate('activity.contact.list.title')} ${contact.contact.displayName}`}
         activities={activities}
