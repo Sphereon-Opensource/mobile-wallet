@@ -11,7 +11,7 @@ import {
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
-import {agentContext} from '../../agent';
+import agent, {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
@@ -188,4 +188,38 @@ export const sendResponse = async (
   }
 
   return response;
+};
+
+export const getFederationTrust = async (
+  context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
+): Promise<Array<string>> => {
+  const {authorizationRequestData, trustAnchors} = context;
+
+  if (trustAnchors.length === 0) {
+    return Promise.reject(Error('No trust anchors found'));
+  }
+
+  if (!authorizationRequestData) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  const entityIdentifier = authorizationRequestData.entityId;
+
+  if (!entityIdentifier) {
+    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  }
+
+  const trustedAnchors = [];
+  for (const trustAnchor of trustAnchors) {
+    const resolveResult = await agent.resolveTrustChain({
+      entityIdentifier,
+      trustAnchors: [trustAnchor],
+    });
+
+    if (Array.isArray(resolveResult) && resolveResult.length > 0) {
+      trustedAnchors.push(trustAnchor);
+    }
+  }
+
+  return trustedAnchors;
 };
