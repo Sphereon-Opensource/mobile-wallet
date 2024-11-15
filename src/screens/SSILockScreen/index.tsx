@@ -12,7 +12,8 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useAuthEffect, useAuthFocusEffect, useBiometricsEnabledContext} from '../../hooks/use-biometrics';
+import {useAuthFocusEffect, useBiometricsEnabledContext} from '../../hooks/use-biometrics';
+import LockingHandler from 'src/handlers/LockingHandler';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -27,19 +28,10 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const biometricsEnabled = useBiometricsEnabledContext();
 
-  // useAuthEffect(async (success: boolean) => {
-  //   console.log('effect');
-  //   if (success) {
-  //     console.log('found success');
-  //     const {onAuthenticate} = props.route.params;
-  //     await onAuthenticate();
-  //   }
-  // });
-
   useAuthFocusEffect(async (success: boolean) => {
-    console.log('effect');
+    const lockingHandler = LockingHandler.getInstance();
     if (success) {
-      console.log('found success');
+      lockingHandler.touchLastInteraction();
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
     }
