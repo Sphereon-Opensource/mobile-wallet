@@ -19,3 +19,8 @@ declare module '*.json' {
   const content: string;
   export default content;
 }
+
+declare module '*.b64' {
+  const content: string;
+  export default content;
+}

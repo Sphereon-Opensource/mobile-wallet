@@ -1,0 +1,81 @@
+diff --git a/node_modules/mmdb-lib/lib/ip.js b/node_modules/mmdb-lib/lib/ip.js
+index 3b7ddd4..1ccda5d 100644
+--- a/node_modules/mmdb-lib/lib/ip.js
++++ b/node_modules/mmdb-lib/lib/ip.js
+@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+     return (mod && mod.__esModule) ? mod : { "default": mod };
+ };
+ Object.defineProperty(exports, "__esModule", { value: true });
+-const net_1 = __importDefault(require("net"));
+ const parseIPv4 = (input) => {
+     const ip = input.split('.', 4);
+     const o0 = parseInt(ip[0]);
+@@ -58,10 +57,64 @@ const bitAt = (rawAddress, idx) => {
+     // Shift the offset rightwards by bitIdx bits and & it to grab the bit
+     return (rawAddress[bufIdx] >>> bitIdx) & 1;
+ };
+-const validate = (ip) => {
+-    const version = net_1.default.isIP(ip);
+-    return version === 4 || version === 6;
+-};
++const validateIPv4 = (ip: string): boolean => {
++  const parts = ip.split('.')
++  if (parts.length !== 4) {
++    return false
++  }
++
++  for (const part of parts) {
++    if (!/^\d+$/.test(part)) {
++      return false
++    }
++    const num = parseInt(part, 10)
++    if (num < 0 || num > 255 || (part.length > 1 && part[0] === '0')) {
++      return false
++    }
++  }
++  return true
++}
++
++const validateIPv6 = (ip: string): boolean => {
++  const parts = ip.split(':')
++  if (parts.length > 8) {
++    return false
++  }
++
++  // Check for :: compression
++  const emptyIndex = parts.indexOf('')
++  if (emptyIndex !== -1) {
++    // :: can only appear once
++    if (parts.indexOf('', emptyIndex + 1) !== -1) {
++      return false
++    }
++    // Adjust parts based on compression
++    const missing = 8 - (parts.length - 1)
++    if (missing < 0) {
++      return false
++    }
++  } else if (parts.length !== 8) {
++    return false
++  }
++
++  for (const part of parts) {
++    if (part === '' || part.length > 4) {
++      continue
++    }
++    if (!/^[0-9A-Fa-f]+$/.test(part)) {
++      return false
++    }
++  }
++  return true
++}
++
++const validate = (ip: string): boolean => {
++  if (ip.includes(':')) {
++    return validateIPv6(ip)
++  }
++  return validateIPv4(ip)
++}
++
+ exports.default = {
+     bitAt,
+     parse,

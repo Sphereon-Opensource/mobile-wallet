@@ -51,11 +51,6 @@ const config = {
       crypto: require.resolve('@sphereon/react-native-quick-crypto'),
       fs: require.resolve('expo-fs'),
       path: require.resolve('path-browserify'),
-      net: require.resolve('net-browserify'),
-      url: require.resolve('url-browserify'),
-      http: require.resolve('http-browserify'),
-      zlib: require.resolve('zlib-browserify'),
-      dns: require.resolve('@cordiverse/dns'),
     },
   },
 };

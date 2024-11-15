@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
 import {connect} from 'react-redux';
 import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
@@ -8,6 +8,7 @@ import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {CredentialsOverviewImages} from './constants';
 import CredentialsOverviewList from './CredentialsOverviewList';
 import CredentialsOverviewCardList from './CredentialsOverviewCardList';
+import agent from '../../agent';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
@@ -21,6 +22,22 @@ type Props = {activeUser: IUser};
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      console.log('clling lookupLocation');
+      try {
+        const result = await agent.lookupLocation({
+          ipOrHostname: 'sphereon.com',
+        });
+        console.log('lookupLocation', result);
+      } catch (e) {
+        console.error('lookupLocation', e);
+      }
+    };
+    console.log('fetchLocation');
+    void fetchLocation();
+  }, []);
 
   return (
     <Container>

@@ -33,6 +33,9 @@ import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
+import {AnomalyDetection} from '@sphereon/ssi-sdk.anomaly-detection';
+import * as RNDnsLookup from 'react-native-dns-lookup';
+const mmdbGeoLite = require('../assets/mmdb/GeoLite2-Country.mmdb.json');
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -108,5 +111,15 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new CredentialValidation(),
     new OIDFClient(),
     new QrCodeProvider(),
+    new AnomalyDetection({
+      geoIpDB: Buffer.from(mmdbGeoLite.data, 'base64'),
+      dnsLookupCallback: async (hostname: string) => {
+        const address = await RNDnsLookup.getIpAddressesForHostname(hostname);
+        if (!address || address.length === 0) {
+          return Promise.reject(Error(`DNS lookup for hostname ${hostname}`));
+        }
+        return address[0];
+      },
+    }),
   ];
 };
