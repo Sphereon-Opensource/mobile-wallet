@@ -31,6 +31,7 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
+import {ResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
 import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 
@@ -106,7 +107,8 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       verifySignature: verifySDJWTSignature,
     }),
     new CredentialValidation(),
-    new OIDFClient(),
+    new OIDFClient({}),
     new QrCodeProvider(),
+    new ResourceResolver(),
   ];
 };
