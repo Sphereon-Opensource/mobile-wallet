@@ -12,7 +12,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useAuthFocusEffect, useBiometricsEnabledContext} from '../../hooks/use-biometrics';
+import {useAuthFocusEffect} from '../../hooks/use-biometrics';
 import LockingHandler from 'src/handlers/LockingHandler';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
@@ -25,8 +25,6 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
   }, []);
-
-  const biometricsEnabled = useBiometricsEnabledContext();
 
   useAuthFocusEffect(async (success: boolean) => {
     const lockingHandler = LockingHandler.getInstance();
