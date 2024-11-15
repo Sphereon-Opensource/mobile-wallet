@@ -27,9 +27,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
   }, []);
 
   useAuthFocusEffect(async (success: boolean) => {
-    const lockingHandler = LockingHandler.getInstance();
     if (success) {
-      lockingHandler.touchLastInteraction();
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
     }

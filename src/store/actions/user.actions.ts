@@ -125,6 +125,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
         const user = users.get(userId);
         if (user) {
           dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
+          //unlocking immediately to prevent re-locking after login
           lockingHandler.isLocked = false;
 
           // We do we need to use the while loop here? The above is a sync action that does not use a thunk, thus getState().user should be available already
