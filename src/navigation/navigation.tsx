@@ -56,6 +56,7 @@ import {
   FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
+  IOnboardingHasTitleAndSubtitle,
   ISiopV2PProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
@@ -615,6 +616,8 @@ type StackGroupConfig = {
   titleKey: string;
   screens: {
     name: OnboardingRoute;
+    titleKey?: string;
+    subtitleKey?: string;
     component: React.FC<any>;
   }[];
 };
@@ -695,6 +698,8 @@ const step3GroupConfig: StackGroupConfig = {
     {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
+      titleKey: 'onboarding_pages.import_scan_card.title',
+      subtitleKey: 'onboarding_pages.import_scan_card.description',
     },
     {
       name: 'ImportDataAuthentication',
@@ -722,23 +727,29 @@ export const OnboardingStack = (): JSX.Element => (
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
-        {group.screens.map(({name, component}, index) => (
+        {group.screens.map(({name, component, titleKey, subtitleKey}, index) => (
           <OnboardingBaseStack.Screen
             key={name}
             name={name}
             component={component}
-            options={{
+            initialParams={{
+              title: titleKey && translate(titleKey),
+              subtitle: subtitleKey && translate(subtitleKey),
+            }}
+            options={({route}) => ({
+              headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
               header: props => (
                 <OnboardingHeader
                   {...props}
                   title={translate(group.titleKey)}
+                  headerSubTitle={(route.params as IOnboardingHasTitleAndSubtitle)?.subtitle}
                   stepConfig={{
                     current: index + 1,
                     total: group.screens.length,
                   }}
                 />
               ),
-            }}
+            })}
           />
         ))}
       </OnboardingBaseStack.Group>
@@ -775,12 +786,18 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
     <GetPIDCredentialsBaseStack.Screen
       name="ImportPersonalData"
       component={ImportPersonalDataScreen}
+      initialParams={{
+        title: translate('onboarding_pages.import_scan_card.title'),
+        subtitle: translate('onboarding_pages.import_scan_card.description'),
+      }}
       options={({route}) => ({
+        headerTitle: route.params.title,
         header: props => (
           <OnboardingHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
+            headerSubTitle={route.params.subtitle}
             stepConfig={{
               current: 2,
               total: 4,
@@ -908,8 +925,13 @@ export const FunkeC2ShareStack = (): JSX.Element => (
     <FunkeC2ShareBaseStack.Screen
       name="ImportPersonalData"
       component={ImportPersonalDataScreen}
+      initialParams={{
+        title: translate('onboarding_pages.import_scan_card.title'),
+        subtitle: translate('onboarding_pages.import_scan_card.description'),
+      }}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        headerTitle: route.params.title,
+        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} />,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
