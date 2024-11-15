@@ -55,15 +55,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     <Container>
       <StatusBar />
       <PinCodeContainer>
-        {!biometricsEnabled && (
-          <SSIPinCode
-            length={PIN_CODE_LENGTH}
-            accessibilityLabel={translate('pin_code_accessibility_label')}
-            accessibilityHint={translate('pin_code_accessibility_hint')}
-            errorMessage={translate('pin_code_invalid_code_message')}
-            onVerification={onVerification}
-          />
-        )}
+        <SSIPinCode
+          length={PIN_CODE_LENGTH}
+          accessibilityLabel={translate('pin_code_accessibility_label')}
+          accessibilityHint={translate('pin_code_accessibility_hint')}
+          errorMessage={translate('pin_code_invalid_code_message')}
+          onVerification={onVerification}
+        />
       </PinCodeContainer>
       {/*<BadgeButton*/}
       {/*  caption={translate('lock_emergency_button_caption')}*/}
