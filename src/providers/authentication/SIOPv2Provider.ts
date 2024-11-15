@@ -54,6 +54,7 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
       },
       supportedDIDMethods: didMethodsSupported,
       eventEmitter: siopEventEmitter,
+      hasher: generateDigest,
     },
     requestJwtOrUri,
   });

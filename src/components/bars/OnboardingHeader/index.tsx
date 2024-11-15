@@ -26,6 +26,7 @@ import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 import SettingsIcon from '../../assets/icons/SettingsIcon';
+import {SSITextH1LightStyled as HeaderCaption, SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption} from '../../../styles/components';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,6 +39,7 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
     total: number;
     current: number;
   };
+  headerSubTitle?: string;
   onBack?: () => Promise<void>;
 }
 
@@ -80,7 +82,7 @@ const PROGRESS_BAR_VERTICAL_MARGIN = 10;
 
 export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VERTICAL_MARGIN * 2;
 
-const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: HeaderBarProps): JSX.Element => {
+const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, headerSubTitle, options}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
 
   const {currentStep, skipImport} = useMemo(
@@ -171,6 +173,8 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack}: Heade
           containerStyle={{marginVertical: PROGRESS_BAR_VERTICAL_MARGIN}}
         />
       )}
+      {options.headerTitle && <HeaderCaption style={{marginBottom: 10}}>{options.headerTitle as string}</HeaderCaption>}
+      {headerSubTitle && <HeaderSubCaption>{headerSubTitle}</HeaderSubCaption>}
       {isVisible && (
         <Animated.View
           style={[
