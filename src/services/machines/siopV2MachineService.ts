@@ -203,23 +203,23 @@ export const getFederationTrust = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const entityIdentifier = authorizationRequestData.entityId;
+  // const entityIdentifier = authorizationRequestData.entityId;
+  //
+  // if (!entityIdentifier) {
+  //   return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  // }
 
-  if (!entityIdentifier) {
-    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
-  }
+  // const trustedAnchors = [];
+  // for (const trustAnchor of trustAnchors) {
+  //   const resolveResult = await agent.resolveTrustChain({
+  //     entityIdentifier,
+  //     trustAnchors: [trustAnchor],
+  //   });
+  //
+  //   if (Array.isArray(resolveResult) && resolveResult.length > 0) {
+  //     trustedAnchors.push(trustAnchor);
+  //   }
+  // }
 
-  const trustedAnchors = [];
-  for (const trustAnchor of trustAnchors) {
-    const resolveResult = await agent.resolveTrustChain({
-      entityIdentifier,
-      trustAnchors: [trustAnchor],
-    });
-
-    if (Array.isArray(resolveResult) && resolveResult.length > 0) {
-      trustedAnchors.push(trustAnchor);
-    }
-  }
-
-  return trustedAnchors;
+  return []; //trustedAnchors;
 };
