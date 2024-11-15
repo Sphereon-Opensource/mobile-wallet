@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {TouchableOpacity, Keyboard, View, TextInput} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 import {Ionicons} from '@expo/vector-icons';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {useNavigation} from '@react-navigation/native';
+import {fontColors} from '@sphereon/ui-components.core';
+import React, {useEffect, useState} from 'react';
+import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
+import {verticalScale} from 'react-native-size-matters';
+import {useModal} from '../../../providers/chat/chatProvider';
 
 const ChatInputToolbar = (props: any) => {
+  const {closeModal, setChatMode} = useModal();
   const navigation = useNavigation();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -24,48 +27,56 @@ const ChatInputToolbar = (props: any) => {
     };
   }, []);
 
+  const handleVoicePress = () => {
+    console.log('Voice Pressed');
+    setChatMode('voice');
+    closeModal();
+  };
+
   return (
     <View
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 30,
-        marginHorizontal: moderateScale(10),
+        marginHorizontal: 16,
         marginBottom: keyboardVisible ? verticalScale(30) : 0,
       }}>
-      <TouchableOpacity
-        style={{
-          marginLeft: 10,
-          marginRight: 10,
-        }}
-        onPress={() => navigation.goBack()}
-      />
+      <TouchableOpacity style={{}} onPress={() => navigation.goBack()} />
 
       <TextInput
         style={{
           flex: 1,
-          borderRadius: 30,
           padding: 10,
           backgroundColor: '#E5E5E5',
-          marginRight: 10,
+          height: keyboardVisible ? 100 : 50,
         }}
+        multiline={true}
         placeholder="Message"
         placeholderTextColor="#2f3c47"
-        autoFocus={true}
         value={inputValue}
         onChangeText={text => setInputValue(text)}
       />
-
-      <TouchableOpacity
-        style={{marginLeft: 8}}
-        onPress={() => {
-          // Logic to send the message
-          props.onSend([{text: inputValue}]);
-          setInputValue(''); // Clear the input field after sending
-        }}
-        disabled={!inputValue.trim()}>
-        <Ionicons name="arrow-up" size={28} color={inputValue.trim() ? '#2f3c47' : '#ccc'} />
-      </TouchableOpacity>
+      {!keyboardVisible && (
+        <TouchableOpacity
+          style={{marginLeft: 8}}
+          onPress={() => {
+            handleVoicePress();
+          }}>
+          <Ionicons name="mic-outline" size={28} color={fontColors.dark} />
+        </TouchableOpacity>
+      )}
+      {keyboardVisible && (
+        <TouchableOpacity
+          style={{position: 'absolute', right: 0, bottom: 0, padding: 8}}
+          onPress={() => {
+            // Logic to send the message
+            props.onSend([{text: inputValue}]);
+            setInputValue(''); // Clear the input field after sending
+          }}
+          disabled={!inputValue.trim()}>
+          <Ionicons name="arrow-up-outline" size={24} color={fontColors.dark} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

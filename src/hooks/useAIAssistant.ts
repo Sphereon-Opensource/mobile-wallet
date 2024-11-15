@@ -1,9 +1,7 @@
-import {RealtimeClient} from '@openai/realtime-api-beta';
+import {RealtimeClient, RealtimeUtils} from '@openai/realtime-api-beta';
 import {ItemType} from '@openai/realtime-api-beta/dist/lib/client.js';
-import {useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {OPENAI_API_KEY} from 'react-native-dotenv';
-import {IMessage} from 'react-native-gifted-chat';
 import {useSelector} from 'react-redux';
 import {RootState} from 'src/types';
 import {basicInstructions} from '../instructions';
@@ -16,6 +14,8 @@ interface RealtimeEvent {
   count?: number;
   event: {[key: string]: any};
 }
+
+export type ChatMode = 'text' | 'voice';
 
 const cleanState = (state: RootState) => {
   let newState = {...state};
@@ -41,24 +41,13 @@ const cleanState = (state: RootState) => {
   return clean(newState);
 };
 
-export type Props = {
-  onResponse?: (newMessages: Array<IMessage>) => void;
-};
-
-const useAIAssistant = (props: Props) => {
-  const {onResponse} = props;
+const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [functions, setFunctions] = useState<Record<string, any>>({});
   const state = useSelector((state: RootState) => state);
-  const navigation = useNavigation();
-
-  const [realtimeEvents, setRealtimeEvents] = useState<RealtimeEvent[]>([]);
-  const [expandedEvents, setExpandedEvents] = useState<{
-    [key: string]: boolean;
-  }>({});
   const [items, setItems] = useState<ItemType[]>([]);
-
-  const wavRecorderRef = useRef<WavRecorder>(new WavRecorder());
+  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
+  const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
@@ -67,23 +56,30 @@ const useAIAssistant = (props: Props) => {
     }),
   );
   const startTimeRef = useRef<string>(new Date().toISOString());
+  const chunkCallback = useCallback(
+    (base64: string) => {
+      const buffer = RealtimeUtils.base64ToArrayBuffer(base64);
+      clientRef.current.appendInputAudio(buffer);
+    },
+    [clientRef.current],
+  );
+  const wavRecorderRef = useRef<WavRecorder>(new WavRecorder(chunkCallback));
 
-  const connectConversation = useCallback(async () => {
+  const connect = useCallback(async () => {
     const client = clientRef.current;
-    const wavRecorder = wavRecorderRef.current;
-    const wavStreamPlayer = wavStreamPlayerRef.current;
 
     // Set state variables
     startTimeRef.current = new Date().toISOString();
     setIsConnected(true);
-    setRealtimeEvents([]);
-    setItems(client.conversation.getItems());
+    setItems(client.conversation.getItems().reverse());
 
-    // Connect to microphone
-    await wavRecorder.begin();
-
-    // Connect to realtime API
     await client.connect();
+  }, []);
+
+  const connectConversation = useCallback(async () => {
+    await connect();
+
+    const client = clientRef.current;
     client.sendUserMessageContent([
       {
         type: `input_text`,
@@ -91,16 +87,41 @@ const useAIAssistant = (props: Props) => {
         // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
       },
     ]);
+  }, []);
 
-    if (client.getTurnDetectionType() === 'server_vad') {
-      // console.log('server vad');
-      await wavRecorder.record((data: any) => client.appendInputAudio(data.mono));
-    }
+  const connectVoice = useCallback(async () => {
+    console.log('connecting voice');
+    await connect();
+    const client = clientRef.current;
+    const wavRecorder = wavRecorderRef.current;
+    const wavStreamPlayer = wavStreamPlayerRef.current;
+    const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
+    const appState = JSON.stringify(cleanState(state));
+
+    wavRecorder.begin();
+
+    client.updateSession({
+      instructions: `
+        # basic instructions:
+        ${basicInstructions}
+
+        # current app state:
+        ${appState}
+
+        # current route:
+        ${route}
+
+        user has just enabled voice mode, which can be toggled with the microphone button in the bottom right corner of the screen. Instruct user if necessary.
+      `,
+    });
+
+    client.sendUserMessageContent([{type: 'input_text', text: 'explain how voice mode works'}]);
+
+    console.log('connected voice');
   }, []);
 
   const disconnectConversation = useCallback(async () => {
     setIsConnected(false);
-    setRealtimeEvents([]);
     setItems([]);
 
     const client = clientRef.current;
@@ -115,35 +136,13 @@ const useAIAssistant = (props: Props) => {
     client.deleteItem(id);
   }, []);
 
-  /**
-   * Core RealtimeClient and audio capture setup
-   * Set all of our instructions, tools, events and more
-   */
   useEffect(() => {
-    // Get refs
     const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
-    // Set instructions
     client.updateSession({instructions: basicInstructions});
-    // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({input_audio_transcription: {model: 'whisper-1'}});
 
-    // handle realtime events from client + server for event logging
-    client.on('realtime.event', (realtimeEvent: RealtimeEvent) => {
-      // // console.log('realtime event', '\n', JSON.stringify(realtimeEvent, null, 2));
-      // console.log('realtime event', '\n', JSON.stringify(realtimeEvent, null, 2), `type: ${realtimeEvent.event.type}`);
-      setRealtimeEvents(realtimeEvents => {
-        const lastEvent = realtimeEvents[realtimeEvents.length - 1];
-        if (lastEvent?.event.type === realtimeEvent.event.type) {
-          // if we receive multiple events in a row, aggregate them for display purposes
-          lastEvent.count = (lastEvent.count || 0) + 1;
-          return realtimeEvents.slice(0, -1).concat(lastEvent);
-        } else {
-          return realtimeEvents.concat(realtimeEvent);
-        }
-      });
-    });
     client.on('error', (event: any) => console.error(event));
     client.on('conversation.interrupted', async () => {
       const trackSampleOffset = await wavStreamPlayer.interrupt();
@@ -153,23 +152,18 @@ const useAIAssistant = (props: Props) => {
       }
     });
     client.on('conversation.updated', async ({item, delta}: any) => {
-      console.log('conversation updated', '\n', JSON.stringify({...item, formatted: {...item.formatted, audio: 'omitted'}}, null, 2));
-      // console.log('conversation updated', item.id, delta?.audio?.length, 'conversation.updated');
       const items = client.conversation.getItems();
-      if (delta?.audio) {
-        // wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+      if (delta?.audio && chatMode === 'voice') {
+        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
       }
-      if (item.status === 'completed' && item.formatted.audio?.length) {
-        wavStreamPlayer.play16BitPCMArray(item.formatted.audio);
-      }
-      setItems(items);
+      setItems(items.reverse());
     });
 
     client.on('response.created', async ({response}: any) => {
       // console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
     });
 
-    setItems(client.conversation.getItems());
+    setItems(client.conversation.getItems().reverse());
 
     return () => {
       // cleanup; resets to defaults
@@ -208,9 +202,50 @@ const useAIAssistant = (props: Props) => {
     setFunctions(functions);
   };
 
-  const startVoiceRecording = async () => {};
+  const startVoiceRecording = async () => {
+    const wavRecorder = wavRecorderRef.current;
+    await wavRecorder.startRecording();
+    setIsVoiceRecording(true);
+  };
 
-  const endVoiceRecording = () => {};
+  const endVoiceRecording = async () => {
+    setIsVoiceRecording(false);
+    const wavRecorder = wavRecorderRef.current;
+    const client = clientRef.current;
+    const filePath = await wavRecorder.stopRecording();
+    // if (!base64) return;
+    // const int16Array = RealtimeUtils.base64ToArrayBuffer(base64);
+    // // console.log('int16Array', int16Array);
+    // // if (!int16Array) return;
+
+    // // wavStreamPlayerRef.current.add16BitPCM(int16Array, 'user-audio');
+
+    // // make chunks of 2400 samples
+    // const chunkSize = 2400;
+    // const chunks = [];
+    // for (let i = 0; i < int16Array.byteLength; i += chunkSize) {
+    //   chunks.push(int16Array.slice(i, i + chunkSize));
+    // }
+    // chunks.forEach(chunk => {
+    //   client.appendInputAudio(chunk);
+    // });
+
+    client.createResponse();
+  };
+
+  useEffect(() => {
+    if (chatMode === 'voice') {
+      connectVoice();
+    }
+  }, [chatMode]);
+
+  useEffect(() => {
+    if (isVoiceRecording) {
+      startVoiceRecording();
+    } else {
+      endVoiceRecording();
+    }
+  }, [isVoiceRecording]);
 
   return {
     isConnected,
@@ -219,6 +254,10 @@ const useAIAssistant = (props: Props) => {
     updateFunctions,
     connectConversation,
     disconnectConversation,
+    chatMode,
+    setChatMode,
+    isVoiceRecording,
+    setIsVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
   };

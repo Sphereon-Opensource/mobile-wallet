@@ -1,100 +1,79 @@
 import {Ionicons} from '@expo/vector-icons';
 import {fontColors} from '@sphereon/ui-components.core';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
 import {useModal} from '../../../providers/chat/chatProvider';
+import {LinearGradient} from 'expo-linear-gradient';
 
 type Props = {
   style?: ViewStyle;
 };
 
 const ChatButton = ({style}: Props) => {
-  const {openModal, updateSession, isConnected, updateFunctions} = useModal();
+  const {openModal, isVoiceRecording, setIsVoiceRecording, setChatMode, chatMode} = useModal();
 
-  useEffect((): void => {
-    if (!isConnected) {
-      return;
+  const handleTextPress = () => {
+    setChatMode('text');
+    openModal();
+  };
+
+  const handleVoicePress = () => {
+    if (chatMode === 'voice') {
+      setIsVoiceRecording(!isVoiceRecording);
+    } else {
+      setChatMode('voice');
     }
+  };
 
-    // void updateSession({
-    //   event_id: 'main_event_123',
-    //   type: 'session.update',
-    //   session: {
-    //     modalities: ['text'],
-    //     instructions: `
-    //          `,
-    //     tools: [
-    //       {
-    //         type: 'function',
-    //         name: 'go_back',
-    //         description: 'Return or go back to the previous screen',
-    //         parameters: {
-    //           type: 'object',
-    //           properties: {},
-    //           required: [],
-    //         },
-    //       },
-    //       {
-    //         type: 'function',
-    //         name: 'scan_qr',
-    //         description: 'Scan the QR code with the QR scanner',
-    //         parameters: {
-    //           type: 'object',
-    //           properties: {},
-    //           required: [],
-    //         },
-    //       },
-    //     ],
-    //     tool_choice: 'auto',
-    //     temperature: 0.8,
-    //   },
-    // });
-
-    updateFunctions({
-      go_back: () => console.log('navigation.goBack(),'),
-      scan_qr: () => console.log("navigation.navigate('AddContact', {})"),
-    });
-  }, [isConnected]);
   return (
     <View
       style={{
+        position: 'absolute',
+        bottom: 16,
+        right: 16,
+        alignItems: 'center',
         ...style,
       }}>
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          bottom: 16,
-          right: 16,
-          width: 50,
-          height: 50,
+          width: chatMode === 'text' ? 56 : 32,
+          height: chatMode === 'text' ? 56 : 32,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: 25,
-          backgroundColor: 'white',
+          borderRadius: chatMode === 'text' ? 56 / 2 : 32 / 2,
+          backgroundColor: chatMode === 'text' ? 'white' : '#585e73',
+          marginBottom: 8,
         }}
         onPress={() => {
-          openModal();
+          handleTextPress();
         }}>
-        <Ionicons name="chatbubble-outline" size={28} color={fontColors.dark} />
+        <Ionicons name="chatbubble-outline" size={chatMode === 'text' ? 28 : 18} color={chatMode === 'text' ? fontColors.dark : fontColors.light} />
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-          position: 'absolute',
-          bottom: 76,
-          right: 16,
-          width: 50,
-          height: 50,
+          width: chatMode === 'voice' ? 56 : 32,
+          height: chatMode === 'voice' ? 56 : 32,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: 25,
-          backgroundColor: 'white',
+          borderRadius: chatMode === 'voice' ? 56 / 2 : 32 / 2,
+          backgroundColor: chatMode === 'voice' ? 'white' : '#585e73',
+          overflow: 'hidden',
+          position: 'relative',
         }}
         onPress={() => {
-          openModal();
+          handleVoicePress();
         }}>
-        <Ionicons name="mic-outline" size={28} color={fontColors.dark} />
+        {isVoiceRecording && (
+          <LinearGradient
+            colors={['#C6FFFA', '#B3B5FF']}
+            start={[0, 0]}
+            end={[1, 1]}
+            style={{position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}}
+          />
+        )}
+        <Ionicons name="mic-outline" size={chatMode === 'voice' ? 28 : 18} color={chatMode === 'voice' ? fontColors.dark : fontColors.light} />
       </TouchableOpacity>
     </View>
   );

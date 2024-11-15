@@ -1,3 +1,5 @@
+import {decode} from 'base-64';
+
 export default class WavPacker {
   // Converts Float32Array audio data to WAV ArrayBuffer in Int16 format
   static float32ToWav(float32Array: Float32Array, sampleRate = 24000, numChannels = 1) {
@@ -105,6 +107,18 @@ export default class WavPacker {
     const blob = new Blob(blobParts, {type: 'audio/wav'});
 
     return blob;
+  }
+
+  static base64ToInt16Array(base64: string): Int16Array {
+    // Decode the Base64 string into a Uint8Array
+    const binaryString = decode(base64);
+    const wavData = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      wavData[i] = binaryString.charCodeAt(i);
+    }
+
+    return new Int16Array(wavData.buffer, 0, wavData.length / 2); // 2 bytes per sample for Int16
   }
 
   static createWavBase64(

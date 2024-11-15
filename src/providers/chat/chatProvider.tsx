@@ -1,11 +1,13 @@
-import {backgroundColors} from '@sphereon/ui-components.core';
+import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import React, {createContext, useCallback, useContext, useEffect, useState} from 'react';
-import {Button, Keyboard, Modal, View, Text} from 'react-native';
+import {Text, Keyboard, Modal, TouchableOpacity, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat, IMessage} from 'react-native-gifted-chat';
+import {ChatBubble} from '../../components/chat/ChatBubble';
 import ChatInputToolbar from '../../components/chat/ChatInputToolbar';
-import useAIAssistant from '../../hooks/useAIAssistant';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import WavStreamPlayer from 'src/utils/wavtools/WavStreamPlayer';
+import useAIAssistant, {ChatMode} from '../../hooks/useAIAssistant';
+import {LinearGradient} from 'expo-linear-gradient';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 type ModalContextType = {
   isConnected: boolean;
@@ -13,6 +15,10 @@ type ModalContextType = {
   closeModal: () => void;
   updateSession: (session: Record<string, any>) => Promise<void>;
   updateFunctions: (functions: Record<string, any>) => void;
+  isVoiceRecording: boolean;
+  setIsVoiceRecording: (isRecording: boolean) => void;
+  chatMode: ChatMode;
+  setChatMode: (mode: ChatMode) => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -35,10 +41,20 @@ export const ChatProvider = ({children}: {children: any}) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
   };
 
-  const {isConnected, sendPrompt, updateSession, updateFunctions, connectConversation, disconnectConversation, items, wavStreamPlayer} =
-    useAIAssistant({
-      onResponse: onSendMessage,
-    });
+  const {
+    isConnected,
+    sendPrompt,
+    updateSession,
+    updateFunctions,
+    connectConversation,
+    disconnectConversation,
+    items,
+    wavStreamPlayer,
+    isVoiceRecording,
+    setIsVoiceRecording,
+    chatMode,
+    setChatMode,
+  } = useAIAssistant();
 
   const parsePatterns = useCallback(() => {
     return [
@@ -63,10 +79,10 @@ export const ChatProvider = ({children}: {children: any}) => {
         },
       },
     ]);
-    connectConversation();
-    return () => {
-      disconnectConversation();
-    };
+    // connectConversation();
+    // return () => {
+    //   disconnectConversation();
+    // };
   }, []);
 
   useEffect(() => {
@@ -113,6 +129,7 @@ export const ChatProvider = ({children}: {children: any}) => {
   }, [items]);
 
   const openModal = (): void => {
+    connectConversation();
     setIsVisible(true);
   };
 
@@ -120,66 +137,77 @@ export const ChatProvider = ({children}: {children: any}) => {
     setIsVisible(false);
   };
 
-  const renderInputToolbar = (props: any) => {
-    //Add the extra styles via containerStyle
-    return <ChatInputToolbar {...props} />;
-  };
-
-  const handleLongPress = useCallback(
-    (context: unknown, currentMessage: any) => {
-      console.log('long press', currentMessage);
+  const handleAudioPress = useCallback(
+    (message: IMessage) => {
       // find item with id and use wavplayerrecorder.playpcmarray with formatted.file
 
-      const item = items.find(({id}) => id === currentMessage._id);
+      const item = items.find(({id}) => id === message._id);
+      if (!item || !item.formatted.audio) return;
       console.log('item', item?.id);
-      wavStreamPlayer.playWavBase64String(item?.formatted.file);
+      wavStreamPlayer.add16BitPCM(item.formatted.audio, item.id);
     },
     [items],
   );
 
   return (
-    <ModalContext.Provider value={{openModal, closeModal, updateSession, isConnected, updateFunctions}}>
-      {children}
-      <Modal transparent visible={isVisible} onRequestClose={closeModal} animationType="slide">
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View
-            style={{
-              marginTop: 'auto',
-              position: 'relative',
-              width: '100%',
-              height: 600,
-              padding: 0,
-              paddingBottom: 30,
-              backgroundColor: '#ffffff',
-              borderTopRightRadius: 32,
-              borderTopLeftRadius: 32,
-              gap: 20,
-            }}>
-            <GiftedChat
-              messages={messages}
-              onSend={(messages: Array<IMessage>): void => {
-                Keyboard.dismiss();
-                onSendMessage(messages);
-                sendPrompt(messages[0].text);
-              }}
-              user={{
-                _id: 1,
-              }}
-              renderInputToolbar={renderInputToolbar}
-              parsePatterns={parsePatterns}
-              onLongPress={handleLongPress}
-            />
+    <ModalContext.Provider
+      value={{openModal, closeModal, updateSession, isConnected, updateFunctions, isVoiceRecording, setIsVoiceRecording, chatMode, setChatMode}}>
+      <GestureHandlerRootView>
+        {children}
+        <Modal transparent visible={isVisible} onRequestClose={closeModal} animationType="slide">
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View
               style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
+                marginTop: 'auto',
+                position: 'relative',
+                width: '100%',
+                height: '90%',
+                padding: 0,
+                paddingBottom: 30,
+                backgroundColor: '#ffffff',
+                borderTopRightRadius: 32,
+                borderTopLeftRadius: 32,
+                gap: 20,
               }}>
-              <Button onPress={closeModal} title="Close" color="#C65102" />
+              <LinearGradient
+                colors={['#7276F7', '#7C40E8']}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 1}}
+                style={{
+                  padding: 16,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                <Text style={{color: fontColors.light, fontSize: 14, fontWeight: 600}}>Sphereon Digital Assistant</Text>
+                <TouchableOpacity onPress={closeModal}>
+                  <Ionicons name="close" size={28} color={fontColors.light} />
+                </TouchableOpacity>
+              </LinearGradient>
+              <GiftedChat
+                messages={messages}
+                onSend={(messages: Array<IMessage>): void => {
+                  Keyboard.dismiss();
+                  onSendMessage(messages);
+                  sendPrompt(messages[0].text);
+                }}
+                user={{
+                  _id: 1,
+                }}
+                messagesContainerStyle={{
+                  marginHorizontal: 16,
+                }}
+                showUserAvatar={false}
+                renderAvatar={null}
+                renderInputToolbar={props => <ChatInputToolbar {...props} />}
+                renderBubble={props => <ChatBubble {...props} handleAudioPress={() => handleAudioPress(props.currentMessage)} />}
+                parsePatterns={parsePatterns}
+              />
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      </GestureHandlerRootView>
     </ModalContext.Provider>
   );
 };

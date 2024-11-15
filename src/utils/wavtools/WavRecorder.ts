@@ -1,9 +1,12 @@
-import AudioRecorderPlayer, {AVEncodingOption} from 'react-native-audio-recorder-player';
+import AudioRecorderPlayer, {AVEncoderAudioQualityIOSType, AVEncodingOption} from 'react-native-audio-recorder-player';
+import AudioRecord from 'react-native-audio-record';
 import {Platform} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import WavPacker from './WavPacker';
 import {Buffer} from 'buffer';
 import {PERMISSIONS, request, check, RESULTS} from 'react-native-permissions';
+import {RealtimeUtils} from '@openai/realtime-api-beta';
+import {decode} from 'base-64';
 
 global.Buffer = Buffer;
 
@@ -14,12 +17,14 @@ class WavRecorder {
   recordPath: string;
   isRecording: boolean;
   chunkInterval: NodeJS.Timeout | undefined;
+  chunkCallback: (base64: string) => void;
 
-  constructor() {
+  constructor(chunkCallback: (base64: string) => void) {
     this.recorder = audioRecorderPlayer;
     this.recordPath = `${FileSystem.documentDirectory}audio_temp.raw`; // Temporary raw recording
     this.isRecording = false;
     this.chunkInterval = undefined;
+    this.chunkCallback = chunkCallback;
   }
 
   /**
@@ -46,6 +51,16 @@ class WavRecorder {
       if (this.isRecording) {
         throw new Error('Already connected: please call .end() to start a new session');
       }
+
+      const options = {
+        sampleRate: 2400, // default 44100
+        channels: 1, // 1 or 2, default 1
+        bitsPerSample: 16, // 8 or 16, default 16
+        audioSource: 6, // android only (see below)
+        wavFile: this.recordPath,
+      };
+
+      AudioRecord.init(options);
     } catch (error) {
       console.error('Error starting recording session:', error);
       return false;
@@ -56,8 +71,9 @@ class WavRecorder {
   async startRecording(): Promise<boolean> {
     try {
       // Start recording in a raw PCM format
-      await this.recorder.startRecorder(this.recordPath, {
-        AVFormatIDKeyIOS: AVEncodingOption.lpcm, // iOS format option
+      AudioRecord.start();
+      AudioRecord.on('data', data => {
+        this.chunkCallback(data);
       });
 
       // console.log('Recording started...');
@@ -70,41 +86,20 @@ class WavRecorder {
     }
   }
 
-  async stopRecording(): Promise<string | undefined> {
+  async stopRecording() {
     try {
       if (!this.isRecording) {
         throw new Error('Recording session has not started');
       }
 
-      const result = await this.recorder.stopRecorder();
-      // console.log('Recording stopped, result:', result, 'stopped');
       this.isRecording = false;
 
       if (this.chunkInterval) {
         clearInterval(this.chunkInterval);
         this.chunkInterval = undefined;
       }
-
-      // Load raw PCM audio data
-      const audioData: string = await FileSystem.readAsStringAsync(this.recordPath, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      const rawArray: Float32Array = this.base64ToFloat32Array(audioData); // Converting from Base64 to Float32Array
-
-      // Convert to WAV
-      const wavArrayBuffer: ArrayBuffer = WavPacker.float32ToWav(rawArray);
-
-      // Save WAV file
-      const wavPath: string = `${FileSystem.documentDirectory}final_audio.wav`;
-
-      // Convert ArrayBuffer to Base64 before writing
-      const wavBase64String: string = Buffer.from(wavArrayBuffer).toString('base64');
-      await FileSystem.writeAsStringAsync(wavPath, wavBase64String, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      // console.log(`WAV file saved at ${wavPath}`);
-      return wavPath;
+      const audioFile = await AudioRecord.stop();
+      return audioFile;
     } catch (error) {
       console.error('Error stopping recorder:', error);
     }
