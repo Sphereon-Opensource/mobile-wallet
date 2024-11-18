@@ -6,17 +6,13 @@ import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
 import {PIN_CODE_LENGTH} from '../../@config/constants';
-import {setBiometrics} from '../../store/actions/user.actions';
 import {
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSILockScreenPinCodeContainerStyled as PinCodeContainer,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useAuthEffect} from '../../hooks/use-biometrics';
-import {Platform} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
+import {useAuthFocusEffect} from '../../hooks/use-biometrics';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -29,9 +25,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   }, []);
 
-  const dispatch = useDispatch();
-
-  useAuthEffect(async (success: boolean) => {
+  const {biometricsEnabled, prompt} = useAuthFocusEffect(async (success: boolean) => {
     if (success) {
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
@@ -62,6 +56,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
           onVerification={onVerification}
+          autoFocus={!biometricsEnabled}
         />
       </PinCodeContainer>
       {/*<BadgeButton*/}

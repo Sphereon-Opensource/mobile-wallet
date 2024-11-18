@@ -23,6 +23,7 @@ interface IProps {
   errorMessage?: string;
   onMaxRetriesExceeded?: () => Promise<void>;
   onVerification: (value: string) => Promise<void>;
+  autoFocus?: boolean;
 }
 
 interface IState {
@@ -207,7 +208,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
             accessibilityHint={accessibilityHint}
             accessibilityRole={'text'}
             keyboardType={'number-pad'}
-            autoFocus
+            autoFocus={this.props.autoFocus}
             caretHidden
             maxLength={length}
             onKeyPress={this.onKeyPressInput}

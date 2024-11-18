@@ -42,13 +42,11 @@ const Footnote = styled.Text`
 
 const EnableBiometricsScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  console.log('enabled?', onboardingInstance.getSnapshot().context.biometricsEnabled);
   const {prompt} = useBiometrics();
 
   const handleAuth = async () => {
     const success = await prompt();
     if (success) onboardingInstance.send(OnboardingMachineEvents.NEXT);
-    if (!success) alert('Strong biometrics not enabled or biometrics not enrolled');
   };
   const footer = (
     <Footer>
