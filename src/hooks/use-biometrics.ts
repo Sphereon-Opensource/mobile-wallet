@@ -83,6 +83,11 @@ export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
       navigation.removeListener('focus', handleFocus);
     };
   }, []);
+
+  return {
+    prompt,
+    biometricsEnabled,
+  };
 };
 
 const isHardwareSupported = (hasHardware: boolean, supported: Auth.AuthenticationType[]) => {

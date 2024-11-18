@@ -13,7 +13,6 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {useAuthFocusEffect} from '../../hooks/use-biometrics';
-import LockingHandler from 'src/handlers/LockingHandler';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -26,7 +25,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     });
   }, []);
 
-  useAuthFocusEffect(async (success: boolean) => {
+  const {biometricsEnabled, prompt} = useAuthFocusEffect(async (success: boolean) => {
     if (success) {
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
@@ -57,6 +56,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
           onVerification={onVerification}
+          autoFocus={!biometricsEnabled}
         />
       </PinCodeContainer>
       {/*<BadgeButton*/}
