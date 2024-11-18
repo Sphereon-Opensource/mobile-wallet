@@ -1,12 +1,10 @@
-import AudioRecorderPlayer, {AVEncoderAudioQualityIOSType, AVEncodingOption} from 'react-native-audio-recorder-player';
+import AudioRecorderPlayer, {AVEncodingOption} from 'react-native-audio-recorder-player';
 import AudioRecord from 'react-native-audio-record';
 import {Platform} from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import WavPacker from './WavPacker';
 import {Buffer} from 'buffer';
 import {PERMISSIONS, request, check, RESULTS} from 'react-native-permissions';
-import {RealtimeUtils} from '@openai/realtime-api-beta';
-import {decode} from 'base-64';
 
 global.Buffer = Buffer;
 
@@ -53,7 +51,7 @@ class WavRecorder {
       }
 
       const options = {
-        sampleRate: 2400, // default 44100
+        sampleRate: 24000, // default 44100
         channels: 1, // 1 or 2, default 1
         bitsPerSample: 16, // 8 or 16, default 16
         audioSource: 6, // android only (see below)

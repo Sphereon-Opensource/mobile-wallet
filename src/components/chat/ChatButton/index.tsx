@@ -10,18 +10,23 @@ type Props = {
 };
 
 const ChatButton = ({style}: Props) => {
-  const {openModal, isVoiceRecording, setIsVoiceRecording, setChatMode, chatMode} = useModal();
+  const {openModal, assistant} = useModal();
+  const {isVoiceRecording, startVoiceRecording, endVoiceRecording, enableVoiceMode, enableTextMode, chatMode} = assistant;
 
   const handleTextPress = () => {
-    setChatMode('text');
+    enableTextMode();
     openModal();
   };
 
   const handleVoicePress = () => {
     if (chatMode === 'voice') {
-      setIsVoiceRecording(!isVoiceRecording);
+      if (isVoiceRecording) {
+        endVoiceRecording();
+      } else {
+        startVoiceRecording();
+      }
     } else {
-      setChatMode('voice');
+      enableVoiceMode();
     }
   };
 

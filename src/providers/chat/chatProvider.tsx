@@ -10,15 +10,8 @@ import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 type ModalContextType = {
-  isConnected: boolean;
   openModal: () => void;
   closeModal: () => void;
-  updateSession: (session: Record<string, any>) => Promise<void>;
-  updateFunctions: (functions: Record<string, any>) => void;
-  isVoiceRecording: boolean;
-  setIsVoiceRecording: (isRecording: boolean) => void;
-  chatMode: ChatMode;
-  setChatMode: (mode: ChatMode) => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -41,20 +34,8 @@ export const ChatProvider = ({children}: {children: any}) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
   };
 
-  const {
-    isConnected,
-    sendPrompt,
-    updateSession,
-    updateFunctions,
-    connectConversation,
-    disconnectConversation,
-    items,
-    wavStreamPlayer,
-    isVoiceRecording,
-    setIsVoiceRecording,
-    chatMode,
-    setChatMode,
-  } = useAIAssistant();
+  const assistant = useAIAssistant();
+  const {sendPrompt, connectConversation, items, wavStreamPlayer} = assistant;
 
   const parsePatterns = useCallback(() => {
     return [
@@ -150,8 +131,7 @@ export const ChatProvider = ({children}: {children: any}) => {
   );
 
   return (
-    <ModalContext.Provider
-      value={{openModal, closeModal, updateSession, isConnected, updateFunctions, isVoiceRecording, setIsVoiceRecording, chatMode, setChatMode}}>
+    <ModalContext.Provider value={{openModal, closeModal}}>
       <GestureHandlerRootView>
         {children}
         <Modal transparent visible={isVisible} onRequestClose={closeModal} animationType="slide">

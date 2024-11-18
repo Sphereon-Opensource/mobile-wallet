@@ -1,3 +1,8 @@
+import {decode, encode} from 'base-64';
+
+globalThis.atob = decode;
+globalThis.btoa = encode;
+
 import {RealtimeClient, RealtimeUtils} from '@openai/realtime-api-beta';
 import {ItemType} from '@openai/realtime-api-beta/dist/lib/client.js';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -8,6 +13,7 @@ import {basicInstructions} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
+
 interface RealtimeEvent {
   time: string;
   source: 'client' | 'server';
@@ -56,10 +62,33 @@ const useAIAssistant = () => {
     }),
   );
   const startTimeRef = useRef<string>(new Date().toISOString());
+
+  /**
+   * Converts a base64 string to an ArrayBuffer
+   * @param {string} base64
+   * @returns {ArrayBuffer}
+   */
+  const base64ToArrayBuffer = (base64: string) => {
+    const buffer = Buffer.from(base64, 'base64'); // Decode base64
+    const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+    console.log('arrayBuffer.byteLength:', arrayBuffer.byteLength); // Logs the length
+    return arrayBuffer;
+  };
+
+  const appendInputAudio = (base64: string) => {
+    console.log('appendInputAudio', base64.length);
+    if (base64.length > 0) {
+      clientRef.current?.realtime.send('input_audio_buffer.append', {
+        audio: base64,
+      });
+      clientRef.current.inputAudioBuffer = RealtimeUtils.mergeInt16Arrays(clientRef.current.inputAudioBuffer, base64ToArrayBuffer(base64));
+    }
+    return true;
+  };
+
   const chunkCallback = useCallback(
     (base64: string) => {
-      const buffer = RealtimeUtils.base64ToArrayBuffer(base64);
-      clientRef.current.appendInputAudio(buffer);
+      appendInputAudio(base64);
     },
     [clientRef.current],
   );
@@ -94,7 +123,6 @@ const useAIAssistant = () => {
     await connect();
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
-    const wavStreamPlayer = wavStreamPlayerRef.current;
     const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
     const appState = JSON.stringify(cleanState(state));
 
@@ -153,6 +181,7 @@ const useAIAssistant = () => {
     });
     client.on('conversation.updated', async ({item, delta}: any) => {
       const items = client.conversation.getItems();
+      console.log('conversation updated', {hasAudio: !!delta?.audio, chatMode});
       if (delta?.audio && chatMode === 'voice') {
         wavStreamPlayer.add16BitPCM(delta.audio, item.id);
       }
@@ -160,7 +189,7 @@ const useAIAssistant = () => {
     });
 
     client.on('response.created', async ({response}: any) => {
-      // console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
+      console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
     });
 
     setItems(client.conversation.getItems().reverse());
@@ -227,25 +256,19 @@ const useAIAssistant = () => {
     //   chunks.push(int16Array.slice(i, i + chunkSize));
     // }
     // chunks.forEach(chunk => {
-    //   client.appendInputAudio(chunk);
+    // client.appendInputAudio(chunk);
     // });
 
     client.createResponse();
   };
+  const enableVoiceMode = () => {
+    setChatMode('voice');
+    connectVoice();
+  };
 
-  useEffect(() => {
-    if (chatMode === 'voice') {
-      connectVoice();
-    }
-  }, [chatMode]);
-
-  useEffect(() => {
-    if (isVoiceRecording) {
-      startVoiceRecording();
-    } else {
-      endVoiceRecording();
-    }
-  }, [isVoiceRecording]);
+  const enableTextMode = () => {
+    setChatMode('text');
+  };
 
   return {
     isConnected,
@@ -255,9 +278,11 @@ const useAIAssistant = () => {
     connectConversation,
     disconnectConversation,
     chatMode,
-    setChatMode,
+    enableVoiceMode,
+    enableTextMode,
     isVoiceRecording,
-    setIsVoiceRecording,
+    startVoiceRecording,
+    endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
   };

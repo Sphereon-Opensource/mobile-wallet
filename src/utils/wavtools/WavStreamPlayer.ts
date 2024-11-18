@@ -69,6 +69,7 @@ class WavStreamPlayer {
     const filenamePrefix = `${FileSystem.documentDirectory}${id}`;
     const timestamp = new Date().getTime();
     const filePath = `${filenamePrefix}_${timestamp}.wav`;
+
     await FileSystem.writeAsStringAsync(filePath, base64String, {
       encoding: FileSystem.EncodingType.Base64,
     });
