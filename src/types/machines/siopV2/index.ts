@@ -39,6 +39,7 @@ export enum SiopV2MachineStates {
   getSiopRequest = 'getSiopRequest',
   retrieveContact = 'retrieveContact',
   transitionFromSetup = 'transitionFromSetup',
+  transitionFromContactSetup = 'transitionFromContactSetup',
   getFederationTrust = 'getFederationTrust',
   addContact = 'addContact',
   reviewContact = 'reviewContact',

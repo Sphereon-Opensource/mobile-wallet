@@ -331,11 +331,42 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           [SiopV2MachineAddContactStates.idle]: {},
           [SiopV2MachineAddContactStates.next]: {
             always: {
-              target: `#${SiopV2MachineStates.transitionFromSetup}`,
+              target: `#${SiopV2MachineStates.transitionFromContactSetup}`,
               cond: SiopV2MachineGuards.hasContactGuard,
             },
           },
         },
+      },
+      [SiopV2MachineStates.reviewContact]: {
+        id: SiopV2MachineStates.reviewContact,
+        on: {
+          [SiopV2MachineEvents.NEXT]: {
+            target: SiopV2MachineStates.transitionFromContactSetup,
+          },
+          [SiopV2MachineEvents.DECLINE]: {
+            target: SiopV2MachineStates.declined,
+          },
+          [SiopV2MachineEvents.PREVIOUS]: {
+            target: SiopV2MachineStates.aborted,
+          },
+        },
+      },
+      [SiopV2MachineStates.transitionFromContactSetup]: {
+        id: SiopV2MachineStates.transitionFromContactSetup,
+        always: [
+          {
+            target: SiopV2MachineStates.sendResponse,
+            cond: SiopV2MachineGuards.siopOnlyGuard,
+          },
+          {
+            target: SiopV2MachineStates.selectCredentials,
+            cond: SiopV2MachineGuards.siopWithOID4VPGuard,
+          },
+          {
+            target: SiopV2MachineStates.selectCredentialOverview,
+            cond: SiopV2MachineGuards.hasJustOneMatchGuard,
+          },
+        ],
       },
       [SiopV2MachineStates.addContactIdentity]: {
         id: SiopV2MachineStates.addContactIdentity,
