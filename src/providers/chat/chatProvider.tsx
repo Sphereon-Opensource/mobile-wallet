@@ -8,10 +8,14 @@ import ChatInputToolbar from '../../components/chat/ChatInputToolbar';
 import useAIAssistant, {ChatMode} from '../../hooks/useAIAssistant';
 import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import ChatButton from '../../components/chat/ChatButton';
 
 type ModalContextType = {
   openModal: () => void;
   closeModal: () => void;
+  showChatButton: (position?: {bottom: number; right: number}) => void;
+  hideChatButton: () => void;
+  assistant: ReturnType<typeof useAIAssistant>;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -28,6 +32,8 @@ export const useModal = () => {
 export const ChatProvider = ({children}: {children: any}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [messages, setMessages] = useState<Array<IMessage>>([]);
+  const [isChatButtonVisible, setIsChatButtonVisible] = useState(false);
+  const [chatButtonPosition, setChatButtonPosition] = useState({bottom: 16, right: 16});
 
   const onSendMessage = (newMessages: Array<IMessage> = []): void => {
     // @ts-ignore
@@ -45,25 +51,6 @@ export const ChatProvider = ({children}: {children: any}) => {
         onPress: (e: any, ...args: any) => console.log('clicked on [Audio Available]', e, args),
       },
     ];
-  }, []);
-
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello! How can I assist you today?',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'Sphereon Assistant',
-          avatar: 'https://play-lh.googleusercontent.com/jQme0II-P0joIy0VBanDAY7RyccZvP4c6A7us6t3oGzcnNOvc6KcfS05m7Gq8jUOR-s=w240-h480-rw',
-        },
-      },
-    ]);
-    // connectConversation();
-    // return () => {
-    //   disconnectConversation();
-    // };
   }, []);
 
   useEffect(() => {
@@ -130,10 +117,22 @@ export const ChatProvider = ({children}: {children: any}) => {
     [items],
   );
 
+  const showChatButton = useCallback((position?: {bottom: number; right: number}) => {
+    setIsChatButtonVisible(true);
+    if (position) {
+      setChatButtonPosition(position);
+    }
+  }, []);
+
+  const hideChatButton = useCallback(() => {
+    setIsChatButtonVisible(false);
+  }, []);
+
   return (
-    <ModalContext.Provider value={{openModal, closeModal}}>
+    <ModalContext.Provider value={{openModal, closeModal, showChatButton, hideChatButton, assistant}}>
       <GestureHandlerRootView>
         {children}
+        {isChatButtonVisible && <ChatButton position={chatButtonPosition} />}
         <Modal transparent visible={isVisible} onRequestClose={closeModal} animationType="slide">
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View

@@ -7,9 +7,10 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 type Props = {
   style?: ViewStyle;
+  position?: {right: number; bottom: number};
 };
 
-const ChatButton = ({style}: Props) => {
+const ChatButton = ({style, position}: Props) => {
   const {openModal, assistant} = useModal();
   const {isVoiceRecording, startVoiceRecording, endVoiceRecording, enableVoiceMode, enableTextMode, chatMode} = assistant;
 
@@ -34,8 +35,8 @@ const ChatButton = ({style}: Props) => {
     <View
       style={{
         position: 'absolute',
-        bottom: 16,
-        right: 16,
+        bottom: position ? position.bottom : 16,
+        right: position ? position.right : 16,
         alignItems: 'center',
         ...style,
       }}>

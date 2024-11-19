@@ -49,7 +49,6 @@ const cleanState = (state: RootState) => {
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
-  const [functions, setFunctions] = useState<Record<string, any>>({});
   const state = useSelector((state: RootState) => state);
   const [items, setItems] = useState<ItemType[]>([]);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
@@ -71,7 +70,6 @@ const useAIAssistant = () => {
   const base64ToArrayBuffer = (base64: string) => {
     const buffer = Buffer.from(base64, 'base64'); // Decode base64
     const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-    console.log('arrayBuffer.byteLength:', arrayBuffer.byteLength); // Logs the length
     return arrayBuffer;
   };
 
@@ -109,13 +107,61 @@ const useAIAssistant = () => {
     await connect();
 
     const client = clientRef.current;
-    client.sendUserMessageContent([
-      {
-        type: `input_text`,
-        text: `Hello!`,
-        // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
-      },
-    ]);
+    const wavStreamPlayer = wavStreamPlayerRef.current;
+
+    client.updateSession({
+      instructions: basicInstructions + '\n' + 'user has just connected to the conversation. Introduce yourself.',
+    });
+
+    // client.addTool(basicTools[0], (result: any) => {
+    //   console.log('tool result', result);
+    //   switch (result.route) {
+    //     case 'QR_READER':
+    //       // navigation.navigate(ScreenRoutesEnum.QR_READER);
+    //       break;
+    //   }
+    // });
+
+    client.on('error', (event: any) => console.error(event));
+    client.on('conversation.interrupted', async () => {
+      const trackSampleOffset = await wavStreamPlayer.interrupt();
+      if (trackSampleOffset?.trackId) {
+        const {trackId, offset} = trackSampleOffset;
+        client.cancelResponse(trackId, offset);
+      }
+    });
+    client.on('conversation.updated', async ({item, delta}: any) => {
+      const items = client.conversation.getItems();
+      if (delta?.audio && chatMode === 'voice') {
+        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+      }
+      setItems(items.reverse().filter(item => item.type !== 'function_call'));
+    });
+
+    client.on('conversation.item.completed', ({item}: any) => {
+      console.log('conversation item completed', '\n', item.type, 'conversation.item.completed');
+      if (item.type === 'function_call') {
+        // your function call is complete, execute some custom code
+        console.log('function call completed', '\n', JSON.stringify(item, null, 2), 'conversation.item.completed');
+      }
+    });
+
+    client.on('response.created', async ({response}: any) => {
+      console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
+    });
+
+    setItems(client.conversation.getItems().reverse());
+
+    client.createResponse();
+
+    //   client.sendUserMessageContent([
+    //     {
+    //       type: `input_text`,
+    //       text: `Hello!`,
+    //       // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
+    //     },
+    //   ]);
+    // }, []);
   }, []);
 
   const connectVoice = useCallback(async () => {
@@ -165,37 +211,10 @@ const useAIAssistant = () => {
   }, []);
 
   useEffect(() => {
-    const wavStreamPlayer = wavStreamPlayerRef.current;
-    const client = clientRef.current;
-
-    client.updateSession({instructions: basicInstructions});
-    client.updateSession({input_audio_transcription: {model: 'whisper-1'}});
-
-    client.on('error', (event: any) => console.error(event));
-    client.on('conversation.interrupted', async () => {
-      const trackSampleOffset = await wavStreamPlayer.interrupt();
-      if (trackSampleOffset?.trackId) {
-        const {trackId, offset} = trackSampleOffset;
-        client.cancelResponse(trackId, offset);
-      }
-    });
-    client.on('conversation.updated', async ({item, delta}: any) => {
-      const items = client.conversation.getItems();
-      console.log('conversation updated', {hasAudio: !!delta?.audio, chatMode});
-      if (delta?.audio && chatMode === 'voice') {
-        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
-      }
-      setItems(items.reverse());
-    });
-
-    client.on('response.created', async ({response}: any) => {
-      console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
-    });
-
-    setItems(client.conversation.getItems().reverse());
-
     return () => {
+      console.log('resetting convo');
       // cleanup; resets to defaults
+      const client = clientRef.current;
       client.reset();
     };
   }, []);
@@ -226,11 +245,6 @@ const useAIAssistant = () => {
     });
     clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
   };
-
-  const updateFunctions = (functions: Record<string, any>): void => {
-    setFunctions(functions);
-  };
-
   const startVoiceRecording = async () => {
     const wavRecorder = wavRecorderRef.current;
     await wavRecorder.startRecording();
@@ -274,7 +288,6 @@ const useAIAssistant = () => {
     isConnected,
     sendPrompt,
     updateSession,
-    updateFunctions,
     connectConversation,
     disconnectConversation,
     chatMode,
@@ -285,6 +298,8 @@ const useAIAssistant = () => {
     endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
+    addTool: clientRef.current.addTool,
+    removeTool: clientRef.current.removeTool,
   };
 };
 

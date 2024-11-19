@@ -67,7 +67,6 @@ const WelcomeScreen = () => {
           />
         </View>
       </View>
-      <ChatButton style={{bottom: 100}} />
     </View>
   );
 };

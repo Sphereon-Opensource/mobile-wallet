@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
@@ -97,6 +97,8 @@ import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import {formatDateTime} from '../utils';
 import ChatButton from '../components/chat/ChatButton';
+import {useModal} from '../providers/chat/chatProvider';
+import {useFocusEffect} from '@react-navigation/native';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -156,7 +158,6 @@ const MainStackNavigator = (): JSX.Element => {
           <>
             <OID4VCIStackWithContext />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            <ChatButton style={{bottom: 100}} />
           </>
         )}
       />
@@ -222,7 +223,14 @@ const MainStackNavigator = (): JSX.Element => {
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
-
+  const {showChatButton, assistant} = useModal();
+  useFocusEffect(
+    useCallback(() => {
+      showChatButton({bottom: 100, right: 16});
+      // assistant.addTool();
+      return () => {};
+    }, []),
+  );
   return (
     <Tab.Navigator
       screenOptions={{
@@ -241,7 +249,6 @@ const TabStackNavigator = (): JSX.Element => {
           <>
             <QRStack />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            <ChatButton />
           </>
         )}
       />
