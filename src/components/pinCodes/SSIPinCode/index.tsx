@@ -75,7 +75,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
 
   submit = (value: string): void => {
     const {onVerification} = this.props;
-
+    this.hideKeyboard();
     onVerification(value)
       .then(() => this.setState({retry: 0}))
       .catch(this.onVerificationFailed);
@@ -87,6 +87,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     if (!maxRetries) {
       this.setState({pin: '', showErrorMessage: true});
       this.failureAnimation();
+      this.setInputFocus();
       return;
     }
 
