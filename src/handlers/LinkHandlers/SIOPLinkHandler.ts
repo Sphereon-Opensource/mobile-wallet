@@ -36,7 +36,10 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
       });
       debug(`FunkeC2Share machine started for link: ${url}`, init);
     } else {
-      const interpreter = SiopV2Machine.newInstance({url});
+      const interpreter = SiopV2Machine.newInstance({
+        url,
+        trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
+      });
       interpreter.start();
 
       const init = await interpreterStartOrResume({

@@ -6,6 +6,7 @@ import {IUserState} from '../types/store/user.types';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../types';
 import {setBiometrics} from '../store/actions/user.actions';
+import {useNavigation} from '@react-navigation/native';
 
 export const useBiometricsEnabledContext = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
@@ -62,18 +63,31 @@ type UseAuthEffectOptions = {
   promptDelay?: number;
 };
 type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => Promise<void>);
-export const useAuthEffect = (effect: AuthEffectCallback) => {
+export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
+  const navigation = useNavigation();
   const biometricsEnabled = useBiometricsEnabledContext();
 
   const {prompt} = useBiometrics();
 
   useEffect(() => {
-    if (biometricsEnabled) {
-      prompt().then(async (result: boolean) => {
-        await effect(result);
-      });
-    }
+    const handleFocus = () => {
+      if (biometricsEnabled) {
+        prompt().then((result: boolean) => {
+          void effect(result);
+        });
+      }
+    };
+    navigation.addListener('focus', handleFocus);
+
+    return () => {
+      navigation.removeListener('focus', handleFocus);
+    };
   }, []);
+
+  return {
+    prompt,
+    biometricsEnabled,
+  };
 };
 
 const isHardwareSupported = (hasHardware: boolean, supported: Auth.AuthenticationType[]) => {
@@ -84,7 +98,7 @@ const isHardwareSupported = (hasHardware: boolean, supported: Auth.Authenticatio
   return hasHardware && (hasTouch || hasFacial);
 };
 
-type UseHasStringBiometricsOptions = {
+type UseHasStrongBiometricsOptions = {
   onBiometricsConfirmed?: (isSecure: boolean) => void;
 };
 
@@ -114,7 +128,7 @@ const getSupportedHardwareContext = async () => {
   };
 };
 
-export const useHasStrongBiometrics = (options: UseHasStringBiometricsOptions = {}) => {
+export const useHasStrongBiometrics = (options: UseHasStrongBiometricsOptions = {}) => {
   const {onBiometricsConfirmed} = options;
   const [hasSupportedHardware, setHasSupportedHardware] = useState(false);
   const [isSecure, setIsSecure] = useState(false);

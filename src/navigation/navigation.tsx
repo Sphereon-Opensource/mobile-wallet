@@ -56,6 +56,7 @@ import {
   FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
+  IOnboardingHasTitleAndSubtitle,
   ISiopV2PProps,
   MainRoutesEnum,
   NavigationBarRoutesEnum,
@@ -222,10 +223,7 @@ const TabStackNavigator = (): JSX.Element => {
       }}
       tabBar={(props: BottomTabBarProps) => <SSINavigationBar {...props} />}
       initialRouteName={
-        // FIXME remove GERMANY check when we have a working federation screen besides PID import
-        credentialState.verifiableCredentials.length === 0 && activeUser?.countryCode === 'DE'
-          ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG
-          : NavigationBarRoutesEnum.CREDENTIALS
+        credentialState.verifiableCredentials.length === 0 ? NavigationBarRoutesEnum.CREDENTIAL_CATALOG : NavigationBarRoutesEnum.CREDENTIALS
       }
       backBehavior="none">
       <Tab.Screen
@@ -255,17 +253,15 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      {!activeUser || activeUser.countryCode === 'DE' ? ( // FIXME remove when we have a working federation screen besides PID import
-        <Tab.Screen
-          name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
-          children={() => (
-            <>
-              <CredentialCatalogStack />
-              <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            </>
-          )}
-        />
-      ) : null}
+      <Tab.Screen
+        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        children={() => (
+          <>
+            <CredentialCatalogStack />
+            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+          </>
+        )}
+      />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
         children={() => (
@@ -620,6 +616,8 @@ type StackGroupConfig = {
   titleKey: string;
   screens: {
     name: OnboardingRoute;
+    titleKey?: string;
+    subtitleKey?: string;
     component: React.FC<any>;
   }[];
 };
@@ -700,6 +698,8 @@ const step3GroupConfig: StackGroupConfig = {
     {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
+      titleKey: 'onboarding_pages.import_scan_card.title',
+      subtitleKey: 'onboarding_pages.import_scan_card.description',
     },
     {
       name: 'ImportDataAuthentication',
@@ -727,23 +727,29 @@ export const OnboardingStack = (): JSX.Element => (
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
-        {group.screens.map(({name, component}, index) => (
+        {group.screens.map(({name, component, titleKey, subtitleKey}, index) => (
           <OnboardingBaseStack.Screen
             key={name}
             name={name}
             component={component}
-            options={{
+            initialParams={{
+              title: titleKey && translate(titleKey),
+              subtitle: subtitleKey && translate(subtitleKey),
+            }}
+            options={({route}) => ({
+              headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
               header: props => (
                 <OnboardingHeader
                   {...props}
                   title={translate(group.titleKey)}
+                  headerSubTitle={(route.params as IOnboardingHasTitleAndSubtitle)?.subtitle}
                   stepConfig={{
                     current: index + 1,
                     total: group.screens.length,
                   }}
                 />
               ),
-            }}
+            })}
           />
         ))}
       </OnboardingBaseStack.Group>
@@ -780,12 +786,18 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
     <GetPIDCredentialsBaseStack.Screen
       name="ImportPersonalData"
       component={ImportPersonalDataScreen}
+      initialParams={{
+        title: translate('onboarding_pages.import_scan_card.title'),
+        subtitle: translate('onboarding_pages.import_scan_card.description'),
+      }}
       options={({route}) => ({
+        headerTitle: route.params.title,
         header: props => (
           <OnboardingHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
+            headerSubTitle={route.params.subtitle}
             stepConfig={{
               current: 2,
               total: 4,
@@ -913,8 +925,13 @@ export const FunkeC2ShareStack = (): JSX.Element => (
     <FunkeC2ShareBaseStack.Screen
       name="ImportPersonalData"
       component={ImportPersonalDataScreen}
+      initialParams={{
+        title: translate('onboarding_pages.import_scan_card.title'),
+        subtitle: translate('onboarding_pages.import_scan_card.description'),
+      }}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        headerTitle: route.params.title,
+        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} />,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
@@ -1057,17 +1074,16 @@ export const OID4VCIStack = (): JSX.Element => {
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_DETAILS}
         component={SSIContactDetailsScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
-            <ContactsHeader
+            <SSIHeaderBar
               {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // showBackButton={false}
+              //onBack={route.params.onBack}
+              // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.NEW_CONTACT_ADD}
@@ -1077,12 +1093,29 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
             />
           ),
         })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          headerTitle: translate('contact_identities_title'),
+          header: props => <SSIHeaderBar {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          headerTitle: translate('contact_activities_title'),
+          header: props => <SSIHeaderBar {...props} />,
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_SELECT_TYPE}

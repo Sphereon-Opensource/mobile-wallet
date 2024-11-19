@@ -3,7 +3,14 @@ import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
 import {siopV2StateNavigationListener} from '../navigation/machines/siopV2StateNavigation';
-import {addContactIdentity, createConfig, getSiopRequest, retrieveContact, sendResponse} from '../services/machines/siopV2MachineService';
+import {
+  addContactIdentity,
+  createConfig,
+  getFederationTrust,
+  getSiopRequest,
+  retrieveContact,
+  sendResponse,
+} from '../services/machines/siopV2MachineService';
 import {ErrorDetails} from '../types';
 import {
   ContactAliasEvent,
@@ -36,6 +43,11 @@ const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machi
 const siopV2HasContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
   return contact !== undefined;
+};
+
+const siopV2ContactHasLowTrustGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
+  const {contact, trustedAnchors} = _ctx;
+  return contact !== undefined && trustedAnchors !== undefined && trustedAnchors.length === 0;
 };
 
 const siopV2CreateContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -112,10 +124,17 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
   return authorizationRequestData.presentationDefinitions !== undefined;
 };
 
+const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
+  // TODO in the future we need to establish if a origin is a IDF origin. So we need to check if this metadata is on the well-known location
+  const {trustAnchors} = _ctx;
+  return trustAnchors.length > 0;
+};
+
 const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
   const {url} = opts;
   const initialContext: SiopV2MachineContext = {
     url: new URL(url).toString(),
+    trustAnchors: opts?.trustAnchors ?? [],
     hasContactConsent: true,
     contactAlias: '',
     selectedCredentials: [],
@@ -131,7 +150,9 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
         | {type: SiopV2MachineGuards.hasNoContactGuard}
         | {type: SiopV2MachineGuards.hasContactGuard}
         | {type: SiopV2MachineGuards.createContactGuard}
-        | {type: SiopV2MachineGuards.hasSelectedRequiredCredentialsGuard},
+        | {type: SiopV2MachineGuards.hasSelectedRequiredCredentialsGuard}
+        | {type: SiopV2MachineGuards.isOIDFOriginGuard}
+        | {type: SiopV2MachineGuards.contactHasLowTrustGuard},
       services: {} as {
         [SiopV2MachineServices.createConfig]: {
           data: DidAuthConfig;
@@ -147,6 +168,9 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
         };
         [SiopV2MachineServices.sendResponse]: {
           data: void;
+        };
+        [SiopV2MachineServices.getFederationTrust]: {
+          data: Array<string>;
         };
       },
     },
@@ -198,15 +222,43 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
         id: SiopV2MachineStates.retrieveContact,
         invoke: {
           src: SiopV2MachineServices.retrieveContact,
-          onDone: {
-            target: SiopV2MachineStates.transitionFromSetup,
-            actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
-          },
+          onDone: [
+            {
+              target: SiopV2MachineStates.getFederationTrust,
+              cond: SiopV2MachineGuards.isOIDFOriginGuard,
+              actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
+            },
+            {
+              target: SiopV2MachineStates.transitionFromSetup,
+              actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
+            },
+          ],
           onError: {
             target: SiopV2MachineStates.handleError,
             actions: assign({
               error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                 title: translate('siopV2_machine_retrieve_contact_error_title'),
+                message: _event.data.message,
+              }),
+            }),
+          },
+        },
+      },
+      [SiopV2MachineStates.getFederationTrust]: {
+        id: SiopV2MachineStates.getFederationTrust,
+        invoke: {
+          src: SiopV2MachineServices.getFederationTrust,
+          onDone: {
+            target: SiopV2MachineStates.transitionFromSetup,
+            actions: assign({
+              trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<string>>) => _event.data,
+            }),
+          },
+          onError: {
+            target: SiopV2MachineStates.handleError,
+            actions: assign({
+              error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+                title: translate('siopV2_machine_retrieve_federation_trust_error_title'),
                 message: _event.data.message,
               }),
             }),
@@ -219,6 +271,10 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           {
             target: SiopV2MachineStates.addContact,
             cond: SiopV2MachineGuards.hasNoContactGuard,
+          },
+          {
+            target: SiopV2MachineStates.reviewContact,
+            cond: SiopV2MachineGuards.contactHasLowTrustGuard,
           },
           {
             target: SiopV2MachineStates.sendResponse,
@@ -330,7 +386,6 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           },
         },
       },
-
       [SiopV2MachineStates.sendResponse]: {
         id: SiopV2MachineStates.sendResponse,
         invoke: {
@@ -390,6 +445,7 @@ export class SiopV2Machine {
           [SiopV2MachineServices.retrieveContact]: retrieveContact,
           [SiopV2MachineServices.addContactIdentity]: addContactIdentity,
           [SiopV2MachineServices.sendResponse]: sendResponse,
+          [SiopV2MachineServices.getFederationTrust]: getFederationTrust,
           ...opts?.services,
         },
         guards: {
@@ -400,6 +456,8 @@ export class SiopV2Machine {
           siopV2IsSiopOnlyGuard,
           siopV2HasJustOneMatchGuard,
           siopV2IsSiopWithOID4VPGuard,
+          siopV2IsOIDFOriginGuard,
+          siopV2ContactHasLowTrustGuard,
           ...opts?.guards,
         },
       }),

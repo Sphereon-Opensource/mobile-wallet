@@ -213,7 +213,7 @@
       "title": "Import personal information",
       "description": {
         "default": "Import your personal information from your national eID provider.",
-        "deutschland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "de": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
       }
     }
   },
@@ -329,9 +329,11 @@
       "button_decline": "Decline"
     },
     "import_scan_card": {
-      "title": "Have your Ausweis card ready for the next steps",
-      "description": "Enter the eID pin and scan your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading your card.",
-      "button_caption": "Start reading your card"
+      "title": "Have your Ausweis card ready",
+      "description": "Start by entering the eID pin of your Ausweis card.",
+      "nfc_step_title": "Now hold the card to the back of the phone",
+      "button_caption": "Start entering eID PIN",
+      "nfc_caption": "The NFC scanner will soon be activated..."
     }
   },
   "onboard_summary_title": "Your entered details",
@@ -384,6 +386,7 @@
   "siopV2_machine_retrieve_contact_error_title": "Retrieve contact",
   "siopV2_machine_add_contact_identity_error_title": "Add contact identity",
   "siopV2_machine_send_response_error_title": "Sending siopV2 response",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Retrieve federation trust",
   "action_view_all_label": "View all",
   "filter_all_label": "View all",
   "filter_other_label": "Other",
@@ -411,6 +414,7 @@
   "federation_view_untrusted_description": "The party is not part of a federation that is trusted by the wallet",
   "federation_view_trusted_description": "The party is part of a federation that is trusted by the wallet",
   "new_contact_add_new_contact_continue_caption": "Yes, continue",
+  "new_contact_add_new_contact_abort_caption": "No, abort",
   "new_contact_add_new_contact_abort_cancel_caption": "No, cancel",
   "new_contact_add_new_contact_abort_continue_caption": "Yes, I want to abort",
   "new_contact_add_new_contact_create_title": "Contact Alias name",
@@ -422,6 +426,8 @@
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Terms of Service",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacy policy",
+  "new_contact_add_new_contact_low_level_trust_title": "Are you sure you want to continue?",
+  "new_contact_add_new_contact_low_level_trust_description": "You are going to interact with a party that has a low level of trust.",
 
   "present_qr_code_screen_header_title": "Present QR code",
   "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",

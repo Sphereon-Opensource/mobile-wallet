@@ -3,7 +3,7 @@ import {CredentialMapper} from '@sphereon/ssi-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton, SecondaryButton, SSILogo as Logo, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
@@ -11,12 +11,10 @@ import styled from 'styled-components/native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import {translate} from '../../localization/Localization';
 import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
-
 import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {generateDigest, showToast} from '../../utils';
 import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
-
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
 import {AusweisRequestedInfoItem} from '../Onboarding/ImportDataConsentScreen/constants';

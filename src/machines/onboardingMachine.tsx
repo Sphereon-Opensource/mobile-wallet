@@ -1,5 +1,5 @@
 import Debug, {Debugger} from 'debug';
-import {GuardPredicate, assign, createMachine, interpret, DoneInvokeEvent} from 'xstate';
+import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
 import {ErrorDetails} from '../types';
@@ -17,10 +17,16 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
-import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
+import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
 import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {computeEntryHash} from '@veramo/utils';
+import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -260,7 +266,7 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
         target: OnboardingMachineStateType.setupWallet,
-        actions: assign({currentStep: 4, skipImport: true}),
+        actions: ['logDeclinePID', assign({currentStep: 4, skipImport: true})],
       },
     },
   },
@@ -373,45 +379,89 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     pidCredentials: [],
   };
 
-  return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>({
-    /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
-    id: 'Onboarding',
-    predictableActionArguments: true,
-    initial: OnboardingMachineStateType.showIntro,
-    context: initialContext,
-    schema: {
-      events: {} as OnboardingMachineEventTypes,
-      guards: {} as
-        | {
-            type: OnboardingMachineGuards.isStepCreateWallet;
-          }
-        | {
-            type: OnboardingMachineGuards.isStepSecureWallet;
-          }
-        | {
-            type: OnboardingMachineGuards.isStepImportPersonalData;
-          }
-        | {
-            type: OnboardingMachineGuards.isNameValid;
-          }
-        | {
-            type: OnboardingMachineGuards.isEmailValid;
-          }
-        | {
-            type: OnboardingMachineGuards.isCountryValid;
-          }
-        | {
-            type: OnboardingMachineGuards.isPinCodeValid;
-          }
-        | {
-            type: OnboardingMachineGuards.doPinsMatch;
-          }
-        | {
-            type: OnboardingMachineGuards.hasFunkeRefreshUrl;
-          },
+  return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>(
+    {
+      /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
+      id: 'Onboarding',
+      predictableActionArguments: true,
+      initial: OnboardingMachineStateType.showIntro,
+      context: initialContext,
+      schema: {
+        events: {} as OnboardingMachineEventTypes,
+        guards: {} as
+          | {
+              type: OnboardingMachineGuards.isStepCreateWallet;
+            }
+          | {
+              type: OnboardingMachineGuards.isStepSecureWallet;
+            }
+          | {
+              type: OnboardingMachineGuards.isStepImportPersonalData;
+            }
+          | {
+              type: OnboardingMachineGuards.isNameValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isEmailValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isCountryValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isPinCodeValid;
+            }
+          | {
+              type: OnboardingMachineGuards.doPinsMatch;
+            }
+          | {
+              type: OnboardingMachineGuards.hasFunkeRefreshUrl;
+            },
+      },
+      states: states,
     },
-    states: states,
-  });
+    {
+      actions: {
+        logDeclinePID: async (context, event): Promise<void> => {
+          context.pidCredentials.forEach(mappedCredential => {
+            // FIXME function is not exposed in SSI-SDK, for now made a copy here
+            function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
+              switch (documentFormat) {
+                case DocumentFormat.JSONLD:
+                  return CredentialDocumentFormat.JSON_LD;
+                case DocumentFormat.JWT:
+                  return CredentialDocumentFormat.JWT;
+                case DocumentFormat.SD_JWT_VC:
+                  return CredentialDocumentFormat.SD_JWT;
+                case DocumentFormat.MSO_MDOC:
+                  return CredentialDocumentFormat.MSO_MDOC;
+                default:
+                  throw new Error(`Not supported document format: ${documentFormat}`);
+              }
+            }
+
+            store.dispatch<any>(
+              storeActivityLogging({
+                level: LogLevel.INFO,
+                system: System.OID4VCI,
+                subSystemType: SubSystem.VC_ISSUER,
+                initiatorType: InitiatorType.SYSTEM,
+                description: 'decline credential',
+                actionType: ActionType.READ,
+                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+                // @ts-ignore
+                credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
+                credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
+                originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                partyCorrelationType: PartyCorrelationType.URL,
+                partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+                partyAlias: 'Bundesdruckerei GmbH',
+              }),
+            );
+          });
+        },
+      },
+    },
+  );
 };
 
 export class OnboardingMachine {

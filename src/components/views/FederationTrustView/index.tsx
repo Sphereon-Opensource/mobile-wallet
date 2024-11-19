@@ -6,17 +6,16 @@ import {IImageAttributes, Party} from '@sphereon/ssi-sdk.data-store';
 import {SSICheckmarkBadge, SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {
   FederationTrustViewContainerStyled as Container,
-  FederationTrustViewIconContainerStyled as IconContainer,
   FederationTrustViewContentContainerStyled as ContentContainer,
-  FederationTrustViewHeaderContainerStyled as HeaderContainer,
-  FederationTrustViewTitleTextStyled as TitleText,
   FederationTrustViewDescriptionTextStyled as DescriptionText,
+  FederationTrustViewHeaderContainerStyled as HeaderContainer,
+  FederationTrustViewIconContainerStyled as IconContainer,
+  FederationTrustViewTitleTextStyled as TitleText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
-import {NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-import RootNavigation from '../../../navigation/rootNavigation';
 
 // TODO move
 export type Federation = {

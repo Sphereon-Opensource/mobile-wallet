@@ -1,6 +1,7 @@
 import {View} from 'react-native';
 import styled from 'styled-components/native';
-import {SSITextH7Styled, SSITextH7SemiBoldStyled} from '@sphereon/ui-components.ssi-react-native';
+import {SSITextH7Styled} from '@sphereon/ui-components.ssi-react-native';
+import {SSITextH7SemiBoldStyled} from '../../fonts';
 
 type Props = {isTrusted: boolean}; // TODO move to types later in time
 

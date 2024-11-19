@@ -31,6 +31,8 @@ import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {getMatchingCredentials} from '../../services/pexService';
+import agent from '../../agent';
+import {OID4VCIMachineEvents, OID4VCIMachineNavigationArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -58,7 +60,7 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {url, authorizationRequestData} = state.context;
+  const {url, authorizationRequestData, trustedAnchors} = state.context;
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
@@ -132,17 +134,49 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       roles: [CredentialRole.VERIFIER],
       uri: contact.uri,
+      federations: federationParties,
       onAliasChange,
       onCreate,
       onDecline,
       onBack,
       isCreateDisabled,
+    },
+  });
+};
+
+const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
+  const {navigation, state, siopV2Machine, onBack, onNext} = args;
+  const {contact} = state.context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  const onDecline = async (): Promise<void> => {
+    siopV2Machine.send(SiopV2MachineEvents.DECLINE);
+  };
+
+  navigation.navigate(MainRoutesEnum.SIOPV2, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      roles: contact.roles,
+      uri: contact.uri,
+      federations: [],
+      onContinue: onNext,
+      onDecline,
+      onBack,
     },
   });
 };
@@ -304,6 +338,8 @@ export const siopV2StateNavigationListener = async (
     return navigateSendingCredentials({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.addContact)) {
     return navigateAddContact({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(SiopV2MachineStates.reviewContact)) {
+    return navigateReviewContact({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.selectCredentials)) {
     return navigateSelectCredentials({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.handleError)) {
