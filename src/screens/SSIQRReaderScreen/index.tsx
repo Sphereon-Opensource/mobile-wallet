@@ -7,8 +7,7 @@ import {translate} from '../../localization/Localization';
 import {onQRScanned} from '../../services/qrService';
 import {SSIBasicContainerStyled, SSIQRReaderScreenScannerStyled as QRScanner} from '../../styles/components';
 import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
-import ChatButton from '../../components/chat/ChatButton';
-import ChatModal from '../../components/chat/ChatModal';
+import {Chat} from '../../components/chat/Chat';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>;
 
@@ -56,8 +55,7 @@ const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
         </QRScanner>
       )}
 
-      <ChatButton />
-      <ChatModal />
+      <Chat screenContext="you are in the qr scanner screen. User can point the camera at a qr code provided by an issuer to scan it." />
     </SSIBasicContainerStyled>
   );
 };

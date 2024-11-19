@@ -225,8 +225,55 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
               screen: 'Contact Review',
               contactAlias,
               hasConsent,
-              actions: ['accept', 'decline', 'edit alias', 'edit consent'],
+              onScreenText: {
+                title: translate('contact_add_cancel_title'),
+                details: translate('contact_add_cancel_message'),
+                primaryButton: {
+                  caption: translate('action_confirm_label'),
+                },
+                secondaryButton: {
+                  caption: translate('action_cancel_label'),
+                },
+              },
             })}
+            tools={[
+              {
+                tool: {
+                  name: 'accept',
+                  description: 'accept contact',
+                  parameters: {},
+                },
+                callback: this.onCreate,
+              },
+              {
+                tool: {
+                  name: 'decline',
+                  description: 'decline contact',
+                  parameters: {},
+                },
+                callback: this.onDecline,
+              },
+              {
+                tool: {
+                  name: 'editAlias',
+                  description: 'edit alias. Change the name of the contact',
+                  parameters: {},
+                },
+                callback: () => {
+                  console.log('edit alias');
+                },
+              },
+              {
+                tool: {
+                  name: 'editConsent',
+                  description: 'edit consent',
+                  parameters: {},
+                },
+                callback: () => {
+                  console.log('edit consent');
+                },
+              },
+            ]}
           />
         </Container>
       </TouchableWithoutFeedback>

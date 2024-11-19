@@ -95,8 +95,8 @@ const useAIAssistant = () => {
 
       updateSession({
         screenContext,
-        // instructions: 'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with.',
-        instructions: 'say what you know about app state',
+        instructions:
+          'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with. Then give information about the current screen. If you have relevant information from the app state, provide it.',
       });
 
       client.on('error', (event: any) => console.error(event));
@@ -115,13 +115,6 @@ const useAIAssistant = () => {
           wavStreamPlayer.add16BitPCM(delta.audio, item.id);
         }
         setItems(items.reverse().filter(item => item.type !== 'function_call'));
-      });
-
-      client.on('conversation.item.completed', ({item}: any) => {
-        console.log('conversation item completed', '\n', item.type, 'conversation.item.completed');
-        if (item.type === 'function_call') {
-          console.log('function call completed', '\n', JSON.stringify(item, null, 2), 'conversation.item.completed');
-        }
       });
 
       client.on('response.created', async ({response}: any) => {
@@ -180,6 +173,10 @@ const useAIAssistant = () => {
     const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
 
     const appState = JSON.stringify(cleanState(state));
+
+    console.log('appState', appState);
+    console.log('route', route);
+
     client.updateSession({
       instructions: `
           # general instructions:
@@ -251,7 +248,10 @@ const useAIAssistant = () => {
     if (!isConnected) {
       connectConversation(true, screenContext);
     } else {
-      updateSession({screenContext, instructions: 'instruct user about can be seen and done on this screen'});
+      updateSession({
+        screenContext,
+        instructions: 'User has re-opened the chat. Provide any relevant information. Do not perform any actions. Do not call any functions.',
+      });
       clientRef.current.createResponse();
     }
   };
@@ -270,8 +270,8 @@ const useAIAssistant = () => {
     endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
-    addTool: clientRef.current.addTool,
-    removeTool: clientRef.current.removeTool,
+    addTool: clientRef.current.addTool.bind(clientRef.current),
+    removeTool: clientRef.current.removeTool.bind(clientRef.current),
     handleChatOpened,
   };
 };

@@ -4,7 +4,7 @@ import {GiftedChat, IMessage} from 'react-native-gifted-chat';
 import {Ionicons} from '@expo/vector-icons';
 import {ChatBubble} from '../ChatBubble';
 import ChatInputToolbar from '../ChatInputToolbar';
-import {useChat} from '../../../providers/chat/ChatProvider-new';
+import {useChat} from '../../../providers/chat/ChatProvider';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {LinearGradient} from 'expo-linear-gradient';

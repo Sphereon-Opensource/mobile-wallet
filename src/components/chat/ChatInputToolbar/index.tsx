@@ -4,7 +4,7 @@ import {fontColors} from '@sphereon/ui-components.core';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
-import {useChat} from '../../../providers/chat/ChatProvider-new';
+import {useChat} from '../../../providers/chat/ChatProvider';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 
 const ChatInputToolbar = (props: any) => {

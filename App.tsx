@@ -24,7 +24,7 @@ import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import './src/agent/index';
-import {ChatProvider} from './src/providers/chat/ChatProvider-new';
+import {ChatProvider} from './src/providers/chat/ChatProvider';
 import {AssistantProvider} from './src/providers/chat/AssistantProvider';
 
 LogBox.ignoreLogs([

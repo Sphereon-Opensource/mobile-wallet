@@ -26,7 +26,10 @@ import {
   CredentialCatalogCredentialListContainerStyled as CredentialListContainer,
   CredentialCatalogScreenPreviewCredentialContentContainerStyled as PreviewCredentialContentContainer,
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {Chat} from '../../components/chat/Chat';
+import RootNavigation from '../../navigation/rootNavigation';
+import {useChat} from '../../providers/chat/ChatProvider';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 
@@ -148,6 +151,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     },
   ];
 
+  const {closeModal} = useChat();
+
   const onClose = async (): Promise<void> => {
     props.navigation.goBack();
   };
@@ -241,6 +246,22 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           />
         </CredentialListContainer>
       </DiscoverCredentialsContainer>
+      <Chat
+        screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet"
+        tools={[
+          {
+            tool: {
+              name: 'navigateToQRScanner',
+              description: 'navigate to QR Scanner Screen',
+              parameters: {},
+            },
+            callback: () => {
+              RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+              closeModal();
+            },
+          },
+        ]}
+      />
     </Container>
   );
 };
