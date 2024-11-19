@@ -87,6 +87,7 @@ import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
 
 import ContactsHeader from '../components/bars/ContactsHeader';
+import OnboardingHeader from '../components/bars/OnboardingHeader';
 import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
 import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
 import CredentialDetailHeader from '../components/bars/credential/CredentialDetailHeader';
@@ -538,8 +539,8 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /*headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-            route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-          }`}*/
+      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+    }`}*/
             />
           ),
         })}
@@ -712,8 +713,6 @@ const step3GroupConfig: StackGroupConfig = {
     {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
-      titleKey: 'onboarding_pages.import_scan_card.title',
-      subtitleKey: 'onboarding_pages.import_scan_card.description',
     },
     {
       name: 'ImportDataAuthentication',
@@ -741,31 +740,55 @@ export const OnboardingStack = (): JSX.Element => (
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
-        {group.screens.map(({name, component, titleKey, subtitleKey}, index) => (
-          <OnboardingBaseStack.Screen
-            key={name}
-            name={name}
-            component={component}
-            initialParams={{
-              title: titleKey && translate(titleKey),
-              subtitle: subtitleKey && translate(subtitleKey),
-            }}
-            options={({route}) => ({
-              headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
-              header: props => (
-                <OnboardingStepHeader
-                  {...props}
-                  title={translate(group.titleKey)}
-                  headerSubTitle={(route.params as IOnboardingHasTitleAndSubtitle)?.subtitle}
-                  stepConfig={{
-                    current: index + 1,
-                    total: group.screens.length,
-                  }}
-                />
-              ),
-            })}
-          />
-        ))}
+        {group.screens.map(({name, component}, index) => {
+          if (name === 'ImportPersonalData') {
+            return (
+              <OnboardingBaseStack.Screen
+                key="ImportPersonalData"
+                name="ImportPersonalData"
+                component={ImportPersonalDataScreen}
+                initialParams={{
+                  title: translate('onboarding_pages.import_scan_card.title'),
+                  subtitle: translate('onboarding_pages.import_scan_card.description'),
+                }}
+                options={({route}) => ({
+                  headerTitle: route.params.title,
+                  header: props => (
+                    <OnboardingHeader
+                      {...props}
+                      title={translate('import_data_title')}
+                      headerSubTitle={route.params.subtitle}
+                      stepConfig={{
+                        current: 2,
+                        total: 5,
+                      }}
+                    />
+                  ),
+                })}
+              />
+            );
+          }
+          return (
+            <OnboardingBaseStack.Screen
+              key={name}
+              name={name}
+              component={component}
+              options={({route}) => ({
+                headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
+                header: props => (
+                  <OnboardingStepHeader
+                    {...props}
+                    title={translate(group.titleKey)}
+                    stepConfig={{
+                      current: index + 1,
+                      total: group.screens.length,
+                    }}
+                  />
+                ),
+              })}
+            />
+          );
+        })}
       </OnboardingBaseStack.Group>
     ))}
     <OnboardingBaseStack.Screen
@@ -1306,8 +1329,8 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /* headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
-            route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-          }`}*/
+      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+    }`}*/
             />
           ),
         })}

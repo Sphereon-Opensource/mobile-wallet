@@ -5,11 +5,11 @@ import {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import OnboardingSettingsModal, {MODAL_HEIGHT} from '../../../modals/OnboardingSettingsModal';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
-import {SSIHeaderBarBackIconStyled as BackIcon, OnboardingHeaderContainerStyled as Container} from '../../../styles/components';
-import {ButtonIconsEnum} from '../../../types';
+import {OnboardingHeaderContainerStyled as Container} from '../../../styles/components';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import SettingsIcon from '../../assets/icons/SettingsIcon';
 import {HeaderSecondaryBarRow} from '../HeaderSecondaryBar/Row';
+import {Back} from '../components';
 
 export type Props = NativeStackHeaderProps & {onBack?: () => Promise<void>};
 
@@ -42,16 +42,7 @@ const OnboardingDefaultHeader: FC<Props> = ({onBack}: Props): JSX.Element => {
     }, 200);
   }, [setIsVisible]);
 
-  const Left = useMemo(
-    () => (
-      <BackIcon
-        style={{marginTop: 0}}
-        icon={ButtonIconsEnum.BACK}
-        onPress={() => (onBack ? onBack() : onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
-      />
-    ),
-    [onBack],
-  );
+  const Left = useMemo(() => <Back onPress={() => (onBack ? onBack() : onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))} />, [onBack]);
 
   const Right = useMemo(() => <SettingsCogWheel onPress={showModal} />, [showModal]);
 

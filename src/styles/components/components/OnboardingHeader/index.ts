@@ -11,4 +11,5 @@ export const OnboardingHeaderRow = styled.View`
   margin-top: 12px;
   min-height: 42px;
   gap: 8px;
+  align-items: center;
 `;

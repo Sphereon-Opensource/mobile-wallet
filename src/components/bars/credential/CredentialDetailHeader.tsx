@@ -5,13 +5,10 @@ import SSIIconButton from '../../../components/buttons/SSIIconButton';
 import SSIDropDownList from '../../../components/dropDownLists/SSIDropDownList';
 import {translate} from '../../../localization/Localization';
 import RootNavigation from '../../../navigation/rootNavigation';
-import {
-  SSIHeaderBarBackIconStyled as BackIcon,
-  SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
-  SSITextH3LightStyled,
-} from '../../../styles/components';
+import {SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer} from '../../../styles/components';
 import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {HeaderSecondaryBar} from '../HeaderSecondaryBar';
+import {Back, Title} from '../components';
 
 export type Props = NativeStackHeaderProps;
 type NavProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
@@ -37,9 +34,9 @@ const CredentialDetailMenu = ({items}: {items: IHeaderMenuButton[]}) => {
 };
 
 const CredentialDetailHeader = ({options: {title}, navigation, route}: Props) => {
-  const Left = useMemo(() => <BackIcon style={{marginTop: 0}} icon={ButtonIconsEnum.BACK} onPress={navigation.goBack} />, [navigation]);
+  const Left = useMemo(() => <Back onPress={() => navigation.goBack()} />, [navigation]);
 
-  const Center = useMemo(() => <SSITextH3LightStyled>{title ?? translate('activity.unknown.credential')}</SSITextH3LightStyled>, [title]);
+  const Center = useMemo(() => <Title>{title ?? translate('activity.unknown.credential')}</Title>, [title]);
 
   const Right = useMemo(
     () => (

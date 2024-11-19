@@ -12,7 +12,6 @@ const ItemContainer = styled.View`
 `;
 
 const LeftContainer = styled(ItemContainer)`
-  align-items: flex-start;
   margin-right: auto;
 `;
 
@@ -23,11 +22,12 @@ const CenterContainer = styled(ItemContainer)`
   left: 0;
   top: 0;
   width: 100%;
+  padding-horizontal: 48px;
   flex: 1;
+  pointer-events: none;
 `;
 
 const RightContainer = styled(ItemContainer)`
-  align-items: flex-start;
   margin-left: auto;
 `;
 

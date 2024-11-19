@@ -1,32 +1,33 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, useMemo, useState} from 'react';
+import {Dimensions, Pressable} from 'react-native';
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import styled from 'styled-components/native';
+import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import ProgressBarIndicator from '../../../components/indicators/ProgressBarIndicator';
+import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
+import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
 import {
+  SSIHeaderBarBackIconStyled as BackIcon,
+  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   Circle,
   OnboardingHeaderContainerStyled as Container,
+  SSITextH1LightStyled as HeaderCaption,
   OnboardingHeaderRow as HeaderRow,
+  SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   PROGRESS_BAR_HEIGHT,
-  SelectedCircle,
-  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
-  SSIHeaderBarBackIconStyled as BackIcon,
   SSITextH3LightStyled,
   SSITextH3RegularLightStyled,
+  SelectedCircle,
 } from '../../../styles/components';
 import {ButtonIconsEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {Dimensions, Pressable} from 'react-native';
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
-import styled from 'styled-components/native';
-import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
-import {translate} from '../../../localization/Localization';
 import {capitalize} from '../../../utils';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 import SettingsIcon from '../../assets/icons/SettingsIcon';
-import {SSITextH1LightStyled as HeaderCaption, SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption} from '../../../styles/components';
 
 const {width, height} = Dimensions.get('window');
 
