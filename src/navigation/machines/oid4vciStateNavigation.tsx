@@ -33,6 +33,9 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialSubjectContact} from '../../utils';
 import agent from '../../agent';
+import store from '../../store';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -366,6 +369,29 @@ export const oid4vciStateNavigationListener = async (
     console.log(`navigation not ready yet`);
     return;
   }
+
+  // if (state.matches(OID4VCIMachineStates.storeCredentials)) {
+  //   for (const mappedCredential of state.context.pidCredentials) {
+  //
+  //   }
+  //
+  //   store.dispatch<any>(
+  //     storeActivityLogging({
+  //       level: LogLevel.INFO,
+  //       system: System.OID4VCI,
+  //       subSystemType: SubSystem.VC_ISSUER,
+  //       initiatorType: InitiatorType.SYSTEM,
+  //       description: 'storePIDCredentials function call',
+  //       actionType: ActionType.CREATE,
+  //       actionSubType: DefaultActionSubType.VC_ISSUE,
+  //       diagnosticData: {digitalCredential},
+  //       // @ts-ignore
+  //       partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+  //       partyCorrelationId: contact?.identities[0].identifier.correlationId,
+  //       partyAlias: contact?.contact.displayName,
+  //     }),
+  //   );
+  // }
 
   if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
