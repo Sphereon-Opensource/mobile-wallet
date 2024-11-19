@@ -85,7 +85,7 @@ const ShowProgressScreen = () => {
       // After the create wallet step, the description changes to a more specific one
       description:
         currentStep > OnboardingMachineStep.CREATE_WALLET
-          ? translate(`onboard_steps.import_personal_data.description.${countryCode?.toLowerCase()}`)
+          ? translate('onboard_steps.import_personal_data.description.deutschland')
           : translate('onboard_steps.import_personal_data.description.default'),
       Image: (
         <View style={{marginTop: 24}}>
