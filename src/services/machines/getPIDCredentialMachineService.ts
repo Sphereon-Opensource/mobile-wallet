@@ -8,7 +8,7 @@ import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/mac
 import {generateDigest} from '../../utils';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -74,6 +74,10 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
         diagnosticData: {digitalCredential},
+        // @ts-ignore
+        credentialType: digitalCredential.documentFormat, // TODO fix types
+        credentialHash: digitalCredential.hash,
+        originalCredential: JSON.stringify(digitalCredential),
         partyCorrelationType: PartyCorrelationType.URL,
         partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         partyAlias: 'Bundesdruckerei GmbH',
