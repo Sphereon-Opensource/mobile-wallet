@@ -1,35 +1,25 @@
 import {Ionicons} from '@expo/vector-icons';
 import {fontColors} from '@sphereon/ui-components.core';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
-import {useModal} from '../../../providers/chat/chatProvider';
+import {useChat} from '../../../providers/chat/ChatProvider-new';
+import {useAssistant} from '../../../providers/chat/AssistantProvider';
 import {LinearGradient} from 'expo-linear-gradient';
+
+export type ChatButtonPosition = {
+  bottom: number;
+  right: number;
+};
 
 type Props = {
   style?: ViewStyle;
-  position?: {right: number; bottom: number};
+  position?: ChatButtonPosition;
+  onVoicePress: () => void;
+  onTextPress: () => void;
 };
 
-const ChatButton = ({style, position}: Props) => {
-  const {openModal, assistant} = useModal();
-  const {isVoiceRecording, startVoiceRecording, endVoiceRecording, enableVoiceMode, enableTextMode, chatMode} = assistant;
-
-  const handleTextPress = () => {
-    enableTextMode();
-    openModal();
-  };
-
-  const handleVoicePress = () => {
-    if (chatMode === 'voice') {
-      if (isVoiceRecording) {
-        endVoiceRecording();
-      } else {
-        startVoiceRecording();
-      }
-    } else {
-      enableVoiceMode();
-    }
-  };
+const ChatButton = ({style, position, onVoicePress, onTextPress}: Props) => {
+  const {isVoiceRecording, chatMode} = useAssistant();
 
   return (
     <View
@@ -52,7 +42,7 @@ const ChatButton = ({style, position}: Props) => {
           marginBottom: 8,
         }}
         onPress={() => {
-          handleTextPress();
+          onTextPress();
         }}>
         <Ionicons name="chatbubble-outline" size={chatMode === 'text' ? 28 : 18} color={chatMode === 'text' ? fontColors.dark : fontColors.light} />
       </TouchableOpacity>
@@ -69,7 +59,7 @@ const ChatButton = ({style, position}: Props) => {
           position: 'relative',
         }}
         onPress={() => {
-          handleVoicePress();
+          onVoicePress();
         }}>
         {isVoiceRecording && (
           <LinearGradient

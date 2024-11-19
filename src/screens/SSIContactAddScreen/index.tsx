@@ -23,6 +23,7 @@ import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, Scree
 import {NavigationState} from '@react-navigation/routers';
 import {navigationRef} from '../../navigation/rootNavigation';
 import {Route} from '@react-navigation/native';
+import {Chat} from '../../components/chat/Chat';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => Promise<Party>;
@@ -217,6 +218,16 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
               }}
             />
           </SSIScrollView>
+
+          <Chat
+            buttonPosition={{bottom: 100, right: 16}}
+            screenContext={JSON.stringify({
+              screen: 'Contact Review',
+              contactAlias,
+              hasConsent,
+              actions: ['accept', 'decline', 'edit alias', 'edit consent'],
+            })}
+          />
         </Container>
       </TouchableWithoutFeedback>
     );

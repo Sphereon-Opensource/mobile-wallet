@@ -4,10 +4,12 @@ import {fontColors} from '@sphereon/ui-components.core';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
-import {useModal} from '../../../providers/chat/chatProvider';
+import {useChat} from '../../../providers/chat/ChatProvider-new';
+import {useAssistant} from '../../../providers/chat/AssistantProvider';
 
 const ChatInputToolbar = (props: any) => {
-  const {closeModal, setChatMode} = useModal();
+  const {closeModal} = useChat();
+  const {enableVoiceMode} = useAssistant();
   const navigation = useNavigation();
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -29,7 +31,7 @@ const ChatInputToolbar = (props: any) => {
 
   const handleVoicePress = () => {
     console.log('Voice Pressed');
-    setChatMode('voice');
+    enableVoiceMode();
     closeModal();
   };
 

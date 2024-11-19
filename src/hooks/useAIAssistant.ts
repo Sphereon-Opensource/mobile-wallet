@@ -1,8 +1,3 @@
-import {decode, encode} from 'base-64';
-
-globalThis.atob = decode;
-globalThis.btoa = encode;
-
 import {RealtimeClient, RealtimeUtils} from '@openai/realtime-api-beta';
 import {ItemType} from '@openai/realtime-api-beta/dist/lib/client.js';
 import {useCallback, useEffect, useRef, useState} from 'react';
@@ -13,13 +8,6 @@ import {basicInstructions} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
-
-interface RealtimeEvent {
-  time: string;
-  source: 'client' | 'server';
-  count?: number;
-  event: {[key: string]: any};
-}
 
 export type ChatMode = 'text' | 'voice';
 
@@ -62,11 +50,6 @@ const useAIAssistant = () => {
   );
   const startTimeRef = useRef<string>(new Date().toISOString());
 
-  /**
-   * Converts a base64 string to an ArrayBuffer
-   * @param {string} base64
-   * @returns {ArrayBuffer}
-   */
   const base64ToArrayBuffer = (base64: string) => {
     const buffer = Buffer.from(base64, 'base64'); // Decode base64
     const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
@@ -103,95 +86,67 @@ const useAIAssistant = () => {
     await client.connect();
   }, []);
 
-  const connectConversation = useCallback(async () => {
-    await connect();
+  const connectConversation = useCallback(
+    async (shouldCreateResponse = true, screenContext?: string) => {
+      await connect();
 
-    const client = clientRef.current;
-    const wavStreamPlayer = wavStreamPlayerRef.current;
+      const client = clientRef.current;
+      const wavStreamPlayer = wavStreamPlayerRef.current;
 
-    client.updateSession({
-      instructions: basicInstructions + '\n' + 'user has just connected to the conversation. Introduce yourself.',
-    });
+      updateSession({
+        screenContext,
+        // instructions: 'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with.',
+        instructions: 'say what you know about app state',
+      });
 
-    // client.addTool(basicTools[0], (result: any) => {
-    //   console.log('tool result', result);
-    //   switch (result.route) {
-    //     case 'QR_READER':
-    //       // navigation.navigate(ScreenRoutesEnum.QR_READER);
-    //       break;
-    //   }
-    // });
+      client.on('error', (event: any) => console.error(event));
 
-    client.on('error', (event: any) => console.error(event));
-    client.on('conversation.interrupted', async () => {
-      const trackSampleOffset = await wavStreamPlayer.interrupt();
-      if (trackSampleOffset?.trackId) {
-        const {trackId, offset} = trackSampleOffset;
-        client.cancelResponse(trackId, offset);
+      client.on('conversation.interrupted', async () => {
+        const trackSampleOffset = await wavStreamPlayer.interrupt();
+        if (trackSampleOffset?.trackId) {
+          const {trackId, offset} = trackSampleOffset;
+          client.cancelResponse(trackId, offset);
+        }
+      });
+
+      client.on('conversation.updated', async ({item, delta}: any) => {
+        const items = client.conversation.getItems();
+        if (delta?.audio && chatMode === 'voice') {
+          wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+        }
+        setItems(items.reverse().filter(item => item.type !== 'function_call'));
+      });
+
+      client.on('conversation.item.completed', ({item}: any) => {
+        console.log('conversation item completed', '\n', item.type, 'conversation.item.completed');
+        if (item.type === 'function_call') {
+          console.log('function call completed', '\n', JSON.stringify(item, null, 2), 'conversation.item.completed');
+        }
+      });
+
+      client.on('response.created', async ({response}: any) => {
+        console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
+      });
+
+      setItems(client.conversation.getItems().reverse());
+
+      if (shouldCreateResponse) {
+        client.createResponse();
       }
-    });
-    client.on('conversation.updated', async ({item, delta}: any) => {
-      const items = client.conversation.getItems();
-      if (delta?.audio && chatMode === 'voice') {
-        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
-      }
-      setItems(items.reverse().filter(item => item.type !== 'function_call'));
-    });
-
-    client.on('conversation.item.completed', ({item}: any) => {
-      console.log('conversation item completed', '\n', item.type, 'conversation.item.completed');
-      if (item.type === 'function_call') {
-        // your function call is complete, execute some custom code
-        console.log('function call completed', '\n', JSON.stringify(item, null, 2), 'conversation.item.completed');
-      }
-    });
-
-    client.on('response.created', async ({response}: any) => {
-      console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
-    });
-
-    setItems(client.conversation.getItems().reverse());
-
-    client.createResponse();
-
-    //   client.sendUserMessageContent([
-    //     {
-    //       type: `input_text`,
-    //       text: `Hello!`,
-    //       // text: `For testing purposes, I want you to list ten car brands. Number each item, e.g. "one (or whatever number you are one): the item name".`
-    //     },
-    //   ]);
-    // }, []);
-  }, []);
+    },
+    [state],
+  );
 
   const connectVoice = useCallback(async () => {
     console.log('connecting voice');
     await connect();
-    const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
-    const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
-    const appState = JSON.stringify(cleanState(state));
-
     wavRecorder.begin();
-
-    client.updateSession({
-      instructions: `
-        # basic instructions:
-        ${basicInstructions}
-
-        # current app state:
-        ${appState}
-
-        # current route:
-        ${route}
-
-        user has just enabled voice mode, which can be toggled with the microphone button in the bottom right corner of the screen. Instruct user if necessary.
-      `,
+    updateSession({
+      instructions:
+        'user has just enabled voice mode, which can be toggled with the microphone button in the bottom right corner of the screen. Instruct user if necessary.',
     });
-
-    client.sendUserMessageContent([{type: 'input_text', text: 'explain how voice mode works'}]);
-
-    console.log('connected voice');
+    clientRef.current.createResponse();
   }, []);
 
   const disconnectConversation = useCallback(async () => {
@@ -219,30 +174,38 @@ const useAIAssistant = () => {
     };
   }, []);
 
-  const updateSession = async (session: Record<string, any>): Promise<void> => {
-    // console.log(`updating session: ${JSON.stringify(session)}`, 'updateSession');
-    clientRef.current.updateSession(session);
-  };
-
-  const sendPrompt = async (prompt: string): Promise<void> => {
-    // console.log(`sending prompt: ${prompt}`);
+  const updateSession = ({screenContext, instructions}: {screenContext?: string; instructions?: string}) => {
+    const client = clientRef.current;
 
     const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
 
     const appState = JSON.stringify(cleanState(state));
-
-    clientRef.current.updateSession({
+    client.updateSession({
       instructions: `
-        # basic instructions:
-        ${basicInstructions}
+          # general instructions:
+          ${basicInstructions}
 
-        # current app state:
-        ${appState}
+          # current app state:
+          ${appState}
+  
+          # current route:
+          ${route}
 
-        # current route:
-        ${route}
-      `,
+          # current onscreen context:
+          ${screenContext || 'unknown'}
+  
+          # specific instructions for current context:
+          ${instructions || ''}
+        `,
     });
+  };
+
+  const sendPrompt = async (prompt: string, screenContext?: string): Promise<void> => {
+    if (!isConnected) {
+      await connectConversation(false);
+    }
+
+    updateSession({screenContext});
     clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
   };
   const startVoiceRecording = async () => {
@@ -284,6 +247,15 @@ const useAIAssistant = () => {
     setChatMode('text');
   };
 
+  const handleChatOpened = (screenContext?: string) => {
+    if (!isConnected) {
+      connectConversation(true, screenContext);
+    } else {
+      updateSession({screenContext, instructions: 'instruct user about can be seen and done on this screen'});
+      clientRef.current.createResponse();
+    }
+  };
+
   return {
     isConnected,
     sendPrompt,
@@ -300,6 +272,7 @@ const useAIAssistant = () => {
     wavStreamPlayer: wavStreamPlayerRef.current,
     addTool: clientRef.current.addTool,
     removeTool: clientRef.current.removeTool,
+    handleChatOpened,
   };
 };
 

@@ -96,9 +96,6 @@ import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import {formatDateTime} from '../utils';
-import ChatButton from '../components/chat/ChatButton';
-import {useModal} from '../providers/chat/chatProvider';
-import {useFocusEffect} from '@react-navigation/native';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -223,14 +220,6 @@ const MainStackNavigator = (): JSX.Element => {
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
-  const {showChatButton, assistant} = useModal();
-  useFocusEffect(
-    useCallback(() => {
-      showChatButton({bottom: 100, right: 16});
-      // assistant.addTool();
-      return () => {};
-    }, []),
-  );
   return (
     <Tab.Navigator
       screenOptions={{

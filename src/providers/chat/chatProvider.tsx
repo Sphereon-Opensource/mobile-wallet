@@ -5,7 +5,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {GiftedChat, IMessage} from 'react-native-gifted-chat';
 import {ChatBubble} from '../../components/chat/ChatBubble';
 import ChatInputToolbar from '../../components/chat/ChatInputToolbar';
-import useAIAssistant, {ChatMode} from '../../hooks/useAIAssistant';
+import useAIAssistant from '../../hooks/useAIAssistant';
 import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ChatButton from '../../components/chat/ChatButton';
@@ -132,7 +132,7 @@ export const ChatProvider = ({children}: {children: any}) => {
     <ModalContext.Provider value={{openModal, closeModal, showChatButton, hideChatButton, assistant}}>
       <GestureHandlerRootView>
         {children}
-        {isChatButtonVisible && <ChatButton position={chatButtonPosition} />}
+        {isChatButtonVisible && <ChatButton />}
         <Modal transparent visible={isVisible} onRequestClose={closeModal} animationType="slide">
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <View

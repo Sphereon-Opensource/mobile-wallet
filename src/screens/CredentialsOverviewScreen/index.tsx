@@ -8,6 +8,7 @@ import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 import CredentialsOverviewList from './CredentialsOverviewList';
 import {CredentialsOverviewImages} from './constants';
+import {Chat} from '../../components/chat/Chat';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
@@ -48,6 +49,12 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
         <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} options={{swipeEnabled: false}} />
         <CredentialViewTypeNav.Screen name="Card" component={CredentialsOverviewCardList} />
       </CredentialViewTypeNav.Navigator>
+      <Chat
+        screenContext={JSON.stringify({
+          screen: 'CredentialsOverviewScreen',
+          assistantInstructions: 'focus on moving to the qr scanner screen.',
+        })}
+      />
     </Container>
   );
 };
