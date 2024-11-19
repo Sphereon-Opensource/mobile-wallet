@@ -277,7 +277,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
     }
 
     store.dispatch<any>(
-      storeAuditLogging({
+      storeActivityLogging({
         level: LogLevel.TRACE,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
