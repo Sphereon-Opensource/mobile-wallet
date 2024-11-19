@@ -14,8 +14,8 @@ import {
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {Linking} from 'react-native';
-import {checkAndAddHTTPPrefix, parseValidURL} from 'src/utils';
 import {fontColors} from '@sphereon/ui-components.core';
+import {checkAndAddHTTPPrefix, parseValidURL} from '../../../utils';
 
 export interface IProps {
   item: CredentialDetailsRow;

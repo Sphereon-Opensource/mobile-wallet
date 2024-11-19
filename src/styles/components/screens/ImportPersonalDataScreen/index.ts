@@ -1,7 +1,7 @@
 import {styled} from 'styled-components/native';
+import {fontSize} from '../../../typography';
 import {SSITextH5LightStyled} from '../../fonts';
 import {fontColors} from '@sphereon/ui-components.core';
-import {fontSize} from 'src/styles/typography';
 
 export const ImportPersonalDataContainer = styled.View`
   position: relative;

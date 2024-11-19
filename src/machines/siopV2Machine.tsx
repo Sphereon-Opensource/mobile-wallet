@@ -272,10 +272,10 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             target: SiopV2MachineStates.addContact,
             cond: SiopV2MachineGuards.hasNoContactGuard,
           },
-          {
+          /*{
             target: SiopV2MachineStates.reviewContact,
             cond: SiopV2MachineGuards.contactHasLowTrustGuard,
-          },
+          },*/
           {
             target: SiopV2MachineStates.sendResponse,
             cond: SiopV2MachineGuards.siopOnlyGuard,
