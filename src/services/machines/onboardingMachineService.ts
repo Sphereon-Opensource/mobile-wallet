@@ -17,7 +17,7 @@ import {generateDigest} from '../../utils';
 import {storagePersistPin} from '../storageService';
 import {ViewPreference} from '../../types/preferences';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -75,8 +75,8 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
     }
 
     store.dispatch<any>(
-      storeAuditLogging({
-        level: LogLevel.TRACE,
+      storeActivityLogging({
+        level: LogLevel.INFO,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
         initiatorType: InitiatorType.SYSTEM,
