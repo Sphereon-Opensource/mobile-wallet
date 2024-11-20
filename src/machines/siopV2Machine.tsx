@@ -23,6 +23,7 @@ import {
   SiopV2MachineState,
   SiopV2MachineStates,
   SiopV2StateMachine,
+  WalletMetadata,
 } from '../types/machines/siopV2';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -82,12 +83,13 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
 };
 
 const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
-  const {url} = opts;
+  const {url, resolveTrustChainArgs} = opts;
   const initialContext: SiopV2MachineContext = {
     url: new URL(url).toString(),
     hasContactConsent: true,
     contactAlias: '',
     selectedCredentials: [],
+    resolveTrustChainArgs,
   };
 
   return createMachine<SiopV2MachineContext, SiopV2MachineEventTypes>({
@@ -117,10 +119,35 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
         [SiopV2MachineServices.sendResponse]: {
           data: void;
         };
+        [SiopV2MachineServices.checkTrustChain]: {
+          data: WalletMetadata | undefined;
+        };
       },
     },
     context: initialContext,
     states: {
+      [SiopV2MachineStates.checkTrustChain]: {
+        id: SiopV2MachineStates.checkTrustChain,
+        invoke: {
+          src: SiopV2MachineServices.checkTrustChain,
+          onDone: {
+            target: '', //TODO check what's the target if the trust chain is resolved
+            actions: assign({}),
+            cond: (_ctx, event) => {
+              return event.data !== undefined && event.data !== null;
+            },
+          },
+          onError: {
+            target: SiopV2MachineStates.handleError,
+            actions: assign({
+              error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+                title: translate('siopV2_machine_check_trust_chain_error_title'),
+                message: _event.data.message,
+              }),
+            }),
+          },
+        },
+      },
       [SiopV2MachineStates.createConfig]: {
         id: SiopV2MachineStates.createConfig,
         invoke: {

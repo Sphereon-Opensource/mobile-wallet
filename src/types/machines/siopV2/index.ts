@@ -2,11 +2,16 @@ import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
-import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, URI} from '@sphereon/did-auth-siop';
+import {
+  FederationEntityMetadataPayload,
+  PresentationDefinitionWithLocation,
+  RPRegistrationMetadataPayload,
+  VerifiedAuthorizationRequest,
+} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
-import {IQrData} from '../../qr';
+import {ResolveTrustChainArgs} from '@sphereon/ssi-sdk.oidf-client';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -28,10 +33,12 @@ export type SiopV2MachineContext = {
   hasContactConsent: boolean;
   contactAlias: string;
   selectedCredentials: Array<OriginalVerifiableCredential>;
+  resolveTrustChainArgs?: ResolveTrustChainArgs;
   error?: ErrorDetails;
 };
 
 export enum SiopV2MachineStates {
+  checkTrustChain = 'checkTrustChain',
   createConfig = 'createConfig',
   getSiopRequest = 'getSiopRequest',
   retrieveContact = 'retrieveContact',
@@ -84,6 +91,7 @@ export type SiopV2StateMachine = StateMachine<
 export type CreateSiopV2MachineOpts = {
   url: string | URL;
   machineId?: string;
+  resolveTrustChainArgs?: ResolveTrustChainArgs;
 };
 
 export type SiopV2MachineInstanceOpts = {
@@ -118,6 +126,7 @@ export enum SiopV2MachineEvents {
   SET_CONTACT_CONSENT = 'SET_CONTACT_CONSENT',
   CREATE_CONTACT = 'CREATE_CONTACT',
   SET_SELECTED_CREDENTIALS = 'SET_SELECTED_CREDENTIALS',
+  RESOLVE_TRUST_CHAIN = 'RESOLVE_TRUST_CHAIN',
 }
 
 export enum SiopV2MachineGuards {
@@ -135,6 +144,7 @@ export enum SiopV2MachineServices {
   addContactIdentity = 'addContactIdentity',
   sendResponse = 'sendResponse',
   createConfig = 'createConfig',
+  checkTrustChain = 'checkTrustChain',
 }
 
 export type NextEvent = {type: SiopV2MachineEvents.NEXT};
@@ -156,3 +166,86 @@ export type SiopV2MachineEventTypes =
   | ContactConsentEvent
   | ContactAliasEvent
   | SelectCredentialsEvent;
+
+// Belongs to OP
+export type OpenIDWalletProvider = {
+  issuer?: string;
+  authorizationEndpoint?: string;
+  tokenEndpoint?: string;
+  jwksUri?: string;
+  registrationEndpoint?: string;
+  scopesSupported?: Array<string>;
+  responseTypesSupported?: Array<string>;
+  responseModesSupported?: Array<string>;
+  grantTypesSupported?: Array<string>;
+  tokenEndpointAuthMethodsSupported?: Array<string>;
+  tokenEndpointAuthSigningAlgValuesSupported?: Array<string>;
+  serviceDocumentation?: string;
+  uiLocalesSupported?: Array<string>;
+  opPolicyUri?: string;
+  opTosUri?: string;
+  revocationEndpoint?: string;
+  revocationEndpointAuthMethodsSupported?: Array<string>;
+  revocationEndpointAuthSigningAlgValuesSupported?: Array<string>;
+  introspectionEndpoint?: string;
+  introspectionEndpointAuthMethodsSupported?: Array<string>;
+  introspectionEndpointAuthSigningAlgValuesSupported?: Array<string>;
+  codeChallengeMethodsSupported?: Array<string>;
+  signedMetadata?: string;
+  deviceAuthorizationEndpoint?: string;
+  tlsClientCertificateBoundAccessTokens?: boolean;
+  mtlsEndpointAliases?: {a?: string};
+  nfvTokenSigningAlgValuesSupported?: Array<string>;
+  nfvTokenEncryptionAlgValuesSupported?: Array<string>;
+  nfvTokenEncryptionEncValuesSupported?: Array<string>;
+  userinfoEndpoint?: string;
+  acrValuesSupported?: Array<string>;
+  subjectTypesSupported?: Array<string>;
+  idTokenSigningAlgValuesSupported?: Array<string>;
+  idTokenEncryptionAlgValuesSupported?: Array<string>;
+  idTokenEncryptionEncValuesSupported?: Array<string>;
+  userinfoSigningAlgValuesSupported?: Array<string>;
+  userinfoEncryptionAlgValuesSupported?: Array<string>;
+  userinfoEncryptionEncValuesSupported?: Array<string>;
+  requestObjectSigningAlgValuesSupported?: Array<string>;
+  requestObjectEncryptionAlgValuesSupported?: Array<string>;
+  requestObjectEncryptionEncValuesSupported?: Array<string>;
+  displayValuesSupported?: Array<string>;
+  claimTypesSupported?: Array<string>;
+  claimsSupported?: Array<string>;
+  claimsLocalesSupported?: Array<string>;
+  claimsParameterSupported?: boolean;
+  requestParameterSupported?: boolean;
+  requestUriParameterSupported?: boolean;
+  requireRequestUriRegistration?: boolean;
+  requireSignedRequestObject?: boolean;
+  pushedAuthorizationRequestEndpoint?: string;
+  requirePushedAuthorizationRequests?: boolean;
+  introspectionSigningAlgValuesSupported?: Array<string>;
+  introspectionEncryptionAlgValuesSupported?: Array<string>;
+  introspectionEncryptionEncValuesSupported?: Array<string>;
+  authorizationResponseIssParameterSupported?: boolean;
+  checkSessionIframe?: string;
+  presentation_definition_uri_supported?: boolean;
+  vp_formats_supported: {alg_values_supported: Format};
+};
+
+// Belongs to OP
+export type Format = {
+  jwt?: JwtObject;
+  jwt_vc?: JwtObject;
+  jwt_vc_json?: JwtObject;
+  jwt_vp?: JwtObject;
+  jwt_vp_json?: JwtObject;
+};
+
+// Belongs to OP
+export type JwtObject = {
+  alg_values_supported?: Array<string>;
+};
+
+// Belongs to OP
+export type WalletMetadata = {
+  federation_entity: FederationEntityMetadataPayload;
+  openid_wallet_provider: OpenIDWalletProvider;
+};

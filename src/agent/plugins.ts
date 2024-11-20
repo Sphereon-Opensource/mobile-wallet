@@ -32,6 +32,8 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {OrPromise} from '@sphereon/ssi-types';
 import {DataSource} from 'typeorm';
+import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
+import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -111,5 +113,7 @@ export const createAgentPlugins = ({
       saltGenerator: generateSalt,
       verifySignature: verifySDJWTSignature,
     }),
+    new JwtService(),
+    new OIDFClient(),
   ];
 };

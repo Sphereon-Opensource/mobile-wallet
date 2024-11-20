@@ -1,4 +1,4 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {FederationEntityMetadataPayload, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -12,11 +12,11 @@ import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
-import {agentContext} from '../../agent';
+import agent, {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
+import {SiopV2AuthorizationRequestData, SiopV2MachineContext, WalletMetadata} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
@@ -172,4 +172,28 @@ export const sendResponse = async (
   }
 
   return response;
+};
+
+// Must return RP metadata
+export const checkTrustChain = async (context: Pick<SiopV2MachineContext, 'resolveTrustChainArgs'>): Promise<WalletMetadata | undefined> => {
+  const {resolveTrustChainArgs} = {...context};
+
+  if (
+    resolveTrustChainArgs?.entityIdentifier !== undefined &&
+    resolveTrustChainArgs?.entityIdentifier !== null &&
+    resolveTrustChainArgs.trustAnchors !== undefined &&
+    resolveTrustChainArgs.trustAnchors !== null &&
+    resolveTrustChainArgs.trustAnchors.length !== 0
+  ) {
+    const resolved = await agent.resolveTrustChain(resolveTrustChainArgs);
+    if (resolved !== undefined && resolved !== null && (resolved as string[]).length !== 0) {
+      const payload = JSON.parse(
+        Buffer.from(resolved.find((ss: any) => ss.sub === resolveTrustChainArgs.entityIdentifier).split('.')[1], 'base64url').toString(),
+      );
+      return {
+        federation_entity: payload?.metadata?.federation_entity,
+        openid_wallet_provider: payload?.metadata?.oauth_authorization_server,
+      };
+    }
+  }
 };
