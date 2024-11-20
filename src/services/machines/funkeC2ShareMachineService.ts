@@ -6,7 +6,7 @@ import {
   VerifiableCredentialsWithDefinition,
 } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {v4 as uuidv4} from 'uuid';
-import {siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
+import {siopGetRequest, siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
 import agent from '../../agent';
 import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
@@ -61,9 +61,11 @@ export const siopGetSiopRequest = async (
   }
   const {sessionId, redirectUrl} = didAuthConfig;
 
-  const session: OpSession = await agent
-    .siopGetOPSession({sessionId})
-    .catch(async () => await agent.siopRegisterOPSession({requestJwtOrUri: redirectUrl, sessionId}));
+  // FIXME the agent plugin has no support for a hasher yet, using the same as local siopv2 flow here for now
+  // const session: OpSession = await agent
+  //   .siopGetOPSession({sessionId})
+  //   .catch(async () => await agent.siopRegisterOPSession({requestJwtOrUri: redirectUrl, sessionId}));
+  const session: OpSession = await siopGetSession(sessionId).catch(async () => await siopRegisterSession({requestJwtOrUri: redirectUrl, sessionId}));
 
   //logger.debug(`session: ${JSON.stringify(session.id, null, 2)}`)
   const verifiedAuthorizationRequest = await session.getAuthorizationRequest();

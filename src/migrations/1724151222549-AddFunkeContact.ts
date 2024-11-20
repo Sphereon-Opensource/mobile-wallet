@@ -13,11 +13,19 @@ export class AddFunkeContact1724151222549 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('838d0211-779d-41d8-829b-809572ff0356', 'https://demo.pid-issuer.bundesdruckerei.de', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
+      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('838d0211-779d-41d8-829b-809572ff0356', 'https://demo.pid-issuer.bundesdruckerei.de/c', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
     );
 
     await queryRunner.query(
       `INSERT INTO "CorrelationIdentifier"(id, type, correlation_id, identity_id) VALUES ('0483e2e8-a17f-45f2-bc8b-053c8d7d5b62', 'url', 'https://demo.pid-issuer.bundesdruckerei.de/c', '838d0211-779d-41d8-829b-809572ff0356')`,
+    );
+
+    await queryRunner.query(
+      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('eefa7ff3-460c-4c83-81f6-0feead86b580', 'https://demo.pid-issuer.bundesdruckerei.de/c2', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
+    );
+
+    await queryRunner.query(
+      `INSERT INTO "CorrelationIdentifier"(id, type, correlation_id, identity_id) VALUES ('1fe9b9aa-398f-4d7e-a91a-1f137f9a783b', 'url', 'https://demo.pid-issuer.bundesdruckerei.de/c2', 'eefa7ff3-460c-4c83-81f6-0feead86b580')`,
     );
 
     await queryRunner.query(

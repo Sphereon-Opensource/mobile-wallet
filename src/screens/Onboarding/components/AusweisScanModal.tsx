@@ -114,13 +114,13 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
           </Animated.View>
         </ContentContainer>
         <Animated.View style={opacityStyle}>
-          <PrimaryButton
-            style={{height: 42, width: 300}}
-            caption="Cancel"
-            backgroundColors={['#6f6f75']}
-            captionColor={fontColors.light}
-            onPress={onCancel}
-          />
+          {/*<PrimaryButton*/}
+          {/*  style={{height: 42, width: 300}}*/}
+          {/*  caption="Cancel"*/}
+          {/*  backgroundColors={['#6f6f75']}*/}
+          {/*  captionColor={fontColors.light}*/}
+          {/*  onPress={onCancel}*/}
+          {/*/>*/}
         </Animated.View>
       </ModalCard>
     </Animated.View>
