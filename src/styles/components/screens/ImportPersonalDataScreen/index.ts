@@ -1,6 +1,6 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {styled} from 'styled-components/native';
-import {fontSize} from '../../../../styles/typography';
+import {fontSize} from '../../../typography';
 import {SSITextH5LightStyled} from '../../fonts';
 
 export const ImportPersonalDataContainer = styled.View`

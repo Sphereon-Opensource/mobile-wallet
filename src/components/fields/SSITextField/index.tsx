@@ -1,10 +1,10 @@
 import React, {FC, useMemo} from 'react';
-
 import {fontColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {Linking} from 'react-native';
 import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
+import {checkAndAddHTTPPrefix, parseValidURL} from '../../../utils';
 import {
   SSITextFieldContainerStyled as Container,
   SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
@@ -15,7 +15,6 @@ import {
   SSITextH5LightStyled as HeaderLabel,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
 } from '../../../styles/components';
-import {checkAndAddHTTPPrefix, parseValidURL} from '../../../utils';
 
 export interface IProps {
   item: CredentialDetailsRow;

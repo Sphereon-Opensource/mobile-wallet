@@ -32,7 +32,6 @@ import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {getMatchingCredentials} from '../../services/pexService';
 import agent from '../../agent';
-import {OID4VCIMachineEvents, OID4VCIMachineNavigationArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -146,6 +145,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
       roles: [CredentialRole.VERIFIER],
       uri: contact.uri,
       federations: federationParties,
+      identities: contact.identities,
       onAliasChange,
       onCreate,
       onDecline,
