@@ -1080,6 +1080,22 @@ export const FunkeC2ShareStack = (): JSX.Element => (
         header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
       })}
     />
+    <Stack.Screen
+      name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+      component={NewContactAddScreen}
+      options={({route}) => ({
+        headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+        header: (props: NativeStackHeaderProps) => (
+          <SSIHeaderBar
+            {...props}
+            onBack={route.params.onBack}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+          />
+        ),
+      })}
+    />
   </FunkeC2ShareBaseStack.Navigator>
 );
 

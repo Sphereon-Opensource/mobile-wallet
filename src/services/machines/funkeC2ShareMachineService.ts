@@ -6,9 +6,9 @@ import {
   VerifiableCredentialsWithDefinition,
 } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {v4 as uuidv4} from 'uuid';
-import {siopGetRequest, siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
+import {siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
-import agent from '../../agent';
+import agent, {agentContext} from '../../agent';
 import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
 import {generateDigest, translateCorrelationIdToName} from '../../utils';
 import {
@@ -28,7 +28,9 @@ import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/
 import {computeEntryHash} from '@veramo/utils';
 import {Linking} from 'react-native';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
+import {SiopV2MachineContext} from '../../types/machines/siopV2';
+import {getContacts} from '../contactService';
 
 const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
@@ -182,6 +184,8 @@ export const siopSendResponse = async (
       }
     }
   }
+
+  console.log(`C2 flow contact: ${JSON.stringify(contact)}`);
 
   sharedCredential.forEach(credential =>
     store.dispatch<any>(
@@ -362,7 +366,7 @@ const deletePIDCredentials = async (): Promise<void> => {
     credential => {
       store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
         store.dispatch<any>(
-          storeActivityLogging({
+          storeAuditLogging({
             level: LogLevel.INFO,
             system: System.CREDENTIALS,
             subSystemType: SubSystem.OID4VP_OP,
@@ -370,10 +374,6 @@ const deletePIDCredentials = async (): Promise<void> => {
             description: 'Credential was deleted by user',
             actionType: ActionType.DELETE,
             actionSubType: DefaultActionSubType.VC_DELETE,
-            // @ts-ignore
-            credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-            credentialHash: credential.hash,
-            originalCredential: JSON.stringify(credential.digitalCredential),
             diagnosticData: credential,
           }),
         ),
@@ -382,4 +382,38 @@ const deletePIDCredentials = async (): Promise<void> => {
   );
 
   await Promise.all(deleteCredentials);
+};
+
+export const getFederationTrust = async (
+  context: Pick<FunkeC2ShareMachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
+): Promise<Array<string>> => {
+  const {authorizationRequestData, trustAnchors} = context;
+
+  if (trustAnchors.length === 0) {
+    return Promise.reject(Error('No trust anchors found'));
+  }
+
+  if (!authorizationRequestData) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  // const entityIdentifier = authorizationRequestData.entityId;
+  //
+  // if (!entityIdentifier) {
+  //   return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  // }
+
+  // const trustedAnchors = [];
+  // for (const trustAnchor of trustAnchors) {
+  //   const resolveResult = await agent.resolveTrustChain({
+  //     entityIdentifier,
+  //     trustAnchors: [trustAnchor],
+  //   });
+  //
+  //   if (Array.isArray(resolveResult) && resolveResult.length > 0) {
+  //     trustedAnchors.push(trustAnchor);
+  //   }
+  // }
+
+  return []; //trustedAnchors;
 };

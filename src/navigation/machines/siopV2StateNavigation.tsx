@@ -331,6 +331,7 @@ export const siopV2StateNavigationListener = async (
     state.matches(SiopV2MachineStates.createConfig) ||
     state.matches(SiopV2MachineStates.getSiopRequest) ||
     state.matches(SiopV2MachineStates.retrieveContact) ||
+    state.matches(SiopV2MachineStates.getFederationTrust) ||
     state.matches(SiopV2MachineStates.transitionFromSetup)
   ) {
     return navigateLoading({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});

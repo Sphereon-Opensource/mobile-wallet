@@ -118,7 +118,9 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
       return {
         id: activity.id,
         title: activity.contactAlias,
-        subtitle: activity.shared.map(({credential}) => credential?.title ?? translate('activity.unknown.credential')).join(', '),
+        subtitle: activity.shared
+          .map(({credential}) => credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'))
+          .join(', '),
         ...common,
       };
     case DefaultActionSubType.VC_ISSUE:

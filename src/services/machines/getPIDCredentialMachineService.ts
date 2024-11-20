@@ -8,7 +8,7 @@ import {GetPIDCredentialsMachineContext, MappedCredential} from '../../types/mac
 import {generateDigest} from '../../utils';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -92,7 +92,7 @@ const deletePIDCredentials = async (): Promise<void> => {
     credential => {
       store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
         store.dispatch<any>(
-          storeActivityLogging({
+          storeAuditLogging({
             level: LogLevel.INFO,
             system: System.CREDENTIALS,
             subSystemType: SubSystem.OID4VP_OP,
@@ -100,10 +100,6 @@ const deletePIDCredentials = async (): Promise<void> => {
             description: 'Credential was deleted by user',
             actionType: ActionType.DELETE,
             actionSubType: DefaultActionSubType.VC_DELETE,
-            // @ts-ignore
-            credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-            credentialHash: credential.hash,
-            originalCredential: JSON.stringify(credential.digitalCredential),
             diagnosticData: credential,
           }),
         ),
