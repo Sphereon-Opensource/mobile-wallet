@@ -21,6 +21,11 @@ import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {Loggers} from '@sphereon/ssi-types';
+import {
+  ExternalIdentifierOIDFEntityIdResult,
+  PublicKeyHex,
+  TrustedAnchor,
+} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -69,7 +74,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
     : name;
   const correlationId: string = uri?.hostname ?? correlationIdName;
+  const clientIdScheme: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
   const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
+  const entityId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -77,7 +84,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     registrationMetadataPayload: verifiedAuthorizationRequest.registrationMetadataPayload,
     uri,
     name,
+    clientIdScheme,
     clientId,
+    entityId,
     presentationDefinitions:
       (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
       (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
@@ -129,7 +138,7 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
       ? clientId
       : `${new URL(clientId).protocol}//${new URL(clientId).hostname}`
     : undefined;
-
+  //  const oidfEntityId = authorizationRequestData.clientId
   if (correlationId) {
     const identity: NonPersistedIdentity = {
       origin: IdentityOrigin.EXTERNAL,
@@ -192,7 +201,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Array<string>> => {
+): Promise<Record<TrustedAnchor, PublicKeyHex>> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -203,23 +212,15 @@ export const getFederationTrust = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  // const entityIdentifier = authorizationRequestData.entityId;
-  //
-  // if (!entityIdentifier) {
-  //   return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
-  // }
+  const entityIdentifier = authorizationRequestData.entityId;
+  if (!entityIdentifier) {
+    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  }
+  const result = await agent.identifierExternalResolveByOIDFEntityId({
+    method: 'entity_id',
+    trustAnchors: trustAnchors,
+    identifier: entityIdentifier,
+  });
 
-  // const trustedAnchors = [];
-  // for (const trustAnchor of trustAnchors) {
-  //   const resolveResult = await agent.resolveTrustChain({
-  //     entityIdentifier,
-  //     trustAnchors: [trustAnchor],
-  //   });
-  //
-  //   if (Array.isArray(resolveResult) && resolveResult.length > 0) {
-  //     trustedAnchors.push(trustAnchor);
-  //   }
-  // }
-
-  return []; //trustedAnchors;
+  return result.trustedAnchors;
 };

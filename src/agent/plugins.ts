@@ -33,6 +33,7 @@ import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
+import {ResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -108,5 +109,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new CredentialValidation(),
     new OIDFClient(),
     new QrCodeProvider(),
+    new ResourceResolver(),
   ];
 };

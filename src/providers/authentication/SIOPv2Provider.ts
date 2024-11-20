@@ -115,7 +115,7 @@ const createMDocPresentation = (
     definition: vcWithDef.definition,
     verifiableCredentials: originalCredentials.filter((cred): cred is OriginalVerifiableCredential => cred !== undefined),
     // @ts-ignore  FIXME Funke
-    verifiablePresentation: originalPresentations[0],
+    verifiablePresentations: originalPresentations,
     idOpts: identifier,
     presentationSubmission: {
       id: presentationSubmission.id,

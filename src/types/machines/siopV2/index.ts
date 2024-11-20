@@ -2,12 +2,15 @@ import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
-import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, URI} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
-import {IQrData} from '../../qr';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {
+  ExternalIdentifierOIDFEntityIdResult,
+  PublicKeyHex,
+  TrustedAnchor,
+} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -15,7 +18,9 @@ export type SiopV2AuthorizationRequestData = {
   issuer?: string;
   name?: string;
   uri?: URL;
+  clientIdScheme?: string;
   clientId?: string;
+  entityId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];
 };
 
@@ -30,7 +35,7 @@ export type SiopV2MachineContext = {
   hasContactConsent: boolean;
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
-  trustedAnchors?: Array<string>;
+  trustedAnchors?: Record<TrustedAnchor, PublicKeyHex>;
   error?: ErrorDetails;
 };
 
