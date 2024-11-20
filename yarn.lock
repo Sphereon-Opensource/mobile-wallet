@@ -3212,6 +3212,10 @@
     uint8arrays "3.1.1"
     uuid "^9.0.0"
 
+"@sphereon/oid4vc-common@link:../OID4VC/packages/common":
+  version "0.0.0"
+  uid ""
+
 "@sphereon/oid4vci-client@0.15.1-next.9":
   version "0.0.0"
   uid ""

@@ -16,7 +16,7 @@ import agent, {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {SiopV2AuthorizationRequestData, SiopV2MachineContext, WalletMetadata} from '../../types/machines/siopV2';
+import {OpenIdFederationEntities, SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
@@ -175,7 +175,9 @@ export const sendResponse = async (
 };
 
 // Must return RP metadata
-export const checkTrustChain = async (context: Pick<SiopV2MachineContext, 'resolveTrustChainArgs'>): Promise<WalletMetadata | undefined> => {
+export const checkTrustChain = async (
+  context: Pick<SiopV2MachineContext, 'resolveTrustChainArgs'>,
+): Promise<OpenIdFederationEntities | undefined> => {
   const {resolveTrustChainArgs} = {...context};
 
   if (
@@ -188,11 +190,14 @@ export const checkTrustChain = async (context: Pick<SiopV2MachineContext, 'resol
     const resolved = await agent.resolveTrustChain(resolveTrustChainArgs);
     if (resolved !== undefined && resolved !== null && (resolved as string[]).length !== 0) {
       const payload = JSON.parse(
-        Buffer.from(resolved.find((ss: any) => ss.sub === resolveTrustChainArgs.entityIdentifier).split('.')[1], 'base64url').toString(),
+        Buffer.from(resolved.find((ss: any) => ss.iss === resolveTrustChainArgs.entityIdentifier).split('.')[1], 'base64url').toString(),
       );
       return {
         federation_entity: payload?.metadata?.federation_entity,
-        openid_wallet_provider: payload?.metadata?.oauth_authorization_server,
+        oauth_server_metadata: payload?.metadata?.oauth_authorization_server,
+        openid_wallet_provider: payload?.metadata?.openid_provider,
+        openid_credential_issuer: payload?.metadata?.openid_connect_relying_party, //Not sure about that one
+        openid_credential_verifier: payload?.metadata?.openid_relying_party,
       };
     }
   }

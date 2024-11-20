@@ -10,6 +10,7 @@ import {
   ContactConsentEvent,
   CreateContactEvent,
   CreateSiopV2MachineOpts,
+  OpenIdFederationEntities,
   SelectCredentialsEvent,
   SiopV2AuthorizationRequestData,
   SiopV2MachineAddContactStates,
@@ -23,7 +24,6 @@ import {
   SiopV2MachineState,
   SiopV2MachineStates,
   SiopV2StateMachine,
-  WalletMetadata,
 } from '../types/machines/siopV2';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -120,7 +120,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           data: void;
         };
         [SiopV2MachineServices.checkTrustChain]: {
-          data: WalletMetadata | undefined;
+          data: OpenIdFederationEntities | undefined;
         };
       },
     },
@@ -132,7 +132,17 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           src: SiopV2MachineServices.checkTrustChain,
           onDone: {
             target: '', //TODO check what's the target if the trust chain is resolved
-            actions: assign({}),
+            actions: assign({
+              federation_entity: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<OpenIdFederationEntities>) => _event.data.federation_entity,
+              oauth_server_metadata: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<OpenIdFederationEntities>) =>
+                _event.data.oauth_server_metadata,
+              openid_wallet_provider: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<OpenIdFederationEntities>) =>
+                _event.data.openid_wallet_provider,
+              openid_credential_issuer: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<OpenIdFederationEntities>) =>
+                _event.data.openid_credential_issuer,
+              openid_credential_verifier: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<OpenIdFederationEntities>) =>
+                _event.data.openid_credential_verifier,
+            }),
             cond: (_ctx, event) => {
               return event.data !== undefined && event.data !== null;
             },
