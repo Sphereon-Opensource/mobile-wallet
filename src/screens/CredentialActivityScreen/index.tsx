@@ -64,7 +64,7 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
         </View>
       )}
       <ActivityList
-        listTitle={`${translate('activity.credential.list.title')} ${credential?.title}`}
+        listTitle={`${translate('activity.credential.list.title')} ${credential?.branding?.alias ?? credential?.title}`}
         activities={activities}
         loading={loading}
         onActivityPress={(id: string) => navigation.push(ScreenRoutesEnum.ACTIVITY_DETAILS, {activity: activities?.find(a => a.id === id)})}
