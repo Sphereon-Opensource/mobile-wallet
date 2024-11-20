@@ -152,7 +152,10 @@ const funkeCShareMachineStates: FunkeC2ShareMachineStatesStatesConfig = {
     on: {
       PREVIOUS: FunkeC2ShareMachineStateTypes.acceptRequestInformation,
       NEXT: FunkeC2ShareMachineStateTypes.sendResponse,
-      DECLINE: ['logDeclineShare', FunkeC2ShareMachineStateTypes.declined],
+      DECLINE: {
+        actions: 'logDeclineShare',
+        target: FunkeC2ShareMachineStateTypes.declined,
+      },
     },
   },
   sendResponse: {
