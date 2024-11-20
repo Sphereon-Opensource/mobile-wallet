@@ -48,6 +48,7 @@
     "@sphereon/jarm": "link:../OID4VC/packages/jarm",
     "@sphereon/oid4vci-client": "link:../OID4VC/packages/client",
     "@sphereon/oid4vci-common": "link:../OID4VC/packages/oid4vci-common",
+    "@sphereon/oid4vc-common": "link:../OID4VC/packages/common",
     "@sphereon/pex": "4.0.1",
     "@sphereon/pex-models": "^2.2.4",
     "@sphereon/ssi-sdk-ext.did-provider-jwk": "0.24.1-next.3",
