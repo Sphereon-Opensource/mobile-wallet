@@ -33,8 +33,6 @@ import {
   storePIDCredentials,
 } from '../services/machines/funkeC2ShareMachineService';
 import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {getMatchingPidCredentials} from '../services/pexService';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 
@@ -303,45 +301,21 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
     {
       actions: {
         logDeclineShare: async (context, event) => {
-          const sharedCredential = new Map<string, UniqueDigitalCredential>();
-
-          if (context.authorizationRequestData?.presentationDefinitions) {
-            for (const presentationDefinition of context.authorizationRequestData.presentationDefinitions) {
-              const matchingCredentials = await getMatchingPidCredentials({
-                presentationDefinitionWithLocation: presentationDefinition,
-                pidCredentials: context.pidCredentials,
-                issuerCorrelationId: context.authorizationRequestData.correlationId,
-              });
-              if (matchingCredentials) {
-                matchingCredentials.forEach(credential => {
-                  sharedCredential.set(credential.hash, credential);
-                });
-              }
-            }
-          }
-
-          sharedCredential.forEach(credential =>
-            store.dispatch<any>(
-              storeActivityLogging({
-                level: LogLevel.INFO,
-                system: System.OID4VP,
-                subSystemType: SubSystem.OID4VP_OP,
-                initiatorType: InitiatorType.USER,
-                description: 'Credential was declined by the user',
-                actionType: ActionType.READ,
-                actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
-                correlationId: context.didAuthConfig?.sessionId,
-                // @ts-ignore
-                credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-                credentialHash: credential.hash,
-                originalCredential: JSON.stringify(credential.digitalCredential),
-                diagnosticData: context.authorizationRequestData?.presentationDefinitions,
-                // @ts-ignore
-                partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
-                partyCorrelationId: context.contact?.identities[0].identifier.correlationId,
-                partyAlias: context.contact?.contact.displayName,
-              }),
-            ),
+          store.dispatch<any>(
+            storeActivityLogging({
+              level: LogLevel.INFO,
+              system: System.OID4VP,
+              subSystemType: SubSystem.OID4VP_OP,
+              initiatorType: InitiatorType.USER,
+              description: 'Credential was declined by the user',
+              actionType: ActionType.READ,
+              actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
+              correlationId: context.didAuthConfig?.sessionId,
+              // @ts-ignore
+              partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
+              partyCorrelationId: context.contact?.identities[0].identifier.correlationId,
+              partyAlias: context.contact?.contact.displayName,
+            }),
           );
         },
       },

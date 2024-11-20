@@ -2,7 +2,7 @@ import React, {FC, ReactElement} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
 import ShieldIcon from '../../assets/icons/ShieldIcon';
 import Localization from '../../../localization/Localization';
-import {IImageAttributes, Party} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 import {SSICheckmarkBadge, SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {
   FederationTrustViewContainerStyled as Container,
@@ -13,16 +13,9 @@ import {
   FederationTrustViewTitleTextStyled as TitleText,
 } from '../../../styles/components/components/FederationTrustView';
 import ArrowIcon from '../../assets/icons/ArrowIcon';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {ScreenRoutesEnum, StackParamList} from '../../../types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-
-// TODO move
-export type Federation = {
-  id: string;
-  name: string;
-  logo: IImageAttributes;
-};
 
 export type Props = {
   partyName: string;
