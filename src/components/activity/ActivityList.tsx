@@ -52,6 +52,7 @@ const searchFilter = (searchTerm: string) => (activity: Activity) => {
         activity.action,
         activity.purpose,
         activity.result,
+        ...(activity.shared ?? []).map(s => `${s.credential?.branding?.alias}`), // TODO do we need both branding.alias and credential.title or 1 or the other?
         ...(activity.shared ?? []).map(s => `${s.credential?.title}`),
         ...(activity.shared ?? []).map(s => Object.keys(s.info)).flat(),
         ...(activity.credentialType ? [activity.credentialType] : []),
@@ -63,6 +64,7 @@ const searchFilter = (searchTerm: string) => (activity: Activity) => {
         activity.at.toString(),
         activity.action,
         activity.result,
+        ...(activity.credential?.branding?.alias ? [activity.credential?.branding?.alias] : []), // TODO do we need both branding.alias and credential.title or 1 or the other?
         ...(activity.credential?.title ? [activity.credential.title] : []),
         ...Object.keys(activity.info),
       ];

@@ -125,7 +125,7 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
     case DefaultActionSubType.VC_ISSUE_DECLINE:
       return {
         id: activity.id,
-        title: activity.credential?.title ?? translate('activity.unknown.credential'),
+        title: activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
         ...common,
       };
   }
