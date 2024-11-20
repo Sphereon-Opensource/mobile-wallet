@@ -256,6 +256,10 @@ const useAIAssistant = () => {
     }
   };
 
+  const speakMessage = async (int16Array: Int16Array) => {
+    wavStreamPlayerRef.current.add16BitPCM(int16Array, 'assistant-audio');
+  };
+
   return {
     isConnected,
     sendPrompt,
@@ -273,6 +277,7 @@ const useAIAssistant = () => {
     addTool: clientRef.current.addTool.bind(clientRef.current),
     removeTool: clientRef.current.removeTool.bind(clientRef.current),
     handleChatOpened,
+    speakMessage,
   };
 };
 

@@ -4,6 +4,7 @@ import ChatButton, {ChatButtonPosition} from '../ChatButton';
 import ChatModal from '../ChatModal';
 import {useEffect} from 'react';
 import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
+import {IMessage} from 'react-native-gifted-chat';
 
 type Props = {
   buttonPosition?: ChatButtonPosition;
@@ -25,6 +26,7 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
     items,
     addTool,
     removeTool,
+    speakMessage,
   } = useAssistant();
 
   useEffect(() => {
@@ -99,10 +101,19 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
     }
   };
 
+  const handleAudioPress = (message: IMessage) => {
+    console.log('handleAudioPress', message);
+    const item = items.find(({id}) => id === message._id);
+    if (item?.formatted.audio) {
+      console.log('Playing audio', item.formatted.audio.length);
+      speakMessage(item?.formatted.audio);
+    }
+  };
+
   return (
     <>
       <ChatButton position={buttonPosition} onTextPress={handleTextPress} onVoicePress={handleVoicePress} />
-      <ChatModal onSendMessage={handleSendMessage} />
+      <ChatModal onSendMessage={handleSendMessage} onAudioPress={handleAudioPress} />
     </>
   );
 };

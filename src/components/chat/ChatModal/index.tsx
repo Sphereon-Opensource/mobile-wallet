@@ -12,17 +12,14 @@ import {fontColors} from '@sphereon/ui-components.core';
 
 type Props = {
   onSendMessage: (message: string) => void;
+  onAudioPress: (currentMessage: IMessage) => void;
 };
 
-const ChatModal = ({onSendMessage}: Props) => {
+const ChatModal = ({onSendMessage, onAudioPress}: Props) => {
   const {messages, isModalVisible, closeModal} = useChat();
 
   const handleSendMessage = (newMessages: IMessage[]) => {
     onSendMessage(newMessages[0].text);
-  };
-
-  const handleAudioPress = (currentMessage: IMessage) => {
-    console.log('Audio Pressed', currentMessage);
   };
 
   return (
@@ -73,7 +70,7 @@ const ChatModal = ({onSendMessage}: Props) => {
             showUserAvatar={false}
             renderAvatar={null}
             renderInputToolbar={props => <ChatInputToolbar {...props} />}
-            renderBubble={props => <ChatBubble {...props} handleAudioPress={() => handleAudioPress(props.currentMessage)} />}
+            renderBubble={props => <ChatBubble {...props} handleAudioPress={() => onAudioPress(props.currentMessage)} />}
             //   parsePatterns={parsePatterns}
           />
         </View>
