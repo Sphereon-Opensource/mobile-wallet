@@ -20,12 +20,9 @@ import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {Loggers} from '@sphereon/ssi-types';
-import {
-  ExternalIdentifierOIDFEntityIdResult,
-  PublicKeyHex,
-  TrustedAnchor,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PublicKeyHex, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -154,9 +151,9 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 };
 
 export const sendResponse = async (
-  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials'>,
+  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact'>,
 ): Promise<Response> => {
-  const {didAuthConfig, authorizationRequestData, selectedCredentials} = context;
+  const {didAuthConfig, authorizationRequestData, selectedCredentials, contact} = context;
 
   if (didAuthConfig === undefined) {
     return Promise.reject(Error('Missing config in context'));
@@ -177,6 +174,31 @@ export const sendResponse = async (
       ],
     }),
   });
+
+  selectedCredentials.forEach(credential =>
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'Credential shared by user',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    ),
+  );
+
   if (!response) {
     return Promise.reject(Error('Missing SIOP authentication response'));
   }
