@@ -183,7 +183,7 @@ const MainStackNavigator = (): JSX.Element => {
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={CredentialDetailsScreen}
         options={({route}) => ({
-          title: route.params.credential.title,
+          title: route.params.credential.branding?.alias ?? route.params.credential.title,
           headerShown: true,
           header: props => <CredentialDetailHeader {...props} />,
         })}
