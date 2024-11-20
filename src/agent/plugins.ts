@@ -13,7 +13,7 @@ import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
-import {LoggingEventType, OrPromise} from '@sphereon/ssi-types';
+import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
 import {IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
@@ -33,6 +33,7 @@ import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -41,6 +42,32 @@ export const oid4vciHolder = new OID4VCIHolder({
   onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
     const {credential, vcHash} = args;
     store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    const contact = store
+      .getState()
+      .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'onCredentialStored event call',
+        actionType: ActionType.CREATE,
+        actionSubType: DefaultActionSubType.VC_ISSUE,
+        diagnosticData: {digitalCredential: credential},
+        // @ts-ignore
+        credentialType: credential.documentFormat, // TODO fix types
+        credentialHash: vcHash,
+        originalCredential: JSON.stringify(credential),
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   },
   onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
     const {identifier} = args;
