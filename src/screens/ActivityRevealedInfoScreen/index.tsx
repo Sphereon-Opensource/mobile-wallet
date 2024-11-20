@@ -22,7 +22,7 @@ const getInfoConfigs = (activity: Activity): InfoProps[] => {
       return activity.shared.map(({info, credential}) => ({
         info,
         header: {
-          title: credential?.title ?? translate('activity.unknown.credential'),
+          title: credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'),
           description: `${Object.keys(info).length} ${translate(`activity.${activity.action}.info_header.description`)}`,
           branding: credential?.branding,
         },
@@ -33,7 +33,7 @@ const getInfoConfigs = (activity: Activity): InfoProps[] => {
         {
           info: activity.info,
           header: {
-            title: activity.credential?.title ?? translate('activity.unknown.credential'),
+            title: activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
             description: `${Object.keys(activity.info).length} ${translate(`activity.${activity.action}.info_header.description`)}`,
             branding: activity.credential?.branding,
           },

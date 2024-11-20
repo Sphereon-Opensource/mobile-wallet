@@ -21,6 +21,7 @@ const ActivityFeedScreen = ({navigation}: Props) => {
   const activities = useMemo(
     () =>
       activityLogging
+        .filter(activity => activity.parentCredentialHash === undefined)
         .map(a =>
           serializeActivity(
             a,

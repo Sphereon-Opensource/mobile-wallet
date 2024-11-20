@@ -271,11 +271,6 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
       opts: {hasher: generateDigest},
     });
 
-    if (!parentId) {
-      parentId = digitalCredential.id;
-      parentCredentialHash = digitalCredential.hash;
-    }
-
     store.dispatch<any>(
       storeActivityLogging({
         level: LogLevel.INFO,
@@ -289,6 +284,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         // @ts-ignore
         credentialType: digitalCredential.documentFormat, // TODO fix types
         credentialHash: digitalCredential.hash,
+        parentCredentialHash,
         originalCredential: JSON.stringify(digitalCredential),
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
@@ -296,6 +292,11 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         partyAlias: contact?.contact.displayName,
       }),
     );
+
+    if (!parentId) {
+      parentId = digitalCredential.id;
+      parentCredentialHash = digitalCredential.hash;
+    }
   }
 };
 

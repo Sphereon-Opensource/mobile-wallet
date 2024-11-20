@@ -71,11 +71,13 @@ const CredentialIssuedActivity = ({activity, navigation}: Props) => {
       <Section title={translate('activity.section_titles.status')}>
         <Status activity={activity} />
       </Section>
-      <NavigationButton
-        label={`${translate('activity.contact_link')} ${contactAlias}`}
-        onPress={() => contact && navigation.push(ScreenRoutesEnum.CONTACT_DETAILS, {contact})}
-        disabled={!contact}
-      />
+      {contact && (
+        <NavigationButton
+          label={`${translate('activity.contact_link')} ${contactAlias}`}
+          onPress={() => navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact})}
+          disabled={!contact}
+        />
+      )}
     </>
   );
 };
