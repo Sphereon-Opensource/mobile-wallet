@@ -234,13 +234,14 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
 
   //fixme: we should pass the hasher function here from the RP
   const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
-  if (matchingCredentials && matchingCredentials.length === 1) {
+  // if (matchingCredentials && matchingCredentials.length === 1) {
+  if (matchingCredentials) {
     navigation.navigate(MainRoutesEnum.SIOPV2, {
       screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
       params: {
         verifier: contact,
         presentationDefinition: presentationDefinitionWithLocation.definition,
-        credential: matchingCredentials[0],
+        credentials: matchingCredentials,
         onDecline,
         onSelectAndSend,
       },
