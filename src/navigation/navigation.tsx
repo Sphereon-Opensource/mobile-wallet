@@ -918,7 +918,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       options={({route}) => ({
         headerTitle: route.params.title,
         header: props => (
-          <OnboardingStepHeader
+          <OnboardingHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
