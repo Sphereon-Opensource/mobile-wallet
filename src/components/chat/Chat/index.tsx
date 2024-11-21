@@ -64,6 +64,7 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
             messageText = item.formatted.text || '(item sent)';
           }
           if (messageText === reopenChatPrompt) {
+            // hacky way of hiding the reopen chat prompt
             return null;
           }
         } else if (item.role === 'assistant') {

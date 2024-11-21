@@ -4,7 +4,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {OPENAI_API_KEY} from 'react-native-dotenv';
 import {useSelector} from 'react-redux';
 import {RootState} from 'src/types';
-import {basicInstructions} from '../instructions';
+import {basicInstructions, reopenChatPrompt} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
@@ -225,16 +225,9 @@ const useAIAssistant = () => {
     if (!isConnected) {
       connectConversation(true, screenContext);
     } else {
-      setIgnoreTools(true);
-
-      updateSession({
-        screenContext,
-        instructions:
-          'User has re-opened the chat. Provide any relevant information, based on the current route and screenContext. Do not perform any actions. Do not call any functions.',
-      });
-      clientRef.current.createResponse();
-
-      setIgnoreTools(false);
+      // workaround for re-opening chat. Using createResponse would create a new response based on the previous prompt.
+      // This message will be hidden based on the content. Slightly ugly, but it works.
+      sendPrompt(reopenChatPrompt, screenContext);
     }
   };
 
