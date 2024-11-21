@@ -5,6 +5,7 @@ import ChatModal from '../ChatModal';
 import {useEffect, useMemo} from 'react';
 import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
 import {IMessage} from 'react-native-gifted-chat';
+import {reopenChatPrompt} from '../../../instructions';
 
 export type ChatTools = {tool: ToolDefinitionType; callback: (args: unknown) => void}[];
 
@@ -62,6 +63,9 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
           } else {
             messageText = item.formatted.text || '(item sent)';
           }
+          if (messageText === reopenChatPrompt) {
+            return null;
+          }
         } else if (item.role === 'assistant') {
           if (item.formatted.transcript) {
             messageText = item.formatted.transcript;
@@ -92,15 +96,15 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
   };
 
   const handleVoicePress = () => {
-    if (chatMode === 'voice') {
-      if (isVoiceRecording) {
-        endVoiceRecording();
-      } else {
-        startVoiceRecording();
-      }
-    } else {
-      enableVoiceMode();
-    }
+    // if (chatMode === 'voice') {
+    //   if (isVoiceRecording) {
+    //     endVoiceRecording();
+    //   } else {
+    //     startVoiceRecording();
+    //   }
+    // } else {
+    //   enableVoiceMode();
+    // }
   };
 
   const handleAudioPress = (message: IMessage) => {
