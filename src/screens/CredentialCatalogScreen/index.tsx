@@ -208,8 +208,10 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           parameters: {},
         },
         callback: () => {
-          RootNavigation.navigate(NavigationBarRoutesEnum.QR);
-          closeModal();
+          setTimeout(() => {
+            RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+            closeModal();
+          }, 2000);
         },
       },
     ],

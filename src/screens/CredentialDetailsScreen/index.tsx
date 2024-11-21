@@ -100,8 +100,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const screenContext = useMemo(() => `this screen shows credential details. onscreen credential: ${stringifyState(credential)}`, [credential]);
 
-  const tools = useMemo(() => {
-    const tools = [
+  const tools = useMemo(
+    () => [
       {
         tool: {
           name: 'editAlias',
@@ -122,33 +122,37 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           console.log('edit consent');
         },
       },
-    ];
-    if (primaryAction && !primaryAction.disabled) {
-      tools.push({
-        tool: {
-          name: 'accept',
-          description: 'accept contact',
-          parameters: {},
-        },
-        callback: () => {
-          primaryAction && primaryAction.onPress();
-        },
-      });
-    }
-    if (secondaryAction && !secondaryAction.disabled) {
-      tools.push({
-        tool: {
-          name: 'decline',
-          description: 'decline contact',
-          parameters: {},
-        },
-        callback: () => {
-          secondaryAction && secondaryAction.onPress();
-        },
-      });
-    }
-    return tools;
-  }, [primaryAction, secondaryAction]);
+      ...(primaryAction
+        ? [
+            {
+              tool: {
+                name: 'accept',
+                description: 'accept contact',
+                parameters: {},
+              },
+              callback: () => {
+                primaryAction && primaryAction.onPress();
+              },
+            },
+          ]
+        : []),
+      ...(secondaryAction
+        ? [
+            {
+              tool: {
+                name: 'decline',
+                description: 'decline contact',
+                parameters: {},
+              },
+              callback: () => {
+                secondaryAction && secondaryAction.onPress();
+              },
+            },
+          ]
+        : []),
+    ],
+    [primaryAction, secondaryAction],
+  );
 
   return (
     <Container style={{paddingTop: 24}}>

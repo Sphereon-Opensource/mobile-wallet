@@ -15,6 +15,7 @@ import {createContact, fetchBrandingForContact, updateContact} from '../../store
 import {useFocusEffect} from '@react-navigation/native';
 import {Chat} from '../../components/chat/Chat';
 import {stringifyState} from '../../utils/stringifyState';
+import {useChat} from '../../providers/chat/chatProvider';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
@@ -40,6 +41,8 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   const contactState = useSelector((state: RootState) => state.contact);
   const [brandedFederations, setBrandedFederations] = useState<Array<Party>>([]);
   const contactAliasRef = useRef(name);
+
+  const {closeModal} = useChat();
 
   const onBackPress = (): boolean => {
     if (onBack) {
@@ -216,7 +219,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           description: 'accept contact',
           parameters: {},
         },
-        callback: () => onContinuePressed(),
+        callback: () => {
+          onContinuePressed();
+          closeModal();
+        },
       },
       {
         tool: {
@@ -224,7 +230,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           description: 'decline contact',
           parameters: {},
         },
-        callback: () => onDeclinePressed(),
+        callback: () => {
+          onDeclinePressed();
+          closeModal();
+        },
       },
       {
         tool: {
