@@ -31,6 +31,7 @@ import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
 import {SiopV2MachineContext} from '../../types/machines/siopV2';
 import {getContacts} from '../contactService';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 
 const logger = Loggers.DEFAULT.get('sphereon:funkeC2ShareMachineService');
 
@@ -185,8 +186,6 @@ export const siopSendResponse = async (
     }
   }
 
-  console.log(`C2 flow contact: ${JSON.stringify(contact)}`);
-
   sharedCredential.forEach(credential =>
     store.dispatch<any>(
       storeActivityLogging({
@@ -254,8 +253,8 @@ export const siopSendResponse = async (
   };
 };
 
-export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineContext, 'pidCredentials' | 'contact'>): Promise<void> => {
-  const {pidCredentials, contact} = context;
+export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineContext, 'pidCredentials'>): Promise<void> => {
+  const {pidCredentials} = context;
 
   await deletePIDCredentials();
 
@@ -293,9 +292,9 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         parentCredentialHash,
         originalCredential: JSON.stringify(digitalCredential),
         // @ts-ignore
-        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
-        partyCorrelationId: contact?.identities[0].identifier.correlationId,
-        partyAlias: contact?.contact.displayName,
+        partyCorrelationType: PartyCorrelationType.URL,
+        partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+        partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
 
