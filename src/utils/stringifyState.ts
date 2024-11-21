@@ -12,8 +12,11 @@ export const stringifyState = (state: {}): string => {
         });
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
         newObj[key] = clean(obj[key]);
-      } else if (!(typeof obj[key] === 'string' && obj[key].startsWith('data:'))) {
-        newObj[key] = obj[key];
+      } else if (typeof obj[key] === 'string') {
+        if (!obj[key].startsWith('data:') && obj[key].length < 100) {
+          // only include strings that are less than 100 characters and do not start with 'data:'
+          newObj[key] = obj[key];
+        }
       }
     }
     return newObj;
