@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useCallback, useEffect, useRef, useState} from 'react';
+import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {BackHandler} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
@@ -13,7 +13,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
 import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
 import {useFocusEffect} from '@react-navigation/native';
-
+import {Chat} from '../../components/chat/Chat';
+import {stringifyState} from '../../utils/stringifyState';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
@@ -207,6 +208,56 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     });
   };
 
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'accept',
+          description: 'accept contact',
+          parameters: {},
+        },
+        callback: () => onContinuePressed(),
+      },
+      {
+        tool: {
+          name: 'decline',
+          description: 'decline contact',
+          parameters: {},
+        },
+        callback: () => onDeclinePressed(),
+      },
+      {
+        tool: {
+          name: 'editAlias',
+          description: 'edit alias. Change the name of the contact',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit alias');
+        },
+      },
+      {
+        tool: {
+          name: 'editConsent',
+          description: 'edit consent',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit consent');
+        },
+      },
+    ],
+    [],
+  );
+
+  const screenContext = useMemo(
+    () =>
+      `you are currently on the Contact Review screen. Here you can see information about the contact related to the credential you are adding. Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState(
+        {name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations},
+      )}`,
+    [contactState, name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations],
+  );
+
   return (
     <Container>
       {federations !== undefined && (
@@ -275,6 +326,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         }}
         logo={logo}
       />
+      <Chat buttonPosition={{bottom: 150, right: 16}} screenContext={screenContext} tools={tools} />
     </Container>
   );
 };

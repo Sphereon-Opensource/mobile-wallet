@@ -3,7 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes, backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {NavigationButton} from '../../components/NavigationButton';
@@ -24,6 +24,7 @@ import {
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {Chat} from '../../components/chat/Chat';
+import {stringifyState} from '../../utils/stringifyState';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -97,6 +98,58 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
+  const screenContext = useMemo(() => `this screen shows credential details. onscreen credential: ${stringifyState(credential)}`, [credential]);
+
+  const tools = useMemo(() => {
+    const tools = [
+      {
+        tool: {
+          name: 'editAlias',
+          description: 'edit alias. Change the name of the contact',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit alias');
+        },
+      },
+      {
+        tool: {
+          name: 'editConsent',
+          description: 'edit consent',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit consent');
+        },
+      },
+    ];
+    if (primaryAction && !primaryAction.disabled) {
+      tools.push({
+        tool: {
+          name: 'accept',
+          description: 'accept contact',
+          parameters: {},
+        },
+        callback: () => {
+          primaryAction && primaryAction.onPress();
+        },
+      });
+    }
+    if (secondaryAction && !secondaryAction.disabled) {
+      tools.push({
+        tool: {
+          name: 'decline',
+          description: 'decline contact',
+          parameters: {},
+        },
+        callback: () => {
+          secondaryAction && secondaryAction.onPress();
+        },
+      });
+    }
+    return tools;
+  }, [primaryAction, secondaryAction]);
+
   return (
     <Container style={{paddingTop: 24}}>
       <StatusBar />
@@ -161,10 +214,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </View>
         )}
       </ContentContainer>
-      <Chat
-        buttonPosition={{bottom: 100, right: 16}}
-        screenContext={`this screen shows ${translate('credential_details_subtitle')}. onscreen credential: ${JSON.stringify(credential)}`}
-      />
+      <Chat buttonPosition={{bottom: 100, right: 16}} screenContext={screenContext} tools={tools} />
     </Container>
   );
 };

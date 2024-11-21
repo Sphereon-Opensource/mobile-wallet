@@ -23,8 +23,6 @@ import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, Scree
 import {NavigationState} from '@react-navigation/routers';
 import {navigationRef} from '../../navigation/rootNavigation';
 import {Route} from '@react-navigation/native';
-import {Chat, ChatTools} from '../../components/chat/Chat';
-import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => Promise<Party>;
@@ -43,48 +41,9 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     contactAlias: this.props.route.params.name ?? '',
     hasConsent: this.props.route.params.hasConsent ?? true,
   };
-  tools: ChatTools;
 
   constructor(props: IProps) {
     super(props);
-    this.tools = [
-      {
-        tool: {
-          name: 'accept',
-          description: 'accept contact',
-          parameters: {},
-        },
-        callback: this.onCreate,
-      },
-      {
-        tool: {
-          name: 'decline',
-          description: 'decline contact',
-          parameters: {},
-        },
-        callback: this.onDecline,
-      },
-      {
-        tool: {
-          name: 'editAlias',
-          description: 'edit alias. Change the name of the contact',
-          parameters: {},
-        },
-        callback: () => {
-          console.log('edit alias');
-        },
-      },
-      {
-        tool: {
-          name: 'editConsent',
-          description: 'edit consent',
-          parameters: {},
-        },
-        callback: () => {
-          console.log('edit consent');
-        },
-      },
-    ];
   }
 
   componentDidMount(): void {
@@ -262,26 +221,6 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
               }}
             />
           </SSIScrollView>
-
-          <Chat
-            buttonPosition={{bottom: 100, right: 16}}
-            screenContext={JSON.stringify({
-              screen: 'Contact Review',
-              contactAlias,
-              hasConsent,
-              onScreenText: {
-                title: translate('contact_add_cancel_title'),
-                details: translate('contact_add_cancel_message'),
-                primaryButton: {
-                  caption: translate('action_confirm_label'),
-                },
-                secondaryButton: {
-                  caption: translate('action_cancel_label'),
-                },
-              },
-            })}
-            tools={this.tools}
-          />
         </Container>
       </TouchableWithoutFeedback>
     );

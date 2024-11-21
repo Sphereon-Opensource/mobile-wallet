@@ -1,4 +1,4 @@
-import {useChat} from '../../../providers/chat/ChatProvider';
+import {useChat} from '../../../providers/chat/chatProvider';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 import ChatButton, {ChatButtonPosition} from '../ChatButton';
 import ChatModal from '../ChatModal';

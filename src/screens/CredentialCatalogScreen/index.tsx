@@ -29,7 +29,7 @@ import {
 import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
 import {Chat} from '../../components/chat/Chat';
 import RootNavigation from '../../navigation/rootNavigation';
-import {useChat} from '../../providers/chat/ChatProvider';
+import {useChat} from '../../providers/chat/chatProvider';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 

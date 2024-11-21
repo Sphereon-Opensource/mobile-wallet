@@ -10,7 +10,7 @@ import CredentialsOverviewList from './CredentialsOverviewList';
 import {CredentialsOverviewImages} from './constants';
 import {Chat} from '../../components/chat/Chat';
 import RootNavigation from '../../navigation/rootNavigation';
-import {useChat} from '../../providers/chat/ChatProvider';
+import {useChat} from '../../providers/chat/chatProvider';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 

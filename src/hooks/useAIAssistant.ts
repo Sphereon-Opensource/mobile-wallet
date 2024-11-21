@@ -8,32 +8,9 @@ import {basicInstructions} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
+import {stringifyState} from '../utils/stringifyState';
 
 export type ChatMode = 'text' | 'voice';
-
-const cleanState = (state: RootState) => {
-  let newState = {...state};
-  const clean = (obj: any) => {
-    const newObj: Record<string, any> = {};
-    for (const key in obj) {
-      if (Array.isArray(obj[key])) {
-        newObj[key] = obj[key].map((item: any) => {
-          if (typeof item === 'object') {
-            return clean(item);
-          }
-          return item;
-        });
-      } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-        newObj[key] = clean(obj[key]);
-      } else if (!(typeof obj[key] === 'string' && obj[key].startsWith('data:'))) {
-        newObj[key] = obj[key];
-      }
-    }
-    return newObj;
-  };
-
-  return clean(newState);
-};
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -83,7 +60,6 @@ const useAIAssistant = () => {
     startTimeRef.current = new Date().toISOString();
     setIsConnected(true);
     setItems(client.conversation.getItems().reverse());
-
     await client.connect();
   }, []);
 
@@ -171,9 +147,9 @@ const useAIAssistant = () => {
   const updateSession = ({screenContext, instructions}: {screenContext?: string; instructions?: string}) => {
     const client = clientRef.current;
 
-    const route = JSON.stringify(navigationRef?.current?.getCurrentRoute());
+    const route = stringifyState(navigationRef?.current?.getCurrentRoute() || {});
 
-    const appState = JSON.stringify(cleanState(state));
+    const appState = stringifyState(state);
 
     console.log('appState', appState);
     console.log('route', route);

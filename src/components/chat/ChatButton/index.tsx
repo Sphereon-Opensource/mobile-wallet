@@ -2,7 +2,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {fontColors} from '@sphereon/ui-components.core';
 import React, {useEffect} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
-import {useChat} from '../../../providers/chat/ChatProvider';
+import {useChat} from '../../../providers/chat/chatProvider';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 import {LinearGradient} from 'expo-linear-gradient';
 
