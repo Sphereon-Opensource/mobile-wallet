@@ -135,7 +135,6 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
       ? clientId
       : `${new URL(clientId).protocol}//${new URL(clientId).hostname}`
     : undefined;
-  //  const oidfEntityId = authorizationRequestData.clientId
   if (correlationId) {
     const identity: NonPersistedIdentity = {
       origin: IdentityOrigin.EXTERNAL,
