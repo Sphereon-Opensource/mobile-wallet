@@ -253,7 +253,8 @@ const useAIAssistant = () => {
 
       updateSession({
         screenContext,
-        instructions: 'User has re-opened the chat. Provide any relevant information. Do not perform any actions. Do not call any functions.',
+        instructions:
+          'User has re-opened the chat. Provide any relevant information, based on the current route and screenContext. Do not perform any actions. Do not call any functions.',
       });
       clientRef.current.createResponse();
 

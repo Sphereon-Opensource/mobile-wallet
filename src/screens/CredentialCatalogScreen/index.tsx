@@ -263,7 +263,10 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           />
         </CredentialListContainer>
       </DiscoverCredentialsContainer>
-      <Chat screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet" tools={tools} />
+      <Chat
+        screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet. Focus on guiding the user towards the QR scanner screen."
+        tools={tools}
+      />
     </Container>
   );
 };

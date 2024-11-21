@@ -23,6 +23,7 @@ import {
 } from '../../styles/components';
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {Chat} from '../../components/chat/Chat';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -160,6 +161,10 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </View>
         )}
       </ContentContainer>
+      <Chat
+        buttonPosition={{bottom: 100, right: 16}}
+        screenContext={`this screen shows ${translate('credential_details_subtitle')}. onscreen credential: ${JSON.stringify(credential)}`}
+      />
     </Container>
   );
 };
