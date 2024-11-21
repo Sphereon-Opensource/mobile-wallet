@@ -22,7 +22,7 @@ const ContactCredentialShareActivity = ({activity, navigation}: Props) => {
           key={JSON.stringify(info)}
           info={info}
           header={{
-            title: credential?.title ?? translate('activity.unknown.credential'),
+            title: credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'),
             description: `${Object.keys(info).length} ${translate(`activity.${activity.action}.info_header.description`)}`,
             branding: credential?.branding,
           }}

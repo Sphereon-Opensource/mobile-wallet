@@ -41,16 +41,16 @@
       "info_header": {
         "description": "items shared"
       },
-      "row_description": "Data sharing succesful",
-      "detail_title": "Data sharing succesful"
+      "row_description": "Data shared",
+      "detail_title": "Data shared"
     },
     "VC share decline": {
       "revealed_info_title": "Declined information",
       "info_header": {
         "description": "items declined"
       },
-      "row_description": "Data sharing declined",
-      "detail_title": "Data sharing declined"
+      "row_description": "Declined sharing data",
+      "detail_title": "Declined sharing data"
     },
     "VC issue": {
       "info_list_title": "Issued information",
@@ -58,7 +58,7 @@
       "info_header": {
         "description": "items issued"
       },
-      "row_description": "Issuing credential succesful",
+      "row_description": "Credential received",
       "detail_title": "New credential added to your wallet",
       "description": ["You can finally use your", "card for official sharing purposes."]
     },
@@ -68,7 +68,7 @@
       "info_header": {
         "description": "items not issued"
       },
-      "row_description": "Issuing credential declined",
+      "row_description": "Declined receiving credential",
       "detail_title": "Credential not added to your wallet",
       "description": ["You have declined to use the", "card for official sharing purposes."]
     },
