@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Image, View} from 'react-native';
 import {connect} from 'react-redux';
 import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
@@ -25,6 +25,22 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
   const {closeModal} = useChat();
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'navigateToQRScanner',
+          description: 'navigate to QR Scanner Screen',
+          parameters: {},
+        },
+        callback: () => {
+          RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+          closeModal();
+        },
+      },
+    ],
+    [], // Only re-create if dependencies change (none in this case)
+  );
 
   return (
     <Container style={{paddingTop: 24}}>
@@ -57,19 +73,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
           screen: 'Credentials Overview Screen',
           assistantInstructions: 'focus on moving to the qr scanner screen. Only use the navigateToQRScanner when explicitly confirmed by the user',
         })}
-        tools={[
-          {
-            tool: {
-              name: 'navigateToQRScanner',
-              description: 'navigate to QR Scanner Screen',
-              parameters: {},
-            },
-            callback: () => {
-              RootNavigation.navigate(NavigationBarRoutesEnum.QR);
-              closeModal();
-            },
-          },
-        ]}
+        tools={tools}
       />
     </Container>
   );

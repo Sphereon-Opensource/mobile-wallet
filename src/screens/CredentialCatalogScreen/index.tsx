@@ -1,4 +1,4 @@
-import React, {FC, ReactElement} from 'react';
+import React, {FC, ReactElement, useMemo} from 'react';
 import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -199,6 +199,23 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     );
   };
 
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'navigateToQRScanner',
+          description: 'navigate to QR Scanner Screen',
+          parameters: {},
+        },
+        callback: () => {
+          RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+          closeModal();
+        },
+      },
+    ],
+    [],
+  );
+
   return (
     <Container>
       <PreviewCredentialContainer>
@@ -246,22 +263,7 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           />
         </CredentialListContainer>
       </DiscoverCredentialsContainer>
-      <Chat
-        screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet"
-        tools={[
-          {
-            tool: {
-              name: 'navigateToQRScanner',
-              description: 'navigate to QR Scanner Screen',
-              parameters: {},
-            },
-            callback: () => {
-              RootNavigation.navigate(NavigationBarRoutesEnum.QR);
-              closeModal();
-            },
-          },
-        ]}
-      />
+      <Chat screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet" tools={tools} />
     </Container>
   );
 };

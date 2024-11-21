@@ -23,7 +23,8 @@ import {ICreateContactArgs, IUpdateContactArgs, MainRoutesEnum, RootState, Scree
 import {NavigationState} from '@react-navigation/routers';
 import {navigationRef} from '../../navigation/rootNavigation';
 import {Route} from '@react-navigation/native';
-import {Chat} from '../../components/chat/Chat';
+import {Chat, ChatTools} from '../../components/chat/Chat';
+import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ADD> {
   createContact: (args: ICreateContactArgs) => Promise<Party>;
@@ -42,6 +43,49 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     contactAlias: this.props.route.params.name ?? '',
     hasConsent: this.props.route.params.hasConsent ?? true,
   };
+  tools: ChatTools;
+
+  constructor(props: IProps) {
+    super(props);
+    this.tools = [
+      {
+        tool: {
+          name: 'accept',
+          description: 'accept contact',
+          parameters: {},
+        },
+        callback: this.onCreate,
+      },
+      {
+        tool: {
+          name: 'decline',
+          description: 'decline contact',
+          parameters: {},
+        },
+        callback: this.onDecline,
+      },
+      {
+        tool: {
+          name: 'editAlias',
+          description: 'edit alias. Change the name of the contact',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit alias');
+        },
+      },
+      {
+        tool: {
+          name: 'editConsent',
+          description: 'edit consent',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit consent');
+        },
+      },
+    ];
+  }
 
   componentDidMount(): void {
     const {onAliasChange} = this.props.route.params;
@@ -236,44 +280,7 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
                 },
               },
             })}
-            tools={[
-              {
-                tool: {
-                  name: 'accept',
-                  description: 'accept contact',
-                  parameters: {},
-                },
-                callback: this.onCreate,
-              },
-              {
-                tool: {
-                  name: 'decline',
-                  description: 'decline contact',
-                  parameters: {},
-                },
-                callback: this.onDecline,
-              },
-              {
-                tool: {
-                  name: 'editAlias',
-                  description: 'edit alias. Change the name of the contact',
-                  parameters: {},
-                },
-                callback: () => {
-                  console.log('edit alias');
-                },
-              },
-              {
-                tool: {
-                  name: 'editConsent',
-                  description: 'edit consent',
-                  parameters: {},
-                },
-                callback: () => {
-                  console.log('edit consent');
-                },
-              },
-            ]}
+            tools={this.tools}
           />
         </Container>
       </TouchableWithoutFeedback>

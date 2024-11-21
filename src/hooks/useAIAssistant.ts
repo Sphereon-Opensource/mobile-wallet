@@ -41,6 +41,7 @@ const useAIAssistant = () => {
   const [items, setItems] = useState<ItemType[]>([]);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
+  const [ignoreTools, setIgnoreTools] = useState(false);
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
@@ -248,11 +249,15 @@ const useAIAssistant = () => {
     if (!isConnected) {
       connectConversation(true, screenContext);
     } else {
+      setIgnoreTools(true);
+
       updateSession({
         screenContext,
         instructions: 'User has re-opened the chat. Provide any relevant information. Do not perform any actions. Do not call any functions.',
       });
       clientRef.current.createResponse();
+
+      setIgnoreTools(false);
     }
   };
 
@@ -278,6 +283,7 @@ const useAIAssistant = () => {
     removeTool: clientRef.current.removeTool.bind(clientRef.current),
     handleChatOpened,
     speakMessage,
+    ignoreTools,
   };
 };
 

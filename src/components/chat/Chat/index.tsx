@@ -2,14 +2,16 @@ import {useChat} from '../../../providers/chat/ChatProvider';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 import ChatButton, {ChatButtonPosition} from '../ChatButton';
 import ChatModal from '../ChatModal';
-import {useEffect} from 'react';
+import {useEffect, useMemo} from 'react';
 import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
 import {IMessage} from 'react-native-gifted-chat';
+
+export type ChatTools = {tool: ToolDefinitionType; callback: (args: unknown) => void}[];
 
 type Props = {
   buttonPosition?: ChatButtonPosition;
   screenContext?: string;
-  tools?: {tool: ToolDefinitionType; callback: (args: unknown) => void}[];
+  tools?: ChatTools;
 };
 
 export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
