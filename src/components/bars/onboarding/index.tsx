@@ -1,0 +1,5 @@
+import {PROGRESS_BAR_HEIGHT} from '../../../styles/components';
+
+export const PROGRESS_BAR_VERTICAL_MARGIN = 10;
+
+export const PROGRESS_BAR_LAYOUT_HEIGHT = PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VERTICAL_MARGIN * 2;

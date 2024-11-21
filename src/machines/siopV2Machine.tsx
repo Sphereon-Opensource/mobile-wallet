@@ -14,7 +14,6 @@ import {
 import {ErrorDetails} from '../types';
 import {
   ContactAliasEvent,
-  ContactConsentEvent,
   CreateContactEvent,
   CreateSiopV2MachineOpts,
   SelectCredentialsEvent,
@@ -312,9 +311,6 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           id: SiopV2MachineStates.addContact,
           initial: SiopV2MachineAddContactStates.idle,
           on: {
-            [SiopV2MachineEvents.SET_CONTACT_CONSENT]: {
-              actions: assign({hasContactConsent: (_ctx: SiopV2MachineContext, _event: ContactConsentEvent) => _event.data}),
-            },
             [SiopV2MachineEvents.SET_CONTACT_ALIAS]: {
               actions: assign({contactAlias: (_ctx: SiopV2MachineContext, _event: ContactAliasEvent) => _event.data}),
             },

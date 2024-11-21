@@ -1,28 +1,30 @@
-import React, {FC} from 'react';
 import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
-import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
-import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
-import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
-import SSIActivityView from '../../components/views/SSIActivityView';
-import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
-import SSITabView from '../../components/views/SSITabView';
+import {ImageAttributes, backgroundColors, fontColors} from '@sphereon/ui-components.core';
+import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
+import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import React, {FC} from 'react';
+import {FlatList, ListRenderItemInfo, View} from 'react-native';
+import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
+import {NavigationButton} from '../../components/NavigationButton';
+import SSIImageField from '../../components/fields/SSIImageField';
+import SSITextField from '../../components/fields/SSITextField';
+import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {
-  CredentialDetailsScreenContentContainer as ContentContainer,
   CredentialDetailsScreenCredentialCardContainer as CardContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
+  CredentialDetailsScreenContentContainer as ContentContainer,
+  SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
+  SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
+  SSICredentialDetailsViewFooterContainerStyled as IssuerFooterContainer,
+  SSITextH3LightStyled,
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
-import {ITabViewRoute, ScreenRoutesEnum, StackParamList} from '../../types';
+import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
-
-enum CredentialTabRoutesEnum {
-  INFO = 'info',
-  ACTIVITY = 'activity',
-}
 
 const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes | undefined => {
   if (credential.branding?.logo?.uri || credential.branding?.logo?.dataUri) {
@@ -36,27 +38,51 @@ const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes |
 };
 
 const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {navigation} = props;
-  const {credential, primaryAction, secondaryAction, showActivity = false, onBack} = props.route.params;
+  const {navigation, route} = props;
+  const {credential, onBack, primaryAction, secondaryAction, hideLinks} = route.params;
   const issuer: string = credential.issuer.alias;
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
+  const contacts = useAppSelector(state => state.contact.contacts);
+  const contact = contacts.find(c => c.contact.displayName === issuer);
+  const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
+    if (itemInfo.item.imageSize) {
+      return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
+    } else {
+      return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
+    }
+  };
 
-  const routes: Array<ITabViewRoute> = [
-    {
-      key: CredentialTabRoutesEnum.INFO,
-      title: translate('credential_details_info_tab_header_label'),
-      content: () => <SSICredentialDetailsView credentialProperties={credential.properties} issuer={issuer} />,
-    },
-    ...(showActivity
-      ? [
-          {
-            key: CredentialTabRoutesEnum.ACTIVITY,
-            title: translate('credential_details_activity_tab_header_label'),
-            content: () => <SSIActivityView />,
-          },
-        ]
-      : []),
-  ];
+  const renderFooter = () => (
+    <>
+      <IssuerFooterContainer>
+        {issuer && (
+          <>
+            <IssuedByLabel>{translate('credential_details_view_issued_by')}</IssuedByLabel>
+            <IssuedBy>{issuer}</IssuedBy>
+          </>
+        )}
+      </IssuerFooterContainer>
+      {!hideLinks && (
+        <View
+          style={{
+            backgroundColor: backgroundColors.primaryDark,
+            marginTop: 16,
+            paddingHorizontal: 16,
+          }}>
+          <NavigationButton
+            label={`${translate('activity.contact_link')} ${issuer}`}
+            onPress={() => contact && navigation.push(ScreenRoutesEnum.CONTACT_DETAILS, {contact})}
+            disabled={!contact}
+          />
+          <Divider />
+          <NavigationButton
+            label={translate('activity.credential_activities_link')}
+            onPress={() => contact && navigation.push(ScreenRoutesEnum.CREDENTIAL_ACTIVITY, {credential})}
+          />
+        </View>
+      )}
+    </>
+  );
 
   useBackHandler((): boolean => {
     if (onBack) {
@@ -71,7 +97,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   });
 
   return (
-    <Container>
+    <Container style={{paddingTop: 24}}>
       <StatusBar />
       <ContentContainer>
         <CardContainer>
@@ -95,23 +121,44 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             }}
           />
         </CardContainer>
-        <SSITabView routes={routes} />
-        <SSIButtonsContainer
-          style={{paddingLeft: 24, paddingRight: 24}} // FIXME create a styling component for this or align design with other button placements
-          backgroundColor={backgroundColors.secondaryDark}
-          {...(secondaryAction && {
-            secondaryButton: {
-              caption: secondaryAction.caption,
-              onPress: secondaryAction.onPress,
-            },
-          })}
-          {...(primaryAction && {
-            primaryButton: {
-              caption: primaryAction.caption,
-              onPress: primaryAction.onPress,
-            },
-          })}
+        <SSITextH3LightStyled
+          style={{
+            marginTop: 24,
+            paddingHorizontal: 24,
+            borderBottomWidth: 1,
+            borderBottomColor: '#404D7A',
+          }}>
+          Card information
+        </SSITextH3LightStyled>
+        <FlatList
+          style={{backgroundColor: backgroundColors.secondaryDark, flex: 1}}
+          data={credential.properties}
+          renderItem={renderItem}
+          keyExtractor={(item: CredentialDetailsRow) => item.id}
+          initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
+          removeClippedSubviews
+          ListFooterComponent={renderFooter}
         />
+        {(primaryAction || secondaryAction) && (
+          <View
+            style={{
+              padding: 24,
+              paddingVertical: 32,
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 10,
+            }}>
+            {primaryAction && (
+              <PrimaryButton
+                caption={primaryAction.caption}
+                captionColor={fontColors.light}
+                onPress={primaryAction.onPress}
+                disabled={primaryAction.disabled}
+              />
+            )}
+            {secondaryAction && <SecondaryButton caption={secondaryAction.caption} onPress={secondaryAction.onPress} />}
+          </View>
+        )}
       </ContentContainer>
     </Container>
   );

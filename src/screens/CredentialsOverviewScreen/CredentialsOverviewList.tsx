@@ -1,4 +1,6 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Loggers} from '@sphereon/ssi-types';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import React, {useCallback, useState} from 'react';
@@ -8,16 +10,14 @@ import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
+import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {setViewPreference} from '../../store/actions/user.actions';
 import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
-import {showToast} from '../../utils';
-import {Loggers} from '@sphereon/ssi-types';
-import {translate} from '../../localization/Localization';
-import {useFocusEffect} from '@react-navigation/native';
-import {setViewPreference} from '../../store/actions/user.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {showToast} from '../../utils';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -75,7 +75,6 @@ const CredentialsOverviewList = ({
         rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
         uniqueDigitalCredential,
         credential,
-        showActivity: false,
       });
     } catch (e) {
       // onPress doesn't handle promise rejections, so log it for now.

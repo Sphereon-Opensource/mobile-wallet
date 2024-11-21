@@ -1,16 +1,16 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC} from 'react';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {navigationRef} from '../../navigation/rootNavigation';
-import {ContactInformationView} from '../../components/views/ContactInformationView';
-import {NavigationButton} from './components/NavigationButton';
-import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {IssuerStatus} from '@sphereon/ui-components.core';
+import React from 'react';
+import {NavigationButton} from '../../components/NavigationButton';
+import {ContactInformationView} from '../../components/views/ContactInformationView';
+import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DETAILS>;
 
-const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {contact} = props.route.params;
+const SSIContactDetailsScreen = ({route, navigation}: Props) => {
+  const {contact} = route.params;
   const contactDetails = [
     {
       id: 'Name',
@@ -48,9 +48,8 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       value: contact.branding?.contacts,
     },
   ];
-
   return (
-    <Container>
+    <Container style={{paddingTop: 24}}>
       <ContactInformationView
         properties={contactDetails}
         name={contact.contact.displayName}
@@ -60,12 +59,20 @@ const SSIContactDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         status={IssuerStatus.VERIFIED}
       />
       <ContactDetailsNavigationSection>
-        <NavigationButton
-          label="Identities"
-          onPress={() => props.navigation.navigate(ScreenRoutesEnum.CONTACT_IDENTITIES, {identities: contact.identities})}
-        />
+        <NavigationButton label="Identities" onPress={() => navigation.push(ScreenRoutesEnum.CONTACT_IDENTITIES, {identities: contact.identities})} />
         <Divider />
-        <NavigationButton label="Contact Activities" onPress={() => props.navigation.navigate(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact})} />
+        <NavigationButton
+          label="Contact Activities"
+          onPress={() => {
+            if (contact.roles.includes(CredentialRole.HOLDER)) {
+              navigation.getParent()?.navigate(MainRoutesEnum.HOME, {
+                screen: NavigationBarRoutesEnum.ACTIVITIES,
+              });
+            } else {
+              navigation.push(ScreenRoutesEnum.CONTACT_ACTIVITY, {contact});
+            }
+          }}
+        />
       </ContactDetailsNavigationSection>
     </Container>
   );

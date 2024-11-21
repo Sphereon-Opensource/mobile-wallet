@@ -1,3 +1,6 @@
+import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialStatus} from '@sphereon/ui-components.core';
+import {CredentialSummary, IssuerSummary} from '@sphereon/ui-components.credential-branding';
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {isDecreasingSequenceNumber, isIncreasingSequenceNumber, isSameDigitNumber} from './number';
 
@@ -87,3 +90,24 @@ export const validate = <T>(value: T, validators: Validator<T>[]): ValidationRes
       : undefined,
   };
 };
+
+export const isOfEnum =
+  <T extends {}>(e: T) =>
+  (token: any): token is T[keyof T] =>
+    Object.values(e).includes(token as T[keyof T]);
+
+export const isIssuerSummary = (value: any): value is IssuerSummary =>
+  typeof value === 'object' && typeof value.name === 'string' && typeof value.alias === 'string';
+
+export const isCredentialSummary = (value: any): value is CredentialSummary =>
+  typeof value === 'object' &&
+  typeof value.hash === 'string' &&
+  typeof value.title === 'string' &&
+  isIssuerSummary(value.issuer) &&
+  isOfEnum(CredentialStatus)(value.credentialStatus) &&
+  isOfEnum(CredentialRole)(value.credentialRole) &&
+  typeof value.issueDate === 'number' &&
+  typeof value.expirationDate === 'number';
+
+export const isDiagnosticData = (value: any): value is Record<string, string | number> =>
+  typeof value === 'object' && Object.values(value).every(v => typeof v === 'string' || typeof v === 'number');

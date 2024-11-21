@@ -1,6 +1,6 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
 import React from 'react';
-import {TextInputProps} from 'react-native';
+import {TextInputProps, ViewStyle} from 'react-native';
 import styled from 'styled-components/native';
 import SSIIconButton from '../../../components/buttons/SSIIconButton';
 import {TextInputStyled} from '../../../styles/components';
@@ -22,10 +22,24 @@ const StyledSearchField = styled(TextInputStyled)`
   flex: 1;
 `;
 
-const OnboardingSearchField = (props: TextInputProps) => (
-  <Container>
+export type Props = TextInputProps & {
+  onClear?: () => void;
+  containerStyle?: ViewStyle;
+};
+
+const OnboardingSearchField = ({onClear, containerStyle = {}, ...inputProps}: Props) => (
+  <Container style={containerStyle}>
     <SSIIconButton icon={ButtonIconsEnum.SEARCH} iconColor={backgroundColors.primaryLight} iconSize={32} disabled onPress={() => {}} />
-    <StyledSearchField placeholder="Search" {...props} />
+    <StyledSearchField placeholder="Search" {...inputProps} />
+    {inputProps.value && onClear && (
+      <SSIIconButton
+        style={{marginLeft: 'auto'}}
+        icon={ButtonIconsEnum.CLOSE}
+        iconColor={backgroundColors.primaryLight}
+        iconSize={12}
+        onPress={onClear}
+      />
+    )}
   </Container>
 );
 

@@ -1,43 +1,54 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useState} from 'react';
-import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
-
-import {SSIBasicContainerSecondaryStyled as SSIContainer, SSITextH3LightStyled, SSITextH4LightStyled, TextInputStyled} from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList} from '../../types';
-
-import {ScrollView} from 'react-native';
-import SearchIcon from '../../components/assets/icons/SearchIcon';
-import {Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
-import {ActivitySearchContainer, ActivitySearchInput, IssuerBrandingContainer} from '../../styles/components/screens/ContactActivityScreen';
+import {SSILogo} from '@sphereon/ui-components.ssi-react-native';
+import React, {useMemo} from 'react';
+import {useDispatch} from 'react-redux';
+import ActivityList from '../../components/activity/ActivityList';
+import {useAppSelector} from '../../hooks/useStore';
+import {translate} from '../../localization/Localization';
+import {getActivityLogging} from '../../store/actions/logging.actions';
+import {Container} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {Activity, ScreenRoutesEnum, StackParamList} from '../../types';
+import {serializeActivity} from '../../utils/activity';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ACTIVITY>;
 
-const ContactActivityScreen: FC<Props> = (props: Props): JSX.Element => {
-  const {contact} = props.route.params;
+const ContactActivityScreen = ({route, navigation}: Props) => {
+  const {contact} = route.params;
+  const dispatch = useDispatch();
+  const getActivityLog = () => dispatch(getActivityLogging());
+  const {activityLogging, verifiableCredentials} = useAppSelector(({logging: {activityLogging}, credential: {verifiableCredentials}}) => ({
+    activityLogging,
+    verifiableCredentials,
+  }));
+  const loading = useAppSelector(state => state.logging.loading);
 
-  const [value, setValue] = useState('');
+  const activities = useMemo(
+    () =>
+      activityLogging
+        .filter(activity => activity.parentCredentialHash === undefined)
+        .map(a =>
+          serializeActivity(
+            a,
+            verifiableCredentials.find(vc => vc.hash === a.credentialHash),
+          ),
+        )
+        .filter((activity): activity is Activity => Boolean(activity))
+        .filter(a => a.contactAlias === contact.contact.displayName),
+    [activityLogging, verifiableCredentials, contact],
+  );
 
   return (
     <Container>
-      <IssuerBrandingContainer>
-        <Logo logo={contact.branding?.logo} size={30} />
-      </IssuerBrandingContainer>
-      {/* TODO: replace this search element with odi's search input component */}
-      <ActivitySearchContainer>
-        <SearchIcon color="white" size={30} />
-        <ActivitySearchInput placeholderTextColor="#FBFBFBCC" placeholder="Search for card or status" value={value} onChangeText={setValue} />
-      </ActivitySearchContainer>
-      <SSITextH3LightStyled style={{paddingLeft: 30, marginTop: 10}}>Activities</SSITextH3LightStyled>
-      <Divider />
-      <ScrollView
-        style={{flex: 1}}
-        contentContainerStyle={{
-          flex: 1,
-          alignItems: 'stretch',
-          width: '100%',
-        }}>
-        {/* TODO: add odi's activity list item here */}
-      </ScrollView>
+      <SSILogo logo={contact.branding?.logo} size={40} style={{marginHorizontal: 'auto', marginBottom: 24}} />
+      <ActivityList
+        listTitle={`${translate('activity.contact.list.title')} ${contact.contact.displayName}`}
+        activities={activities}
+        loading={loading}
+        onActivityPress={(id: string) => navigation.push(ScreenRoutesEnum.ACTIVITY_DETAILS, {activity: activities?.find(a => a.id === id)})}
+        onRefresh={getActivityLog}
+        loadingListText={translate('activity.contact.list.loading')}
+        searchInputProps={{placeholder: translate('activity.contact.list.search_placeholder')}}
+      />
     </Container>
   );
 };
