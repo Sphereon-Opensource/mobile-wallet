@@ -1,5 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 
+import {useAccessibility} from '../../../hooks/useAccessibility';
 import {
   SSIQRCustomMarkerBottomContainerStyled as BottomContainer,
   SSIFullFlexDirectionRowViewStyled as Container,
@@ -17,12 +18,17 @@ export interface IProps {
 }
 
 const SSIQRCustomMarker: FC<IProps> = (props: IProps): JSX.Element => {
+  const titleRef = React.useRef(null);
+  const {setFocus} = useAccessibility();
+  const focusOnTitle = useCallback(() => setFocus(titleRef), [titleRef]);
+  useEffect(focusOnTitle, []);
+
   return (
     <Container>
       <SideSpace />
       <ContentContainer>
         <TopContainer>
-          <Title>{props.title}</Title>
+          <Title ref={titleRef}>{props.title}</Title>
           <SubTitle>{props.subtitle}</SubTitle>
         </TopContainer>
         <Marker />

@@ -5,11 +5,14 @@ import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
 import {LogBox, Platform, StatusBar} from 'react-native';
 import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {DB_CONNECTION_NAME} from './src/@config/database';
 import {agentContext, linkHandlers} from './src/agent';
+import './src/agent/index';
+import {AccessibilityProvider} from './src/contexts/AccessibiltyContext';
 import IntentHandler from './src/handlers/IntentHandler';
 import {addLinkListeners} from './src/handlers/LinkHandlers';
 import LockingHandler from './src/handlers/LockingHandler';
@@ -22,8 +25,6 @@ import {getDbConnection} from './src/services/databaseService';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import './src/agent/index';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -119,7 +120,9 @@ export default function App() {
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
             <GestureHandlerRootView style={{flex: 1}}>
-              <AppNavigator />
+              <AccessibilityProvider>
+                <AppNavigator />
+              </AccessibilityProvider>
             </GestureHandlerRootView>
           </OnTouchProvider>
         </NavigationContainer>

@@ -117,6 +117,7 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
         }),
         primaryButton: {
           caption: translate('action_ok_label'),
+          accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
           onPress: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),
         },
         onBack: () => onboardingMachine.send(OnboardingMachineEvents.PREVIOUS),

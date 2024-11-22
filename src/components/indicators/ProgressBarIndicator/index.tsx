@@ -10,7 +10,10 @@ export interface IProps {
 
 const ProgressBarIndicator: FC<IProps> = ({step, stepsNumber, containerStyle}) => {
   return (
-    <Container style={containerStyle}>
+    <Container
+      accessibilityLabel={`Progress bar. Current progress: ${Math.round((step / stepsNumber) * 100)}%`}
+      accessibilityRole="progressbar"
+      style={containerStyle}>
       <BackgroundBar>
         <ForegroundBar style={{width: `${(step / stepsNumber) * 100}%`}} />
       </BackgroundBar>

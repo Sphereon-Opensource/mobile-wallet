@@ -1,7 +1,7 @@
 import {ImageAttributes} from '@sphereon/ui-components.core';
+import {TCountryCode} from 'countries-list';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-import {TCountryCode} from 'countries-list';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -38,11 +38,13 @@ export interface IButton {
   caption: string;
   onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean | (() => boolean);
+  accessibilityLabel?: string;
 }
 
 export interface IHeaderMenuButton extends IButton {
   icon?: HeaderMenuIconsEnum;
   fontColor?: ColorValue;
+  accessibilityHint?: string;
 }
 
 export interface ITabRoute {
@@ -63,7 +65,13 @@ export type CredentialMiniCardDisplay = {
 
 export type StepState = 'current' | 'finished' | 'upcoming';
 
-export type StepContent = (stepState: StepState) => JSX.Element;
+export type StepContent = {
+  render: (stepState: StepState) => JSX.Element;
+  accessibility?: {
+    getLabel: (stepState: StepState, current: number, isFinal: boolean) => string;
+    buttonHint: string;
+  };
+};
 
 export interface IStepIndicatorProps {
   state: StepState;
