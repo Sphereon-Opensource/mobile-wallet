@@ -297,6 +297,7 @@ export interface INewContactAddProps {
   clientUri?: string;
   tosUri?: string;
   policyUri?: string;
+  contacts?: Array<string>;
   logo?: ImageAttributes;
   federations?: Array<Party>;
   roles?: Array<CredentialRole>;
