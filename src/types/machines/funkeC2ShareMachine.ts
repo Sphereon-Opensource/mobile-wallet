@@ -15,7 +15,7 @@ import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution
 import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../error';
 import {MappedCredential} from './getPIDCredentialMachine';
-import {SiopV2AuthorizationRequestData} from './siopV2';
+import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
 
 export enum FunkeC2ShareMachineStateTypes {
   createConfig = 'createConfig',
@@ -30,6 +30,10 @@ export enum FunkeC2ShareMachineStateTypes {
   storeCredentialBranding = 'storeCredentialBranding',
   sendResponse = 'sendResponse',
   fetchCredentialsInStore = 'fetchCredentialsInStore',
+  getFederationTrust = 'getFederationTrust',
+  transitionFromSetup = 'transitionFromSetup',
+  addContact = 'addContact',
+  reviewContact = 'reviewContact',
   handleError = 'handleError',
   declined = 'declined',
   aborted = 'aborted',
@@ -39,6 +43,11 @@ export enum FunkeC2ShareMachineStateTypes {
 
 export enum FunkeC2ShareMachineGuards {
   hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
+  createContactGuard = 'funkeC2CreateContactGuard',
+  hasContactGuard = 'funkeC2HasContactGuard',
+  hasNoContactGuard = 'funkeC2HasNoContactGuard',
+  contactHasLowTrustGuard = 'funkeC2ContactHasLowTrustGuard',
+  isOIDFOriginGuard = 'funkeC2IsOIDFOriginGuard',
 }
 
 export enum FunkeC2ShareMachineServices {
@@ -50,6 +59,7 @@ export enum FunkeC2ShareMachineServices {
   storePIDCredentials = 'storePIDCredentials',
   storeCredentialBranding = 'storeCredentialBranding',
   fetchCredentialsInStore = 'fetchCredentialsInStore',
+  getFederationTrust = 'getFederationTrust',
 }
 
 export enum FunkeC2ShareMachineEvents {
@@ -57,14 +67,19 @@ export enum FunkeC2ShareMachineEvents {
   PREVIOUS = 'PREVIOUS',
   SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
   DECLINE = 'DECLINE',
+  SET_CONTACT_ALIAS = 'SET_CONTACT_ALIAS',
+  // SET_CONTACT_CONSENT = 'SET_CONTACT_CONSENT',
+  CREATE_CONTACT = 'CREATE_CONTACT',
 }
 
 export type NextEvent = {type: FunkeC2ShareMachineEvents.NEXT};
 export type PreviousEvent = {type: FunkeC2ShareMachineEvents.PREVIOUS};
 export type SetFunkeProvider = {type: FunkeC2ShareMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 export type DeclineEvent = {type: FunkeC2ShareMachineEvents.DECLINE};
+export type ContactAliasEvent = {type: FunkeC2ShareMachineEvents.SET_CONTACT_ALIAS; data: string};
+export type CreateContactEvent = {type: FunkeC2ShareMachineEvents.CREATE_CONTACT; data: Party};
 
-export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider | DeclineEvent;
+export type FunkeC2ShareMachineEventTypes = NextEvent | PreviousEvent | SetFunkeProvider | DeclineEvent | ContactAliasEvent | CreateContactEvent;
 
 export type FunkeC2ShareMachineContext = {
   url: string;
@@ -75,6 +90,9 @@ export type FunkeC2ShareMachineContext = {
   contact?: Party;
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
+  contactAlias: string;
+  trustAnchors: Array<string>;
+  trustedAnchors?: Array<string>;
 };
 
 export type FunkeC2ShareMachineStates = Record<FunkeC2ShareMachineStateTypes, {}>;
@@ -92,6 +110,7 @@ export type FunkeC2ShareMachineOpts = {
   url: string | URL;
   idOpts?: ManagedIdentifierOpts;
   machineId?: string;
+  trustAnchors?: Array<string>;
 };
 
 export type FunkeC2ShareStateMachine = StateMachine<
@@ -145,4 +164,19 @@ export type FunkeC2ShareContextType = {
 export type FunkeC2ShareProviderProps = {
   children?: ReactNode;
   customFunkeC2ShareInstance?: FunkeC2ShareMachineInterpreter;
+};
+
+export enum FunkeC2ShareMachineAddContactStates {
+  idle = 'idle',
+  next = 'next',
+}
+
+export type SiopV2AuthorizationRequestData = {
+  correlationId: string;
+  registrationMetadataPayload: RPRegistrationMetadataPayload;
+  issuer?: string;
+  name?: string;
+  uri?: URL;
+  clientId?: string;
+  presentationDefinitions?: PresentationDefinitionWithLocation[];
 };

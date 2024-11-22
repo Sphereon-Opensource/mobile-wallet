@@ -1,4 +1,88 @@
 {
+  "activity": {
+    "unknown": {
+      "contact": "Unknown contact",
+      "credential": "Unknown credential",
+      "credential_type": "Unknown credential type",
+      "purpose": "Unknown purpose",
+      "issuer": "Unknown issuer",
+      "type": "Unknown activity type",
+      "date": "Unknown date",
+      "activity": "Unknown activity"
+    },
+    "feed": {
+      "title": "Activity feed",
+      "list": {
+        "title": "All activities",
+        "loading": "Loading activities",
+        "search_placeholder": "Search for contact, card or status",
+        "empty_state": {
+          "title": "No activities",
+          "subtitle": "At the moment you don’t have any activities.\nThe activities will automatically appear here."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "All activities with",
+        "loading": "Loading activities for",
+        "search_placeholder": "Search for card or status"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "All activities from",
+        "loading": "Loading activities for",
+        "search_placeholder": "Search for contact or status"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Shared information",
+      "info_header": {
+        "description": "items shared"
+      },
+      "row_description": "Data shared",
+      "detail_title": "Data shared"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items declined"
+      },
+      "row_description": "Declined sharing data",
+      "detail_title": "Declined sharing data"
+    },
+    "VC issue": {
+      "info_list_title": "Issued information",
+      "revealed_info_title": "Issued information",
+      "info_header": {
+        "description": "items issued"
+      },
+      "row_description": "Credential received",
+      "detail_title": "New credential added to your wallet",
+      "description": ["You can finally use your", "card for official sharing purposes."]
+    },
+    "VC issue decline": {
+      "info_list_title": "Declined information",
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items not issued"
+      },
+      "row_description": "Declined receiving credential",
+      "detail_title": "Credential not added to your wallet",
+      "description": ["You have declined to use the", "card for official sharing purposes."]
+    },
+    "section_titles": {
+      "status": "Status",
+      "purpose": "Purpose",
+      "credential_type": "Type of credential",
+      "issued_information": "Issued information"
+    },
+    "contact_link": "About",
+    "credential_activities_link": "Card activities",
+    "credential_claims_link": "My claims",
+    "support_link": "Something wrong?"
+  },
   "credential_details_title": "Credential details",
   "credentials_overview_title": "Credentials",
   "credential_details_view_issued_by": "Issued by",
@@ -90,6 +174,7 @@
   "contact_details_activity_tab_header_label": "Activity",
   "contact_details_identities_tab_header_label": "Identities",
   "intent_share_file_unable_to_receive_message": "Unable to receive the credential",
+  "credential_activities_title": "Card activities",
   "credential_delete_title": "Delete credential",
   "credential_delete_message": "Are you sure you want to delete the credential: {{credentialName}}?",
   "credential_deleted_success_toast": "Credential successfully deleted",
@@ -189,9 +274,6 @@
   "pin_code_accessibility_hint": "Enter your pin code",
   "pin_code_invalid_code_message": "This pin code does not match. Please try again.",
   "pin_code_attempts_left_message": "Attempts left:",
-  "notifications_overview_title": "Notifications",
-  "notifications_overview_empty_state_title": "No notifications",
-  "notifications_overview_empty_state_subtitle": "At the moment you don’t have any notifications.\nThe notifications will automatically appear here.",
   "lock_title": "Login to\nthe Sphereon Wallet",
   "lock_subtitle": "Enter your pin code.",
   "lock_emergency_button_caption": "Emergency call",
@@ -426,6 +508,7 @@
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Terms of Service",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacy policy",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contacts",
   "new_contact_add_new_contact_low_level_trust_title": "Are you sure you want to continue?",
   "new_contact_add_new_contact_low_level_trust_description": "You are going to interact with a party that has a low level of trust.",
 

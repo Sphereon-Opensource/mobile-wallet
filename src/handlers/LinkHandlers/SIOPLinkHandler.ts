@@ -23,7 +23,10 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
 
     const pidSecurityModel = await storageGetPIDSecurityModel();
     if (pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
-      const interpreter = FunkeC2ShareMachine.newInstance({url});
+      const interpreter = FunkeC2ShareMachine.newInstance({
+        url,
+        trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
+      });
       interpreter.start();
 
       const init = await interpreterStartOrResume({

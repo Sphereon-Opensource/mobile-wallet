@@ -1,16 +1,17 @@
 import {NavigationHelpers} from '@react-navigation/native';
+import {IPresentationDefinition} from '@sphereon/pex';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {CredentialRole, IImageAttributes, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialRole, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {ImageAttributes} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
+import {Activity} from '../activity';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {IPresentationDefinition} from '@sphereon/pex';
-import {ImageAttributes} from '@sphereon/ui-components.core';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -29,6 +30,8 @@ export type StackParamList = {
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
   AusweisModal: IAusweisModalProps;
+  ActivityDetails: IActivityDetailsProps;
+  ActivityReveledInfo: IActivityDetailsProps;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -36,10 +39,11 @@ export type StackParamList = {
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
   ContactIdentities: IContactIdentitiesProps;
   ContactActivity: IContactActivityProps;
+  CredentialActivity: ICredentialActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
   BrowserOpen: IBrowserOpen;
-  NotificationsOverview: Record<string, never>;
+  ActivityFeed: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps & Partial<IHasOnBackProps>;
@@ -58,6 +62,14 @@ export type StackParamList = {
 };
 
 export type Document = 'terms' | 'privacy';
+
+export type IActivityDetailsProps = {
+  activity?: Activity;
+};
+
+export type ICredentialActivityProps = {
+  credential?: CredentialSummary;
+};
 
 export type OnboardingStackParamsList = {
   AcceptTermsAndPrivacy: Record<string, never>;
@@ -188,7 +200,7 @@ export interface ICredentialDetailsProps {
   credential: CredentialSummary;
   primaryAction?: IButton;
   secondaryAction?: IButton;
-  showActivity?: boolean;
+  hideLinks?: boolean;
   /*
    TODO WAL-340
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
@@ -285,6 +297,7 @@ export interface INewContactAddProps {
   clientUri?: string;
   tosUri?: string;
   policyUri?: string;
+  contacts?: Array<string>;
   logo?: ImageAttributes;
   federations?: Array<Party>;
   roles?: Array<CredentialRole>;
@@ -335,7 +348,7 @@ export enum MainRoutesEnum {
 
 export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
-  NOTIFICATIONS = 'NotificationsStack',
+  ACTIVITIES = 'ActivitiesStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
   CREDENTIAL_CATALOG = 'CredentialCatalogStack',
@@ -349,17 +362,20 @@ export enum ScreenRoutesEnum {
   QR_PRESENTATION = 'QrPresentation',
   VERIFICATION_CODE = 'VerificationCode',
   ERROR = 'Error',
+  ACTIVITY_DETAILS = 'ActivityDetails',
+  ACTIVITY_REVEALED_INFO = 'ActivityReveledInfo',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
   CONTACT_IDENTITIES = 'ContactIdentities',
   CONTACT_ACTIVITY = 'ContactActivity',
-  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
+  ACTIVITY_FEED = 'ActivityFeed',
   LOCK = 'Lock',
   BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  CREDENTIAL_ACTIVITY = 'CredentialActivity',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',

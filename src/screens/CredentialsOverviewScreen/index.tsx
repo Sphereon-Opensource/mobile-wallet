@@ -5,9 +5,9 @@ import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
-import {CredentialsOverviewImages} from './constants';
-import CredentialsOverviewList from './CredentialsOverviewList';
 import CredentialsOverviewCardList from './CredentialsOverviewCardList';
+import CredentialsOverviewList from './CredentialsOverviewList';
+import {CredentialsOverviewImages} from './constants';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
@@ -23,7 +23,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
 
   return (
-    <Container>
+    <Container style={{paddingTop: 24}}>
       <StatusBar />
       <CredentialViewTypeNav.Navigator
         initialRouteName={initialRouteName}
@@ -35,7 +35,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
             height: 32,
             paddingVertical: 0,
             borderBottomWidth: 0,
-            marginVertical: 16,
+            marginBottom: 16,
             marginHorizontal: 24,
           },
           indicatorStyle: {top: 0, zIndex: -1},

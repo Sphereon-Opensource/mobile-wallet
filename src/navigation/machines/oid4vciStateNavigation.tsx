@@ -143,6 +143,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       federations: federationParties,
       uri: contact.uri,
       identities: contact.identities,
+      contacts: branding.contacts,
       logo: branding.logo,
       description: branding.description,
       clientUri: branding.clientUri,
@@ -179,6 +180,7 @@ const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promis
       uri: contact.uri,
       logo: branding.logo,
       description: branding.description,
+      contacts: branding.contacts,
       clientUri: branding.clientUri,
       tosUri: branding.tosUri,
       policyUri: branding.policyUri,
@@ -322,6 +324,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
+      hideLinks: true,
       credential: await toNonPersistedCredentialSummary({
         verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
         credentialRole: CredentialRole.HOLDER,

@@ -1,19 +1,26 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
 import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
+import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
-import OnboardingHeader from '../components/bars/OnboardingHeader';
 import SSIHeaderBar from '../components/bars/SSIHeaderBar';
 import SSINavigationBar from '../components/bars/SSINavigationBar';
+import OnboardingDefaultHeader from '../components/bars/onboarding/OnboardingDefaultHeader';
+import OnboardingStepHeader from '../components/bars/onboarding/OnboardingStepHeader';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
+import AusweisModal from '../modals/AusweisModal';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
+import ActivityDetailScreen from '../screens/ActivityDetailsScreen';
+import ActivityFeedScreen from '../screens/ActivityFeedScreen';
+import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
+import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import EmergencyScreen from '../screens/EmergencyScreen';
@@ -34,6 +41,8 @@ import {
   VerifyPinCodeScreen,
   WelcomeScreen,
 } from '../screens/Onboarding';
+import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
+import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
@@ -44,12 +53,11 @@ import SSICredentialSelectTypeScreen from '../screens/SSICredentialSelectTypeScr
 import SSIErrorScreen from '../screens/SSIErrorScreen';
 import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
-import SSINotificationsOverviewScreen from '../screens/SSINotificationsOverviewScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
-import SettingsScreen from '../screens/Settings/SettingsScreen';
 import AccountScreen from '../screens/Settings/AccountScreen';
 import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedClaimsScreen';
+import SettingsScreen from '../screens/Settings/SettingsScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
@@ -70,25 +78,24 @@ import {
   WalletAuthLockState,
 } from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
+import {ICredentialState} from '../types/store/credential.types';
+import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
+import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
 import {SiopV2Provider} from './machines/siopV2StateNavigation';
-import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
-import AusweisModal from '../modals/AusweisModal';
-import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
-import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
-import {useSelector} from 'react-redux';
-import {ICredentialState} from '../types/store/credential.types';
-import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
-import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
-import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
-
-import store from '../store';
 import ContactsHeader from '../components/bars/ContactsHeader';
-import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import OnboardingHeader from '../components/bars/OnboardingHeader';
+import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
+import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
+import CredentialDetailHeader from '../components/bars/credential/CredentialDetailHeader';
+import ActivityRevealedInfoScreen from '../screens/ActivityRevealedInfoScreen';
 import ContactActivityScreen from '../screens/ContactActivityScreen';
+import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
+import {formatDateTime} from '../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -213,7 +220,7 @@ const MainStackNavigator = (): JSX.Element => {
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
-  const activeUser = store.getState().user.activeUser;
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -236,10 +243,10 @@ const TabStackNavigator = (): JSX.Element => {
         )}
       />
       <Tab.Screen
-        name={NavigationBarRoutesEnum.NOTIFICATIONS}
+        name={NavigationBarRoutesEnum.ACTIVITIES}
         children={() => (
           <>
-            <NotificationsStack />
+            <ActivitiesStack />
             <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
@@ -294,26 +301,17 @@ const CredentialsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CREDENTIAL_DETAILS}
         component={CredentialDetailsScreen}
         options={({route}) => ({
-          headerTitle: translate('credential_details_title'),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              // TODO create actions that can be passed in
-              moreActions={[
-                {
-                  caption: translate('show_raw_credential_button_caption'),
-                  onPress: async (): Promise<void> =>
-                    RootNavigation.navigate(ScreenRoutesEnum.CREDENTIAL_RAW_JSON, {
-                      rawCredential: route.params.rawCredential,
-                    }),
-                  icon: HeaderMenuIconsEnum.DOWNLOAD,
-                },
-              ]}
-            />
-          ),
+          title: route.params.credential.branding?.alias ?? route.params.credential.title,
+          header: props => <CredentialDetailHeader {...props} />,
         })}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CREDENTIAL_ACTIVITY}
+        component={CredentialActivityScreen}
+        options={{
+          title: translate('credential_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIAL_RAW_JSON}
@@ -327,6 +325,62 @@ const CredentialsStack = (): JSX.Element => {
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          title: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <ContactsHeader
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // showBackButton={false}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          title: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          title: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
+        component={ActivityDetailScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
+          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
+          return {
+            title,
+            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
+        component={ActivityRevealedInfoScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
+          return {
+            title,
+            header: props => <ActivityRevealedInfoHeader {...props} />,
+          };
         }}
       />
       <Stack.Screen
@@ -359,7 +413,7 @@ const ContactsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CONTACT_DETAILS}
         component={SSIContactDetailsScreen}
         options={{
-          headerTitle: translate('contact_details_title'),
+          title: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <ContactsHeader
               {...props}
@@ -374,20 +428,43 @@ const ContactsStack = (): JSX.Element => {
         name={ScreenRoutesEnum.CONTACT_IDENTITIES}
         component={ContactIdentitiesScreen}
         options={{
-          headerTitle: translate('contact_identities_title'),
+          title: translate('contact_identities_title'),
           header: props => <ContactsHeader {...props} />,
         }}
       />
-
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_ACTIVITY}
         component={ContactActivityScreen}
         options={{
-          headerTitle: translate('contact_activities_title'),
+          title: translate('contact_activities_title'),
           header: props => <ContactsHeader {...props} />,
         }}
       />
-
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
+        component={ActivityDetailScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
+          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
+          return {
+            title,
+            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
+        component={ActivityRevealedInfoScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
+          return {
+            title,
+            header: props => <ActivityRevealedInfoHeader {...props} />,
+          };
+        }}
+      />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
@@ -509,8 +586,8 @@ const QRStack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /*headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifierName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}*/
+      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+    }`}*/
             />
           ),
         })}
@@ -556,41 +633,51 @@ const QRStack = (): JSX.Element => {
   );
 };
 
-const NotificationsStack = (): JSX.Element => {
+const ActivitiesStack = (): JSX.Element => {
   return (
     <Stack.Navigator
-      initialRouteName={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
+      initialRouteName={ScreenRoutesEnum.ACTIVITY_FEED}
       screenOptions={{
         animation: 'none',
       }}>
       <Stack.Screen
-        name={ScreenRoutesEnum.NOTIFICATIONS_OVERVIEW}
-        component={SSINotificationsOverviewScreen}
+        name={ScreenRoutesEnum.ACTIVITY_FEED}
+        component={ActivityFeedScreen}
         options={{
-          headerTitle: translate('notifications_overview_title'),
+          headerTitle: translate('activity.feed.title'),
           header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showBackButton={false} showBorder={false} />,
         }}
       />
       <Stack.Screen
-        name={ScreenRoutesEnum.NEW_CONTACT_ADD}
-        component={NewContactAddScreen}
-        options={({route}) => ({
-          headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
-          header: (props: NativeStackHeaderProps) => (
-            <SSIHeaderBar
-              {...props}
-              // TODO rethink back button visibility for Android
-              //showBackButton={Platform.OS === PlatformsEnum.IOS}
-              headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
-            />
-          ),
-        })}
+        name={ScreenRoutesEnum.ACTIVITY_DETAILS}
+        component={ActivityDetailScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : activity.contactAlias;
+          const createdAt = activity?.at ? formatDateTime(activity.at, 'MMMM DD, YYYY TD hh:mm A') : translate('activity.unknown.date');
+          return {
+            title,
+            header: props => <ActivityDetailHeader {...props} createdAt={createdAt} />,
+          };
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.ACTIVITY_REVEALED_INFO}
+        component={ActivityRevealedInfoScreen}
+        options={({route}) => {
+          const {activity} = route.params;
+          const title = !activity ? translate('activity.unknown.activity') : translate(`activity.${activity.action}.revealed_info_title`);
+          return {
+            title,
+            header: props => <ActivityRevealedInfoHeader {...props} />,
+          };
+        }}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.CONTACT_DETAILS}
         component={SSIContactDetailsScreen}
         options={{
-          headerTitle: translate('contact_details_title'),
+          title: translate('contact_details_title'),
           header: (props: NativeStackHeaderProps) => (
             <ContactsHeader
               {...props}
@@ -599,6 +686,22 @@ const NotificationsStack = (): JSX.Element => {
               // showBackButton={false}
             />
           ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          title: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          title: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
         }}
       />
       <Stack.Screen
@@ -698,8 +801,6 @@ const step3GroupConfig: StackGroupConfig = {
     {
       name: 'ImportPersonalData',
       component: ImportPersonalDataScreen,
-      titleKey: 'onboarding_pages.import_scan_card.title',
-      subtitleKey: 'onboarding_pages.import_scan_card.description',
     },
     {
       name: 'ImportDataAuthentication',
@@ -721,37 +822,61 @@ const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig]
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
     <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingHeader}} />
-    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingHeader}} />
-    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingHeader}} />
+    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingDefaultHeader}} />
+    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingDefaultHeader}} />
+    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingDefaultHeader}} />
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
-        {group.screens.map(({name, component, titleKey, subtitleKey}, index) => (
-          <OnboardingBaseStack.Screen
-            key={name}
-            name={name}
-            component={component}
-            initialParams={{
-              title: titleKey && translate(titleKey),
-              subtitle: subtitleKey && translate(subtitleKey),
-            }}
-            options={({route}) => ({
-              headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
-              header: props => (
-                <OnboardingHeader
-                  {...props}
-                  title={translate(group.titleKey)}
-                  headerSubTitle={(route.params as IOnboardingHasTitleAndSubtitle)?.subtitle}
-                  stepConfig={{
-                    current: index + 1,
-                    total: group.screens.length,
-                  }}
-                />
-              ),
-            })}
-          />
-        ))}
+        {group.screens.map(({name, component}, index) => {
+          if (name === 'ImportPersonalData') {
+            return (
+              <OnboardingBaseStack.Screen
+                key="ImportPersonalData"
+                name="ImportPersonalData"
+                component={ImportPersonalDataScreen}
+                initialParams={{
+                  title: translate('onboarding_pages.import_scan_card.title'),
+                  subtitle: translate('onboarding_pages.import_scan_card.description'),
+                }}
+                options={({route}) => ({
+                  headerTitle: route.params.title,
+                  header: props => (
+                    <OnboardingHeader
+                      {...props}
+                      title={translate('import_data_title')}
+                      headerSubTitle={route.params.subtitle}
+                      stepConfig={{
+                        current: 2,
+                        total: 5,
+                      }}
+                    />
+                  ),
+                })}
+              />
+            );
+          }
+          return (
+            <OnboardingBaseStack.Screen
+              key={name}
+              name={name}
+              component={component}
+              options={({route}) => ({
+                headerTitle: (route.params as IOnboardingHasTitleAndSubtitle)?.title,
+                header: props => (
+                  <OnboardingStepHeader
+                    {...props}
+                    title={translate(group.titleKey)}
+                    stepConfig={{
+                      current: index + 1,
+                      total: group.screens.length,
+                    }}
+                  />
+                ),
+              })}
+            />
+          );
+        })}
       </OnboardingBaseStack.Group>
     ))}
     <OnboardingBaseStack.Screen
@@ -771,7 +896,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataConsentScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -811,7 +936,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataAuthenticationScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -828,7 +953,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataLoaderScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             title={translate('import_data_title')}
             stepConfig={{
@@ -844,7 +969,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataFinalScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -861,7 +986,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={IncorrectInformationScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             onBack={route.params.onBack}
             title={translate('import_data_title')}
@@ -878,7 +1003,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       component={ImportDataLoaderScreen}
       options={({route}) => ({
         header: props => (
-          <OnboardingHeader
+          <OnboardingStepHeader
             {...props}
             title={translate('import_data_title')}
             stepConfig={{
@@ -953,6 +1078,22 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       component={SSIErrorScreen}
       options={({route}) => ({
         header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+      })}
+    />
+    <Stack.Screen
+      name={ScreenRoutesEnum.NEW_CONTACT_ADD}
+      component={NewContactAddScreen}
+      options={({route}) => ({
+        headerTitle: translate('new_contact_add_new_contact_detected_title', {partyName: route.params.name}),
+        header: (props: NativeStackHeaderProps) => (
+          <SSIHeaderBar
+            {...props}
+            onBack={route.params.onBack}
+            // TODO rethink back button visibility for Android
+            //showBackButton={Platform.OS === PlatformsEnum.IOS}
+            headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
+          />
+        ),
       })}
     />
   </FunkeC2ShareBaseStack.Navigator>
@@ -1292,8 +1433,8 @@ export const SiopV2Stack = (): JSX.Element => {
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               /* headerSubTitle={`${translate('credentials_required_subtitle', {verifierName: route.params.verifier.contact.displayName})} ${
-                route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
-              }`}*/
+      route.params.presentationDefinition.purpose && `\n\n${route.params.presentationDefinition.purpose}`
+    }`}*/
             />
           ),
         })}

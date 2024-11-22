@@ -201,6 +201,7 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
     {
       actions: {
         logDeclinePID: async (context, event): Promise<void> => {
+          let parentCredentialHash: string | undefined = undefined;
           context.pidCredentials.forEach(mappedCredential => {
             // FIXME function is not exposed in SSI-SDK, for now made a copy here
             function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
@@ -218,6 +219,8 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
               }
             }
 
+            const credentialHash = mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential);
+
             store.dispatch<any>(
               storeActivityLogging({
                 level: LogLevel.INFO,
@@ -229,13 +232,18 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
                 actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
                 // @ts-ignore
                 credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
-                credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
+                credentialHash,
+                parentCredentialHash,
                 originalCredential: JSON.stringify(mappedCredential.rawCredential),
                 partyCorrelationType: PartyCorrelationType.URL,
                 partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
                 partyAlias: 'Bundesdruckerei GmbH',
               }),
             );
+
+            if (!parentCredentialHash) {
+              parentCredentialHash = credentialHash;
+            }
           });
         },
       },

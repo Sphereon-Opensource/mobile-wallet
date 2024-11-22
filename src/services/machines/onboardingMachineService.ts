@@ -69,11 +69,6 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 
     storeCredentials.push(digitalCredential);
 
-    if (!parentId) {
-      parentId = digitalCredential.id;
-      parentCredentialHash = digitalCredential.hash;
-    }
-
     store.dispatch<any>(
       storeActivityLogging({
         level: LogLevel.INFO,
@@ -87,12 +82,18 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
         // @ts-ignore
         credentialType: digitalCredential.documentFormat, // TODO fix types
         credentialHash: digitalCredential.hash,
+        parentCredentialHash,
         originalCredential: JSON.stringify(digitalCredential),
         partyCorrelationType: PartyCorrelationType.URL,
         partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
+
+    if (!parentId) {
+      parentId = digitalCredential.id;
+      parentCredentialHash = digitalCredential.hash;
+    }
   }
 
   return storeCredentials;
