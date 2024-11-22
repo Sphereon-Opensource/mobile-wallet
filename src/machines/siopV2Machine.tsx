@@ -54,7 +54,7 @@ const siopV2HasContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machine
 
 const siopV2ContactHasLowTrustGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact, trustedAnchors} = _ctx;
-  return contact !== undefined && trustedAnchors !== undefined && Object.keys(trustedAnchors).length === 0;
+  return contact !== undefined && trustedAnchors !== undefined && trustedAnchors.length === 0;
 };
 
 const siopV2CreateContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -259,7 +259,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             onDone: {
               target: SiopV2MachineStates.transitionFromSetup,
               actions: assign({
-                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Record<TrustedAnchor, PublicKeyHex>>) => _event.data,
+                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data,
               }),
             },
             onError: {

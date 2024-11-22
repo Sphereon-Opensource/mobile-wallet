@@ -222,7 +222,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Record<TrustedAnchor, PublicKeyHex>> => {
+): Promise<Array<TrustedAnchor>> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {

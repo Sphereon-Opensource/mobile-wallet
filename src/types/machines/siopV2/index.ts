@@ -35,7 +35,7 @@ export type SiopV2MachineContext = {
   hasContactConsent: boolean;
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
-  trustedAnchors?: Record<TrustedAnchor, PublicKeyHex>;
+  trustedAnchors?: Array<TrustedAnchor>;
   error?: ErrorDetails;
 };
 
