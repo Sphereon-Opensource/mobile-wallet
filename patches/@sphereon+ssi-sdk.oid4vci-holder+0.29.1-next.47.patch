@@ -1,0 +1,24 @@
+diff --git a/node_modules/@sphereon/ssi-sdk.oid4vci-holder/dist/agent/OID4VCIHolder.js b/node_modules/@sphereon/ssi-sdk.oid4vci-holder/dist/agent/OID4VCIHolder.js
+index 8489473..739ca0e 100644
+--- a/node_modules/@sphereon/ssi-sdk.oid4vci-holder/dist/agent/OID4VCIHolder.js
++++ b/node_modules/@sphereon/ssi-sdk.oid4vci-holder/dist/agent/OID4VCIHolder.js
+@@ -118,6 +118,7 @@ class OID4VCIHolder {
+             ssi_sdk_ext_did_utils_1.SupportedDidMethodEnum.DID_JWK,
+             ssi_sdk_ext_did_utils_1.SupportedDidMethodEnum.DID_EBSI,
+             ssi_sdk_ext_did_utils_1.SupportedDidMethodEnum.DID_ION,
++            ssi_sdk_ext_did_utils_1.SupportedDidMethodEnum.DID_OYD,
+         ];
+         this.jwtCryptographicSuitePreferences = [
+             IOID4VCIHolder_1.SignatureAlgorithmEnum.ES256,
+diff --git a/node_modules/@sphereon/ssi-sdk.oid4vci-holder/src/agent/OID4VCIHolder.ts b/node_modules/@sphereon/ssi-sdk.oid4vci-holder/src/agent/OID4VCIHolder.ts
+index 6a05c0b..ecc911f 100644
+--- a/node_modules/@sphereon/ssi-sdk.oid4vci-holder/src/agent/OID4VCIHolder.ts
++++ b/node_modules/@sphereon/ssi-sdk.oid4vci-holder/src/agent/OID4VCIHolder.ts
+@@ -191,6 +191,7 @@ export class OID4VCIHolder implements IAgentPlugin {
+     SupportedDidMethodEnum.DID_JWK,
+     SupportedDidMethodEnum.DID_EBSI,
+     SupportedDidMethodEnum.DID_ION,
++    SupportedDidMethodEnum.DID_OYD,
+   ]
+   private readonly jwtCryptographicSuitePreferences: Array<SignatureAlgorithmEnum> = [
+     SignatureAlgorithmEnum.ES256,
