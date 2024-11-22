@@ -134,9 +134,9 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   };
 
   const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+    filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = trustedAnchors && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,

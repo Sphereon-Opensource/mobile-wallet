@@ -508,6 +508,7 @@
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Terms of Service",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacy policy",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contacts",
   "new_contact_add_new_contact_low_level_trust_title": "Are you sure you want to continue?",
   "new_contact_add_new_contact_low_level_trust_description": "You are going to interact with a party that has a low level of trust.",
 

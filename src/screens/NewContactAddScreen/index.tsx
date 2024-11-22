@@ -28,6 +28,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     clientUri,
     tosUri,
     policyUri,
+    contacts,
     identities,
     federations,
     onCreate,
@@ -320,6 +321,15 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
                   id: '5',
                   label: Localization.translate('new_contact_add_new_contact_contact_details_policy_label'),
                   value: policyUri,
+                },
+              ]
+            : []),
+          ...(contacts
+            ? [
+                {
+                  id: '6',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_contacts_label'),
+                  value: contacts,
                 },
               ]
             : []),
