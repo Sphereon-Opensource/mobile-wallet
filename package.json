@@ -23,7 +23,6 @@
     "build:android:production": "eas build -p android --profile production",
     "bundle:ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "postinstall": "patch-package && rn-nodeify --install fs,os,path,assert,process,vm --hack",
-    "prepare": "husky install",
     "android": "expo run:android"
   },
   "dependencies": {
@@ -203,7 +202,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.25.4",
-    "husky": "^8.0.3",
     "jest": "^29.2.1",
     "jest-expo": "~51.0.3",
     "metro": "~0.80.8",
