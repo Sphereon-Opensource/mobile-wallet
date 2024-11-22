@@ -1,0 +1,71 @@
+diff --git a/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js b/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
+index 4fec6ba..60a503f 100644
+--- a/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
++++ b/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
+@@ -5960,8 +5960,51 @@
+     // Inline function 'kotlin.js.asDynamic' call
+     return new Int8Array(_this__u8e3s4.buffer, _this__u8e3s4.byteOffset, _this__u8e3s4.length);
+   }
+-  function readBodyBrowser(_this__u8e3s4, response) {
+-    var tmp0_elvis_lhs = response.body;
++
++  function createReadableStreamFromBlob(response) {
++    if (response.body) {
++        return response.body
++        }
++
++      if (response._bodyBlob) {
++        return {
++            getReader() {
++              let isDone = false
++                return {
++                  read() {
++                    if (isDone) {
++                        return Promise.resolve({ done: true })
++                        }
++      
++                      return new Promise((resolve, reject) => {
++                          const reader = new FileReader()
++                          reader.onload = () => {
++                              isDone = true
++                                resolve({
++                                    done: false,
++                                  value: new Uint8Array(reader.result)
++                              })
++                            }
++                          reader.onerror = (error) => reject(error)
++                            reader.readAsArrayBuffer(response._bodyBlob)
++                          })
++                    },
++    
++                  cancel() {
++                    isDone = true
++                      return Promise.resolve()
++                    }
++              }
++            }
++        }
++      }
++
++      return null
++    }
++
++    
++    function readBodyBrowser(_this__u8e3s4, response) {
++      var tmp0_elvis_lhs = createReadableStreamFromBlob(response);
+     var tmp;
+     if (tmp0_elvis_lhs == null) {
+       return Companion_getInstance().u19();
+diff --git a/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js b/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
+index 75af956..852e910 100644
+--- a/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
++++ b/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
+@@ -5793,7 +5793,7 @@
+     // Inline function 'kotlin.with' call
+     // Inline function 'kotlin.js.asDynamic' call
+     // Inline function 'kotlin.contracts.contract' call
+-    this_0.fatal = fatal;
++    //this_0.fatal = fatal;
+     return this_0;
+   }
+   function toKtor$1($this_toKtor) {

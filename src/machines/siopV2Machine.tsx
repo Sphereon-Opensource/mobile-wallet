@@ -35,6 +35,11 @@ import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerif
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
+import {
+  ExternalIdentifierOIDFEntityIdResult,
+  PublicKeyHex,
+  TrustedAnchor,
+} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -127,8 +132,8 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
 
 const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   // TODO in the future we need to establish if a origin is a IDF origin. So we need to check if this metadata is on the well-known location
-  const {trustAnchors} = _ctx;
-  return trustAnchors.length > 0;
+  const {trustAnchors, authorizationRequestData} = _ctx;
+  return trustAnchors.length > 0 && authorizationRequestData?.clientIdScheme === 'entity_id';
 };
 
 const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
@@ -172,7 +177,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             data: void;
           };
           [SiopV2MachineServices.getFederationTrust]: {
-            data: Array<string>;
+            data: ExternalIdentifierOIDFEntityIdResult;
           };
         },
       },
@@ -253,7 +258,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             onDone: {
               target: SiopV2MachineStates.transitionFromSetup,
               actions: assign({
-                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<string>>) => _event.data,
+                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data,
               }),
             },
             onError: {
