@@ -1,4 +1,3 @@
-import {Image} from 'react-native';
 import {AusweisRequestedInfoItem, InfoSchemaIcons} from '../constants';
 import {
   InformationIconContainer,
@@ -14,7 +13,7 @@ type ImportInformationSummaryProps = {
 };
 
 const ImportInformationSummary = ({data}: ImportInformationSummaryProps) => (
-  <RequestedInformationContainer>
+  <RequestedInformationContainer accessibilityRole="list" accessibilityLabel="Imported information">
     {data.map(info => (
       <RequestedInformationRow key={info.label}>
         <InformationIconContainer>{InfoSchemaIcons[info.icon]}</InformationIconContainer>

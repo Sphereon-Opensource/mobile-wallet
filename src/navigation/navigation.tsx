@@ -235,6 +235,9 @@ const TabStackNavigator = (): JSX.Element => {
       backBehavior="none">
       <Tab.Screen
         name={NavigationBarRoutesEnum.QR}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.qr'),
+        }}
         children={() => (
           <>
             <QRStack />
@@ -244,6 +247,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.ACTIVITIES}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.activities'),
+        }}
         children={() => (
           <>
             <ActivitiesStack />
@@ -253,6 +259,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CREDENTIALS}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.home'),
+        }}
         children={() => (
           <>
             <CredentialsStack />
@@ -262,6 +271,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.credential_catalog'),
+        }}
         children={() => (
           <>
             <CredentialCatalogStack />
@@ -271,6 +283,9 @@ const TabStackNavigator = (): JSX.Element => {
       />
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
+        options={{
+          tabBarAccessibilityLabel: translate('accessibility.tabBar.contacts'),
+        }}
         children={() => (
           <>
             <ContactsStack />
@@ -513,6 +528,7 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -525,6 +541,7 @@ const QRStack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />
@@ -568,6 +585,8 @@ const QRStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -1235,6 +1254,8 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -1313,6 +1334,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -1325,6 +1347,7 @@ export const OID4VCIStack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />
@@ -1396,6 +1419,8 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
+              disableFocusOnTitle
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('new_contact_add_new_contact_detected_subtitle')}
@@ -1477,6 +1502,7 @@ export const SiopV2Stack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_details_subtitle')}
@@ -1489,6 +1515,7 @@ export const SiopV2Stack = (): JSX.Element => {
                       rawCredential: route.params.rawCredential,
                     }),
                   icon: HeaderMenuIconsEnum.DOWNLOAD,
+                  accessibilityHint: 'Go to the view raw credential screen',
                 },
               ]}
             />

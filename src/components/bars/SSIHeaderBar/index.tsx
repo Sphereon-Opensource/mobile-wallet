@@ -1,12 +1,14 @@
-import {NativeStackHeaderProps, NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {FC, useContext} from 'react';
-import {ColorValue, GestureResponderEvent, View} from 'react-native';
+import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import React, {FC, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
+import {ColorValue, GestureResponderEvent, Pressable, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import OnTouchContext from '../../../contexts/OnTouchContext';
+import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
+import {useLogout} from '../../../hooks/use-logout';
+import {useAccessibility} from '../../../hooks/useAccessibility';
 import {translate} from '../../../localization/Localization';
 import {
-  SSIHeaderBarBackIconStyled as BackIcon,
   SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   SSIHeaderBarContainerStyled as Container,
   SSITextH1LightStyled as HeaderCaption,
@@ -14,16 +16,14 @@ import {
   SSIFlexDirectionColumnViewStyled as LeftColumn,
   SSIHeaderBarMoreIconStyled as MoreIcon,
   SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer,
-  SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
   SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
 } from '../../../styles/components';
-import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, IUser, MainRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../../types';
+import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, MainRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import SSIDropDownList from '../../dropDownLists/SSIDropDownList';
-import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
-import {useLogout} from '../../../hooks/use-logout';
+import {AccessibleMenu, Back} from '../components';
 
 export interface HeaderBarProps extends NativeStackHeaderProps {
   headerSubTitle?: string;
@@ -33,6 +33,7 @@ export interface HeaderBarProps extends NativeStackHeaderProps {
   showProfileIcon?: boolean;
   onBack?: () => void | Promise<void>;
   backgroundColor?: ColorValue;
+  disableFocusOnTitle?: boolean;
 }
 
 // TODO fix that there is a slight flash of elements moving when navigating
@@ -47,10 +48,11 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
     moreActions = [],
     navigation,
     backgroundColor,
+    disableFocusOnTitle = false,
   } = props;
   const dispatch = useDispatch();
   const {showProfileMenu, setShowProfileMenu, showMoreMenu, setShowMoreMenu} = useContext(OnTouchContext);
-
+  const {setFocus, isScreenReaderEnabled, announce} = useAccessibility();
   const onBack = async (): Promise<void> => {
     typeof props.onBack === 'function' ? await props.onBack() : props.navigation.goBack();
   };
@@ -58,10 +60,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
   const onProfile = async (): Promise<void> => {
     setShowMoreMenu(false);
     setShowProfileMenu(!showProfileMenu);
-  };
-
-  const onProfileLong = async (): Promise<void> => {
-    navigation.navigate('Veramo', {});
+    announce({message: `Menu ${!showProfileMenu ? 'opened' : 'closed'}`});
   };
 
   const onNavigateProfile = () => {
@@ -75,6 +74,7 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
   const onMore = async (): Promise<void> => {
     setShowProfileMenu(false);
     setShowMoreMenu(!showMoreMenu);
+    announce({message: `Action menu ${!showMoreMenu ? 'opened' : 'closed'}`});
   };
 
   const logout = useLogout();
@@ -93,16 +93,43 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
     event.stopPropagation();
   };
 
+  const menuItems = useMemo<IHeaderMenuButton[]>(
+    () => [
+      {
+        caption: translate('settings_dropdown_item_text'),
+        onPress: onNavigateProfile,
+        icon: HeaderMenuIconsEnum.SETTINGS,
+        accessibilityHint: translate('settings_dropdown_item_accessibility_hint'),
+      },
+      {
+        caption: translate('present_qr_code_dropdown_item_text'),
+        onPress: onNavigateQrPresentation,
+        icon: HeaderMenuIconsEnum.QR,
+        accessibilityHint: translate('present_qr_code_dropdown_item_accessibility_hint'),
+      },
+    ],
+    [onNavigateProfile, onNavigateQrPresentation],
+  );
+
+  const titleRef = useRef(null);
+  const focusOnTitle = useCallback(() => setFocus(titleRef), [titleRef.current]);
+  useEffect(() => {
+    if (!disableFocusOnTitle) focusOnTitle();
+  }, [disableFocusOnTitle]);
   return (
     <Container style={{paddingTop: useSafeAreaInsets().top, ...(backgroundColor && {backgroundColor})}} showBorder={showBorder}>
-      <Row>
+      <Row style={{alignItems: 'center'}}>
         <LeftColumn>
           {showBackButton && (
             <BackIconContainer>
-              <BackIcon icon={ButtonIconsEnum.BACK} onPress={onBack} />
+              <Back onPress={onBack} />
             </BackIconContainer>
           )}
-          <HeaderCaption style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: headerSubTitle ? 0 : 10}}>
+          <HeaderCaption
+            accessible
+            accessibilityRole="header"
+            style={{marginTop: showBackButton ? 21.5 : 15, marginBottom: headerSubTitle ? 0 : 10}}
+            ref={titleRef}>
             {options.headerTitle as string}
           </HeaderCaption>
           {headerSubTitle && <HeaderSubCaption>{headerSubTitle}</HeaderSubCaption>}
@@ -111,42 +138,38 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
           {showProfileIcon && (
             // we need this view wrapper to stop the event from propagating to the onTouch provider which will catch the onTouch set show menu to false and then the onPress would set it to true again, as onTouch will be before onPress
             <View onTouchStart={onTouchStart}>
-              <ProfileIconContainer onPress={onProfile} onLongPress={onProfileLong}>
+              <Pressable onPress={onProfile} accessibilityRole="togglebutton" accessibilityState={{checked: showProfileMenu}}>
                 <SSIProfileIcon />
-              </ProfileIconContainer>
+              </Pressable>
             </View>
           )}
-          {showProfileMenu && (
+          {showProfileMenu && !isScreenReaderEnabled && (
             <ProfileMenuContainer onTouchStart={onTouchStart}>
-              <SSIDropDownList
-                buttons={[
-                  {
-                    caption: translate('settings_dropdown_item_text'),
-                    onPress: onNavigateProfile,
-                    icon: HeaderMenuIconsEnum.SETTINGS,
-                  },
-                  {
-                    caption: translate('present_qr_code_dropdown_item_text'),
-                    onPress: onNavigateQrPresentation,
-                    icon: HeaderMenuIconsEnum.QR,
-                  },
-                ]}
-              />
+              <SSIDropDownList buttons={menuItems} />
             </ProfileMenuContainer>
           )}
           {moreActions.length > 0 && (
             // we need this view wrapper to stop the event from propagating to the onTouch provider which will catch the onTouch set show menu to false and then the onPress would set it to true again, as onTouch will be before onPress
             <View onTouchStart={onTouchStart}>
-              <MoreIcon icon={ButtonIconsEnum.MORE} onPress={onMore} />
+              <MoreIcon
+                icon={ButtonIconsEnum.MORE}
+                onPress={onMore}
+                accessibilityRole="togglebutton"
+                accessibilityState={{checked: showMoreMenu}}
+                accessibilityLabel="Actions menu button icon"
+                accessibilityHint={`${showMoreMenu ? 'close' : 'open'} actions menu`}
+              />
             </View>
           )}
-          {showMoreMenu && (
+          {showMoreMenu && !isScreenReaderEnabled && (
             <MoreMenuContainer onTouchStart={onTouchStart}>
               <SSIDropDownList buttons={moreActions} />
             </MoreMenuContainer>
           )}
         </RightColumn>
       </Row>
+      {showProfileMenu && isScreenReaderEnabled && <AccessibleMenu items={menuItems} />}
+      {showMoreMenu && isScreenReaderEnabled && <AccessibleMenu items={moreActions} />}
     </Container>
   );
 };

@@ -5,7 +5,9 @@ import {SSITextH3LightStyled, SSITextH4LightStyled} from '../../styles/component
 
 export const Section = ({title, children}: {title: string; children: React.ReactNode}) => (
   <View style={{gap: 8}}>
-    <SSITextH3LightStyled style={{marginHorizontal: 8}}>{title}</SSITextH3LightStyled>
+    <SSITextH3LightStyled accessibilityRole="header" style={{marginHorizontal: 8}}>
+      {title}
+    </SSITextH3LightStyled>
     {children}
   </View>
 );

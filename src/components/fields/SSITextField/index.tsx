@@ -48,13 +48,17 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
           </StatusLabelContainer>
         )}
       </HeaderContainer>
+      {/* This forces every field to be a touchable, hence making accessibility misleading */}
       <ContentContainer
         disabled={!item.isEditable}
         style={{...(valueIsArray && {flexDirection: 'column'})}}
         {...(item.onPress && {onPress: item.onPress})}>
         {valueIsArray && item.value.map((v: string) => <ContentText style={{marginLeft: 25}}>{v}</ContentText>)}
         {!valueIsArray && (
-          <ContentText onPress={onPressLink} style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
+          <ContentText
+            accessibilityRole={validURL ? 'link' : 'text'}
+            onPress={onPressLink}
+            style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
             {item.value}
           </ContentText>
         )}

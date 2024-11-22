@@ -14,7 +14,7 @@ export interface IProps {
 
 const SSISwipeDeleteButton: FC<IProps> = (props: IProps): JSX.Element => {
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable onPress={props.onPress} importantForAccessibility="no">
       <LinearGradient>
         <SSIDeleteIcon />
         <ButtonCaption>{translate('swipe_delete_button_caption')}</ButtonCaption>

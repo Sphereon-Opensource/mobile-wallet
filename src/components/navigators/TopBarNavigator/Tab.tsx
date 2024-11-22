@@ -2,15 +2,20 @@ import {TouchableOpacity} from 'react-native';
 import {ParamsList} from '../../../types';
 
 export type Props<T extends ParamsList> = {
-  routeName: Extract<keyof T, string>;
   isFocused: boolean;
   renderLabel: (isFocused: boolean) => JSX.Element;
   onPress: () => void;
+  accessibilityLabel?: string;
 };
 
-const Tab = <T extends ParamsList>({renderLabel, routeName, isFocused, onPress}: Props<T>) => {
+const Tab = <T extends ParamsList>({renderLabel, isFocused, onPress, accessibilityLabel}: Props<T>) => {
   return (
-    <TouchableOpacity key={routeName} style={{flex: 1, alignItems: 'center'}} onPress={onPress}>
+    <TouchableOpacity
+      style={{flex: 1, alignItems: 'center'}}
+      onPress={onPress}
+      accessibilityRole="tab"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{selected: isFocused}}>
       {renderLabel(isFocused)}
     </TouchableOpacity>
   );

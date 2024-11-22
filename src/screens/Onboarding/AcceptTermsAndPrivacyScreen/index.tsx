@@ -24,7 +24,11 @@ const AcceptTermsAndPrivacyScreen = () => {
   );
   return (
     <ScreenContainer footer={footer}>
-      <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} description={translate(`${translationsPath}.description`)} />
+      <ScreenTitleAndDescription
+        title={translate(`${translationsPath}.title`)}
+        description={translate(`${translationsPath}.description`)}
+        accessibilityFocusOnTitle
+      />
       <TermsAndPrivacyFeatures
         style={{marginTop: 8}}
         features={[
