@@ -506,7 +506,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.4.9;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DFOLLY_NO_CONFIG",
@@ -633,7 +633,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.4.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
