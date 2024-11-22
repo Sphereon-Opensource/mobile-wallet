@@ -2,12 +2,15 @@ import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
-import {VerifiedAuthorizationRequest, PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, URI} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ErrorDetails} from '../../error';
-import {IQrData} from '../../qr';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {
+  ExternalIdentifierOIDFEntityIdResult,
+  PublicKeyHex,
+  TrustedAnchor,
+} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -15,12 +18,15 @@ export type SiopV2AuthorizationRequestData = {
   issuer?: string;
   name?: string;
   uri?: URL;
+  clientIdScheme?: string;
   clientId?: string;
+  entityId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];
 };
 
 export type SiopV2MachineContext = {
   url: string;
+  trustAnchors: Array<string>;
   identifier?: IIdentifier;
   didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
@@ -29,6 +35,7 @@ export type SiopV2MachineContext = {
   hasContactConsent: boolean;
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
+  trustedAnchors?: Array<TrustedAnchor>;
   error?: ErrorDetails;
 };
 
@@ -37,7 +44,10 @@ export enum SiopV2MachineStates {
   getSiopRequest = 'getSiopRequest',
   retrieveContact = 'retrieveContact',
   transitionFromSetup = 'transitionFromSetup',
+  transitionFromContactSetup = 'transitionFromContactSetup',
+  getFederationTrust = 'getFederationTrust',
   addContact = 'addContact',
+  reviewContact = 'reviewContact',
   addContactIdentity = 'addContactIdentity',
   selectCredentials = 'selectCredentials',
   selectCredentialOverview = 'selectCredentialOverview',
@@ -86,6 +96,7 @@ export type SiopV2StateMachine = StateMachine<
 export type CreateSiopV2MachineOpts = {
   url: string | URL;
   machineId?: string;
+  trustAnchors?: Array<string>;
 };
 
 export type SiopV2MachineInstanceOpts = {
@@ -130,6 +141,8 @@ export enum SiopV2MachineGuards {
   hasJustOneMatchGuard = 'siopV2HasJustOneMatchGuard',
   siopOnlyGuard = 'siopV2IsSiopOnlyGuard',
   siopWithOID4VPGuard = 'siopV2IsSiopWithOID4VPGuard',
+  isOIDFOriginGuard = 'siopV2IsOIDFOriginGuard',
+  contactHasLowTrustGuard = 'siopV2ContactHasLowTrustGuard',
 }
 
 export enum SiopV2MachineServices {
@@ -138,6 +151,7 @@ export enum SiopV2MachineServices {
   addContactIdentity = 'addContactIdentity',
   sendResponse = 'sendResponse',
   createConfig = 'createConfig',
+  getFederationTrust = 'getFederationTrust',
 }
 
 export type NextEvent = {type: SiopV2MachineEvents.NEXT};

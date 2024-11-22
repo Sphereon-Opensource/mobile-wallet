@@ -8,7 +8,7 @@ export interface IProps {
   style?: ViewStyle;
 }
 
-const SSINotificationsImage: FC<IProps> = (props: IProps): JSX.Element => {
+const ActivitiesImage: FC<IProps> = (props: IProps): JSX.Element => {
   const {style, height = 141, width = 181} = props;
 
   return (
@@ -134,4 +134,4 @@ const SSINotificationsImage: FC<IProps> = (props: IProps): JSX.Element => {
   );
 };
 
-export default SSINotificationsImage;
+export default ActivitiesImage;

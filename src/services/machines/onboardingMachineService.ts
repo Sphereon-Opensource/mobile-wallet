@@ -17,7 +17,7 @@ import {generateDigest} from '../../utils';
 import {storagePersistPin} from '../storageService';
 import {ViewPreference} from '../../types/preferences';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {storeActivityLogging, storeAuditLogging} from '../../store/actions/logging.actions';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -69,14 +69,9 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 
     storeCredentials.push(digitalCredential);
 
-    if (!parentId) {
-      parentId = digitalCredential.id;
-      parentCredentialHash = digitalCredential.hash;
-    }
-
     store.dispatch<any>(
-      storeAuditLogging({
-        level: LogLevel.TRACE,
+      storeActivityLogging({
+        level: LogLevel.INFO,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
         initiatorType: InitiatorType.SYSTEM,
@@ -84,11 +79,21 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
         diagnosticData: {digitalCredential},
+        // @ts-ignore
+        credentialType: digitalCredential.documentFormat, // TODO fix types
+        credentialHash: digitalCredential.hash,
+        parentCredentialHash,
+        originalCredential: JSON.stringify(digitalCredential),
         partyCorrelationType: PartyCorrelationType.URL,
         partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
+
+    if (!parentId) {
+      parentId = digitalCredential.id;
+      parentCredentialHash = digitalCredential.hash;
+    }
   }
 
   return storeCredentials;

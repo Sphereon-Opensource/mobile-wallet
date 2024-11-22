@@ -8,7 +8,7 @@ import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import PinCode from '../../../components/pinCodes/OnboardingPinCode';
-import {useAuthEffect, useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
+import {useAuthFocusEffect, useBiometricsEnabledContext} from '../../../hooks/use-biometrics';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {storageGetPin} from '../../../services/storageService';
@@ -38,7 +38,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
 
   const [failed, setFailed] = useState(false);
 
-  useAuthEffect((success: boolean) => {
+  useAuthFocusEffect((success: boolean) => {
     if (!success) {
       if (pinInputRef.current) {
         pinInputRef.current.focus();

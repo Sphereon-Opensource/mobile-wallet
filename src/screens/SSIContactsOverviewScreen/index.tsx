@@ -5,6 +5,7 @@ import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
@@ -12,7 +13,6 @@ import {translate} from '../../localization/Localization';
 import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;

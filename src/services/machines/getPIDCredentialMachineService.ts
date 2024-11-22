@@ -59,14 +59,9 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
       opts: {hasher: generateDigest},
     });
 
-    if (!parentId) {
-      parentId = digitalCredential.id;
-      parentCredentialHash = digitalCredential.hash;
-    }
-
     store.dispatch<any>(
-      storeAuditLogging({
-        level: LogLevel.TRACE,
+      storeActivityLogging({
+        level: LogLevel.INFO,
         system: System.OID4VCI,
         subSystemType: SubSystem.VC_ISSUER,
         initiatorType: InitiatorType.SYSTEM,
@@ -74,11 +69,21 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
         actionType: ActionType.CREATE,
         actionSubType: DefaultActionSubType.VC_ISSUE,
         diagnosticData: {digitalCredential},
+        // @ts-ignore
+        credentialType: digitalCredential.documentFormat, // TODO fix types
+        credentialHash: digitalCredential.hash,
+        parentCredentialHash,
+        originalCredential: JSON.stringify(digitalCredential),
         partyCorrelationType: PartyCorrelationType.URL,
         partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
         partyAlias: 'Bundesdruckerei GmbH',
       }),
     );
+
+    if (!parentId) {
+      parentId = digitalCredential.id;
+      parentCredentialHash = digitalCredential.hash;
+    }
   }
 };
 
@@ -87,7 +92,7 @@ const deletePIDCredentials = async (): Promise<void> => {
     credential => {
       store.dispatch<any>(deleteVerifiableCredential(credential.hash)).then(() =>
         store.dispatch<any>(
-          storeActivityLogging({
+          storeAuditLogging({
             level: LogLevel.INFO,
             system: System.CREDENTIALS,
             subSystemType: SubSystem.OID4VP_OP,
@@ -95,10 +100,6 @@ const deletePIDCredentials = async (): Promise<void> => {
             description: 'Credential was deleted by user',
             actionType: ActionType.DELETE,
             actionSubType: DefaultActionSubType.VC_DELETE,
-            // @ts-ignore
-            credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-            credentialHash: credential.hash,
-            originalCredential: JSON.stringify(credential.digitalCredential),
             diagnosticData: credential,
           }),
         ),

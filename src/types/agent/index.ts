@@ -15,6 +15,7 @@ import {IOIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 import {IQRCodeGenerator} from '@sphereon/ssi-sdk.qr-code-generator';
 import {IEventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IAnomalyDetection} from '@sphereon/ssi-sdk.anomaly-detection';
+import {IResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
@@ -36,6 +37,7 @@ export type TAgentTypes = IDIDManager &
   ImDLMdoc &
   ISDJwtPlugin &
   IOIDFClient &
+  IResourceResolver &
   IQRCodeGenerator &
   IAnomalyDetection;
 

@@ -1,15 +1,15 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
+import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import React, {useCallback} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
-import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
-import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
-import {setViewPreference} from '../../store/actions/user.actions';
-import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
-import {useFocusEffect} from '@react-navigation/native';
 import {getVerifiableCredential} from '../../services/credentialService';
+import {setViewPreference} from '../../store/actions/user.actions';
+import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'Card'> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -69,7 +69,6 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
       rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
       uniqueDigitalCredential,
       credential,
-      showActivity: false,
     });
   };
 
@@ -78,6 +77,8 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
       style={{
         backgroundColor: backgroundColors.primaryDark,
         flex: 1,
+        paddingTop: 24,
+        gap: 12,
         paddingHorizontal: 24,
         alignItems: 'center',
         borderTopColor: '#404D7A',

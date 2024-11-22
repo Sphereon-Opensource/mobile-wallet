@@ -1,17 +1,14 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
-import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
-  CredentialMapper,
-  InitiatorType,
-  LogLevel,
-  OriginalVerifiableCredential,
-  OriginalVerifiablePresentation,
-  PresentationSubmission,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+  IOPOptions,
+  OID4VP,
+  OpSession,
+  VerifiableCredentialsWithDefinition,
+  VerifiablePresentationWithDefinition,
+} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
@@ -22,7 +19,7 @@ import {DocumentType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCreden
 import {com} from '@sphereon/kmp-mdl-mdoc';
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {EventEmitter} from 'events';
-import {encodeJoseBlob, EventLoggerBuilder} from '@sphereon/ssi-sdk.core';
+import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
@@ -115,7 +112,7 @@ const createMDocPresentation = (
     definition: vcWithDef.definition,
     verifiableCredentials: originalCredentials.filter((cred): cred is OriginalVerifiableCredential => cred !== undefined),
     // @ts-ignore  FIXME Funke
-    verifiablePresentation: originalPresentations[0],
+    verifiablePresentations: originalPresentations,
     idOpts: identifier,
     presentationSubmission: {
       id: presentationSubmission.id,

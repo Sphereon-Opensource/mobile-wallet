@@ -1,4 +1,79 @@
 {
+  "activity": {
+    "unknown": {
+      "contact": "Unknown contact",
+      "credential": "Unknown credential",
+      "credential_type": "Unknown credential type",
+      "purpose": "Unknown purpose",
+      "issuer": "Unknown issuer",
+      "type": "Unknown activity type",
+      "date": "Unknown date",
+      "activity": "Unknown activity"
+    },
+    "feed": {
+      "title": "Activity feed",
+      "list": {
+        "title": "All activities",
+        "loading": "Loading activities",
+        "search_placeholder": "Search for contact, card or status",
+        "empty_state": {
+          "title": "No activities",
+          "subtitle": "At the moment you don’t have any activities.\nThe activities will automatically appear here."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "All activities with",
+        "loading": "Loading activities for",
+        "search_placeholder": "Search for card or status"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Shared information",
+      "info_header": {
+        "description": "items shared"
+      },
+      "row_description": "Data gedeelt",
+      "detail_title": "Data gedeelt"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items declined"
+      },
+      "row_description": "Delen gegevens geweigerd",
+      "detail_title": "Delen gegevens geweigerd"
+    },
+    "VC issue": {
+      "info_list_title": "Issued information",
+      "revealed_info_title": "Issued information",
+      "info_header": {
+        "description": "items issued"
+      },
+      "row_description": "Credential ontvangen",
+      "detail_title": "New credential added to your wallet",
+      "description": ["You can finally use your", "card for official sharing purposes."]
+    },
+    "VC issue decline": {
+      "info_list_title": "Declined information",
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items not issued"
+      },
+      "row_description": "Ontvangen credential geweigerd",
+      "detail_title": "Credential not added to your wallet",
+      "description": ["You have declined to use the", "card for official sharing purposes."]
+    },
+    "section_titles": {
+      "status": "Status",
+      "purpose": "Purpose",
+      "credential_type": "Type of credential",
+      "issued_information": "Issued information"
+    },
+    "contact_link": "About",
+    "support_link": "Something wrong?"
+  },
   "credential_details_title": "Credential details",
   "credentials_overview_title": "Credentials",
   "credential_details_view_issued_by": "Uitgegeven door",
@@ -139,9 +214,6 @@
   "pin_code_accessibility_hint": "Vul je pincode in",
   "pin_code_invalid_code_message": "Deze pincode komt niet overeen. Probeer het opnieuw.",
   "pin_code_attempts_left_message": "Pogingen over:",
-  "notifications_overview_title": "Notificaties",
-  "notifications_overview_empty_state_title": "Geen notificaties",
-  "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch.",
   "lock_title": "Log in\nde Sphereon Wallet",
   "lock_subtitle": "Vul je pincode in.",
   "lock_emergency_button_caption": "Noodoproep",
@@ -371,6 +443,7 @@
   "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
   "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
   "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Ophalen federatievertrouwen",
   "action_view_all_label": "Alles bekijken",
   "filter_all_label": "Alles bekijken",
   "filter_other_label": "Overige",
@@ -398,6 +471,7 @@
   "federation_view_untrusted_description": "De partij maakt geen deel uit van een federatie die door de wallet wordt vertrouwd",
   "federation_view_trusted_description": "De partij maakt deel uit van een federatie die door de wallet wordt vertrouwd",
   "new_contact_add_new_contact_continue_caption": "Ja, doorgaan",
+  "new_contact_add_new_contact_abort_caption": "Nee, afbreken",
   "new_contact_add_new_contact_abort_cancel_caption": "Nee, annuleren",
   "new_contact_add_new_contact_abort_continue_caption": "Ja, ik wil stoppen",
   "new_contact_add_new_contact_create_title": "Contact aliasnaam",
@@ -409,6 +483,9 @@
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contacten",
+  "new_contact_add_new_contact_low_level_trust_title": "Weet u zeker dat u wilt doorgaan?",
+  "new_contact_add_new_contact_low_level_trust_description": "U staat op het punt om te communiceren met een partij met een laag betrouwbaarheidsniveau.",
 
   "present_qr_code_screen_header_title": "Present QR code",
   "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",

@@ -17,9 +17,7 @@ export const ContactDetailsHeaderSection = styled.View`
 export const ContactDetailsNavigationSection = styled.View`
   display: flex;
   align-items: stretch;
-  gap: 15px;
-  margin: 20px 0px 10px 0px;
-  padding: 0px 20px;
+  padding-horizontal: 16px;
 `;
 
 export const Divider = styled.View`

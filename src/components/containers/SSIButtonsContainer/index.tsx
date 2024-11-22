@@ -1,14 +1,14 @@
-import React, {CSSProperties, PureComponent} from 'react';
-import {ColorValue, EmitterSubscription, Keyboard, View} from 'react-native';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import React, {PureComponent} from 'react';
+import {ColorValue, EmitterSubscription, Keyboard, View, ViewStyle} from 'react-native';
 import {SSIButtonBottomContainerStyled as ButtonContainer} from '../../../styles/components';
 import {IButton} from '../../../types';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 
 export interface Props {
   primaryButton?: IButton;
   secondaryButton?: IButton;
   backgroundColor?: ColorValue;
-  style?: CSSProperties;
+  style?: ViewStyle;
 }
 
 interface IState {
@@ -47,17 +47,18 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
     return (
       <ButtonContainer
         style={{
-          paddingBottom: keyboardVisible ? 18 : 36,
+          paddingVertical: keyboardVisible ? 16 : 32,
+          gap: 16,
           ...(backgroundColor && {backgroundColor}),
           ...style,
         }}>
         {secondaryButton && (
-          <View style={{flex: 1, flexDirection: 'column'}}>
+          <View style={{flex: 1}}>
             <SecondaryButton caption={secondaryButton.caption} onPress={secondaryButton.onPress} disabled={secondaryButton.disabled} />
           </View>
         )}
         {primaryButton && (
-          <View style={{flex: 1, flexDirection: 'column'}}>
+          <View style={{flex: 1}}>
             <PrimaryButton
               caption={primaryButton.caption}
               onPress={primaryButton.onPress}

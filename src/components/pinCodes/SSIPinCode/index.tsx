@@ -23,6 +23,7 @@ interface IProps {
   errorMessage?: string;
   onMaxRetriesExceeded?: () => Promise<void>;
   onVerification: (value: string) => Promise<void>;
+  autoFocus?: boolean;
 }
 
 interface IState {
@@ -74,7 +75,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
 
   submit = (value: string): void => {
     const {onVerification} = this.props;
-
+    this.hideKeyboard();
     onVerification(value)
       .then(() => this.setState({retry: 0}))
       .catch(this.onVerificationFailed);
@@ -86,6 +87,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     if (!maxRetries) {
       this.setState({pin: '', showErrorMessage: true});
       this.failureAnimation();
+      this.setInputFocus();
       return;
     }
 
@@ -207,7 +209,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
             accessibilityHint={accessibilityHint}
             accessibilityRole={'text'}
             keyboardType={'number-pad'}
-            autoFocus
+            autoFocus={this.props.autoFocus}
             caretHidden
             maxLength={length}
             onKeyPress={this.onKeyPressInput}

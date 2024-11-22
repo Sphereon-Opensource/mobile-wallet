@@ -122,9 +122,12 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
     dispatch({type: USERS_LOADING});
     await userServiceGetUsers()
       .then(async (users: Map<string, IUser>) => {
+        const lockingHandler = LockingHandler.getInstance();
         const user = users.get(userId);
         if (user) {
           dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
+          //unlocking immediately to prevent re-locking after login
+          lockingHandler.isLocked = false;
 
           // We do we need to use the while loop here? The above is a sync action that does not use a thunk, thus getState().user should be available already
           const maxWaitTime = 5000;
@@ -146,9 +149,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           await dispatch(getVerifiableCredentials());
           // add small delay to make the conditional navigation working for the catalog
           await delay(700);
-          const lockingHandler = await LockingHandler.getInstance();
           lockingHandler.touchLastInteraction();
-          lockingHandler.isLocked = false;
 
           dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();
