@@ -217,7 +217,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       {
         tool: {
           name: 'accept',
-          description: 'accept contact',
+          description: 'accept and add the contact',
           parameters: {},
         },
         callback: () => {
@@ -228,7 +228,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       {
         tool: {
           name: 'decline',
-          description: 'decline contact',
+          description: 'decline, abort or skip adding the contact',
           parameters: {},
         },
         callback: () => {
@@ -243,26 +243,21 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           parameters: {},
         },
         callback: () => {
-          console.log('edit alias');
-        },
-      },
-      {
-        tool: {
-          name: 'editConsent',
-          description: 'edit consent',
-          parameters: {},
-        },
-        callback: () => {
-          console.log('edit consent');
-        },
+          contactAliasRef.current
+          onEditAlias();
+        }
       },
     ],
     [],
   );
-
   const screenContext = useMemo(
     () =>
-      `you are currently on the Contact Review screen. Here you can see information about the contact related to the credential you are adding. Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState(
+      `you are currently on the Contact Review screen. Here you can see information about the contact related to the credential you are adding.
+      ${federations?.length === 0
+        ? "It looks like this contact is not part of any trusted federations. This is a low trust level contact. You can still add this contact, but explicitly and clearly inform the user about it before even listing the contact information. If the user is okay with this, you can proceed with listing the details."
+        : `This contact is part of the following federations ${federations?.map(f => f.contact.displayName)?.join(', ')}. This is a high trust level contact. You can proceed with listing the details.`
+      }
+      Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState(
         {name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations},
       )}`,
     [contactState, name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations],

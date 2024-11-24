@@ -4,6 +4,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {OPENAI_API_KEY} from 'react-native-dotenv';
 import {useSelector} from 'react-redux';
 import {RootState} from 'src/types';
+import {ChatTools} from '../components/chat/Chat';
 import {basicInstructions, reopenChatPrompt} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
 import WavRecorder from '../utils/wavtools/WavRecorder';
@@ -235,6 +236,14 @@ const useAIAssistant = () => {
     wavStreamPlayerRef.current.add16BitPCM(int16Array, 'assistant-audio');
   };
 
+  const addTools = (tools: ChatTools) => tools?.forEach(({tool, callback}) => {
+    clientRef.current.addTool(tool, callback);
+  });
+
+  const removeTools = (tools: ChatTools) => tools?.forEach(({tool}) => {
+    clientRef.current.removeTool(tool.name);
+  })
+
   return {
     isConnected,
     sendPrompt,
@@ -249,8 +258,8 @@ const useAIAssistant = () => {
     endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
-    addTool: clientRef.current.addTool.bind(clientRef.current),
-    removeTool: clientRef.current.removeTool.bind(clientRef.current),
+    addTools,
+    removeTools,
     handleChatOpened,
     speakMessage,
     ignoreTools,

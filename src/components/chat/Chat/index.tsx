@@ -27,22 +27,14 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
     handleChatOpened,
     sendPrompt,
     items,
-    addTool,
-    removeTool,
+    addTools,
+    removeTools,
     speakMessage,
   } = useAssistant();
-
   useEffect(() => {
-    tools?.forEach(({tool, callback}) => {
-      addTool(tool, callback);
-    });
-    return () => {
-      tools?.forEach(({tool}) => {
-        removeTool(tool.name);
-      });
-    };
+    addTools(tools ?? []);
+    return () => removeTools(tools ?? []);
   }, [tools]);
-
   useEffect(() => {
     const updatedMessages = items
       .map(item => {

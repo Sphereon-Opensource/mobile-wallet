@@ -124,31 +124,31 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       },
       ...(primaryAction
         ? [
-            {
-              tool: {
-                name: 'accept',
-                description: 'accept contact',
-                parameters: {},
-              },
-              callback: () => {
-                primaryAction && primaryAction.onPress();
-              },
+          {
+            tool: {
+              name: 'accept',
+              description: 'accept the credential offer',
+              parameters: {},
             },
-          ]
+            callback: () => {
+              primaryAction && primaryAction.onPress();
+            },
+          },
+        ]
         : []),
       ...(secondaryAction
         ? [
-            {
-              tool: {
-                name: 'decline',
-                description: 'decline contact',
-                parameters: {},
-              },
-              callback: () => {
-                secondaryAction && secondaryAction.onPress();
-              },
+          {
+            tool: {
+              name: 'decline',
+              description: 'decline the credential offer',
+              parameters: {},
             },
-          ]
+            callback: () => {
+              secondaryAction && secondaryAction.onPress();
+            },
+          },
+        ]
         : []),
     ],
     [primaryAction, secondaryAction],
