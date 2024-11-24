@@ -5,11 +5,13 @@ import * as React from 'react';
 import {useCallback, useEffect, useState} from 'react';
 import {LogBox, Platform, StatusBar} from 'react-native';
 import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {DB_CONNECTION_NAME} from './src/@config/database';
 import {agentContext, linkHandlers} from './src/agent';
+import './src/agent/index';
 import IntentHandler from './src/handlers/IntentHandler';
 import {addLinkListeners} from './src/handlers/LinkHandlers';
 import LockingHandler from './src/handlers/LockingHandler';
@@ -22,10 +24,6 @@ import {getDbConnection} from './src/services/databaseService';
 import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import './src/agent/index';
-import {ChatProvider} from './src/providers/chat/chatProvider';
-import {AssistantProvider} from './src/providers/chat/AssistantProvider';
 
 LogBox.ignoreLogs([
   // Ignore require cycles for the app in dev mode. They do show up in Metro!
@@ -120,13 +118,9 @@ export default function App() {
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
-            <AssistantProvider>
-              <ChatProvider>
-                <GestureHandlerRootView style={{flex: 1}}>
-                  <AppNavigator />
-                </GestureHandlerRootView>
-              </ChatProvider>
-            </AssistantProvider>
+            <GestureHandlerRootView style={{flex: 1}}>
+              <AppNavigator />
+            </GestureHandlerRootView>
           </OnTouchProvider>
         </NavigationContainer>
       </SafeAreaProvider>
