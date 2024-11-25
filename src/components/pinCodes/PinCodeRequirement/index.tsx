@@ -1,5 +1,7 @@
 import {fontColors, statusColors} from '@sphereon/ui-components.core';
+import {useEffect} from 'react';
 import {ColorValue, View, ViewProps} from 'react-native';
+import {useAccessibility} from '../../../hooks/useAccessibility';
 import {SSITextH3RegularLightStyled} from '../../../styles/components';
 
 type Requirement = {
@@ -17,6 +19,12 @@ type Props = {
 
 const Requirement = ({text, met, showFeedback}: Requirement) => {
   const textColor: ColorValue = !met && showFeedback ? statusColors.expired : `${fontColors.light}CC`;
+  const {announce} = useAccessibility();
+  useEffect(() => {
+    if (!met && showFeedback) {
+      announce({message: `Pin invalid: ${text} not allowed`});
+    }
+  }, [met, showFeedback]);
   return (
     <View style={{flexDirection: 'row'}}>
       <SSITextH3RegularLightStyled style={{color: textColor}}>{'  \u2022  '}</SSITextH3RegularLightStyled>

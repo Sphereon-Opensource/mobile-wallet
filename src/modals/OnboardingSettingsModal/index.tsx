@@ -1,11 +1,12 @@
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {useState} from 'react';
-import {Dimensions, ViewStyle} from 'react-native';
+import React, {ReactNode, useEffect, useState} from 'react';
+import {Dimensions, View, ViewStyle} from 'react-native';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import SSICloseIcon from '../../components/assets/icons/SSICloseIcon';
 import ScreenTitleAndDescription from '../../components/containers/ScreenTitleAndDescription';
 import SelectOption from '../../components/fields/SelectOption';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {translate} from '../../localization/Localization';
 import {OnboardingContext} from '../../navigation/machines/onboardingStateNavigation';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../services/storageService';
@@ -17,7 +18,7 @@ const MODAL_WIDTH = width;
 export const MODAL_HEIGHT = (2 * height) / 3;
 
 type Props = {
-  onModalClose: () => void;
+  onModalClose: (securityModel: PIDSecurityModel) => void;
   style: ViewStyle;
 };
 
@@ -51,24 +52,34 @@ const OptionContainer = styled.View`
   gap: 15px;
 `;
 
-const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
-  const {onboardingInstance} = React.useContext(OnboardingContext);
-  const [securityModel, setSecurityModel] = useState<PIDSecurityModel>(PIDSecurityModel.SECURE_ELEMENT);
-  const onClose = async (): Promise<void> => {
-    storagePersistPIDSecurityModel(securityModel)
-      .then((): void => {
-        if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
+export const Wrapper = ({children, onClose, style = {}}: {children: ReactNode; onClose: () => void; style?: ViewStyle}) => {
+  const {isScreenReaderEnabled, setFocus} = useAccessibility();
+  const containerRef = React.useRef<View>(null);
+  useEffect(() => {
+    setFocus(containerRef);
+  }, [setFocus]);
+  return isScreenReaderEnabled ? (
+    <View
+      ref={containerRef}
+      accessibilityLabel="PID security model selection menu"
+      accessibilityActions={[{name: 'close', label: 'Close menu'}]}
+      onAccessibilityAction={event => {
+        if (event.nativeEvent.actionName === 'close') {
+          onClose();
         }
-        if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
-        }
-        onModalClose();
-      })
-      .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
-  };
-
-  return (
+      }}
+      style={[
+        {
+          width: MODAL_WIDTH,
+          height: height - 42,
+          position: 'static',
+          marginLeft: -24,
+        },
+        style,
+      ]}>
+      {children}
+    </View>
+  ) : (
     <Animated.View
       style={[
         {
@@ -80,15 +91,46 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
         },
         style,
       ]}>
+      {children}
+    </Animated.View>
+  );
+};
+
+const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
+  const {onboardingInstance} = React.useContext(OnboardingContext);
+  const {isScreenReaderEnabled, announce} = useAccessibility();
+  const [securityModel, setSecurityModel] = useState<PIDSecurityModel>(PIDSecurityModel.SECURE_ELEMENT);
+  const onClose = async (): Promise<void> => {
+    storagePersistPIDSecurityModel(securityModel)
+      .then((): void => {
+        if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
+          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
+        }
+        if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {
+          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
+        }
+        announce({message: `Selected security model: ${securityModel}`});
+        setTimeout(() => onModalClose(securityModel), isScreenReaderEnabled ? 3000 : 0);
+      })
+      .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
+  };
+
+  return (
+    <Wrapper onClose={onClose} style={!isScreenReaderEnabled ? style : undefined}>
       <SettingsModalContainer>
-        <SettingsCloseContainer onPress={onClose} style={({pressed}) => ({opacity: pressed ? 0.7 : 1})}>
+        <SettingsCloseContainer
+          onPress={onClose}
+          accessibilityRole="button"
+          accessibilityLabel="Close menu"
+          style={({pressed}) => ({opacity: pressed ? 0.7 : 1, padding: 8})}>
           <SSICloseIcon color="white" size={15} />
         </SettingsCloseContainer>
         <ScreenTitleAndDescription
           title={translate('onboarding_pid_security_model_title')}
           description={translate('onboarding_pid_security_model_subtitle')}
+          containerStyle={{marginTop: 8}}
         />
-        <OptionContainer>
+        <OptionContainer accessibilityRole="radiogroup" accessibilityLabel="Security model options">
           <SelectOption
             label={translate('onboarding_pid_security_model_secure_element')}
             onPress={() => setSecurityModel(PIDSecurityModel.SECURE_ELEMENT)}
@@ -113,9 +155,14 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
           />
         </OptionContainer>
 
-        <PrimaryButton caption={translate('onboarding_pid_security_model_select')} onPress={onClose} />
+        <PrimaryButton
+          accessibilityRole="button"
+          accessibilityLabel="Select security model and close menu"
+          caption={translate('onboarding_pid_security_model_select')}
+          onPress={onClose}
+        />
       </SettingsModalContainer>
-    </Animated.View>
+    </Wrapper>
   );
 };
 

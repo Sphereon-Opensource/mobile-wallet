@@ -137,6 +137,7 @@ export const getPIDCredentialsStateNavigationListener = (
         }),
         primaryButton: {
           caption: translate('action_ok_label'),
+          accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
           onPress: () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
         },
         onBack: () => getPIDCredentialsMachine.send(GetPIDCredentialsMachineEvents.PREVIOUS),

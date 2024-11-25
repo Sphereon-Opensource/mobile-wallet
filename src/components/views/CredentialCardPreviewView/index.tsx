@@ -1,12 +1,12 @@
-import React, {FC, ReactElement} from 'react';
+import {SSITextH4Styled as DescriptionCaption, SSITextH3SemiBoldStyled as TitleCaption} from '@sphereon/ui-components.ssi-react-native';
+import React, {FC, ReactElement, ReactNode} from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {SSITextH3SemiBoldStyled as TitleCaption, SSITextH4Styled as DescriptionCaption} from '@sphereon/ui-components.ssi-react-native';
 import {
   CredentialCardPreviewViewImageBackgroundStyled as ImageBackground,
-  CredentialCardPreviewViewLogoStyled as Logo,
-  CredentialCardPreviewViewInformationContainerStyled as InformationContainer,
   CredentialCardPreviewViewInformationBorderStyled as InformationBorder,
+  CredentialCardPreviewViewInformationContainerStyled as InformationContainer,
   CredentialCardPreviewViewInformationContentContainerStyled as InformationContentContainer,
+  CredentialCardPreviewViewLogoStyled as Logo,
 } from '../../../styles/components';
 
 // TODO eventually we want to have a preview card for potential credentials a user can acquire. Now this component is just a hardcoded eID card preview
@@ -20,9 +20,22 @@ export type Props = {
 
 const CredentialCardPreviewView: FC<Props> = (props: Props): ReactElement => {
   const {title, description, issuer, onPress} = props;
-
+  const Wrapper = ({children}: {children: ReactNode}) =>
+    onPress ? (
+      <TouchableOpacity
+        onPress={onPress}
+        accessible
+        accessibilityRole="imagebutton"
+        accessibilityHint="Double tap to add this information to your wallet">
+        {children}
+      </TouchableOpacity>
+    ) : (
+      <View accessibilityRole="summary" accessible>
+        {children}
+      </View>
+    );
   return (
-    <TouchableOpacity disabled={!onPress} onPress={onPress}>
+    <Wrapper>
       <ImageBackground source={require('../../../assets/images/eIDCartBackground.png')}>
         <Logo />
         <InformationContainer>
@@ -36,7 +49,7 @@ const CredentialCardPreviewView: FC<Props> = (props: Props): ReactElement => {
           </InformationContentContainer>
         </InformationContainer>
       </ImageBackground>
-    </TouchableOpacity>
+    </Wrapper>
   );
 };
 

@@ -36,7 +36,7 @@ const Status = ({activity}: Props) => {
   const {title, description, icon} = getActivityStatusText(activity);
   const colors = colorMap[activity.result];
   return (
-    <Container style={{backgroundColor: colors.background}}>
+    <Container accessible accessibilityLabel={`${activity.result}: ${title}. ${description}`} style={{backgroundColor: colors.background}}>
       {icon}
       <TextContainer>
         <SSITextH3Styled style={{color: colors.title}}>{title}</SSITextH3Styled>

@@ -94,6 +94,7 @@ const ActivityList = ({activities, loading, onActivityPress, onRefresh, listTitl
         <>
           <Search search={search} onSearchChange={setSearch} {...searchInputProps} />
           <SSITextH3LightStyled
+            accessibilityRole="header"
             style={{
               paddingHorizontal: 24,
               borderBottomWidth: 1,
@@ -102,6 +103,8 @@ const ActivityList = ({activities, loading, onActivityPress, onRefresh, listTitl
             {listTitle}
           </SSITextH3LightStyled>
           <SwipeListView
+            accessibilityRole="list"
+            accessibilityLabel="activities"
             style={{
               backgroundColor: backgroundColors.primaryDark,
             }}

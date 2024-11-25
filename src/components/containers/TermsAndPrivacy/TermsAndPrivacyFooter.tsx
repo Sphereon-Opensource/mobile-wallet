@@ -30,7 +30,7 @@ const FooterContainer = styled(View)`
 
 const Link = ({text, onPress}: {text: string; onPress: () => void}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} accessibilityRole="link">
       <LinkText>{text}</LinkText>
     </TouchableOpacity>
   );

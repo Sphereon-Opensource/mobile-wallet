@@ -301,6 +301,7 @@ const navigateError = async (args: SiopV2MachineNavigationArgs): Promise<void> =
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,

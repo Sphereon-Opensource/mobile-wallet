@@ -22,13 +22,25 @@ export type Props = NativeStackHeaderProps & {
 const OnboardingStepHeader: FC<Props> = ({title, subtitle, stepConfig, onBack}: Props): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
   const Left = useMemo(
-    () => <Back onPress={onBack ?? (() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))} />,
+    () => (
+      <Back
+        onPress={onBack ?? (() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS))}
+        accessibilityHint="Navigate back to the previous screen"
+      />
+    ),
     [onBack, onboardingInstance],
   );
 
   const Center = useMemo(() => <CenterInfo title={title} subtitle={subtitle} />, [title, subtitle]);
 
-  const Right = useMemo(() => <SSITextH3LightStyled>{`${stepConfig.current}/${stepConfig.total}`}</SSITextH3LightStyled>, [stepConfig]);
+  const Right = useMemo(
+    () => (
+      <SSITextH3LightStyled accessibilityLabel={`Step ${stepConfig.current} of ${stepConfig.total}`}>
+        {`${stepConfig.current}/${stepConfig.total}`}
+      </SSITextH3LightStyled>
+    ),
+    [stepConfig],
+  );
 
   return (
     <Container style={{paddingTop: useSafeAreaInsets().top}}>

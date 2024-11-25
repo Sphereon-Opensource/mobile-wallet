@@ -1,9 +1,11 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {IssuerStatus} from '@sphereon/ui-components.core';
 import React from 'react';
 import {NavigationButton} from '../../components/NavigationButton';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {MainRoutesEnum, NavigationBarRoutesEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 
@@ -11,6 +13,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_DET
 
 const SSIContactDetailsScreen = ({route, navigation}: Props) => {
   const {contact} = route.params;
+  const {announce} = useAccessibility();
   const contactDetails = [
     {
       id: 'Name',
@@ -48,6 +51,7 @@ const SSIContactDetailsScreen = ({route, navigation}: Props) => {
       value: contact.branding?.contacts,
     },
   ];
+  useFocusEffect(() => announce({message: `Contact details for ${contact.contact.displayName}`, delay: 1000}));
   return (
     <Container style={{paddingTop: 24}}>
       <ContactInformationView

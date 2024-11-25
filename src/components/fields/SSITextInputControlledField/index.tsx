@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
+import React, {useContext} from 'react';
 import {TextInputProps} from 'react-native';
 
 import {selectionElementColors, statusColors} from '@sphereon/ui-components.core';
+import {AccessibilityContext} from '../../../contexts/AccessibiltyContext';
 import {inputs} from '../../../styles/colors';
 import {
   SSITextInputFieldContainerStyled as Container,
@@ -12,9 +13,8 @@ import {
   SSITextFieldLinearTextGradientStyled as LinearTextGradient,
   SSITextH5StyleObject,
   SSITextInputFieldUnderlineLightStyled,
-  SSITextInputFieldTextInputStyled as TextInput,
+  SSITextInputFieldTextInputStyled as StyledTextInput,
   SSITextInputFieldUnderlineStyled as Underline,
-  SSITextInputFieldUnderlineLinearGradientStyled as UnderlineLinearGradient,
 } from '../../../styles/components';
 import {OpacityStyleEnum} from '../../../types';
 import SSIEyeIcon from '../../assets/icons/SSIEyeIcon';
@@ -30,7 +30,7 @@ export interface IProps extends TextInputProps {
   endAdornment?: JSX.Element;
 }
 
-const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => {
+const SSITextInputControlledField = (props: IProps) => {
   const {
     error,
     label,
@@ -45,12 +45,20 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
     style: textInputStyle,
     ...TextInputProps
   } = props;
+  const {announce} = useContext(AccessibilityContext);
+  if (error) {
+    announce({
+      message: error,
+      queue: true,
+    });
+  }
 
   return (
     <Container>
       {label ? (
         labelColor || error ? (
           <LabelCaption
+            importantForAccessibility="no"
             style={{
               color: error ? statusColors.expired : labelColor,
               ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
@@ -68,7 +76,8 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
         )
       ) : null}
       <InputContainer>
-        <TextInput
+        <StyledTextInput
+          accessibilityLabel={label}
           value={value}
           style={[
             textInputStyle,
@@ -99,6 +108,7 @@ const SSITextInputControlledField: FC<IProps> = (props: IProps): JSX.Element => 
       <HelperContainer>
         {(helperText || error) && (
           <LabelCaption
+            importantForAccessibility="no"
             style={{
               color: error ? statusColors.expired : inputs.placeholder,
               ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),

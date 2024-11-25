@@ -39,7 +39,6 @@ export const SSIHeaderBarBackIconContainerStyled = styled.View`
 // TODO move width to attributes of SSIIconButton
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin-top: 18px;
-  width: 20px;
 `;
 
 export const SSIHeaderBarMoreMenuContainerStyled = styled.View`

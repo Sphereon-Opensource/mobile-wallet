@@ -1,12 +1,12 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {TCountryCode} from 'countries-list';
 import {ReactNode} from 'react';
 import {Interpreter, State, StatesConfig} from 'xstate';
-import {OnboardingStackParamsList} from '../../navigation';
 import VciServiceFunkeCProvider from '../../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../../error';
+import {OnboardingStackParamsList} from '../../navigation';
 import {IUser} from '../../user';
 import {MappedCredential} from '../getPIDCredentialMachine';
-import {TCountryCode} from 'countries-list';
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
@@ -34,6 +34,7 @@ export type OnboardingMachineContext = {
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
+  popupMenuOpen?: boolean;
 };
 
 // States
@@ -83,6 +84,7 @@ export enum OnboardingMachineEvents {
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
   DECLINE_INFORMATION = 'DECLINE_INFORMATION',
   SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
+  SET_POPUP_MENU_OPEN = 'SET_POPUP_MENU_OPEN',
 }
 
 export type NextEvent = {type: OnboardingMachineEvents.NEXT};
@@ -100,6 +102,7 @@ export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
 export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
+export type SetPopupMenuOpen = {type: OnboardingMachineEvents.SET_POPUP_MENU_OPEN; data: boolean};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -116,7 +119,8 @@ export type OnboardingMachineEventTypes =
   | SkipBiometricsEvent
   | SetBiometricsEvent
   | DeclineInformation
-  | SetFunkeProvider;
+  | SetFunkeProvider
+  | SetPopupMenuOpen;
 
 // Guards
 export enum OnboardingMachineGuards {
