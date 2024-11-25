@@ -5,14 +5,18 @@ import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 import {ContactStore, DigitalCredentialStore, EventLoggerStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs, OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
+import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
+import {ResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
 import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
-import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
 import {IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
@@ -26,15 +30,11 @@ import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {storeActivityLogging} from '../store/actions/logging.actions';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
-import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
-import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
-import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
-import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
-import {ResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
-import {storeActivityLogging} from '../store/actions/logging.actions';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -116,6 +116,22 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new IssuanceBrandingStore(dbConnection),
     }),
     new CredentialPlugin(),
+   /* new CredentialHandlerLDLocal({
+      contextMaps: [LdContexts],
+      suites: [
+        new SphereonEd25519Signature2018(),
+        new SphereonEd25519Signature2020(),
+        // new SphereonBbsBlsSignature2020(),
+        new SphereonJsonWebSignature2020(),
+      ],
+      bindingOverrides: new Map([
+        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
+        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
+      ]),
+      keyStore: privateKeyStore,
+    }),*/
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
     new MachineStatePersistence({
