@@ -1,4 +1,5 @@
-import {DEBUG} from '@env';
+import {DEBUG} from 'react-native-dotenv';
+import {install as installCrypto} from '@sphereon/react-native-quick-crypto';
 
 if (typeof __dirname === 'undefined') global.__dirname = '/';
 if (typeof __filename === 'undefined') global.__filename = '';
@@ -41,6 +42,19 @@ if (isDev) {
   debug.enable(level);
 }
 
+installCrypto();
+if (!global.window.crypto) {
+  global.window.crypto = global.crypto;
+}
+if (typeof self !== 'undefined') {
+  self.crypto = global.crypto;
+}
+
+//export const walletCrypto = global.crypto;
+global.CryptoKey = global.crypto.CryptoKey; // FIXME DELETE?
+global.window.CryptoKey = global.crypto.CryptoKey; // FIXME DELETE?
+
+// require('string.prototype.matchall/shim');
 // If using the crypto shim, uncomment the following line to ensure
 // crypto is loaded first, so it can populate global.crypto
 // require('crypto')

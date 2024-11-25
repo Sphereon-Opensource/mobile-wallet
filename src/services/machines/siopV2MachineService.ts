@@ -8,7 +8,6 @@ import {
   NonPersistedIdentity,
   Party,
 } from '@sphereon/ssi-sdk.data-store';
-import {W3CVerifiableCredential} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
@@ -20,6 +19,12 @@ import {OpenIdFederationEntities, SiopV2AuthorizationRequestData, SiopV2MachineC
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PublicKeyHex, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
+
+const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
 export const createConfig = async (
   context: Pick<SiopV2MachineContext, 'url' | 'identifier'>,
@@ -66,7 +71,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
     : name;
   const correlationId: string = uri?.hostname ?? correlationIdName;
+  const clientIdScheme: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
   const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
+  const entityId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -74,7 +81,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     registrationMetadataPayload: verifiedAuthorizationRequest.registrationMetadataPayload,
     uri,
     name,
+    clientIdScheme,
     clientId,
+    entityId,
     presentationDefinitions:
       (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
       (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
@@ -126,7 +135,6 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
       ? clientId
       : `${new URL(clientId).protocol}//${new URL(clientId).hostname}`
     : undefined;
-
   if (correlationId) {
     const identity: NonPersistedIdentity = {
       origin: IdentityOrigin.EXTERNAL,
@@ -142,9 +150,9 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 };
 
 export const sendResponse = async (
-  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials'>,
+  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact'>,
 ): Promise<Response> => {
-  const {didAuthConfig, authorizationRequestData, selectedCredentials} = context;
+  const {didAuthConfig, authorizationRequestData, selectedCredentials, contact} = context;
 
   if (didAuthConfig === undefined) {
     return Promise.reject(Error('Missing config in context'));
@@ -160,18 +168,82 @@ export const sendResponse = async (
       verifiableCredentialsWithDefinition: [
         {
           definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
-          credentials: selectedCredentials as Array<W3CVerifiableCredential>,
+          credentials: selectedCredentials as Array<UniqueDigitalCredential>,
         },
       ],
     }),
   });
+
+  selectedCredentials.forEach(credential =>
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'Credential shared by user',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    ),
+  );
+
+  if (!response) {
+    return Promise.reject(Error('Missing SIOP authentication response'));
+  }
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
-    Linking.emit('url', {url});
+    Linking.openURL(url);
+  } else if (response.status >= 200 && response.status < 300) {
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const body: Record<string, unknown> = await response.json();
+      const redirectUri = body['redirect_uri'];
+      if (typeof redirectUri === 'string') {
+        logger.info(`Redirecting to: ${redirectUri}`);
+        Linking.openURL(redirectUri);
+      }
+    }
   }
 
   return response;
+};
+
+export const getFederationTrust = async (
+  context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
+): Promise<Array<TrustedAnchor>> => {
+  const {authorizationRequestData, trustAnchors} = context;
+
+  if (trustAnchors.length === 0) {
+    return Promise.reject(Error('No trust anchors found'));
+  }
+
+  if (!authorizationRequestData) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  const entityIdentifier = authorizationRequestData.entityId;
+  if (!entityIdentifier) {
+    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  }
+  const result = await agent.identifierExternalResolveByOIDFEntityId({
+    method: 'entity_id',
+    trustAnchors: trustAnchors,
+    identifier: entityIdentifier,
+  });
+
+  return result.trustedAnchors;
 };
 
 // Must return RP metadata

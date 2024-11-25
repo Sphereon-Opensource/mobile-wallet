@@ -27,9 +27,11 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getMatchingCredentials} from '../../services/pexService';
+import agent from '../../agent';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -57,7 +59,7 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {hasContactConsent, url, authorizationRequestData} = state.context;
+  const {url, authorizationRequestData, trustedAnchors} = state.context;
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
@@ -116,13 +118,6 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     });
   };
 
-  const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-    siopV2Machine.send({
-      type: SiopV2MachineEvents.SET_CONTACT_CONSENT,
-      data: hasConsent,
-    });
-  };
-
   const onAliasChange = async (alias: string): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.SET_CONTACT_ALIAS,
@@ -138,19 +133,50 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  const getContactsArgs = {
+    filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  const federationParties = trustedAnchors && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+
   navigation.navigate(MainRoutesEnum.SIOPV2, {
-    screen: ScreenRoutesEnum.CONTACT_ADD,
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
+      roles: [CredentialRole.VERIFIER],
       uri: contact.uri,
+      federations: federationParties,
       identities: contact.identities,
-      hasConsent: hasContactConsent,
       onAliasChange,
-      onConsentChange,
       onCreate,
       onDecline,
       onBack,
       isCreateDisabled,
+    },
+  });
+};
+
+const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
+  const {navigation, state, siopV2Machine, onBack, onNext} = args;
+  const {contact} = state.context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  const onDecline = async (): Promise<void> => {
+    siopV2Machine.send(SiopV2MachineEvents.DECLINE);
+  };
+
+  navigation.navigate(MainRoutesEnum.SIOPV2, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      roles: contact.roles,
+      uri: contact.uri,
+      federations: [],
+      onContinue: onNext,
+      onDecline,
+      onBack,
     },
   });
 };
@@ -175,11 +201,8 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
   const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
-  const subjectSyntaxTypesSupported: Array<string> | undefined =
-    authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
 
-  const onSelect = async (selectedCredentials: Array<OriginalVerifiableCredential>): Promise<void> => {
+  const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
       type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS,
       data: selectedCredentials,
@@ -201,20 +224,46 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     await authenticate(onAuthenticate);
   };
 
-  navigation.navigate(MainRoutesEnum.SIOPV2, {
-    screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
-    params: {
-      verifierName: contact.contact.displayName,
-      presentationDefinition: presentationDefinitionWithLocation.definition,
-      format,
-      subjectSyntaxTypesSupported,
-      onDecline,
-      onSelect,
-      onSend,
-      onBack,
-      isSendDisabled,
-    },
-  });
+  const onSelectAndSend = async (credential: UniqueDigitalCredential): Promise<void> => {
+    await onSelect([credential]);
+    setTimeout(() => {
+      // FIXME Funke; wait for machine event, but we need to set a state somewhere that onSelectAndSend was used so we know to proceed to onSend()
+      onSend();
+    }, 600);
+  };
+
+  //fixme: we should pass the hasher function here from the RP
+  const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  if (matchingCredentials && matchingCredentials.length === 1) {
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+      params: {
+        verifier: contact,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        credential: matchingCredentials[0],
+        onDecline,
+        onSelectAndSend,
+      },
+    });
+  } else {
+    const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
+    const subjectSyntaxTypesSupported: Array<string> | undefined =
+      authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
+    navigation.navigate(MainRoutesEnum.SIOPV2, {
+      screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+      params: {
+        verifierName: contact.contact.displayName,
+        presentationDefinition: presentationDefinitionWithLocation.definition,
+        format,
+        subjectSyntaxTypesSupported,
+        onDecline,
+        onSelect,
+        onSend,
+        onBack,
+        isSendDisabled,
+      },
+    });
+  }
 };
 
 const navigateFinal = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
@@ -252,6 +301,7 @@ const navigateError = async (args: SiopV2MachineNavigationArgs): Promise<void> =
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,
@@ -282,6 +332,7 @@ export const siopV2StateNavigationListener = async (
     state.matches(SiopV2MachineStates.createConfig) ||
     state.matches(SiopV2MachineStates.getSiopRequest) ||
     state.matches(SiopV2MachineStates.retrieveContact) ||
+    state.matches(SiopV2MachineStates.getFederationTrust) ||
     state.matches(SiopV2MachineStates.transitionFromSetup)
   ) {
     return navigateLoading({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
@@ -289,6 +340,8 @@ export const siopV2StateNavigationListener = async (
     return navigateSendingCredentials({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.addContact)) {
     return navigateAddContact({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(SiopV2MachineStates.reviewContact)) {
+    return navigateReviewContact({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.selectCredentials)) {
     return navigateSelectCredentials({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(SiopV2MachineStates.handleError)) {

@@ -4,13 +4,12 @@ import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
-import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {storageDeletePin} from '../../services/storageService';
 import {
-  getUsers as userServiceGetUsers,
-  deleteUser as userServiceDeleteUser,
-  updateUser as userServiceUpdateUser,
   createUser as userServiceCreateUser,
+  deleteUser as userServiceDeleteUser,
+  getUsers as userServiceGetUsers,
+  updateUser as userServiceUpdateUser,
 } from '../../services/userService';
 import {BasicUser, IAddIdentifierArgs, IUser, RootState} from '../../types';
 import {CLEAR_CONTACTS} from '../../types/store/contact.action.types';
@@ -33,14 +32,22 @@ import {
 } from '../../types/store/user.action.types';
 import {IUserState} from '../../types/store/user.types';
 
+import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
+import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
-import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
+import {getActivityLogging} from './logging.actions';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {delay} from '../../utils';
+import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
-export const createUser = (args: BasicUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
+export const createUser = (
+  args: BasicUser,
+  options?: {credentialOverviewViewPreference?: ViewPreference},
+): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
     dispatch({type: USERS_LOADING});
-    return userServiceCreateUser(args)
+    return userServiceCreateUser(args, options)
       .then((user: IUser) => {
         dispatch({type: CREATE_USER_SUCCESS, payload: user});
         return user;
@@ -82,14 +89,45 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
   };
 };
 
+export const setViewPreference = (
+  viewKey: ConfigurableViewKey,
+  preference: ViewPreference,
+): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    const userState: IUserState = getState().user;
+    if (!userState.activeUser) {
+      return;
+    }
+
+    dispatch({type: USERS_LOADING});
+
+    // We are currently only supporting a single user right now
+    const views = {
+      ...userState.activeUser?.preferences.views,
+      [viewKey]: preference,
+    };
+    const user: IUser = {
+      ...userState.activeUser,
+      preferences: {...userState.activeUser?.preferences, views},
+    };
+
+    userServiceUpdateUser(user)
+      .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
+      .catch(() => dispatch({type: UPDATE_USER_FAILED}));
+  };
+};
+
 export const login = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: USERS_LOADING});
     await userServiceGetUsers()
       .then(async (users: Map<string, IUser>) => {
+        const lockingHandler = LockingHandler.getInstance();
         const user = users.get(userId);
         if (user) {
           dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
+          //unlocking immediately to prevent re-locking after login
+          lockingHandler.isLocked = false;
 
           // We do we need to use the while loop here? The above is a sync action that does not use a thunk, thus getState().user should be available already
           const maxWaitTime = 5000;
@@ -107,8 +145,11 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
             await new Promise(resolve => setTimeout(resolve, 50));
             contactState = getState().contact;
           }
+          await dispatch(getActivityLogging());
           await dispatch(getVerifiableCredentials());
-          (await LockingHandler.getInstance()).isLocked = false;
+          // add small delay to make the conditional navigation working for the catalog
+          await delay(700);
+          lockingHandler.touchLastInteraction();
 
           dispatch({type: LOGIN_SUCCESS});
           const intentHandler = IntentHandler.getInstance();
@@ -141,7 +182,7 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
     // first delete the user (including redux store) then logout (remove active user). As then the switch navigator will navigate directly to the onboarding stack
     // without an active user the switch navigator will navigate to the login screen. So doing this first would flicker the login screen
     OnboardingMachine.clearInstance({stop: true});
-    userServiceDeleteUser(userId)
+    await userServiceDeleteUser(userId)
       .then(() => {
         dispatch({type: DELETE_USER_SUCCESS, payload: userId});
 
@@ -157,5 +198,20 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
       .catch(() => {
         dispatch({type: DELETE_USER_FAILED});
       });
+  };
+};
+
+export const setBiometrics = (status: OnboardingBiometricsStatus): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    dispatch({type: USERS_LOADING});
+    const {
+      user: {users},
+    } = await getState();
+    const user = users.values().next().value as IUser;
+
+    await userServiceUpdateUser({
+      ...user,
+      biometricsEnabled: status,
+    }).then(result => dispatch({type: UPDATE_USER_SUCCESS, payload: result}));
   };
 };

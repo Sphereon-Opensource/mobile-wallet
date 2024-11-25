@@ -8,6 +8,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionType,
   CorrelationIdentifierType,
+  CredentialDocumentFormat,
   CredentialRole,
   IBasicCredentialLocaleBranding,
   IdentityOrigin,
@@ -32,6 +33,12 @@ import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialSubjectContact} from '../../utils';
+import agent from '../../agent';
+import store from '../../store';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {computeEntryHash} from '@veramo/utils';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -49,10 +56,10 @@ const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void
 
 const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {hasContactConsent, serverMetadata} = state.context;
+  const {serverMetadata, trustedAnchors, issuerBranding} = state.context;
 
   if (!serverMetadata) {
-    return Promise.reject(Error('Missing serverMetadata in context'));
+    return Promise.reject(Error('Missing server metadata in context'));
   }
 
   const issuerUrl: URL = new URL(serverMetadata.issuer);
@@ -108,13 +115,6 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     });
   };
 
-  const onConsentChange = async (hasConsent: boolean): Promise<void> => {
-    oid4vciMachine.send({
-      type: OID4VCIMachineEvents.SET_CONTACT_CONSENT,
-      data: hasConsent,
-    });
-  };
-
   const onAliasChange = async (alias: string): Promise<void> => {
     oid4vciMachine.send({
       type: OID4VCIMachineEvents.SET_CONTACT_ALIAS,
@@ -130,19 +130,64 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+
+  const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
-    screen: ScreenRoutesEnum.CONTACT_ADD,
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
+      federations: federationParties,
       uri: contact.uri,
       identities: contact.identities,
-      hasConsent: hasContactConsent,
+      contacts: branding.contacts,
+      logo: branding.logo,
+      description: branding.description,
+      clientUri: branding.clientUri,
+      tosUri: branding.tosUri,
+      policyUri: branding.policyUri,
+      roles: [CredentialRole.ISSUER],
       onAliasChange,
-      onConsentChange,
       onCreate,
       onDecline,
       onBack,
       isCreateDisabled,
+    },
+  });
+};
+
+const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
+  const {navigation, state, oid4vciMachine, onBack, onNext} = args;
+  const {contact, issuerBranding} = state.context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  const onDecline = async (): Promise<void> => {
+    oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
+  };
+
+  const branding = issuerBranding?.[0] ?? {};
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      federations: [],
+      uri: contact.uri,
+      logo: branding.logo,
+      description: branding.description,
+      contacts: branding.contacts,
+      clientUri: branding.clientUri,
+      tosUri: branding.tosUri,
+      policyUri: branding.policyUri,
+      roles: contact.roles,
+      onContinue: onNext,
+      onDecline,
+      onBack,
     },
   });
 };
@@ -229,10 +274,47 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
-  const credentialSubject = credentialsToAccept[0].uniformVerifiableCredential.credentialSubject;
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
+      switch (documentFormat) {
+        case DocumentFormat.JSONLD:
+          return CredentialDocumentFormat.JSON_LD;
+        case DocumentFormat.JWT:
+          return CredentialDocumentFormat.JWT;
+        case DocumentFormat.SD_JWT_VC:
+          return CredentialDocumentFormat.SD_JWT;
+        case DocumentFormat.MSO_MDOC:
+          return CredentialDocumentFormat.MSO_MDOC;
+        default:
+          throw new Error(`Not supported document format: ${documentFormat}`);
+      }
+    }
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'decline credential',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+        // @ts-ignore
+        credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(credentialsToAccept[0].rawVerifiableCredential)),
+        // @ts-ignore
+        credentialHash: credentialsToAccept[0].uniformVerifiableCredential.id ?? computeEntryHash(credentialsToAccept[0].uniformVerifiableCredential),
+        originalCredential: JSON.stringify(credentialsToAccept[0].uniformVerifiableCredential),
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   };
 
   const signingMode = credentialsToAccept.find(cred => !!cred.credential_subject_issuance);
@@ -242,12 +324,13 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
+      hideLinks: true,
       credential: await toNonPersistedCredentialSummary({
         verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
         credentialRole: CredentialRole.HOLDER,
         branding: localeBranding,
         issuer: contact,
-        subject: getCredentialSubjectContact(credentialsToAccept[0].rawVerifiableCredential),
+        subject: getCredentialSubjectContact(credentialsToAccept[0].uniformVerifiableCredential),
       }),
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
@@ -297,6 +380,7 @@ const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,
@@ -316,6 +400,12 @@ export const oid4vciStateNavigationListener = async (
     // Make sure we do not navigate when state has not changed
     return;
   }
+
+  // FIXME quick hack to stop the navigation from resetting as the add contact screen now uses a modal which is another screen
+  if (state._event.name === 'SET_CONTACT_ALIAS') {
+    return;
+  }
+
   const onBack = () => oid4vciMachine.send(OID4VCIMachineEvents.PREVIOUS);
   const onNext = () => oid4vciMachine.send(OID4VCIMachineEvents.NEXT);
 
@@ -327,6 +417,8 @@ export const oid4vciStateNavigationListener = async (
 
   if (state.matches(OID4VCIMachineStates.addContact)) {
     return navigateAddContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
+  } else if (state.matches(OID4VCIMachineStates.reviewContact)) {
+    return navigateReviewContact({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.selectCredentials)) {
     return navigateSelectCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.verifyPin)) {
@@ -336,6 +428,7 @@ export const oid4vciStateNavigationListener = async (
   } else if (state.matches(OID4VCIMachineStates.reviewCredentials)) {
     return navigateReviewCredentials({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (state.matches(OID4VCIMachineStates.handleError)) {
+    console.error(state._event.data);
     return navigateError({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else if (
     state.matches(OID4VCIMachineStates.done) ||

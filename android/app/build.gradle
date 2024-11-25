@@ -92,8 +92,8 @@ android {
         applicationId "com.sphereon.ssi.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "0.3.0"
+        versionCode 39
+        versionName "0.4.10"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
                 appAuthRedirectScheme: "com.sphereon.ssi.wallet"
@@ -119,7 +119,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.debug  // having debug symbols in aar breaks upload to Playstore now
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -153,11 +153,23 @@ android {
     }
 }
 
+// Access to MUSAP Maven artifacts
+repositories {
+    maven {
+        url "$rootDir/../node_modules/@sphereon/musap-native/android/maven"
+    }
+    maven {
+        url "$rootDir/../node_modules/@sphereon/musap-react-native/android/maven"
+    }
+}
+
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
     implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
+    implementation("com.sphereon.musap:musap-react-native:0.1.0")
+
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

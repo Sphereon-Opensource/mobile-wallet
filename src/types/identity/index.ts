@@ -4,6 +4,7 @@ import {SupportedDidMethodEnum} from '../did';
 
 export enum KeyManagementSystemEnum {
   LOCAL = 'local',
+  MUSAP_TEE = 'musapTee',
 }
 
 export enum IdentifierAliasEnum {

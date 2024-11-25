@@ -1,211 +1,479 @@
-import {CredentialPayload} from '@veramo/core';
-
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
-import {v4 as uuidv4} from 'uuid';
-import {assign, createMachine, interpret} from 'xstate';
-import {APP_ID, EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
+import {DoneInvokeEvent, GuardPredicate, assign, createMachine, interpret} from 'xstate';
+import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
+import {translate} from '../localization/Localization';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
-import {setupWallet} from '../services/machines/onboardingMachineService';
-import {SupportedDidMethodEnum} from '../types';
+import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
+import {ErrorDetails} from '../types';
+import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
-  NextEvent,
+  OnboardingBiometricsStatus,
   OnboardingMachineContext,
-  OnboardingMachineEvents,
   OnboardingMachineEventTypes,
   OnboardingMachineGuards,
   OnboardingMachineInterpreter,
+  OnboardingMachineServices,
   OnboardingMachineState,
-  OnboardingMachineStates,
-  PersonalDataEvent,
-  PinSetEvent,
-  PrivacyPolicyEvent,
-  TermsConditionsEvent,
-  WalletSetupServiceResult,
+  OnboardingMachineStateType,
+  OnboardingMachineStep,
+  OnboardingStatesConfig,
 } from '../types/machines/onboarding';
+import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
-const onboardingToSAgreementGuard = (ctx: OnboardingMachineContext, _event: OnboardingMachineEventTypes) =>
-  ctx.termsConditionsAccepted && ctx.privacyPolicyAccepted;
+type OnboardingGuard = GuardPredicate<OnboardingMachineContext, OnboardingMachineEventTypes>['predicate'];
 
-const onboardingPersonalDataGuard = (ctx: OnboardingMachineContext, _event: OnboardingMachineEventTypes) => {
-  const {firstName, lastName, emailAddress} = ctx.personalData;
-  return firstName && firstName.length > 0 && lastName && lastName.length > 0 && emailAddress && EMAIL_ADDRESS_VALIDATION_REGEX.test(emailAddress);
+const isStepCreateWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.CREATE_WALLET;
+const isStepSecureWallet = (ctx: OnboardingMachineContext) => ctx.currentStep === OnboardingMachineStep.SECURE_WALLET;
+const isStepComplete: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.FINAL;
+const isBiometricsEnabled = (ctx: OnboardingMachineContext) => {
+  return ctx.biometricsEnabled === OnboardingBiometricsStatus.ENABLED;
 };
+const isBiometricsDisabled = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.DISABLED;
+const isBiometricsUndetermined = (ctx: OnboardingMachineContext) => ctx.biometricsEnabled === OnboardingBiometricsStatus.INDETERMINATE;
+const validatePinCode = (pinCode: string) =>
+  validate(pinCode, [isStringOfLength(PIN_CODE_LENGTH)()]).isValid && validate(Number(pinCode), [isNotSameDigits(), isNotSequentialDigits()]).isValid;
+const isStepImportPersonalData: OnboardingGuard = ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA;
+const isNameValid: OnboardingGuard = ({name}) => validate(name, [isNonEmptyString()]).isValid;
+const isEmailValid: OnboardingGuard = ({emailAddress}) => validate(emailAddress, [isNonEmptyString(), IsValidEmail()]).isValid;
+const isCountryValid: OnboardingGuard = ({countryCode}) => validate(countryCode, [isNotNil()]).isValid;
+const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
+const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
+  validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
+const isSkipImport: OnboardingGuard = ({skipImport, countryCode}) => !!skipImport || countryCode !== 'DE'; // Do not import PID for other countries
+const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
+const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 
-const onboardingPinCodeSetGuard = (ctx: OnboardingMachineContext, _event: OnboardingMachineEventTypes) => {
-  const {pinCode} = ctx;
-  return pinCode && pinCode.length === 6;
-};
-
-const onboardingPinCodeVerifyGuard = (ctx: OnboardingMachineContext, event: NextEvent) => {
-  return onboardingPinCodeSetGuard(ctx, event) && ctx.pinCode === event.data;
+const states: OnboardingStatesConfig = {
+  showIntro: {
+    on: {
+      NEXT: OnboardingMachineStateType.showProgress,
+    },
+  },
+  showProgress: {
+    on: {
+      NEXT: [
+        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
+        {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
+        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPIDDataConsent},
+        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
+      ],
+      PREVIOUS: [
+        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
+        {
+          cond: OnboardingMachineGuards.isStepSecureWallet,
+          target: OnboardingMachineStateType.enterCountry,
+          actions: assign({currentStep: 1}),
+        },
+        {
+          cond: ({currentStep}) => currentStep === 3,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: 2}),
+        },
+        {
+          cond: ({currentStep, skipImport}) => currentStep === 4 && !skipImport,
+          target: OnboardingMachineStateType.reviewPIDCredentials,
+          actions: assign({currentStep: 3}),
+        },
+        {
+          cond: ({currentStep, skipImport}) => currentStep === 4 && skipImport,
+          target: OnboardingMachineStateType.importPIDDataConsent,
+          actions: assign({currentStep: 3}),
+        },
+      ],
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true}),
+      },
+      SET_SKIP_IMPORT: {
+        actions: assign({skipImport: (_, event) => event.data}),
+      },
+      SET_POPUP_MENU_OPEN: {
+        actions: assign({popupMenuOpen: (_, event) => event.data}),
+      },
+    },
+  },
+  enterName: {
+    on: {
+      NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
+      PREVIOUS: OnboardingMachineStateType.showProgress,
+      SET_NAME: {actions: assign({name: (_, event) => event.data})},
+    },
+  },
+  enterEmailAddress: {
+    on: {
+      NEXT: {cond: OnboardingMachineGuards.isEmailValid, target: OnboardingMachineStateType.enterCountry},
+      PREVIOUS: OnboardingMachineStateType.enterName,
+      SET_EMAIL_ADDRESS: {actions: assign({emailAddress: (_, event) => event.data})},
+    },
+  },
+  enterCountry: {
+    on: {
+      NEXT: {
+        cond: OnboardingMachineGuards.isCountryValid,
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 2}),
+      },
+      PREVIOUS: OnboardingMachineStateType.enterEmailAddress,
+      SET_COUNTRY: {actions: assign({countryCode: (_, event) => event.data})},
+    },
+  },
+  enterPinCode: {
+    on: {
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isPinCodeValid,
+          target: OnboardingMachineStateType.verifyPinCode,
+        },
+      ],
+      PREVIOUS: OnboardingMachineStateType.showProgress,
+      SET_PIN_CODE: {actions: assign({pinCode: (_, event) => event.data})},
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
+    },
+  },
+  verifyPinCode: {
+    on: {
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isBiometricsUndetermined,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsDisabled,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsEnabled,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+      ],
+      PREVIOUS: OnboardingMachineStateType.enterPinCode,
+      SET_BIOMETRICS: {actions: assign({biometricsEnabled: (_, event) => event.data})},
+      SET_VERIFICATION_PIN_CODE: {actions: assign({verificationPinCode: (_, event) => event.data})},
+    },
+  },
+  enableBiometrics: {
+    on: {
+      NEXT: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({biometricsEnabled: OnboardingBiometricsStatus.ENABLED}),
+      },
+      PREVIOUS: OnboardingMachineStateType.enterPinCode,
+      SKIP_BIOMETRICS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({biometricsEnabled: OnboardingBiometricsStatus.DISABLED}),
+      },
+    },
+  },
+  acceptTermsAndPrivacy: {
+    on: {
+      READ_TERMS: OnboardingMachineStateType.readTerms,
+      READ_PRIVACY: OnboardingMachineStateType.readPrivacy,
+      PREVIOUS: [
+        {
+          cond: OnboardingMachineGuards.isBiometricsEnabled,
+          target: OnboardingMachineStateType.enableBiometrics,
+        },
+        {
+          cond: OnboardingMachineGuards.isBiometricsDisabled,
+          target: OnboardingMachineStateType.enterPinCode,
+        },
+      ],
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.setupWallet,
+          actions: assign({currentStep: 4}),
+        },
+        {
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: 3}),
+        },
+      ],
+    },
+  },
+  readTerms: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  readPrivacy: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+    },
+  },
+  importPIDDataConsent: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.showProgress,
+      NEXT: OnboardingMachineStateType.importPIDDataNFC,
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: 4, skipImport: true}),
+      },
+    },
+  },
+  importPIDDataNFC: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
+      SET_FUNKE_PROVIDER: {actions: assign({funkeProvider: (_, event) => event.data})},
+      NEXT: {cond: OnboardingMachineGuards.hasFunkeRefreshUrl, target: OnboardingMachineStateType.importPIDDataAuthentication},
+    },
+  },
+  importPIDDataAuthentication: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
+      NEXT: OnboardingMachineStateType.retrievePIDCredentials,
+    },
+  },
+  retrievePIDCredentials: {
+    invoke: {
+      src: OnboardingMachineServices.retrievePIDCredentials,
+      onDone: {
+        target: OnboardingMachineStateType.reviewPIDCredentials,
+        actions: assign({pidCredentials: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Array<MappedCredential>>) => _event.data}),
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_retrieve_credentials_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  reviewPIDCredentials: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.importPIDDataNFC,
+      DECLINE_INFORMATION: {
+        target: OnboardingMachineStateType.declinePIDCredentials,
+        actions: assign({skipImport: true}),
+      },
+      NEXT: {
+        target: OnboardingMachineStateType.storePIDCredentials,
+      },
+    },
+  },
+  declinePIDCredentials: {
+    on: {
+      PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
+      NEXT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: ['logDeclinePID', assign({currentStep: 4, skipImport: true})],
+      },
+    },
+  },
+  storePIDCredentials: {
+    invoke: {
+      src: OnboardingMachineServices.storePIDCredentials,
+      onDone: {
+        target: OnboardingMachineStateType.storeCredentialBranding,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  storeCredentialBranding: {
+    invoke: {
+      src: OnboardingMachineServices.storeCredentialBranding,
+      onDone: {
+        target: OnboardingMachineStateType.setupWallet,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_store_credential_branding_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  setupWallet: {
+    invoke: {
+      src: OnboardingMachineServices.setupWallet,
+      onDone: {
+        target: OnboardingMachineStateType.completeOnboarding,
+      },
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_store_credential_error_title'),
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
+  },
+  completeOnboarding: {
+    on: {
+      PREVIOUS: [
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: 3}),
+        },
+        {
+          cond: OnboardingMachineGuards.isImportData,
+          target: OnboardingMachineStateType.reviewPIDCredentials,
+        },
+      ],
+      NEXT: OnboardingMachineStateType.done,
+    },
+  },
+  handleError: {
+    on: {
+      PREVIOUS: {
+        target: OnboardingMachineStateType.error,
+      },
+      NEXT: {
+        target: OnboardingMachineStateType.error,
+      },
+    },
+  },
+  error: {
+    type: 'final',
+    entry: assign({
+      pinCode: '',
+      name: undefined,
+      emailAddress: undefined,
+    }),
+  },
+  done: {
+    type: 'final',
+    entry: assign({
+      pinCode: '',
+      name: undefined,
+      emailAddress: undefined,
+    }),
+  },
 };
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
-  const credentialData = {
-    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_JWK,
-    didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
-    proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
-    credential:
-      opts?.credentialData?.credential ??
-      ({
-        '@context': [
-          'https://www.w3.org/2018/credentials/v1',
-          'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-        ],
-        id: `urn:uuid:${uuidv4()}`,
-        type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
-        issuanceDate: new Date(),
-        credentialSubject: {},
-      } as Partial<CredentialPayload>),
+  const initialContext: OnboardingMachineContext = {
+    name: '',
+    emailAddress: '',
+    countryCode: 'DE',
+    pinCode: '',
+    biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
+    verificationPinCode: '',
+    termsAndPrivacyAccepted: false,
+    currentStep: 1,
+    skipImport: false,
+    pidCredentials: [],
+    popupMenuOpen: false,
   };
 
-  const initialContext: OnboardingMachineContext = {
-    credentialData,
-    termsConditionsAccepted: false,
-    privacyPolicyAccepted: false,
-    personalData: {},
-    pinCode: '',
-  } as OnboardingMachineContext;
-
-  return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>({
-    id: opts?.machineId ?? 'Onboarding',
-    predictableActionArguments: true,
-    initial: OnboardingMachineStates.showIntro,
-    schema: {
-      events: {} as OnboardingMachineEventTypes,
-      guards: {} as
-        | {
-            type: OnboardingMachineGuards.onboardingPersonalDataGuard;
-          }
-        | {
-            type: OnboardingMachineGuards.onboardingToSAgreementGuard;
-          }
-        | {
-            type: OnboardingMachineGuards.onboardingPinCodeSetGuard;
-          }
-        | {
-            type: OnboardingMachineGuards.onboardingPinCodeVerifyGuard;
-          },
-      services: {} as {
-        [OnboardingMachineStates.setupWallet]: {
-          data: WalletSetupServiceResult;
-        };
-      },
-    },
-    context: {
-      ...initialContext,
-    },
-
-    states: {
-      [OnboardingMachineStates.showIntro]: {
-        on: {
-          [OnboardingMachineEvents.NEXT]: [
-            {
-              target: OnboardingMachineStates.acceptAgreement,
+  return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>(
+    {
+      /** @xstate-layout N4IgpgJg5mDOIC5gF8A0IB2B7CdGgAoBbAQwGMALASwzAEp8QAHLWKgFyqw0YA9EAjACZ0AT0FDkU5EA */
+      id: 'Onboarding',
+      predictableActionArguments: true,
+      initial: OnboardingMachineStateType.showIntro,
+      context: initialContext,
+      schema: {
+        events: {} as OnboardingMachineEventTypes,
+        guards: {} as
+          | {
+              type: OnboardingMachineGuards.isStepCreateWallet;
+            }
+          | {
+              type: OnboardingMachineGuards.isStepSecureWallet;
+            }
+          | {
+              type: OnboardingMachineGuards.isStepImportPersonalData;
+            }
+          | {
+              type: OnboardingMachineGuards.isNameValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isEmailValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isCountryValid;
+            }
+          | {
+              type: OnboardingMachineGuards.isPinCodeValid;
+            }
+          | {
+              type: OnboardingMachineGuards.doPinsMatch;
+            }
+          | {
+              type: OnboardingMachineGuards.hasFunkeRefreshUrl;
             },
-          ],
+      },
+      states: states,
+    },
+    {
+      actions: {
+        logDeclinePID: async (context, event): Promise<void> => {
+          let parentCredentialHash: string | undefined = undefined;
+          context.pidCredentials.forEach(mappedCredential => {
+            // FIXME function is not exposed in SSI-SDK, for now made a copy here
+            function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
+              switch (documentFormat) {
+                case DocumentFormat.JSONLD:
+                  return CredentialDocumentFormat.JSON_LD;
+                case DocumentFormat.JWT:
+                  return CredentialDocumentFormat.JWT;
+                case DocumentFormat.SD_JWT_VC:
+                  return CredentialDocumentFormat.SD_JWT;
+                case DocumentFormat.MSO_MDOC:
+                  return CredentialDocumentFormat.MSO_MDOC;
+                default:
+                  throw new Error(`Not supported document format: ${documentFormat}`);
+              }
+            }
+
+            const credentialHash = mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential);
+
+            store.dispatch<any>(
+              storeActivityLogging({
+                level: LogLevel.INFO,
+                system: System.OID4VCI,
+                subSystemType: SubSystem.VC_ISSUER,
+                initiatorType: InitiatorType.SYSTEM,
+                description: 'decline credential',
+                actionType: ActionType.READ,
+                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+                // @ts-ignore
+                credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
+                parentCredentialHash,
+                credentialHash,
+                originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                partyCorrelationType: PartyCorrelationType.URL,
+                partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+                partyAlias: 'Bundesdruckerei GmbH',
+              }),
+            );
+
+            if (!parentCredentialHash) {
+              parentCredentialHash = credentialHash;
+            }
+          });
         },
-      },
-      [OnboardingMachineStates.acceptAgreement]: {
-        on: {
-          [OnboardingMachineEvents.SET_POLICY]: {
-            actions: assign({privacyPolicyAccepted: (_ctx: OnboardingMachineContext, e: PrivacyPolicyEvent) => e.data}),
-          },
-          [OnboardingMachineEvents.SET_TOC]: {
-            actions: assign({termsConditionsAccepted: (_ctx: OnboardingMachineContext, e: TermsConditionsEvent) => e.data}),
-          },
-          [OnboardingMachineEvents.DECLINE]: {
-            target: OnboardingMachineStates.declineOnboarding,
-          },
-          [OnboardingMachineEvents.NEXT]: {
-            cond: OnboardingMachineGuards.onboardingToSAgreementGuard,
-            target: OnboardingMachineStates.enterPersonalDetails,
-          },
-          [OnboardingMachineEvents.PREVIOUS]: {target: OnboardingMachineStates.showIntro},
-        },
-      },
-      [OnboardingMachineStates.enterPersonalDetails]: {
-        on: {
-          [OnboardingMachineEvents.SET_PERSONAL_DATA]: {
-            actions: assign({personalData: (_ctx: OnboardingMachineContext, e: PersonalDataEvent) => e.data}),
-          },
-          [OnboardingMachineEvents.NEXT]: {
-            cond: OnboardingMachineGuards.onboardingPersonalDataGuard,
-            target: OnboardingMachineStates.enterPin,
-          },
-          [OnboardingMachineEvents.PREVIOUS]: {target: OnboardingMachineStates.acceptAgreement},
-        },
-      },
-      [OnboardingMachineStates.enterPin]: {
-        on: {
-          [OnboardingMachineEvents.SET_PIN]: {
-            actions: assign({pinCode: (_ctx: OnboardingMachineContext, e: PinSetEvent) => e.data}),
-          },
-          [OnboardingMachineEvents.NEXT]: {
-            cond: OnboardingMachineGuards.onboardingPinCodeSetGuard,
-            target: OnboardingMachineStates.verifyPin,
-          },
-          [OnboardingMachineEvents.PREVIOUS]: {
-            target: OnboardingMachineStates.enterPersonalDetails,
-          },
-        },
-      },
-      [OnboardingMachineStates.verifyPin]: {
-        on: {
-          [OnboardingMachineEvents.NEXT]: {
-            cond: OnboardingMachineGuards.onboardingPinCodeVerifyGuard,
-            target: OnboardingMachineStates.verifyPersonalDetails,
-          },
-          [OnboardingMachineEvents.PREVIOUS]: {
-            target: OnboardingMachineStates.enterPin,
-          },
-        },
-      },
-      [OnboardingMachineStates.verifyPersonalDetails]: {
-        on: {
-          [OnboardingMachineEvents.NEXT]: {
-            target: OnboardingMachineStates.setupWallet,
-          },
-          [OnboardingMachineEvents.PREVIOUS]: {
-            target: OnboardingMachineStates.enterPin, // We are going back to pin entry and then verify
-          },
-        },
-      },
-      [OnboardingMachineStates.setupWallet]: {
-        invoke: {
-          id: OnboardingMachineStates.setupWallet,
-          src: OnboardingMachineStates.setupWallet,
-          onDone: {
-            target: OnboardingMachineStates.finishOnboarding,
-          },
-          // todo: On Error
-        },
-      },
-      [OnboardingMachineStates.declineOnboarding]: {
-        id: OnboardingMachineStates.declineOnboarding,
-        always: OnboardingMachineStates.showIntro,
-        entry: assign({
-          ...initialContext,
-        }),
-        // Since we are not allowed to exit an app by Apple/Google, we go back to the onboarding state when the user declines
-      },
-      [OnboardingMachineStates.finishOnboarding]: {
-        type: 'final',
-        id: OnboardingMachineStates.finishOnboarding,
-        entry: assign({
-          pinCode: '',
-          personalData: undefined,
-          credentialData: undefined,
-          privacyPolicyAccepted: false,
-          termsConditionsAccepted: false,
-        }),
       },
     },
-  });
+  );
 };
 
 export class OnboardingMachine {
@@ -248,12 +516,29 @@ export class OnboardingMachine {
     debug(`Creating new onboarding instance`, opts);
     const newInst: OnboardingMachineInterpreter = interpret(
       createOnboardingMachine(opts).withConfig({
-        services: {setupWallet, ...opts?.services},
+        services: {
+          [OnboardingMachineServices.retrievePIDCredentials]: retrievePIDCredentials,
+          [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
+          [OnboardingMachineServices.storeCredentialBranding]: storeCredentialBranding,
+          [OnboardingMachineServices.setupWallet]: setupWallet,
+          ...opts?.services,
+        },
         guards: {
-          onboardingToSAgreementGuard,
-          onboardingPersonalDataGuard,
-          onboardingPinCodeSetGuard,
-          onboardingPinCodeVerifyGuard,
+          isStepCreateWallet,
+          isStepSecureWallet,
+          isStepComplete,
+          isBiometricsEnabled,
+          isBiometricsDisabled,
+          isBiometricsUndetermined,
+          isStepImportPersonalData,
+          isNameValid,
+          isEmailValid,
+          isCountryValid,
+          isPinCodeValid,
+          doPinsMatch,
+          isSkipImport,
+          isImportData,
+          hasFunkeRefreshUrl,
           ...opts?.guards,
         },
       }),

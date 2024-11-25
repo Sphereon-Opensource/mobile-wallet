@@ -1,9 +1,10 @@
+import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import {ListRenderItemInfo, ViewStyle} from 'react-native';
-import {useBackHandler} from '@react-native-community/hooks';
 import {SwipeListView} from 'react-native-swipe-list-view';
 
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialSelectViewItem from '../../components/views/SSICredentialSelectViewItem';
@@ -15,7 +16,6 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ICredentialSelection, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_SELECT>;
 
@@ -51,9 +51,9 @@ const SSICredentialsSelectScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const onItemPress = async (selection: ICredentialSelection): Promise<void> => {
     props.navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-      rawCredential: selection.rawCredential,
+      rawCredential: selection.uniqueDigitalCredential.originalVerifiableCredential,
+      uniqueDigitalCredential: selection.uniqueDigitalCredential,
       credential: selection.credential,
-      showActivity: false,
       primaryAction: {
         caption: translate('action_select_label'),
         onPress: () => onSelectPress(selection),

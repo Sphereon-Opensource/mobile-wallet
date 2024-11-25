@@ -2,7 +2,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC, useEffect} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import BadgeButton from '../../components/buttons/BadgeButton';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
 import {storageGetPin} from '../../services/storageService';
 import {translate} from '../../localization/Localization';
@@ -13,6 +12,7 @@ import {
   SSIStatusBarDarkModeStyled as StatusBar,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {useAuthFocusEffect} from '../../hooks/use-biometrics';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
@@ -24,6 +24,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
       void changeNavigationBarColor(backgroundColors.primaryDark);
     });
   }, []);
+
+  const {biometricsEnabled, prompt} = useAuthFocusEffect(async (success: boolean) => {
+    if (success) {
+      const {onAuthenticate} = props.route.params;
+      await onAuthenticate();
+    }
+  });
 
   const onVerification = async (value: string): Promise<void> => {
     const {onAuthenticate} = props.route.params;
@@ -49,6 +56,7 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
           onVerification={onVerification}
+          autoFocus={!biometricsEnabled}
         />
       </PinCodeContainer>
       {/*<BadgeButton*/}

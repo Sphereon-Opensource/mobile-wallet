@@ -1,6 +1,9 @@
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 
+import {borderColors, fontColors} from '@sphereon/ui-components.core';
+import SSIQRIcon from '../../../components/assets/icons/SSIQRIcon';
+import SettingsIcon from '../../../components/assets/icons/SettingsIcon';
 import {
   SSITouchableOpacityButtonFlexRowStyled as Button,
   SSIDropDownListItemContainerStyled as Container,
@@ -12,7 +15,6 @@ import SSIAddIcon from '../../assets/icons/SSIAddIcon';
 import SSIDeleteIcon from '../../assets/icons/SSIDeleteIcon';
 import SSIDownloadIcon from '../../assets/icons/SSIDownloadIcon';
 import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
-import {borderColors, fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   caption: string;
@@ -25,7 +27,6 @@ export interface IProps {
 
 const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
   const {disabled, caption, icon, showBorder = false, fontColor = fontColors.dark} = props;
-
   const onPress = async () => {
     await props.onPress();
   };
@@ -42,6 +43,10 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
         return <SSILogoutIcon color={fontColor} />;
       case HeaderMenuIconsEnum.DOWNLOAD:
         return <SSIDownloadIcon color={fontColor} />;
+      case HeaderMenuIconsEnum.SETTINGS:
+        return <SettingsIcon color={fontColor} />;
+      case HeaderMenuIconsEnum.QR:
+        return <SSIQRIcon primaryColor={fontColor} secondaryColor={fontColor} />;
       default:
         return <View />;
     }
@@ -49,6 +54,8 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
 
   return (
     <Button
+      accessibilityRole="menuitem"
+      accessible
       onPress={onPress}
       disabled={disabled}
       style={{

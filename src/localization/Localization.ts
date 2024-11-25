@@ -6,7 +6,7 @@ class Localization {
   public static supportedLanguages = {
     ENGLISH: 'en',
     DUTCH: 'nl',
-  };
+  } as const;
 
   private static translationGetters: {[locale: string]: () => object} = {
     [Localization.supportedLanguages.ENGLISH]: () => require('./translations/en.json'),

@@ -4,6 +4,10 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - AusweisApp2 (2.2.1)
+  - AusweisSdk (0.0.1-alpha.14):
+    - AusweisApp2 (= 2.2.1)
+    - ExpoModulesCore
   - Base64 (1.1.2)
   - boost (1.83.0)
   - BVLinearGradient (2.8.3):
@@ -11,25 +15,29 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXConstants (16.0.2):
     - ExpoModulesCore
-  - Expo (51.0.24):
+  - Expo (51.0.38):
     - ExpoModulesCore
   - ExpoAsset (10.0.10):
     - ExpoModulesCore
-  - ExpoCamera (15.0.14):
+  - ExpoCamera (15.0.16):
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
+  - ExpoClipboard (6.0.3):
+    - ExpoModulesCore
   - ExpoFileSystem (17.0.1):
     - ExpoModulesCore
-  - ExpoFont (12.0.9):
+  - ExpoFont (12.0.10):
     - ExpoModulesCore
   - ExpoKeepAwake (13.0.2):
     - ExpoModulesCore
   - ExpoLinearGradient (13.0.2):
     - ExpoModulesCore
+  - ExpoLocalAuthentication (14.0.1):
+    - ExpoModulesCore
   - ExpoLocalization (15.0.3):
     - ExpoModulesCore
-  - ExpoModulesCore (1.12.20):
+  - ExpoModulesCore (1.12.26):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -54,7 +62,7 @@ PODS:
     - Yoga
   - ExpoRandom (14.0.1):
     - ExpoModulesCore
-  - EXSplashScreen (0.27.5):
+  - EXSplashScreen (0.27.6):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -96,10 +104,34 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - MMKV (1.2.13):
-    - MMKVCore (~> 1.2.13)
-  - MMKVCore (1.2.16)
-  - OpenSSL-Universal (3.2.2000)
+  - MMKV (1.3.9):
+    - MMKVCore (~> 1.3.9)
+  - MMKVCore (1.3.9)
+  - musap-ios (0.1.0):
+    - YubiKit
+  - "musap-react-native (0.0.1-next.154+a8d7831)":
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - musap-ios
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - OpenSSL-Universal (3.3.2000)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1031,7 +1063,7 @@ PODS:
   - react-native-app-auth (6.4.3):
     - AppAuth (= 1.4.0)
     - React-Core
-  - react-native-blur (4.4.0):
+  - react-native-blur (4.4.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1054,6 +1086,8 @@ PODS:
     - Yoga
   - react-native-fingerprint-scanner (6.0.0):
     - React
+  - react-native-get-random-values (1.11.0):
+    - React-Core
   - react-native-linear-gradient-text (1.2.8):
     - DoubleConversion
     - glog
@@ -1075,8 +1109,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-mmkv-storage (0.9.1):
-    - MMKV (= 1.2.13)
+  - react-native-mmkv-storage (0.10.3):
+    - MMKV (~> 1.3.9)
+    - React
     - React-Core
   - react-native-pager-view (6.3.0):
     - DoubleConversion
@@ -1102,7 +1137,7 @@ PODS:
   - react-native-pure-jwt (3.0.2):
     - JWT (= 3.0.0-beta.12)
     - React
-  - react-native-quick-crypto (0.7.1):
+  - react-native-quick-crypto (0.7.5-sph.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1379,12 +1414,18 @@ PODS:
     - React-logger (= 0.74.3)
     - React-perflogger (= 0.74.3)
     - React-utils (= 0.74.3)
+  - RNAudioRecord (0.2.2):
+    - React
+  - RNAudioRecorderPlayer (3.6.12):
+    - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
   - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
+  - RNFS (2.20.0):
+    - React-Core
   - RNGestureHandler (2.16.2):
     - DoubleConversion
     - glog
@@ -1459,6 +1500,11 @@ PODS:
     - React-Core
   - RNShareMenu (6.0.0):
     - React
+  - RNSound (0.11.2):
+    - React-Core
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
+    - React-Core
   - RNSVG (15.2.0):
     - React-Core
   - SDWebImage (5.11.1):
@@ -1469,6 +1515,7 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.7.0)
   - Yoga (0.0.0)
+  - YubiKit (4.4.0)
   - ZXingObjC/Core (3.6.9)
   - ZXingObjC/OneD (3.6.9):
     - ZXingObjC/Core
@@ -1476,6 +1523,7 @@ PODS:
     - ZXingObjC/Core
 
 DEPENDENCIES:
+  - "AusweisSdk (from `../node_modules/@animo-id/expo-ausweis-sdk/ios`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -1483,10 +1531,12 @@ DEPENDENCIES:
   - Expo (from `../node_modules/expo`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
+  - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
+  - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoLocalization (from `../node_modules/expo-localization/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
@@ -1495,6 +1545,8 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - "musap-ios (from `../node_modules/@sphereon/musap-native`)"
+  - "musap-react-native (from `../node_modules/@sphereon/musap-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1524,11 +1576,12 @@ DEPENDENCIES:
   - react-native-app-auth (from `../node_modules/react-native-app-auth`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-fingerprint-scanner (from `../node_modules/react-native-fingerprint-scanner`)
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-linear-gradient-text (from `../node_modules/react-native-linear-gradient-text`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pure-jwt (from `../node_modules/react-native-pure-jwt`)
-  - react-native-quick-crypto (from `../node_modules/react-native-quick-crypto`)
+  - "react-native-quick-crypto (from `../node_modules/@sphereon/react-native-quick-crypto`)"
   - react-native-quick-sqlite (from `../node_modules/react-native-quick-sqlite`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1555,8 +1608,11 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNAudioRecord (from `../node_modules/react-native-audio-record`)
+  - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNOS (from `../node_modules/react-native-os`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -1565,10 +1621,14 @@ DEPENDENCIES:
   - RNSecureRandom (from `../node_modules/react-native-securerandom`)
   - RNShare (from `../node_modules/react-native-share`)
   - RNShareMenu (from `../node_modules/react-native-share-menu`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - YubiKit
 
 SPEC REPOS:
+  https://github.com/animo/expo-ausweis-sdk:
+    - AusweisApp2
   https://github.com/CocoaPods/Specs.git:
     - AppAuth
     - Base64
@@ -1577,12 +1637,16 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - OpenSSL-Universal
-    - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
+    - YubiKit
     - ZXingObjC
+  trunk:
+    - SDWebImage
 
 EXTERNAL SOURCES:
+  AusweisSdk:
+    :path: "../node_modules/@animo-id/expo-ausweis-sdk/ios"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -1597,6 +1661,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-asset/ios"
   ExpoCamera:
     :path: "../node_modules/expo-camera/ios"
+  ExpoClipboard:
+    :path: "../node_modules/expo-clipboard/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
@@ -1605,6 +1671,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLinearGradient:
     :path: "../node_modules/expo-linear-gradient/ios"
+  ExpoLocalAuthentication:
+    :path: "../node_modules/expo-local-authentication/ios"
   ExpoLocalization:
     :path: "../node_modules/expo-localization/ios"
   ExpoModulesCore:
@@ -1622,6 +1690,10 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-06-28-RNv0.74.3-7bda0c267e76d11b68a585f84cfdd65000babf85
+  musap-ios:
+    :path: "../node_modules/@sphereon/musap-native"
+  musap-react-native:
+    :path: "../node_modules/@sphereon/musap-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1676,6 +1748,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-fingerprint-scanner:
     :path: "../node_modules/react-native-fingerprint-scanner"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-linear-gradient-text:
     :path: "../node_modules/react-native-linear-gradient-text"
   react-native-mmkv-storage:
@@ -1685,7 +1759,7 @@ EXTERNAL SOURCES:
   react-native-pure-jwt:
     :path: "../node_modules/react-native-pure-jwt"
   react-native-quick-crypto:
-    :path: "../node_modules/react-native-quick-crypto"
+    :path: "../node_modules/@sphereon/react-native-quick-crypto"
   react-native-quick-sqlite:
     :path: "../node_modules/react-native-quick-sqlite"
   react-native-randombytes:
@@ -1738,10 +1812,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAudioRecord:
+    :path: "../node_modules/react-native-audio-record"
+  RNAudioRecorderPlayer:
+    :path: "../node_modules/react-native-audio-recorder-player"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNOS:
@@ -1758,6 +1838,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNShareMenu:
     :path: "../node_modules/react-native-share-menu"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -1765,32 +1847,38 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AusweisApp2: b138d3d9d88e84f6100b43844b26f31126545733
+  AusweisSdk: f489485343795df4b9f735c52306c42605029abe
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
-  Expo: 798848eae1daf13363d69790986146b08d0cf92f
+  Expo: 9b6666ef2fedcfc89c5b9be2aa1ce12b81f9e7f5
   ExpoAsset: 323700f291684f110fb55f0d4022a3362ea9f875
-  ExpoCamera: a5d000b22cd7dfd2c5904ed960e549de42c96da0
+  ExpoCamera: 929be541d1c1319fcf32f9f5d9df8b97804346b5
+  ExpoClipboard: 23d203f5d4843699fbc45be1cc4fe1fbd811a6fa
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
-  ExpoFont: e7f2275c10ca8573c991e007329ad6bf98086485
+  ExpoFont: 00756e6c796d8f7ee8d211e29c8b619e75cbf238
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
   ExpoLinearGradient: 8cec4a09426d8934c433e83cb36262d72c667fce
+  ExpoLocalAuthentication: 9e02a56a4cf9868f0052656a93d4c94101a42ed7
   ExpoLocalization: f04eeec2e35bed01ab61c72ee1768ec04d093d01
-  ExpoModulesCore: 5440e96a8ee014f4fd88e77264985fd0a65f5f8c
+  ExpoModulesCore: 831ece8311a489418746925820bbffdda587d6f4
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
-  EXSplashScreen: fbf0ec78e9cee911df188bf17b4fe51d15a84b87
+  EXSplashScreen: 17a656c08a0095be15b620c52e61dfdb665863d2
   FBLazyVector: 7e977dd099937dc5458851233141583abba49ff2
-  fmt: 8083860262b879fc92bca720969c91bdb88ada93
-  glog: 77f46f3d5c779b34a09b51a92fa9e0fcab64df1c
-  hermes-engine: 04d892dbfd7ada26273bb526af2b2136395cf17e
+  fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
+  glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
+  hermes-engine: 1f547997900dd0752dc0cc0ae6dd16173c49e09b
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
-  MMKVCore: 9cfef4c48c6c46f66226fc2e4634d78490206a48
-  OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
-  RCT-Folly: 0efc5cc427fdcf65cf631871e78fd40bcf9f9c9c
+  MMKV: 817ba1eea17421547e01e087285606eb270a8dcb
+  MMKVCore: af055b00e27d88cd92fad301c5fecd1ff9b26dd9
+  musap-ios: d1f24632d1cbb24ccf79e5ac6876d6b1356621d1
+  musap-react-native: 5476322acb15cebd6ae16cb0c3be761228b53e0c
+  OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
+  RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: 4c7eeb42be0b2e95195563c49be08d0b839d22b4
   RCTRequired: d530a0f489699c8500e944fde963102c42dcd0c2
   RCTTypeSafety: b20878506b094fa3d9007d7b9e4be0faa3562499
@@ -1815,13 +1903,14 @@ SPEC CHECKSUMS:
   React-logger: fa92ba4d3a5d39ac450f59be2a3cec7b099f0304
   React-Mapbuffer: 9f68550e7c6839d01411ac8896aea5c868eff63a
   react-native-app-auth: fd1eaa667c0bc014199456d14a6440cb74de814e
-  react-native-blur: a2acf22fd7bd13621df5e0b1c130b81adea7009c
+  react-native-blur: 30d91a67da86a4d4d924b0c7c36f6e01479a246b
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
+  react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-linear-gradient-text: e5c4b82093a7c9858dc3ffc059a10be0ff8abf2d
-  react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
+  react-native-mmkv-storage: 36fcafe92a2c4cf19bce96be0b5d587f7a62a2c6
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: c7aabf3e38f688922741774c5b37d1288fc64311
-  react-native-quick-crypto: d3457afaa680f961c7bcf6c382329aafe4abddcd
+  react-native-quick-crypto: 26195fe5231ca5ff25c3490b3c9a1abde0a3af32
   react-native-quick-sqlite: 7bccedbaa812b3a154b1505d8d1db4c12842e60b
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
@@ -1848,23 +1937,28 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 0c80752bceb80924cb8a4babc2a8e3ed70d41e87
   React-utils: a06061b3887c702235d2dac92dacbd93e1ea079e
   ReactCommon: f00e436b3925a7ae44dfa294b43ef360fbd8ccc4
+  RNAudioRecord: 162fee3b8fb628773ec704bf0333823125be2ed7
+  RNAudioRecorderPlayer: 224c7de87722938aedce04000d09baa633148f5b
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
+  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
-  RNPermissions: 2d80aab8cf15a2dcf5be697552bfdd6409c3e3d3
+  RNPermissions: bab3c7941037bbcda872e336870fa65f98d040ab
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
   RNSecureRandom: 07efbdf2cd99efe13497433668e54acd7df49fef
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
+  RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: 43b64ed39c14ce830d840903774154ca0c1f27ec
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: 88480008ccacea6301ff7bf58726e27a72931c8d
+  Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
+  YubiKit: 390e7733942f9518f9b3f5890c60914f7b8d74c8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 0b7f6915c2c954f51ee0634c2c03d880758229e0
+PODFILE CHECKSUM: 0ae0a4505380b658ebc567ffdeeeebfbd64e7893
 
 COCOAPODS: 1.15.2

@@ -5,6 +5,7 @@ import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
+import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
@@ -12,7 +13,6 @@ import {translate} from '../../localization/Localization';
 import {deleteContact, getContacts} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container, SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {IUser, MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 
 interface IProps extends NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACTS_OVERVIEW> {
   getContacts: () => void;
@@ -37,7 +37,6 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 
   onDelete = async (contact: Party): Promise<void> => {
     const {navigation, deleteContact} = this.props;
-
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('contact_delete_title'),
       details: translate('contact_delete_message', {contactName: contact.contact.displayName}),
@@ -63,6 +62,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
     const {activeUser, contacts} = this.props;
     const contactItem = (
       <SSIContactViewItem
+        showArrow
         name={itemInfo.item.contact.displayName}
         uri={itemInfo.item.uri}
         roles={itemInfo.item.roles}
@@ -77,24 +77,48 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       ...(itemInfo.index === contacts.length - 1 && itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
+    const accessibility = {
+      accessibilityLabel: `${itemInfo.item.contact.displayName}. Roles: ${itemInfo.item.roles.join(', ')}`,
+      accessibilityHint: 'Go to contact details',
+    };
+
     return itemInfo.item.id === activeUser.id ? (
-      <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)}>
+      <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)} {...accessibility} accessible>
         <View>{contactItem}</View>
       </ItemContainer>
     ) : (
-      <SSISwipeRowViewItem
-        style={style}
-        hiddenStyle={backgroundStyle}
-        viewItem={contactItem}
-        onPress={() => this.onItemPress(itemInfo.item)}
-        onDelete={() => this.onDelete(itemInfo.item)}
-      />
+      <View
+        accessible
+        {...accessibility}
+        accessibilityActions={[{name: 'delete', label: 'delete contact'}, {name: 'activate'}]}
+        onAccessibilityAction={event => {
+          {
+            switch (event.nativeEvent.actionName) {
+              case 'delete':
+                this.onDelete(itemInfo.item);
+                break;
+              case 'activate':
+                this.onItemPress(itemInfo.item);
+                break;
+            }
+          }
+        }}>
+        <View importantForAccessibility="no-hide-descendants">
+          <SSISwipeRowViewItem
+            style={style}
+            hiddenStyle={backgroundStyle}
+            viewItem={contactItem}
+            onPress={() => this.onItemPress(itemInfo.item)}
+            onDelete={() => this.onDelete(itemInfo.item)}
+          />
+        </View>
+      </View>
     );
   };
 
   render(): JSX.Element {
     return (
-      <Container>
+      <Container accessibilityRole="list" accessibilityLabel="Contacts">
         <SwipeListView
           data={this.props.contacts}
           keyExtractor={(itemInfo: Party) => itemInfo.id}

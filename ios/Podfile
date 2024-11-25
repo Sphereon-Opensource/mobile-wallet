@@ -21,7 +21,7 @@ node_require('react-native-permissions/scripts/setup.rb')
 ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '1' : '0'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] = podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
 
-platform :ios, podfile_properties['ios.deploymentTarget'] || '13.4'
+platform :ios, podfile_properties['ios.deploymentTarget'] || '15.0'
 install! 'cocoapods',
   :deterministic_uuids => false
 
@@ -41,7 +41,7 @@ setup_permissions([
   # 'LocationAlways',
   # 'LocationWhenInUse',
   # 'MediaLibrary',
-  # 'Microphone',
+  'Microphone',
   # 'Motion',
   'Notifications',
   # 'PhotoLibrary',
@@ -53,6 +53,10 @@ setup_permissions([
 ])
 target 'SphereonWallet' do
   use_expo_modules!
+# @generated begin @animo-id/expo-ausweis-sdk - expo prebuild (DO NOT MODIFY) sync-f7defb8a7e68494511942d008678677bd68dc108
+source 'https://github.com/animo/expo-ausweis-sdk'
+source 'https://cdn.cocoapods.org'
+# @generated end @animo-id/expo-ausweis-sdk
   config = use_native_modules!
 
   use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
@@ -67,6 +71,9 @@ target 'SphereonWallet' do
     :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
   )
 
+  pod 'musap-ios', :path => '../node_modules/@sphereon/musap-native'
+  pod 'musap-react-native', :path => '../node_modules/@sphereon/musap-react-native' # auto-linking not working on expo app for some reason
+  pod 'YubiKit', :modular_headers => true
 
 #  permissions_path = '../node_modules/react-native-permissions/ios'
 

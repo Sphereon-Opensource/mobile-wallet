@@ -1,7 +1,7 @@
+import {fontColors} from '@sphereon/ui-components.core';
 import React, {FC} from 'react';
 import {ColorValue, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {fontColors} from '@sphereon/ui-components.core';
 
 export interface IProps {
   size?: number;

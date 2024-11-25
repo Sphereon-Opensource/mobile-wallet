@@ -5,6 +5,7 @@ export enum QrTypesEnum {
   SIOPV2 = 'siopv2',
   OPENID_VC = 'openid-vc',
   OPENID4VC = 'openid4vc',
+  OPENID4VP = 'openid4vp',
   OPENID = 'openid',
   OPENID_INITIATE_ISSUANCE = 'openid-initiate-issuance',
   OPENID_CREDENTIAL_OFFER = 'openid-credential-offer',

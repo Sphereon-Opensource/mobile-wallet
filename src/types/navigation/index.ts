@@ -1,38 +1,49 @@
+import {NavigationHelpers} from '@react-navigation/native';
+import {IPresentationDefinition} from '@sphereon/pex';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialRole, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {ImageAttributes} from '@sphereon/ui-components.core';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';
+import {Activity} from '../activity';
 import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
-import {OnboardingMachineContext, OnboardingMachineInterpreter, OnboardingPersonalData} from '../machines/onboarding';
+import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
-import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
+
+export type ParamsList = Record<string, object | undefined>;
+export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
 
 export type StackParamList = {
   CredentialsOverview: Record<string, never>;
   CredentialDetails: ICredentialDetailsProps & Partial<IHasOnBackProps>;
   CredentialRawJson: ICredentialRawJsonProps;
+  //fixme: changed the any to an actual type
+  CredentialShareOverview: ICredentialOverviewShareProps;
   QrReader: Record<string, never>;
+  SHARE: Record<string, never>;
   Veramo: Record<string, never>;
   Home: Record<string, never>;
   VerificationCode: IVerificationCodeProps & Partial<IHasOnBackProps>;
   AlertModal: IAlertModalProps;
   PopupModal: IPopupModalProps;
+  AusweisModal: IAusweisModalProps;
+  ActivityDetails: IActivityDetailsProps;
+  ActivityReveledInfo: IActivityDetailsProps;
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
   ContactDetails: IContactDetailsProps;
   ContactAdd: IContactAddProps & Partial<IHasOnBackProps>;
+  ContactIdentities: IContactIdentitiesProps;
+  ContactActivity: IContactActivityProps;
+  CredentialActivity: ICredentialActivityProps;
   Onboarding: IOnboardingProps;
   Main: Record<string, never>;
-  Welcome: IHasOnboardingContext & IHasOnNextProps;
-  TermsOfService: IHasOnboardingContext & ITermsOfServiceProps & IHasOnBackProps & IHasOnNextProps;
-  PersonalData: IHasOnboardingContext & IHasOnBackProps & IPersonalDataProps;
-  PinCodeSet: IPinCodeSetProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 also partials for IHasOnBackProps?
-  PinCodeVerify: IPinCodeVerifyProps & IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps; // TODO WAL-677 this should not contain a whole context but only a pin code
-  OnboardingSummary: IHasOnboardingContext & IHasOnBackProps & IHasOnNextProps;
   BrowserOpen: IBrowserOpen;
-  NotificationsOverview: Record<string, never>;
+  ActivityFeed: Record<string, never>;
   Lock: ILockProps;
   Authentication: Record<string, never>;
   CredentialsRequired: ICredentialsRequiredProps & Partial<IHasOnBackProps>;
@@ -41,7 +52,87 @@ export type StackParamList = {
   Emergency: Record<string, never>;
   SIOPV2: ISiopV2PProps;
   OID4VCI: Record<string, never>;
+  CredentialCatalog: Record<string, never>;
+  GET_PID_CREDENTIALS: Record<string, never>;
+  FUNKE_C2_SHARE: Record<string, never>;
+  SETTINGS: Record<string, never>;
+  ACCOUNT: Record<string, never>;
+  AGE_DERIVED_CLAIMS: Record<string, never>;
+  NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
 };
+
+export type Document = 'terms' | 'privacy';
+
+export type IActivityDetailsProps = {
+  activity?: Activity;
+};
+
+export type ICredentialActivityProps = {
+  credential?: CredentialSummary;
+};
+
+export type OnboardingStackParamsList = {
+  AcceptTermsAndPrivacy: Record<string, never>;
+  ReadTermsAndPrivacy: {document: Document};
+  EnableBiometrics: Record<string, never>;
+  EnterCountry: Record<string, never>;
+  EnterEmailAddress: Record<string, never>;
+  EnterName: Record<string, never>;
+  EnterPinCode: Record<string, never>;
+  ShowProgress: Record<string, never>;
+  VerifyPinCode: Record<string, never>;
+  Welcome: Record<string, never>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle;
+  ImportDataConsent: Record<string, never>;
+  PinCodeSet: Record<string, never>;
+  PinCodeVerify: Record<string, never>;
+  ImportDataAuthentication: Record<string, never>;
+  ImportDataLoader: Record<string, never>;
+  ImportDataFinal: Record<string, never>;
+  IncorrectPersonalData: Record<string, never>;
+  CompleteOnboarding: Record<string, never>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type GetPIDCredentialsStackParamsList = {
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoader: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
+  IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type FunkeC2ShareStackParamsList = {
+  Loading: ILoadingProps;
+  ImportDataConsent: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportPersonalData: IOnboardingHasTitleAndSubtitle & Partial<IHasOnBackProps>;
+  ImportDataAuthentication: Record<string, never> & Partial<IHasOnBackProps>;
+  ImportDataFinal: Record<string, never> & Partial<IHasOnBackProps>;
+
+  // IncorrectPersonalData: Record<string, never> & Partial<IHasOnBackProps>;
+  // ImportDataLoaderStore: Record<string, never> & Partial<IHasOnBackProps>;
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
+};
+
+export type ShareStackParamList = {
+  QrPresentation: Record<string, never>;
+};
+
+// export interface IImportDataConsentProps {
+//   onAccept?: () => Promise<void>;
+// }
+
+export type CreditOverviewStackParamsList = {
+  Card: Record<string, never>;
+  List: Record<string, never>;
+};
+
+export type ReadDocumentParamsList = Record<Document, {document: Document}>;
+
+export type OnboardingRoute = keyof OnboardingStackParamsList;
 
 export type IBrowserOpen = IHasOnBackProps &
   IHasOnNextProps & {
@@ -51,21 +142,17 @@ export type IBrowserOpen = IHasOnBackProps &
     actionNextLabeli18n?: string;
   };
 
-interface IPersonalDataProps {
-  isDisabled: (personalData: OnboardingPersonalData) => boolean;
-  onNext: (personalData: OnboardingPersonalData) => void;
-  onPersonalData: (personalData: OnboardingPersonalData) => void;
-}
-
 export interface IOnboardingProps {
   customOnboardingInstance?: OnboardingMachineInterpreter;
 }
 
-export interface IHasOnboardingContext {
-  context: OnboardingMachineContext;
+export interface IOnboardingHasTitleAndSubtitle {
+  title?: string;
+  subtitle?: string;
 }
 
 export interface IHasOnBackProps {
+  onClick: () => {};
   onBack: () => Promise<void>;
 }
 
@@ -95,23 +182,32 @@ export interface ICredentialsRequiredProps {
   subjectSyntaxTypesSupported: string[] | undefined;
   presentationDefinition: PresentationDefinitionV1 | PresentationDefinitionV2;
   onDecline: () => Promise<void>;
-  onSelect?: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
+  onSelect?: (credentials: Array<UniqueDigitalCredential>) => Promise<void>;
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   isSendDisabled?: () => boolean | (() => boolean);
   verifierName: string;
+}
+
+export interface ICredentialOverviewShareProps {
+  verifier: Party;
+  presentationDefinition: IPresentationDefinition;
+  credential: UniqueDigitalCredential;
+  onDecline: () => Promise<void>;
+  onSelectAndSend: (credential: UniqueDigitalCredential) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {
   credential: CredentialSummary;
   primaryAction?: IButton;
   secondaryAction?: IButton;
-  showActivity?: boolean;
+  hideLinks?: boolean;
   /*
    TODO WAL-340
    We want to keep screens simple and we want one object representing the vc to avoid mismatches.
    What we need is a list of actions that will be used for the 'more' button, where the credential is passed in.
   */
   rawCredential?: OriginalVerifiableCredential;
+  uniqueDigitalCredential?: UniqueDigitalCredential;
   headerTitle?: string;
 }
 
@@ -136,6 +232,15 @@ export interface IPopupModalProps {
   image?: PopupImagesEnum;
   title?: string;
   titleBadge?: PopupBadgesEnum;
+  input?: {
+    // TODO temp solution to support input on the modal
+    label?: string;
+    initialValue?: string;
+    placeHolder?: string;
+    maxLength?: number;
+    onEndEditing?: (value: string) => Promise<void>;
+    onValueChange?: (value: string) => Promise<void>;
+  };
   details?: string;
   extraDetails?: string;
   detailsPopup?: {
@@ -146,6 +251,11 @@ export interface IPopupModalProps {
   };
   primaryButton?: IButton;
   secondaryButton?: IButton;
+}
+
+export interface IAusweisModalProps {
+  onClose: () => Promise<void>;
+  onAccept: () => Promise<void>;
 }
 
 export interface ICredentialSelectTypeProps {
@@ -160,6 +270,14 @@ export interface IContactDetailsProps {
   contact: Party;
 }
 
+export interface IContactIdentitiesProps {
+  identities: Party['identities'];
+}
+
+export interface IContactActivityProps {
+  contact: Party;
+}
+
 export interface IContactAddProps {
   name: string;
   uri?: string;
@@ -169,6 +287,25 @@ export interface IContactAddProps {
   onConsentChange?: (hasConsent: boolean) => Promise<void>;
   onAliasChange?: (alias: string) => Promise<void>;
   hasConsent?: boolean;
+  isCreateDisabled?: boolean | (() => boolean);
+}
+
+export interface INewContactAddProps {
+  name: string;
+  uri?: string;
+  description?: string;
+  clientUri?: string;
+  tosUri?: string;
+  policyUri?: string;
+  contacts?: Array<string>;
+  logo?: ImageAttributes;
+  federations?: Array<Party>;
+  roles?: Array<CredentialRole>;
+  identities?: Array<NonPersistedIdentity>;
+  onCreate?: (contact: Party) => Promise<void>;
+  onContinue?: () => Promise<void>; // TODO we need to restructure this prop, so that there is only one to continue with create or not
+  onDecline: () => Promise<void>;
+  onAliasChange?: (alias: string) => Promise<void>;
   isCreateDisabled?: boolean | (() => boolean);
 }
 
@@ -198,41 +335,51 @@ export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
   POPUP_MODAL = 'PopupModal',
+  AUSWEIS_MODAL = 'AusweisModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
+  GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
+  FUNKE_C2_SHARE = 'FUNKE_C2_SHARE',
+  SHARE = 'SHARE',
+  SETTINGS = 'SETTINGS',
+  ACCOUNT = 'ACCOUNT',
+  AGE_DERIVED_CLAIMS = 'AGE_DERIVED_CLAIMS',
 }
 
 export enum NavigationBarRoutesEnum {
   QR = 'QRStack',
-  NOTIFICATIONS = 'NotificationsStack',
+  ACTIVITIES = 'ActivitiesStack',
   CREDENTIALS = 'CredentialsStack',
   CONTACTS = 'ContactsStack',
+  CREDENTIAL_CATALOG = 'CredentialCatalogStack',
 }
-
 export enum ScreenRoutesEnum {
-  WELCOME = 'Welcome',
   CREDENTIALS_OVERVIEW = 'CredentialsOverview',
+  CREDENTIAL_SHARE_OVERVIEW = 'CredentialShareOverview',
   CREDENTIAL_DETAILS = 'CredentialDetails',
   CREDENTIAL_RAW_JSON = 'CredentialRawJson',
   QR_READER = 'QrReader',
+  QR_PRESENTATION = 'QrPresentation',
   VERIFICATION_CODE = 'VerificationCode',
   ERROR = 'Error',
+  ACTIVITY_DETAILS = 'ActivityDetails',
+  ACTIVITY_REVEALED_INFO = 'ActivityReveledInfo',
   CREDENTIAL_SELECT_TYPE = 'CredentialSelectType',
   CONTACTS_OVERVIEW = 'ContactsOverview',
   CONTACT_DETAILS = 'ContactDetails',
   CONTACT_ADD = 'ContactAdd',
-  TERMS_OF_SERVICE = 'TermsOfService',
-  PERSONAL_DATA = 'PersonalData',
-  PIN_CODE_SET = 'PinCodeSet',
-  PIN_CODE_VERIFY = 'PinCodeVerify',
-  NOTIFICATIONS_OVERVIEW = 'NotificationsOverview',
+  CONTACT_IDENTITIES = 'ContactIdentities',
+  CONTACT_ACTIVITY = 'ContactActivity',
+  ACTIVITY_FEED = 'ActivityFeed',
   LOCK = 'Lock',
-  ONBOARDING_SUMMARY = 'OnboardingSummary',
   BROWSER_OPEN = 'BrowserOpen',
   CREDENTIALS_REQUIRED = 'CredentialsRequired',
   CREDENTIALS_SELECT = 'CredentialsSelect',
+  CREDENTIAL_ACTIVITY = 'CredentialActivity',
   LOADING = 'Loading',
   EMERGENCY = 'Emergency',
+  CREDENTIAL_CATALOG = 'CredentialCatalog',
+  NEW_CONTACT_ADD = 'NewContactAdd',
 }
 
 export interface ISiopV2PProps {

@@ -12,7 +12,7 @@ import {MainRoutesEnum, StackParamList} from '../../types';
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.POPUP_MODAL>;
 
 const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
-  const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
+  const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton, input} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
   const onShowExtraDetails = async (): Promise<void> => {
@@ -43,15 +43,14 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
           title={title}
           titleBadge={titleBadge}
           details={details}
+          input={input}
           extraDetails={extraDetails}
-          detailsButton={
-            detailsPopup
-              ? {
-                  caption: detailsPopup.buttonCaption,
-                  onPress: onShowExtraDetails,
-                }
-              : undefined
-          }
+          {...(detailsPopup && {
+            detailsPopup: {
+              caption: detailsPopup.buttonCaption,
+              onPress: onShowExtraDetails,
+            },
+          })}
           primaryButton={primaryButton}
           secondaryButton={secondaryButton}
         />

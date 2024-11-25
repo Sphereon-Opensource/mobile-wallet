@@ -11,7 +11,7 @@ import {
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
-import {agentContext} from '../../agent';
+import agent, {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {
   updateContact as editContact,
@@ -37,10 +37,11 @@ import {
   UPDATE_CONTACT_FAILED,
   UPDATE_CONTACT_SUCCESS,
 } from '../../types/store/contact.action.types';
-import {showToast} from '../../utils/ToastUtils';
+import {showToast} from '../../utils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
+import {NonPersistedIdentity} from '@sphereon/ssi-sdk.data-store/dist/types/contact/contact';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {
@@ -61,7 +62,7 @@ export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unk
   };
 };
 
-async function fetchBrandingForContact(contact: Party): Promise<Party> {
+export async function fetchBrandingForContact(contact: Party): Promise<Party> {
   const correlationIds: string[] = contact.identities.map(identity => identity.identifier.correlationId);
   const brandingPromises = correlationIds.map(correlationId => getIssuerBrandingFromStorage({filter: [{issuerCorrelationId: correlationId}]}));
   const brandingResults = await Promise.all(brandingPromises);
@@ -127,7 +128,19 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CONTACTS_LOADING});
 
+    // TODO fix hacky way of deleting issuer branding
+    const contact = store.getState().contact.contacts.find(contact => contact.id === contactId);
+    const issuerCorrelationId = contact?.identities
+      .filter((identity: Identity) => identity.roles.includes(CredentialRole.ISSUER))
+      .map((identity: Identity) => identity.identifier.correlationId)[0];
+
     removeContact({contactId: contactId}, agentContext)
+      .then(isDeleted => {
+        if (issuerCorrelationId) {
+          return agent.ibRemoveIssuerBranding({filter: [{issuerCorrelationId}]}).then(() => isDeleted);
+        }
+        return isDeleted;
+      })
       .then((isDeleted: boolean): void => {
         if (isDeleted) {
           dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});

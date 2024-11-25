@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 
 import {SSILinearGradientStyled} from '../../gradients';
 import {TextInputStyled} from '../../text';
+import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const SSITextInputFieldContainerStyled = styled.View`
   width: 100%;
@@ -26,6 +27,13 @@ export const SSITextInputFieldUnderlineLinearGradientStyled = styled(SSILinearGr
   height: 1px;
   width: 100%;
   margin-bottom: 4px;
+`;
+
+export const SSITextInputFieldUnderlineLightStyled = styled.View`
+  height: 1px;
+  width: 100%;
+  margin-bottom: 4px;
+  background-color: ${backgroundColors.primaryLight};
 `;
 
 export const SSITextInputFieldHelperContainerStyled = styled.View`

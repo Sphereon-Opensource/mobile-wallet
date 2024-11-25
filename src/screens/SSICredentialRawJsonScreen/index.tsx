@@ -50,8 +50,8 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
         <JSONTree theme={theme} data={rawCredential} invertTheme={false} />
       </ScrollView>
       <View style={{backgroundColor: '#202537', height: 100, marginTop: 'auto', marginRight: 38, marginLeft: 38}}>
-        <SSIBasicHorizontalCenterContainerStyled>
-          <SSIButtonBottomContainerStyled>
+        <SSIBasicHorizontalCenterContainerStyled style={{justifyContent: 'center', flex: 1}}>
+          <SSIButtonBottomContainerStyled style={{flex: 1}}>
             <PrimaryButton
               caption={'Share'} // TODO translation
               onPress={async () => {

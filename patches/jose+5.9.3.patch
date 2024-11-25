@@ -1,0 +1,57 @@
+diff --git a/node_modules/jose/dist/browser/package.json b/node_modules/jose/dist/browser/package.json
+index 8fb7e8f..d0bb035 100644
+--- a/node_modules/jose/dist/browser/package.json
++++ b/node_modules/jose/dist/browser/package.json
+@@ -1 +1,16 @@
+-{"type":"module","sideEffects":false}
++{
++  "type": "module",
++  "sideEffects": false,
++  "react-native": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  },
++  "browser": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  }
++}
+diff --git a/node_modules/jose/dist/browser/runtime/webcrypto.js b/node_modules/jose/dist/browser/runtime/webcrypto.js
+index f9e1e91..d445ebd 100644
+--- a/node_modules/jose/dist/browser/runtime/webcrypto.js
++++ b/node_modules/jose/dist/browser/runtime/webcrypto.js
+@@ -1,2 +1,6 @@
+-export default crypto;
+-export const isCryptoKey = (key) => key instanceof CryptoKey;
++
++// Check if there is a globally available crypto (e.g., from a polyfill)
++const globalCrypto = globalThis.crypto || window.crypto || self.crypto || {};
++
++export default globalCrypto;
++export const isCryptoKey = (key) => (key && typeof key === 'object' && key.constructor && key.constructor.name === 'CryptoKey');
+diff --git a/node_modules/jose/dist/node/esm/package.json b/node_modules/jose/dist/node/esm/package.json
+index 8fb7e8f..d0bb035 100644
+--- a/node_modules/jose/dist/node/esm/package.json
++++ b/node_modules/jose/dist/node/esm/package.json
+@@ -1 +1,16 @@
+-{"type":"module","sideEffects":false}
++{
++  "type": "module",
++  "sideEffects": false,
++  "react-native": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  },
++  "browser": {
++    "os": "react-native-os",
++    "path": "path-browserify",
++    "fs": "expo-fs",
++    "vm": "vm-browserify"
++  }
++}

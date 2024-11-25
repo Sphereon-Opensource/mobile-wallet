@@ -1,6 +1,7 @@
 import {
   DataStoreContactEntities,
   DataStoreDigitalCredentialEntities,
+  DataStoreEventLoggerEntities,
   DataStoreIssuanceBrandingEntities,
   DataStoreMachineStateEntities,
   DataStoreMigrations,
@@ -9,13 +10,14 @@ import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrat
 // @ts-ignore
 import {typeORMDriver} from 'react-native-quick-sqlite';
 import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
+import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact';
+import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts';
 
 const DB_CONNECTION_NAME = 'default';
-const DB_ENCRYPTION_KEY = '29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f86664aa830c';
 
 const sqliteConfig: ReactNativeConnectionOptions = {
   type: 'react-native',
-  database: 'sphereon-wallet-v0.3.sqlite',
+  database: 'funke-wallet-v0.4.sqlite',
   location: '.',
   driver: typeORMDriver,
   entities: [
@@ -24,8 +26,9 @@ const sqliteConfig: ReactNativeConnectionOptions = {
     ...DataStoreIssuanceBrandingEntities,
     ...DataStoreMachineStateEntities,
     ...DataStoreDigitalCredentialEntities,
+    ...DataStoreEventLoggerEntities,
   ],
-  migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations],
+  migrations: [...VeramoDataStoreMigrations, ...DataStoreMigrations, AddFunkeContact1724156944125, AddTrustAnchorContacts1730209599556],
   migrationsRun: false, // We run migrations from code to ensure proper ordering with Redux
   synchronize: false, // We do not enable synchronize, as we use migrations from code
   migrationsTransactionMode: 'each', // protect every migration with a separate transaction
@@ -34,4 +37,4 @@ const sqliteConfig: ReactNativeConnectionOptions = {
   relationLoadStrategy: 'query',
 };
 
-export {sqliteConfig, DB_CONNECTION_NAME, DB_ENCRYPTION_KEY};
+export {sqliteConfig, DB_CONNECTION_NAME};

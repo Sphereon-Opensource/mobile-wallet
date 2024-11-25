@@ -1,15 +1,17 @@
 import Debug, {Debugger} from 'debug';
 import moment from 'moment';
-import {AppState, DeviceEventEmitter, EmitterSubscription, NativeEventSubscription, Platform} from 'react-native';
-
+import {AppState, EmitterSubscription, NativeEventSubscription, Platform} from 'react-native';
 import {APP_ID} from '../../@config/constants';
 import {navigationRef} from '../../navigation/rootNavigation';
 import store from '../../store';
 import {logout} from '../../store/actions/user.actions';
 import {PlatformsEnum, ScreenRoutesEnum} from '../../types';
 
+const nonLockableScreens = new Map([ScreenRoutesEnum.QR_READER, 'ImportPersonalData', ScreenRoutesEnum.NEW_CONTACT_ADD].map(k => [k, true]));
+
 const debug: Debugger = Debug(`${APP_ID}:LockingHandler`);
 const IDLE_LOGOUT_AFTER = 5 * 60 * 1000; // 5 minutes logout
+
 class LockingHandler {
   private static instance: LockingHandler;
   private _isLocked = true;
@@ -18,7 +20,9 @@ class LockingHandler {
 
   private lockingEventListener: NativeEventSubscription | EmitterSubscription;
   private constructor() {
-    navigationRef.addListener('__unsafe_action__', () => this.touchLastInteraction());
+    navigationRef.addListener('__unsafe_action__', () => {
+      this.touchLastInteraction();
+    });
   }
 
   private checkInactive() {
@@ -87,7 +91,9 @@ class LockingHandler {
 
   // TODO WAL-601, remove function when refactoring iOS locking mechanism
   private isLockingRequiredForScreen(): boolean {
-    return ScreenRoutesEnum.QR_READER !== navigationRef.current?.getCurrentRoute()?.name;
+    const screenName = navigationRef?.current?.getCurrentRoute()?.name;
+    if (!screenName) return true;
+    return !nonLockableScreens.has(screenName as ScreenRoutesEnum);
   }
 
   public disableLocking = async (): Promise<void> => {

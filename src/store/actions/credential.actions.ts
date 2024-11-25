@@ -1,5 +1,7 @@
-import {CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialCorrelationType, CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
 import {CredentialMapper, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ICreateVerifiableCredentialArgs, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
@@ -23,11 +25,7 @@ import {
   STORE_CREDENTIAL_FAILED,
   STORE_CREDENTIAL_SUCCESS,
 } from '../../types/store/credential.action.types';
-import {showToast} from '../../utils';
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
-import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {getCredentialIssuerContact, getCredentialSubjectContact, showToast} from '../../utils';
 
 export const logger = Loggers.DEFAULT.get('sphereon:store');
 
@@ -45,37 +43,47 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             const credentialBranding: ICredentialBranding | undefined = credentialsBranding.find(
               (branding: ICredentialBranding): boolean => branding.vcHash === uniqueVC.hash,
             );
-            return await toCredentialSummary({
-              verifiableCredential: uniqueVC.originalVerifiableCredential as VerifiableCredential,
+            // todo: we should get uniform from the store instead of having to map it. We store it for a reason
+            const uniform = JSON.parse(uniqueVC.digitalCredential.uniformDocument) as VerifiableCredential;
+            console.log(JSON.stringify(uniform));
+            console.log(`Pre to summary with\r\n:${JSON.stringify(uniform, null, 2)}`);
+            return toCredentialSummary({
+              verifiableCredential: uniform,
               hash: uniqueVC.hash,
               credentialRole: uniqueVC.digitalCredential.credentialRole,
               branding: credentialBranding?.localeBranding,
-              issuer: await getCredentialIssuerContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
-              subject: await getCredentialSubjectContact(uniqueVC.originalVerifiableCredential as VerifiableCredential),
+              issuer: getCredentialIssuerContact(uniform),
+              subject: getCredentialSubjectContact(uniform),
             });
           }),
         );
+        console.log('summaries', credentialSummaries);
         dispatch({type: GET_CREDENTIALS_SUCCESS, payload: [...credentialSummaries]});
       })
-      .catch(() => dispatch({type: GET_CREDENTIALS_FAILED}));
+      .catch(e => {
+        console.error(e);
+        dispatch({type: GET_CREDENTIALS_FAILED});
+      });
   };
 };
 
 export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
+    console.log(`ORIG RAW VC: ${vc}`);
     const mappedVc: VerifiableCredential = CredentialMapper.toUniformCredential(vc as OriginalVerifiableCredential) as VerifiableCredential;
+    const issuer = typeof mappedVc.issuer === 'object' ? mappedVc.issuer.id : mappedVc.issuer;
     storeCredential({
       credentialRole: CredentialRole.HOLDER,
-      issuerCorrelationId: `${vc.issuer}`,
-      issuerCorrelationType: CredentialCorrelationType.DID,
-      vc: mappedVc,
+      issuerCorrelationId: `${issuer}`,
+      issuerCorrelationType: issuer && issuer.startsWith('did:') ? CredentialCorrelationType.DID : CredentialCorrelationType.URL,
+      vc: vc,
     } satisfies IStoreVerifiableCredentialArgs)
-      .then(async (hash: string): Promise<CredentialSummary> => {
-        const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: hash}]});
+      .then(async (digitalCredential: DigitalCredential): Promise<CredentialSummary> => {
+        const credentialBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: digitalCredential.hash}]});
         return toCredentialSummary({
           verifiableCredential: mappedVc,
-          hash,
+          hash: digitalCredential.hash,
           credentialRole: CredentialRole.HOLDER,
           branding: credentialBranding?.[0]?.localeBranding,
           issuer: getCredentialIssuerContact(mappedVc),
@@ -167,10 +175,10 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
           issuerCorrelationId: `${vc.issuer}`,
           issuerCorrelationType: CredentialCorrelationType.DID,
           vc,
-        } satisfies IStoreVerifiableCredentialArgs).then((hash: string) =>
+        } satisfies IStoreVerifiableCredentialArgs).then((digitalCredential: DigitalCredential) =>
           toCredentialSummary({
             verifiableCredential: vc,
-            hash,
+            hash: digitalCredential.hash,
             credentialRole: CredentialRole.HOLDER,
             issuer: getCredentialIssuerContact(vc),
             subject: getCredentialSubjectContact(vc),

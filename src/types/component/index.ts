@@ -1,11 +1,14 @@
+import {ImageAttributes} from '@sphereon/ui-components.core';
+import {TCountryCode} from 'countries-list';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
-import {CredentialStatus, ImageAttributes, IssuerStatus} from '@sphereon/ui-components.core';
 
 export enum ButtonIconsEnum {
   BACK = 'back',
   MORE = 'more',
   CLOSE = 'close',
+  SEARCH = 'search',
+  CHEVRON = 'chevron',
 }
 
 export enum HeaderMenuIconsEnum {
@@ -13,6 +16,8 @@ export enum HeaderMenuIconsEnum {
   DELETE = 'delete',
   LOGOUT = 'logout',
   DOWNLOAD = 'download',
+  SETTINGS = 'settings',
+  QR = 'qr',
 }
 
 export enum PopupImagesEnum {
@@ -31,13 +36,15 @@ export interface IHeaderProps {
 
 export interface IButton {
   caption: string;
-  onPress: () => Promise<void>;
+  onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean | (() => boolean);
+  accessibilityLabel?: string;
 }
 
 export interface IHeaderMenuButton extends IButton {
   icon?: HeaderMenuIconsEnum;
   fontColor?: ColorValue;
+  accessibilityHint?: string;
 }
 
 export interface ITabRoute {
@@ -54,4 +61,28 @@ export type CredentialMiniCardDisplay = {
   backgroundImage?: ImageAttributes;
   logoColor: ColorValue;
   logo?: ImageAttributes;
+};
+
+export type StepState = 'current' | 'finished' | 'upcoming';
+
+export type StepContent = {
+  render: (stepState: StepState) => JSX.Element;
+  accessibility?: {
+    getLabel: (stepState: StepState, current: number, isFinal: boolean) => string;
+    buttonHint: string;
+  };
+};
+
+export interface IStepIndicatorProps {
+  state: StepState;
+  isLastStep: boolean;
+  stepIndex: number;
+  ringColor: ColorValue;
+}
+
+export type CountryOption = {
+  label: string;
+  countryCode: TCountryCode;
+  flag?: string;
+  selected: boolean;
 };

@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 
+import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {translate} from '../../../localization/Localization';
 import {
@@ -10,7 +11,6 @@ import {
   SSICredentialDetailsViewFooterLabelValueStyled as IssuedBy,
   SSICredentialDetailsViewFooterLabelCaptionStyled as IssuedByLabel,
 } from '../../../styles/components';
-import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import SSIImageField from '../../fields/SSIImageField';
 import SSITextField from '../../fields/SSITextField';
 

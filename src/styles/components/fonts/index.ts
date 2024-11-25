@@ -1,10 +1,10 @@
-import {Animated} from 'react-native';
+import {Animated, Text, TextStyle} from 'react-native';
 import styled from 'styled-components/native';
 
-import {fontStyle} from '../../typography';
 import {fontColors} from '@sphereon/ui-components.core';
+import {fontStyle} from '../../typography';
 
-export const SSITextH0Styled = styled.Text`
+export const SSITextH0Styled = styled(Text)`
   font-family: ${fontStyle.h0SemiBold.fontFamily};
   font-size: ${fontStyle.h0SemiBold.fontSize}px;
   font-weight: ${fontStyle.h0SemiBold.fontWeight};
@@ -16,7 +16,7 @@ export const SSITextH0LightStyled = styled(SSITextH0Styled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH1Styled = styled.Text`
+export const SSITextH1Styled = styled(Text)`
   font-family: ${fontStyle.h1SemiBold.fontFamily};
   font-size: ${fontStyle.h1SemiBold.fontSize}px;
   font-weight: ${fontStyle.h1SemiBold.fontWeight};
@@ -24,11 +24,23 @@ export const SSITextH1Styled = styled.Text`
   height: auto;
 `;
 
+export const SSITextH1RegularStyled = styled(Text)`
+  font-family: ${fontStyle.h1Regular.fontFamily};
+  font-size: ${fontStyle.h1Regular.fontSize}px;
+  font-weight: ${fontStyle.h1Regular.fontWeight};
+  line-height: ${fontStyle.h1Regular.lineHeight}px;
+  height: auto;
+`;
+
+export const SSITextH1RegularLightStyled = styled(SSITextH1RegularStyled)`
+  color: ${fontColors.light};
+`;
+
 export const SSITextH1LightStyled = styled(SSITextH1Styled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH2Styled = styled.Text`
+export const SSITextH2Styled = styled(Text)`
   font-family: ${fontStyle.h2Regular.fontFamily};
   font-size: ${fontStyle.h2Regular.fontSize}px;
   font-weight: ${fontStyle.h2Regular.fontWeight};
@@ -36,7 +48,7 @@ export const SSITextH2Styled = styled.Text`
   height: auto;
 `;
 
-export const SSITextH2SemiBoldStyled = styled.Text`
+export const SSITextH2SemiBoldStyled = styled(Text)`
   font-family: ${fontStyle.h2SemiBold.fontFamily};
   font-size: ${fontStyle.h2SemiBold.fontSize}px;
   font-weight: ${fontStyle.h2SemiBold.fontWeight};
@@ -60,7 +72,7 @@ export const SSITextH2SecondaryButtonStyled = styled(SSITextH2Styled)`
   color: ${fontColors.secondaryButton};
 `;
 
-export const SSITextH3RegularStyled = styled.Text`
+export const SSITextH3RegularStyled = styled(Text)`
   font-family: ${fontStyle.h3Regular.fontFamily};
   font-size: ${fontStyle.h3Regular.fontSize}px;
   font-weight: ${fontStyle.h3Regular.fontWeight};
@@ -70,10 +82,12 @@ export const SSITextH3RegularStyled = styled.Text`
 
 export const SSITextH3RegularLightStyled = styled(SSITextH3RegularStyled)`
   color: ${fontColors.light};
+  padding-right: 8px;
+  margin-right: 8px;
 `;
 
 // TODO name semibold
-export const SSITextH3Styled = styled.Text`
+export const SSITextH3Styled = styled(Text)`
   font-family: ${fontStyle.h3SemiBold.fontFamily};
   font-size: ${fontStyle.h3SemiBold.fontSize}px;
   font-weight: ${fontStyle.h3SemiBold.fontWeight};
@@ -97,7 +111,7 @@ export const SSITextH3AnimatedLightStyled = styled(SSITextH3AnimatedStyled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH4Styled = styled.Text`
+export const SSITextH4Styled = styled(Text)`
   font-family: ${fontStyle.h4Regular.fontFamily};
   font-size: ${fontStyle.h4Regular.fontSize}px;
   font-weight: ${fontStyle.h4Regular.fontWeight};
@@ -105,7 +119,7 @@ export const SSITextH4Styled = styled.Text`
   height: auto;
 `;
 
-export const SSITextH4SemiBoldStyled = styled.Text`
+export const SSITextH4SemiBoldStyled = styled(Text)`
   font-family: ${fontStyle.h4SemiBold.fontFamily};
   font-size: ${fontStyle.h4SemiBold.fontSize}px;
   font-weight: ${fontStyle.h4SemiBold.fontWeight};
@@ -125,7 +139,8 @@ export const SSITextH4SemiBoldLightStyled = styled(SSITextH4SemiBoldStyled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH5Styled = styled.Text`
+// Sync updates with SSITextH5StyleObject below
+export const SSITextH5Styled = styled(Text)`
   font-family: ${fontStyle.h5Regular.fontFamily};
   font-size: ${fontStyle.h5Regular.fontSize}px;
   font-weight: ${fontStyle.h5Regular.fontWeight};
@@ -133,11 +148,21 @@ export const SSITextH5Styled = styled.Text`
   height: auto;
 `;
 
+// Needed for gradient text
+// Sync updates with SSITextH5Styled above
+export const SSITextH5StyleObject: TextStyle = {
+  fontFamily: fontStyle.h5Regular.fontFamily,
+  fontSize: fontStyle.h5Regular.fontSize,
+  fontWeight: fontStyle.h5Regular.fontWeight,
+  lineHeight: fontStyle.h5Regular.lineHeight,
+  height: 'auto',
+};
+
 export const SSITextH5LightStyled = styled(SSITextH5Styled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH5SemiBoldStyled = styled.Text`
+export const SSITextH5SemiBoldStyled = styled(Text)`
   font-family: ${fontStyle.h5SemiBold.fontFamily};
   font-size: ${fontStyle.h5SemiBold.fontSize}px;
   font-weight: ${fontStyle.h5SemiBold.fontWeight};
@@ -149,7 +174,7 @@ export const SSITextH5LightSemiBoldStyled = styled(SSITextH5SemiBoldStyled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH6Styled = styled.Text`
+export const SSITextH6Styled = styled(Text)`
   font-family: ${fontStyle.h6.fontFamily};
   font-size: ${fontStyle.h6.fontSize}px;
   font-weight: ${fontStyle.h6.fontWeight};
@@ -161,7 +186,7 @@ export const SSITextH6LightStyled = styled(SSITextH6Styled)`
   color: ${fontColors.light};
 `;
 
-export const SSITextH7SemiBoldStyled = styled.Text`
+export const SSITextH7SemiBoldStyled = styled(Text)`
   font-family: ${fontStyle.h7SemiBold.fontFamily};
   font-size: ${fontStyle.h7SemiBold.fontSize}px;
   font-weight: ${fontStyle.h7SemiBold.fontWeight};

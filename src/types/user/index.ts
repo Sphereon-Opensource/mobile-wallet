@@ -1,3 +1,7 @@
+import {IUserPreferences} from '../preferences';
+import {OnboardingBiometricsStatus} from '../machines/onboarding';
+import {TCountryCode} from 'countries-list';
+
 export interface IUser {
   id: string;
   firstName: string;
@@ -6,6 +10,9 @@ export interface IUser {
   identifiers: Array<IUserIdentifier>;
   createdAt: Date;
   lastUpdatedAt: Date;
+  preferences: IUserPreferences;
+  biometricsEnabled: OnboardingBiometricsStatus;
+  countryCode: TCountryCode;
 }
 
 export interface BasicUser {
@@ -13,6 +20,8 @@ export interface BasicUser {
   lastName: string;
   emailAddress: string;
   identifiers?: Array<BasicUserIdentifier>;
+  biometricsEnabled: OnboardingBiometricsStatus;
+  countryCode: TCountryCode;
 }
 
 export interface IUserIdentifier {

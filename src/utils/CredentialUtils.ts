@@ -1,5 +1,5 @@
-import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, ICredential, OriginalVerifiableCredential, IVerifiableCredential} from '@sphereon/ssi-types';
+import {Identity, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialMapper, ICredential, IVerifiableCredential, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {VerifiableCredential} from '@veramo/core';
 import store from '../store';
 import {IUser, IUserIdentifier} from '../types';
@@ -34,11 +34,13 @@ export const getMatchingUniqueDigitalCredential = (
       (typeof searchVC !== 'string' &&
         (uniqueVC.id === (<IVerifiableCredential>searchVC).id ||
           (uniqueVC.originalVerifiableCredential as VerifiableCredential).proof === (<IVerifiableCredential>searchVC).proof)) ||
-      (typeof searchVC === 'string' && (uniqueVC.originalVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC) ||
+      (typeof searchVC === 'string' && (uniqueVC.uniformVerifiableCredential as VerifiableCredential)?.proof?.jwt === searchVC) ||
       // We are ignoring the signature of the sd-jwt as PEX signs the vc again and it will not match anymore with the jwt in the proof of the stored jsonld vc
       (typeof searchVC === 'string' &&
         CredentialMapper.isSdJwtEncoded(searchVC) &&
-        uniqueVC.originalCredential?.proof?.jwt?.split('.')?.slice(0, 2)?.join('.') === searchVC.split('.')?.slice(0, 2)?.join('.')),
+        uniqueVC.uniformVerifiableCredential?.proof &&
+        'jwt' in uniqueVC.uniformVerifiableCredential.proof &&
+        uniqueVC.uniformVerifiableCredential.proof.jwt?.split('.')?.slice(0, 2)?.join('.') === searchVC.split('.')?.slice(0, 2)?.join('.')),
   );
 };
 
@@ -73,17 +75,24 @@ export const translateCorrelationIdToName = (correlationId: string): string => {
 };
 
 export const getCredentialIssuerContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  console.log(`getCredentialIssuerContact ${vc}`, vc);
   const contacts: Array<Party> = store.getState().contact.contacts;
   const issuer: string = typeof vc.issuer === 'string' ? vc.issuer : vc.issuer?.id ?? vc.issuer?.name;
   return contacts.find((contact: Party) => contact.identities.some((identity: Identity): boolean => identity.identifier.correlationId === issuer));
 };
 
 export const getCredentialSubjectContact = (vc: VerifiableCredential | ICredential): Party | undefined => {
+  console.log(`getCredentialSubjectContact ${vc}`, vc);
   const contacts: Array<Party> = store.getState().contact.contacts;
-  const subjects: string[] = asArray(vc.credentialSubject)
+  const subjects: string[] = asArray('credentialSubject' in vc ? vc.credentialSubject : [])
     .map(subject => subject.id)
     .filter((id: string | undefined) => !!id) as string[];
-  return contacts.find((contact: Party) =>
+  const party = contacts.find((contact: Party) =>
     contact.identities.some((identity: Identity): boolean => subjects.includes(identity.identifier.correlationId)),
   );
+  if (!party) {
+    const contacts: Array<Party> = store.getState().contact.contacts;
+    return contacts[0];
+  }
+  return party;
 };

@@ -3,6 +3,7 @@ import React, {PureComponent} from 'react';
 import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
 import {
   SSINavigationBarButtonStyled as Button,
@@ -10,11 +11,11 @@ import {
   SSINavigationBarSafeAreaContainerStyled as SafeAreaContainer,
 } from '../../../styles/components';
 import {NavigationBarRoutesEnum} from '../../../types';
+import CredentialCatalogIcon from '../../assets/icons/CredentialCatalogIcon';
 import SSIBellIcon from '../../assets/icons/SSIBellIcon';
 import SSIContactsIcon from '../../assets/icons/SSIContactsIcon';
 import SSIHomeIcon from '../../assets/icons/SSIHomeIcon';
 import SSIQRIcon from '../../assets/icons/SSIQRIcon';
-import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 
 interface IState {
   keyboardVisible: boolean;
@@ -47,7 +48,7 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
 
   render() {
     return !this.state.keyboardVisible ? (
-      <SafeAreaContainer>
+      <SafeAreaContainer accessibilityRole="tablist">
         <SafeAreaView edges={['bottom']}>
           <Container>
             {this.props.state.routes.map((route, index: number) => {
@@ -66,12 +67,11 @@ class SSINavigationBar extends PureComponent<BottomTabBarProps, IState> {
                   this.props.navigation.navigate(route.name, {merge: true});
                 }
               };
-
               return (
                 <Button
                   key={route.key}
-                  accessibilityRole="button"
-                  accessibilityState={isFocused ? {selected: true} : {}}
+                  accessibilityRole="tab"
+                  accessibilityState={{selected: isFocused}}
                   accessibilityLabel={options.tabBarAccessibilityLabel}
                   testID={options.tabBarTestID}
                   onPress={onPress}
@@ -101,7 +101,7 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
           secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />
       );
-    case NavigationBarRoutesEnum.NOTIFICATIONS:
+    case NavigationBarRoutesEnum.ACTIVITIES:
       return (
         <SSIBellIcon
           primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
@@ -118,6 +118,13 @@ const getNavigationIcon = (route: string, isFocused: boolean): JSX.Element => {
     case NavigationBarRoutesEnum.CONTACTS:
       return (
         <SSIContactsIcon
+          primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
+          secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
+        />
+      );
+    case NavigationBarRoutesEnum.CREDENTIAL_CATALOG:
+      return (
+        <CredentialCatalogIcon
           primaryColor={isFocused ? gradientsColors['200'].primaryColor : fontColors.light}
           secondaryColor={isFocused ? gradientsColors['200'].secondaryColor : fontColors.light}
         />

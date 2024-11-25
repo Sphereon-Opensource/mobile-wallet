@@ -59,6 +59,14 @@ export const SSIPopupCloseButtonContainerStyled = styled.View`
   margin-top: auto;
 `;
 
+export const SSIPopupButtonsContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-left: 18px;
+  padding-right: 18px;
+  gap: 12px;
+`;
+
 export const SSICheckmarkBadgeStyled = styled(SSICheckmarkBadge).attrs({
   size: 12,
 })``;
