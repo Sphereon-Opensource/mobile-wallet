@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
@@ -16,6 +16,8 @@ import AusweisModal from '../modals/AusweisModal';
 import SSIAlertModal from '../modals/SSIAlertModal';
 import SSIPopupModal from '../modals/SSIPopupModal';
 import RootNavigation from '../navigation/rootNavigation';
+import {AssistantProvider} from '../providers/chat/AssistantProvider';
+import {ChatProvider} from '../providers/chat/chatProvider';
 import ActivityDetailScreen from '../screens/ActivityDetailsScreen';
 import ActivityFeedScreen from '../screens/ActivityFeedScreen';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
@@ -109,118 +111,122 @@ const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = (): JSX.Element => {
   return (
-    <Stack.Navigator
-      initialRouteName={MainRoutesEnum.HOME}
-      screenOptions={{
-        animation: 'none',
-        headerShown: false,
-      }}>
-      <Stack.Screen name={MainRoutesEnum.HOME} component={TabStackNavigator} />
-      <Stack.Screen
-        name={MainRoutesEnum.ALERT_MODAL}
-        children={({navigation, route}) => (
-          <>
-            <SSIAlertModal navigation={navigation} route={route} />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-        options={{
-          presentation: 'transparentModal',
-        }}
-      />
-      <Stack.Screen
-        // TODO WAL-541 fix navigation hierarchy
-        name={MainRoutesEnum.POPUP_MODAL}
-        children={({navigation, route}) => (
-          <>
-            <SSIPopupModal navigation={navigation} route={route} />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-        options={{
-          presentation: 'transparentModal',
-        }}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.AUSWEIS_MODAL}
-        component={AusweisModal}
-        options={{
-          presentation: 'transparentModal',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.OID4VCI}
-        children={() => (
-          <>
-            <OID4VCIStackWithContext />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.SIOPV2}
-        children={() => (
-          <>
-            <SiopV2StackWithContext />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.GET_PID_CREDENTIALS}
-        children={() => (
-          <>
-            <GetPIDCredentialsStackScreenWithContext />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.FUNKE_C2_SHARE}
-        children={() => (
-          <>
-            <FunkeC2ShareStackScreenWithContext />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen name="Veramo" component={Veramo} />
-      <Stack.Screen
-        name={MainRoutesEnum.SETTINGS}
-        children={() => (
-          <>
-            <SettingsScreen />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
-      <Stack.Screen
-        name={MainRoutesEnum.ACCOUNT}
-        children={() => (
-          <>
-            <AccountScreen />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-      <Stack.Screen
-        name={MainRoutesEnum.AGE_DERIVED_CLAIMS}
-        children={() => (
-          <>
-            <AgeDerivedClaimsScreen />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
-    </Stack.Navigator>
+    <AssistantProvider>
+      <ChatProvider>
+        <Stack.Navigator
+          initialRouteName={MainRoutesEnum.HOME}
+          screenOptions={{
+            animation: 'none',
+            headerShown: false,
+          }}>
+          <Stack.Screen name={MainRoutesEnum.HOME} component={TabStackNavigator} />
+          <Stack.Screen
+            name={MainRoutesEnum.ALERT_MODAL}
+            children={({navigation, route}) => (
+              <>
+                <SSIAlertModal navigation={navigation} route={route} />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+            options={{
+              presentation: 'transparentModal',
+            }}
+          />
+          <Stack.Screen
+            // TODO WAL-541 fix navigation hierarchy
+            name={MainRoutesEnum.POPUP_MODAL}
+            children={({navigation, route}) => (
+              <>
+                <SSIPopupModal navigation={navigation} route={route} />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+            options={{
+              presentation: 'transparentModal',
+            }}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.AUSWEIS_MODAL}
+            component={AusweisModal}
+            options={{
+              presentation: 'transparentModal',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.OID4VCI}
+            children={() => (
+              <>
+                <OID4VCIStackWithContext />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.SIOPV2}
+            children={() => (
+              <>
+                <SiopV2StackWithContext />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.GET_PID_CREDENTIALS}
+            children={() => (
+              <>
+                <GetPIDCredentialsStackScreenWithContext />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.FUNKE_C2_SHARE}
+            children={() => (
+              <>
+                <FunkeC2ShareStackScreenWithContext />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen name="Veramo" component={Veramo} />
+          <Stack.Screen
+            name={MainRoutesEnum.SETTINGS}
+            children={() => (
+              <>
+                <SettingsScreen />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
+          <Stack.Screen
+            name={MainRoutesEnum.ACCOUNT}
+            children={() => (
+              <>
+                <AccountScreen />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.AGE_DERIVED_CLAIMS}
+            children={() => (
+              <>
+                <AgeDerivedClaimsScreen />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+        </Stack.Navigator>
+      </ChatProvider>
+    </AssistantProvider>
+
   );
 };
 
 const TabStackNavigator = (): JSX.Element => {
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
-
   return (
     <Tab.Navigator
       screenOptions={{

@@ -67,7 +67,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   }, [value]); // Add dependencies here
   return (
     <Container
-      style={{borderTopColor: 'red', borderTopWidth: 1, backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
+      style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>

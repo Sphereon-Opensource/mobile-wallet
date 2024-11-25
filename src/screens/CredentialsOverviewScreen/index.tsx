@@ -1,15 +1,18 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {Image, View} from 'react-native';
 import {connect} from 'react-redux';
 import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
-import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
+import {CreditOverviewStackParamsList, IUser, NavigationBarRoutesEnum, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 import CredentialsOverviewList from './CredentialsOverviewList';
 import {CredentialsOverviewImages} from './constants';
+import {Chat} from '../../components/chat/Chat';
+import RootNavigation from '../../navigation/rootNavigation';
+import {useChat} from '../../providers/chat/chatProvider';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
@@ -23,6 +26,24 @@ type Props = {activeUser: IUser};
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
+  const {closeModal} = useChat();
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'navigateToQRScanner',
+          description: 'navigate to QR Scanner Screen',
+          parameters: {},
+        },
+        callback: () => {
+          RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+          closeModal();
+        },
+      },
+    ],
+    [], // Only re-create if dependencies change (none in this case)
+  );
+
   const {announce} = useAccessibility();
   useFocusEffect(() => announce({message: 'Credential overview screen'}));
   return (
@@ -50,6 +71,13 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
         <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} options={{swipeEnabled: false}} />
         <CredentialViewTypeNav.Screen name="Card" component={CredentialsOverviewCardList} />
       </CredentialViewTypeNav.Navigator>
+      <Chat
+        screenContext={JSON.stringify({
+          screen: 'Credentials Overview Screen',
+          assistantInstructions: 'focus on moving to the qr scanner screen. Only use the navigateToQRScanner when explicitly confirmed by the user',
+        })}
+        tools={tools}
+      />
     </Container>
   );
 };

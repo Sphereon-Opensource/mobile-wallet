@@ -12,13 +12,14 @@ import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {createAgentPlugins} from './plugins';
 import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
+import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd'
 
 export const didResolver = new Resolver({
   ...getDidEbsiResolver(),
   ...getDidKeyResolver(),
   ...webDIDResolver(),
   ...getDidJwkResolver(),
-  // ...getDidOydResolver(),
+  ...getDidOydResolver(),
 });
 
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
@@ -30,9 +31,9 @@ export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
     defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
   }),
-  /*[`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
     defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
-  }),*/
+  }),
 };
 
 const dbConnection: OrPromise<DataSource> = DEFAULT_DB_CONNECTION;

@@ -4,10 +4,11 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes, backgroundColors, fontColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {NavigationButton} from '../../components/NavigationButton';
+import {Chat, ChatTools} from '../../components/chat/Chat';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
 import {useAccessibility} from '../../hooks/useAccessibility';
@@ -25,6 +26,7 @@ import {
 } from '../../styles/components';
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {stringifyState} from '../../utils/stringifyState';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
 
@@ -54,6 +56,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
     }
   };
+  // this is a loose differntiation between adding a credential and viewing a credential
+  const isAddingNewCredential = hideLinks;
 
   const renderFooter = () => (
     <>
@@ -65,7 +69,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </>
         )}
       </IssuerFooterContainer>
-      {!hideLinks && (
+      {!isAddingNewCredential && (
         <View
           style={{
             backgroundColor: backgroundColors.primaryDark,
@@ -98,6 +102,67 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     navigation.goBack();
     return true;
   });
+
+  const screenContext = useMemo(() => `
+    this screen shows credential details. onscreen credential: ${stringifyState(credential)}.
+    ${!isAddingNewCredential && `Please note that this is not a new credential, but an existing one. The user is currently just
+      viewing the details of an existing credential. The user is not currently in the process of adding a new credential.
+      There is nothing you can help the user with, other than answering questions regarding this credential`}
+  `, [credential]);
+
+  const AddNewCredentialtools: ChatTools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'editAlias',
+          description: 'edit alias. Change the name of the contact',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit alias');
+        },
+      },
+      {
+        tool: {
+          name: 'editConsent',
+          description: 'edit consent',
+          parameters: {},
+        },
+        callback: () => {
+          console.log('edit consent');
+        },
+      },
+      ...(primaryAction
+        ? [
+          {
+            tool: {
+              name: 'accept',
+              description: 'accept the credential offer',
+              parameters: {},
+            },
+            callback: () => {
+              primaryAction && primaryAction.onPress();
+            },
+          },
+        ]
+        : []),
+      ...(secondaryAction
+        ? [
+          {
+            tool: {
+              name: 'decline',
+              description: 'decline the credential offer',
+              parameters: {},
+            },
+            callback: () => {
+              secondaryAction && secondaryAction.onPress();
+            },
+          },
+        ]
+        : []),
+    ],
+    [primaryAction, secondaryAction],
+  );
 
   useFocusEffect(() => announce({message: `Credential details for ${credential.branding?.alias ?? credential.title}`, delay: 1000}));
 
@@ -183,6 +248,11 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </View>
         )}
       </ContentContainer>
+      <Chat
+        buttonPosition={{bottom: 100, right: 16}}
+        screenContext={screenContext}
+        tools={isAddingNewCredential ? AddNewCredentialtools : []}
+      />
     </Container>
   );
 };

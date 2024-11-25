@@ -1,11 +1,10 @@
-import {useFocusEffect} from '@react-navigation/native';
+import React, {FC, ReactElement, useMemo} from 'react';
+import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
+import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {SSITextH2SemiBoldLightStyled as HeaderCaption} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC, ReactElement} from 'react';
-import {ListRenderItemInfo, RefreshControl, TouchableWithoutFeedback} from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import FilterBar from '../../components/bars/FilterBar';
 import SearchField from '../../components/fields/SearchField';
@@ -27,8 +26,18 @@ import {
   CredentialCatalogViewAllContainerStyled as ViewAllContainer,
   CredentialCatalogViewAllTextStyled as ViewAllText,
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {Chat} from '../../components/chat/Chat';
+import {useChat} from '../../providers/chat/chatProvider';
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types'
 import {showToast} from '../../utils';
+import RootNavigation from '../../navigation/rootNavigation'
+import { useFocusEffect } from '@react-navigation/native'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 
@@ -150,6 +159,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     },
   ];
 
+  const {closeModal} = useChat();
+
   const onClose = async (): Promise<void> => {
     props.navigation.goBack();
   };
@@ -195,6 +206,25 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
       </ItemContainer>
     );
   };
+
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'navigateToQRScanner',
+          description: 'navigate to QR Scanner Screen',
+          parameters: {},
+        },
+        callback: () => {
+          setTimeout(() => {
+            RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+            closeModal();
+          }, 2000);
+        },
+      },
+    ],
+    [],
+  );
 
   useFocusEffect(() => announce({message: 'Credential catalog screen'}));
 
@@ -248,6 +278,10 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           />
         </CredentialListContainer>
       </DiscoverCredentialsContainer>
+      <Chat
+        screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet. Focus on guiding the user towards the QR scanner screen."
+        tools={tools}
+      />
     </Container>
   );
 };
