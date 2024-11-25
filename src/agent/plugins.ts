@@ -150,6 +150,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
         return address[0];
       },
     }),
-    new ResourceResolver(),
+    new ResourceResolver({detectLocation: true}),
   ];
 };
