@@ -1,4 +1,4 @@
-import {FederationEntityMetadataPayload, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -260,10 +260,9 @@ export const checkTrustChain = async (
     resolveTrustChainArgs.trustAnchors.length !== 0
   ) {
     const resolved = await agent.resolveTrustChain(resolveTrustChainArgs);
-    if (resolved !== undefined && resolved !== null && (resolved as string[]).length !== 0) {
-      const payload = JSON.parse(
-        Buffer.from(resolved.find((ss: any) => ss.iss === resolveTrustChainArgs.entityIdentifier).split('.')[1], 'base64url').toString(),
-      );
+    if (resolved !== undefined && resolved !== null) {
+      const trustChain = resolved.trustChain?.asJsReadonlyArrayView()?.map(tc => JSON.parse(Buffer.from(tc.split('.')[1]).toString('base64url')))
+      const payload = trustChain?.find(tc => tc.iss === resolveTrustChainArgs.entityIdentifier)
       return {
         federation_entity: payload?.metadata?.federation_entity,
         oauth_server_metadata: payload?.metadata?.oauth_authorization_server,

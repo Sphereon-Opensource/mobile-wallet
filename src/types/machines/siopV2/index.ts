@@ -6,13 +6,9 @@ import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, Verif
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {
-  ExternalIdentifierOIDFEntityIdResult,
-  PublicKeyHex,
-  TrustedAnchor,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {ResolveTrustChainArgs} from '@sphereon/ssi-sdk.oidf-client';
-import {AuthorizationServerMetadata, FederationEntityMetadata, WalletMetadata} from '../../../../../OID4VC/packages/oid4vci-common';
+import {AuthorizationServerMetadata} from '../../../../../OID4VC/packages/oid4vci-common';
 import {DynamicRegistrationClientMetadata} from '../../../../../OID4VC/packages/common';
 
 export type SiopV2AuthorizationRequestData = {
@@ -183,9 +179,9 @@ export type SiopV2MachineEventTypes =
   | SelectCredentialsEvent;
 
 export type OpenIdFederationEntities = {
-  federation_entity?: FederationEntityMetadata;
+  federation_entity?: any;
   oauth_server_metadata?: AuthorizationServerMetadata;
-  openid_wallet_provider?: AuthorizationServerMetadata & WalletMetadata;
+  openid_wallet_provider?: AuthorizationServerMetadata;
   openid_credential_issuer?: DynamicRegistrationClientMetadata; //Not sure about that one
   openid_credential_verifier?: DynamicRegistrationClientMetadata;
 };
