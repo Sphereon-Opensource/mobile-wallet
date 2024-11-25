@@ -3309,10 +3309,10 @@
     "@sphereon/oid4vc-common" "0.16.1-next.226+ca61afe"
     valibot "^0.42.1"
 
-"@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.10", "@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.11":
-  version "0.2.0-SNAPSHOT.11"
-  resolved "https://registry.yarnpkg.com/@sphereon/kmp-mdoc-core/-/kmp-mdoc-core-0.2.0-SNAPSHOT.11.tgz#3729e43bc78c049024ac3da2f931291ad6ef0d55"
-  integrity sha512-f2wLDfekXKgDIaroiaizTfrCmO1drfbnS3+6P1dywq24yAY0Uay/UjMicGeIwzXf8WTerpWNUSWrymvkWAIIgQ==
+"@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.10", "@sphereon/kmp-mdoc-core@0.2.0-SNAPSHOT.12":
+  version "0.2.0-SNAPSHOT.12"
+  resolved "https://registry.yarnpkg.com/@sphereon/kmp-mdoc-core/-/kmp-mdoc-core-0.2.0-SNAPSHOT.12.tgz#1eafc1cfe4c3b18128cb6056d8619ab8934139b3"
+  integrity sha512-FQ6sVLyUKpQlu/vFVIJ9lgWPjEoMSC4GgUKMhIiBEfnfIpF/EFoseO78CeQypdedp1TxO4jvKh4nEnUwpCSRxA==
   dependencies:
     "@js-joda/core" "5.6.3"
     "@js-joda/timezone" "2.3.0"
