@@ -146,7 +146,6 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
             label={translate('onboarding_pid_security_model_mobile_operator')}
             onPress={() => setSecurityModel(PIDSecurityModel.MOBILE_OPERATOR_ESIM)}
             selected={securityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM}
-            disabled
           />
           <SelectOption
             label={translate('onboarding_pid_security_model_eid_presentation')}
