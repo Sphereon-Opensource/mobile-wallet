@@ -1,6 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
+import {useEffect} from 'react';
 import styled from 'styled-components/native';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {SSIBasicContainerStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import ContactCredentialShareActivity from './ContactCredentialShareActivity';
@@ -16,6 +18,8 @@ const Container = styled(SSIBasicContainerStyled)`
 
 export const ActivityDetailScreen = (navProps: Props) => {
   const {activity} = navProps.route.params;
+  const {announce} = useAccessibility();
+  useEffect(() => announce({message: 'Activity details'}));
   if (!activity) return null;
   const isShare = activity.action === DefaultActionSubType.VC_SHARE || activity.action === DefaultActionSubType.VC_SHARE_DECLINE;
   const isIssue = activity.action === DefaultActionSubType.VC_ISSUE || activity.action === DefaultActionSubType.VC_ISSUE_DECLINE;

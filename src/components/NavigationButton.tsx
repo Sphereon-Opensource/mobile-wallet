@@ -21,7 +21,11 @@ type NavigationButtonProps = PressableProps & {
 export const NavigationButton = (props: NavigationButtonProps) => {
   const {onPress, label, disabled, ...pressableProps} = props;
   return (
-    <NavigationButtonContainer onPress={onPress} style={({pressed}) => ({opacity: disabled ? 0.4 : pressed ? 0.7 : 1})} {...pressableProps}>
+    <NavigationButtonContainer
+      accessibilityRole="link"
+      onPress={onPress}
+      style={({pressed}) => ({opacity: disabled ? 0.4 : pressed ? 0.7 : 1})}
+      {...pressableProps}>
       <SSITextH3RegularLightStyled>{label}</SSITextH3RegularLightStyled>
       <ChevronIcon size={16} color={fontColors.light} style={{marginRight: 8, transform: [{rotate: '-90deg'}]}} />
     </NavigationButtonContainer>

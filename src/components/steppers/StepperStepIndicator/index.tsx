@@ -19,7 +19,7 @@ type DotProps = {
 };
 
 const CurrentStepDot = ({ringColor, stepIndex}: DotProps) => (
-  <CurrentDot>
+  <CurrentDot accessibilityLabel={`Step ${stepIndex} is the current step`}>
     <CurrentDotInnerRing style={{borderColor: ringColor}} />
     <Text style={{color: 'white', fontSize: 16, fontWeight: '700'}}>{stepIndex}</Text>
   </CurrentDot>
@@ -32,7 +32,7 @@ const FinishedStepDot = () => (
 );
 
 const UpcomingStepDot = ({stepIndex}: DotProps) => (
-  <UpcomingDot>
+  <UpcomingDot accessibilityLabel={`Step ${stepIndex} is an upcoming step`}>
     <Text style={{color: 'white', fontSize: 16, fontWeight: '700'}}>{stepIndex}</Text>
   </UpcomingDot>
 );

@@ -7,7 +7,7 @@ import Tabs, {Props as TabsProps} from './Tabs';
 
 type TapBarProps<T extends ParamsList> = Pick<
   TabsProps<T>,
-  'containerStyle' | 'labels' | 'indicatorProportionalWidth' | 'indicatorStyle' | 'renderIndicator'
+  'containerStyle' | 'labels' | 'indicatorProportionalWidth' | 'indicatorStyle' | 'renderIndicator' | 'accessibilityLabel'
 >;
 
 type Props<T extends ParamsList> = {

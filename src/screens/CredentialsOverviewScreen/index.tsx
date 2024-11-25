@@ -1,7 +1,9 @@
+import {useFocusEffect} from '@react-navigation/native';
 import React from 'react';
 import {Image, View} from 'react-native';
 import {connect} from 'react-redux';
 import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
 import {CreditOverviewStackParamsList, IUser, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
@@ -11,7 +13,7 @@ import {CredentialsOverviewImages} from './constants';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
-const renderLabel = (label: 'card' | 'list') => () => {
+const renderLabel = (label: 'card' | 'list') => (isFocused: boolean) => {
   const source = CredentialsOverviewImages[label];
   return <Image source={source} />;
 };
@@ -21,7 +23,8 @@ type Props = {activeUser: IUser};
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
   const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
-
+  const {announce} = useAccessibility();
+  useFocusEffect(() => announce({message: 'Credential overview screen'}));
   return (
     <Container style={{paddingTop: 24}}>
       <StatusBar />
@@ -30,7 +33,6 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
         tapBarProps={{
           containerStyle: {
             width: 74,
-            gap: 9,
             alignSelf: 'flex-end',
             height: 32,
             paddingVertical: 0,
@@ -40,8 +42,8 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
           },
           indicatorStyle: {top: 0, zIndex: -1},
           labels: {
-            Card: renderLabel('card'),
-            List: renderLabel('list'),
+            Card: {render: renderLabel('card'), accessibilityLabel: 'Card view'},
+            List: {render: renderLabel('list'), accessibilityLabel: 'List view'},
           },
           renderIndicator: <View style={{height: '100%', backgroundColor: 'white', opacity: 0.1, borderRadius: 4}} />,
         }}>

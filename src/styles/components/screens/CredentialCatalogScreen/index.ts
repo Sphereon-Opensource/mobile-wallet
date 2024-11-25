@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
-import {moderateScale} from 'react-native-size-matters';
 import {borderColors, fontColors} from '@sphereon/ui-components.core';
+import {moderateScale} from 'react-native-size-matters';
+import styled from 'styled-components/native';
 import {SSITextFieldLinearTextGradientStyled} from '../../gradients';
 
 export const CredentialCatalogScreenPreviewCredentialContainerStyled = styled.View`

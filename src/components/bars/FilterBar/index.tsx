@@ -1,15 +1,15 @@
+import {SSITextH7LightStyled as InactiveLabelText} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, ReactElement} from 'react';
 import {TouchableWithoutFeedback} from 'react-native';
-import {SSITextH7LightStyled as InactiveLabelText} from '@sphereon/ui-components.ssi-react-native';
 import Localization from '../../../localization/Localization';
-import {showToast} from '../../../utils';
 import {
   FilterBarActiveLabelStyled as ActiveLabel,
+  FilterBarActiveLabelTextStyled as ActiveLabelText,
   FilterBarContainerStyled as Container,
   FilterBarInactiveLabelStyled as InactiveLabel,
-  FilterBarActiveLabelTextStyled as ActiveLabelText,
 } from '../../../styles/components';
 import {ToastTypeEnum} from '../../../types';
+import {showToast} from '../../../utils';
 
 const FilterBar: FC = (): ReactElement => {
   const labels = [
@@ -36,7 +36,7 @@ const FilterBar: FC = (): ReactElement => {
 
   const getLabelElements = (): Array<ReactElement> => {
     return labels.map((label, index) => (
-      <TouchableWithoutFeedback key={index} onPress={showNotYetImplementedToast}>
+      <TouchableWithoutFeedback key={index} onPress={showNotYetImplementedToast} accessible={false} importantForAccessibility="no">
         {label.active ? (
           <ActiveLabel>
             <ActiveLabelText>{label.text}</ActiveLabelText>
@@ -50,7 +50,15 @@ const FilterBar: FC = (): ReactElement => {
     ));
   };
 
-  return <Container>{getLabelElements()}</Container>;
+  return (
+    <Container
+      accessible
+      accessibilityRole="tablist"
+      accessibilityHint={Localization.translate('item_not_yet_available_message')}
+      accessibilityState={{disabled: true}}>
+      {getLabelElements()}
+    </Container>
+  );
 };
 
 export default FilterBar;

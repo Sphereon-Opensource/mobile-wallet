@@ -16,10 +16,12 @@ const SelectOption = ({selected, onPress, label, disabled}: Props) => {
   };
   return (
     <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{selected, disabled}}
       onPress={handlePress}
       style={{display: 'flex', flexDirection: 'row', alignItems: 'center', paddingVertical: 3, paddingHorizontal: 5, opacity: disabled ? 0.7 : 1}}>
       <SSITextH3RegularLightStyled>{capitalize(label)}</SSITextH3RegularLightStyled>
-      <Circle>{selected && <SelectedCircle />}</Circle>
+      <Circle accessibilityRole="radio">{selected && <SelectedCircle />}</Circle>
     </Pressable>
   );
 };

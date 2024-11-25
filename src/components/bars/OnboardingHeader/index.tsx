@@ -92,7 +92,6 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
   );
 
   const showCogWheel = useMemo(() => {
-    console.log('current step', currentStep);
     if (!currentStep) return false;
     return currentStep < 4 && !stepConfig;
   }, [currentStep]);

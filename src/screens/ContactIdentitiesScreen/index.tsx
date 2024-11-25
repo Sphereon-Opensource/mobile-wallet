@@ -4,12 +4,14 @@ import React, {FC} from 'react';
 import {SSIBasicContainerSecondaryStyled as SSIContainer, SSITextH3LightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 
+import {useFocusEffect} from '@react-navigation/native';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
-import {backgroundColors} from '@sphereon/ui-components.core';
-import {IdentitiesContainer} from './style';
-import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {NewContactViewItem} from '../../components/views/NewContactViewItem';
+import {useAccessibility} from '../../hooks/useAccessibility';
+import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
+import {IdentitiesContainer} from './style';
 
 const Container = styled(SSIContainer)`
   background-color: ${backgroundColors.primaryDark};
@@ -19,15 +21,22 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_IDE
 
 const ContactIdentitiesScreen: FC<Props> = (props: Props): JSX.Element => {
   const {identities} = props.route.params;
-
+  const {announce} = useAccessibility();
+  useFocusEffect(() => announce({message: 'Related identities to contact', delay: 1000}));
   return (
     <Container style={{paddingTop: 24}}>
       <ScrollView style={{flex: 1}}>
-        <SSITextH3LightStyled style={{paddingLeft: 24, marginTop: 10}}>All related identities</SSITextH3LightStyled>
+        <SSITextH3LightStyled style={{paddingLeft: 24, marginTop: 10}} accessibilityRole="header">
+          All related identities
+        </SSITextH3LightStyled>
         <Divider />
-        <IdentitiesContainer>
+        <IdentitiesContainer accessibilityRole="list" accessibilityLabel="Identities">
           {identities.map((item, idx) => (
             <NewContactViewItem
+              containerProps={{
+                accessible: true,
+                accessibilityLabel: `${item.alias}, roles: ${item.roles.join(', ')}`,
+              }}
               logoSize={45}
               background={idx % 2 === 0 ? 'light' : 'dark'}
               key={idx}

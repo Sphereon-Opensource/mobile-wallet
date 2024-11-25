@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageAttributes} from '@sphereon/ui-components.core';
+import {ImageAttributes, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import {View, useWindowDimensions} from 'react-native';
@@ -39,6 +39,10 @@ const CredentialIssuedActivity = ({activity, navigation}: Props) => {
     <>
       {credential && (
         <View
+          accessible
+          accessibilityLabel={`${credential.title}. Issued by: ${credential.issuer.alias}, on: ${toLocalDateString(
+            credential.issueDate,
+          )}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`}
           style={{
             marginHorizontal: 'auto',
             marginVertical: 16,
