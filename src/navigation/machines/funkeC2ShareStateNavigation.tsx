@@ -253,6 +253,7 @@ const navigateHandleError = async (args: any): Promise<void> => {
     }),
     primaryButton: {
       caption: translate('action_ok_label'),
+      accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
       onPress: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
     },
     onBack: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),

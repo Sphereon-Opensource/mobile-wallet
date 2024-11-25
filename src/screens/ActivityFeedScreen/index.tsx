@@ -1,7 +1,9 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useMemo} from 'react';
 import {useDispatch} from 'react-redux';
 import ActivityList from '../../components/activity/ActivityList';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {getActivityLogging} from '../../store/actions/logging.actions';
@@ -13,6 +15,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ACTIVITY_FE
 const ActivityFeedScreen = ({navigation}: Props) => {
   const dispatch = useDispatch();
   const getActivityLog = () => dispatch(getActivityLogging());
+  const {announce} = useAccessibility();
   const {activityLogging, verifiableCredentials} = useAppSelector(({logging: {activityLogging}, credential: {verifiableCredentials}}) => ({
     activityLogging,
     verifiableCredentials,
@@ -31,7 +34,7 @@ const ActivityFeedScreen = ({navigation}: Props) => {
         .filter((activity): activity is Activity => Boolean(activity)),
     [activityLogging, verifiableCredentials],
   );
-
+  useFocusEffect(() => announce({message: 'Activity feed screen'}));
   return (
     <ActivityList
       listTitle={translate('activity.feed.list.title')}

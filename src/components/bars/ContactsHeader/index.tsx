@@ -5,8 +5,8 @@ import {Back, Title} from '../components';
 
 export type Props = NativeStackHeaderProps;
 
-const ContactsHeader = ({options: {title, ...rest}, navigation}: Props) => {
-  const Left = useMemo(() => <Back onPress={navigation.goBack} />, [navigation]);
+const ContactsHeader = ({options: {title}, navigation}: Props) => {
+  const Left = useMemo(() => <Back onPress={navigation.goBack} accessibilityHint="Navigate back to the previous screen" />, [navigation]);
   const Center = useMemo(() => <Title>{title ?? 'Unknown contact'}</Title>, [title]);
 
   return <HeaderSecondaryBar left={Left} center={Center} />;

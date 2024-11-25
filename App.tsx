@@ -12,6 +12,7 @@ import {bindActionCreators} from 'redux';
 import {DB_CONNECTION_NAME} from './src/@config/database';
 import {agentContext, linkHandlers} from './src/agent';
 import './src/agent/index';
+import {AccessibilityProvider} from './src/contexts/AccessibiltyContext';
 import IntentHandler from './src/handlers/IntentHandler';
 import {addLinkListeners} from './src/handlers/LinkHandlers';
 import LockingHandler from './src/handlers/LockingHandler';
@@ -119,7 +120,9 @@ export default function App() {
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
             <GestureHandlerRootView style={{flex: 1}}>
-              <AppNavigator />
+              <AccessibilityProvider>
+                <AppNavigator />
+              </AccessibilityProvider>
             </GestureHandlerRootView>
           </OnTouchProvider>
         </NavigationContainer>

@@ -36,7 +36,6 @@ const ChevronRight = styled.View`
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
   const {name, uri, roles, logo, showArrow = false} = props;
-  debug(`logo: ${logo ? JSON.stringify(logo) : ''}`);
   return (
     <Container>
       <StatusContainer />

@@ -1,8 +1,11 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 
+import {useFocusEffect} from '@react-navigation/native';
+import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import SSISecurityImage from '../../../../components/assets/images/SSISecurityImage';
 import SSIWarningImage from '../../../../components/assets/images/SSIWarningImage';
+import {useAccessibility} from '../../../../hooks/useAccessibility';
 import {
   SSIPopupCloseButtonContainerStyled as CloseButtonContainer,
   SSIPopupContainerStyled as Container,
@@ -16,13 +19,12 @@ import {
   SSICheckmarkBadgeStyled as SSICheckmarkBadge,
   SSIExclamationMarkBadgeStyled as SSIExclamationMarkBadge,
   SSIPopupTitleBadgeContainerStyled as TitleBadgeContainer,
+  SSITextH2SemiBoldStyled as TitleCaption,
   SSIPopupTitleContainerStyled as TitleContainer,
 } from '../../../../styles/components';
-import {SSITextH2SemiBoldStyled as TitleCaption} from '../../../../styles/components';
 import {ButtonIconsEnum, IButton, PopupBadgesEnum, PopupImagesEnum} from '../../../../types';
 import {parseTextToElement} from '../../../../utils';
 import SSIIconButton from '../../../buttons/SSIIconButton';
-import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import SSIButtonsContainer from '../../../containers/SSIButtonsContainer';
 import SSITextInputField from '../../../fields/SSITextInputField';
 
@@ -51,14 +53,21 @@ export interface IProps {
 const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false, input} = props;
   const [value, setValue] = useState<string | undefined>();
-
+  const {setFocus} = useAccessibility();
+  const titleRef = useRef(null);
+  const focusOnTitle = useCallback(() => {
+    if (titleRef.current) {
+      setFocus(titleRef, 200);
+    }
+  }, [titleRef, setFocus]);
+  useFocusEffect(focusOnTitle);
   // FIXME quick hack to make sure the disabled state is recalculated because the component is not getting rerendered
   const isDisabled = useMemo(() => {
     return typeof primaryButton?.disabled === 'function' ? primaryButton.disabled() : primaryButton?.disabled;
   }, [value]); // Add dependencies here
-
   return (
-    <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
+    <Container
+      style={{borderTopColor: 'red', borderTopWidth: 1, backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>
@@ -71,7 +80,9 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         {title && (
           <TitleContainer>
             {titleBadge && <TitleBadgeContainer>{getBadge(titleBadge)}</TitleBadgeContainer>}
-            <TitleCaption style={{color: darkMode ? fontColors.light : undefined}}>{title}</TitleCaption>
+            <TitleCaption ref={titleRef} style={{color: darkMode ? fontColors.light : undefined}}>
+              {title}
+            </TitleCaption>
           </TitleContainer>
         )}
         {details && <DetailsText style={{color: darkMode ? fontColors.light : undefined}}>{parseTextToElement(details)}</DetailsText>}
@@ -107,12 +118,14 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
             caption: secondaryButton.caption,
             onPress: secondaryButton.onPress,
             disabled: secondaryButton.disabled,
+            accessibilityLabel: secondaryButton.accessibilityLabel,
           },
         })}
         {...(primaryButton && {
           primaryButton: {
             caption: primaryButton.caption,
             onPress: primaryButton.onPress,
+            accessibilityLabel: primaryButton.accessibilityLabel,
             // FIXME quick hack to make sure the disabled state is recalculated because the component is not getting rerendered
             disabled: isDisabled, //primaryButton.disabled
           },

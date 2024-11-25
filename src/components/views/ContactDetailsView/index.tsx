@@ -1,13 +1,13 @@
+import {backgroundColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {FC, ReactElement} from 'react';
-import {ListRenderItemInfo, StyleProp, View, ViewStyle} from 'react-native';
+import {ListRenderItemInfo, View, ViewStyle} from 'react-native';
+import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
+import {SSICredentialDetailsViewContainerStyled as Container, SSIDetailsViewDetailsListStyled as DetailsList} from '../../../styles/components';
+import {IButton} from '../../../types';
 import SSIImageField from '../../fields/SSIImageField';
 import SSITextField from '../../fields/SSITextField';
-import {SSICredentialDetailsViewContainerStyled as Container, SSIDetailsViewDetailsListStyled as DetailsList} from '../../../styles/components';
-import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
-import {IButton} from '../../../types';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {backgroundColors} from '@sphereon/ui-components.core';
 
 export interface IContactDetailsViewProps {
   properties: Array<CredentialDetailsRow>;
@@ -27,7 +27,7 @@ export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContact
   };
   //style
   return (
-    <Container style={{...style}}>
+    <Container style={{...style}} accessibilityRole="list" accessibilityLabel="Contact details">
       <DetailsList
         data={properties.filter(p => p.value !== undefined)}
         renderItem={renderItem}
@@ -55,8 +55,8 @@ export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContact
                 backgroundColor: backgroundColors.primaryDark,
                 marginTop: 20,
               }}>
-              {primaryButton && <PrimaryButton caption={primaryButton.caption} onPress={primaryButton.onPress} />}
-              {secondaryButton && <SecondaryButton caption={secondaryButton.caption} onPress={secondaryButton.onPress} />}
+              {primaryButton && <PrimaryButton accessibilityRole="button" caption={primaryButton.caption} onPress={primaryButton.onPress} />}
+              {secondaryButton && <SecondaryButton accessibilityRole="button" caption={secondaryButton.caption} onPress={secondaryButton.onPress} />}
             </View>
           ) : null
         }

@@ -32,7 +32,11 @@ const Description = styled.View`
 
 export const ActivityEventRow = forwardRef(
   (p: RowProps, _: ForwardedRef<unknown>): JSX.Element => (
-    <Container onPress={p.onPress} style={{backgroundColor: backgroundColors[p.index % 2 === 0 ? 'primaryDark' : 'secondaryDark']}}>
+    <Container
+      accessible
+      onPress={p.onPress}
+      accessibilityHint="See more about this activity"
+      style={{backgroundColor: backgroundColors[p.index % 2 === 0 ? 'primaryDark' : 'secondaryDark']}}>
       <View style={{flex: 1}}>
         <SSITextH2SemiBoldLightStyled>{p.title}</SSITextH2SemiBoldLightStyled>
         {p.subtitle && <SSITextH4LightStyled>{p.subtitle}</SSITextH4LightStyled>}

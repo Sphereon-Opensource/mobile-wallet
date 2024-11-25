@@ -4,7 +4,7 @@ import {useContext, useState} from 'react';
 import {LayoutChangeEvent, Platform, StatusBar, View} from 'react-native';
 import Svg from 'react-native-svg';
 import WelcomeBackground from '../../../assets/images/welcomeBackground.svg';
-import {contentContainerStyle, IOS_EXTRA_BOTTOM_PADDING} from '../../../components/containers/ScreenContainer';
+import {IOS_EXTRA_BOTTOM_PADDING, contentContainerStyle} from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
@@ -57,9 +57,12 @@ const WelcomeScreen = () => {
           description={translate(`${translationPath}.description`)}
           titleVariant="h0"
           containerStyle={{gap: 16}}
+          accessibilityFocusOnTitle
         />
         <View style={{marginTop: 'auto'}}>
           <PrimaryButton
+            accessibilityRole="button"
+            accessibilityHint="Start the onboarding process"
             style={{height: 42, width: '100%'}}
             caption={translate(`${translationPath}.button_caption`)}
             captionColor={fontColors.light}

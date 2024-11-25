@@ -13,10 +13,15 @@ const DEFAULT_INDICATOR_PROPORTION_WIDTH = 1;
 // useNavigationState hook we could use for the state is not convenient as it
 // starts at the root navigator state and it is cumbersome to get the state of
 // the current navigator
+export type Label = {
+  render: (isFocused: boolean) => JSX.Element;
+  accessibilityLabel?: string;
+};
+
 export type Props<T extends ParamsList> = Omit<MaterialTopTabBarProps, 'state' | 'navigation'> & {
   state: NavigationState<T>;
   navigation: NavigationHelpers<T, MaterialTopTabNavigationEventMap>;
-  labels: Record<keyof T, (isFocused: boolean) => JSX.Element>;
+  labels: Record<keyof T, Label>;
   containerWidth: number;
   containerStyle?: Omit<ViewStyle, 'width' | 'paddingLeft' | 'paddingRight'> & {
     width?: number;
@@ -25,6 +30,7 @@ export type Props<T extends ParamsList> = Omit<MaterialTopTabBarProps, 'state' |
   renderIndicator?: JSX.Element;
   indicatorStyle?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>;
   indicatorProportionalWidth?: number;
+  accessibilityLabel?: string;
 };
 const defaultContainerStyle: ViewProps['style'] = {
   flexDirection: 'row',
@@ -41,6 +47,7 @@ const Tabs = <T extends ParamsList>({
   renderIndicator,
   indicatorStyle,
   indicatorProportionalWidth = DEFAULT_INDICATOR_PROPORTION_WIDTH,
+  accessibilityLabel,
 }: Props<T>) => {
   const numberOfTabs = routes.length;
   const tabsGap = containerStyle?.gap ?? 0;
@@ -58,12 +65,12 @@ const Tabs = <T extends ParamsList>({
     indicatorLeft.value = withTiming(getIndicatorLeft(routeIndex), {duration: 200});
   }, [routeIndex, getIndicatorLeft]);
   return (
-    <View style={[defaultContainerStyle, containerStyle]}>
+    <View accessible accessibilityRole="tablist" accessibilityLabel={accessibilityLabel} style={[defaultContainerStyle, containerStyle]}>
       {routes.map((route, i) => (
         <Tab
           key={route.name}
-          routeName={route.name}
-          renderLabel={labels[route.name]}
+          renderLabel={labels[route.name].render}
+          accessibilityLabel={labels[route.name].accessibilityLabel}
           isFocused={routeIndex === i}
           onPress={() => (navigation.navigate as any)(route.name, route.params)}
         />

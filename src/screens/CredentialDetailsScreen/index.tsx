@@ -1,6 +1,7 @@
 import {useBackHandler} from '@react-native-community/hooks';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageAttributes, backgroundColors, fontColors} from '@sphereon/ui-components.core';
+import {ImageAttributes, backgroundColors, fontColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, useMemo} from 'react';
@@ -9,6 +10,7 @@ import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {NavigationButton} from '../../components/NavigationButton';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {
@@ -43,6 +45,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation, route} = props;
   const {credential, onBack, primaryAction, secondaryAction, hideLinks} = route.params;
   const issuer: string = credential.issuer.alias;
+  const {announce} = useAccessibility();
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
   const contacts = useAppSelector(state => state.contact.contacts);
   const contact = contacts.find(c => c.contact.displayName === issuer);
@@ -154,32 +157,43 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     [primaryAction, secondaryAction],
   );
 
+  useFocusEffect(() => announce({message: `Credential details for ${credential.branding?.alias ?? credential.title}`, delay: 1000}));
+
   return (
     <Container style={{paddingTop: 24}}>
       <StatusBar />
       <ContentContainer>
         <CardContainer>
-          <SSICredentialCardView
-            header={{
-              credentialTitle: credential.branding?.alias,
-              credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
-              logo: credentialCardLogo,
-            }}
-            body={{
-              issuerName: issuer ?? credential.issuer.name,
-            }}
-            footer={{
-              credentialStatus: getCredentialStatus(credential),
-              expirationDate: credential.expirationDate,
-            }}
-            display={{
-              backgroundColor: credential.branding?.background?.color,
-              backgroundImage: credential.branding?.background?.image,
-              textColor: credential.branding?.text?.color,
-            }}
-          />
+          <View
+            accessible
+            accessibilityLabel={`${credential.title}. Issued by: ${credential.issuer.alias}, on: ${toLocalDateString(
+              credential.issueDate,
+            )}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`}>
+            <View importantForAccessibility="no-hide-descendants">
+              <SSICredentialCardView
+                header={{
+                  credentialTitle: credential.branding?.alias,
+                  credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
+                  logo: credentialCardLogo,
+                }}
+                body={{
+                  issuerName: issuer ?? credential.issuer.name,
+                }}
+                footer={{
+                  credentialStatus: getCredentialStatus(credential),
+                  expirationDate: credential.expirationDate,
+                }}
+                display={{
+                  backgroundColor: credential.branding?.background?.color,
+                  backgroundImage: credential.branding?.background?.image,
+                  textColor: credential.branding?.text?.color,
+                }}
+              />
+            </View>
+          </View>
         </CardContainer>
         <SSITextH3LightStyled
+          accessibilityRole="header"
           style={{
             marginTop: 24,
             paddingHorizontal: 24,
@@ -189,6 +203,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           Card information
         </SSITextH3LightStyled>
         <FlatList
+          accessibilityRole="list"
+          accessibilityLabel={`${credential.title} details`}
           style={{backgroundColor: backgroundColors.secondaryDark, flex: 1}}
           data={credential.properties}
           renderItem={renderItem}
@@ -212,9 +228,16 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                 captionColor={fontColors.light}
                 onPress={primaryAction.onPress}
                 disabled={primaryAction.disabled}
+                accessibilityLabel={primaryAction.accessibilityLabel}
               />
             )}
-            {secondaryAction && <SecondaryButton caption={secondaryAction.caption} onPress={secondaryAction.onPress} />}
+            {secondaryAction && (
+              <SecondaryButton
+                caption={secondaryAction.caption}
+                onPress={secondaryAction.onPress}
+                accessibilityLabel={secondaryAction.accessibilityLabel}
+              />
+            )}
           </View>
         )}
       </ContentContainer>

@@ -1,18 +1,18 @@
+import {useFocusEffect} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
 import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {BackHandler} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {SSIBasicContainerStyled as Container} from '../../styles/components';
-import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import FederationTrustView from '../../components/views/FederationTrustView';
-import {ContactInformationView} from '../../components/views/ContactInformationView';
-import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
-import Localization, {translate} from '../../localization/Localization';
-import {getContacts} from '../../services/contactService';
-import {agentContext} from '../../agent';
 import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
+import {agentContext} from '../../agent';
+import {ContactInformationView} from '../../components/views/ContactInformationView';
+import FederationTrustView from '../../components/views/FederationTrustView';
+import Localization, {translate} from '../../localization/Localization';
+import {getContacts} from '../../services/contactService';
 import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
-import {useFocusEffect} from '@react-navigation/native';
+import {SSIBasicContainerStyled as Container} from '../../styles/components';
+import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
 import {Chat} from '../../components/chat/Chat';
 import {stringifyState} from '../../utils/stringifyState';
 import {useChat} from '../../providers/chat/chatProvider';
@@ -201,6 +201,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           props.navigation.getParent()?.goBack();
         },
         disabled: isConfirmDisabled,
+        accessibilityLabel: translate('contact_name_label'),
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),

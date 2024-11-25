@@ -54,14 +54,22 @@ class SSIButtonsContainer extends PureComponent<Props, IState> {
         }}>
         {secondaryButton && (
           <View style={{flex: 1}}>
-            <SecondaryButton caption={secondaryButton.caption} onPress={secondaryButton.onPress} disabled={secondaryButton.disabled} />
+            <SecondaryButton
+              caption={secondaryButton.caption}
+              onPress={secondaryButton.onPress}
+              disabled={secondaryButton.disabled}
+              accessibilityRole="button"
+              accessibilityLabel={secondaryButton.accessibilityLabel}
+            />
           </View>
         )}
         {primaryButton && (
           <View style={{flex: 1}}>
             <PrimaryButton
+              accessibilityRole="button"
               caption={primaryButton.caption}
               onPress={primaryButton.onPress}
+              accessibilityLabel={primaryButton.accessibilityLabel}
               disabled={typeof primaryButton.disabled === 'function' ? primaryButton.disabled() : primaryButton.disabled}
             />
           </View>

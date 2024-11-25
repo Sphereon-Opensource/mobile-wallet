@@ -8,9 +8,18 @@ export type Props = NativeStackHeaderProps & {
 };
 
 const ActivityDetailHeader = ({options: {title}, createdAt, navigation}: Props) => {
-  const Left = useMemo(() => <Back onPress={navigation.goBack} />, [navigation]);
-
-  const Center = useMemo(() => <CenterInfo title={title ?? 'Unknown activity'} subtitle={createdAt} />, [title, createdAt]);
+  const Left = useMemo(() => <Back onPress={navigation.goBack} accessibilityHint="Navigate back to the previous screen" />, [navigation]);
+  const Center = useMemo(
+    () => (
+      <CenterInfo
+        title={title ?? 'Unknown activity'}
+        titleAccessibilityLabel={`contact involved: ${title}`}
+        subtitle={createdAt}
+        subtitleAccessibilityLabel={`Activity occurred at: ${createdAt}`}
+      />
+    ),
+    [title, createdAt],
+  );
 
   return <HeaderSecondaryBar left={Left} center={Center} />;
 };
