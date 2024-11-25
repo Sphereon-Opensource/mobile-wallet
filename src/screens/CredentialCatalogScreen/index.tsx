@@ -28,8 +28,16 @@ import {
 } from '../../styles/components';
 import {Chat} from '../../components/chat/Chat';
 import {useChat} from '../../providers/chat/chatProvider';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types'
 import {showToast} from '../../utils';
+import RootNavigation from '../../navigation/rootNavigation'
+import { useFocusEffect } from '@react-navigation/native'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 
