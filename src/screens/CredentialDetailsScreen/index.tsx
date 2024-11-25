@@ -7,6 +7,7 @@ import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import {NavigationButton} from '../../components/NavigationButton';
+import {Chat, ChatTools} from '../../components/chat/Chat';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
 import {useAppSelector} from '../../hooks/useStore';
@@ -23,7 +24,6 @@ import {
 } from '../../styles/components';
 import {Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {Chat} from '../../components/chat/Chat';
 import {stringifyState} from '../../utils/stringifyState';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;
@@ -53,6 +53,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
     }
   };
+  // this is a loose differntiation between adding a credential and viewing a credential
+  const isAddingNewCredential = hideLinks;
 
   const renderFooter = () => (
     <>
@@ -64,7 +66,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </>
         )}
       </IssuerFooterContainer>
-      {!hideLinks && (
+      {!isAddingNewCredential && (
         <View
           style={{
             backgroundColor: backgroundColors.primaryDark,
@@ -98,9 +100,14 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
-  const screenContext = useMemo(() => `this screen shows credential details. onscreen credential: ${stringifyState(credential)}`, [credential]);
+  const screenContext = useMemo(() => `
+    this screen shows credential details. onscreen credential: ${stringifyState(credential)}.
+    ${!isAddingNewCredential && `Please note that this is not a new credential, but an existing one. The user is currently just
+      viewing the details of an existing credential. The user is not currently in the process of adding a new credential.
+      There is nothing you can help the user with, other than answering questions regarding this credential`}
+  `, [credential]);
 
-  const tools = useMemo(
+  const AddNewCredentialtools: ChatTools = useMemo(
     () => [
       {
         tool: {
@@ -218,7 +225,11 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </View>
         )}
       </ContentContainer>
-      <Chat buttonPosition={{bottom: 100, right: 16}} screenContext={screenContext} tools={tools} />
+      <Chat
+        buttonPosition={{bottom: 100, right: 16}}
+        screenContext={screenContext}
+        tools={isAddingNewCredential ? AddNewCredentialtools : []}
+      />
     </Container>
   );
 };
