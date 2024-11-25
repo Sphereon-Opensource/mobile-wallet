@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
-import {ColorValue, GestureResponderEvent, Pressable, View} from 'react-native';
+import {ColorValue, GestureResponderEvent, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import OnTouchContext from '../../../contexts/OnTouchContext';
@@ -19,6 +19,7 @@ import {
   SSIHeaderBarProfileMenuContainerStyled as ProfileMenuContainer,
   SSIRightColumnRightAlignedContainerStyled as RightColumn,
   SSIFlexDirectionRowViewStyled as Row,
+  SSIHeaderBarProfileIconContainerStyled as ProfileIconContainer,
 } from '../../../styles/components';
 import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, MainRoutesEnum} from '../../../types';
 import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
@@ -138,9 +139,9 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
           {showProfileIcon && (
             // we need this view wrapper to stop the event from propagating to the onTouch provider which will catch the onTouch set show menu to false and then the onPress would set it to true again, as onTouch will be before onPress
             <View onTouchStart={onTouchStart}>
-              <Pressable onPress={onProfile} accessibilityRole="togglebutton" accessibilityState={{checked: showProfileMenu}}>
+              <ProfileIconContainer onPress={onProfile} accessibilityRole="togglebutton" accessibilityState={{checked: showProfileMenu}}>
                 <SSIProfileIcon />
-              </Pressable>
+              </ProfileIconContainer>
             </View>
           )}
           {showProfileMenu && !isScreenReaderEnabled && (

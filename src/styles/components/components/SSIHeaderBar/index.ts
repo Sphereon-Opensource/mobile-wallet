@@ -20,7 +20,9 @@ export const SSIHeaderBarHeaderSubCaptionStyled = styled(SSITextH4LightStyled)`
   font-size: 16px;
 `;
 
-export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)``;
+export const SSIHeaderBarProfileIconContainerStyled = styled(TouchableOpacity)`
+  margin: 7px 0 15px auto;
+`;
 
 // TODO move height to attributes of SSIIconButton
 export const SSIHeaderBarMoreIconStyled = styled(SSIIconButton)`
