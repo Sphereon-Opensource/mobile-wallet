@@ -99,10 +99,10 @@ const AccountScreen = () => {
                 <SectionTitle style={{paddingLeft: 0, marginTop: 10}}>More</SectionTitle>
                 <MoreContainer>
                   <NavigationItem
-                    // @ts-ignore
+                    // @ts-ignore // TODO fix types later
                     onPress={() => navigation.navigate(MainRoutesEnum.AGE_DERIVED_CLAIMS, { claims: pid?.uniformVerifiableCredential?.credentialSubject.age_equal_or_over })}
                     left={<AgeIcon width={25} height={25} />}
-                    // @ts-ignore
+                    // @ts-ignore // TODO fix types later
                     text={<AgeDerivedClaimsPreview age={pid?.uniformVerifiableCredential?.credentialSubject.age_in_years} claims={pid?.uniformVerifiableCredential?.credentialSubject.age_equal_or_over}/>}
                   />
                 </MoreContainer>
