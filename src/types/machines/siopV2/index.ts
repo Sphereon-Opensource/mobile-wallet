@@ -179,9 +179,9 @@ export type SiopV2MachineEventTypes =
   | ResolveTrustChainEvent;
 
 export type OpenIdFederationEntities = {
-  federation_entity?: any;
+  federation_entity?: any; // TODO generate the models from the openid-federation-open-api?
   oauth_server_metadata?: AuthorizationServerMetadata;
   openid_wallet_provider?: AuthorizationServerMetadata;
-  openid_credential_issuer?: DynamicRegistrationClientMetadata; //Not sure about that one
+  openid_credential_issuer?: AuthorizationServerMetadata;
   openid_credential_verifier?: DynamicRegistrationClientMetadata;
 };
