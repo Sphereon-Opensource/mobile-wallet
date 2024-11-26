@@ -23,9 +23,7 @@ const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
   const state = useSelector((state: RootState) => state);
   const [items, setItems] = useState<ItemType[]>([]);
-  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
-  const [ignoreTools, setIgnoreTools] = useState(false);
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
@@ -95,10 +93,19 @@ const useAIAssistant = () => {
 
       client.on('conversation.updated', async ({item, delta}: any) => {
         const items = client.conversation.getItems();
-        if (delta?.audio && chatMode === 'voice') {
-          wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+        if (item.status === 'completed') {
+          setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          if (item.role === 'assistant' && item.formatted.audio?.length) {
+            wavStreamPlayer.add16BitPCM(item.formatted.audio, item.id);
+          } else if (item.role === 'user') {
+            await wavStreamPlayer.interrupt();
+          }
+        } else {
+          // can decrease to debounce
+          if (Math.random() < 1) {
+            setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          }
         }
-        setItems(items.reverse().filter(item => item.type !== 'function_call'));
       });
 
       client.on('response.created', async ({response}: any) => {
@@ -135,11 +142,6 @@ const useAIAssistant = () => {
 
     const wavStreamPlayer = wavStreamPlayerRef.current;
     wavStreamPlayer.interrupt();
-  }, []);
-
-  const deleteConversationItem = useCallback(async (id: string) => {
-    const client = clientRef.current;
-    client.deleteItem(id);
   }, []);
 
   useEffect(() => {
@@ -190,36 +192,7 @@ const useAIAssistant = () => {
     updateSession({screenContext});
     clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
   };
-  const startVoiceRecording = async () => {
-    const wavRecorder = wavRecorderRef.current;
-    await wavRecorder.startRecording();
-    setIsVoiceRecording(true);
-  };
 
-  const endVoiceRecording = async () => {
-    setIsVoiceRecording(false);
-    const wavRecorder = wavRecorderRef.current;
-    const client = clientRef.current;
-    const filePath = await wavRecorder.stopRecording();
-    // if (!base64) return;
-    // const int16Array = RealtimeUtils.base64ToArrayBuffer(base64);
-    // // console.log('int16Array', int16Array);
-    // // if (!int16Array) return;
-
-    // // wavStreamPlayerRef.current.add16BitPCM(int16Array, 'user-audio');
-
-    // // make chunks of 2400 samples
-    // const chunkSize = 2400;
-    // const chunks = [];
-    // for (let i = 0; i < int16Array.byteLength; i += chunkSize) {
-    //   chunks.push(int16Array.slice(i, i + chunkSize));
-    // }
-    // chunks.forEach(chunk => {
-    // client.appendInputAudio(chunk);
-    // });
-
-    client.createResponse();
-  };
   const enableVoiceMode = () => {
     setChatMode('voice');
     connectVoice();
@@ -264,7 +237,6 @@ const useAIAssistant = () => {
     clientRef.current?.realtime.send('input_audio_buffer.append', {audio});
     clientRef.current?.realtime.send('input_audio_buffer.commit', {});
 
-    // clientRef.current.sendUserMessageContent([{type: 'input_audio', audio}]);
     clientRef.current.createResponse();
   }
 
@@ -277,16 +249,12 @@ const useAIAssistant = () => {
     chatMode,
     enableVoiceMode,
     enableTextMode,
-    isVoiceRecording,
-    startVoiceRecording,
-    endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
     addTools,
     removeTools,
     handleChatOpened,
     speakMessage,
-    ignoreTools,
     sendAudio
   };
 };

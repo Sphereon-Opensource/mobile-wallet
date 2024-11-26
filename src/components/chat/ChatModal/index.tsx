@@ -1,14 +1,12 @@
-import React, {useEffect} from 'react';
-import {Modal, View, Keyboard, Text, TouchableOpacity} from 'react-native';
-import {GiftedChat, IMessage} from 'react-native-gifted-chat';
 import {Ionicons} from '@expo/vector-icons';
+import {fontColors} from '@sphereon/ui-components.core';
+import {LinearGradient} from 'expo-linear-gradient';
+import React from 'react';
+import {Keyboard, Modal, Text, TouchableOpacity, View} from 'react-native';
+import {GiftedChat, IMessage} from 'react-native-gifted-chat';
+import {useChat} from '../../../providers/chat/chatProvider';
 import {ChatBubble} from '../ChatBubble';
 import ChatInputToolbar from '../ChatInputToolbar';
-import {useChat} from '../../../providers/chat/chatProvider';
-import {useAssistant} from '../../../providers/chat/AssistantProvider';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {LinearGradient} from 'expo-linear-gradient';
-import {fontColors} from '@sphereon/ui-components.core';
 
 type Props = {
   onSendMessage: (message: string) => void;
@@ -71,7 +69,7 @@ const ChatModal = ({onSendMessage, onAudioPress}: Props) => {
             renderAvatar={null}
             renderInputToolbar={props => <ChatInputToolbar {...props} />}
             renderBubble={props => <ChatBubble {...props} handleAudioPress={() => onAudioPress(props.currentMessage)} />}
-            //   parsePatterns={parsePatterns}
+          //   parsePatterns={parsePatterns}
           />
         </View>
       </View>
