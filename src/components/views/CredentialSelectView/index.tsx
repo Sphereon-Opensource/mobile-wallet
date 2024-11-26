@@ -14,6 +14,9 @@ import {SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5Styled} from '../..
 import {generateDigest} from '../../../utils';
 import SelectedCredentialDetailsView from '../SelectedCredentialDetailsView';
 import {PressableCredentialMiniCard} from '../PressableCredentialMiniCard';
+import {ICredentialState} from '../../../types/store/credential.types';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../types';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
@@ -28,6 +31,13 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const accordionExpanded = useSharedValue(true);
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
+
+  const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
+
+  const storeCredentialMap = useMemo(() => {
+    const map = new Map(credentialState.verifiableCredentials.map(c => [c.hash, c]));
+    return map;
+  }, [credentialState]);
 
   const chevronStyles = useAnimatedStyle(() => {
     return {
@@ -59,6 +69,8 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const loadCredentialContent = async (credential: UniqueDigitalCredential) => {
     const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
     const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
+
+    console.log('name');
 
     if (isPIDCredential) {
       setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
@@ -102,7 +114,10 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
       </ScrollView>
       <View style={{flexDirection: 'row', gap: 10, justifyContent: 'space-between', marginBottom: 16}}>
         <SSITextH3LightStyled numberOfLines={1} style={{flex: 1}}>
-          {selectedCredential ? verifier?.contact?.displayName : 'Select a credential'}
+          {/* {selectedCredential ? verifier?.contact?.displayName : 'Select a credential'} */}
+          {selectedCredential
+            ? storeCredentialMap.get(selectedCredential.hash)?.branding?.alias ?? storeCredentialMap?.get(selectedCredential.hash)?.title
+            : 'Select a credential'}
         </SSITextH3LightStyled>
         <Pressable onPress={onToggleAccordion} style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
           <SSITextH5Styled style={{color: selectedCredential ? '#0B81FF' : fontColors.light}}>
