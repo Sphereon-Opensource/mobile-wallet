@@ -27,10 +27,8 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {Format} from '@sphereon/pex-models';
 import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {getMatchingCredentials} from '../../services/pexService';
 import agent from '../../agent';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 
@@ -332,6 +330,12 @@ export const siopV2StateNavigationListener = async (
     // Make sure we do not navigate when state has not changed
     return;
   }
+
+  // FIXME quick hack to stop the navigation from resetting as the add contact screen now uses a modal which is another screen
+  if (state._event.name === 'SET_CONTACT_ALIAS') {
+    return;
+  }
+
   const onBack = () => siopV2Machine.send(SiopV2MachineEvents.PREVIOUS);
   const onNext = () => siopV2Machine.send(SiopV2MachineEvents.NEXT);
 
