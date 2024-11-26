@@ -47,7 +47,7 @@ const AccountScreen = () => {
   useEffect(() => {
     getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: true})
       .then((pid) => {
-        if (pid?.[0].uniformVerifiableCredential?.credentialSubject) {
+        if (pid?.[0]?.uniformVerifiableCredential?.credentialSubject) {
           setPid(pid?.[0])
           setPidInfo(convertFromPIDPayload(pid?.[0].uniformVerifiableCredential?.credentialSubject, 'import'))
         }
