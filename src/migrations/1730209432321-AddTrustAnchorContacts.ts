@@ -118,7 +118,11 @@ export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
                                  issuerBrandingId, 
                                  logoId, 
                                  locale, 
-                                 type, 
+                                 type,
+                                 client_uri,
+                                 tos_uri,
+                                 policy_uri,
+                                 contacts,
                                  created_at, 
                                  last_updated_at
                                  ) VALUES (
@@ -127,6 +131,10 @@ export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
                                            '19803a99-8d0a-4fe8-8565-278032b7903b', 
                                            '', 
                                            'IssuerLocaleBranding',
+                                           'https://sphereon.com',
+                                           'https://sphereon.com/sphereon-wallet-terms-and-conditions',
+                                           'https://sphereon.com/sphereon-wallet-privacy-policy',
+                                           'dev@sphereon.com,support@sphereon.com',
                                            datetime('now'), 
                                            datetime('now')
                                            )`,
@@ -204,13 +212,13 @@ export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
 
     await queryRunner.query(
       `INSERT INTO "IssuerBranding"(
-                             id, 
+                             id,
                              issuerCorrelationId, 
                              created_at, 
                              last_updated_at
                              ) VALUES (
-                                       'e6523745-aa00-43ee-8c92-d352243c64b1', 
-                                       'https://federation.dev.findy.fi', 
+                                       'e6523745-aa00-43ee-8c92-d352243c64b1',
+                                       'https://federation.dev.findy.fi',
                                        datetime('now'), 
                                        datetime('now')
                                        )`,
@@ -246,7 +254,11 @@ export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
                                  issuerBrandingId, 
                                  logoId, 
                                  locale, 
-                                 type, 
+                                 type,
+                                 client_uri,
+                                 tos_uri,
+                                 policy_uri,
+                                 contacts,
                                  created_at, 
                                  last_updated_at
                                  ) VALUES (
@@ -255,6 +267,10 @@ export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
                                            '154f90c0-2135-439e-b23d-458e3d781589', 
                                            '', 
                                            'IssuerLocaleBranding',
+                                           'https://sphereon.com',
+                                           'https://sphereon.com/sphereon-wallet-terms-and-conditions',
+                                           'https://sphereon.com/sphereon-wallet-privacy-policy',
+                                           'dev@sphereon.com,support@sphereon.com',
                                            datetime('now'), 
                                            datetime('now')
                                            )`,
