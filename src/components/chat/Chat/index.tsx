@@ -49,7 +49,7 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
         // Check if it's a user message without a tool
         else if (item.role === 'user') {
           if (item.formatted.transcript) {
-            messageText = item.formatted.transcript;
+            messageText = item.formatted.transcript.trimEnd();
           } else if (item.formatted.audio?.length) {
             messageText = '(awaiting transcript)';
           } else {
