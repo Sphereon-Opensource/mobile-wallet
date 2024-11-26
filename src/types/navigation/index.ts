@@ -195,9 +195,9 @@ export interface ICredentialsRequiredProps {
 export interface ICredentialOverviewShareProps {
   verifier: Party;
   presentationDefinition: IPresentationDefinition;
-  credential: UniqueDigitalCredential;
+  credentials: UniqueDigitalCredential[];
   onDecline: () => Promise<void>;
-  onSelectAndSend: (credential: UniqueDigitalCredential) => Promise<void>;
+  onSelectAndSend: (credentials: UniqueDigitalCredential[]) => Promise<void>;
 }
 
 export interface ICredentialDetailsProps {

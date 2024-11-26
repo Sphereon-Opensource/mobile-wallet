@@ -1419,6 +1419,37 @@ export const SiopV2Stack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_DETAILS}
+        component={SSIContactDetailsScreen}
+        options={{
+          title: translate('contact_details_title'),
+          header: (props: NativeStackHeaderProps) => (
+            <ContactsHeader
+              {...props}
+              // TODO rethink back button visibility for Android
+              //showBackButton={Platform.OS === PlatformsEnum.IOS}
+              // showBackButton={false}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_IDENTITIES}
+        component={ContactIdentitiesScreen}
+        options={{
+          title: translate('contact_identities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenRoutesEnum.CONTACT_ACTIVITY}
+        component={ContactActivityScreen}
+        options={{
+          title: translate('contact_activities_title'),
+          header: props => <ContactsHeader {...props} />,
+        }}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_REQUIRED}
         component={CredentialsRequiredScreen}
         options={({route}) => ({
@@ -1468,6 +1499,7 @@ export const SiopV2Stack = (): JSX.Element => {
           ),
         }}
       />
+
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_SELECT}
         component={SSICredentialsSelectScreen}

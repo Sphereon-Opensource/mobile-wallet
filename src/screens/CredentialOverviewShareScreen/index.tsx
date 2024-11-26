@@ -1,191 +1,176 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CredentialMapper} from '@sphereon/ssi-types';
-import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton, SSILogo as Logo, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
-import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
-import React, {useEffect, useRef, useState} from 'react';
-import {ScrollView, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
-import styled from 'styled-components/native';
+import {fontColors} from '@sphereon/ui-components.core';
+import {
+  PrimaryButton,
+  SecondaryButton,
+  SSICheckmarkBadge,
+  SSILogo as Logo,
+  SSITextH3LightStyled,
+  SSITextH4LightStyled,
+  SSITextH7LightStyled,
+} from '@sphereon/ui-components.ssi-react-native';
+import React, {useMemo, useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import {translate} from '../../localization/Localization';
-import SSICredentialDetailsView from '../../components/views/SSICredentialDetailsView';
-import {SSIContactViewItemLogoContainerStyled as LogoContainer, SSITextH2SemiBoldLightStyled, SSITextH5Styled} from '../../styles/components';
-import {ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
-import {generateDigest, showToast} from '../../utils';
-import {ImportInformationSummary} from '../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
+import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
+import {ScreenRoutesEnum, StackParamList} from '../../types';
+import {generateDigest} from '../../utils';
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
-import {convertFromPIDPayload} from '../Onboarding/ImportDataConsentScreen/util';
-import {AusweisRequestedInfoItem} from '../Onboarding/ImportDataConsentScreen/constants';
-
-const MiniCard = styled.Pressable`
-  height: 50px;
-  width: 78px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid black;
-  border-radius: 10px;
-  background-color: white;
-`;
-
-const BrandingImage = styled.Image`
-  height: 40px;
-  width: 40px;
-`;
+import RelyingPartyView from 'src/components/views/RelyingPartyView';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
+import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
+import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
+import {CredentialSelectView} from '../../components/views/CredentialSelectView';
+import ArrowIcon from '../../components/assets/icons/ArrowIcon';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
-const RequestedInformationContainer = styled.View`
-  border: 1px solid #5d6990;
-  border-radius: 8px;
-  background-color: #2c334b;
-  width: 100%;
-  overflow: hidden;
-`;
+const filterCredentialsByInputDescriptor = (credentials: UniqueDigitalCredential[], inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
+  const presentationDefinition: IPresentationDefinition = {
+    id: inputDescriptor.id,
+    //@ts-ignore
+    input_descriptors: [inputDescriptor],
+  };
+
+  const pex: PEX = new PEX({hasher: generateDigest});
+  const result: SelectResults = pex.selectFrom(
+    presentationDefinition,
+    credentials.map(c => c.originalVerifiableCredential!),
+  );
+
+  const subsetCredentials = [];
+  if (
+    result.areRequiredCredentialsPresent !== 'error' &&
+    result.verifiableCredential &&
+    result.vcIndexes &&
+    result.vcIndexes.length === result.verifiableCredential?.length
+  ) {
+    for (let i = 0; i < result.vcIndexes.length; i++) {
+      const index = result.vcIndexes[i];
+      if (index < 0 || index >= credentials.length) {
+        throw new Error(`Index ${index} at position ${i} is out of bounds. Valid range is 0 to ${credentials.length - 1}.`);
+      }
+      const selectedCredential = credentials[index];
+      selectedCredential.originalVerifiableCredential = result.verifiableCredential?.[i];
+      subsetCredentials.push(selectedCredential);
+    }
+  }
+
+  return subsetCredentials;
+};
+
+const matchCredsWithInputDescriptors = (
+  credentials: UniqueDigitalCredential[],
+  input_descriptors: PresentationDefinitionWithLocation['definition']['input_descriptors'],
+) => {
+  const udcIDMap = new Map(input_descriptors.map(input => [input.id, [] as UniqueDigitalCredential[]]));
+  input_descriptors.forEach(input => {
+    const results = filterCredentialsByInputDescriptor(credentials, input);
+    udcIDMap.set(input.id, results);
+  });
+
+  return udcIDMap;
+};
 
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
-  const {credential, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
-  const [credentialContent, setCredentialContent] = useState<AusweisRequestedInfoItem[] | CredentialDetailsRow[]>([]);
+  const {credentials, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
 
-  if (credential === undefined) {
-    showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_required_no_available_label')}); // FIXME Funke
-    onDecline();
-    return; // FIXME Funke, we need to go to an error / warn screen for this
-  }
-  const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
-  const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
+  const input_descriptors = presentationDefinition.input_descriptors;
 
-  useEffect(() => {
-    if (!credential) return;
+  const credsPerInputDescriptor = useMemo(
+    //@ts-ignore
+    () => matchCredsWithInputDescriptors(credentials, input_descriptors),
+    [credentials, input_descriptors],
+  );
 
-    const loadContent = async () => {
-      if (isPIDCredential) {
-        setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
-      } else {
-        setCredentialContent(
-          await toCredentialDetailsRow({
-            object: {...uniformCredential.credentialSubject},
-          }),
-        );
-      }
-    };
+  //FIXME Funke, make this support multi credential selection per input descriptor
+  const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
+    input_descriptors.reduce(
+      (prev, curr) => ({
+        ...prev,
+        [curr.id]: null,
+      }),
+      {},
+    ),
+  );
 
-    void loadContent();
-  }, [credential, isPIDCredential]);
-
-  const ref = useRef<ScrollView>(null);
-  const accordionExpanded = useSharedValue(false);
-  const chevronRotation = useSharedValue(0);
-
-  const chevronStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{rotate: `${interpolate(chevronRotation.value, [0, 1], [0, 180])}deg`}],
-    };
-  });
-
-  const onToggleAccordion = () => {
-    chevronRotation.value = withTiming(chevronRotation.value === 0 ? 1 : 0, {duration: 200});
-    accordionExpanded.value = !accordionExpanded.value;
+  //FIXME Funke, make this support multi credential selection per input descriptor
+  const selectCredential = (inputDescriptorId: string, credential: UniqueDigitalCredential) => {
+    const exists = selectedCredentials[inputDescriptorId]?.hash === credential.hash;
+    if (!exists) setSelectedCredentials(creds => ({...creds, [inputDescriptorId]: credential}));
   };
-  const translationPath = 'share_pages.select_credentials';
+
+  if (credentials.length === 0) {
+    // showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('credentials_required_no_available_label')}); // FIXME Funke
+    // onDecline();
+    // return; // FIXME Funke, we need to go to an error / warn screen for this
+  }
+
+  console.log('selected length', Object.values(selectedCredentials).filter(c => !!c).length);
+  console.log('input descriptor length', presentationDefinition.input_descriptors.length);
 
   const footer = (
-    <>
-      <View style={{flex: 1}}>
-        <SecondaryButton
-          style={{height: 42}}
-          caption={translate('action_decline_label')}
-          captionColor={fontColors.secondaryButton}
-          onPress={() => onDecline()}
-        />
-      </View>
-      <View style={{flex: 1}}>
-        <PrimaryButton
-          style={{height: 42}}
-          caption={translate('action_share_label')}
-          captionColor={fontColors.light}
-          onPress={() => onSelectAndSend(credential)}
-        />
-      </View>
-    </>
+    <View style={{gap: 10, flexDirection: 'column'}}>
+      <PrimaryButton
+        style={{height: 42}}
+        caption={translate('action_share_label')}
+        captionColor={fontColors.light}
+        disabled={Object.values(selectedCredentials).filter(c => !!c).length !== presentationDefinition.input_descriptors.length}
+        onPress={() => {
+          const selected = Object.values(selectedCredentials).filter(c => !!c);
+          if (!selected.length) return;
+          onSelectAndSend(Object.values(selectedCredentials).filter(s => !!s));
+        }}
+      />
+      <SecondaryButton
+        style={{height: 42}}
+        caption={translate('action_decline_label')}
+        captionColor={fontColors.secondaryButton}
+        onPress={() => onDecline()}
+      />
+    </View>
   );
+
+  const onPressRP = async (): Promise<void> => {
+    props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: verifier});
+  };
+
   return (
-    <ScreenContainer footer={footer} footerStyle={{flexDirection: 'row', gap: 8}} style={{paddingHorizontal: 0}}>
+    <ScreenContainer footer={footer} style={{paddingHorizontal: 0}}>
       <View style={{paddingHorizontal: 20, paddingTop: 20}}>
-        {/* <ScreenTitleAndDescription
-          title="Information request"
-          description={verifier.contact?.displayName + ' would like to receive the following information from you for verification.'}
-        />*/}
+        <RelyingPartyView party={verifier} onPress={onPressRP} />
       </View>
       <View style={{paddingHorizontal: 16}}>
-        <ProviderContainer style={{marginBottom: 0}}>
-          <ProviderDescription>
-            <SSITextH3LightStyled>Purpose</SSITextH3LightStyled>
-            <SSITextH4LightStyled>{presentationDefinition.purpose}</SSITextH4LightStyled>
-          </ProviderDescription>
-        </ProviderContainer>
-        <ProviderContainer>
-          <LogoContainer>
-            {/* FIXME: this should be the crendential branding */}
-            <Logo logo={verifier?.branding?.logo} />
-          </LogoContainer>
-          <ProviderDescription>
-            <SSITextH3LightStyled>{verifier?.contact?.displayName}</SSITextH3LightStyled>
-            <SSITextH4LightStyled>Verifier</SSITextH4LightStyled>
-            {verifier?.uri && <SSITextH4LightStyled style={{color: 'white', marginTop: 4}}>{verifier?.uri}</SSITextH4LightStyled>}
-          </ProviderDescription>
-        </ProviderContainer>
-        <SSITextH2SemiBoldLightStyled>The following information will be shared</SSITextH2SemiBoldLightStyled>
+        {presentationDefinition.purpose && (
+          <ProviderContainer style={{marginBottom: 0}}>
+            <ProviderDescription>
+              <SSITextH3LightStyled>Reason</SSITextH3LightStyled>
+              <SSITextH4LightStyled>{presentationDefinition.purpose}</SSITextH4LightStyled>
+            </ProviderDescription>
+          </ProviderContainer>
+        )}
       </View>
-      <View style={{backgroundColor: backgroundColors.secondaryDark, padding: 24}}>
-        <ScrollView
-          ref={ref}
-          horizontal
-          contentContainerStyle={{
-            columnGap: 12,
-            padding: 8,
-            marginBottom: 16,
-          }}>
-          <TouchableOpacity key={verifier?.contact?.displayName}>
-            {/* <View
-              style={{
-                width: 75,
-                height: 50,
-                position: 'relative',
-                borderRadius: 4,
-                justifyContent: 'center',
-                alignItems: 'center',
-                //fixme: add verifier branding to the object that we're passing
-                backgroundColor: 'white'
-              }}
-              key={verifier?.contact?.displayName}>
-              <Title>{verifier?.contact?.displayName}</Title>
-            </View> */}
-            <MiniCard>
-              <Logo logo={verifier.branding?.logo} />
-            </MiniCard>
-          </TouchableOpacity>
-        </ScrollView>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16}}>
-          <SSITextH3LightStyled>{verifier?.contact?.displayName}</SSITextH3LightStyled>
-          <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
-            <SSITextH5Styled style={{color: '#0B81FF'}}>{/* Not sure where this "1" refers to */}1 selected</SSITextH5Styled>
-            {/* <Animated.View style={[chevronStyles, {marginTop: 1}]}>
-              <ChevronIcon size={16} color={backgroundColors.primaryLight} />
-            </Animated.View> */}
-          </View>
-        </View>
-        <View style={{flex: 1}}>
-          {isPIDCredential ? (
-            <ImportInformationSummary data={credentialContent as Array<AusweisRequestedInfoItem>} />
-          ) : (
-            <SSICredentialDetailsView credentialProperties={credentialContent as Array<CredentialDetailsRow>} />
-          )}
-        </View>
-      </View>
+      {input_descriptors.map((inputDescriptor, idx) => (
+        <>
+          <SSITextH2SemiBoldLightStyled key={'t' + idx} style={{marginTop: 10, paddingLeft: 24}}>
+            {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}
+          </SSITextH2SemiBoldLightStyled>
+          <CredentialSelectView
+            style={{marginTop: 5}}
+            key={idx}
+            credentials={credsPerInputDescriptor.get(inputDescriptor.id) ?? []}
+            onSelect={(credential: UniqueDigitalCredential) => {
+              selectCredential(inputDescriptor.id, credential);
+            }}
+            purpose={inputDescriptor.purpose}
+            verifier={verifier}
+          />
+        </>
+      ))}
     </ScreenContainer>
   );
 };
