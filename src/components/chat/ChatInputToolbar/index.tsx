@@ -62,11 +62,13 @@ const ChatInputToolbar = (props: any) => {
         style={{
           flex: 1,
           padding: 10,
-          backgroundColor: '#E5E5E5',
-          height: keyboardVisible ? 100 : 50,
+          borderWidth: 1,
+          borderColor: '#C4C5CA',
+          borderRadius: 8,
+          height: 50,
         }}
         multiline={true}
-        placeholder="Message"
+        placeholder="Type or speak your message"
         placeholderTextColor="#2f3c47"
         value={inputValue}
         onChangeText={text => setInputValue(text)}
@@ -86,7 +88,7 @@ const ChatInputToolbar = (props: any) => {
       )}
       {keyboardVisible && (
         <TouchableOpacity
-          style={{position: 'absolute', right: 0, bottom: 0, padding: 8}}
+          style={{position: 'absolute', right: 0, bottom: 0, height: 50, width: 50, display: 'flex', justifyContent: 'center', alignItems: 'center'}}
           onPress={() => {
             // Logic to send the message
             props.onSend([{text: inputValue}]);
@@ -95,8 +97,9 @@ const ChatInputToolbar = (props: any) => {
           disabled={!inputValue.trim()}>
           <Ionicons name="arrow-up-outline" size={24} color={fontColors.dark} />
         </TouchableOpacity>
-      )}
-    </View>
+      )
+      }
+    </View >
   );
 };
 
