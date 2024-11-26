@@ -18,6 +18,7 @@ const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'users';
 const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
+const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code'
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -146,3 +147,21 @@ export const storageHasPin = (): boolean => {
   debug(`hasPin: ${JSON.stringify(result)}`);
   return result;
 };
+
+
+export const storagePersistCoupledWithCode = async (value: string): Promise<any> => {
+  debug(`storing coupled with code: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
+  .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`))
+}
+
+export const storageGetCoupledWithCode = async (): Promise<string | null | undefined> => {
+  debug('getCoupledWithCode...')
+  return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
+  debug('deleteCoupledWithCode...')
+  return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
+}

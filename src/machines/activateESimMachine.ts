@@ -14,12 +14,13 @@ import {
   ESIMActivationStateMachine,
   InstanceESIMActivationMachineOpts,
 } from '../types/machines/activateESimMachine';
+import {storageDeleteCoupledWithCode, storageGetCoupledWithCode} from '../services/storageService';
 
 
 const hasValidDetails: ESIMActivationMachineGuard = ({msisdn, couplingCode}) =>
   !!msisdn && !!couplingCode;
 
-const needsKeyCleanup: ESIMActivationMachineGuard = (context) => !!context.musapLinkIdCreatedNow
+const needsKeyCleanup: ESIMActivationMachineGuard = (context) => !!context.musapLinkIdCreatedNow;
 
 
 const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
@@ -42,10 +43,14 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       src: ESIMActivationMachineServices.createMusapLink,
       onDone: {
         target: ESIMActivationMachineStateTypes.checkSscd,
-        actions: assign({
-          musapLinkId: (_, event: DoneInvokeEvent<string>) => event.data,
-          musapLinkIdCreatedNow: () => true
-        }),
+        actions: [
+          assign({
+            musapLinkId: (_, event: DoneInvokeEvent<string>) => event.data,
+            musapLinkIdCreatedNow: () => true,
+            coupledWithCode: () => undefined,
+          }),
+          (context) => storageDeleteCoupledWithCode(),
+        ],
       },
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
@@ -91,7 +96,7 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
           actions: assign({
             sscdInfo: (_, event) => event.data,
           }),
-        }
+        },
       ],
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
@@ -105,7 +110,7 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
     invoke: {
       src: ESIMActivationMachineServices.cleanupKeys,
       onDone: {
-        target: ESIMActivationMachineStateTypes.enterDetails,
+        target: ESIMActivationMachineStateTypes.loadCoupledWithCode,
       },
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
@@ -115,6 +120,19 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       },
     },
   },
+
+  [ESIMActivationMachineStateTypes.loadCoupledWithCode]: {
+    invoke: {
+      src: ESIMActivationMachineServices.getCoupledWithCode,
+      onDone: {
+        target: ESIMActivationMachineStateTypes.enterDetails,
+        actions: assign({
+          coupledWithCode: (_, event) => event.data,
+        }),
+      },
+    },
+  },
+
   [ESIMActivationMachineStateTypes.enterDetails]: {
     on: {
       SET_MSISDN: {
@@ -190,7 +208,7 @@ const createESIMActivationMachine = (opts?: CreateESIMActivationMachineOpts): ES
     {
       guards: {
         hasValidDetails,
-        needsKeyCleanup
+        needsKeyCleanup,
       },
     },
   );
@@ -236,6 +254,8 @@ export class ESIMActivationMachine {
           [ESIMActivationMachineServices.checkSscd]: checkSscd,
           [ESIMActivationMachineServices.enableSscd]: enableSscd,
           [ESIMActivationMachineServices.cleanupKeys]: cleanupKeys,
+          [ESIMActivationMachineServices.loadCoupledWithCode]: storageGetCoupledWithCode,
+          [ESIMActivationMachineServices.storageDeleteCoupledWithCode]: storageDeleteCoupledWithCode,
           [ESIMActivationMachineServices.coupleWithRP]: coupleWithRP,
           [ESIMActivationMachineServices.bindKey]: bindKey,
           ...opts?.services,

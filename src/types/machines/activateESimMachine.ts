@@ -11,6 +11,7 @@ import {
 } from 'xstate';
 import {SscdInfo} from '@sphereon/musap-react-native';
 import {ReactNode} from 'react';
+import {storageDeleteCoupledWithCode} from '../../services/storageService';
 
 export type CreateESIMActivationMachineOpts = {
   machineId?: string;
@@ -22,6 +23,7 @@ export type ESIMActivationMachineContext = {
   musapLinkId?: string;
   msisdn?: string;
   couplingCode?: string;
+  coupledWithCode?: string;
   sscdInfo?: SscdInfo;
   error?: Error;
 };
@@ -86,6 +88,9 @@ export enum ESIMActivationMachineServices {
   checkSscd = 'checkSscd',
   enableSscd = 'enableSscd',
   cleanupKeys = 'cleanupKeys',
+  loadCoupledWithCode = 'loadCoupledWithCode',
+  storageDeleteCoupledWithCode = 'storageDeleteCoupledWithCode',
+  getCoupledWithCode = 'getCoupledWithCode',
   coupleWithRP = 'coupleWithRP',
   bindKey = 'bindKey',
 }
@@ -96,6 +101,7 @@ export enum ESIMActivationMachineStateTypes {
   checkSscd = 'checkSscd',
   enableSscd = 'enableSscd',
   cleanupKeys = 'cleanupKeys',
+  loadCoupledWithCode = 'loadCoupledWithCode',
   enterDetails = 'enterDetails',
   coupleWithRP = 'coupleWithRP',
   bindKey = 'bindKey',
