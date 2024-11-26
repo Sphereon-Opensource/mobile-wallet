@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
@@ -77,8 +77,8 @@ import {
   ShareStackParamList,
   StackParamList,
   SwitchRoutesEnum,
-  WalletAuthLockState,
-} from '../types';
+  WalletAuthLockState
+} from '../types'
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 import {ICredentialState} from '../types/store/credential.types';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
@@ -190,38 +190,22 @@ const MainStackNavigator = (): JSX.Element => {
             )}
           />
           <Stack.Screen name="Veramo" component={Veramo} />
-          <Stack.Screen
-            name={MainRoutesEnum.SETTINGS}
-            children={() => (
-              <>
-                <SettingsScreen />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-              </>
-            )}
-          />
           <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
           <Stack.Screen
+            name={MainRoutesEnum.SETTINGS}
+            component={SettingsScreen}
+          />
+          <Stack.Screen
             name={MainRoutesEnum.ACCOUNT}
-            children={() => (
-              <>
-                <AccountScreen />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-              </>
-            )}
+            component={AccountScreen}
           />
           <Stack.Screen
             name={MainRoutesEnum.AGE_DERIVED_CLAIMS}
-            children={() => (
-              <>
-                <AgeDerivedClaimsScreen />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-              </>
-            )}
+            component={AgeDerivedClaimsScreen}
           />
         </Stack.Navigator>
       </ChatProvider>
     </AssistantProvider>
-
   );
 };
 
