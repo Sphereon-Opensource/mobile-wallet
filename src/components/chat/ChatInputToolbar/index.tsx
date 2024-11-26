@@ -4,8 +4,8 @@ import {fontColors} from '@sphereon/ui-components.core';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
-import {useRealtimeRecording} from 'src/hooks/useRealtimeRecording';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
+import { useRealtimeRecording } from '../../../hooks/useRealtimeRecording';
 
 const ChatInputToolbar = (props: any) => {
   const {sendAudio} = useAssistant();
