@@ -107,7 +107,7 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
         }}>
         {credentials.map((credential, idx) => (
           <PressableCredentialMiniCard
-            key={credential.hash}
+            key={idx}
             credential={credential}
             selected={credential.hash === selectedCredential?.hash}
             onPress={() => onPressCredential(credential)}

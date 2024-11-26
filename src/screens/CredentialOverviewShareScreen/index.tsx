@@ -110,6 +110,9 @@ const SelectOverviewShareScreen = (props: Props) => {
     // return; // FIXME Funke, we need to go to an error / warn screen for this
   }
 
+  console.log('selected length', Object.values(selectedCredentials).filter(c => !!c).length);
+  console.log('input descriptor length', presentationDefinition.input_descriptors.length);
+
   const footer = (
     <View style={{gap: 10, flexDirection: 'column'}}>
       <PrimaryButton
@@ -153,12 +156,12 @@ const SelectOverviewShareScreen = (props: Props) => {
       </View>
       {input_descriptors.map((inputDescriptor, idx) => (
         <>
-          <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
+          <SSITextH2SemiBoldLightStyled key={'t' + idx} style={{marginTop: 10, paddingLeft: 24}}>
             {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}
           </SSITextH2SemiBoldLightStyled>
           <CredentialSelectView
             style={{marginTop: 5}}
-            key={inputDescriptor.purpose}
+            key={idx}
             credentials={credsPerInputDescriptor.get(inputDescriptor.id) ?? []}
             onSelect={(credential: UniqueDigitalCredential) => {
               selectCredential(inputDescriptor.id, credential);
