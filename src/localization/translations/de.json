@@ -1,0 +1,214 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "QR-Code-Scanner",
+      "activities": "Aktivitätsfeed",
+      "home": "Nachweisliste",
+      "credential_catalog": "Nachweiskatalog",
+      "contacts": "Kontaktliste"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Unbekannter Kontakt",
+      "credential": "Unbekannter Nachweis",
+      "credential_type": "Unbekannter Nachweistyp",
+      "purpose": "Unbekannter Zweck",
+      "issuer": "Unbekannter Aussteller",
+      "type": "Unbekannter Aktivitätstyp",
+      "date": "Unbekanntes Datum",
+      "activity": "Unbekannte Aktivität"
+    },
+    "feed": {
+      "title": "Aktivitätsfeed",
+      "list": {
+        "title": "Alle Aktivitäten",
+        "loading": "Aktivitäten laden",
+        "search_placeholder": "Suche nach Kontakt, Karte oder Status",
+        "empty_state": {
+          "title": "Keine Aktivitäten",
+          "subtitle": "Zurzeit hast du keine Aktivitäten.\nDie Aktivitäten werden hier automatisch erscheinen."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Alle Aktivitäten mit",
+        "loading": "Lade Aktivitäten für",
+        "search_placeholder": "Suche nach Karte oder Status"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Alle Aktivitäten von",
+        "loading": "Lade Aktivitäten für",
+        "search_placeholder": "Suche nach Kontakt oder Status"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Geteilte Informationen",
+      "info_header": {
+        "description": "Elemente geteilt"
+      },
+      "row_description": "Daten geteilt",
+      "detail_title": "Daten geteilt"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Abgelehnte Informationen",
+      "info_header": {
+        "description": "Elemente abgelehnt"
+      },
+      "row_description": "Datenteilung abgelehnt",
+      "detail_title": "Datenteilung abgelehnt"
+    },
+    "VC issue": {
+      "info_list_title": "Ausgestellte Informationen",
+      "revealed_info_title": "Ausgestellte Informationen",
+      "info_header": {
+        "description": "Elemente ausgestellt"
+      },
+      "row_description": "Nachweis erhalten",
+      "detail_title": "Neuer Nachweis zu deinem Wallet hinzugefügt",
+      "description": [
+        "Du kannst nun endlich deine",
+        "Karte für offizielle Zwecke nutzen."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Abgelehnte Informationen",
+      "revealed_info_title": "Abgelehnte Informationen",
+      "info_header": {
+        "description": "Elemente nicht ausgestellt"
+      },
+      "row_description": "Empfang von Nachweis abgelehnt",
+      "detail_title": "Nachweis nicht zu deinem Wallet hinzugefügt",
+      "description": [
+        "Du hast abgelehnt, die",
+        "Karte für offizielle Zwecke zu nutzen."
+      ]
+    },
+    "section_titles": {
+      "status": "Status",
+      "purpose": "Zweck",
+      "credential_type": "Nachweistyp",
+      "issued_information": "Ausgestellte Informationen"
+    },
+    "contact_link": "Über",
+    "credential_activities_link": "Kartenaktivitäten",
+    "credential_claims_link": "Meine Ansprüche",
+    "support_link": "Etwas stimmt nicht?"
+  },
+  "credential_details_title": "Nachweisdetails",
+  "credentials_overview_title": "Nachweise",
+  "credential_details_view_issued_by": "Ausgestellt von",
+  "credentials_view_item_expires_on": "Läuft ab am",
+  "swipe_delete_button_caption": "Löschen",
+  "credential_offer_accepted_toast": "Nachweis erfolgreich gespeichert",
+  "settings_dropdown_item_text": "Einstellungen",
+  "settings_dropdown_item_accessibility_hint": "Zum Einstellungsbildschirm navigieren",
+  "settings_title": "Einstellungen",
+  "account_title": "Konto",
+  "settings_general_section_label": "Allgemein",
+  "settings_privacy_controls_section_label": "Datenschutzeinstellungen",
+  "settings_feedback_controls_section_label": "Feedback-Einstellungen",
+  "settings_logout_label": "Abmelden",
+  "account_personal_section_label": "Persönlich",
+  "account_general_section_label": "Allgemein",
+  "account_personal_information_label": "Persönliche Informationen",
+  "account_login_and_security_label": "Anmeldung und Sicherheit",
+  "account_biometric_login_label": "Biometrische Authentifizierung",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Wallet löschen",
+  "age_derived_claims_title": "Altersnachweise",
+  "age_derived_claims_screen_title": "Altersnachweise",
+  "age_dervived_claims_screen_description": "Die Altersnachweise dienen dazu, dein Alter gegenüber Dritten zu beweisen, ohne dein genaues Alter preiszugeben.",
+  "biometrics_title": "Möchtest du die biometrische Authentifizierung aktivieren?",
+  "biometrics_subtitle": "Nutze die biometrische Anmeldung und Authentifizierung mit deinem Gesicht oder Fingerabdruck für einen schnelleren und einfacheren Zugang zu deinem Konto.",
+  "biometrics_description": "Deine biometrischen Informationen werden nicht von Sphereon gesammelt und dienen nur lokal zu Verifizierungszwecken.",
+  "biometrics_enable_text": "Jetzt aktivieren",
+  "biometrics_disallow": "Vielleicht später",
+  "onboarding_pid_security_model_title": "Welches PID-Sicherheitsmodell würdest du verwenden?",
+  "onboarding_pid_security_model_subtitle": "Bitte beachte, dass dies eine Test-/Entwicklungsoption ist. Du kannst sie später nicht ändern, ohne ein neues Wallet zu erstellen.",
+  "onboarding_pid_security_model_secure_element": "Sicheres Element im Telefon",
+  "onboarding_pid_security_model_remote_hardware": "Externe Hardware-Sicherheitsmodul",
+  "onboarding_pid_security_model_mobile_operator": "Mobilfunkbetreiber eSIM",
+  "onboarding_pid_security_model_eid_presentation": "eID-Karte während der Präsentation verwenden",
+  "onboarding_pid_security_model_select": "Auswählen",
+  "authentication_pin_code_title": "Gib deinen PIN-Code ein",
+  "authentication_pin_code_subtitle": "Zur Bestätigung bitte deinen PIN-Code eingeben",
+  "qr_scanner_marker_title": "QR-Code scannen",
+  "qr_scanner_marker_subtitle": "Positioniere den QR-Code im Sichtfeld der Kamera",
+  "qr_scanner_qr_not_supported_message": "QR-Code wird nicht unterstützt. Versuche einen anderen QR-Code zu scannen, um fortzufahren.",
+  "qr_scanner_qr_no_longer_valid_message": "QR-Code ist nicht mehr gültig. Bitte versuche einen neuen QR-Code zu scannen.",
+  "connection_details_view_details": "Details",
+  "action_confirm_label": "Bestätigen",
+  "action_continue_label": "Fortfahren",
+  "action_cancel_label": "Abbrechen",
+  "action_decline_label": "Ablehnen",
+  "action_abort_label": "Abbrechen",
+  "action_accept_label": "Akzeptieren",
+  "action_sign_label": "Unterschreiben",
+  "verification_code_title": "Gib deinen Verifizierungscode ein",
+  "verification_code_subtitle": "Du benötigst einen Code, um den Nachweis {{credentialName}} zu beanspruchen.",
+  "verification_code_accessibility_label": "Verifizierungscode",
+  "verification_code_accessibility_hint": "Gib deinen Verifizierungscode ein",
+  "verification_code_invalid_code_title": "Falscher Verifizierungscode",
+  "verification_code_invalid_code_details": "Das war nicht der gesuchte Code. Versuche es erneut, indem du einen neuen Link anforderst oder den QR-Code erneut scannst.",
+  "verification_code_invalid_code_details_title": "Weitere Details",
+  "verification_code_invalid_code_message": "Falscher Verifizierungscode. Bitte versuche es erneut.",
+  "credential_details_info_tab_header_label": "Verifizierte Informationen",
+  "credential_details_activity_tab_header_label": "Aktivität",
+  "action_view_extra_details": "Zusätzliche Details anzeigen",
+  "action_ok_label": "Ok, ich habe verstanden",
+  "error_generic_title": "Oops! Es ist ein Fehler aufgetreten.",
+  "error_generic_message": "Bitte kontaktiere den Autor dieser App.",
+  "error_details_generic_title": "Die App ist auf einen unerwarteten Fehler gestoßen",
+  "error_details_generic_message": "Fehlerdetails:",
+  "oidc4vci_error_invalid_request": "Ungültige Anfrage",
+  "oidc4vci_error_invalid_client": "Ungültiger Client angegeben",
+  "oidc4vci_error_invalid_grant": "Ungültige Berechtigung angegeben",
+  "oidc4vci_error_unauthorized_client": "App ist nicht autorisiert",
+  "oidc4vci_error_unsupported_grant_type": "Nicht unterstützter Berechtigungstyp angegeben",
+  "oidc4vci_error_unsupported_invalid_scope": "Nicht unterstützter Bereichstyp angegeben",
+  "oidc4vci_error_invalid_or_missing_proof": "Nachweis ist ungültig oder fehlt",
+  "credential_select_type_title": "Nachweise auswählen",
+  "credential_select_type_subtitle": "Der Aussteller {{issuerName}} unterstützt die Ausstellung der folgenden Nachweise. Wähle denjenigen aus, den du in deinem Wallet erhalten möchtest.",
+  "raw_credential_title": "Roh-Nachweis",
+  "credential_details_subtitle": "Die Informationen über den Nachweis, den du hinzufügen möchtest, sind unten angegeben.",
+  "contacts_overview_title": "Kontakte",
+  "contact_details_title": "Kontakt",
+  "contact_identities_title": "Identitäten",
+  "contact_activities_title": "Kontaktaktivitäten",
+  "contact_details_info_tab_header_label": "Details",
+  "contact_details_activity_tab_header_label": "Aktivität",
+  "contact_details_identities_tab_header_label": "Identitäten",
+  "intent_share_file_unable_to_receive_message": "Kann den Nachweis nicht empfangen",
+  "credential_activities_title": "Kartenaktivitäten",
+  "credential_delete_title": "Nachweis löschen",
+  "credential_delete_message": "Bist du sicher, dass du den Nachweis löschen möchtest: {{credentialName}}?",
+  "credential_deleted_success_toast": "Nachweis erfolgreich gelöscht",
+  "credential_deleted_failed_toast": "Nachweis konnte nicht gelöscht werden",
+  "contact_add_new_contact_detected_title": "Neuer Kontakt erkannt",
+  "contact_add_new_contact_detected_subtitle": "Wir haben festgestellt, dass die andere Partei in diesem Nachweisaustauschprozess noch nicht in deinen Kontakten ist. Du musst einen Namen für diesen neuen Kontakt angeben, um den Austausch abzuschließen.",
+  "contact_name_label": "Kontaktname",
+  "contact_name_placeholder": "Name des Kontakts",
+  "contact_name_invalid_message": "Bitte gib einen gültigen Kontaktname ein",
+  "contact_add_disclaimer": "Ich bestätige, dass dieser Kontakt als Ergebnis eines von mir initiierten Nachweisaustauschs erstellt wird.",
+  "contact_delete_title": "Kontakt löschen",
+  "contact_delete_message": "Bist du sicher, dass du den Kontakt löschen möchtest: {{contactName}}?",
+  "contact_deleted_success_toast": "Kontakt erfolgreich gelöscht",
+  "contact_deleted_failed_toast": "Kontakt konnte nicht gelöscht werden",
+  "contact_add_success_toast": "Kontakt erfolgreich erstellt",
+  "contact_update_success_toast": "Kontakt erfolgreich aktualisiert",
+  "contact_add_no_consent_toast": "Ohne Zustimmung kannst du den Nachweisaustauschprozess nicht fortsetzen und musst den Ablehnen-Button verwenden.",
+  "contact_add_cancel_title": "Bist du sicher, dass du ablehnen möchtest?",
+  "contact_add_cancel_message": "Das Hinzufügen eines Kontakts ist obligatorisch, wenn du einer neuen Partei in einem Nachweisaustauschprozess begegnest. Bitte beachte, dass der gesamte Nachweisaustauschprozess abgebrochen wird, wenn du bestätigst.",
+  "onboarding_welcome_header": "Willkommen",
+  "onboarding_welcome_title": "Sphereon Wallet",
+  "onboarding_welcome_intro_body": "Ermöglicht es dir, Akkreditierungen, Nachweise, Abzeichen und Identitätsattribute zu empfangen und zu teilen.\n\nDiese sind digital signiert und von dritten Parteien ausgestellten Organisationen beglaubigt.",
+  "browser_open_title": "Browser öffnen",
+  "browser_open_header": "Browser öffnen",
+  "browser_open_auth_title": "Authentifizierung angefordert",
+  "browser_open_auth_body": "Die verlassende Partei verlangt, dass du dich authentifizierst. Dein Standardbrowser wird für diese Aktion verwendet",
+  "browser_open_action_next_label": "Browser öffnen"
+}
