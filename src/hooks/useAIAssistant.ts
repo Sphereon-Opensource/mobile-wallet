@@ -14,7 +14,7 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
+console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 10) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
 console.log('==============================');
 
 
@@ -24,9 +24,13 @@ const useAIAssistant = () => {
   const [items, setItems] = useState<ItemType[]>([]);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
+  const apiKey = process.env.EXPO_OPENAI_API_KEY ?? OPENAI_API_KEY
+  if (!apiKey) {
+    throw Error('OPENAI_API_KEY is not set. Chatbot not available')
+  }
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
-      apiKey: OPENAI_API_KEY,
+      apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
     }),
   );
