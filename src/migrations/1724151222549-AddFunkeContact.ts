@@ -39,7 +39,31 @@ export class AddFunkeContact1724151222549 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO "BaseLocaleBranding"(id, issuerBrandingId, logoId, locale, type, created_at, last_updated_at) VALUES ('8790a44f-37e2-4ba6-adf2-624ea347960d', '316e1857-8d15-4a21-9821-69e47a21d867', '99a2fd3a-2c5f-4274-994b-cc167d167a8a', '', 'IssuerLocaleBranding', datetime('now'), datetime('now'))`,
+      `INSERT INTO "BaseLocaleBranding"(
+                                 id, 
+                                 issuerBrandingId, 
+                                 logoId, 
+                                 locale, 
+                                 type,
+                                 client_uri,
+                                 tos_uri,
+                                 policy_uri,
+                                 contacts,
+                                 created_at, 
+                                 last_updated_at
+                                 ) VALUES (
+                                           '8790a44f-37e2-4ba6-adf2-624ea347960d', 
+                                           '316e1857-8d15-4a21-9821-69e47a21d867', 
+                                           '99a2fd3a-2c5f-4274-994b-cc167d167a8a', 
+                                           '', 
+                                           'IssuerLocaleBranding', 
+                                           'https://www.bundesdruckerei.de',
+                                           'https://www.bundesdruckerei-gmbh.de/de/agb',
+                                           'https://www.bundesdruckerei.de/de/datenschutz',
+                                           'info@bdr.de,https://www.bundesdruckerei.de/de/kontakt',
+                                           datetime('now'), 
+                                           datetime('now')
+                                           )`,
     );
   }
 

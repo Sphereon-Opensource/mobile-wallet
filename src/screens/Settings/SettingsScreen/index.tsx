@@ -7,7 +7,6 @@ import {
   MenuItemText,
   NavigationItemRow,
   NavigationItemRowText,
-  SectionTitle,
   SettingsScreenContainer,
   SettingsSection,
   UserName,
@@ -17,7 +16,7 @@ import ChevronIcon from '../../../components/assets/icons/ChevronIcon';
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import SSIProfileIcon from '../../../components/assets/icons/SSIProfileIcon';
-import {MainRoutesEnum, RootState} from '../../../types';
+import {MainRoutesEnum, RootState } from '../../../types';
 import {useSelector} from 'react-redux';
 import {SSITextH5LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import SSIPersonIcon from '../../../components/assets/icons/SSIPersonIcon';
@@ -51,48 +50,48 @@ const SettingsScreen = () => {
               </>
             )}
           </SettingsSection>
-          <SectionTitle>General</SectionTitle>
-          <Divider />
-          <SettingsSection>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-          </SettingsSection>
+          {/*<SectionTitle>General</SectionTitle>*/}
+          {/*<Divider />*/}
+          {/*<SettingsSection>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*</SettingsSection>*/}
 
-          <SectionTitle>{translate('settings_privacy_controls_section_label')}</SectionTitle>
-          <Divider />
-          <SettingsSection>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-          </SettingsSection>
+          {/*<SectionTitle>{translate('settings_privacy_controls_section_label')}</SectionTitle>*/}
+          {/*<Divider />*/}
+          {/*<SettingsSection>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*</SettingsSection>*/}
 
-          <SectionTitle>{translate('settings_feedback_controls_section_label')}</SectionTitle>
-          <Divider />
-          <SettingsSection>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-            <MenuItemRow>
-              <SSIPersonIcon color="white" />
-              <MenuItemText>Item</MenuItemText>
-            </MenuItemRow>
-          </SettingsSection>
+          {/*<SectionTitle>{translate('settings_feedback_controls_section_label')}</SectionTitle>*/}
+          {/*<Divider />*/}
+          {/*<SettingsSection>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*  <MenuItemRow>*/}
+          {/*    <SSIPersonIcon color="white" />*/}
+          {/*    <MenuItemText>Item</MenuItemText>*/}
+          {/*  </MenuItemRow>*/}
+          {/*</SettingsSection>*/}
         </Content>
       </ScrollView>
       <MenuItemRow onPress={() => logout()} style={({pressed}) => ({paddingLeft: 24, opacity: pressed ? 0.7 : 1})}>
