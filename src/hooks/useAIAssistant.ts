@@ -7,11 +7,15 @@ import {RootState} from 'src/types';
 import {ChatTools} from '../components/chat/Chat';
 import {basicInstructions, reopenChatPrompt} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
+import {stringifyState} from '../utils/stringifyState';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
-import {stringifyState} from '../utils/stringifyState';
 
 export type ChatMode = 'text' | 'voice';
+
+console.log('==============================');
+console.log('OPENAI_API_KEY', OPENAI_API_KEY.substring(0, 10), '...');
+console.log('==============================');
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -236,13 +240,19 @@ const useAIAssistant = () => {
     wavStreamPlayerRef.current.add16BitPCM(int16Array, 'assistant-audio');
   };
 
-  const addTools = (tools: ChatTools) => tools?.forEach(({tool, callback}) => {
-    clientRef.current.addTool(tool, callback);
-  });
+  const addTools = (tools: ChatTools) =>
+    tools?.forEach(({tool, callback}) => {
+      clientRef.current.addTool(tool, callback);
+    });
 
-  const removeTools = (tools: ChatTools) => tools?.forEach(({tool}) => {
-    clientRef.current.removeTool(tool.name);
-  })
+  const removeTools = (tools: ChatTools) =>
+    tools?.forEach(({tool}) => {
+      try {
+        clientRef.current.removeTool(tool.name);
+      } catch (e) {
+        console.log(e);
+      }
+    });
 
   return {
     isConnected,
