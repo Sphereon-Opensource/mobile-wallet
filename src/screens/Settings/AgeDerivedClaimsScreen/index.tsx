@@ -1,3 +1,4 @@
+import { FC, ReactElement } from 'react';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import ClaimTrueIcon from '../../../components/assets/icons/ClaimTrueIcon';
 import {
@@ -8,21 +9,23 @@ import {
   AgeDerivedClaimsScreenDescription,
   AgeDerivedClaimsText,
   Content,
-  MoreText,
   SettingsHeaderText,
   SettingsScreenContainer,
 } from '../components/style';
 import {SettingsHeaderBar} from '../components/SettingsHeaderBar';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../types';
+import {MainRoutesEnum, StackParamList} from '../../../types'
 import {translate} from '../../../localization/Localization';
 import {ScrollView} from 'react-native';
 import ClaimFalseIcon from '../../../components/assets/icons/ClaimFalseIcon';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const AgeDerivedClaimsScreen = () => {
+type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.AGE_DERIVED_CLAIMS>;
+
+const AgeDerivedClaimsScreen: FC<Props> = (props: Props): ReactElement => {
+  const {route} = props;
+  const {claims} = route.params;
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-  const {users, activeUser} = useSelector((state: RootState) => state.user);
   return (
     <SettingsScreenContainer>
       <SettingsHeaderBar showBottomBorder={false} onBack={() => navigation.goBack()} />
@@ -32,10 +35,10 @@ const AgeDerivedClaimsScreen = () => {
           <AgeDerivedClaimsScreenDescription>{translate('age_dervived_claims_screen_description')}</AgeDerivedClaimsScreenDescription>
           <AgeDerivedClaimsContainer>
             <AgeDerivedClaimsLabel>{translate('age_derived_claims_screen_title')}</AgeDerivedClaimsLabel>
-            {mockClaims.map(claim => (
-              <AgeDerivedClaimsRow key={claim.key}>
-                <AgeDerivedClaimsText>{claim.key + ':'}</AgeDerivedClaimsText>
-                {claim.value ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
+            {Object.entries(claims).map(([key, value]) => (
+              <AgeDerivedClaimsRow key={key}>
+                <AgeDerivedClaimsText>{key + ':'}</AgeDerivedClaimsText>
+                {value ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
               </AgeDerivedClaimsRow>
             ))}
           </AgeDerivedClaimsContainer>
@@ -45,32 +48,43 @@ const AgeDerivedClaimsScreen = () => {
   );
 };
 
-const mockClaims = [
-  {key: '0', value: true},
-  {key: '1', value: true},
-  {key: '2', value: true},
-  {key: '3', value: true},
-  {key: '4', value: true},
-  {key: '21', value: true},
-  {key: '24', value: true},
-  {key: '30', value: true},
-  {key: '42', value: true},
-  {key: '50', value: true},
-  {key: '60', value: true},
-  {key: '65', value: true},
-];
+export type PreviewProps = {
+  claims: Record<number, boolean>
+}
 
-export const AgeDerivedClaimsPreview = () => {
+export const AgeDerivedClaimsPreview = (props: PreviewProps) => {
+  const { claims } = props
+
+  let over
+  let before
+  Object.entries(claims).map((value): void => {
+    if (value[1]) {
+      over = value
+    }
+    if (!value[1]) {
+      before = value
+      return
+    }
+  });
+
   return (
     <AgeDerivedClaimsPreviewContainer>
       <AgeDerivedClaimsLabel>{translate('age_derived_claims_title')}</AgeDerivedClaimsLabel>
       <AgeDerivedClaimsRow>
-        <AgeDerivedClaimsText>{mockClaims[6].key}</AgeDerivedClaimsText>
-        {mockClaims[6].value ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
+        {over &&
+          <>
+            <AgeDerivedClaimsText>{over[0]}</AgeDerivedClaimsText>
+            {over[1] ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
+          </>
+        }
       </AgeDerivedClaimsRow>
       <AgeDerivedClaimsRow>
-        <MoreText>{mockClaims[7].key}</MoreText>
-        {mockClaims[7].value ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
+        {before &&
+          <>
+            <AgeDerivedClaimsText>{before[0]}</AgeDerivedClaimsText>
+            {before[1] ? <ClaimTrueIcon /> : <ClaimFalseIcon />}
+          </>
+        }
       </AgeDerivedClaimsRow>
     </AgeDerivedClaimsPreviewContainer>
   );

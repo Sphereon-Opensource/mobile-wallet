@@ -57,11 +57,15 @@ export type StackParamList = {
   FUNKE_C2_SHARE: Record<string, never>;
   SETTINGS: Record<string, never>;
   ACCOUNT: Record<string, never>;
-  AGE_DERIVED_CLAIMS: Record<string, never>;
+  AGE_DERIVED_CLAIMS: IAgeDerivedClaimsProps;
   NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
 };
 
 export type Document = 'terms' | 'privacy';
+
+export type IAgeDerivedClaimsProps = {
+  claims: Record<number, boolean>
+};
 
 export type IActivityDetailsProps = {
   activity?: Activity;
