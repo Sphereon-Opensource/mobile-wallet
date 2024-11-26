@@ -8,6 +8,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   ConnectionType,
   CorrelationIdentifierType,
+  CredentialDocumentFormat,
   CredentialRole,
   IBasicCredentialLocaleBranding,
   IdentityOrigin,
@@ -33,6 +34,11 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialSubjectContact} from '../../utils';
 import agent from '../../agent';
+import store from '../../store';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {computeEntryHash} from '@veramo/utils';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -137,6 +143,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
       federations: federationParties,
       uri: contact.uri,
       identities: contact.identities,
+      contacts: branding.contacts,
       logo: branding.logo,
       description: branding.description,
       clientUri: branding.clientUri,
@@ -173,6 +180,7 @@ const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promis
       uri: contact.uri,
       logo: branding.logo,
       description: branding.description,
+      contacts: branding.contacts,
       clientUri: branding.clientUri,
       tosUri: branding.tosUri,
       policyUri: branding.policyUri,
@@ -269,6 +277,44 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
+      switch (documentFormat) {
+        case DocumentFormat.JSONLD:
+          return CredentialDocumentFormat.JSON_LD;
+        case DocumentFormat.JWT:
+          return CredentialDocumentFormat.JWT;
+        case DocumentFormat.SD_JWT_VC:
+          return CredentialDocumentFormat.SD_JWT;
+        case DocumentFormat.MSO_MDOC:
+          return CredentialDocumentFormat.MSO_MDOC;
+        default:
+          throw new Error(`Not supported document format: ${documentFormat}`);
+      }
+    }
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'decline credential',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+        // @ts-ignore
+        credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(credentialsToAccept[0].rawVerifiableCredential)),
+        // @ts-ignore
+        credentialHash: credentialsToAccept[0].uniformVerifiableCredential.id ?? computeEntryHash(credentialsToAccept[0].uniformVerifiableCredential),
+        originalCredential: JSON.stringify(credentialsToAccept[0].uniformVerifiableCredential),
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   };
 
   const signingMode = credentialsToAccept.find(cred => !!cred.credential_subject_issuance);
@@ -278,6 +324,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
+      hideLinks: true,
       credential: await toNonPersistedCredentialSummary({
         verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
         credentialRole: CredentialRole.HOLDER,
@@ -333,6 +380,7 @@ const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,

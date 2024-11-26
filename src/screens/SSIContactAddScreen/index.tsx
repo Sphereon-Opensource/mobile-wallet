@@ -42,6 +42,10 @@ class SSIContactAddScreen extends PureComponent<IProps, IState> {
     hasConsent: this.props.route.params.hasConsent ?? true,
   };
 
+  constructor(props: IProps) {
+    super(props);
+  }
+
   componentDidMount(): void {
     const {onAliasChange} = this.props.route.params;
     this.hardwareBackPressListener = BackHandler.addEventListener('hardwareBackPress', this.onBack);

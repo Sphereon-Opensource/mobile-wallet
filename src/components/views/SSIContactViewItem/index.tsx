@@ -2,6 +2,11 @@ import {CredentialRole, IImageAttributes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {View} from 'react-native';
 
+import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
+import Debug, {Debugger} from 'debug';
+import styled from 'styled-components/native';
+import {APP_ID} from '../../../@config/constants';
+import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
   SSITextH3LightStyled as ContactNameCaption,
@@ -11,12 +16,6 @@ import {
   SSIContactViewItemLogoContainerStyled as LogoContainer,
   SSIContactViewItemNewStatusContainerStyled as StatusContainer,
 } from '../../../styles/components';
-import Debug, {Debugger} from 'debug';
-import {APP_ID} from '../../../@config/constants';
-import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
-import styled from 'styled-components/native';
-import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
-import {transform} from 'typescript';
 
 const debug: Debugger = Debug(`${APP_ID}:SSIContactViewItem`);
 
@@ -37,7 +36,6 @@ const ChevronRight = styled.View`
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
   const {name, uri, roles, logo, showArrow = false} = props;
-  debug(`logo: ${logo ? JSON.stringify(logo) : ''}`);
   return (
     <Container>
       <StatusContainer />

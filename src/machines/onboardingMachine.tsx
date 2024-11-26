@@ -1,8 +1,17 @@
+import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
+import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
-import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
+import {DoneInvokeEvent, GuardPredicate, assign, createMachine, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
+import {translate} from '../localization/Localization';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
+import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import store from '../store';
+import {storeActivityLogging} from '../store/actions/logging.actions';
 import {ErrorDetails} from '../types';
+import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {
   CreateOnboardingMachineOpts,
   InstanceOnboardingMachineOpts,
@@ -17,16 +26,7 @@ import {
   OnboardingMachineStep,
   OnboardingStatesConfig,
 } from '../types/machines/onboarding';
-import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
-import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
-import {translate} from '../localization/Localization';
-import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {computeEntryHash} from '@veramo/utils';
-import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
-import store from '../store';
-import {storeActivityLogging} from '../store/actions/logging.actions';
+import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -96,6 +96,9 @@ const states: OnboardingStatesConfig = {
       },
       SET_SKIP_IMPORT: {
         actions: assign({skipImport: (_, event) => event.data}),
+      },
+      SET_POPUP_MENU_OPEN: {
+        actions: assign({popupMenuOpen: (_, event) => event.data}),
       },
     },
   },
@@ -377,6 +380,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     currentStep: 1,
     skipImport: false,
     pidCredentials: [],
+    popupMenuOpen: false,
   };
 
   return createMachine<OnboardingMachineContext, OnboardingMachineEventTypes>(
@@ -422,6 +426,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     {
       actions: {
         logDeclinePID: async (context, event): Promise<void> => {
+          let parentCredentialHash: string | undefined = undefined;
           context.pidCredentials.forEach(mappedCredential => {
             // FIXME function is not exposed in SSI-SDK, for now made a copy here
             function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
@@ -439,6 +444,8 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
               }
             }
 
+            const credentialHash = mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential);
+
             store.dispatch<any>(
               storeActivityLogging({
                 level: LogLevel.INFO,
@@ -450,13 +457,18 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
                 actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
                 // @ts-ignore
                 credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
-                credentialHash: mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential),
+                parentCredentialHash,
+                credentialHash,
                 originalCredential: JSON.stringify(mappedCredential.rawCredential),
                 partyCorrelationType: PartyCorrelationType.URL,
                 partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
                 partyAlias: 'Bundesdruckerei GmbH',
               }),
             );
+
+            if (!parentCredentialHash) {
+              parentCredentialHash = credentialHash;
+            }
           });
         },
       },

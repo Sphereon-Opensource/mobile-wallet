@@ -1,4 +1,88 @@
 {
+  "accessibility": {
+    "tabBar": {
+      "qr": "QR code scanner",
+      "activities": "Activity feed",
+      "home": "Credentials list",
+      "credential_catalog": "Credential catalog",
+      "contacts": "Contacts list"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Unknown contact",
+      "credential": "Unknown credential",
+      "credential_type": "Unknown credential type",
+      "purpose": "Unknown purpose",
+      "issuer": "Unknown issuer",
+      "type": "Unknown activity type",
+      "date": "Unknown date",
+      "activity": "Unknown activity"
+    },
+    "feed": {
+      "title": "Activity feed",
+      "list": {
+        "title": "All activities",
+        "loading": "Loading activities",
+        "search_placeholder": "Search for contact, card or status",
+        "empty_state": {
+          "title": "No activities",
+          "subtitle": "At the moment you don’t have any activities.\nThe activities will automatically appear here."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "All activities with",
+        "loading": "Loading activities for",
+        "search_placeholder": "Search for card or status"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Shared information",
+      "info_header": {
+        "description": "items shared"
+      },
+      "row_description": "Data gedeelt",
+      "detail_title": "Data gedeelt"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items declined"
+      },
+      "row_description": "Delen gegevens geweigerd",
+      "detail_title": "Delen gegevens geweigerd"
+    },
+    "VC issue": {
+      "info_list_title": "Issued information",
+      "revealed_info_title": "Issued information",
+      "info_header": {
+        "description": "items issued"
+      },
+      "row_description": "Credential ontvangen",
+      "detail_title": "New credential added to your wallet",
+      "description": ["You can finally use your", "card for official sharing purposes."]
+    },
+    "VC issue decline": {
+      "info_list_title": "Declined information",
+      "revealed_info_title": "Declined information",
+      "info_header": {
+        "description": "items not issued"
+      },
+      "row_description": "Ontvangen credential geweigerd",
+      "detail_title": "Credential not added to your wallet",
+      "description": ["You have declined to use the", "card for official sharing purposes."]
+    },
+    "section_titles": {
+      "status": "Status",
+      "purpose": "Purpose",
+      "credential_type": "Type of credential",
+      "issued_information": "Issued information"
+    },
+    "contact_link": "About",
+    "support_link": "Something wrong?"
+  },
   "credential_details_title": "Credential details",
   "credentials_overview_title": "Credentials",
   "credential_details_view_issued_by": "Uitgegeven door",
@@ -7,6 +91,7 @@
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
 
   "settings_dropdown_item_text": "Settings",
+  "settings_dropdown_item_accessibility_hint": "Navigate to the settings screen",
   "settings_title": "Settings",
   "account_title": "Account",
 
@@ -139,9 +224,6 @@
   "pin_code_accessibility_hint": "Vul je pincode in",
   "pin_code_invalid_code_message": "Deze pincode komt niet overeen. Probeer het opnieuw.",
   "pin_code_attempts_left_message": "Pogingen over:",
-  "notifications_overview_title": "Notificaties",
-  "notifications_overview_empty_state_title": "Geen notificaties",
-  "notifications_overview_empty_state_subtitle": "Op dit moment heb je geen notificaties.\nDe notificaties verschijnen hier automatisch.",
   "lock_title": "Log in\nde Sphereon Wallet",
   "lock_subtitle": "Vul je pincode in.",
   "lock_emergency_button_caption": "Noodoproep",
@@ -149,21 +231,50 @@
   "onboard_create_wallet_step_title": "Creëer Wallet",
   "onboard_secure_wallet_step_title": "Beveilig wallet",
   "onboard_progress_pages": {
-    "create_wallet": {"title": "Getting started", "description": "Each section should take only a couple of minutes to complete."},
-    "secure_wallet": {"title": "You're halfway there", "description": null},
-    "import_personal_data": {"title": "Almost done, last section", "description": null}
+    "create_wallet": {
+      "title": "Getting started",
+      "description": "Each section should take only a couple of minutes to complete.",
+      "accessibility_label": "Getting started. Onboarding progress currently on step"
+    },
+    "secure_wallet": {
+      "title": "You're halfway there",
+      "description": null,
+      "accessibility_label": "You're halfway there. Onboarding progress currently on step"
+    },
+    "import_personal_data": {
+      "title": "Almost done, last section",
+      "description": null,
+      "accessibility_label": "Almost done, last section. Onboarding progress currently on step"
+    }
   },
   "onboard_steps": {
-    "create_wallet": {"title": "Create wallet", "description": "Set up an account with your name, email address and country of residence."},
+    "accessibility_tokens": {
+      "step": "step",
+      "of": "of",
+      "and_final": "and final"
+    },
+    "create_wallet": {
+      "title": "Create wallet",
+      "description": "Set up an account with your name, email address and country of residence.",
+      "accessibility": {
+        "button_hint": "Start creating your wallet"
+      }
+    },
     "secure_wallet": {
       "title": "Secure wallet",
-      "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login."
+      "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login.",
+      "accessibility": {
+        "button_hint": "Start securing your wallet"
+      }
     },
     "import_personal_data": {
       "title": "Import personal information",
       "description": {
         "default": "Import your personal information from your national eID provider.",
-        "deutchland": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "de": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+      },
+      "accessibility": {
+        "button_hint": "Start importing your personal data"
       }
     }
   },
@@ -171,13 +282,20 @@
     "welcome": {
       "title": "Welcome to your Sphereon Wallet",
       "description": "Receive and share accreditations, credentials, badges and identity details.",
-      "button_caption": "Get started"
+      "button_caption": "Get started",
+      "accessibility": {
+        "hint": "Swipe left to continue",
+        "label": "Welcome to your Sphereon Wallet"
+      }
     },
     "enter_name": {
       "title": "Enter your name",
       "text_field": {
         "label": "Name",
         "placeholder": "Your name",
+        "accessibility": {
+          "label": "Enter your name"
+        },
         "errors": {
           "missing": "Please fill in a name"
         }
@@ -188,6 +306,9 @@
       "text_field": {
         "label": "Email address",
         "placeholder": "Your email address",
+        "accessibility": {
+          "label": "Enter your email address"
+        },
         "errors": {
           "missing": "Please fill in an email address",
           "invalid": "Please fill in a valid email address"
@@ -198,6 +319,9 @@
       "title": "Your country of residence",
       "select": {
         "label": "Country",
+        "accessibility": {
+          "select": "Selected country"
+        },
         "placeholder": "You country of residence",
         "errors": {
           "missing": "Please select a country"
@@ -411,10 +535,12 @@
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contacten",
   "new_contact_add_new_contact_low_level_trust_title": "Weet u zeker dat u wilt doorgaan?",
   "new_contact_add_new_contact_low_level_trust_description": "U staat op het punt om te communiceren met een partij met een laag betrouwbaarheidsniveau.",
 
   "present_qr_code_screen_header_title": "Present QR code",
   "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",
-  "present_qr_code_dropdown_item_text": "Present QR code"
+  "present_qr_code_dropdown_item_text": "Present QR code",
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest."
 }

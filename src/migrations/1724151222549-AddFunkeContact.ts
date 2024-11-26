@@ -13,15 +13,23 @@ export class AddFunkeContact1724151222549 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('838d0211-779d-41d8-829b-809572ff0356', 'https://demo.pid-issuer.bundesdruckerei.de', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
+      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('838d0211-779d-41d8-829b-809572ff0356', 'https://demo.pid-issuer.bundesdruckerei.de/c', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
     );
 
     await queryRunner.query(
-      `INSERT INTO "CorrelationIdentifier"(id, type, correlation_id, identity_id) VALUES ('0483e2e8-a17f-45f2-bc8b-053c8d7d5b62', 'url', 'https://demo.pid-issuer.bundesdruckerei.de', '838d0211-779d-41d8-829b-809572ff0356')`,
+      `INSERT INTO "CorrelationIdentifier"(id, type, correlation_id, identity_id) VALUES ('0483e2e8-a17f-45f2-bc8b-053c8d7d5b62', 'url', 'https://demo.pid-issuer.bundesdruckerei.de/c', '838d0211-779d-41d8-829b-809572ff0356')`,
     );
 
     await queryRunner.query(
-      `INSERT INTO "IssuerBranding"(id, issuerCorrelationId, created_at, last_updated_at) VALUES ('316e1857-8d15-4a21-9821-69e47a21d867', 'https://demo.pid-issuer.bundesdruckerei.de', datetime('now'), datetime('now'))`,
+      `INSERT INTO "Identity"(id, alias, origin, roles, partyId, created_at, last_updated_at) VALUES ('eefa7ff3-460c-4c83-81f6-0feead86b580', 'https://demo.pid-issuer.bundesdruckerei.de/c2', 'EXTERNAL', 'ISSUER', 'd3ad5214-dff7-45a8-8047-750b18f22c0f', datetime('now'), datetime('now'))`,
+    );
+
+    await queryRunner.query(
+      `INSERT INTO "CorrelationIdentifier"(id, type, correlation_id, identity_id) VALUES ('1fe9b9aa-398f-4d7e-a91a-1f137f9a783b', 'url', 'https://demo.pid-issuer.bundesdruckerei.de/c2', 'eefa7ff3-460c-4c83-81f6-0feead86b580')`,
+    );
+
+    await queryRunner.query(
+      `INSERT INTO "IssuerBranding"(id, issuerCorrelationId, created_at, last_updated_at) VALUES ('316e1857-8d15-4a21-9821-69e47a21d867', 'https://demo.pid-issuer.bundesdruckerei.de/c', datetime('now'), datetime('now'))`,
     );
 
     await queryRunner.query(`INSERT INTO "ImageDimensions"(id, width, height) VALUES ('18e8273d-6748-46f9-a6cd-5c7130eb18ec', 2363, 2363)`);
@@ -31,7 +39,31 @@ export class AddFunkeContact1724151222549 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO "BaseLocaleBranding"(id, issuerBrandingId, logoId, locale, type, created_at, last_updated_at) VALUES ('8790a44f-37e2-4ba6-adf2-624ea347960d', '316e1857-8d15-4a21-9821-69e47a21d867', '99a2fd3a-2c5f-4274-994b-cc167d167a8a', '', 'IssuerLocaleBranding', datetime('now'), datetime('now'))`,
+      `INSERT INTO "BaseLocaleBranding"(
+                                 id, 
+                                 issuerBrandingId, 
+                                 logoId, 
+                                 locale, 
+                                 type,
+                                 client_uri,
+                                 tos_uri,
+                                 policy_uri,
+                                 contacts,
+                                 created_at, 
+                                 last_updated_at
+                                 ) VALUES (
+                                           '8790a44f-37e2-4ba6-adf2-624ea347960d', 
+                                           '316e1857-8d15-4a21-9821-69e47a21d867', 
+                                           '99a2fd3a-2c5f-4274-994b-cc167d167a8a', 
+                                           '', 
+                                           'IssuerLocaleBranding', 
+                                           'https://www.bundesdruckerei.de',
+                                           'https://www.bundesdruckerei-gmbh.de/de/agb',
+                                           'https://www.bundesdruckerei.de/de/datenschutz',
+                                           'info@bdr.de,https://www.bundesdruckerei.de/de/kontakt',
+                                           datetime('now'), 
+                                           datetime('now')
+                                           )`,
     );
   }
 

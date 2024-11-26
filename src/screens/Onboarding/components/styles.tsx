@@ -65,6 +65,7 @@ export const ModalCard = styled.View`
   gap: 10px;
   align-items: center;
   background-color: white;
+  height: 280px;
 `;
 
 export const IconContainer = styled.View`

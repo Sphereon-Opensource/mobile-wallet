@@ -32,7 +32,6 @@ import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {getMatchingCredentials} from '../../services/pexService';
 import agent from '../../agent';
-import {OID4VCIMachineEvents, OID4VCIMachineNavigationArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
@@ -136,9 +135,9 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
   };
 
   const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+    filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = trustedAnchors && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -147,6 +146,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
       roles: [CredentialRole.VERIFIER],
       uri: contact.uri,
       federations: federationParties,
+      identities: contact.identities,
       onAliasChange,
       onCreate,
       onDecline,
@@ -314,6 +314,7 @@ const navigateError = async (args: SiopV2MachineNavigationArgs): Promise<void> =
       }),
       primaryButton: {
         caption: translate('action_ok_label'),
+        accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
         onPress: onNext,
       },
       onBack,
@@ -344,6 +345,7 @@ export const siopV2StateNavigationListener = async (
     state.matches(SiopV2MachineStates.createConfig) ||
     state.matches(SiopV2MachineStates.getSiopRequest) ||
     state.matches(SiopV2MachineStates.retrieveContact) ||
+    state.matches(SiopV2MachineStates.getFederationTrust) ||
     state.matches(SiopV2MachineStates.transitionFromSetup)
   ) {
     return navigateLoading({siopV2Machine: siopV2Machine, state, navigation: nav, onNext, onBack});

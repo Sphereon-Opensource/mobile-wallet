@@ -1,7 +1,7 @@
-import {FC, ReactElement, useCallback} from 'react';
-import {BackHandler} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {FC, ReactElement, useCallback} from 'react';
+import {BackHandler} from 'react-native';
 import {
   SSILoadingScreenActivityCaptionStyled as ActivityCaption,
   SSILoadingScreenActivityIndicatorStyled as ActivityIndicator,
@@ -25,7 +25,7 @@ const SSILoadingScreen: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container>
       <ActivityIndicatorContainer>
-        <ActivityIndicator />
+        <ActivityIndicator accessibilityRole="progressbar" accessibilityLabel={`${message.replaceAll('.', '')}`} />
       </ActivityIndicatorContainer>
       <ActivityCaption>{message}</ActivityCaption>
     </Container>

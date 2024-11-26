@@ -5,15 +5,19 @@ import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 import {ContactStore, DigitalCredentialStore, EventLoggerStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
 import {OID4VCIHolder, OnContactIdentityCreatedArgs, OnCredentialStoredArgs, OnIdentifierCreatedArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
+import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
+import {ResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
 import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
-import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
-import {LoggingEventType, OrPromise} from '@sphereon/ssi-types';
+import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
 import {IAgentPlugin} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
@@ -26,13 +30,11 @@ import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
+import {storeActivityLogging} from '../store/actions/logging.actions';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
-import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
-import {OIDFClient} from '@sphereon/ssi-sdk.oidf-client';
-import {QrCodeProvider} from '@sphereon/ssi-sdk.qr-code-generator';
-import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -41,6 +43,32 @@ export const oid4vciHolder = new OID4VCIHolder({
   onCredentialStored: async (args: OnCredentialStoredArgs): Promise<void> => {
     const {credential, vcHash} = args;
     store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
+
+    // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
+    const contact = store
+      .getState()
+      .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VCI,
+        subSystemType: SubSystem.VC_ISSUER,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'onCredentialStored event call',
+        actionType: ActionType.CREATE,
+        actionSubType: DefaultActionSubType.VC_ISSUE,
+        diagnosticData: {digitalCredential: credential},
+        // @ts-ignore
+        credentialType: credential.documentFormat, // TODO fix types
+        credentialHash: vcHash,
+        originalCredential: JSON.stringify(credential),
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   },
   onIdentifierCreated: async (args: OnIdentifierCreatedArgs): Promise<void> => {
     const {identifier} = args;
@@ -88,6 +116,22 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new IssuanceBrandingStore(dbConnection),
     }),
     new CredentialPlugin(),
+   /* new CredentialHandlerLDLocal({
+      contextMaps: [LdContexts],
+      suites: [
+        new SphereonEd25519Signature2018(),
+        new SphereonEd25519Signature2020(),
+        // new SphereonBbsBlsSignature2020(),
+        new SphereonJsonWebSignature2020(),
+      ],
+      bindingOverrides: new Map([
+        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
+        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
+      ]),
+      keyStore: privateKeyStore,
+    }),*/
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
     new MachineStatePersistence({
@@ -108,5 +152,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new CredentialValidation(),
     new OIDFClient(),
     new QrCodeProvider(),
+    new ResourceResolver(),
   ];
 };

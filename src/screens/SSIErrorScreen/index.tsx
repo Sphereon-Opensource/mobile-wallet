@@ -1,13 +1,14 @@
+import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {FC} from 'react';
 import SSIPopup from '../../components/messageBoxes/popups/SSIPopup';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import {
   SSIBasicContainerStyled as Container,
   SSIErrorScreenContentContainerStyled as ContentContainer,
   SSIPopupModalDetailsModalContainerStyled as ExtraDetailsContainer,
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ERROR>;
 
@@ -15,8 +16,9 @@ const SSIErrorScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {onClose, onBack, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
-
+  const {announce} = useAccessibility();
   console.error(`ERROR Screen: ${JSON.stringify(details)}`);
+  announce({message: 'Error'});
   if (extraDetails) {
     console.error(`ERROR details:\n${JSON.stringify(extraDetails)}`);
   }

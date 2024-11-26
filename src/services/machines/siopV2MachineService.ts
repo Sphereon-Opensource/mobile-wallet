@@ -20,7 +20,9 @@ import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {Loggers} from '@sphereon/ssi-types';
+import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {PublicKeyHex, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -69,7 +71,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
     : name;
   const correlationId: string = uri?.hostname ?? correlationIdName;
+  const clientIdScheme: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
   const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
+  const entityId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -77,7 +81,9 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     registrationMetadataPayload: verifiedAuthorizationRequest.registrationMetadataPayload,
     uri,
     name,
+    clientIdScheme,
     clientId,
+    entityId,
     presentationDefinitions:
       (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
       (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
@@ -129,7 +135,6 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
       ? clientId
       : `${new URL(clientId).protocol}//${new URL(clientId).hostname}`
     : undefined;
-
   if (correlationId) {
     const identity: NonPersistedIdentity = {
       origin: IdentityOrigin.EXTERNAL,
@@ -145,9 +150,9 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 };
 
 export const sendResponse = async (
-  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials'>,
+  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact'>,
 ): Promise<Response> => {
-  const {didAuthConfig, authorizationRequestData, selectedCredentials} = context;
+  const {didAuthConfig, authorizationRequestData, selectedCredentials, contact} = context;
 
   if (didAuthConfig === undefined) {
     return Promise.reject(Error('Missing config in context'));
@@ -168,6 +173,31 @@ export const sendResponse = async (
       ],
     }),
   });
+
+  selectedCredentials.forEach(credential =>
+    store.dispatch<any>(
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'Credential shared by user',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    ),
+  );
+
   if (!response) {
     return Promise.reject(Error('Missing SIOP authentication response'));
   }
@@ -192,7 +222,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Array<string>> => {
+): Promise<Array<TrustedAnchor>> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -203,23 +233,15 @@ export const getFederationTrust = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  // const entityIdentifier = authorizationRequestData.entityId;
-  //
-  // if (!entityIdentifier) {
-  //   return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
-  // }
+  const entityIdentifier = authorizationRequestData.entityId;
+  if (!entityIdentifier) {
+    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  }
+  const result = await agent.identifierExternalResolveByOIDFEntityId({
+    method: 'entity_id',
+    trustAnchors: trustAnchors,
+    identifier: entityIdentifier,
+  });
 
-  // const trustedAnchors = [];
-  // for (const trustAnchor of trustAnchors) {
-  //   const resolveResult = await agent.resolveTrustChain({
-  //     entityIdentifier,
-  //     trustAnchors: [trustAnchor],
-  //   });
-  //
-  //   if (Array.isArray(resolveResult) && resolveResult.length > 0) {
-  //     trustedAnchors.push(trustAnchor);
-  //   }
-  // }
-
-  return []; //trustedAnchors;
+  return result.trustedAnchors;
 };

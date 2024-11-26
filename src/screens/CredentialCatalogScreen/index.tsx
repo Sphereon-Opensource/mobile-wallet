@@ -1,32 +1,43 @@
-import React, {FC, ReactElement} from 'react';
+import React, {FC, ReactElement, useMemo} from 'react';
 import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {SSITextH2SemiBoldLightStyled as HeaderCaption} from '@sphereon/ui-components.ssi-react-native';
-import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
-import SearchField from '../../components/fields/SearchField';
-import FilterBar from '../../components/bars/FilterBar';
-import CredentialPreviewViewItem from '../../components/views/CredentialPreviewViewItem';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
+import FilterBar from '../../components/bars/FilterBar';
+import SearchField from '../../components/fields/SearchField';
+import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
+import CredentialPreviewViewItem from '../../components/views/CredentialPreviewViewItem';
+import {useAccessibility} from '../../hooks/useAccessibility';
 import Localization from '../../localization/Localization';
-import {showToast} from '../../utils';
 import {GetPIDCredentialsMachine} from '../../machines/getPIDCredentialMachine';
 import {
+  SSIBasicContainerStyled as Container,
+  CredentialCatalogCredentialListContainerStyled as CredentialListContainer,
+  CredentialCatalogDiscoverCredentialsContainerStyled as DiscoverCredentialsContainer,
+  CredentialCatalogScreenDiscoverCredentialsHeaderContainerStyled as DiscoverCredentialsHeaderContainer,
+  SSIRippleContainerStyled as ItemContainer,
   CredentialCatalogScreenPreviewCredentialContainerStyled as PreviewCredentialContainer,
+  CredentialCatalogScreenPreviewCredentialContentContainerStyled as PreviewCredentialContentContainer,
   CredentialCatalogScreenRelevantCredentialContainerStyled as RelevantCredentialContainer,
   CredentialCatalogScreenRelevantCredentialHeaderContainerStyled as RelevantCredentialHeaderContainer,
   CredentialCatalogViewAllContainerStyled as ViewAllContainer,
   CredentialCatalogViewAllTextStyled as ViewAllText,
-  SSIBasicContainerStyled as Container,
-  SSIRippleContainerStyled as ItemContainer,
-  CredentialCatalogDiscoverCredentialsContainerStyled as DiscoverCredentialsContainer,
-  CredentialCatalogScreenDiscoverCredentialsHeaderContainerStyled as DiscoverCredentialsHeaderContainer,
-  CredentialCatalogCredentialListContainerStyled as CredentialListContainer,
-  CredentialCatalogScreenPreviewCredentialContentContainerStyled as PreviewCredentialContentContainer,
 } from '../../styles/components';
-import {MainRoutesEnum, ScreenRoutesEnum, StackParamList, ToastTypeEnum} from '../../types';
+import {Chat} from '../../components/chat/Chat';
+import {useChat} from '../../providers/chat/chatProvider';
+import {
+  MainRoutesEnum,
+  NavigationBarRoutesEnum,
+  ScreenRoutesEnum,
+  StackParamList,
+  ToastTypeEnum
+} from '../../types'
+import {showToast} from '../../utils';
+import RootNavigation from '../../navigation/rootNavigation'
+import { useFocusEffect } from '@react-navigation/native'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_CATALOG>;
 
@@ -38,7 +49,7 @@ type CredentialPreview = {
 
 const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const {announce} = useAccessibility();
   const credentials: Array<CredentialPreview> = [
     {
       title: 'Girocard',
@@ -148,6 +159,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     },
   ];
 
+  const {closeModal} = useChat();
+
   const onClose = async (): Promise<void> => {
     props.navigation.goBack();
   };
@@ -188,11 +201,32 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
     };
 
     return (
-      <ItemContainer onPress={showNotYetImplementedToast} style={style}>
+      <ItemContainer onPress={showNotYetImplementedToast} style={style} importantForAccessibility="no-hide-descendants">
         {credentialItem}
       </ItemContainer>
     );
   };
+
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'navigateToQRScanner',
+          description: 'navigate to QR Scanner Screen',
+          parameters: {},
+        },
+        callback: () => {
+          setTimeout(() => {
+            RootNavigation.navigate(NavigationBarRoutesEnum.QR);
+            closeModal();
+          }, 2000);
+        },
+      },
+    ],
+    [],
+  );
+
+  useFocusEffect(() => announce({message: 'Credential catalog screen'}));
 
   return (
     <Container>
@@ -202,8 +236,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           <FilterBar />
           <RelevantCredentialContainer>
             <RelevantCredentialHeaderContainer>
-              <HeaderCaption>{Localization.translate('credential_catalog_most_relevant_header_label')}</HeaderCaption>
-              <TouchableWithoutFeedback onPress={showNotYetImplementedToast}>
+              <HeaderCaption accessibilityRole="header">{Localization.translate('credential_catalog_most_relevant_header_label')}</HeaderCaption>
+              <TouchableWithoutFeedback onPress={showNotYetImplementedToast} importantForAccessibility="no">
                 <ViewAllContainer>
                   <ViewAllText text={Localization.translate('action_view_all_label')} />
                 </ViewAllContainer>
@@ -220,8 +254,8 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
       </PreviewCredentialContainer>
       <DiscoverCredentialsContainer>
         <DiscoverCredentialsHeaderContainer>
-          <HeaderCaption>{Localization.translate('credential_catalog_discover_header_label')}</HeaderCaption>
-          <TouchableWithoutFeedback onPress={showNotYetImplementedToast}>
+          <HeaderCaption accessibilityRole="header">{Localization.translate('credential_catalog_discover_header_label')}</HeaderCaption>
+          <TouchableWithoutFeedback onPress={showNotYetImplementedToast} importantForAccessibility="no">
             <ViewAllContainer>
               <ViewAllText text={Localization.translate('action_view_all_label')} />
             </ViewAllContainer>
@@ -229,6 +263,9 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
         </DiscoverCredentialsHeaderContainer>
         <CredentialListContainer>
           <SwipeListView
+            accessibilityRole="list"
+            accessible
+            accessibilityLabel={`List of credentials you can add to your wallet in the future, like ${credentials.map(c => c.title).join(', ')}`}
             data={credentials}
             keyExtractor={(itemInfo: CredentialPreview) => itemInfo.title}
             renderItem={renderItem}
@@ -241,6 +278,10 @@ const CredentialCatalogScreen: FC<Props> = (props: Props): ReactElement => {
           />
         </CredentialListContainer>
       </DiscoverCredentialsContainer>
+      <Chat
+        screenContext="You are in the Credential Catalog Screen. It lists credentials that the user could add to their wallet. Focus on guiding the user towards the QR scanner screen."
+        tools={tools}
+      />
     </Container>
   );
 };

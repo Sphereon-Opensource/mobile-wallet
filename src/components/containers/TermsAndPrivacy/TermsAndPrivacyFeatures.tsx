@@ -37,7 +37,7 @@ const Feature = ({feature}: {feature: Feature}) => (
 );
 
 const TermsAndPrivacyFeatures = ({features, style}: Props) => (
-  <View style={[{gap: 32}, style]}>
+  <View style={[{gap: 32}, style]} accessibilityRole="list" accessibilityLabel="Features">
     {features.map(feature => (
       <Feature key={feature} feature={feature} />
     ))}

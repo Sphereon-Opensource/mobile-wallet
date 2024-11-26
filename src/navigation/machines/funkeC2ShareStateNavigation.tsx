@@ -1,5 +1,6 @@
 import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {
+  CreateContactEvent,
   FunkeC2ShareContextType,
   FunkeC2ShareMachineContext,
   FunkeC2ShareMachineEvents,
@@ -17,6 +18,19 @@ import {translate} from '../../localization/Localization';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
 import {delay} from '../../utils';
 import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
+import {
+  ConnectionType,
+  CorrelationIdentifierType,
+  CredentialRole,
+  IdentityOrigin,
+  NonPersistedParty,
+  Party,
+  PartyOrigin,
+  PartyTypeType,
+} from '@sphereon/ssi-sdk.data-store';
+import {SimpleEventsOf} from 'xstate';
+import agent from '../../agent';
+import {SiopV2MachineEvents, SiopV2MachineNavigationArgs} from '../../types/machines/siopV2';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
 
@@ -28,6 +42,130 @@ const navigateLoading = async (args: any): Promise<void> => {
     screen: ScreenRoutesEnum.LOADING,
     params: {
       message: translate('action_getting_information_message'),
+    },
+  });
+};
+
+const navigateAddContact = async (args: any): Promise<void> => {
+  const {navigation, context, machine} = args;
+  const {url, authorizationRequestData, trustedAnchors} = context;
+
+  if (authorizationRequestData === undefined) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  if (url === undefined) {
+    return Promise.reject(Error('Missing request data in context'));
+  }
+
+  const contactName: string = authorizationRequestData.name ?? authorizationRequestData.correlationId;
+  const contact: NonPersistedParty = {
+    contact: {
+      displayName: contactName,
+      legalName: contactName,
+    },
+    // FIXME maybe its nicer if we can also just use the id only
+    // TODO using the predefined party type from the contact migrations here
+    partyType: {
+      id: '3875c12e-fdaa-4ef6-a340-c936e054b627',
+      origin: PartyOrigin.EXTERNAL,
+      type: PartyTypeType.ORGANIZATION,
+      name: 'Sphereon_default_type',
+      tenantId: '95e09cfc-c974-4174-86aa-7bf1d5251fb4',
+    },
+    uri: authorizationRequestData.uri && `${authorizationRequestData.uri.protocol}//${authorizationRequestData.uri.hostname}`,
+    identities: [
+      {
+        alias: authorizationRequestData.correlationId,
+        origin: IdentityOrigin.INTERNAL,
+        roles: [CredentialRole.ISSUER],
+        identifier: {
+          type: CorrelationIdentifierType.URL,
+          correlationId: authorizationRequestData.correlationId,
+        },
+        // TODO WAL-476 add support for correct connection
+        connection: {
+          type: ConnectionType.OPENID_CONNECT,
+          config: {
+            clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
+            clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+            scopes: ['auth'],
+            issuer: 'https://example.com/app-test',
+            redirectUrl: 'app:/callback',
+            dangerouslyAllowInsecureHttpRequests: true,
+            clientAuthMethod: 'post' as const,
+          },
+        },
+      },
+    ],
+  };
+
+  const onCreate = async (contact: Party): Promise<void> => {
+    machine.send({
+      type: FunkeC2ShareMachineEvents.CREATE_CONTACT,
+      data: contact,
+    });
+  };
+
+  const onAliasChange = async (alias: string): Promise<void> => {
+    machine.send({
+      type: FunkeC2ShareMachineEvents.SET_CONTACT_ALIAS,
+      data: alias,
+    });
+  };
+
+  const onDecline = async (): Promise<void> => {
+    machine.send(FunkeC2ShareMachineEvents.DECLINE);
+  };
+
+  const isCreateDisabled = (): boolean => {
+    return machine.getSnapshot()?.can(FunkeC2ShareMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
+  };
+
+  const getContactsArgs = {
+    filter: trustedAnchors?.map((trustedAnchor: any) => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      roles: [CredentialRole.VERIFIER],
+      uri: contact.uri,
+      federations: federationParties,
+      identities: contact.identities,
+      onAliasChange,
+      onCreate,
+      onDecline,
+      onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
+      isCreateDisabled,
+    },
+  });
+};
+
+const navigateReviewContact = async (args: any): Promise<void> => {
+  const {navigation, context, machine} = args;
+  const {contact} = context;
+
+  if (!contact) {
+    return Promise.reject(Error('Missing contact in context'));
+  }
+
+  const onDecline = async (): Promise<void> => {
+    machine.send(SiopV2MachineEvents.DECLINE);
+  };
+
+  navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
+    screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
+    params: {
+      name: contact.contact.displayName,
+      roles: contact.roles,
+      uri: contact.uri,
+      federations: [],
+      onContinue: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
+      onDecline,
+      onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
     },
   });
 };
@@ -115,6 +253,7 @@ const navigateHandleError = async (args: any): Promise<void> => {
     }),
     primaryButton: {
       caption: translate('action_ok_label'),
+      accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
       onPress: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
     },
     onBack: () => machine.send(GetPIDCredentialsMachineEvents.PREVIOUS),
@@ -151,6 +290,7 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     state.matches(FunkeC2ShareMachineStateTypes.createConfig) ||
     state.matches(FunkeC2ShareMachineStateTypes.getSiopRequest) ||
     state.matches(FunkeC2ShareMachineStateTypes.retrieveContact) ||
+    state.matches(FunkeC2ShareMachineStateTypes.getFederationTrust) ||
     state.matches(FunkeC2ShareMachineStateTypes.retrievePIDCredentials)
   ) {
     void navigateLoading({navigation, context, machine: funkeCShareMachine});
@@ -161,6 +301,10 @@ export const funkeC2ShareStateNavigationListener = (funkeCShareMachine: FunkeC2S
     state.matches(FunkeC2ShareMachineStateTypes.fetchCredentialsInStore)
   ) {
     void navigateSendingCredentials({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.addContact)) {
+    void navigateAddContact({navigation, context, machine: funkeCShareMachine});
+  } else if (state.matches(FunkeC2ShareMachineStateTypes.reviewContact)) {
+    void navigateReviewContact({navigation, context, machine: funkeCShareMachine});
   } else if (state.matches(FunkeC2ShareMachineStateTypes.acceptRequestInformation)) {
     void navigateAcceptRequestInformation({navigation, context, machine: funkeCShareMachine});
   } else if (state.matches(FunkeC2ShareMachineStateTypes.authenticateAusweisEID)) {

@@ -23,7 +23,7 @@ import {
 } from '../types';
 import {removeCredentialBranding} from './brandingService';
 import store from '../store';
-import {storeActivityLogging} from '../store/actions/logging.actions';
+import {storeAuditLogging} from '../store/actions/logging.actions';
 
 export const getVerifiableCredentialsFromStorage = async (opts?: {
   regulationTypes?: RegulationType[];
@@ -78,7 +78,7 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
     .then(() => agent.crsDeleteCredential({hash}))
     .then(deletionResult => {
       store.dispatch<any>(
-        storeActivityLogging({
+        storeAuditLogging({
           subSystemType: SubSystem.OID4VP_OP,
           initiatorType: InitiatorType.SYSTEM,
           level: LogLevel.INFO,
@@ -86,7 +86,6 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
           description: 'Credential was deleted by the user',
           actionType: ActionType.DELETE,
           actionSubType: DefaultActionSubType.VC_DELETE,
-          credentialHash: hash,
           diagnosticData: args,
         }),
       );

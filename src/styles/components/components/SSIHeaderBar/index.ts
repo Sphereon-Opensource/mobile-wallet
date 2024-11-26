@@ -1,16 +1,16 @@
 import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 
+import {borderColors} from '@sphereon/ui-components.core';
 import SSIIconButton from '../../../../components/buttons/SSIIconButton';
 import {IHeaderProps} from '../../../../types';
 import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
 import {SSITextH4LightStyled} from '../../fonts';
-import {borderColors} from '@sphereon/ui-components.core';
 
-export const SSIHeaderBarContainerStyled = styled.View`
+export const SSIHeaderBarContainerStyled = styled.View<IHeaderProps>`
   ${SSIBackgroundPrimaryDarkColorCss};
   border-bottom-color: ${borderColors.dark};
-  border-bottom-width: ${(props: IHeaderProps) => (props.showBorder ? '1px' : '0px')};
+  border-bottom-width: ${({showBorder}) => (showBorder ? '1px' : '0')};
   padding-right: 24px;
   padding-left: 24px;
 `;
@@ -39,7 +39,6 @@ export const SSIHeaderBarBackIconContainerStyled = styled.View`
 // TODO move width to attributes of SSIIconButton
 export const SSIHeaderBarBackIconStyled = styled(SSIIconButton)`
   margin-top: 18px;
-  width: 20px;
 `;
 
 export const SSIHeaderBarMoreMenuContainerStyled = styled.View`

@@ -10,7 +10,11 @@ const QRPresentationScreen: FC = () => {
   return (
     <SSIContainer>
       <QRPresentationViewContainer>
-        <QRContainer>
+        <QRContainer
+          accessible
+          accessibilityLabel="QR code for presentation"
+          accessibilityRole="image"
+          accessibilityHint="Show the QR code to the sharing party">
           <QRCode
             title={'Presentation'}
             value={'some_uri_content'} // TODO Replace this with some result once back end for holder

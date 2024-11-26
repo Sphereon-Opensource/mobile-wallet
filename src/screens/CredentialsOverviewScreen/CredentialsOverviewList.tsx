@@ -1,23 +1,24 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+import {Loggers} from '@sphereon/ssi-types';
+import {backgroundColors, borderColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import React, {useCallback, useState} from 'react';
-import {ListRenderItemInfo, RefreshControl} from 'react-native';
+import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
+import {useAccessibility} from '../../hooks/useAccessibility';
+import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {setViewPreference} from '../../store/actions/user.actions';
 import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
 import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
-import {showToast} from '../../utils';
-import {Loggers} from '@sphereon/ssi-types';
-import {translate} from '../../localization/Localization';
-import {useFocusEffect} from '@react-navigation/native';
-import {setViewPreference} from '../../store/actions/user.actions';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {showToast} from '../../utils';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -37,7 +38,7 @@ const CredentialsOverviewList = ({
   deleteVerifiableCredential,
 }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
-
+  const {announce} = useAccessibility();
   useFocusEffect(
     useCallback(() => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.LIST);
@@ -75,7 +76,6 @@ const CredentialsOverviewList = ({
         rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
         uniqueDigitalCredential,
         credential,
-        showActivity: false,
       });
     } catch (e) {
       // onPress doesn't handle promise rejections, so log it for now.
@@ -110,25 +110,53 @@ const CredentialsOverviewList = ({
         itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
+    const accessibility = {
+      accessibilityLabel: `${itemInfo.item.title}. Issued by: ${itemInfo.item.issuer.alias}, on: ${toLocalDateString(
+        itemInfo.item.issueDate,
+      )}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${itemInfo.item.credentialStatus}`,
+      accessibilityHint: 'Go to credential details',
+    };
+
     return activeUser.identifiers.some(
       (identifier: IUserIdentifier) => itemInfo.item.issuer.name === identifier.did && itemInfo.item.title === 'SphereonWalletIdentityCredential',
     ) ? (
-      <ItemContainer style={style} onPress={() => onItemPress(itemInfo.item)}>
+      <ItemContainer style={style} onPress={() => onItemPress(itemInfo.item)} accessible {...accessibility}>
         {credentialItem}
       </ItemContainer>
     ) : (
-      <SSISwipeRowViewItem
-        style={style}
-        hiddenStyle={backgroundStyle}
-        viewItem={credentialItem}
-        onPress={() => onItemPress(itemInfo.item)}
-        onDelete={() => onDelete(itemInfo.item.hash, itemInfo.item.title)}
-      />
+      <View
+        accessible
+        {...accessibility}
+        accessibilityActions={[{name: 'delete', label: 'delete credential'}, {name: 'activate'}]}
+        onAccessibilityAction={event => {
+          {
+            switch (event.nativeEvent.actionName) {
+              case 'delete':
+                onDelete(itemInfo.item.hash, itemInfo.item.title);
+                break;
+              case 'activate':
+                onItemPress(itemInfo.item);
+                break;
+            }
+          }
+        }}>
+        <View importantForAccessibility="no-hide-descendants">
+          <SSISwipeRowViewItem
+            style={style}
+            hiddenStyle={backgroundStyle}
+            viewItem={credentialItem}
+            onPress={() => onItemPress(itemInfo.item)}
+            onDelete={() => onDelete(itemInfo.item.hash, itemInfo.item.title)}
+          />
+        </View>
+      </View>
     );
   };
 
   return (
     <SwipeListView
+      accessibilityRole="list"
+      accessibilityLabel="Credentials"
       style={{backgroundColor: backgroundColors.primaryDark, borderTopColor: '#404D7A', borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0}}
       data={verifiableCredentials}
       keyExtractor={(itemInfo: CredentialSummary) => itemInfo.hash}

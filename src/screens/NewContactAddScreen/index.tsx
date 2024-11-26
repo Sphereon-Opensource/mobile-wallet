@@ -1,19 +1,21 @@
-import React, {FC, ReactElement, useCallback, useEffect, useRef, useState} from 'react';
-import {BackHandler} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {SSIBasicContainerStyled as Container} from '../../styles/components';
-import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
-import FederationTrustView from '../../components/views/FederationTrustView';
-import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
-import Localization, {translate} from '../../localization/Localization';
-import {getContacts} from '../../services/contactService';
-import {agentContext} from '../../agent';
+import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {BackHandler} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {CONTACT_ALIAS_MAX_LENGTH} from '../../@config/constants';
+import {agentContext} from '../../agent';
+import {ContactInformationView} from '../../components/views/ContactInformationView';
+import FederationTrustView from '../../components/views/FederationTrustView';
+import Localization, {translate} from '../../localization/Localization';
+import {getContacts} from '../../services/contactService';
 import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
-import {useFocusEffect} from '@react-navigation/native';
-
+import {SSIBasicContainerStyled as Container} from '../../styles/components';
+import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {Chat} from '../../components/chat/Chat';
+import {stringifyState} from '../../utils/stringifyState';
+import {useChat} from '../../providers/chat/chatProvider';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
@@ -26,6 +28,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
     clientUri,
     tosUri,
     policyUri,
+    contacts,
     identities,
     federations,
     onCreate,
@@ -39,6 +42,8 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   const contactState = useSelector((state: RootState) => state.contact);
   const [brandedFederations, setBrandedFederations] = useState<Array<Party>>([]);
   const contactAliasRef = useRef(name);
+
+  const {closeModal} = useChat();
 
   const onBackPress = (): boolean => {
     if (onBack) {
@@ -196,6 +201,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           props.navigation.getParent()?.goBack();
         },
         disabled: isConfirmDisabled,
+        accessibilityLabel: translate('contact_name_label'),
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
@@ -206,6 +212,57 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       },
     });
   };
+
+  const tools = useMemo(
+    () => [
+      {
+        tool: {
+          name: 'accept',
+          description: 'accept and add the contact',
+          parameters: {},
+        },
+        callback: () => {
+          onContinuePressed();
+          closeModal();
+        },
+      },
+      {
+        tool: {
+          name: 'decline',
+          description: 'decline, abort or skip adding the contact',
+          parameters: {},
+        },
+        callback: () => {
+          onDeclinePressed();
+          closeModal();
+        },
+      },
+      {
+        tool: {
+          name: 'editAlias',
+          description: 'edit alias. Change the name of the contact',
+          parameters: {},
+        },
+        callback: () => {
+          contactAliasRef.current
+          onEditAlias();
+        }
+      },
+    ],
+    [],
+  );
+  const screenContext = useMemo(
+    () =>
+      `you are currently on the Contact Review screen. Here you can see information about the contact related to the credential you are adding.
+      ${federations?.length === 0
+        ? "It looks like this contact is not part of any trusted federations. This is a low trust level contact. You can still add this contact, but explicitly and clearly inform the user about it before even listing the contact information. If the user is okay with this, you can proceed with listing the details."
+        : `This contact is part of the following federations ${federations?.map(f => f.contact.displayName)?.join(', ')}. This is a high trust level contact. You can proceed with listing the details.`
+      }
+      Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState(
+        {name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations},
+      )}`,
+    [contactState, name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations],
+  );
 
   return (
     <Container>
@@ -263,6 +320,15 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
                 },
               ]
             : []),
+          ...(contacts
+            ? [
+                {
+                  id: '6',
+                  label: Localization.translate('new_contact_add_new_contact_contact_details_contacts_label'),
+                  value: contacts,
+                },
+              ]
+            : []),
         ]}
         primaryButton={{
           caption: translate('new_contact_add_new_contact_continue_caption'),
@@ -275,6 +341,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         }}
         logo={logo}
       />
+      <Chat buttonPosition={{bottom: 150, right: 16}} screenContext={screenContext} tools={tools} />
     </Container>
   );
 };
