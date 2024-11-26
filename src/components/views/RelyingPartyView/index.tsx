@@ -1,17 +1,12 @@
+import {Party} from '@sphereon/ssi-sdk.data-store';
+import {SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, ReactElement} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
-import {IImageAttributes, Party} from '@sphereon/ssi-sdk.data-store';
-import {
-  SSICheckmarkBadge,
-  SSILogo as Logo,
-  SSITextH7LightStyled
-} from '@sphereon/ui-components.ssi-react-native'
 import {
   RelyingPartyViewContainerStyled as Container,
   RelyingPartyViewContentContainerStyled as ContentContainer,
 } from '../../../styles/components/components/RelyingPartyView';
-import { ScreenRoutesEnum } from '../../../types'
-import ArrowIcon from '../../assets/icons/ArrowIcon'
+import ArrowIcon from '../../assets/icons/ArrowIcon';
 
 export type Props = {
   party: Party;

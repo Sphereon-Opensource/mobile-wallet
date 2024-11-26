@@ -12,12 +12,12 @@ import {
 import React, {useMemo, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
+import RelyingPartyView from "../../components/views/RelyingPartyView";
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {generateDigest} from '../../utils';
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
-import RelyingPartyView from 'src/components/views/RelyingPartyView';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
