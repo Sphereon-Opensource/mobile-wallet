@@ -19,6 +19,8 @@ const STORAGE_PIN_KEY = 'pin';
 const STORAGE_USERS_KEY = 'users';
 const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
 const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code'
+const STORAGE_MSISDN_KEY = 'msisdn'
+
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -164,4 +166,21 @@ export const storageGetCoupledWithCode = async (): Promise<string | null | undef
 export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
   debug('deleteCoupledWithCode...')
   return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storagePersistMsisdn = async (value: string): Promise<any> => {
+  debug(`storing msisdn: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_MSISDN_KEY, value)
+  .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
+}
+
+export const storageGetMsisdn =(): string | null | undefined => {
+  debug('getMsisdn...')
+  return userStorage.getString(STORAGE_MSISDN_KEY)
+}
+
+export const storageDeleteMsisdn = async (): Promise<boolean> => {
+  debug('deleteMsisdn...')
+  return userStorage.removeItem(STORAGE_MSISDN_KEY)
 }

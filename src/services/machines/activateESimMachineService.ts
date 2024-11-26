@@ -14,7 +14,7 @@ export const createMusapLink = async (): Promise<string> => {
 };
 
 export const checkSscd = async (): Promise<SscdInfo | undefined> => {
-  const sscds = await MusapClient.listEnabledSscds();
+  const sscds = MusapClient.listEnabledSscds();
   const eSim = sscds.find(sscd => sscd.sscdInfo.provider === 'eSim');
   return eSim?.sscdInfo;
 };
@@ -22,11 +22,11 @@ export const checkSscd = async (): Promise<SscdInfo | undefined> => {
 export const enableSscd = async (): Promise<SscdInfo> => {
   const settings: ExternalSscdSettings = {
     clientId: 'SCO',
-    sscdName: 'eSim Swisscom',
+    sscdName: 'eSim',
     provider: 'eSim',
   };
-  MusapClient.enableSscd('EXTERNAL', 'eSim Swisscom', settings);
-  const sscds = await MusapClient.listEnabledSscds();
+  MusapClient.enableSscd('EXTERNAL', 'eSim', settings);
+  const sscds = MusapClient.listEnabledSscds();
   return sscds[0].sscdInfo;
 };
 

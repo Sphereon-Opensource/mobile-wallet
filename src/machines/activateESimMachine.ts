@@ -1,5 +1,13 @@
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
-import {bindKey, checkSscd, cleanupKeys, coupleWithRP, createMusapLink, enableSscd} from '../services/machines/activateESimMachineService';
+import {
+  bindKey,
+  checkMustEnableLink,
+  checkSscd,
+  cleanupKeys,
+  coupleWithRP,
+  createMusapLink,
+  enableSscd,
+} from '../services/machines/activateESimMachineService';
 import {
   CreateESIMActivationMachineOpts,
   ESIMActivationMachineContext,
@@ -14,7 +22,7 @@ import {
   ESIMActivationStateMachine,
   InstanceESIMActivationMachineOpts,
 } from '../types/machines/activateESimMachine';
-import {storageDeleteCoupledWithCode, storageGetCoupledWithCode} from '../services/storageService';
+import {storageDeleteCoupledWithCode, storageGetCoupledWithCode, storagePersistMsisdn} from '../services/storageService';
 
 
 const hasValidDetails: ESIMActivationMachineGuard = ({msisdn, couplingCode}) =>
@@ -171,14 +179,19 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       src: ESIMActivationMachineServices.bindKey,
       onDone: {
         target: ESIMActivationMachineStateTypes.success,
+        actions: (context) => {
+          if (context.msisdn) {
+            void storagePersistMsisdn(context.msisdn)
+          }
+        }
       },
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
-        }),
-      },
-    },
+          error: (_, event) => event.data as Error
+        })
+      }
+    }
   },
   [ESIMActivationMachineStateTypes.handleError]: {
     on: {
@@ -250,6 +263,7 @@ export class ESIMActivationMachine {
     const newInst: ESIMActivationMachineInterpreter = interpret(
       createESIMActivationMachine(opts).withConfig({
         services: {
+          [ESIMActivationMachineServices.checkMustEnableLink]: checkMustEnableLink,
           [ESIMActivationMachineServices.createMusapLink]: createMusapLink,
           [ESIMActivationMachineServices.checkSscd]: checkSscd,
           [ESIMActivationMachineServices.enableSscd]: enableSscd,

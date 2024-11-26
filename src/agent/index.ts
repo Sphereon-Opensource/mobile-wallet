@@ -26,13 +26,13 @@ export const didMethodsSupported = Object.keys(didResolver['registry']).map(meth
 
 export const didProviders = {
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
+    defaultKms: KeyManagementSystemEnum.MUSAP,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
+    defaultKms: KeyManagementSystemEnum.MUSAP,
   }),
   [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP_TEE,
+    defaultKms: KeyManagementSystemEnum.MUSAP,
   }),
 };
 
