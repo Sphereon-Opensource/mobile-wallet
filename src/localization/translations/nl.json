@@ -1,212 +1,269 @@
 {
   "accessibility": {
     "tabBar": {
-      "qr": "QR code scanner",
-      "activities": "Activity feed",
-      "home": "Credentials list",
-      "credential_catalog": "Credential catalog",
-      "contacts": "Contacts list"
+      "qr": "QR-code scanner",
+      "activities": "Activiteitenfeed",
+      "home": "Lijst met Credentials",
+      "credential_catalog": "Credential-catalogus",
+      "contacts": "Contactenlijst"
     }
   },
   "activity": {
     "unknown": {
-      "contact": "Unknown contact",
-      "credential": "Unknown credential",
-      "credential_type": "Unknown credential type",
-      "purpose": "Unknown purpose",
-      "issuer": "Unknown issuer",
-      "type": "Unknown activity type",
-      "date": "Unknown date",
-      "activity": "Unknown activity"
+      "contact": "Onbekend contact",
+      "credential": "Onbekende Credential",
+      "credential_type": "Onbekend Credential-type",
+      "purpose": "Onbekend doel",
+      "issuer": "Onbekende uitgever",
+      "type": "Onbekend activiteitstype",
+      "date": "Onbekende datum",
+      "activity": "Onbekende activiteit"
     },
     "feed": {
-      "title": "Activity feed",
+      "title": "Activiteitenfeed",
       "list": {
-        "title": "All activities",
-        "loading": "Loading activities",
-        "search_placeholder": "Search for contact, card or status",
+        "title": "Alle activiteiten",
+        "loading": "Activiteiten laden",
+        "search_placeholder": "Zoeken naar contact, kaart of status",
         "empty_state": {
-          "title": "No activities",
-          "subtitle": "At the moment you don’t have any activities.\nThe activities will automatically appear here."
+          "title": "Geen activiteiten",
+          "subtitle": "Op dit moment heb je geen activiteiten.\nDe activiteiten verschijnen hier automatisch."
         }
       }
     },
     "contact": {
       "list": {
-        "title": "All activities with",
-        "loading": "Loading activities for",
-        "search_placeholder": "Search for card or status"
+        "title": "Alle activiteiten met",
+        "loading": "Activiteiten laden voor",
+        "search_placeholder": "Zoeken naar kaart of status"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Alle activiteiten van",
+        "loading": "Activiteiten laden voor",
+        "search_placeholder": "Zoeken naar contact of status"
       }
     },
     "VC share": {
-      "revealed_info_title": "Shared information",
+      "revealed_info_title": "Gedeelde informatie",
       "info_header": {
-        "description": "items shared"
+        "description": "items gedeeld"
       },
-      "row_description": "Data gedeelt",
-      "detail_title": "Data gedeelt"
+      "row_description": "Data gedeeld",
+      "detail_title": "Data gedeeld"
     },
     "VC share decline": {
-      "revealed_info_title": "Declined information",
+      "revealed_info_title": "Informatie geweigerd",
       "info_header": {
-        "description": "items declined"
+        "description": "items geweigerd"
       },
-      "row_description": "Delen gegevens geweigerd",
-      "detail_title": "Delen gegevens geweigerd"
+      "row_description": "Data delen geweigerd",
+      "detail_title": "Data delen geweigerd"
     },
     "VC issue": {
-      "info_list_title": "Issued information",
-      "revealed_info_title": "Issued information",
+      "info_list_title": "Uitgegeven informatie",
+      "revealed_info_title": "Uitgegeven informatie",
       "info_header": {
-        "description": "items issued"
+        "description": "items uitgegeven"
       },
       "row_description": "Credential ontvangen",
-      "detail_title": "New credential added to your wallet",
-      "description": ["You can finally use your", "card for official sharing purposes."]
+      "detail_title": "Nieuwe Credential toegevoegd aan je wallet",
+      "description": [
+        "Je kunt nu eindelijk je",
+        "kaart gebruiken voor officiële doeleinden."
+      ]
     },
     "VC issue decline": {
-      "info_list_title": "Declined information",
-      "revealed_info_title": "Declined information",
+      "info_list_title": "Informatie geweigerd",
+      "revealed_info_title": "Informatie geweigerd",
       "info_header": {
-        "description": "items not issued"
+        "description": "items niet uitgegeven"
       },
-      "row_description": "Ontvangen credential geweigerd",
-      "detail_title": "Credential not added to your wallet",
-      "description": ["You have declined to use the", "card for official sharing purposes."]
+      "row_description": "Ontvangst van Credential geweigerd",
+      "detail_title": "Credential niet toegevoegd aan je wallet",
+      "description": [
+        "Je hebt geweigerd om de",
+        "kaart te gebruiken voor officiële doeleinden."
+      ]
     },
     "section_titles": {
       "status": "Status",
-      "purpose": "Purpose",
-      "credential_type": "Type of credential",
-      "issued_information": "Issued information"
+      "purpose": "Doel",
+      "credential_type": "Type Credential",
+      "issued_information": "Uitgegeven informatie"
     },
-    "contact_link": "About",
-    "support_link": "Something wrong?"
+    "contact_link": "Over",
+    "credential_activities_link": "Kaartactiviteiten",
+    "credential_claims_link": "Mijn claims",
+    "support_link": "Is er iets mis?"
   },
-  "credential_details_title": "Credential details",
+  "credential_details_title": "Details van Credential",
   "credentials_overview_title": "Credentials",
   "credential_details_view_issued_by": "Uitgegeven door",
-  "credentials_view_item_expires_on": "Vervalt op",
+  "credentials_view_item_expires_on": "Verloopt op",
   "swipe_delete_button_caption": "Verwijderen",
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
-
-  "settings_dropdown_item_text": "Settings",
-  "settings_dropdown_item_accessibility_hint": "Navigate to the settings screen",
-  "settings_title": "Settings",
+  "settings_dropdown_item_text": "Instellingen",
+  "settings_dropdown_item_accessibility_hint": "Navigeer naar het instellingenscherm",
+  "settings_title": "Instellingen",
   "account_title": "Account",
-
-  "settings_general_section_label": "General",
-  "settings_privacy_controls_section_label": "Privacy Controls",
-  "settings_feedback_controls_section_label": "Privacy Controls",
-  "settings_logout_label": "Sign out",
-
-  "account_personal_section_label": "Personal",
-  "account_general_section_label": "General",
-  "account_personal_information_label": "Personal information",
-  "account_login_and_security_label": "Login and security",
-  "account_biometric_login_label": "Biometric authentication",
+  "settings_general_section_label": "Algemeen",
+  "settings_privacy_controls_section_label": "Privacycontroles",
+  "settings_feedback_controls_section_label": "Feedbackcontroles",
+  "settings_logout_label": "Uitloggen",
+  "account_personal_section_label": "Persoonlijk",
+  "account_general_section_label": "Algemeen",
+  "account_personal_information_label": "Persoonlijke informatie",
+  "account_login_and_security_label": "Inloggen en beveiliging",
+  "account_biometric_login_label": "Biometrische authenticatie",
   "account_pid_section_label": "PID",
-  "account_delete_wallet_label": "Delete wallet",
-
-  "age_derived_claims_title": "Age derived claims",
-  "age_derived_claims_screen_title": "Age derived claims",
-  "age_dervived_claims_screen_description": "The age derived claims are there to proof your age to an other party without giving them your exact age to them.",
-
-  "biometrics_title": "Do you want to enable Biometric login?",
-
-  "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
-  "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
-  "biometrics_enable_text": "Enable now",
-  "biometrics_disallow": "Maybe later",
-
-  "authentication_pin_code_title": "Vul je pincode in",
-  "authentication_pin_code_subtitle": "Voer ter bevestiging uw pincode in",
-  "qr_scanner_marker_title": "Scan QR code",
-  "qr_scanner_marker_subtitle": "Plaats de QR-code in het gezichtsveld van de camera",
+  "account_delete_wallet_label": "Wallet verwijderen",
+  "age_derived_claims_title": "Leeftijd afgeleide claims",
+  "age_derived_claims_screen_title": "Leeftijd afgeleide claims",
+  "age_dervived_claims_screen_description": "De leeftijd afgeleide claims zijn er om je leeftijd te bewijzen aan een andere partij zonder je exacte leeftijd te geven.",
+  "biometrics_title": "Wil je biometrische authenticatie inschakelen?",
+  "biometrics_subtitle": "Gebruik biometrische login en authenticatie met je gezicht of vingerafdruk voor snellere en gemakkelijkere toegang tot je account.",
+  "biometrics_description": "Je biometrische informatie wordt niet verzameld door Sphereon en wordt alleen lokaal gebruikt voor verificatiedoeleinden",
+  "biometrics_enable_text": "Nu inschakelen",
+  "biometrics_disallow": "Misschien later",
+  "onboarding_pid_security_model_title": "Welk PID-beveiligingsmodel zou je gebruiken?",
+  "onboarding_pid_security_model_subtitle": "Houd er rekening mee dat dit een test-/ontwikkeloptie is. Je kunt dit later niet wijzigen zonder een nieuwe wallet te starten.",
+  "onboarding_pid_security_model_secure_element": "Veilig element op telefoon",
+  "onboarding_pid_security_model_remote_hardware": "Externe Hardware Security Module",
+  "onboarding_pid_security_model_mobile_operator": "Mobiele operator eSIM",
+  "onboarding_pid_security_model_eid_presentation": "Gebruik eID-kaart tijdens presentatie",
+  "onboarding_pid_security_model_select": "Selecteren",
+  "authentication_pin_code_title": "Voer je pincode in",
+  "authentication_pin_code_subtitle": "Om te bevestigen, voer je pincode in",
+  "qr_scanner_marker_title": "Scan QR-code",
+  "qr_scanner_marker_subtitle": "Plaats de QR-code in het zichtveld van de camera",
   "qr_scanner_qr_not_supported_message": "QR-code wordt niet ondersteund. Probeer een andere QR-code te scannen om door te gaan.",
-  "qr_scanner_qr_no_longer_valid_message": "QR-code is niet meer geldig. Probeer een nieuwe QR-code te scannen.",
+  "qr_scanner_qr_no_longer_valid_message": "QR-code is niet langer geldig. Probeer een nieuwe QR-code te scannen.",
   "connection_details_view_details": "Details",
   "action_confirm_label": "Bevestigen",
-  "action_continue_label": "Continue",
+  "action_continue_label": "Doorgaan",
   "action_cancel_label": "Annuleren",
   "action_decline_label": "Weigeren",
   "action_abort_label": "Afbreken",
   "action_accept_label": "Accepteren",
   "action_sign_label": "Ondertekenen",
-  "verification_code_title": "Voer uw\nverificatie code in",
-  "verification_code_subtitle": "U zult een code nodig hebben om aanspraak te maken op de {{credentialName}} credential.",
-  "verification_code_accessibility_label": "Verificatie code",
-  "verification_code_accessibility_hint": "Voer uw verificatie code in",
-  "verification_code_invalid_code_title": "Verkeerde verification code",
-  "verification_code_invalid_code_details": "Dat was niet de code die we zoeken. Probeer het opnieuw door een nieuwe link aan te vragen of de QR-code opnieuw te scannen.",
+  "verification_code_title": "Voer je verificatiecode in",
+  "verification_code_subtitle": "Je hebt een code nodig om de {{credentialName}} credential te claimen.",
+  "verification_code_accessibility_label": "Verificatiecode",
+  "verification_code_accessibility_hint": "Voer je verificatiecode in",
+  "verification_code_invalid_code_title": "Verkeerde verificatiecode",
+  "verification_code_invalid_code_details": "Dat was niet de code die we zochten. Probeer het opnieuw door een nieuwe link aan te vragen of de QR-code opnieuw te scannen.",
   "verification_code_invalid_code_details_title": "Extra details",
-  "verification_code_invalid_code_message": "Verkeerde verificatie code. Probeer het opnieuw.",
+  "verification_code_invalid_code_message": "Verkeerde verificatiecode. Probeer het opnieuw.",
   "credential_details_info_tab_header_label": "Geverifieerde info",
   "credential_details_activity_tab_header_label": "Activiteit",
   "action_view_extra_details": "Bekijk extra details",
-  "action_ok_label": "Ok, ik begrijp het",
-  "error_generic_title": "Oeps! Er is iets fout gegaan.",
+  "action_ok_label": "Oké, ik begrijp het",
+  "error_generic_title": "Oeps! Er ging iets mis.",
   "error_generic_message": "Neem contact op met de auteur van deze app.",
-  "error_details_generic_title": "Er is een onverwachte fout opgetreden in de app",
-  "error_details_generic_message": "Error Details:",
+  "error_details_generic_title": "De app heeft een onverwachte fout ondervonden",
+  "error_details_generic_message": "Foutdetails:",
   "oidc4vci_error_invalid_request": "Ongeldig verzoek",
   "oidc4vci_error_invalid_client": "Ongeldige client opgegeven",
-  "oidc4vci_error_invalid_grant": "Ongeldige toekennen opgegeven",
+  "oidc4vci_error_invalid_grant": "Ongeldige toestemming opgegeven",
   "oidc4vci_error_unauthorized_client": "App is niet geautoriseerd",
-  "oidc4vci_error_unsupported_grant_type": "Niet-ondersteund toekenningstype opgegeven",
-  "oidc4vci_error_unsupported_invalid_scope": "Niet-ondersteund bereiktype opgegeven",
-  "oidc4vci_error_invalid_or_missing_proof": "Credential is ongeldig of ontbreekt bewijs",
+  "oidc4vci_error_unsupported_grant_type": "Ondersteunde toestemmingstype niet opgegeven",
+  "oidc4vci_error_unsupported_invalid_scope": "Ondersteund bereiktype niet opgegeven",
+  "oidc4vci_error_invalid_or_missing_proof": "Credential heeft ongeldige of ontbrekend bewijs",
   "credential_select_type_title": "Selecteer credentials",
-  "credential_select_type_subtitle": "De uitgever {{issuerName}}, ondersteunt het uitgeven van de volgende credentials. Selecteer degene die u in uw portemonnee wilt ontvangen.",
+  "credential_select_type_subtitle": "De uitgever {{issuerName}}, ondersteunt het uitgeven van de volgende credentials. Selecteer de credential die je in je wallet wilt ontvangen.",
   "raw_credential_title": "Ruwe credential",
-  "credential_details_subtitle": "Hieronder vindt u de informatie over de credential die u wilt toevoegen.",
+  "credential_details_subtitle": "De informatie over de credential die je van plan bent toe te voegen staat hieronder vermeld.",
   "contacts_overview_title": "Contacten",
   "contact_details_title": "Contact",
-  "contact_details_info_tab_header_label": "Info",
+  "contact_identities_title": "Identiteiten",
+  "contact_activities_title": "Contactactiviteiten",
+  "contact_details_info_tab_header_label": "Details",
   "contact_details_activity_tab_header_label": "Activiteit",
   "contact_details_identities_tab_header_label": "Identiteiten",
   "intent_share_file_unable_to_receive_message": "Kan de credential niet ontvangen",
-  "credential_delete_title": "Verwijder credential",
-  "credential_delete_message": "Weet u zeker dat u de credential: {{credentialName}}, wilt verwijderen?",
-  "credential_deleted_success_toast": "Credential succesvol verwijdert",
+  "credential_activities_title": "Kaartactiviteiten",
+  "credential_delete_title": "Credential verwijderen",
+  "credential_delete_message": "Weet je zeker dat je de credential wilt verwijderen: {{credentialName}}?",
+  "credential_deleted_success_toast": "Credential succesvol verwijderd",
   "credential_deleted_failed_toast": "Kan de credential niet verwijderen",
   "contact_add_new_contact_detected_title": "Nieuw contact gedetecteerd",
-  "contact_add_new_contact_detected_subtitle": "We hebben gemerkt dat de andere partij in dit uitwisselingsproces van gegevens nog niet in uw contacten staat. U moet een naam opgeven voor deze nieuwe contactpersoon om de uitwisseling te voltooien.",
-  "contact_name_label": "Contact Naam",
+  "contact_add_new_contact_detected_subtitle": "We hebben opgemerkt dat de andere partij in dit credential-uitwisselingsproces nog niet in je contacten staat. Je moet een naam voor dit nieuwe contact opgeven om het uitwisselingsproces te voltooien.",
+  "contact_name_label": "Naam contact",
   "contact_name_placeholder": "Naam contact",
-  "contact_name_invalid_message": "Vul een geldige contact naam in",
-  "contact_add_disclaimer": "Ik erken dat dit contact tot stand zal komen als gevolg van een uitwisseling van credentials die door mij is geïnitieerd.",
-  "contact_delete_title": "Verwijder contact",
-  "contact_delete_message": "Weet u zeker dat u het contact wilt verwijderen: {{contactName}}?",
-  "contact_deleted_success_toast": "Contact successfully deleted",
-  "contact_deleted_failed_toast": "Contact succesvol verwijderd",
-  "credential_status_never_expires_date_label": "Verloopt nooit",
+  "contact_name_invalid_message": "Vul een geldige naam in",
+  "contact_add_disclaimer": "Ik erken dat dit contact wordt aangemaakt als gevolg van een door mij geïnitieerd credential-uitwisselingsproces.",
+  "contact_delete_title": "Contact verwijderen",
+  "contact_delete_message": "Weet je zeker dat je het contact wilt verwijderen: {{contactName}}?",
+  "contact_deleted_success_toast": "Contact succesvol verwijderd",
+  "contact_deleted_failed_toast": "Kan het contact niet verwijderen",
   "contact_add_success_toast": "Contact succesvol aangemaakt",
   "contact_update_success_toast": "Contact succesvol bijgewerkt",
-  "contact_add_no_consent_toast": "Zonder bevestiging gaat u niet door met het uitwisselen van gegevens en moet u de knop Weigeren gebruiken.",
-  "contact_add_cancel_title": "Weet u zeker dat u wilt weigeren?",
-  "contact_add_cancel_message": "Het toevoegen van een contactpersoon is verplicht wanneer u een nieuwe partij tegenkomt bij het uitwissel van credentials. Houd er rekening mee dat het hele proces voor het uitwisselen van gegevens wordt afgebroken als u bevestigt.",
+  "contact_add_no_consent_toast": "Zonder toestemming kun je het credential-uitwisseling niet voortzetten, en moet je de knop Weigeren gebruiken.",
+  "contact_add_cancel_title": "Weet je zeker dat je wilt weigeren?",
+  "contact_add_cancel_message": "Het toevoegen van een contact is verplicht wanneer je een nieuwe partij tegenkomt in een credential-uitwisselingsproces. Wees ervan bewust dat het gehele credential-uitwisselingsproces wordt afgebroken als je bevestigt.",
   "onboarding_welcome_header": "Welkom",
   "onboarding_welcome_title": "Sphereon Wallet",
-  "onboarding_welcome_intro_body": "Hiermee kunt u accreditaties, inloggegevens, badges en identiteitskenmerken ontvangen en delen.\n\nDeze zijn digitaal ondertekend en geattesteerd door externe uitgevende organisaties.",
+  "onboarding_welcome_intro_body": "Stelt je in staat om accreditaties, credentials, badges en identiteitsattributen te ontvangen en te delen.\n\nDeze zijn digitaal ondertekend en bekrachtigd door externe uitgevende organisaties.",
+  "browser_open_title": "Browser openen",
+  "browser_open_header": "Browser openen",
+  "browser_open_auth_title": "Authenticatie gevraagd",
+  "browser_open_auth_body": "De vertrouwende partij vereist dat je je authenticeert. Je standaardbrowser zal worden gebruikt voor deze actie",
+  "browser_open_action_next_label": "Browser openen",
   "action_next_label": "Volgende",
   "action_back_label": "Terug",
-  "action_go_label": "Gaan!",
-  "onboarding_welcome_store_body": "Slaat credentials van derden in versleutelde vorm rechtstreeks op uw apparaat op. Alleen u heeft toegang tot uw gegevens.\n\nHet communiceert niet met Sphereon-servers, tenzij u zich bijvoorbeeld aanmeldt voor back-ups of zakelijke functies.",
-  "onboarding_welcome_share_body": "Hiermee kunt u credentials presenteren aan externe verifierende partijen.\n\nAlleen de informatie waarmee u instemt, wordt gedeeld. Er wordt geen informatie automatisch gedeeld. Je bent altijd de baas.",
-  "terms_and_conditions_agreement_message": "These terms and conditions (“Agreement”) set forth the general terms and conditions of your use of the “Sphereon Wallet” mobile application (“Mobile Application” or “Service”) and any of its related products and services (collectively, “Services”).\n\nThis Agreement is legally binding between you (“User”, “you” or “your”) and Sphereon B.V., incorporated in The Netherlands, as the Mobile Application developer (“Operator”, “we”, “us” or “our”).\n\nIf you are entering into this agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this agreement, in which case the terms “User”, “you” or “your” shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this agreement, you must not accept this agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and the Operator, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services.\n\nLinks to other resources\n\nAlthough the Mobile Application and Services may link to other resources (such as websites, mobile applications, etc.), we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked resource, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of, any businesses or individuals or the content of their resources. We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any resource which you access through a link in the Mobile Application. Your linking to any other off-site resources is at your own risk.\n\nIntellectual property rights\n\n“Intellectual Property Rights” means all present and future rights conferred by statute, common law or equity in or in relation to any copyright and related rights, trademarks, designs, patents, inventions, goodwill and the right to sue for passing off, rights to inventions, rights to use, and all other intellectual property rights, in each case whether registered or unregistered and including all applications and rights to apply for and be granted, rights to claim priority from, such rights and all similar or equivalent rights or forms of protection and any other results of intellectual activity which subsist or will subsist now or in the future in any part of the world.\n\nThis Agreement does not transfer to you any intellectual property owned by the Operator or third parties, and all rights, titles, and interests in and to such property will remain (as between the parties) solely with the Operator.\n\nAll trademarks, service marks, graphics and logos used in connection with the Mobile Application and Services, are trademarks or registered trademarks of the Operator or its licensors.\nOther trademarks, service marks, graphics and logos used in connection with the Mobile Application and Services may be the trademarks of other third parties.\n\nYour use of the Mobile Application and Services grants you no right or license to reproduce or otherwise use any of the Operator or third party trademarks.\n\nLimitation of liability\n\nTo the fullest extent permitted by applicable law, in no event will the Operator, its affiliates, directors, officers, employees, agents, suppliers or licensors be liable to any person for any indirect, incidental, special, punitive, cover or consequential damages (including, without limitation, damages for lost profits, revenue, sales, goodwill, use of content, impact on business, business interruption, loss of anticipated savings, loss of business opportunity) however caused, under any theory of liability, including, without limitation, contract, tort, warranty, breach of statutory duty, negligence or otherwise, even if the liable party has been advised as to the possibility of such damages or could have foreseen such damages.\nTo the maximum extent permitted by applicable law, the aggregate liability of the Operator and its affiliates, officers, employees, agents, suppliers and licensors relating to the services will be limited to an amount no greater than one dollar or any amounts actually paid in cash by you to the Operator for the prior one month period prior to the first event or occurrence giving rise to such liability. The limitations and exclusions also apply if this remedy does not fully compensate you for any losses or fails of its essential purpose.\n\nIndemnification\n\nYou agree to indemnify and hold the Operator and its affiliates, directors, officers, employees, agents, suppliers and licensors harmless from and against any liabilities, losses, damages or costs, including reasonable attorneys’ fees, incurred in connection with or arising from any third party allegations, claims, actions, disputes, or demands asserted against any of them as a result of or relating to your Content, your use of the Mobile Application and Services or any willful misconduct on your part.\n\nChanges and amendments\n\nWe reserve the right to modify this Agreement or its terms related to the Mobile Application and Services at any time at our discretion. When we do, we will revise the updated date at the bottom of this page. We may also provide notice to you in other ways at our discretion, such as through the contact information you have provided. You are to inform yourself regularly about the content of these terms and conditions.\n\nAn updated version of this Agreement will be effective immediately upon the posting of the revised Agreement unless otherwise specified. Your continued use of the Mobile Application and Services after the effective date of the revised Agreement (or such other act specified at that time) will constitute your consent to those changes.\n\nAcceptance of these terms\n\nYou acknowledge that you have read this Agreement and agree to all its terms and conditions. By accessing and using the Mobile Application and Services you agree to be bound by this Agreement. If you do not agree to abide by the terms of this Agreement, you are not authorized to access or use the Mobile Application and/or Services\n\nContacting us\n\nIf you have any questions, concerns, or complaints regarding this Agreement, we encourage you to contact us using the details below: support@sphereon.com",
-  "privacy_policy_agreement_message": "Sphereon provides you with the Sphereon Wallet mobile App (\"App\"), which you can download and install onto your mobile device.\n\nThe protection of personal data is very important to Sphereon. Whether personal data is collected when using the App and for what purpose it is processed, is explained in the following data protection declaration. Processing in this sense means any form of use of the data, e.g. collection, recording, storage, transmission, presentation and deletion.\n\nPersonal data is only processed to the extent necessary for communication with the user. We observe the principle of data minimization and comply with all applicable legal provisions for the protection of personal data and data security. Specifically, the corresponding data will only be processed if there is a legal basis.\n\nThe legal basis for data processing is the EU General Data Protection Regulation, more precisely: Art. 6 Par. 1 (a), Art. 7, Art. 6 Par. 1 (b) and (f), and Art. 6 Par. 1 (c) of EU 2016/679 (hereinafter “GDPR”).\n\nI. Name and contact details of the entity responsible\nThe person responsible within the meaning of Art. 4 GDPR for the processing of personal data is:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nThe Netherlands\ninfo@sphereon.com\n\n2. Type of data processed, purpose of processing, legal basis\n\n1. User and Device Data\nWe will never have any knowledge of, or have access to, your personal data, unless you contact us using the Sphereon contact-form or the email address provided in the App.\n\nWhen downloading the App, the necessary information required for this is transferred to the Apple AppStore or GooglePlay Store (the \"app Stores\"), i.e. in particular the user name, e-mail address and customer number of your account, the time of the download and the individual device code. The above data is required to enable downloading of the App from the app stores. We do not receive any personal data from this.\nWe have no influence on this data collection and are not responsible for it. For more information regarding the purpose and scope of data processing in the App stores, we refer to the relevant data protection declarations of the Aapp stores.\n\nAfter the App has been successfully installed onto your mobile device, it can be used without access to the internet. When you are using the App, we do not collect any personal data. The personal and credential information that you make available to the App for use (e.g. name, address, driver\\'s license, identity card, educational, or other credential information) is only stored locally and is encrypted on your mobile device. We do not check the data.\nIt is also your sole responsibility to save the stored content and to carry out data backups.\n\nIf you make this information available to other parties (\"Issuers\", \"Verifiers\", or \"Third Party Providers\") for verification or sharing, the data protection declaration of that Issuer, Verifier or Third Party Provider applies with regard to the purpose and scope of the data processing. Sphereon has no access to the data or the data flow here either.\n\nPersonal data will only be collected, stored and processed in the event of contact being initiated by you, insofar as this is necessary to answer your request.\n\nThe legal basis for data processing is Art. 6 Par. 1 (a), (b) and (f) of the EU GDPR\n\n1. Cookies\nNo cookies are used with this App.\n\n1. Contact\nIf you contact us via the contact-form provided in the App or via our e-mail address, we will use the contact details you have provided, such as name, e-mail address, and any additional information you have provided for the purpose of answering your request. At the metadata level, your IP address and the version of the App are transmitted.\n\nHere, the processing of the contact data you provide is essential to be able to contact you and answer your request. If data has also been communicated, the processing serves to individualize your request and thus be able to respond in the best possible way.\nThe legal basis for data processing is Art. 6 Par. 1 (b) and (f) GDPR.\n\nI. Duration of storage\nYour data will only be stored for as long as is necessary to fulfill the purposes mentioned above.\n\nAs soon as this is no longer the case, e.g. after your request has been fully answered, the data will be deleted or blocked if and for as long as this is required by commercial or tax law retention requirements (Art. 6 Par. 1 (c) GDPR).\nFrom the point in time at which statutory retention requirements no longer conflict, the data will be deleted unless you have expressly consented to further use (Art. 6 Par. 1 (a) GDPR).\n\nI. Disclosure of data to third parties, transmission to third countries\n\nIt is a foundational principle that the data you store or transmit will not be made available to third parties.\nIn individual cases, however, it may be necessary for the execution of the contract to pass on your personal data to companies that we have entrusted with the provision of individual services (e.g. cloud providers). If we disclose data to third parties as part of our processing, transmit it to them or otherwise grant them access to the data, this is only done based on legal permission, based on your consent, based on a legal obligation, or based on our legitimate interests.\nIf we commission third-party providers to process data based on a so-called \"data processing agreement\", this is done based on Art. 28 GDPR.\n\nFor their part, the third parties are obliged to comply with the statutory provisions when handling and processing this data. The seat of a third party may be in a third country, i.e. in a country in which the GDPR does not have direct legal effect. In this case, data will only be transmitted if you have given your consent, an appropriate level of data protection prevails, for example based on individual agreements, the use of EU standard contractual clauses, the existence of an EU adequacy decision, or other legal permission.\n\nTransmission to authorities and state institutions entitled to receive information is also possible, but only within the framework of the statutory information obligations and in the event of a binding court decision. In these cases, Sphereon B.V. can provide the information, e.g. to assert, exercise and defend legal claims, enforce existing contracts, in the context of allegations of fraud, security measures or generally applicable statutory provisions.\n\nPersonal data will not be passed on outside of the scope described here without the user’s express consent.\n\nUnder no circumstances will we sell or rent personal data to third parties.\n\nI. Third-party services when operating the App\nWe would like to draw your attention to the following third-party providers, whose services we use to operate the App and to provide our services, and who may come into contact with the above-mentioned personal data:\na. Microsoft 365 , Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Ireland\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Australia\n\nWe expressly point out that we have no influence on the scope of the have data that these companies collect. Regarding data protection, we must therefore rely on the information provided by the respective companies, to which we refer in the explanation below.\n\nIf required, please obtain further information from the company about the purpose and scope of the data collection and your rights in this regard and setting options for protecting your privacy. We have provided the links to the data protection declarations here.\n\nIn the following you will find information on possible data protection effects of the cooperation with the third-party providers as well as further links.\n\nMicrosoft\nWe use the service of Microsoft, a cloud provider, such as Offices 365, to ensure our accessibility via email.\nYou can find out more about Microsoft\\'s data protection regulations here: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nWe use Atlassian services, such as Jira, to structure and optimize the processing of your technical inquiries. It may be necessary for isolated data on the problems described to be saved and stored in Atlassian\\'s cloud servers.\nYou can find out more about Atlassian\\'s privacy policy here: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Rights of data subjects\nAs a person affected by the processing of personal data, you are entitled to the rights listed below. These rights result from the provisions of the GDPR and are reproduced here in a partly simplified form.\n\nRight to revoke the declaration of consent\nAccording to Art. 7, Par. (3) GDPR, you have the right to revoke your consent to processing at any time. The lawfulness of the processing carried out based on the consent until the revocation is not affected. The right of withdrawal can be exercised by means of an informal declaration. A written declaration or alternatively an e-mail to the above contact address is sufficient.\n\nRight to information\nAccording to Art. 15 GDPR, you have the right to request confirmation from us as to whether personal data relating to you are being processed. If this is the case, you have a right to information about this personal data and the information specified in Article 15 (1) GDPR. This includes the purpose of the processing, the categories of the processed data, the recipients to whom data have been or will be disclosed, as far as possible the planned duration of storage or the criteria for the duration of storage.\n\nRight to rectification\nAccording to Art. 16 GDPR, you have the right to request us to rectify incorrect personal data concerning you without delay. Considering the purposes of the processing, you have the right to request the completion of incomplete personal data - also by means of a supplementary declaration.\n\nRight to erasure\nAccording to Art. 17 GDPR, you have the right to demand that personal data relating to you be erased immediately. We are obliged to delete personal data immediately if one of the provisions of Art. 17 Par. (1) GDPR applies. These reasons include, for example, that the data is no longer necessary for the purposes for which it was collected or otherwise processed.\n\nRight to restriction of processing\nAccording to Art. 18 GDPR, you have the right to demand that we restrict processing if one of the conditions specified in Article 18 GDPR applies. This includes, for example, that you contest the accuracy of the personal data. Then we may only process the data to a limited extent for as long as it takes to check the accuracy of the personal data.\n\nRight to data portability\nAccording to Art. 20 GDPR, you have the right to receive the personal data that you have provided to us in a structured, common, and machine-readable format. You have the right to transmit this data to another person responsible, i.e. another body that processes data, without hindrance, provided that the original processing was based on consent or was necessary for the execution of a contract.\n\nRight of objection\nAccording to Art. 21 GDPR, you have the right to object at any time to the processing of your personal data if this data is processed based on Art. 6 Par. 1 (e) or (f) GDPR and there are reasons that arise from your personal situation. You can object at any time to the processing of data for the purpose of operating direct advertising. Personal data will then no longer be processed for this purpose. The right to object can be exercised by means of an informal declaration. A written declaration or alternatively an e-mail to the contact address in the App is sufficient.\nAutomated decision-making in individual cases, including profiling\n\nAccording to Art. 22 GDPR, you have the right not to be subject to a decision based exclusively on automated processing - including profiling - which has legal effect on you or significantly affects you in a similar way. Art. 22 Par. (1) GDPR provides for exceptions to this, whereby Art. 22 Par. (4) GDPR again contains partial exceptions.\n\nRight to lodge a complaint with a supervisory authority\nAccording to Art. 77 GDPR, without prejudice to any other administrative or judicial remedy, you have the right to lodge a complaint with a supervisory authority in the member state of your residence, your place of work or the place of the alleged infringement, if you are of the opinion that the processing of your personal data infringes this regulation.\n\nII. Technical and organizational measures\nWe take technical and organizational measures to ensure that the security and protection requirements of the GDPR are met and that personal data is protected against loss, destruction, manipulation, or access by unauthorized persons.\n\nIII. Changes to the data protection declaration\nWe reserve the right to change this data protection declaration at any time. You are to inform yourself regularly about the content of our data protection declaration.\n\nIV. Final provision\nThis text is subject to laws of The Netherlands and should be interpreted according to Dutch legal understanding. This English version is for information only. In the event of discrepancies between the Dutch and English versions, only the Dutch version applies.",
+  "action_go_label": "Ga!",
+  "onboarding_welcome_store_body": "Bewaart credentials die zijn uitgegeven door derden in versleutelde vorm en direct op je apparaat. Alleen jij hebt toegang tot je gegevens.\n\nHet interageert niet met Sphereon-servers tenzij je kiest voor back-ups of zakelijke functies bijvoorbeeld.",
+  "onboarding_welcome_share_body": "Stelt je in staat om credentials te presenteren aan verificateurs van derden.\n\nAlleen de informatie waar je toestemming voor geeft zal ooit worden gedeeld. Er vindt geen automatische openbaring plaats. Je hebt altijd de controle.",
+  "terms_and_conditions_agreement_message": "Deze algemene voorwaarden (“Overeenkomst”) bepalen de algemene voorwaarden voor jouw gebruik van de “Sphereon Wallet” mobiele applicatie (“Mobiele Applicatie” of “Dienst”) en alle daaraan gerelateerde producten en diensten (gezamenlijk, “Diensten”).\n\nDeze Overeenkomst is wettelijk bindend tussen jou (“Gebruiker”, “jij” of “jou”) en Sphereon B.V., opgenomen in Nederland, als de ontwikkelaar van de Mobiele Applicatie (“Operator”, “wij”, “ons” of “onze”).\n\nAls je deze overeenkomst aangaat namens een bedrijf of andere rechtspersoon, verklaar je dat je de bevoegdheid hebt om zo'n entiteit aan deze overeenkomst te binden, in welk geval de termen “Gebruiker”, “jij” of “jou” verwijzen naar zo'n entiteit. Als je niet over zo'n bevoegdheid beschikt, of als je niet akkoord gaat met de voorwaarden van deze overeenkomst, mag je deze overeenkomst niet accepteren en mag je de Mobiele Applicatie en Diensten niet gebruiken. Door de Mobiele Applicatie en Diensten te gebruiken, erken je dat je deze Overeenkomst hebt gelezen, begrepen en ermee instemt gebonden te zijn aan de voorwaarden ervan. Je erkent dat deze Overeenkomst een contract is tussen jou en de Operator, ook al is het elektronisch en niet fysiek door jou ondertekend, en het regelt jouw gebruik van de Mobiele Applicatie en Diensten.\n\nLinks naar andere bronnen\n\nHoewel de Mobiele Applicatie en Diensten kunnen linken naar andere bronnen (zoals websites, mobiele applicaties, enz.), impliceren wij niet, direct of indirect, enige goedkeuring, associatie, sponsoring, goedkeuring of affiliatie met een gelinkte bron, tenzij hierin uitdrukkelijk vermeld. We zijn niet verantwoordelijk voor het onderzoeken of evalueren, en we garanderen niet de aanbiedingen van, enige bedrijven of individuen of de inhoud van hun bronnen. We nemen geen enkele verantwoordelijkheid of aansprakelijkheid voor de acties, producten, diensten en inhoud van andere derden. Je dient de juridische verklaringen en andere gebruiksvoorwaarden van elke bron die je bezoekt via een link in de Mobiele Applicatie zorgvuldig te beoordelen. Het linken naar andere off-site bronnen is op eigen risico.\n\nIntellectuele eigendomsrechten\n\n“Intellectuele Eigendomsrechten” betekent alle huidige en toekomstige rechten die door wetgeving, gewoonterecht of billijkheid worden verleend in of met betrekking tot auteursrechten en daaraan gerelateerde rechten, handelsmerken, ontwerpen, patenten, uitvindingen, goodwill en het recht om te procederen wegens namaak, rechten op uitvindingen, gebruiksrechten, en alle andere intellectuele eigendomsrechten, in elk geval of deze nu geregistreerd zijn of niet",
+  "privacy_policy_agreement_message": "Sphereon biedt je de Sphereon Wallet mobiele App ('App'), die je kunt downloaden en installeren op je mobiele apparaat.\n\nDe bescherming van persoonlijke gegevens is erg belangrijk voor Sphereon. Of er persoonlijke gegevens worden verzameld bij het gebruik van de App en met welk doel deze worden verwerkt, wordt uitgelegd in de volgende gegevensbeschermingsverklaring. Verwerking in deze zin betekent elke vorm van gebruik van de gegevens, bijv. verzameling, opname, opslag, overdracht, presentatie en verwijdering.\n\nPersoonlijke gegevens worden alleen verwerkt voor zover nodig voor communicatie met de gebruiker. We volgen het principe van gegevensminimalisatie en voldoen aan alle toepasselijke wettelijke bepalingen voor de bescherming van persoonlijke gegevens en gegevensbeveiliging. Specifiek zullen de corresponderende gegevens alleen worden verwerkt als er een wettelijke basis is.\n\nDe wettelijke basis voor gegevensverwerking is de EU Algemene Verordening Gegevensbescherming, meer bepaald: Art. 6 Par. 1 (a), Art. 7, Art. 6 Par. 1 (b) en (f), en Art. 6 Par. 1 (c) van EU 2016/679 (hierna 'AVG').",
   "terms_of_service_terms_tab_header_label": "Algemene voorwaarden",
   "terms_of_service_privacy_tab_header_label": "Privacybeleid",
-  "terms_of_service_consent_terms_message": "Ik heb de algemene voorwaarden gelezen en ga ermee akkoord.",
-  "terms_of_service_consent_privacy_message": "Ik heb het privacybeleid gelezen en ga ermee akkoord.",
-  "terms_of_service_decline_title": "U heeft de servicevoorwaarden afgewezen",
-  "terms_of_service_decline_message": "Je hebt geweigerd, wat betekent dat de onboarding van de wallet nog niet is voltooid. Verwijder de Sphereon Wallet van je apparaat of begin vanaf het begin bij het openen van de wallet.",
-  "terms_of_service_decline_action_caption": "App afsluiten",
+  "terms_of_service_consent_terms_message": "Ik heb de algemene voorwaarden gelezen en accepteer deze.",
+  "terms_of_service_consent_privacy_message": "Ik heb het privacybeleid gelezen en accepteer dit.",
+  "terms_of_service_decline_title": "Je hebt de algemene voorwaarden geweigerd",
+  "terms_of_service_decline_message": "Je hebt geweigerd, wat betekent dat de onboarding van de wallet niet is voltooid. Verwijder de Sphereon Wallet van je apparaat, of start opnieuw wanneer je de wallet opent.",
+  "terms_of_service_decline_action_caption": "App verlaten",
   "terms_of_service_title": "Algemene voorwaarden",
-  "terms_of_service_subtitle": "Dit document is voor het laatst bijgewerkt op 5 januari 2023.",
+  "terms_of_service_subtitle": "Dit document is voor het laatst bijgewerkt op 5 November 2024.",
+  "pid_security_model_warning": "EID wordt alleen geladen tijdens presentatie",
+  "import_data_auth_title": "Voer je Sphereon PIN in",
+  "import_data_auth_next": "Doorgaan",
+  "import_data_auth_biometrics_title": "Authenticeren met biometrie",
+  "import_data_auth_failure_title": "Biometrische authenticatie is mislukt, we hebben je niet herkend",
+  "import_data_auth_failure_description": "Op dit moment kun je niet doorgaan. De enige manier om de taak die je aan het doen was af te ronden, is door opnieuw te beginnen. Sluit de app en open deze opnieuw om de onboarding opnieuw te starten.",
+  "import_data_auth_step_title": "Voer je Sphereon PIN in",
+  "import_data_consent_button_accept": "Ja, dat ben ik",
+  "import_data_consent_button_decline": "Niet alles is correct",
+  "import_data_loader_step_title": "Een moment geduld",
+  "import_data_loader_step_subtitle": "Je persoonlijke informatie ophalen.",
+  "import_data_final_step_title": "Je informatie is geïmporteerd. Klopt alles?",
+  "import_data_setup_complete_title": "Installatie voltooid",
+  "incorrect_data_title": "Kloppen sommige van je gegevens niet?",
+  "incorrect_data_description": "Als je persoonlijke informatie niet klopt, kan dit problemen veroorzaken. Voeg deze gegevens daarom niet toe.",
+  "incorrect_data_bullet_content_heading": "Wat kun je doen",
+  "incorrect_data_bullet_content": "Neem contact op met je gemeente om je gegevens te laten wijzigen.\nWacht op een bericht van je gemeente dat de update is bevestigd.\nProbeer de persoonlijke informatie opnieuw toe te voegen. Je kunt het vinden in de catalogus.",
+  "incorrect_data_back": "Terug",
+  "incorrect_data_dont_add_info": "Voeg deze informatie niet toe",
+  "incorrect_data_after_bullet_heading": "Als het niet van jou is",
+  "incorrect_data_after_bullet_content": "Als de informatie niet van jou is, voeg het dan niet toe aan je wallet.",
+  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
+  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
+  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
+  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
+  "onboarding_esim_enter_details_continue": "Continue",
+  "onboarding_esim_enter_details_back": "Back",
+  "import_data_title": "Persoonlijke gegevens importeren",
+  "onboarding_complete_title": "Alles klaar!",
+  "onboarding_complete_description": "Je bent nu klaar om identiteitsgegevens, credentials en meer te ontvangen en te delen.",
+  "onboarding_complete_next": "Begin mijn Wallet te verkennen",
+  "scan_card_step_subtitle": "Houd je kaart tegen de achterkant van de telefoon en druk op start met lezen.",
+  "scan_card_step_title": "Scan om je gegevens te importeren",
   "personal_data_title": "Voer persoonlijke gegevens in",
-  "personal_data_subtitle": "Personaliseer uw wallet door uw naam en e-mailadres op te geven. We zullen een zelfverklaarde credential maken die u kunt gebruiken. De door u verstrekte informatie verlaat uw apparaat niet!",
+  "personal_data_subtitle": "Personaliseer je wallet door je naam en e-mailadres op te geven. We zullen een zelf-geverifieerde credential voor je aanmaken om te gebruiken. De informatie die je verstrekt, verlaat je apparaat niet!",
   "first_name_label": "Voornaam",
   "first_name_placeholder": "Voornaam",
   "first_name_invalid_message": "Vul een geldige voornaam in",
@@ -217,316 +274,272 @@
   "email_address_placeholder": "E-mailadres",
   "email_address_invalid_message": "Vul een geldig e-mailadres in",
   "pin_code_choose_pin_code_title": "Kies je pincode",
-  "pin_code_choose_pin_code_subtitle": "Kies een pincode om uw wallet veilig te houden.",
-  "pin_code_confirm_pin_code_title": "Bevestig uw pincode",
-  "pin_code_confirm_pin_code_subtitle": "Voer uw pincode in om de eerste te bevestigen.",
+  "pin_code_choose_pin_code_subtitle": "Kies een pincode om je wallet veilig en beveiligd te houden.",
+  "pin_code_confirm_pin_code_title": "Bevestig je pincode",
+  "pin_code_confirm_pin_code_subtitle": "Voer je pincode in om de eerste te bevestigen.",
   "pin_code_accessibility_label": "Pincode",
-  "pin_code_accessibility_hint": "Vul je pincode in",
+  "pin_code_accessibility_hint": "Voer je pincode in",
   "pin_code_invalid_code_message": "Deze pincode komt niet overeen. Probeer het opnieuw.",
   "pin_code_attempts_left_message": "Pogingen over:",
-  "lock_title": "Log in\nde Sphereon Wallet",
-  "lock_subtitle": "Vul je pincode in.",
+  "lock_title": "Login in\nSphereon Wallet",
+  "lock_subtitle": "Voer je pincode in.",
   "lock_emergency_button_caption": "Noodoproep",
-  "show_raw_credential_button_caption": "Ruwe credential",
-  "onboard_create_wallet_step_title": "Creëer Wallet",
+  "show_raw_credential_button_caption": "Broncode credential",
+  "onboard_create_wallet_step_title": "Maak wallet aan",
   "onboard_secure_wallet_step_title": "Beveilig wallet",
   "onboard_progress_pages": {
     "create_wallet": {
-      "title": "Getting started",
-      "description": "Each section should take only a couple of minutes to complete.",
-      "accessibility_label": "Getting started. Onboarding progress currently on step"
+      "title": "Aan de slag",
+      "description": "Elk onderdeel zou slechts een paar minuten moeten duren om te voltooien.",
+      "accessibility_label": "Aan de slag. Voortgang van onboarding momenteel op stap"
     },
     "secure_wallet": {
-      "title": "You're halfway there",
+      "title": "Je schiet op",
       "description": null,
-      "accessibility_label": "You're halfway there. Onboarding progress currently on step"
+      "accessibility_label": "Je bent er bijna. Voortgang van onboarding momenteel in stap"
     },
     "import_personal_data": {
-      "title": "Almost done, last section",
+      "title": "Bijna klaar, laatste onderdeel",
       "description": null,
-      "accessibility_label": "Almost done, last section. Onboarding progress currently on step"
+      "accessibility_label": "Bijna klaar, laatste onderdeel. Voortgang van onboarding momenteel in stap"
     }
   },
   "onboard_steps": {
     "accessibility_tokens": {
-      "step": "step",
-      "of": "of",
-      "and_final": "and final"
+      "step": "stap",
+      "of": "van",
+      "and_final": "en laatste"
     },
     "create_wallet": {
-      "title": "Create wallet",
-      "description": "Set up an account with your name, email address and country of residence.",
+      "title": "Maak wallet aan",
+      "description": "Stel een account in met je naam, e-mailadres en land.",
       "accessibility": {
-        "button_hint": "Start creating your wallet"
+        "button_hint": "Start met het aanmaken van je wallet"
       }
     },
     "secure_wallet": {
-      "title": "Secure wallet",
-      "description": "Create an unique Sphereon PIN you need to keep safe. Optionally enable biometric login.",
+      "title": "Beveilig wallet",
+      "description": "Maak een unieke Sphereon PIN die je veilig moet houden. Optioneel biometrische login inschakelen.",
       "accessibility": {
-        "button_hint": "Start securing your wallet"
+        "button_hint": "Start met het beveiligen van je wallet"
       }
     },
     "import_personal_data": {
-      "title": "Import personal information",
+      "title": "Importeer persoonlijke informatie",
       "description": {
-        "default": "Import your personal information from your national eID provider.",
-        "de": "Scan your Ausweis eID-card. Keep the card and eID pin ready."
+        "default": "Importeer je persoonlijke informatie van je nationale eID-aanbieder.",
+        "de": "Scan je digitale eID-kaart. Houd de kaart klaar en PIN bij de hand."
       },
       "accessibility": {
-        "button_hint": "Start importing your personal data"
+        "button_hint": "Start met het importeren van je persoonlijke gegevens"
       }
     }
   },
   "onboarding_pages": {
     "welcome": {
-      "title": "Welcome to your Sphereon Wallet",
-      "description": "Receive and share accreditations, credentials, badges and identity details.",
-      "button_caption": "Get started",
+      "title": "Welkom bij je Sphereon Wallet",
+      "description": "Ontvang en deel accreditaties, credentials, badges en identiteitsgegevens.",
+      "button_caption": "Beginnen",
       "accessibility": {
-        "hint": "Swipe left to continue",
-        "label": "Welcome to your Sphereon Wallet"
+        "hint": "Veeg naar links om verder te gaan",
+        "label": "Welkom bij je Sphereon Wallet"
       }
     },
     "enter_name": {
-      "title": "Enter your name",
+      "title": "Voer je naam in",
       "text_field": {
-        "label": "Name",
-        "placeholder": "Your name",
+        "label": "Naam",
+        "placeholder": "Jouw naam",
         "accessibility": {
-          "label": "Enter your name"
+          "label": "Voer je naam in"
         },
         "errors": {
-          "missing": "Please fill in a name"
+          "missing": "Vul een naam in"
         }
       }
     },
     "enter_email_address": {
-      "title": "Enter your email address",
+      "title": "Voer je e-mailadres in",
       "text_field": {
-        "label": "Email address",
-        "placeholder": "Your email address",
+        "label": "E-mailadres",
+        "placeholder": "Jouw e-mailadres",
         "accessibility": {
-          "label": "Enter your email address"
+          "label": "Voer je e-mailadres in"
         },
         "errors": {
-          "missing": "Please fill in an email address",
-          "invalid": "Please fill in a valid email address"
+          "missing": "Vul een e-mailadres in",
+          "invalid": "Vul een geldig e-mailadres in"
         }
       }
     },
     "enter_country": {
-      "title": "Your country of residence",
+      "title": "Je woonland",
       "select": {
-        "label": "Country",
+        "label": "Land",
         "accessibility": {
-          "select": "Selected country"
+          "select": "Geselecteerd land"
         },
-        "placeholder": "You country of residence",
+        "placeholder": "Jouw woonland",
         "errors": {
-          "missing": "Please select a country"
+          "missing": "Selecteer een land"
         }
       },
       "modal": {
-        "title": "Select country",
-        "search_placeholder": "Search"
+        "title": "Selecteer land",
+        "search_placeholder": "Zoeken"
       }
     },
     "enter_pin": {
-      "title": "Set a 6-digit Sphereon PIN",
+      "title": "Stel een 6-cijferige Sphereon PIN in",
       "requirements": {
-        "title": "Your PIN should not contain:",
-        "not_same_digits": "similar digits",
-        "not_sequential_digits": "A consecutive sequence",
-        "invalid_example_prefix": "Like: ",
-        "invalid_example_delimiter": " or "
+        "title": "Jouw PIN mag niet:",
+        "not_same_digits": "vergelijkbare cijfers",
+        "not_sequential_digits": "Een opeenvolgende reeks hebben",
+        "invalid_example_prefix": "Zoals: ",
+        "invalid_example_delimiter": " of "
       },
-      "success": "That’s a strong PIN, note it down somewhere safe",
-      "button_caption": "Set your PIN"
+      "success": "Dat is een sterke PIN, noteer het ergens goed",
+      "button_caption": "Stel je PIN in"
     },
     "verify_pin": {
-      "title": "Repeat your Sphereon PIN",
-      "match": "Your PINs match. You're good to go!",
-      "mismatch": "Oops! Your PINs don't match.\nLet's try again.",
-      "button_caption": "Repeat your PIN"
+      "title": "Herhaal je Sphereon PIN",
+      "match": "Je PINs komen overeen. Je bent klaar om verder te gaan!",
+      "mismatch": "Oeps! Je PINs komen niet overeen.\nLaten we het opnieuw proberen.",
+      "button_caption": "Herhaal je PIN"
     },
     "terms_and_privacy": {
-      "title": "Terms & privacy",
-      "description": "Your trust matters to us. That's why we handle your personal information with security and confidentiality.",
+      "title": "Voorwaarden & privacy",
+      "description": "Jouw vertrouwen is belangrijk voor ons. Daarom behandelen wij je persoonlijke informatie met beveiliging en vertrouwelijkheid.",
       "features": {
-        "secure_data_storage": "Advanced encryption",
-        "strict_access_control": "Two-factor authentication",
-        "selective_data_sharing": "Regular security audits",
-        "no_3rdparty_data_sharing": "Data anonymization",
-        "no_tracking_profiling": "Strict access controls"
+        "secure_data_storage": "Veilige gegevensopslag",
+        "strict_access_control": "Strikte toegangscontrole",
+        "selective_data_sharing": "Selectief delen van gegevens",
+        "strong_privacy_compliance": "Sterke bescherming van je privacy",
+        "no_3rdparty_data_sharing": "We delen geen gegevens met derden",
+        "no_tracking_profiling": "Geen tracking of profilering"
       },
       "footer": {
-        "prefix": "Want to read all the details? Check our",
+        "prefix": "Wil je alle details lezen? Bekijk onze",
         "links": {
-          "terms": "Terms of Use",
-          "privacy": "Privacy Policy",
-          "delimiter": "and"
+          "terms": "Gebruiksvoorwaarden",
+          "privacy": "Privacybeleid",
+          "delimiter": "en"
         }
       },
-      "button_caption": "Accept Terms & Privacy"
+      "button_caption": "Accepteer voorwaarden & privacybeleid"
     },
     "read_terms_and_privacy": {
-      "title": "Terms of Service ",
-      "description": "This document was last updated on",
+      "title": "Servicevoorwaarden",
+      "description": "Dit document is voor het laatst bijgewerkt op",
       "terms": {
-        "tab_title": "Terms & conditions",
-        "text": "These terms and conditions (“Agreement”) set forth the general terms and conditions of your use of the “Sphereon Wallet” mobile application (“Mobile Application” or “Service”) and any of its related products and services (collectively, “Services”).\n\nThis Agreement is legally binding between you (“User”, “you” or “your”) and Sphereon B.V., incorporated in The Netherlands, as the Mobile Application developer (“Operator”, “we”, “us” or “our”).\n\nIf you are entering into this agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this agreement, in which case the terms “User”, “you” or “your” shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this agreement, you must not accept this agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and the Operator, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services.\n\nLinks to other resources\n\nAlthough the Mobile Application and Services may link to other resources (such as websites, mobile applications, etc.), we are not, directly or indirectly, implying any approval, association, sponsorship, endorsement, or affiliation with any linked resource, unless specifically stated herein. We are not responsible for examining or evaluating, and we do not warrant the offerings of, any businesses or individuals or the content of their resources. We do not assume any responsibility or liability for the actions, products, services, and content of any other third parties. You should carefully review the legal statements and other conditions of use of any resource which you access through a link in the Mobile Application. Your linking to any other off-site resources is at your own risk.\n\nIntellectual property rights"
+        "tab_title": "Algemene voorwaarden",
+        "text": "Deze algemene voorwaarden (‘Overeenkomst’) bepalen de algemene voorwaarden voor jouw gebruik van de ‘Sphereon Wallet’ mobiele applicatie (‘Mobiele Applicatie’ of ‘Dienst’) en al haar gerelateerde producten en diensten (gezamenlijk, ‘Diensten’).\n\nDeze Overeenkomst is juridisch bindend tussen jou (‘Gebruiker’, ‘jij’ of ‘jou’) en Sphereon B.V., geregistreerd in Nederland, als ontwikkelaar van de Mobiele Applicatie (‘Operator’, ‘wij’, ‘ons’ of ‘onze’).\n\nAls je deze overeenkomst aangaat namens een bedrijf of andere juridische entiteit, verklaar je dat je de bevoegdheid hebt om deze entiteit aan deze overeenkomst te binden, in welk geval de termen ‘Gebruiker’, ‘jij’ of ‘jou’ verwijzen naar die entiteit. Als je niet over deze bevoegdheid beschikt, of als je niet akkoord gaat met de voorwaarden van deze overeenkomst, mag je deze overeenkomst niet accepteren en mag je de Mobiele Applicatie en Diensten niet gebruiken en openen. Door toegang te krijgen tot en gebruik te maken van de Mobiele Applicatie en Diensten, erkennen je dat je deze hebt gelezen, begrepen, en ermee instemt gebonden te zijn aan de voorwaarden van deze Overeenkomst. Je erkent dat deze Overeenkomst een contract is tussen jou en de Operator, hoewel het elektronisch is en niet fysiek door jou is ondertekend, en het regelt jouw gebruik van de Mobiele Applicatie en Diensten.\n\nLinks naar andere bronnen\n\nHoewel de Mobiele Applicatie en Diensten kunnen linken naar andere bronnen (zoals websites, mobiele applicaties, enz.), impliceren wij niet, direct of indirect, enige goedkeuring, associatie, sponsoring, goedkeuring of affiliatie met een gelinkte bron, tenzij hierin specifiek vermeld. Wij zijn niet verantwoordelijk voor het onderzoeken of evalueren, en wij garanderen niet de aanbiedingen van, enige bedrijven of individuen of de inhoud van hun bronnen. Wij nemen geen enkele verantwoordelijkheid of aansprakelijkheid voor de acties, producten, diensten en inhoud van enige andere derden. Je dient de juridische verklaringen en andere gebruiksvoorwaarden van elke bron die je bezoekt via een link in de Mobiele Applicatie zorgvuldig te beoordelen. Jouw linken naar enige andere off-site bronnen is op eigen risico.\n\nIntellectuele eigendomsrechten"
       },
       "privacy": {
-        "tab_title": "Privacy policy",
-        "text": "Sphereon provides you with the Sphereon Wallet mobile App (\"App\"), which you can download and install onto your mobile device.\n\nThe protection of personal data is very important to Sphereon. Whether personal data is collected when using the App and for what purpose it is processed, is explained in the following data protection declaration. Processing in this sense means any form of use of the data, e.g. collection, recording, storage, transmission, presentation and deletion.\n\nPersonal data is only processed to the extent necessary for communication with the user. We observe the principle of data minimization and comply with all applicable legal provisions for the protection of personal data and data security. Specifically, the corresponding data will only be processed if there is a legal basis.\n\nThe legal basis for data processing is the EU General Data Protection Regulation, more precisely: Art. 6 Par. 1 (a), Art. 7, Art. 6 Par. 1 (b) and (f), and Art. 6 Par. 1 (c) of EU 2016/679 (hereinafter “GDPR”).\n\nI. Name and contact details of the entity responsible\nThe person responsible within the meaning of Art. 4 GDPR for the processing of personal data is:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nThe Netherlands\ninfo@sphereon.com\n\n2. Type of data processed, purpose of processing, legal basis\n\n1. User and Device Data\nWe will never have any knowledge of, or have access to, your personal data, unless you contact us using the Sphereon contact-form or the email address provided in the App."
+        "tab_title": "Privacybeleid",
+        "text": "Sphereon biedt je de Sphereon Wallet mobiele App ('App'), die je kunt downloaden en installeren op je mobiele apparaat.\n\nDe bescherming van persoonsgegevens is zeer belangrijk voor Sphereon. Of er persoonsgegevens worden verzameld bij het gebruik van de App en voor welk doel deze worden verwerkt, wordt uitgelegd in de volgende gegevensbeschermingsverklaring. Verwerking in deze zin betekent elke vorm van gebruik van de gegevens, bijvoorbeeld verzameling, registratie, opslag, overdracht, presentatie en verwijdering.\n\nPersoonsgegevens worden alleen verwerkt voor zover nodig voor communicatie met de gebruiker. We volgen het principe van gegevensminimalisatie en voldoen aan alle toepasselijke wettelijke bepalingen voor de bescherming van persoonsgegevens en gegevensbeveiliging. Specifiek worden de corresponderende gegevens alleen verwerkt als er een wettelijke basis is.\n\nDe wettelijke basis voor gegevensverwerking is de EU Algemene Verordening Gegevensbescherming, meer bepaald: Art. 6 Par. 1 (a), Art. 7, Art. 6 Par. 1 (b) en (f), en Art. 6 Par. 1 (c) van EU 2016/679 (hierna 'AVG').\n\nI. Naam en contactgegevens van de verantwoordelijke entiteit\nDe verantwoordelijke in de zin van Art. 4 AVG voor de verwerking van persoonsgegevens is:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nNederland\ninfo@sphereon.com\n\n2. Soort verwerkte gegevens, doel van de verwerking, juridische basis\n\n1. Gebruikers- en Apparaatgegevens\nWij zullen nooit enige kennis hebben van, of toegang hebben tot, jouw persoonsgegevens, tenzij je contact met ons opneemt via het Sphereon contactformulier of het e-mailadres vermeld in de App."
       }
     },
     "import_data_consent": {
-      "title": "Do you want to add this information?",
-      "subtitle": "The personal information is very important to have in your wallet. Are you sure you want to add the information?",
+      "title": "Wil je deze informatie toevoegen?",
+      "subtitle": "De persoonlijke informatie is erg belangrijk om in je wallet te hebben. Weet je zeker dat je de informatie wilt toevoegen?",
       "pid_provider_title": "PID Provider",
-      "pid_provider_subheading": "Personal Identification Data Provider",
-      "offered_data_title": "PID Provider",
+      "pid_provider_subheading": "Aanbieder van persoonlijke identificatiegegevens",
+      "offered_data_title": "Aangeboden gegevens",
       "labels": {
-        "given_name": "Given name",
-        "family_name": "Family name",
-        "also_known_as": "Also known as",
-        "gender": "Gender",
-        "birthdate": "Birth date",
-        "birthplace": "Place of birth",
-        "nationality": "Nationality",
-        "address": "Address"
+        "given_name": "Voornaam",
+        "family_name": "Achternaam",
+        "also_known_as": "Ook bekend als",
+        "gender": "Geslacht",
+        "birthdate": "Geboortedatum",
+        "birthplace": "Geboorteplaats",
+        "nationality": "Nationaliteit",
+        "address": "Adres"
       },
-      "button_accept": "Yes, I want to add this",
-      "button_decline": "Not everything is correct"
+      "button_accept": "Ja, ik wil dit toevoegen",
+      "button_decline": "Afwijzen"
     },
     "import_scan_card": {
-      "title": "Have your Ausweis card ready for the next steps",
-      "description": "Enter the eID pin and scan your card to import the data to your wallet.\n\nBy holding your card to the back of the phone and press start reading your card.",
-      "button_caption": "Start reading your card"
+      "title": "Zorg dat je Ausweis-kaart klaar is",
+      "description": "Begin met het invoeren van de eID-pin van je Ausweis-kaart.",
+      "nfc_step_title": "Houd nu de kaart tegen de achterkant van de telefoon",
+      "button_caption": "Begin met het invoeren van eID PIN",
+      "nfc_caption": "De NFC-scanner wordt binnenkort geactiveerd..."
     }
   },
-
-  "pid_security_model_warning": "EID can will only loaded during presentation",
-
-  "import_data_auth_title": "Enter your Sphereon PIN ",
-  "import_data_auth_next": "Continue",
-
-  "import_data_auth_biometrics_title": "Athenticate with Biometrics",
-  "import_data_auth_failure_title": "Biometric authentication has failed, we didn't recognize you",
-  "import_data_auth_failure_description": "You can’t continue at this point. The only way to finish the task you were doing, is by starting from the beginning. Close the app and reopen to restart the onboarding.",
-
-  "import_data_auth_step_title": "Enter your sphereon pin",
-  "import_data_consent_button_accept": "Yes, that's me",
-  "import_data_consent_button_decline": "Not everything is correct",
-  "import_data_loader_step_title": "One moment",
-  "import_data_loader_step_subtitle": "Getting your personal information.",
-
-  "import_data_final_step_title": "Your information is imported. Is it all correct?",
-
-  "import_data_setup_complete_title": "Setup complete",
-
-  "incorrect_data_title": "Are some of your details incorrect?",
-  "incorrect_data_description": "If your personal information is incorrect, it can cause problems. Therefore do not add this data.",
-  "incorrect_data_bullet_content_heading": "What can you do",
-  "incorrect_data_bullet_content": "Contact your municipality to have your informaiton changed.\nWait for a message from your municipality confirming the update.\nTry to add the personal information again. You can find it in the catalog.",
-  "incorrect_data_back": "Back",
-  "incorrect_data_dont_add_info": "Don't add this information",
-  "incorrect_data_after_bullet_heading": "If it's not yours",
-  "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
-
-  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
-  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
-  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
-  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
-  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
-  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
-  "onboarding_esim_enter_details_continue": "Continue",
-  "onboarding_esim_enter_details_back": "Back",
-
-  "import_data_title": "Import personal data",
-
-  "onboarding_complete_title": "All done!",
-  "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
-  "onboarding_complete_next": "Start exploring my Wallet",
-
-  "onboard_summary_title": "Uw ingevulde gegevens",
-  "onboard_summary_subtitle": "Als je op voltooien drukt, accepteer je de gegevens die je hebt ingevoerd en ga je verder naar het inlogscherm. De persoonlijke gegevens kunnen worden gewijzigd in de instellingen.",
-  "onboard_summary_info_tab_header_label": "Uw gegevens",
-  "onboard_summary_button_caption": "Voltooi en ga naar mijn wallet",
-  "browser_open_header": "Browser openen",
-  "browser_open_auth_title": "Authenticatie vereist",
-  "browser_open_auth_body": "De vragebde oartij vereist authenticatie. Uw standaard browser zal hiervoor gebruikt worden",
-  "browser_open_action_next_label": "Open browser",
+  "onboard_summary_title": "Jouw ingevoerde gegevens",
+  "onboard_summary_subtitle": "Wanneer je op voltooien drukt, accepteer je de ingevoerde gegevens en ga je door naar het inlogscherm. De persoonlijke gegevens kunnen in de instellingen worden gewijzigd.",
+  "onboard_summary_info_tab_header_label": "Jouw informatie",
+  "onboard_summary_button_caption": "Voltooien en naar mijn wallet gaan",
   "credentials_required_title": "Vereiste credentials",
-  "credentials_required_subtitle": "{{verifierName}} wil graag de volgende informatie van u ontvangen ter verificatie.",
+  "credentials_required_subtitle": "{{verifierName}} wil de volgende informatie van jou ontvangen voor verificatie.",
   "credentials_required_selected_label": "geselecteerd",
   "credentials_required_available_label": "beschikbaar",
   "credentials_required_credential_select_label": "Selecteer een credential",
   "credentials_select_title": "Selecteer credentials",
-  "credentials_select_subtitle": "Je hebt meer dan één credential die aan dit verzoek kan voldoen. Kies er één om naar de verificateur te sturen.",
-  "credentials_required_checking_label": "...bezig",
+  "credentials_select_subtitle": "Je hebt meer dan één credential die aan dit verzoek kan voldoen. Kies er een om naar de verificateur te sturen.",
+  "credentials_required_checking_label": "...controleren",
   "credentials_required_no_available_label": "Er is geen geschikte credential",
-  "credentials_required_no_available_additional_label": "Je hebt geen credential om te delen met de verificateur. Neem contact op met een uitgever om een nieuwe credential uit te geven.",
-  "action_share_label": "Deel",
+  "credentials_required_no_available_additional_label": "Je hebt geen credential om met de verificateur te delen. Neem contact op met een uitgever om een nieuwe credential uit te geven.",
+  "action_share_label": "Delen",
   "credentials_share_success_toast_title": "Succesvol gedeeld",
-  "credentials_share_success_toast_message": "Je hebt je geselecteerde credentials met succes gepresenteerd aan {{verifierName}}.",
-  "action_select_label": "Selecteer",
-  "action_onboarding_setup_message": "Opzetten van wallet...",
-  "action_getting_information_message": "Ophalen informatie...",
-  "action_sharing_credentials_message": "Delen credentials...",
-  "profile_logout_action_caption": "Log uit",
-  "action_getting_credentials_message": "Ophalen credential...",
+  "credentials_share_success_toast_message": "Je hebt succesvol je geselecteerde credentials gepresenteerd aan {{verifierName}}.",
+  "action_select_label": "Selecteren",
+  "action_onboarding_setup_message": "Wallet instellen...",
+  "action_getting_information_message": "Informatie ophalen...",
+  "action_sharing_credentials_message": "Credentials delen...",
+  "profile_logout_action_caption": "Uitloggen",
+  "action_getting_credentials_message": "Credential ophalen...",
   "credentials_share_failed_toast_message": "Kan credentials niet presenteren. Fout: {{errorMessage}}.",
   "information_retrieve_failed_toast_message": "Kan informatie niet ophalen. Fout: {{errorMessage}}.",
-  "credential_verification_failed_message": "Verificatie van de credential leidde tot een fout.",
-  "credential_offer_title": "Credential aanbod",
-  "credential_sign_title": "Onderteken verzoek",
+  "credential_verification_failed_message": "De verificatie van de credential resulteerde in een fout.",
+  "credential_offer_title": "Credential aanbieding",
+  "credential_sign_title": "Handtekening gevraagd",
   "profile_delete_wallet_action_caption": "Wallet verwijderen",
-  "profile_delete_wallet_action_title": "Weet je zeker dat je de wallet wilt verwijderen?",
-  "profile_delete_wallet_action_subtitle": "Weet je zeker dat je de wallet wilt verwijderen: {{userName}}?",
-  "oid4vci_machine_initiation_error_title": "Initiëren OID4VCI provider",
+  "profile_delete_wallet_action_title": "Weet je zeker dat je je wallet wilt verwijderen?",
+  "profile_delete_wallet_action_subtitle": "Weet je zeker dat je je wallet: {{userName}} wilt verwijderen?",
+  "credential_status_never_expires_date_label": "Verloopt nooit",
+  "oid4vci_machine_initiation_error_title": "OID4VCI provider starten",
   "oid4vci_machine_credential_selection_error_title": "Credential selectie",
-  "oid4vci_machine_retrieve_contact_error_title": "Ophalen contact",
-  "oid4vci_machine_retrieve_credentials_error_title": "Ophalen credential",
-  "oid4vci_machine_verify_credentials_error_title": "Verifiëren credential",
-  "oid4vci_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
-  "oid4vci_machine_store_credential_branding_error_title": "Opslaan credential branding",
-  "oid4vci_machine_store_credential_error_title": "Opslaan credential",
+  "oid4vci_machine_retrieve_contact_error_title": "Contact ophalen",
+  "oid4vci_machine_retrieve_credentials_error_title": "Credentials ophalen",
+  "oid4vci_machine_verify_credentials_error_title": "Credentials verifiëren",
+  "oid4vci_machine_add_contact_identity_error_title": "Contactidentiteit toevoegen",
+  "oid4vci_machine_store_credential_branding_error_title": "Credential branding opslaan",
+  "oid4vci_machine_store_credential_error_title": "Credential opslaan",
   "emergency_send_button_caption": "Activeer nu!",
-  "emergency_abort_button_caption": "Alarm afbreken",
-  "emergency_title": "Stuur een noodwaarschuwing",
-  "emergency_subtitle": "Uw noodoproep wordt over {{emergencyAlertDelay}} seconden verzonden, of u kunt deze onmiddellijk activeren door op de knop Activeer nu! te klikken.",
+  "emergency_abort_button_caption": "Alarm annuleren",
+  "emergency_title": "Noodmelding verzenden",
+  "emergency_subtitle": "Je noodsignaal wordt verzonden in {{emergencyAlertDelay}} seconden, of je kunt het onmiddellijk activeren door op de knop 'Activeer nu!' te klikken.",
   "siopV2_machine_identifier_error_title": "Identifier ophalen",
-  "siopV2_machine_create_config_error_title": "SiopV2 configuratie maken",
-  "siopV2_machine_get_request_error_title": "SiopV2 verzoek ophalen",
-  "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
-  "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
-  "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden",
-  "siopV2_machine_retrieve_federation_trust_error_title": "Ophalen federatievertrouwen",
+  "siopV2_machine_create_config_error_title": "SiopV2-configuratie aanmaken",
+  "siopV2_machine_get_request_error_title": "SiopV2-verzoek ophalen",
+  "siopV2_machine_retrieve_contact_error_title": "Contact ophalen",
+  "siopV2_machine_add_contact_identity_error_title": "Contactidentiteit toevoegen",
+  "siopV2_machine_send_response_error_title": "SiopV2-respons verzenden",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Federatievertrouwen ophalen",
   "action_view_all_label": "Alles bekijken",
   "filter_all_label": "Alles bekijken",
   "filter_other_label": "Overige",
   "filter_new_label": "Nieuw",
   "search_field_default_caption": "Zoeken",
-  "credential_catalog_most_relevant_header_label": "Meest relevante certificaten",
-  "credential_catalog_discover_header_label": "Ontdek meer certificaten",
+  "credential_catalog_most_relevant_header_label": "Meest relevante credentials",
+  "credential_catalog_discover_header_label": "Ontdek meer credentials",
   "ausweis_eid_preview_card_title": "Ausweis eID",
-  "ausweis_eid_preview_card_description": "Uw persoonlijke gegevens van de nationale eID-provider Ausweis.",
+  "ausweis_eid_preview_card_description": "Je persoonlijke informatie van de nationale eID-aanbieder Ausweis.",
   "ausweis_eid_preview_card_issuer": "Duitse Bundesdruckerei",
-  "ausweis_eid_modal_title": "Verkrijg de Ausweis eID-gegevens",
-  "ausweis_eid_modal_description": "De Persoonsidentificatiegegevens vormen de basis van uw wallet en zijn daarom erg belangrijk om andere certificaten te kunnen verkrijgen.\n\nWeet u zeker dat u deze informatie in uw wallet wilt opslaan?",
+  "ausweis_eid_modal_title": "Haal de Ausweis eID-gegevens",
+  "ausweis_eid_modal_description": "De persoonsidentificatiegegevens zijn de basis van je wallet en daarom erg belangrijk om andere credentials te kunnen verkrijgen.\n\nWeet je zeker dat je deze informatie in je wallet wilt?",
   "ausweis_eid_modal_accept_label": "Persoonlijke informatie importeren",
   "action_maybe_later_label": "Misschien later",
-  "item_not_yet_available_message": "Dit item is nog niet beschikbaar.",
-  "onboarding_machine_store_credential_error_title": "Opslaan credential",
-  "onboarding_machine_retrieve_credentials_error_title": "Ophalen credentials",
-  "onboarding_skip_credential_import_step3_caption": "Ik zal dit gedeelte later afmaken",
-  "onboarding_store_credential_branding_error_title": "Opslaan credential branding",
-  "share_credential_c2_flow_title": "The following information will be shared",
-  "new_contact_add_new_contact_detected_title": "Herken je {{partyName}}?",
-  "new_contact_add_new_contact_detected_subtitle": "Dit is de eerste interactie met deze partij. Wil je doorgaan?",
+  "item_not_yet_available_message": "Dit item is momenteel nog niet beschikbaar.",
+  "onboarding_machine_store_credential_error_title": "Credential opslaan",
+  "onboarding_machine_retrieve_credentials_error_title": "Credentials ophalen",
+  "onboarding_skip_credential_import_step3_caption": "Ik zal dit gedeelte later afronden",
+  "onboarding_store_credential_branding_error_title": "Credential branding opslaan",
+  "share_credential_c2_flow_title": "De volgende informatie zal worden gedeeld",
+  "new_contact_add_new_contact_detected_title": "Herken je {{partyName}}",
+  "new_contact_add_new_contact_detected_subtitle": "Dit is een eerste interactie met deze partij. Wil je doorgaan?",
   "federation_view_untrusted_title": "{{partyName}} heeft een laag vertrouwensniveau",
   "federation_view_trusted_title": "{{partyName}} heeft een hoog vertrouwensniveau",
   "federation_view_untrusted_description": "De partij maakt geen deel uit van een federatie die door de wallet wordt vertrouwd",
@@ -534,22 +547,23 @@
   "new_contact_add_new_contact_continue_caption": "Ja, doorgaan",
   "new_contact_add_new_contact_abort_caption": "Nee, afbreken",
   "new_contact_add_new_contact_abort_cancel_caption": "Nee, annuleren",
-  "new_contact_add_new_contact_abort_continue_caption": "Ja, ik wil stoppen",
-  "new_contact_add_new_contact_create_title": "Contact aliasnaam",
-  "new_contact_add_new_contact_create_description": "Je kunt een aliasnaam voor het contact aanmaken door een nieuwe naam in het tekstveld hieronder in te voeren.",
-  "new_contact_add_new_contact_abort_title": "Weet je zeker dat je wilt stoppen?",
-  "new_contact_add_new_contact_abort_description": "Als je stopt, betekent dit dat je het interactieproces met {{partyName}} zal beëindigen.",
+  "new_contact_add_new_contact_abort_continue_caption": "Ja, ik wil afbreken",
+  "new_contact_add_new_contact_create_title": "Contact Aliasnaam",
+  "new_contact_add_new_contact_create_description": "Je kunt een aliasnaam voor het contact aanmaken door een nieuwe naam in het onderstaande tekstveld in te voeren.",
+  "new_contact_add_new_contact_abort_title": "Weet je zeker dat je wilt afbreken?",
+  "new_contact_add_new_contact_abort_description": "Als je afbreekt, betekent dit dat je het interactieproces met {{partyName}} stopt.",
   "new_contact_add_new_contact_contact_details_description_label": "Beschrijving",
   "new_contact_add_new_contact_contact_details_name_label": "Naam",
   "new_contact_add_new_contact_contact_details_website_label": "Website",
   "new_contact_add_new_contact_contact_details_tos_label": "Servicevoorwaarden",
   "new_contact_add_new_contact_contact_details_policy_label": "Privacybeleid",
   "new_contact_add_new_contact_contact_details_contacts_label": "Contacten",
-  "new_contact_add_new_contact_low_level_trust_title": "Weet u zeker dat u wilt doorgaan?",
-  "new_contact_add_new_contact_low_level_trust_description": "U staat op het punt om te communiceren met een partij met een laag betrouwbaarheidsniveau.",
-
-  "present_qr_code_screen_header_title": "Present QR code",
-  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",
-  "present_qr_code_dropdown_item_text": "Present QR code",
-  "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest."
+  "new_contact_add_new_contact_low_level_trust_title": "Weet je zeker dat je wilt doorgaan?",
+  "new_contact_add_new_contact_low_level_trust_description": "Je gaat interageren met een partij die een laag vertrouwensniveau heeft.",
+  "present_qr_code_screen_header_title": "Presenteer QR-code",
+  "present_qr_code_screen_subtitle": "Toon de QR-code aan de geïnteresseerde partij. Zo kunnen zij jouw QR-code scannen.",
+  "present_qr_code_dropdown_item_text": "Presenteer QR-code",
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigeer naar een scherm dat de QR-code toont"
 }
+
+

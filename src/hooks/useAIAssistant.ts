@@ -7,23 +7,30 @@ import {RootState} from 'src/types';
 import {ChatTools} from '../components/chat/Chat';
 import {basicInstructions, reopenChatPrompt} from '../instructions';
 import {navigationRef} from '../navigation/rootNavigation';
+import {stringifyState} from '../utils/stringifyState';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
-import {stringifyState} from '../utils/stringifyState';
 
 export type ChatMode = 'text' | 'voice';
+
+console.log('==============================');
+console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 10) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
+console.log('==============================');
+
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
   const state = useSelector((state: RootState) => state);
   const [items, setItems] = useState<ItemType[]>([]);
-  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
-  const [ignoreTools, setIgnoreTools] = useState(false);
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
+  const apiKey = process.env.EXPO_OPENAI_API_KEY ?? OPENAI_API_KEY
+  if (!apiKey) {
+    throw Error('OPENAI_API_KEY is not set. Chatbot not available')
+  }
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
-      apiKey: OPENAI_API_KEY,
+      apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
     }),
   );
@@ -89,10 +96,17 @@ const useAIAssistant = () => {
 
       client.on('conversation.updated', async ({item, delta}: any) => {
         const items = client.conversation.getItems();
-        if (delta?.audio && chatMode === 'voice') {
-          wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+        if (item.status === 'completed') {
+          setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          if (item.role === 'user') {
+            await wavStreamPlayer.interrupt();
+          }
+        } else {
+          // can decrease to debounce
+          if (Math.random() < 1) {
+            setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          }
         }
-        setItems(items.reverse().filter(item => item.type !== 'function_call'));
       });
 
       client.on('response.created', async ({response}: any) => {
@@ -131,11 +145,6 @@ const useAIAssistant = () => {
     wavStreamPlayer.interrupt();
   }, []);
 
-  const deleteConversationItem = useCallback(async (id: string) => {
-    const client = clientRef.current;
-    client.deleteItem(id);
-  }, []);
-
   useEffect(() => {
     return () => {
       console.log('resetting convo');
@@ -156,6 +165,7 @@ const useAIAssistant = () => {
     console.log('route', route);
 
     client.updateSession({
+      input_audio_transcription: {model: 'whisper-1'},
       instructions: `
           # general instructions:
           ${basicInstructions}
@@ -183,36 +193,7 @@ const useAIAssistant = () => {
     updateSession({screenContext});
     clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
   };
-  const startVoiceRecording = async () => {
-    const wavRecorder = wavRecorderRef.current;
-    await wavRecorder.startRecording();
-    setIsVoiceRecording(true);
-  };
 
-  const endVoiceRecording = async () => {
-    setIsVoiceRecording(false);
-    const wavRecorder = wavRecorderRef.current;
-    const client = clientRef.current;
-    const filePath = await wavRecorder.stopRecording();
-    // if (!base64) return;
-    // const int16Array = RealtimeUtils.base64ToArrayBuffer(base64);
-    // // console.log('int16Array', int16Array);
-    // // if (!int16Array) return;
-
-    // // wavStreamPlayerRef.current.add16BitPCM(int16Array, 'user-audio');
-
-    // // make chunks of 2400 samples
-    // const chunkSize = 2400;
-    // const chunks = [];
-    // for (let i = 0; i < int16Array.byteLength; i += chunkSize) {
-    //   chunks.push(int16Array.slice(i, i + chunkSize));
-    // }
-    // chunks.forEach(chunk => {
-    // client.appendInputAudio(chunk);
-    // });
-
-    client.createResponse();
-  };
   const enableVoiceMode = () => {
     setChatMode('voice');
     connectVoice();
@@ -236,13 +217,29 @@ const useAIAssistant = () => {
     wavStreamPlayerRef.current.add16BitPCM(int16Array, 'assistant-audio');
   };
 
-  const addTools = (tools: ChatTools) => tools?.forEach(({tool, callback}) => {
-    clientRef.current.addTool(tool, callback);
-  });
+  const addTools = (tools: ChatTools) =>
+    tools?.forEach(({tool, callback}) => {
+      clientRef.current.addTool(tool, callback);
+    });
 
-  const removeTools = (tools: ChatTools) => tools?.forEach(({tool}) => {
-    clientRef.current.removeTool(tool.name);
-  })
+  const removeTools = (tools: ChatTools) =>
+    tools?.forEach(({tool}) => {
+      try {
+        clientRef.current.removeTool(tool.name);
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+  const sendAudio = async (audio: string) => {
+    if (!isConnected) {
+      await connectConversation(false);
+    }
+    clientRef.current?.realtime.send('input_audio_buffer.append', {audio});
+    clientRef.current?.realtime.send('input_audio_buffer.commit', {});
+
+    clientRef.current.createResponse();
+  }
 
   return {
     isConnected,
@@ -253,16 +250,13 @@ const useAIAssistant = () => {
     chatMode,
     enableVoiceMode,
     enableTextMode,
-    isVoiceRecording,
-    startVoiceRecording,
-    endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
     addTools,
     removeTools,
     handleChatOpened,
     speakMessage,
-    ignoreTools,
+    sendAudio
   };
 };
 

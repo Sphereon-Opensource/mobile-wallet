@@ -23,19 +23,16 @@ export interface IProps {
 
 const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
   const {item, index} = props;
-
   const valueIsArray = Array.isArray(item.value);
-
   const validURL = useMemo(() => parseValidURL(item.value), [item.value]);
 
-  const onPressLink = () => {
-    if (!validURL) return;
-    const valueWithPrefix = checkAndAddHTTPPrefix(item.value);
+  const onPressLink = (url: string) => {
+    const valueWithPrefix = checkAndAddHTTPPrefix(url);
     return Linking.canOpenURL(valueWithPrefix)
-      .then(canOpen => {
-        if (canOpen) Linking.openURL(valueWithPrefix).catch(e => console.log('Failed to open: ' + item.value));
-      })
-      .catch(e => console.log('SSITextField: unable to open weblink ' + item.value));
+    .then(canOpen => {
+      if (canOpen) Linking.openURL(valueWithPrefix).catch(e => console.log('Failed to open: ' + url));
+    })
+    .catch(e => console.log('SSITextField: unable to open weblink ' + url));
   };
 
   return (
@@ -53,11 +50,14 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
         disabled={!item.isEditable}
         style={{...(valueIsArray && {flexDirection: 'column'})}}
         {...(item.onPress && {onPress: item.onPress})}>
-        {valueIsArray && item.value.map((v: string) => <ContentText style={{marginLeft: 25}}>{v}</ContentText>)}
+        {valueIsArray && item.value.map((v: string, index: number) => {
+          const validURL = parseValidURL(v)
+          return <ContentText onPress={() => onPressLink(v)} accessibilityRole={validURL ? 'link' : 'text'} key={index} style={{textDecorationLine: validURL ? 'underline' : 'none', marginLeft: 25}}>{v}</ContentText>
+        })}
         {!valueIsArray && (
           <ContentText
             accessibilityRole={validURL ? 'link' : 'text'}
-            onPress={onPressLink}
+            {...(validURL && {onPress: () => onPressLink(item.value)})}
             style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
             {item.value}
           </ContentText>

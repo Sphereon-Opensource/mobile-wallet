@@ -26,7 +26,7 @@ import { APP_ID } from "../../@config/constants";
 import agent, { agentContext, didMethodsSupported, didResolver } from "../../agent";
 import { generateDigest } from "../../utils";
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
-import DocumentCbor = com.sphereon.mdoc.data.device.DocumentCbor
+import DeviceResponseCbor = com.sphereon.mdoc.data.device.DeviceResponseCbor
 import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor
 import decodeFrom = com.sphereon.kmp.decodeFrom;
 import Encoding = com.sphereon.kmp.Encoding;
@@ -122,7 +122,7 @@ const createMDocPresentation = async (
 
 
   const presentations = [
-    DocumentCbor.Static.cborDecode(decodeFrom(presentation.vp_token, Encoding.BASE64URL)) as unknown as OriginalVerifiablePresentation,
+     presentation.vp_token as OriginalVerifiablePresentation,
   ];
 
   return {
@@ -131,7 +131,7 @@ const createMDocPresentation = async (
     // @ts-ignore  FIXME Funke
     verifiablePresentations: presentations,
     idOpts: identifier,
-    presentationSubmission: presentation.presentation_submission/* {
+    presentationSubmission: {
       id: presentationSubmission.id,
       definition_id: presentationSubmission.definition_id,
       descriptor_map: presentationSubmission.descriptor_map.map(descriptor => {
@@ -141,7 +141,7 @@ const createMDocPresentation = async (
           format: descriptor.format
         };
       })
-    }*/
+    }
   };
 };
 // FIX Funke END of temp code
