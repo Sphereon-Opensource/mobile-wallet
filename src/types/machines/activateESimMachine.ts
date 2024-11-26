@@ -11,7 +11,7 @@ import {
 } from 'xstate';
 import {SscdInfo} from '@sphereon/musap-react-native';
 import {ReactNode} from 'react';
-import {storageDeleteCoupledWithCode} from '../../services/storageService';
+import {ErrorDetails} from '../error';
 
 export type CreateESIMActivationMachineOpts = {
   machineId?: string;
@@ -25,7 +25,7 @@ export type ESIMActivationMachineContext = {
   couplingCode?: string;
   coupledWithCode?: string;
   sscdInfo?: SscdInfo;
-  error?: Error;
+  error?: ErrorDetails;
 };
 
 export type ESIMActivationMachineState = State<

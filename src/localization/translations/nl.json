@@ -436,6 +436,15 @@
   "incorrect_data_after_bullet_heading": "If it's not yours",
   "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
 
+  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
+  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
+  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
+  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
+  "onboarding_esim_enter_details_continue": "Continue",
+  "onboarding_esim_enter_details_back": "Back",
+
   "import_data_title": "Import personal data",
 
   "onboarding_complete_title": "All done!",

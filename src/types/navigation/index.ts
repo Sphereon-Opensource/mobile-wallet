@@ -121,6 +121,18 @@ export type ShareStackParamList = {
   QrPresentation: Record<string, never>;
 };
 
+export type ESIMActivationStackParamList = {
+  EnterESimDetails: {
+    onBack: () => Promise<void>
+    onNext: () => Promise<void>
+    onSetMsisdn: (msisdn: string) => Promise<void>
+    onSetCouplingCode: (couplingCode: string) => Promise<void>
+    msisdn?: string
+    coupledWithCode?: string
+  }
+  Error: IPopupModalProps & Partial<IHasOnBackProps>
+};
+
 // export interface IImportDataConsentProps {
 //   onAccept?: () => Promise<void>;
 // }
@@ -334,8 +346,9 @@ export enum SwitchRoutesEnum {
 export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
-  POPUP_MODAL = 'PopupModal',
   AUSWEIS_MODAL = 'AusweisModal',
+  ACTIVATE_ESIM = 'ACTIVATE_ESIM',
+  POPUP_MODAL = 'PopupModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
