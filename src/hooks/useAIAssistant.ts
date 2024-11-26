@@ -95,9 +95,7 @@ const useAIAssistant = () => {
         const items = client.conversation.getItems();
         if (item.status === 'completed') {
           setItems(items.reverse().filter(item => item.type !== 'function_call'));
-          if (item.role === 'assistant' && item.formatted.audio?.length) {
-            wavStreamPlayer.add16BitPCM(item.formatted.audio, item.id);
-          } else if (item.role === 'user') {
+          if (item.role === 'user') {
             await wavStreamPlayer.interrupt();
           }
         } else {
