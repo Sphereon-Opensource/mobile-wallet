@@ -32,6 +32,8 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
 
+  const hasNoMatches = credentials.length === 0;
+
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
 
   const storeCredentialMap = useMemo(() => {
@@ -113,16 +115,18 @@ export const CredentialSelectView = (props: CredentialSelectViewProps) => {
         ))}
       </ScrollView>
       <View style={{flexDirection: 'row', gap: 10, justifyContent: 'space-between', marginBottom: 16}}>
-        <SSITextH3LightStyled numberOfLines={1} style={{flex: 1}}>
+        <SSITextH3LightStyled numberOfLines={1} style={{flex: 1, ...(hasNoMatches && {color: '#D74500'})}}>
           {/* {selectedCredential ? verifier?.contact?.displayName : 'Select a credential'} */}
           {selectedCredential
             ? storeCredentialMap.get(selectedCredential.hash)?.branding?.alias ?? storeCredentialMap?.get(selectedCredential.hash)?.title
+            : hasNoMatches
+            ? 'No Available Credentials'
             : 'Select a credential'}
         </SSITextH3LightStyled>
         <Pressable onPress={onToggleAccordion} style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
           <SSITextH5Styled style={{color: selectedCredential ? '#0B81FF' : fontColors.light}}>
             {/* Not sure where this "1" refers to */}
-            {selectedCredential ? 1 : 0} selected
+            {hasNoMatches ? '0 available' : `${selectedCredential ? 1 : 0} selected`}
           </SSITextH5Styled>
           <Animated.View style={[chevronStyles, {marginTop: 1}]}>
             <ChevronIcon size={16} color={backgroundColors.primaryLight} />

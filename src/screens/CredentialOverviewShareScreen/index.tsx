@@ -2,13 +2,15 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
 import {
   PrimaryButton,
-  SecondaryButton, SSICheckmarkBadge,
+  SecondaryButton,
+  SSICheckmarkBadge,
   SSILogo as Logo,
   SSITextH3LightStyled,
-  SSITextH4LightStyled, SSITextH7LightStyled
-} from '@sphereon/ui-components.ssi-react-native'
+  SSITextH4LightStyled,
+  SSITextH7LightStyled,
+} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useState} from 'react';
-import { TouchableOpacity, View } from 'react-native'
+import {TouchableOpacity, View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
@@ -21,8 +23,8 @@ import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {CredentialSelectView} from '../../components/views/CredentialSelectView';
-import ArrowIcon from '../../components/assets/icons/ArrowIcon'
-import { Party } from '@sphereon/ssi-sdk.data-store'
+import ArrowIcon from '../../components/assets/icons/ArrowIcon';
+import {Party} from '@sphereon/ssi-sdk.data-store';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -77,14 +79,17 @@ const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credentials, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
 
+  const input_descriptors = presentationDefinition.input_descriptors;
+
   const credsPerInputDescriptor = useMemo(
-    () => matchCredsWithInputDescriptors(credentials, presentationDefinition.input_descriptors),
-    [credentials, presentationDefinition],
+    //@ts-ignore
+    () => matchCredsWithInputDescriptors(credentials, input_descriptors),
+    [credentials, input_descriptors],
   );
 
   //FIXME Funke, make this support multi credential selection per input descriptor
   const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
-    presentationDefinition.input_descriptors.reduce(
+    input_descriptors.reduce(
       (prev, curr) => ({
         ...prev,
         [curr.id]: null,
@@ -127,16 +132,14 @@ const SelectOverviewShareScreen = (props: Props) => {
     </View>
   );
 
-
   const onPressRP = async (): Promise<void> => {
     props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: verifier});
   };
 
-
   return (
     <ScreenContainer footer={footer} style={{paddingHorizontal: 0}}>
       <View style={{paddingHorizontal: 20, paddingTop: 20}}>
-        <RelyingPartyView party={verifier} onPress={onPressRP}/>
+        <RelyingPartyView party={verifier} onPress={onPressRP} />
       </View>
       <View style={{paddingHorizontal: 16}}>
         {presentationDefinition.purpose && (
@@ -147,19 +150,23 @@ const SelectOverviewShareScreen = (props: Props) => {
             </ProviderDescription>
           </ProviderContainer>
         )}
-        <SSITextH2SemiBoldLightStyled style={{marginTop: 10}}>The following information will be shared</SSITextH2SemiBoldLightStyled>
       </View>
-      {presentationDefinition.input_descriptors.map(inputDescriptor => (
-        <CredentialSelectView
-          style={{marginTop: 5}}
-          key={inputDescriptor.purpose}
-          credentials={credsPerInputDescriptor.get(inputDescriptor.id) ?? []}
-          onSelect={(credential: UniqueDigitalCredential) => {
-            selectCredential(inputDescriptor.id, credential);
-          }}
-          purpose={inputDescriptor.purpose}
-          verifier={verifier}
-        />
+      {input_descriptors.map((inputDescriptor, idx) => (
+        <>
+          <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
+            {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}
+          </SSITextH2SemiBoldLightStyled>
+          <CredentialSelectView
+            style={{marginTop: 5}}
+            key={inputDescriptor.purpose}
+            credentials={credsPerInputDescriptor.get(inputDescriptor.id) ?? []}
+            onSelect={(credential: UniqueDigitalCredential) => {
+              selectCredential(inputDescriptor.id, credential);
+            }}
+            purpose={inputDescriptor.purpose}
+            verifier={verifier}
+          />
+        </>
       ))}
     </ScreenContainer>
   );
