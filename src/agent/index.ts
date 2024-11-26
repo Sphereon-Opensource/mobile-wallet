@@ -1,8 +1,12 @@
+import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
+
+import {com} from '@sphereon/kmp-mdoc-core';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
+import {CoseCryptoService} from '@sphereon/ssi-sdk.mdl-mdoc/dist/functions';
 import {createAgent} from '@veramo/core';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
@@ -10,9 +14,9 @@ import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
-import {createAgentPlugins} from './plugins';
 import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
-import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd'
+import {createAgentPlugins} from './plugins';
+import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
 
 export const didResolver = new Resolver({
   ...getDidEbsiResolver(),
@@ -46,3 +50,5 @@ const agent = createAgent<TAgentTypes>({
 
 export default agent;
 export const agentContext: IRequiredContext = {...agent.context, agent};
+
+DefaultCallbacks.setCoseCryptoDefault(new CoseCryptoService(agentContext));
