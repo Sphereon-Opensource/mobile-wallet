@@ -131,6 +131,13 @@ android {
             useLegacyPackaging (findProperty('expo.useLegacyPackaging')?.toBoolean() ?: false)
         }
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'com.squareup.okio:okio:3.0.0'
+            force 'com.squareup.okio:okio-jvm:3.0.0'
+        }
+    }
 }
 
 // Apply static values from `gradle.properties` to the `android.packagingOptions`
@@ -155,11 +162,12 @@ android {
 
 // Access to MUSAP Maven artifacts
 repositories {
+    mavenLocal()
     maven {
-        url "$rootDir/../node_modules/@sphereon/musap-native/android/maven"
+        url uri(new File("$rootDir/../node_modules/@sphereon/musap-native/android/maven").absolutePath)
     }
     maven {
-        url "$rootDir/../node_modules/@sphereon/musap-react-native/android/maven"
+        url uri(new File("$rootDir/../node_modules/@sphereon/musap-react-native/android/maven").absolutePath)
     }
 }
 
@@ -168,7 +176,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
-    implementation("com.sphereon.musap:musap-react-native:0.1.0")
+    implementation("com.sphereon.musap:musap-react-native:0.2.0")
 
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
