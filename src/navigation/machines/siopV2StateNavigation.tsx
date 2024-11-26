@@ -33,6 +33,7 @@ import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {getMatchingCredentials} from '../../services/pexService';
 import agent from '../../agent';
 import {OID4VCIMachineEvents, OID4VCIMachineNavigationArgs} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -183,6 +184,7 @@ const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise
 
 const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onNext, onBack} = args;
+
   const {contact, authorizationRequestData} = state.context;
 
   if (contact === undefined) {
@@ -232,39 +234,49 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     }, 600);
   };
 
+  const creds = await getVerifiableCredentialsFromStorage({parentsOnly: false});
   //fixme: we should pass the hasher function here from the RP
-  const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  // const matchingCredentials = await getMatchingCredentials({presentationDefinitionWithLocation});
+  navigation.navigate(MainRoutesEnum.SIOPV2, {
+    screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+    params: {
+      verifier: contact,
+      presentationDefinition: presentationDefinitionWithLocation.definition,
+      credentials: creds,
+      onDecline,
+      onSelectAndSend,
+    },
+  });
   // if (matchingCredentials && matchingCredentials.length === 1) {
-  if (matchingCredentials) {
-    navigation.navigate(MainRoutesEnum.SIOPV2, {
-      screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
-      params: {
-        verifier: contact,
-        presentationDefinition: presentationDefinitionWithLocation.definition,
-        credentials: matchingCredentials,
-        onDecline,
-        onSelectAndSend,
-      },
-    });
-  } else {
-    const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
-    const subjectSyntaxTypesSupported: Array<string> | undefined =
-      authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
-    navigation.navigate(MainRoutesEnum.SIOPV2, {
-      screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
-      params: {
-        verifierName: contact.contact.displayName,
-        presentationDefinition: presentationDefinitionWithLocation.definition,
-        format,
-        subjectSyntaxTypesSupported,
-        onDecline,
-        onSelect,
-        onSend,
-        onBack,
-        isSendDisabled,
-      },
-    });
-  }
+  //   navigation.navigate(MainRoutesEnum.SIOPV2, {
+  //     screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+  //     params: {
+  //       verifier: contact,
+  //       presentationDefinition: presentationDefinitionWithLocation.definition,
+  //       credentials: creds ?? [],
+  //       onDecline,
+  //       onSelectAndSend,
+  //     },
+  //   });
+  // } else {
+  //   const format: Format | undefined = authorizationRequestData.registrationMetadataPayload?.registration?.vp_formats;
+  //   const subjectSyntaxTypesSupported: Array<string> | undefined =
+  //     authorizationRequestData.registrationMetadataPayload?.registration?.subject_syntax_types_supported;
+  //   navigation.navigate(MainRoutesEnum.SIOPV2, {
+  //     screen: ScreenRoutesEnum.CREDENTIALS_REQUIRED,
+  //     params: {
+  //       verifierName: contact.contact.displayName,
+  //       presentationDefinition: presentationDefinitionWithLocation.definition,
+  //       format,
+  //       subjectSyntaxTypesSupported,
+  //       onDecline,
+  //       onSelect,
+  //       onSend,
+  //       onBack,
+  //       isSendDisabled,
+  //     },
+  //   });
+  // }
 };
 
 const navigateFinal = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
