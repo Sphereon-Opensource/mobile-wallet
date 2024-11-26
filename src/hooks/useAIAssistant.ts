@@ -162,6 +162,7 @@ const useAIAssistant = () => {
     console.log('route', route);
 
     client.updateSession({
+      input_audio_transcription: {model: 'whisper-1'},
       instructions: `
           # general instructions:
           ${basicInstructions}
@@ -256,6 +257,17 @@ const useAIAssistant = () => {
       }
     });
 
+  const sendAudio = async (audio: string) => {
+    if (!isConnected) {
+      await connectConversation(false);
+    }
+    clientRef.current?.realtime.send('input_audio_buffer.append', {audio});
+    clientRef.current?.realtime.send('input_audio_buffer.commit', {});
+
+    // clientRef.current.sendUserMessageContent([{type: 'input_audio', audio}]);
+    clientRef.current.createResponse();
+  }
+
   return {
     isConnected,
     sendPrompt,
@@ -275,6 +287,7 @@ const useAIAssistant = () => {
     handleChatOpened,
     speakMessage,
     ignoreTools,
+    sendAudio
   };
 };
 
