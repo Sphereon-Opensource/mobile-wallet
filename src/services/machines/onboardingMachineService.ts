@@ -100,7 +100,7 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 };
 
 export const setupWallet = async (
-  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials'>,
+  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'>,
 ): Promise<WalletSetupServiceResult> => {
   const {pinCode} = context;
   const setup = await Promise.all([
