@@ -1,6 +1,5 @@
 import {Action, CombinedState} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
-
 import {DB_CONNECTION_NAME} from '../../@config/database';
 import IntentHandler from '../../handlers/IntentHandler';
 import LockingHandler from '../../handlers/LockingHandler';
@@ -31,7 +30,6 @@ import {
   USERS_LOADING,
 } from '../../types/store/user.action.types';
 import {IUserState} from '../../types/store/user.types';
-
 import {resetDatabase} from '@sphereon/ssi-sdk.agent-config';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
@@ -124,6 +122,7 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
       .then(async (users: Map<string, IUser>) => {
         const lockingHandler = LockingHandler.getInstance();
         const user = users.get(userId);
+
         if (user) {
           dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
           //unlocking immediately to prevent re-locking after login
