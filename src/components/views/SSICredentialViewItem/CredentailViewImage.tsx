@@ -13,7 +13,7 @@ import { SSILogo } from '@sphereon/ui-components.ssi-react-native'
 export const CredentialViewImage = ({branding}: {branding?: IBasicCredentialLocaleBranding}) => {
   const CARD_ASPECT_RATIO = 3 / 2;
   const backgroundURI = branding?.background?.image?.uri;
-  const backgroundColor = branding?.background?.color ? branding.background.color : credentialCardColors.default;
+  const backgroundColor = branding?.background?.color ?? credentialCardColors.default;
 
   return (
     <ImageContainer>
