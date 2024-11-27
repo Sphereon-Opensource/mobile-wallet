@@ -6,8 +6,7 @@ import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, Verif
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {AuthorizationServerMetadata} from '../../../../../OID4VC/packages/oid4vci-common';
-import {DynamicRegistrationClientMetadata} from '../../../../../OID4VC/packages/common';
+import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -23,6 +22,7 @@ export type SiopV2AuthorizationRequestData = {
 
 export type SiopV2MachineContext = {
   url: string;
+  trustAnchors: Array<string>;
   identifier?: IIdentifier;
   didAuthConfig?: Omit<DidAuthConfig, 'identifier'>;
   authorizationRequestData?: SiopV2AuthorizationRequestData;
@@ -31,11 +31,9 @@ export type SiopV2MachineContext = {
   hasContactConsent: boolean;
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
-  entityIdentifier?: string
-  trustChain?: Array<string>
-  trustAnchors?: Array<string>
+  trustedAnchors?: Array<TrustedAnchor>;
   error?: ErrorDetails;
-} & OpenIdFederationEntities;
+};
 
 export enum SiopV2MachineStates {
   checkTrustChain = 'checkTrustChain',
@@ -96,8 +94,6 @@ export type CreateSiopV2MachineOpts = {
   url: string | URL;
   machineId?: string;
   trustAnchors?: Array<string>;
-  trustChain?: Array<string>;
-  entityIdentifier?: string;
 };
 
 export type SiopV2MachineInstanceOpts = {
@@ -132,7 +128,7 @@ export enum SiopV2MachineEvents {
   SET_CONTACT_CONSENT = 'SET_CONTACT_CONSENT',
   CREATE_CONTACT = 'CREATE_CONTACT',
   SET_SELECTED_CREDENTIALS = 'SET_SELECTED_CREDENTIALS',
-  RESOLVE_TRUST_CHAIN = 'RESOLVE_TRUST_CHAIN',
+  RESOLVE_TRUST_CHAIN = 'RESOLVE_TRUST_CHAIN'
 }
 
 export enum SiopV2MachineGuards {
@@ -143,6 +139,7 @@ export enum SiopV2MachineGuards {
   hasJustOneMatchGuard = 'siopV2HasJustOneMatchGuard',
   siopOnlyGuard = 'siopV2IsSiopOnlyGuard',
   siopWithOID4VPGuard = 'siopV2IsSiopWithOID4VPGuard',
+  isOIDFOriginGuard = 'siopV2IsOIDFOriginGuard',
   isTrustChainMemberGuard = 'isTrustChainMemberGuard',
   contactHasLowTrustGuard = 'siopV2ContactHasLowTrustGuard',
 }
@@ -162,7 +159,7 @@ export type DeclineEvent = {type: SiopV2MachineEvents.DECLINE};
 export type ContactConsentEvent = {type: SiopV2MachineEvents.SET_CONTACT_CONSENT; data: boolean};
 export type ContactAliasEvent = {type: SiopV2MachineEvents.SET_CONTACT_ALIAS; data: string};
 export type CreateContactEvent = {type: SiopV2MachineEvents.CREATE_CONTACT; data: Party};
-export type ResolveTrustChainEvent = {type: SiopV2MachineEvents.RESOLVE_TRUST_CHAIN; data: OpenIdFederationEntities };
+export type ResolveTrustChainEvent = {type: SiopV2MachineEvents.RESOLVE_TRUST_CHAIN; data: RPRegistrationMetadataPayload }
 export type SelectCredentialsEvent = {
   type: SiopV2MachineEvents.SET_SELECTED_CREDENTIALS;
   data: Array<UniqueDigitalCredential>;
@@ -177,11 +174,3 @@ export type SiopV2MachineEventTypes =
   | ContactAliasEvent
   | SelectCredentialsEvent
   | ResolveTrustChainEvent;
-
-export type OpenIdFederationEntities = {
-  federation_entity?: any; // TODO generate the models from the openid-federation-open-api?
-  oauth_server_metadata?: AuthorizationServerMetadata;
-  openid_wallet_provider?: AuthorizationServerMetadata;
-  openid_credential_issuer?: AuthorizationServerMetadata;
-  openid_credential_verifier?: DynamicRegistrationClientMetadata;
-};

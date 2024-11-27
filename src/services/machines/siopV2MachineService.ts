@@ -1,4 +1,4 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {RPRegistrationMetadataPayload, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -15,7 +15,7 @@ import agent, {agentContext} from '../../agent';
 import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
-import {OpenIdFederationEntities, SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
+import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
@@ -222,28 +222,25 @@ export const sendResponse = async (
 
 // Must return RP metadata
 export const checkTrustChain = async (
-  context: Pick<SiopV2MachineContext, 'entityIdentifier' | 'trustAnchors'>,
-): Promise<OpenIdFederationEntities | undefined> => {
-  const {entityIdentifier, trustAnchors } = {...context};
+  context: Pick<SiopV2MachineContext, 'authorizationRequestData' | 'trustAnchors'>,
+): Promise<RPRegistrationMetadataPayload | undefined> => {
+  const {authorizationRequestData, trustAnchors } = {...context};
 
   if (
-    entityIdentifier !== undefined &&
-    entityIdentifier !== null &&
+    authorizationRequestData?.entityId !== undefined &&
+    authorizationRequestData?.entityId !== null &&
     trustAnchors !== undefined &&
     trustAnchors !== null &&
     trustAnchors.length !== 0
   ) {
-    const resolved = await agent.resolveTrustChain({ entityIdentifier, trustAnchors });
+    const resolved = await agent.resolveTrustChain({
+       entityIdentifier: authorizationRequestData?.entityId,
+       trustAnchors
+    });
     if (resolved !== undefined && resolved !== null) {
       const trustChain = resolved.trustChain?.asJsReadonlyArrayView()?.map(tc => jwtDecode<any>(tc).payload)
-      const payload = trustChain?.find(tc => tc.iss === entityIdentifier)
-      return {
-        federation_entity: payload?.metadata?.federation_entity,
-        oauth_server_metadata: payload?.metadata?.oauth_authorization_server,
-        openid_wallet_provider: payload?.metadata?.openid_provider,
-        openid_credential_issuer: payload?.metadata?.openid_connect_relying_party, //Not sure about that one
-        openid_credential_verifier: payload?.metadata?.openid_relying_party,
-      };
+      const payload = trustChain?.find(tc => tc.iss === authorizationRequestData?.entityId)
+      return payload?.metadata?.openid_relying_party
     }
   }
 };

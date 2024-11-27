@@ -14,7 +14,7 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', OPENAI_API_KEY.substring(0, 10), '...');
+//console.log('OPENAI_API_KEY', OPENAI_API_KEY.substring(0, 10), '...');
 console.log('==============================');
 
 const useAIAssistant = () => {
