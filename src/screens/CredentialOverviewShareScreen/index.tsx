@@ -155,13 +155,12 @@ const SelectOverviewShareScreen = (props: Props) => {
         )}
       </View>
       {input_descriptors.map((inputDescriptor, idx) => (
-        <>
-          <SSITextH2SemiBoldLightStyled key={'t' + idx} style={{marginTop: 10, paddingLeft: 24}}>
+        <View key={idx}>
+          <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
             {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}
           </SSITextH2SemiBoldLightStyled>
           <CredentialSelectView
             style={{marginTop: 5}}
-            key={idx}
             credentials={credsPerInputDescriptor.get(inputDescriptor.id) ?? []}
             onSelect={(credential: UniqueDigitalCredential) => {
               selectCredential(inputDescriptor.id, credential);
@@ -169,7 +168,7 @@ const SelectOverviewShareScreen = (props: Props) => {
             purpose={inputDescriptor.purpose}
             verifier={verifier}
           />
-        </>
+        </View>
       ))}
     </ScreenContainer>
   );

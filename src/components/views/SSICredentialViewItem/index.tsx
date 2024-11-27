@@ -30,7 +30,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <Row>
-        {branding && <CredentialViewImage branding={branding} />}
+        <CredentialViewImage branding={branding} />
         <DataContainer>
           <ContentTopContainer>
             <TitleCaption numberOfLines={2}>{title}</TitleCaption>
