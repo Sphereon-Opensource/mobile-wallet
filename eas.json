@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": "^10.2.1"
+    "version": "^13.4.2"
   },
   "build": {
     "base": {
