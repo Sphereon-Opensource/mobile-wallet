@@ -40,10 +40,10 @@ const FederationTrustView: FC<Props> = (props: Props): ReactElement => {
         key={index}
         style={{height: 42, alignItems: 'center', flexDirection: 'row'}}
         onPress={() => onPress(federation)}>
-        <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
-          {federation.branding && <Logo logo={federation.branding.logo} size={22} />}
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-            <SSITextH7LightStyled>{federation.contact.displayName}</SSITextH7LightStyled>
+        <View style={{flexDirection: 'row', gap: 12, alignItems: 'center', flex: 1}}>
+          <Logo logo={federation.branding?.logo} size={22} />
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 4, flex: 1}}>
+            <SSITextH7LightStyled numberOfLines={2}>{federation.contact.displayName}</SSITextH7LightStyled>
             <SSICheckmarkBadge />
           </View>
         </View>

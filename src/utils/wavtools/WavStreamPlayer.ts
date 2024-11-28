@@ -1,6 +1,6 @@
-import Sound from 'react-native-sound';
-import * as FileSystem from 'expo-file-system';
 import {Buffer} from 'buffer';
+import * as FileSystem from 'expo-file-system';
+import Sound from 'react-native-sound';
 import WavRecorder from './WavRecorder';
 
 async function checkIfFileExists(filePath: string): Promise<boolean> {
@@ -102,12 +102,9 @@ class WavStreamPlayer {
     return new Promise<{trackId: string | null; offset: number} | undefined>((resolve, reject) => {
       if (this.currentSound) {
         this.currentSound.pause();
-        this.currentSound.getCurrentTime(seconds => {
-          resolve({
-            trackId: this.trackId,
-            offset: seconds,
-          });
-        });
+        this.currentSound.release();
+        this.currentSound = null;
+        this.queue = [];
       } else {
         // console.log('No sound is currently playing to interrupt.');
       }

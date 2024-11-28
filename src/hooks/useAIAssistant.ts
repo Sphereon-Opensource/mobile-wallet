@@ -3,10 +3,11 @@ import {ItemType} from '@openai/realtime-api-beta/dist/lib/client.js';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {OPENAI_API_KEY} from 'react-native-dotenv';
 import {useSelector} from 'react-redux';
-import {RootState} from 'src/types';
 import {ChatTools} from '../components/chat/Chat';
 import {basicInstructions, reopenChatPrompt} from '../instructions';
-import {navigationRef} from '../navigation/rootNavigation';
+import {translate} from '../localization/Localization';
+import rootNavigation, {navigationRef} from '../navigation/rootNavigation';
+import {PopupImagesEnum, RootState, ScreenRoutesEnum} from '../types';
 import {stringifyState} from '../utils/stringifyState';
 import WavRecorder from '../utils/wavtools/WavRecorder';
 import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
@@ -14,23 +15,27 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', OPENAI_API_KEY.substring(0, 10), '...');
+console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 10) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
 console.log('==============================');
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
   const state = useSelector((state: RootState) => state);
   const [items, setItems] = useState<ItemType[]>([]);
-  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
-  const [ignoreTools, setIgnoreTools] = useState(false);
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
+  const apiKey = process.env.EXPO_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? OPENAI_API_KEY;
+  if (!apiKey) {
+    throw Error('OPENAI_API_KEY is not set. Chatbot not available');
+  }
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
-      apiKey: OPENAI_API_KEY,
+      apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
+      debug: false,
     }),
   );
+
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const base64ToArrayBuffer = (base64: string) => {
@@ -81,9 +86,13 @@ const useAIAssistant = () => {
           'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with. Then give information about the current screen. If you have relevant information from the app state, provide it.',
       });
 
-      client.on('error', (event: any) => console.error(event));
+      client.on('error', (event: any) => {
+        console.error('REALTIME API ERROR');
+        console.error(event);
+      });
 
       client.on('conversation.interrupted', async () => {
+        console.log('conversation interrupted');
         const trackSampleOffset = await wavStreamPlayer.interrupt();
         if (trackSampleOffset?.trackId) {
           const {trackId, offset} = trackSampleOffset;
@@ -92,15 +101,75 @@ const useAIAssistant = () => {
       });
 
       client.on('conversation.updated', async ({item, delta}: any) => {
+        // console.log('conversation updated with status' + item.status);
         const items = client.conversation.getItems();
-        if (delta?.audio && chatMode === 'voice') {
-          wavStreamPlayer.add16BitPCM(delta.audio, item.id);
+        if (item.status === 'completed') {
+          setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          if (item.role === 'user') {
+            await wavStreamPlayer.interrupt();
+          }
+        } else {
+          // can decrease to debounce
+          if (Math.random() < 1) {
+            setItems(items.reverse().filter(item => item.type !== 'function_call'));
+          }
         }
-        setItems(items.reverse().filter(item => item.type !== 'function_call'));
       });
 
       client.on('response.created', async ({response}: any) => {
         console.log('response created', '\n', JSON.stringify(response, null, 2), 'response.created');
+      });
+
+      const navigateHandleSocketError = async (args: any): Promise<void> => {
+        const {navigation, context} = args;
+
+        if (!context.error) {
+          throw new Error(`Missing error in context`);
+        }
+
+        navigation.navigate(ScreenRoutesEnum.ERROR, {
+          image: PopupImagesEnum.WARNING,
+          title: context.error.title,
+          details: context.error.message,
+          ...(context.error.detailsMessage && {
+            detailsPopup: {
+              buttonCaption: translate('action_view_extra_details'),
+              title: context.error.detailsTitle,
+              details: context.error.detailsMessage,
+            },
+          }),
+          primaryButton: {
+            caption: translate('action_ok_label'),
+            accessibilityLabel: `${translate('action_ok_label')}.`,
+            onPress: () => navigation.goBack(),
+          },
+          onBack: () => navigation.goBack(),
+        });
+      };
+      client.realtime.ws.addEventListener('message', (event: any) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'response.done') {
+          const {response} = message;
+          if (response?.status === 'failed') {
+            let errorMessage = (response.status_details?.error?.message ??
+              response.status_details?.error?.code ??
+              'An unknown error occurred.') as string;
+            if (errorMessage.match(/.*(Limit[^.]+).*(Please try[^.]+).*/)) {
+              errorMessage = errorMessage?.replace(/.*(Limit[^.]+).*(Please try[^.]+.[^.]+).*/, `Rate limit reached: $1. $2`);
+            }
+
+            navigateHandleSocketError({
+              navigation: rootNavigation,
+              context: {
+                error: {
+                  title: 'An error occurred.',
+                  message: errorMessage,
+                  detailsMessage: `The assistant it using Beta technology from OpenAI. Unfortunately they are applying rate limits at present, meaning we cannot always interact and currently there is no way to increase those limits. These limits are applied across all wallets collectively. If you limit voice input and output you are less likely to hit the rate limits`,
+                },
+              },
+            });
+          }
+        }
       });
 
       setItems(client.conversation.getItems().reverse());
@@ -125,6 +194,7 @@ const useAIAssistant = () => {
   }, []);
 
   const disconnectConversation = useCallback(async () => {
+    console.log('disconnecting conversation');
     setIsConnected(false);
     setItems([]);
 
@@ -133,11 +203,6 @@ const useAIAssistant = () => {
 
     const wavStreamPlayer = wavStreamPlayerRef.current;
     wavStreamPlayer.interrupt();
-  }, []);
-
-  const deleteConversationItem = useCallback(async (id: string) => {
-    const client = clientRef.current;
-    client.deleteItem(id);
   }, []);
 
   useEffect(() => {
@@ -160,6 +225,7 @@ const useAIAssistant = () => {
     console.log('route', route);
 
     client.updateSession({
+      input_audio_transcription: {model: 'whisper-1'},
       instructions: `
           # general instructions:
           ${basicInstructions}
@@ -180,43 +246,31 @@ const useAIAssistant = () => {
   };
 
   const sendPrompt = async (prompt: string, screenContext?: string): Promise<void> => {
+    // console.log('sendPrompt (connected: ' + isConnected + ")", prompt);
     if (!isConnected) {
       await connectConversation(false);
     }
 
     updateSession({screenContext});
-    clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
+    try {
+      const out = clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
+    } catch (error: any) {
+      console.log(`Update session error ${error.message}`);
+      console.error(error);
+      if (error?.message?.includes('is not connected') == true) {
+        console.log('reconnecting');
+        try {
+          clientRef.current.disconnect();
+          clientRef.current.reset();
+        } finally {
+          setIsConnected(false);
+        }
+        await connect();
+        await sendPrompt(prompt, screenContext);
+      }
+    }
   };
-  const startVoiceRecording = async () => {
-    const wavRecorder = wavRecorderRef.current;
-    await wavRecorder.startRecording();
-    setIsVoiceRecording(true);
-  };
 
-  const endVoiceRecording = async () => {
-    setIsVoiceRecording(false);
-    const wavRecorder = wavRecorderRef.current;
-    const client = clientRef.current;
-    const filePath = await wavRecorder.stopRecording();
-    // if (!base64) return;
-    // const int16Array = RealtimeUtils.base64ToArrayBuffer(base64);
-    // // console.log('int16Array', int16Array);
-    // // if (!int16Array) return;
-
-    // // wavStreamPlayerRef.current.add16BitPCM(int16Array, 'user-audio');
-
-    // // make chunks of 2400 samples
-    // const chunkSize = 2400;
-    // const chunks = [];
-    // for (let i = 0; i < int16Array.byteLength; i += chunkSize) {
-    //   chunks.push(int16Array.slice(i, i + chunkSize));
-    // }
-    // chunks.forEach(chunk => {
-    // client.appendInputAudio(chunk);
-    // });
-
-    client.createResponse();
-  };
   const enableVoiceMode = () => {
     setChatMode('voice');
     connectVoice();
@@ -254,6 +308,16 @@ const useAIAssistant = () => {
       }
     });
 
+  const sendAudio = async (audio: string) => {
+    if (!isConnected) {
+      await connectConversation(false);
+    }
+    clientRef.current?.realtime.send('input_audio_buffer.append', {audio});
+    clientRef.current?.realtime.send('input_audio_buffer.commit', {});
+
+    clientRef.current.createResponse();
+  };
+
   return {
     isConnected,
     sendPrompt,
@@ -263,16 +327,13 @@ const useAIAssistant = () => {
     chatMode,
     enableVoiceMode,
     enableTextMode,
-    isVoiceRecording,
-    startVoiceRecording,
-    endVoiceRecording,
     items,
     wavStreamPlayer: wavStreamPlayerRef.current,
     addTools,
     removeTools,
     handleChatOpened,
     speakMessage,
-    ignoreTools,
+    sendAudio,
   };
 };
 

@@ -9,12 +9,16 @@ import {deleteUser} from '../store/actions/user.actions';
 export const useDeleteWallet = () => {
   const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
   const dispatch = useDispatch();
-  const prompt = () => {
+
+  return (): void => {
     const activeUser = store.getState().user.activeUser;
-    if (!activeUser) return;
+    if (!activeUser) {
+      return;
+    }
+
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('profile_delete_wallet_action_title'),
-      details: translate('profile_delete_wallet_action_subtitle', {userName: `${activeUser.firstName} ${activeUser.lastName}`}),
+      details: translate('profile_delete_wallet_action_subtitle', { userName: `${activeUser.firstName} ${activeUser.lastName}` }),
       primaryButton: {
         caption: translate('action_confirm_label'),
         onPress: async (): Promise<void> => dispatch<any>(deleteUser(activeUser.id)),
@@ -25,6 +29,4 @@ export const useDeleteWallet = () => {
       },
     });
   };
-
-  return prompt;
 };

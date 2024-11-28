@@ -1,11 +1,11 @@
-import {useChat} from '../../../providers/chat/chatProvider';
-import {useAssistant} from '../../../providers/chat/AssistantProvider';
-import ChatButton, {ChatButtonPosition} from '../ChatButton';
-import ChatModal from '../ChatModal';
-import {useEffect, useMemo} from 'react';
 import {ToolDefinitionType} from '@openai/realtime-api-beta/dist/lib/client';
+import {useEffect} from 'react';
 import {IMessage} from 'react-native-gifted-chat';
 import {reopenChatPrompt} from '../../../instructions';
+import {useAssistant} from '../../../providers/chat/AssistantProvider';
+import {useChat} from '../../../providers/chat/chatProvider';
+import ChatButton, {ChatButtonPosition} from '../ChatButton';
+import ChatModal from '../ChatModal';
 
 export type ChatTools = {tool: ToolDefinitionType; callback: (args: unknown) => void}[];
 
@@ -49,17 +49,18 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
         // Check if it's a user message without a tool
         else if (item.role === 'user') {
           if (item.formatted.transcript) {
-            messageText = item.formatted.transcript;
+            messageText = item.formatted.transcript.trimEnd();
           } else if (item.formatted.audio?.length) {
             messageText = '(awaiting transcript)';
           } else {
-            messageText = item.formatted.text || '(item sent)';
+            messageText = item.formatted.text || '...';
           }
           if (messageText === reopenChatPrompt) {
             // hacky way of hiding the reopen chat prompt
             return null;
           }
         } else if (item.role === 'assistant') {
+
           if (item.formatted.transcript) {
             messageText = item.formatted.transcript;
           } else {

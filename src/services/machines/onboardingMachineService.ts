@@ -100,7 +100,7 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 };
 
 export const setupWallet = async (
-  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials'>,
+  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'>,
 ): Promise<WalletSetupServiceResult> => {
   const {pinCode} = context;
   const setup = await Promise.all([
@@ -131,9 +131,7 @@ const storeUser = async (
     countryCode: countryCode,
   };
 
-  const storedUser: IUser = await store.dispatch<any>(
-    createUser(user, {credentialOverviewViewPreference: pidCredentials.length > 0 ? ViewPreference.CARD : ViewPreference.LIST}),
-  );
+  const storedUser: IUser = await store.dispatch<any>(createUser(user));
   return {storedUser};
 };
 
