@@ -11,7 +11,7 @@ import {setViewPreference} from '../../store/actions/user.actions';
 import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 
-type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'Card'> & {
+type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
   setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
