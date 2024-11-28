@@ -136,7 +136,7 @@ const ShowProgressScreen = () => {
         buttonHint: translate('onboard_steps.secure_wallet.accessibility.button_hint'),
       },
     },
-    {
+    ...((!countryCode || countryCode === 'DE') ? [{
       render: renderStepContent({
         title: translate('onboard_steps.import_personal_data.title'),
         description: getImportDataDescription(currentStep, countryCode),
@@ -152,7 +152,7 @@ const ShowProgressScreen = () => {
         ),
         buttonHint: translate('onboard_steps.import_personal_data.accessibility.button_hint'),
       },
-    },
+    }] : [])
   ];
 
   const footer = (
@@ -182,7 +182,7 @@ const ShowProgressScreen = () => {
   return (
     <ScreenContainer footer={footer} importantForAccessibility={popupMenuOpen ? 'no-hide-descendants' : 'yes'}>
       <ScreenTitleAndDescription
-        title={translate(titleKey)}
+        title={(!countryCode || countryCode === 'DE') ? translate(titleKey) : translate('onboard_progress_pages.import_personal_data.title')} // FIXME quick fix to show a proper title if we skipping the import of the PID
         description={descriptionKey && translate(descriptionKey)}
         accessibilityLabel={accessibilityLabelKey && `${translate(accessibilityLabelKey)} ${currentStep} out of ${stepperContent.length} `}
         titleVariant="h0"
