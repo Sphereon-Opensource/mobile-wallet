@@ -130,8 +130,8 @@ export type ShareStackParamList = {
 // }
 
 export type CreditOverviewStackParamsList = {
-  Card: Record<string, never>;
-  List: Record<string, never>;
+  CARD: Record<string, never>;
+  LIST: Record<string, never>;
 };
 
 export type ReadDocumentParamsList = Record<Document, {document: Document}>;
