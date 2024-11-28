@@ -33,7 +33,7 @@ const ScreenContainer = ({
   const isAndroid = Platform.OS === 'android';
   const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
-  const verticalOffset = isIos ? headerHeight + 32 : 0;
+  const verticalOffset = isIos ? headerHeight + 32 : headerHeight + 52; // FIXME adding android to this to fix an issue where the button is behind the keyboard
   return (
     <View
       importantForAccessibility={importantForAccessibility}
@@ -42,6 +42,7 @@ const ScreenContainer = ({
         backgroundColor: backgroundColors.primaryDark,
         paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
       }}>
+
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <KeyboardAvoidingView enabled={!disableKeyboardAvoidingView} verticalOffset={verticalOffset} style={{flex: 1}} importantForAccessibility="no">
         <ScrollView
