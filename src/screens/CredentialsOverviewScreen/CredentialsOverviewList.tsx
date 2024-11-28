@@ -19,7 +19,7 @@ import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, R
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import {showToast} from '../../utils';
 
-type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'List'> & {
+type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.LIST> & {
   verifiableCredentials: Array<CredentialSummary>;
   activeUser: IUser;
   getVerifiableCredentials: () => void;

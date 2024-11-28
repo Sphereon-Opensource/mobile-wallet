@@ -131,9 +131,7 @@ const storeUser = async (
     countryCode: countryCode,
   };
 
-  const storedUser: IUser = await store.dispatch<any>(
-    createUser(user, {credentialOverviewViewPreference: pidCredentials.length > 0 ? ViewPreference.CARD : ViewPreference.LIST}),
-  );
+  const storedUser: IUser = await store.dispatch<any>(createUser(user));
   return {storedUser};
 };
 

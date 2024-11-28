@@ -16,7 +16,7 @@ import {useChat} from '../../providers/chat/chatProvider';
 
 const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
 
-const renderLabel = (label: 'card' | 'list') => (isFocused: boolean) => {
+const renderLabel = (label: 'card' | 'list') => () => {
   const source = CredentialsOverviewImages[label];
   return <Image source={source} />;
 };
@@ -25,7 +25,6 @@ type Props = {activeUser: IUser};
 
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
   const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
-  const initialRouteName = viewPreference === ViewPreference.CARD ? 'Card' : 'List';
   const {closeModal} = useChat();
   const tools = useMemo(
     () => [
@@ -50,7 +49,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
     <Container style={{paddingTop: 24}}>
       <StatusBar />
       <CredentialViewTypeNav.Navigator
-        initialRouteName={initialRouteName}
+        initialRouteName={viewPreference}
         tapBarProps={{
           containerStyle: {
             width: 74,
@@ -63,13 +62,13 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
           },
           indicatorStyle: {top: 0, zIndex: -1},
           labels: {
-            Card: {render: renderLabel('card'), accessibilityLabel: 'Card view'},
-            List: {render: renderLabel('list'), accessibilityLabel: 'List view'},
+            [ViewPreference.CARD]: {render: renderLabel('card'), accessibilityLabel: 'Card view'},
+            [ViewPreference.LIST]: {render: renderLabel('list'), accessibilityLabel: 'List view'},
           },
           renderIndicator: <View style={{height: '100%', backgroundColor: 'white', opacity: 0.1, borderRadius: 4}} />,
         }}>
-        <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} />
-        <CredentialViewTypeNav.Screen name="Card" component={CredentialsOverviewCardList} />
+        <CredentialViewTypeNav.Screen name={ViewPreference.LIST} component={CredentialsOverviewList} />
+        <CredentialViewTypeNav.Screen name={ViewPreference.CARD} component={CredentialsOverviewCardList} />
       </CredentialViewTypeNav.Navigator>
       <Chat
         screenContext={JSON.stringify({
