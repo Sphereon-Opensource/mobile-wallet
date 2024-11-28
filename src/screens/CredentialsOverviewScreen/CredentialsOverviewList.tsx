@@ -10,7 +10,6 @@ import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
-import {useAccessibility} from '../../hooks/useAccessibility';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
@@ -38,14 +37,13 @@ const CredentialsOverviewList = ({
   deleteVerifiableCredential,
 }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
-  const {announce} = useAccessibility();
   useFocusEffect(
     useCallback(() => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.LIST);
     }, []),
   );
 
-  const onRefresh = () => {
+  const onRefresh = (): void => {
     getVerifiableCredentials();
     setRefreshing(false);
   };
@@ -132,10 +130,10 @@ const CredentialsOverviewList = ({
           {
             switch (event.nativeEvent.actionName) {
               case 'delete':
-                onDelete(itemInfo.item.hash, itemInfo.item.title);
+                void onDelete(itemInfo.item.hash, itemInfo.item.title);
                 break;
               case 'activate':
-                onItemPress(itemInfo.item);
+                void onItemPress(itemInfo.item);
                 break;
             }
           }

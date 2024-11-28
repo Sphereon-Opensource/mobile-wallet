@@ -4,7 +4,7 @@ import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import React, {useCallback} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native'
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
@@ -73,23 +73,21 @@ const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, 
   };
 
   return (
-    <View
-      accessibilityRole="list"
-      accessibilityLabel="Card list"
-      style={{
-        backgroundColor: backgroundColors.primaryDark,
-        flex: 1,
-        paddingTop: 24,
-        gap: 12,
-        paddingHorizontal: 24,
-        alignItems: 'center',
-        borderTopColor: '#404D7A',
-        borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0,
-      }}>
-      {verifiableCredentials.map((credential, index) => (
-        <CredentialViewCard key={index} credential={credential} onPress={() => onItemPress(credential)} />
-      ))}
-    </View>
+      <ScrollView
+        accessibilityRole="list"
+        accessibilityLabel="Card list"
+        style={{
+          backgroundColor: backgroundColors.primaryDark,
+          flex: 1,
+          borderTopColor: '#404D7A',
+          borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0,
+        }}
+        contentContainerStyle={{alignItems: 'center', gap: 12, paddingTop: 24, paddingBottom: 24}}
+      >
+        {verifiableCredentials.map((credential, index) => (
+          <CredentialViewCard key={index} credential={credential} onPress={() => onItemPress(credential)} />
+        ))}
+      </ScrollView>
   );
 };
 
