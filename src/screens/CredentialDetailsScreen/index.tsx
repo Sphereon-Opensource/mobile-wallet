@@ -218,6 +218,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           keyExtractor={(item: CredentialDetailsRow) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
+          contentContainerStyle={{flexGrow: 1}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
+          ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
           ListFooterComponent={renderFooter}
         />
         {(primaryAction || secondaryAction) && (
