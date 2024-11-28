@@ -495,7 +495,7 @@
   "siopV2_machine_retrieve_contact_error_title": "Ophalen credential",
   "siopV2_machine_add_contact_identity_error_title": "Toevoegen identiteit contact",
   "siopV2_machine_send_response_error_title": "SiopV2 antwoord verzenden",
-  "siopV2_machine_check_trust_chain_error_title": "Ophalen federatievertrouwen",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Ophalen federatievertrouwen",
   "action_view_all_label": "Alles bekijken",
   "filter_all_label": "Alles bekijken",
   "filter_other_label": "Overige",

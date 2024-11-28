@@ -520,7 +520,7 @@
   "siopV2_machine_retrieve_contact_error_title": "Retrieve contact",
   "siopV2_machine_add_contact_identity_error_title": "Add contact identity",
   "siopV2_machine_send_response_error_title": "Sending siopV2 response",
-  "siopV2_machine_check_trust_chain_error_title": "Retrieve trust chain",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Retrieve federation trust",
   "action_view_all_label": "View all",
   "filter_all_label": "View all",
   "filter_other_label": "Other",

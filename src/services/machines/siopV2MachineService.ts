@@ -1,4 +1,4 @@
-import {RPRegistrationMetadataPayload, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -21,8 +21,8 @@ import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import jwtDecode from 'jwt-decode';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -220,27 +220,28 @@ export const sendResponse = async (
   return response;
 };
 
-// Must return RP metadata
-export const checkTrustChain = async (
-  context: Pick<SiopV2MachineContext, 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<RPRegistrationMetadataPayload | undefined> => {
-  const {authorizationRequestData, trustAnchors } = {...context};
+export const getFederationTrust = async (
+  context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
+): Promise<Array<TrustedAnchor>> => {
+  const {authorizationRequestData, trustAnchors} = context;
 
-  if (
-    authorizationRequestData?.entityId !== undefined &&
-    authorizationRequestData?.entityId !== null &&
-    trustAnchors !== undefined &&
-    trustAnchors !== null &&
-    trustAnchors.length !== 0
-  ) {
-    const resolved = await agent.resolveTrustChain({
-       entityIdentifier: authorizationRequestData?.entityId,
-       trustAnchors
-    });
-    if (resolved !== undefined && resolved !== null) {
-      const trustChain = resolved.trustChain?.asJsReadonlyArrayView()?.map(tc => jwtDecode<any>(tc).payload)
-      const payload = trustChain?.find(tc => tc.iss === authorizationRequestData?.entityId)
-      return payload?.metadata?.openid_relying_party
-    }
+  if (trustAnchors.length === 0) {
+    return Promise.reject(Error('No trust anchors found'));
   }
+
+  if (!authorizationRequestData) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  const entityIdentifier = authorizationRequestData.entityId;
+  if (!entityIdentifier) {
+    return Promise.reject(Error('Unable to determine entity identifier to resolve trust chain'));
+  }
+  const result = await agent.identifierExternalResolveByOIDFEntityId({
+    method: 'entity_id',
+    trustAnchors: trustAnchors,
+    identifier: entityIdentifier,
+  });
+
+  return result.trustedAnchors;
 };

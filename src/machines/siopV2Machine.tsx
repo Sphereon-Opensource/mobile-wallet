@@ -1,17 +1,12 @@
-import {
-  AuthorizationRequest, AuthorizationRequestPayload,
-  PresentationDefinitionWithLocation, ResponseURIType,
-  RPRegistrationMetadataPayload, SupportedVersion,
-  VerifiedAuthorizationRequest, VerifyAuthorizationRequestOpts,
-} from '@sphereon/did-auth-siop';
+import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
 import {siopV2StateNavigationListener} from '../navigation/machines/siopV2StateNavigation';
 import {
   addContactIdentity,
-  checkTrustChain,
   createConfig,
+  getFederationTrust,
   getSiopRequest,
   retrieveContact,
   sendResponse,
@@ -36,18 +31,15 @@ import {
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
 import {EvaluationResults, PEX, Status} from '@sphereon/pex';
-import {
-  ActionType,
-  DefaultActionSubType,
-  InitiatorType,
-  LogLevel,
-  OriginalVerifiableCredential,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
+import {
+  ExternalIdentifierOIDFEntityIdResult,
+  PublicKeyHex,
+  TrustedAnchor,
+} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -144,14 +136,6 @@ const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machi
   return trustAnchors.length > 0 && authorizationRequestData?.clientIdScheme === 'entity_id';
 };
 
-const siopv2IsTrustChainMemberGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
-  const { authorizationRequestData, verifiedAuthorizationRequest } = _ctx
-  return authorizationRequestData?.registrationMetadataPayload !== undefined &&
-    authorizationRequestData?.registrationMetadataPayload !== null &&
-    verifiedAuthorizationRequest?.registrationMetadataPayload !== undefined &&
-    verifiedAuthorizationRequest?.registrationMetadataPayload !== null
-};
-
 const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
   const {url} = opts;
   const initialContext: SiopV2MachineContext = {
@@ -175,7 +159,6 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           | {type: SiopV2MachineGuards.createContactGuard}
           | {type: SiopV2MachineGuards.hasSelectedRequiredCredentialsGuard}
           | {type: SiopV2MachineGuards.isOIDFOriginGuard}
-          | {type: SiopV2MachineGuards.isTrustChainMemberGuard}
           | {type: SiopV2MachineGuards.contactHasLowTrustGuard},
         services: {} as {
           [SiopV2MachineServices.createConfig]: {
@@ -193,44 +176,13 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
           [SiopV2MachineServices.sendResponse]: {
             data: void;
           };
-          [SiopV2MachineServices.checkTrustChain]: {
-            data: RPRegistrationMetadataPayload | undefined;
+          [SiopV2MachineServices.getFederationTrust]: {
+            data: ExternalIdentifierOIDFEntityIdResult;
           };
         },
       },
       context: initialContext,
       states: {
-        [SiopV2MachineStates.checkTrustChain]: {
-          id: SiopV2MachineStates.checkTrustChain,
-          invoke: {
-            src: SiopV2MachineServices.checkTrustChain,
-            onDone: {
-              target: SiopV2MachineStates.transitionFromSetup,
-              actions: assign({
-                authorizationRequestData: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<RPRegistrationMetadataPayload>) => ({ ..._ctx.authorizationRequestData, correlationId: _ctx.authorizationRequestData?.correlationId as string, registrationMetadataPayload: _event.data }),
-                verifiedAuthorizationRequest: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<RPRegistrationMetadataPayload>) => ({
-                  ..._ctx.verifiedAuthorizationRequest,
-                  responseURIType: _ctx.verifiedAuthorizationRequest?.responseURIType as ResponseURIType,
-                  authorizationRequest: _ctx.verifiedAuthorizationRequest?.authorizationRequest as AuthorizationRequest,
-                  authorizationRequestPayload: _ctx.verifiedAuthorizationRequest?.authorizationRequestPayload as AuthorizationRequestPayload,
-                  verifyOpts: _ctx.verifiedAuthorizationRequest?.verifyOpts as VerifyAuthorizationRequestOpts,
-                  versions: _ctx.verifiedAuthorizationRequest?.versions as SupportedVersion[],
-                  correlationId: _ctx.verifiedAuthorizationRequest?.correlationId as string,
-                  registrationMetadataPayload: _event.data })
-              }),
-              cond: SiopV2MachineGuards.isTrustChainMemberGuard
-            },
-            onError: {
-              target: SiopV2MachineStates.handleError,
-              actions: assign({
-                error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
-                  title: translate('siopV2_machine_check_trust_chain_error_title'),
-                  message: _event.data.message,
-                }),
-              }),
-            },
-          },
-        },
         [SiopV2MachineStates.createConfig]: {
           id: SiopV2MachineStates.createConfig,
           invoke: {
@@ -279,7 +231,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             src: SiopV2MachineServices.retrieveContact,
             onDone: [
               {
-                target: SiopV2MachineStates.checkTrustChain,
+                target: SiopV2MachineStates.getFederationTrust,
                 cond: SiopV2MachineGuards.isOIDFOriginGuard,
                 actions: assign({contact: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Party>) => _event.data}),
               },
@@ -293,6 +245,27 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
               actions: assign({
                 error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
                   title: translate('siopV2_machine_retrieve_contact_error_title'),
+                  message: _event.data.message,
+                }),
+              }),
+            },
+          },
+        },
+        [SiopV2MachineStates.getFederationTrust]: {
+          id: SiopV2MachineStates.getFederationTrust,
+          invoke: {
+            src: SiopV2MachineServices.getFederationTrust,
+            onDone: {
+              target: SiopV2MachineStates.transitionFromSetup,
+              actions: assign({
+                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data,
+              }),
+            },
+            onError: {
+              target: SiopV2MachineStates.handleError,
+              actions: assign({
+                error: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+                  title: translate('siopV2_machine_retrieve_federation_trust_error_title'),
                   message: _event.data.message,
                 }),
               }),
@@ -531,7 +504,7 @@ export class SiopV2Machine {
           [SiopV2MachineServices.retrieveContact]: retrieveContact,
           [SiopV2MachineServices.addContactIdentity]: addContactIdentity,
           [SiopV2MachineServices.sendResponse]: sendResponse,
-          [SiopV2MachineServices.checkTrustChain]: checkTrustChain,
+          [SiopV2MachineServices.getFederationTrust]: getFederationTrust,
           ...opts?.services,
         },
         guards: {
@@ -544,7 +517,6 @@ export class SiopV2Machine {
           siopV2IsSiopWithOID4VPGuard,
           siopV2IsOIDFOriginGuard,
           siopV2ContactHasLowTrustGuard,
-          siopv2IsTrustChainMemberGuard,
           ...opts?.guards,
         },
       }),
