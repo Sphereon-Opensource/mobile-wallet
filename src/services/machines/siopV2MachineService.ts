@@ -222,7 +222,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Array<TrustedAnchor>> => {
+): Promise<{ trustedAnchors: Array<TrustedAnchor>; payload: string | undefined }> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -242,6 +242,8 @@ export const getFederationTrust = async (
     trustAnchors: trustAnchors,
     identifier: entityIdentifier,
   });
-
-  return result.trustedAnchors;
+  return {
+    trustedAnchors: result.trustedAnchors,
+    payload: result.jwtPayload
+  };
 };

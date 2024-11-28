@@ -11,6 +11,7 @@ import {
   PublicKeyHex,
   TrustedAnchor,
 } from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {JwsPayload} from '@sphereon/ssi-sdk-ext.jwt-service';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -36,6 +37,7 @@ export type SiopV2MachineContext = {
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
   trustedAnchors?: Array<TrustedAnchor>;
+  payload?: JwsPayload
   error?: ErrorDetails;
 };
 

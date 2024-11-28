@@ -40,6 +40,7 @@ import {
   PublicKeyHex,
   TrustedAnchor,
 } from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {JwsPayload} from '@sphereon/ssi-sdk-ext.jwt-service';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -136,7 +137,10 @@ const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machi
   return trustAnchors.length > 0 && authorizationRequestData?.clientIdScheme === 'entity_id';
 };
 
-const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
+const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): StateMachine<SiopV2MachineContext, any, SiopV2MachineEventTypes, {
+  value: any;
+  context: TContext
+}, BaseActionObject, ServiceMap, ResolveTypegenMeta<TypegenDisabled, SiopV2MachineEventTypes, BaseActionObject, ServiceMap>> => {
   const {url} = opts;
   const initialContext: SiopV2MachineContext = {
     url: new URL(url).toString(),
@@ -257,9 +261,14 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             src: SiopV2MachineServices.getFederationTrust,
             onDone: {
               target: SiopV2MachineStates.transitionFromSetup,
-              actions: assign({
-                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data,
+              actions: [
+                assign({
+                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data
               }),
+                assign({
+                  payload: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<JwsPayload>) => _event.data
+                })
+              ]
             },
             onError: {
               target: SiopV2MachineStates.handleError,
