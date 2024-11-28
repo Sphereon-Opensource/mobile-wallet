@@ -251,7 +251,6 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         )}
       </ContentContainer>
       <Chat
-        buttonPosition={{bottom: 100, right: 16}}
         screenContext={screenContext}
         tools={isAddingNewCredential ? AddNewCredentialtools : []}
       />
