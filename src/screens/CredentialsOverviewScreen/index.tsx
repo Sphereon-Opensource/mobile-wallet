@@ -68,7 +68,7 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
           },
           renderIndicator: <View style={{height: '100%', backgroundColor: 'white', opacity: 0.1, borderRadius: 4}} />,
         }}>
-        <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} options={{swipeEnabled: false}} />
+        <CredentialViewTypeNav.Screen name="List" component={CredentialsOverviewList} />
         <CredentialViewTypeNav.Screen name="Card" component={CredentialsOverviewCardList} />
       </CredentialViewTypeNav.Navigator>
       <Chat
