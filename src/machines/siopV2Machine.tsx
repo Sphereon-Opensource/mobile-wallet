@@ -28,18 +28,13 @@ import {
   SiopV2MachineServices,
   SiopV2MachineState,
   SiopV2MachineStates,
-  SiopV2StateMachine,
 } from '../types/machines/siopV2';
 import {EvaluationResults, PEX, Status} from '@sphereon/pex';
 import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
-import {
-  ExternalIdentifierOIDFEntityIdResult,
-  PublicKeyHex,
-  TrustedAnchor,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {JwsPayload} from '@sphereon/ssi-sdk-ext.jwt-service';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
