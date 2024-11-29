@@ -32,7 +32,7 @@ const config = {
         wrap_iife: true,
       },
       sourceMap: {
-        includeSources: false,
+        includeSources: true,
       },
       toplevel: false,
       compress: {
