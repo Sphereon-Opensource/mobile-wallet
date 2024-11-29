@@ -12,7 +12,7 @@ import {ConfigurableViewKey, ViewPreference} from '../types/preferences';
 
 export const createUser = async (args: BasicUser, options?: {credentialOverviewViewPreference?: ViewPreference}): Promise<IUser> => {
   debug(`createUser(${JSON.stringify(args)})...`);
-  const {credentialOverviewViewPreference = ViewPreference.LIST} = options || {};
+  const {credentialOverviewViewPreference = ViewPreference.CARD} = {...options};
 
   const user: IUser = {
     ...args,
