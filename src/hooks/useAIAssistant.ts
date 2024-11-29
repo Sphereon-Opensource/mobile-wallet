@@ -25,9 +25,9 @@ const useAIAssistant = () => {
   const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const apiKey = process.env.EXPO_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? OPENAI_API_KEY;
-  if (!apiKey) {
-    throw Error('OPENAI_API_KEY is not set. Chatbot not available');
-  }
+  // if (!apiKey) {
+  //   throw Error('OPENAI_API_KEY is not set. Chatbot not available');
+  // }
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
       apiKey,

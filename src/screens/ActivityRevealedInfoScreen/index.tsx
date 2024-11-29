@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
 import styled from 'styled-components/native';
-import {NavigationButton} from '../../components/NavigationButton';
+import {NavigationButton} from '../../components/buttons/NavigationButton';
 import Info, {Props as InfoProps} from '../../components/activity/Info';
 import {translate} from '../../localization/Localization';
 import {SSIBasicContainerStyled} from '../../styles/components';

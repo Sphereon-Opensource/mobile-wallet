@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {NavigationButton} from '../../components/NavigationButton';
+import {NavigationButton} from '../../components/buttons/NavigationButton';
 import Info from '../../components/activity/Info';
 import {Section, SectionText} from '../../components/activity/Section';
 import Status from '../../components/activity/Status';
