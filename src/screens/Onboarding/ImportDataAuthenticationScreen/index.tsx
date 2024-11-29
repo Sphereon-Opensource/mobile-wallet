@@ -14,6 +14,7 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {storageGetPin} from '../../../services/storageService';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
+import { Keyboard } from 'react-native'
 
 const Content = styled.View`
   flex: 1;
@@ -26,17 +27,29 @@ const Content = styled.View`
 
 const ImportDataAuthenticationScreen = (props?: any) => {
   const {onAccept} = props?.route?.params ?? {};
-
   const {onboardingInstance} = useContext(OnboardingContext);
-
   const biometricsEnabled = useBiometricsEnabledContext();
-
   const [pinCode, setPinCode] = useState('');
   const [pinCodeContext, setPinCodeContext] = useState('');
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
   const pinInputRef = useRef<TextInput>(null);
-
+  const [keyboardShown, setKeyboardShown] = useState(true);
   const [failed, setFailed] = useState(false);
+
+  // FIXME adding android to this to fix an issue where the button is behind the keyboard
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', (): void => {
+      setKeyboardShown(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', (): void => {
+      setKeyboardShown(false);
+    });
+
+    return (): void => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   useAuthFocusEffect((success: boolean) => {
     if (!success) {
@@ -83,7 +96,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
   }, [biometricsEnabled, failed]);
 
   return (
-    <ScreenContainer footer={footer}>
+    <ScreenContainer footer={footer} disableKeyboardAvoidingView={!keyboardShown}>
       <ScreenTitleAndDescription title={title} description={description} />
       {(failed || biometricsEnabled) && (
         <Content style={{height: '100%'}}>
