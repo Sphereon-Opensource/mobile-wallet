@@ -1,16 +1,14 @@
 import React, { FC, ReactElement, useRef, useState } from 'react'
 import { View, Animated } from 'react-native'
 import { Easing } from 'react-native-reanimated'
-import { Swipeable, Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { Swipeable, Gesture, GestureDetector, TapGesture } from 'react-native-gesture-handler'
 import { CredentialSummary, getCredentialStatus } from '@sphereon/ui-components.credential-branding'
 import { SSICredentialCardView } from '@sphereon/ui-components.ssi-react-native'
 
 type Props = {
   credentials?: Array<CredentialSummary>
-  // TODO no onPress, disable all singleTap functionality
-  onPress?: () => Promise<void>
-  // TODO no onSwipe, disable all swipe functionality
-  onSwipe?: () => Promise<void>
+  onPress?: (credential: CredentialSummary) => Promise<void>
+  onSwipe?: (credential: CredentialSummary) => Promise<void>
 }
 
 const CARD_HEIGHT = 186;
@@ -29,18 +27,25 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
   const swipeableRefs: Array<Swipeable | null> = [];
   let prevOpenedSwipeable: Swipeable | null;
 
-  const onRightSwipe = (index: number): void => {
+  const onRightSwipe = (credential: CredentialSummary, index: number): void => {
     if (prevOpenedSwipeable && prevOpenedSwipeable !== swipeableRefs[index]) {
       prevOpenedSwipeable.close();
     }
     prevOpenedSwipeable = swipeableRefs[index];
+    onSwipe?.(credential)
   };
 
-  const onSingleTap = (index: number): void => {
-    console.log(`Single tap! index: ${index}`)
+  const onSingleTap = (credential: CredentialSummary): void => {
+    onPress?.(credential)
   };
 
   const onDoubleTap = (index: number): void => {
+    // disable the doubleTap for the last card, as this one is always completely visible, and also causes some layout issues if enabled
+    // we do this here so that all cards do have a double tap and the user does not get confused as to why the last card behaves differently with only a single tap
+    if (index === (credentials.length - 1)) {
+      return
+    }
+
     const expandedHeight = (credentials.length-2) * CARD_SPACING + (CARD_HEIGHT*2);
     const collapsedHeight = (credentials.length-1) * CARD_SPACING + CARD_HEIGHT
 
@@ -55,7 +60,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
 
     const targetHeight = cardExpandedIndex === index ? CARD_HEIGHT : CARD_EXPANDED_HEIGHT;
 
-    Animated.timing(contentHeight, {
+    Animated.timing(contentHeight, { // TODO look at why this does not animate well
       toValue: cardExpandedIndex === index ? collapsedHeight : expandedHeight,
       duration: CARD_ANIMATION_DURATION,
       easing: Easing.out(Easing.quad),
@@ -83,36 +88,45 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
         {credentials.map((credential, index) => {
           const inputRange = [-CARD_HEIGHT, 0]
           const outputRange = [CARD_HEIGHT * index, (CARD_HEIGHT - CARD_SPACING) * -index]
+
           if (index > 0) {
             inputRange.push(index);
             outputRange.push(CARD_HEIGHT * -index)
           }
+
           const translateY = y.interpolate({
             inputRange,
             outputRange,
             extrapolateRight: 'clamp'
           })
+
           const singleTap = Gesture.Tap()
             .maxDuration(GESTURE_TAP_MAX_DURATION)
             .runOnJS(true)
-            .onStart(() => onSingleTap(index));
+            .onStart(() => onSingleTap(credential));
           const doubleTap = Gesture.Tap()
             .maxDuration(GESTURE_TAP_MAX_DURATION)
             .numberOfTaps(2)
             .runOnJS(true)
             .onStart(() => onDoubleTap(index));
 
+          const gestures: Array<TapGesture> = [
+            doubleTap,
+            ...(onPress ? [singleTap] : [])
+          ]
+
           return (
             <GestureDetector
               key={index}
-              // disable the doubleTap for the last card, as this one is always completely visible, and also causes some layout issues iof enabled
-              gesture={(index !== credentials.length-1) ? Gesture.Exclusive(doubleTap, singleTap) : Gesture.Exclusive(singleTap)}
+              gesture={Gesture.Exclusive(...gestures)}
             >
               <Animated.View style={{ transform: [{ translateY }], height: cardAnimatedHeights[index], alignItems: 'center'}} >
                 <Swipeable
                   ref={ref => swipeableRefs[index] = ref}
-                  renderRightActions={() => <View style={{width: CARD_SWIPE_ACTION_WIDTH}}/>}
-                  onSwipeableRightOpen={() => onRightSwipe(index)}
+                  {...(onSwipe && {
+                    renderRightActions: () => <View style={{width: CARD_SWIPE_ACTION_WIDTH}}/>,
+                    onSwipeableRightOpen: () => onRightSwipe(credential, index)
+                  })}
                   containerStyle={{width: '100%', flex: 1, alignItems: 'center'}}
                 >
                   <SSICredentialCardView

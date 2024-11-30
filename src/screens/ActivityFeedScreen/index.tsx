@@ -78,6 +78,8 @@ const ActivityFeedScreen = ({navigation}: Props) => {
     <Container>
       <CredentialCardStackView
         credentials={mocked}
+        onPress={async (credential) => console.log(credential.hash)}
+        onSwipe={async (credential) => console.log(credential.hash)}
       />
     </Container>
 
