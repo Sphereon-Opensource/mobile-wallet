@@ -77,9 +77,12 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container>
       <CredentialCardStackView
+        accessibilityRole="list"
+        accessibilityLabel="Credentials"
         credentials={verifiableCredentials}
         onPress={onItemPress}
         onSwipe={async (credential) =>  onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
+        removeClippedSubviews
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>

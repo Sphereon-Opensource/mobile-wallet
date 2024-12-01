@@ -101,9 +101,7 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     };
 
     const accessibility = {
-      accessibilityLabel: `${itemInfo.item.title}. Issued by: ${itemInfo.item.issuer.alias}, on: ${toLocalDateString(
-        itemInfo.item.issueDate,
-      )}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${itemInfo.item.credentialStatus}`,
+      accessibilityLabel: `${itemInfo.item.branding?.alias ?? itemInfo.item.title}. Issued by: ${itemInfo.item.issuer.alias ?? itemInfo.item.issuer.name}, on: ${toLocalDateString(itemInfo.item.issueDate)}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${itemInfo.item.credentialStatus}`,
       accessibilityHint: 'Go to credential details',
     };
 

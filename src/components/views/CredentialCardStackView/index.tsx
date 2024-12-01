@@ -5,6 +5,7 @@ import { Swipeable, Gesture, GestureDetector, TapGesture } from 'react-native-ge
 import { CredentialSummary, getCredentialStatus } from '@sphereon/ui-components.credential-branding'
 import { SSICredentialCardView } from '@sphereon/ui-components.ssi-react-native'
 import { getCardElementArgs } from '../../../types'
+import { toLocalDateString } from '@sphereon/ui-components.core'
 
 type Props = {
   credentials?: Array<CredentialSummary>
@@ -18,8 +19,6 @@ const CARD_SPACING = 55;
 const CARD_ANIMATION_DURATION = 250;
 const CARD_SWIPE_ACTION_WIDTH = 100;
 const GESTURE_TAP_MAX_DURATION = 250;
-
-// TODO implement accessibility
 
 export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement => {
   const {
@@ -129,12 +128,21 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
       ...(onPress ? [singleTap] : [])
     ]
 
+    // TODO we should start supporting this on SSICredentialCardView
+    const accessibility = {
+      accessibilityLabel: `${credential.branding?.alias ?? credential.title}. Issued by: ${credential.issuer.alias ?? credential.issuer.name}, on: ${toLocalDateString(credential.issueDate)}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`,
+      accessibilityHint: 'Go to credential details',
+    };
+
     return (
       <GestureDetector
         key={index}
         gesture={Gesture.Exclusive(...gestures)}
       >
-        <Animated.View style={{ transform: [{ translateY }], height: cardAnimatedHeights[index], alignItems: 'center'}} >
+        <Animated.View
+          style={{ transform: [{ translateY }], height: cardAnimatedHeights[index], alignItems: 'center'}}
+          {...accessibility}
+        >
           <Swipeable
             ref={ref => swipeableRefs[index] = ref}
             {...(onSwipe && {
