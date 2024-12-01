@@ -1,22 +1,22 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, { FC, ReactElement, useCallback, useState } from 'react'
+import React, {FC, ReactElement, useCallback, useState} from 'react';
+import {RefreshControl} from 'react-native';
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
+import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import CredentialCardStackView from '../../components/views/CredentialCardStackView';
+import {SSIBasicContainerStyled as Container} from '../../styles/components';
+import {translate} from '../../localization/Localization';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {
   CreditOverviewStackParamsList,
   MainRoutesEnum,
   RootState,
   ScreenRoutesEnum
 } from '../../types';
-import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
-import CredentialCardStackView from '../../components/views/CredentialCardStackView'
-import {SSIBasicContainerStyled as Container} from '../../styles/components';
-import {translate} from '../../localization/Localization';
-import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import { RefreshControl } from 'react-native'
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -82,7 +82,6 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
         credentials={verifiableCredentials}
         onPress={onItemPress}
         onSwipe={async (credential) =>  onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
-        removeClippedSubviews
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>

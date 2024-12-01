@@ -2,7 +2,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, { FC, ReactElement, useCallback, useState } from 'react';
+import React, {FC, ReactElement, useCallback, useState} from 'react';
 import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';

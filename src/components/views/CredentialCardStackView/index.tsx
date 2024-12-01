@@ -2,10 +2,10 @@ import React, { FC, ReactElement, useEffect, useRef, useState } from 'react'
 import { Animated, ScrollViewProps, View } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 import { Swipeable, Gesture, GestureDetector, TapGesture } from 'react-native-gesture-handler'
+import { toLocalDateString } from '@sphereon/ui-components.core'
 import { CredentialSummary, getCredentialStatus } from '@sphereon/ui-components.credential-branding'
 import { SSICredentialCardView } from '@sphereon/ui-components.ssi-react-native'
 import { getCardElementArgs } from '../../../types'
-import { toLocalDateString } from '@sphereon/ui-components.core'
 
 type Props = {
   credentials?: Array<CredentialSummary>
@@ -30,8 +30,8 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
   const [y, setY] = useState<Animated.Value>(new Animated.Value(0));
   const [cardExpandedIndex, setCardExpandedIndex] = useState<number | null>(null);
   const [cardAnimatedHeights, setCardAnimatedHeights] = useState(credentials.map(() => new Animated.Value(CARD_HEIGHT)));
-  const contentHeight = useRef(new Animated.Value((credentials.length-1) * CARD_SPACING + CARD_HEIGHT)).current;
   const [swipedCardIndex, setSwipedCardIndex] = useState<number | undefined>();
+  const contentHeight = useRef(new Animated.Value((credentials.length-1) * CARD_SPACING + CARD_HEIGHT)).current;
   const swipeableRefs: Array<Swipeable | null> = [];
 
   useEffect((): void => {
@@ -49,11 +49,11 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
   const onRightSwipe = (credential: CredentialSummary, index: number): void => {
     setSwipedCardIndex(index)
     onSwipe?.(credential).then(() => setSwipedCardIndex(undefined))
-  };
+  }
 
   const onSingleTap = (credential: CredentialSummary): void => {
     onPress?.(credential)
-  };
+  }
 
   const onDoubleTap = (index: number): void => {
     // disable the doubleTap for the last card, as this one is always completely visible, and also causes some layout issues if enabled
@@ -65,7 +65,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
     const expandedHeight = (credentials.length-2) * CARD_SPACING + (CARD_HEIGHT*2);
     const collapsedHeight = (credentials.length-1) * CARD_SPACING + CARD_HEIGHT
 
-    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
+    // Collapse the previous expended card
     if (cardExpandedIndex !== null && cardExpandedIndex !== index) {
       Animated.timing(cardAnimatedHeights[cardExpandedIndex], {
         toValue: CARD_HEIGHT,
@@ -77,15 +77,15 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
 
     const targetHeight = cardExpandedIndex === index ? CARD_HEIGHT : CARD_EXPANDED_HEIGHT;
 
-    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
-    Animated.timing(contentHeight, { // TODO look at why this does not animate well
+    // Set the right content height for the scrollview if a card is getting expanded
+    Animated.timing(contentHeight, {
       toValue: cardExpandedIndex === index ? collapsedHeight : expandedHeight,
       duration: CARD_ANIMATION_DURATION,
       easing: Easing.out(Easing.quad),
       useNativeDriver: false,
     }).start();
 
-    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
+    // Expand the new card
     Animated.timing(cardAnimatedHeights[index], {
       toValue: targetHeight,
       duration: CARD_ANIMATION_DURATION,
@@ -94,7 +94,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
     }).start((): void => {
       setCardExpandedIndex(prevIndex => (prevIndex === index ? null : index));
     });
-  };
+  }
 
   const getCardElementFrom = (args: getCardElementArgs): ReactElement => {
     const {credential, index} = args
