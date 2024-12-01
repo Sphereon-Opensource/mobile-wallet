@@ -1,14 +1,16 @@
-import React, { FC, ReactElement, useRef, useState } from 'react'
-import { View, Animated } from 'react-native'
+import React, { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import { View, Animated, ViewStyle } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 import { Swipeable, Gesture, GestureDetector, TapGesture } from 'react-native-gesture-handler'
 import { CredentialSummary, getCredentialStatus } from '@sphereon/ui-components.credential-branding'
 import { SSICredentialCardView } from '@sphereon/ui-components.ssi-react-native'
+import { getCardElementArgs } from '../../../types'
 
 type Props = {
   credentials?: Array<CredentialSummary>
   onPress?: (credential: CredentialSummary) => Promise<void>
   onSwipe?: (credential: CredentialSummary) => Promise<void>
+  style?: ViewStyle
 }
 
 const CARD_HEIGHT = 186;
@@ -18,21 +20,33 @@ const CARD_ANIMATION_DURATION = 250;
 const CARD_SWIPE_ACTION_WIDTH = 100;
 const GESTURE_TAP_MAX_DURATION = 250;
 
+// TODO implement a refresh mechanism
+// TODO implement accessibility
+
 export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement => {
-  const {credentials = [], onPress, onSwipe} = props;
+  const {credentials = [], onPress, onSwipe, style} = props;
   const [y, setY] = useState<Animated.Value>(new Animated.Value(0));
   const [cardExpandedIndex, setCardExpandedIndex] = useState<number | null>(null);
   const [cardAnimatedHeights, setCardAnimatedHeights] = useState(credentials.map(() => new Animated.Value(CARD_HEIGHT)));
   const contentHeight = useRef(new Animated.Value((credentials.length-1) * CARD_SPACING + CARD_HEIGHT)).current;
+  const [swipedCardIndex, setSwipedCardIndex] = useState<number | undefined>();
   const swipeableRefs: Array<Swipeable | null> = [];
-  let prevOpenedSwipeable: Swipeable | null;
+
+  useEffect((): void => {
+    setCardAnimatedHeights(credentials.map(() => new Animated.Value(CARD_HEIGHT)))
+  }, [credentials])
+
+  useEffect((): void => {
+    swipeableRefs.forEach((ref, index): void => {
+      if (index !== swipedCardIndex) {
+        ref?.close()
+      }
+    })
+  }, [swipedCardIndex])
 
   const onRightSwipe = (credential: CredentialSummary, index: number): void => {
-    if (prevOpenedSwipeable && prevOpenedSwipeable !== swipeableRefs[index]) {
-      prevOpenedSwipeable.close();
-    }
-    prevOpenedSwipeable = swipeableRefs[index];
-    onSwipe?.(credential)
+    setSwipedCardIndex(index)
+    onSwipe?.(credential).then(() => setSwipedCardIndex(undefined))
   };
 
   const onSingleTap = (credential: CredentialSummary): void => {
@@ -49,6 +63,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
     const expandedHeight = (credentials.length-2) * CARD_SPACING + (CARD_HEIGHT*2);
     const collapsedHeight = (credentials.length-1) * CARD_SPACING + CARD_HEIGHT
 
+    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
     if (cardExpandedIndex !== null && cardExpandedIndex !== index) {
       Animated.timing(cardAnimatedHeights[cardExpandedIndex], {
         toValue: CARD_HEIGHT,
@@ -60,6 +75,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
 
     const targetHeight = cardExpandedIndex === index ? CARD_HEIGHT : CARD_EXPANDED_HEIGHT;
 
+    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
     Animated.timing(contentHeight, { // TODO look at why this does not animate well
       toValue: cardExpandedIndex === index ? collapsedHeight : expandedHeight,
       duration: CARD_ANIMATION_DURATION,
@@ -67,6 +83,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
       useNativeDriver: false,
     }).start();
 
+    // TODO what if we put this in a useEffect with a dep on cardExpandedIndex?
     Animated.timing(cardAnimatedHeights[index], {
       toValue: targetHeight,
       duration: CARD_ANIMATION_DURATION,
@@ -77,82 +94,89 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
     });
   };
 
+  const getCardElementFrom = (args: getCardElementArgs): ReactElement => {
+    const {credential, index} = args
+
+    const inputRange = [-CARD_HEIGHT, 0]
+    const outputRange = [CARD_HEIGHT * index, (CARD_HEIGHT - CARD_SPACING) * -index]
+
+    if (index > 0) {
+      inputRange.push(index);
+      outputRange.push(CARD_HEIGHT * -index)
+    }
+
+    const translateY = y.interpolate({
+      inputRange,
+      outputRange,
+      extrapolateRight: 'clamp'
+    })
+
+    const singleTap = Gesture.Tap()
+      .maxDuration(GESTURE_TAP_MAX_DURATION)
+      .runOnJS(true)
+      .onStart(() => onSingleTap(credential));
+    const doubleTap = Gesture.Tap()
+      .maxDuration(GESTURE_TAP_MAX_DURATION)
+      .numberOfTaps(2)
+      .runOnJS(true)
+      .onStart(() => onDoubleTap(index));
+
+    const gestures: Array<TapGesture> = [
+      doubleTap,
+      ...(onPress ? [singleTap] : [])
+    ]
+
+    return (
+      <GestureDetector
+        key={index}
+        gesture={Gesture.Exclusive(...gestures)}
+      >
+        <Animated.View style={{ transform: [{ translateY }], height: cardAnimatedHeights[index], alignItems: 'center'}} >
+          <Swipeable
+            ref={ref => swipeableRefs[index] = ref}
+            {...(onSwipe && {
+              renderRightActions: () => <View style={{width: CARD_SWIPE_ACTION_WIDTH}}/>,
+              onSwipeableRightWillOpen: () => onRightSwipe(credential, index),
+            })}
+            containerStyle={{width: '100%', flex: 1, alignItems: 'center'}}
+          >
+            <SSICredentialCardView
+              header={{
+                credentialTitle: credential.branding?.alias,
+                credentialSubtitle: credential.branding?.description,
+                logo: credential.branding?.logo,
+              }}
+              body={{
+                issuerName: credential.issuer.alias ?? credential.issuer.name,
+              }}
+              footer={{
+                credentialStatus: getCredentialStatus(credential),
+                expirationDate: credential.expirationDate,
+              }}
+              display={{
+                backgroundColor: credential.branding?.background?.color,
+                backgroundImage: credential.branding?.background?.image,
+                textColor: credential.branding?.text?.color,
+              }}
+            />
+          </Swipeable>
+        </Animated.View>
+      </GestureDetector>
+    );
+  }
+
   return (
       <Animated.ScrollView
+        style={style}
         scrollEventThrottle={16}
         contentContainerStyle={{
           height: contentHeight,
           flexGrow: 1
         }}
       >
-        {credentials.map((credential, index) => {
-          const inputRange = [-CARD_HEIGHT, 0]
-          const outputRange = [CARD_HEIGHT * index, (CARD_HEIGHT - CARD_SPACING) * -index]
-
-          if (index > 0) {
-            inputRange.push(index);
-            outputRange.push(CARD_HEIGHT * -index)
-          }
-
-          const translateY = y.interpolate({
-            inputRange,
-            outputRange,
-            extrapolateRight: 'clamp'
-          })
-
-          const singleTap = Gesture.Tap()
-            .maxDuration(GESTURE_TAP_MAX_DURATION)
-            .runOnJS(true)
-            .onStart(() => onSingleTap(credential));
-          const doubleTap = Gesture.Tap()
-            .maxDuration(GESTURE_TAP_MAX_DURATION)
-            .numberOfTaps(2)
-            .runOnJS(true)
-            .onStart(() => onDoubleTap(index));
-
-          const gestures: Array<TapGesture> = [
-            doubleTap,
-            ...(onPress ? [singleTap] : [])
-          ]
-
-          return (
-            <GestureDetector
-              key={index}
-              gesture={Gesture.Exclusive(...gestures)}
-            >
-              <Animated.View style={{ transform: [{ translateY }], height: cardAnimatedHeights[index], alignItems: 'center'}} >
-                <Swipeable
-                  ref={ref => swipeableRefs[index] = ref}
-                  {...(onSwipe && {
-                    renderRightActions: () => <View style={{width: CARD_SWIPE_ACTION_WIDTH}}/>,
-                    onSwipeableRightOpen: () => onRightSwipe(credential, index)
-                  })}
-                  containerStyle={{width: '100%', flex: 1, alignItems: 'center'}}
-                >
-                  <SSICredentialCardView
-                    header={{
-                      credentialTitle: credential.branding?.alias,
-                      credentialSubtitle: credential.branding?.description,
-                      logo: credential.branding?.logo,
-                    }}
-                    body={{
-                      issuerName: credential.issuer.name,
-                    }}
-                    footer={{
-                      credentialStatus: getCredentialStatus(credential),
-                      expirationDate: credential.expirationDate,
-                    }}
-                    display={{
-                      backgroundColor: credential.branding?.background?.color,
-                      backgroundImage: credential.branding?.background?.image,
-                      textColor: credential.branding?.text?.color,
-                    }}
-                  />
-                </Swipeable>
-              </Animated.View>
-            </GestureDetector>
-          );
-        })}
+        {credentials.map((credential, index) =>
+          getCardElementFrom({ credential, index })
+        )}
       </Animated.ScrollView>
   )
 }

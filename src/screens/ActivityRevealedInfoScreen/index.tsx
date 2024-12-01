@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
 import styled from 'styled-components/native';
-import {NavigationButton} from '../../components/buttons/NavigationButton';
+import NavigationButton from '../../components/buttons/NavigationButton';
 import Info, {Props as InfoProps} from '../../components/activity/Info';
 import {translate} from '../../localization/Localization';
 import {SSIBasicContainerStyled} from '../../styles/components';
@@ -10,7 +10,8 @@ import {Activity, ScreenRoutesEnum, StackParamList} from '../../types';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ACTIVITY_REVEALED_INFO>;
 
 const Container = styled(SSIBasicContainerStyled)`
-  padding-horizontal: 16px;
+  padding-right: 16px;
+  padding-left: 16px;
   padding-top: 32px;
   gap: 16px;
 `;

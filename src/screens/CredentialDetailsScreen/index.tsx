@@ -7,7 +7,7 @@ import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/u
 import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import {NavigationButton} from '../../components/buttons/NavigationButton';
+import NavigationButton from '../../components/buttons/NavigationButton';
 import {Chat, ChatTools} from '../../components/chat/Chat';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';

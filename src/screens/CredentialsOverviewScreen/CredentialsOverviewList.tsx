@@ -1,9 +1,8 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Loggers} from '@sphereon/ssi-types';
 import {backgroundColors, borderColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, {useCallback, useState} from 'react';
+import React, { FC, ReactElement, useCallback, useState } from 'react';
 import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
@@ -15,9 +14,8 @@ import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {setViewPreference} from '../../store/actions/user.actions';
 import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
-import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum, ToastTypeEnum} from '../../types';
+import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
-import {showToast} from '../../utils';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.LIST> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -27,16 +25,17 @@ type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreferenc
   setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
-const logger = Loggers.DEFAULT.get('sphereon:screens');
-const CredentialsOverviewList = ({
-  setViewPreference,
-  navigation,
-  verifiableCredentials,
-  activeUser,
-  getVerifiableCredentials,
-  deleteVerifiableCredential,
-}: Props) => {
+const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
+  const {
+    setViewPreference,
+    navigation,
+    verifiableCredentials,
+    activeUser,
+    getVerifiableCredentials,
+    deleteVerifiableCredential,
+  } = props
   const [refreshing, setRefreshing] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.LIST);
@@ -67,20 +66,13 @@ const CredentialsOverviewList = ({
   };
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
-    try {
-      const uniqueDigitalCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
-
-      navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-        rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
-        uniqueDigitalCredential,
-        credential,
-      });
-    } catch (e) {
-      // onPress doesn't handle promise rejections, so log it for now.
-      logger.error('onItemPress failed', e);
-      console.log('onItemPress failed', e);
-      showToast(ToastTypeEnum.TOAST_ERROR, {message: translate('information_retrieve_failed_toast_message', {message: (e as Error).message})});
-    }
+      getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then((uniqueDigitalCredential) =>
+        navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+          rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
+          uniqueDigitalCredential,
+          credential,
+        })
+      )
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
@@ -144,7 +136,7 @@ const CredentialsOverviewList = ({
             hiddenStyle={backgroundStyle}
             viewItem={credentialItem}
             onPress={() => onItemPress(itemInfo.item)}
-            onDelete={() => onDelete(itemInfo.item.hash, itemInfo.item.title)}
+            onDelete={() => onDelete(itemInfo.item.hash, itemInfo.item.branding?.alias ?? itemInfo.item.title)}
           />
         </View>
       </View>

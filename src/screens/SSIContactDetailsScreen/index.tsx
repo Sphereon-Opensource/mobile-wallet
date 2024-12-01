@@ -3,7 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {IssuerStatus} from '@sphereon/ui-components.core';
 import React from 'react';
-import {NavigationButton} from '../../components/buttons/NavigationButton';
+import NavigationButton from '../../components/buttons/NavigationButton';
 import {ContactInformationView} from '../../components/views/ContactInformationView';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {ContactDetailsNavigationSection, Container, Divider} from '../../styles/components/screens/SSIContactDetailsScreen';
