@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useEffect, useRef, useState } from 'react'
-import { View, Animated, ViewStyle } from 'react-native'
+import { Animated, ScrollViewProps, View } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 import { Swipeable, Gesture, GestureDetector, TapGesture } from 'react-native-gesture-handler'
 import { CredentialSummary, getCredentialStatus } from '@sphereon/ui-components.credential-branding'
@@ -10,8 +10,7 @@ type Props = {
   credentials?: Array<CredentialSummary>
   onPress?: (credential: CredentialSummary) => Promise<void>
   onSwipe?: (credential: CredentialSummary) => Promise<void>
-  style?: ViewStyle
-}
+} & ScrollViewProps
 
 const CARD_HEIGHT = 186;
 const CARD_EXPANDED_HEIGHT = 316;
@@ -20,11 +19,15 @@ const CARD_ANIMATION_DURATION = 250;
 const CARD_SWIPE_ACTION_WIDTH = 100;
 const GESTURE_TAP_MAX_DURATION = 250;
 
-// TODO implement a refresh mechanism
 // TODO implement accessibility
 
 export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement => {
-  const {credentials = [], onPress, onSwipe, style} = props;
+  const {
+    credentials = [],
+    onPress,
+    onSwipe,
+    ...rest
+  } = props;
   const [y, setY] = useState<Animated.Value>(new Animated.Value(0));
   const [cardExpandedIndex, setCardExpandedIndex] = useState<number | null>(null);
   const [cardAnimatedHeights, setCardAnimatedHeights] = useState(credentials.map(() => new Animated.Value(CARD_HEIGHT)));
@@ -167,7 +170,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
 
   return (
       <Animated.ScrollView
-        style={style}
+        {...rest}
         scrollEventThrottle={16}
         contentContainerStyle={{
           height: contentHeight,

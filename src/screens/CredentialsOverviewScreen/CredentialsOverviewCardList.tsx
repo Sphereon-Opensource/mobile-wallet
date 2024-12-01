@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, { FC, ReactElement, useCallback } from 'react';
+import React, { FC, ReactElement, useCallback, useState } from 'react'
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
@@ -16,6 +16,7 @@ import CredentialCardStackView from '../../components/views/CredentialCardStackV
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {translate} from '../../localization/Localization';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import { RefreshControl } from 'react-native'
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -32,12 +33,18 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
     getVerifiableCredentials,
     navigation
   } = props
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     useCallback((): void => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.CARD);
     }, []),
   );
+
+  const onRefresh = (): void => {
+    getVerifiableCredentials();
+    setRefreshing(false);
+  };
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
     getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then((uniqueDigitalCredential) =>
@@ -73,6 +80,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
         credentials={verifiableCredentials}
         onPress={onItemPress}
         onSwipe={async (credential) =>  onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>
   );
