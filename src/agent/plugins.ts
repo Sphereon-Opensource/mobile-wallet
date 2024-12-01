@@ -24,7 +24,7 @@ import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
 import {DataSource} from 'typeorm';
-import {animoFunkeCert, funkeTestCA, sphereonCA} from '../@config/trustanchors';
+import {animoFunkeCert, funkeTestCA, sphereonCA, sphereonFunke} from '../@config/trustanchors';
 import {PIDIssuerPresentationSigning} from '../providers/authentication/funke/PIDIssuerPresentationSigning';
 import {dispatchIdentifier} from '../services/identityService';
 import {verifySDJWTSignature} from '../services/signatureService';
@@ -103,7 +103,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DataStoreORM(dbConnection),
     new IdentifierResolution({crypto: global.crypto}),
     // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
-    new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
+    new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA, sphereonFunke], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
     new JwtService(),
     new EventLogger({
       store: new EventLoggerStore(dbConnection),
@@ -164,7 +164,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       hasher: generateDigest,
       saltGenerator: generateSalt,
       verifySignature: verifySDJWTSignature,
-    }),
+    },[sphereonCA, funkeTestCA, sphereonFunke] ),
     new CredentialValidation(),
     new OIDFClient(),
     new QrCodeProvider(),

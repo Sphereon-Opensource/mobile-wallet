@@ -35,6 +35,7 @@ const ActivityFeedScreen = ({navigation}: Props) => {
     [activityLogging, verifiableCredentials],
   );
   useFocusEffect(() => announce({message: 'Activity feed screen'}));
+
   return (
     <ActivityList
       listTitle={translate('activity.feed.list.title')}

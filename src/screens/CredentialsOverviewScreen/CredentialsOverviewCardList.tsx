@@ -1,95 +1,90 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {backgroundColors, ImageAttributes} from '@sphereon/ui-components.core';
-import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
-import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
-import React, {useCallback} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
+import React, {FC, ReactElement, useCallback, useState} from 'react';
+import {RefreshControl} from 'react-native';
 import {connect} from 'react-redux';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {setViewPreference} from '../../store/actions/user.actions';
-import {CreditOverviewStackParamsList, RootState, ScreenRoutesEnum} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import CredentialCardStackView from '../../components/views/CredentialCardStackView';
+import {SSIBasicContainerStyled as Container} from '../../styles/components';
+import {translate} from '../../localization/Localization';
+import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {
+  CreditOverviewStackParamsList,
+  MainRoutesEnum,
+  RootState,
+  ScreenRoutesEnum
+} from '../../types';
 
-type Props = NativeStackScreenProps<CreditOverviewStackParamsList, 'Card'> & {
+type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
+  getVerifiableCredentials: () => void;
+  deleteVerifiableCredential: (credentialHash: string) => void;
   setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
-const getCredentialCardLogo = (credential: CredentialSummary): ImageAttributes | undefined => {
-  if (credential.branding?.logo?.uri || credential.branding?.logo?.dataUri) {
-    return credential.branding.logo;
-  }
+const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
+  const {
+    setViewPreference,
+    verifiableCredentials,
+    deleteVerifiableCredential,
+    getVerifiableCredentials,
+    navigation
+  } = props
+  const [refreshing, setRefreshing] = useState(false);
 
-  const uri: string | undefined = getIssuerLogo(credential, credential.branding);
-  if (uri) {
-    return {uri};
-  }
-};
-
-const CredentialViewCard = ({credential, onPress}: {credential: CredentialSummary; onPress: () => Promise<void>}) => {
-  const issuer: string = credential.issuer.alias;
-  const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
-
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <SSICredentialCardView
-        header={{
-          credentialTitle: credential.branding?.alias,
-          credentialSubtitle: credential.branding?.description,
-          logo: credentialCardLogo,
-        }}
-        body={{
-          issuerName: issuer ?? credential.issuer.name,
-        }}
-        footer={{
-          credentialStatus: getCredentialStatus(credential),
-          expirationDate: credential.expirationDate,
-        }}
-        display={{
-          backgroundColor: credential.branding?.background?.color,
-          backgroundImage: credential.branding?.background?.image,
-          textColor: credential.branding?.text?.color,
-        }}
-      />
-    </TouchableOpacity>
-  );
-};
-
-const CredentialsOverviewCardList = ({setViewPreference, verifiableCredentials, navigation}: Props) => {
   useFocusEffect(
-    useCallback(() => {
+    useCallback((): void => {
       setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.CARD);
     }, []),
   );
 
+  const onRefresh = (): void => {
+    getVerifiableCredentials();
+    setRefreshing(false);
+  };
+
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
-    const uniqueDigitalCredential = await getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash});
-    navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-      rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
-      uniqueDigitalCredential,
-      credential,
+    getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then((uniqueDigitalCredential) =>
+      navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+        rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
+        uniqueDigitalCredential,
+        credential,
+      })
+    )
+  };
+
+  const onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
+    navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+      title: translate('credential_delete_title'),
+      details: translate('credential_delete_message', {credentialName}),
+      primaryButton: {
+        caption: translate('action_confirm_label'),
+        onPress: async () => {
+          deleteVerifiableCredential(credentialHash);
+          navigation.getParent()?.goBack();
+        },
+      },
+      secondaryButton: {
+        caption: translate('action_cancel_label'),
+        onPress: async () => navigation.getParent()?.goBack(),
+      },
     });
   };
 
   return (
-    <View
-      accessibilityRole="list"
-      accessibilityLabel="Card list"
-      style={{
-        backgroundColor: backgroundColors.primaryDark,
-        flex: 1,
-        paddingTop: 24,
-        gap: 12,
-        paddingHorizontal: 24,
-        alignItems: 'center',
-        borderTopColor: '#404D7A',
-        borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0,
-      }}>
-      {verifiableCredentials.map((credential, index) => (
-        <CredentialViewCard key={index} credential={credential} onPress={() => onItemPress(credential)} />
-      ))}
-    </View>
+    <Container>
+      <CredentialCardStackView
+        accessibilityRole="list"
+        accessibilityLabel="Credentials"
+        credentials={verifiableCredentials}
+        onPress={onItemPress}
+        onSwipe={async (credential) =>  onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
+    </Container>
   );
 };
 
@@ -101,6 +96,8 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
+    getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
+    deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash)),
     setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => dispatch(setViewPreference(viewKey, preference)),
   };
 };
