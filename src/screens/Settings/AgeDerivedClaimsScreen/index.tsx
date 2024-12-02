@@ -18,6 +18,7 @@ import {translate} from '../../../localization/Localization';
 import {ScrollView} from 'react-native';
 import ClaimFalseIcon from '../../../components/assets/icons/ClaimFalseIcon';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 type Props = NativeStackScreenProps<StackParamList, MainRoutesEnum.AGE_DERIVED_CLAIMS>;
 
@@ -28,6 +29,7 @@ const AgeDerivedClaimsScreen: FC<Props> = (props: Props): ReactElement => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <SettingsScreenContainer>
+      <SafeAreaView style={{flex: 1}}>
       <SettingsHeaderBar showBottomBorder={false} onBack={() => navigation.goBack()} />
       <ScrollView>
         <Content style={{paddingHorizontal: 24}}>
@@ -44,6 +46,7 @@ const AgeDerivedClaimsScreen: FC<Props> = (props: Props): ReactElement => {
           </AgeDerivedClaimsContainer>
         </Content>
       </ScrollView>
+      </SafeAreaView>
     </SettingsScreenContainer>
   );
 };

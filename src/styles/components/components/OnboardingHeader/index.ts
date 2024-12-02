@@ -3,7 +3,8 @@ import {SSIBackgroundPrimaryDarkColorCss} from '../../css';
 
 export const OnboardingHeaderContainerStyled = styled.View`
   ${SSIBackgroundPrimaryDarkColorCss};
-  padding-horizontal: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 `;
 
 export const OnboardingHeaderRow = styled.View`
