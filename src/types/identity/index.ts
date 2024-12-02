@@ -5,6 +5,7 @@ import {SupportedDidMethodEnum} from '../did';
 export enum KeyManagementSystemEnum {
   LOCAL = 'local',
   MUSAP_TEE = 'musapTee',
+  AZURE_KEY_VAULT_REST = 'azureKeyVault'
 }
 
 export enum IdentifierAliasEnum {

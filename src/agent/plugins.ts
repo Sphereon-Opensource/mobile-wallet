@@ -35,6 +35,12 @@ import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
+import {
+  AZURE_KEYVAULT_REST_API_KEY,
+  AZURE_KEYVAULT_REST_APPLICATION_ID,
+  AZURE_KEYVAULT_REST_URL,
+} from 'react-native-dotenv';
+import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -97,6 +103,11 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new KeyStore(dbConnection),
       kms: {
         musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
+        azureKeyVaultRest: new AzureKeyVaultKeyManagementSystemRestClient({
+          applicationId: AZURE_KEYVAULT_REST_APPLICATION_ID,
+          apiKey: AZURE_KEYVAULT_REST_API_KEY,
+          vaultUrl: AZURE_KEYVAULT_REST_URL,
+        }),
       },
     }),
     new DIDManager({
