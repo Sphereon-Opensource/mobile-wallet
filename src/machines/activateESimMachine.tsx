@@ -25,7 +25,6 @@ import {
 import {storageDeleteCoupledWithCode, storageGetCoupledWithCode, storagePersistMsisdn} from '../services/storageService';
 import {ErrorDetails} from '../types';
 import {translate} from '../localization/Localization';
-import {getPIDCredentialsStateNavigationListener} from '../navigation/machines/getPIDCredentialsStateNavigation';
 import {activateESimStateNavigationListener} from '../navigation/machines/activateESimStateNavigation';
 
 const hasValidDetails: ESIMActivationMachineGuard = ({msisdn, couplingCode}) =>

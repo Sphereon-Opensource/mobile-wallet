@@ -83,7 +83,7 @@ export const oid4vciHolder = new OID4VCIHolder({
 export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
 const getMusapKeyManagementSystem = () => {
-  const msIsdn = storageGetMsisdn();
+  const msIsdn = storageGetMsisdn(); // FIXME use pidSecurityModel
   if (msIsdn) { // Use eSim signing when we have a msisdn
     return new MusapKeyManagementSystem('EXTERNAL', 'eSim', {
       defaultSignAttributes:
