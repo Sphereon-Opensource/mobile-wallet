@@ -3622,7 +3622,7 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-feature.OIDF.69.25+ffb8097", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.30", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.30+b1c6ff7":
+"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-feature.OIDF.69.59+6a9aa53", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.30", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.30+b1c6ff7":
   version "0.26.1-next.30"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-utils/-/ssi-sdk-ext.did-utils-0.26.1-next.30.tgz#d8269b1c6996598ce7dc65bdf7b003ee2dcae878"
   integrity sha512-5gndV7iRImlLdvZ7D+fkxyXjyVitSPGi4KlzB987QUNogaG3kkkJ+XSHwwV3VszfZGpEJMRmO1kAoxD7UK6MPg==
@@ -3725,7 +3725,7 @@
     "@veramo/key-manager" "4.2.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-feature.OIDF.69.25+ffb8097", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.30", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.30+b1c6ff7":
+"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-feature.OIDF.69.59+6a9aa53", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.30", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.30+b1c6ff7":
   version "0.26.1-next.30"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-utils/-/ssi-sdk-ext.key-utils-0.26.1-next.30.tgz#e280ce79def2a2755e8e3e3adec049c3731e5450"
   integrity sha512-3T0AuUI3SRRAVSbFMdzK2OErA4BEwQazQOy3Gr6TTiM/GugQsVJYCxWjaEw5Q6/yIyY+VUWFbULXh8zbdtEnTA==
@@ -3749,16 +3749,17 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.kms-azure-rest-client@0.26.1-feature.OIDF.69.25+ffb8097":
-  version "0.26.1-feature.OIDF.69.25"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-azure-rest-client/-/ssi-sdk-ext.kms-azure-rest-client-0.26.1-feature.OIDF.69.25.tgz#1fc5ee74245ef613a2f8144acdd57701c44e9b02"
-  integrity sha512-4WDFAsKvoRdOzTVEo6PErWHtgx50PcddiNMAVoqwMjv0aOM1cRHEoTQ6P1es/Koc/EIFXe6bqReqF/25laa73Q==
+"@sphereon/ssi-sdk-ext.kms-azure-rest-client@0.26.1-feature.OIDF.69.59+6a9aa53":
+  version "0.26.1-feature.OIDF.69.59"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-azure-rest-client/-/ssi-sdk-ext.kms-azure-rest-client-0.26.1-feature.OIDF.69.59.tgz#0c1e14938a2ba4e00d49ed11959786839163a0f7"
+  integrity sha512-nFJ04tKBs95gacSkprSLGU7n23qjgpWtOTk8Z2P0J2MdFKmYoUOg8Au26dzcN0oj252p6mj5t/+6YqF4arYxRA==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-feature.OIDF.69.25+ffb8097"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.OIDF.69.25+ffb8097"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-feature.OIDF.69.59+6a9aa53"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.OIDF.69.59+6a9aa53"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
+    uint8arrays "^3.1.1"
 
 "@sphereon/ssi-sdk-ext.kms-musap-rn@0.26.1-next.30":
   version "0.26.1-next.30"

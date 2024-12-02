@@ -102,7 +102,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new SphereonKeyManager({
       store: new KeyStore(dbConnection),
       kms: {
-        musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
+        // musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
         azureKeyVaultRest: new AzureKeyVaultKeyManagementSystemRestClient({
           applicationId: AZURE_KEYVAULT_REST_APPLICATION_ID,
           apiKey: AZURE_KEYVAULT_REST_API_KEY,
