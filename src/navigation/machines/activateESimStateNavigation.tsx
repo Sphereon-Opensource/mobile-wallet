@@ -18,6 +18,17 @@ const debug: Debugger = Debug(`${APP_ID}:activateESimStateNavigation`)
 
 export const ESIMActivationContext = createContext<{activateESimInstance: ESIMActivationMachineInterpreter}>({} as {activateESimInstance: ESIMActivationMachineInterpreter})
 
+const navigateLoading = async (args: any): Promise<void> => {
+  const {navigation} = args;
+  navigation.navigate(MainRoutesEnum.ACTIVATE_ESIM, {
+    screen: ScreenRoutesEnum.LOADING,
+    params: {
+      message: translate('action_getting_information_message'),
+    },
+  });
+};
+
+
 export const activateESimStateNavigationListener = (
   activateESimMachine: ESIMActivationMachineInterpreter,
   state: ESIMActivationMachineState
@@ -34,21 +45,32 @@ export const activateESimStateNavigationListener = (
   }
 
   switch (state.value) {
+    case ESIMActivationMachineStateTypes.init:
+    case ESIMActivationMachineStateTypes.createMusapLink:
+    case ESIMActivationMachineStateTypes.getCoupledWithCode:
+    case ESIMActivationMachineStateTypes.cleanupKeys:
+    case ESIMActivationMachineStateTypes.checkSscd:
+    case ESIMActivationMachineStateTypes.enableSscd:
+    case ESIMActivationMachineStateTypes.coupleWithRP:
+    case ESIMActivationMachineStateTypes.bindKey:
+      void navigateLoading({navigation, context, machine: activateESimMachine});
+      break;
     case ESIMActivationMachineStateTypes.enterDetails:
+      console.log('Navigating to EnterESimDetails with context:', context);
       navigation.navigate(MainRoutesEnum.ACTIVATE_ESIM, {
         screen: 'EnterESimDetails',
         params: {
           onBack: async () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS),
           onNext: async () => activateESimMachine.send(ESIMActivationMachineEvents.NEXT),
-          onSetMsisdn: async (msisdn: string) =>
+          onSetMsisdn: (msisdn: string) =>
             activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn}),
-          onSetCouplingCode: async (couplingCode: string) =>
+          onSetCouplingCode: (couplingCode: string) =>
             activateESimMachine.send(ESIMActivationMachineEvents.SET_COUPLING_CODE, {couplingCode}),
           msisdn: context.msisdn,
           couplingCode: context.couplingCode
         }
-      })
-      break
+      });
+      break;
 
     case ESIMActivationMachineStateTypes.handleError: {
       const {error} = context

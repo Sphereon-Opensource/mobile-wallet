@@ -9,7 +9,18 @@ import {ESIMActivationStackParamList} from '../../../types';
 import SSITextInputControlledField from '../../../components/fields/SSITextInputControlledField';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-type Props = NativeStackScreenProps<ESIMActivationStackParamList, 'EnterESimDetails'>;
+type Props = NativeStackScreenProps<ESIMActivationStackParamList, 'EnterESimDetails'> & {
+  route: {
+    params: {
+      onBack: () => Promise<void>;
+      onNext: () => Promise<void>;
+      onSetMsisdn: (msisdn: string) => void; 
+      onSetCouplingCode: (couplingCode: string) => void;
+      msisdn?: string;
+      coupledWithCode?: string;
+    }
+  }
+};
 
 
 const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
@@ -26,13 +37,13 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
 
   const handleMsisdnChange = (value: string) => {
     setMsisdn(value);
-    onSetMsisdn?.(value);
+    void onSetMsisdn?.(value);
   };
 
   const handleCouplingCodeChange = (value: string) => {
     if (!coupledWithCode) {
       setCouplingCode(value);
-      onSetCouplingCode?.(value);
+      void onSetCouplingCode?.(value); 
     }
   };
 

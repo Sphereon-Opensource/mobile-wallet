@@ -193,6 +193,15 @@ const MainStackNavigator = (): JSX.Element => {
               </>
             )}
           />
+          <Stack.Screen
+            name={MainRoutesEnum.ACTIVATE_ESIM}
+            children={() => (
+              <>
+                <ESIMActivationStackWithContext/>
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
           <Stack.Screen name="Veramo" component={Veramo} />
           <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
           <Stack.Screen
@@ -1135,6 +1144,14 @@ const ShareStack = (): JSX.Element => {
 
 export const ESIMActivationStack = (): JSX.Element => (
   <ESIMActivationBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <Stack.Screen
+      name={ScreenRoutesEnum.LOADING}
+      component={SSILoadingScreen}
+      initialParams={{message: translate('action_getting_information_message')}}
+      options={{
+        headerShown: false,
+      }}
+    />
     <ESIMActivationBaseStack.Screen
       name="EnterESimDetails"
       component={EnterESimDetailsScreen}
@@ -1152,6 +1169,8 @@ export const ESIMActivationStack = (): JSX.Element => (
     />
   </ESIMActivationBaseStack.Navigator>
 )
+
+
 const AuthenticationStack = (): JSX.Element => {
   return (
     <Stack.Navigator
@@ -1596,7 +1615,7 @@ export const SiopV2StackWithContext = (props: ISiopV2PProps): JSX.Element => {
 
 export const ESIMActivationStackWithContext = (props: any): ReactElement => (
   <ESIMActivationProvider customESIMActivationInstance={props?.params?.customESIMActivationInstance}>
-    <ESIMActivationStack />
+    <ESIMActivationStack/>
   </ESIMActivationProvider>
 );
 

@@ -23,7 +23,10 @@ import {
   InstanceESIMActivationMachineOpts,
 } from '../types/machines/activateESimMachine';
 import {storageDeleteCoupledWithCode, storageGetCoupledWithCode, storagePersistMsisdn} from '../services/storageService';
-
+import {ErrorDetails} from '../types';
+import {translate} from '../localization/Localization';
+import {getPIDCredentialsStateNavigationListener} from '../navigation/machines/getPIDCredentialsStateNavigation';
+import {activateESimStateNavigationListener} from '../navigation/machines/activateESimStateNavigation';
 
 const hasValidDetails: ESIMActivationMachineGuard = ({msisdn, couplingCode}) =>
   !!msisdn && !!couplingCode;
@@ -63,7 +66,11 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_create_link_failed'),
+            message: _event.data.message
+          })
+
         }),
       },
     },
@@ -83,7 +90,11 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_couple_rp_failed'),
+            message: _event.data.message
+          })
+
         }),
       },
     },
@@ -109,7 +120,11 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_enable_sscd_failed'),
+            message: _event.data.message
+          })
+
         }),
       },
     },
@@ -118,18 +133,21 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
     invoke: {
       src: ESIMActivationMachineServices.cleanupKeys,
       onDone: {
-        target: ESIMActivationMachineStateTypes.loadCoupledWithCode,
+        target: ESIMActivationMachineStateTypes.getCoupledWithCode,
       },
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_cleanup_keys_failed'),
+            message: _event.data.message
+          })
         }),
       },
     },
   },
 
-  [ESIMActivationMachineStateTypes.loadCoupledWithCode]: {
+  [ESIMActivationMachineStateTypes.getCoupledWithCode]: {
     invoke: {
       src: ESIMActivationMachineServices.getCoupledWithCode,
       onDone: {
@@ -169,7 +187,10 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error,
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_couple_rp_failed'),
+            message: _event.data.message
+          })
         }),
       },
     },
@@ -188,7 +209,10 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
       onError: {
         target: ESIMActivationMachineStateTypes.handleError,
         actions: assign({
-          error: (_, event) => event.data as Error
+          error: (_ctx: ESIMActivationMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_esim_error_bindkey_failed'),
+            message: _event.data.message
+          })
         })
       }
     }
@@ -268,7 +292,7 @@ export class ESIMActivationMachine {
           [ESIMActivationMachineServices.checkSscd]: checkSscd,
           [ESIMActivationMachineServices.enableSscd]: enableSscd,
           [ESIMActivationMachineServices.cleanupKeys]: cleanupKeys,
-          [ESIMActivationMachineServices.loadCoupledWithCode]: storageGetCoupledWithCode,
+          [ESIMActivationMachineServices.getCoupledWithCode]: storageGetCoupledWithCode,
           [ESIMActivationMachineServices.storageDeleteCoupledWithCode]: storageDeleteCoupledWithCode,
           [ESIMActivationMachineServices.coupleWithRP]: coupleWithRP,
           [ESIMActivationMachineServices.bindKey]: bindKey,
@@ -287,7 +311,8 @@ export class ESIMActivationMachine {
 
     if (opts?.requireCustomNavigationHook !== true) {
       newInst.onTransition((snapshot: ESIMActivationMachineState): void => {
-        // TODO: Implement navigation listener similar to getPIDCredentialsStateNavigationListener
+        void activateESimStateNavigationListener(newInst, snapshot);
+
       });
     }
 

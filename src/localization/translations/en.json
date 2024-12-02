@@ -132,7 +132,7 @@
   "onboarding_pid_security_model_secure_element": "Secure element on phone",
   "onboarding_pid_security_model_remote_hardware": "Remote Hardware Security Module",
   "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
-  "onboarding_pid_security_model_eid_presentation": "Use eID  card during presentation",
+  "onboarding_pid_security_model_eid_presentation": "Use eID card during presentation",
   "onboarding_pid_security_model_select": "Select",
   
   
@@ -266,6 +266,12 @@
   "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
   "onboarding_esim_enter_details_continue": "Continue",
   "onboarding_esim_enter_details_back": "Back",
+  "onboarding_esim_error_couple_rp_failed": "The RP coupling step of the eSim activation failed",
+  "onboarding_esim_error_bindkey_failed": "The bind-key step of the eSim activation failed",
+  "onboarding_esim_error_create_link_failed": "The create-link step of the eSim activation failed",
+  "onboarding_esim_error_check_sscd_failed": "The check-sscd step of the eSim activation failed",
+  "onboarding_esim_error_enable_sscd_failed": "The enable-sscd step of the eSim activation failed",
+  "onboarding_esim_error_cleanup_keys_failed": "The cleanup-keys step of the eSim activation failed",
   
   "import_data_title": "Import personal data",
 
@@ -311,6 +317,11 @@
       "title": "You're halfway there",
       "description": null,
       "accessibility_label": "You're halfway there. Onboarding progress currently on step"
+    },
+    "setup_security_model": {
+      "title": "Security model activation",
+      "description": null,
+      "accessibility_label": "Activation your keystore model. Onboarding progress currently on step"
     },
     "import_personal_data": {
       "title": "Almost done, last section",

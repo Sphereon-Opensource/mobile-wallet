@@ -13,7 +13,7 @@ import {
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
 import RootNavigation from './../rootNavigation';
-import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import store from '../../store';
 import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
@@ -96,6 +96,12 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       break;
     case OnboardingMachineStateType.completeOnboarding:
       onboardingNavigation.navigate('CompleteOnboarding', {});
+      break;
+    case OnboardingMachineStateType.pidSecurityModelCheck:
+      onboardingNavigation.navigate('ImportDataLoader', {});
+      break;
+    case OnboardingMachineStateType.activateESim:
+      onboardingNavigation.navigate('ImportDataLoader', {});
       break;
     case OnboardingMachineStateType.handleError: {
       const {error} = context;

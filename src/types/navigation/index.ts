@@ -32,6 +32,15 @@ export type StackParamList = {
   AusweisModal: IAusweisModalProps;
   ActivityDetails: IActivityDetailsProps;
   ActivityReveledInfo: IActivityDetailsProps;
+  ACTIVATE_ESIM: Record<string, never>
+  EnterESimDetails: {
+    onBack: () => Promise<void>
+    onNext: () => Promise<void>
+    onSetMsisdn: (msisdn: string) => Promise<void>
+    onSetCouplingCode: (couplingCode: string) => Promise<void>
+    msisdn?: string
+    coupledWithCode?: string
+  }
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -86,6 +95,7 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
+  ACTIVATE_ESIM:  Record<string, never>;
   ImportPersonalData: IOnboardingHasTitleAndSubtitle;
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
