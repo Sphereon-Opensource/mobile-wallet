@@ -14,8 +14,9 @@ module.exports = function (api) {
         {
           alias: {
             'react-native-sqlite-storage': 'react-native-quick-sqlite',
-            'react-native-quick-crypto': '@sphereon/react-native-quick-crypto',
-            crypto: '@sphereon/react-native-quick-crypto',
+            // 'react-native-quick-crypto': '@sphereon/react-native-quick-crypto',
+            // crypto: '@sphereon/react-native-quick-crypto',
+            crypto: 'react-native-crypto',
             stream: 'readable-stream',
             buffer: '@craftzdog/react-native-buffer',
             fs: 'expo-fs',
