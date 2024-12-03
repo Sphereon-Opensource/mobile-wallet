@@ -103,7 +103,15 @@ const getMusapKeyManagementSystem = () => {
   // TODO YubiKey as well?
 };
 
+export let sphereonKeyManager:SphereonKeyManager
+
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
+  sphereonKeyManager = new SphereonKeyManager({
+    store: new KeyStore(dbConnection),
+    kms: {
+      musap: getMusapKeyManagementSystem(),
+    },
+  });
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
@@ -115,12 +123,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new EventLoggerStore(dbConnection),
       eventTypes: [LoggingEventType.ACTIVITY, LoggingEventType.GENERAL, LoggingEventType.AUDIT],
     }),
-    new SphereonKeyManager({
-      store: new KeyStore(dbConnection),
-      kms: {
-        musap: getMusapKeyManagementSystem(),
-      },
-    }),
+    sphereonKeyManager,
     new DIDManager({
       store: new DIDStore(dbConnection),
       defaultProvider: DEFAULT_DID_PREFIX_AND_METHOD,

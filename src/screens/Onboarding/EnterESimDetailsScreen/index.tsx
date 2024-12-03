@@ -24,7 +24,7 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
   const {
     onBack,
     onNext,
-    msisdn: initialMsisdn = '+41796861241',
+    msisdn: initialMsisdn = '+41',
     coupledWithCode = '',
   } = route.params;
   const [msisdn, setMsisdn] = useState(initialMsisdn);
