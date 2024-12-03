@@ -27,7 +27,7 @@ export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRe
   const identifier = await context.agent.didManagerCreate({
     kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.AZURE_KEY_VAULT_REST,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
-    alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
+    alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().getTime()}`,
     options: args?.createOpts?.options,
   });
 
