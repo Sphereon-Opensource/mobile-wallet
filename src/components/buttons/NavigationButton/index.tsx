@@ -1,8 +1,8 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PressableProps} from 'react-native';
 import styled from 'styled-components/native';
-import {SSITextH3RegularLightStyled} from '../styles/components';
-import ChevronIcon from './assets/icons/ChevronIcon';
+import {SSITextH3RegularLightStyled} from '../../../styles/components';
+import ChevronIcon from './../../assets/icons/ChevronIcon';
 
 const NavigationButtonContainer = styled.Pressable`
   width: 100%;
@@ -18,7 +18,7 @@ type NavigationButtonProps = PressableProps & {
   label: string;
 };
 
-export const NavigationButton = (props: NavigationButtonProps) => {
+const NavigationButton = (props: NavigationButtonProps) => {
   const {onPress, label, disabled, ...pressableProps} = props;
   return (
     <NavigationButtonContainer
@@ -31,3 +31,5 @@ export const NavigationButton = (props: NavigationButtonProps) => {
     </NavigationButtonContainer>
   );
 };
+
+export default NavigationButton;

@@ -36,6 +36,7 @@ import { RegulationType } from '@sphereon/ssi-sdk.data-store';
 import React, {useEffect, useState} from 'react';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {convertFromPIDPayload} from '../../Onboarding/ImportDataConsentScreen/util';
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const AccountScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -56,6 +57,7 @@ const AccountScreen = () => {
 
   return (
     <SettingsScreenContainer>
+      <SafeAreaView style={{flex: 1}}>
       <SettingsHeaderBar title={translate('account_title')} onBack={() => navigation.goBack()} />
       <ScrollView>
         <Content>
@@ -115,6 +117,7 @@ const AccountScreen = () => {
         <SSIPersonIcon color="white" />
         <MenuItemText>{translate('account_delete_wallet_label')}</MenuItemText>
       </MenuItemRow>
+      </SafeAreaView>
     </SettingsScreenContainer>
   );
 };
