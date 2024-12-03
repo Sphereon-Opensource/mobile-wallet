@@ -1144,7 +1144,7 @@ const ShareStack = (): JSX.Element => {
 
 export const ESIMActivationStack = (): JSX.Element => (
   <ESIMActivationBaseStack.Navigator screenOptions={{animation: 'none'}}>
-    <Stack.Screen
+    <ESIMActivationBaseStack.Screen
       name={ScreenRoutesEnum.LOADING}
       component={SSILoadingScreen}
       initialParams={{message: translate('action_getting_information_message')}}
@@ -1153,7 +1153,7 @@ export const ESIMActivationStack = (): JSX.Element => (
       }}
     />
     <ESIMActivationBaseStack.Screen
-      name="EnterESimDetails"
+      name={ScreenRoutesEnum.ENTER_ESIM_DETAILS}
       component={EnterESimDetailsScreen}
       options={({route}) => ({
         headerTitle: translate('onboarding_esim_enter_details_title'),
@@ -1659,13 +1659,19 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen
-          name={SwitchRoutesEnum.ONBOARDING}
-          component={OnboardingStackScreenWithContext}
-          initialParams={{
-            customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
-          }}
-        />
+        <>
+          <Stack.Screen
+            name={SwitchRoutesEnum.ONBOARDING}
+            component={OnboardingStackScreenWithContext}
+            initialParams={{
+              customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+            }}
+          />
+          <Stack.Screen
+            name={SwitchRoutesEnum.ACTIVATE_ESIM}
+            component={ESIMActivationStackWithContext}
+          />
+        </>
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (

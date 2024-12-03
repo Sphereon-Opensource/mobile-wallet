@@ -34,7 +34,7 @@ const needsKeyCleanup: ESIMActivationMachineGuard = (context) => !!context.musap
 
 
 const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
-  [ESIMActivationMachineStateTypes.init]: {
+  [ESIMActivationMachineStateTypes.esim_init]: {
     invoke: {
       src: ESIMActivationMachineServices.checkMustEnableLink,
       onDone: [
@@ -174,7 +174,7 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
         target: ESIMActivationMachineStateTypes.coupleWithRP,
         cond: ESIMActivationMachineGuards.hasValidDetails,
       },
-      PREVIOUS: ESIMActivationMachineStateTypes.init,
+      PREVIOUS: ESIMActivationMachineStateTypes.esim_init,
     },
   },
   [ESIMActivationMachineStateTypes.coupleWithRP]: {
@@ -219,7 +219,7 @@ const esimActivationMachineStates: ESIMActivationMachineStatesConfig = {
   [ESIMActivationMachineStateTypes.handleError]: {
     on: {
       NEXT: ESIMActivationMachineStateTypes.error,
-      PREVIOUS: ESIMActivationMachineStateTypes.init,
+      PREVIOUS: ESIMActivationMachineStateTypes.esim_init,
     },
   },
   [ESIMActivationMachineStateTypes.error]: {
@@ -237,7 +237,7 @@ const createESIMActivationMachine = (opts?: CreateESIMActivationMachineOpts): ES
     {
       id: opts?.machineId ?? 'ESIMActivation',
       predictableActionArguments: true,
-      initial: ESIMActivationMachineStateTypes.init,
+      initial: ESIMActivationMachineStateTypes.esim_init,
       context: initialContext,
       states: esimActivationMachineStates,
     },
@@ -311,7 +311,6 @@ export class ESIMActivationMachine {
     if (opts?.requireCustomNavigationHook !== true) {
       newInst.onTransition((snapshot: ESIMActivationMachineState): void => {
         void activateESimStateNavigationListener(newInst, snapshot);
-
       });
     }
 

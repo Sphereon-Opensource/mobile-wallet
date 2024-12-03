@@ -5,31 +5,26 @@ import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import {fontColors} from '@sphereon/ui-components.core';
 import {translate} from '../../../localization/Localization';
-import {ESIMActivationStackParamList} from '../../../types';
+import {ESIMActivationStackParamList, ScreenRoutesEnum} from '../../../types';
 import SSITextInputControlledField from '../../../components/fields/SSITextInputControlledField';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {View, StyleSheet} from 'react-native';
 
-type Props = NativeStackScreenProps<ESIMActivationStackParamList, 'EnterESimDetails'> & {
-  route: {
-    params: {
-      onBack: () => Promise<void>;
-      onNext: () => Promise<void>;
-      onSetMsisdn: (msisdn: string) => void; 
-      onSetCouplingCode: (couplingCode: string) => void;
-      msisdn?: string;
-      coupledWithCode?: string;
-    }
+type Props = NativeStackScreenProps<ESIMActivationStackParamList, ScreenRoutesEnum.ENTER_ESIM_DETAILS>
+
+const styles = StyleSheet.create({
+  fieldsContainer: {
+    gap: 24,
+    width: '100%',
+    paddingHorizontal: 16
   }
-};
-
+});
 
 const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
   const {
     onBack,
     onNext,
-    onSetMsisdn,
-    onSetCouplingCode,
-    msisdn: initialMsisdn = '',
+    msisdn: initialMsisdn = '+41796861241',
     coupledWithCode = '',
   } = route.params;
   const [msisdn, setMsisdn] = useState(initialMsisdn);
@@ -37,14 +32,16 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
 
   const handleMsisdnChange = (value: string) => {
     setMsisdn(value);
-    void onSetMsisdn?.(value);
   };
 
   const handleCouplingCodeChange = (value: string) => {
     if (!coupledWithCode) {
       setCouplingCode(value);
-      void onSetCouplingCode?.(value); 
     }
+  };
+
+  const handleNext = () => {
+    void onNext(msisdn, couplingCode);
   };
 
   const footer = (
@@ -55,7 +52,7 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
         caption={translate('onboarding_esim_enter_details_continue')}
         captionColor={fontColors.light}
         disabled={!msisdn || !couplingCode}
-        onPress={onNext}
+        onPress={handleNext}
       />
       <SecondaryButton
         accessibilityRole="button"
@@ -73,8 +70,8 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
         title={translate('onboarding_esim_enter_details_title')}
         description={translate('onboarding_esim_enter_details_description')}
       />
-      <Container>
-        <div className="space-y-6 w-full">
+      <Container style={{width: '100%', paddingHorizontal: 0}}>
+        <View style={styles.fieldsContainer}>
           <SSITextInputControlledField
             value={msisdn}
             onChangeText={handleMsisdnChange}
@@ -89,8 +86,9 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
             label={translate('onboarding_esim_enter_details_coupling_code_label')}
             placeholder={translate('onboarding_esim_enter_details_coupling_code_placeholder')}
             editable={!coupledWithCode}
+            autoCapitalize="characters"
           />
-        </div>
+        </View>
       </Container>
     </ScreenContainer>
   );

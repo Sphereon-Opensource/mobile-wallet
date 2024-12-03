@@ -36,6 +36,7 @@ import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {storageGetMsisdn} from '../services/storageService';
+import {MusapClient} from '@sphereon/musap-react-native';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -84,8 +85,13 @@ export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
 const getMusapKeyManagementSystem = () => {
   const msIsdn = storageGetMsisdn(); // FIXME use pidSecurityModel
-  if (msIsdn) { // Use eSim signing when we have a msisdn
+  const linkId = MusapClient.getLink()
+  if (msIsdn && linkId) { // Use eSim signing when we have a msisdn
+    console.log('Found msIsdn & linkId, enabling eSim KMS')
     return new MusapKeyManagementSystem('EXTERNAL', 'eSim', {
+      externalSscdSettings: { // FIXME this is still mandatory for ExternalSscd
+        clientId: 'SCO'
+      },
       defaultSignAttributes:
         {
           msisdn: msIsdn,

@@ -136,11 +136,10 @@ export type ShareStackParamList = {
 };
 
 export type ESIMActivationStackParamList = {
+  Loading: ILoadingProps;
   EnterESimDetails: {
     onBack: () => Promise<void>
-    onNext: () => Promise<void>
-    onSetMsisdn: (msisdn: string) => Promise<void>
-    onSetCouplingCode: (couplingCode: string) => Promise<void>
+    onNext: (msisdn: string, couplingCode: string) => Promise<void>
     msisdn?: string
     coupledWithCode?: string
   }
@@ -353,6 +352,7 @@ export interface ILockProps {
 
 export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
+  ACTIVATE_ESIM = 'ACTIVATE_ESIM',
   AUTHENTICATION = 'Authentication',
   MAIN = 'Main',
 }
@@ -407,6 +407,7 @@ export enum ScreenRoutesEnum {
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
   NEW_CONTACT_ADD = 'NewContactAdd',
+  ENTER_ESIM_DETAILS = "EnterESimDetails"
 }
 
 export interface ISiopV2PProps {

@@ -95,7 +95,7 @@ export enum ESIMActivationMachineServices {
 }
 
 export enum ESIMActivationMachineStateTypes {
-  init = 'init',
+  esim_init = 'esim_init',
   createMusapLink = 'createMusapLink',
   checkSscd = 'checkSscd',
   enableSscd = 'enableSscd',

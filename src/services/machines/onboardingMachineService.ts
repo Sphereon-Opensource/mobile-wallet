@@ -10,7 +10,7 @@ import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
-import {BasicUser, IUser} from '../../types';
+import {BasicUser, IUser, WalletAuthLockState} from '../../types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {OnboardingMachineContext, OnboardingMachineEventTypes, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {generateDigest} from '../../utils';
@@ -208,6 +208,7 @@ export const activateESim = async (
       esimMachineInstance.onTransition((state) => {
         console.log('ESIMActivationMachine state transition:', state.value);
         if (state.matches('success')) {
+          console.log('ESIMActivationMachine ended successfully');
           resolve(state.context);
         } else if (state.matches('handleError') || state.matches('error')) {
           console.error('ESIMActivationMachine error:', state.context.error);

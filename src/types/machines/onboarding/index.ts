@@ -32,7 +32,7 @@ export type OnboardingMachineContext = {
   verificationPinCode: string;
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
-  skipImport?: boolean;
+  skipImport: boolean;
   pidSecurityModel: PIDSecurityModel;
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
@@ -82,6 +82,7 @@ export enum OnboardingMachineEvents {
   SET_PIN_CODE = 'SET_PIN_CODE',
   SET_VERIFICATION_PIN_CODE = 'SET_VERIFICATION_PIN_CODE',
   UPDATE_SECURITY_MODEL = 'UPDATE_SECURITY_MODEL',
+  SKIP_IMPORT = 'SKIP_IMPORT',
   READ_TERMS = 'READ_TERMS',
   READ_PRIVACY = 'READ_PRIVACY',
   SET_BIOMETRICS = 'SET_BIOMETRICS',
@@ -100,6 +101,7 @@ export type SetPinCodeEvent = {type: OnboardingMachineEvents.SET_PIN_CODE; data:
 export type SetVerificationPinCodeEvent = {type: OnboardingMachineEvents.SET_VERIFICATION_PIN_CODE; data: string};
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
 export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
+export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
@@ -121,6 +123,7 @@ export type OnboardingMachineEventTypes =
   | SetVerificationPinCodeEvent
   | ReadTermsEvent
   | ReadPrivacyEvent
+  | SkipImportEvent
   | SkipBiometricsEvent
   | SetBiometricsEvent
   | DeclineInformation

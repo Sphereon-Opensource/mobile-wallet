@@ -28,6 +28,11 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     // Make sure we do not navigate when state has not changed
     return;
   }
+  if (!Object.values(OnboardingMachineStateType).includes(state.value as OnboardingMachineStateType)) {
+    console.log('Ignoring non-onboarding state:', state.value)
+    return
+  }
+  
   const context: OnboardingMachineContext = onboardingMachine.getSnapshot().context;
   const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {

@@ -36,7 +36,7 @@ export const activateESimStateNavigationListener = (
   if (state._event.type === 'internal') {
     return
   }
-
+  console.log('activateESimStateNavigationListener received state', state.value);
   const context: ESIMActivationMachineContext = activateESimMachine.getSnapshot().context
   const navigation = RootNavigation
   if (navigation === undefined || !navigation.isReady()) {
@@ -45,7 +45,7 @@ export const activateESimStateNavigationListener = (
   }
 
   switch (state.value) {
-    case ESIMActivationMachineStateTypes.init:
+    case ESIMActivationMachineStateTypes.esim_init:
     case ESIMActivationMachineStateTypes.createMusapLink:
     case ESIMActivationMachineStateTypes.getCoupledWithCode:
     case ESIMActivationMachineStateTypes.cleanupKeys:
@@ -53,21 +53,23 @@ export const activateESimStateNavigationListener = (
     case ESIMActivationMachineStateTypes.enableSscd:
     case ESIMActivationMachineStateTypes.coupleWithRP:
     case ESIMActivationMachineStateTypes.bindKey:
+      console.log('ESIMActivationMachine navigate to loading screen');
       void navigateLoading({navigation, context, machine: activateESimMachine});
       break;
     case ESIMActivationMachineStateTypes.enterDetails:
       console.log('Navigating to EnterESimDetails with context:', context);
       navigation.navigate(MainRoutesEnum.ACTIVATE_ESIM, {
-        screen: 'EnterESimDetails',
+        screen: ScreenRoutesEnum.ENTER_ESIM_DETAILS,
         params: {
+          coupledWithCode: context.coupledWithCode,
           onBack: async () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS),
-          onNext: async () => activateESimMachine.send(ESIMActivationMachineEvents.NEXT),
-          onSetMsisdn: (msisdn: string) =>
-            activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn}),
-          onSetCouplingCode: (couplingCode: string) =>
-            activateESimMachine.send(ESIMActivationMachineEvents.SET_COUPLING_CODE, {couplingCode}),
-          msisdn: context.msisdn,
-          couplingCode: context.couplingCode
+          onNext: async (msisdn: string, couplingCode: string) => {
+            console.log('Sending coupling code & msisdn to machine context', msisdn, couplingCode)
+            activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn})
+            activateESimMachine.send(ESIMActivationMachineEvents.SET_COUPLING_CODE, {couplingCode});
+            console.log('Sending activateESimMachine NEXT')
+            return activateESimMachine.send(ESIMActivationMachineEvents.NEXT);
+          },
         }
       });
       break;

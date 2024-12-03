@@ -258,6 +258,7 @@
   "incorrect_data_after_bullet_heading": "If it's not yours",
   "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
 
+  
   "onboarding_esim_enter_details_title": "Enter eSim information",
   "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
   "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
@@ -266,6 +267,8 @@
   "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
   "onboarding_esim_enter_details_continue": "Continue",
   "onboarding_esim_enter_details_back": "Back",
+
+  "onboarding_machine_activate_esim_error_title": "eSim activation failed",
   "onboarding_esim_error_couple_rp_failed": "The RP coupling step of the eSim activation failed",
   "onboarding_esim_error_bindkey_failed": "The bind-key step of the eSim activation failed",
   "onboarding_esim_error_create_link_failed": "The create-link step of the eSim activation failed",

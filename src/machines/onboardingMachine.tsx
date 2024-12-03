@@ -115,6 +115,10 @@ const states: OnboardingStatesConfig = {
       SET_POPUP_MENU_OPEN: {
         actions: assign({popupMenuOpen: (_, event) => event.data})
       },
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true}),
+      },
       UPDATE_SECURITY_MODEL: {
         actions: assign({
           pidSecurityModel: (_, event: SetSecurityModel) => event.model,
@@ -241,11 +245,11 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: OnboardingMachineStep.SETUP_SECURITY_MODEL}),
         },
         {
-          cond: OnboardingMachineGuards.isEidDuringPresentation,
-          target: OnboardingMachineStateType.setupWallet,
-          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
-        },
-        {
+        cond: OnboardingMachineGuards.isSkipImport,
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+      },
+      {
           target: OnboardingMachineStateType.importPIDDataConsent,
           actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
         },
@@ -258,10 +262,17 @@ const states: OnboardingStatesConfig = {
   activateESim: {
     invoke: {
       src: OnboardingMachineServices.activateESim,
-      onDone: {
-        target: OnboardingMachineStateType.importPIDDataConsent,
-        actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
-      },
+      onDone: [
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.setupWallet,
+          actions: assign({currentStep: OnboardingMachineStep.FINAL})
+        },
+        {
+          target: OnboardingMachineStateType.importPIDDataConsent,
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
+        }
+      ],
       onError: {
         target: OnboardingMachineStateType.handleError,
         actions: assign({
