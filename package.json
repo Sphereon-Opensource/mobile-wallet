@@ -62,7 +62,7 @@
     "@sphereon/ssi-sdk-ext.jwt-service": "0.26.1-next.30",
     "@sphereon/ssi-sdk-ext.key-manager": "0.26.1-next.30",
     "@sphereon/ssi-sdk-ext.key-utils": "0.26.1-next.30",
-    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "0.26.1-feature.OIDF.69.59+6a9aa53",
+    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "0.26.1-feature.OIDF.69.60+0ffefd5",
     "@sphereon/ssi-sdk-ext.kms-musap-rn": "0.26.1-next.30",
     "@sphereon/ssi-sdk.agent-config": "0.31.1-next.32",
     "@sphereon/ssi-sdk.contact-manager": "0.31.1-next.32",
