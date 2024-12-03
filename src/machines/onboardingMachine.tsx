@@ -286,6 +286,10 @@ const states: OnboardingStatesConfig = {
   },
   importPIDDataConsent: {
     on: {
+      SKIP_IMPORT: {
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
+      },
       PREVIOUS: OnboardingMachineStateType.showProgress,
       NEXT: [
         {
