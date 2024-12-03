@@ -32,6 +32,15 @@ export type StackParamList = {
   AusweisModal: IAusweisModalProps;
   ActivityDetails: IActivityDetailsProps;
   ActivityReveledInfo: IActivityDetailsProps;
+  ACTIVATE_ESIM: Record<string, never>
+  EnterESimDetails: {
+    onBack: () => Promise<void>
+    onNext: () => Promise<void>
+    onSetMsisdn: (msisdn: string) => Promise<void>
+    onSetCouplingCode: (couplingCode: string) => Promise<void>
+    msisdn?: string
+    coupledWithCode?: string
+  }
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -86,6 +95,7 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
+  ACTIVATE_ESIM:  Record<string, never>;
   ImportPersonalData: IOnboardingHasTitleAndSubtitle;
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
@@ -123,6 +133,17 @@ export type FunkeC2ShareStackParamsList = {
 
 export type ShareStackParamList = {
   QrPresentation: Record<string, never>;
+};
+
+export type ESIMActivationStackParamList = {
+  Loading: ILoadingProps;
+  EnterESimDetails: {
+    onBack: () => Promise<void>
+    onNext: (msisdn: string, couplingCode: string) => Promise<void>
+    msisdn?: string
+    coupledWithCode?: string
+  }
+  Error: IPopupModalProps & Partial<IHasOnBackProps>
 };
 
 // export interface IImportDataConsentProps {
@@ -331,6 +352,7 @@ export interface ILockProps {
 
 export enum SwitchRoutesEnum {
   ONBOARDING = 'Onboarding',
+  ACTIVATE_ESIM = 'ACTIVATE_ESIM',
   AUTHENTICATION = 'Authentication',
   MAIN = 'Main',
 }
@@ -338,8 +360,9 @@ export enum SwitchRoutesEnum {
 export enum MainRoutesEnum {
   HOME = 'Home',
   ALERT_MODAL = 'AlertModal',
-  POPUP_MODAL = 'PopupModal',
   AUSWEIS_MODAL = 'AusweisModal',
+  ACTIVATE_ESIM = 'ACTIVATE_ESIM',
+  POPUP_MODAL = 'PopupModal',
   OID4VCI = 'OID4VCI',
   SIOPV2 = 'SIOPV2',
   GET_PID_CREDENTIALS = 'GET_PID_CREDENTIALS',
@@ -384,6 +407,7 @@ export enum ScreenRoutesEnum {
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
   NEW_CONTACT_ADD = 'NewContactAdd',
+  ENTER_ESIM_DETAILS = "EnterESimDetails"
 }
 
 export interface ISiopV2PProps {

@@ -248,6 +248,21 @@
   "incorrect_data_dont_add_info": "Voeg deze informatie niet toe",
   "incorrect_data_after_bullet_heading": "Als het niet van jou is",
   "incorrect_data_after_bullet_content": "Als de informatie niet van jou is, voeg het dan niet toe aan je wallet.",
+  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
+  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
+  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
+  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
+  "onboarding_esim_enter_details_continue": "Continue",
+  "onboarding_esim_enter_details_back": "Back",
+  "onboarding_esim_error_couple_rp_failed": "De RP-koppelingsstap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_bindkey_failed": "De bind-key-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_create_link_failed": "De create-link-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_check_sscd_failed": "De check-sscd-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_enable_sscd_failed": "De enable-sscd-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_cleanup_keys_failed": "De cleanup-keys-stap van de eSim-activatie is mislukt",
+
   "import_data_title": "Persoonlijke gegevens importeren",
   "onboarding_complete_title": "Alles klaar!",
   "onboarding_complete_description": "Je bent nu klaar om identiteitsgegevens, credentials en meer te ontvangen en te delen.",
@@ -289,6 +304,11 @@
       "title": "Je schiet op",
       "description": null,
       "accessibility_label": "Je bent er bijna. Voortgang van onboarding momenteel in stap"
+    },
+    "setup_security_model": {
+      "title": "Beveiligingsmodel activeren",
+      "description": null,
+      "accessibility_label": "Beveiligingsmodel activeren. Voortgang van onboarding momenteel in stap"
     },
     "import_personal_data": {
       "title": "Bijna klaar, laatste onderdeel",

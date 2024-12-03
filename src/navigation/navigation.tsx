@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useEffect} from 'react';
+import React, {ReactElement, useCallback, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
@@ -63,6 +63,7 @@ import SettingsScreen from '../screens/Settings/SettingsScreen';
 import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
+  ESIMActivationStackParamList,
   FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
@@ -98,6 +99,8 @@ import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import {formatDateTime} from '../utils';
+import {ESIMActivationProvider} from './machines/activateESimStateNavigation';
+import EnterESimDetailsScreen from '../screens/Onboarding/EnterESimDetailsScreen';
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -106,6 +109,7 @@ const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList
 const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
 const FunkeC2ShareBaseStack = createNativeStackNavigator<FunkeC2ShareStackParamsList>();
 const ShareBaseStack = createNativeStackNavigator<ShareStackParamList>();
+const ESIMActivationBaseStack = createNativeStackNavigator<ESIMActivationStackParamList>()
 
 const Tab = createBottomTabNavigator();
 
@@ -185,6 +189,15 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <FunkeC2ShareStackScreenWithContext />
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
+          <Stack.Screen
+            name={MainRoutesEnum.ACTIVATE_ESIM}
+            children={() => (
+              <>
+                <ESIMActivationStackWithContext/>
                 <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
@@ -1129,6 +1142,35 @@ const ShareStack = (): JSX.Element => {
   );
 };
 
+export const ESIMActivationStack = (): JSX.Element => (
+  <ESIMActivationBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.LOADING}
+      component={SSILoadingScreen}
+      initialParams={{message: translate('action_getting_information_message')}}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.ENTER_ESIM_DETAILS}
+      component={EnterESimDetailsScreen}
+      options={({route}) => ({
+        headerTitle: translate('onboarding_esim_enter_details_title'),
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />
+      })}
+    />
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />
+      })}
+    />
+  </ESIMActivationBaseStack.Navigator>
+)
+
+
 const AuthenticationStack = (): JSX.Element => {
   return (
     <Stack.Navigator
@@ -1571,6 +1613,12 @@ export const SiopV2StackWithContext = (props: ISiopV2PProps): JSX.Element => {
   );
 };
 
+export const ESIMActivationStackWithContext = (props: any): ReactElement => (
+  <ESIMActivationProvider customESIMActivationInstance={props?.params?.customESIMActivationInstance}>
+    <ESIMActivationStack/>
+  </ESIMActivationProvider>
+);
+
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
@@ -1611,13 +1659,19 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen
-          name={SwitchRoutesEnum.ONBOARDING}
-          component={OnboardingStackScreenWithContext}
-          initialParams={{
-            customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
-          }}
-        />
+        <>
+          <Stack.Screen
+            name={SwitchRoutesEnum.ONBOARDING}
+            component={OnboardingStackScreenWithContext}
+            initialParams={{
+              customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+            }}
+          />
+          <Stack.Screen
+            name={SwitchRoutesEnum.ACTIVATE_ESIM}
+            component={ESIMActivationStackWithContext}
+          />
+        </>
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (

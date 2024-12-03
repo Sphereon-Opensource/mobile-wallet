@@ -50,8 +50,8 @@ export const oid4vciHolder = new OID4VCIHolder({
 
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
     const contact = store
-      .getState()
-      .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+    .getState()
+    .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
 
     store.dispatch<any>(
       storeActivityLogging({
@@ -155,7 +155,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
-    new JwtService(),
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection),
@@ -164,22 +163,22 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new IssuanceBrandingStore(dbConnection),
     }),
     new CredentialPlugin(),
-   /* new CredentialHandlerLDLocal({
-      contextMaps: [LdContexts],
-      suites: [
-        new SphereonEd25519Signature2018(),
-        new SphereonEd25519Signature2020(),
-        // new SphereonBbsBlsSignature2020(),
-        new SphereonJsonWebSignature2020(),
-      ],
-      bindingOverrides: new Map([
-        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
-        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
-        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
-        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
-      ]),
-      keyStore: privateKeyStore,
-    }),*/
+    /* new CredentialHandlerLDLocal({
+       contextMaps: [LdContexts],
+       suites: [
+         new SphereonEd25519Signature2018(),
+         new SphereonEd25519Signature2020(),
+         // new SphereonBbsBlsSignature2020(),
+         new SphereonJsonWebSignature2020(),
+       ],
+       bindingOverrides: new Map([
+         ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+         ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
+         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
+       ]),
+       keyStore: privateKeyStore,
+     }),*/
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
     new MachineStatePersistence({

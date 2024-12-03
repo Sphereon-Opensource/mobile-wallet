@@ -12,22 +12,24 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
-import com.sphereon.musap.MusapModuleAndroid
+import com.sphereon.musap.MusapBridgeAndroid
 import com.sphereon.musap.MusapPackage
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 
+@OptIn(ExperimentalStdlibApi::class)
+@kotlinx.coroutines.ExperimentalCoroutinesApi
 class MainApplication : Application(), ReactApplication {
     override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
             this,
             object : DefaultReactNativeHost(this) {
                 override fun getPackages(): kotlin.collections.List<ReactPackage> {
                     val packages = PackageList(this).packages.toMutableList()
-                    try {
+/*                    try {
                         packages.add(MusapPackage())
                     } catch (e: Exception) {
                         Log.e("MWALL", "Failed to add MusapPackage", e)
-                    }
+                    }*/
                     return packages
                 }
 
@@ -48,7 +50,7 @@ class MainApplication : Application(), ReactApplication {
         if (AusweisSdkUtils.isAA2Process(this)) return
 
         try {
-            MusapModuleAndroid.init(this)
+            MusapBridgeAndroid.initializeMusap(this)
         } catch (e: Throwable) {
             Log.e("MWALL", "init failed", e) // To logcat
             throw e

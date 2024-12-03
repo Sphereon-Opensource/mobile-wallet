@@ -31,7 +31,6 @@ import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {computeEntryHash} from '@veramo/utils';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {OnboardingMachineStateType} from '../types/machines/onboarding';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentials`);
 

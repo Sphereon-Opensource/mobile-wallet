@@ -25,7 +25,7 @@ export const getIdentifiers = async (context: IRequiredContext): Promise<IIdenti
 
 export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRequiredContext): Promise<IIdentifier> => {
   const identifier = await context.agent.didManagerCreate({
-    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.AZURE_KEY_VAULT_REST,
+    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.MUSAP,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
     alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().getTime()}`,
     options: args?.createOpts?.options,
