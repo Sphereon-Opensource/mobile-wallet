@@ -14,7 +14,7 @@ import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
-import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
+import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
 import {createAgentPlugins} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
 
@@ -29,15 +29,9 @@ export const didResolver = new Resolver({
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
 
 export const didProviders = {
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP,
-  }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP,
-  }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
-    defaultKms: KeyManagementSystemEnum.MUSAP,
-  }),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({}),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({}),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({}),
 };
 
 const dbConnection: OrPromise<DataSource> = DEFAULT_DB_CONNECTION;
