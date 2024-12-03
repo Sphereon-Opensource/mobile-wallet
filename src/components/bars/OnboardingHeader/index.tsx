@@ -86,8 +86,8 @@ export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VE
 const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, headerSubTitle, options}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
 
-  const {currentStep, skipImport} = useMemo(
-    () => (onboardingInstance ? onboardingInstance.getSnapshot().context : {currentStep: undefined, skipImport: undefined}),
+  const {currentStep} = useMemo(
+    () => (onboardingInstance ? onboardingInstance.getSnapshot().context : {currentStep: undefined}),
     [onboardingInstance],
   );
 
@@ -127,14 +127,13 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
   const onClose = async (): Promise<void> => {
     storagePersistPIDSecurityModel(securityModel)
       .then((): void => {
-        if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
+        const currentState = onboardingInstance.getSnapshot()
+        if (securityModel !== currentState.context.pidSecurityModel) {
+          onboardingInstance.send({
+            type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL,
+            model: securityModel,
+          });
         }
-
-        if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
-        }
-
         closeModal();
       })
       .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
@@ -211,7 +210,6 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
                 label={translate('onboarding_pid_security_model_mobile_operator')}
                 onPress={() => setSecurityModel(PIDSecurityModel.MOBILE_OPERATOR_ESIM)}
                 selected={securityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM}
-                disabled
               />
               <SelectOption
                 label={translate('onboarding_pid_security_model_eid_presentation')}
