@@ -3402,10 +3402,10 @@
     qs "^6.11.2"
     uint8arrays "^3.1.1"
 
-"@sphereon/did-provider-oyd@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.26.1-next.37.tgz#f8a986847bae88b8176c55dec753ec0b53608725"
-  integrity sha512-+j0ac4IO9kiPJ5jjbFcKh+GmYoOY7L76gTlitQjV8K4TW+yynacoMmt3pJeIewEfax03XxjQzksounjijldAyg==
+"@sphereon/did-provider-oyd@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.26.1-feature.SPRIND.124.esim.47.tgz#82402046952fc5b877bf97e7ccee55171b5d5b56"
+  integrity sha512-1JCHpXr+Y7ho77O+eo4/US9A9xaZyUoRX09kHcqti+IOe9w7QyjsVUZetxcHIedlBXfJG5Z3qsv4veuDMTW3PA==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
@@ -3438,17 +3438,24 @@
     "@js-joda/timezone" "2.3.0"
     format-util "^1.0.5"
 
-"@sphereon/musap-native@0.0.1-next.154+a8d7831":
-  version "0.0.1-next.154"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.0.1-next.154.tgz#2655c07f6b065947a2a3ff3dd9a072b2a5100e37"
-  integrity sha512-WNdL0bAYV+YnyAdruoHV9nvWh9gag2ELBhbkXYSvynBv5kLBv2sOQ670+GfiLzoAkgl5xyre58QHVM65zzY8Dw==
+"@sphereon/musap-native@0.2.1-unstable.160+6870fa9", "@sphereon/musap-native@0.2.1-unstable.161", "@sphereon/musap-native@0.2.1-unstable.161+5b02bab":
+  version "0.2.1-unstable.161"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.2.1-unstable.161.tgz#16cfdbfbd8c4bd2cfb73508883344e25721019be"
+  integrity sha512-i9XW+LdZcc+hVGjM4Dnntwe53BMzhde4Wihe1Ufgxoi7NL/TK5xnlucKFp6dWt4MR4wbttga44ar6sEkv8mV9w==
 
-"@sphereon/musap-react-native@0.0.1-next.154":
-  version "0.0.1-next.154"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.0.1-next.154.tgz#9256eeb0524daa80c744f85ec6eb8200fd82d67c"
-  integrity sha512-sj7k1Ikylm0540urv2hXc7MiBhwNUzgrrRaSl+VbOV1PpGkrydqQz0QTB4Dmsxl8+JddOb4DNV0Lr9VdYYAl9A==
+"@sphereon/musap-react-native@0.2.1-unstable.160":
+  version "0.2.1-unstable.160"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-unstable.160.tgz#d8017692a4f316af9bbb77d1c5bd765efc68aed7"
+  integrity sha512-vR9iPRjMgYRJ/Wg5c16CC2HowpV2As+IrpKbLhv2WQT1lwZNeuh8jkobTvRLd9424Nk/l0bd4tL16IZi4otm3A==
   dependencies:
-    "@sphereon/musap-native" "0.0.1-next.154+a8d7831"
+    "@sphereon/musap-native" "0.2.1-unstable.160+6870fa9"
+
+"@sphereon/musap-react-native@0.2.1-unstable.161":
+  version "0.2.1-unstable.161"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-unstable.161.tgz#cd9b527a2229d99144232c08499e902e46bc4486"
+  integrity sha512-c5ERKr4XOqojr9chqxJ76NZtgneuYJgYl0AZPdi1Nl9b8jq6KpHKorpWK+2iKWsyYnVUaXXbdu2c3v829gyNJg==
+  dependencies:
+    "@sphereon/musap-native" "0.2.1-unstable.161+5b02bab"
 
 "@sphereon/oid4vc-common@0.16.1-next.224", "@sphereon/oid4vc-common@0.16.1-next.224+7be2c0d":
   version "0.16.1-next.224"
@@ -3551,14 +3558,14 @@
     nanoid "^3.3.7"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-provider-jwk@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-jwk/-/ssi-sdk-ext.did-provider-jwk-0.26.1-next.37.tgz#e64ffbb56e230dd136ab1adf3cd3e2a1cedb6a4a"
-  integrity sha512-2+sunkLTjNno/GqLoUrXbF54O4nYFsBj17UCgFVEKKS5CoQhJ7WFIaHB3uXuOVPkMRnbj5aQTvRxRx6RqW3dSA==
+"@sphereon/ssi-sdk-ext.did-provider-jwk@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-jwk/-/ssi-sdk-ext.did-provider-jwk-0.26.1-feature.SPRIND.124.esim.47.tgz#3ecca366ec2f3f86891ba52ca14813a8bcd28e77"
+  integrity sha512-moX7s48nJ85BjIlNg67Mwdtcho7n8x+k5/BBLuBZyuP1hA2888cyAiRLn0o3RuBsnGxnE9fjAA62tdIeTWymbw==
   dependencies:
     "@ethersproject/random" "^5.7.0"
-    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-next.37+af30cea"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@stablelib/ed25519" "^1.0.3"
     "@veramo/core" "4.2.0"
@@ -3568,13 +3575,13 @@
     did-resolver "^4.1.0"
     elliptic "^6.5.4"
 
-"@sphereon/ssi-sdk-ext.did-provider-key@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-key/-/ssi-sdk-ext.did-provider-key-0.26.1-next.37.tgz#8a0f6f2d67ee57a3d20675b3c0c57c58db8d3780"
-  integrity sha512-grpYorJf+zceFa25wT9hzR7LGWdxBEFPtD+R7z1SwsBqoUA3RW/ovGQqY2/gbYFYZgQGlLYK3jsf5wqOIbjqyA==
+"@sphereon/ssi-sdk-ext.did-provider-key@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-key/-/ssi-sdk-ext.did-provider-key-0.26.1-feature.SPRIND.124.esim.47.tgz#10d19a70e55ac5c2e7b87d721dfe1cabfd65965f"
+  integrity sha512-XRfXtFgH7hA0P+KdYSphRTlDEA/F8GjybLi6LBfqXoKYeeVYI2LP0tNKeVy2fhleNToCpWDsUCoWTdprnKw4Iw==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-resolver-key" "0.26.1-next.37+af30cea"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/ssi-sdk-ext.did-resolver-key" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@transmute/did-key-bls12381" "0.3.0-unstable.10"
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
@@ -3585,19 +3592,19 @@
     multicodec "^3.2.1"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-ebsi@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-ebsi/-/ssi-sdk-ext.did-resolver-ebsi-0.26.1-next.37.tgz#1e56295254e77d782dc5aaea79de869b78961f87"
-  integrity sha512-vEDkwKtFPDHKLMFQ+sJ1AYc2Q/JiYgfsKI4O48jou3N2owmoRlf/h+7MVCKq7FArfLqORD+NsDbHbkYpspwdRg==
+"@sphereon/ssi-sdk-ext.did-resolver-ebsi@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-ebsi/-/ssi-sdk-ext.did-resolver-ebsi-0.26.1-feature.SPRIND.124.esim.47.tgz#0f6bdcf231f6f3f4a6ef64917ace3eff7b1fe42b"
+  integrity sha512-SjY+taNb0wCLKW9u+KwBpYLDmr5acTpUiZ8AiINIcNP59YFNW/RI7YvXxqFQh7cffzH40MNpeg1F3KJkERAlxQ==
   dependencies:
     cross-fetch "^3.1.8"
     did-resolver "^4.1.0"
     dotenv "^16.3.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-jwk@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-jwk/-/ssi-sdk-ext.did-resolver-jwk-0.26.1-next.37.tgz#c529d4835e2ec9392c462fe3bb3614df4b625bd3"
-  integrity sha512-We2mKdsMXbJ47HTtjqDdjLEH8RSW+9JaXVMxrocz+B8LsL+GdbWIb98HomDe3xJV+vhIo5TYu1PXS9KYXSY0+g==
+"@sphereon/ssi-sdk-ext.did-resolver-jwk@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-jwk/-/ssi-sdk-ext.did-resolver-jwk-0.26.1-feature.SPRIND.124.esim.47.tgz#c2786fb467df85dbd78b32d1e53efded717086b6"
+  integrity sha512-+9cu90Y6KtO3opc/evNwKVDfQ9eO18rYjzq9K3L4knsPgcjB8IGwul00x+67ROMvZ6cSCXOVOlT0TToHqdVrQQ==
   dependencies:
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     base64url "^3.0.1"
@@ -3605,12 +3612,12 @@
     did-resolver "^4.1.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-key@0.26.1-next.37", "@sphereon/ssi-sdk-ext.did-resolver-key@0.26.1-next.37+af30cea":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-key/-/ssi-sdk-ext.did-resolver-key-0.26.1-next.37.tgz#18226ed1aef4c86334fb7e38ab473e6398936e63"
-  integrity sha512-/aeUIq0gbxxKxxOVCWlxW1XgzVD0ynfKqa3BpU/mCbKi/jpBqA0BN4BCuBWyGin3fbAadnT5zgRLA+SxgYReVA==
+"@sphereon/ssi-sdk-ext.did-resolver-key@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.did-resolver-key@0.26.1-feature.SPRIND.124.esim.47+42ba7ee":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-key/-/ssi-sdk-ext.did-resolver-key-0.26.1-feature.SPRIND.124.esim.47.tgz#87743d7989cfbcfa861f6a24efda975c57d540b4"
+  integrity sha512-B4+qYpIMDfLpQpqpqb8zJqP3FtSrIR5RdsgnHbAJrrWdGtbFhPZSs27wc/tvoU77SgsQhwMpV0jK5idu/jKVJA==
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@stablelib/ed25519" "^1.0.3"
     bigint-mod-arith "^3.3.1"
     did-resolver "^4.1.0"
@@ -3622,16 +3629,16 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.37+af30cea":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-utils/-/ssi-sdk-ext.did-utils-0.26.1-next.37.tgz#1578722ae424fc8813f8f4336136e6d22d25112b"
-  integrity sha512-hHiHAlcX7dmt08mqC9aw3srPjPdxxBBZyLt/KoYWgszuOxiduR0XQMQLulj7+onxGTmxqr7aXaKGw8u8v4yQgw==
+"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-feature.SPRIND.124.esim.47+42ba7ee", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.did-utils@0.26.1-next.37+af30cea":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-utils/-/ssi-sdk-ext.did-utils-0.26.1-feature.SPRIND.124.esim.47.tgz#df142e5ae29f499cfef224a8e890de8b303d4719"
+  integrity sha512-bWr/3MRNFHAmy9nembrdvVDjXI2PYSwHM6z0AmJnSLi4cLo/Sn3o07IeNUt2/k9K8+d3FMcfYv0AP91QgI4Cuw==
   dependencies:
     "@ethersproject/networks" "^5.7.1"
     "@ethersproject/transactions" "^5.7.0"
     "@sphereon/did-uni-client" "^0.6.3"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-next.37+af30cea"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-sdk.core" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
@@ -3653,6 +3660,23 @@
     "@sphereon/ssi-sdk-ext.x509-utils" "0.25.0"
     "@sphereon/ssi-sdk.agent-config" "0.30.1"
     "@sphereon/ssi-types" "0.30.1"
+    "@veramo/core" "4.2.0"
+    "@veramo/utils" "4.2.0"
+    debug "^4.3.4"
+    pkijs "^3.2.4"
+    uint8arrays "^3.1.1"
+
+"@sphereon/ssi-sdk-ext.identifier-resolution@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.identifier-resolution@0.26.1-feature.SPRIND.124.esim.47+42ba7ee":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.identifier-resolution/-/ssi-sdk-ext.identifier-resolution-0.26.1-feature.SPRIND.124.esim.47.tgz#ec3dd72190a4dcc0ed225efdfe82268cad81a8ce"
+  integrity sha512-o6vs6lMBYkiIPPhqw5Z6l3xTQp1Mp7EzfVT7pW6+CdtXUtlXETJbWyiB+aRAXgoVZYmmCH0KE6zWLf+aSOXUGA==
+  dependencies:
+    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
+    "@sphereon/ssi-sdk.oidf-client" " 0.30.2-feature.SDK.41.oidf.support.286"
+    "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@veramo/core" "4.2.0"
     "@veramo/utils" "4.2.0"
     debug "^4.3.4"
@@ -3696,6 +3720,26 @@
     jwt-decode "^4.0.0"
     uint8arrays "^3.1.1"
 
+"@sphereon/ssi-sdk-ext.jwt-service@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.jwt-service/-/ssi-sdk-ext.jwt-service-0.26.1-feature.SPRIND.124.esim.47.tgz#8e8ddfed6ce973d2970f66f0dde4fda4ad4fb2e3"
+  integrity sha512-3Gs+Afd9wyUoDgMvL9j6rTjzpXzxotEjqzGtf3+2PsaXqF26Dl2S9qFvobDHXOiZurnFRUBeBlr29rz5pPIlrg==
+  dependencies:
+    "@sphereon/ssi-sdk-ext.did-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.identifier-resolution" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.key-manager" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
+    "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
+    "@stablelib/random" "^1.0.2"
+    "@veramo/core" "4.2.0"
+    "@veramo/utils" "4.2.0"
+    debug "^4.3.4"
+    jose "^5.9.3"
+    jwt-decode "^4.0.0"
+    uint8arrays "^3.1.1"
+
 "@sphereon/ssi-sdk-ext.jwt-service@0.26.1-next.37":
   version "0.26.1-next.37"
   resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.jwt-service/-/ssi-sdk-ext.jwt-service-0.26.1-next.37.tgz#20074c7a8ad6fc77ade03fe053e1be18f8c9b0ad"
@@ -3716,24 +3760,24 @@
     jwt-decode "^4.0.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.key-manager@0.25.0", "@sphereon/ssi-sdk-ext.key-manager@0.26.1-next.37", "@sphereon/ssi-sdk-ext.key-manager@0.26.1-next.37+af30cea":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-manager/-/ssi-sdk-ext.key-manager-0.26.1-next.37.tgz#36e047b94fc407110c875824fab8e6a3e263e97a"
-  integrity sha512-4s49/R2NA0+YGLCv1b4qzUwlacLGhe4K8xfrm5IS/0PEOcaqGDFiSIS6gYSj0l5PhLmkDzEseXj+gdsgAd9G8w==
+"@sphereon/ssi-sdk-ext.key-manager@0.25.0", "@sphereon/ssi-sdk-ext.key-manager@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.key-manager@0.26.1-feature.SPRIND.124.esim.47+42ba7ee", "@sphereon/ssi-sdk-ext.key-manager@0.26.1-next.37+af30cea":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-manager/-/ssi-sdk-ext.key-manager-0.26.1-feature.SPRIND.124.esim.47.tgz#8948293be4877bc912cff2e1f7f6178d9549561c"
+  integrity sha512-9MvGajQCTFN3tuy3HRO1CJ5T1EjcRlcoGsX27hX/uFVl75E5zWUrZ9GD+nP6Eis+C4TB94x25oFNC1eE+Qan/Q==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.37+af30cea":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-utils/-/ssi-sdk-ext.key-utils-0.26.1-next.37.tgz#19d0b059e39cff782146b537efe7b5cecca083e8"
-  integrity sha512-wP52abms4gB+7eSoqXm6mchB4cUuibK+WAFirKOX50j0uxaBYTX8mVpHy1HtUEtzNyyhXwut//heNrLKNWeDIQ==
+"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-feature.SPRIND.124.esim.47+42ba7ee", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.key-utils@0.26.1-next.37+af30cea":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-utils/-/ssi-sdk-ext.key-utils-0.26.1-feature.SPRIND.124.esim.47.tgz#55dffcf17681698396192a39a8c2c5bda84cda0e"
+  integrity sha512-Gpa77kiiQX+nsHigxeXWw1P3thqPikghTa+NkIqPzskRW1HMJ/iwQqevi8RIreGvl3FzPXdauni+YSryvQU1XA==
   dependencies:
     "@ethersproject/random" "^5.7.0"
     "@noble/curves" "1.7.0"
     "@noble/hashes" "1.6.1"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@stablelib/ed25519" "^1.0.3"
     "@trust/keyto" "^1.0.1"
@@ -3749,24 +3793,24 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.kms-musap-rn@0.26.1-next.37":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-musap-rn/-/ssi-sdk-ext.kms-musap-rn-0.26.1-next.37.tgz#d64a9f3b27c5492a17a73d66158161e695f5d45b"
-  integrity sha512-kDEOIr0zd9cHyA9EdghQ8kLUjtTJbJ/AXNF3z2H4Bms2C/46IjZroGyVeEjxp7d8G44hJ8WyT8kfnpjmhCPmiA==
+"@sphereon/ssi-sdk-ext.kms-musap-rn@0.26.1-feature.SPRIND.124.esim.47":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-musap-rn/-/ssi-sdk-ext.kms-musap-rn-0.26.1-feature.SPRIND.124.esim.47.tgz#3a7b8ab5fb5b9b251b959def26b24bfcc08bdcdd"
+  integrity sha512-TbD49UCHUMFjYM7JXE6w64LugPb88VUGcONAPx/dpFT4ofH+jYTIGhPldcJxisGKHO82M/hgo0irSFbjVnaVXA==
   dependencies:
-    "@sphereon/musap-react-native" "0.0.1-next.154"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-next.37+af30cea"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-next.37+af30cea"
+    "@sphereon/musap-react-native" "0.2.1-unstable.161"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.26.1-feature.SPRIND.124.esim.47+42ba7ee"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
     "@veramo/kms-local" "4.2.0"
     text-encoding "^0.7.0"
 
-"@sphereon/ssi-sdk-ext.x509-utils@0.25.0", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-next.37+af30cea":
-  version "0.26.1-next.37"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.x509-utils/-/ssi-sdk-ext.x509-utils-0.26.1-next.37.tgz#678a9c0db16d990ef0c629b9eed201089291533b"
-  integrity sha512-y+yHAUdk3/9BRHAXYHCHzUt9QP/cQfWtXcayjoyODmL54wE0qfeXAzzS+aOcbhJUyk/Pr/FXDZNogrb1xrE6Kg==
+"@sphereon/ssi-sdk-ext.x509-utils@0.25.0", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-feature.SPRIND.124.esim.47", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-feature.SPRIND.124.esim.47+42ba7ee", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-next.37", "@sphereon/ssi-sdk-ext.x509-utils@0.26.1-next.37+af30cea":
+  version "0.26.1-feature.SPRIND.124.esim.47"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.x509-utils/-/ssi-sdk-ext.x509-utils-0.26.1-feature.SPRIND.124.esim.47.tgz#714095b4288b0f944f98dd11e62ebd40eb1de89c"
+  integrity sha512-ZsnMJXGfy+2Z6QRyIqayFtL7Shp7ZlF4s6LKhi8xR/6OLMFOLiRnb/gOrH1+om70Z+P5c8ME2tCei1Rw7ppuIg==
   dependencies:
     "@peculiar/asn1-schema" "^2.3.13"
     "@peculiar/asn1-x509" "^2.3.13"
