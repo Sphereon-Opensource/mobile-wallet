@@ -1,4 +1,8 @@
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {
+  ClientMetadataOpts,
+  PresentationDefinitionWithLocation,
+  VerifiedAuthorizationRequest,
+} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
@@ -36,6 +40,7 @@ import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {JwsPayload} from '@sphereon/ssi-sdk-ext.jwt-service';
+import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -258,10 +263,20 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): StateMachine<SiopV2
               target: SiopV2MachineStates.transitionFromSetup,
               actions: [
                 assign({
-                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data
-              }),
+                  trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data
+                }),
                 assign({
-                  payload: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<JwsPayload>) => _event.data
+                  oauth_authorization_server: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<AuthorizationServerMetadata>) => _event.data,
+                  openid_wallet_provider: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<AuthorizationServerMetadata>) => _event.data,
+                }),
+                assign({
+                  openid_credential_issuer: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<CredentialIssuerMetadata>) => _event.data,
+                }),
+                assign({
+                  openid_credential_verifier: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<ClientMetadataOpts>) => _event.data
+                }),
+                assign({
+                  federation_entity: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<any>) => _event.data
                 })
               ]
             },

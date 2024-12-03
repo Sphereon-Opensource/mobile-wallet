@@ -21,7 +21,6 @@ import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
@@ -222,7 +221,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<{ trustedAnchors: Array<TrustedAnchor>; payload: string | undefined }> => {
+): Promise<Pick<SiopV2MachineContext, 'trustedAnchors' | 'federation_entity' | 'oauth_authorization_server' | 'openid_wallet_provider' | 'openid_credential_verifier' | 'openid_credential_issuer'>> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -244,6 +243,10 @@ export const getFederationTrust = async (
   });
   return {
     trustedAnchors: result.trustedAnchors,
-    payload: result.jwtPayload
+    federation_entity: result.jwtPayload.federation_entity,
+    openid_wallet_provider: result.jwtPayload.metadata.openid_wallet_provider,
+    oauth_authorization_server: result.jwtPayload.metadata.oauth_authorization_server,
+    openid_credential_issuer: result.jwtPayload.metadata.openid_credential_issuer,
+    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier
   };
 };
