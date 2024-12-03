@@ -33,7 +33,7 @@ const ScreenContainer = ({
   const isAndroid = Platform.OS === 'android';
   const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
-  const verticalOffset = isIos ? headerHeight + 32 : headerHeight + 52; // FIXME adding android to this to fix an issue where the button is behind the keyboard
+  const verticalOffset = isIos ? headerHeight + 32 : 0;
   return (
     <View
       importantForAccessibility={importantForAccessibility}

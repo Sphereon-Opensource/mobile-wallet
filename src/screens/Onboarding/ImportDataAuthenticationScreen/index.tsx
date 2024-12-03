@@ -33,23 +33,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
   const [pinCodeContext, setPinCodeContext] = useState('');
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
   const pinInputRef = useRef<TextInput>(null);
-  const [keyboardShown, setKeyboardShown] = useState(true);
   const [failed, setFailed] = useState(false);
-
-  // FIXME adding android to this to fix an issue where the button is behind the keyboard
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', (): void => {
-      setKeyboardShown(true);
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', (): void => {
-      setKeyboardShown(false);
-    });
-
-    return (): void => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   useAuthFocusEffect((success: boolean) => {
     if (!success) {
@@ -96,7 +80,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
   }, [biometricsEnabled, failed]);
 
   return (
-    <ScreenContainer footer={footer} disableKeyboardAvoidingView={!keyboardShown}>
+    <ScreenContainer footer={footer}>
       <ScreenTitleAndDescription title={title} description={description} />
       {(failed || biometricsEnabled) && (
         <Content style={{height: '100%'}}>
