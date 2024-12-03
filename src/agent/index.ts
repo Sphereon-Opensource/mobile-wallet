@@ -14,10 +14,9 @@ import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
-import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
-import {createAgentPlugins, sphereonKeyManager} from './plugins';
+import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
+import {createAgentPlugins} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
-import {AbstractIdentifierProvider} from '@veramo/did-manager';
 
 export const didResolver = new Resolver({
   ...getDidEbsiResolver(),

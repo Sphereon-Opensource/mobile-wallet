@@ -37,7 +37,7 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {AZURE_KEYVAULT_REST_API_KEY, AZURE_KEYVAULT_REST_APPLICATION_ID, AZURE_KEYVAULT_REST_URL} from 'react-native-dotenv';
 import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
-import {PIDSecurityModel, storageGetMsisdn, storageGetPIDSecurityModelSync} from '../services/storageService';
+import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdn, storageGetPIDSecurityModelSync} from '../services/storageService';
 import {MusapClient} from '@sphereon/musap-react-native';
 
 export const oid4vciHolder = new OID4VCIHolder({
@@ -123,14 +123,8 @@ const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource)
       }),
     },
   });
-  switch (pidSecurityModel) {
-    case PIDSecurityModel.REMOTE_HSM:
-      sphereonKeyManager.defaultKms = KeyManagementSystemEnum.AZURE_KEY_VAULT_REST;
-      break;
-    default:
-      sphereonKeyManager.defaultKms = KeyManagementSystemEnum.MUSAP;
+  sphereonKeyManager.defaultKms = mapPIDSecurityModelToKMS(pidSecurityModel);
   }
-};
 
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   buildSphereonKeyManager(dbConnection);

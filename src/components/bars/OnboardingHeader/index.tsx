@@ -135,8 +135,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
             model: securityModel,
           });
           if(securityModel === PIDSecurityModel.REMOTE_HSM) {
-            //sphereonKeyManager.setKms(KeyManagementSystemEnum.REMOTE_HSM, new MyKMS());
-            sphereonKeyManager.defaultKms = KeyManagementSystemEnum.REMOTE_HSM
+            sphereonKeyManager.defaultKms = KeyManagementSystemEnum.AZURE_KEY_VAULT_REST
           }
         }
         closeModal();
@@ -209,7 +208,6 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
                 label={translate('onboarding_pid_security_model_remote_hardware')}
                 onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
                 selected={securityModel === PIDSecurityModel.REMOTE_HSM}
-                disabled
               />
               <SelectOption
                 label={translate('onboarding_pid_security_model_mobile_operator')}

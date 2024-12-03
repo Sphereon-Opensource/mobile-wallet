@@ -141,7 +141,6 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
             label={translate('onboarding_pid_security_model_remote_hardware')}
             onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
             selected={securityModel === PIDSecurityModel.REMOTE_HSM}
-            disabled
           />
           <SelectOption
             label={translate('onboarding_pid_security_model_mobile_operator')}
