@@ -11,23 +11,24 @@ import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../../services/storageService';
 import {
-  SSIHeaderBarBackIconStyled as BackIcon,
-  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
   Circle,
   OnboardingHeaderContainerStyled as Container,
-  SSITextH1LightStyled as HeaderCaption,
   OnboardingHeaderRow as HeaderRow,
-  SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
   PROGRESS_BAR_HEIGHT,
+  SelectedCircle,
+  SSIHeaderBarBackIconContainerStyled as BackIconContainer,
+  SSIHeaderBarBackIconStyled as BackIcon,
+  SSIHeaderBarHeaderSubCaptionStyled as HeaderSubCaption,
+  SSITextH1LightStyled as HeaderCaption,
   SSITextH3LightStyled,
   SSITextH3RegularLightStyled,
-  SelectedCircle,
 } from '../../../styles/components';
-import {ButtonIconsEnum} from '../../../types';
+import {ButtonIconsEnum, KeyManagementSystemEnum} from '../../../types';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {capitalize} from '../../../utils';
 import SSICloseIcon from '../../assets/icons/SSICloseIcon';
 import SettingsIcon from '../../assets/icons/SettingsIcon';
+import {sphereonKeyManager} from '../../../agent/plugins';
 
 const {width, height} = Dimensions.get('window');
 
@@ -86,7 +87,7 @@ export const PROGRESS_BAR_LAYOUT_HEIGHT = +PROGRESS_BAR_HEIGHT + PROGRESS_BAR_VE
 const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, headerSubTitle, options}: HeaderBarProps): JSX.Element => {
   const {onboardingInstance} = React.useContext(OnboardingContext);
 
-  const {currentStep, skipImport} = useMemo(
+  const {currentStep} = useMemo(
     () => (onboardingInstance ? onboardingInstance.getSnapshot().context : {currentStep: undefined, skipImport: undefined}),
     [onboardingInstance],
   );
@@ -129,6 +130,10 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
       .then((): void => {
         if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
           onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
+          if(securityModel === PIDSecurityModel.REMOTE_HSM) {
+            //sphereonKeyManager.setKms(KeyManagementSystemEnum.REMOTE_HSM, new MyKMS());
+            sphereonKeyManager.defaultKms = KeyManagementSystemEnum.REMOTE_HSM
+          }
         }
 
         if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {

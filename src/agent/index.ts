@@ -15,8 +15,9 @@ import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, KeyManagementSystemEnum, SupportedDidMethodEnum, TAgentTypes} from '../types';
-import {createAgentPlugins} from './plugins';
+import {createAgentPlugins, sphereonKeyManager} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
+import {AbstractIdentifierProvider} from '@veramo/did-manager';
 
 export const didResolver = new Resolver({
   ...getDidEbsiResolver(),
@@ -29,15 +30,9 @@ export const didResolver = new Resolver({
 export const didMethodsSupported = Object.keys(didResolver['registry']).map(method => method.toLowerCase().replace('did:', ''));
 
 export const didProviders = {
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({
-    defaultKms: KeyManagementSystemEnum.AZURE_KEY_VAULT_REST,
-  }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({
-    defaultKms: KeyManagementSystemEnum.AZURE_KEY_VAULT_REST,
-  }),
-  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({
-    defaultKms: KeyManagementSystemEnum.AZURE_KEY_VAULT_REST,
-  }),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_KEY}`]: new SphereonKeyDidProvider({}),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_JWK}`]: new JwkDIDProvider({}),
+  [`${DID_PREFIX}:${SupportedDidMethodEnum.DID_OYD}`]: new OydDIDProvider({}),
 };
 
 const dbConnection: OrPromise<DataSource> = DEFAULT_DB_CONNECTION;

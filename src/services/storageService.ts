@@ -18,6 +18,9 @@ const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'users';
 const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
+const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code'
+const STORAGE_MSISDN_KEY = 'msisdn'
+
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -121,6 +124,11 @@ export const storageGetPIDSecurityModel = async () => {
   return value as PIDSecurityModel;
 };
 
+export const storageGetPIDSecurityModelSync =  () => {
+  debug('getPIDSecurityModel...');
+  return userStorage.getString(STORAGE_USER_PID_SECURITY_MODEL_KEY) as PIDSecurityModel;
+};
+
 export const storagePersistPin = async ({value}: IStorePinArgs): Promise<any> => {
   console.log(`storePin...`);
   return await pinStorage.setStringAsync(STORAGE_PIN_KEY, value);
@@ -146,3 +154,38 @@ export const storageHasPin = (): boolean => {
   debug(`hasPin: ${JSON.stringify(result)}`);
   return result;
 };
+
+
+export const storagePersistCoupledWithCode = async (value: string): Promise<any> => {
+  debug(`storing coupled with code: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
+  .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`))
+}
+
+export const storageGetCoupledWithCode = async (): Promise<string | null | undefined> => {
+  debug('getCoupledWithCode...')
+  return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
+  debug('deleteCoupledWithCode...')
+  return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storagePersistMsisdn = async (value: string): Promise<any> => {
+  debug(`storing msisdn: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_MSISDN_KEY, value)
+  .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
+}
+
+export const storageGetMsisdn =(): string | null | undefined => {
+  debug('getMsisdn...')
+  return userStorage.getString(STORAGE_MSISDN_KEY)
+}
+
+export const storageDeleteMsisdn = async (): Promise<boolean> => {
+  debug('deleteMsisdn...')
+  return userStorage.removeItem(STORAGE_MSISDN_KEY)
+}
