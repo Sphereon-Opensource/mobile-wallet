@@ -111,7 +111,8 @@ const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
 export let sphereonKeyManager:SphereonKeyManager
 
 const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource) => {
-  const pidSecurityModel = storageGetPIDSecurityModelSync();
+  let pidSecurityModel = storageGetPIDSecurityModelSync() ?? PIDSecurityModel.SECURE_ELEMENT;
+
   sphereonKeyManager = new SphereonKeyManager({
     store: new KeyStore(dbConnection),
     kms: {
