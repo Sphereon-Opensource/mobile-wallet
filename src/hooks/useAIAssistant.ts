@@ -249,7 +249,7 @@ const useAIAssistant = () => {
       await connectConversation(false);
     }
 
-    updateSession({screenContext, instructions: 'User inputted text via text input field.', route: stringifyState(navigationRef?.current?.getCurrentRoute() || {})});
+    updateSession({screenContext, instructions: 'User sent a text message.', route: stringifyState(navigationRef?.current?.getCurrentRoute() || {})});
     try {
       const out = clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
     } catch (error: any) {
