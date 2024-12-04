@@ -297,13 +297,14 @@ export class PidIssuerService {
 
   async createPidKey(pidInfo: PidRequestInfo): Promise<ManagedIdentifierResult> {
     const {keyType, alg} = await this.getKeyTypeAndAlgSupported(pidInfo);
+    const keyAlias = this.kms === 'azureKeyVault' /*ugh*/  ? `pid-${pidInfo.format.replaceAll('+', '-').replaceAll('_', '-')}-${Date.now()}` : `pid-${pidInfo.type.replace('https://', '').replace('https://', '').replaceAll('/', '_')}-${pidInfo.format.replace('+', '_')}-${new Date().getTime()}`
     const key = await this.context.agent.keyManagerCreate({
       type: keyType,
       kms: this.kms,
       meta: {
         primaryAlgorithm: alg,
         algorithms: algorithmsFromKeyType(keyType),
-        keyAlias: `pid-${pidInfo.type}-${pidInfo.format}-${new Date().getTime()}`,
+        keyAlias,
       },
     });
 

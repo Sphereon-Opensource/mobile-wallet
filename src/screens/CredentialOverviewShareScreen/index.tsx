@@ -3,14 +3,11 @@ import {fontColors} from '@sphereon/ui-components.core';
 import {
   PrimaryButton,
   SecondaryButton,
-  SSICheckmarkBadge,
-  SSILogo as Logo,
   SSITextH3LightStyled,
   SSITextH4LightStyled,
-  SSITextH7LightStyled,
 } from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import RelyingPartyView from "../../components/views/RelyingPartyView";
 import {translate} from '../../localization/Localization';
@@ -22,9 +19,7 @@ import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {CredentialSelectView} from '../../components/views/CredentialSelectView';
-import ArrowIcon from '../../components/assets/icons/ArrowIcon';
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import CredentialSelectView from '../../components/views/CredentialSelectView';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -120,10 +115,12 @@ const SelectOverviewShareScreen = (props: Props) => {
         caption={translate('action_share_label')}
         captionColor={fontColors.light}
         disabled={Object.values(selectedCredentials).filter(c => !!c).length !== presentationDefinition.input_descriptors.length}
-        onPress={() => {
+        onPress={async () => {
           const selected = Object.values(selectedCredentials).filter(c => !!c);
-          if (!selected.length) return;
-          onSelectAndSend(Object.values(selectedCredentials).filter(s => !!s));
+          if (!selected.length) {
+            return;
+          }
+          await onSelectAndSend(Object.values(selectedCredentials).filter(s => !!s));
         }}
       />
       <SecondaryButton
@@ -165,6 +162,7 @@ const SelectOverviewShareScreen = (props: Props) => {
             onSelect={(credential: UniqueDigitalCredential) => {
               selectCredential(inputDescriptor.id, credential);
             }}
+            presentationDefinition={presentationDefinition}
             purpose={inputDescriptor.purpose}
             verifier={verifier}
           />

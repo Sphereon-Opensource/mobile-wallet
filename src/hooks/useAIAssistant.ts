@@ -15,7 +15,7 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 10) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
+console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 20) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...', process.env.EXPO_OPENAI_API_KEY?.slice(-10) ?? OPENAI_API_KEY?.slice(-10));
 console.log('==============================');
 
 const useAIAssistant = () => {
@@ -34,10 +34,11 @@ const useAIAssistant = () => {
     new RealtimeClient({
       apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
-      debug: false,
+      debug: true,
     }),
   );
 
+  clientRef.current.defaultSessionConfig.max_response_output_tokens = 500
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const base64ToArrayBuffer = (base64: string) => {
@@ -229,7 +230,7 @@ const useAIAssistant = () => {
           ${baseInstructions}
 
           # current app state:
-          ${appState}
+          // ${appState}
   
           # current route:
           ${route}
