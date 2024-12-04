@@ -1,6 +1,6 @@
 import {IdentifierResolution, isManagedIdentifierDidResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
-import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
+import {MemoryPrivateKeyStore, SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
@@ -31,7 +31,7 @@ import {verifySDJWTSignature} from '../services/signatureService';
 import store from '../store';
 import {dispatchVerifiableCredential} from '../store/actions/credential.actions';
 import {storeActivityLogging} from '../store/actions/logging.actions';
-import {DEFAULT_DID_PREFIX_AND_METHOD, KeyManagementSystemEnum} from '../types';
+import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
 import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
@@ -39,6 +39,7 @@ import {AZURE_KEYVAULT_REST_API_KEY, AZURE_KEYVAULT_REST_APPLICATION_ID, AZURE_K
 import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
 import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdn, storageGetPIDSecurityModelSync} from '../services/storageService';
 import {MusapClient} from '@sphereon/musap-react-native';
+import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -98,6 +99,8 @@ const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
         defaultSignAttributes:
           {
             msisdn: msIsdn,
+            mimetype: 'application/x-sha256',
+            signaturetype: 'pkcs1'
           },
       });
     }
@@ -116,6 +119,7 @@ const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource)
   sphereonKeyManager = new SphereonKeyManager({
     store: new KeyStore(dbConnection),
     kms: {
+      ephemeral: new SphereonKeyManagementSystem(new MemoryPrivateKeyStore()),
       musap: getMusapKeyManagementSystem(pidSecurityModel),
       azureKeyVault: new AzureKeyVaultKeyManagementSystemRestClient({
         applicationId: AZURE_KEYVAULT_REST_APPLICATION_ID,

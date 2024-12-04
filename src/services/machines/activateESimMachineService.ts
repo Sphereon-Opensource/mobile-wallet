@@ -69,13 +69,13 @@ export const bindKey = async (context: ESIMActivationMachineContext): Promise<vo
   if (!context.msisdn || !context.sscdInfo) {
     throw new Error('MSISDN and SSCD info are required');
   }
-  const msIsdnAttrs = [{name: 'msisdn', value: context.msisdn}];
+  const bindAttrs = [{name: 'msisdn', value: context.msisdn}];
   console.log('bindKey is sscdId', context.sscdInfo.sscdId);
   console.log('calling bindKey with ms-isdn', context.msisdn);
 
   const response = await MusapClient.bindKey(context.sscdInfo.sscdId, {
     keyAlias: `eSim-${Date.now()}`,
-    attributes: msIsdnAttrs,
+    attributes: bindAttrs,
     keyUsages: ['personal'],
   });
 
@@ -89,6 +89,8 @@ export const bindKey = async (context: ESIMActivationMachineContext): Promise<vo
       defaultSignAttributes:
         {
           msisdn: context.msisdn,
+          mimetype: 'application/x-sha256',
+          signaturetype: 'pkcs1'
         },
     }));
   sphereonKeyManager.defaultKms = 'musap'
