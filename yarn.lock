@@ -3438,17 +3438,17 @@
     "@js-joda/timezone" "2.3.0"
     format-util "^1.0.5"
 
-"@sphereon/musap-native@0.2.1-unstable.163", "@sphereon/musap-native@0.2.1-unstable.163+294bf1b":
-  version "0.2.1-unstable.163"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.2.1-unstable.163.tgz#fda2538e020ba7c40298448373d1e3fc6b3e3726"
-  integrity sha512-hmV0+SrV3mMGXoroDezn1oVlIyZrYJ5QqH6kQXPMc8/i0ipjejgjVpKmF3WeW4yaO3fJKLVeyTc4BaoCBPuPjA==
+"@sphereon/musap-native@0.2.1-next.164", "@sphereon/musap-native@0.2.1-next.164+c8c53ed":
+  version "0.2.1-next.164"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.2.1-next.164.tgz#e698d239343435c88675f8bad523c3661b8ed101"
+  integrity sha512-rZGdwCSV/Hvy0GyMra7h9ie7Ru2g4I5m8mCsymqyrCozPyyyVuGsff/mJJmwBt69zTxJmb5bnR25Sdh8E2fdlA==
 
-"@sphereon/musap-react-native@0.2.1-unstable.161", "@sphereon/musap-react-native@0.2.1-unstable.163":
-  version "0.2.1-unstable.163"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-unstable.163.tgz#6569719934003bbe40eff270cd5ac245432d7dfb"
-  integrity sha512-plK2qCqicBdL785+j0VTj9AtLPDPi50oa1Avof8mdn/k93chSzkCmYNP0z1cgzRo7ekCRNaBcOBlYLdwbuSz6Q==
+"@sphereon/musap-react-native@0.2.1-next.164", "@sphereon/musap-react-native@0.2.1-unstable.161":
+  version "0.2.1-next.164"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-next.164.tgz#fa93c18bd062dde93bc7e59a32d199d02e7f2f59"
+  integrity sha512-qtgE5ctEpEc7ArEaJNYv51n89+NF1xTvcYA9Ck+qZ/UO6nr13bc8fFCVrynWaMbE6C/aB/SLCGfY/raGymZXkQ==
   dependencies:
-    "@sphereon/musap-native" "0.2.1-unstable.163+294bf1b"
+    "@sphereon/musap-native" "0.2.1-next.164+c8c53ed"
 
 "@sphereon/oid4vc-common@0.16.1-next.224", "@sphereon/oid4vc-common@0.16.1-next.224+7be2c0d":
   version "0.16.1-next.224"

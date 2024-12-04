@@ -134,9 +134,6 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
             type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL,
             model: securityModel,
           });
-          if(securityModel === PIDSecurityModel.REMOTE_HSM) {
-            sphereonKeyManager.defaultKms = KeyManagementSystemEnum.AZURE_KEY_VAULT_REST
-          }
         }
         closeModal();
       })
