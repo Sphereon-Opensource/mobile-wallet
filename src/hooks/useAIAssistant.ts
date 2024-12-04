@@ -230,7 +230,7 @@ const useAIAssistant = () => {
           ${baseInstructions}
 
           # current app state:
-          // ${appState}
+          ${appState}
   
           # current route:
           ${route}
