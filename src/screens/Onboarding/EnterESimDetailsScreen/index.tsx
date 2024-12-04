@@ -67,7 +67,7 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
   return (
     <ScreenContainer footer={footer} footerStyle={{gap: 12}}>
       <ScreenTitleAndDescription
-        title={translate('onboarding_esim_enter_details_title')}
+        title={""}
         description={translate('onboarding_esim_enter_details_description')}
       />
       <Container style={{width: '100%', paddingHorizontal: 0}}>

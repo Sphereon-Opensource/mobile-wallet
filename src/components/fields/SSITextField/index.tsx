@@ -15,6 +15,8 @@ import {
   SSITextH5LightStyled as HeaderLabel,
   SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
 } from '../../../styles/components';
+import ClaimTrueIcon from '../../assets/icons/ClaimTrueIcon'
+import ClaimFalseIcon from '../../assets/icons/ClaimFalseIcon'
 
 export interface IProps {
   item: CredentialDetailsRow;
@@ -59,7 +61,10 @@ const SSITextField: FC<IProps> = (props: IProps): JSX.Element => {
             accessibilityRole={validURL ? 'link' : 'text'}
             {...(validURL && {onPress: () => onPressLink(item.value)})}
             style={{textDecorationLine: validURL ? 'underline' : 'none'}}>
-            {item.value}
+            { typeof item.value === 'boolean'
+              ? item.value ? <ClaimTrueIcon /> : <ClaimFalseIcon />
+              : item.value
+            }
           </ContentText>
         )}
         <ContentBadgeContainer>
