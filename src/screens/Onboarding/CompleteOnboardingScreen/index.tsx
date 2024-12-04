@@ -57,15 +57,6 @@ const CompleteOnboardingScreen = () => {
           </Svg>
         )}
       </View>
-      <ExitButtonContainer onPress={() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS)}>
-        <CircleWithBorder
-          icon={<SSICloseIcon size={15} color="white" />}
-          size={40}
-          borderWidth={0}
-          backgroundColors={['#7276F7', '#7C40E8']}
-          borderColors={['transparent', 'transparent']}
-        />
-      </ExitButtonContainer>
       <View style={[contentContainerStyle, {marginTop: 24}]}>
         <ScreenTitleAndDescription
           title={translate(`onboarding_complete_title`)}

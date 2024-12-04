@@ -290,7 +290,7 @@ const states: OnboardingStatesConfig = {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
       },
-      PREVIOUS: OnboardingMachineStateType.showProgress,
+      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
       NEXT: [
         {
           cond: OnboardingMachineGuards.isEidDuringPresentation,
@@ -348,7 +348,7 @@ const states: OnboardingStatesConfig = {
   },
   declinePIDCredentials: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
+      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
       NEXT: {
         target: OnboardingMachineStateType.setupWallet,
         actions: ['logDeclinePID', assign({currentStep: OnboardingMachineStep.FINAL, skipImport: true})],
