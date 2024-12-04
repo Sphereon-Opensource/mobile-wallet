@@ -1,12 +1,12 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useEffect, useState} from 'react';
-import {Image, Keyboard, Platform, View, Text} from 'react-native';
+import {Image, Keyboard, Platform} from 'react-native';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import {AusweisEPinModal} from '../components/AusweisEPinModal';
-import {AusweisScanModal} from '../components/AusweisScanModal';
+import AusweisEPinModal from '../components/AusweisEPinModal';
+import AusweisScanModal from '../components/AusweisScanModal';
 import {
   ImportPersonalDataContainer as Container,
   ImportPersonalDataContentContainer as Content,
@@ -34,7 +34,14 @@ const ImportPersonalDataScreen = (props?: any) => {
     Keyboard.dismiss();
   };
 
-  useEffect((): void => {
+  useEffect(() => {
+    if (eIDFlowState?.state === 'ERROR' && (eIDFlowState?.reason === 'card_locked' || eIDFlowState?.message === 'Error in onEnterPin callback')) {
+      setShowPin(true)
+      setPin('');
+    }
+  }, [eIDFlowState])
+
+  useEffect(() => {
     if (pin.length === 0) {
       return;
     }
@@ -87,8 +94,29 @@ const ImportPersonalDataScreen = (props?: any) => {
         )}
         {!!pin && <ImportPersonalDataNFCCaptionText>{translate(`${translationsPath}.nfc_caption`)}</ImportPersonalDataNFCCaptionText>}
       </ImportPersonalDataFooter>
-      {Platform.OS === 'android' && <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />}
-      <AusweisEPinModal isVisible={showPin} onClose={() => setShowPin(false)} onComplete={onCompletePin} />
+      { (Platform.OS === 'android' && !showPin) &&
+          <AusweisScanModal
+              state={eIDFlowState}
+              progress={eIDFlowState?.progress}
+              onCancel={() => provider?.cancel()}
+          />
+      }
+      <AusweisEPinModal
+          isVisible={showPin}
+          onClose={() => setShowPin(false)}
+          onComplete={onCompletePin}
+          {...(eIDFlowState?.state === 'ERROR' && {
+            errorMessage: (() => {
+              if (eIDFlowState?.reason === 'card_locked') {
+                return translate('card_locked_message');
+              } else if (eIDFlowState?.message === 'Error in onEnterPin callback') {
+                return translate('incorrect_pin_message');
+              } else {
+                return eIDFlowState?.message ?? translate('unknown_scan_card_error_message');
+              }
+            })()
+          })}
+      />
     </Container>
   );
 };
