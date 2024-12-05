@@ -290,7 +290,10 @@ const states: OnboardingStatesConfig = {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
       },
-      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+      PREVIOUS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+      },
       NEXT: [
         {
           cond: OnboardingMachineGuards.isEidDuringPresentation,
