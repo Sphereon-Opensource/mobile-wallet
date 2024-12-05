@@ -39,7 +39,6 @@ const CompleteOnboardingScreen = () => {
     return true;
   });
 
-
   return (
     <View style={{flex: 1, justifyContent: 'space-between', backgroundColor: backgroundColors.primaryDark, paddingBottom: 32}}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
