@@ -38,7 +38,6 @@ export type OnboardingMachineContext = {
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
   popupMenuOpen?: boolean;
-  esimActivationAborted?: boolean
 };
 
 // States
