@@ -264,6 +264,11 @@ const states: OnboardingStatesConfig = {
       src: OnboardingMachineServices.activateESim,
       onDone: [
         {
+          cond: (context: OnboardingMachineContext): boolean => context.esimActivationAborted === true,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
+        },
+        {
           cond: OnboardingMachineGuards.isSkipImport,
           target: OnboardingMachineStateType.setupWallet,
           actions: assign({currentStep: OnboardingMachineStep.FINAL})
