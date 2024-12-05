@@ -89,7 +89,6 @@ export enum ESIMActivationMachineServices {
   enableSscd = 'enableSscd',
   cleanupKeys = 'cleanupKeys',
   getCoupledWithCode = 'getCoupledWithCode',
-  getMsisdn = 'getMsisdn',
   storageDeleteCoupledWithCode = 'storageDeleteCoupledWithCode',
   coupleWithRP = 'coupleWithRP',
   bindKey = 'bindKey',
@@ -102,14 +101,12 @@ export enum ESIMActivationMachineStateTypes {
   enableSscd = 'enableSscd',
   cleanupKeys = 'cleanupKeys',
   getCoupledWithCode = 'getCoupledWithCode',
-  getMsisdn = 'getMsisdn',
   enterDetails = 'enterDetails',
   coupleWithRP = 'coupleWithRP',
   bindKey = 'bindKey',
   handleError = 'handleError',
   error = 'error',
   success = 'success',
-  abort = 'abort',
 }
 
 export type ESIMActivationMachineStates = Record<ESIMActivationMachineStateTypes, {}>;

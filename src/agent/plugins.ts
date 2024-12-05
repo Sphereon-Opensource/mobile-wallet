@@ -37,7 +37,7 @@ import {generateDigest, generateSalt} from '../utils';
 import {didProviders, didResolver, linkHandlers} from './index';
 import {AZURE_KEYVAULT_REST_API_KEY, AZURE_KEYVAULT_REST_APPLICATION_ID, AZURE_KEYVAULT_REST_URL} from 'react-native-dotenv';
 import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
-import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdnSync, storageGetPIDSecurityModelSync} from '../services/storageService';
+import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdn, storageGetPIDSecurityModelSync} from '../services/storageService';
 import {MusapClient} from '@sphereon/musap-react-native';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 
@@ -88,7 +88,7 @@ export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
 const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
   if (pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM) {
-    const msIsdn = storageGetMsisdnSync(); // FIXME use pidSecurityModel
+    const msIsdn = storageGetMsisdn(); // FIXME use pidSecurityModel
     const linkId = MusapClient.getLink();
     if (msIsdn && linkId) { // Use eSim signing when we have a msisdn
       console.log('Found msIsdn & linkId, enabling eSim KMS');

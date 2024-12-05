@@ -191,7 +191,7 @@ export const storeCredentialBranding = async (context: Pick<OnboardingMachineCon
 export const activateESim = async (
   context: OnboardingMachineContext,
   event: OnboardingMachineEventTypes,
-): Promise<void> => {
+): Promise<ESIMActivationMachineContext> => {
   console.log('Starting activateESim service with context:', context);
 
   return new Promise((resolve, reject) => {
@@ -206,18 +206,12 @@ export const activateESim = async (
         resolve(doneEvent.data);
       });
       esimMachineInstance.onTransition((state) => {
-        console.log('OnboardingMachine<->ESIMActivationMachine state transition:', state.value);
+        console.log('ESIMActivationMachine state transition:', state.value);
         if (state.matches('success')) {
           console.log('ESIMActivationMachine ended successfully');
-          context.esimActivationAborted = false
-          resolve();
-        } else if (state.matches('abort')) {
-          context.esimActivationAborted = true
-          resolve();
-        } 
-        else if (state.matches('handleError') || state.matches('error')) {
+          resolve(state.context);
+        } else if (state.matches('handleError') || state.matches('error')) {
           console.error('ESIMActivationMachine error:', state.context.error);
-          context.esimActivationAborted = false
           reject(state.context.error);
         }
       });
