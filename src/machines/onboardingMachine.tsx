@@ -356,7 +356,7 @@ const states: OnboardingStatesConfig = {
   },
   declinePIDCredentials: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.importPIDDataConsent,
+      PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
         target: OnboardingMachineStateType.setupWallet,
         actions: ['logDeclinePID', assign({currentStep: OnboardingMachineStep.FINAL, skipImport: true})],
