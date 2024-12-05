@@ -53,9 +53,8 @@ import {
   VerifyPinCodeScreen,
   WelcomeScreen,
 } from '../screens/Onboarding';
-import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
+import {CompleteOnboardingScreen, IncorrectInformationScreen} from '../screens/Onboarding';
 import EnterESimDetailsScreen from '../screens/Onboarding/EnterESimDetailsScreen';
-import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
 import AccountScreen from '../screens/Settings/AccountScreen';

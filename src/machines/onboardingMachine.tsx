@@ -295,7 +295,10 @@ const states: OnboardingStatesConfig = {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
       },
-      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
+      PREVIOUS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+      },
       NEXT: [
         {
           cond: OnboardingMachineGuards.isEidDuringPresentation,
@@ -413,17 +416,6 @@ const states: OnboardingStatesConfig = {
   },
   completeOnboarding: {
     on: {
-      PREVIOUS: [
-        {
-          cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.showProgress,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-        },
-        {
-          cond: OnboardingMachineGuards.isImportData,
-          target: OnboardingMachineStateType.reviewPIDCredentials,
-        },
-      ],
       NEXT: OnboardingMachineStateType.done,
     },
   },
