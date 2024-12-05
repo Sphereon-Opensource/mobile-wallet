@@ -254,15 +254,15 @@
     "crypto": "react-native-crypto"
   },
   "browser": {
-    "_stream_transform": "readable-stream/transform",
-    "_stream_readable": "readable-stream/readable",
-    "_stream_writable": "readable-stream/writable",
     "_stream_duplex": "readable-stream/duplex",
     "_stream_passthrough": "readable-stream/passthrough",
-    "vm": "vm-browserify",
-    "path": "path-browserify",
+    "_stream_readable": "readable-stream/readable",
+    "_stream_transform": "readable-stream/transform",
+    "_stream_writable": "readable-stream/writable",
+    "fs": "expo-fs",
     "os": "react-native-os",
-    "fs": "expo-fs"
+    "path": "path-browserify",
+    "vm": "vm-browserify"
   },
   "pnpm": {
     "neverBuiltDependencies": [
