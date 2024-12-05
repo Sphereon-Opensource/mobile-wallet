@@ -9,7 +9,7 @@ import SelectOption from '../../components/fields/SelectOption';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {translate} from '../../localization/Localization';
 import {OnboardingContext} from '../../navigation/machines/onboardingStateNavigation';
-import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../services/storageService';
+import {PIDSecurityModel, storageGetPIDSecurityModel, storagePersistPIDSecurityModel} from '../../services/storageService';
 import {OnboardingMachineEvents} from '../../types/machines/onboarding';
 
 const {width, height} = Dimensions.get('window');
@@ -116,6 +116,21 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
       .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
   };
 
+
+  useEffect(() => {
+    const loadStoredModel = async () => {
+      try {
+        const storedModel = await storageGetPIDSecurityModel();
+        if (storedModel) {
+          setSecurityModel(storedModel);
+        }
+      } catch (error) {
+        console.log(`Failed to load PID security model. Error: ${(error as Error).message}`);
+      }
+    };
+    void loadStoredModel();
+  }, []);
+  
   return (
     <Wrapper onClose={onClose} style={!isScreenReaderEnabled ? style : undefined}>
       <SettingsModalContainer>
