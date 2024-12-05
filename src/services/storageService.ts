@@ -173,40 +173,40 @@ export const storageHasPin = (): boolean => {
 
 
 export const storagePersistCoupledWithCode = async (value: string): Promise<any> => {
-  console.info(`storing coupled with code: ${value}`)
+  debug(`storing coupled with code: ${value}`)
   return userStorage
   .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
   .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`))
 }
 
 export const storageGetCoupledWithCode = async (): Promise<string | null | undefined> => {
-  console.info('getCoupledWithCode...')
+  debug('getCoupledWithCode...')
   return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY)
 }
 
 export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
-  console.info('deleteCoupledWithCode...')
+  debug('deleteCoupledWithCode...')
   return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
 }
 
 export const storagePersistMsisdn = async (value: string): Promise<any> => {
-  console.info(`storing msisdn: ${value}`)
+  debug(`storing msisdn: ${value}`)
   return userStorage
   .setStringAsync(STORAGE_MSISDN_KEY, value)
   .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
 }
 
 export const storageGetMsisdn = async (): Promise<string | null | undefined> => {
-  console.info('getMsisdn...')
+  debug('getMsisdn...')
   return await userStorage.getStringAsync(STORAGE_MSISDN_KEY)
 }
 
 export const storageGetMsisdnSync =(): string | null | undefined => {
-  console.info('getMsisdn...')
+  debug('getMsisdn...')
   return userStorage.getString(STORAGE_MSISDN_KEY)
 }
 
 export const storageDeleteMsisdn = async (): Promise<boolean> => {
-  console.info('deleteMsisdn...')
+  debug('deleteMsisdn...')
   return userStorage.removeItem(STORAGE_MSISDN_KEY)
 }

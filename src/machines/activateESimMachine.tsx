@@ -271,7 +271,7 @@ const createESIMActivationMachine = (opts?: CreateESIMActivationMachineOpts): ES
         hasValidDetails,
         needsKeyCleanup,
       },
-      },
+    },
   );
 };
 
