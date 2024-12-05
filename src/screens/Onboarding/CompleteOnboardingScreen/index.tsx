@@ -9,19 +9,7 @@ import ScreenTitleAndDescription from '../../../components/containers/ScreenTitl
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
-import styled from 'styled-components/native';
-import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
-import SSICloseIcon from '../../../components/assets/icons/SSICloseIcon';
-
-const ExitButtonContainer = styled.Pressable`
-  position: absolute;
-  top: 50px;
-  left: 20px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import {useBackHandler} from '@react-native-community/hooks';
 
 // Size of the assets/images/fitted.svg file
 const SVG_ASSET_WIDTH = 375;
@@ -30,7 +18,6 @@ const SVG_ASSET_ASPECT_RATIO = SVG_ASSET_WIDTH / SVG_ASSET_HEIGHT;
 
 const CompleteOnboardingScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
-  const translationPath = 'onboarding_pages.welcome';
   const [svgDimensions, setSVGDimensions] = useState<null | {width: number; height: number}>(null);
   const isAndroid = Platform.OS === 'android';
   const handleSVGContainerLayout = (event: LayoutChangeEvent) => {
@@ -46,6 +33,11 @@ const CompleteOnboardingScreen = () => {
       }
     });
   };
+
+  useBackHandler((): boolean => {
+    onboardingInstance.send(OnboardingMachineEvents.NEXT)
+    return true;
+  });
 
   return (
     <View style={{flex: 1, justifyContent: 'space-between', backgroundColor: backgroundColors.primaryDark, paddingBottom: 32}}>
