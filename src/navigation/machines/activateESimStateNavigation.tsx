@@ -38,7 +38,7 @@ export const activateESimStateNavigationListener = (
   if (state._event.type === 'internal') {
     return;
   }
-  console.log('activateESimStateNavigationListener received state', state.value);
+  console.debug('activateESimStateNavigationListener received state', state.value);
   const context: ESIMActivationMachineContext = activateESimMachine.getSnapshot().context;
   const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {
@@ -55,11 +55,11 @@ export const activateESimStateNavigationListener = (
     case ESIMActivationMachineStateTypes.enableSscd:
     case ESIMActivationMachineStateTypes.coupleWithRP:
     case ESIMActivationMachineStateTypes.bindKey:
-      console.log('ESIMActivationMachine navigate to loading screen');
+      console.debug('ESIMActivationMachine navigate to loading screen');
       void navigateLoading({navigation, context, machine: activateESimMachine});
       break;
     case ESIMActivationMachineStateTypes.enterDetails:
-      console.log('Navigating to EnterESimDetails with context:', context);
+      console.debug('Navigating to EnterESimDetails with context:', context);
       navigation.navigate(MainRoutesEnum.ACTIVATE_ESIM, {
         screen: ScreenRoutesEnum.ENTER_ESIM_DETAILS,
         params: {
@@ -69,10 +69,10 @@ export const activateESimStateNavigationListener = (
             return activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS);
           },
           onNext: async (msisdn: string, couplingCode: string) => {
-            console.log('Sending coupling code & msisdn to machine context', msisdn, couplingCode);
+            console.debug('Sending coupling code & msisdn to machine context', msisdn, couplingCode);
             activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn});
             activateESimMachine.send(ESIMActivationMachineEvents.SET_COUPLING_CODE, {couplingCode});
-            console.log('Sending activateESimMachine NEXT');
+            console.debug('Sending activateESimMachine NEXT');
             return activateESimMachine.send(ESIMActivationMachineEvents.NEXT);
           },
         },
