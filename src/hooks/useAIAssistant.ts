@@ -84,9 +84,12 @@ const useAIAssistant = () => {
       const wavStreamPlayer = wavStreamPlayerRef.current;
 
       updateSession({
+        baseInstructions: basicInstructions,
+        appState: stringifyState(state),
+        route: stringifyState(navigationRef?.current?.getCurrentRoute() || {}),
         screenContext,
         instructions:
-          'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with. Then give information about the current screen. If you have relevant information from the app state, provide it.',
+          'Introduce yourself to the user who just connected, explain how you can assist them, provide current screen information, and share relevant app state if available.',
       });
 
       client.on('error', (event: any) => {
@@ -191,7 +194,7 @@ const useAIAssistant = () => {
     wavRecorder.begin();
     updateSession({
       instructions:
-        'user has just enabled voice mode, which can be toggled with the microphone button in the bottom right corner of the screen. Instruct user if necessary.',
+        'User enabled voice mode via microphone button (bottom right). Provide instructions if needed.',
     });
     clientRef.current.createResponse();
   }, []);
@@ -217,24 +220,17 @@ const useAIAssistant = () => {
     };
   }, []);
 
-  const updateSession = ({screenContext, instructions}: {screenContext?: string; instructions?: string}) => {
+  const updateSession = ({baseInstructions, appState, route, screenContext, instructions}: {baseInstructions?: string, appState?: string, route?: string, screenContext?: string; instructions?: string}) => {
     const client = clientRef.current;
-
-    const route = stringifyState(navigationRef?.current?.getCurrentRoute() || {});
-
-    const appState = stringifyState(state);
-
-    console.log('appState', appState);
-    console.log('route', route);
 
     client.updateSession({
       input_audio_transcription: {model: 'whisper-1'},
       instructions: `
           # general instructions:
-          ${basicInstructions}
+          ${baseInstructions}
 
           # current app state:
-          // ${appState}
+          ${appState}
   
           # current route:
           ${route}
@@ -243,7 +239,7 @@ const useAIAssistant = () => {
           ${screenContext || 'unknown'}
   
           # specific instructions for current context:
-          ${instructions || ''}
+          ${instructions}
         `,
     });
   };
@@ -254,7 +250,7 @@ const useAIAssistant = () => {
       await connectConversation(false);
     }
 
-    updateSession({screenContext});
+    updateSession({screenContext, instructions: 'User sent a text message.', route: stringifyState(navigationRef?.current?.getCurrentRoute() || {})});
     try {
       const out = clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
     } catch (error: any) {

@@ -48,13 +48,13 @@ export const cleanupKeys = async (): Promise<void> => {
   });
 };
 
-export const coupleWithRP = async (context: ESIMActivationMachineContext): Promise<string> => {
+export const coupleWithRP = async (context: ESIMActivationMachineContext): Promise<string|undefined> => {
   if (!context.couplingCode) {
     throw new Error('Coupling code is required');
   }
   if (context.coupledWithCode) {
-    console.log('coupleWithRelyingParty was already called for linkId', context.musapLinkId);
-    return context.musapLinkId ?? ''; // FIXME
+    console.warn('coupleWithRelyingParty was already called for linkId', context.musapLinkId);
+    return context.musapLinkId
   }
 
   console.log('calling coupleWithRelyingParty with couplingCode', context.couplingCode);
@@ -69,13 +69,13 @@ export const bindKey = async (context: ESIMActivationMachineContext): Promise<vo
   if (!context.msisdn || !context.sscdInfo) {
     throw new Error('MSISDN and SSCD info are required');
   }
-  const msIsdnAttrs = [{name: 'msisdn', value: context.msisdn}];
-  console.log('bindKey is sscdId', context.sscdInfo.sscdId);
-  console.log('calling bindKey with ms-isdn', context.msisdn);
+  const bindAttrs = [{name: 'msisdn', value: context.msisdn}];
+  console.debug('bindKey is sscdId', context.sscdInfo.sscdId);
+  console.debug('calling bindKey with ms-isdn', context.msisdn);
 
   const response = await MusapClient.bindKey(context.sscdInfo.sscdId, {
     keyAlias: `eSim-${Date.now()}`,
-    attributes: msIsdnAttrs,
+    attributes: bindAttrs,
     keyUsages: ['personal'],
   });
 
@@ -89,6 +89,8 @@ export const bindKey = async (context: ESIMActivationMachineContext): Promise<vo
       defaultSignAttributes:
         {
           msisdn: context.msisdn,
+          mimetype: 'application/x-sha256',
+          signaturetype: 'pkcs1'
         },
     }));
   sphereonKeyManager.defaultKms = 'musap'

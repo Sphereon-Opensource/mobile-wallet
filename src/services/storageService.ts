@@ -196,7 +196,12 @@ export const storagePersistMsisdn = async (value: string): Promise<any> => {
   .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
 }
 
-export const storageGetMsisdn =(): string | null | undefined => {
+export const storageGetMsisdn = async (): Promise<string | null | undefined> => {
+  debug('getMsisdn...')
+  return await userStorage.getStringAsync(STORAGE_MSISDN_KEY)
+}
+
+export const storageGetMsisdnSync =(): string | null | undefined => {
   debug('getMsisdn...')
   return userStorage.getString(STORAGE_MSISDN_KEY)
 }

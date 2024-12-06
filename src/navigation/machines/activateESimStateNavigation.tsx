@@ -14,9 +14,11 @@ import {
   ESIMActivationProviderProps,
 } from '../../types/machines/activateESimMachine';
 
-const debug: Debugger = Debug(`${APP_ID}:activateESimStateNavigation`)
+const debug: Debugger = Debug(`${APP_ID}:activateESimStateNavigation`);
 
-export const ESIMActivationContext = createContext<{activateESimInstance: ESIMActivationMachineInterpreter}>({} as {activateESimInstance: ESIMActivationMachineInterpreter})
+export const ESIMActivationContext = createContext<{activateESimInstance: ESIMActivationMachineInterpreter}>({} as {
+  activateESimInstance: ESIMActivationMachineInterpreter
+});
 
 const navigateLoading = async (args: any): Promise<void> => {
   const {navigation} = args;
@@ -31,17 +33,17 @@ const navigateLoading = async (args: any): Promise<void> => {
 
 export const activateESimStateNavigationListener = (
   activateESimMachine: ESIMActivationMachineInterpreter,
-  state: ESIMActivationMachineState
+  state: ESIMActivationMachineState,
 ): void => {
   if (state._event.type === 'internal') {
-    return
+    return;
   }
-  console.log('activateESimStateNavigationListener received state', state.value);
-  const context: ESIMActivationMachineContext = activateESimMachine.getSnapshot().context
-  const navigation = RootNavigation
+  console.debug('activateESimStateNavigationListener received state', state.value);
+  const context: ESIMActivationMachineContext = activateESimMachine.getSnapshot().context;
+  const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {
-    debug(`navigation not ready yet`)
-    return
+    debug(`navigation not ready yet`);
+    return;
   }
 
   switch (state.value) {
@@ -53,32 +55,35 @@ export const activateESimStateNavigationListener = (
     case ESIMActivationMachineStateTypes.enableSscd:
     case ESIMActivationMachineStateTypes.coupleWithRP:
     case ESIMActivationMachineStateTypes.bindKey:
-      console.log('ESIMActivationMachine navigate to loading screen');
+      console.debug('ESIMActivationMachine navigate to loading screen');
       void navigateLoading({navigation, context, machine: activateESimMachine});
       break;
     case ESIMActivationMachineStateTypes.enterDetails:
-      console.log('Navigating to EnterESimDetails with context:', context);
+      console.debug('Navigating to EnterESimDetails with context:', context);
       navigation.navigate(MainRoutesEnum.ACTIVATE_ESIM, {
         screen: ScreenRoutesEnum.ENTER_ESIM_DETAILS,
         params: {
           coupledWithCode: context.coupledWithCode,
-          onBack: async () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS),
+          msisdn: context.msisdn,
+          onBack: async () => {
+            return activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS);
+          },
           onNext: async (msisdn: string, couplingCode: string) => {
-            console.log('Sending coupling code & msisdn to machine context', msisdn, couplingCode)
-            activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn})
+            console.debug('Sending coupling code & msisdn to machine context', msisdn, couplingCode);
+            activateESimMachine.send(ESIMActivationMachineEvents.SET_MSISDN, {msisdn});
             activateESimMachine.send(ESIMActivationMachineEvents.SET_COUPLING_CODE, {couplingCode});
-            console.log('Sending activateESimMachine NEXT')
+            console.debug('Sending activateESimMachine NEXT');
             return activateESimMachine.send(ESIMActivationMachineEvents.NEXT);
           },
-        }
+        },
       });
       break;
 
     case ESIMActivationMachineStateTypes.handleError: {
-      const {error} = context
+      const {error} = context;
 
       if (!error) {
-        throw new Error(`Missing error in context`)
+        throw new Error(`Missing error in context`);
       }
 
       navigation.navigate(ScreenRoutesEnum.ERROR, {
@@ -89,48 +94,38 @@ export const activateESimStateNavigationListener = (
           detailsPopup: {
             buttonCaption: translate('action_view_extra_details'),
             title: error.detailsTitle,
-            details: error.detailsMessage
-          }
+            details: error.detailsMessage,
+          },
         }),
         primaryButton: {
           caption: translate('action_ok_label'),
           accessibilityLabel: `${translate('action_ok_label')}. Exit flow`,
-          onPress: () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS)
+          onPress: () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS),
         },
-        onBack: () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS)
-      })
-      break
+        onBack: () => activateESimMachine.send(ESIMActivationMachineEvents.PREVIOUS),
+      });
+      break;
     }
 
-    case ESIMActivationMachineStateTypes.success: {
-      ESIMActivationMachine.clearInstance({stop: true})
-      navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-      })
-      break
-    }
-
+    case ESIMActivationMachineStateTypes.success:
+    case ESIMActivationMachineStateTypes.abort:
     case ESIMActivationMachineStateTypes.error: {
-      ESIMActivationMachine.clearInstance({stop: true})
-        navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
-        screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW
-      })
-      break
+      ESIMActivationMachine.clearInstance({stop: true});
+      break;
     }
-
     default:
-      throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`)
+      throw new Error(`Navigation for ${JSON.stringify(state)} is not implemented!`);
   }
-}
+};
 
 export const ESIMActivationProvider = (props: ESIMActivationProviderProps): ReactElement => {
-  const {children, customESIMActivationInstance} = props
+  const {children, customESIMActivationInstance} = props;
 
   return (
     <ESIMActivationContext.Provider value={{
-      activateESimInstance: customESIMActivationInstance ?? ESIMActivationMachine.getInstance()
+      activateESimInstance: customESIMActivationInstance ?? ESIMActivationMachine.getInstance(),
     }}>
       {children}
     </ESIMActivationContext.Provider>
-  )
-}
+  );
+};

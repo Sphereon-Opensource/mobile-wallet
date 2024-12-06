@@ -264,6 +264,11 @@ const states: OnboardingStatesConfig = {
       src: OnboardingMachineServices.activateESim,
       onDone: [
         {
+          cond: (context: OnboardingMachineContext): boolean => context.esimActivationAborted === true,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
+        },
+        {
           cond: OnboardingMachineGuards.isSkipImport,
           target: OnboardingMachineStateType.setupWallet,
           actions: assign({currentStep: OnboardingMachineStep.FINAL})
@@ -290,7 +295,10 @@ const states: OnboardingStatesConfig = {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
       },
-      PREVIOUS: OnboardingMachineStateType.showProgress,
+      PREVIOUS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+      },
       NEXT: [
         {
           cond: OnboardingMachineGuards.isEidDuringPresentation,
@@ -408,17 +416,6 @@ const states: OnboardingStatesConfig = {
   },
   completeOnboarding: {
     on: {
-      PREVIOUS: [
-        {
-          cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.showProgress,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-        },
-        {
-          cond: OnboardingMachineGuards.isImportData,
-          target: OnboardingMachineStateType.reviewPIDCredentials,
-        },
-      ],
       NEXT: OnboardingMachineStateType.done,
     },
   },
