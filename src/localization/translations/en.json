@@ -492,7 +492,10 @@
       "description": "Start by entering the eID pin of your Ausweis card.",
       "nfc_step_title": "Now hold the card to the back of the phone",
       "button_caption": "Start entering eID PIN",
-      "nfc_caption": "The NFC scanner will soon be activated..."
+      "nfc_caption": "The NFC scanner will soon be activated...",
+      "card_locked_message": "Your card has been locked.",
+      "incorrect_pin_message": "Wrong pin code. Please try again.",
+      "unknown_scan_card_error_message": "An unknown error occurred."
     }
   },
   "onboard_summary_title": "Your entered details",
