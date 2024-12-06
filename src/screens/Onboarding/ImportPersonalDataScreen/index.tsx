@@ -108,11 +108,11 @@ const ImportPersonalDataScreen = (props?: any) => {
           {...(eIDFlowState?.state === 'ERROR' && {
             errorMessage: (() => {
               if (eIDFlowState?.reason === 'card_locked') {
-                return translate('onboarding_pages.import_scan_card.card_locked_message');
+                return translate(`${translationsPath}.card_locked_message`);
               } else if (eIDFlowState?.message === 'Error in onEnterPin callback') {
-                return translate('onboarding_pages.import_scan_card.incorrect_pin_message');
+                return translate(`${translationsPath}.incorrect_pin_message`);
               } else {
-                return eIDFlowState?.message ?? translate('onboarding_pages.import_scan_card.unknown_scan_card_error_message');
+                return eIDFlowState?.message ?? translate(`${translationsPath}.unknown_scan_card_error_message`);
               }
             })()
           })}
