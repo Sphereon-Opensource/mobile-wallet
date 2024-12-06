@@ -1,6 +1,6 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {useMemo, useState} from 'react';
+import {FC, ReactElement, useMemo, useState} from 'react';
 import {Dimensions, Image, LayoutChangeEvent} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, withTiming} from 'react-native-reanimated';
 import {ContentContainer, IconContainer, ModalCard, ModalText, ModalTitle, ProgressItem, ProgressItemActive, ProgressRow} from './styles';
@@ -19,14 +19,14 @@ const {width} = Dimensions.get('window');
 
 const STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-type AusweisScanModalProps = {
+type Props = {
   state?: EIDFlowState; // FIXME in the future we need a general type for just NFC behavior
   progress?: number;
   onCancel: () => void;
   onProgress?: () => void;
 };
 
-export const AusweisScanModal = (props: AusweisScanModalProps) => {
+const AusweisScanModal: FC<Props> = (props: Props): ReactElement | null => {
   const {progress, onCancel, state} = props;
   const [containerHeight, setContainerHeight] = useState(200);
 
@@ -81,28 +81,27 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
   }, [state, progress]);
 
   const modalTitle = useMemo(() => {
-    console.log('STATE: ' + state?.state);
     if (state?.state === 'INSERT_CARD' || state?.state === 'STARTED') return 'Ready to Scan'; //FIXME there is a small delay in the SDK starting and being ready for reading. i am not sure how we want to handle this in the UI
     if (state?.state === 'READING_CARD') return 'Scanning Document';
     return '';
   }, [state]);
 
-  if (!state) return null;
+  if (!state) {
+    return null;
+  }
 
   return (
     <Animated.View onLayout={onLayout} style={transform}>
       <ModalCard>
         {!!modalTitle && <ModalTitle>{modalTitle}</ModalTitle>}
-        {state?.state !== 'SUCCESS' && (
-          <IconContainer>
-            <ScanIcon />
-          </IconContainer>
-        )}
-        {state?.state === 'SUCCESS' && (
-          <IconContainer>
-            <ScanSuccessIcon />
-          </IconContainer>
-        )}
+        {state?.state === 'SUCCESS'
+            ? <IconContainer>
+              <ScanSuccessIcon />
+            </IconContainer>
+            : <IconContainer>
+              <ScanIcon />
+            </IconContainer>
+        }
         <ContentContainer>
           <Animated.View style={textStyle}>
             <ModalText>Keep your phone on top of your card. Hold in place until the reading is done. </ModalText>
@@ -126,3 +125,5 @@ export const AusweisScanModal = (props: AusweisScanModalProps) => {
     </Animated.View>
   );
 };
+
+export default AusweisScanModal;

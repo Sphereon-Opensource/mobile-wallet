@@ -476,7 +476,10 @@
       "description": "Begin met het invoeren van de eID-pin van je Ausweis-kaart.",
       "nfc_step_title": "Houd nu de kaart tegen de achterkant van de telefoon",
       "button_caption": "Begin met het invoeren van eID PIN",
-      "nfc_caption": "De NFC-scanner wordt binnenkort geactiveerd..."
+      "nfc_caption": "De NFC-scanner wordt binnenkort geactiveerd...",
+      "card_locked_message": "Uw kaart is geblokkeerd.",
+      "incorrect_pin_message": "Verkeerde pincode. Probeer het opnieuw.",
+      "unknown_scan_card_error_message": "Er is een onbekende fout opgetreden."
     }
   },
   "onboard_summary_title": "Jouw ingevoerde gegevens",

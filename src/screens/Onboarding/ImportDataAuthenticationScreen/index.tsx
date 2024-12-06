@@ -14,7 +14,6 @@ import {OnboardingContext} from '../../../navigation/machines/onboardingStateNav
 import {storageGetPin} from '../../../services/storageService';
 import {OnboardingMachineEvents} from '../../../types/machines/onboarding';
 import {CircleWithBorder} from '../EnableBiometricsScreen/Circle';
-import { Keyboard } from 'react-native'
 
 const Content = styled.View`
   flex: 1;
