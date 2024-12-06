@@ -16,7 +16,7 @@ import {
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
   private static readonly _funke_clientId = 'bc11dd24-cbe9-4f13-890b-967e5f900222';
-  private pidService: PidIssuerService; //readonly
+  private readonly pidService: PidIssuerService;
   private retryCounter?: number;
   private authFlow: AusweisAuthFlow;
   public currentState: EIDFlowState;
@@ -82,8 +82,8 @@ class VciServiceFunkeCProvider {
 
     addMessageListener((message: AusweisSdkMessage): void => {
       // set the initial retry count -1 as this one does not share the same format as the value in onEnterPin
-      if (message.msg === 'ENTER_PIN' && this.retryCounter === undefined) {
-        this.retryCounter = (message.reader.card?.retryCounter! - 1)
+      if (message.msg === 'ENTER_PIN' && this.retryCounter === undefined && message.reader.card?.retryCounter) {
+        this.retryCounter = (message.reader.card?.retryCounter - 1)
       }
 
       if (message.msg === 'STATUS' && (this.currentState.state === 'READING_CARD' || this.currentState.state === 'INSERT_CARD')) {
