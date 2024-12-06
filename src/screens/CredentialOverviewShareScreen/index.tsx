@@ -1,18 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  SSICheckmarkBadge,
-  SSILogo as Logo,
-  SSITextH3LightStyled,
-  SSITextH4LightStyled,
-  SSITextH7LightStyled,
-} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SecondaryButton, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
-import RelyingPartyView from "../../components/views/RelyingPartyView";
+import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
@@ -23,8 +15,6 @@ import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {CredentialSelectView} from '../../components/views/CredentialSelectView';
-import ArrowIcon from '../../components/assets/icons/ArrowIcon';
-import {Party} from '@sphereon/ssi-sdk.data-store';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
