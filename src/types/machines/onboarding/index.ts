@@ -12,9 +12,8 @@ import {PIDSecurityModel} from '../../../services/storageService';
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
   SECURE_WALLET = 2,
-  SETUP_SECURITY_MODEL = 3,
-  IMPORT_PERSONAL_DATA = 4,
-  FINAL = 5
+  IMPORT_PERSONAL_DATA = 3,
+  FINAL = 4
 }
 
 export enum OnboardingBiometricsStatus {
@@ -54,7 +53,6 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
-  pidSecurityModelCheck = 'pidSecurityModelCheck',
   activateESim = 'activateESim',
   importPIDDataConsent = 'importPIDDataConsent',
   importPIDDataNFC = 'importPIDDataNFC',
