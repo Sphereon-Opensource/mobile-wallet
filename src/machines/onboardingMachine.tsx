@@ -214,14 +214,18 @@ const states: OnboardingStatesConfig = {
       ],
       NEXT: [
         {
-          cond: OnboardingMachineGuards.isSecureElement,
-          target: OnboardingMachineStateType.importPIDDataConsent,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
+          cond: OnboardingMachineGuards.isESimSecurity,
+          target: OnboardingMachineStateType.activateESim,
         },
-        {
-          target: OnboardingMachineStateType.pidSecurityModelCheck,
-          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
-        }
+          {
+            cond: OnboardingMachineGuards.isSkipImport,
+            target: OnboardingMachineStateType.setupWallet,
+            actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+          },
+          {
+            target: OnboardingMachineStateType.showProgress,
+            actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+          },
       ],
     },
   },
@@ -235,48 +239,24 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
     },
   },
-  pidSecurityModelCheck: {
-    invoke: {
-      src: () => Promise.resolve(),
-      onDone: [
-        {
-          cond: OnboardingMachineGuards.isESimSecurity,
-          target: OnboardingMachineStateType.activateESim,
-          actions: assign({currentStep: OnboardingMachineStep.SETUP_SECURITY_MODEL}),
-        },
-        {
-        cond: OnboardingMachineGuards.isSkipImport,
-        target: OnboardingMachineStateType.setupWallet,
-        actions: assign({currentStep: OnboardingMachineStep.FINAL}),
-      },
-      {
-          target: OnboardingMachineStateType.importPIDDataConsent,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-        },
-      ],
-    },
-    on: {
-      PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
-    },
-  },
   activateESim: {
     invoke: {
       src: OnboardingMachineServices.activateESim,
       onDone: [
+        // this is pressing a back button (nothing aborted)
         {
           cond: (context: OnboardingMachineContext): boolean => context.esimActivationAborted === true,
           target: OnboardingMachineStateType.acceptTermsAndPrivacy,
-          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
         },
         {
           cond: OnboardingMachineGuards.isSkipImport,
           target: OnboardingMachineStateType.setupWallet,
-          actions: assign({currentStep: OnboardingMachineStep.FINAL})
+          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
         },
         {
-          target: OnboardingMachineStateType.importPIDDataConsent,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
-        }
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+        },
       ],
       onError: {
         target: OnboardingMachineStateType.handleError,

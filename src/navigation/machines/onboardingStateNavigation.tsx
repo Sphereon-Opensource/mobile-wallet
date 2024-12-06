@@ -102,9 +102,6 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     case OnboardingMachineStateType.completeOnboarding:
       onboardingNavigation.navigate('CompleteOnboarding', {});
       break;
-    case OnboardingMachineStateType.pidSecurityModelCheck:
-      onboardingNavigation.navigate('ImportDataLoader', {});
-      break;
     case OnboardingMachineStateType.activateESim:
       onboardingNavigation.navigate('ImportDataLoader', {});
       break;
