@@ -2,16 +2,10 @@ import {addMessageListener, AusweisAuthFlow, AusweisSdkMessage, sendCommand} fro
 import {PARMode} from '@sphereon/oid4vci-common';
 import {Dispatch, SetStateAction} from 'react';
 import {agentContext} from '../../../agent';
+import {sphereonKeyManager} from '../../../agent/plugins';
 import {PIDSecurityModel, storageIsPIDSecurityModel} from '../../../services/storageService';
+import {EIDFlowState, EIDGetAccessTokenArgs, EIDHandleErrorArgs, EIDInitializeArgs, EIDProviderArgs} from '../../../types';
 import {PidIssuerService, PidResponse} from '../../PidIssuerService';
-import {
-  EIDFlowState,
-  EIDGetAccessTokenArgs,
-  EIDHandleErrorArgs,
-  EIDInitializeArgs,
-  EIDProviderArgs,
-  KeyManagementSystemEnum
-} from '../../../types';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
@@ -23,26 +17,21 @@ class VciServiceFunkeCProvider {
   public refreshUrl: string;
 
   private constructor(args: EIDProviderArgs) {
-    const {
-      pidService,
-      onStateChange,
-      onAuthenticated,
-      onEnterPin: handlePinEntry
-    } = args;
+    const {pidService, onStateChange, onAuthenticated, onEnterPin: handlePinEntry} = args;
 
     this.pidService = pidService;
     this.onStateChange = onStateChange;
     this.authFlow = new AusweisAuthFlow({
       onEnterPin: async (options): Promise<string> => {
         if (!this.retryCounter) {
-          return Promise.reject(Error('Unable to determine initial pin retry count'))
+          return Promise.reject(Error('Unable to determine initial pin retry count'));
         } else if (this.retryCounter === 0) {
-          return Promise.reject(Error('Card Locked'))
+          return Promise.reject(Error('Card Locked'));
         } else if (options.attemptsRemaining < this.retryCounter) {
-          this.retryCounter = options.attemptsRemaining
-          return Promise.reject(Error('Incorrect pin entered'))
+          this.retryCounter = options.attemptsRemaining;
+          return Promise.reject(Error('Incorrect pin entered'));
         }
-        return handlePinEntry()
+        return handlePinEntry();
       },
       onError: (error): void => {
         this.handleError(error);
@@ -83,7 +72,7 @@ class VciServiceFunkeCProvider {
     addMessageListener((message: AusweisSdkMessage): void => {
       // set the initial retry count -1 as this one does not share the same format as the value in onEnterPin
       if (message.msg === 'ENTER_PIN' && this.retryCounter === undefined && message.reader.card?.retryCounter) {
-        this.retryCounter = (message.reader.card?.retryCounter - 1)
+        this.retryCounter = message.reader.card?.retryCounter - 1;
       }
 
       if (message.msg === 'STATUS' && (this.currentState.state === 'READING_CARD' || this.currentState.state === 'INSERT_CARD')) {

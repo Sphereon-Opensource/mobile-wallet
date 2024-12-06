@@ -3438,17 +3438,17 @@
     "@js-joda/timezone" "2.3.0"
     format-util "^1.0.5"
 
-"@sphereon/musap-native@0.2.1-next.164", "@sphereon/musap-native@0.2.1-next.164+c8c53ed":
-  version "0.2.1-next.164"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.2.1-next.164.tgz#e698d239343435c88675f8bad523c3661b8ed101"
-  integrity sha512-rZGdwCSV/Hvy0GyMra7h9ie7Ru2g4I5m8mCsymqyrCozPyyyVuGsff/mJJmwBt69zTxJmb5bnR25Sdh8E2fdlA==
+"@sphereon/musap-native@0.2.1-next.169", "@sphereon/musap-native@0.2.1-next.169+c2a4179":
+  version "0.2.1-next.169"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-native/-/musap-native-0.2.1-next.169.tgz#0cb785d93a4a81413701c2548d639de51442b734"
+  integrity sha512-eGOV7KSV5+v1ASfhDbJCazGCjIV/kOvnS+hW31IIHzqHf3KsSooM0B0RqNkMt+0GTG7d6n4lc331lr8m18MwWw==
 
-"@sphereon/musap-react-native@0.2.1-next.164":
-  version "0.2.1-next.164"
-  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-next.164.tgz#fa93c18bd062dde93bc7e59a32d199d02e7f2f59"
-  integrity sha512-qtgE5ctEpEc7ArEaJNYv51n89+NF1xTvcYA9Ck+qZ/UO6nr13bc8fFCVrynWaMbE6C/aB/SLCGfY/raGymZXkQ==
+"@sphereon/musap-react-native@0.2.1-next.164", "@sphereon/musap-react-native@0.2.1-next.169":
+  version "0.2.1-next.169"
+  resolved "https://registry.yarnpkg.com/@sphereon/musap-react-native/-/musap-react-native-0.2.1-next.169.tgz#e864cf38ec24e1f6658174ccda769f0f40d71285"
+  integrity sha512-KHwAeL2E9iknJemMgJUPNrZPQ6gV8RNSH5+sDWwVbwxDEfI7lXnhf2d3tleeqAw4G7D7tK6pdYoO7y6HjDwN5A==
   dependencies:
-    "@sphereon/musap-native" "0.2.1-next.164+c8c53ed"
+    "@sphereon/musap-native" "0.2.1-next.169+c2a4179"
 
 "@sphereon/oid4vc-common@0.16.1-next.224", "@sphereon/oid4vc-common@0.16.1-next.224+7be2c0d":
   version "0.16.1-next.224"
@@ -3760,6 +3760,21 @@
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
     uint8arrays "^3.1.1"
+
+"@sphereon/ssi-sdk-ext.kms-local@0.27.0":
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-local/-/ssi-sdk-ext.kms-local-0.27.0.tgz#9d93ffe2cde6fd98e01be320860fb78be0af9061"
+  integrity sha512-5bFD5FVPcEWCF+yjwtjc01KI6DjdjvUujWW9WhDJ4svRlQM3d6ms2uxTl/Sk8FEyRa2MpHXolXwxNIN4ml/8MA==
+  dependencies:
+    "@sphereon/ssi-sdk-ext.did-utils" "0.27.0"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.27.0"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.27.0"
+    "@trust/keyto" "2.0.0-alpha1"
+    "@veramo/core" "4.2.0"
+    "@veramo/key-manager" "4.2.0"
+    "@veramo/kms-local" "4.2.0"
+    elliptic "^6.5.4"
+    uint8arrays "3.1.1"
 
 "@sphereon/ssi-sdk-ext.kms-musap-rn@0.27.0":
   version "0.27.0"
@@ -4969,6 +4984,15 @@
   dependencies:
     "@stablelib/x25519" "^1.0.0"
     "@transmute/ld-key-pair" "^0.7.0-unstable.82"
+
+"@trust/keyto@2.0.0-alpha1":
+  version "2.0.0-alpha1"
+  resolved "https://registry.yarnpkg.com/@trust/keyto/-/keyto-2.0.0-alpha1.tgz#b097679bc8fc60ad3e73e982e27654d8c4c6ddf2"
+  integrity sha512-VmlOa+nOaDzhEUfprnVp7RxFQyuEwA4fJ5+smnsud5WM01gU16yQnO/ejZnDVMGXuq/sUwTa5pCej4JhkKA5Sg==
+  dependencies:
+    asn1.js "^5.2.0"
+    base64url "^3.0.1"
+    elliptic "^6.5.2"
 
 "@trust/keyto@^1.0.1":
   version "1.0.1"
