@@ -31,6 +31,7 @@ import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import agent from '../../agent';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {DcqlQuery} from 'dcql';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -193,14 +194,20 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    return Promise.reject(Error('No presentation definitions present2'));
+  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions === null || authorizationRequestData.presentationDefinitions.length === 0) {
+    if (authorizationRequestData.dcqlQuery === undefined || authorizationRequestData.dcqlQuery === null) {
+      return Promise.reject(Error('No presentation definitions or dcql query present'));
+    }
   }
+
   // TODO currently only supporting 1 presentation definition
-  if (authorizationRequestData.presentationDefinitions.length > 1) {
+  if (authorizationRequestData.presentationDefinitions && authorizationRequestData?.presentationDefinitions?.length > 1) {
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
-  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+
+  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation | undefined = authorizationRequestData.presentationDefinitions && authorizationRequestData.presentationDefinitions[0];
+
+  const dcqlQuery: DcqlQuery | undefined = authorizationRequestData.dcqlQuery
 
   const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
@@ -239,10 +246,11 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
     screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
     params: {
       verifier: contact,
-      presentationDefinition: presentationDefinitionWithLocation.definition,
+      presentationDefinition: presentationDefinitionWithLocation && presentationDefinitionWithLocation.definition,
       credentials: creds,
       onDecline,
       onSelectAndSend,
+      dcqlQuery
     },
   });
   // if (matchingCredentials && matchingCredentials.length === 1) {

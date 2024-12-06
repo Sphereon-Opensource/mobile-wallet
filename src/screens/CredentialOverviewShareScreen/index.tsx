@@ -15,6 +15,7 @@ import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {CredentialSelectView} from '../../components/views/CredentialSelectView';
+import {DcqlCredentialRepresentation, DcqlPresentationQueryResult, DcqlQuery} from 'dcql';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -67,25 +68,58 @@ const matchCredsWithInputDescriptors = (
 
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
-  const {credentials, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
+  const {credentials, verifier, presentationDefinition, dcqlQuery, onSelectAndSend, onDecline} = props.route.params;
 
-  const input_descriptors = presentationDefinition.input_descriptors;
+  let input_descriptors: InputDescriptorV1[] | InputDescriptorV2[] | undefined
+  let credsPerInputDescriptor: Map<string, UniqueDigitalCredential[] | string>;
+  let dcqlCredentials: DcqlCredentialRepresentation
 
-  const credsPerInputDescriptor = useMemo(
-    //@ts-ignore
-    () => matchCredsWithInputDescriptors(credentials, input_descriptors),
-    [credentials, input_descriptors],
-  );
+  if (dcqlQuery === undefined && dcqlQuery === null) {
+    input_descriptors = presentationDefinition.input_descriptors;
+    credsPerInputDescriptor = useMemo(
+      //@ts-ignore
+      () => matchCredsWithInputDescriptors(credentials, input_descriptors),
+      [credentials, input_descriptors],
+    );
+  } else if (dcqlQuery !== undefined && dcqlQuery !== null){
+    const vcDcqlMap = new Map<DcqlCredentialRepresentation, UniqueDigitalCredential>()
+    credentials.forEach((vc: any, index: number) => {
+      const payload = vc['decodedPayload'] !== undefined && vc['decodedPayload'] !== null ? vc.decodedPayload : vc
+      const vct = payload?.vct
+      const docType = payload?.docType
+      const namespaces = payload?.namespaces
+      const dcqlVc: DcqlCredentialRepresentation = {
+        claims: payload,
+        vct,
+        docType,
+        namespaces
+      }
+      vcDcqlMap.set(dcqlVc, vc)
+    })
+    const queryResult = DcqlQuery.query(dcqlQuery, Array.from(vcDcqlMap.keys()))
+
+    credsPerInputDescriptor = useMemo(
+      () => {
+        const credentialToQueryId = new Map<string | UniqueDigitalCredential[], string>()
+        Object.entries(queryResult.credential_matches).forEach((c: any[]) => credentialToQueryId.set(vcDcqlMap.get({
+          docType: c[1].output.docType,
+          vct: c[1].output.vct,
+          claims: c[1].output.claims,
+          namespaces: c[1].output.namespaces
+        }) as unknown as string | UniqueDigitalCredential[], c[0] as string))
+        return credentialToQueryId as any
+      }, [credentials, dcqlQuery])
+  }
 
   //FIXME Funke, make this support multi credential selection per input descriptor
   const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
-    input_descriptors.reduce(
+    input_descriptors ? input_descriptors.reduce(
       (prev, curr) => ({
         ...prev,
         [curr.id]: null,
       }),
       {},
-    ),
+    ): {}
   );
 
   //FIXME Funke, make this support multi credential selection per input descriptor
@@ -144,7 +178,8 @@ const SelectOverviewShareScreen = (props: Props) => {
           </ProviderContainer>
         )}
       </View>
-      {input_descriptors.map((inputDescriptor, idx) => (
+      {/* FIXME make it optional to use input descriptors or dcql query */}
+      {input_descriptors?.map((inputDescriptor, idx) => (
         <View key={idx}>
           <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
             {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}

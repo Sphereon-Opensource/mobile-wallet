@@ -12,6 +12,7 @@ import {IButton, PopupBadgesEnum, PopupImagesEnum} from '../component';
 import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
+import {DcqlQuery} from 'dcql';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -196,6 +197,7 @@ export interface ICredentialOverviewShareProps {
   verifier: Party;
   presentationDefinition: IPresentationDefinition;
   credentials: UniqueDigitalCredential[];
+  dcqlQuery?: DcqlQuery
   onDecline: () => Promise<void>;
   onSelectAndSend: (credentials: UniqueDigitalCredential[]) => Promise<void>;
 }

@@ -11,6 +11,7 @@ import {
   PublicKeyHex,
   TrustedAnchor,
 } from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {DcqlQuery} from 'dcql';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -22,6 +23,7 @@ export type SiopV2AuthorizationRequestData = {
   clientId?: string;
   entityId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];
+  dcqlQuery?: DcqlQuery
 };
 
 export type SiopV2MachineContext = {
