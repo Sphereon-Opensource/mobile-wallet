@@ -25,11 +25,11 @@ class MainApplication : Application(), ReactApplication {
             object : DefaultReactNativeHost(this) {
                 override fun getPackages(): kotlin.collections.List<ReactPackage> {
                     val packages = PackageList(this).packages.toMutableList()
-/*                    try {
+                    try {
                         packages.add(MusapPackage())
                     } catch (e: Exception) {
                         Log.e("MWALL", "Failed to add MusapPackage", e)
-                    }*/
+                    }
                     return packages
                 }
 
