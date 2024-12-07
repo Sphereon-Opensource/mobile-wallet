@@ -321,11 +321,6 @@
       "description": null,
       "accessibility_label": "You're halfway there. Onboarding progress currently on step"
     },
-    "setup_security_model": {
-      "title": "Security model activation",
-      "description": null,
-      "accessibility_label": "Activation your keystore model. Onboarding progress currently on step"
-    },
     "import_personal_data": {
       "title": "Almost done, last section",
       "description": null,

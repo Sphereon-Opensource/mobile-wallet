@@ -70,10 +70,6 @@ const screenTextKeys: Record<OnboardingMachineStep, ScreenText> = {
     titleKey: 'onboard_progress_pages.secure_wallet.title',
     accessibilityLabelKey: 'onboard_progress_pages.secure_wallet.accessibility_label',
   },
-  [OnboardingMachineStep.SETUP_SECURITY_MODEL]: {
-    titleKey: 'onboard_progress_pages.setup_security_model.title',
-    accessibilityLabelKey: 'onboard_progress_pages.setup_security_model.accessibility_label',
-  },
   [OnboardingMachineStep.IMPORT_PERSONAL_DATA]: {
     titleKey: 'onboard_progress_pages.import_personal_data.title',
     accessibilityLabelKey: 'onboard_progress_pages.import_personal_data.accessibility_label',
