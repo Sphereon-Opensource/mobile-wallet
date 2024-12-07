@@ -3,7 +3,7 @@ import {ImageAttributes, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import {View, useWindowDimensions} from 'react-native';
-import {NavigationButton} from '../../components/NavigationButton';
+import NavigationButton from '../../components/buttons/NavigationButton';
 import Info from '../../components/activity/Info';
 import {Section} from '../../components/activity/Section';
 import Status from '../../components/activity/Status';

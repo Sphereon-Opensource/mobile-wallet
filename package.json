@@ -22,7 +22,7 @@
     "build:android:remote": "eas build -p android --profile preview",
     "build:android:production": "eas build -p android --profile production",
     "bundle:ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
-    "postinstall": "patch-package && rn-nodeify --install fs,os,path,assert,process,vm --hack",
+    "postinstall": "patch-package && rn-nodeify --install fs,os,path,assert,process,vm,crypto --hack",
     "android": "expo run:android"
   },
   "dependencies": {
@@ -88,6 +88,7 @@
     "@veramo/data-store": "4.2.0",
     "@veramo/did-manager": "4.2.0",
     "@veramo/did-resolver": "4.2.0",
+    "@veramo/key-manager": "4.2.0",
     "@veramo/utils": "4.2.0",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
@@ -115,7 +116,7 @@
     "fbjs": "^3.0.5",
     "ffmpeg-kit-react-native": "^6.0.2",
     "i18n-js": "^3.9.2",
-    "jose": "^5.9.3",
+    "jose": "^5.9.6",
     "jsonpath": "^1.1.1",
     "jwt-decode": "^3.1.2",
     "lodash.memoize": "^4.1.2",
@@ -130,6 +131,7 @@
     "react-native-app-auth": "^6.4.3",
     "react-native-audio-record": "^0.2.2",
     "react-native-audio-recorder-player": "^3.6.12",
+    "react-native-crypto": "^2.2.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-fingerprint-scanner": "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git",
     "react-native-fs": "^2.20.0",
@@ -164,6 +166,8 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-toast-message": "^2.2.0",
     "react-native-url-polyfill": "^2.0.0",
+    "react-native-webview": "^13.12.4",
+    "react-native-webview-crypto": "^0.0.26",
     "react-redux": "^7.2.9",
     "readable-stream": "^4.5.2",
     "redux": "^4.2.1",
@@ -244,7 +248,8 @@
     "vm": "vm-browserify",
     "path": "path-browserify",
     "os": "react-native-os",
-    "fs": "expo-fs"
+    "fs": "expo-fs",
+    "crypto": "react-native-crypto"
   },
   "browser": {
     "_stream_duplex": "readable-stream/duplex",
@@ -329,19 +334,19 @@
     "jose": "^5.9.3",
     "react-native-permissions": "^4.1.5",
     "react-native-svg": "15.2.0",
-    "@sphereon/musap-react-native": "0.0.1-next.154",
+    "@sphereon/musap-react-native": "0.2.1-next.170",
+    "@sphereon/musap-native": "0.2.1-next.170",
     "expo-fs/expo-file-system": "~17.0.1",
     "isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
     "jsonld": "link:./node_modules/@digitalcredentials/jsonld",
     "security-context": "link:./node_modules/@digitalbazaar/security-context",
     "@transmute/web-crypto-key-pair/@peculiar/webcrypto": "^1.1.6",
     "@peculiar/webcrypto": "1.4.5",
-    "crypto": "link:./node_modules/@sphereon/react-native-quick-crypto",
-    "@sphereon/kmp-mdoc-core": "0.2.0-SNAPSHOT.16",
-    "**/@sphereon/kmp-mdoc-core": "0.2.0-SNAPSHOT.16",
+    "@sphereon/kmp-mdoc-core": "0.2.0-SNAPSHOT.27",
     "@sphereon/openid-federation-open-api": "0.1.1-unstable.0647eb6",
     "@sphereon/openid-federation-client": "0.1.1-unstable.0647eb6",
-    "@sphereon/openid-federation-common": "0.1.1-unstable.0647eb6"
+    "@sphereon/openid-federation-common": "0.1.1-unstable.0647eb6",
+    "browserify-sign": "4.2.2"
   },
   "engines": {
     "node": ">=20.0.0"

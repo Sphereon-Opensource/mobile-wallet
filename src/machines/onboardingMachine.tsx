@@ -3,11 +3,17 @@ import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
 import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
-import {DoneInvokeEvent, GuardPredicate, assign, createMachine, interpret} from 'xstate';
+import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
 import {APP_ID, PIN_CODE_LENGTH} from '../@config/constants';
 import {translate} from '../localization/Localization';
 import {onboardingStateNavigationListener} from '../navigation/machines/onboardingStateNavigation';
-import {retrievePIDCredentials, setupWallet, storeCredentialBranding, storePIDCredentials} from '../services/machines/onboardingMachineService';
+import {
+  activateESim,
+  retrievePIDCredentials,
+  setupWallet,
+  storeCredentialBranding,
+  storePIDCredentials,
+} from '../services/machines/onboardingMachineService';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {ErrorDetails} from '../types';
@@ -25,8 +31,10 @@ import {
   OnboardingMachineStateType,
   OnboardingMachineStep,
   OnboardingStatesConfig,
+  SetSecurityModel,
 } from '../types/machines/onboarding';
-import {IsValidEmail, isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, validate} from '../utils/validate';
+import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
+import {PIDSecurityModel} from '../services/storageService';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -49,9 +57,23 @@ const isCountryValid: OnboardingGuard = ({countryCode}) => validate(countryCode,
 const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
-const isSkipImport: OnboardingGuard = ({skipImport, countryCode}) => !!skipImport || countryCode !== 'DE'; // Do not import PID for other countries
+const isSkipImport: OnboardingGuard = ({pidSecurityModel, countryCode, skipImport}) =>
+  skipImport === true || 
+  pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION ||
+  countryCode !== 'DE'
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
+const isESimSecurity: OnboardingGuard = ({pidSecurityModel}) => {
+  console.log('isESimSecurity check:', {pidSecurityModel, isESim: pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM});
+  return pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM;
+};
+
+const isEidDuringPresentation: OnboardingGuard = ({pidSecurityModel}) =>
+  pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION;
+
+const isSecureElement: OnboardingGuard = ({pidSecurityModel}) =>
+  pidSecurityModel === PIDSecurityModel.SECURE_ELEMENT;
+
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -64,43 +86,45 @@ const states: OnboardingStatesConfig = {
       NEXT: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
-        {cond: OnboardingMachineGuards.isStepImportPersonalData, target: OnboardingMachineStateType.importPIDDataConsent},
-        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
+        {
+          cond: OnboardingMachineGuards.isStepImportPersonalData,
+          target: OnboardingMachineStateType.importPIDDataConsent
+        },
+        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding}
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
         {
           cond: OnboardingMachineGuards.isStepSecureWallet,
           target: OnboardingMachineStateType.enterCountry,
-          actions: assign({currentStep: 1}),
+          actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET})
         },
         {
-          cond: ({currentStep}) => currentStep === 3,
+          cond: ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA,
           target: OnboardingMachineStateType.acceptTermsAndPrivacy,
-          actions: assign({currentStep: 2}),
+          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
         },
         {
-          cond: ({currentStep, skipImport}) => currentStep === 4 && !skipImport,
+          cond: ({currentStep, pidSecurityModel}) => 
+            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && 
+            pidSecurityModel !== PIDSecurityModel.EID_DURING_PRESENTATION, // TODO move to guard
           target: OnboardingMachineStateType.reviewPIDCredentials,
-          actions: assign({currentStep: 3}),
-        },
-        {
-          cond: ({currentStep, skipImport}) => currentStep === 4 && skipImport,
-          target: OnboardingMachineStateType.importPIDDataConsent,
-          actions: assign({currentStep: 3}),
-        },
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
+        }
       ],
+      SET_POPUP_MENU_OPEN: {
+        actions: assign({popupMenuOpen: (_, event) => event.data})
+      },
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.setupWallet,
         actions: assign({skipImport: true}),
       },
-      SET_SKIP_IMPORT: {
-        actions: assign({skipImport: (_, event) => event.data}),
-      },
-      SET_POPUP_MENU_OPEN: {
-        actions: assign({popupMenuOpen: (_, event) => event.data}),
-      },
-    },
+      UPDATE_SECURITY_MODEL: {
+        actions: assign({
+          pidSecurityModel: (_, event: SetSecurityModel) => event.model,
+        }),
+      }
+    }
   },
   enterName: {
     on: {
@@ -121,7 +145,7 @@ const states: OnboardingStatesConfig = {
       NEXT: {
         cond: OnboardingMachineGuards.isCountryValid,
         target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 2}),
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
       },
       PREVIOUS: OnboardingMachineStateType.enterEmailAddress,
       SET_COUNTRY: {actions: assign({countryCode: (_, event) => event.data})},
@@ -190,14 +214,18 @@ const states: OnboardingStatesConfig = {
       ],
       NEXT: [
         {
-          cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.setupWallet,
-          actions: assign({currentStep: 4}),
+          cond: OnboardingMachineGuards.isESimSecurity,
+          target: OnboardingMachineStateType.activateESim,
         },
-        {
-          target: OnboardingMachineStateType.showProgress,
-          actions: assign({currentStep: 3}),
-        },
+          {
+            cond: OnboardingMachineGuards.isSkipImport,
+            target: OnboardingMachineStateType.setupWallet,
+            actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+          },
+          {
+            target: OnboardingMachineStateType.showProgress,
+            actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+          },
       ],
     },
   },
@@ -211,14 +239,56 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.acceptTermsAndPrivacy,
     },
   },
+  activateESim: {
+    invoke: {
+      src: OnboardingMachineServices.activateESim,
+      onDone: [
+        // this is pressing a back button (nothing aborted)
+        {
+          cond: (context: OnboardingMachineContext): boolean => context.esimActivationAborted === true,
+          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        },
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.setupWallet,
+          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+        },
+        {
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+        },
+      ],
+      onError: {
+        target: OnboardingMachineStateType.handleError,
+        actions: assign({
+          error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
+            title: translate('onboarding_machine_activate_esim_error_title'),
+            message: _event.data.message
+          })
+        })
+      }
+    }
+  },
   importPIDDataConsent: {
     on: {
-      PREVIOUS: OnboardingMachineStateType.showProgress,
-      NEXT: OnboardingMachineStateType.importPIDDataNFC,
       SKIP_IMPORT: {
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: 4, skipImport: true}),
+        target: OnboardingMachineStateType.setupWallet,
+        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
       },
+      PREVIOUS: {
+        target: OnboardingMachineStateType.acceptTermsAndPrivacy,
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+      },
+      NEXT: [
+        {
+          cond: OnboardingMachineGuards.isEidDuringPresentation,
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+        },
+        {
+          target: OnboardingMachineStateType.importPIDDataNFC,
+        },
+      ],
     },
   },
   importPIDDataNFC: {
@@ -269,7 +339,7 @@ const states: OnboardingStatesConfig = {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
         target: OnboardingMachineStateType.setupWallet,
-        actions: ['logDeclinePID', assign({currentStep: 4, skipImport: true})],
+        actions: ['logDeclinePID', assign({currentStep: OnboardingMachineStep.FINAL, skipImport: true})],
       },
     },
   },
@@ -326,17 +396,6 @@ const states: OnboardingStatesConfig = {
   },
   completeOnboarding: {
     on: {
-      PREVIOUS: [
-        {
-          cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.showProgress,
-          actions: assign({currentStep: 3}),
-        },
-        {
-          cond: OnboardingMachineGuards.isImportData,
-          target: OnboardingMachineStateType.reviewPIDCredentials,
-        },
-      ],
       NEXT: OnboardingMachineStateType.done,
     },
   },
@@ -377,6 +436,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     verificationPinCode: '',
     termsAndPrivacyAccepted: false,
+    pidSecurityModel: PIDSecurityModel.SECURE_ELEMENT,
     currentStep: 1,
     skipImport: false,
     pidCredentials: [],
@@ -521,6 +581,7 @@ export class OnboardingMachine {
           [OnboardingMachineServices.storePIDCredentials]: storePIDCredentials,
           [OnboardingMachineServices.storeCredentialBranding]: storeCredentialBranding,
           [OnboardingMachineServices.setupWallet]: setupWallet,
+          [OnboardingMachineServices.activateESim]: activateESim,
           ...opts?.services,
         },
         guards: {
@@ -538,6 +599,9 @@ export class OnboardingMachine {
           doPinsMatch,
           isSkipImport,
           isImportData,
+          isESimSecurity,
+          isEidDuringPresentation,
+          isSecureElement,
           hasFunkeRefreshUrl,
           ...opts?.guards,
         },

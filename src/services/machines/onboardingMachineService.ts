@@ -10,14 +10,15 @@ import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
-import {BasicUser, IUser} from '../../types';
+import {BasicUser, IUser, WalletAuthLockState} from '../../types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
-import {OnboardingMachineContext, WalletSetupServiceResult} from '../../types/machines/onboarding';
+import {OnboardingMachineContext, OnboardingMachineEventTypes, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {generateDigest} from '../../utils';
 import {storagePersistPin} from '../storageService';
-import {ViewPreference} from '../../types/preferences';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {ESIMActivationMachine} from '../../machines/activateESimMachine';
+import {ESIMActivationMachineContext} from '../../types/machines/activateESimMachine';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -27,22 +28,22 @@ export const retrievePIDCredentials = async (context: Pick<OnboardingMachineCont
   }
 
   return funkeProvider
-    .getAuthorizationCode()
-    .then((authorizationCode: string) => funkeProvider.getPids({authorizationCode}))
-    .then(pidResponses => {
-      return pidResponses.map(pidResponse => {
-        const credential = pidResponse.credential;
-        const identifier = pidResponse.identifier;
-        const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
-        const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
+  .getAuthorizationCode()
+  .then((authorizationCode: string) => funkeProvider.getPids({authorizationCode}))
+  .then(pidResponses => {
+    return pidResponses.map(pidResponse => {
+      const credential = pidResponse.credential;
+      const identifier = pidResponse.identifier;
+      const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
+      const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
 
-        return {
-          uniformCredential,
-          rawCredential,
-          identifier,
-        };
-      });
+      return {
+        uniformCredential,
+        rawCredential,
+        identifier,
+      };
     });
+  });
 };
 
 export const storePIDCredentials = async (context: Pick<OnboardingMachineContext, 'pidCredentials'>): Promise<Array<DigitalCredential>> => {
@@ -119,7 +120,7 @@ export const setupWallet = async (
 const storeUser = async (
   context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'>,
 ): Promise<WalletSetupServiceResult> => {
-  const {emailAddress, name, biometricsEnabled, pidCredentials, countryCode} = context;
+  const {emailAddress, name, biometricsEnabled, countryCode} = context;
 
   const names = parseFullName(name);
 
@@ -184,4 +185,47 @@ export const storeCredentialBranding = async (context: Pick<OnboardingMachineCon
   );
 
   await Promise.all(storeCredentials);
+};
+
+
+export const activateESim = async (
+  context: OnboardingMachineContext,
+  event: OnboardingMachineEventTypes,
+): Promise<void> => {
+  console.log('Starting activateESim service with context:', context);
+
+  return new Promise((resolve, reject) => {
+    try {
+      // Create a new instance of the ESIMActivationMachine
+      const esimMachineInstance = ESIMActivationMachine.newInstance();
+      console.log('Created ESIMActivationMachine instance');
+      
+      esimMachineInstance
+      .onDone((doneEvent) => {
+        console.log('ESIMActivationMachine done:', doneEvent);
+        resolve(doneEvent.data);
+      });
+      esimMachineInstance.onTransition((state) => {
+        console.log('OnboardingMachine<->ESIMActivationMachine state transition:', state.value);
+        if (state.matches('success')) {
+          console.log('ESIMActivationMachine ended successfully');
+          context.esimActivationAborted = false
+          resolve();
+        } else if (state.matches('abort')) {
+          context.esimActivationAborted = true
+          resolve();
+        } 
+        else if (state.matches('handleError') || state.matches('error')) {
+          console.error('ESIMActivationMachine error:', state.context.error);
+          context.esimActivationAborted = false
+          reject(state.context.error);
+        }
+      });
+      esimMachineInstance.start();
+      console.log('Started ESIMActivationMachine');
+    } catch (error) {
+      console.error('activateESim service error:', error);
+      reject(error);
+    }
+  });
 };

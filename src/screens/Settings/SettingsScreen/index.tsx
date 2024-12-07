@@ -22,6 +22,7 @@ import {SSITextH5LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import SSIPersonIcon from '../../../components/assets/icons/SSIPersonIcon';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useLogout} from '../../../hooks/use-logout';
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const SettingsScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -29,6 +30,7 @@ const SettingsScreen = () => {
   const logout = useLogout();
   return (
     <SettingsScreenContainer>
+      <SafeAreaView style={{flex: 1}}>
       <SettingsHeaderBar title={translate('settings_title')} onBack={() => navigation.goBack()} />
       <ScrollView>
         <Content>
@@ -98,7 +100,9 @@ const SettingsScreen = () => {
         <SSIPersonIcon />
         <MenuItemText>{translate('settings_logout_label')}</MenuItemText>
       </MenuItemRow>
+      </SafeAreaView>
     </SettingsScreenContainer>
+
   );
 };
 

@@ -248,6 +248,21 @@
   "incorrect_data_dont_add_info": "Voeg deze informatie niet toe",
   "incorrect_data_after_bullet_heading": "Als het niet van jou is",
   "incorrect_data_after_bullet_content": "Als de informatie niet van jou is, voeg het dan niet toe aan je wallet.",
+  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
+  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
+  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
+  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
+  "onboarding_esim_enter_details_continue": "Continue",
+  "onboarding_esim_enter_details_back": "Back",
+  "onboarding_esim_error_couple_rp_failed": "De RP-koppelingsstap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_bindkey_failed": "De bind-key-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_create_link_failed": "De create-link-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_check_sscd_failed": "De check-sscd-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_enable_sscd_failed": "De enable-sscd-stap van de eSim-activatie is mislukt",
+  "onboarding_esim_error_cleanup_keys_failed": "De cleanup-keys-stap van de eSim-activatie is mislukt",
+
   "import_data_title": "Persoonlijke gegevens importeren",
   "onboarding_complete_title": "Alles klaar!",
   "onboarding_complete_description": "Je bent nu klaar om identiteitsgegevens, credentials en meer te ontvangen en te delen.",
@@ -456,7 +471,10 @@
       "description": "Begin met het invoeren van de eID-pin van je Ausweis-kaart.",
       "nfc_step_title": "Houd nu de kaart tegen de achterkant van de telefoon",
       "button_caption": "Begin met het invoeren van eID PIN",
-      "nfc_caption": "De NFC-scanner wordt binnenkort geactiveerd..."
+      "nfc_caption": "De NFC-scanner wordt binnenkort geactiveerd...",
+      "card_locked_message": "Uw kaart is geblokkeerd.",
+      "incorrect_pin_message": "Verkeerde pincode. Probeer het opnieuw.",
+      "unknown_scan_card_error_message": "Er is een onbekende fout opgetreden."
     }
   },
   "onboard_summary_title": "Jouw ingevoerde gegevens",

@@ -132,9 +132,10 @@
   "onboarding_pid_security_model_secure_element": "Secure element on phone",
   "onboarding_pid_security_model_remote_hardware": "Remote Hardware Security Module",
   "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
-  "onboarding_pid_security_model_eid_presentation": "Use eID  card during presentation",
+  "onboarding_pid_security_model_eid_presentation": "Use eID card during presentation",
   "onboarding_pid_security_model_select": "Select",
-
+  
+  
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
@@ -257,11 +258,30 @@
   "incorrect_data_after_bullet_heading": "If it's not yours",
   "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
 
+  
+  "onboarding_esim_enter_details_title": "Enter eSim information",
+  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
+  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
+  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
+  "onboarding_esim_enter_details_continue": "Continue",
+  "onboarding_esim_enter_details_back": "Back",
+
+  "onboarding_machine_activate_esim_error_title": "eSim activation failed",
+  "onboarding_esim_error_couple_rp_failed": "The RP coupling step of the eSim activation failed",
+  "onboarding_esim_error_bindkey_failed": "The bind-key step of the eSim activation failed",
+  "onboarding_esim_error_create_link_failed": "The create-link step of the eSim activation failed",
+  "onboarding_esim_error_check_sscd_failed": "The check-sscd step of the eSim activation failed",
+  "onboarding_esim_error_enable_sscd_failed": "The enable-sscd step of the eSim activation failed",
+  "onboarding_esim_error_cleanup_keys_failed": "The cleanup-keys step of the eSim activation failed",
+
   "import_data_title": "Import personal data",
 
   "onboarding_complete_title": "All done!",
   "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
   "onboarding_complete_next": "Start exploring my Wallet",
+
 
   "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
   "scan_card_step_title": "Scan to import your data",
@@ -467,7 +487,10 @@
       "description": "Start by entering the eID pin of your Ausweis card.",
       "nfc_step_title": "Now hold the card to the back of the phone",
       "button_caption": "Start entering eID PIN",
-      "nfc_caption": "The NFC scanner will soon be activated..."
+      "nfc_caption": "The NFC scanner will soon be activated...",
+      "card_locked_message": "Your card has been locked.",
+      "incorrect_pin_message": "Wrong pin code. Please try again.",
+      "unknown_scan_card_error_message": "An unknown error occurred."
     }
   },
   "onboard_summary_title": "Your entered details",

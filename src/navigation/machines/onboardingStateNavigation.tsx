@@ -13,7 +13,7 @@ import {
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
 import RootNavigation from './../rootNavigation';
-import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import store from '../../store';
 import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
@@ -28,6 +28,11 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     // Make sure we do not navigate when state has not changed
     return;
   }
+  if (!Object.values(OnboardingMachineStateType).includes(state.value as OnboardingMachineStateType)) {
+    console.log('Ignoring non-onboarding state:', state.value)
+    return
+  }
+  
   const context: OnboardingMachineContext = onboardingMachine.getSnapshot().context;
   const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {
@@ -96,6 +101,9 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       break;
     case OnboardingMachineStateType.completeOnboarding:
       onboardingNavigation.navigate('CompleteOnboarding', {});
+      break;
+    case OnboardingMachineStateType.activateESim:
+      onboardingNavigation.navigate('ImportDataLoader', {});
       break;
     case OnboardingMachineStateType.handleError: {
       const {error} = context;

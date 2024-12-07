@@ -26,16 +26,12 @@ const Content = styled.View`
 
 const ImportDataAuthenticationScreen = (props?: any) => {
   const {onAccept} = props?.route?.params ?? {};
-
   const {onboardingInstance} = useContext(OnboardingContext);
-
   const biometricsEnabled = useBiometricsEnabledContext();
-
   const [pinCode, setPinCode] = useState('');
   const [pinCodeContext, setPinCodeContext] = useState('');
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
   const pinInputRef = useRef<TextInput>(null);
-
   const [failed, setFailed] = useState(false);
 
   useAuthFocusEffect((success: boolean) => {

@@ -14,7 +14,7 @@ import {IJwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
 import {toJwk} from '@sphereon/ssi-sdk-ext.key-utils';
 import {signCallback} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IAgentContext, IDIDManager, IKeyManager, IResolver} from '@veramo/core';
-import {EIDGetAuthorizationCodeArgs} from '../types';
+import {EIDGetAuthorizationCodeArgs, KeyManagementSystemEnum} from '../types';
 import {keyTypeFromCryptographicSuite} from '../utils';
 import {algorithmsFromKeyType, DpopService} from './DpopService';
 import store from '../store';
@@ -96,7 +96,7 @@ export class PidIssuerService {
         required: true,
         // @ts-ignore // because of the versions/types we support
         metadata,
-        kms: this.kms,
+        kms: KeyManagementSystemEnum.EPHEMERAL,
         clientId: this.clientId,
       },
       this.context,
@@ -297,13 +297,14 @@ export class PidIssuerService {
 
   async createPidKey(pidInfo: PidRequestInfo): Promise<ManagedIdentifierResult> {
     const {keyType, alg} = await this.getKeyTypeAndAlgSupported(pidInfo);
+    const keyAlias = this.kms === 'azureKeyVault' /*ugh*/  ? `pid-${pidInfo.format.replaceAll('+', '-').replaceAll('_', '-')}-${Date.now()}` : `pid-${pidInfo.type.replace('https://', '').replace('https://', '').replaceAll('/', '_')}-${pidInfo.format.replace('+', '_')}-${new Date().getTime()}`
     const key = await this.context.agent.keyManagerCreate({
       type: keyType,
       kms: this.kms,
       meta: {
         primaryAlgorithm: alg,
         algorithms: algorithmsFromKeyType(keyType),
-        keyAlias: `pid-${pidInfo.type}-${pidInfo.format}-${new Date().getTime()}`,
+        keyAlias,
       },
     });
 

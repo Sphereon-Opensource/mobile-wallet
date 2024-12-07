@@ -42,6 +42,7 @@ const ScreenContainer = ({
         backgroundColor: backgroundColors.primaryDark,
         paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
       }}>
+
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <KeyboardAvoidingView enabled={!disableKeyboardAvoidingView} verticalOffset={verticalOffset} style={{flex: 1}} importantForAccessibility="no">
         <ScrollView

@@ -18,7 +18,7 @@ import SSILogoutIcon from '../../assets/icons/SSILogoutIcon';
 
 export interface IProps {
   caption: string;
-  onPress: () => Promise<void>;
+  onPress: (() => Promise<void>) | (() => void);
   disabled?: boolean;
   icon?: HeaderMenuIconsEnum;
   showBorder?: boolean;

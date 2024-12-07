@@ -1,4 +1,5 @@
 import 'reflect-metadata'; // needed for typeorm migrations
+import 'react-native-get-random-values'
 
 import './shim';
 import '@ethersproject/shims';

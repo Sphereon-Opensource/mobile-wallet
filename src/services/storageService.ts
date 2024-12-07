@@ -1,9 +1,9 @@
-import {MMKVLoader, IOSAccessibleStates} from 'react-native-mmkv-storage';
+import {IOSAccessibleStates, MMKVLoader} from 'react-native-mmkv-storage';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';
-import {IStorePinArgs, IStoreUserArgs, IUser} from '../types';
-import {useSafeAreaFrame} from 'react-native-safe-area-context';
+import {IStorePinArgs, IStoreUserArgs, IUser, KeyManagementSystemEnum} from '../types';
+import {sphereonKeyManager} from '../agent/plugins';
 
 export enum PIDSecurityModel {
   SECURE_ELEMENT = 'secure element',
@@ -18,6 +18,9 @@ const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'users';
 const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
+const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code'
+const STORAGE_MSISDN_KEY = 'msisdn'
+
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -103,8 +106,24 @@ export const storageDeleteUser = async (userId: string): Promise<void> => {
     .catch((error: Error) => Promise.reject(new Error(`Unable to set value for key: ${STORAGE_PIN_KEY}. ${error.message}`)));
 };
 
+export const mapPIDSecurityModelToKMS = (model: PIDSecurityModel): KeyManagementSystemEnum => {
+  switch (model) {
+    case PIDSecurityModel.REMOTE_HSM:
+      return KeyManagementSystemEnum.AZURE_KEY_VAULT_REST;
+    case PIDSecurityModel.SECURE_ELEMENT:
+    case PIDSecurityModel.MOBILE_OPERATOR_ESIM:
+    case PIDSecurityModel.EID_DURING_PRESENTATION:
+      return KeyManagementSystemEnum.MUSAP;
+    default:
+      throw new Error(`Unknown PID security model: ${model}`);
+  }
+}
+
 export const storagePersistPIDSecurityModel = async (value: PIDSecurityModel) => {
   debug(`storing user PID security model: ${value}`);
+
+  sphereonKeyManager.defaultKms = mapPIDSecurityModelToKMS(value);
+
   return userStorage
     .setStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY, value)
     .catch(() => new Error(`Failed to read PID security model for key: ${STORAGE_USER_PID_SECURITY_MODEL_KEY}`));
@@ -119,6 +138,11 @@ export const storageGetPIDSecurityModel = async () => {
   const value = await userStorage.getStringAsync(STORAGE_USER_PID_SECURITY_MODEL_KEY);
 
   return value as PIDSecurityModel;
+};
+
+export const storageGetPIDSecurityModelSync =  () => {
+  debug('getPIDSecurityModel...');
+  return userStorage.getString(STORAGE_USER_PID_SECURITY_MODEL_KEY) as PIDSecurityModel;
 };
 
 export const storagePersistPin = async ({value}: IStorePinArgs): Promise<any> => {
@@ -146,3 +170,43 @@ export const storageHasPin = (): boolean => {
   debug(`hasPin: ${JSON.stringify(result)}`);
   return result;
 };
+
+
+export const storagePersistCoupledWithCode = async (value: string): Promise<any> => {
+  debug(`storing coupled with code: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
+  .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`))
+}
+
+export const storageGetCoupledWithCode = async (): Promise<string | null | undefined> => {
+  debug('getCoupledWithCode...')
+  return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
+  debug('deleteCoupledWithCode...')
+  return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
+}
+
+export const storagePersistMsisdn = async (value: string): Promise<any> => {
+  debug(`storing msisdn: ${value}`)
+  return userStorage
+  .setStringAsync(STORAGE_MSISDN_KEY, value)
+  .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
+}
+
+export const storageGetMsisdn = async (): Promise<string | null | undefined> => {
+  debug('getMsisdn...')
+  return await userStorage.getStringAsync(STORAGE_MSISDN_KEY)
+}
+
+export const storageGetMsisdnSync =(): string | null | undefined => {
+  debug('getMsisdn...')
+  return userStorage.getString(STORAGE_MSISDN_KEY)
+}
+
+export const storageDeleteMsisdn = async (): Promise<boolean> => {
+  debug('deleteMsisdn...')
+  return userStorage.removeItem(STORAGE_MSISDN_KEY)
+}
