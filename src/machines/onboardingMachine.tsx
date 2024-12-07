@@ -100,7 +100,7 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET})
         },
         {
-          cond: ({currentStep}) => currentStep === OnboardingMachineStep.SETUP_SECURITY_MODEL,
+          cond: ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA,
           target: OnboardingMachineStateType.acceptTermsAndPrivacy,
           actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
         },
