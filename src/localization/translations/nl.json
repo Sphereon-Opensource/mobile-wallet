@@ -305,11 +305,6 @@
       "description": null,
       "accessibility_label": "Je bent er bijna. Voortgang van onboarding momenteel in stap"
     },
-    "setup_security_model": {
-      "title": "Beveiligingsmodel activeren",
-      "description": null,
-      "accessibility_label": "Beveiligingsmodel activeren. Voortgang van onboarding momenteel in stap"
-    },
     "import_personal_data": {
       "title": "Bijna klaar, laatste onderdeel",
       "description": null,
