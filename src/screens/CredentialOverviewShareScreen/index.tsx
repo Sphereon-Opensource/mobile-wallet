@@ -20,6 +20,7 @@ import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
+import {CredentialMapper} from '@sphereon/ssi-types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -73,9 +74,7 @@ const matchCredsWithInputDescriptors = (
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credentials, verifier, presentationDefinition, onSelectAndSend, onDecline} = props.route.params;
-
   const input_descriptors = presentationDefinition.input_descriptors;
-
   const credsPerInputDescriptor = useMemo(
     //@ts-ignore
     () => matchCredsWithInputDescriptors(credentials, input_descriptors),
@@ -104,9 +103,6 @@ const SelectOverviewShareScreen = (props: Props) => {
     // onDecline();
     // return; // FIXME Funke, we need to go to an error / warn screen for this
   }
-
-  console.log('selected length', Object.values(selectedCredentials).filter(c => !!c).length);
-  console.log('input descriptor length', presentationDefinition.input_descriptors.length);
 
   const footer = (
     <View style={{gap: 10, flexDirection: 'column'}}>

@@ -35,11 +35,7 @@ import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerif
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
-import {
-  ExternalIdentifierOIDFEntityIdResult,
-  PublicKeyHex,
-  TrustedAnchor,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import { ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;

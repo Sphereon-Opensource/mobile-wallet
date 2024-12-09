@@ -16,7 +16,7 @@ const Container = styled(SSIBasicContainerStyled)`
   gap: 16px;
 `;
 
-const getInfoConfigs = (activity: Activity): InfoProps[] => {
+const getInfoConfigs = (activity: Activity, claimsCount: number): InfoProps[] => {
   switch (activity.action) {
     case DefaultActionSubType.VC_SHARE:
     case DefaultActionSubType.VC_SHARE_DECLINE:
@@ -24,7 +24,7 @@ const getInfoConfigs = (activity: Activity): InfoProps[] => {
         info,
         header: {
           title: credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'),
-          description: `${Object.keys(info).length} ${translate(`activity.${activity.action}.info_header.description`)}`,
+          description: `${claimsCount} ${translate(`activity.${activity.action}.info_header.description`)}`,
           branding: credential?.branding,
         },
       }));
@@ -44,12 +44,16 @@ const getInfoConfigs = (activity: Activity): InfoProps[] => {
 };
 
 const ActivityRevealedInfoScreen = (navProps: Props) => {
-  const {activity} = navProps.route.params;
+  const {activity, claimsCount} = navProps.route.params;
   if (!activity) return null;
   return (
     <Container>
-      {getInfoConfigs(activity).map(infoConfig => (
-        <Info {...infoConfig} key={JSON.stringify(infoConfig.info)} showValues />
+      {getInfoConfigs(activity, claimsCount).map(infoConfig => (
+        <Info
+            {...infoConfig}
+            key={JSON.stringify(infoConfig.info)}
+            showValues
+        />
       ))}
       <NavigationButton label={translate('activity.support_link')} onPress={() => {}} disabled />
     </Container>
