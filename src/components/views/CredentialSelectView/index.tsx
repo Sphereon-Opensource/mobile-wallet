@@ -80,13 +80,14 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const [selectedCredential, setSelectedCredential] = useState<UniqueDigitalCredential | null>(null);
   const [credentialContent, setCredentialContent] = useState<AusweisRequestedInfoItem[] | CredentialDetailsRow[]>([]);
 
-  const isPIDCredential = useMemo((): boolean => {
-    if (!selectedCredential) {
-      return false;
-    }
-    const uniformCredential = CredentialMapper.toUniformCredential(selectedCredential.originalVerifiableCredential!, {hasher: generateDigest});
-    return uniformCredential.type.some(type => type.includes('/pid'));
-  }, [selectedCredential]);
+  // FIXME disabled this as a PID is just another credential
+  // const isPIDCredential = useMemo((): boolean => {
+  //   if (!selectedCredential) {
+  //     return false;
+  //   }
+  //   const uniformCredential = CredentialMapper.toUniformCredential(selectedCredential.originalVerifiableCredential!, {hasher: generateDigest});
+  //   return uniformCredential.type.some(type => type.includes('/pid'));
+  // }, [selectedCredential]);
 
   const onPressCredential = async (credential: UniqueDigitalCredential): Promise<void> => {
     onSelect(credential);
@@ -96,9 +97,9 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
 
   const loadCredentialContent = async (credential: UniqueDigitalCredential, pd: IPresentationDefinition): Promise<void> => {
     const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
-    const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
-
     // FIXME disabled this as a PID is just another credential
+    //const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
+
     // if (isPIDCredential) {
     //   setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
     // } else {

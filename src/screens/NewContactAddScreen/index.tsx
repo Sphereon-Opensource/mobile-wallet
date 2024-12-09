@@ -40,7 +40,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   } = props.route.params;
   const dispatch = useDispatch();
   const contactState = useSelector((state: RootState) => state.contact);
-  const [brandedFederations, setBrandedFederations] = useState<Array<Party>>([]);
+  const [brandedFederations, setBrandedFederations] = useState<Array<Party> | undefined>();
   const contactAliasRef = useRef(name);
 
   const {closeModal} = useChat();
@@ -222,7 +222,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           parameters: {},
         },
         callback: () => {
-          onContinuePressed();
+          void onContinuePressed();
           closeModal();
         },
       },
@@ -233,7 +233,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           parameters: {},
         },
         callback: () => {
-          onDeclinePressed();
+          void onDeclinePressed();
           closeModal();
         },
       },
@@ -245,7 +245,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         },
         callback: () => {
           contactAliasRef.current
-          onEditAlias();
+          void onEditAlias();
         }
       },
     ],
@@ -266,7 +266,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
 
   return (
     <Container>
-      {federations !== undefined && (
+      {brandedFederations && (
         <FederationTrustView
           partyName={name}
           federations={brandedFederations}
@@ -341,7 +341,10 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         }}
         logo={logo}
       />
-      <Chat buttonPosition={{bottom: 150, right: 16}} screenContext={screenContext} tools={tools} />
+      <Chat
+          screenContext={screenContext}
+          tools={tools}
+      />
     </Container>
   );
 };

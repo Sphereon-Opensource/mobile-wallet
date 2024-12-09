@@ -197,6 +197,7 @@ export const siopSendResponse = async (
         actionType: ActionType.READ,
         actionSubType: DefaultActionSubType.VC_SHARE,
         correlationId: didAuthConfig.sessionId,
+        sharePurpose: authorizationRequestData?.presentationDefinitions?.[0].definition.purpose,
         // @ts-ignore
         credentialType: credential.digitalCredential.documentFormat, // TODO fix types
         credentialHash: credential.hash,
