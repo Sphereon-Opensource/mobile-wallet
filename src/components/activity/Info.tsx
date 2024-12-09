@@ -1,10 +1,15 @@
 import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {View} from 'react-native';
+import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
-import {SSITextH2SemiBoldLightStyled, SSITextH3RegularLightStyled, SSITextH4LightStyled} from '../../styles/components';
+import {SSITextH2SemiBoldLightStyled, SSITextH4LightStyled} from '../../styles/components';
 import ChevronIcon from '../assets/icons/ChevronIcon';
 import {CredentialViewImage} from '../views/SSICredentialViewItem/CredentailViewImage';
+import React, {useEffect, useState} from 'react';
+import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
+import SSIImageField from '../fields/SSIImageField';
+import SSITextField from '../fields/SSITextField';
+import { Info as InfoType } from '../../types';
 
 const SharedInfoContainer = styled.View`
   background-color: ${backgroundColors.secondaryDark};
@@ -19,22 +24,16 @@ const SharedInfoHeader = styled.View`
 
 const SharedInfoBody = styled.TouchableOpacity`
   flex-direction: row;
-  padding: 16px;
-  gap: 16px;
-  align-items: center;
+  padding-right: 16px;
+  padding-left: 16px;
+  padding-bottom: 16px;
 `;
 
 const SharedInfoItemList = styled.View`
   flex: 1;
 `;
 
-const SharedInfoItemKey = styled(SSITextH4LightStyled)`
-  opacity: 0.8;
-`;
-
-const SharedInfoItemValue = styled(SSITextH3RegularLightStyled)``;
-
-const CredentialSumary = styled.View`
+const CredentialSummary = styled.View`
   justify-content: center;
   flex: 1;
 `;
@@ -46,7 +45,7 @@ const Divider = styled.View`
 `;
 
 export type Props = {
-  info: Record<string, string | number>;
+  info: InfoType;
   header?: {
     title: string;
     description?: string;
@@ -57,39 +56,63 @@ export type Props = {
 };
 
 const Info = ({header, info, onPress, showValues = false}: Props) => {
+  const [credentialContent, setCredentialContent] = useState<Array<CredentialDetailsRow>>([]);
   const itemsShared = Object.entries(info);
-  const disabled = !onPress || itemsShared.length === 0;
+  const disabled = itemsShared.length === 0;
+
+  useEffect(() => {
+    toCredentialDetailsRow({
+      object: info
+    }).then((content) => setCredentialContent(content))
+  }, [])
+
   return (
-    <SharedInfoContainer>
+    <SharedInfoContainer style={{
+      ...(!onPress && {flex: 1})
+    }}>
       {header && (
         <>
           <SharedInfoHeader>
             {header.branding && <CredentialViewImage branding={header.branding} />}
-            <CredentialSumary>
+            <CredentialSummary>
               <SSITextH2SemiBoldLightStyled>{header.title}</SSITextH2SemiBoldLightStyled>
               {header.description && <SSITextH4LightStyled style={{opacity: 0.8}}>{header.description}</SSITextH4LightStyled>}
-            </CredentialSumary>
+            </CredentialSummary>
           </SharedInfoHeader>
-          <Divider />
+          {!disabled &&
+              <Divider />
+          }
         </>
       )}
-      <SharedInfoBody
-        onPress={onPress}
-        disabled={disabled}
-        accessibilityState={{disabled}}
-        accessibilityRole="list"
-        accessibilityLabel="Shared information"
-        accessibilityHint={disabled ? 'No information shared' : ''}>
-        <SharedInfoItemList importantForAccessibility="no" style={{gap: showValues ? 24 : 12}}>
-          {itemsShared.map(([key, value]) => (
-            <View key={key}>
-              <SharedInfoItemKey>{key}</SharedInfoItemKey>
-              {showValues && <SharedInfoItemValue>{value}</SharedInfoItemValue>}
-            </View>
-          ))}
-        </SharedInfoItemList>
-        {onPress && <ChevronIcon size={16} color={fontColors.light} style={{transform: [{rotate: '-90deg'}]}} />}
-      </SharedInfoBody>
+      {!disabled &&
+          <SharedInfoBody
+              style={{
+                ...(onPress && {paddingTop: 16}),
+                ...(!onPress && {flex: 1})
+              }}
+              onPress={onPress}
+              disabled={disabled || !onPress}
+              accessibilityState={{disabled}}
+              accessibilityRole="list"
+              accessibilityLabel="Shared information"
+              accessibilityHint={disabled ? 'No information shared' : ''}
+          >
+            {!onPress &&
+                <ScrollView>
+                <SharedInfoItemList importantForAccessibility="no">
+                  {credentialContent.map((property, idx) =>
+                      property.imageSize ? (
+                          <SSIImageField key={idx} item={property} />
+                      ) : (
+                          <SSITextField key={idx} item={property} />
+                      ),
+                  )}
+                </SharedInfoItemList>
+                </ScrollView>
+            }
+            {onPress && <ChevronIcon size={16} color={fontColors.light} style={{marginLeft: 'auto', transform: [{rotate: '-90deg'}]}} />}
+          </SharedInfoBody>
+      }
     </SharedInfoContainer>
   );
 };

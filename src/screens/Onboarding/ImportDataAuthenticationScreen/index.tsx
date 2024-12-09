@@ -1,5 +1,4 @@
-import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {backgroundColors} from '@sphereon/ui-components.core';
 import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
@@ -56,16 +55,12 @@ const ImportDataAuthenticationScreen = (props?: any) => {
     }
   }, []);
 
-  const footer = !biometricsEnabled ? (
-    <PrimaryButton
-      style={{height: 42, width: 300}}
-      caption="Next"
-      backgroundColors={['#7276F7', '#7C40E8']}
-      captionColor={fontColors.light}
-      onPress={() => (onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT))}
-      disabled={biometricsEnabled ? undefined : !doPinsCompletelyMatch}
-    />
-  ) : null;
+  useEffect(() => {
+    const isComplete = pinCode.length === PIN_CODE_LENGTH;
+    if (doPinsCompletelyMatch && isComplete) {
+      onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT)
+    }
+  }, [doPinsCompletelyMatch]);
 
   const title = useMemo(() => {
     if (!biometricsEnabled) return translate('import_data_auth_title');
@@ -79,7 +74,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
   }, [biometricsEnabled, failed]);
 
   return (
-    <ScreenContainer footer={footer}>
+    <ScreenContainer>
       <ScreenTitleAndDescription title={title} description={description} />
       {(failed || biometricsEnabled) && (
         <Content style={{height: '100%'}}>

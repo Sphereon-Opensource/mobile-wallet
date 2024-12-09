@@ -78,6 +78,7 @@ export type IAgeDerivedClaimsProps = {
 
 export type IActivityDetailsProps = {
   activity?: Activity;
+  claimsCount?: number
 };
 
 export type ICredentialActivityProps = {

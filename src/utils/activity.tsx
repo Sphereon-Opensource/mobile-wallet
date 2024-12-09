@@ -1,5 +1,10 @@
-import {ActivityLoggingEvent} from '@sphereon/ssi-sdk.core';
-import {DefaultActionSubType} from '@sphereon/ssi-types';
+import {ActivityLoggingEvent, CredentialType} from '@sphereon/ssi-sdk.core';
+import {
+  CredentialMapper,
+  decodeMdocIssuerSigned,
+  DefaultActionSubType, getMdocDecodedPayload,
+  MdocOid4vpIssuerSigned
+} from '@sphereon/ssi-types';
 
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ColorValue, View} from 'react-native';
@@ -17,10 +22,16 @@ import {
   ActivityShareType,
   ActivityType,
   IContactCredentialsShareActivity,
-  ICredentialIssuedActivity,
+  ICredentialIssuedActivity, Info,
 } from '../types';
 import {parseAndValidateJson} from './json';
 import {isDiagnosticData} from './validate';
+import {generateDigest} from './CryptoUtils';
+import {PEX, SelectResults} from '@sphereon/pex';
+import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
+import {com} from '@sphereon/kmp-mdoc-core';
+import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
+import {ComponentType} from 'react';
 
 type StatusProps = {
   title: string;
@@ -84,7 +95,7 @@ const DetailIconWrapper = styled(View)`
   justify-content: center;
 `;
 
-const icons = (background: ColorValue, Icon: React.ComponentType<IProps>): Icons => {
+const icons = (background: ColorValue, Icon: ComponentType<IProps>): Icons => {
   return {
     row: (
       <RowIconWrapper style={{backgroundColor: background}}>
@@ -136,21 +147,45 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
 const shareActivitySerializer = <T extends ActivityShareType>(
   event: ActivityLoggingEvent,
   credential?: CredentialSummary,
-): IContactCredentialsShareActivity<T> => ({
-  id: event.id,
-  action: event.actionSubType as T,
-  at: event.timestamp,
-  result: (event.actionSubType as T) === DefaultActionSubType.VC_SHARE ? ActivityActionResult.SUCCESS : ActivityActionResult.DECLINE,
-  contactAlias: event.partyAlias ?? translate('activity.unknown.contact'),
-  shared: [
-    {
-      credential,
-      info: parseAndValidateJson(event.diagnosticData ?? '{}', isDiagnosticData) ?? {},
-    },
-  ],
-  purpose: event.sharePurpose ?? translate('activity.unknown.purpose'),
-  credentialType: event.credentialType,
-});
+): IContactCredentialsShareActivity<T> => {
+
+  let info: Info
+  if (event.originalCredential && event.actionSubType === DefaultActionSubType.VC_SHARE) {
+    if (event.credentialType === CredentialType.MSO_MDOC) {
+      const pd = (event.diagnosticData as PresentationDefinitionWithLocation[])[0].definition
+      const vc = JSON.parse(event.originalCredential)
+      const decodedMdoc = decodeMdocIssuerSigned(vc.rawDocument as MdocOid4vpIssuerSigned)
+      const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
+      info = getMdocDecodedPayload(limitDisclosedMdoc)
+    } else {
+      const pd = (event.diagnosticData as PresentationDefinitionWithLocation[])[0].definition
+      const vc = JSON.parse(event.originalCredential)
+      const pex: PEX = new PEX({hasher: generateDigest});
+      const result: SelectResults = pex.selectFrom(
+          pd,
+          [vc.rawDocument]
+      );
+      const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
+      info = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
+    }
+  }
+
+  return {
+    id: event.id,
+    action: event.actionSubType as T,
+    at: event.timestamp,
+    result: (event.actionSubType as T) === DefaultActionSubType.VC_SHARE ? ActivityActionResult.SUCCESS : ActivityActionResult.DECLINE,
+    contactAlias: event.partyAlias ?? translate('activity.unknown.contact'),
+    shared: [
+      {
+        credential,
+        info: info ?? {},
+      },
+    ],
+    purpose: event.sharePurpose ?? translate('activity.unknown.purpose'),
+    credentialType: event.credentialType,
+  }
+};
 
 const issueActivitySerializer = <T extends ActivityIssueType>(
   event: ActivityLoggingEvent,
