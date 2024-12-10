@@ -20,13 +20,13 @@ const ContactCredentialShareActivity = ({activity, navigation}: Props) => {
   const [infoData, setInfoData] = useState<Array<ReactElement>| null>(null);
 
   useEffect(() => {
-      const mapping = shared.map(async ({info, credential}) => {
+      const mapping = shared.map(async ({info, credential}, index) => {
           const rows = await toCredentialDetailsRow({
               object: info
           })
 
           return <Info
-              key={JSON.stringify(info)}
+              key={index}
               info={info}
               header={{
                   title: credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'),
