@@ -212,6 +212,7 @@ export interface ICredentialsRequiredProps {
   onSend: (credentials: Array<OriginalVerifiableCredential>) => Promise<void>;
   isSendDisabled?: () => boolean | (() => boolean);
   verifierName: string;
+  dcqlQuery?: DcqlQuery
 }
 
 export interface ICredentialOverviewShareProps {

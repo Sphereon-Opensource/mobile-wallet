@@ -25,12 +25,13 @@ import {JSONPath} from '@astronautlabs/jsonpath';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {VerifiableCredential} from '@veramo/core';
+import {DcqlCredentialRepresentation, DcqlQuery} from 'dcql';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS_REQUIRED>;
 
 const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
-  const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
+  const {dcqlQuery, presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
   const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueDigitalCredential> | null>(null);
   const [allOriginalCredentials, setAllOriginalCredentials] = useState<Array<OriginalVerifiableCredential>>([]);
   const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
@@ -82,38 +83,77 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
     }
 
     const pexMatchingVCs: Map<string, Array<UniqueDigitalCredential>> = new Map<string, Array<UniqueDigitalCredential>>();
-    presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
-      const presentationDefinition: IPresentationDefinition = {
-        id: inputDescriptor.id,
-        // @ts-ignore
-        input_descriptors: [inputDescriptor],
-      };
+    let selectResult: SelectResults
 
-      const selectResult: SelectResults = pex.selectFrom(presentationDefinition, allOriginalCredentials, {
-        restrictToFormats: format,
-        restrictToDIDMethods: subjectSyntaxTypesSupported,
+    if (presentationDefinition.input_descriptors !== undefined && presentationDefinition.input_descriptors !== null) {
+      presentationDefinition.input_descriptors.forEach((inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
+        const presentationDefinition: IPresentationDefinition = {
+          id: inputDescriptor.id,
+          // @ts-ignore
+          input_descriptors: [inputDescriptor],
+        };
+
+        selectResult = pex.selectFrom(presentationDefinition, allOriginalCredentials, {
+          restrictToFormats: format,
+          restrictToDIDMethods: subjectSyntaxTypesSupported,
+        });
+
+        if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
+          console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
+        }
+
+        const matchedVCs: Array<UniqueDigitalCredential> =
+          selectResult.matches && selectResult.verifiableCredential
+            ? selectResult.matches
+                .map((match: SubmissionRequirementMatch) => {
+                  const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
+                  if (matchedVC && matchedVC.length > 0) {
+                    return getMatchingUniqueDigitalCredential(allUniqueCredentials ?? [], matchedVC[0]);
+                  }
+                })
+                .filter((matchedVC: UniqueDigitalCredential | undefined): matchedVC is UniqueDigitalCredential => !!matchedVC) // filter out the undefined (should not happen)
+            : [];
+        pexMatchingVCs.set(inputDescriptor.id, matchedVCs);
       });
+    } else if (dcqlQuery !== undefined && dcqlQuery !== null) {
+      const vcDcqlMap = new Map<DcqlCredentialRepresentation, OriginalVerifiableCredential>();
+      allOriginalCredentials.forEach((payload: OriginalVerifiableCredential) => {
+        // FIXME remove any
+        const vct = (payload as any).vct;
+        const docType = (payload as any).docType;
+        const namespaces = (payload as any).namespaces;
+        const dcqlVc: DcqlCredentialRepresentation = {
+          claims: payload as any,
+          vct,
+          docType,
+          namespaces,
+        };
+        vcDcqlMap.set(dcqlVc, payload);
+      });
+      const queryResult = DcqlQuery.query(dcqlQuery, Array.from(vcDcqlMap.keys()));
+      const matchedVcs = Array.from(Object.entries(queryResult.credential_matches));
 
-      if (selectResult.areRequiredCredentialsPresent === Status.ERROR) {
-        console.debug('pex.selectFrom returned errors:\n', JSON.stringify(selectResult.errors));
+      if (matchedVcs !== undefined && matchedVcs !== null && matchedVcs.length > 0) {
+        Object.entries(queryResult.credential_matches).forEach((c: [string, any]) => {
+          const originalCredential = vcDcqlMap.get({
+            docType: c[1].output.docType,
+            vct: c[1].output.vct,
+            claims: c[1].output.claims,
+            namespaces: c[1].output.namespaces,
+          });
+          if (originalCredential !== undefined && originalCredential !== null) {
+            const matchedUDC = getMatchingUniqueDigitalCredential(allUniqueCredentials ?? [], originalCredential);
+            if (matchedUDC !== undefined && matchedUDC !== null) {
+              pexMatchingVCs.set(c[0], [matchedUDC]);
+            }
+          }
+        });
       }
-      const matchedVCs: Array<UniqueDigitalCredential> =
-        selectResult.matches && selectResult.verifiableCredential
-          ? selectResult.matches
-              .map((match: SubmissionRequirementMatch) => {
-                const matchedVC = JSONPath.query(selectResult, match.vc_path[0]); // TODO Can we have multiple vc_path elements for a single match?
-                if (matchedVC && matchedVC.length > 0) {
-                  return getMatchingUniqueDigitalCredential(allUniqueCredentials ?? [], matchedVC[0]);
-                }
-              })
-              .filter((matchedVC: UniqueDigitalCredential | undefined): matchedVC is UniqueDigitalCredential => !!matchedVC) // filter out the undefined (should not happen)
-          : [];
-      pexMatchingVCs.set(inputDescriptor.id, matchedVCs);
-    });
+    }
     setPexFilteredCredentials(pexMatchingVCs);
     // });
     console.log(`pex desc length:` + pexMatchingVCs.size);
-  }, [presentationDefinition, allUniqueCredentials, allOriginalCredentials]);
+  }, [dcqlQuery, presentationDefinition, allUniqueCredentials, allOriginalCredentials]);
 
   useEffect((): void => {
     const selectedVCsPerDescriptor: Map<string, Array<UniqueDigitalCredential>> = new Map<string, Array<UniqueDigitalCredential>>();

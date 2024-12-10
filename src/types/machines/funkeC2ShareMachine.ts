@@ -16,6 +16,7 @@ import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciSe
 import {ErrorDetails} from '../error';
 import {MappedCredential} from './getPIDCredentialMachine';
 import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
+import {DcqlQuery} from 'dcql';
 
 export enum FunkeC2ShareMachineStateTypes {
   createConfig = 'createConfig',
@@ -179,4 +180,5 @@ export type SiopV2AuthorizationRequestData = {
   uri?: URL;
   clientId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];
+  dcql?: DcqlQuery
 };
