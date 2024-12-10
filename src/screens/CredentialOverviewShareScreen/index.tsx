@@ -21,6 +21,8 @@ import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
 import {DcqlCredentialRepresentation, DcqlQuery} from 'dcql';
+import {CredentialMapper} from '@sphereon/ssi-types';
+
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
 const filterCredentialsByInputDescriptor = (credentials: UniqueDigitalCredential[], inputDescriptor: InputDescriptorV1 | InputDescriptorV2) => {
@@ -137,9 +139,6 @@ const SelectOverviewShareScreen = (props: Props) => {
     // onDecline();
     // return; // FIXME Funke, we need to go to an error / warn screen for this
   }
-
-  console.log('selected length', Object.values(selectedCredentials).filter(c => !!c).length);
-  console.log('input descriptor length', presentationDefinition.input_descriptors.length);
 
   const footer = (
     <View style={{gap: 10, flexDirection: 'column'}}>

@@ -1,13 +1,13 @@
 import {useHeaderHeight} from '@react-navigation/elements';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import {Ref} from 'react';
+import {ReactNode, Ref} from 'react';
 import {Platform, ScrollView, StatusBar, View, ViewProps, ViewStyle} from 'react-native';
 import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   style?: ViewProps['style'];
-  footer?: React.ReactNode;
+  footer?: ReactNode;
   footerStyle?: ViewProps['style'];
   disableKeyboardAvoidingView?: boolean;
   scrollViewRef?: Ref<ScrollView>;

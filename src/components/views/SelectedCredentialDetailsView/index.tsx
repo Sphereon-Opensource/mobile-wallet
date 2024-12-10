@@ -53,9 +53,9 @@ const SelectedCredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element =
       <View onLayout={onLayout} style={{flex: 1}}>
         {props.credentialProperties.map((property, idx) =>
           property.imageSize ? (
-            <SSIImageField key={property.label} item={property} index={idx} />
+            <SSIImageField key={idx} item={property}/>
           ) : (
-            <SSITextField key={property.label} item={property} index={idx} />
+            <SSITextField key={idx} item={property} />
           ),
         )}
       </View>
