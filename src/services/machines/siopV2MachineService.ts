@@ -195,6 +195,7 @@ export const sendResponse = async (
   });
 
   const pd = authorizationRequestData.presentationDefinitions?.[0].definition
+  const pex: PEX = new PEX({hasher: generateDigest});
   selectedCredentials.forEach(credential => {
     let data
     if (pd) {
@@ -203,7 +204,6 @@ export const sendResponse = async (
         const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
         data = getMdocDecodedPayload(limitDisclosedMdoc)
       } else {
-        const pex: PEX = new PEX({hasher: generateDigest});
         const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
         const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
         data = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
