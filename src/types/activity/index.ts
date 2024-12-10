@@ -31,7 +31,7 @@ export type BaseActivity = {
   contactAlias: string;
 };
 
-export type Info = Record<string, Record<string, string | number | boolean>>
+export type Info = Record<string, any> //FIXME Record<string, string | number | boolean>
 
 export type ICredentialIssuedActivity<T extends ActivityIssueType> = BaseActivity & {
   action: T;

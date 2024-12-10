@@ -1,10 +1,5 @@
-import {ActivityLoggingEvent, CredentialType} from '@sphereon/ssi-sdk.core';
-import {
-  CredentialMapper,
-  decodeMdocIssuerSigned,
-  DefaultActionSubType, getMdocDecodedPayload,
-  MdocOid4vpIssuerSigned
-} from '@sphereon/ssi-types';
+import {ActivityLoggingEvent} from '@sphereon/ssi-sdk.core';
+import {DefaultActionSubType} from '@sphereon/ssi-types';
 
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ColorValue, View} from 'react-native';
@@ -22,15 +17,10 @@ import {
   ActivityShareType,
   ActivityType,
   IContactCredentialsShareActivity,
-  ICredentialIssuedActivity, Info,
+  ICredentialIssuedActivity,
 } from '../types';
 import {parseAndValidateJson} from './json';
 import {isDiagnosticData} from './validate';
-import {generateDigest} from './CryptoUtils';
-import {PEX, SelectResults} from '@sphereon/pex';
-import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
-import {com} from '@sphereon/kmp-mdoc-core';
-import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 import {ComponentType} from 'react';
 
 type StatusProps = {
@@ -148,28 +138,6 @@ const shareActivitySerializer = <T extends ActivityShareType>(
   event: ActivityLoggingEvent,
   credential?: CredentialSummary,
 ): IContactCredentialsShareActivity<T> => {
-
-  let info: Info
-  if (event.originalCredential && event.actionSubType === DefaultActionSubType.VC_SHARE) {
-    if (event.credentialType === CredentialType.MSO_MDOC) {
-      const pd = (event.diagnosticData as PresentationDefinitionWithLocation[])[0].definition
-      const vc = JSON.parse(event.originalCredential)
-      const decodedMdoc = decodeMdocIssuerSigned(vc.rawDocument as MdocOid4vpIssuerSigned)
-      const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
-      info = getMdocDecodedPayload(limitDisclosedMdoc)
-    } else {
-      const pd = (event.diagnosticData as PresentationDefinitionWithLocation[])[0].definition
-      const vc = JSON.parse(event.originalCredential)
-      const pex: PEX = new PEX({hasher: generateDigest});
-      const result: SelectResults = pex.selectFrom(
-          pd,
-          [vc.rawDocument]
-      );
-      const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
-      info = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
-    }
-  }
-
   return {
     id: event.id,
     action: event.actionSubType as T,
@@ -179,7 +147,7 @@ const shareActivitySerializer = <T extends ActivityShareType>(
     shared: [
       {
         credential,
-        info: info ?? {},
+        info: event.data ?? {},
       },
     ],
     purpose: event.sharePurpose ?? translate('activity.unknown.purpose'),
