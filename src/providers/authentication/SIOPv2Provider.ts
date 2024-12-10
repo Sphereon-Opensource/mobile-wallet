@@ -413,7 +413,7 @@ export const siopSendAuthorizationResponse = async (
       const vp = DcqlPresentationQueryResult.fromDcqlQueryResult(queryResult)
       const response = session.sendAuthorizationResponse({
         responseSignerOpts: identifier,
-        ...({ dcqlQuery: { encodedPresentationRecord: vp }})
+        ...({ dcqlQuery: { encodedPresentationRecord: vp.presentation_matches }})
       })
 
       debug(`Response: `, response);
