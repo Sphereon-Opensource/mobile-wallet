@@ -1,7 +1,12 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {
+  PresentationDefinitionWithLocation,
+  SupportedVersion,
+  VerifiedAuthorizationRequest
+} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
+  CredentialDocumentFormat,
   CredentialRole,
   DidAuthConfig,
   IdentityOrigin,
@@ -16,13 +21,28 @@ import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/aut
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
-import {translateCorrelationIdToName} from '../../utils';
+import {generateDigest, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {ActionType, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {PublicKeyHex, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {
+  ActionType,
+  CredentialMapper,
+  decodeMdocIssuerSigned,
+  DefaultActionSubType,
+  getMdocDecodedPayload,
+  InitiatorType,
+  Loggers,
+  LogLevel,
+  MdocOid4vpIssuerSigned,
+  SubSystem,
+  System
+} from '@sphereon/ssi-types';
+import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {PEX, SelectResults} from '@sphereon/pex';
+import {com} from '@sphereon/kmp-mdoc-core';
+import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -174,29 +194,47 @@ export const sendResponse = async (
     }),
   });
 
-  selectedCredentials.forEach(credential =>
-    store.dispatch<any>(
-      storeActivityLogging({
-        level: LogLevel.INFO,
-        system: System.OID4VP,
-        subSystemType: SubSystem.OID4VP_OP,
-        initiatorType: InitiatorType.SYSTEM,
-        description: 'Credential shared by user',
-        actionType: ActionType.READ,
-        actionSubType: DefaultActionSubType.VC_SHARE,
-        correlationId: didAuthConfig.sessionId,
-        sharePurpose: authorizationRequestData?.presentationDefinitions?.[0].definition.purpose,
-        // @ts-ignore
-        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-        credentialHash: credential.hash,
-        originalCredential: JSON.stringify(credential.digitalCredential),
-        diagnosticData: authorizationRequestData.presentationDefinitions,
-        // @ts-ignore
-        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
-        partyCorrelationId: contact?.identities[0].identifier.correlationId,
-        partyAlias: contact?.contact.displayName,
-      }),
-    ),
+  const pd = authorizationRequestData.presentationDefinitions?.[0].definition
+  const pex: PEX = new PEX({hasher: generateDigest});
+  selectedCredentials.forEach(credential => {
+    let data
+    if (pd) {
+      if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
+        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
+        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
+        data = getMdocDecodedPayload(limitDisclosedMdoc)
+      } else {
+        const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
+        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
+        data = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
+      }
+    }
+
+    return store.dispatch<any>(
+        storeActivityLogging({
+          level: LogLevel.INFO,
+          system: System.OID4VP,
+          subSystemType: SubSystem.OID4VP_OP,
+          initiatorType: InitiatorType.SYSTEM,
+          description: 'Credential shared by user',
+          actionType: ActionType.READ,
+          actionSubType: DefaultActionSubType.VC_SHARE,
+          correlationId: didAuthConfig.sessionId,
+          sharePurpose: pd?.purpose,
+          // @ts-ignore
+          credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+          credentialHash: credential.hash,
+          originalCredential: JSON.stringify(credential.digitalCredential),
+          diagnosticData: authorizationRequestData.presentationDefinitions,
+          data,
+          // @ts-ignore
+          partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+          partyCorrelationId: contact?.identities[0].identifier.correlationId,
+          partyAlias: contact?.contact.displayName,
+        }),
+    )
+  }
+
   );
 
   if (!response) {

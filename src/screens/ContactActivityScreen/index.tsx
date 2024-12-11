@@ -11,6 +11,7 @@ import {getActivityLogging} from '../../store/actions/logging.actions';
 import {Container} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {Activity, ScreenRoutesEnum, StackParamList} from '../../types';
 import {serializeActivity} from '../../utils/activity';
+import {DefaultActionSubType} from '@sphereon/ssi-types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CONTACT_ACTIVITY>;
 
@@ -28,11 +29,12 @@ const ContactActivityScreen = ({route, navigation}: Props) => {
   const activities = useMemo(
     () =>
       activityLogging
-        .filter(activity => activity.parentCredentialHash === undefined)
+        // filter the double issuance events for parent child credentials
+        .filter(activity => !((activity.actionSubType === DefaultActionSubType.VC_ISSUE) && activity.parentCredentialHash === undefined))
         .map(a =>
           serializeActivity(
             a,
-            verifiableCredentials.find(vc => vc.hash === a.credentialHash),
+              verifiableCredentials.find(vc => vc.hash === a.credentialHash || vc.hash === a.parentCredentialHash),
           ),
         )
         .filter((activity): activity is Activity => Boolean(activity))
