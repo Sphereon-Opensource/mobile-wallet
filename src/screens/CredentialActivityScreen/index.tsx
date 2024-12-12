@@ -38,9 +38,8 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
   const {announce} = useAccessibility();
   const dispatch = useDispatch();
   const getActivityLog = () => dispatch(getActivityLogging());
-  const {activityLogging, verifiableCredentials} = useAppSelector(({logging: {activityLogging}, credential: {verifiableCredentials}}) => ({
-    activityLogging,
-    verifiableCredentials,
+  const {activityLogging} = useAppSelector(({logging: {activityLogging}}) => ({
+    activityLogging
   }));
   const loading = useAppSelector(state => state.logging.loading);
 
@@ -48,16 +47,11 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
     () =>
       activityLogging
         // filter the double issuance events for parent child credentials
-        .filter(activity => !((activity.actionSubType === DefaultActionSubType.VC_ISSUE) && activity.parentCredentialHash === undefined))
-        .map(a =>
-          serializeActivity(
-            a,
-              verifiableCredentials.find(vc => vc.hash === a.credentialHash || vc.hash === a.parentCredentialHash),
-          ),
-        )
+        .filter(activity => !((activity.actionSubType === DefaultActionSubType.VC_ISSUE || activity.actionSubType === DefaultActionSubType.VC_ISSUE_DECLINE) && activity.parentCredentialHash !== undefined))
+        .map(event => serializeActivity(event))
         .filter((activity): activity is Activity => Boolean(activity))
         .filter(filterForCredential(credential)),
-    [activityLogging, verifiableCredentials, credential],
+    [activityLogging, credential],
   );
 
   useFocusEffect(() => announce({message: `Activity feed for ${credential?.branding?.alias ?? credential?.title}`, delay: 1000}));

@@ -5477,7 +5477,7 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020":
+"@veramo-community/lds-ecdsa-secp256k1-recovery2020@github:uport-project/EcdsaSecp256k1RecoverySignature2020", "@veramo-community/lds-ecdsa-secp256k1-recovery2020@uport-project/EcdsaSecp256k1RecoverySignature2020":
   version "0.0.8"
   resolved "https://codeload.github.com/uport-project/EcdsaSecp256k1RecoverySignature2020/tar.gz/ab0db52de6f4e6663ef271a48009ba26e688ef9b"
   dependencies:
@@ -15415,7 +15415,7 @@ web-streams-polyfill@^3.0.0, web-streams-polyfill@^3.0.3:
   resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz#2073b91a2fdb1fbfbd401e7de0ac9f8214cecb4b"
   integrity sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==
 
-webcrypto-core@^1.7.8, webcrypto-core@^1.8.0:
+webcrypto-core@^1.7.8:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/webcrypto-core/-/webcrypto-core-1.8.1.tgz#09d5bd8a9c48e9fbcaf412e06b1ff1a57514ce86"
   integrity sha512-P+x1MvlNCXlKbLSOY4cYrdreqPG5hbzkmawbcXLKN/mf6DZW0SdNNkZ+sjwsqVkI4A4Ko2sPZmkZtCKY58w83A==

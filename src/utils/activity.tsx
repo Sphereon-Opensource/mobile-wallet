@@ -1,7 +1,6 @@
+import {ComponentType, ReactElement} from 'react';
 import {ActivityLoggingEvent} from '@sphereon/ssi-sdk.core';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
-
-import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ColorValue, View} from 'react-native';
 import styled from 'styled-components/native';
 import {RowProps} from '../components/activity/ActivityEventRow';
@@ -21,12 +20,11 @@ import {
 } from '../types';
 import {parseAndValidateJson} from './json';
 import {isDiagnosticData} from './validate';
-import {ComponentType} from 'react';
 
 type StatusProps = {
   title: string;
   description?: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
 };
 
 export const getActivityStatusText = (activity: Activity): StatusProps => {
@@ -46,7 +44,7 @@ export const getActivityStatusText = (activity: Activity): StatusProps => {
         title: translate(`activity.${DefaultActionSubType.VC_ISSUE}.detail_title`),
         description: [
           translate(`activity.${DefaultActionSubType.VC_ISSUE}.description`)[0],
-          activity.credential?.title ?? translate('activity.unknown.credential'),
+          activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
           translate(`activity.${DefaultActionSubType.VC_ISSUE}.description`)[1],
         ].join(' '),
         icon: actionResultIconMap[activity.action].detail,
@@ -56,7 +54,7 @@ export const getActivityStatusText = (activity: Activity): StatusProps => {
         title: translate(`activity.${DefaultActionSubType.VC_ISSUE_DECLINE}.detail_title`),
         description: [
           translate(`activity.${DefaultActionSubType.VC_ISSUE_DECLINE}.description`)[0],
-          activity.credential?.title ?? translate('activity.unknown.credential'),
+          activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
           translate(`activity.${DefaultActionSubType.VC_ISSUE_DECLINE}.description`)[1],
         ].join(' '),
         icon: actionResultIconMap[activity.action].detail,
@@ -115,13 +113,18 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
   };
   switch (activity.action) {
     case DefaultActionSubType.VC_SHARE:
-    case DefaultActionSubType.VC_SHARE_DECLINE:
       return {
         id: activity.id,
         title: activity.contactAlias,
         subtitle: activity.shared
-          .map(({credential}) => credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'))
-          .join(', '),
+            .map(({credential}) => credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'))
+            .join(', '),
+        ...common,
+      };
+    case DefaultActionSubType.VC_SHARE_DECLINE:
+      return {
+        id: activity.id,
+        title: activity.contactAlias,
         ...common,
       };
     case DefaultActionSubType.VC_ISSUE:
@@ -134,10 +137,7 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
   }
 };
 
-const shareActivitySerializer = <T extends ActivityShareType>(
-  event: ActivityLoggingEvent,
-  credential?: CredentialSummary,
-): IContactCredentialsShareActivity<T> => {
+const shareActivitySerializer = <T extends ActivityShareType>(event: ActivityLoggingEvent): IContactCredentialsShareActivity<T> => {
   return {
     id: event.id,
     action: event.actionSubType as T,
@@ -146,8 +146,8 @@ const shareActivitySerializer = <T extends ActivityShareType>(
     contactAlias: event.partyAlias ?? translate('activity.unknown.contact'),
     shared: [
       {
-        credential,
-        info: event.data ?? {},
+        credential: event.data?.credential,
+        info: event.data?.sharedClaims ?? {},
       },
     ],
     purpose: event.sharePurpose ?? translate('activity.unknown.purpose'),
@@ -155,27 +155,24 @@ const shareActivitySerializer = <T extends ActivityShareType>(
   }
 };
 
-const issueActivitySerializer = <T extends ActivityIssueType>(
-  event: ActivityLoggingEvent,
-  credential?: CredentialSummary,
-): ICredentialIssuedActivity<T> => ({
+const issueActivitySerializer = <T extends ActivityIssueType>(event: ActivityLoggingEvent): ICredentialIssuedActivity<T> => ({
   id: event.id,
   action: event.actionSubType as T,
   at: event.timestamp,
   contactAlias: event.partyAlias ?? translate('activity.unknown.issuer'),
   result: (event.actionSubType as T) === DefaultActionSubType.VC_ISSUE ? ActivityActionResult.SUCCESS : ActivityActionResult.DECLINE,
-  credential,
+  credential: event.data?.credential,
   info: parseAndValidateJson(event.diagnosticData ?? '{}', isDiagnosticData) ?? {},
 });
 
-export const serializeActivity = (event: ActivityLoggingEvent, credential?: CredentialSummary): Activity | undefined => {
+export const serializeActivity = (event: ActivityLoggingEvent): Activity | undefined => {
   switch (event.actionSubType) {
     case DefaultActionSubType.VC_SHARE:
     case DefaultActionSubType.VC_SHARE_DECLINE:
-      return shareActivitySerializer(event, credential);
+      return shareActivitySerializer(event)
     case DefaultActionSubType.VC_ISSUE:
     case DefaultActionSubType.VC_ISSUE_DECLINE:
-      return issueActivitySerializer(event, credential);
+      return issueActivitySerializer(event)
     default:
       console.error(translate('activity.unknown.type'), event);
       return undefined;

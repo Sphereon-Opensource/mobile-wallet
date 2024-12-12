@@ -179,8 +179,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             <View importantForAccessibility="no-hide-descendants">
               <SSICredentialCardView
                 header={{
-                  credentialTitle: credential.branding?.alias,
-                  credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
+                  credentialTitle: credential.branding?.alias ?? credential.title,
+                  credentialSubtitle: credential.branding?.description,
                   logo: credentialCardLogo,
                 }}
                 body={{

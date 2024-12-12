@@ -1,14 +1,10 @@
-import {
-  PresentationDefinitionWithLocation,
-  SupportedVersion,
-  VerifiedAuthorizationRequest
-} from '@sphereon/did-auth-siop';
+import { SupportedVersion, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
   CredentialDocumentFormat,
   CredentialRole,
-  DidAuthConfig,
+  DidAuthConfig, ICredentialBranding,
   IdentityOrigin,
   NonPersistedIdentity,
   Party,
@@ -21,9 +17,14 @@ import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/aut
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
-import {generateDigest, translateCorrelationIdToName} from '../../utils';
+import {
+  generateDigest,
+  getCredentialIssuerContact,
+  getCredentialSubjectContact,
+  translateCorrelationIdToName
+} from '../../utils';
 import {getContacts} from '../contactService';
-import {IIdentifier} from '@veramo/core';
+import {IIdentifier, VerifiableCredential} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {
   ActionType,
@@ -43,6 +44,7 @@ import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';
 import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
+import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -196,21 +198,33 @@ export const sendResponse = async (
 
   const pd = authorizationRequestData.presentationDefinitions?.[0].definition
   const pex: PEX = new PEX({hasher: generateDigest});
-  selectedCredentials.forEach(credential => {
-    let data
+  for (const credential of selectedCredentials) {
+    let sharedClaims
     if (pd) {
       if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
         const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
         const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
-        data = getMdocDecodedPayload(limitDisclosedMdoc)
+        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc)
       } else {
         const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
         const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
-        data = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
+        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
       }
     }
 
-    return store.dispatch<any>(
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash: credential.hash } ]});
+    const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
+    const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
+    const credentialSummary = await toCredentialSummary({
+      verifiableCredential: uniform as VerifiableCredential,
+      hash: credential.hash,
+      credentialRole: credential.digitalCredential.credentialRole,
+      branding: credentialsBranding[0]?.localeBranding,
+      issuer,
+      subject: getCredentialSubjectContact(uniform as VerifiableCredential),
+    });
+
+    store.dispatch<any>(
         storeActivityLogging({
           level: LogLevel.INFO,
           system: System.OID4VP,
@@ -226,16 +240,17 @@ export const sendResponse = async (
           credentialHash: credential.hash,
           originalCredential: JSON.stringify(credential.digitalCredential),
           diagnosticData: authorizationRequestData.presentationDefinitions,
-          data,
+          data: {
+            credential: credentialSummary,
+            sharedClaims,
+          },
           // @ts-ignore
           partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
           partyCorrelationId: contact?.identities[0].identifier.correlationId,
           partyAlias: contact?.contact.displayName,
-        }),
+        })
     )
   }
-
-  );
 
   if (!response) {
     return Promise.reject(Error('Missing SIOP authentication response'));
@@ -243,7 +258,7 @@ export const sendResponse = async (
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
-    Linking.openURL(url);
+    await Linking.openURL(url);
   } else if (response.status >= 200 && response.status < 300) {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -251,7 +266,7 @@ export const sendResponse = async (
       const redirectUri = body['redirect_uri'];
       if (typeof redirectUri === 'string') {
         logger.info(`Redirecting to: ${redirectUri}`);
-        Linking.openURL(redirectUri);
+        await Linking.openURL(redirectUri);
       }
     }
   }

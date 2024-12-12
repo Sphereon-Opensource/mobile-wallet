@@ -153,7 +153,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
           >
             <SSICredentialCardView
               header={{
-                credentialTitle: credential.branding?.alias,
+                credentialTitle: credential.branding?.alias ?? credential.title,
                 credentialSubtitle: credential.branding?.description,
                 logo: credential.branding?.logo,
               }}
