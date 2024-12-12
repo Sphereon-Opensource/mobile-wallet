@@ -348,6 +348,7 @@ export enum PinCodeMode {
   CONFIRM_PIN = 'confirm_pin',
 }
 export interface ILockProps {
+  showProfileIcon?: boolean
   onAuthenticate: () => Promise<void>;
 }
 

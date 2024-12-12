@@ -6,7 +6,14 @@ import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
-import {ContactStore, DigitalCredentialStore, EventLoggerStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {
+  ContactStore,
+  DigitalCredentialStore,
+  EventLoggerStore, ICredentialBranding,
+  IssuanceBrandingStore,
+  MachineStateStore,
+  Party
+} from '@sphereon/ssi-sdk.data-store';
 import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
@@ -18,7 +25,7 @@ import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
-import {IAgentPlugin} from '@veramo/core';
+import {IAgentPlugin, VerifiableCredential} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -33,13 +40,14 @@ import {dispatchVerifiableCredential} from '../store/actions/credential.actions'
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
-import {generateDigest, generateSalt} from '../utils';
-import {didProviders, didResolver, linkHandlers} from './index';
+import {generateDigest, generateSalt, getCredentialIssuerContact, getCredentialSubjectContact} from '../utils';
+import agent, {didProviders, didResolver, linkHandlers} from './index';
 import {AZURE_KEYVAULT_REST_API_KEY, AZURE_KEYVAULT_REST_APPLICATION_ID, AZURE_KEYVAULT_REST_URL} from 'react-native-dotenv';
 import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
 import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdnSync, storageGetPIDSecurityModelSync} from '../services/storageService';
 import {MusapClient} from '@sphereon/musap-react-native';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -51,8 +59,20 @@ export const oid4vciHolder = new OID4VCIHolder({
 
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
     const contact = store
-    .getState()
-    .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+      .getState()
+      .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash } ]});
+    const uniform = JSON.parse(credential.uniformDocument) as VerifiableCredential;
+    const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
+    const credentialSummary: CredentialSummary = await toCredentialSummary({
+      verifiableCredential: uniform as VerifiableCredential,
+      hash: credential.hash,
+      credentialRole: credential.credentialRole,
+      branding: credentialsBranding[0].localeBranding,
+      issuer,
+      subject: getCredentialSubjectContact(uniform as VerifiableCredential),
+    });
 
     store.dispatch<any>(
       storeActivityLogging({
@@ -68,6 +88,9 @@ export const oid4vciHolder = new OID4VCIHolder({
         credentialType: credential.documentFormat, // TODO fix types
         credentialHash: vcHash,
         originalCredential: JSON.stringify(credential),
+        data: {
+          credential: credentialSummary
+        },
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
         partyCorrelationId: contact?.identities[0].identifier.correlationId,

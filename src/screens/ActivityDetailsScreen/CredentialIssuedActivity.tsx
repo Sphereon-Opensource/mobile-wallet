@@ -4,7 +4,6 @@ import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/u
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import {View, useWindowDimensions} from 'react-native';
 import NavigationButton from '../../components/buttons/NavigationButton';
-import Info from '../../components/activity/Info';
 import {Section} from '../../components/activity/Section';
 import Status from '../../components/activity/Status';
 import {useAppSelector} from '../../hooks/useStore';
@@ -31,7 +30,7 @@ const PARENT_CONTAINER_TOTAL_PADDING_HORIZONTAL = 32;
 
 const CredentialIssuedActivity = ({activity, navigation}: Props) => {
   const contacts = useAppSelector(state => state.contact.contacts);
-  const {info, contactAlias, credential} = activity;
+  const {contactAlias, credential} = activity;
   const contact = contacts.find(c => c.contact.displayName === contactAlias);
   const screenWidth = useWindowDimensions().width;
   const scale = (screenWidth - PARENT_CONTAINER_TOTAL_PADDING_HORIZONTAL) / CARD_WIDTH;
@@ -50,8 +49,8 @@ const CredentialIssuedActivity = ({activity, navigation}: Props) => {
           }}>
           <SSICredentialCardView
             header={{
-              credentialTitle: credential.branding?.alias,
-              credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
+              credentialTitle: credential.branding?.alias ?? credential.title,
+              credentialSubtitle: credential.branding?.description,
               logo: getCredentialCardLogo(credential),
             }}
             body={{
@@ -69,9 +68,9 @@ const CredentialIssuedActivity = ({activity, navigation}: Props) => {
           />
         </View>
       )}
-      <Section title={translate('activity.section_titles.issued_information')}>
-        <Info info={info} onPress={() => navigation.push(ScreenRoutesEnum.ACTIVITY_REVEALED_INFO, {activity})} />
-      </Section>
+      {/*<Section title={translate('activity.section_titles.issued_information')}>*/}
+      {/*  <Info info={info} onPress={() => navigation.push(ScreenRoutesEnum.ACTIVITY_REVEALED_INFO, {activity})} />*/}
+      {/*</Section>*/}
       <Section title={translate('activity.section_titles.status')}>
         <Status activity={activity} />
       </Section>
