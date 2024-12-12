@@ -1,8 +1,4 @@
-import {
-  PresentationDefinitionWithLocation,
-  SupportedVersion,
-  VerifiedAuthorizationRequest
-} from '@sphereon/did-auth-siop';
+import { SupportedVersion, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
@@ -48,7 +44,7 @@ import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';
 import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
-import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -223,12 +219,12 @@ export const sendResponse = async (
       verifiableCredential: uniform as VerifiableCredential,
       hash: credential.hash,
       credentialRole: credential.digitalCredential.credentialRole,
-      branding: credentialsBranding[0].localeBranding,
+      branding: credentialsBranding[0]?.localeBranding,
       issuer,
       subject: getCredentialSubjectContact(uniform as VerifiableCredential),
     });
 
-    return store.dispatch<any>(
+    store.dispatch<any>(
         storeActivityLogging({
           level: LogLevel.INFO,
           system: System.OID4VP,
@@ -262,7 +258,7 @@ export const sendResponse = async (
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
-    Linking.openURL(url);
+    await Linking.openURL(url);
   } else if (response.status >= 200 && response.status < 300) {
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('application/json')) {
@@ -270,7 +266,7 @@ export const sendResponse = async (
       const redirectUri = body['redirect_uri'];
       if (typeof redirectUri === 'string') {
         logger.info(`Redirecting to: ${redirectUri}`);
-        Linking.openURL(redirectUri);
+        await Linking.openURL(redirectUri);
       }
     }
   }

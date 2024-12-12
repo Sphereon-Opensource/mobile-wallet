@@ -298,14 +298,15 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
       }
     }
 
-    const issuer: Party | undefined = getCredentialIssuerContact(credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential);
+    const uniform = credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential
+    const issuer: Party | undefined = getCredentialIssuerContact(uniform);
     const credentialSummary = await toCredentialSummary({
-      verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential,
-      hash: credentialsToAccept[0].uniformVerifiableCredential.hash,
-      credentialRole: credentialsToAccept[0].uniformVerifiableCredential.credentialRole,
+      verifiableCredential: uniform,
+      hash: uniform.hash,
+      credentialRole: uniform.credentialRole,
       branding: localeBranding,
       issuer,
-      subject: getCredentialSubjectContact(credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential),
+      subject: getCredentialSubjectContact(uniform),
     });
 
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later

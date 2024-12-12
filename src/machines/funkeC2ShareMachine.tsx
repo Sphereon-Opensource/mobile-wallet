@@ -432,7 +432,7 @@ const createFunkeCShareMachine = (opts: FunkeC2ShareMachineOpts): FunkeC2ShareSt
     {
       actions: {
         logDeclineShare: async (context, event) => {
-          const pd = context.authorizationRequestData?.presentationDefinitions?.[0].definition
+          const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition
           store.dispatch<any>(
             storeActivityLogging({
               level: LogLevel.INFO,

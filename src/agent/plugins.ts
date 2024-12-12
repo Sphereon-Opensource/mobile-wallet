@@ -69,7 +69,7 @@ export const oid4vciHolder = new OID4VCIHolder({
       verifiableCredential: uniform as VerifiableCredential,
       hash: credential.hash,
       credentialRole: credential.credentialRole,
-      branding: credentialsBranding[0].localeBranding,
+      branding: credentialsBranding[0]?.localeBranding,
       issuer,
       subject: getCredentialSubjectContact(uniform as VerifiableCredential),
     });

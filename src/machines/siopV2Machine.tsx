@@ -468,7 +468,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
     {
       actions: {
         logDeclineShare: async (context, event) => {
-          const pd = context.authorizationRequestData?.presentationDefinitions?.[0].definition
+          const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition
           store.dispatch<any>(
             storeActivityLogging({
               level: LogLevel.INFO,
