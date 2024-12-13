@@ -18,6 +18,7 @@ import {
 import {sphereonKeyManager} from '../agent/plugins';
 import {OID4VCIHolderEvent} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {agentEventBus} from '../agent';
+import {Siopv2HolderEvent} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 
 const debug: Debugger = Debug(`${APP_ID}:identity`);
 
@@ -40,10 +41,16 @@ export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRe
 };
 
 
-export const initializeIdentityCreatedEventListener = () => {
+export const initializeIdentityCreatedEventListeners = () => {
   agentEventBus.addListener(OID4VCIHolderEvent.IDENTIFIER_CREATED, args => {
     console.debug('Received OID4VCIHolderEvent.IDENTIFIER_CREATED event, dispatching the new identifier', args.identifier)
     dispatchIdentifier({identifier: args.identifier}).then(value => {
+      console.debug('identifier linked to the active user')
+    })
+  })
+  agentEventBus.addListener(Siopv2HolderEvent.IDENTIFIER_CREATED, args => {
+    console.debug('Received Siopv2HolderEvent.IDENTIFIER_CREATED event, dispatching the new identifier', args.result)
+    dispatchIdentifier({identifier: args.result}).then(value => {
       console.debug('identifier linked to the active user')
     })
   })
