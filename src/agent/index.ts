@@ -16,7 +16,9 @@ import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
 import {createAgentPlugins} from './plugins';
+import {EventEmitter} from 'events';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
+import {initializeIdentityCreatedEventListener} from '../services/identityService';
 
 export const didResolver = new Resolver({
   ...getDidEbsiResolver(),
@@ -44,5 +46,7 @@ const agent = createAgent<TAgentTypes>({
 
 export default agent;
 export const agentContext: IRequiredContext = {...agent.context, agent};
-
 DefaultCallbacks.setCoseCryptoDefault(new CoseCryptoService(agentContext));
+
+export const agentEventBus: EventEmitter = (agent as any).eventBus as EventEmitter // agent has an eventBus but it is nog exposing it, it only exposes its events to the agent plugins, but we want them here as well
+initializeIdentityCreatedEventListener()

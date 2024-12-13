@@ -16,6 +16,8 @@ import {
   SupportedDidMethodEnum,
 } from '../types';
 import {sphereonKeyManager} from '../agent/plugins';
+import {OID4VCIHolderEvent} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {agentEventBus} from '../agent';
 
 const debug: Debugger = Debug(`${APP_ID}:identity`);
 
@@ -36,6 +38,18 @@ export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRe
 
   return identifier;
 };
+
+
+export const initializeIdentityCreatedEventListener = () => {
+  agentEventBus.addListener(OID4VCIHolderEvent.IDENTIFIER_CREATED, args => {
+    console.debug('Received OID4VCIHolderEvent.IDENTIFIER_CREATED event, dispatching the new identifier', args.identifier)
+    dispatchIdentifier({identifier: args.identifier}).then(value => {
+      console.debug('identifier linked to the active user')
+    })
+  })
+}
+
+
 
 export const dispatchIdentifier = async (args: IDispatchIdentifierArgs): Promise<void> => {
   const {identifier} = args;
