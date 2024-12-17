@@ -111,6 +111,7 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
         verifiedAuthorizationRequest.presentationDefinitions.length > 0)
         ? verifiedAuthorizationRequest.presentationDefinitions
         : undefined,
+    dcqlQuery: verifiedAuthorizationRequest.dcqlQuery
   };
 };
 
