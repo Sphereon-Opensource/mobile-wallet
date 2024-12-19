@@ -8,6 +8,7 @@ import {translate} from '../../localization/Localization';
 import {ActivityShareType, IContactCredentialsShareActivity, ScreenRoutesEnum, StackParamList} from '../../types';
 import {toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {ReactElement, useEffect, useState} from 'react';
+import {DefaultActionSubType} from '@sphereon/ssi-types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.ACTIVITY_DETAILS> & {
   activity: IContactCredentialsShareActivity<ActivityShareType>;
@@ -42,16 +43,20 @@ const ContactCredentialShareActivity = ({activity, navigation}: Props) => {
 
   return (
     <>
-      {infoData}
+      {activity.action === DefaultActionSubType.VC_SHARE &&
+          infoData
+      }
       <Section title={translate('activity.section_titles.status')}>
         <Status activity={activity} />
       </Section>
       <Section title={translate('activity.section_titles.purpose')}>
         <SectionText>{purpose}</SectionText>
       </Section>
-      <Section title={translate('activity.section_titles.credential_type')}>
-        <SectionText>{credentialType ?? translate('activity.unknown.credential_type')}</SectionText>
-      </Section>
+      { activity.action === DefaultActionSubType.VC_SHARE &&
+          <Section title={translate('activity.section_titles.credential_type')}>
+              <SectionText>{credentialType ?? translate('activity.unknown.credential_type')}</SectionText>
+          </Section>
+      }
       <NavigationButton
         label={`${translate('activity.contact_link')} ${contactAlias}`}
         onPress={() => contact && navigation.push(ScreenRoutesEnum.CONTACT_DETAILS, {contact})}

@@ -1037,7 +1037,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({
-        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
   </GetPIDCredentialsBaseStack.Navigator>
@@ -1063,7 +1063,7 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       name="ImportDataConsent"
       component={ImportDataConsentScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
@@ -1075,28 +1075,28 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       }}
       options={({route}) => ({
         headerTitle: route.params.title,
-        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name="ImportDataAuthentication"
       component={ImportDataAuthenticationScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name="ImportDataFinal"
       component={ImportDataFinalScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({
-        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <Stack.Screen
@@ -1107,6 +1107,7 @@ export const FunkeC2ShareStack = (): JSX.Element => (
         header: (props: NativeStackHeaderProps) => (
           <SSIHeaderBar
             {...props}
+            showProfileIcon={false}
             onBack={route.params.onBack}
             // TODO rethink back button visibility for Android
             //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1239,6 +1240,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
@@ -1253,6 +1255,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
@@ -1270,6 +1273,7 @@ export const OID4VCIStack = (): JSX.Element => {
               {...props}
               //onBack={route.params.onBack}
               // headerSubTitle={translate('browser_open_subtitle')}
+              showProfileIcon={false}
             />
           ),
         })}
@@ -1297,7 +1301,7 @@ export const OID4VCIStack = (): JSX.Element => {
         component={ContactIdentitiesScreen}
         options={{
           headerTitle: translate('contact_identities_title'),
-          header: props => <SSIHeaderBar {...props} />,
+          header: props => <SSIHeaderBar {...props} showProfileIcon={false}/>,
         }}
       />
       <Stack.Screen
@@ -1305,7 +1309,7 @@ export const OID4VCIStack = (): JSX.Element => {
         component={ContactActivityScreen}
         options={{
           headerTitle: translate('contact_activities_title'),
-          header: props => <SSIHeaderBar {...props} />,
+          header: props => <SSIHeaderBar {...props} showProfileIcon={false}/>,
         }}
       />
       <Stack.Screen
@@ -1317,6 +1321,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_select_type_subtitle', {issuerName: route.params.issuer})}
@@ -1333,6 +1338,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('verification_code_subtitle', {credentialName: route.params.credentialName})}
@@ -1348,6 +1354,7 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
@@ -1387,7 +1394,7 @@ export const OID4VCIStack = (): JSX.Element => {
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={({route}) => ({
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showProfileIcon={false} onBack={route.params.onBack} />,
         })}
       />
       <Stack.Screen
@@ -1432,6 +1439,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1496,6 +1504,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1514,6 +1523,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onDecline}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1532,13 +1542,13 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}
       />
-
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_SELECT}
         component={SSICredentialsSelectScreen}
@@ -1547,6 +1557,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={`${translate('credentials_select_subtitle')} ${route.params.purpose && `\n\n${route.params.purpose}`}`}
@@ -1587,16 +1598,16 @@ export const SiopV2Stack = (): JSX.Element => {
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={({route}) => ({
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
         })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('authentication_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} />,
-        }}
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} showProfileIcon={route.params.showProfileIcon}/>,
+        })}
       />
     </Stack.Navigator>
   );

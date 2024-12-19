@@ -10,7 +10,7 @@ import {
   CorrelationIdentifierType,
   CredentialDocumentFormat,
   CredentialRole,
-  IBasicCredentialLocaleBranding,
+  IBasicCredentialLocaleBranding, ICredentialBranding,
   IdentityOrigin,
   NonPersistedParty,
   Party,
@@ -31,14 +31,18 @@ import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialSubjectContact} from '../../utils';
+import {
+  CredentialSummary,
+  toCredentialSummary,
+  toNonPersistedCredentialSummary
+} from '@sphereon/ui-components.credential-branding';
+import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
 import agent from '../../agent';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 import {computeEntryHash} from '@veramo/utils';
+import {VerifiableCredential} from '@veramo/core';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -294,6 +298,17 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
       }
     }
 
+    const uniform = credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential
+    const issuer: Party | undefined = getCredentialIssuerContact(uniform);
+    const credentialSummary = await toCredentialSummary({
+      verifiableCredential: uniform,
+      hash: uniform.hash,
+      credentialRole: uniform.credentialRole,
+      branding: localeBranding,
+      issuer,
+      subject: getCredentialSubjectContact(uniform),
+    });
+
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
     store.dispatch<any>(
       storeActivityLogging({
@@ -309,6 +324,9 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
         // @ts-ignore
         credentialHash: credentialsToAccept[0].uniformVerifiableCredential.id ?? computeEntryHash(credentialsToAccept[0].uniformVerifiableCredential),
         originalCredential: JSON.stringify(credentialsToAccept[0].uniformVerifiableCredential),
+        data: {
+          credential: credentialSummary
+        },
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
         partyCorrelationId: contact?.identities[0].identifier.correlationId,

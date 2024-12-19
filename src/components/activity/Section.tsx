@@ -15,5 +15,6 @@ export const Section = ({title, children}: {title: string; children: React.React
 export const SectionText = styled(SSITextH4LightStyled)`
   color: ${fontColors.light};
   opacity: 0.8;
-  margin-horizontal: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
 `;

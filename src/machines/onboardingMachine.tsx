@@ -1,6 +1,15 @@
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
+import {
+  ActionType,
+  CredentialMapper,
+  DefaultActionSubType,
+  DocumentFormat,
+  InitiatorType,
+  LogLevel,
+  SubSystem,
+  System
+} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
@@ -35,6 +44,11 @@ import {
 } from '../types/machines/onboarding';
 import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
 import {PIDSecurityModel} from '../services/storageService';
+import {getCredentialSubjectContact} from '../utils';
+import {VerifiableCredential} from '@veramo/core';
+import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import agent from '../agent';
+import PersonalIdentificationDataBranding from '../@config/branding/PersonalIdentificationDataBranding.json';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -58,7 +72,7 @@ const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
 const isSkipImport: OnboardingGuard = ({pidSecurityModel, countryCode, skipImport}) =>
-  skipImport === true || 
+  skipImport === true ||
   pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION ||
   countryCode !== 'DE'
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
@@ -105,8 +119,8 @@ const states: OnboardingStatesConfig = {
           actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
         },
         {
-          cond: ({currentStep, pidSecurityModel}) => 
-            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && 
+          cond: ({currentStep, pidSecurityModel}) =>
+            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA &&
             pidSecurityModel !== PIDSecurityModel.EID_DURING_PRESENTATION, // TODO move to guard
           target: OnboardingMachineStateType.reviewPIDCredentials,
           actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
@@ -487,7 +501,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
       actions: {
         logDeclinePID: async (context, event): Promise<void> => {
           let parentCredentialHash: string | undefined = undefined;
-          context.pidCredentials.forEach(mappedCredential => {
+          for (const mappedCredential of context.pidCredentials) {
             // FIXME function is not exposed in SSI-SDK, for now made a copy here
             function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
               switch (documentFormat) {
@@ -504,7 +518,21 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
               }
             }
 
-            const credentialHash = mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential);
+            const uniform = mappedCredential.uniformCredential as VerifiableCredential
+            const credentialHash = uniform.id ?? computeEntryHash(mappedCredential.rawCredential);
+            const issuerCorrelationId: string = typeof uniform.issuer === 'string' ? uniform.issuer : uniform.issuer?.id ?? uniform.issuer?.name;
+            const getContactsArgs = {
+              filter: [{identities: {identifier: {correlationId: issuerCorrelationId}}}]
+            };
+            const issuer: Party | undefined = (await agent.cmGetContacts(getContactsArgs))[0];
+            const credentialSummary = await toCredentialSummary({
+              verifiableCredential: uniform,
+              hash: credentialHash,
+              credentialRole: uniform.credentialRole,
+              issuer,
+              branding: [PersonalIdentificationDataBranding],
+              subject: getCredentialSubjectContact(uniform),
+            })
 
             store.dispatch<any>(
               storeActivityLogging({
@@ -520,6 +548,9 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
                 parentCredentialHash,
                 credentialHash,
                 originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                data: {
+                  credential: credentialSummary
+                },
                 partyCorrelationType: PartyCorrelationType.URL,
                 partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
                 partyAlias: 'Bundesdruckerei GmbH',
@@ -529,7 +560,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
             if (!parentCredentialHash) {
               parentCredentialHash = credentialHash;
             }
-          });
+          }
         },
       },
     },
