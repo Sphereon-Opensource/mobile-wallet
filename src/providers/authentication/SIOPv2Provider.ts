@@ -6,7 +6,7 @@ import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifi
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig, DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {DcqlCredentialRepresentation, DcqlPresentationQueryResult, DcqlQuery} from 'dcql';
+import {DcqlCredentialRepresentation, DcqlPresentationQueryResult, DcqlPresentationRecord, DcqlQuery} from 'dcql';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
@@ -18,6 +18,7 @@ import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentatio
 import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
 import decodeFrom = com.sphereon.kmp.decodeFrom;
 import Encoding = com.sphereon.kmp.Encoding;
+import {Json} from 'dcql/dist/src/u-dcql';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -328,98 +329,102 @@ export const siopSendAuthorizationResponse = async (
   } else if (request.dcqlQuery !== undefined && request.dcqlQuery !== null) {
     if (args.verifiableCredentialsWithDefinition !== undefined && args.verifiableCredentialsWithDefinition !== null) {
       const vcs = args.verifiableCredentialsWithDefinition.flatMap(vcd => vcd.credentials)
+        const domain =
+          ((await request.authorizationRequest.getMergedProperty("client_id")) as string) ??
+          request.issuer ??
+          (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
+            ? "https://self-issued.me/v2/openid-vc"
+            : "https://self-issued.me/v2");
+        debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+        console.log(`#########$$$$$$$$$$$$$$$#############`);
 
-      const domain =
-        ((await request.authorizationRequest.getMergedProperty("client_id")) as string) ??
-        request.issuer ??
-        (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
-          ? "https://self-issued.me/v2/openid-vc"
-          : "https://self-issued.me/v2");
-      debug(`NONCE: ${session.nonce}, domain: ${domain}`);
-      console.log(`#########$$$$$$$$$$$$$$$#############`);
+        const firstUniqueDC = vcs[0];
+        // FIXME Funke EBSI needs to be fixed
 
-      const firstUniqueDC = vcs[0];
-      // FIXME Funke EBSI needs to be fixed
+        if (!firstUniqueDC) {
+          return Promise.reject(Error("SiopMachine could not determine a credential"));
+        }
 
-      if (!firstUniqueDC) {
-        return Promise.reject(Error("SiopMachine could not determine a credential"));
+        if (typeof firstUniqueDC !== "object" || !("digitalCredential" in firstUniqueDC)) {
+          return Promise.reject(Error("SiopMachine only supports UniqueDigitalCredentials for now"));
+        }
+
+        let identifier: ManagedIdentifierOptsOrResult;
+        const digitalCredential = firstUniqueDC.digitalCredential;
+        const firstVC = firstUniqueDC.uniformVerifiableCredential;
+        const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
+          ? firstVC.decodedPayload.cnf?.jwk
+            ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
+              //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
+            `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
+            : firstVC.decodedPayload.sub
+          : Array.isArray(firstVC.credentialSubject)
+            ? firstVC.credentialSubject[0].id
+            : firstVC.credentialSubject.id;
+        if (!digitalCredential.kmsKeyRef) {
+          // In case the store does not have the kmsKeyRef lets search for the holder
+
+          if (!holder) {
+            return Promise.reject(`No holder found and no kmsKeyRef in DB. Cannot determine identifier to use`);
+          }
+          try {
+            identifier = await session.context.agent.identifierManagedGet({identifier: holder});
+          } catch (e) {
+            debug(`Holder DID not found: ${holder}`);
+            throw e;
+          }
+        } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
+          identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
+            identifier: firstUniqueDC.digitalCredential.kmsKeyRef
+          });
+        } else {
+          switch (digitalCredential.subjectCorrelationType) {
+            case "DID":
+              identifier = await session.context.agent.identifierManagedGetByDid({
+                identifier: digitalCredential.subjectCorrelationId ?? holder,
+                kmsKeyRef: digitalCredential.kmsKeyRef
+              });
+              break;
+            // TODO other implementations?
+            default:
+              // Since we are using the kmsKeyRef we will find the KID regardless of the identifier. We set it for later access though
+              identifier = await session.context.agent.identifierManagedGetByKid({
+                identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
+                kmsKeyRef: digitalCredential.kmsKeyRef
+              });
+          }
+        }
+        console.log(`Identifier`, identifier);
+
+        const dcqlCredentialToCredential: Map<DcqlCredentialRepresentation, UniqueDigitalCredential> = new Map()
+        vcs.forEach((vc: any) => {
+          const payload = vc['decodedPayload'] !== undefined && vc['decodedPayload'] !== null ? vc.decodedPayload : vc
+          const vct = payload?.vct
+          const docType = payload?.docType
+          const namespaces = payload?.namespaces
+          const result: DcqlCredentialRepresentation = {
+            claims: payload,
+            vct,
+            docType,
+            namespaces
+          }
+          dcqlCredentialToCredential.set(result, vc)
+        })
+        const queryResult = DcqlQuery.query(request.dcqlQuery, Array.from(dcqlCredentialToCredential.keys()))
+        const presentation: DcqlPresentationRecord.Output = {}
+        for (const [key, value] of Object.entries(queryResult.credential_matches)) {
+          const credential = dcqlCredentialToCredential.get(value.output as DcqlCredentialRepresentation)!
+          presentation[key] = (credential.originalVerifiableCredential as any)['compactSdJwtVc'] !== undefined ? (credential.originalVerifiableCredential as any).compactSdJwtVc : (credential.originalCredential as any).original
+        }
+        const response = session.sendAuthorizationResponse({
+          responseSignerOpts: identifier,
+          ...({dcqlQuery: {encodedPresentationRecord: DcqlPresentationRecord.parse(presentation)}})
+        })
+
+        debug(`Response: `, response);
+
+        return response
       }
-
-      if (typeof firstUniqueDC !== "object" || !("digitalCredential" in firstUniqueDC)) {
-        return Promise.reject(Error("SiopMachine only supports UniqueDigitalCredentials for now"));
-      }
-
-      let identifier: ManagedIdentifierOptsOrResult;
-      const digitalCredential = firstUniqueDC.digitalCredential;
-      const firstVC = firstUniqueDC.uniformVerifiableCredential;
-      const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
-        ? firstVC.decodedPayload.cnf?.jwk
-          ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
-            //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
-          `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
-          : firstVC.decodedPayload.sub
-        : Array.isArray(firstVC.credentialSubject)
-          ? firstVC.credentialSubject[0].id
-          : firstVC.credentialSubject.id;
-      if (!digitalCredential.kmsKeyRef) {
-        // In case the store does not have the kmsKeyRef lets search for the holder
-
-        if (!holder) {
-          return Promise.reject(`No holder found and no kmsKeyRef in DB. Cannot determine identifier to use`);
-        }
-        try {
-          identifier = await session.context.agent.identifierManagedGet({ identifier: holder });
-        } catch (e) {
-          debug(`Holder DID not found: ${holder}`);
-          throw e;
-        }
-      } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
-        identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
-          identifier: firstUniqueDC.digitalCredential.kmsKeyRef
-        });
-      } else {
-        switch (digitalCredential.subjectCorrelationType) {
-          case "DID":
-            identifier = await session.context.agent.identifierManagedGetByDid({
-              identifier: digitalCredential.subjectCorrelationId ?? holder,
-              kmsKeyRef: digitalCredential.kmsKeyRef
-            });
-            break;
-          // TODO other implementations?
-          default:
-            // Since we are using the kmsKeyRef we will find the KID regardless of the identifier. We set it for later access though
-            identifier = await session.context.agent.identifierManagedGetByKid({
-              identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
-              kmsKeyRef: digitalCredential.kmsKeyRef
-            });
-        }
-      }
-      console.log(`Identifier`, identifier);
-
-      const dcqlVcs = vcs.map((vc: any) => {
-        const payload = vc['decodedPayload'] !== undefined && vc['decodedPayload'] !== null ? vc.decodedPayload : vc
-        const vct = payload?.vct
-        const docType = payload?.docType
-        const namespaces = payload?.namespaces
-        const result: DcqlCredentialRepresentation = {
-          claims: payload,
-          vct,
-          docType,
-          namespaces
-        }
-        return result
-      })
-      const queryResult = DcqlQuery.query(request.dcqlQuery, dcqlVcs)
-      const vp = DcqlPresentationQueryResult.fromDcqlQueryResult(queryResult)
-      const response = session.sendAuthorizationResponse({
-        responseSignerOpts: identifier,
-        ...({ dcqlQuery: { encodedPresentationRecord: vp.presentation_matches }})
-      })
-
-      debug(`Response: `, response);
-      
-      return response
     }
-  }
-  return undefined;
+    return undefined;
 };
