@@ -1,15 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  SSITextH3LightStyled,
-  SSITextH4LightStyled,
-} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SecondaryButton, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
-import RelyingPartyView from "../../components/views/RelyingPartyView";
+import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
@@ -21,7 +16,6 @@ import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
 import {DcqlCredentialRepresentation, DcqlQuery} from 'dcql';
-import {CredentialMapper} from '@sphereon/ssi-types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -77,10 +71,9 @@ const SelectOverviewShareScreen = (props: Props) => {
   const {credentials, verifier, presentationDefinition, dcqlQuery, onSelectAndSend, onDecline} = props.route.params;
 
   let input_descriptors: InputDescriptorV1[] | InputDescriptorV2[] | undefined
-  let credsPerInputDescriptor: Map<string, UniqueDigitalCredential[] | string>;
-  let dcqlCredentials: DcqlCredentialRepresentation
+  let credsPerInputDescriptor: Map<string, UniqueDigitalCredential[]>;
 
-  if (dcqlQuery === undefined && dcqlQuery === null) {
+  if (presentationDefinition !== undefined && presentationDefinition !== null) {
     input_descriptors = presentationDefinition.input_descriptors;
     credsPerInputDescriptor = useMemo(
       //@ts-ignore
@@ -89,7 +82,7 @@ const SelectOverviewShareScreen = (props: Props) => {
     );
   } else if (dcqlQuery !== undefined && dcqlQuery !== null){
     const vcDcqlMap = new Map<DcqlCredentialRepresentation, UniqueDigitalCredential>()
-    credentials.forEach((vc: any, index: number) => {
+    credentials.forEach((vc: any) => {
       const payload = vc['decodedPayload'] !== undefined && vc['decodedPayload'] !== null ? vc.decodedPayload : vc
       const vct = payload?.vct
       const docType = payload?.docType
@@ -107,19 +100,21 @@ const SelectOverviewShareScreen = (props: Props) => {
     credsPerInputDescriptor = useMemo(
       () => {
         const credentialToQueryId = new Map<string | UniqueDigitalCredential[], string>()
-        Object.entries(queryResult.credential_matches).forEach((c: any[]) => credentialToQueryId.set(vcDcqlMap.get({
-          docType: c[1].output.docType,
-          vct: c[1].output.vct,
-          claims: c[1].output.claims,
-          namespaces: c[1].output.namespaces
-        }) as unknown as string | UniqueDigitalCredential[], c[0] as string))
+          Object.entries(queryResult.credential_matches).forEach((c: any[]) => {
+            credentialToQueryId.set(vcDcqlMap.get({
+              docType: c[1].output?.docType,
+              vct: c[1].output?.vct,
+              claims: c[1].output?.claims,
+              namespaces: c[1].output?.namespaces
+          }) as unknown as string | UniqueDigitalCredential[], c[0] as string)
+        })
         return credentialToQueryId as any
       }, [credentials, dcqlQuery])
   }
 
   //FIXME Funke, make this support multi credential selection per input descriptor
   const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
-    input_descriptors ? input_descriptors.reduce(
+    !!input_descriptors ? input_descriptors.reduce(
       (prev, curr) => ({
         ...prev,
         [curr.id]: null,
@@ -146,13 +141,13 @@ const SelectOverviewShareScreen = (props: Props) => {
         style={{height: 42}}
         caption={translate('action_share_label')}
         captionColor={fontColors.light}
-        disabled={Object.values(selectedCredentials).filter(c => !!c).length !== presentationDefinition.input_descriptors.length}
+        disabled={Object.values(selectedCredentials).filter(c => !!c).length !== (presentationDefinition?.input_descriptors.length ?? dcqlQuery?.credentials.length)}
         onPress={async () => {
           const selected = Object.values(selectedCredentials).filter(c => !!c);
           if (!selected.length) {
             return;
           }
-          await onSelectAndSend(Object.values(selectedCredentials).filter(s => !!s));
+          await onSelectAndSend(Object.values(selectedCredentials).map(s => s!));
         }}
       />
       <SecondaryButton
@@ -174,11 +169,11 @@ const SelectOverviewShareScreen = (props: Props) => {
         <RelyingPartyView party={verifier} onPress={onPressRP} />
       </View>
       <View style={{paddingHorizontal: 16}}>
-        {presentationDefinition.purpose && (
+        {presentationDefinition?.purpose && (
           <ProviderContainer style={{marginBottom: 0}}>
             <ProviderDescription>
               <SSITextH3LightStyled>Reason</SSITextH3LightStyled>
-              <SSITextH4LightStyled>{presentationDefinition.purpose}</SSITextH4LightStyled>
+              <SSITextH4LightStyled>{presentationDefinition?.purpose}</SSITextH4LightStyled>
             </ProviderDescription>
           </ProviderContainer>
         )}
@@ -196,7 +191,7 @@ const SelectOverviewShareScreen = (props: Props) => {
               selectCredential(inputDescriptor.id, credential);
             }}
             presentationDefinition={presentationDefinition}
-            purpose={inputDescriptor.purpose}
+            purpose={inputDescriptor?.purpose}
             verifier={verifier}
           />
         </View>
@@ -211,6 +206,8 @@ const SelectOverviewShareScreen = (props: Props) => {
             onSelect={(credential: UniqueDigitalCredential) => {
               selectCredential(credentialQuery.id, credential);
             }}
+            presentationDefinition={undefined}
+            purpose={undefined}
             verifier={verifier}
           />
         </View>

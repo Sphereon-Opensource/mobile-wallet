@@ -136,10 +136,10 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
       if (matchedVcs !== undefined && matchedVcs !== null && matchedVcs.length > 0) {
         Object.entries(queryResult.credential_matches).forEach((c: [string, any]) => {
           const originalCredential = vcDcqlMap.get({
-            docType: c[1].output.docType,
-            vct: c[1].output.vct,
-            claims: c[1].output.claims,
-            namespaces: c[1].output.namespaces,
+            docType: c[1].output?.docType,
+            vct: c[1].output?.vct,
+            claims: c[1].output?.claims,
+            namespaces: c[1].output?.namespaces,
           });
           if (originalCredential !== undefined && originalCredential !== null) {
             const matchedUDC = getMatchingUniqueDigitalCredential(allUniqueCredentials ?? [], originalCredential);

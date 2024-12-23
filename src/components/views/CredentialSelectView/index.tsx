@@ -1,60 +1,35 @@
-import { UniqueDigitalCredential } from '@sphereon/ssi-sdk.credential-store'
-import { Party, CredentialDocumentFormat } from '@sphereon/ssi-sdk.data-store'
-import {
-  CredentialMapper,
-  decodeMdocIssuerSigned,
-  getMdocDecodedPayload,
-  mdocDecodedCredentialToUniformCredential,
-  MdocDocument,
-  MdocOid4vpIssuerSigned
-} from '@sphereon/ssi-types'
-import { backgroundColors, fontColors } from '@sphereon/ui-components.core'
-import {
-  CredentialDetailsRow,
-  toCredentialDetailsRow
-} from '@sphereon/ui-components.credential-branding'
-import { useEffect, useMemo, useState } from 'react'
-import { Pressable, ScrollView, StyleProp, View, ViewStyle } from 'react-native'
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming
-} from 'react-native-reanimated'
-import ChevronIcon from '../../assets/icons/ChevronIcon'
-import {
-  ImportInformationSummary
-} from '../../../screens/Onboarding/ImportDataConsentScreen/components/ImportInformationSummary'
-import {
-  AusweisRequestedInfoItem
-} from '../../../screens/Onboarding/ImportDataConsentScreen/constants'
-import { convertFromPIDPayload } from '../../../screens/Onboarding/ImportDataConsentScreen/util'
-import {
-  SSITextH3LightStyled,
-  SSITextH4LightStyled,
-  SSITextH5Styled
-} from '../../../styles/components'
-import { generateDigest } from '../../../utils'
-import SelectedCredentialDetailsView from '../SelectedCredentialDetailsView'
-import { PressableCredentialMiniCard } from '../PressableCredentialMiniCard'
-import { ICredentialState } from '../../../types/store/credential.types'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../types'
-import { IPresentationDefinition } from '@sphereon/pex'
-import { com } from '@sphereon/kmp-mdoc-core'
-import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialMapper, decodeMdocIssuerSigned, getMdocDecodedPayload, MdocOid4vpIssuerSigned} from '@sphereon/ssi-types';
+import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
+import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
+import {useEffect, useMemo, useState} from 'react';
+import {Pressable, ScrollView, StyleProp, View, ViewStyle} from 'react-native';
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
+import ChevronIcon from '../../assets/icons/ChevronIcon';
+import {AusweisRequestedInfoItem} from '../../../screens/Onboarding/ImportDataConsentScreen/constants';
+import {SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5Styled} from '../../../styles/components';
+import {generateDigest} from '../../../utils';
+import SelectedCredentialDetailsView from '../SelectedCredentialDetailsView';
+import {PressableCredentialMiniCard} from '../PressableCredentialMiniCard';
+import {ICredentialState} from '../../../types/store/credential.types';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../types';
+import {IPresentationDefinition} from '@sphereon/pex';
+import {com} from '@sphereon/kmp-mdoc-core';
+import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
   credentials: UniqueDigitalCredential[];
-  presentationDefinition: IPresentationDefinition,
+  presentationDefinition?: IPresentationDefinition;
   purpose?: string;
   verifier?: Party;
   style?: StyleProp<ViewStyle>;
 };
 
 const CredentialSelectView = (props: CredentialSelectViewProps) => {
-  const {purpose, verifier, credentials, onSelect, style, presentationDefinition} = props;
+  const {purpose, verifier, credentials, onSelect, style, presentationDefinition } = props;
   const accordionExpanded = useSharedValue(true);
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
@@ -95,7 +70,7 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     await loadCredentialContent(credential, presentationDefinition);
   };
 
-  const loadCredentialContent = async (credential: UniqueDigitalCredential, pd: IPresentationDefinition): Promise<void> => {
+  const loadCredentialContent = async (credential: UniqueDigitalCredential, pd?: IPresentationDefinition): Promise<void> => {
     const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
     // FIXME disabled this as a PID is just another credential
     //const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
@@ -103,16 +78,24 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     // if (isPIDCredential) {
     //   setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
     // } else {
-        if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-          const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
-          const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
-          const payload = getMdocDecodedPayload(limitDisclosedMdoc)
-          setCredentialContent(
-            await toCredentialDetailsRow({
-              object: payload
-            })
-          )
-        } else {
+    if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC && pd !== undefined) {
+      const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
+      const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
+      const payload = getMdocDecodedPayload(limitDisclosedMdoc)
+      setCredentialContent(
+        await toCredentialDetailsRow({
+          object: payload
+        })
+      )
+    } else if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC && pd === undefined) {
+      const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
+      const payload = getMdocDecodedPayload(decodedMdoc)
+      setCredentialContent(
+        await toCredentialDetailsRow({
+          object: payload
+        })
+      )
+    }  else {
           setCredentialContent(
             await toCredentialDetailsRow({
               object: {...uniformCredential.credentialSubject},
