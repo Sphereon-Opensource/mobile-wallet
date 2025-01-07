@@ -15,7 +15,8 @@ import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
-import {DcqlCredentialRepresentation, DcqlQuery} from 'dcql';
+import {DcqlCredentialRepresentation, DcqlMdocRepresentation, DcqlQuery, DcqlSdJwtVcRepresentation, DcqlW3cVcRepresentation} from 'dcql';
+import {CredentialMapper} from '@sphereon/ssi-types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -66,12 +67,34 @@ const matchCredsWithInputDescriptors = (
   return udcIDMap;
 };
 
+function convertToDcqlRepresentation(vc: UniqueDigitalCredential): DcqlCredentialRepresentation {
+  let payload = vc.originalVerifiableCredential
+    ? CredentialMapper.decodeVerifiableCredential(vc.originalVerifiableCredential, generateDigest)
+    : undefined;
+  if (!payload) {
+    throw new Error('No payload found');
+  }
+  if ('decodedPayload' in payload && payload.decodedPayload) {
+    payload = payload.decodedPayload;
+  }
+
+  if ('vct' in payload!) {
+    return { vct: payload.vct, claims: payload } satisfies DcqlSdJwtVcRepresentation;
+  } else if ('docType' in payload! && 'namespaces' in payload) {
+    return { docType: payload.docType, namespaces: payload.namespaces, claims: payload };
+  }else {
+    return {
+      claims: payload,
+    } as DcqlW3cVcRepresentation;
+  }
+}
+
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
   const {credentials, verifier, presentationDefinition, dcqlQuery, onSelectAndSend, onDecline} = props.route.params;
 
   let input_descriptors: InputDescriptorV1[] | InputDescriptorV2[] | undefined
-  let credsPerInputDescriptor: Map<string, UniqueDigitalCredential[]>;
+  let credsPerInputDescriptor = new Map<string, UniqueDigitalCredential[]>();
 
   if (presentationDefinition !== undefined && presentationDefinition !== null) {
     input_descriptors = presentationDefinition.input_descriptors;
@@ -81,35 +104,34 @@ const SelectOverviewShareScreen = (props: Props) => {
       [credentials, input_descriptors],
     );
   } else if (dcqlQuery !== undefined && dcqlQuery !== null){
-    const vcDcqlMap = new Map<DcqlCredentialRepresentation, UniqueDigitalCredential>()
-    credentials.forEach((vc: any) => {
-      const payload = vc['decodedPayload'] !== undefined && vc['decodedPayload'] !== null ? vc.decodedPayload : vc
-      const vct = payload?.vct
-      const docType = payload?.docType
-      const namespaces = payload?.namespaces
-      const dcqlVc: DcqlCredentialRepresentation = {
-        claims: payload,
-        vct,
-        docType,
-        namespaces
-      }
-      vcDcqlMap.set(dcqlVc, vc)
-    })
-    const queryResult = DcqlQuery.query(dcqlQuery, Array.from(vcDcqlMap.keys()))
+    credsPerInputDescriptor = useMemo(() => {
+      const dcqlRepresentations: DcqlCredentialRepresentation[] = [];
+      credentials.forEach(vc => {
+        const rep = convertToDcqlRepresentation(vc);
+        if (rep) dcqlRepresentations.push(rep);
+      });
 
-    credsPerInputDescriptor = useMemo(
-      () => {
-        const credentialToQueryId = new Map<string | UniqueDigitalCredential[], string>()
-          Object.entries(queryResult.credential_matches).forEach((c: any[]) => {
-            credentialToQueryId.set(vcDcqlMap.get({
-              docType: c[1].output?.docType,
-              vct: c[1].output?.vct,
-              claims: c[1].output?.claims,
-              namespaces: c[1].output?.namespaces
-          }) as unknown as string | UniqueDigitalCredential[], c[0] as string)
-        })
-        return credentialToQueryId as any
-      }, [credentials, dcqlQuery])
+      const queryResult = DcqlQuery.query(dcqlQuery, dcqlRepresentations);
+
+      const mapResult = new Map<string, UniqueDigitalCredential[]>();
+      Object.entries(queryResult.credential_matches).forEach(([queryId, match]) => {
+        const allMatches = Array.isArray(match) ? match : [match];
+        const matchedUniqueDCs: UniqueDigitalCredential[] = [];
+
+        allMatches.forEach(m => {
+          if (m.success) {
+            const matchedCredential = credentials[m.credential_index];
+            if (!matchedCredential) {
+              throw new Error(`Index ${m.credential_index} out of range in credentials array`);
+            }
+            matchedUniqueDCs.push(matchedCredential);
+          }
+        });
+        mapResult.set(queryId, matchedUniqueDCs);
+      });
+
+      return mapResult;
+    }, [credentials, dcqlQuery]);
   }
 
   //FIXME Funke, make this support multi credential selection per input descriptor

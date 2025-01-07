@@ -65,7 +65,9 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
+  if ((authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0)
+    && (authorizationRequestData.dcqlQuery === undefined)
+  ) {
     throw Error('No presentation definitions present');
   }
 
@@ -85,7 +87,9 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
+  if ((authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0)
+    && (authorizationRequestData.dcqlQuery === undefined)
+  ) {
     throw Error('No presentation definitions present');
   }
 
@@ -94,16 +98,22 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     udcMap.set(credential.originalVerifiableCredential!, credential);
   });
 
-  const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(
-    definitionWithLocation.definition,
-    selectedCredentials.map(udc => udc.originalVerifiableCredential!),
-  );
 
-  // @ts-ignore FIXME Funke
-  _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
+  if (authorizationRequestData.presentationDefinitions !== undefined && authorizationRequestData.presentationDefinitions.length > 0) {
+    const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+    const pex: PEX = new PEX();
+    const evaluationResults: EvaluationResults = pex.evaluateCredentials(
+      definitionWithLocation.definition,
+      selectedCredentials.map(udc => udc.originalVerifiableCredential!),
+    );
+
+
+    // @ts-ignore FIXME Funke
+    _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
+    return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
+  }
+
+  return false; // FIXME SPRIND-137
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
