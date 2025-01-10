@@ -1,6 +1,6 @@
-import React, {FC, ReactElement, useMemo} from 'react';
+import React, {FC, ReactElement, ReactNode} from 'react';
 import {Linking, Text, TouchableOpacity, View} from 'react-native';
-import Markdown from 'react-native-markdown-display';
+import Markdown, {ASTNode} from 'react-native-markdown-display';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
@@ -28,16 +28,14 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
     const {item, index} = props;
     const valueIsArray = Array.isArray(item.value);
     const markDownRules = {
-        // @ts-ignore
-        link: (node, children, parent, styles) => {
+        link: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any) => {
             return (
                 <Text key={node.key} style={styles.link}>
                     {children}
                 </Text>
             );
         },
-        // @ts-ignore
-        image: (node, children, parent, styles, allowedImageHandlers, defaultImageHandler) => {
+        image: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any, allowedImageHandlers: Array<string>, defaultImageHandler: string) => {
             return (
                 <View key={node.key} style={styles.image}>
                     {children}
