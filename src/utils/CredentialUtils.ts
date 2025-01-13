@@ -5,6 +5,7 @@ import store from '../store';
 import {IUser, IUserIdentifier} from '../types';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {asArray} from '@veramo/utils';
+import {generateDigest} from './CryptoUtils';
 
 /**
  * Return the type(s) of a VC minus the VerifiableCredential type which should always be present
@@ -44,16 +45,38 @@ export const getMatchingUniqueDigitalCredential = (
   );
 };
 
+type InputCredential =
+  | UniqueDigitalCredential
+  | VerifiableCredential
+  | ICredential
+  | OriginalVerifiableCredential
+
 /**
  * Get an original verifiable credential. Maps to wrapped Verifiable Credential first, to get an original JWT as Veramo stores these with a special proof value
- * @param vc The input VC
+ * @param credential The input VC
  */
-export const getOriginalVerifiableCredential = (vc: VerifiableCredential | ICredential) => {
-  // FIXME we need to start using one singular flow instead of making these sd-jwt checks. the difficulty is that we have multiple representations of a sd-jwt (sd-jwt and jsonld) and we do not need to decode the sd-jwt here for example. we just need the original which was a string
-  // TODO can we not call CredentialMapper.storedCredentialToOriginalFormat instead of using this function?
-  return CredentialMapper.isSdJwtEncoded(vc.proof.jwt)
-    ? vc.proof.jwt
-    : CredentialMapper.toWrappedVerifiableCredential(vc as OriginalVerifiableCredential).original;
+
+export const getOriginalVerifiableCredential = (
+  credential: InputCredential
+): OriginalVerifiableCredential => {
+  if (isUniqueDigitalCredential(credential)) {
+    if (!credential.originalVerifiableCredential) {
+      throw new Error('originalVerifiableCredential is not defined in UniqueDigitalCredential')
+    }
+    return getCredentialFromProofOrWrapped(credential.originalVerifiableCredential)
+  }
+
+  return getCredentialFromProofOrWrapped(credential)
+}
+
+const getCredentialFromProofOrWrapped = (cred: any): OriginalVerifiableCredential => {
+  if (typeof cred === 'object' && 'proof' in cred && 'jwt' in cred.proof && CredentialMapper.isSdJwtEncoded(cred.proof.jwt)) {
+    return cred.proof.jwt;
+  }
+
+  return CredentialMapper.toWrappedVerifiableCredential(
+    cred as OriginalVerifiableCredential, {hasher: generateDigest},
+  ).original;
 };
 
 export const translateCorrelationIdToName = (correlationId: string): string => {
@@ -96,3 +119,7 @@ export const getCredentialSubjectContact = (vc: VerifiableCredential | ICredenti
   }
   return party;
 };
+
+export const isUniqueDigitalCredential = (credential: InputCredential): credential is UniqueDigitalCredential => {
+  return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
+}

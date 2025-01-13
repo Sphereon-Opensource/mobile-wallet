@@ -8,7 +8,7 @@ import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {generateDigest} from '../../utils';
+import {convertToDcqlRepresentation, generateDigest} from '../../utils';
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
@@ -66,28 +66,6 @@ const matchCredsWithInputDescriptors = (
 
   return udcIDMap;
 };
-
-function convertToDcqlRepresentation(vc: UniqueDigitalCredential): DcqlCredentialRepresentation {
-  let payload = vc.originalVerifiableCredential
-    ? CredentialMapper.decodeVerifiableCredential(vc.originalVerifiableCredential, generateDigest)
-    : undefined;
-  if (!payload) {
-    throw new Error('No payload found');
-  }
-  if ('decodedPayload' in payload && payload.decodedPayload) {
-    payload = payload.decodedPayload;
-  }
-
-  if ('vct' in payload!) {
-    return { vct: payload.vct, claims: payload } satisfies DcqlSdJwtVcRepresentation;
-  } else if ('docType' in payload! && 'namespaces' in payload) {
-    return { docType: payload.docType, namespaces: payload.namespaces, claims: payload };
-  }else {
-    return {
-      claims: payload,
-    } as DcqlW3cVcRepresentation;
-  }
-}
 
 const SelectOverviewShareScreen = (props: Props) => {
   // memoize filtered and other values
