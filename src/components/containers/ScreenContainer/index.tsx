@@ -1,13 +1,13 @@
 import {useHeaderHeight} from '@react-navigation/elements';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import {Ref} from 'react';
+import {ReactNode, Ref} from 'react';
 import {Platform, ScrollView, StatusBar, View, ViewProps, ViewStyle} from 'react-native';
 import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   style?: ViewProps['style'];
-  footer?: React.ReactNode;
+  footer?: ReactNode;
   footerStyle?: ViewProps['style'];
   disableKeyboardAvoidingView?: boolean;
   scrollViewRef?: Ref<ScrollView>;
@@ -42,6 +42,7 @@ const ScreenContainer = ({
         backgroundColor: backgroundColors.primaryDark,
         paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
       }}>
+
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <KeyboardAvoidingView enabled={!disableKeyboardAvoidingView} verticalOffset={verticalOffset} style={{flex: 1}} importantForAccessibility="no">
         <ScrollView

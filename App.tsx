@@ -1,3 +1,5 @@
+import PolyfillCrypto from 'react-native-webview-crypto'
+
 import {NavigationContainer} from '@react-navigation/native';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import * as SplashScreen from 'expo-splash-screen';
@@ -62,6 +64,10 @@ export default function App() {
     // TODO this function should be moved to an init place
     async function prepare(): Promise<void> {
       try {
+        if (typeof global.crypto === 'undefined') {
+          // @ts-ignore
+          global.crypto = global.window.crypto
+        }
         addLinkListeners(linkHandlers, agentContext);
 
         // Enable the intent handler early, so we can get deeplinks on start or before login
@@ -116,6 +122,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      <PolyfillCrypto />
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>

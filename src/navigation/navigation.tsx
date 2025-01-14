@@ -1,15 +1,20 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NativeStackHeaderProps, createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {useEffect} from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
-import SSIHeaderBar from '../components/bars/SSIHeaderBar';
-import SSINavigationBar from '../components/bars/SSINavigationBar';
+import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
+import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
+import ContactsHeader from '../components/bars/ContactsHeader';
+import CredentialDetailHeader from '../components/bars/credential/CredentialDetailHeader';
 import OnboardingDefaultHeader from '../components/bars/onboarding/OnboardingDefaultHeader';
 import OnboardingStepHeader from '../components/bars/onboarding/OnboardingStepHeader';
+import OnboardingHeader from '../components/bars/OnboardingHeader';
+import SSIHeaderBar from '../components/bars/SSIHeaderBar';
+import SSINavigationBar from '../components/bars/SSINavigationBar';
 import {translate} from '../localization/Localization';
 import {OnboardingMachine} from '../machines/onboardingMachine';
 import AusweisModal from '../modals/AusweisModal';
@@ -20,12 +25,17 @@ import {AssistantProvider} from '../providers/chat/AssistantProvider';
 import {ChatProvider} from '../providers/chat/chatProvider';
 import ActivityDetailScreen from '../screens/ActivityDetailsScreen';
 import ActivityFeedScreen from '../screens/ActivityFeedScreen';
+import ActivityRevealedInfoScreen from '../screens/ActivityRevealedInfoScreen';
+import ContactActivityScreen from '../screens/ContactActivityScreen';
+import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
+import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
 import CredentialsRequiredScreen from '../screens/CredentialsRequiredScreen';
 import EmergencyScreen from '../screens/EmergencyScreen';
+import NewContactAddScreen from '../screens/NewContactAddScreen';
 import {
   AcceptTermsAndPrivacyScreen,
   EnableBiometricsScreen,
@@ -43,9 +53,13 @@ import {
   VerifyPinCodeScreen,
   WelcomeScreen,
 } from '../screens/Onboarding';
-import CompleteOnboardingScreen from '../screens/Onboarding/CompleteOnboardingScreen';
-import IncorrectInformationScreen from '../screens/Onboarding/IncorrectInformationScreen';
+import {CompleteOnboardingScreen, IncorrectInformationScreen} from '../screens/Onboarding';
+import EnterESimDetailsScreen from '../screens/Onboarding/EnterESimDetailsScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
+import QRPresentationScreen from '../screens/QRPresentationScreen';
+import AccountScreen from '../screens/Settings/AccountScreen';
+import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedClaimsScreen';
+import SettingsScreen from '../screens/Settings/SettingsScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
@@ -57,12 +71,9 @@ import SSILoadingScreen from '../screens/SSILoadingScreen';
 import SSILockScreen from '../screens/SSILockScreen';
 import SSIQRReaderScreen from '../screens/SSIQRReaderScreen';
 import SSIVerificationCodeScreen from '../screens/SSIVerificationCodeScreen';
-import AccountScreen from '../screens/Settings/AccountScreen';
-import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedClaimsScreen';
-import SettingsScreen from '../screens/Settings/SettingsScreen';
-import Veramo from '../screens/Veramo';
 import {login, walletAuthLockState} from '../services/authenticationService';
 import {
+  ESIMActivationStackParamList,
   FunkeC2ShareStackParamsList,
   GetPIDCredentialsStackParamsList,
   HeaderMenuIconsEnum,
@@ -77,27 +88,17 @@ import {
   ShareStackParamList,
   StackParamList,
   SwitchRoutesEnum,
-  WalletAuthLockState
-} from '../types'
+  WalletAuthLockState,
+} from '../types';
 import {OnboardingMachineInterpreter} from '../types/machines/onboarding';
 import {ICredentialState} from '../types/store/credential.types';
+import {formatDateTime} from '../utils';
+import {ESIMActivationProvider} from './machines/activateESimStateNavigation';
 import {FunkeC2ShareProvider} from './machines/funkeC2ShareStateNavigation';
 import {GetPIDCredentialsProvider} from './machines/getPIDCredentialsStateNavigation';
 import {OID4VCIProvider} from './machines/oid4vciStateNavigation';
 import {OnboardingProvider} from './machines/onboardingStateNavigation';
-import {SiopV2Provider} from './machines/siopV2StateNavigation';
-import ContactsHeader from '../components/bars/ContactsHeader';
-import OnboardingHeader from '../components/bars/OnboardingHeader';
-import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
-import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
-import CredentialDetailHeader from '../components/bars/credential/CredentialDetailHeader';
-import ActivityRevealedInfoScreen from '../screens/ActivityRevealedInfoScreen';
-import ContactActivityScreen from '../screens/ContactActivityScreen';
-import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
-import CredentialActivityScreen from '../screens/CredentialActivityScreen';
-import NewContactAddScreen from '../screens/NewContactAddScreen';
-import QRPresentationScreen from '../screens/QRPresentationScreen';
-import {formatDateTime} from '../utils';
+import { SiopV2Provider } from "./machines/siopV2StateNavigation";
 
 const debug: Debugger = Debug(`${APP_ID}:navigation`);
 
@@ -106,6 +107,7 @@ const OnboardingBaseStack = createNativeStackNavigator<OnboardingStackParamsList
 const GetPIDCredentialsBaseStack = createNativeStackNavigator<GetPIDCredentialsStackParamsList>();
 const FunkeC2ShareBaseStack = createNativeStackNavigator<FunkeC2ShareStackParamsList>();
 const ShareBaseStack = createNativeStackNavigator<ShareStackParamList>();
+const ESIMActivationBaseStack = createNativeStackNavigator<ESIMActivationStackParamList>()
 
 const Tab = createBottomTabNavigator();
 
@@ -189,7 +191,15 @@ const MainStackNavigator = (): JSX.Element => {
               </>
             )}
           />
-          <Stack.Screen name="Veramo" component={Veramo} />
+          <Stack.Screen
+            name={MainRoutesEnum.ACTIVATE_ESIM}
+            children={() => (
+              <>
+                <ESIMActivationStackWithContext/>
+                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+              </>
+            )}
+          />
           <Stack.Screen name={MainRoutesEnum.SHARE} children={() => <ShareStack />} />
           <Stack.Screen
             name={MainRoutesEnum.SETTINGS}
@@ -1027,7 +1037,7 @@ export const GetPIDCredentialsStack = (): JSX.Element => (
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({
-        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
   </GetPIDCredentialsBaseStack.Navigator>
@@ -1053,7 +1063,7 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       name="ImportDataConsent"
       component={ImportDataConsentScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
@@ -1065,28 +1075,28 @@ export const FunkeC2ShareStack = (): JSX.Element => (
       }}
       options={({route}) => ({
         headerTitle: route.params.title,
-        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar headerSubTitle={route.params.subtitle} {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name="ImportDataAuthentication"
       component={ImportDataAuthenticationScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name="ImportDataFinal"
       component={ImportDataFinalScreen}
       options={({route}) => ({
-        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <FunkeC2ShareBaseStack.Screen
       name={ScreenRoutesEnum.ERROR}
       component={SSIErrorScreen}
       options={({route}) => ({
-        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+        header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
       })}
     />
     <Stack.Screen
@@ -1097,6 +1107,7 @@ export const FunkeC2ShareStack = (): JSX.Element => (
         header: (props: NativeStackHeaderProps) => (
           <SSIHeaderBar
             {...props}
+            showProfileIcon={false}
             onBack={route.params.onBack}
             // TODO rethink back button visibility for Android
             //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1128,6 +1139,35 @@ const ShareStack = (): JSX.Element => {
     </ShareBaseStack.Navigator>
   );
 };
+
+export const ESIMActivationStack = (): JSX.Element => (
+  <ESIMActivationBaseStack.Navigator screenOptions={{animation: 'none'}}>
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.LOADING}
+      component={SSILoadingScreen}
+      initialParams={{message: translate('action_getting_information_message')}}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.ENTER_ESIM_DETAILS}
+      component={EnterESimDetailsScreen}
+      options={({route}) => ({
+        headerTitle: translate('onboarding_esim_enter_details_title'),
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />
+      })}
+    />
+    <ESIMActivationBaseStack.Screen
+      name={ScreenRoutesEnum.ERROR}
+      component={SSIErrorScreen}
+      options={({route}) => ({
+        header: props => <SSIHeaderBar {...props} onBack={route.params.onBack} />
+      })}
+    />
+  </ESIMActivationBaseStack.Navigator>
+)
+
 
 const AuthenticationStack = (): JSX.Element => {
   return (
@@ -1200,6 +1240,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // headerSubTitle={translate('browser_open_subtitle')}
             />
           ),
@@ -1214,6 +1255,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('contact_add_new_contact_detected_subtitle')}
@@ -1231,6 +1273,7 @@ export const OID4VCIStack = (): JSX.Element => {
               {...props}
               //onBack={route.params.onBack}
               // headerSubTitle={translate('browser_open_subtitle')}
+              showProfileIcon={false}
             />
           ),
         })}
@@ -1258,7 +1301,7 @@ export const OID4VCIStack = (): JSX.Element => {
         component={ContactIdentitiesScreen}
         options={{
           headerTitle: translate('contact_identities_title'),
-          header: props => <SSIHeaderBar {...props} />,
+          header: props => <SSIHeaderBar {...props} showProfileIcon={false}/>,
         }}
       />
       <Stack.Screen
@@ -1266,7 +1309,7 @@ export const OID4VCIStack = (): JSX.Element => {
         component={ContactActivityScreen}
         options={{
           headerTitle: translate('contact_activities_title'),
-          header: props => <SSIHeaderBar {...props} />,
+          header: props => <SSIHeaderBar {...props} showProfileIcon={false}/>,
         }}
       />
       <Stack.Screen
@@ -1278,6 +1321,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('credential_select_type_subtitle', {issuerName: route.params.issuer})}
@@ -1294,6 +1338,7 @@ export const OID4VCIStack = (): JSX.Element => {
             <SSIHeaderBar
               {...props}
               onBack={route.params.onBack}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={translate('verification_code_subtitle', {credentialName: route.params.credentialName})}
@@ -1309,6 +1354,7 @@ export const OID4VCIStack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
@@ -1348,7 +1394,7 @@ export const OID4VCIStack = (): JSX.Element => {
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={({route}) => ({
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} showProfileIcon={false} onBack={route.params.onBack} />,
         })}
       />
       <Stack.Screen
@@ -1393,6 +1439,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1457,6 +1504,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onBack}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1475,6 +1523,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               onBack={route.params.onDecline}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
@@ -1493,13 +1542,13 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
             />
           ),
         }}
       />
-
       <Stack.Screen
         name={ScreenRoutesEnum.CREDENTIALS_SELECT}
         component={SSICredentialsSelectScreen}
@@ -1508,6 +1557,7 @@ export const SiopV2Stack = (): JSX.Element => {
           header: (props: NativeStackHeaderProps) => (
             <SSIHeaderBar
               {...props}
+              showProfileIcon={false}
               // TODO rethink back button visibility for Android
               //showBackButton={Platform.OS === PlatformsEnum.IOS}
               headerSubTitle={`${translate('credentials_select_subtitle')} ${route.params.purpose && `\n\n${route.params.purpose}`}`}
@@ -1548,16 +1598,16 @@ export const SiopV2Stack = (): JSX.Element => {
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={({route}) => ({
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} />,
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} onBack={route.params.onBack} showProfileIcon={false}/>,
         })}
       />
       <Stack.Screen
         name={ScreenRoutesEnum.LOCK}
         component={SSILockScreen}
-        options={{
+        options={({route}) => ({
           headerTitle: translate('authentication_pin_code_title'),
-          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} />,
-        }}
+          header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} showProfileIcon={route.params.showProfileIcon}/>,
+        })}
       />
     </Stack.Navigator>
   );
@@ -1570,6 +1620,12 @@ export const SiopV2StackWithContext = (props: ISiopV2PProps): JSX.Element => {
     </SiopV2Provider>
   );
 };
+
+export const ESIMActivationStackWithContext = (props: any): ReactElement => (
+  <ESIMActivationProvider customESIMActivationInstance={props?.params?.customESIMActivationInstance}>
+    <ESIMActivationStack/>
+  </ESIMActivationProvider>
+);
 
 /**
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
@@ -1611,13 +1667,19 @@ const AppNavigator = (): JSX.Element => {
         headerShown: false,
       }}>
       {lockState === WalletAuthLockState.ONBOARDING ? (
-        <Stack.Screen
-          name={SwitchRoutesEnum.ONBOARDING}
-          component={OnboardingStackScreenWithContext}
-          initialParams={{
-            customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
-          }}
-        />
+        <>
+          <Stack.Screen
+            name={SwitchRoutesEnum.ONBOARDING}
+            component={OnboardingStackScreenWithContext}
+            initialParams={{
+              customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+            }}
+          />
+          <Stack.Screen
+            name={SwitchRoutesEnum.ACTIVATE_ESIM}
+            component={ESIMActivationStackWithContext}
+          />
+        </>
       ) : lockState === WalletAuthLockState.AUTHENTICATED ? (
         <Stack.Screen name={SwitchRoutesEnum.MAIN} component={MainStackNavigator} />
       ) : (

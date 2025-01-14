@@ -15,7 +15,7 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 10) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...');
+console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 20) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...', process.env.EXPO_OPENAI_API_KEY?.slice(-10) ?? OPENAI_API_KEY?.slice(-10));
 console.log('==============================');
 
 const useAIAssistant = () => {
@@ -25,17 +25,20 @@ const useAIAssistant = () => {
   const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const apiKey = process.env.EXPO_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? OPENAI_API_KEY;
+/*
   if (!apiKey) {
     throw Error('OPENAI_API_KEY is not set. Chatbot not available');
   }
+*/
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient({
       apiKey,
       dangerouslyAllowAPIKeyInBrowser: true,
-      debug: false,
+      debug: true,
     }),
   );
 
+  clientRef.current.defaultSessionConfig.max_response_output_tokens = 500
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const base64ToArrayBuffer = (base64: string) => {
@@ -81,9 +84,12 @@ const useAIAssistant = () => {
       const wavStreamPlayer = wavStreamPlayerRef.current;
 
       updateSession({
+        baseInstructions: basicInstructions,
+        appState: stringifyState(state),
+        route: stringifyState(navigationRef?.current?.getCurrentRoute() || {}),
         screenContext,
         instructions:
-          'user has just connected to the conversation. Introduce yourself. Tell the user what you can help them with. Then give information about the current screen. If you have relevant information from the app state, provide it.',
+          'Introduce yourself to the user who just connected, explain how you can assist them, provide current screen information, and share relevant app state if available.',
       });
 
       client.on('error', (event: any) => {
@@ -188,7 +194,7 @@ const useAIAssistant = () => {
     wavRecorder.begin();
     updateSession({
       instructions:
-        'user has just enabled voice mode, which can be toggled with the microphone button in the bottom right corner of the screen. Instruct user if necessary.',
+        'User enabled voice mode via microphone button (bottom right). Provide instructions if needed.',
     });
     clientRef.current.createResponse();
   }, []);
@@ -214,21 +220,14 @@ const useAIAssistant = () => {
     };
   }, []);
 
-  const updateSession = ({screenContext, instructions}: {screenContext?: string; instructions?: string}) => {
+  const updateSession = ({baseInstructions, appState, route, screenContext, instructions}: {baseInstructions?: string, appState?: string, route?: string, screenContext?: string; instructions?: string}) => {
     const client = clientRef.current;
-
-    const route = stringifyState(navigationRef?.current?.getCurrentRoute() || {});
-
-    const appState = stringifyState(state);
-
-    console.log('appState', appState);
-    console.log('route', route);
 
     client.updateSession({
       input_audio_transcription: {model: 'whisper-1'},
       instructions: `
           # general instructions:
-          ${basicInstructions}
+          ${baseInstructions}
 
           # current app state:
           ${appState}
@@ -240,7 +239,7 @@ const useAIAssistant = () => {
           ${screenContext || 'unknown'}
   
           # specific instructions for current context:
-          ${instructions || ''}
+          ${instructions}
         `,
     });
   };
@@ -251,7 +250,7 @@ const useAIAssistant = () => {
       await connectConversation(false);
     }
 
-    updateSession({screenContext});
+    updateSession({screenContext, instructions: 'User sent a text message.', route: stringifyState(navigationRef?.current?.getCurrentRoute() || {})});
     try {
       const out = clientRef.current.sendUserMessageContent([{type: 'input_text', text: prompt}]);
     } catch (error: any) {

@@ -7,12 +7,13 @@ import {ErrorDetails} from '../../error';
 import {OnboardingStackParamsList} from '../../navigation';
 import {IUser} from '../../user';
 import {MappedCredential} from '../getPIDCredentialMachine';
+import {PIDSecurityModel} from '../../../services/storageService';
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
   SECURE_WALLET = 2,
   IMPORT_PERSONAL_DATA = 3,
-  FINAL = 4,
+  FINAL = 4
 }
 
 export enum OnboardingBiometricsStatus {
@@ -31,10 +32,12 @@ export type OnboardingMachineContext = {
   termsAndPrivacyAccepted: boolean;
   currentStep: OnboardingMachineStep;
   skipImport: boolean;
+  pidSecurityModel: PIDSecurityModel;
   funkeProvider?: VciServiceFunkeCProvider;
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
   popupMenuOpen?: boolean;
+  esimActivationAborted?: boolean
 };
 
 // States
@@ -50,6 +53,7 @@ export enum OnboardingMachineStateType {
   acceptTermsAndPrivacy = 'acceptTermsAndPrivacy',
   readTerms = 'readTerms',
   readPrivacy = 'readPrivacy',
+  activateESim = 'activateESim',
   importPIDDataConsent = 'importPIDDataConsent',
   importPIDDataNFC = 'importPIDDataNFC',
   importPIDDataAuthentication = 'importPIDDataAuthentication',
@@ -76,10 +80,10 @@ export enum OnboardingMachineEvents {
   SET_COUNTRY = 'SET_COUNTRY',
   SET_PIN_CODE = 'SET_PIN_CODE',
   SET_VERIFICATION_PIN_CODE = 'SET_VERIFICATION_PIN_CODE',
+  UPDATE_SECURITY_MODEL = 'UPDATE_SECURITY_MODEL',
+  SKIP_IMPORT = 'SKIP_IMPORT',
   READ_TERMS = 'READ_TERMS',
   READ_PRIVACY = 'READ_PRIVACY',
-  SKIP_IMPORT = 'SKIP_IMPORT',
-  SET_SKIP_IMPORT = 'SET_SKIP_IMPORT',
   SET_BIOMETRICS = 'SET_BIOMETRICS',
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
   DECLINE_INFORMATION = 'DECLINE_INFORMATION',
@@ -97,12 +101,16 @@ export type SetVerificationPinCodeEvent = {type: OnboardingMachineEvents.SET_VER
 export type ReadTermsEvent = {type: OnboardingMachineEvents.READ_TERMS};
 export type ReadPrivacyEvent = {type: OnboardingMachineEvents.READ_PRIVACY};
 export type SkipImportEvent = {type: OnboardingMachineEvents.SKIP_IMPORT};
-export type SetSkipImportEvent = {type: OnboardingMachineEvents.SET_SKIP_IMPORT; data: boolean};
 export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS};
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
 export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 export type SetPopupMenuOpen = {type: OnboardingMachineEvents.SET_POPUP_MENU_OPEN; data: boolean};
+export type SetSecurityModel = {
+  type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL
+  model: PIDSecurityModel
+}
+
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -115,12 +123,12 @@ export type OnboardingMachineEventTypes =
   | ReadTermsEvent
   | ReadPrivacyEvent
   | SkipImportEvent
-  | SetSkipImportEvent
   | SkipBiometricsEvent
   | SetBiometricsEvent
   | DeclineInformation
   | SetFunkeProvider
-  | SetPopupMenuOpen;
+  | SetSecurityModel
+  | SetPopupMenuOpen
 
 // Guards
 export enum OnboardingMachineGuards {
@@ -137,6 +145,9 @@ export enum OnboardingMachineGuards {
   isStepImportPersonalData = 'isStepImportPersonalData',
   isStepComplete = 'isStepComplete',
   isSkipImport = 'isSkipImport',
+  isESimSecurity = 'isESimSecurity',
+  isEidDuringPresentation = 'isEidDuringPresentation',
+  isSecureElement = 'isSecureElement',
   isImportData = 'isImportData',
   hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
 }
@@ -146,6 +157,7 @@ export enum OnboardingMachineServices {
   storePIDCredentials = 'storePIDCredentials',
   setupWallet = 'setupWallet',
   storeCredentialBranding = 'storeCredentialBranding',
+  activateESim = 'activateESim',
 }
 
 // States Config

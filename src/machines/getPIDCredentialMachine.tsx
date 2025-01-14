@@ -26,12 +26,15 @@ import {
 } from '../types/machines/getPIDCredentialMachine';
 import {ErrorDetails} from '../types';
 import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
+import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {computeEntryHash} from '@veramo/utils';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {OnboardingMachineStateType} from '../types/machines/onboarding';
+import {getCredentialIssuerContact, getCredentialSubjectContact} from '../utils';
+import {VerifiableCredential} from '@veramo/core';
+import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import PersonalIdentificationDataBranding from '../@config/branding/PersonalIdentificationDataBranding.json';
 
 const debug: Debugger = Debug(`${APP_ID}:getPIDCredentials`);
 
@@ -202,8 +205,8 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
       actions: {
         logDeclinePID: async (context, event): Promise<void> => {
           let parentCredentialHash: string | undefined = undefined;
-          context.pidCredentials.forEach(mappedCredential => {
-            // FIXME function is not exposed in SSI-SDK, for now made a copy here
+
+          for (const mappedCredential of context.pidCredentials) {
             function determineCredentialDocumentFormat(documentFormat: DocumentFormat): CredentialDocumentFormat {
               switch (documentFormat) {
                 case DocumentFormat.JSONLD:
@@ -220,31 +223,43 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
             }
 
             const credentialHash = mappedCredential.uniformCredential.id ?? computeEntryHash(mappedCredential.rawCredential);
+            const issuer: Party | undefined = getCredentialIssuerContact(mappedCredential.uniformCredential as VerifiableCredential);
+            const credentialSummary = await toCredentialSummary({
+              verifiableCredential: mappedCredential.uniformCredential as VerifiableCredential,
+              hash: credentialHash,
+              credentialRole: mappedCredential.uniformCredential.credentialRole,
+              issuer,
+              branding: [PersonalIdentificationDataBranding],
+              subject: getCredentialSubjectContact(mappedCredential.uniformCredential as VerifiableCredential),
+            })
 
             store.dispatch<any>(
-              storeActivityLogging({
-                level: LogLevel.INFO,
-                system: System.OID4VCI,
-                subSystemType: SubSystem.VC_ISSUER,
-                initiatorType: InitiatorType.SYSTEM,
-                description: 'decline credential',
-                actionType: ActionType.READ,
-                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
-                // @ts-ignore
-                credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
-                credentialHash,
-                parentCredentialHash,
-                originalCredential: JSON.stringify(mappedCredential.rawCredential),
-                partyCorrelationType: PartyCorrelationType.URL,
-                partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
-                partyAlias: 'Bundesdruckerei GmbH',
-              }),
+                storeActivityLogging({
+                  level: LogLevel.INFO,
+                  system: System.OID4VCI,
+                  subSystemType: SubSystem.VC_ISSUER,
+                  initiatorType: InitiatorType.SYSTEM,
+                  description: 'decline credential',
+                  actionType: ActionType.READ,
+                  actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+                  // @ts-ignore
+                  credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
+                  credentialHash,
+                  parentCredentialHash,
+                  originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                  data: {
+                    credential: credentialSummary
+                  },
+                  partyCorrelationType: PartyCorrelationType.URL,
+                  partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+                  partyAlias: 'Bundesdruckerei GmbH',
+                }),
             );
 
             if (!parentCredentialHash) {
               parentCredentialHash = credentialHash;
             }
-          });
+          }
         },
       },
     },

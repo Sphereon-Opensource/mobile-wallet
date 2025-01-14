@@ -9,7 +9,7 @@ import SelectOption from '../../components/fields/SelectOption';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {translate} from '../../localization/Localization';
 import {OnboardingContext} from '../../navigation/machines/onboardingStateNavigation';
-import {PIDSecurityModel, storagePersistPIDSecurityModel} from '../../services/storageService';
+import {PIDSecurityModel, storageGetPIDSecurityModel, storagePersistPIDSecurityModel} from '../../services/storageService';
 import {OnboardingMachineEvents} from '../../types/machines/onboarding';
 
 const {width, height} = Dimensions.get('window');
@@ -103,11 +103,12 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
   const onClose = async (): Promise<void> => {
     storagePersistPIDSecurityModel(securityModel)
       .then((): void => {
-        if (securityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: true});
-        }
-        if (securityModel === PIDSecurityModel.SECURE_ELEMENT) {
-          onboardingInstance.send(OnboardingMachineEvents.SET_SKIP_IMPORT, {data: false});
+        const currentState = onboardingInstance.getSnapshot()
+        if (securityModel !== currentState.context.pidSecurityModel) {
+          onboardingInstance.send({
+            type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL,
+            model: securityModel,
+          });
         }
         announce({message: `Selected security model: ${securityModel}`});
         setTimeout(() => onModalClose(securityModel), isScreenReaderEnabled ? 3000 : 0);
@@ -115,6 +116,21 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
       .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
   };
 
+
+  useEffect(() => {
+    const loadStoredModel = async () => {
+      try {
+        const storedModel = await storageGetPIDSecurityModel();
+        if (storedModel) {
+          setSecurityModel(storedModel);
+        }
+      } catch (error) {
+        console.log(`Failed to load PID security model. Error: ${(error as Error).message}`);
+      }
+    };
+    void loadStoredModel();
+  }, []);
+  
   return (
     <Wrapper onClose={onClose} style={!isScreenReaderEnabled ? style : undefined}>
       <SettingsModalContainer>
@@ -140,13 +156,11 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
             label={translate('onboarding_pid_security_model_remote_hardware')}
             onPress={() => setSecurityModel(PIDSecurityModel.REMOTE_HSM)}
             selected={securityModel === PIDSecurityModel.REMOTE_HSM}
-            disabled
           />
           <SelectOption
             label={translate('onboarding_pid_security_model_mobile_operator')}
             onPress={() => setSecurityModel(PIDSecurityModel.MOBILE_OPERATOR_ESIM)}
             selected={securityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM}
-            disabled
           />
           <SelectOption
             label={translate('onboarding_pid_security_model_eid_presentation')}

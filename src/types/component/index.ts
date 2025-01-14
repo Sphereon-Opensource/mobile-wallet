@@ -2,6 +2,7 @@ import {ImageAttributes} from '@sphereon/ui-components.core';
 import {TCountryCode} from 'countries-list';
 import {ComponentType} from 'react';
 import {ColorValue} from 'react-native';
+import { CredentialSummary } from '@sphereon/ui-components.credential-branding'
 
 export enum ButtonIconsEnum {
   BACK = 'back',
@@ -86,3 +87,8 @@ export type CountryOption = {
   flag?: string;
   selected: boolean;
 };
+
+export type getCardElementArgs = {
+  credential: CredentialSummary
+  index: number
+}

@@ -15,6 +15,7 @@ import {
   KeyManagementSystemEnum,
   SupportedDidMethodEnum,
 } from '../types';
+import {sphereonKeyManager} from '../agent/plugins';
 
 const debug: Debugger = Debug(`${APP_ID}:identity`);
 
@@ -25,9 +26,9 @@ export const getIdentifiers = async (context: IRequiredContext): Promise<IIdenti
 
 export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRequiredContext): Promise<IIdentifier> => {
   const identifier = await context.agent.didManagerCreate({
-    kms: args?.createOpts?.kms ?? KeyManagementSystemEnum.MUSAP_TEE,
+    kms: args?.createOpts?.kms ?? sphereonKeyManager.defaultKms,
     ...(args?.method && {provider: `${DID_PREFIX}:${args?.method}`}),
-    alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().toUTCString()}`,
+    alias: args?.createOpts?.alias ?? `${IdentifierAliasEnum.PRIMARY}-${args?.method}-${args?.createOpts?.options?.type}-${new Date().getTime()}`,
     options: args?.createOpts?.options,
   });
 

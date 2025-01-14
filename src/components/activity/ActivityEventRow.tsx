@@ -1,5 +1,5 @@
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {ForwardedRef, forwardRef} from 'react';
+import {ForwardedRef, forwardRef, ReactNode} from 'react';
 import {View} from 'react-native';
 import styled from 'styled-components/native';
 import {SSITextH2SemiBoldLightStyled, SSITextH4LightStyled} from '../../styles/components';
@@ -9,7 +9,7 @@ import ChevronIcon from '../assets/icons/ChevronIcon';
 export type RowProps = {
   title: string;
   actionDescription: string;
-  actionIcon: React.ReactNode;
+  actionIcon: ReactNode;
   subtitle?: string;
   date: Date;
   index: number;
@@ -26,7 +26,8 @@ const Container = styled.TouchableOpacity`
 const Description = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-vertical: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
   gap: 8px;
 `;
 

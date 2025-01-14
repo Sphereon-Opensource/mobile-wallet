@@ -18,7 +18,7 @@ export const authenticate = async (onAuthenticate: () => Promise<void>): Promise
 };
 
 const enterPinCode = async (onAuthenticate: () => Promise<void>): Promise<void> => {
-  RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onAuthenticate});
+  RootNavigation.navigate(ScreenRoutesEnum.LOCK, {onAuthenticate, showProfileIcon: false});
 };
 
 export const login = async (): Promise<void> => {

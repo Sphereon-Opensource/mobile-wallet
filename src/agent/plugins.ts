@@ -1,12 +1,19 @@
 import {IdentifierResolution, isManagedIdentifierDidResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {JwtService} from '@sphereon/ssi-sdk-ext.jwt-service';
-import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
+import {MemoryPrivateKeyStore, SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 import {MusapKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-musap-rn';
 import {ContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {LinkHandlerEventType, LinkHandlerPlugin} from '@sphereon/ssi-sdk.core';
 import {CredentialStore} from '@sphereon/ssi-sdk.credential-store';
 import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
-import {ContactStore, DigitalCredentialStore, EventLoggerStore, IssuanceBrandingStore, MachineStateStore} from '@sphereon/ssi-sdk.data-store';
+import {
+  ContactStore,
+  DigitalCredentialStore,
+  EventLoggerStore, ICredentialBranding,
+  IssuanceBrandingStore,
+  MachineStateStore,
+  Party
+} from '@sphereon/ssi-sdk.data-store';
 import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
@@ -18,7 +25,7 @@ import {SDJwtPlugin} from '@sphereon/ssi-sdk.sd-jwt';
 import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
-import {IAgentPlugin} from '@veramo/core';
+import {IAgentPlugin, VerifiableCredential} from '@veramo/core';
 import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
@@ -33,8 +40,14 @@ import {dispatchVerifiableCredential} from '../store/actions/credential.actions'
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {DEFAULT_DID_PREFIX_AND_METHOD} from '../types';
 import {ADD_IDENTITY_SUCCESS} from '../types/store/contact.action.types';
-import {generateDigest, generateSalt} from '../utils';
-import {didProviders, didResolver, linkHandlers} from './index';
+import {generateDigest, generateSalt, getCredentialIssuerContact, getCredentialSubjectContact} from '../utils';
+import agent, {didProviders, didResolver, linkHandlers} from './index';
+import {AZURE_KEYVAULT_REST_API_KEY, AZURE_KEYVAULT_REST_APPLICATION_ID, AZURE_KEYVAULT_REST_URL} from 'react-native-dotenv';
+import {AzureKeyVaultKeyManagementSystemRestClient} from '@sphereon/ssi-sdk-ext.kms-azure-rest-client';
+import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdnSync, storageGetPIDSecurityModelSync} from '../services/storageService';
+import {MusapClient} from '@sphereon/musap-react-native';
+import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
+import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -48,6 +61,18 @@ export const oid4vciHolder = new OID4VCIHolder({
     const contact = store
       .getState()
       .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash } ]});
+    const uniform = JSON.parse(credential.uniformDocument) as VerifiableCredential;
+    const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
+    const credentialSummary: CredentialSummary = await toCredentialSummary({
+      verifiableCredential: uniform as VerifiableCredential,
+      hash: credential.hash,
+      credentialRole: credential.credentialRole,
+      branding: credentialsBranding[0]?.localeBranding,
+      issuer,
+      subject: getCredentialSubjectContact(uniform as VerifiableCredential),
+    });
 
     store.dispatch<any>(
       storeActivityLogging({
@@ -63,6 +88,9 @@ export const oid4vciHolder = new OID4VCIHolder({
         credentialType: credential.documentFormat, // TODO fix types
         credentialHash: vcHash,
         originalCredential: JSON.stringify(credential),
+        data: {
+          credential: credentialSummary
+        },
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
         partyCorrelationId: contact?.identities[0].identifier.correlationId,
@@ -81,7 +109,54 @@ export const oid4vciHolder = new OID4VCIHolder({
 
 export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';
 
+const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
+  if (pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM) {
+    const msIsdn = storageGetMsisdnSync(); // FIXME use pidSecurityModel
+    const linkId = MusapClient.getLink();
+    if (msIsdn && linkId) { // Use eSim signing when we have a msisdn
+      console.log('Found msIsdn & linkId, enabling eSim KMS');
+      return new MusapKeyManagementSystem('EXTERNAL', 'eSim', {
+        externalSscdSettings: { // FIXME this is still mandatory for ExternalSscd
+          clientId: 'SCO',
+        },
+        defaultSignAttributes:
+          {
+            msisdn: msIsdn,
+            mimetype: 'application/x-sha256',
+            signaturetype: 'pkcs1'
+          },
+      });
+    }
+  }
+
+  return new MusapKeyManagementSystem('TEE');
+
+  // TODO YubiKey as well?
+};
+
+export let sphereonKeyManager:SphereonKeyManager
+
+const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource) => {
+  let pidSecurityModel = storageGetPIDSecurityModelSync() ?? PIDSecurityModel.SECURE_ELEMENT;
+
+  sphereonKeyManager = new SphereonKeyManager({
+    store: new KeyStore(dbConnection),
+    kms: {
+      ephemeral: new SphereonKeyManagementSystem(new MemoryPrivateKeyStore()),
+      musap: getMusapKeyManagementSystem(pidSecurityModel),
+      azureKeyVault: new AzureKeyVaultKeyManagementSystemRestClient({
+        applicationId: AZURE_KEYVAULT_REST_APPLICATION_ID,
+        apiKey: AZURE_KEYVAULT_REST_API_KEY,
+        vaultUrl: AZURE_KEYVAULT_REST_URL,
+      }),
+    },
+  });
+  sphereonKeyManager.defaultKms = mapPIDSecurityModelToKMS(pidSecurityModel);
+  }
+
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
+  buildSphereonKeyManager(dbConnection);
+
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
@@ -93,12 +168,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new EventLoggerStore(dbConnection),
       eventTypes: [LoggingEventType.ACTIVITY, LoggingEventType.GENERAL, LoggingEventType.AUDIT],
     }),
-    new SphereonKeyManager({
-      store: new KeyStore(dbConnection),
-      kms: {
-        musapTee: new MusapKeyManagementSystem('TEE'), // TODO YubiKey as well
-      },
-    }),
+    sphereonKeyManager,
     new DIDManager({
       store: new DIDStore(dbConnection),
       defaultProvider: DEFAULT_DID_PREFIX_AND_METHOD,
@@ -107,7 +177,6 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
-    new JwtService(),
     new DidAuthSiopOpAuthenticator(),
     new ContactManager({
       store: new ContactStore(dbConnection),
@@ -116,22 +185,22 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       store: new IssuanceBrandingStore(dbConnection),
     }),
     new CredentialPlugin(),
-   /* new CredentialHandlerLDLocal({
-      contextMaps: [LdContexts],
-      suites: [
-        new SphereonEd25519Signature2018(),
-        new SphereonEd25519Signature2020(),
-        // new SphereonBbsBlsSignature2020(),
-        new SphereonJsonWebSignature2020(),
-      ],
-      bindingOverrides: new Map([
-        ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
-        ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
-        ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
-        ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
-      ]),
-      keyStore: privateKeyStore,
-    }),*/
+    /* new CredentialHandlerLDLocal({
+       contextMaps: [LdContexts],
+       suites: [
+         new SphereonEd25519Signature2018(),
+         new SphereonEd25519Signature2020(),
+         // new SphereonBbsBlsSignature2020(),
+         new SphereonJsonWebSignature2020(),
+       ],
+       bindingOverrides: new Map([
+         ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
+         ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
+         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
+         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
+       ]),
+       keyStore: privateKeyStore,
+     }),*/
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
     new MachineStatePersistence({

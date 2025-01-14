@@ -491,6 +491,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): StateMachine<SiopV2
     {
       actions: {
         logDeclineShare: async (context, event) => {
+          const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition
           store.dispatch<any>(
             storeActivityLogging({
               level: LogLevel.INFO,
@@ -501,6 +502,8 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): StateMachine<SiopV2
               actionType: ActionType.READ,
               actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
               correlationId: context.didAuthConfig?.sessionId,
+              sharePurpose: pd?.purpose,
+              diagnosticData: context.authorizationRequestData?.presentationDefinitions,
               // @ts-ignore
               partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
               partyCorrelationId: context.contact?.identities[0].identifier.correlationId,

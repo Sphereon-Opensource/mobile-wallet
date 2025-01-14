@@ -7,7 +7,7 @@ import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/u
 import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
-import {NavigationButton} from '../../components/NavigationButton';
+import NavigationButton from '../../components/buttons/NavigationButton';
 import {Chat, ChatTools} from '../../components/chat/Chat';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
@@ -56,7 +56,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
     }
   };
-  // this is a loose differntiation between adding a credential and viewing a credential
+  // this is a loose differentiation between adding a credential and viewing a credential
   const isAddingNewCredential = hideLinks;
 
   const renderFooter = () => (
@@ -179,8 +179,8 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             <View importantForAccessibility="no-hide-descendants">
               <SSICredentialCardView
                 header={{
-                  credentialTitle: credential.branding?.alias,
-                  credentialSubtitle: credential.branding?.description ?? 'Personal Identification Data', // FIXME Funke
+                  credentialTitle: credential.branding?.alias ?? credential.title,
+                  credentialSubtitle: credential.branding?.description,
                   logo: credentialCardLogo,
                 }}
                 body={{
@@ -251,7 +251,6 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
         )}
       </ContentContainer>
       <Chat
-        buttonPosition={{bottom: 100, right: 16}}
         screenContext={screenContext}
         tools={isAddingNewCredential ? AddNewCredentialtools : []}
       />
