@@ -1,11 +1,11 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store'
-import {DcqlCredentialRepresentation, DcqlSdJwtVcRepresentation, DcqlW3cVcRepresentation} from 'dcql'
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types'
 import {generateDigest} from './CryptoUtils'
 import {isUniqueDigitalCredential} from './CredentialUtils';
+import {DcqlCredential, DcqlSdJwtVcCredential, DcqlW3cVcCredential} from 'dcql'
 
 
-export function convertToDcqlRepresentation(credential: UniqueDigitalCredential | OriginalVerifiableCredential): DcqlCredentialRepresentation {
+export function convertToDcqlCredentials(credential: UniqueDigitalCredential | OriginalVerifiableCredential): DcqlCredential {
   let payload
   if (isUniqueDigitalCredential(credential)) {
     if (!credential.originalVerifiableCredential) {
@@ -25,12 +25,13 @@ export function convertToDcqlRepresentation(credential: UniqueDigitalCredential 
   }
 
   if ('vct' in payload!) {
-    return {vct: payload.vct, claims: payload} satisfies DcqlSdJwtVcRepresentation
-  } else if ('docType' in payload! && 'namespaces' in payload) {
+    return {vct: payload.vct, claims: payload, credential_format: 'vc+sd-jwt'} satisfies DcqlSdJwtVcCredential // TODO dc+sd-jwt support?
+  } else if ('docType' in payload! && 'namespaces' in payload) { // mdoc
     return {docType: payload.docType, namespaces: payload.namespaces, claims: payload}
   } else {
     return {
       claims: payload,
-    } as DcqlW3cVcRepresentation
+      credential_format: 'jwt_vc_json' // TODO jwt_vc_json-ld support
+    } as DcqlW3cVcCredential
   }
 }

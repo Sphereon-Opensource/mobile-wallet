@@ -6,19 +6,23 @@ import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifi
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig, DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {DcqlCredentialRepresentation, DcqlPresentationQueryResult, DcqlPresentationRecord, DcqlQuery} from 'dcql';
+import {DcqlCredential, DcqlQuery, DcqlCredentialPresentation, DcqlPresentation} from 'dcql';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {
+  CredentialMapper,
+  OriginalVerifiableCredential,
+  OriginalVerifiablePresentation,
+  PresentationSubmission,
+} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
-import {convertToDcqlRepresentation, generateDigest, getOriginalVerifiableCredential, isUniqueDigitalCredential} from '../../utils';
+import {convertToDcqlCredentials, generateDigest, getOriginalVerifiableCredential, isUniqueDigitalCredential} from '../../utils';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
 import decodeFrom = com.sphereon.kmp.decodeFrom;
 import Encoding = com.sphereon.kmp.Encoding;
-import {Json} from 'dcql/dist/src/u-dcql';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -390,24 +394,24 @@ export const siopSendAuthorizationResponse = async (
       }
       console.log(`Identifier`, identifier);
 
-      const dcqlRepresentations: DcqlCredentialRepresentation[] = []
+      const dcqlRepresentations: DcqlCredential[] = []
       vcs.forEach((vc: UniqueDigitalCredential | OriginalVerifiableCredential) => {
-        const rep = convertToDcqlRepresentation(vc)
+        const rep = convertToDcqlCredentials(vc)
         if (rep) {
           dcqlRepresentations.push(rep)
         }
       })
 
       const queryResult = DcqlQuery.query(request.dcqlQuery, dcqlRepresentations)
-      const presentation: DcqlPresentationRecord.Output = {}
+      const presentation: Record<string, DcqlCredentialPresentation> = {}
 
       for (const [key, value] of Object.entries(queryResult.credential_matches)) {
         const allMatches = Array.isArray(value) ? value : [value]
         allMatches.forEach(match => {
           if (match.success) {
-            const originalCredential = getOriginalVerifiableCredential(vcs[match.credential_index])
+            const originalCredential = getOriginalVerifiableCredential(vcs[match.input_credential_index])
             if (!originalCredential) {
-              throw new Error(`Index ${match.credential_index} out of range in credentials array`)
+              throw new Error(`Index ${match.input_credential_index} out of range in credentials array`)
             }
             presentation[key] = (originalCredential as any)['compactSdJwtVc'] !== undefined ? (originalCredential as any).compactSdJwtVc : originalCredential
           }
@@ -416,7 +420,7 @@ export const siopSendAuthorizationResponse = async (
 
       const response = session.sendAuthorizationResponse({
         responseSignerOpts: identifier,
-        ...({dcqlQuery: {encodedPresentationRecord: DcqlPresentationRecord.parse(presentation)}}),
+        ...({dcqlQuery: {dcqlPresentation: DcqlPresentation.parse(presentation)}}),
       });
 
       debug(`Response: `, response);

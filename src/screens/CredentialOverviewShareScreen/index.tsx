@@ -8,15 +8,14 @@ import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {convertToDcqlRepresentation, generateDigest} from '../../utils';
+import {convertToDcqlCredentials, generateDigest} from '../../utils';
 import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
 import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
-import {DcqlCredentialRepresentation, DcqlMdocRepresentation, DcqlQuery, DcqlSdJwtVcRepresentation, DcqlW3cVcRepresentation} from 'dcql';
-import {CredentialMapper} from '@sphereon/ssi-types';
+import {DcqlCredential, DcqlQuery} from 'dcql';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -83,9 +82,9 @@ const SelectOverviewShareScreen = (props: Props) => {
     );
   } else if (dcqlQuery !== undefined && dcqlQuery !== null){
     credsPerInputDescriptor = useMemo(() => {
-      const dcqlRepresentations: DcqlCredentialRepresentation[] = [];
+      const dcqlRepresentations: DcqlCredential[] = [];
       credentials.forEach(vc => {
-        const rep = convertToDcqlRepresentation(vc);
+        const rep = convertToDcqlCredentials(vc);
         if (rep) dcqlRepresentations.push(rep);
       });
 
@@ -98,9 +97,9 @@ const SelectOverviewShareScreen = (props: Props) => {
 
         allMatches.forEach(m => {
           if (m.success) {
-            const matchedCredential = credentials[m.credential_index];
+            const matchedCredential = credentials[m.input_credential_index];
             if (!matchedCredential) {
-              throw new Error(`Index ${m.credential_index} out of range in credentials array`);
+              throw new Error(`Index ${m.input_credential_index} out of range in credentials array`);
             }
             matchedUniqueDCs.push(matchedCredential);
           }
