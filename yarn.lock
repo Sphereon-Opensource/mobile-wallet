@@ -3529,6 +3529,16 @@
     node-fetch "2.6.7"
     ws "8.5.0"
 
+"@sphereon/openid-federation-open-api@^0.1.2-unstable.df52b90":
+  version "0.1.2-unstable.df52b90"
+  resolved "https://registry.yarnpkg.com/@sphereon/openid-federation-open-api/-/openid-federation-open-api-0.1.2-unstable.df52b90.tgz#dc6bdfd7633e63a8323e3f976d189ed3c00f01c0"
+  integrity sha512-6fMLFO5Gh94n1TBozFOklAUHNbRRKpPPJxNvOFPdByh/HdSpBV9K1LpXFfscWAA1YLLrMjrjt4BaTWlwXFjKHw==
+  dependencies:
+    abort-controller "3.0.0"
+    format-util "^1.0.5"
+    node-fetch "2.6.7"
+    ws "8.5.0"
+
 "@sphereon/pex-models@^2.3.1", "@sphereon/pex-models@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@sphereon/pex-models/-/pex-models-2.3.2.tgz#88bb330745ef8011e4b13fb0a586593095888c6e"
