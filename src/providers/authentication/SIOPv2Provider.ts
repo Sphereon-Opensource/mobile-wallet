@@ -6,25 +6,14 @@ import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifi
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig, DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {DcqlCredential, DcqlQuery, DcqlCredentialPresentation, DcqlPresentation} from 'dcql';
+import {DcqlCredentialPresentation, DcqlPresentation} from 'dcql';
 import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
-import {
-  CredentialMapper,
-  OriginalVerifiableCredential,
-  OriginalVerifiablePresentation,
-  PresentationSubmission,
-} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import {CredentialMapper, OriginalVerifiableCredential, OriginalVerifiablePresentation, PresentationSubmission} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
-import {
-  convertToDcqlCredentials,
-  createDcqlPresentations,
-  generateDigest,
-  getOriginalVerifiableCredential,
-  isUniqueDigitalCredential,
-} from '../../utils';
+import {createDcqlPresentations, generateDigest, isUniqueDigitalCredential} from '../../utils';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
 import decodeFrom = com.sphereon.kmp.decodeFrom;
