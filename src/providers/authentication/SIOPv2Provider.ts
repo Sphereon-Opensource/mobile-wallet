@@ -18,7 +18,13 @@ import Debug, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
 import {APP_ID} from '../../@config/constants';
 import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
-import {convertToDcqlCredentials, generateDigest, getOriginalVerifiableCredential, isUniqueDigitalCredential} from '../../utils';
+import {
+  convertToDcqlCredentials,
+  createDcqlPresentations,
+  generateDigest,
+  getOriginalVerifiableCredential,
+  isUniqueDigitalCredential,
+} from '../../utils';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
 import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
 import decodeFrom = com.sphereon.kmp.decodeFrom;
@@ -394,29 +400,8 @@ export const siopSendAuthorizationResponse = async (
       }
       console.log(`Identifier`, identifier);
 
-      const dcqlRepresentations: DcqlCredential[] = []
-      vcs.forEach((vc: UniqueDigitalCredential | OriginalVerifiableCredential) => {
-        const rep = convertToDcqlCredentials(vc)
-        if (rep) {
-          dcqlRepresentations.push(rep)
-        }
-      })
+      const presentation: Record<string, DcqlCredentialPresentation> = createDcqlPresentations(request.dcqlQuery, vcs)
 
-      const queryResult = DcqlQuery.query(request.dcqlQuery, dcqlRepresentations)
-      const presentation: Record<string, DcqlCredentialPresentation> = {}
-
-      for (const [key, value] of Object.entries(queryResult.credential_matches)) {
-        const allMatches = Array.isArray(value) ? value : [value]
-        allMatches.forEach(match => {
-          if (match.success) {
-            const originalCredential = getOriginalVerifiableCredential(vcs[match.input_credential_index])
-            if (!originalCredential) {
-              throw new Error(`Index ${match.input_credential_index} out of range in credentials array`)
-            }
-            presentation[key] = (originalCredential as any)['compactSdJwtVc'] !== undefined ? (originalCredential as any).compactSdJwtVc : originalCredential
-          }
-        })
-      }
 
       const response = session.sendAuthorizationResponse({
         responseSignerOpts: identifier,
