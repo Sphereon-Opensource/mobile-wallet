@@ -276,7 +276,7 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Array<TrustedAnchor>> => {
+): Promise<Pick<SiopV2MachineContext, 'trustedAnchors' | 'federation_entity' | 'oauth_authorization_server' | 'openid_wallet_provider' | 'openid_credential_verifier' | 'openid_credential_issuer'>> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -296,6 +296,12 @@ export const getFederationTrust = async (
     trustAnchors: trustAnchors,
     identifier: entityIdentifier,
   });
-
-  return result.trustedAnchors;
+  return {
+    trustedAnchors: result.trustedAnchors,
+    federation_entity: result.jwtPayload.federation_entity,
+    openid_wallet_provider: result.jwtPayload.metadata.openid_wallet_provider,
+    oauth_authorization_server: result.jwtPayload.metadata.oauth_authorization_server,
+    openid_credential_issuer: result.jwtPayload.metadata.openid_credential_issuer,
+    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier
+  };
 };

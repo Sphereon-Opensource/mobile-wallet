@@ -2,15 +2,17 @@ import {ReactNode} from 'react';
 import {BaseActionObject, Interpreter, ResolveTypegenMeta, ServiceMap, State, StateMachine, TypegenDisabled} from 'xstate';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
-import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {
+  ClientMetadataOpts,
+  PresentationDefinitionWithLocation,
+  RPRegistrationMetadataPayload,
+  VerifiedAuthorizationRequest,
+} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
 import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {
-  ExternalIdentifierOIDFEntityIdResult,
-  PublicKeyHex,
-  TrustedAnchor,
-} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -36,6 +38,12 @@ export type SiopV2MachineContext = {
   contactAlias: string;
   selectedCredentials: Array<UniqueDigitalCredential>;
   trustedAnchors?: Array<TrustedAnchor>;
+  //FIXME The openid federation open api, the .d.ts file does not contain the entities: https://sphereon.atlassian.net/browse/OIDF-78
+  federation_entity?: any
+  openid_wallet_provider?: AuthorizationServerMetadata
+  oauth_authorization_server?: AuthorizationServerMetadata
+  openid_credential_issuer?: CredentialIssuerMetadata
+  openid_credential_verifier?: ClientMetadataOpts
   error?: ErrorDetails;
 };
 

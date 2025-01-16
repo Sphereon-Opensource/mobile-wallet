@@ -1,4 +1,8 @@
-import {PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {
+  ClientMetadataOpts,
+  PresentationDefinitionWithLocation,
+  VerifiedAuthorizationRequest,
+} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
@@ -28,14 +32,15 @@ import {
   SiopV2MachineServices,
   SiopV2MachineState,
   SiopV2MachineStates,
-  SiopV2StateMachine,
 } from '../types/machines/siopV2';
 import {EvaluationResults, PEX, Status} from '@sphereon/pex';
 import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
-import { ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
+import {JwsPayload} from '@sphereon/ssi-sdk-ext.jwt-service';
+import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -132,7 +137,10 @@ const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machi
   return trustAnchors.length > 0 && authorizationRequestData?.clientIdScheme === 'entity_id';
 };
 
-const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine => {
+const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): StateMachine<SiopV2MachineContext, any, SiopV2MachineEventTypes, {
+  value: any;
+  context: TContext
+}, BaseActionObject, ServiceMap, ResolveTypegenMeta<TypegenDisabled, SiopV2MachineEventTypes, BaseActionObject, ServiceMap>> => {
   const {url} = opts;
   const initialContext: SiopV2MachineContext = {
     url: new URL(url).toString(),
@@ -253,9 +261,24 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
             src: SiopV2MachineServices.getFederationTrust,
             onDone: {
               target: SiopV2MachineStates.transitionFromSetup,
-              actions: assign({
-                trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data,
-              }),
+              actions: [
+                assign({
+                  trustedAnchors: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<Array<TrustedAnchor>>) => _event.data
+                }),
+                assign({
+                  oauth_authorization_server: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<AuthorizationServerMetadata>) => _event.data,
+                  openid_wallet_provider: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<AuthorizationServerMetadata>) => _event.data,
+                }),
+                assign({
+                  openid_credential_issuer: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<CredentialIssuerMetadata>) => _event.data,
+                }),
+                assign({
+                  openid_credential_verifier: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<ClientMetadataOpts>) => _event.data
+                }),
+                assign({
+                  federation_entity: (_ctx: SiopV2MachineContext, _event: DoneInvokeEvent<any>) => _event.data
+                })
+              ]
             },
             onError: {
               target: SiopV2MachineStates.handleError,
