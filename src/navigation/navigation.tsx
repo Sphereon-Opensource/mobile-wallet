@@ -1391,6 +1391,22 @@ export const OID4VCIStack = (): JSX.Element => {
         })}
       />
       <Stack.Screen
+          name={ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW}
+          component={CredentialOverviewShareScreen}
+          options={({route}) => ({
+              headerTitle: 'Information request',
+              header: (props: NativeStackHeaderProps) => (
+                  <SSIHeaderBar
+                      {...props}
+                      showProfileIcon={false}
+                      onBack={route.params.onDecline}
+                      // TODO rethink back button visibility for Android
+                      //showBackButton={Platform.OS === PlatformsEnum.IOS}
+                  />
+              ),
+          })}
+      />
+      <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}
         options={({route}) => ({
