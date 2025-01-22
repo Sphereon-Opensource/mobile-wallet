@@ -177,7 +177,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
-    new DidAuthSiopOpAuthenticator(),
+    new DidAuthSiopOpAuthenticator({ hasher: generateDigest }),
     new ContactManager({
       store: new ContactStore(dbConnection),
     }),

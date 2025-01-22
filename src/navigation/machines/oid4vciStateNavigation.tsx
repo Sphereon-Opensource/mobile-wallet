@@ -62,7 +62,7 @@ const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
 const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIContextType);
 
-const navigateLoading = async (navigation: any): Promise<void> => {
+const navigateLoading = async (navigation: NativeStackNavigationProp<any>): Promise<void> => {
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.LOADING,
     params: {
@@ -388,7 +388,7 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
   if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
     return Promise.reject(Error('No presentation definitions present2'));
   }
-  // TODO currently only supporting 1 presentation definition
+  // FIXME MWALL-720 currently only supporting 1 presentation definition
   if (authorizationRequestData.presentationDefinitions.length > 1) {
     return Promise.reject(Error('Multiple presentation definitions present'));
   }
@@ -428,6 +428,7 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
       verifier: contact,
       presentationDefinition: presentationDefinitionWithLocation.definition,
       credentials,
+      onBack,
       onDecline,
       onSelectAndSend,
     },
