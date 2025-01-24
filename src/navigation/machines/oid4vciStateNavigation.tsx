@@ -10,7 +10,7 @@ import {
   CorrelationIdentifierType,
   CredentialDocumentFormat,
   CredentialRole,
-  IBasicCredentialLocaleBranding, ICredentialBranding,
+  IBasicCredentialLocaleBranding,
   IdentityOrigin,
   NonPersistedParty,
   Party,
@@ -26,30 +26,43 @@ import {
   OID4VCIMachineState,
   OID4VCIMachineStates,
   OID4VCIProviderProps,
+  FirstPartyMachineNavigationArgs,
+  FirstPartyMachineEvents,
+  FirstPartyMachineInterpreter,
+  FirstPartyMachineState,
+  FirstPartyMachineStateTypes
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
-import {
-  CredentialSummary,
-  toCredentialSummary,
-  toNonPersistedCredentialSummary
-} from '@sphereon/ui-components.credential-branding';
+import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
 import agent from '../../agent';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {
+  ActionType,
+  CredentialMapper,
+  DefaultActionSubType,
+  DocumentFormat,
+  InitiatorType,
+  LogLevel,
+  SubSystem,
+  System
+} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
+import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {authenticate} from '../../services/authenticationService';
+import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
 const OID4VCIContext: Context<OID4VCIContextType> = createContext({} as OID4VCIContextType);
 
-const navigateLoading = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation} = args;
+const navigateLoading = async (navigation: NativeStackNavigationProp<any>): Promise<void> => {
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.LOADING,
     params: {
@@ -363,6 +376,65 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   });
 };
 
+const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigationArgs): Promise<void> => {
+  const {firstPartyMachine, navigation, state, onBack, onNext} = args;
+
+  const {authorizationRequestData, contact} = state.context;
+
+  if (authorizationRequestData === undefined) {
+    return Promise.reject(Error('Missing authorization request data in context'));
+  }
+
+  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
+    return Promise.reject(Error('No presentation definitions present2'));
+  }
+  // FIXME MWALL-720 currently only supporting 1 presentation definition
+  if (authorizationRequestData.presentationDefinitions.length > 1) {
+    return Promise.reject(Error('Multiple presentation definitions present'));
+  }
+  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+
+  const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
+    firstPartyMachine.send({
+      type: FirstPartyMachineEvents.SET_SELECTED_CREDENTIALS,
+      data: selectedCredentials,
+    });
+  };
+
+  const onDecline = async (): Promise<void> => {
+    firstPartyMachine.send(FirstPartyMachineEvents.DECLINE);
+  };
+
+  const onSend = async (): Promise<void> => {
+    const onAuthenticate = async (): Promise<void> => {
+      onNext?.();
+    };
+    await authenticate(onAuthenticate);
+  };
+
+  const onSelectAndSend = async (credentials: UniqueDigitalCredential[]): Promise<void> => {
+    await onSelect(credentials);
+    setTimeout(() => {
+      // FIXME Funke; wait for machine event, but we need to set a state somewhere that onSelectAndSend was used so we know to proceed to onSend()
+      onSend();
+    }, 600);
+  };
+
+  const credentials = await getVerifiableCredentialsFromStorage({parentsOnly: false});
+  // fixme: we should pass the hasher function here from the RP
+  navigation.navigate(MainRoutesEnum.OID4VCI, {
+    screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
+    params: {
+      verifier: contact,
+      presentationDefinition: presentationDefinitionWithLocation.definition,
+      credentials,
+      onBack,
+      onDecline,
+      onSelectAndSend,
+    },
+  });
+}
+
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
 
@@ -456,7 +528,7 @@ export const oid4vciStateNavigationListener = async (
   ) {
     return navigateFinal({oid4vciMachine, state, navigation: nav, onNext, onBack});
   } else {
-    return navigateLoading({oid4vciMachine, state, navigation: nav, onNext, onBack});
+    return navigateLoading(nav);
   }
 };
 
@@ -464,4 +536,38 @@ export const OID4VCIProvider = (props: OID4VCIProviderProps): JSX.Element => {
   const {children, customOID4VCIInstance} = props;
 
   return <OID4VCIContext.Provider value={{oid4vciInstance: customOID4VCIInstance}}>{children}</OID4VCIContext.Provider>;
+};
+
+export const firstPartyStateNavigationListener = async (
+    firstPartyMachine: FirstPartyMachineInterpreter,
+    state: FirstPartyMachineState,
+    navigation?: NativeStackNavigationProp<any>,
+): Promise<void> => {
+  debug('firstPartyStateNavigationListener: ', state.value);
+  if (state._event.type === 'internal') {
+    debug('firstPartyStateNavigationListener: internal event');
+    // Make sure we do not navigate when triggered by an internal event. We need to stay on current screen
+    // Make sure we do not navigate when state has not changed
+    return;
+  }
+
+  const onBack = () => firstPartyMachine.send(FirstPartyMachineEvents.PREVIOUS);
+  const onNext = () => firstPartyMachine.send(FirstPartyMachineEvents.NEXT);
+
+  const nav = navigation ?? RootNavigation;
+  if (nav === undefined || !nav.isReady()) {
+    console.log(`navigation not ready yet`);
+    return;
+  }
+
+  if (state.matches(FirstPartyMachineStateTypes.selectCredentials)) {
+    return navigateSelectCredentialsToPresent({firstPartyMachine, state, navigation: nav, onNext, onBack});
+  } else if (
+      state.matches(FirstPartyMachineStateTypes.sendAuthorizationChallengeRequest) ||
+      state.matches(FirstPartyMachineStateTypes.sendAuthorizationResponse) ||
+      state.matches(FirstPartyMachineStateTypes.createConfig) ||
+      state.matches(FirstPartyMachineStateTypes.getSiopRequest)
+  ) {
+    return navigateLoading(nav);
+  }
 };
