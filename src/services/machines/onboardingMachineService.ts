@@ -7,6 +7,7 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {_ExtendedIKey, computeEntryHash} from '@veramo/utils';
+import {v4 as uuidv4} from 'uuid';
 import agent, {agentContext} from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
@@ -21,10 +22,10 @@ import {ESIMActivationMachine} from '../../machines/activateESimMachine';
 import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import PersonalIdentificationDataBranding from '../../@config/branding/PersonalIdentificationDataBranding.json';
+import SphereonWalletIdentityBranding from '../../@config/branding/SphereonWalletIdentityBranding.json';
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
-import {v4 as uuidv4} from 'uuid';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -132,7 +133,14 @@ export const setupWallet = async (
     storagePersistPin({
       value: pinCode,
     }),
-    createSelfIssuedCredential(context),
+    createSelfIssuedCredential(context)
+        .then((credential) =>
+           agent.ibAddCredentialBranding({
+            vcHash: credential.hash,
+            issuerCorrelationId: credential.issuerCorrelationId,
+            localeBranding: [SphereonWalletIdentityBranding]
+          })
+        ),
     storeUser(context),
     // Make sure we never finish before the timeout, to ensure the UI doesn't navigate too fast for a user between screens
     new Promise(resolve => setTimeout(() => resolve(true), 1000)),
@@ -144,7 +152,7 @@ export const setupWallet = async (
 
 const createSelfIssuedCredential = async (
     context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'credentialData'>
-): Promise<void> => {
+): Promise<DigitalCredential> => {
   const {emailAddress, name, credentialData} = context;
   const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
       {
@@ -183,7 +191,7 @@ const createSelfIssuedCredential = async (
       kid: key?.meta?.verificationMethod?.id,
     },
   });
-  await storeVerifiableCredential({
+  return storeVerifiableCredential({
     credentialRole: CredentialRole.HOLDER, // Here we are both ISSUER & HOLDER but has I think it to be HOLDER due to "oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER)"
     issuerCorrelationId: identifier.did,
     issuerCorrelationType: CredentialCorrelationType.DID,
