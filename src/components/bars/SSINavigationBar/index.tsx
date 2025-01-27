@@ -2,7 +2,6 @@ import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import React, {PureComponent} from 'react';
 import {EmitterSubscription, Keyboard, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
 import {fontColors, gradientsColors} from '@sphereon/ui-components.core';
 import {HIT_SLOP_DISTANCE} from '../../../@config/constants';
 import {

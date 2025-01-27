@@ -269,18 +269,20 @@ const TabStackNavigator = (): JSX.Element => {
           </>
         )}
       />
-      <Tab.Screen
-        name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
-        options={{
-          tabBarAccessibilityLabel: translate('accessibility.tabBar.credential_catalog'),
-        }}
-        children={() => (
-          <>
-            <CredentialCatalogStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-          </>
-        )}
-      />
+      {__DEV__ &&
+          <Tab.Screen
+              name={NavigationBarRoutesEnum.CREDENTIAL_CATALOG}
+              options={{
+                  tabBarAccessibilityLabel: translate('accessibility.tabBar.credential_catalog'),
+              }}
+              children={() => (
+                  <>
+                      <CredentialCatalogStack />
+                      <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+                  </>
+              )}
+          />
+      }
       <Tab.Screen
         name={NavigationBarRoutesEnum.CONTACTS}
         options={{
