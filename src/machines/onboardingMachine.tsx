@@ -25,7 +25,7 @@ import {
 } from '../services/machines/onboardingMachineService';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
-import {ErrorDetails} from '../types';
+import {ErrorDetails, SupportedDidMethodEnum} from '../types';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {
   CreateOnboardingMachineOpts,
@@ -45,10 +45,11 @@ import {
 import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
 import {PIDSecurityModel} from '../services/storageService';
 import {getCredentialSubjectContact} from '../utils';
-import {VerifiableCredential} from '@veramo/core';
+import {CredentialPayload, VerifiableCredential} from '@veramo/core';
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import agent from '../agent';
 import PersonalIdentificationDataBranding from '../@config/branding/PersonalIdentificationDataBranding.json';
+import {v4 as uuidv4} from 'uuid';
 
 const debug: Debugger = Debug(`${APP_ID}:onboarding`);
 
@@ -442,7 +443,26 @@ const states: OnboardingStatesConfig = {
 };
 
 const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
+  const credentialData = {
+    didMethod: opts?.credentialData?.didMethod ?? SupportedDidMethodEnum.DID_JWK,
+    didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
+    proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
+    credential:
+        opts?.credentialData?.credential ??
+        ({
+          '@context': [
+            'https://www.w3.org/2018/credentials/v1',
+            'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
+          ],
+          id: `urn:uuid:${uuidv4()}`,
+          type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
+          issuanceDate: new Date(),
+          credentialSubject: {},
+        } as Partial<CredentialPayload>),
+  };
+
   const initialContext: OnboardingMachineContext = {
+    credentialData,
     name: '',
     emailAddress: '',
     countryCode: 'DE',

@@ -8,6 +8,15 @@ import {OnboardingStackParamsList} from '../../navigation';
 import {IUser} from '../../user';
 import {MappedCredential} from '../getPIDCredentialMachine';
 import {PIDSecurityModel} from '../../../services/storageService';
+import {CredentialPayload, ProofFormat} from '@veramo/core';
+import {SupportedDidMethodEnum} from '../../did';
+
+export type OnboardingCredentialData = {
+  didMethod: SupportedDidMethodEnum;
+  didOptions?: any;
+  credential?: Partial<CredentialPayload>;
+  proofFormat?: ProofFormat;
+};
 
 export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
@@ -23,6 +32,7 @@ export enum OnboardingBiometricsStatus {
 }
 
 export type OnboardingMachineContext = {
+  credentialData: OnboardingCredentialData;
   name: string;
   emailAddress: string;
   countryCode: TCountryCode;
@@ -181,6 +191,7 @@ export type OnboardingContext = {
 };
 
 export type CreateOnboardingMachineOpts = {
+  credentialData?: Partial<OnboardingCredentialData>;
   machineId?: string;
 };
 
