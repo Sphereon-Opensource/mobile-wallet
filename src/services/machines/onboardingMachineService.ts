@@ -192,7 +192,7 @@ const createSelfIssuedCredential = async (
     },
   });
   return storeVerifiableCredential({
-    credentialRole: CredentialRole.HOLDER, // Here we are both ISSUER & HOLDER but has I think it to be HOLDER due to "oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER)"
+    credentialRole: CredentialRole.HOLDER,
     issuerCorrelationId: identifier.did,
     issuerCorrelationType: CredentialCorrelationType.DID,
     vc: verifiableCredential,
