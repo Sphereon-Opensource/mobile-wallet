@@ -92,8 +92,8 @@ android {
         applicationId "com.sphereon.ssi.wallet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 45
-        versionName "0.4.16"
+        versionCode 46
+        versionName "0.4.17"
         missingDimensionStrategy 'react-native-camera', 'general'
         manifestPlaceholders = [
                 appAuthRedirectScheme: "com.sphereon.ssi.wallet"
