@@ -7,6 +7,7 @@ import Debug from 'debug';
 import {SiopV2Machine} from '../../machines/siopV2Machine';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
 import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
+import {federationTrustAnchors} from '../../@config/trustanchors';
 
 const debug = Debug(`sphereon:ssi-sdk:linkhandler:siop`);
 
@@ -25,7 +26,7 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
     if (pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION) {
       const interpreter = FunkeC2ShareMachine.newInstance({
         url,
-        trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
+        trustAnchors: federationTrustAnchors,
       });
       interpreter.start();
 
@@ -41,7 +42,7 @@ export class SIOPv2OID4VPLinkHandler extends LinkHandlerAdapter {
     } else {
       const interpreter = SiopV2Machine.newInstance({
         url,
-        trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
+        trustAnchors: federationTrustAnchors,
       });
       interpreter.start();
 
