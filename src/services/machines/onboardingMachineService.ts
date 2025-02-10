@@ -126,77 +126,20 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 };
 
 export const setupWallet = async (
-    context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'| 'credentialData'>
+  context: Pick<OnboardingMachineContext, 'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'>,
 ): Promise<WalletSetupServiceResult> => {
   const {pinCode} = context;
   const setup = await Promise.all([
     storagePersistPin({
       value: pinCode,
     }),
-    createSelfIssuedCredential(context)
-        .then((credential) =>
-           agent.ibAddCredentialBranding({
-            vcHash: credential.hash,
-            issuerCorrelationId: credential.issuerCorrelationId,
-            localeBranding: [SphereonWalletIdentityBranding]
-          })
-        ),
     storeUser(context),
     // Make sure we never finish before the timeout, to ensure the UI doesn't navigate too fast for a user between screens
     new Promise(resolve => setTimeout(() => resolve(true), 1000)),
   ]);
 
-  await store.dispatch<any>(login(setup[2].storedUser.id));
-  return setup[2];
-};
-
-const createSelfIssuedCredential = async (
-    context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'credentialData'>
-): Promise<DigitalCredential> => {
-  const {emailAddress, name, credentialData} = context;
-  const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
-      {
-        method: credentialData.didMethod,
-        createOpts: {options: credentialData.didOptions},
-      },
-      agentContext,
-  );
-
-  const names = parseFullName(name);
-
-  const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
-  const ctx = {...agent?.context, agent};
-  const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation({identifier, vmRelationship: 'authentication'}, ctx);
-  const verifiableCredential: VerifiableCredential = await createVerifiableCredential({
-    credential: {
-      ...cred,
-      '@context': cred?.['@context'] ?? [
-        'https://www.w3.org/2018/credentials/v1',
-        'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-      ],
-      id: cred?.id ?? `urn:uuid:${uuidv4()}`,
-      type: cred?.type ?? ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
-      issuer: cred?.issuer ?? identifier.did,
-      issuanceDate: cred?.issuanceDate ?? new Date(),
-      credentialSubject: {
-        ...cred?.credentialSubject,
-        id: cred?.credentialSubject?.id ?? identifier.did,
-        emailAddress,
-        firstName: names.firstName,
-        ...(names.lastName && { lastName: names.lastName })
-      },
-    },
-    proofFormat: credentialData.proofFormat ?? 'jwt',
-    header: {
-      kid: key?.meta?.verificationMethod?.id,
-    },
-  });
-  return storeVerifiableCredential({
-    credentialRole: CredentialRole.HOLDER,
-    issuerCorrelationId: identifier.did,
-    issuerCorrelationType: CredentialCorrelationType.DID,
-    vc: verifiableCredential,
-  });
+  await store.dispatch<any>(login(setup[1].storedUser.id));
+  return setup[1];
 };
 
 const storeUser = async (
