@@ -49,8 +49,8 @@
     "@sphereon/did-auth-siop-adapter": "0.16.1-feature.SSISDK.5.credential.offer.uri.366",
     "@sphereon/did-provider-oyd": "0.27.1-next.14",
     "@sphereon/kmp-mdoc-core": "0.2.0-SNAPSHOT.27",
-    "@sphereon/musap-react-native": "0.2.1-next.183",
     "@sphereon/musap-native": "0.2.1-next.183",
+    "@sphereon/musap-react-native": "0.2.1-next.183",
     "@sphereon/oid4vci-client": "0.16.1-feature.SSISDK.5.credential.offer.uri.366",
     "@sphereon/oid4vci-common": "0.16.1-feature.SSISDK.5.credential.offer.uri.366",
     "@sphereon/pex": "5.0.0-unstable.28",
@@ -338,5 +338,6 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22"
 }
