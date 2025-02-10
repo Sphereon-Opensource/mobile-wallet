@@ -20,6 +20,7 @@ import SphereonWalletIdentityBranding from '../../@config/branding/SphereonWalle
 import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {createVerifiableCredential, storeVerifiableCredential} from '../credentialService';
+import {Platform} from 'react-native';
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -148,6 +149,10 @@ const createSelfIssuedCredential = async (
     context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'credentialData'>
 ): Promise<DigitalCredential> => {
   const {emailAddress, name, credentialData} = context;
+
+  if (Platform.OS === 'android') {
+    await fetch('https://sphereon.com/content/themes/sphereon/assets/favicons/site.webmanifest'); // @FIXME SSISDK-7
+  }
 
   const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
       {

@@ -54,7 +54,6 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
-        preinitializeHttps()
         if (AusweisSdkUtils.isAA2Process(this)) return
 
         try {
@@ -70,25 +69,6 @@ class MainApplication : Application(), ReactApplication {
             load()
         }
         ApplicationLifecycleDispatcher.onApplicationCreate(this)
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun preinitializeHttps() {
-        val context = SSLContext.getInstance("TLS")
-        context.init(null, null, null)
-        context.socketFactory
-
-        GlobalScope.launch {
-            try {
-                val url = URL("https://sphereon.com/content/themes/sphereon/assets/favicons/site.webmanifest")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "HEAD"
-                connection.connect()
-                connection.disconnect()
-            } catch (e: Exception) {
-                Log.e("MWALL", "preinitializeHttps failed", e)
-            }
-        }
     }
 
 
