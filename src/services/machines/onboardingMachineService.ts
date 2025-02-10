@@ -1,10 +1,4 @@
-import {
-  CredentialCorrelationType,
-  CredentialRole,
-  DigitalCredential,
-  Party,
-  RegulationType,
-} from '@sphereon/ssi-sdk.data-store';
+import {CredentialCorrelationType, CredentialRole, DigitalCredential, Party, RegulationType} from '@sphereon/ssi-sdk.data-store';
 import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {_ExtendedIKey, computeEntryHash} from '@veramo/utils';
 import {v4 as uuidv4} from 'uuid';
@@ -154,6 +148,7 @@ const createSelfIssuedCredential = async (
     context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'credentialData'>
 ): Promise<DigitalCredential> => {
   const {emailAddress, name, credentialData} = context;
+
   const identifier: IIdentifier = await getOrCreatePrimaryIdentifier(
       {
         method: credentialData.didMethod,

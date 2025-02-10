@@ -16,6 +16,13 @@ import com.sphereon.musap.MusapBridgeAndroid
 import com.sphereon.musap.MusapPackage
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.SSLContext
 
 @OptIn(ExperimentalStdlibApi::class)
 @kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,6 +54,7 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+        preinitializeHttps()
         if (AusweisSdkUtils.isAA2Process(this)) return
 
         try {
@@ -63,6 +71,26 @@ class MainApplication : Application(), ReactApplication {
         }
         ApplicationLifecycleDispatcher.onApplicationCreate(this)
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun preinitializeHttps() {
+        val context = SSLContext.getInstance("TLS")
+        context.init(null, null, null)
+        context.socketFactory
+
+        GlobalScope.launch {
+            try {
+                val url = URL("https://sphereon.com/content/themes/sphereon/assets/favicons/site.webmanifest")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "HEAD"
+                connection.connect()
+                connection.disconnect()
+            } catch (e: Exception) {
+                Log.e("MWALL", "preinitializeHttps failed", e)
+            }
+        }
+    }
+
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
