@@ -7,7 +7,6 @@ import {
 } from '../../navigation/machines/oid4vciStateNavigation';
 import {QrTypesEnum} from '../../types';
 import {SIOPv2OID4VPLinkHandler} from './SIOPLinkHandler';
-import {federationTrustAnchors} from '../../@config/trustanchors';
 
 export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentContext<any>): void => {
   linkHandlers.add([
@@ -17,7 +16,7 @@ export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentCont
       // partialIssuanceOpt: {
       //   kms: KeyManagementSystemEnum.MUSAP,
       // },
-      trustAnchors: federationTrustAnchors,
+      trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
       stateNavigationListener: oid4vciStateNavigationListener,
       firstPartyStateNavigationListener: firstPartyStateNavigationListener,
       context,

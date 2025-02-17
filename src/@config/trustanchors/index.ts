@@ -51,26 +51,3 @@ export const animoFunkeCert =
   'KoZIzj0EAwIDSAAwRQIgPdbgy3gL/8BFFkMCoeDGLYt5BAMKZhqg19krQgmbBDAC\n' +
   'IQCPJ08ouPoTyUsQ0hYGemoC2nrvOj1N//WYvj5TRoC5Dw==\n' +
   '-----END CERTIFICATE-----';
-
-
-export const bootcampFederationTrustAnchors = [
-  'https://bootcamp1.federation.dev.findy.fi',
-  'https://bootcamp2.federation.dev.findy.fi',
-  'https://bootcamp3.federation.dev.findy.fi',
-  'https://bootcamp4.federation.dev.findy.fi',
-  'https://bootcamp5.federation.dev.findy.fi',
-  'https://bootcamp6.federation.dev.findy.fi',
-  'https://bootcamp7.federation.dev.findy.fi',
-  'https://bootcamp8.federation.dev.findy.fi',
-  'https://bootcamp9.federation.dev.findy.fi',
-  'https://bootcamp10.federation.dev.findy.fi',
-  'https://bootcamp11.federation.dev.findy.fi',
-  'https://bootcamp12.federation.dev.findy.fi'
-]
-
-export const federationTrustAnchors = [
-  'https://federation.demo.sphereon.com',
-  'https://federation.dev.findy.fi',
-  ...bootcampFederationTrustAnchors
-]
-
