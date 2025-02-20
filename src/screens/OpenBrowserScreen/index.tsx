@@ -10,7 +10,7 @@ import {
   SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIWelcomeViewContentContainerStyled as ContentContainer,
-  SSINotificationsOverviewScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
+  OpenBrowserScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
   SSIWelcomeViewHeaderTextStyled as HeaderCaption,
   SSIWelcomeViewTitleTextStyled as TitleCaption,
 } from '../../styles/components';

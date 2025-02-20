@@ -4,10 +4,11 @@ import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store';
 import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 
 export interface IStoreVerifiableCredentialArgs {
-  vc: VerifiableCredential;
+  vc: VerifiableCredential | string;
   credentialRole: CredentialRole;
   issuerCorrelationId: string;
   issuerCorrelationType: CredentialCorrelationType;
+  kmsKeyRef?: string;
 }
 
 export interface IGetVerifiableCredentialArgs {

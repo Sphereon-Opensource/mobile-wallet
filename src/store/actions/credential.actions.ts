@@ -174,6 +174,7 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
           credentialRole: CredentialRole.HOLDER,
           issuerCorrelationId: `${vc.issuer}`,
           issuerCorrelationType: CredentialCorrelationType.DID,
+          kmsKeyRef: args.keyRef,
           vc,
         } satisfies IStoreVerifiableCredentialArgs).then((digitalCredential: DigitalCredential) =>
           toCredentialSummary({

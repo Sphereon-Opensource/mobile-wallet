@@ -449,13 +449,8 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
     credential:
         opts?.credentialData?.credential ??
-        ({
-          '@context': [
-            'https://www.w3.org/2018/credentials/v1',
-            'https://sphereon-opensource.github.io/ssi-mobile-wallet/context/sphereon-wallet-identity-v1.jsonld',
-          ],
+        ({vct: "SphereonWalletIdentityCredential",
           id: `urn:uuid:${uuidv4()}`,
-          type: ['VerifiableCredential', 'SphereonWalletIdentityCredential'],
           issuanceDate: new Date(),
           credentialSubject: {},
         } as Partial<CredentialPayload>),

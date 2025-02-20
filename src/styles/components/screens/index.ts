@@ -5,6 +5,7 @@ export * from './CredentialsRequiredScreen';
 export * from './EmergencyScreen';
 export * from './EnterNameScreen';
 export * from './ImportPersonalDataScreen';
+export * from './OpenBrowserScreen';
 export * from './QRPresentationScreen';
 export * from './SSIContactAddScreen';
 export * from './SSICredentialSelectTypeScreen';

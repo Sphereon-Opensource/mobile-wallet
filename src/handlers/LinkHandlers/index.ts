@@ -7,6 +7,7 @@ import {
 } from '../../navigation/machines/oid4vciStateNavigation';
 import {QrTypesEnum} from '../../types';
 import {SIOPv2OID4VPLinkHandler} from './SIOPLinkHandler';
+import {DefaultURISchemes} from '@sphereon/oid4vci-common';
 
 export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentContext<any>): void => {
   linkHandlers.add([
@@ -16,6 +17,9 @@ export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentCont
       // partialIssuanceOpt: {
       //   kms: KeyManagementSystemEnum.MUSAP,
       // },
+      authorizationRequestOpts: {
+        redirectUri: `${DefaultURISchemes.CREDENTIAL_OFFER}://com.sphereon.wallet` // We add the suffix as Keycloak root URL wildcard does not work on openid-credential-offer:// alone
+      },
       trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
       stateNavigationListener: oid4vciStateNavigationListener,
       firstPartyStateNavigationListener: firstPartyStateNavigationListener,
