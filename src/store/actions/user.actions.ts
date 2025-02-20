@@ -69,21 +69,30 @@ export const getUsers = (): ThunkAction<Promise<void>, RootState, unknown, Actio
 export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: USERS_LOADING});
-    const userSate: IUserState = getState().user;
+    const userState: IUserState = getState().user;
+    const user: IUser = userState.users.values().next().value;
+
+    // Check if identifier already exists
+    const isDuplicate = user.identifiers.some(identifier => identifier.did === args.did);
+    if (isDuplicate) {
+      return;
+    }
+
     const userIdentifier = {
       did: args.did,
       createdAt: new Date(),
       lastUpdatedAt: new Date(),
     };
+
     // We are currently only supporting a single user right now
-    const user: IUser = {
-      ...userSate.users.values().next().value,
-      identifiers: [...userSate.users.values().next().value.identifiers, userIdentifier],
+    const updatedUser: IUser = {
+      ...user,
+      identifiers: [...user.identifiers, userIdentifier],
     };
 
-    userServiceUpdateUser(user)
-      .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
-      .catch(() => dispatch({type: UPDATE_USER_FAILED}));
+    userServiceUpdateUser(updatedUser)
+    .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
+    .catch(() => dispatch({type: UPDATE_USER_FAILED}));
   };
 };
 

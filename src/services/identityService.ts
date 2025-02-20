@@ -1,5 +1,4 @@
 import {IIdentifier, IKey} from '@veramo/core';
-import Debug, {Debugger} from 'debug';
 
 import {APP_ID, DID_PREFIX} from '../@config/constants';
 
@@ -12,12 +11,15 @@ import {
   IdentifierAliasEnum,
   IDispatchIdentifierArgs,
   IRequiredContext,
-  KeyManagementSystemEnum,
   SupportedDidMethodEnum,
 } from '../types';
 import {sphereonKeyManager} from '../agent/plugins';
+import {OID4VCIHolderEvent} from '@sphereon/ssi-sdk.oid4vci-holder';
+import {agentEventBus} from '../agent';
+import {Siopv2HolderEvent} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {Loggers} from '@sphereon/ssi-types';
 
-const debug: Debugger = Debug(`${APP_ID}:identity`);
+const logger = Loggers.DEFAULT.get(`${APP_ID}:identity`);
 
 export const getIdentifiers = async (context: IRequiredContext): Promise<IIdentifier[]> => {
   // TODO fully implement
@@ -36,6 +38,24 @@ export const createIdentifier = async (args: ICreateIdentifierArgs, context: IRe
 
   return identifier;
 };
+
+
+export const initializeIdentityCreatedEventListeners = () => {
+  agentEventBus.addListener(OID4VCIHolderEvent.IDENTIFIER_CREATED, args => {
+    logger.debug('Received OID4VCIHolderEvent.IDENTIFIER_CREATED event, dispatching the new identifier', args.identifier)
+    dispatchIdentifier({identifier: args.identifier}).then(value => {
+      logger.debug('identifier linked to the active user')
+    })
+  })
+  agentEventBus.addListener(Siopv2HolderEvent.IDENTIFIER_CREATED, args => {
+    logger.debug('Received Siopv2HolderEvent.IDENTIFIER_CREATED event, dispatching the new identifier', args.result)
+    dispatchIdentifier({identifier: args.result}).then(value => {
+      logger.debug('identifier linked to the active user')
+    })
+  })
+}
+
+
 
 export const dispatchIdentifier = async (args: IDispatchIdentifierArgs): Promise<void> => {
   const {identifier} = args;
@@ -60,7 +80,7 @@ export const getOrCreatePrimaryIdentifier = async (args: ICreateOrGetIdentifierA
       args?.createOpts?.options?.type === undefined || identifier.keys.some((key: IKey) => key.type === args?.createOpts?.options?.type),
   );
 
-  debug(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
+  logger.debug(`Currently available identifiers for ${args?.method} / ${args?.createOpts?.options?.type}: ${identifiers.length}`);
 
   // Currently we only support one identifier
 
@@ -71,6 +91,6 @@ export const getOrCreatePrimaryIdentifier = async (args: ICreateOrGetIdentifierA
   }
   const identifier: IIdentifier = !identifiers || identifiers.length == 0 ? await createIdentifier(args, context) : identifiers[0];
 
-  debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);
+  logger.debug(`identifier: ${JSON.stringify(identifier, null, 2)}`);
   return await context.agent.didManagerGet({did: identifier.did});
 };
