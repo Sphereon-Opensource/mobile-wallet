@@ -168,7 +168,7 @@ const createSelfIssuedCredential = async (
   const cred: Partial<CredentialPayload> | undefined = credentialData.credential;
   const ctx = {...agent?.context, agent};
   const key: _ExtendedIKey | undefined = await getFirstKeyWithRelation({identifier, vmRelationship: 'assertionMethod'}, ctx);
-  const resolution = await agent.identifierManagedGetByDid({identifier: identifier.did, kmsKeyRef: key.kid})
+  const resolution = await agent.identifierManagedGetByDid({identifier: identifier.did, kmsKeyRef: key.kid});
   const verifiableCredential = await agent.createSdJwtVc({
     credentialPayload: {
       ...cred?.credentialSubject,
@@ -182,18 +182,18 @@ const createSelfIssuedCredential = async (
       ...(names.lastName && {lastName: names.lastName}),
       cnf: {
         jwk: resolution.jwk,
-        ...(resolution.kid && {kid: resolution.kid})
-      }
+        ...(resolution.kid && {kid: resolution.kid}),
+      },
     },
-    disclosureFrame: { _sd: ["id", "sub", "emailAddress", "firstName", "lastName"] },
-    resolution
+    disclosureFrame: {_sd: ['id', 'sub', 'emailAddress', 'firstName', 'lastName']},
+    resolution,
   });
   return storeVerifiableCredential({
     credentialRole: CredentialRole.HOLDER,
     issuerCorrelationId: identifier.did,
     issuerCorrelationType: CredentialCorrelationType.DID,
     vc: verifiableCredential.credential,
-    kmsKeyRef: key.kid
+    kmsKeyRef: key.kid,
   });
 };
 

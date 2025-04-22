@@ -103,7 +103,7 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
   const onClose = async (): Promise<void> => {
     storagePersistPIDSecurityModel(securityModel)
       .then((): void => {
-        const currentState = onboardingInstance.getSnapshot()
+        const currentState = onboardingInstance.getSnapshot();
         if (securityModel !== currentState.context.pidSecurityModel) {
           onboardingInstance.send({
             type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL,
@@ -115,7 +115,6 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
       })
       .catch(error => console.log(`Failed to persist PID security model. Error: ${error.message}`));
   };
-
 
   useEffect(() => {
     const loadStoredModel = async () => {
@@ -130,7 +129,7 @@ const OnboardingSettingsModal = ({style, onModalClose}: Props) => {
     };
     void loadStoredModel();
   }, []);
-  
+
   return (
     <Wrapper onClose={onClose} style={!isScreenReaderEnabled ? style : undefined}>
       <SettingsModalContainer>

@@ -10,12 +10,7 @@ import {siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
 import agent from '../../agent';
 import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
-import {
-  generateDigest,
-  getCredentialIssuerContact,
-  getCredentialSubjectContact,
-  translateCorrelationIdToName
-} from '../../utils';
+import {generateDigest, getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {
   ConnectionType,
   CredentialCorrelationType,
@@ -37,7 +32,7 @@ import {
   LogLevel,
   MdocOid4vpIssuerSigned,
   SubSystem,
-  System
+  System,
 } from '@sphereon/ssi-types';
 import {getMatchingPidCredentials} from '../pexService';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
@@ -209,23 +204,23 @@ export const siopSendResponse = async (
     }
   }
 
-  const pd = authorizationRequestData.presentationDefinitions?.[0].definition
+  const pd = authorizationRequestData.presentationDefinitions?.[0].definition;
   const pex: PEX = new PEX({hasher: generateDigest});
   for (const credential of Array.from(sharedCredentials.values())) {
-    let sharedClaims
+    let sharedClaims;
     if (pd) {
       if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
-        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
-        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc)
+        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
+        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
+        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc);
       } else {
         const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
-        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
-        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
+        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject;
+        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject;
       }
     }
 
-    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash: credential.hash  } ]});
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
     const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
     const credentialSummary = await toCredentialSummary({
@@ -238,31 +233,31 @@ export const siopSendResponse = async (
     });
 
     store.dispatch<any>(
-        storeActivityLogging({
-          level: LogLevel.INFO,
-          system: System.OID4VP,
-          subSystemType: SubSystem.OID4VP_OP,
-          initiatorType: InitiatorType.SYSTEM,
-          description: 'Credential shared by user',
-          actionType: ActionType.READ,
-          actionSubType: DefaultActionSubType.VC_SHARE,
-          correlationId: didAuthConfig.sessionId,
-          sharePurpose: pd?.purpose,
-          // @ts-ignore
-          credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-          credentialHash: credential.hash,
-          originalCredential: JSON.stringify(credential.digitalCredential),
-          diagnosticData: authorizationRequestData.presentationDefinitions,
-          data: {
-            credential: credentialSummary,
-            sharedClaims,
-          },
-          // @ts-ignore
-          partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
-          partyCorrelationId: contact?.identities[0].identifier.correlationId,
-          partyAlias: contact?.contact.displayName,
-        }),
-    )
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'Credential shared by user',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        sharePurpose: pd?.purpose,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        data: {
+          credential: credentialSummary,
+          sharedClaims,
+        },
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   }
 
   console.log(
@@ -331,7 +326,6 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
       opts: {hasher: generateDigest},
     });
 
-
     const uniform = JSON.parse(digitalCredential.uniformDocument) as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
     const credentialSummary: CredentialSummary = await toCredentialSummary({
@@ -359,7 +353,7 @@ export const storePIDCredentials = async (context: Pick<FunkeC2ShareMachineConte
         parentCredentialHash,
         originalCredential: JSON.stringify(digitalCredential),
         data: {
-          credential: credentialSummary
+          credential: credentialSummary,
         },
         // @ts-ignore
         partyCorrelationType: PartyCorrelationType.URL,

@@ -10,7 +10,8 @@ import {
   LogLevel,
   OriginalVerifiableCredential,
   SubSystem,
-  System, W3CVerifiableCredential,
+  System,
+  W3CVerifiableCredential,
 } from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
 import agent from '../agent';
@@ -44,7 +45,7 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
   const {vc, kmsKeyRef, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
   const rawDocument = typeof vc === 'string' ? vc : JSON.stringify(vc);
   const uniformDocument = CredentialMapper.toUniformCredential(vc as W3CVerifiableCredential, {hasher: generateDigest});
-  const sub = (Array.isArray(uniformDocument.credentialSubject) ? uniformDocument.credentialSubject?.[0]?.id : uniformDocument.credentialSubject?.id);
+  const sub = Array.isArray(uniformDocument.credentialSubject) ? uniformDocument.credentialSubject?.[0]?.id : uniformDocument.credentialSubject?.id;
 
   const addCredential: AddDigitalCredential = {
     rawDocument: rawDocument,
@@ -52,7 +53,7 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
     issuerCorrelationType: issuerCorrelationType,
     credentialRole: credentialRole,
     kmsKeyRef,
-    identifierMethod: (sub?.startsWith('did:') ?? issuerCorrelationId.startsWith('did:')) ? 'did'  : 'jwk',
+    identifierMethod: sub?.startsWith('did:') ?? issuerCorrelationId.startsWith('did:') ? 'did' : 'jwk',
   };
   return agent.crsAddCredential({credential: addCredential});
 };

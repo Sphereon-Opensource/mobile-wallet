@@ -36,10 +36,10 @@ const ImportPersonalDataScreen = (props?: any) => {
 
   useEffect(() => {
     if (eIDFlowState?.state === 'ERROR' && (eIDFlowState?.reason === 'card_locked' || eIDFlowState?.message === 'Error in onEnterPin callback')) {
-      setShowPin(true)
+      setShowPin(true);
       setPin('');
     }
-  }, [eIDFlowState])
+  }, [eIDFlowState]);
 
   useEffect(() => {
     if (pin.length === 0) {
@@ -94,28 +94,24 @@ const ImportPersonalDataScreen = (props?: any) => {
         )}
         {!!pin && <ImportPersonalDataNFCCaptionText>{translate(`${translationsPath}.nfc_caption`)}</ImportPersonalDataNFCCaptionText>}
       </ImportPersonalDataFooter>
-      { (Platform.OS === 'android' && !showPin) &&
-          <AusweisScanModal
-              state={eIDFlowState}
-              progress={eIDFlowState?.progress}
-              onCancel={() => provider?.cancel()}
-          />
-      }
+      {Platform.OS === 'android' && !showPin && (
+        <AusweisScanModal state={eIDFlowState} progress={eIDFlowState?.progress} onCancel={() => provider?.cancel()} />
+      )}
       <AusweisEPinModal
-          isVisible={showPin}
-          onClose={() => setShowPin(false)}
-          onComplete={onCompletePin}
-          {...(eIDFlowState?.state === 'ERROR' && {
-            errorMessage: (() => {
-              if (eIDFlowState?.reason === 'card_locked') {
-                return translate(`${translationsPath}.card_locked_message`);
-              } else if (eIDFlowState?.message === 'Error in onEnterPin callback') {
-                return translate(`${translationsPath}.incorrect_pin_message`);
-              } else {
-                return eIDFlowState?.message ?? translate(`${translationsPath}.unknown_scan_card_error_message`);
-              }
-            })()
-          })}
+        isVisible={showPin}
+        onClose={() => setShowPin(false)}
+        onComplete={onCompletePin}
+        {...(eIDFlowState?.state === 'ERROR' && {
+          errorMessage: (() => {
+            if (eIDFlowState?.reason === 'card_locked') {
+              return translate(`${translationsPath}.card_locked_message`);
+            } else if (eIDFlowState?.message === 'Error in onEnterPin callback') {
+              return translate(`${translationsPath}.incorrect_pin_message`);
+            } else {
+              return eIDFlowState?.message ?? translate(`${translationsPath}.unknown_scan_card_error_message`);
+            }
+          })(),
+        })}
       />
     </Container>
   );

@@ -6,7 +6,7 @@ import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.d
 import {getResolver as getDidEbsiResolver} from '@sphereon/ssi-sdk-ext.did-resolver-ebsi';
 import {getDidJwkResolver} from '@sphereon/ssi-sdk-ext.did-resolver-jwk';
 import {LinkHandlers, LogLinkHandler} from '@sphereon/ssi-sdk.core';
-import {CoseCryptoService} from '@sphereon/ssi-sdk.mdl-mdoc/dist/functions';
+import {CoseCryptoService} from '@sphereon/ssi-sdk.mdl-mdoc';
 import {createAgent} from '@veramo/core';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';

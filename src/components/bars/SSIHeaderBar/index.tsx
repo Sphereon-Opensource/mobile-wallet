@@ -1,6 +1,6 @@
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import React, {FC, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
-import { ColorValue, GestureResponderEvent, Pressable, View } from 'react-native'
+import {ColorValue, GestureResponderEvent, Pressable, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import OnTouchContext from '../../../contexts/OnTouchContext';

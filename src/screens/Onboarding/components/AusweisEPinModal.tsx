@@ -11,16 +11,11 @@ type Props = {
   isVisible: boolean;
   onClose: () => void;
   onComplete: (pin: string) => void;
-  errorMessage?: string
+  errorMessage?: string;
 };
 
 const AusweisEPinModal: FC<Props> = (props: Props): ReactElement | null => {
-  const {
-    errorMessage,
-    isVisible,
-    onClose,
-    onComplete
-  } = props
+  const {errorMessage, isVisible, onClose, onComplete} = props;
   const ref = useRef<TextInput>(null);
   const keyboard = useAnimatedKeyboard();
   const style = useAnimatedStyle(() => {
@@ -62,25 +57,26 @@ const AusweisEPinModal: FC<Props> = (props: Props): ReactElement | null => {
         <SSITextH1RegularStyled ref={titleRef} style={{color: '#8F8E94'}}>
           Enter Ausweis eID pin
         </SSITextH1RegularStyled>
-        { errorMessage
-            ? <SSITextH3RegularStyled style={{color: '#D74500'}}>{errorMessage}</SSITextH3RegularStyled>
-            : <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>
-        }
-          <PinInput
-            ref={ref}
-            inputProps={{placeholder: '', caretHidden: true, secureTextEntry: true}}
-            inputStyle={{
-              height: 50,
-              width: 40,
-              fontSize: 16,
-            }}
-            onFillEnded={onComplete}
-            length={6}
-            autoFocus={true}
-          />
+        {errorMessage ? (
+          <SSITextH3RegularStyled style={{color: '#D74500'}}>{errorMessage}</SSITextH3RegularStyled>
+        ) : (
+          <SSITextH3RegularStyled>Your pin code is unique to your card</SSITextH3RegularStyled>
+        )}
+        <PinInput
+          ref={ref}
+          inputProps={{placeholder: '', caretHidden: true, secureTextEntry: true}}
+          inputStyle={{
+            height: 50,
+            width: 40,
+            fontSize: 16,
+          }}
+          onFillEnded={onComplete}
+          length={6}
+          autoFocus={true}
+        />
       </ModalCard>
     </Animated.View>
   );
 };
 
-export default AusweisEPinModal
+export default AusweisEPinModal;

@@ -22,7 +22,7 @@ export enum OnboardingMachineStep {
   CREATE_WALLET = 1,
   SECURE_WALLET = 2,
   IMPORT_PERSONAL_DATA = 3,
-  FINAL = 4
+  FINAL = 4,
 }
 
 export enum OnboardingBiometricsStatus {
@@ -47,7 +47,7 @@ export type OnboardingMachineContext = {
   pidCredentials: Array<MappedCredential>;
   error?: ErrorDetails;
   popupMenuOpen?: boolean;
-  esimActivationAborted?: boolean
+  esimActivationAborted?: boolean;
 };
 
 // States
@@ -117,10 +117,9 @@ export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMAT
 export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
 export type SetPopupMenuOpen = {type: OnboardingMachineEvents.SET_POPUP_MENU_OPEN; data: boolean};
 export type SetSecurityModel = {
-  type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL
-  model: PIDSecurityModel
-}
-
+  type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL;
+  model: PIDSecurityModel;
+};
 
 export type OnboardingMachineEventTypes =
   | NextEvent
@@ -138,7 +137,7 @@ export type OnboardingMachineEventTypes =
   | DeclineInformation
   | SetFunkeProvider
   | SetSecurityModel
-  | SetPopupMenuOpen
+  | SetPopupMenuOpen;
 
 // Guards
 export enum OnboardingMachineGuards {

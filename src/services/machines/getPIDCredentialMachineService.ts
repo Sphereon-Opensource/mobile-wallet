@@ -1,18 +1,5 @@
-import {
-    CredentialCorrelationType,
-    CredentialRole,
-    Party,
-    RegulationType
-} from '@sphereon/ssi-sdk.data-store';
-import {
-    ActionType,
-    CredentialMapper,
-    DefaultActionSubType,
-    InitiatorType,
-    LogLevel,
-    SubSystem,
-    System
-} from '@sphereon/ssi-types';
+import {CredentialCorrelationType, CredentialRole, Party, RegulationType} from '@sphereon/ssi-sdk.data-store';
+import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
@@ -78,13 +65,13 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
     const uniform = JSON.parse(digitalCredential.uniformDocument) as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform);
     const credentialSummary = await toCredentialSummary({
-        verifiableCredential: mappedCredential.uniformCredential as VerifiableCredential,
-        hash: digitalCredential.hash,
-        credentialRole: uniform.credentialRole,
-        issuer,
-        branding: [PersonalIdentificationDataBranding],
-        subject: getCredentialSubjectContact(uniform),
-    })
+      verifiableCredential: mappedCredential.uniformCredential as VerifiableCredential,
+      hash: digitalCredential.hash,
+      credentialRole: uniform.credentialRole,
+      issuer,
+      branding: [PersonalIdentificationDataBranding],
+      subject: getCredentialSubjectContact(uniform),
+    });
 
     store.dispatch<any>(
       storeActivityLogging({
@@ -102,7 +89,7 @@ export const storePIDCredentials = async (context: Pick<GetPIDCredentialsMachine
         parentCredentialHash,
         originalCredential: JSON.stringify(digitalCredential),
         data: {
-            credential: credentialSummary
+          credential: credentialSummary,
         },
         partyCorrelationType: PartyCorrelationType.URL,
         partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',

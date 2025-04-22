@@ -1,15 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  SSITextH3LightStyled,
-  SSITextH4LightStyled,
-} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SecondaryButton, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {useMemo, useState} from 'react';
 import {View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
-import RelyingPartyView from "../../components/views/RelyingPartyView";
+import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';

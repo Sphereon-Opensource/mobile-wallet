@@ -1,4 +1,4 @@
-import PolyfillCrypto from 'react-native-webview-crypto'
+import PolyfillCrypto from 'react-native-webview-crypto';
 import 'cross-fetch/polyfill';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -67,7 +67,7 @@ export default function App() {
       try {
         if (typeof global.crypto === 'undefined') {
           // @ts-ignore
-          global.crypto = global.window.crypto
+          global.crypto = global.window.crypto;
         }
         addLinkListeners(linkHandlers, agentContext);
 

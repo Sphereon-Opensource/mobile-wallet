@@ -69,10 +69,7 @@
       },
       "row_description": "Nachweis erhalten",
       "detail_title": "Neuer Nachweis zu deinem Wallet hinzugefügt",
-      "description": [
-        "Du kannst nun endlich deine",
-        "Karte für offizielle Zwecke nutzen."
-      ]
+      "description": ["Du kannst nun endlich deine", "Karte für offizielle Zwecke nutzen."]
     },
     "VC issue decline": {
       "info_list_title": "Abgelehnte Informationen",
@@ -82,10 +79,7 @@
       },
       "row_description": "Empfang von Nachweis abgelehnt",
       "detail_title": "Nachweis nicht zu deinem Wallet hinzugefügt",
-      "description": [
-        "Du hast abgelehnt, die",
-        "Karte für offizielle Zwecke zu nutzen."
-      ]
+      "description": ["Du hast abgelehnt, die", "Karte für offizielle Zwecke zu nutzen."]
     },
     "section_titles": {
       "status": "Status",

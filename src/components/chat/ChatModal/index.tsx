@@ -69,7 +69,7 @@ const ChatModal = ({onSendMessage, onAudioPress}: Props) => {
             renderAvatar={null}
             renderInputToolbar={props => <ChatInputToolbar {...props} />}
             renderBubble={props => <ChatBubble {...props} handleAudioPress={() => onAudioPress(props.currentMessage)} />}
-          //   parsePatterns={parsePatterns}
+            //   parsePatterns={parsePatterns}
           />
         </View>
       </View>

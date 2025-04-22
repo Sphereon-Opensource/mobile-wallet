@@ -39,7 +39,7 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
   const dispatch = useDispatch();
   const getActivityLog = () => dispatch(getActivityLogging());
   const {activityLogging} = useAppSelector(({logging: {activityLogging}}) => ({
-    activityLogging
+    activityLogging,
   }));
   const loading = useAppSelector(state => state.logging.loading);
 
@@ -47,7 +47,13 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
     () =>
       activityLogging
         // filter the double issuance events for parent child credentials
-        .filter(activity => !((activity.actionSubType === DefaultActionSubType.VC_ISSUE || activity.actionSubType === DefaultActionSubType.VC_ISSUE_DECLINE) && activity.parentCredentialHash !== undefined))
+        .filter(
+          activity =>
+            !(
+              (activity.actionSubType === DefaultActionSubType.VC_ISSUE || activity.actionSubType === DefaultActionSubType.VC_ISSUE_DECLINE) &&
+              activity.parentCredentialHash !== undefined
+            ),
+        )
         .map(event => serializeActivity(event))
         .filter((activity): activity is Activity => Boolean(activity))
         .filter(filterForCredential(credential)),

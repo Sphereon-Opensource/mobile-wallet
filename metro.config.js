@@ -46,11 +46,21 @@ const config = {
     extraNodeModules: {
       // shim: path.resolve(__dirname, 'shim.js'),
       // 'react-native-quick-crypto': require.resolve('@sphereon/react-native-quick-crypto'),
+      // resolverMainFields: ['browser', 'main'],
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
+      'node:crypto': require.resolve('react-native-crypto'),
       crypto: require.resolve('react-native-crypto'), // require.resolve('@sphereon/react-native-quick-crypto'),
+      'node:url': require.resolve('url/'),
+      url: require.resolve('url/'),
+      'node:fs': require.resolve('expo-fs'),
       fs: require.resolve('expo-fs'),
+      'node:path': require.resolve('path-browserify'),
       path: require.resolve('path-browserify'),
+      'node:events': require.resolve('events'),
+      'node:stream': require.resolve('stream-browserify'),
+      'node:string_decoder': require.resolve('string_decoder'),
+
     },
   },
 };

@@ -10,13 +10,13 @@ import ClaimFalseIcon from '../../assets/icons/ClaimFalseIcon';
 import {checkAndAddHTTPPrefix, parseValidURL} from '../../../utils';
 import {fontStyle} from '../../../styles/typography';
 import {
-    SSITextFieldContainerStyled as Container,
-    SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
-    SSITextFieldContentContainerStyled as ContentContainer,
-    SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
-    SSITextFieldHeaderContainerStyled as HeaderContainer,
-    SSITextH5LightStyled as HeaderLabel,
-    SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
+  SSITextFieldContainerStyled as Container,
+  SSITextFieldContentBadgeContainerStyled as ContentBadgeContainer,
+  SSITextFieldContentContainerStyled as ContentContainer,
+  SSITextFieldEditBadgeContainerStyled as EditBadgeContainer,
+  SSITextFieldHeaderContainerStyled as HeaderContainer,
+  SSITextH5LightStyled as HeaderLabel,
+  SSITextFieldStatusLabelContainerStyled as StatusLabelContainer,
 } from '../../../styles/components';
 
 export interface IProps {
@@ -25,79 +25,94 @@ export interface IProps {
 }
 
 const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
-    const {item, index} = props;
-    const valueIsArray = Array.isArray(item.value);
-    const markDownRules = {
-        link: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any) => {
-            return (
-                <Text key={node.key} style={styles.link}>
-                    {children}
-                </Text>
-            );
-        },
-        image: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any, allowedImageHandlers: Array<string>, defaultImageHandler: string) => {
-            return (
-                <View key={node.key} style={styles.image}>
-                    {children}
-                </View>
-            );
-        },
-    };
+  const {item, index} = props;
+  const valueIsArray = Array.isArray(item.value);
+  const markDownRules = {
+    link: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any) => {
+      return (
+        <Text key={node.key} style={styles.link}>
+          {children}
+        </Text>
+      );
+    },
+    image: (
+      node: ASTNode,
+      children: Array<ReactNode>,
+      parent: Array<ASTNode>,
+      styles: any,
+      allowedImageHandlers: Array<string>,
+      defaultImageHandler: string,
+    ) => {
+      return (
+        <View key={node.key} style={styles.image}>
+          {children}
+        </View>
+      );
+    },
+  };
 
-    const onPressLink = async (url: string): Promise<void> => {
-        const valueWithPrefix = checkAndAddHTTPPrefix(url);
-        return Linking.canOpenURL(valueWithPrefix)
-            .then((canOpen: boolean): void => {
-                if (canOpen) {
-                    Linking.openURL(valueWithPrefix).catch(() => console.log(`Failed to open: ${url}`));
-                }
-            })
-            .catch(() => console.log(`SSITextField: unable to open weblink ${url}`));
-    };
+  const onPressLink = async (url: string): Promise<void> => {
+    const valueWithPrefix = checkAndAddHTTPPrefix(url);
+    return Linking.canOpenURL(valueWithPrefix)
+      .then((canOpen: boolean): void => {
+        if (canOpen) {
+          Linking.openURL(valueWithPrefix).catch(() => console.log(`Failed to open: ${url}`));
+        }
+      })
+      .catch(() => console.log(`SSITextField: unable to open weblink ${url}`));
+  };
 
-    const getValueElements = (item: any): Array<ReactElement> => {
-        const values = valueIsArray ? item : [item]
-        return values.map((value: any, index: number) => {
-            const validURL = parseValidURL(value)
-            const markdownStyle = {
-                body: {
-                    fontFamily: fontStyle.h7SemiBold.fontFamily,
-                    fontSize: fontStyle.h7SemiBold.fontSize,
-                    fontWeight: fontStyle.h7SemiBold.fontWeight,
-                    color: fontColors.light,
-                },
-                code_inline: {
-                    backgroundColor: backgroundColors.primaryDark
-                },
-                blockquote: {
-                    backgroundColor: backgroundColors.primaryDark
-                },
-                code_block: {
-                    backgroundColor: backgroundColors.primaryDark
-                },
-                // Overriding implicit margin on text
-                // https://github.com/iamacup/react-native-markdown-display/blob/master/src/lib/styles.js#L174
-                paragraph: {
-                    marginTop: 0,
-                    marginBottom: 0,
-                    ...(validURL && {textDecorationLine: 'underline'})
-                },
-            };
-            return <TouchableOpacity
-                key={index}
-                accessibilityRole={validURL ? 'link' : 'text'}
-                disabled={true}
-                {...(validURL && {onPress: () => onPressLink(value), disabled: false})}
-            >
-                {typeof value === 'boolean'
-                    ? value ? <ClaimTrueIcon/> : <ClaimFalseIcon/>
-                    : <Markdown rules={markDownRules} style={markdownStyle}>{
-                        value.toString() // to string as Markdown only supports strings and not numbers
-                    }</Markdown>
-                }
-            </TouchableOpacity>
-        })
-    }
+  const getValueElements = (item: any): Array<ReactElement> => {
+    const values = valueIsArray ? item : [item];
+    return values.map((value: any, index: number) => {
+      const validURL = parseValidURL(value);
+      const markdownStyle = {
+        body: {
+          fontFamily: fontStyle.h7SemiBold.fontFamily,
+          fontSize: fontStyle.h7SemiBold.fontSize,
+          fontWeight: fontStyle.h7SemiBold.fontWeight,
+          color: fontColors.light,
+        },
+        code_inline: {
+          backgroundColor: backgroundColors.primaryDark,
+        },
+        blockquote: {
+          backgroundColor: backgroundColors.primaryDark,
+        },
+        code_block: {
+          backgroundColor: backgroundColors.primaryDark,
+        },
+        // Overriding implicit margin on text
+        // https://github.com/iamacup/react-native-markdown-display/blob/master/src/lib/styles.js#L174
+        paragraph: {
+          marginTop: 0,
+          marginBottom: 0,
+          ...(validURL && {textDecorationLine: 'underline'}),
+        },
+      };
+      return (
+        <TouchableOpacity
+          key={index}
+          accessibilityRole={validURL ? 'link' : 'text'}
+          disabled={true}
+          {...(validURL && {onPress: () => onPressLink(value), disabled: false})}>
+          {typeof value === 'boolean' ? (
+            value ? (
+              <ClaimTrueIcon />
+            ) : (
+              <ClaimFalseIcon />
+            )
+          ) : (
+            <Markdown rules={markDownRules} style={markdownStyle}>
+              {
+                value.toString() // to string as Markdown only supports strings and not numbers
+              }
+            </Markdown>
+          )}
+        </TouchableOpacity>
+      );
+    });
+  };
 
   return (
     <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10}}>
@@ -113,8 +128,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
       <ContentContainer
         disabled={!item.isEditable}
         style={{...(valueIsArray && {flexDirection: 'column', marginLeft: 25})}}
-        {...(item.onPress && {onPress: item.onPress})}
-      >
+        {...(item.onPress && {onPress: item.onPress})}>
         {getValueElements(item.value)}
         <ContentBadgeContainer>
           {item.isEditable && (

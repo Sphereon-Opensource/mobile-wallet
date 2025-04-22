@@ -11,7 +11,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 
-type Props = NativeStackScreenProps<ESIMActivationStackParamList, ScreenRoutesEnum.ENTER_ESIM_DETAILS>
+type Props = NativeStackScreenProps<ESIMActivationStackParamList, ScreenRoutesEnum.ENTER_ESIM_DETAILS>;
 
 const styles = StyleSheet.create({
   fieldsContainer: {
@@ -38,12 +38,7 @@ const SSICheckmarkBadgeLarge = styled(SSICheckmarkBadge).attrs({
 })``;
 
 const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
-  const {
-    onBack,
-    onNext,
-    msisdn: initialMsisdn = '+41',
-    coupledWithCode = '',
-  } = route.params;
+  const {onBack, onNext, msisdn: initialMsisdn = '+41', coupledWithCode = ''} = route.params;
   const [msisdn, setMsisdn] = useState(initialMsisdn);
   const [couplingCode, setCouplingCode] = useState(coupledWithCode);
 
@@ -83,10 +78,7 @@ const EnterESimDetailsScreen = ({route}: Props): JSX.Element => {
 
   return (
     <ScreenContainer footer={footer} footerStyle={{gap: 12}}>
-      <ScreenTitleAndDescription
-        title={''}
-        description={translate('onboarding_esim_enter_details_description')}
-      />
+      <ScreenTitleAndDescription title={''} description={translate('onboarding_esim_enter_details_description')} />
       <Container style={{width: '100%', paddingHorizontal: 0}}>
         <View style={styles.fieldsContainer}>
           <View style={styles.fieldRow}>

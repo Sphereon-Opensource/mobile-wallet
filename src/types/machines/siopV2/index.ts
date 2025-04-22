@@ -39,11 +39,11 @@ export type SiopV2MachineContext = {
   selectedCredentials: Array<UniqueDigitalCredential>;
   trustedAnchors?: Array<TrustedAnchor>;
   //FIXME The openid federation open api, the .d.ts file does not contain the entities: https://sphereon.atlassian.net/browse/OIDF-78
-  federation_entity?: any
-  openid_wallet_provider?: AuthorizationServerMetadata
-  oauth_authorization_server?: AuthorizationServerMetadata
-  openid_credential_issuer?: CredentialIssuerMetadata
-  openid_credential_verifier?: ClientMetadataOpts
+  federation_entity?: any;
+  openid_wallet_provider?: AuthorizationServerMetadata;
+  oauth_authorization_server?: AuthorizationServerMetadata;
+  openid_credential_issuer?: CredentialIssuerMetadata;
+  openid_credential_verifier?: ClientMetadataOpts;
   error?: ErrorDetails;
 };
 

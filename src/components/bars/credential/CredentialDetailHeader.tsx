@@ -1,7 +1,7 @@
 import {NativeStackHeaderProps, NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors} from '@sphereon/ui-components.core';
-import React, { useContext, useMemo } from 'react'
-import { GestureResponderEvent, View } from 'react-native'
+import React, {useContext, useMemo} from 'react';
+import {GestureResponderEvent, View} from 'react-native';
 import SSIIconButton from '../../../components/buttons/SSIIconButton';
 import SSIDropDownList from '../../../components/dropDownLists/SSIDropDownList';
 import {useAccessibility} from '../../../hooks/useAccessibility';
@@ -11,7 +11,7 @@ import {SSIHeaderBarMoreMenuContainerStyled as MoreMenuContainer} from '../../..
 import {ButtonIconsEnum, HeaderMenuIconsEnum, IHeaderMenuButton, ScreenRoutesEnum, StackParamList} from '../../../types';
 import {HeaderSecondaryBar} from '../HeaderSecondaryBar';
 import {AccessibleMenu, Back, Title} from '../components';
-import OnTouchContext from '../../../contexts/OnTouchContext'
+import OnTouchContext from '../../../contexts/OnTouchContext';
 
 export type Props = NativeStackHeaderProps;
 type NavProps = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_DETAILS>;

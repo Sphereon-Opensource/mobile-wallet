@@ -128,7 +128,7 @@ const OnboardingHeader: FC<HeaderBarProps> = ({title, stepConfig, onBack, header
   const onClose = async (): Promise<void> => {
     storagePersistPIDSecurityModel(securityModel)
       .then((): void => {
-        const currentState = onboardingInstance.getSnapshot()
+        const currentState = onboardingInstance.getSnapshot();
         if (securityModel !== currentState.context.pidSecurityModel) {
           onboardingInstance.send({
             type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL,

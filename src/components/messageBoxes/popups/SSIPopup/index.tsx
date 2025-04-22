@@ -66,8 +66,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
     return typeof primaryButton?.disabled === 'function' ? primaryButton.disabled() : primaryButton?.disabled;
   }, [value]); // Add dependencies here
   return (
-    <Container
-      style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
+    <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>

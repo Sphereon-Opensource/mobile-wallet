@@ -1,33 +1,28 @@
-import { SupportedVersion, VerifiedAuthorizationRequest } from "@sphereon/did-auth-siop";
-import { CheckLinkedDomain } from "@sphereon/did-auth-siop-adapter";
-import { com } from "@sphereon/kmp-mdoc-core";
-import { PresentationDefinitionV1, PresentationDefinitionV2 } from "@sphereon/pex-models";
-import { isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult } from "@sphereon/ssi-sdk-ext.identifier-resolution";
-import { encodeJoseBlob } from "@sphereon/ssi-sdk.core";
-import { UniqueDigitalCredential } from "@sphereon/ssi-sdk.credential-store";
-import { ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig } from "@sphereon/ssi-sdk.data-store";
-import { DocumentType } from "@sphereon/ssi-sdk.data-store";
-import {
-  OID4VP,
-  OpSession,
-  VerifiableCredentialsWithDefinition,
-  VerifiablePresentationWithDefinition
-} from "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth";
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
+import {com} from '@sphereon/kmp-mdoc-core';
+import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {DocumentType} from '@sphereon/ssi-sdk.data-store';
+import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialMapper,
   MdocDocument,
   OriginalVerifiableCredential,
   OriginalVerifiablePresentation,
-  PresentationSubmission
-} from "@sphereon/ssi-types"; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
-import Debug, { Debugger } from "debug";
-import { EventEmitter } from "events";
-import { APP_ID } from "../../@config/constants";
-import agent, { agentContext, didMethodsSupported, didResolver } from "../../agent";
-import { generateDigest } from "../../utils";
+  PresentationSubmission,
+} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+import Debug, {Debugger} from 'debug';
+import {EventEmitter} from 'events';
+import {APP_ID} from '../../@config/constants';
+import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
+import {generateDigest} from '../../utils';
 import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
-import DeviceResponseCbor = com.sphereon.mdoc.data.device.DeviceResponseCbor
-import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor
+import DeviceResponseCbor = com.sphereon.mdoc.data.device.DeviceResponseCbor;
+import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
 import decodeFrom = com.sphereon.kmp.decodeFrom;
 import Encoding = com.sphereon.kmp.Encoding;
 
@@ -35,34 +30,34 @@ const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
 export const siopEventEmitter = new EventEmitter();
 
-export const siopGetRequest = async (config: Omit<DidAuthConfig, "identifier">): Promise<VerifiedAuthorizationRequest> => {
+export const siopGetRequest = async (config: Omit<DidAuthConfig, 'identifier'>): Promise<VerifiedAuthorizationRequest> => {
   const session: OpSession = await siopGetSession(config.sessionId).catch(
-    async () => await siopRegisterSession({ requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId })
+    async () => await siopRegisterSession({requestJwtOrUri: config.redirectUrl, sessionId: config.sessionId}),
   );
 
   debug(`session: ${JSON.stringify(session.id, null, 2)}`);
   const verifiedAuthorizationRequest = await session.getAuthorizationRequest();
-  debug("Request: " + JSON.stringify(verifiedAuthorizationRequest, null, 2));
+  debug('Request: ' + JSON.stringify(verifiedAuthorizationRequest, null, 2));
   return verifiedAuthorizationRequest;
 };
 
 export const siopGetSession = async (sessionId: string): Promise<OpSession> => {
-  return agent.siopGetOPSession({ sessionId });
+  return agent.siopGetOPSession({sessionId});
 };
 
-export const siopRegisterSession = async ({ requestJwtOrUri, sessionId }: { requestJwtOrUri: string; sessionId?: string }): Promise<OpSession> => {
+export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {requestJwtOrUri: string; sessionId?: string}): Promise<OpSession> => {
   return agent.siopRegisterOPSession({
     sessionId,
     op: {
       checkLinkedDomains: CheckLinkedDomain.NEVER, // fixme: check whether it works and enable
       resolveOpts: {
-        resolver: didResolver
+        resolver: didResolver,
       },
       supportedDIDMethods: didMethodsSupported,
       eventEmitter: siopEventEmitter,
-      hasher: generateDigest
+      hasher: generateDigest,
     },
-    requestJwtOrUri
+    requestJwtOrUri,
   });
 };
 
@@ -72,8 +67,8 @@ const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWith
     vcWithDef.credentials.some(
       credential =>
         (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
-        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC
-    )
+        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
+    ),
   );
 };
 
@@ -82,10 +77,10 @@ const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | Origina
 };
 
 const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
-  if ("id" in definition) {
+  if ('id' in definition) {
     return definition.id;
   } else {
-    throw new Error("Invalid presentation definition: missing id");
+    throw new Error('Invalid presentation definition: missing id');
   }
 };
 
@@ -93,12 +88,11 @@ const createMDocPresentation = async (
   vcWithDef: VerifiableCredentialsWithDefinition,
   identifier: ManagedIdentifierOptsOrResult,
   session: OpSession,
-  request: VerifiedAuthorizationRequest
-
+  request: VerifiedAuthorizationRequest,
 ): Promise<VerifiablePresentationWithDefinition> => {
   const presentationSubmission: Oid4VPPresentationSubmission = Oid4VPPresentationSubmission.Static.fromPresentationDefinition(
     // @ts-ignore FIXME
-    vcWithDef.definition.definition
+    vcWithDef.definition.definition,
   );
   const defId = presentationSubmission.definition_id;
   const dm = presentationSubmission.descriptor_map;
@@ -106,24 +100,27 @@ const createMDocPresentation = async (
     (credential): credential is UniqueDigitalCredential =>
       isUniqueDigitalCredential(credential) &&
       credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
-      credential.digitalCredential.documentType === DocumentType.VC
+      credential.digitalCredential.documentType === DocumentType.VC,
   );
 
   const originalCredentials: (OriginalVerifiableCredential | undefined)[] = mDocCredentials.map(
-    credential => credential.originalVerifiableCredential
+    credential => credential.originalVerifiableCredential,
   );
 
   const mdocs = originalCredentials.map(cred => IssuerSignedCbor.Static.cborDecode(decodeFrom(cred as string, Encoding.BASE64URL)).toDocument());
   const clientId = (await request.authorizationRequest.getMergedProperty<string>('client_id')) ?? request.issuer;
   if (!clientId) {
-    return Promise.reject(Error("Could not get client_id from authorization request"));
+    return Promise.reject(Error('Could not get client_id from authorization request'));
   }
-  const presentation = await agent.mdocOid4vpHolderPresent({ mdocs: mdocs, presentationDefinition: vcWithDef.definition.definition as PresentationDefinitionV2, clientId, responseUri: request.responseURI!!,  authorizationRequestNonce: (await request.authorizationRequest.getMergedProperty("nonce"))!!});
+  const presentation = await agent.mdocOid4vpHolderPresent({
+    mdocs: mdocs,
+    presentationDefinition: vcWithDef.definition.definition as PresentationDefinitionV2,
+    clientId,
+    responseUri: request.responseURI!!,
+    authorizationRequestNonce: (await request.authorizationRequest.getMergedProperty('nonce'))!!,
+  });
 
-
-  const presentations = [
-     presentation.vp_token as OriginalVerifiablePresentation,
-  ];
+  const presentations = [presentation.vp_token as OriginalVerifiablePresentation];
 
   return {
     definition: vcWithDef.definition,
@@ -138,10 +135,10 @@ const createMDocPresentation = async (
         return {
           id: descriptor.id,
           path: descriptor.path,
-          format: descriptor.format
+          format: descriptor.format,
         };
-      })
-    }
+      }),
+    },
   };
 };
 // FIX Funke END of temp code
@@ -151,12 +148,12 @@ export const siopSendAuthorizationResponse = async (
   args: {
     sessionId: string;
     verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[];
-  }
+  },
 ) => {
   if (connectionType !== ConnectionType.SIOPv2_OpenID4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
-  const session: OpSession = await agent.siopGetOPSession({ sessionId: args.sessionId });
+  const session: OpSession = await agent.siopGetOPSession({sessionId: args.sessionId});
   /*
     let identifiers: Array<IIdentifier> = await session.getSupportedIdentifiers();
     if (!identifiers || identifiers.length === 0) {
@@ -164,7 +161,7 @@ export const siopSendAuthorizationResponse = async (
     }
   */
   const request = await session.getAuthorizationRequest();
-  const aud = await request.authorizationRequest.getMergedProperty<string>("aud");
+  const aud = await request.authorizationRequest.getMergedProperty<string>('aud');
   console.log(`AUD: ${aud}`);
   console.log(JSON.stringify(request.authorizationRequest));
   /* const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
@@ -199,17 +196,17 @@ export const siopSendAuthorizationResponse = async (
   let managedIdentifier: ManagedIdentifierResult | undefined;
   let presentationSubmission: PresentationSubmission | undefined;
   if (await session.hasPresentationDefinitions()) {
-    const oid4vp: OID4VP = await session.getOID4VP({ hasher: generateDigest });
+    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
     const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
       ? args.verifiableCredentialsWithDefinition
       : await oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER);
     const domain =
-      ((await request.authorizationRequest.getMergedProperty("client_id")) as string) ??
+      ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
       request.issuer ??
       (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
-        ? "https://self-issued.me/v2/openid-vc"
-        : "https://self-issued.me/v2");
+        ? 'https://self-issued.me/v2/openid-vc'
+        : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
     console.log(`#########$$$$$$$$$$$$$$$#############`);
 
@@ -238,11 +235,11 @@ export const siopSendAuthorizationResponse = async (
     // FIXME Funke EBSI needs to be fixed
 
     if (!firstUniqueDC) {
-      return Promise.reject(Error("SiopMachine could not determine a credential"));
+      return Promise.reject(Error('SiopMachine could not determine a credential'));
     }
 
-    if (typeof firstUniqueDC !== "object" || !("digitalCredential" in firstUniqueDC)) {
-      return Promise.reject(Error("SiopMachine only supports UniqueDigitalCredentials for now"));
+    if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
+      return Promise.reject(Error('SiopMachine only supports UniqueDigitalCredentials for now'));
     }
 
     let identifier: ManagedIdentifierOptsOrResult;
@@ -252,11 +249,11 @@ export const siopSendAuthorizationResponse = async (
       ? firstVC.decodedPayload.cnf?.jwk
         ? //TODO SDK-19: convert the JWK to hex and search for the appropriate key and associated DID
           //doesn't apply to did:jwk only, as you can represent any DID key as a JWK. So whenever you encounter a JWK it doesn't mean it had to come from a did:jwk in the system. It just can always be represented as a did:jwk
-        `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
+          `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0`
         : firstVC.decodedPayload.sub
       : Array.isArray(firstVC.credentialSubject)
-        ? firstVC.credentialSubject[0].id
-        : firstVC.credentialSubject.id;
+      ? firstVC.credentialSubject[0].id
+      : firstVC.credentialSubject.id;
     if (!digitalCredential.kmsKeyRef) {
       // In case the store does not have the kmsKeyRef lets search for the holder
 
@@ -264,21 +261,21 @@ export const siopSendAuthorizationResponse = async (
         return Promise.reject(`No holder found and no kmsKeyRef in DB. Cannot determine identifier to use`);
       }
       try {
-        identifier = await session.context.agent.identifierManagedGet({ identifier: holder });
+        identifier = await session.context.agent.identifierManagedGet({identifier: holder});
       } catch (e) {
         debug(`Holder DID not found: ${holder}`);
         throw e;
       }
     } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
       identifier = await session.context.agent.identifierManagedGetByOID4VCIssuer({
-        identifier: firstUniqueDC.digitalCredential.kmsKeyRef
+        identifier: firstUniqueDC.digitalCredential.kmsKeyRef,
       });
     } else {
       switch (digitalCredential.subjectCorrelationType) {
-        case "DID":
+        case 'DID':
           identifier = await session.context.agent.identifierManagedGetByDid({
             identifier: digitalCredential.subjectCorrelationId ?? holder,
-            kmsKeyRef: digitalCredential.kmsKeyRef
+            kmsKeyRef: digitalCredential.kmsKeyRef,
           });
           break;
         // TODO other implementations?
@@ -286,13 +283,13 @@ export const siopSendAuthorizationResponse = async (
           if (digitalCredential.subjectCorrelationId?.startsWith('did:') || holder?.startsWith('did:')) {
             identifier = await session.context.agent.identifierManagedGetByDid({
               identifier: digitalCredential.subjectCorrelationId ?? holder,
-              kmsKeyRef: digitalCredential.kmsKeyRef
+              kmsKeyRef: digitalCredential.kmsKeyRef,
             });
           } else {
             // Since we are using the kmsKeyRef we will find the KID regardless of the identifier. We set it for later access though
             identifier = await session.context.agent.identifierManagedGetByKid({
               identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
-              kmsKeyRef: digitalCredential.kmsKeyRef
+              kmsKeyRef: digitalCredential.kmsKeyRef,
             });
           }
       }
@@ -301,9 +298,11 @@ export const siopSendAuthorizationResponse = async (
 
     if (hasMDocCredentials(credentialsAndDefinitions)) {
       // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
-      presentationsAndDefs = await Promise.all(credentialsAndDefinitions.map((vcWithDef: VerifiableCredentialsWithDefinition) =>
-        createMDocPresentation(vcWithDef, identifier, session, request)
-      ));
+      presentationsAndDefs = await Promise.all(
+        credentialsAndDefinitions.map((vcWithDef: VerifiableCredentialsWithDefinition) =>
+          createMDocPresentation(vcWithDef, identifier, session, request),
+        ),
+      );
     } else {
       const authRequest = await session.getAuthorizationRequest();
       const vpFormats = authRequest.registrationMetadataPayload?.vp_formats;
@@ -311,14 +310,14 @@ export const siopSendAuthorizationResponse = async (
         idOpts: identifier,
         proofOpts: {
           nonce: session.nonce,
-          domain
+          domain,
         },
-        restrictToFormats: vpFormats
+        restrictToFormats: vpFormats,
       });
       console.log(presentationsAndDefs);
     }
     if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
-      throw Error("No verifiable presentations could be created");
+      throw Error('No verifiable presentations could be created');
     } else if (presentationsAndDefs.length > 1) {
       throw Error(`Only one verifiable presentation supported for now. Got ${presentationsAndDefs.length}`);
     }
@@ -333,9 +332,9 @@ export const siopSendAuthorizationResponse = async (
     debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentations, null, 2));
     debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
     const response = await session.sendAuthorizationResponse({
-      ...(presentationsAndDefs && { verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations) }),
-      ...(presentationSubmission && { presentationSubmission }),
-      responseSignerOpts: identifier
+      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations)}),
+      ...(presentationSubmission && {presentationSubmission}),
+      responseSignerOpts: identifier,
     });
 
     debug(`Response: `, response);

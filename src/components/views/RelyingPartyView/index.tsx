@@ -11,7 +11,7 @@ import ArrowIcon from '../../assets/icons/ArrowIcon';
 export type Props = {
   party: Party;
   style?: ViewStyle;
-  onPress?: () => Promise<void>
+  onPress?: () => Promise<void>;
 };
 
 const RelyingPartyView: FC<Props> = (props: Props): ReactElement => {
@@ -20,7 +20,7 @@ const RelyingPartyView: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container isTrusted={true} style={{...style}}>
       <ContentContainer>
-        <TouchableOpacity  onPress={onPress} style={{height: 42, alignItems: 'center', flexDirection: 'row'}}>
+        <TouchableOpacity onPress={onPress} style={{height: 42, alignItems: 'center', flexDirection: 'row'}}>
           <View style={{flexDirection: 'row', gap: 12, alignItems: 'center', flex: 1}}>
             <Logo logo={party.branding?.logo} size={22} />
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 4, flex: 1}}>

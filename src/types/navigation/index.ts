@@ -32,15 +32,15 @@ export type StackParamList = {
   AusweisModal: IAusweisModalProps;
   ActivityDetails: IActivityDetailsProps;
   ActivityReveledInfo: IActivityDetailsProps;
-  ACTIVATE_ESIM: Record<string, never>
+  ACTIVATE_ESIM: Record<string, never>;
   EnterESimDetails: {
-    onBack: () => Promise<void>
-    onNext: () => Promise<void>
-    onSetMsisdn: (msisdn: string) => Promise<void>
-    onSetCouplingCode: (couplingCode: string) => Promise<void>
-    msisdn?: string
-    coupledWithCode?: string
-  }
+    onBack: () => Promise<void>;
+    onNext: () => Promise<void>;
+    onSetMsisdn: (msisdn: string) => Promise<void>;
+    onSetCouplingCode: (couplingCode: string) => Promise<void>;
+    msisdn?: string;
+    coupledWithCode?: string;
+  };
   Error: IPopupModalProps & Partial<IHasOnBackProps>;
   CredentialSelectType: ICredentialSelectTypeProps & Partial<IHasOnBackProps>;
   ContactsOverview: Record<string, never>;
@@ -73,12 +73,12 @@ export type StackParamList = {
 export type Document = 'terms' | 'privacy';
 
 export type IAgeDerivedClaimsProps = {
-  claims: Record<number, boolean>
+  claims: Record<number, boolean>;
 };
 
 export type IActivityDetailsProps = {
   activity?: Activity;
-  claimsCount?: number
+  claimsCount?: number;
 };
 
 export type ICredentialActivityProps = {
@@ -96,7 +96,7 @@ export type OnboardingStackParamsList = {
   ShowProgress: Record<string, never>;
   VerifyPinCode: Record<string, never>;
   Welcome: Record<string, never>;
-  ACTIVATE_ESIM:  Record<string, never>;
+  ACTIVATE_ESIM: Record<string, never>;
   ImportPersonalData: IOnboardingHasTitleAndSubtitle;
   ImportDataConsent: Record<string, never>;
   PinCodeSet: Record<string, never>;
@@ -139,12 +139,12 @@ export type ShareStackParamList = {
 export type ESIMActivationStackParamList = {
   Loading: ILoadingProps;
   EnterESimDetails: {
-    onBack: () => Promise<void>
-    onNext: (msisdn: string, couplingCode: string) => Promise<void>
-    msisdn?: string
-    coupledWithCode?: string
-  }
-  Error: IPopupModalProps & Partial<IHasOnBackProps>
+    onBack: () => Promise<void>;
+    onNext: (msisdn: string, couplingCode: string) => Promise<void>;
+    msisdn?: string;
+    coupledWithCode?: string;
+  };
+  Error: IPopupModalProps & Partial<IHasOnBackProps>;
 };
 
 // export interface IImportDataConsentProps {
@@ -348,7 +348,7 @@ export enum PinCodeMode {
   CONFIRM_PIN = 'confirm_pin',
 }
 export interface ILockProps {
-  showProfileIcon?: boolean
+  showProfileIcon?: boolean;
   onAuthenticate: () => Promise<void>;
 }
 
@@ -409,7 +409,7 @@ export enum ScreenRoutesEnum {
   EMERGENCY = 'Emergency',
   CREDENTIAL_CATALOG = 'CredentialCatalog',
   NEW_CONTACT_ADD = 'NewContactAdd',
-  ENTER_ESIM_DETAILS = "EnterESimDetails"
+  ENTER_ESIM_DETAILS = 'EnterESimDetails',
 }
 
 export interface ISiopV2PProps {

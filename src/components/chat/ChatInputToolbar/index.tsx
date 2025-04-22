@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
-import { useRealtimeRecording } from '../../../hooks/useRealtimeRecording';
+import {useRealtimeRecording} from '../../../hooks/useRealtimeRecording';
 
 const ChatInputToolbar = (props: any) => {
   const {sendAudio} = useAssistant();
@@ -13,17 +13,14 @@ const ChatInputToolbar = (props: any) => {
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const {
-    recording,
-    startRecording,
-    stopRecording
-  } = useRealtimeRecording({
+  const {recording, startRecording, stopRecording} = useRealtimeRecording({
     onData: data => {
-      try {sendAudio(data)}
-      catch (err) {
+      try {
+        sendAudio(data);
+      } catch (err) {
         console.error('Failed to send audio', err);
       }
-    }
+    },
   });
 
   useEffect(() => {
@@ -42,7 +39,7 @@ const ChatInputToolbar = (props: any) => {
 
   const handleVoicePress = () => {
     if (recording) {
-      stopRecording()
+      stopRecording();
     } else {
       startRecording();
     }
@@ -79,11 +76,7 @@ const ChatInputToolbar = (props: any) => {
           onPress={() => {
             handleVoicePress();
           }}>
-          <Ionicons
-            name={recording ? 'stop-circle-outline' : 'mic-outline'}
-            size={28}
-            color={recording ? '#D74500' : fontColors.dark}
-          />
+          <Ionicons name={recording ? 'stop-circle-outline' : 'mic-outline'} size={28} color={recording ? '#D74500' : fontColors.dark} />
         </TouchableOpacity>
       )}
       {keyboardVisible && (
@@ -97,9 +90,8 @@ const ChatInputToolbar = (props: any) => {
           disabled={!inputValue.trim()}>
           <Ionicons name="arrow-up-outline" size={24} color={fontColors.dark} />
         </TouchableOpacity>
-      )
-      }
-    </View >
+      )}
+    </View>
   );
 };
 

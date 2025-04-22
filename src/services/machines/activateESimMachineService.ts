@@ -11,10 +11,7 @@ export const checkMustEnableLink = async (): Promise<boolean> => {
 };
 
 export const createMusapLink = async (): Promise<string> => {
-  return await MusapClient.enableLink(
-    'https://demo.methics.fi/sphereon/musaplink/musap?',
-    undefined,
-  );
+  return await MusapClient.enableLink('https://demo.methics.fi/sphereon/musaplink/musap?', undefined);
 };
 
 export const checkSscd = async (): Promise<SscdInfo | undefined> => {
@@ -42,26 +39,26 @@ export const enableSscd = async (): Promise<SscdInfo> => {
 export const cleanupKeys = async (): Promise<void> => {
   const existingKeys = MusapClient.listKeys();
   existingKeys
-  .filter(value => value.keyAlias.startsWith('eSim-'))
-  .forEach(value => {
-    MusapClient.removeKey(value.keyUri);
-  });
+    .filter(value => value.keyAlias.startsWith('eSim-'))
+    .forEach(value => {
+      MusapClient.removeKey(value.keyUri);
+    });
 };
 
-export const coupleWithRP = async (context: ESIMActivationMachineContext): Promise<string|undefined> => {
+export const coupleWithRP = async (context: ESIMActivationMachineContext): Promise<string | undefined> => {
   if (!context.couplingCode) {
     throw new Error('Coupling code is required');
   }
   if (context.coupledWithCode) {
     console.warn('coupleWithRelyingParty was already called for linkId', context.musapLinkId);
-    return context.musapLinkId
+    return context.musapLinkId;
   }
 
   console.log('calling coupleWithRelyingParty with couplingCode', context.couplingCode);
   const linkId = await MusapClient.coupleWithRelyingParty(context.couplingCode);
   console.log('coupleWithRelyingParty successful. LinkID is', linkId);
 
-  void await storagePersistCoupledWithCode(context.couplingCode);
+  void (await storagePersistCoupledWithCode(context.couplingCode));
   return linkId;
 };
 
@@ -81,17 +78,19 @@ export const bindKey = async (context: ESIMActivationMachineContext): Promise<vo
 
   console.log('bindKey successful. keyUri is', response.keyUri);
 
-  sphereonKeyManager.setKms('musap',
+  sphereonKeyManager.setKms(
+    'musap',
     new MusapKeyManagementSystem('EXTERNAL', 'eSim', {
-      externalSscdSettings: { // FIXME this is still mandatory for ExternalSscd
+      externalSscdSettings: {
+        // FIXME this is still mandatory for ExternalSscd
         clientId: 'SCO',
       },
-      defaultSignAttributes:
-        {
-          msisdn: context.msisdn,
-          mimetype: 'application/x-sha256',
-          signaturetype: 'pkcs1'
-        },
-    }));
-  sphereonKeyManager.defaultKms = 'musap'
+      defaultSignAttributes: {
+        msisdn: context.msisdn,
+        mimetype: 'application/x-sha256',
+        signaturetype: 'pkcs1',
+      },
+    }),
+  );
+  sphereonKeyManager.defaultKms = 'musap';
 };

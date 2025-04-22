@@ -1,10 +1,11 @@
-import { SupportedVersion, VerifiedAuthorizationRequest } from '@sphereon/did-auth-siop';
+import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
   CredentialDocumentFormat,
   CredentialRole,
-  DidAuthConfig, ICredentialBranding,
+  DidAuthConfig,
+  ICredentialBranding,
   IdentityOrigin,
   NonPersistedIdentity,
   Party,
@@ -17,12 +18,7 @@ import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/aut
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
-import {
-  generateDigest,
-  getCredentialIssuerContact,
-  getCredentialSubjectContact,
-  translateCorrelationIdToName
-} from '../../utils';
+import {generateDigest, getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier, VerifiableCredential} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -37,7 +33,7 @@ import {
   LogLevel,
   MdocOid4vpIssuerSigned,
   SubSystem,
-  System
+  System,
 } from '@sphereon/ssi-types';
 import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
@@ -196,23 +192,23 @@ export const sendResponse = async (
     }),
   });
 
-  const pd = authorizationRequestData.presentationDefinitions?.[0].definition
+  const pd = authorizationRequestData.presentationDefinitions?.[0].definition;
   const pex: PEX = new PEX({hasher: generateDigest});
   for (const credential of selectedCredentials) {
-    let sharedClaims
+    let sharedClaims;
     if (pd) {
       if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned)
-        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition)
-        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc)
+        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
+        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
+        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc);
       } else {
         const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
-        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject
-        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject
+        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject;
+        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject;
       }
     }
 
-    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash: credential.hash } ]});
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
     const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
     const credentialSummary = await toCredentialSummary({
@@ -225,31 +221,31 @@ export const sendResponse = async (
     });
 
     store.dispatch<any>(
-        storeActivityLogging({
-          level: LogLevel.INFO,
-          system: System.OID4VP,
-          subSystemType: SubSystem.OID4VP_OP,
-          initiatorType: InitiatorType.SYSTEM,
-          description: 'Credential shared by user',
-          actionType: ActionType.READ,
-          actionSubType: DefaultActionSubType.VC_SHARE,
-          correlationId: didAuthConfig.sessionId,
-          sharePurpose: pd?.purpose,
-          // @ts-ignore
-          credentialType: credential.digitalCredential.documentFormat, // TODO fix types
-          credentialHash: credential.hash,
-          originalCredential: JSON.stringify(credential.digitalCredential),
-          diagnosticData: authorizationRequestData.presentationDefinitions,
-          data: {
-            credential: credentialSummary,
-            sharedClaims,
-          },
-          // @ts-ignore
-          partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
-          partyCorrelationId: contact?.identities[0].identifier.correlationId,
-          partyAlias: contact?.contact.displayName,
-        })
-    )
+      storeActivityLogging({
+        level: LogLevel.INFO,
+        system: System.OID4VP,
+        subSystemType: SubSystem.OID4VP_OP,
+        initiatorType: InitiatorType.SYSTEM,
+        description: 'Credential shared by user',
+        actionType: ActionType.READ,
+        actionSubType: DefaultActionSubType.VC_SHARE,
+        correlationId: didAuthConfig.sessionId,
+        sharePurpose: pd?.purpose,
+        // @ts-ignore
+        credentialType: credential.digitalCredential.documentFormat, // TODO fix types
+        credentialHash: credential.hash,
+        originalCredential: JSON.stringify(credential.digitalCredential),
+        diagnosticData: authorizationRequestData.presentationDefinitions,
+        data: {
+          credential: credentialSummary,
+          sharedClaims,
+        },
+        // @ts-ignore
+        partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
+        partyCorrelationId: contact?.identities[0].identifier.correlationId,
+        partyAlias: contact?.contact.displayName,
+      }),
+    );
   }
 
   if (!response) {
@@ -276,7 +272,17 @@ export const sendResponse = async (
 
 export const getFederationTrust = async (
   context: Pick<SiopV2MachineContext, 'url' | 'authorizationRequestData' | 'trustAnchors'>,
-): Promise<Pick<SiopV2MachineContext, 'trustedAnchors' | 'federation_entity' | 'oauth_authorization_server' | 'openid_wallet_provider' | 'openid_credential_verifier' | 'openid_credential_issuer'>> => {
+): Promise<
+  Pick<
+    SiopV2MachineContext,
+    | 'trustedAnchors'
+    | 'federation_entity'
+    | 'oauth_authorization_server'
+    | 'openid_wallet_provider'
+    | 'openid_credential_verifier'
+    | 'openid_credential_issuer'
+  >
+> => {
   const {authorizationRequestData, trustAnchors} = context;
 
   if (trustAnchors.length === 0) {
@@ -302,6 +308,6 @@ export const getFederationTrust = async (
     openid_wallet_provider: result.jwtPayload.metadata.openid_wallet_provider,
     oauth_authorization_server: result.jwtPayload.metadata.oauth_authorization_server,
     openid_credential_issuer: result.jwtPayload.metadata.openid_credential_issuer,
-    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier
+    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier,
   };
 };

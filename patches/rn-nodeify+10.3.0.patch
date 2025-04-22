@@ -2,12 +2,13 @@ diff --git a/node_modules/rn-nodeify/browser-browserify.json b/node_modules/rn-n
 index 52fa68a..b9ef48b 100644
 --- a/node_modules/rn-nodeify/browser-browserify.json
 +++ b/node_modules/rn-nodeify/browser-browserify.json
-@@ -11,7 +11,7 @@
+@@ -11,7 +11,8 @@
    "os": "os-browserify",
    "path": "path-browserify",
    "querystring": "querystring-es3",
 -  "fs": "react-native-level-fs",
 +  "fs": "expo-fs",
++  "node:url": "url",
    "_stream_transform": "readable-stream/transform",
    "_stream_readable": "readable-stream/readable",
    "_stream_writable": "readable-stream/writable",
@@ -15,12 +16,13 @@ diff --git a/node_modules/rn-nodeify/browser.json b/node_modules/rn-nodeify/brow
 index dad26ae..34c4c73 100644
 --- a/node_modules/rn-nodeify/browser.json
 +++ b/node_modules/rn-nodeify/browser.json
-@@ -11,7 +11,7 @@
+@@ -11,7 +11,8 @@
    "os": "react-native-os",
    "path": "path-browserify",
    "querystring": "querystring-es3",
 -  "fs": "react-native-level-fs",
 +  "fs": "expo-fs",
++  "node:url": "url",
    "_stream_transform": "readable-stream/transform",
    "_stream_readable": "readable-stream/readable",
    "_stream_writable": "readable-stream/writable",

@@ -9,7 +9,7 @@ import React, {useEffect, useState} from 'react';
 import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import SSIImageField from '../fields/SSIImageField';
 import SSITextField from '../fields/SSITextField';
-import { Info as InfoType } from '../../types';
+import {Info as InfoType} from '../../types';
 
 const SharedInfoContainer = styled.View`
   background-color: ${backgroundColors.secondaryDark};
@@ -62,14 +62,15 @@ const Info = ({header, info, onPress, showValues = false}: Props) => {
 
   useEffect(() => {
     toCredentialDetailsRow({
-      object: info
-    }).then((content) => setCredentialContent(content))
-  }, [])
+      object: info,
+    }).then(content => setCredentialContent(content));
+  }, []);
 
   return (
-    <SharedInfoContainer style={{
-      ...(!onPress && {flex: 1})
-    }}>
+    <SharedInfoContainer
+      style={{
+        ...(!onPress && {flex: 1}),
+      }}>
       {header && (
         <>
           <SharedInfoHeader>
@@ -79,40 +80,33 @@ const Info = ({header, info, onPress, showValues = false}: Props) => {
               {header.description && <SSITextH4LightStyled style={{opacity: 0.8}}>{header.description}</SSITextH4LightStyled>}
             </CredentialSummary>
           </SharedInfoHeader>
-          {!disabled &&
-              <Divider />
-          }
+          {!disabled && <Divider />}
         </>
       )}
-      {!disabled &&
-          <SharedInfoBody
-              style={{
-                ...(onPress && {paddingTop: 16}),
-                ...(!onPress && {flex: 1})
-              }}
-              onPress={onPress}
-              disabled={disabled || !onPress}
-              accessibilityState={{disabled}}
-              accessibilityRole="list"
-              accessibilityLabel="Shared information"
-              accessibilityHint={disabled ? 'No information shared' : ''}
-          >
-            {!onPress &&
-                <ScrollView>
-                <SharedInfoItemList importantForAccessibility="no">
-                  {credentialContent.map((property, idx) =>
-                      property.imageSize ? (
-                          <SSIImageField key={idx} item={property} />
-                      ) : (
-                          <SSITextField key={idx} item={property} />
-                      ),
-                  )}
-                </SharedInfoItemList>
-                </ScrollView>
-            }
-            {onPress && <ChevronIcon size={16} color={fontColors.light} style={{marginLeft: 'auto', transform: [{rotate: '-90deg'}]}} />}
-          </SharedInfoBody>
-      }
+      {!disabled && (
+        <SharedInfoBody
+          style={{
+            ...(onPress && {paddingTop: 16}),
+            ...(!onPress && {flex: 1}),
+          }}
+          onPress={onPress}
+          disabled={disabled || !onPress}
+          accessibilityState={{disabled}}
+          accessibilityRole="list"
+          accessibilityLabel="Shared information"
+          accessibilityHint={disabled ? 'No information shared' : ''}>
+          {!onPress && (
+            <ScrollView>
+              <SharedInfoItemList importantForAccessibility="no">
+                {credentialContent.map((property, idx) =>
+                  property.imageSize ? <SSIImageField key={idx} item={property} /> : <SSITextField key={idx} item={property} />,
+                )}
+              </SharedInfoItemList>
+            </ScrollView>
+          )}
+          {onPress && <ChevronIcon size={16} color={fontColors.light} style={{marginLeft: 'auto', transform: [{rotate: '-90deg'}]}} />}
+        </SharedInfoBody>
+      )}
     </SharedInfoContainer>
   );
 };

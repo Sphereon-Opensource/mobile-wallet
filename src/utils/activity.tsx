@@ -117,8 +117,8 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
         id: activity.id,
         title: activity.contactAlias,
         subtitle: activity.shared
-            .map(({credential}) => credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'))
-            .join(', '),
+          .map(({credential}) => credential?.branding?.alias ?? credential?.title ?? translate('activity.unknown.credential'))
+          .join(', '),
         ...common,
       };
     case DefaultActionSubType.VC_SHARE_DECLINE:
@@ -152,7 +152,7 @@ const shareActivitySerializer = <T extends ActivityShareType>(event: ActivityLog
     ],
     purpose: event.sharePurpose ?? translate('activity.unknown.purpose'),
     credentialType: event.credentialType,
-  }
+  };
 };
 
 const issueActivitySerializer = <T extends ActivityIssueType>(event: ActivityLoggingEvent): ICredentialIssuedActivity<T> => ({
@@ -169,10 +169,10 @@ export const serializeActivity = (event: ActivityLoggingEvent): Activity | undef
   switch (event.actionSubType) {
     case DefaultActionSubType.VC_SHARE:
     case DefaultActionSubType.VC_SHARE_DECLINE:
-      return shareActivitySerializer(event)
+      return shareActivitySerializer(event);
     case DefaultActionSubType.VC_ISSUE:
     case DefaultActionSubType.VC_ISSUE_DECLINE:
-      return issueActivitySerializer(event)
+      return issueActivitySerializer(event);
     default:
       console.error(translate('activity.unknown.type'), event);
       return undefined;

@@ -30,7 +30,7 @@ import {
   FirstPartyMachineEvents,
   FirstPartyMachineInterpreter,
   FirstPartyMachineState,
-  FirstPartyMachineStateTypes
+  FirstPartyMachineStateTypes,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
@@ -41,16 +41,7 @@ import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../uti
 import agent from '../../agent';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {
-  ActionType,
-  CredentialMapper,
-  DefaultActionSubType,
-  DocumentFormat,
-  InitiatorType,
-  LogLevel,
-  SubSystem,
-  System
-} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
@@ -311,7 +302,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
       }
     }
 
-    const uniform = credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential
+    const uniform = credentialsToAccept[0].uniformVerifiableCredential as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform);
     const credentialSummary = await toCredentialSummary({
       verifiableCredential: uniform,
@@ -338,7 +329,7 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
         credentialHash: credentialsToAccept[0].uniformVerifiableCredential.id ?? computeEntryHash(credentialsToAccept[0].uniformVerifiableCredential),
         originalCredential: JSON.stringify(credentialsToAccept[0].uniformVerifiableCredential),
         data: {
-          credential: credentialSummary
+          credential: credentialSummary,
         },
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
@@ -433,7 +424,7 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
       onSelectAndSend,
     },
   });
-}
+};
 
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, oid4vciMachine} = args;
@@ -539,9 +530,9 @@ export const OID4VCIProvider = (props: OID4VCIProviderProps): JSX.Element => {
 };
 
 export const firstPartyStateNavigationListener = async (
-    firstPartyMachine: FirstPartyMachineInterpreter,
-    state: FirstPartyMachineState,
-    navigation?: NativeStackNavigationProp<any>,
+  firstPartyMachine: FirstPartyMachineInterpreter,
+  state: FirstPartyMachineState,
+  navigation?: NativeStackNavigationProp<any>,
 ): Promise<void> => {
   debug('firstPartyStateNavigationListener: ', state.value);
   if (state._event.type === 'internal') {
@@ -563,10 +554,10 @@ export const firstPartyStateNavigationListener = async (
   if (state.matches(FirstPartyMachineStateTypes.selectCredentials)) {
     return navigateSelectCredentialsToPresent({firstPartyMachine, state, navigation: nav, onNext, onBack});
   } else if (
-      state.matches(FirstPartyMachineStateTypes.sendAuthorizationChallengeRequest) ||
-      state.matches(FirstPartyMachineStateTypes.sendAuthorizationResponse) ||
-      state.matches(FirstPartyMachineStateTypes.createConfig) ||
-      state.matches(FirstPartyMachineStateTypes.getSiopRequest)
+    state.matches(FirstPartyMachineStateTypes.sendAuthorizationChallengeRequest) ||
+    state.matches(FirstPartyMachineStateTypes.sendAuthorizationResponse) ||
+    state.matches(FirstPartyMachineStateTypes.createConfig) ||
+    state.matches(FirstPartyMachineStateTypes.getSiopRequest)
   ) {
     return navigateLoading(nav);
   }

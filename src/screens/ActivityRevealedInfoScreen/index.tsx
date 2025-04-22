@@ -49,11 +49,7 @@ const ActivityRevealedInfoScreen = (navProps: Props) => {
   return (
     <Container>
       {getInfoConfigs(activity, claimsCount).map(infoConfig => (
-        <Info
-            {...infoConfig}
-            key={JSON.stringify(infoConfig.info)}
-            showValues
-        />
+        <Info {...infoConfig} key={JSON.stringify(infoConfig.info)} showValues />
       ))}
       <NavigationButton label={translate('activity.support_link')} onPress={() => {}} disabled />
     </Container>

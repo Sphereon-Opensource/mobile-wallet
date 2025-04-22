@@ -6,7 +6,7 @@ export enum KeyManagementSystemEnum {
   LOCAL = 'local',
   MUSAP = 'musap',
   AZURE_KEY_VAULT_REST = 'azureKeyVault',
-  EPHEMERAL = 'ephemeral'
+  EPHEMERAL = 'ephemeral',
 }
 
 export enum IdentifierAliasEnum {

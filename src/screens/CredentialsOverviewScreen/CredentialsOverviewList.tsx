@@ -26,14 +26,7 @@ type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreferenc
 };
 
 const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
-  const {
-    setViewPreference,
-    navigation,
-    verifiableCredentials,
-    activeUser,
-    getVerifiableCredentials,
-    deleteVerifiableCredential,
-  } = props
+  const {setViewPreference, navigation, verifiableCredentials, activeUser, getVerifiableCredentials, deleteVerifiableCredential} = props;
   const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
@@ -66,13 +59,13 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
   };
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
-      getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then((uniqueDigitalCredential) =>
-        navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
-          rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
-          uniqueDigitalCredential,
-          credential,
-        })
-      )
+    getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then(uniqueDigitalCredential =>
+      navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+        rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
+        uniqueDigitalCredential,
+        credential,
+      }),
+    );
   };
 
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
@@ -101,7 +94,11 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     };
 
     const accessibility = {
-      accessibilityLabel: `${itemInfo.item.branding?.alias ?? itemInfo.item.title}. Issued by: ${itemInfo.item.issuer.alias ?? itemInfo.item.issuer.name}, on: ${toLocalDateString(itemInfo.item.issueDate)}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${itemInfo.item.credentialStatus}`,
+      accessibilityLabel: `${itemInfo.item.branding?.alias ?? itemInfo.item.title}. Issued by: ${
+        itemInfo.item.issuer.alias ?? itemInfo.item.issuer.name
+      }, on: ${toLocalDateString(itemInfo.item.issueDate)}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${
+        itemInfo.item.credentialStatus
+      }`,
       accessibilityHint: 'Go to credential details',
     };
 

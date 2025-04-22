@@ -244,9 +244,9 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
           parameters: {},
         },
         callback: () => {
-          contactAliasRef.current
+          contactAliasRef.current;
           void onEditAlias();
-        }
+        },
       },
     ],
     [],
@@ -254,13 +254,25 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
   const screenContext = useMemo(
     () =>
       `you are currently on the Contact Review screen. Here you can see information about the contact related to the credential you are adding.
-      ${federations?.length === 0
-        ? "It looks like this contact is not part of any trusted federations. This is a low trust level contact. You can still add this contact, but explicitly and clearly inform the user about it before even listing the contact information. If the user is okay with this, you can proceed with listing the details."
-        : `This contact is part of the following federations ${federations?.map(f => f.contact.displayName)?.join(', ')}. This is a high trust level contact. You can proceed with listing the details.`
+      ${
+        federations?.length === 0
+          ? 'It looks like this contact is not part of any trusted federations. This is a low trust level contact. You can still add this contact, but explicitly and clearly inform the user about it before even listing the contact information. If the user is okay with this, you can proceed with listing the details.'
+          : `This contact is part of the following federations ${federations
+              ?.map(f => f.contact.displayName)
+              ?.join(', ')}. This is a high trust level contact. You can proceed with listing the details.`
       }
-      Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState(
-        {name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations},
-      )}`,
+      Communicate contact details, trust level and possible actions. contact: ${contactState} screen props: ${stringifyState({
+        name,
+        uri,
+        roles,
+        logo,
+        description,
+        clientUri,
+        tosUri,
+        policyUri,
+        identities,
+        federations,
+      })}`,
     [contactState, name, uri, roles, logo, description, clientUri, tosUri, policyUri, identities, federations],
   );
 
@@ -341,10 +353,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
         }}
         logo={logo}
       />
-      <Chat
-          screenContext={screenContext}
-          tools={tools}
-      />
+      <Chat screenContext={screenContext} tools={tools} />
     </Container>
   );
 };

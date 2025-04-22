@@ -94,14 +94,15 @@ const AusweisScanModal: FC<Props> = (props: Props): ReactElement | null => {
     <Animated.View onLayout={onLayout} style={transform}>
       <ModalCard>
         {!!modalTitle && <ModalTitle>{modalTitle}</ModalTitle>}
-        {state?.state === 'SUCCESS'
-            ? <IconContainer>
-              <ScanSuccessIcon />
-            </IconContainer>
-            : <IconContainer>
-              <ScanIcon />
-            </IconContainer>
-        }
+        {state?.state === 'SUCCESS' ? (
+          <IconContainer>
+            <ScanSuccessIcon />
+          </IconContainer>
+        ) : (
+          <IconContainer>
+            <ScanIcon />
+          </IconContainer>
+        )}
         <ContentContainer>
           <Animated.View style={textStyle}>
             <ModalText>Keep your phone on top of your card. Hold in place until the reading is done. </ModalText>

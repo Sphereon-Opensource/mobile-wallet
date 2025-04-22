@@ -15,7 +15,12 @@ import WavStreamPlayer from '../utils/wavtools/WavStreamPlayer';
 export type ChatMode = 'text' | 'voice';
 
 console.log('==============================');
-console.log('OPENAI_API_KEY', process.env.EXPO_OPENAI_API_KEY?.substring(0, 20) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!', '...', process.env.EXPO_OPENAI_API_KEY?.slice(-10) ?? OPENAI_API_KEY?.slice(-10));
+console.log(
+  'OPENAI_API_KEY',
+  process.env.EXPO_OPENAI_API_KEY?.substring(0, 20) ?? OPENAI_API_KEY?.substring(0, 10) ?? 'NOT FOUND!!!',
+  '...',
+  process.env.EXPO_OPENAI_API_KEY?.slice(-10) ?? OPENAI_API_KEY?.slice(-10),
+);
 console.log('==============================');
 
 const useAIAssistant = () => {
@@ -25,7 +30,7 @@ const useAIAssistant = () => {
   const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
   const apiKey = process.env.EXPO_OPENAI_API_KEY ?? process.env.OPENAI_API_KEY ?? OPENAI_API_KEY;
-/*
+  /*
   if (!apiKey) {
     throw Error('OPENAI_API_KEY is not set. Chatbot not available');
   }
@@ -38,7 +43,7 @@ const useAIAssistant = () => {
     }),
   );
 
-  clientRef.current.defaultSessionConfig.max_response_output_tokens = 500
+  clientRef.current.defaultSessionConfig.max_response_output_tokens = 500;
   const startTimeRef = useRef<string>(new Date().toISOString());
 
   const base64ToArrayBuffer = (base64: string) => {
@@ -193,8 +198,7 @@ const useAIAssistant = () => {
     const wavRecorder = wavRecorderRef.current;
     wavRecorder.begin();
     updateSession({
-      instructions:
-        'User enabled voice mode via microphone button (bottom right). Provide instructions if needed.',
+      instructions: 'User enabled voice mode via microphone button (bottom right). Provide instructions if needed.',
     });
     clientRef.current.createResponse();
   }, []);
@@ -220,7 +224,19 @@ const useAIAssistant = () => {
     };
   }, []);
 
-  const updateSession = ({baseInstructions, appState, route, screenContext, instructions}: {baseInstructions?: string, appState?: string, route?: string, screenContext?: string; instructions?: string}) => {
+  const updateSession = ({
+    baseInstructions,
+    appState,
+    route,
+    screenContext,
+    instructions,
+  }: {
+    baseInstructions?: string;
+    appState?: string;
+    route?: string;
+    screenContext?: string;
+    instructions?: string;
+  }) => {
     const client = clientRef.current;
 
     client.updateSession({

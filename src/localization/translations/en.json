@@ -134,8 +134,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
   "onboarding_pid_security_model_eid_presentation": "Use eID card during presentation",
   "onboarding_pid_security_model_select": "Select",
-  
-  
+
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
@@ -258,7 +257,6 @@
   "incorrect_data_after_bullet_heading": "If it's not yours",
   "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
 
-  
   "onboarding_esim_enter_details_title": "Enter eSim information",
   "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
   "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
@@ -281,7 +279,6 @@
   "onboarding_complete_title": "All done!",
   "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
   "onboarding_complete_next": "Start exploring my Wallet",
-
 
   "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
   "scan_card_step_title": "Scan to import your data",

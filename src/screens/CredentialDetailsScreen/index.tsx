@@ -103,12 +103,18 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     return true;
   });
 
-  const screenContext = useMemo(() => `
+  const screenContext = useMemo(
+    () => `
     this screen shows credential details. onscreen credential: ${stringifyState(credential)}.
-    ${!isAddingNewCredential && `Please note that this is not a new credential, but an existing one. The user is currently just
+    ${
+      !isAddingNewCredential &&
+      `Please note that this is not a new credential, but an existing one. The user is currently just
       viewing the details of an existing credential. The user is not currently in the process of adding a new credential.
-      There is nothing you can help the user with, other than answering questions regarding this credential`}
-  `, [credential]);
+      There is nothing you can help the user with, other than answering questions regarding this credential`
+    }
+  `,
+    [credential],
+  );
 
   const AddNewCredentialtools: ChatTools = useMemo(
     () => [
@@ -134,31 +140,31 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
       },
       ...(primaryAction
         ? [
-          {
-            tool: {
-              name: 'accept',
-              description: 'accept the credential offer',
-              parameters: {},
+            {
+              tool: {
+                name: 'accept',
+                description: 'accept the credential offer',
+                parameters: {},
+              },
+              callback: () => {
+                primaryAction && primaryAction.onPress();
+              },
             },
-            callback: () => {
-              primaryAction && primaryAction.onPress();
-            },
-          },
-        ]
+          ]
         : []),
       ...(secondaryAction
         ? [
-          {
-            tool: {
-              name: 'decline',
-              description: 'decline the credential offer',
-              parameters: {},
+            {
+              tool: {
+                name: 'decline',
+                description: 'decline the credential offer',
+                parameters: {},
+              },
+              callback: () => {
+                secondaryAction && secondaryAction.onPress();
+              },
             },
-            callback: () => {
-              secondaryAction && secondaryAction.onPress();
-            },
-          },
-        ]
+          ]
         : []),
     ],
     [primaryAction, secondaryAction],
@@ -250,10 +256,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           </View>
         )}
       </ContentContainer>
-      <Chat
-        screenContext={screenContext}
-        tools={isAddingNewCredential ? AddNewCredentialtools : []}
-      />
+      <Chat screenContext={screenContext} tools={isAddingNewCredential ? AddNewCredentialtools : []} />
     </Container>
   );
 };

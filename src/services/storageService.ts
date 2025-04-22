@@ -18,9 +18,8 @@ const STORAGE_PIN_KEY = 'pin';
 // TODO: With the new storage solution we can use individual items per user
 const STORAGE_USERS_KEY = 'users';
 const STORAGE_USER_PID_SECURITY_MODEL_KEY = 'user_pid_security_model';
-const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code'
-const STORAGE_MSISDN_KEY = 'msisdn'
-
+const STORAGE_COUPLED_WITH_CODE_KEY = 'coupled_with_code';
+const STORAGE_MSISDN_KEY = 'msisdn';
 
 const userStorage = new MMKVLoader()
   .withEncryption()
@@ -117,7 +116,7 @@ export const mapPIDSecurityModelToKMS = (model: PIDSecurityModel): KeyManagement
     default:
       throw new Error(`Unknown PID security model: ${model}`);
   }
-}
+};
 
 export const storagePersistPIDSecurityModel = async (value: PIDSecurityModel) => {
   debug(`storing user PID security model: ${value}`);
@@ -140,7 +139,7 @@ export const storageGetPIDSecurityModel = async () => {
   return value as PIDSecurityModel;
 };
 
-export const storageGetPIDSecurityModelSync =  () => {
+export const storageGetPIDSecurityModelSync = () => {
   debug('getPIDSecurityModel...');
   return userStorage.getString(STORAGE_USER_PID_SECURITY_MODEL_KEY) as PIDSecurityModel;
 };
@@ -171,42 +170,39 @@ export const storageHasPin = (): boolean => {
   return result;
 };
 
-
 export const storagePersistCoupledWithCode = async (value: string): Promise<any> => {
-  debug(`storing coupled with code: ${value}`)
+  debug(`storing coupled with code: ${value}`);
   return userStorage
-  .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
-  .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`))
-}
+    .setStringAsync(STORAGE_COUPLED_WITH_CODE_KEY, value)
+    .catch(() => new Error(`Failed to store coupled with code for key: ${STORAGE_COUPLED_WITH_CODE_KEY}`));
+};
 
 export const storageGetCoupledWithCode = async (): Promise<string | null | undefined> => {
-  debug('getCoupledWithCode...')
-  return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY)
-}
+  debug('getCoupledWithCode...');
+  return await userStorage.getStringAsync(STORAGE_COUPLED_WITH_CODE_KEY);
+};
 
 export const storageDeleteCoupledWithCode = async (): Promise<boolean> => {
-  debug('deleteCoupledWithCode...')
-  return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY)
-}
+  debug('deleteCoupledWithCode...');
+  return userStorage.removeItem(STORAGE_COUPLED_WITH_CODE_KEY);
+};
 
 export const storagePersistMsisdn = async (value: string): Promise<any> => {
-  debug(`storing msisdn: ${value}`)
-  return userStorage
-  .setStringAsync(STORAGE_MSISDN_KEY, value)
-  .catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`))
-}
+  debug(`storing msisdn: ${value}`);
+  return userStorage.setStringAsync(STORAGE_MSISDN_KEY, value).catch(() => new Error(`Failed to store msisdn for key: ${STORAGE_MSISDN_KEY}`));
+};
 
 export const storageGetMsisdn = async (): Promise<string | null | undefined> => {
-  debug('getMsisdn...')
-  return await userStorage.getStringAsync(STORAGE_MSISDN_KEY)
-}
+  debug('getMsisdn...');
+  return await userStorage.getStringAsync(STORAGE_MSISDN_KEY);
+};
 
-export const storageGetMsisdnSync =(): string | null | undefined => {
-  debug('getMsisdn...')
-  return userStorage.getString(STORAGE_MSISDN_KEY)
-}
+export const storageGetMsisdnSync = (): string | null | undefined => {
+  debug('getMsisdn...');
+  return userStorage.getString(STORAGE_MSISDN_KEY);
+};
 
 export const storageDeleteMsisdn = async (): Promise<boolean> => {
-  debug('deleteMsisdn...')
-  return userStorage.removeItem(STORAGE_MSISDN_KEY)
-}
+  debug('deleteMsisdn...');
+  return userStorage.removeItem(STORAGE_MSISDN_KEY);
+};

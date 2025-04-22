@@ -9,10 +9,11 @@ import {CredentialValidation} from '@sphereon/ssi-sdk.credential-validation';
 import {
   ContactStore,
   DigitalCredentialStore,
-  EventLoggerStore, ICredentialBranding,
+  EventLoggerStore,
+  ICredentialBranding,
   IssuanceBrandingStore,
   MachineStateStore,
-  Party
+  Party,
 } from '@sphereon/ssi-sdk.data-store';
 import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
@@ -62,7 +63,7 @@ export const oid4vciHolder = new OID4VCIHolder({
       .getState()
       .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
 
-    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [ { vcHash } ]});
+    const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash}]});
     const uniform = JSON.parse(credential.uniformDocument) as VerifiableCredential;
     const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
     const credentialSummary: CredentialSummary = await toCredentialSummary({
@@ -89,7 +90,7 @@ export const oid4vciHolder = new OID4VCIHolder({
         credentialHash: vcHash,
         originalCredential: JSON.stringify(credential),
         data: {
-          credential: credentialSummary
+          credential: credentialSummary,
         },
         // @ts-ignore
         partyCorrelationType: contact?.identities[0].identifier.type, // TODO fix types
@@ -113,18 +114,19 @@ const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
   if (pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM) {
     const msIsdn = storageGetMsisdnSync(); // FIXME use pidSecurityModel
     const linkId = MusapClient.getLink();
-    if (msIsdn && linkId) { // Use eSim signing when we have a msisdn
+    if (msIsdn && linkId) {
+      // Use eSim signing when we have a msisdn
       console.log('Found msIsdn & linkId, enabling eSim KMS');
       return new MusapKeyManagementSystem('EXTERNAL', 'eSim', {
-        externalSscdSettings: { // FIXME this is still mandatory for ExternalSscd
+        externalSscdSettings: {
+          // FIXME this is still mandatory for ExternalSscd
           clientId: 'SCO',
         },
-        defaultSignAttributes:
-          {
-            msisdn: msIsdn,
-            mimetype: 'application/x-sha256',
-            signaturetype: 'pkcs1'
-          },
+        defaultSignAttributes: {
+          msisdn: msIsdn,
+          mimetype: 'application/x-sha256',
+          signaturetype: 'pkcs1',
+        },
       });
     }
   }
@@ -134,7 +136,7 @@ const getMusapKeyManagementSystem = (pidSecurityModel: PIDSecurityModel) => {
   // TODO YubiKey as well?
 };
 
-export let sphereonKeyManager:SphereonKeyManager
+export let sphereonKeyManager: SphereonKeyManager;
 
 const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource) => {
   let pidSecurityModel = storageGetPIDSecurityModelSync() ?? PIDSecurityModel.SECURE_ELEMENT;
@@ -152,7 +154,7 @@ const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource)
     },
   });
   sphereonKeyManager.defaultKms = mapPIDSecurityModelToKMS(pidSecurityModel);
-  }
+};
 
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   buildSphereonKeyManager(dbConnection);
@@ -177,7 +179,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDResolverPlugin({
       resolver: didResolver,
     }),
-    new DidAuthSiopOpAuthenticator({ hasher: generateDigest }),
+    new DidAuthSiopOpAuthenticator({hasher: generateDigest}),
     new ContactManager({
       store: new ContactStore(dbConnection),
     }),
@@ -211,13 +213,16 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
       eventTypes: [LinkHandlerEventType.LINK_HANDLER_URL],
       handlers: linkHandlers,
     }),
-    new SDJwtPlugin({
-      // We hookup a custom signer for the C2 flow. IT delegates the KB signing to the PID Issuer
-      signers: {[funkeC2Issuer]: new PIDIssuerPresentationSigning(funkeC2Issuer).kbPresentationSigner},
-      hasher: generateDigest,
-      saltGenerator: generateSalt,
-      verifySignature: verifySDJWTSignature,
-    },[sphereonCA, funkeTestCA, sphereonFunke] ),
+    new SDJwtPlugin(
+      {
+        // We hookup a custom signer for the C2 flow. IT delegates the KB signing to the PID Issuer
+        signers: {[funkeC2Issuer]: new PIDIssuerPresentationSigning(funkeC2Issuer).kbPresentationSigner},
+        hasher: generateDigest,
+        saltGenerator: generateSalt,
+        verifySignature: verifySDJWTSignature,
+      },
+      [sphereonCA, funkeTestCA, sphereonFunke],
+    ),
     new CredentialValidation(),
     new OIDFClient(),
     new QrCodeProvider(),

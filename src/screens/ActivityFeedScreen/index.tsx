@@ -18,14 +18,20 @@ const ActivityFeedScreen = ({navigation}: Props) => {
   const getActivityLog = () => dispatch(getActivityLogging());
   const {announce} = useAccessibility();
   const {activityLogging} = useAppSelector(({logging: {activityLogging}}) => ({
-    activityLogging
+    activityLogging,
   }));
   const loading = useAppSelector(state => state.logging.loading);
   const activities = useMemo(
     () =>
       activityLogging
         // filter the double issuance events for parent child credentials
-        .filter(activity => !((activity.actionSubType === DefaultActionSubType.VC_ISSUE || activity.actionSubType === DefaultActionSubType.VC_ISSUE_DECLINE) && activity.parentCredentialHash !== undefined))
+        .filter(
+          activity =>
+            !(
+              (activity.actionSubType === DefaultActionSubType.VC_ISSUE || activity.actionSubType === DefaultActionSubType.VC_ISSUE_DECLINE) &&
+              activity.parentCredentialHash !== undefined
+            ),
+        )
         .map(event => serializeActivity(event))
         .filter((activity): activity is Activity => Boolean(activity)),
     [activityLogging],

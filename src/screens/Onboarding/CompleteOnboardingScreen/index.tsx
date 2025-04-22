@@ -35,7 +35,7 @@ const CompleteOnboardingScreen = () => {
   };
 
   useBackHandler((): boolean => {
-    onboardingInstance.send(OnboardingMachineEvents.NEXT)
+    onboardingInstance.send(OnboardingMachineEvents.NEXT);
     return true;
   });
 

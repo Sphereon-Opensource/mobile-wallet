@@ -7,8 +7,8 @@ import {
   SSICredentialViewItemImageContainerStyled as ImageContainer,
   SSICredentialViewItemLogoContainerStyled as LogoContainer,
 } from '../../../styles/components';
-import { credentialCardColors } from '@sphereon/ui-components.core'
-import { SSILogo } from '@sphereon/ui-components.ssi-react-native'
+import {credentialCardColors} from '@sphereon/ui-components.core';
+import {SSILogo} from '@sphereon/ui-components.ssi-react-native';
 
 export const CredentialViewImage = ({branding}: {branding?: IBasicCredentialLocaleBranding}) => {
   const CARD_ASPECT_RATIO = 3 / 2;

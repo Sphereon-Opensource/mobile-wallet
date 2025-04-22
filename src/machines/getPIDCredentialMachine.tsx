@@ -231,29 +231,29 @@ const createGetPIDCredentialMachine = (opts?: CreateGetPIDCredentialsMachineOpts
               issuer,
               branding: [PersonalIdentificationDataBranding],
               subject: getCredentialSubjectContact(mappedCredential.uniformCredential as VerifiableCredential),
-            })
+            });
 
             store.dispatch<any>(
-                storeActivityLogging({
-                  level: LogLevel.INFO,
-                  system: System.OID4VCI,
-                  subSystemType: SubSystem.VC_ISSUER,
-                  initiatorType: InitiatorType.SYSTEM,
-                  description: 'decline credential',
-                  actionType: ActionType.READ,
-                  actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
-                  // @ts-ignore
-                  credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
-                  credentialHash,
-                  parentCredentialHash,
-                  originalCredential: JSON.stringify(mappedCredential.rawCredential),
-                  data: {
-                    credential: credentialSummary
-                  },
-                  partyCorrelationType: PartyCorrelationType.URL,
-                  partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
-                  partyAlias: 'Bundesdruckerei GmbH',
-                }),
+              storeActivityLogging({
+                level: LogLevel.INFO,
+                system: System.OID4VCI,
+                subSystemType: SubSystem.VC_ISSUER,
+                initiatorType: InitiatorType.SYSTEM,
+                description: 'decline credential',
+                actionType: ActionType.READ,
+                actionSubType: DefaultActionSubType.VC_ISSUE_DECLINE,
+                // @ts-ignore
+                credentialType: determineCredentialDocumentFormat(CredentialMapper.detectDocumentType(mappedCredential.rawCredential)),
+                credentialHash,
+                parentCredentialHash,
+                originalCredential: JSON.stringify(mappedCredential.rawCredential),
+                data: {
+                  credential: credentialSummary,
+                },
+                partyCorrelationType: PartyCorrelationType.URL,
+                partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',
+                partyAlias: 'Bundesdruckerei GmbH',
+              }),
             );
 
             if (!parentCredentialHash) {

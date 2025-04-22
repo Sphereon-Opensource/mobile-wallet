@@ -60,7 +60,6 @@ export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
             return null;
           }
         } else if (item.role === 'assistant') {
-
           if (item.formatted.transcript) {
             messageText = item.formatted.transcript;
           } else {

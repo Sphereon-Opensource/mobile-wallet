@@ -11,12 +11,7 @@ import CredentialCardStackView from '../../components/views/CredentialCardStackV
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {translate} from '../../localization/Localization';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {
-  CreditOverviewStackParamsList,
-  MainRoutesEnum,
-  RootState,
-  ScreenRoutesEnum
-} from '../../types';
+import {CreditOverviewStackParamsList, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
@@ -26,13 +21,7 @@ type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreferenc
 };
 
 const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
-  const {
-    setViewPreference,
-    verifiableCredentials,
-    deleteVerifiableCredential,
-    getVerifiableCredentials,
-    navigation
-  } = props
+  const {setViewPreference, verifiableCredentials, deleteVerifiableCredential, getVerifiableCredentials, navigation} = props;
   const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
@@ -47,13 +36,13 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
   };
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
-    getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then((uniqueDigitalCredential) =>
+    getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then(uniqueDigitalCredential =>
       navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
         uniqueDigitalCredential,
         credential,
-      })
-    )
+      }),
+    );
   };
 
   const onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
@@ -81,7 +70,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
         accessibilityLabel="Credentials"
         credentials={verifiableCredentials}
         onPress={onItemPress}
-        onSwipe={async (credential) =>  onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
+        onSwipe={async credential => onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>

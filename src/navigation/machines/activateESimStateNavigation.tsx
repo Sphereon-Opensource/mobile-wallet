@@ -16,9 +16,11 @@ import {
 
 const debug: Debugger = Debug(`${APP_ID}:activateESimStateNavigation`);
 
-export const ESIMActivationContext = createContext<{activateESimInstance: ESIMActivationMachineInterpreter}>({} as {
-  activateESimInstance: ESIMActivationMachineInterpreter
-});
+export const ESIMActivationContext = createContext<{activateESimInstance: ESIMActivationMachineInterpreter}>(
+  {} as {
+    activateESimInstance: ESIMActivationMachineInterpreter;
+  },
+);
 
 const navigateLoading = async (args: any): Promise<void> => {
   const {navigation} = args;
@@ -29,7 +31,6 @@ const navigateLoading = async (args: any): Promise<void> => {
     },
   });
 };
-
 
 export const activateESimStateNavigationListener = (
   activateESimMachine: ESIMActivationMachineInterpreter,
@@ -122,9 +123,10 @@ export const ESIMActivationProvider = (props: ESIMActivationProviderProps): Reac
   const {children, customESIMActivationInstance} = props;
 
   return (
-    <ESIMActivationContext.Provider value={{
-      activateESimInstance: customESIMActivationInstance ?? ESIMActivationMachine.getInstance(),
-    }}>
+    <ESIMActivationContext.Provider
+      value={{
+        activateESimInstance: customESIMActivationInstance ?? ESIMActivationMachine.getInstance(),
+      }}>
       {children}
     </ESIMActivationContext.Provider>
   );

@@ -58,7 +58,7 @@ const ImportDataAuthenticationScreen = (props?: any) => {
   useEffect(() => {
     const isComplete = pinCode.length === PIN_CODE_LENGTH;
     if (doPinsCompletelyMatch && isComplete) {
-      onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT)
+      onAccept ? onAccept() : onboardingInstance.send(OnboardingMachineEvents.NEXT);
     }
   }, [doPinsCompletelyMatch]);
 

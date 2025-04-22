@@ -1,15 +1,6 @@
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
-import {
-  ActionType,
-  CredentialMapper,
-  DefaultActionSubType,
-  DocumentFormat,
-  InitiatorType,
-  LogLevel,
-  SubSystem,
-  System
-} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';
 import {assign, createMachine, DoneInvokeEvent, GuardPredicate, interpret} from 'xstate';
@@ -73,9 +64,7 @@ const isPinCodeValid: OnboardingGuard = ({pinCode}) => validatePinCode(pinCode);
 const doPinsMatch: OnboardingGuard = ({pinCode, verificationPinCode}) =>
   validatePinCode(pinCode) && validatePinCode(verificationPinCode) && pinCode === verificationPinCode;
 const isSkipImport: OnboardingGuard = ({pidSecurityModel, countryCode, skipImport}) =>
-  skipImport === true ||
-  pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION ||
-  countryCode !== 'DE'
+  skipImport === true || pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION || countryCode !== 'DE';
 const isImportData: OnboardingGuard = ({skipImport}) => !skipImport;
 const hasFunkeRefreshUrl: OnboardingGuard = ({funkeProvider}) => funkeProvider?.refreshUrl !== undefined;
 const isESimSecurity: OnboardingGuard = ({pidSecurityModel}) => {
@@ -83,12 +72,9 @@ const isESimSecurity: OnboardingGuard = ({pidSecurityModel}) => {
   return pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM;
 };
 
-const isEidDuringPresentation: OnboardingGuard = ({pidSecurityModel}) =>
-  pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION;
+const isEidDuringPresentation: OnboardingGuard = ({pidSecurityModel}) => pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION;
 
-const isSecureElement: OnboardingGuard = ({pidSecurityModel}) =>
-  pidSecurityModel === PIDSecurityModel.SECURE_ELEMENT;
-
+const isSecureElement: OnboardingGuard = ({pidSecurityModel}) => pidSecurityModel === PIDSecurityModel.SECURE_ELEMENT;
 
 const states: OnboardingStatesConfig = {
   showIntro: {
@@ -103,32 +89,31 @@ const states: OnboardingStatesConfig = {
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
         {
           cond: OnboardingMachineGuards.isStepImportPersonalData,
-          target: OnboardingMachineStateType.importPIDDataConsent
+          target: OnboardingMachineStateType.importPIDDataConsent,
         },
-        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding}
+        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
         {
           cond: OnboardingMachineGuards.isStepSecureWallet,
           target: OnboardingMachineStateType.enterCountry,
-          actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET})
+          actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET}),
         },
         {
           cond: ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA,
           target: OnboardingMachineStateType.acceptTermsAndPrivacy,
-          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET})
+          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
         },
         {
           cond: ({currentStep, pidSecurityModel}) =>
-            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA &&
-            pidSecurityModel !== PIDSecurityModel.EID_DURING_PRESENTATION, // TODO move to guard
+            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && pidSecurityModel !== PIDSecurityModel.EID_DURING_PRESENTATION, // TODO move to guard
           target: OnboardingMachineStateType.reviewPIDCredentials,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA})
-        }
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+        },
       ],
       SET_POPUP_MENU_OPEN: {
-        actions: assign({popupMenuOpen: (_, event) => event.data})
+        actions: assign({popupMenuOpen: (_, event) => event.data}),
       },
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.setupWallet,
@@ -138,8 +123,8 @@ const states: OnboardingStatesConfig = {
         actions: assign({
           pidSecurityModel: (_, event: SetSecurityModel) => event.model,
         }),
-      }
-    }
+      },
+    },
   },
   enterName: {
     on: {
@@ -232,15 +217,15 @@ const states: OnboardingStatesConfig = {
           cond: OnboardingMachineGuards.isESimSecurity,
           target: OnboardingMachineStateType.activateESim,
         },
-          {
-            cond: OnboardingMachineGuards.isSkipImport,
-            target: OnboardingMachineStateType.setupWallet,
-            actions: assign({currentStep: OnboardingMachineStep.FINAL}),
-          },
-          {
-            target: OnboardingMachineStateType.showProgress,
-            actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-          },
+        {
+          cond: OnboardingMachineGuards.isSkipImport,
+          target: OnboardingMachineStateType.setupWallet,
+          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+        },
+        {
+          target: OnboardingMachineStateType.showProgress,
+          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
+        },
       ],
     },
   },
@@ -278,17 +263,17 @@ const states: OnboardingStatesConfig = {
         actions: assign({
           error: (_ctx: OnboardingMachineContext, _event: DoneInvokeEvent<Error>): ErrorDetails => ({
             title: translate('onboarding_machine_activate_esim_error_title'),
-            message: _event.data.message
-          })
-        })
-      }
-    }
+            message: _event.data.message,
+          }),
+        }),
+      },
+    },
   },
   importPIDDataConsent: {
     on: {
       SKIP_IMPORT: {
         target: OnboardingMachineStateType.setupWallet,
-        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL})
+        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL}),
       },
       PREVIOUS: {
         target: OnboardingMachineStateType.acceptTermsAndPrivacy,
@@ -448,12 +433,13 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     didOptions: opts?.credentialData?.didOptions ?? {/*codecName: 'EBSI',*/ type: 'Secp256r1'}, // todo: We need a preference/options provider supporting ecosystems
     proofFormat: opts?.credentialData?.proofFormat ?? 'jwt',
     credential:
-        opts?.credentialData?.credential ??
-        ({vct: "SphereonWalletIdentityCredential",
-          id: `urn:uuid:${uuidv4()}`,
-          issuanceDate: new Date(),
-          credentialSubject: {},
-        } as Partial<CredentialPayload>),
+      opts?.credentialData?.credential ??
+      ({
+        vct: 'SphereonWalletIdentityCredential',
+        id: `urn:uuid:${uuidv4()}`,
+        issuanceDate: new Date(),
+        credentialSubject: {},
+      } as Partial<CredentialPayload>),
   };
 
   const initialContext: OnboardingMachineContext = {
@@ -533,11 +519,11 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
               }
             }
 
-            const uniform = mappedCredential.uniformCredential as VerifiableCredential
+            const uniform = mappedCredential.uniformCredential as VerifiableCredential;
             const credentialHash = uniform.id ?? computeEntryHash(mappedCredential.rawCredential);
             const issuerCorrelationId: string = typeof uniform.issuer === 'string' ? uniform.issuer : uniform.issuer?.id ?? uniform.issuer?.name;
             const getContactsArgs = {
-              filter: [{identities: {identifier: {correlationId: issuerCorrelationId}}}]
+              filter: [{identities: {identifier: {correlationId: issuerCorrelationId}}}],
             };
             const issuer: Party | undefined = (await agent.cmGetContacts(getContactsArgs))[0];
             const credentialSummary = await toCredentialSummary({
@@ -547,7 +533,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
               issuer,
               branding: [PersonalIdentificationDataBranding],
               subject: getCredentialSubjectContact(uniform),
-            })
+            });
 
             store.dispatch<any>(
               storeActivityLogging({
@@ -564,7 +550,7 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
                 credentialHash,
                 originalCredential: JSON.stringify(mappedCredential.rawCredential),
                 data: {
-                  credential: credentialSummary
+                  credential: credentialSummary,
                 },
                 partyCorrelationType: PartyCorrelationType.URL,
                 partyCorrelationId: 'https://demo.pid-issuer.bundesdruckerei.de',

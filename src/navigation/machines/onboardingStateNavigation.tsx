@@ -29,10 +29,10 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
     return;
   }
   if (!Object.values(OnboardingMachineStateType).includes(state.value as OnboardingMachineStateType)) {
-    console.log('Ignoring non-onboarding state:', state.value)
-    return
+    console.log('Ignoring non-onboarding state:', state.value);
+    return;
   }
-  
+
   const context: OnboardingMachineContext = onboardingMachine.getSnapshot().context;
   const navigation = RootNavigation;
   if (navigation === undefined || !navigation.isReady()) {

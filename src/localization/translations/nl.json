@@ -69,10 +69,7 @@
       },
       "row_description": "Credential ontvangen",
       "detail_title": "Nieuwe Credential toegevoegd aan je wallet",
-      "description": [
-        "Je kunt nu eindelijk je",
-        "kaart gebruiken voor officiële doeleinden."
-      ]
+      "description": ["Je kunt nu eindelijk je", "kaart gebruiken voor officiële doeleinden."]
     },
     "VC issue decline": {
       "info_list_title": "Informatie geweigerd",
@@ -82,10 +79,7 @@
       },
       "row_description": "Ontvangst van Credential geweigerd",
       "detail_title": "Credential niet toegevoegd aan je wallet",
-      "description": [
-        "Je hebt geweigerd om de",
-        "kaart te gebruiken voor officiële doeleinden."
-      ]
+      "description": ["Je hebt geweigerd om de", "kaart te gebruiken voor officiële doeleinden."]
     },
     "section_titles": {
       "status": "Status",
@@ -575,5 +569,3 @@
   "present_qr_code_dropdown_item_text": "Presenteer QR-code",
   "present_qr_code_dropdown_item_accessibility_hint": "Navigeer naar een scherm dat de QR-code toont"
 }
-
-
