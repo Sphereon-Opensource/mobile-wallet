@@ -30,7 +30,7 @@ import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {DataSource} from 'typeorm';
+import {DataSource} from 'typeorm/browser';
 import {animoFunkeCert, funkeTestCA, sphereonCA, sphereonFunke} from '../@config/trustanchors';
 import {PIDIssuerPresentationSigning} from '../providers/authentication/funke/PIDIssuerPresentationSigning';
 import {dispatchIdentifier} from '../services/identityService';
@@ -172,7 +172,7 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new DIDManager({
       store: new DIDStore(dbConnection),
       defaultProvider: DEFAULT_DID_PREFIX_AND_METHOD,
-      providers: didProviders,
+      providers: didProviders({keyManager: sphereonKeyManager}),
     }),
     new DIDResolverPlugin({
       resolver: didResolver,
