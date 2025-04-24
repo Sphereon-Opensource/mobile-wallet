@@ -10,7 +10,7 @@ import {
   LogLevel,
   OriginalVerifiableCredential,
   SubSystem,
-  System,
+  System, W3CVerifiableCredential,
 } from '@sphereon/ssi-types';
 import {ICreateVerifiableCredentialArgs, IVerifyCredentialArgs, VerifiableCredential} from '@veramo/core';
 import agent from '../agent';
@@ -24,6 +24,7 @@ import {
 import {removeCredentialBranding} from './brandingService';
 import store from '../store';
 import {storeAuditLogging} from '../store/actions/logging.actions';
+import {generateDigest} from '../utils';
 
 export const getVerifiableCredentialsFromStorage = async (opts?: {
   regulationTypes?: RegulationType[];
@@ -40,15 +41,18 @@ export const getVerifiableCredentialsFromStorage = async (opts?: {
 };
 
 export const storeVerifiableCredential = async (args: IStoreVerifiableCredentialArgs): Promise<DigitalCredential> => {
-  const {vc, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
+  const {vc, kmsKeyRef, credentialRole, issuerCorrelationId, issuerCorrelationType}: IStoreVerifiableCredentialArgs = args;
   const rawDocument = typeof vc === 'string' ? vc : JSON.stringify(vc);
+  const uniformDocument = CredentialMapper.toUniformCredential(vc as W3CVerifiableCredential, {hasher: generateDigest});
+  const sub = (Array.isArray(uniformDocument.credentialSubject) ? uniformDocument.credentialSubject?.[0]?.id : uniformDocument.credentialSubject?.id);
+
   const addCredential: AddDigitalCredential = {
     rawDocument: rawDocument,
     issuerCorrelationId: issuerCorrelationId,
     issuerCorrelationType: issuerCorrelationType,
     credentialRole: credentialRole,
-    kmsKeyRef: 'FIXME', // FIXME Funke
-    identifierMethod: 'jwk', // FIXME Funke
+    kmsKeyRef,
+    identifierMethod: (sub?.startsWith('did:') ?? issuerCorrelationId.startsWith('did:')) ? 'did'  : 'jwk',
   };
   return agent.crsAddCredential({credential: addCredential});
 };

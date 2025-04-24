@@ -16,6 +16,13 @@ import com.sphereon.musap.MusapBridgeAndroid
 import com.sphereon.musap.MusapPackage
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.SSLContext
 
 @OptIn(ExperimentalStdlibApi::class)
 @kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -63,6 +70,7 @@ class MainApplication : Application(), ReactApplication {
         }
         ApplicationLifecycleDispatcher.onApplicationCreate(this)
     }
+
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)

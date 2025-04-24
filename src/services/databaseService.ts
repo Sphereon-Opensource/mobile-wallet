@@ -1,6 +1,6 @@
 import {DataSources} from '@sphereon/ssi-sdk.agent-config';
 import {OrPromise} from '@veramo/utils';
-import {DataSource} from 'typeorm';
+import {DataSource} from 'typeorm/browser';
 import {DB_CONNECTION_NAME, sqliteConfig} from '../@config/database';
 
 export const getDbConnection = async (dbName: string): Promise<DataSource> => {

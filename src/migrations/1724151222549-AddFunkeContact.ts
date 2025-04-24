@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from 'typeorm';
+import {MigrationInterface, QueryRunner} from 'typeorm/browser';
 
 export class AddFunkeContact1724151222549 implements MigrationInterface {
   name = 'AddFunkeContact1724151222549';

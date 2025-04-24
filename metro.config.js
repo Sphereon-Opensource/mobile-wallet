@@ -42,10 +42,12 @@ const config = {
   },
   resolver: {
     assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
-    sourceExts: [...defaultSourceExts, 'svg', 'cjs', 'json'],
+    sourceExts: [...defaultSourceExts, 'svg', 'mjs', 'cjs', 'json'],
     extraNodeModules: {
       // shim: path.resolve(__dirname, 'shim.js'),
       // 'react-native-quick-crypto': require.resolve('@sphereon/react-native-quick-crypto'),
+      // resolverMainFields: ['browser', 'main'],
+      // 'react-native-sqlite-storage': require.resolve('react-native-quick-sqlite/src/index.js'),
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),
       crypto: require.resolve('react-native-crypto'), // require.resolve('@sphereon/react-native-quick-crypto'),

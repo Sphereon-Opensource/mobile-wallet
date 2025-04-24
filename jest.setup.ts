@@ -5,7 +5,7 @@ import {migrations as VeramoDataStoreMigrations} from '@veramo/data-store/build/
 import {LogBox} from 'react-native';
 // include this line for mocking react-native-gesture-handler
 import 'react-native-gesture-handler/jestSetup';
-import {DataSource} from 'typeorm';
+import {DataSource} from 'typeorm/browser';
 import {SqliteConnectionOptions} from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import {TextDecoder, TextEncoder} from 'util';
 import Localization from './src/localization/Localization';

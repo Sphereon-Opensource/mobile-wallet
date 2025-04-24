@@ -1,4 +1,5 @@
 import PolyfillCrypto from 'react-native-webview-crypto'
+import 'cross-fetch/polyfill';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {backgroundColors} from '@sphereon/ui-components.core';

@@ -1,3 +1,4 @@
+import 'cross-fetch/polyfill';
 import {DEBUG} from 'react-native-dotenv';
 // import {install as installCrypto} from '@sphereon/react-native-quick-crypto';
 if (typeof global.crypto === 'undefined') {
