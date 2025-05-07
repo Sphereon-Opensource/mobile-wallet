@@ -3438,16 +3438,20 @@
     qs "^6.11.2"
     uint8arrays "^3.1.1"
 
-"@sphereon/did-provider-oyd@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.28.1-feature.oyd.cmsm.improv.16.tgz#ffc06bad24fc6c22c5a96048b1425999f8fe5b5a"
-  integrity sha512-xl3cwrwqd0flZZlikKrsNapzXrn0rohq/PCsrSY14twdTpNjkb8lZpQUplrMhmlTzKKUm6VgmO35AKfOBatN1w==
+"@sphereon/did-provider-oyd@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/did-provider-oyd/-/did-provider-oyd-0.28.1-feature.oyd.cmsm.improv.21.tgz#c86d54b5aad4854ea926e35ad0604bdde8bda4fa"
+  integrity sha512-YcjVAXap/zbbiVs/OuM+1N5cJZLzCMTWYBlFYpfxbgVPLpvE6aAXfmgvfzUKP1coUzoMkipp2qt4D9s75OG2hA==
   dependencies:
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
     cross-fetch "^4.0.0"
     debug "^4.3.3"
     did-resolver "^4.1.0"
+    multibase "^4.0.6"
+    multicodec "^3.2.1"
+    uint8arrays "^3.1.1"
 
 "@sphereon/did-uni-client@^0.6.2", "@sphereon/did-uni-client@^0.6.3":
   version "0.6.3"
@@ -3585,14 +3589,14 @@
     nanoid "^3.3.7"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-provider-jwk@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-jwk/-/ssi-sdk-ext.did-provider-jwk-0.28.1-feature.oyd.cmsm.improv.16.tgz#a03d1ecc3a4464d608425a19d8ade27f2e9b258b"
-  integrity sha512-PzRAlv7y0K0+BwMUVO1xFPkhb8i4Wfy7stjuBIeccp8UU4hRCSVNJ7DXIqqT/DW1Jsar7qbk84HLP9Bxq/An6g==
+"@sphereon/ssi-sdk-ext.did-provider-jwk@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-jwk/-/ssi-sdk-ext.did-provider-jwk-0.28.1-feature.oyd.cmsm.improv.21.tgz#9da905d38154db8e9f0fa3e32780f0a9819d1688"
+  integrity sha512-X0eD+REgZ9uLU+1FYpnFB8deqLO24F0Vj9lOvZSh54DtB9bgplvHbb55VtrmmTk52NKYdOkH5Qt6CdoMX4x/jQ==
   dependencies:
     "@ethersproject/random" "^5.7.0"
-    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@stablelib/ed25519" "^1.0.3"
     "@veramo/core" "4.2.0"
@@ -3602,13 +3606,13 @@
     did-resolver "^4.1.0"
     elliptic "^6.5.4"
 
-"@sphereon/ssi-sdk-ext.did-provider-key@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-key/-/ssi-sdk-ext.did-provider-key-0.28.1-feature.oyd.cmsm.improv.16.tgz#794878b58bca8820a0504dcf6497c10887f3d356"
-  integrity sha512-mMPaVU6SX6c2N4xaXFyRZL1s+53980S5EyArsoZyzV7msBSzfQIMUDMTskuzvz3bpoiitL5e71i/z5M9f2IRVw==
+"@sphereon/ssi-sdk-ext.did-provider-key@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-provider-key/-/ssi-sdk-ext.did-provider-key-0.28.1-feature.oyd.cmsm.improv.21.tgz#ee48239644e309bab3360950c95c8d2283c6f036"
+  integrity sha512-Os4AGEv0zX1GTE3t3hL/AzWodkUbJGE21lOXA4zL7PumTJKACRgkEpcSyzxeD6C8/O0czEr/s+cNdQewt+1zQQ==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-resolver-key" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-resolver-key" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@transmute/did-key-bls12381" "0.3.0-unstable.10"
     "@veramo/core" "4.2.0"
     "@veramo/did-manager" "4.2.0"
@@ -3619,19 +3623,19 @@
     multicodec "^3.2.1"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-ebsi@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-ebsi/-/ssi-sdk-ext.did-resolver-ebsi-0.28.1-feature.oyd.cmsm.improv.16.tgz#b68b804259f6916128064ed1635fc63162bf9f95"
-  integrity sha512-J/NLXVyReFCFKxkOeqKR875VAIUkpi60U0vs+mazunl6i+ClnwSr/oZFfSwT6rLUDVqxWPFypNc31v7kmh3vaQ==
+"@sphereon/ssi-sdk-ext.did-resolver-ebsi@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-ebsi/-/ssi-sdk-ext.did-resolver-ebsi-0.28.1-feature.oyd.cmsm.improv.21.tgz#02403871e979d6a6171071a058e7766a98d42786"
+  integrity sha512-naIW4TA2S424sVdOecxa5XOaFfeo8QInD4Tlt9yCsTl7ftbLOS/Ktdl7uAhBbMexuk2v4cxGqbBId7hlQBscHA==
   dependencies:
     cross-fetch "^3.1.8"
     did-resolver "^4.1.0"
     dotenv "^16.3.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-jwk@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-jwk/-/ssi-sdk-ext.did-resolver-jwk-0.28.1-feature.oyd.cmsm.improv.16.tgz#709614fbaa8e01680a3dff7d3d6534b50d1dde46"
-  integrity sha512-MVZ5NSuwCpTrAxiv7tD/19Iuz+LNXM2zRCU+Uv/xeyWQJf8veLFGIJj7wxoH/LiifmnuT8bDHRMpHDPe4wmSUw==
+"@sphereon/ssi-sdk-ext.did-resolver-jwk@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-jwk/-/ssi-sdk-ext.did-resolver-jwk-0.28.1-feature.oyd.cmsm.improv.21.tgz#b30f96372a505ea58dee257718b7cd80e95477a0"
+  integrity sha512-ivHg2wdHujkJXii4PXOE//qOQM5Pih8bz+EAT9ybnjicSmmyu8hIY2UAYBdPbkv2x0ztvQ0guo/tt5z8F5js8Q==
   dependencies:
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     base64url "^3.0.1"
@@ -3639,12 +3643,12 @@
     did-resolver "^4.1.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.did-resolver-key@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.did-resolver-key@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-key/-/ssi-sdk-ext.did-resolver-key-0.28.1-feature.oyd.cmsm.improv.16.tgz#2f53184d7964a311960018e2907c9ad9eca270b3"
-  integrity sha512-h/+pC0animddGPBhcTkSVmi6OJ3P2+Z146o7yaOXQ6WsTXMsLg6aobTrS5T6psHQ3Kvp8jBZdEcsbcKU2uMqMg==
+"@sphereon/ssi-sdk-ext.did-resolver-key@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.did-resolver-key@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-resolver-key/-/ssi-sdk-ext.did-resolver-key-0.28.1-feature.oyd.cmsm.improv.21.tgz#eeea2c4c92a4232b01d2f6dd1997e25be2f1d2e2"
+  integrity sha512-J+sriGspvMf1AXulIFoEdjbTfLFYqIMbzpp5YmzanR8vUvyyd3qX7y9pq1j0neanbxaOLrjVIbf3YJY8rmHpGw==
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@stablelib/ed25519" "^1.0.3"
     bigint-mod-arith "^3.3.1"
     did-resolver "^4.1.0"
@@ -3656,16 +3660,16 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.28.0", "@sphereon/ssi-sdk-ext.did-utils@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.did-utils@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-utils/-/ssi-sdk-ext.did-utils-0.28.1-feature.oyd.cmsm.improv.16.tgz#efda1ffb03ed082703fce40179ca7e364a0ed227"
-  integrity sha512-IpecMbI0/RNTBfQHtnuO0OJ6RwcwJi3UaC7VU8/J8IFU6QnGeniZsPv9tok2Gi9JW7ZGA+pa1OclLa8Ub/IylA==
+"@sphereon/ssi-sdk-ext.did-utils@0.25.0", "@sphereon/ssi-sdk-ext.did-utils@0.28.0", "@sphereon/ssi-sdk-ext.did-utils@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.did-utils@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.did-utils/-/ssi-sdk-ext.did-utils-0.28.1-feature.oyd.cmsm.improv.21.tgz#85ece7a54ac5bcddb48b66d2308c36f35d27d82e"
+  integrity sha512-i9KEusXPm9z5HfIYxacAsHdHoZMDPy+r/tDkQSR9YAiMJ/fx3/nqexoMesi662F3O6us3tb2QqbUMl3L/mXcUQ==
   dependencies:
     "@ethersproject/networks" "^5.7.1"
     "@ethersproject/transactions" "^5.7.0"
     "@sphereon/did-uni-client" "^0.6.3"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-sdk.core" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
@@ -3710,14 +3714,14 @@
     pkijs "^3.2.4"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.identifier-resolution@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.identifier-resolution@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.identifier-resolution/-/ssi-sdk-ext.identifier-resolution-0.28.1-feature.oyd.cmsm.improv.16.tgz#91761c6396ee4e3890e13318d9ef36b71e9eff4f"
-  integrity sha512-S3qpbmRWyWMU/JsSw0HfDIKJEWtMLoptL5T4OyeZlMmSePjEfKpPUs8hK/MVvIm9FiBCyRAFUMxu22eblrGCKw==
+"@sphereon/ssi-sdk-ext.identifier-resolution@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.identifier-resolution@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.identifier-resolution/-/ssi-sdk-ext.identifier-resolution-0.28.1-feature.oyd.cmsm.improv.21.tgz#7b533123a7fe18f22d6fa78b4f80a090ae4e3130"
+  integrity sha512-/DkpbaFFjxtqGBiPES4g7732W4dS98+k7t3NPbl13cbgw5X57fZmi3RfwyVSRj3IEozvWLoTX12PHSmyWlyG+A==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-sdk.oidf-client" " 0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
@@ -3767,16 +3771,16 @@
     jwt-decode "^4.0.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.jwt-service@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.jwt-service/-/ssi-sdk-ext.jwt-service-0.28.1-feature.oyd.cmsm.improv.16.tgz#f893889f91912a0735f32387f67dc11993b1640d"
-  integrity sha512-6hv0uRmb1bPZuDclJCK7cEHzn2xMTI0Iv36/jXRGUaWw4Bkx9MXMA/Q75/ItTLIb0AAz9kBiRwqUV614x2HS8g==
+"@sphereon/ssi-sdk-ext.jwt-service@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.jwt-service/-/ssi-sdk-ext.jwt-service-0.28.1-feature.oyd.cmsm.improv.21.tgz#224fb3fd26ea5ffe93485991260090b7996d12de"
+  integrity sha512-gzkxxt/RVez8Jth3GxFAcaFnzp49osYMtVhcGMArJA777DrGPSR/Z5p2b3jYxbs/2h7uL/uhQ3iOU5r/ysi8PQ==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.identifier-resolution" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-manager" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.identifier-resolution" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-manager" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-sdk.agent-config" "0.30.2-feature.SDK.41.oidf.support.286"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@stablelib/random" "^1.0.2"
@@ -3787,24 +3791,24 @@
     jwt-decode "^4.0.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.key-manager@0.25.0", "@sphereon/ssi-sdk-ext.key-manager@0.28.0", "@sphereon/ssi-sdk-ext.key-manager@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.key-manager@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-manager/-/ssi-sdk-ext.key-manager-0.28.1-feature.oyd.cmsm.improv.16.tgz#c5994d82eeaad8587ead3bb93d6dd1562912f895"
-  integrity sha512-s4v1TRZyEcftLTBn3LCi5SYHuWY0Ynan9Tj6Lk/cF3/vOSYEv+yhkNfAeDEdiI5d28+kJnDUJGpykeEX0is+zg==
+"@sphereon/ssi-sdk-ext.key-manager@0.25.0", "@sphereon/ssi-sdk-ext.key-manager@0.28.0", "@sphereon/ssi-sdk-ext.key-manager@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.key-manager@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-manager/-/ssi-sdk-ext.key-manager-0.28.1-feature.oyd.cmsm.improv.21.tgz#c5cbb8b7f0739d30e86d2f0ed1623f8c59c27213"
+  integrity sha512-Zghig5XVv0KkuxaktHdKlBPYBanfr+/k10H72FQgY7+JEYXJ7fZM8mTBRkR7L3OXUtSOWr2aRZ1pZHPueSoYqg==
   dependencies:
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.28.0", "@sphereon/ssi-sdk-ext.key-utils@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.key-utils@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-utils/-/ssi-sdk-ext.key-utils-0.28.1-feature.oyd.cmsm.improv.16.tgz#e4279ddcd67f753de88b25baaaca4c70212a605c"
-  integrity sha512-n2aespKmL+hTabK+abZ4G1XNFxzpIAVnK6AUEDXhzFJGoQ4b9ozN78gIXuvwWhNoZa8y1VYBmq6mzwCKR7Ehdg==
+"@sphereon/ssi-sdk-ext.key-utils@0.25.0", "@sphereon/ssi-sdk-ext.key-utils@0.28.0", "@sphereon/ssi-sdk-ext.key-utils@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.key-utils@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.key-utils/-/ssi-sdk-ext.key-utils-0.28.1-feature.oyd.cmsm.improv.21.tgz#e75fef38b80984e4ccf12c91a891ff1980aeeaaf"
+  integrity sha512-QTf96u3818lDOzronCgAE6i4KVZrROSpqXnbJzVv064RXIif6SNK7g3giltNlVQ5UFW8BMyeQ7ErybMDwH7ZTA==
   dependencies:
     "@ethersproject/random" "^5.7.0"
     "@noble/curves" "1.7.0"
     "@noble/hashes" "1.6.1"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@stablelib/ed25519" "^1.0.3"
     "@trust/keyto" "^1.0.1"
@@ -3820,26 +3824,26 @@
     varint "^6.0.0"
     web-encoding "^1.1.5"
 
-"@sphereon/ssi-sdk-ext.kms-azure-rest-client@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-azure-rest-client/-/ssi-sdk-ext.kms-azure-rest-client-0.28.1-feature.oyd.cmsm.improv.16.tgz#8e7f5ef58c8ac2a9248432a3838dea2f54039938"
-  integrity sha512-XF7fwHCf3+nlmy7KPT/9GSUCPsrTKFkVLmbyX/MH4KqYBjtCF4FWxwSfDf44wRLqaSMqblrO94BcjwB+QZfarA==
+"@sphereon/ssi-sdk-ext.kms-azure-rest-client@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-azure-rest-client/-/ssi-sdk-ext.kms-azure-rest-client-0.28.1-feature.oyd.cmsm.improv.21.tgz#a6f7959668bef35f24e8626b5fb5833213dd2183"
+  integrity sha512-Op8EGXQOlfWBiMS6sWh/Eagv3AxnNtQsfdeXPeHR1yOT/db32jT44KYNJKfjiBgkWZ80nELQNYAflXO5Qat0MA==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.kms-local@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-local/-/ssi-sdk-ext.kms-local-0.28.1-feature.oyd.cmsm.improv.16.tgz#11727195e9892aca435356259dcb40c116aa75fb"
-  integrity sha512-A4gWF2aWKtJuZQFBYc/Od9PEmyMMEk4d2uI0VbHUU3qsO7CyjYGdwuW+Gbcz4u7DYGElAqC332UyNbf8DfRSwg==
+"@sphereon/ssi-sdk-ext.kms-local@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-local/-/ssi-sdk-ext.kms-local-0.28.1-feature.oyd.cmsm.improv.21.tgz#4001b6faaf7b4e41bbf9f04d729860ea660a5027"
+  integrity sha512-lFl1dZN/sFNd1PN6SoUafCb0zUIswonQs+cFjdSPtH6D4L2sX37RBOvL2k8zzBh+EPPqbVAQftD+HKsvYA52BA==
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.did-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@trust/keyto" "2.0.0-alpha1"
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
@@ -3847,14 +3851,14 @@
     elliptic "^6.5.4"
     uint8arrays "3.1.1"
 
-"@sphereon/ssi-sdk-ext.kms-musap-rn@0.28.1-feature.oyd.cmsm.improv.16":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-musap-rn/-/ssi-sdk-ext.kms-musap-rn-0.28.1-feature.oyd.cmsm.improv.16.tgz#73749d46905e38a325c2ee6fea52c4e72b33fadc"
-  integrity sha512-4iVntj3bBnn9IwytwU3dsEegqVBYL6fEGafmbJrK7xXegc3YI7qsN4GO5ose0ptPUIWdxtw2LdCvMXIaE6vzYg==
+"@sphereon/ssi-sdk-ext.kms-musap-rn@0.28.1-feature.oyd.cmsm.improv.21":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.kms-musap-rn/-/ssi-sdk-ext.kms-musap-rn-0.28.1-feature.oyd.cmsm.improv.21.tgz#f3111b89bda83ae27b099f11a846de61e84e578c"
+  integrity sha512-a2nw7YpVfnI97MddhYHIynowH9AYo+fKPQS+0O8P//2i51p6OFRMfaImyWuz/YLNeTZFbyHq8IzAF7LYsa0F5A==
   dependencies:
     "@sphereon/musap-react-native" "0.2.1-next.170"
-    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
-    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.16+a254c6d"
+    "@sphereon/ssi-sdk-ext.key-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
+    "@sphereon/ssi-sdk-ext.x509-utils" "0.28.1-feature.oyd.cmsm.improv.21+d4f5d24"
     "@sphereon/ssi-types" "0.30.2-feature.SDK.41.oidf.support.286"
     "@veramo/core" "4.2.0"
     "@veramo/key-manager" "4.2.0"
@@ -3862,10 +3866,10 @@
     text-encoding "^0.7.0"
     uint8arrays "^3.1.1"
 
-"@sphereon/ssi-sdk-ext.x509-utils@0.25.0", "@sphereon/ssi-sdk-ext.x509-utils@0.28.0", "@sphereon/ssi-sdk-ext.x509-utils@0.28.1-feature.oyd.cmsm.improv.16", "@sphereon/ssi-sdk-ext.x509-utils@0.28.1-feature.oyd.cmsm.improv.16+a254c6d":
-  version "0.28.1-feature.oyd.cmsm.improv.16"
-  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.x509-utils/-/ssi-sdk-ext.x509-utils-0.28.1-feature.oyd.cmsm.improv.16.tgz#061d19c62d521a39c6db723139f13efee17b9c6d"
-  integrity sha512-MAzfF/p5qmwmprDPbFcqlbb5BXW6HMg8Nn5IywfSei8u1Rj+A4IY9updZ/2BamKK46UUIP5lor1rVT8hF8n5Dg==
+"@sphereon/ssi-sdk-ext.x509-utils@0.25.0", "@sphereon/ssi-sdk-ext.x509-utils@0.28.0", "@sphereon/ssi-sdk-ext.x509-utils@0.28.1-feature.oyd.cmsm.improv.21", "@sphereon/ssi-sdk-ext.x509-utils@0.28.1-feature.oyd.cmsm.improv.21+d4f5d24":
+  version "0.28.1-feature.oyd.cmsm.improv.21"
+  resolved "https://registry.yarnpkg.com/@sphereon/ssi-sdk-ext.x509-utils/-/ssi-sdk-ext.x509-utils-0.28.1-feature.oyd.cmsm.improv.21.tgz#fbbe39833a793cb19bbc0406b403fff9f3cd9137"
+  integrity sha512-46oM3c8lp5MEFzzJLt4+L3AbLjyCr23uj8wgf7aMHzzQaO5H586jNmhEAX1t5N7wNcfrgArLi1GIvp8J2pYrUw==
   dependencies:
     "@peculiar/asn1-schema" "^2.3.13"
     "@peculiar/asn1-x509" "^2.3.13"
