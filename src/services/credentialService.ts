@@ -1,5 +1,5 @@
-import {DocumentType, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store/src/types/ICredentialStore';
+import {DocumentType, OptionalUniqueDigitalCredential, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
 import {
   ActionType,
@@ -33,7 +33,7 @@ export const getVerifiableCredentialsFromStorage = async (opts?: {
 }): Promise<Array<UniqueDigitalCredential>> => {
   const regulationTypes = opts?.regulationTypes;
   const parentsOnly = opts?.parentsOnly ?? true;
-  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then(creds => {
+  return agent.crsGetUniqueCredentials({filter: [{documentType: DocumentType.VC}]}).then((creds: Array<UniqueDigitalCredential>) => {
     const filtered = creds
       .filter(cred => !regulationTypes || !cred.digitalCredential.regulationType || regulationTypes.includes(cred.digitalCredential.regulationType))
       .filter(cred => !parentsOnly || cred.digitalCredential.parentId === null || cred.digitalCredential.parentId === undefined); // filter out any instances
@@ -61,7 +61,7 @@ export const storeVerifiableCredential = async (args: IStoreVerifiableCredential
 export const getVerifiableCredential = async (args: IGetVerifiableCredentialArgs): Promise<UniqueDigitalCredential> => {
   const {credentialRole, hash} = args;
   try {
-    const uniqueCredential = await agent.crsGetUniqueCredentialByIdOrHash({credentialRole, idOrHash: hash});
+    const uniqueCredential: OptionalUniqueDigitalCredential = await agent.crsGetUniqueCredentialByIdOrHash({credentialRole, idOrHash: hash});
     if (uniqueCredential === undefined) {
       return Promise.reject(Error(`DigitalCredential with hash ${hash} was not found ${JSON.stringify(hash)}`));
     }

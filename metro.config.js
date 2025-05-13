@@ -46,7 +46,8 @@ const config = {
     extraNodeModules: {
       // shim: path.resolve(__dirname, 'shim.js'),
       // 'react-native-quick-crypto': require.resolve('@sphereon/react-native-quick-crypto'),
-      // resolverMainFields: ['browser', 'main'],
+      // resolverMainFields: ["react-native", "browser", "module", "main"],
+      typeorm: path.resolve(__dirname, "node_modules/typeorm/browser"),
       // 'react-native-sqlite-storage': require.resolve('react-native-quick-sqlite/src/index.js'),
       buffer: require.resolve('@craftzdog/react-native-buffer'),
       stream: require.resolve('readable-stream'),

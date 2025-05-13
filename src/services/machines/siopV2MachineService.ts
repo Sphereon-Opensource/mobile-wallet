@@ -35,7 +35,6 @@ import {
   SubSystem,
   System,
 } from '@sphereon/ssi-types';
-import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution/src/types/externalIdentifierTypes';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';

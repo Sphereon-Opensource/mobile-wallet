@@ -208,7 +208,6 @@ export const siopSendAuthorizationResponse = async (
         ? 'https://self-issued.me/v2/openid-vc'
         : 'https://self-issued.me/v2');
     debug(`NONCE: ${session.nonce}, domain: ${domain}`);
-    console.log(`#########$$$$$$$$$$$$$$$#############`);
 
     /*
 

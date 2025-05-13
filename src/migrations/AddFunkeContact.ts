@@ -1,4 +1,4 @@
-import {DatabaseType, MigrationInterface, QueryRunner} from 'typeorm/browser';
+import {DatabaseType, MigrationInterface, QueryRunner} from 'typeorm';
 import Debug from 'debug';
 import {AddFunkeContact1724151222549} from './1724151222549-AddFunkeContact';
 

@@ -26,6 +26,7 @@ module.exports = function (api) {
             'node:events': 'events',
             'node:string_decoder': 'string_decoder',
             'node:url': 'url',
+            'typeorm': 'typeorm/browser',
             'node:fs': 'expo-fs',
             fs: 'expo-fs',
             path: 'path-browserify',

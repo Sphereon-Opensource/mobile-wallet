@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner} from 'typeorm/browser';
+import {MigrationInterface, QueryRunner} from 'typeorm';
 
 export class AddTrustAnchorContacts1730209432321 implements MigrationInterface {
   name = 'AddTrustAnchorContacts1730209432321';

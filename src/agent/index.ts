@@ -10,14 +10,14 @@ import {CoseCryptoService} from '@sphereon/ssi-sdk.mdl-mdoc';
 import {createAgent} from '@veramo/core';
 import {OrPromise} from '@veramo/utils';
 import {Resolver} from 'did-resolver';
-import {DataSource} from 'typeorm/browser';
+import {DataSource} from 'typeorm';
 import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
 import {createAgentPlugins, sphereonKeyManager} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
-import {DefaultOydCmsmCallbacks} from '@sphereon/did-provider-oyd/dist/oyd-did-provider';
+import {DefaultOydCmsmCallbacks} from '@sphereon/did-provider-oyd';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';
 
 export const didResolver = new Resolver({

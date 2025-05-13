@@ -1,4 +1,4 @@
-import {DatabaseType, MigrationInterface, QueryRunner} from 'typeorm/browser';
+import {DatabaseType, MigrationInterface, QueryRunner} from 'typeorm';
 import Debug from 'debug';
 import {AddTrustAnchorContacts1730209432321} from './1730209432321-AddTrustAnchorContacts';
 

@@ -1,3 +1,4 @@
+// console.log("📦 typeorm resolves to:", require.resolve("typeorm"));
 import PolyfillCrypto from 'react-native-webview-crypto';
 import 'cross-fetch/polyfill';
 

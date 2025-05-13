@@ -4,9 +4,9 @@ import {PEX, SelectResults} from '@sphereon/pex';
 import {PEXOptions} from '@sphereon/pex/dist/main/lib/PEX';
 import {CredentialRole, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {DigitalCredential, NonPersistedDigitalCredential, nonPersistedDigitalCredentialEntityFromAddArgs} from '@sphereon/ssi-sdk.data-store';
-import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store/src/types/digitalCredential/digitalCredential';
+import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store'
 import {CredentialMapper, decodeMdocIssuerSigned, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import {MdocOid4vpIssuerSigned} from '@sphereon/ssi-types/src/types/mso_mdoc';
+import {MdocOid4vpIssuerSigned} from '@sphereon/ssi-types';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {generateDigest} from '../utils';
 import {getVerifiableCredentialsFromStorage} from './credentialService';

@@ -27,11 +27,10 @@ import {DidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-aut
 import {MachineStatePersistence, MachineStatePersistEventType} from '@sphereon/ssi-sdk.xstate-machine-persistence';
 import {ActionType, DefaultActionSubType, InitiatorType, LoggingEventType, LogLevel, OrPromise, SubSystem, System} from '@sphereon/ssi-types';
 import {IAgentPlugin, VerifiableCredential} from '@veramo/core';
-import {CredentialPlugin} from '@veramo/credential-w3c';
 import {DataStore, DataStoreORM, DIDStore, KeyStore} from '@veramo/data-store';
 import {DIDManager} from '@veramo/did-manager';
 import {DIDResolverPlugin} from '@veramo/did-resolver';
-import {DataSource} from 'typeorm/browser';
+import {DataSource} from 'typeorm';
 import {animoFunkeCert, funkeTestCA, sphereonCA, sphereonFunke} from '../@config/trustanchors';
 import {PIDIssuerPresentationSigning} from '../providers/authentication/funke/PIDIssuerPresentationSigning';
 import {dispatchIdentifier} from '../services/identityService';
@@ -49,6 +48,9 @@ import {mapPIDSecurityModelToKMS, PIDSecurityModel, storageGetMsisdnSync, storag
 import {MusapClient} from '@sphereon/musap-react-native';
 import {SphereonKeyManagementSystem} from '@sphereon/ssi-sdk-ext.kms-local';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {VcdmCredentialPlugin} from '@sphereon/ssi-sdk.credential-vcdm';
+import {CredentialProviderVcdm2Jose} from '@sphereon/ssi-sdk.credential-vcdm2-jose-provider';
+import {CredentialProviderJWT} from '@sphereon/ssi-sdk.credential-vcdm1-jwt-provider';
 
 export const oid4vciHolder = new OID4VCIHolder({
   onContactIdentityCreated: async (args: OnContactIdentityCreatedArgs): Promise<void> => {
@@ -156,6 +158,18 @@ const buildSphereonKeyManager = (dbConnection: Promise<DataSource> | DataSource)
   sphereonKeyManager.defaultKms = mapPIDSecurityModelToKMS(pidSecurityModel);
 };
 
+
+const vcdm2Jose = new CredentialProviderVcdm2Jose();
+/*const vcdmJsonld = new CredentialProviderJsonld({
+  contextMaps: [LdContexts],
+  suites: [
+    new SphereonEd25519Signature2018(),
+    new SphereonEd25519Signature2020(),
+  ],
+});*/
+const vcdm1Jwt = new CredentialProviderJWT();
+const issuers = [vcdm2Jose, vcdm1Jwt];
+
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   buildSphereonKeyManager(dbConnection);
 
@@ -186,23 +200,8 @@ export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<Data
     new IssuanceBranding({
       store: new IssuanceBrandingStore(dbConnection),
     }),
-    new CredentialPlugin(),
-    /* new CredentialHandlerLDLocal({
-       contextMaps: [LdContexts],
-       suites: [
-         new SphereonEd25519Signature2018(),
-         new SphereonEd25519Signature2020(),
-         // new SphereonBbsBlsSignature2020(),
-         new SphereonJsonWebSignature2020(),
-       ],
-       bindingOverrides: new Map([
-         ['verifyCredentialLD', MethodNames.verifyCredentialLDLocal],
-         ['verifyPresentationLD', MethodNames.verifyPresentationLDLocal],
-         ['createVerifiableCredentialLD', MethodNames.createVerifiableCredentialLDLocal],
-         ['createVerifiablePresentationLD', MethodNames.createVerifiablePresentationLDLocal],
-       ]),
-       keyStore: privateKeyStore,
-     }),*/
+
+    new VcdmCredentialPlugin({issuers}),
     new CredentialStore({store: new DigitalCredentialStore(dbConnection)}),
     oid4vciHolder,
     new MachineStatePersistence({
