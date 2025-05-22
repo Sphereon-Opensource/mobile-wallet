@@ -1,5 +1,5 @@
 import {Audio} from 'expo-av';
-import {FFmpegKit} from 'ffmpeg-kit-react-native';
+// import {FFmpegKit} from 'ffmpeg-kit-react-native';
 import {useState} from 'react';
 import RNFS from 'react-native-fs';
 
@@ -39,12 +39,13 @@ export const useRealtimeRecording = ({onData}: Props) => {
     if (!uri) {
       throw new Error('No recording URI found');
     }
-    const out = await convertTo24kHzMono(uri);
+   /* const out = await convertTo24kHzMono(uri);
     const outputData = await RNFS.readFile(out, 'base64');
-    onData(outputData);
+    onData(outputData);*/
   };
 
-  const convertTo24kHzMono = async (inputPath: string) => {
+  // FIXME: Disable audio recording, because FFMpeg react0native discontinued project and pulled all binaries, leaving a mess for implementer
+  /*const convertTo24kHzMono = async (inputPath: string) => {
     const outputPath = `${RNFS.DocumentDirectoryPath}/converted_audio.pcm`;
     const command = `-y -i ${inputPath} -ar 24000 -ac 1 -f s16le ${outputPath}`;
     const session = await FFmpegKit.execute(command);
@@ -54,7 +55,7 @@ export const useRealtimeRecording = ({onData}: Props) => {
       throw new Error('Conversion failed');
     }
     return outputPath;
-  };
+  };*/
 
   return {
     recording,

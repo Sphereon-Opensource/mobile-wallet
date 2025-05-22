@@ -5,7 +5,7 @@ import React, {useEffect, useState} from 'react';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 import {verticalScale} from 'react-native-size-matters';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
-import {useRealtimeRecording} from '../../../hooks/useRealtimeRecording';
+// import {useRealtimeRecording} from '../../../hooks/useRealtimeRecording';
 
 const ChatInputToolbar = (props: any) => {
   const {sendAudio} = useAssistant();
@@ -13,7 +13,7 @@ const ChatInputToolbar = (props: any) => {
 
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const {recording, startRecording, stopRecording} = useRealtimeRecording({
+ /* const {recording, startRecording, stopRecording} = useRealtimeRecording({
     onData: data => {
       try {
         sendAudio(data);
@@ -21,7 +21,7 @@ const ChatInputToolbar = (props: any) => {
         console.error('Failed to send audio', err);
       }
     },
-  });
+  });*/
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -37,13 +37,13 @@ const ChatInputToolbar = (props: any) => {
     };
   }, []);
 
-  const handleVoicePress = () => {
+ /* const handleVoicePress = () => {
     if (recording) {
       stopRecording();
     } else {
       startRecording();
     }
-  };
+  };*/
 
   return (
     <View
@@ -70,7 +70,7 @@ const ChatInputToolbar = (props: any) => {
         value={inputValue}
         onChangeText={text => setInputValue(text)}
       />
-      {!keyboardVisible && (
+     {/* {!keyboardVisible && (
         <TouchableOpacity
           style={{marginLeft: 8}}
           onPress={() => {
@@ -78,7 +78,7 @@ const ChatInputToolbar = (props: any) => {
           }}>
           <Ionicons name={recording ? 'stop-circle-outline' : 'mic-outline'} size={28} color={recording ? '#D74500' : fontColors.dark} />
         </TouchableOpacity>
-      )}
+      )}*/}
       {keyboardVisible && (
         <TouchableOpacity
           style={{position: 'absolute', right: 0, bottom: 0, height: 50, width: 50, display: 'flex', justifyContent: 'center', alignItems: 'center'}}

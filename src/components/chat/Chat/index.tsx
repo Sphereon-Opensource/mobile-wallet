@@ -18,10 +18,10 @@ type Props = {
 export const Chat = ({buttonPosition, screenContext, tools}: Props) => {
   const {openModal, setMessages} = useChat();
   const {
-    isVoiceRecording,
+  /*  isVoiceRecording,
     startVoiceRecording,
     endVoiceRecording,
-    enableVoiceMode,
+    enableVoiceMode,*/
     enableTextMode,
     chatMode,
     handleChatOpened,
