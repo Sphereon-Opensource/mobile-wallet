@@ -1,0 +1,32 @@
+diff --git a/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs b/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
+index abf8a89..4aa9f00 100644
+--- a/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
++++ b/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
+@@ -292,9 +292,12 @@ async function createObjects(config, pointers) {
+       npmModule = resolve(npmModule);
+     }
+     const resolvedArgs = args !== void 0 ? await resolveRefs(args) : [];
+-    console.error(`npmModule: ${npmModule}`);
++    console.log(`npmModule: ${npmModule}`);
++    return Promise.reject(Error("Agent-config dynammic loading disabled in RN")
++    /*@metro-ignore*/
++/*
+     return await Promise.resolve(await import(
+-      /*@metro-ignore*/
++      /!*@metro-ignore*!/
+       npmModule
+     ).then((mod) => {
+       if (member) {
+@@ -319,10 +322,11 @@ async function createObjects(config, pointers) {
+         return Promise.reject(Error(`Error creating ${npmModule}['${member}']: Object is undefined and pointer was present requiring an object.`));
+       }
+       return (0, import_jsonpointer.get)(object, pointer);
++
+     }).catch((e) => {
+       console.error(e);
+       return Promise.reject(Error(`Error creating ${npmModule}['${member}']: ${e.message}`));
+-    }));
++    })*/);
+   }
+   __name(objectFromConfig, "objectFromConfig");
+   async function objectFromPointer(pointer) {
