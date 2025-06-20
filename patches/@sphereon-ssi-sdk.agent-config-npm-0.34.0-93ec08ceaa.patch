@@ -1,7 +1,7 @@
-diff --git a/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs b/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
+diff --git a/dist/index.cjs b/dist/index.cjs
 index abf8a89..4aa9f00 100644
---- a/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
-+++ b/node_modules/@sphereon/ssi-sdk.agent-config/dist/index.cjs
+--- a/dist/index.cjs
++++ b/dist/index.cjs
 @@ -292,9 +292,12 @@ async function createObjects(config, pointers) {
        npmModule = resolve(npmModule);
      }
