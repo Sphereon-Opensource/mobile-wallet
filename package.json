@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "expo start --dev-client",
     "start:prod": "expo start --no-dev",
-    "android:dev": "expo run:android",
+    "android:dev": "expo run:android --variant debug",
     "android:prod": "expo run:android --variant release",
     "ios": "expo run:ios --device",
     "lint": "eslint .",
@@ -22,7 +22,7 @@
     "build:android:remote": "eas build -p android --profile preview",
     "build:android:production": "eas build -p android --profile production",
     "bundle:ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
-    "postinstall.back": "patch-package && rn-nodeify --install fs,os,path,assert,process,vm,crypto,url --hack --yarn",
+    "postinstall": "rn-nodeify --install fs,os,path,assert,process,vm,crypto,url --hack",
     "android": "expo run:android"
   },
   "dependencies": {
@@ -241,7 +241,6 @@
     "metro-config": "~0.80.8",
     "metro-react-native-babel-transformer": "^0.74.1",
     "metro-resolver": "~0.80.8",
-    "patch-package": "^8.0.0",
     "prettier": "^2.8.4",
     "react-native-dotenv": "^3.4.11",
     "react-test-renderer": "18.2.0",
@@ -339,6 +338,10 @@
     "@sphereon/musap-react-native": "0.2.1-next.183",
     "@sphereon/musap-native": "0.2.1-next.183",
     "expo-fs/expo-file-system": "~17.0.1",
+    "isomorphic-webcrypto": "link:./node_modules/@sphereon/isomorphic-webcrypto",
+    "jsonld": "link:./node_modules/@digitalcredentials/jsonld",
+    "security-context": "link:./node_modules/@digitalbazaar/security-context",
+    "@transmute/web-crypto-key-pair/@peculiar/webcrypto": "^1.1.6",
     "@peculiar/webcrypto": "1.4.5",
     "@sphereon/kmp-mdoc-core": "0.2.0-SNAPSHOT.27",
     "@sphereon/openid-federation-open-api": "0.1.1-unstable.0647eb6",
