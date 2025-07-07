@@ -118,7 +118,6 @@
     "expo-status-bar": "~1.12.1",
     "fast-text-encoding": "^1.0.6",
     "fbjs": "^3.0.5",
-    "ffmpeg-kit-react-native": "^6.0.2",
     "i18n-js": "^3.9.2",
     "jose": "^5.9.6",
     "jsonpath": "^1.1.1",
