@@ -138,6 +138,9 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  if(contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    trustedAnchors?.push('https://federation.demo.sphereon.com')
+  }
   const getContactsArgs = {
     filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
