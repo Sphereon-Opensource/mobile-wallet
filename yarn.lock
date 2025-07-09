@@ -5,7 +5,7 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@0no-co/graphql.web@npm:^1.0.5":
+"@0no-co/graphql.web@npm:^1.0.13":
   version: 1.1.2
   resolution: "@0no-co/graphql.web@npm:1.1.2"
   peerDependencies:
@@ -69,39 +69,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/compat-data@npm:^7.20.5, @babel/compat-data@npm:^7.22.6, @babel/compat-data@npm:^7.27.2":
-  version: 7.27.5
-  resolution: "@babel/compat-data@npm:7.27.5"
-  checksum: 10c0/da2751fcd0b58eea958f2b2f7ff7d6de1280712b709fa1ad054b73dc7d31f589e353bb50479b9dc96007935f3ed3cada68ac5b45ce93086b7122ddc32e60dc00
+"@babel/compat-data@npm:^7.20.5, @babel/compat-data@npm:^7.27.2, @babel/compat-data@npm:^7.27.7, @babel/compat-data@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/compat-data@npm:7.28.0"
+  checksum: 10c0/c4e527302bcd61052423f757355a71c3bc62362bac13f7f130de16e439716f66091ff5bdecda418e8fa0271d4c725f860f0ee23ab7bf6e769f7a8bb16dfcb531
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.20.0, @babel/core@npm:^7.20.2, @babel/core@npm:^7.21.3, @babel/core@npm:^7.23.9":
-  version: 7.27.4
-  resolution: "@babel/core@npm:7.27.4"
+"@babel/core@npm:^7.11.6, @babel/core@npm:^7.12.3, @babel/core@npm:^7.13.16, @babel/core@npm:^7.14.0, @babel/core@npm:^7.20.0, @babel/core@npm:^7.21.3, @babel/core@npm:^7.23.9, @babel/core@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/core@npm:7.28.0"
   dependencies:
     "@ampproject/remapping": "npm:^2.2.0"
     "@babel/code-frame": "npm:^7.27.1"
-    "@babel/generator": "npm:^7.27.3"
+    "@babel/generator": "npm:^7.28.0"
     "@babel/helper-compilation-targets": "npm:^7.27.2"
     "@babel/helper-module-transforms": "npm:^7.27.3"
-    "@babel/helpers": "npm:^7.27.4"
-    "@babel/parser": "npm:^7.27.4"
+    "@babel/helpers": "npm:^7.27.6"
+    "@babel/parser": "npm:^7.28.0"
     "@babel/template": "npm:^7.27.2"
-    "@babel/traverse": "npm:^7.27.4"
-    "@babel/types": "npm:^7.27.3"
+    "@babel/traverse": "npm:^7.28.0"
+    "@babel/types": "npm:^7.28.0"
     convert-source-map: "npm:^2.0.0"
     debug: "npm:^4.1.0"
     gensync: "npm:^1.0.0-beta.2"
     json5: "npm:^2.2.3"
     semver: "npm:^6.3.1"
-  checksum: 10c0/d2d17b106a8d91d3eda754bb3f26b53a12eb7646df73c2b2d2e9b08d90529186bc69e3823f70a96ec6e5719dc2372fb54e14ad499da47ceeb172d2f7008787b5
+  checksum: 10c0/423302e7c721e73b1c096217880272e02020dfb697a55ccca60ad01bba90037015f84d0c20c6ce297cf33a19bb704bc5c2b3d3095f5284dfa592bd1de0b9e8c3
   languageName: node
   linkType: hard
 
 "@babel/eslint-parser@npm:^7.18.2":
-  version: 7.27.5
-  resolution: "@babel/eslint-parser@npm:7.27.5"
+  version: 7.28.0
+  resolution: "@babel/eslint-parser@npm:7.28.0"
   dependencies:
     "@nicolo-ribaudo/eslint-scope-5-internals": "npm:5.1.1-v1"
     eslint-visitor-keys: "npm:^2.1.0"
@@ -109,7 +109,7 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.11.0
     eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/c1159946c0b41687945adbc7457f9c0895e0a439d59eb7020f03f08fb471ebf67ca9c6a799f667f869c93a846c627d709ec9da4b51afccd52be51f97ec26ddf0
+  checksum: 10c0/ca25b8ce38026f22ef875bf45a7bf96601446461d245dabfd8422c4e9d17a8fbe48149b97f5adc58147962118b22acf7f45c54effef8501232f88b3e5eb7c62e
   languageName: node
   linkType: hard
 
@@ -126,20 +126,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.20.0, @babel/generator@npm:^7.20.5, @babel/generator@npm:^7.27.3, @babel/generator@npm:^7.7.2":
-  version: 7.27.5
-  resolution: "@babel/generator@npm:7.27.5"
+"@babel/generator@npm:^7.20.0, @babel/generator@npm:^7.20.5, @babel/generator@npm:^7.28.0, @babel/generator@npm:^7.7.2":
+  version: 7.28.0
+  resolution: "@babel/generator@npm:7.28.0"
   dependencies:
-    "@babel/parser": "npm:^7.27.5"
-    "@babel/types": "npm:^7.27.3"
-    "@jridgewell/gen-mapping": "npm:^0.3.5"
-    "@jridgewell/trace-mapping": "npm:^0.3.25"
+    "@babel/parser": "npm:^7.28.0"
+    "@babel/types": "npm:^7.28.0"
+    "@jridgewell/gen-mapping": "npm:^0.3.12"
+    "@jridgewell/trace-mapping": "npm:^0.3.28"
     jsesc: "npm:^3.0.2"
-  checksum: 10c0/8f649ef4cd81765c832bb11de4d6064b035ffebdecde668ba7abee68a7b0bce5c9feabb5dc5bb8aeba5bd9e5c2afa3899d852d2bd9ca77a711ba8c8379f416f0
+  checksum: 10c0/1b3d122268ea3df50fde707ad864d9a55c72621357d5cebb972db3dd76859c45810c56e16ad23123f18f80cc2692f5a015d2858361300f0f224a05dc43d36a92
   languageName: node
   linkType: hard
 
-"@babel/helper-annotate-as-pure@npm:^7.27.1":
+"@babel/helper-annotate-as-pure@npm:^7.27.1, @babel/helper-annotate-as-pure@npm:^7.27.3":
   version: 7.27.3
   resolution: "@babel/helper-annotate-as-pure@npm:7.27.3"
   dependencies:
@@ -148,7 +148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-compilation-targets@npm:^7.20.7, @babel/helper-compilation-targets@npm:^7.22.6, @babel/helper-compilation-targets@npm:^7.27.1, @babel/helper-compilation-targets@npm:^7.27.2":
+"@babel/helper-compilation-targets@npm:^7.20.7, @babel/helper-compilation-targets@npm:^7.27.1, @babel/helper-compilation-targets@npm:^7.27.2":
   version: 7.27.2
   resolution: "@babel/helper-compilation-targets@npm:7.27.2"
   dependencies:
@@ -191,18 +191,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-define-polyfill-provider@npm:^0.6.3, @babel/helper-define-polyfill-provider@npm:^0.6.4":
-  version: 0.6.4
-  resolution: "@babel/helper-define-polyfill-provider@npm:0.6.4"
+"@babel/helper-define-polyfill-provider@npm:^0.6.5":
+  version: 0.6.5
+  resolution: "@babel/helper-define-polyfill-provider@npm:0.6.5"
   dependencies:
-    "@babel/helper-compilation-targets": "npm:^7.22.6"
-    "@babel/helper-plugin-utils": "npm:^7.22.5"
-    debug: "npm:^4.1.1"
+    "@babel/helper-compilation-targets": "npm:^7.27.2"
+    "@babel/helper-plugin-utils": "npm:^7.27.1"
+    debug: "npm:^4.4.1"
     lodash.debounce: "npm:^4.0.8"
-    resolve: "npm:^1.14.2"
+    resolve: "npm:^1.22.10"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10c0/b74f2b46e233a178618d19432bdae16e0137d0a603497ee901155e083c4a61f26fe01d79fb95d5f4c22131ade9d958d8f587088d412cca1302633587f070919d
+  checksum: 10c0/4886a068d9ca1e70af395340656a9dda33c50502c67eed39ff6451785f370bdfc6e57095b90cb92678adcd4a111ca60909af53d3a741120719c5604346ae409e
   languageName: node
   linkType: hard
 
@@ -212,6 +212,13 @@ __metadata:
   dependencies:
     "@babel/types": "npm:^7.24.7"
   checksum: 10c0/36ece78882b5960e2d26abf13cf15ff5689bf7c325b10a2895a74a499e712de0d305f8d78bb382dd3c05cfba7e47ec98fe28aab5674243e0625cd38438dd0b2d
+  languageName: node
+  linkType: hard
+
+"@babel/helper-globals@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/helper-globals@npm:7.28.0"
+  checksum: 10c0/5a0cd0c0e8c764b5f27f2095e4243e8af6fa145daea2b41b53c0c1414fe6ff139e3640f4e2207ae2b3d2153a1abd346f901c26c290ee7cb3881dd922d4ee9232
   languageName: node
   linkType: hard
 
@@ -257,7 +264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-plugin-utils@npm:^7.0.0, @babel/helper-plugin-utils@npm:^7.10.4, @babel/helper-plugin-utils@npm:^7.12.13, @babel/helper-plugin-utils@npm:^7.14.5, @babel/helper-plugin-utils@npm:^7.18.6, @babel/helper-plugin-utils@npm:^7.20.2, @babel/helper-plugin-utils@npm:^7.22.5, @babel/helper-plugin-utils@npm:^7.27.1, @babel/helper-plugin-utils@npm:^7.8.0":
+"@babel/helper-plugin-utils@npm:^7.0.0, @babel/helper-plugin-utils@npm:^7.10.4, @babel/helper-plugin-utils@npm:^7.12.13, @babel/helper-plugin-utils@npm:^7.14.5, @babel/helper-plugin-utils@npm:^7.18.6, @babel/helper-plugin-utils@npm:^7.20.2, @babel/helper-plugin-utils@npm:^7.27.1, @babel/helper-plugin-utils@npm:^7.8.0":
   version: 7.27.1
   resolution: "@babel/helper-plugin-utils@npm:7.27.1"
   checksum: 10c0/94cf22c81a0c11a09b197b41ab488d416ff62254ce13c57e62912c85700dc2e99e555225787a4099ff6bae7a1812d622c80fbaeda824b79baa10a6c5ac4cf69b
@@ -332,7 +339,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helpers@npm:^7.27.4":
+"@babel/helpers@npm:^7.27.6":
   version: 7.27.6
   resolution: "@babel/helpers@npm:7.27.6"
   dependencies:
@@ -354,14 +361,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.27.2, @babel/parser@npm:^7.27.4, @babel/parser@npm:^7.27.5":
-  version: 7.27.5
-  resolution: "@babel/parser@npm:7.27.5"
+"@babel/parser@npm:^7.1.0, @babel/parser@npm:^7.13.16, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.20.0, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.23.9, @babel/parser@npm:^7.27.2, @babel/parser@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/parser@npm:7.28.0"
   dependencies:
-    "@babel/types": "npm:^7.27.3"
+    "@babel/types": "npm:^7.28.0"
   bin:
     parser: ./bin/babel-parser.js
-  checksum: 10c0/f7faaebf21cc1f25d9ca8ac02c447ed38ef3460ea95be7ea760916dcf529476340d72a5a6010c6641d9ed9d12ad827c8424840277ec2295c5b082ba0f291220a
+  checksum: 10c0/c2ef81d598990fa949d1d388429df327420357cb5200271d0d0a2784f1e6d54afc8301eb8bdf96d8f6c77781e402da93c7dc07980fcc136ac5b9d5f1fce701b5
   languageName: node
   linkType: hard
 
@@ -438,7 +445,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-class-properties@npm:^7.0.0, @babel/plugin-proposal-class-properties@npm:^7.13.0, @babel/plugin-proposal-class-properties@npm:^7.18.0, @babel/plugin-proposal-class-properties@npm:^7.18.6":
+"@babel/plugin-proposal-class-properties@npm:^7.13.0, @babel/plugin-proposal-class-properties@npm:^7.18.0, @babel/plugin-proposal-class-properties@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/plugin-proposal-class-properties@npm:7.18.6"
   dependencies:
@@ -450,16 +457,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-decorators@npm:^7.12.9, @babel/plugin-proposal-decorators@npm:^7.18.10":
-  version: 7.27.1
-  resolution: "@babel/plugin-proposal-decorators@npm:7.27.1"
+"@babel/plugin-proposal-decorators@npm:^7.12.9, @babel/plugin-proposal-decorators@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-proposal-decorators@npm:7.28.0"
   dependencies:
     "@babel/helper-create-class-features-plugin": "npm:^7.27.1"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
     "@babel/plugin-syntax-decorators": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/3af0db6b2468907bcaf62246b2cfd3616ba9239ea1cd26036ec6baff1bc095fe4964853b1d29a79944d36e6e3d331cd130d05b0c41c835266daf7bb9d8e8f87c
+  checksum: 10c0/e399f3adc4278560d15fd80691c7a9b644f46e50fa90746f9f3b9ac02cf955ef2b6677277d97c97a4bd6d6a777821fdedf1318923632a439cba1c05e8e59246c
   languageName: node
   linkType: hard
 
@@ -486,7 +493,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-nullish-coalescing-operator@npm:^7.0.0, @babel/plugin-proposal-nullish-coalescing-operator@npm:^7.13.8, @babel/plugin-proposal-nullish-coalescing-operator@npm:^7.18.0":
+"@babel/plugin-proposal-nullish-coalescing-operator@npm:^7.13.8, @babel/plugin-proposal-nullish-coalescing-operator@npm:^7.18.0":
   version: 7.18.6
   resolution: "@babel/plugin-proposal-nullish-coalescing-operator@npm:7.18.6"
   dependencies:
@@ -510,7 +517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-object-rest-spread@npm:^7.0.0, @babel/plugin-proposal-object-rest-spread@npm:^7.20.0":
+"@babel/plugin-proposal-object-rest-spread@npm:^7.20.0":
   version: 7.20.7
   resolution: "@babel/plugin-proposal-object-rest-spread@npm:7.20.7"
   dependencies:
@@ -537,7 +544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-optional-chaining@npm:^7.0.0, @babel/plugin-proposal-optional-chaining@npm:^7.13.12, @babel/plugin-proposal-optional-chaining@npm:^7.20.0":
+"@babel/plugin-proposal-optional-chaining@npm:^7.13.12, @babel/plugin-proposal-optional-chaining@npm:^7.20.0":
   version: 7.21.0
   resolution: "@babel/plugin-proposal-optional-chaining@npm:7.21.0"
   dependencies:
@@ -593,7 +600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-class-properties@npm:^7.0.0, @babel/plugin-syntax-class-properties@npm:^7.12.13":
+"@babel/plugin-syntax-class-properties@npm:^7.12.13":
   version: 7.12.13
   resolution: "@babel/plugin-syntax-class-properties@npm:7.12.13"
   dependencies:
@@ -626,7 +633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-dynamic-import@npm:^7.0.0, @babel/plugin-syntax-dynamic-import@npm:^7.8.0":
+"@babel/plugin-syntax-dynamic-import@npm:^7.8.0":
   version: 7.8.3
   resolution: "@babel/plugin-syntax-dynamic-import@npm:7.8.3"
   dependencies:
@@ -648,7 +655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-flow@npm:^7.0.0, @babel/plugin-syntax-flow@npm:^7.12.1, @babel/plugin-syntax-flow@npm:^7.18.0, @babel/plugin-syntax-flow@npm:^7.27.1":
+"@babel/plugin-syntax-flow@npm:^7.12.1, @babel/plugin-syntax-flow@npm:^7.18.0, @babel/plugin-syntax-flow@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-syntax-flow@npm:7.27.1"
   dependencies:
@@ -659,7 +666,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-import-assertions@npm:^7.20.0, @babel/plugin-syntax-import-assertions@npm:^7.27.1":
+"@babel/plugin-syntax-import-assertions@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-syntax-import-assertions@npm:7.27.1"
   dependencies:
@@ -703,7 +710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-jsx@npm:^7.0.0, @babel/plugin-syntax-jsx@npm:^7.27.1, @babel/plugin-syntax-jsx@npm:^7.7.2":
+"@babel/plugin-syntax-jsx@npm:^7.27.1, @babel/plugin-syntax-jsx@npm:^7.7.2":
   version: 7.27.1
   resolution: "@babel/plugin-syntax-jsx@npm:7.27.1"
   dependencies:
@@ -747,7 +754,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-object-rest-spread@npm:^7.0.0, @babel/plugin-syntax-object-rest-spread@npm:^7.8.3":
+"@babel/plugin-syntax-object-rest-spread@npm:^7.8.3":
   version: 7.8.3
   resolution: "@babel/plugin-syntax-object-rest-spread@npm:7.8.3"
   dependencies:
@@ -836,20 +843,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-async-generator-functions@npm:^7.27.1":
-  version: 7.27.1
-  resolution: "@babel/plugin-transform-async-generator-functions@npm:7.27.1"
+"@babel/plugin-transform-async-generator-functions@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-async-generator-functions@npm:7.28.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
     "@babel/helper-remap-async-to-generator": "npm:^7.27.1"
-    "@babel/traverse": "npm:^7.27.1"
+    "@babel/traverse": "npm:^7.28.0"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/772e449c69ee42a466443acefb07083bd89efb1a1d95679a4dc99ea3be9d8a3c43a2b74d2da95d7c818e9dd9e0b72bfa7c03217a1feaf108f21b7e542f0943c0
+  checksum: 10c0/739d577e649d7d7b9845dc309e132964327ab3eaea43ad04d04a7dcb977c63f9aa9a423d1ca39baf10939128d02f52e6fda39c834fb9f1753785b1497e72c4dc
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-async-to-generator@npm:^7.0.0, @babel/plugin-transform-async-to-generator@npm:^7.20.0, @babel/plugin-transform-async-to-generator@npm:^7.27.1":
+"@babel/plugin-transform-async-to-generator@npm:^7.20.0, @babel/plugin-transform-async-to-generator@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-async-to-generator@npm:7.27.1"
   dependencies:
@@ -862,7 +869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-block-scoped-functions@npm:^7.0.0, @babel/plugin-transform-block-scoped-functions@npm:^7.27.1":
+"@babel/plugin-transform-block-scoped-functions@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-block-scoped-functions@npm:7.27.1"
   dependencies:
@@ -873,14 +880,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-block-scoping@npm:^7.0.0, @babel/plugin-transform-block-scoping@npm:^7.27.1":
-  version: 7.27.5
-  resolution: "@babel/plugin-transform-block-scoping@npm:7.27.5"
+"@babel/plugin-transform-block-scoping@npm:^7.0.0, @babel/plugin-transform-block-scoping@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-block-scoping@npm:7.28.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/5c1a61f312f18d3807c4df25868161301a7bd0807092b86951fa6b9918e07ee382d58d61a204c3f9ad0b72b8f6f1d18586f8e485c355a3e959c26a070397e95e
+  checksum: 10c0/787d85e72a92917e735aa54e23062fa777031f8a07046e67f5026eff3d91e64eb535575dd1df917b0011bee014ae51287478af14c1d4ba60bc81e326bc044cfc
   languageName: node
   linkType: hard
 
@@ -896,7 +903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-class-static-block@npm:^7.26.0, @babel/plugin-transform-class-static-block@npm:^7.27.1":
+"@babel/plugin-transform-class-static-block@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-class-static-block@npm:7.27.1"
   dependencies:
@@ -908,19 +915,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-classes@npm:^7.0.0, @babel/plugin-transform-classes@npm:^7.27.1":
-  version: 7.27.1
-  resolution: "@babel/plugin-transform-classes@npm:7.27.1"
+"@babel/plugin-transform-classes@npm:^7.0.0, @babel/plugin-transform-classes@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-classes@npm:7.28.0"
   dependencies:
-    "@babel/helper-annotate-as-pure": "npm:^7.27.1"
-    "@babel/helper-compilation-targets": "npm:^7.27.1"
+    "@babel/helper-annotate-as-pure": "npm:^7.27.3"
+    "@babel/helper-compilation-targets": "npm:^7.27.2"
+    "@babel/helper-globals": "npm:^7.28.0"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
     "@babel/helper-replace-supers": "npm:^7.27.1"
-    "@babel/traverse": "npm:^7.27.1"
-    globals: "npm:^11.1.0"
+    "@babel/traverse": "npm:^7.28.0"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/1071f4cb1ed5deb5e6f8d0442f2293a540cac5caa5ab3c25ad0571aadcbf961f61e26d367a67894976165a543e02f3a19e40b63b909afbed6e710801a590635c
+  checksum: 10c0/3b213b43104fe99dd7e79401a86d09e545836e057a70ffe77e8196a87bf67ae167e502ae90afdf0d1a2be683be5652514aaeda743bd984e583523dd8ecfef887
   languageName: node
   linkType: hard
 
@@ -936,14 +943,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-destructuring@npm:^7.0.0, @babel/plugin-transform-destructuring@npm:^7.20.0, @babel/plugin-transform-destructuring@npm:^7.27.1, @babel/plugin-transform-destructuring@npm:^7.27.3":
-  version: 7.27.3
-  resolution: "@babel/plugin-transform-destructuring@npm:7.27.3"
+"@babel/plugin-transform-destructuring@npm:^7.20.0, @babel/plugin-transform-destructuring@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-destructuring@npm:7.28.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
+    "@babel/traverse": "npm:^7.28.0"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/f8ac96deef6f9a4cb1dff148dfa2a43116ca1c48434bba433964498c4ef5cef5557693b47463e64a71ffaaf10191c7fab0270844e8dbdc47dc4d120435025df5
+  checksum: 10c0/cc7ccafa952b3ff7888544d5688cfafaba78c69ce1e2f04f3233f4f78c9de5e46e9695f5ea42c085b0c0cfa39b10f366d362a2be245b6d35b66d3eb1d427ccb2
   languageName: node
   linkType: hard
 
@@ -993,6 +1001,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-explicit-resource-management@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-explicit-resource-management@npm:7.28.0"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.27.1"
+    "@babel/plugin-transform-destructuring": "npm:^7.28.0"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 10c0/3baa706af3112adf2ae0c7ec0dc61b63dd02695eb5582f3c3a2b2d05399c6aa7756f55e7bbbd5412e613a6ba1dd6b6736904074b4d7ebd6b45a1e3f9145e4094
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-exponentiation-operator@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-exponentiation-operator@npm:7.27.1"
@@ -1015,7 +1035,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-flow-strip-types@npm:^7.0.0, @babel/plugin-transform-flow-strip-types@npm:^7.20.0, @babel/plugin-transform-flow-strip-types@npm:^7.21.0, @babel/plugin-transform-flow-strip-types@npm:^7.27.1":
+"@babel/plugin-transform-flow-strip-types@npm:^7.20.0, @babel/plugin-transform-flow-strip-types@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-flow-strip-types@npm:7.27.1"
   dependencies:
@@ -1027,7 +1047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-for-of@npm:^7.0.0, @babel/plugin-transform-for-of@npm:^7.27.1":
+"@babel/plugin-transform-for-of@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-for-of@npm:7.27.1"
   dependencies:
@@ -1085,7 +1105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-member-expression-literals@npm:^7.0.0, @babel/plugin-transform-member-expression-literals@npm:^7.27.1":
+"@babel/plugin-transform-member-expression-literals@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-member-expression-literals@npm:7.27.1"
   dependencies:
@@ -1108,7 +1128,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-modules-commonjs@npm:^7.0.0, @babel/plugin-transform-modules-commonjs@npm:^7.13.8, @babel/plugin-transform-modules-commonjs@npm:^7.26.3, @babel/plugin-transform-modules-commonjs@npm:^7.27.1":
+"@babel/plugin-transform-modules-commonjs@npm:^7.0.0, @babel/plugin-transform-modules-commonjs@npm:^7.13.8, @babel/plugin-transform-modules-commonjs@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-modules-commonjs@npm:7.27.1"
   dependencies:
@@ -1191,21 +1211,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-object-rest-spread@npm:^7.12.13, @babel/plugin-transform-object-rest-spread@npm:^7.27.2":
-  version: 7.27.3
-  resolution: "@babel/plugin-transform-object-rest-spread@npm:7.27.3"
+"@babel/plugin-transform-object-rest-spread@npm:^7.12.13, @babel/plugin-transform-object-rest-spread@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-object-rest-spread@npm:7.28.0"
   dependencies:
     "@babel/helper-compilation-targets": "npm:^7.27.2"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
-    "@babel/plugin-transform-destructuring": "npm:^7.27.3"
-    "@babel/plugin-transform-parameters": "npm:^7.27.1"
+    "@babel/plugin-transform-destructuring": "npm:^7.28.0"
+    "@babel/plugin-transform-parameters": "npm:^7.27.7"
+    "@babel/traverse": "npm:^7.28.0"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/f2d04f59f773a9480bbaabd082fecdb5fb2b6ae5e77147ae8df34a8b773b6148d0c4260d2beaa4755eb5f548a105f2069124b9cea96f9387128656cbb0730ee4
+  checksum: 10c0/360dc6fd5285ee5e1d3be8a1fb0decd120b2a1726800317b4ab48b7c91616247030239b7fa06ceaa1a8a586fde1e143c24d45f8d41956876099d97d664f8ef1e
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-object-super@npm:^7.0.0, @babel/plugin-transform-object-super@npm:^7.27.1":
+"@babel/plugin-transform-object-super@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-object-super@npm:7.27.1"
   dependencies:
@@ -1240,14 +1261,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-parameters@npm:^7.0.0, @babel/plugin-transform-parameters@npm:^7.20.7, @babel/plugin-transform-parameters@npm:^7.22.15, @babel/plugin-transform-parameters@npm:^7.27.1":
-  version: 7.27.1
-  resolution: "@babel/plugin-transform-parameters@npm:7.27.1"
+"@babel/plugin-transform-parameters@npm:^7.0.0, @babel/plugin-transform-parameters@npm:^7.20.7, @babel/plugin-transform-parameters@npm:^7.22.15, @babel/plugin-transform-parameters@npm:^7.27.7":
+  version: 7.27.7
+  resolution: "@babel/plugin-transform-parameters@npm:7.27.7"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/453a9618735eeff5551d4c7f02c250606586fe1dd210ec9f69a4f15629ace180cd944339ebff2b0f11e1a40567d83a229ba1c567620e70b2ebedea576e12196a
+  checksum: 10c0/f2da3804e047d9f1cfb27be6c014e2c7f6cf5e1e38290d1cb3cb2607859e3d6facb4ee8c8c1e336e9fbb440091a174ce95ce156582d7e8bf9c0e735d11681f0f
   languageName: node
   linkType: hard
 
@@ -1276,7 +1297,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-property-literals@npm:^7.0.0, @babel/plugin-transform-property-literals@npm:^7.27.1":
+"@babel/plugin-transform-property-literals@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-property-literals@npm:7.27.1"
   dependencies:
@@ -1288,13 +1309,13 @@ __metadata:
   linkType: hard
 
 "@babel/plugin-transform-react-display-name@npm:^7.0.0, @babel/plugin-transform-react-display-name@npm:^7.27.1":
-  version: 7.27.1
-  resolution: "@babel/plugin-transform-react-display-name@npm:7.27.1"
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-react-display-name@npm:7.28.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/6cd474b5fb30a2255027d8fc19975aee1c1da54dd8bc8b79802676096182ca4136302ce65a24fbb277f8fe30f266006bbf327ef6be2846d3681eb57509744125
+  checksum: 10c0/f5f86d2ad92be3e962158f344c2e385e23e2dfae7c8c7dc32138fb2cc46f63f5e50386c9f6c6fc16dbf1792c7bb650ad92c18203d0c2c0bd875bc28b0b80ef30
   languageName: node
   linkType: hard
 
@@ -1358,14 +1379,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-regenerator@npm:^7.27.1":
-  version: 7.27.5
-  resolution: "@babel/plugin-transform-regenerator@npm:7.27.5"
+"@babel/plugin-transform-regenerator@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-regenerator@npm:7.28.0"
   dependencies:
     "@babel/helper-plugin-utils": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/4ace8ced76b421cd44dd9fa08bebc2f3fd76ec84e532cd1027738f411afdbc239789edd6c96dd1db412fc4a42cead5c1ac98a8aef94f35102f5de1049e64c07a
+  checksum: 10c0/c6a416221044b4547a81945baefa309f635d35b06e90344e4a896e512b636446552cef4a72b4dc3033dc507a28ee76ddf112ca63728c0a90da8ae7498b410ada
   languageName: node
   linkType: hard
 
@@ -1393,18 +1414,18 @@ __metadata:
   linkType: hard
 
 "@babel/plugin-transform-runtime@npm:^7.0.0":
-  version: 7.27.4
-  resolution: "@babel/plugin-transform-runtime@npm:7.27.4"
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-runtime@npm:7.28.0"
   dependencies:
     "@babel/helper-module-imports": "npm:^7.27.1"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
-    babel-plugin-polyfill-corejs2: "npm:^0.4.10"
-    babel-plugin-polyfill-corejs3: "npm:^0.11.0"
-    babel-plugin-polyfill-regenerator: "npm:^0.6.1"
+    babel-plugin-polyfill-corejs2: "npm:^0.4.14"
+    babel-plugin-polyfill-corejs3: "npm:^0.13.0"
+    babel-plugin-polyfill-regenerator: "npm:^0.6.5"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/7d4683410b8d04483e666baf150faeefa6525acf9c53c8631d9bb7c49271fabe4817dad6284a7a8c54c92ce1f24a69cd62f56782bb9bd35135c9933b1c5362ed
+  checksum: 10c0/71eba1e6aaafacb2ec0fd468394c7aeaff32265b21424bd9b2d963368a4a5260547e06976bb34e2553a7179463c3a3a4c2a4552256b5112c8b7dcadb7bd5bb07
   languageName: node
   linkType: hard
 
@@ -1442,7 +1463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-template-literals@npm:^7.0.0, @babel/plugin-transform-template-literals@npm:^7.0.0-0, @babel/plugin-transform-template-literals@npm:^7.27.1":
+"@babel/plugin-transform-template-literals@npm:^7.0.0-0, @babel/plugin-transform-template-literals@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-template-literals@npm:7.27.1"
   dependencies:
@@ -1465,17 +1486,17 @@ __metadata:
   linkType: hard
 
 "@babel/plugin-transform-typescript@npm:^7.27.1, @babel/plugin-transform-typescript@npm:^7.5.0":
-  version: 7.27.1
-  resolution: "@babel/plugin-transform-typescript@npm:7.27.1"
+  version: 7.28.0
+  resolution: "@babel/plugin-transform-typescript@npm:7.28.0"
   dependencies:
-    "@babel/helper-annotate-as-pure": "npm:^7.27.1"
+    "@babel/helper-annotate-as-pure": "npm:^7.27.3"
     "@babel/helper-create-class-features-plugin": "npm:^7.27.1"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
     "@babel/helper-skip-transparent-expression-wrappers": "npm:^7.27.1"
     "@babel/plugin-syntax-typescript": "npm:^7.27.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/48f1db5de17a0f9fc365ff4fb046010aedc7aad813a7aa42fb73fcdab6442f9e700dde2cc0481086e01b0dae662ae4d3e965a52cde154f0f146d243a8ac68e93
+  checksum: 10c0/049c2bd3407bbf5041d8c95805a4fadee6d176e034f6b94ce7967b92a846f1e00f323cf7dfbb2d06c93485f241fb8cf4c10520e30096a6059d251b94e80386e9
   languageName: node
   linkType: hard
 
@@ -1526,11 +1547,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.20.2":
-  version: 7.27.2
-  resolution: "@babel/preset-env@npm:7.27.2"
+"@babel/preset-env@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/preset-env@npm:7.28.0"
   dependencies:
-    "@babel/compat-data": "npm:^7.27.2"
+    "@babel/compat-data": "npm:^7.28.0"
     "@babel/helper-compilation-targets": "npm:^7.27.2"
     "@babel/helper-plugin-utils": "npm:^7.27.1"
     "@babel/helper-validator-option": "npm:^7.27.1"
@@ -1544,19 +1565,20 @@ __metadata:
     "@babel/plugin-syntax-import-attributes": "npm:^7.27.1"
     "@babel/plugin-syntax-unicode-sets-regex": "npm:^7.18.6"
     "@babel/plugin-transform-arrow-functions": "npm:^7.27.1"
-    "@babel/plugin-transform-async-generator-functions": "npm:^7.27.1"
+    "@babel/plugin-transform-async-generator-functions": "npm:^7.28.0"
     "@babel/plugin-transform-async-to-generator": "npm:^7.27.1"
     "@babel/plugin-transform-block-scoped-functions": "npm:^7.27.1"
-    "@babel/plugin-transform-block-scoping": "npm:^7.27.1"
+    "@babel/plugin-transform-block-scoping": "npm:^7.28.0"
     "@babel/plugin-transform-class-properties": "npm:^7.27.1"
     "@babel/plugin-transform-class-static-block": "npm:^7.27.1"
-    "@babel/plugin-transform-classes": "npm:^7.27.1"
+    "@babel/plugin-transform-classes": "npm:^7.28.0"
     "@babel/plugin-transform-computed-properties": "npm:^7.27.1"
-    "@babel/plugin-transform-destructuring": "npm:^7.27.1"
+    "@babel/plugin-transform-destructuring": "npm:^7.28.0"
     "@babel/plugin-transform-dotall-regex": "npm:^7.27.1"
     "@babel/plugin-transform-duplicate-keys": "npm:^7.27.1"
     "@babel/plugin-transform-duplicate-named-capturing-groups-regex": "npm:^7.27.1"
     "@babel/plugin-transform-dynamic-import": "npm:^7.27.1"
+    "@babel/plugin-transform-explicit-resource-management": "npm:^7.28.0"
     "@babel/plugin-transform-exponentiation-operator": "npm:^7.27.1"
     "@babel/plugin-transform-export-namespace-from": "npm:^7.27.1"
     "@babel/plugin-transform-for-of": "npm:^7.27.1"
@@ -1573,15 +1595,15 @@ __metadata:
     "@babel/plugin-transform-new-target": "npm:^7.27.1"
     "@babel/plugin-transform-nullish-coalescing-operator": "npm:^7.27.1"
     "@babel/plugin-transform-numeric-separator": "npm:^7.27.1"
-    "@babel/plugin-transform-object-rest-spread": "npm:^7.27.2"
+    "@babel/plugin-transform-object-rest-spread": "npm:^7.28.0"
     "@babel/plugin-transform-object-super": "npm:^7.27.1"
     "@babel/plugin-transform-optional-catch-binding": "npm:^7.27.1"
     "@babel/plugin-transform-optional-chaining": "npm:^7.27.1"
-    "@babel/plugin-transform-parameters": "npm:^7.27.1"
+    "@babel/plugin-transform-parameters": "npm:^7.27.7"
     "@babel/plugin-transform-private-methods": "npm:^7.27.1"
     "@babel/plugin-transform-private-property-in-object": "npm:^7.27.1"
     "@babel/plugin-transform-property-literals": "npm:^7.27.1"
-    "@babel/plugin-transform-regenerator": "npm:^7.27.1"
+    "@babel/plugin-transform-regenerator": "npm:^7.28.0"
     "@babel/plugin-transform-regexp-modifiers": "npm:^7.27.1"
     "@babel/plugin-transform-reserved-words": "npm:^7.27.1"
     "@babel/plugin-transform-shorthand-properties": "npm:^7.27.1"
@@ -1594,14 +1616,14 @@ __metadata:
     "@babel/plugin-transform-unicode-regex": "npm:^7.27.1"
     "@babel/plugin-transform-unicode-sets-regex": "npm:^7.27.1"
     "@babel/preset-modules": "npm:0.1.6-no-external-plugins"
-    babel-plugin-polyfill-corejs2: "npm:^0.4.10"
-    babel-plugin-polyfill-corejs3: "npm:^0.11.0"
-    babel-plugin-polyfill-regenerator: "npm:^0.6.1"
-    core-js-compat: "npm:^3.40.0"
+    babel-plugin-polyfill-corejs2: "npm:^0.4.14"
+    babel-plugin-polyfill-corejs3: "npm:^0.13.0"
+    babel-plugin-polyfill-regenerator: "npm:^0.6.5"
+    core-js-compat: "npm:^3.43.0"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 10c0/fd7ec310832a9ff26ed8d56bc0832cdbdb3a188e022050b74790796650649fb8373568af05b320b58b3ff922507979bad50ff95a4d504ab0081134480103504e
+  checksum: 10c0/f343103b8f0e8da5be4ae031aff8bf35da4764997af4af78ae9506f421b785dd45da1bc09f845b1fc308c8b7d134aead4a1f89e7fb6e213cd2f9fe1d2aa78bc9
   languageName: node
   linkType: hard
 
@@ -1677,7 +1699,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.27.6, @babel/runtime@npm:^7.9.2":
   version: 7.27.6
   resolution: "@babel/runtime@npm:7.27.6"
   checksum: 10c0/89726be83f356f511dcdb74d3ea4d873a5f0cf0017d4530cb53aa27380c01ca102d573eff8b8b77815e624b1f8c24e7f0311834ad4fb632c90a770fda00bd4c8
@@ -1695,28 +1717,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.20.0, @babel/traverse@npm:^7.27.1, @babel/traverse@npm:^7.27.3, @babel/traverse@npm:^7.27.4":
-  version: 7.27.4
-  resolution: "@babel/traverse@npm:7.27.4"
+"@babel/traverse@npm:^7.20.0, @babel/traverse@npm:^7.27.1, @babel/traverse@npm:^7.27.3, @babel/traverse@npm:^7.28.0":
+  version: 7.28.0
+  resolution: "@babel/traverse@npm:7.28.0"
   dependencies:
     "@babel/code-frame": "npm:^7.27.1"
-    "@babel/generator": "npm:^7.27.3"
-    "@babel/parser": "npm:^7.27.4"
+    "@babel/generator": "npm:^7.28.0"
+    "@babel/helper-globals": "npm:^7.28.0"
+    "@babel/parser": "npm:^7.28.0"
     "@babel/template": "npm:^7.27.2"
-    "@babel/types": "npm:^7.27.3"
+    "@babel/types": "npm:^7.28.0"
     debug: "npm:^4.3.1"
-    globals: "npm:^11.1.0"
-  checksum: 10c0/6de8aa2a0637a6ee6d205bf48b9e923928a02415771fdec60085ed754dcdf605e450bb3315c2552fa51c31a4662275b45d5ae4ad527ce55a7db9acebdbbbb8ed
+  checksum: 10c0/32794402457827ac558173bcebdcc0e3a18fa339b7c41ca35621f9f645f044534d91bb923ff385f5f960f2e495f56ce18d6c7b0d064d2f0ccb55b285fa6bc7b9
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.0.0, @babel/types@npm:^7.19.0, @babel/types@npm:^7.2.0, @babel/types@npm:^7.20.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.3, @babel/types@npm:^7.24.7, @babel/types@npm:^7.27.1, @babel/types@npm:^7.27.3, @babel/types@npm:^7.27.6, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4":
-  version: 7.27.6
-  resolution: "@babel/types@npm:7.27.6"
+"@babel/types@npm:^7.0.0, @babel/types@npm:^7.19.0, @babel/types@npm:^7.2.0, @babel/types@npm:^7.20.0, @babel/types@npm:^7.20.7, @babel/types@npm:^7.21.3, @babel/types@npm:^7.24.7, @babel/types@npm:^7.27.1, @babel/types@npm:^7.27.3, @babel/types@npm:^7.27.6, @babel/types@npm:^7.28.0, @babel/types@npm:^7.3.3, @babel/types@npm:^7.4.4":
+  version: 7.28.0
+  resolution: "@babel/types@npm:7.28.0"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.27.1"
     "@babel/helper-validator-identifier": "npm:^7.27.1"
-  checksum: 10c0/39d556be114f2a6d874ea25ad39826a9e3a0e98de0233ae6d932f6d09a4b222923a90a7274c635ed61f1ba49bbd345329226678800900ad1c8d11afabd573aaf
+  checksum: 10c0/7ca8521bf5e2d2ed4db31176efaaf94463a6b7a4d16dcc60e34e963b3596c2ecadb85457bebed13a9ee9a5829ef5f515d05b55a991b6a8f3b835451843482e39
   languageName: node
   linkType: hard
 
@@ -2676,13 +2698,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:^9.1.4":
-  version: 9.1.4
-  resolution: "@expo/json-file@npm:9.1.4"
+"@expo/json-file@npm:^9.1.5":
+  version: 9.1.5
+  resolution: "@expo/json-file@npm:9.1.5"
   dependencies:
     "@babel/code-frame": "npm:~7.10.4"
     json5: "npm:^2.2.3"
-  checksum: 10c0/43c68ba5316dc9b2e79a0a15fbfca60430f64181ae1d47f9627fd1f5b2f27b090a829125168290cbab8af72f0421bab941dbd855217fec4787bde921e6962a05
+  checksum: 10c0/989e3aa6d3e31a7f499d7979c6062694f2bc1fe1a4bc81b64aff74c39f27ed5f52098861897236cdc26b86186062560f3191814a2e8ff5b821a74a71d617f135
   languageName: node
   linkType: hard
 
@@ -2713,26 +2735,26 @@ __metadata:
   linkType: hard
 
 "@expo/osascript@npm:^2.0.31":
-  version: 2.2.4
-  resolution: "@expo/osascript@npm:2.2.4"
+  version: 2.2.5
+  resolution: "@expo/osascript@npm:2.2.5"
   dependencies:
     "@expo/spawn-async": "npm:^1.7.2"
     exec-async: "npm:^2.2.0"
-  checksum: 10c0/e8e9d6f6f4d78edc083fb50b291b4fd41cd408dfac7e60163555d7f1c3f528c3fd58e7cf2dcb837b697086629ebef40a47fcd3725ca006b8d9db863cc8fbd9b2
+  checksum: 10c0/1fd6d0ebb43eb09d57db02b4053dd4b1aa5ba341aebbe10c1b39afa03c4724c77778e2e5ed932fe2ff24724ff73f464789778ca9e964aea6dfe3481f3ffbf570
   languageName: node
   linkType: hard
 
 "@expo/package-manager@npm:^1.5.0":
-  version: 1.8.4
-  resolution: "@expo/package-manager@npm:1.8.4"
+  version: 1.8.6
+  resolution: "@expo/package-manager@npm:1.8.6"
   dependencies:
-    "@expo/json-file": "npm:^9.1.4"
+    "@expo/json-file": "npm:^9.1.5"
     "@expo/spawn-async": "npm:^1.7.2"
     chalk: "npm:^4.0.0"
     npm-package-arg: "npm:^11.0.0"
     ora: "npm:^3.4.0"
     resolve-workspace-root: "npm:^2.0.0"
-  checksum: 10c0/b55a68296dcc6f9af668436c8159e164370c34ada1e187866215fadf0e984b27a951e77b2d0ac192dbb759a86c9b31f1603feed6fcefe255af7a93b4291b636d
+  checksum: 10c0/2d2860016ce15a0c7c6d99bd3df28b0250ce277eae0120696c84ee3edae644524baa43be0874fe7a4796c39ff7ba9de23337360ab2e5fc1501e5da411345143f
   languageName: node
   linkType: hard
 
@@ -3206,14 +3228,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/gen-mapping@npm:^0.3.2, @jridgewell/gen-mapping@npm:^0.3.5":
-  version: 0.3.8
-  resolution: "@jridgewell/gen-mapping@npm:0.3.8"
+"@jridgewell/gen-mapping@npm:^0.3.12, @jridgewell/gen-mapping@npm:^0.3.2, @jridgewell/gen-mapping@npm:^0.3.5":
+  version: 0.3.12
+  resolution: "@jridgewell/gen-mapping@npm:0.3.12"
   dependencies:
-    "@jridgewell/set-array": "npm:^1.2.1"
-    "@jridgewell/sourcemap-codec": "npm:^1.4.10"
+    "@jridgewell/sourcemap-codec": "npm:^1.5.0"
     "@jridgewell/trace-mapping": "npm:^0.3.24"
-  checksum: 10c0/c668feaf86c501d7c804904a61c23c67447b2137b813b9ce03eca82cb9d65ac7006d766c218685d76e3d72828279b6ee26c347aa1119dab23fbaf36aed51585a
+  checksum: 10c0/32f771ae2467e4d440be609581f7338d786d3d621bac3469e943b9d6d116c23c4becb36f84898a92bbf2f3c0511365c54a945a3b86a83141547a2a360a5ec0c7
   languageName: node
   linkType: hard
 
@@ -3224,37 +3245,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/set-array@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@jridgewell/set-array@npm:1.2.1"
-  checksum: 10c0/2a5aa7b4b5c3464c895c802d8ae3f3d2b92fcbe84ad12f8d0bfbb1f5ad006717e7577ee1fd2eac00c088abe486c7adb27976f45d2941ff6b0b92b2c3302c60f4
-  languageName: node
-  linkType: hard
-
 "@jridgewell/source-map@npm:^0.3.3":
-  version: 0.3.6
-  resolution: "@jridgewell/source-map@npm:0.3.6"
+  version: 0.3.10
+  resolution: "@jridgewell/source-map@npm:0.3.10"
   dependencies:
     "@jridgewell/gen-mapping": "npm:^0.3.5"
     "@jridgewell/trace-mapping": "npm:^0.3.25"
-  checksum: 10c0/6a4ecc713ed246ff8e5bdcc1ef7c49aaa93f7463d948ba5054dda18b02dcc6a055e2828c577bcceee058f302ce1fc95595713d44f5c45e43d459f88d267f2f04
+  checksum: 10c0/cf6a51808bc710eb91a9e6c5e250c1af5714299c8de3db2b74e273a27ba7313f37c198ba332a512b7657fa23fed125c0147bfb1b925cadc9697a89cebecad0d8
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.14":
-  version: 1.5.0
-  resolution: "@jridgewell/sourcemap-codec@npm:1.5.0"
-  checksum: 10c0/2eb864f276eb1096c3c11da3e9bb518f6d9fc0023c78344cdc037abadc725172c70314bdb360f2d4b7bffec7f5d657ce006816bc5d4ecb35e61b66132db00c18
+"@jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.5.0":
+  version: 1.5.4
+  resolution: "@jridgewell/sourcemap-codec@npm:1.5.4"
+  checksum: 10c0/c5aab3e6362a8dd94ad80ab90845730c825fc4c8d9cf07ebca7a2eb8a832d155d62558800fc41d42785f989ddbb21db6df004d1786e8ecb65e428ab8dff71309
   languageName: node
   linkType: hard
 
-"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.24, @jridgewell/trace-mapping@npm:^0.3.25":
-  version: 0.3.25
-  resolution: "@jridgewell/trace-mapping@npm:0.3.25"
+"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.18, @jridgewell/trace-mapping@npm:^0.3.24, @jridgewell/trace-mapping@npm:^0.3.25, @jridgewell/trace-mapping@npm:^0.3.28":
+  version: 0.3.29
+  resolution: "@jridgewell/trace-mapping@npm:0.3.29"
   dependencies:
     "@jridgewell/resolve-uri": "npm:^3.1.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
-  checksum: 10c0/3d1ce6ebc69df9682a5a8896b414c6537e428a1d68b02fcc8363b04284a8ca0df04d0ee3013132252ab14f2527bc13bea6526a912ecb5658f0e39fd2860b4df4
+  checksum: 10c0/fb547ba31658c4d74eb17e7389f4908bf7c44cef47acb4c5baa57289daf68e6fe53c639f41f751b3923aca67010501264f70e7b49978ad1f040294b22c37b333
   languageName: node
   linkType: hard
 
@@ -3693,8 +3707,8 @@ __metadata:
   linkType: hard
 
 "@peculiar/x509@npm:^1.12.3":
-  version: 1.12.4
-  resolution: "@peculiar/x509@npm:1.12.4"
+  version: 1.13.0
+  resolution: "@peculiar/x509@npm:1.13.0"
   dependencies:
     "@peculiar/asn1-cms": "npm:^2.3.15"
     "@peculiar/asn1-csr": "npm:^2.3.15"
@@ -3707,7 +3721,7 @@ __metadata:
     reflect-metadata: "npm:^0.2.2"
     tslib: "npm:^2.8.1"
     tsyringe: "npm:^4.10.0"
-  checksum: 10c0/d85da2a8d21024817fe163e2e64abeb0a0a02693c2fe9f96c9d65812a9eff25ff679eecac4579a76f09f5d2e4e9a6dfb1642f26a9fca209003d77d70db861c5b
+  checksum: 10c0/94cfbb577a2d9b16b8b4c94fb08398d303d99d0921198cd31b79005616d9dd0e4987fc1257e884f27990244424df4b6661e4009b38038782938c801c7fe80770
   languageName: node
   linkType: hard
 
@@ -4589,11 +4603,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/did-provider-oyd@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/did-provider-oyd@npm:0.29.0"
+"@sphereon/did-provider-oyd@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/did-provider-oyd@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
     cross-fetch: "npm:^4.0.0"
@@ -4602,7 +4616,7 @@ __metadata:
     multibase: "npm:^4.0.6"
     multicodec: "npm:^3.2.1"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/5ade5b2ce5db851a883fa8eaaf73b03868675d6263eac4c018f9ccd79e74f1579a74c097c17ce414a2b1a353675860120e0514fc16705dd6ca866b113d5c88b3
+  checksum: 10c0/e3495c35a87d38d75e6f16b0f4e9ba756aea8a36e3b4c25f5e06fc61fdd17358e3338ee8d3046fab5a3a67a8b94e95c81414679f77cb072205dc5922e4fb71bd
   languageName: node
   linkType: hard
 
@@ -4767,17 +4781,17 @@ __metadata:
   dependencies:
     "@animo-id/expo-ausweis-sdk": "npm:0.0.1-alpha.14"
     "@astronautlabs/jsonpath": "npm:^1.1.2"
-    "@babel/core": "npm:^7.20.2"
+    "@babel/core": "npm:^7.28.0"
     "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
-    "@babel/plugin-proposal-decorators": "npm:^7.18.10"
+    "@babel/plugin-proposal-decorators": "npm:^7.28.0"
     "@babel/plugin-proposal-private-methods": "npm:^7.18.6"
     "@babel/plugin-syntax-bigint": "npm:^7.8.3"
-    "@babel/plugin-syntax-import-assertions": "npm:^7.20.0"
-    "@babel/plugin-transform-class-static-block": "npm:^7.26.0"
-    "@babel/plugin-transform-flow-strip-types": "npm:^7.21.0"
-    "@babel/plugin-transform-modules-commonjs": "npm:^7.26.3"
-    "@babel/preset-env": "npm:^7.20.2"
-    "@babel/runtime": "npm:^7.20.0"
+    "@babel/plugin-syntax-import-assertions": "npm:^7.27.1"
+    "@babel/plugin-transform-class-static-block": "npm:^7.27.1"
+    "@babel/plugin-transform-flow-strip-types": "npm:^7.27.1"
+    "@babel/plugin-transform-modules-commonjs": "npm:^7.27.1"
+    "@babel/preset-env": "npm:^7.28.0"
+    "@babel/runtime": "npm:^7.27.6"
     "@craftzdog/react-native-buffer": "npm:^6.1.0"
     "@digitalbazaar/security-context": "npm:^1.0.1"
     "@ethersproject/shims": "npm:^5.7.0"
@@ -4799,7 +4813,7 @@ __metadata:
     "@sd-jwt/types": "npm:^0.7.2"
     "@sphereon/did-auth-siop": "npm:0.19.0"
     "@sphereon/did-auth-siop-adapter": "npm:0.19.0"
-    "@sphereon/did-provider-oyd": "npm:0.29.0"
+    "@sphereon/did-provider-oyd": "npm:0.29.1-next.3"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.27"
     "@sphereon/musap-native": "npm:0.2.1-next.183"
     "@sphereon/musap-react-native": "npm:0.2.1-next.183"
@@ -4807,38 +4821,38 @@ __metadata:
     "@sphereon/oid4vci-common": "npm:0.19.0"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.29.0"
+    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.29.1-next.3"
     "@sphereon/ssi-sdk.agent-config": "patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm2-jose-provider": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.event-logger": "npm:0.34.0"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.0"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.0"
-    "@sphereon/ssi-sdk.oid4vci-holder": "npm:0.34.0"
-    "@sphereon/ssi-sdk.qr-code-generator": "npm:0.34.0"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.0"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.0"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.0"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.credential-vcdm2-jose-provider": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.event-logger": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.oid4vci-holder": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.qr-code-generator": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-next.3"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-next.3"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3"
     "@sphereon/ui-components.core": "npm:0.3.1-next.28"
     "@sphereon/ui-components.credential-branding": "npm:0.3.1-next.28"
     "@sphereon/ui-components.ssi-react-native": "npm:0.3.1-next.28"
@@ -4910,13 +4924,6 @@ __metadata:
     jsonpath: "npm:^1.1.1"
     jwt-decode: "npm:^3.1.2"
     lodash.memoize: "npm:^4.1.2"
-    metro: "npm:~0.80.12"
-    metro-cache: "npm:~0.80.12"
-    metro-config: "npm:~0.80.12"
-    metro-react-native-babel-transformer: "npm:^0.74.1"
-    metro-resolver: "npm:~0.80.12"
-    metro-source-map: "npm:~0.80.12"
-    metro-transform-plugins: "npm:~0.80.12"
     moment: "npm:^2.30.1"
     path-browserify: "npm:^1.0.1"
     prettier: "npm:^2.8.4"
@@ -4951,7 +4958,7 @@ __metadata:
     react-native-pager-view: "npm:6.3.0"
     react-native-permissions: "npm:^4.1.5"
     react-native-pure-jwt: "npm:^3.0.2"
-    react-native-quick-base64: "npm:^2.0.5"
+    react-native-quick-base64: "npm:^2.2.0"
     react-native-quick-sqlite: "github:margelo/react-native-nitro-sqlite#99f34ebefa91698945f3ed26622e002bd79489e0"
     react-native-randombytes: "npm:^3.6.1"
     react-native-reanimated: "npm:~3.10.1"
@@ -4998,14 +5005,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.1-next.3"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
@@ -5013,16 +5020,16 @@ __metadata:
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
-  checksum: 10c0/734616ba55005725ffc806dc0a7b4d62cd59b42f82415551ba7949ed639096139f32893827b621e4c97fd4730ec0afc5e6b4a71e989dce4bfd75f96799f6cf74
+  checksum: 10c0/557808f84410bfb5b75be4eabeb09b279f3e5734c6c4b4e89c2edbde9ba08f89c9e60b3560471d82b3f49a7a6c2a13ba5e22d7404d42e0485529e712a434febf
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
     "@transmute/did-key-bls12381": "npm:0.3.0-unstable.10"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
@@ -5032,39 +5039,39 @@ __metadata:
     multibase: "npm:^4.0.6"
     multicodec: "npm:^3.2.1"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/aefbb7cabe528ef2ac7c36b5f82ee79da0fc6e6703cc12ed7b369608aa8edb3b0c7fc8cad52b3278f708381ceac0b53fac4e5aa069630aed4a222128c3b60eea
+  checksum: 10c0/96e39df8e6bb44237d3b0037ec856c4a42849db3c9161bf4847784fdc2f315adfd64314803cb92378a63f1fec86c61bc031d910aad39f03afaa68303d47a8e8b
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.1-next.3"
   dependencies:
     cross-fetch: "npm:^3.1.8"
     did-resolver: "npm:^4.1.0"
     dotenv: "npm:^16.3.1"
-  checksum: 10c0/10cf7222857503752526849cac22c1460d1c042b10abd1c6e09a2955f6e43b33b1be6098ef80bbadf71bbd54f9a352421417b597dcddbd0ee245fef28ebb66d1
+  checksum: 10c0/5e807bda36ae14e2583c376aee5a85151ad88bcb2b433596d3d040f406e4936cc0b0ccf6eab38b7967af7bc645e03694ee94eafc224f3b40323ed15c654b936f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-types": "npm:0.34.0"
     base64url: "npm:^3.0.1"
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/86c374882651cdc3405583e0cf9a70f1cb8bb9cb53a7121bbfd1e9b4ffc5df047aadcabde7bcdc64c6b517cefbfb399eec6886582e4cbfd1b6d7c3f85482f0c5
+  checksum: 10c0/9d09e695b2af44b04b534ba7591fc9c8ae13d92aad368c4a4c24d61c2ae814c5a5b1bca64cfb8b9261446b663b281148d97deb5c5027c4aa2eedd6a7a9e8c123
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3, @sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3+2e81aa3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
     "@stablelib/ed25519": "npm:^1.0.3"
     bigint-mod-arith: "npm:^3.3.1"
     did-resolver: "npm:^4.1.0"
@@ -5075,22 +5082,22 @@ __metadata:
     uint8arrays: "npm:3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/f238388e943b8ccb2ec13b5bbd526236399799750c5fb1e518dbdeb03720aff0d04683d1af625b55bed068a175d45e754ac0bf99a3683c5bc81798a52a877bb5
+  checksum: 10c0/ed257c61dc4cad285ad531dde67bd7d09078690b254aa60423e01824844fcf6418ada7052e4121eaf5944cd2c55c36c11f4cfc8146a1b8d09d2a9e1bf3e15eeb
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-utils@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.did-utils@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.29.1-next.3"
   dependencies:
     "@ethersproject/networks": "npm:^5.7.1"
     "@ethersproject/transactions": "npm:^5.7.0"
     "@sphereon/did-uni-client": "npm:^0.6.3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-next.73"
-    "@sphereon/ssi-sdk.core": "npm:0.33.1-next.73"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
+    "@sphereon/ssi-sdk.core": "npm:0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5098,201 +5105,40 @@ __metadata:
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/2f450632b1355ff76ac744f523d3a34a5834385d4110616fdd7b664bc3f99f3909268b7e96aa872dc479ff2ee399ee5a5d9259c8cd86627c96dcfc2d8aac2c54
+  checksum: 10c0/e430caad8ae8c1c006c001818513342419c8684d3d53c1141a6aa048c2c8aea85f413bf65de2e8602919892a086265269bca65b7243d9b8b8256674e1fb7adeb
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.esm.cjs.18+8edbf0f":
-  version: 0.28.1-feature.esm.cjs.18
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.esm.cjs.18"
+"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.vcdm2.tsup.28"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-feature.vcdm2.tsup.28"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.vcdm2.tsup.28"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    pkijs: "npm:^3.2.4"
-    uint8arrays: "npm: 3.1.1"
-  checksum: 10c0/c2f4151edcfb59e00e219adc2934cc062aa8332f71b24e9bf88b5bd66ea0d146c69eebad98797a112062e68d576eabcafc72bd8b735337619c31c7099d9080b3
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.jose.vcdm.28+d413275":
-  version: 0.28.1-feature.jose.vcdm.28
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.jose.vcdm.28"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.56"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-feature.jose.vcdm.56"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.56"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    pkijs: "npm:^3.2.4"
-    uint8arrays: "npm: 3.1.1"
-  checksum: 10c0/7dd972eee847b4bdc5e201bbe1b034c549102dd41f0f4f678dbecb0dc8af602b26f85e8b5d984916d8d6494f3861001196362d23d0b294895af1ffed2e572386
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.jose.vcdm.51+e61d3fd":
-  version: 0.28.1-feature.jose.vcdm.51
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-feature.jose.vcdm.51"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.65"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-feature.jose.vcdm.65"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.65"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
+    "@sphereon/ssi-sdk.oidf-client": "npm: 0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     debug: "npm:^4.3.4"
     pkijs: "npm:^3.2.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/fe27760bdd399608411c60d98d552cbc1ebc38b42521cf1a9834bc7f71c107abd866f80e08f142d70df238e1c57b59c487721e22bfc680e6e93e94c65b94a72a
+  checksum: 10c0/a4975a7d6afd5d38e72540071820016fae65941006c8e6272ea2397364239305e7585f197066243411fa9d21a6b164c177ed63f238557aa46a5f3cbb431e4d55
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-next.53+5199437":
-  version: 0.28.1-next.53
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-next.53"
+"@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.67"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-feature.jose.vcdm.67"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.67"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    pkijs: "npm:^3.2.4"
-    uint8arrays: "npm:3.1.1"
-  checksum: 10c0/8c2e9dc1b9a80198e226de7adaf3b750fe3a7fcf4a84ec7779786ad8891bd8c2a4d74612aba7970c8cf63850baed7cd9ce7c40eead968386fa55d0a2e59c4d5b
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.0"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-next.73"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-next.73"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    pkijs: "npm:^3.2.4"
-    uint8arrays: "npm:3.1.1"
-  checksum: 10c0/d02f52512584910a24bc40fd3d5ffa663f1b36697c871af164b7acc414e90d2099cc7ae89d858b3b6e3500cde64c8ca8c1efce88b97bcbcf351d16e81a02c50d
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:^0.28.1-feature.esm.cjs.15+f531c58":
-  version: 0.28.1-next.54
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.28.1-next.54"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-next.54+59fa071"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-next.54+59fa071"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-next.54+59fa071"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-next.73"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.33.1-next.73"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    pkijs: "npm:^3.2.4"
-    uint8arrays: "npm:3.1.1"
-  checksum: 10c0/56edb805d1d203221ae79e672682f0c0da165a4024c7c49fafcc632127fe052678778ff424216281495c9f5e1fe173ad3120bba9ac9746f7b23e3929a4e7c505
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.esm.cjs.15":
-  version: 0.28.1-feature.esm.cjs.15
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.esm.cjs.15"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:^0.28.1-feature.esm.cjs.15+f531c58"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:^0.28.1-feature.esm.cjs.15+f531c58"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:^0.28.1-feature.esm.cjs.15+f531c58"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:^0.28.1-feature.esm.cjs.15+f531c58"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:^0.28.1-feature.esm.cjs.15+f531c58"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.vcdm2.tsup.26"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.vcdm2.tsup.26"
-    "@stablelib/random": "npm:^1.0.2"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    jose: "npm:^5.9.3"
-    jwt-decode: "npm:^4.0.0"
-    uint8arrays: "npm: 3.1.1"
-  checksum: 10c0/0eb5ecf173856abe3808adc4a58afa62ed4e26e1e1428a69559c1597480b463200b9f7074b52a80f9607503c7a03ec2960537eee6653892326820c5a0368ec1f
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.esm.cjs.18":
-  version: 0.28.1-feature.esm.cjs.18
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.esm.cjs.18"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.esm.cjs.18+8edbf0f"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.vcdm2.tsup.28"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.vcdm2.tsup.28"
-    "@stablelib/random": "npm:^1.0.2"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    jose: "npm:^5.9.3"
-    jwt-decode: "npm:^4.0.0"
-    uint8arrays: "npm: 3.1.1"
-  checksum: 10c0/79f6dc5c29458e40219b8a1c05bab86c6a6bc66021f89bb03f94e5bff03a08824f1c67f993237567ba85018f08c0d8d59235505365318d603308e4e26a51b4d0
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.jose.vcdm.28":
-  version: 0.28.1-feature.jose.vcdm.28
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.jose.vcdm.28"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.jose.vcdm.28+d413275"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.56"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.56"
-    "@stablelib/random": "npm:^1.0.2"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    jose: "npm:^5.10.0"
-    jwt-decode: "npm:^4.0.0"
-    uint8arrays: "npm: 3.1.1"
-  checksum: 10c0/4c8590beb4f9cabfdfe82e7a37d092cb7065c3e2a100a3940dbfac62b9476b1d2ffb932a3ccf73a804b5f60594da3f0cf3de72f0eee5cddf3cf217950a1ea7de
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.jose.vcdm.51":
-  version: 0.28.1-feature.jose.vcdm.51
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-feature.jose.vcdm.51"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-feature.jose.vcdm.51+e61d3fd"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.65"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.65"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@stablelib/random": "npm:^1.0.2"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5300,74 +5146,30 @@ __metadata:
     jose: "npm:^5.10.0"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/eea335ee703f4e5a5fffcf029807ae0c0bfd799bea167e81693defc5a48ac1182c570a30506644770a37a59881d827174e0403caffb2f8a2ef42b3161af56a37
+  checksum: 10c0/8f261002850580510136e3ed300161f18424ba87b7f8d1bf2477c65ef9e8408297a779e5eccc47a080367c9e54e3c7dfb9a4dc8b756504aace7a050fd1dcdd33
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-next.53":
-  version: 0.28.1-next.53
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.28.1-next.53"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.28.1-next.53+5199437"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-feature.jose.vcdm.67"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.67"
-    "@stablelib/random": "npm:^1.0.2"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    jose: "npm:^5.10.0"
-    jwt-decode: "npm:^4.0.0"
-    uint8arrays: "npm:3.1.1"
-  checksum: 10c0/1d084992e438a9c21b87956e61681157e2b966dedd6759100cfd799404e7ba737d96a1eb2c0069c1f2f16db23083d94ed8e0da061e6b2dcf1eb1a36883b853e7
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.0"
-  dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.33.1-next.73"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
-    "@stablelib/random": "npm:^1.0.2"
-    "@veramo/core": "npm:4.2.0"
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.4"
-    jose: "npm:^5.10.0"
-    jwt-decode: "npm:^4.0.0"
-    uint8arrays: "npm:3.1.1"
-  checksum: 10c0/7b8f366c364386fa13b13f3207182c7b2c20131c0184503b68205ba42a01e62346dd4df715dbbe8ec2adc6333248859e8434f2be3316113cc61725a1e4413947
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk-ext.key-manager@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.key-manager@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.29.1-next.3"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/e99cfb2037f970cd84e5ba997dc93449eef5cd5942941f90210b1ab67aee31b3885ceb4663b687bfce088f75fcb1d77bad7209bc5f352fd24aaf287346a304ec
+  checksum: 10c0/3e6ae89ef5df5a28920f8545fad1ad8ccd3d7cb599c552da3978b0261d7070fd4645eeea9cf3f0a8bde9e52edd40e8f8d74ba666453d8c834f5763d7bab6905a
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.key-utils@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.key-utils@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.29.1-next.3"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
     "@noble/curves": "npm:1.7.0"
     "@noble/hashes": "npm:1.6.1"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@trust/keyto": "npm:^1.0.1"
     "@veramo/core": "npm:4.2.0"
@@ -5381,31 +5183,31 @@ __metadata:
     uint8arrays: "npm:3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/477b48790527f776e0aa7a651c75c35d2827a26991f9ba3a01b1531802f5b0bd2606b06ccfb6bdc5de108a54295bdfd0e460c9e80d6fef373b9696bf0edaaa8f
+  checksum: 10c0/bc63fddb5c62de3e816bad7b7b0e625a5ce30ce9fada47fe13b398eee749832c151557588a5b31bd63b2d3e8fae9b8beeb9909f0699075ea9720949939130a0a
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/d28e6b304d74637a0bc6d320124866d0acbd6758e5b5fca78944c9d8258a8a85bf44d47bd749b0db36e07f9490cc32db78d3a26db8df9ef4015ec7b1332416c0
+  checksum: 10c0/1e7ea0f65801021acdeeeb67835a8deda7b302b55b261ee67aa47b153d4c5d04faebbe67bedd52ec0842342e325fb7c24b8395ef5cd6580a99e78d9cfa767e8f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-local@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.kms-local@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.29.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
     "@trust/keyto": "npm:2.0.0-alpha1"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
@@ -5413,42 +5215,42 @@ __metadata:
     debug: "npm:^4.4.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/19c21096986d9915dda9e5d35aacc88381439bca9a4411272bab3187cd7f2451f318cefcb1c5b3b69d23ee88fee16029048fe6312ed829d619158abf67e758b4
+  checksum: 10c0/1a7261ca68fc4c2fe291abc43afb57050a48b58e2155c8dd2f4adfc3c96fd56a9b0f08003b597813d1aee08ddd04a676275aef133bb017d11db4f2e3098e2d99
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.1-next.3"
   dependencies:
     "@sphereon/musap-react-native": "npm:0.2.1-next.170"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     "@veramo/kms-local": "npm:4.2.0"
     text-encoding: "npm:^0.7.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/a150e2ef060d231b6ed298b27daf22196e2de63ec26e5b19bc7ef7930e804118298fc88c55f92b8f947f40733a29a4b6ad48df9046ba5c49bff535534c946f2a
+  checksum: 10c0/1c3d1158d67588a827bc316f40c8131d4de1a116c1e98f2fcb6e36e7d176a9967c87ab9f7e4a35e044ce4bcb546fd6a4c7d27b758181ae16794077c7a39e5ff6
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.0":
-  version: 0.29.0
-  resolution: "@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.0"
+"@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.1-next.3":
+  version: 0.29.1-next.3
+  resolution: "@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.1-next.3"
   dependencies:
     "@peculiar/asn1-schema": "npm:^2.3.13"
     "@peculiar/asn1-x509": "npm:^2.3.13"
     "@peculiar/x509": "npm:^1.12.3"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73"
+    "@sphereon/ssi-types": "npm:0.34.0"
     "@trust/keyto": "npm:^1.0.1"
     debug: "npm:^4.3.4"
     js-x509-utils: "npm:^1.0.7"
     pkijs: "npm:^3.2.4"
     tsyringe: "npm:^4.8.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/8a570382dbd913c63512d9904a9d75f917d649f06665c9116a332c822269731ac6fca915e98ea3a7233304aa361cc3ea7005ed061a5a3d117e3a40fb8ed9f19e
+  checksum: 10c0/d7462a356774f6c50d98942d89d928515efb181519ed9aa2cb05b6d40a30e608253bf0e3e2805af02a92c0ef91cc0c93055e0892d8785b68558ccf9246741801
   languageName: node
   linkType: hard
 
@@ -5482,66 +5284,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.56+91d93e08":
-  version: 0.33.1-feature.jose.vcdm.56
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.56"
-  dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    dns-query: "npm:^0.11.2"
-    mmdb-lib: "npm:^2.1.1"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/ed56e855f36b05f28d4a35a1b750b9438c66d678604ff12315da2e845b9568d2bad90032b5fd67554737a01a8706a32e32a48d36a8352553f2dfde3ff04bf898
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.65+c1e653df":
-  version: 0.33.1-feature.jose.vcdm.65
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.65"
-  dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    dns-query: "npm:^0.11.2"
-    mmdb-lib: "npm:^2.1.1"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/bcbf8883e549645257ee324af8747736157445303365dffe9a6e2114b1c0a5d93a87badcd67c300b5b369e324aff9a094adc960acd0bb603af7b9fc4a6905ac8
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa":
-  version: 0.33.1-feature.jose.vcdm.67
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-feature.jose.vcdm.67"
-  dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    dns-query: "npm:^0.11.2"
-    mmdb-lib: "npm:^2.1.1"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/c2aa3f6acde8af482e32465e3e28b57293696fe824fd881ac5f66342d15133d43e80235715338b273ebc83a26740b5835e7cd53a0cd0195d55b613b3585735d5
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-next.73+be17b2cb":
-  version: 0.33.1-next.73
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.33.1-next.73"
-  dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.33.1-next.73+be17b2cb"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-next.73+be17b2cb"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    dns-query: "npm:^0.11.2"
-    mmdb-lib: "npm:^2.1.1"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/1e819ccdf570cb4285ed99f109df4e33efdc26d3e02c2d2c97383e9b8428c32025835de787423ce8c79db52e1e922cb54f8b1e445e87b99af7bd4d342b5127b6
-  languageName: node
-  linkType: hard
-
 "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.0":
   version: 0.34.0
   resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.0"
@@ -5557,59 +5299,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.contact-manager@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.34.0"
+"@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
+    "@sphereon/ssi-sdk.geolocation-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-next.3+6c49ea2f"
     cross-fetch: "npm:^3.1.8"
     debug: "npm:^4.3.5"
+    dns-query: "npm:^0.11.2"
+    mmdb-lib: "npm:^2.1.1"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/bf65e53182b807509622b3b6b33450d4b43ec86737b27663d6e59baaa91898d7e5abcfddd7e7f571209431438c8f8cc8d7e204809230cc3f2c15f520fabfa803
+  checksum: 10c0/abd3c8efb3e74194d03a5d3a96363bd426c8227d71b2f3b035a647fb6043f4b52c847fb5edf710c3ed1ff39e1e7273517cb1299b9955ad56d6ba475bdf0885c8
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.core@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.core@npm:0.34.0"
+"@sphereon/ssi-sdk.contact-manager@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.34.1-next.3"
+  dependencies:
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.5"
+    typeorm: "npm:0.3.20"
+  checksum: 10c0/c3d7f91eb3370334a18b933102321b913a704dfb0740cf9c5cc10cdb2ae2ffd1c5ec36970f28555f72244fdc5d2cc15e6c873fd08e3812cc5866a2377020cddb
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.core@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.core@npm:0.34.1-next.3"
   dependencies:
     "@noble/hashes": "npm:^1.6.1"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     cross-fetch: "npm:^3.1.8"
     debug: "npm:^4.3.5"
     image-size: "npm:2.0.1"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/b913e77cd1aba75f37680cbb760008cd93bf1672d206b5785a41a9a3c4c933ba216bb56dc96d0ca205b8929481fa3656de6538562eda37c30fdfeeba27d1c939
+  checksum: 10c0/7c89a389edda534914e614eb3ba3e8104cb802bcf3f18363ea881bcd0d908484c2a68ddc7085dfa8aff20bc91d0712f71d7edbe8c06258abb1903ea6d813cdfa
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-store@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-store@npm:0.34.1-next.3, @sphereon/ssi-sdk.credential-store@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
     cross-fetch: "npm:^3.1.8"
     debug: "npm:^4.3.4"
     typeorm: "npm:0.3.20"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/ed8b506c77a098d450e7256cf3e510ba95986c85eaeaaca9bc7e722378700e98868b9caa39a5f105f320e98457b605c1bcca10cace0936d000e8ed5ac8045e46
+  checksum: 10c0/0ebcfe99a634db5c9bf007210369e0706b9c1d051ec5d3332f0656ff250c538348007f12f9258f4292a08cd8983511896bd2894439001212adaef719fd3375f4
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-validation@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-validation@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-validation@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-validation@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.0"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/data-store": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5618,13 +5375,13 @@ __metadata:
     cross-fetch: "npm:^3.1.8"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/5ae1e2fdd17bb5f54533b852c6ae5d735e63a574aac7667a836f562697a408204410be6e2e7d521e41df512d2cd33197f83378213f37e38f4669f71dfb567999
+  checksum: 10c0/ce60e90ff0fad42dfb8f13ccd622ae851a3cbf21046848212c5d252e36850850625c389e1e18f547b8348036ede8f925c4400ec64c98d5612ba0a7328adc693e
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-next.3"
   dependencies:
     "@digitalbazaar/ed25519-signature-2018": "npm:^4.1.0"
     "@digitalbazaar/ed25519-verification-key-2018": "npm:^4.0.0"
@@ -5639,14 +5396,14 @@ __metadata:
     "@digitalcredentials/vc": "npm:^9.0.1"
     "@digitalcredentials/x25519-key-agreement-2020-context": "npm:^1.0.0"
     "@noble/hashes": "npm:1.6.1"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo-community/lds-ecdsa-secp256k1-recovery2020": "github:uport-project/EcdsaSecp256k1RecoverySignature2020"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5658,42 +5415,42 @@ __metadata:
     ed25519-signature-2020-context: "npm:^1.1.0"
   peerDependencies:
     react-native-securerandom: ^1.0.1
-  checksum: 10c0/146b1c87c6f48df81877cc9108323f36bf23d463f4e15bd4d9c7166d2a24927d1d4036bce6572a7d7af29ebf5978d2580690ac4872c151ab3370c4e73c410e8a
+  checksum: 10c0/b3e6e463a05ec3378087d612d7a2483618bb88baf1a07958134b4fe1770f307992e0d7525392182110f9a0618f32a66c930c37ae457b7385fe962a69d4b44405
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     canonicalize: "npm:^2.0.0"
     debug: "npm:^4.3.3"
     did-jwt-vc: "npm:3.1.3"
     did-resolver: "npm:^4.1.0"
-  checksum: 10c0/92fd8a471eee4834373266d207923a100ca0e878411be180e6189da3a1fd7f09f643e9b78a9851e9aae142b66d718f6bdf32eedf7d7f2ac63e68cdaa3868ae3a
+  checksum: 10c0/060758f39171779c41875c4ee8f93d2d58cab0e27d9f0ba26c5df8ffb226b12138c211f546835225902947f6ce558a140be4c513fbb3c7658b25b482eb12c86c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-next.3"
   dependencies:
     "@noble/ciphers": "npm:^1.0.0"
     "@noble/curves": "npm:^1.0.0"
     "@noble/hashes": "npm:^1.3.0"
     "@scure/base": "npm:^1.1.3"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     canonicalize: "npm:^2.0.0"
@@ -5703,20 +5460,20 @@ __metadata:
     multibase: "npm:^4.0.6"
     multiformats: "npm:^9.6.2"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/f1028369f4b40e0bb7dbd9f8a5dc2a12a4f6efd7e5c8f472a171486cf7a9ca10d3bff96a231989d262a95dfa04222cbda96d4faf02ff8e3fae672665b51120d0
+  checksum: 10c0/df76557c16604cfd55657b741658c744125b208b44b246a455cc6700784ec8aba61672c3694dfe053d01df853a5b60b4d79284bfd794325cff9ad9a7aad1c185
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.credential-vcdm@npm:0.34.0"
+"@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/ssi-sdk-ext.did-utils": "workspace:*"
     "@sphereon/ssi-sdk-ext.key-utils": "workspace:*"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/message-handler": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5726,21 +5483,21 @@ __metadata:
     did-jwt-vc: "npm:3.1.3"
     did-resolver: "npm:^4.1.0"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/f19fb85b1aa11bdc819c797f4d0176ee2dea444f3b455446079b8b43d3affb6ec36d23a54bccf4fd91f8b8d4ba964ea885f20b6088f6b00e3bac93f9483bfbf7
+  checksum: 10c0/ea2f807f8c920d28ca82938fafcdb7d19d34cb2972d1d4a493cfadbe257ab2028b151238d68ba1caf7420ac1a2055c1cfef55e00f7b79e7a6bbd5e12861a6e3e
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.data-store@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.data-store@npm:0.34.0"
+"@sphereon/ssi-sdk.data-store@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.data-store@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     blakejs: "npm:^1.2.1"
@@ -5748,54 +5505,18 @@ __metadata:
     dcql: "npm:0.2.19"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/af91a1ab43992711c95846b34ea050cc4eef9bd661f5d6c43228683e02c634ebb9e959ba87c2d525ffb55cb9b68d8245e511da5d5baf18a78e516cafbafeaaa0
+  checksum: 10c0/f3c683e4b93face162d956372d61d376843785f7109359e28a71b8a29a801d6950da04475fac1770f964517fdf1d1e883c7125f11c5c5ed5fa7c45f8eddf7496
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.event-logger@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.event-logger@npm:0.34.0"
+"@sphereon/ssi-sdk.event-logger@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.event-logger@npm:0.34.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/0b5a9af2dc95e54a3c35f565a1a09042eb8e4f99488d6018dac57ccdc4415c9fb28321da055a27ba13871b47d740bb34fa5a3d0e86ca7d09ffb6ae2c5f95e662
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.56+91d93e08":
-  version: 0.33.1-feature.jose.vcdm.56
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.56"
-  dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-  checksum: 10c0/1dd3def185b45cce79662cfa4babe1f0f02c8b4c0f766a22ea2d306283e35681bfbac4d6a07003dc752a29fd7c569a999d2162bdd9057b1f384bbb2c46768fa8
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.65+c1e653df":
-  version: 0.33.1-feature.jose.vcdm.65
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.65"
-  dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-  checksum: 10c0/e98cd3088b9826fa833900263b5a446db3eb0b8b2e2b425e768ddf59977faf77af9a33885dc6b0ee8da7a67e76fc83f75dc85f8eba9d6f8671f9eb04ca0221d2
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa":
-  version: 0.33.1-feature.jose.vcdm.67
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-feature.jose.vcdm.67"
-  dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-  checksum: 10c0/2ecc14111ed69d655d8e0c43ef4eb348b3cbb0aa3cf8a5a194316c5b0bfb8ad51ea93155e176611fb6c01852be3b3d9c964ee3c72939e92b203dcbbbf0e584f7
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-next.73+be17b2cb":
-  version: 0.33.1-next.73
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.33.1-next.73"
-  dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-next.73+be17b2cb"
-  checksum: 10c0/00f2069811cc0046e5294b2481508fb0c57d00d7affb8d8cd1d67969c1c45a379a236749f1c6d0fd5dd7df23ba904b9eff2ac87ae1251bb469daadb8dd7fa7c3
+  checksum: 10c0/249af1a50c0072ff6b6020842caded6f8f123da0dc34d1eaf4ca604a334b1401d19a6069ea31da1d697ad2cbe7222b1053142057d5ddeb88a91e7dc857cc6571
   languageName: node
   linkType: hard
 
@@ -5808,75 +5529,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.issuance-branding@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.0"
+"@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/17b2a45ef8f55c88797b9cd66cca4c366b7c50c6e687f9e7c0548131abc05f248f9d1029ac4e1d22cf5cb48106e3ea1dffbaa9ba69572195930206d02c526ebb
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-next.3+6c49ea2f"
+  checksum: 10c0/f02edfaefc0494eb7ce4ee1e178dba356383e0d573e75d53349eaca77488fc335e54f4ed160ba6541ecca52572fed89359ab7ccbd92b283f7282089f990e1998
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.56+91d93e08":
-  version: 0.33.1-feature.jose.vcdm.56
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.56"
+"@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.3, @sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.3"
   dependencies:
-    "@veramo/utils": "npm:4.2.0"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
     debug: "npm:^4.3.5"
-    events: "npm:^3.3.0"
-    json-buffer: "npm:^3.0.1"
-    reflect-metadata: "npm:^0.2.2"
     typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/bac4e9cba449083368bf347e0bcbfab57b062debf2962d86720d9839acb0eba80bdcb6e8e8b7c929187adb2b1890267fc14393641a2620066823f1dae3808e17
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.65+c1e653df":
-  version: 0.33.1-feature.jose.vcdm.65
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.65"
-  dependencies:
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.5"
-    events: "npm:^3.3.0"
-    json-buffer: "npm:^3.0.1"
-    reflect-metadata: "npm:^0.2.2"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/4a42b97cb146156d032d7f4f24bec478a7f9c6c96c360cb7aa0a202d939cc98c50b9ca4965e8533cda192654491a959162d1a56b826115a3288dddc70e74ce62
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa":
-  version: 0.33.1-feature.jose.vcdm.67
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-feature.jose.vcdm.67"
-  dependencies:
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.5"
-    events: "npm:^3.3.0"
-    json-buffer: "npm:^3.0.1"
-    reflect-metadata: "npm:^0.2.2"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/0ae81dedf2d5e434a0d4c8e873fba258f6f188aedd60cb56455e5d3e87b7e80679ddb4a5d9b04440a195496d3b726aacb16d1f4e2695791832a0a1e4137383bd
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-next.73+be17b2cb":
-  version: 0.33.1-next.73
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.33.1-next.73"
-  dependencies:
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.5"
-    events: "npm:^3.3.0"
-    json-buffer: "npm:^3.0.1"
-    reflect-metadata: "npm:^0.2.2"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/b0597e6243fb77ea56511df18352dc2519cbd38f7107bfe81735b3d8915e31dbcb9dab791c13876429234d5728cc828c8a45c98addc0c3cc6eeaeed36e1481c2
+  checksum: 10c0/9974f19442a65d735c94147e4bd83779780e457ee22dd15b7e1b8ac6e2fc27b639954068c33a098cf4d0f91b63f931ccf626e32f0044e0754bc7d031c13d91e7
   languageName: node
   linkType: hard
 
@@ -5895,19 +5565,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.0"
+"@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-next.3"
+  dependencies:
+    "@veramo/utils": "npm:4.2.0"
+    debug: "npm:^4.3.5"
+    events: "npm:^3.3.0"
+    json-buffer: "npm:^3.0.1"
+    reflect-metadata: "npm:^0.2.2"
+    typeorm: "npm:0.3.20"
+    uint8arrays: "npm:^3.1.1"
+  checksum: 10c0/1acc925098775230c0f91b35b831a8dc23c140f749e568e55b4bc58f040e9b6ce87a33277ebecb229b7d341207fe7d3170a11ad466b1ece44f8ac97740effa3b
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-next.3, @sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/did-auth-siop-adapter": "npm:0.19.0"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5918,35 +5603,35 @@ __metadata:
     pkijs: "npm:^3.2.4"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/a42a9a865e17980d90c4e48754bcfed786052a9df23acf99b4fc0a2a2e5b6aed822da28089f495879a5bbd7214321c6002698810ad7a071e1023decfae9e5dba
+  checksum: 10c0/819bf772784f7c19af7c185d31bc8c72ac4d47f97d13e408d627e7168014834015ac266cc839034b910039324708919fd57184a24ae35d9047b6399f14dd94fb
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.0"
+"@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/did-auth-siop": "npm:0.19.0"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/oid4vci-client": "npm:0.19.0"
     "@sphereon/oid4vci-common": "npm:0.19.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.0"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.0"
-    "@sphereon/ssi-sdk.oidf-client": "npm:0.34.0"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.0"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.0"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.0"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.oidf-client": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     "@veramo/data-store": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5956,81 +5641,11 @@ __metadata:
     lodash.memoize: "npm:^4.1.2"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/62c171cd84ec8c30d7f58ec7bb3050edb023d14d157cf697e1992937b445ebb4f8608548eb724edf3545e9a60bcf42187537716d9fb24f9a8f65d536d3591480
+  checksum: 10c0/f4c5579bc1fd1722036724afafee97b17482392a7e5a851773006550b12c3770df53203468fba4532678707b68e8987f2947052d15c62b0fdae9fee8b36d4362
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.oidf-client@npm: 0.33.1-feature.jose.vcdm.56":
-  version: 0.33.1-feature.jose.vcdm.56
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.33.1-feature.jose.vcdm.56"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.28.1-feature.esm.cjs.18"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-  checksum: 10c0/cb5ea463ce1ceeca720d7d1564a97ee2b27c1d9861fbb5c4846813f7cefa350df9a9ed5a97daa7802de73768b663656dc3cbfdcfa11eea4585858f29cf0a0689
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.oidf-client@npm: 0.33.1-feature.jose.vcdm.65":
-  version: 0.33.1-feature.jose.vcdm.65
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.33.1-feature.jose.vcdm.65"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.28.1-feature.jose.vcdm.28"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-  checksum: 10c0/9eda6c10f15091e51334fa9a86f0a7cee8d06c64913909d05046f1b9b82e75458c494c65796d9423ba8734fcc39d9117f150e11ad436953dee1877542e8d0579
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.oidf-client@npm: 0.33.1-feature.jose.vcdm.67":
-  version: 0.33.1-feature.jose.vcdm.67
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.33.1-feature.jose.vcdm.67"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.28.1-feature.jose.vcdm.51"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-    "@sphereon/ssi-types": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-  checksum: 10c0/7cb7408145b8d5a386c120e3ba4c20ea3037b66c8d5fd41e64af03ec33f70ba43efdd2526a5bec180fecacceea90fa94afc2dc146cd5be96af325c4c5c10c36a
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.oidf-client@npm: 0.33.1-feature.vcdm2.tsup.28":
-  version: 0.33.1-feature.vcdm2.tsup.28
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.33.1-feature.vcdm2.tsup.28"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.28.1-feature.esm.cjs.15"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:^0.33.1-feature.vcdm2.tsup.28+9de2a353"
-    "@sphereon/ssi-types": "npm:^0.33.1-feature.vcdm2.tsup.28+9de2a353"
-  checksum: 10c0/3deab10a3d28652e6306b5d9d35e01ac7d80e3eca0951ca29051effb9da83429f59e9a884d381224cd84f398c340bb0626f8a7f2cbf35fd38449a6424089a2c9
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.oidf-client@npm: 0.33.1-next.73":
-  version: 0.33.1-next.73
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.33.1-next.73"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.28.1-next.53"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.33.1-next.73+be17b2cb"
-    "@sphereon/ssi-types": "npm:0.33.1-next.73+be17b2cb"
-  checksum: 10c0/b0a01f821b4ba48b0e9c7fab065c15c211be3870a8057a92b8d677beb4b74f8faf2db706062d00c45e4d85da9f205deff180993412bfc2e277554d2e4afebf81
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.oidf-client@npm:0.34.0":
+"@sphereon/ssi-sdk.oidf-client@npm: 0.34.0":
   version: 0.34.0
   resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.34.0"
   dependencies:
@@ -6044,103 +5659,61 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.pd-manager@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.0"
+"@sphereon/ssi-sdk.oidf-client@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.34.1-next.3"
+  dependencies:
+    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
+    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
+    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
+  checksum: 10c0/a3523f4222cbadf9a12bbb65632ec79ff3aeb9446263b95d7b2e1cffc7f91c9c85b8692c99ef6e27491e81110e5b3d5c4bde84235d84c748d020e41365910b03
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.pd-manager@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
     cross-fetch: "npm:^3.1.8"
     debug: "npm:^4.3.5"
     semver: "npm:^7.6.3"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/cfb066b4d174f6bda5ee5e08df3dc4e1b06dce0745fa1e7c679844ef78ffa6a4b367ac1817ba26f89fa7b917d3e1f7849ea8e2eacec174f51a17b12224bdda80
+  checksum: 10c0/d5661f20328a038dc4f158ed30cec124503b8684fd29db26b172fa81c382d22ca30fc606d64a429bcd5a44317e416f77ca6faaec22c193a67ef1299b532c427a
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.presentation-exchange@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.presentation-exchange@npm:0.34.0"
+"@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
-  checksum: 10c0/1b0f20723496e272fb553ff020e4041ff160ab781a6e66b448114fdf259051be0a241c7286c247e209e2d2e068af50e7ffee25a0fa28b25b7a951ff25650d8a3
+  checksum: 10c0/a462d8b99453e0c778ba8dc4784214137b900add8d858e7d838f5ff84804b9cc4f67e4829aab88bd9bcb06a7a27d7baae8f147503c0e54b2948c871a1cb3a54f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.qr-code-generator@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.qr-code-generator@npm:0.34.0"
+"@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-next.3"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     base64url: "npm:^3.0.1"
     react: "npm:^18.3.1"
     react-qr-code: "npm:^2.0.15"
-  checksum: 10c0/68feb7e850e7ba52604578ea771853f8b4f91603462c3b8f4df6ad4ac331bf537366a1b4dea7ec7f231bf098ca21c8ac5bf1a6f9c02f28cd0ca0784d8ecf4558
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.56+91d93e08":
-  version: 0.33.1-feature.jose.vcdm.56
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.56"
-  dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.56+91d93e08"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/0977b6aecbf171e25add9ac23da2a1f622fb5b61ce35eb5044cba2a86d22e3c5335096114fdc025fa51675973df7052f3bbc76eb2fa45e294fa076cf3f47fcc8
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.65+c1e653df":
-  version: 0.33.1-feature.jose.vcdm.65
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.65"
-  dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.65+c1e653df"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/f946c7b971959257d28b831d43e4ba0f58313312f95e86e18a8370a3bc68937e43b3dae4349ee79474480fb5574eb80413445009761c80b4b5de720921c20ca0
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa":
-  version: 0.33.1-feature.jose.vcdm.67
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-feature.jose.vcdm.67"
-  dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-feature.jose.vcdm.67+f5bcf4fa"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/33b48f8a5481c7a097e823ca29536b0bac458a244be852ffa2d242fc9ac1d7bfcfa1008ac852ee187d48f4d75aa5b118010d6be1925481693a495880c2f9870b
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-next.73+be17b2cb, @sphereon/ssi-sdk.resource-resolver@npm:^0.33.1-feature.vcdm2.tsup.28+9de2a353":
-  version: 0.33.1-next.73
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.33.1-next.73"
-  dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.33.1-next.73+be17b2cb"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.33.1-next.73+be17b2cb"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/c23dbd5eb2d8cb60b1a4a29544a7a4719fd3931129c80ce15cb3bd0d1fd4171b319483ea4ac0d7cc6abafda9519f318192511661dffc8deb8923314f5989aee0
+  checksum: 10c0/be15bc62ce7e24e2d43628c03827cb9ba48c07a08ada0a7e1dea5766eaea93dab96047ebcf900dae37802bb3336fa93408e6489cf4bd8a32723dfbb2d1ad969a
   languageName: node
   linkType: hard
 
@@ -6158,64 +5731,78 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.sd-jwt@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.sd-jwt@npm:0.34.0"
+"@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-next.3, @sphereon/ssi-sdk.resource-resolver@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-next.3"
+  dependencies:
+    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-next.3+6c49ea2f"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.5"
+    typeorm: "npm:0.3.20"
+    uint8arrays: "npm:^3.1.1"
+  checksum: 10c0/dd1bdc4fff645da4560aeec8a7cca183e51f5879fe3b364e1b50cd829c040019051c1c7e7a4c89bdce92739ddef43c843f09cb98e5eaa84768a83e80f4bf40cc
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-next.3"
   dependencies:
     "@sd-jwt/core": "npm:^0.9.2"
     "@sd-jwt/sd-jwt-vc": "npm:^0.9.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/utils": "npm:4.2.0"
     debug: "npm:^4.3.5"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/529c9abc6b4bf1d7acf880cf20a266878123b6ba3547d996d943c5f62d57d928036765250b6ad75863b31dcd57a120843afe32a4be8f4b6f3f20dcbe1c5f8a1a
+  checksum: 10c0/7e31ccf459ff0404056d0f6e48a39588ec36c82fd206c3ba1f24100337db35cbafe4b67ca88cd81d2f71cadc6bf4ffb7549a0415bedc514f2ac02d8caa6144ec
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.0"
+"@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/did-auth-siop": "npm:0.19.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/03624649452a9984486126d6400087b26433d35aedae0e464a40817bb6642c7a476c6260d1a4ee829104d89ba83b096205166466fdd6895d75c890d1703937e8
+  checksum: 10c0/a7e0a1334ab290aa53d7ad259938a805ebaf49ec2e3b17d1a9f8cb0262f62ab35ba3836ac278e830648dfdba8d00f41f59b4c100a82cdbfe7d41779111c933e7
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.0"
+"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.3, @sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.3"
   dependencies:
     "@sphereon/did-auth-siop": "npm:0.19.0"
     "@sphereon/did-auth-siop-adapter": "npm:0.19.0"
     "@sphereon/oid4vc-common": "npm:0.19.0"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.0"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.0"
-    "@sphereon/ssi-sdk.pd-manager": "npm:0.34.0"
-    "@sphereon/ssi-sdk.presentation-exchange": "npm:0.34.0"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.0"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.0"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.pd-manager": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.presentation-exchange": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-next.3+6c49ea2f"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@sphereon/wellknown-dids-client": "npm:^0.1.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/credential-w3c": "npm:4.2.0"
@@ -6226,23 +5813,23 @@ __metadata:
     lodash.memoize: "npm:^4.1.2"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/40e282725308eb838ecc603b1697dd33bee924ae6dbca3a83ddd13869d78acd73e1e072faa7a6a195734e1c2892c36fdadec78f7dba54d49bdff174867ba37fa
+  checksum: 10c0/950ea18e170b9a4373685ed7ca899e4785b9990e1fb50327dab2452f7d94dda136bbc9c21737f58748aad1fd680fc530a8a1eb30a47a0a0e5d0b2cd3cf60fcd2
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.vc-status-list@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.vc-status-list@npm:0.34.0"
+"@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-next.3+6c49ea2f":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-next.3"
   dependencies:
     "@sd-jwt/core": "npm:^0.9.2"
     "@sd-jwt/jwt-status-list": "npm:^0.9.1"
     "@sd-jwt/sd-jwt-vc": "npm:^0.9.2"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/oid4vci-common": "npm:0.19.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.0"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
+    "@sphereon/ssi-types": "npm:0.34.1-next.3+6c49ea2f"
     "@sphereon/vc-status-list": "npm:7.0.0-next.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/credential-status": "npm:4.2.0"
@@ -6253,26 +5840,26 @@ __metadata:
     pako: "npm:^2.1.0"
     typeorm: "npm:0.3.20"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/5e5dad818fb529cf1df6e9d7811616ffd7b70a7f30725a307d0b8e6177a52d4c8752d8fccfb9e9c2fbb24051ca1d96f25906e32163ab6e0985ddddf042e69212
+  checksum: 10c0/6893feb10be3c2c12c194675f0f5d9cc65ac4b3435336e96fe4cf42c4a7a4c51a77bd54075de9e086b7f6fff2e057587436755e527408128c5cc0b685c44d2d5
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.0"
+"@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-next.3"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.0"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-next.3+6c49ea2f"
     "@veramo/core": "npm:4.2.0"
     debug: "npm:^4.3.5"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/98dd9ab072623e998a83532c9680233580544e8c817feafb0b2e822126ce4d504d7b21c5170e66abc81bddb64960ca5be6583f3ea1bb28e0b4a4c33eeedebe12
+  checksum: 10c0/97194a4743b6049bcf3243e2dddd22cbf1b19f56ac21581cf1c93abcfed6a6952cdde1b988f5c8fb968b87657ff3da925c6b9fda0e798c83f861c0948ebf3087
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-types@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-types@npm:0.34.0"
+"@sphereon/ssi-types@npm:0.34.1-next.3":
+  version: 0.34.1-next.3
+  resolution: "@sphereon/ssi-types@npm:0.34.1-next.3"
   dependencies:
     "@noble/hashes": "npm:1.6.1"
     "@sd-jwt/decode": "npm:^0.9.2"
@@ -6281,7 +5868,7 @@ __metadata:
     events: "npm:^3.3.0"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/7e57c354ed3165a6daf133fad716dfd6d35496e5c375157fa630545dee9822ea2dc4da6febc76a265950dead454b0c2caafc34c78c2db808e16672b8f4931e44
+  checksum: 10c0/56761fe94d6957c0d39792bb676bc8b402c5baf380659b60ce861fd71d439fc184001faea7e048d5bf80ceda74dec8dfc43476e9dd5f8bf878b86331aed5810b
   languageName: node
   linkType: hard
 
@@ -7114,7 +6701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:^1.0.6":
+"@types/estree@npm:*, @types/estree@npm:^1.0.8":
   version: 1.0.8
   resolution: "@types/estree@npm:1.0.8"
   checksum: 10c0/39d34d1afaa338ab9763f37ad6066e3f349444f9052b9676a7cc0252ef9485a41c6d81c9c4e0d26e9077993354edf25efc853f3224dd4b447175ef62bdcc86a5
@@ -7243,9 +6830,9 @@ __metadata:
   linkType: hard
 
 "@types/lodash@npm:*, @types/lodash@npm:^4.14.178":
-  version: 4.17.18
-  resolution: "@types/lodash@npm:4.17.18"
-  checksum: 10c0/d25f86941990403d59dcaae42b42fc9fef55a0a7f398790517e7189300183e425a94127594cbeaf9b5fcdc4f6c2b285e34f4301fb56c92f81ccd8505a41ab5f5
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
   languageName: node
   linkType: hard
 
@@ -7257,29 +6844,29 @@ __metadata:
   linkType: hard
 
 "@types/node-forge@npm:^1.3.0":
-  version: 1.3.11
-  resolution: "@types/node-forge@npm:1.3.11"
+  version: 1.3.12
+  resolution: "@types/node-forge@npm:1.3.12"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/3d7d23ca0ba38ac0cf74028393bd70f31169ab9aba43f21deb787840170d307d662644bac07287495effe2812ddd7ac8a14dbd43f16c2936bbb06312e96fc3b9
+  checksum: 10c0/6d92bb211127a20fc1b7ad45758f6ab7930263eacc31af5ca4a71c2e488c1924a1f826b3e66ad6cab62e78032a4aef27fa17c64e92082ed52726ed2552f2d7af
   languageName: node
   linkType: hard
 
 "@types/node@npm:*":
-  version: 24.0.3
-  resolution: "@types/node@npm:24.0.3"
+  version: 24.0.12
+  resolution: "@types/node@npm:24.0.12"
   dependencies:
     undici-types: "npm:~7.8.0"
-  checksum: 10c0/9c3c4e87600d1cf11e291c2fd4bfd806a615455463c30a0ef6dc9c801b3423344d9b82b8084e3ccabce485a7421ebb61a66e9676181bd7d9aea4759998a120d5
+  checksum: 10c0/333777c3416b758bbdb72a09e9db5599ff7789dca519d3fcf8150a1c56c79d808e0009e92d52016e80033b3c52724def08aad2c5b396e28f00dbdfe40a1756a4
   languageName: node
   linkType: hard
 
 "@types/node@npm:^18.0.0":
-  version: 18.19.112
-  resolution: "@types/node@npm:18.19.112"
+  version: 18.19.117
+  resolution: "@types/node@npm:18.19.117"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10c0/e3421fb3c755337a0477014b235026d914cac8266b67de5867d778b2d4ce2ed0c8052c922e61810f2364d6b29ee24c6ea18671c5636076371b82b0d3e480fbef
+  checksum: 10c0/3ba985a15507383abd3c8764318f40564552217c4b495c8d2e72566fdbed0d16391b50564b40e109ad63a2fe6e42f0d6947dfe4b145dea0a599d5cbebe95d757
   languageName: node
   linkType: hard
 
@@ -7561,12 +7148,12 @@ __metadata:
   linkType: hard
 
 "@urql/core@npm:>=2.3.1":
-  version: 5.1.1
-  resolution: "@urql/core@npm:5.1.1"
+  version: 5.2.0
+  resolution: "@urql/core@npm:5.2.0"
   dependencies:
-    "@0no-co/graphql.web": "npm:^1.0.5"
+    "@0no-co/graphql.web": "npm:^1.0.13"
     wonka: "npm:^6.3.2"
-  checksum: 10c0/2a66f58452bbf153c251dd6d127fc0bc0473b4cde47171ca360960059eb08fc019202aee16911168a800814a3b9748300bb88b87817b5d05cf92c16f5772447b
+  checksum: 10c0/1893a7417c6e5e3604fc3bd27e8b63b748d1817fb906fa95beba52be103d18e015d20ca740a9be570bca2bd11e98d34f605e108a4d3428678d9a1e3368ab2275
   languageName: node
   linkType: hard
 
@@ -8061,6 +7648,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn-import-phases@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "acorn-import-phases@npm:1.0.3"
+  peerDependencies:
+    acorn: ^8.14.0
+  checksum: 10c0/43cc13a63f13105756e53cdc057f0a60dcbf38f8be739258ba85ed9f126920936a0720a4232a45569d391e82da85135af23dd431e8882a226380db289632f7b2
+  languageName: node
+  linkType: hard
+
 "acorn-jsx@npm:^5.3.2":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2"
@@ -8079,7 +7675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.1.0, acorn@npm:^8.11.0, acorn@npm:^8.14.0, acorn@npm:^8.8.1, acorn@npm:^8.9.0":
+"acorn@npm:^8.1.0, acorn@npm:^8.11.0, acorn@npm:^8.14.0, acorn@npm:^8.15.0, acorn@npm:^8.8.1, acorn@npm:^8.9.0":
   version: 8.15.0
   resolution: "acorn@npm:8.15.0"
   bin:
@@ -8105,9 +7701,9 @@ __metadata:
   linkType: hard
 
 "agent-base@npm:^7.1.0, agent-base@npm:^7.1.2":
-  version: 7.1.3
-  resolution: "agent-base@npm:7.1.3"
-  checksum: 10c0/6192b580c5b1d8fb399b9c62bf8343d76654c2dd62afcb9a52b2cf44a8b6ace1e3b704d3fe3547d91555c857d3df02603341ff2cb961b9cfe2b12f9f3c38ee11
+  version: 7.1.4
+  resolution: "agent-base@npm:7.1.4"
+  checksum: 10c0/c2c9ab7599692d594b6a161559ada307b7a624fa4c7b03e3afdb5a5e31cd0e53269115b620fcab024c5ac6a6f37fa5eb2e004f076ad30f5f7e6b8b671f7b35fe
   languageName: node
   linkType: hard
 
@@ -8686,39 +8282,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:^0.4.10":
-  version: 0.4.13
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.13"
+"babel-plugin-polyfill-corejs2@npm:^0.4.14":
+  version: 0.4.14
+  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.14"
   dependencies:
-    "@babel/compat-data": "npm:^7.22.6"
-    "@babel/helper-define-polyfill-provider": "npm:^0.6.4"
+    "@babel/compat-data": "npm:^7.27.7"
+    "@babel/helper-define-polyfill-provider": "npm:^0.6.5"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10c0/b4a54561606d388e6f9499f39f03171af4be7f9ce2355e737135e40afa7086cf6790fdd706c2e59f488c8fa1f76123d28783708e07ddc84647dca8ed8fb98e06
+  checksum: 10c0/d74cba0600a6508e86d220bde7164eb528755d91be58020e5ea92ea7fbb12c9d8d2c29246525485adfe7f68ae02618ec428f9a589cac6cbedf53cc3972ad7fbe
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs3@npm:^0.11.0":
-  version: 0.11.1
-  resolution: "babel-plugin-polyfill-corejs3@npm:0.11.1"
+"babel-plugin-polyfill-corejs3@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "babel-plugin-polyfill-corejs3@npm:0.13.0"
   dependencies:
-    "@babel/helper-define-polyfill-provider": "npm:^0.6.3"
-    core-js-compat: "npm:^3.40.0"
+    "@babel/helper-define-polyfill-provider": "npm:^0.6.5"
+    core-js-compat: "npm:^3.43.0"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10c0/025f754b6296d84b20200aff63a3c1acdd85e8c621781f2bd27fe2512d0060526192d02329326947c6b29c27cf475fbcfaaff8c51eab1d2bfc7b79086bb64229
+  checksum: 10c0/5d8e228da425edc040d8c868486fd01ba10b0440f841156a30d9f8986f330f723e2ee61553c180929519563ef5b64acce2caac36a5a847f095d708dda5d8206d
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-regenerator@npm:^0.6.1":
-  version: 0.6.4
-  resolution: "babel-plugin-polyfill-regenerator@npm:0.6.4"
+"babel-plugin-polyfill-regenerator@npm:^0.6.5":
+  version: 0.6.5
+  resolution: "babel-plugin-polyfill-regenerator@npm:0.6.5"
   dependencies:
-    "@babel/helper-define-polyfill-provider": "npm:^0.6.4"
+    "@babel/helper-define-polyfill-provider": "npm:^0.6.5"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 10c0/ebaaf9e4e53201c02f496d3f686d815e94177b3e55b35f11223b99c60d197a29f907a2e87bbcccced8b7aff22a807fccc1adaf04722864a8e1862c8845ab830a
+  checksum: 10c0/63aa8ed716df6a9277c6ab42b887858fa9f57a70cc1d0ae2b91bdf081e45d4502848cba306fb60b02f59f99b32fd02ff4753b373cac48ccdac9b7d19dd56f06d
   languageName: node
   linkType: hard
 
@@ -8741,13 +8337,6 @@ __metadata:
   version: 0.19.13
   resolution: "babel-plugin-react-native-web@npm:0.19.13"
   checksum: 10c0/0710db342063182163d58febfb01ef510c9460f0500f9faaf47603d06dda37554f216e6123a099a343eb2067c2dfb43c9d4ca573a9d659662ca429048db11af4
-  languageName: node
-  linkType: hard
-
-"babel-plugin-syntax-trailing-function-commas@npm:^7.0.0-beta.0":
-  version: 7.0.0-beta.0
-  resolution: "babel-plugin-syntax-trailing-function-commas@npm:7.0.0-beta.0"
-  checksum: 10c0/67e3d6a706637097526b2d3046d3124d3efd3aac28b47af940c2f8df01b8d7ffeb4cdf5648f3b5eac3f098f5b61c4845e306f34301c869e5e14db6ae8b77f699
   languageName: node
   linkType: hard
 
@@ -8809,43 +8398,6 @@ __metadata:
     babel-plugin-react-native-web: "npm:~0.19.10"
     react-refresh: "npm:^0.14.2"
   checksum: 10c0/2e1c31e51031f83d705d3c56a7b19a51bfe8aa39408e7433e3032d74626475f842fdbe011521577878813d9a1bf50ebba128cd6dbe5c10f7feadcd030ae36abb
-  languageName: node
-  linkType: hard
-
-"babel-preset-fbjs@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "babel-preset-fbjs@npm:3.4.0"
-  dependencies:
-    "@babel/plugin-proposal-class-properties": "npm:^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread": "npm:^7.0.0"
-    "@babel/plugin-syntax-class-properties": "npm:^7.0.0"
-    "@babel/plugin-syntax-flow": "npm:^7.0.0"
-    "@babel/plugin-syntax-jsx": "npm:^7.0.0"
-    "@babel/plugin-syntax-object-rest-spread": "npm:^7.0.0"
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0"
-    "@babel/plugin-transform-block-scoped-functions": "npm:^7.0.0"
-    "@babel/plugin-transform-block-scoping": "npm:^7.0.0"
-    "@babel/plugin-transform-classes": "npm:^7.0.0"
-    "@babel/plugin-transform-computed-properties": "npm:^7.0.0"
-    "@babel/plugin-transform-destructuring": "npm:^7.0.0"
-    "@babel/plugin-transform-flow-strip-types": "npm:^7.0.0"
-    "@babel/plugin-transform-for-of": "npm:^7.0.0"
-    "@babel/plugin-transform-function-name": "npm:^7.0.0"
-    "@babel/plugin-transform-literals": "npm:^7.0.0"
-    "@babel/plugin-transform-member-expression-literals": "npm:^7.0.0"
-    "@babel/plugin-transform-modules-commonjs": "npm:^7.0.0"
-    "@babel/plugin-transform-object-super": "npm:^7.0.0"
-    "@babel/plugin-transform-parameters": "npm:^7.0.0"
-    "@babel/plugin-transform-property-literals": "npm:^7.0.0"
-    "@babel/plugin-transform-react-display-name": "npm:^7.0.0"
-    "@babel/plugin-transform-react-jsx": "npm:^7.0.0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0"
-    "@babel/plugin-transform-spread": "npm:^7.0.0"
-    "@babel/plugin-transform-template-literals": "npm:^7.0.0"
-    babel-plugin-syntax-trailing-function-commas: "npm:^7.0.0-beta.0"
-  peerDependencies:
-    "@babel/core": ^7.0.0
-  checksum: 10c0/2be440c0fd7d1df247417be35644cb89f40a300e7fcdc44878b737ec49b04380eff422e4ebdc7bb5efd5ecfef45b634fc5fe11c3a409a50c9084e81083037902
   languageName: node
   linkType: hard
 
@@ -9163,17 +8715,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.24.0, browserslist@npm:^4.25.0":
-  version: 4.25.0
-  resolution: "browserslist@npm:4.25.0"
+"browserslist@npm:^4.24.0, browserslist@npm:^4.25.1":
+  version: 4.25.1
+  resolution: "browserslist@npm:4.25.1"
   dependencies:
-    caniuse-lite: "npm:^1.0.30001718"
-    electron-to-chromium: "npm:^1.5.160"
+    caniuse-lite: "npm:^1.0.30001726"
+    electron-to-chromium: "npm:^1.5.173"
     node-releases: "npm:^2.0.19"
     update-browserslist-db: "npm:^1.1.3"
   bin:
     browserslist: cli.js
-  checksum: 10c0/cc16c55b4468b18684a0e1ca303592b38635b1155d6724f172407192737a2f405b8030d87a05813729592793445b3d15e737b0055f901cdecccb29b1e580a1c5
+  checksum: 10c0/acba5f0bdbd5e72dafae1e6ec79235b7bad305ed104e082ed07c34c38c7cb8ea1bc0f6be1496958c40482e40166084458fc3aee15111f15faa79212ad9081b2a
   languageName: node
   linkType: hard
 
@@ -9426,10 +8978,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001718":
-  version: 1.0.30001724
-  resolution: "caniuse-lite@npm:1.0.30001724"
-  checksum: 10c0/ed9ec0bcf619f0e7ef2d33aac74d2346d1faf52060dfded1fb9c32d87854de5c2988b3ba338c281034c88bf797d6b55468a804ce8396a7e16a48cb0d481d4bfe
+"caniuse-lite@npm:^1.0.30001726":
+  version: 1.0.30001727
+  resolution: "caniuse-lite@npm:1.0.30001727"
+  checksum: 10c0/f0a441c05d8925d728c2d02ce23b001935f52183a3bf669556f302568fe258d1657940c7ac0b998f92bc41383e185b390279a7d779e6d96a2b47881f56400221
   languageName: node
   linkType: hard
 
@@ -9957,12 +9509,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-compat@npm:^3.40.0":
-  version: 3.43.0
-  resolution: "core-js-compat@npm:3.43.0"
+"core-js-compat@npm:^3.43.0":
+  version: 3.44.0
+  resolution: "core-js-compat@npm:3.44.0"
   dependencies:
-    browserslist: "npm:^4.25.0"
-  checksum: 10c0/923804c16faf91bacb747a697640a907cb2a3e63078d467a75eb7ea4187d62d36347a94e5826d1b36739012e81a2ea435922cc8bd8e228fa68efaf00a9ce94af
+    browserslist: "npm:^4.25.1"
+  checksum: 10c0/5de4b042b8bb232b8390be3079030de5c7354610f136ed3eb91310a44455a78df02cfcf49b2fd05d5a5aa2695460620abf1b400784715f7482ed4770d40a68b2
   languageName: node
   linkType: hard
 
@@ -10168,15 +9720,15 @@ __metadata:
   linkType: hard
 
 "css-select@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "css-select@npm:5.1.0"
+  version: 5.2.2
+  resolution: "css-select@npm:5.2.2"
   dependencies:
     boolbase: "npm:^1.0.0"
     css-what: "npm:^6.1.0"
     domhandler: "npm:^5.0.2"
     domutils: "npm:^3.0.1"
     nth-check: "npm:^2.0.1"
-  checksum: 10c0/551c60dba5b54054741032c1793b5734f6ba45e23ae9e82761a3c0ed1acbb8cfedfa443aaba3a3c1a54cac12b456d2012a09d2cd5f0e82e430454c1b9d84d500
+  checksum: 10c0/d79fffa97106007f2802589f3ed17b8c903f1c961c0fc28aa8a051eee0cbad394d8446223862efd4c1b40445a6034f626bb639cf2035b0bfc468544177593c99
   languageName: node
   linkType: hard
 
@@ -10222,9 +9774,9 @@ __metadata:
   linkType: hard
 
 "css-what@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "css-what@npm:6.1.0"
-  checksum: 10c0/a09f5a6b14ba8dcf57ae9a59474722e80f20406c53a61e9aedb0eedc693b135113ffe2983f4efc4b5065ae639442e9ae88df24941ef159c218b231011d733746
+  version: 6.2.2
+  resolution: "css-what@npm:6.2.2"
+  checksum: 10c0/91e24c26fb977b4ccef30d7007d2668c1c10ac0154cc3f42f7304410e9594fb772aea4f30c832d2993b132ca8d99338050866476210316345ec2e7d47b248a56
   languageName: node
   linkType: hard
 
@@ -10366,7 +9918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.4.0":
+"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.4.0, debug@npm:^4.4.1":
   version: 4.4.1
   resolution: "debug@npm:4.4.1"
   dependencies:
@@ -10395,9 +9947,9 @@ __metadata:
   linkType: hard
 
 "decimal.js@npm:^10.4.2":
-  version: 10.5.0
-  resolution: "decimal.js@npm:10.5.0"
-  checksum: 10c0/785c35279df32762143914668df35948920b6c1c259b933e0519a69b7003fc0a5ed2a766b1e1dda02574450c566b21738a45f15e274b47c2ac02072c0d1f3ac3
+  version: 10.6.0
+  resolution: "decimal.js@npm:10.6.0"
+  checksum: 10c0/07d69fbcc54167a340d2d97de95f546f9ff1f69d2b45a02fd7a5292412df3cd9eb7e23065e532a318f5474a2e1bccf8392fdf0443ef467f97f3bf8cb0477e5aa
   languageName: node
   linkType: hard
 
@@ -10794,9 +10346,9 @@ __metadata:
   linkType: hard
 
 "dotenv@npm:^16.0.3, dotenv@npm:^16.3.1, dotenv@npm:^16.4.5":
-  version: 16.5.0
-  resolution: "dotenv@npm:16.5.0"
-  checksum: 10c0/5bc94c919fbd955bf0ba44d33922a1e93d1078e64a1db5c30faeded1d996e7a83c55332cb8ea4fae5a9ca4d0be44cbceb95c5811e70f9f095298df09d1997dd9
+  version: 16.6.1
+  resolution: "dotenv@npm:16.6.1"
+  checksum: 10c0/15ce56608326ea0d1d9414a5c8ee6dcf0fffc79d2c16422b4ac2268e7e2d76ff5a572d37ffe747c377de12005f14b3cc22361e79fc7f1061cce81f77d2c973dc
   languageName: node
   linkType: hard
 
@@ -10857,10 +10409,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.5.160":
-  version: 1.5.172
-  resolution: "electron-to-chromium@npm:1.5.172"
-  checksum: 10c0/16f97154b518391519e3037541095a59b744a6794f7863f0eb59eac3b5d1cb61bb13bdf449832d5a314bce81493160af9e3e3e14516f054412f3f3a432f0858f
+"electron-to-chromium@npm:^1.5.173":
+  version: 1.5.180
+  resolution: "electron-to-chromium@npm:1.5.180"
+  checksum: 10c0/3042aa1d20e1ff0b8205bc856a98a7f94aafb3051d468a40d9bb3dac65b36dc48b9c1197c5a56ea179f39231668a3f0c35b02c3a58d0fe25d047613e07a21565
   languageName: node
   linkType: hard
 
@@ -10961,13 +10513,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.15.0, enhanced-resolve@npm:^5.17.1":
-  version: 5.18.1
-  resolution: "enhanced-resolve@npm:5.18.1"
+"enhanced-resolve@npm:^5.15.0, enhanced-resolve@npm:^5.17.2":
+  version: 5.18.2
+  resolution: "enhanced-resolve@npm:5.18.2"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
-  checksum: 10c0/4cffd9b125225184e2abed9fdf0ed3dbd2224c873b165d0838fd066cde32e0918626cba2f1f4bf6860762f13a7e2364fd89a82b99566be2873d813573ac71846
+  checksum: 10c0/2a45105daded694304b0298d1c0351a981842249a9867513d55e41321a4ccf37dfd35b0c1e9ceae290eab73654b09aa7a910d618ea6f9441e97c52bc424a2372
   languageName: node
   linkType: hard
 
@@ -12272,9 +11824,9 @@ __metadata:
   linkType: hard
 
 "flow-parser@npm:0.*":
-  version: 0.273.1
-  resolution: "flow-parser@npm:0.273.1"
-  checksum: 10c0/97166383e8c10c5b6f0a6c372940b56ecd8831cae5e6a1bfe295f44cd90cf1dc9dd803bd2116e2eb3d778f9a474d01090d2a30557d6a05b3c61692b94c849896
+  version: 0.275.0
+  resolution: "flow-parser@npm:0.275.0"
+  checksum: 10c0/47f30339022b00c6037c5281d5c6c9995b8f174677d0b7e950fa4661e7ab71573031e9c70e567783f790a1216fcbeac3cf8c4639fda4a0af2b2035b490fc17ed
   languageName: node
   linkType: hard
 
@@ -12662,13 +12214,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^11.1.0":
-  version: 11.12.0
-  resolution: "globals@npm:11.12.0"
-  checksum: 10c0/758f9f258e7b19226bd8d4af5d3b0dcf7038780fb23d82e6f98932c44e239f884847f1766e8fa9cc5635ccb3204f7fa7314d4408dd4002a5e8ea827b4018f0a1
-  languageName: node
-  linkType: hard
-
 "globals@npm:^13.19.0":
   version: 13.24.0
   resolution: "globals@npm:13.24.0"
@@ -12884,13 +12429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hermes-estree@npm:0.8.0":
-  version: 0.8.0
-  resolution: "hermes-estree@npm:0.8.0"
-  checksum: 10c0/091bca8dcd656d80eff7ff2dee13891698e0fe1d77265e6ed5a3c7d5ed7817a1e6bc997e3acec4b37bcca33558e56021510bc8621e90ec91fbf1b290a9be958c
-  languageName: node
-  linkType: hard
-
 "hermes-parser@npm:0.19.1":
   version: 0.19.1
   resolution: "hermes-parser@npm:0.19.1"
@@ -12906,15 +12444,6 @@ __metadata:
   dependencies:
     hermes-estree: "npm:0.23.1"
   checksum: 10c0/56907e6136d2297543922dd9f8ee27378ef010c11dc1e0b4a0866faab2c527613b0edcda5e1ebc0daa0ca1ae6528734dfc479e18267aabe4dce0c7198217fd97
-  languageName: node
-  linkType: hard
-
-"hermes-parser@npm:0.8.0":
-  version: 0.8.0
-  resolution: "hermes-parser@npm:0.8.0"
-  dependencies:
-    hermes-estree: "npm:0.8.0"
-  checksum: 10c0/c239f757f8461c2ee376cfd8dd8f3b640bb375b960dee99249ed8648e0ce27a7dc9d735e018ebd2522ffdee3ae6296ec51211efb2ac64476d76bf2ba60e795a7
   languageName: node
   linkType: hard
 
@@ -15646,18 +15175,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-babel-transformer@npm:0.74.1":
-  version: 0.74.1
-  resolution: "metro-babel-transformer@npm:0.74.1"
-  dependencies:
-    "@babel/core": "npm:^7.20.0"
-    hermes-parser: "npm:0.8.0"
-    metro-source-map: "npm:0.74.1"
-    nullthrows: "npm:^1.1.1"
-  checksum: 10c0/e7c17be97043ab43ca85181a6a1f9489766c23c09d4c9a1e7f1938f0ed3061874901891dc81d6c94ca1bf0f7684769fbf5576ef0783f9cfe0d96d0df1c2e2e73
-  languageName: node
-  linkType: hard
-
 "metro-babel-transformer@npm:0.80.12":
   version: 0.80.12
   resolution: "metro-babel-transformer@npm:0.80.12"
@@ -15679,7 +15196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-cache@npm:~0.80.12":
+"metro-cache@npm:0.80.12":
   version: 0.80.12
   resolution: "metro-cache@npm:0.80.12"
   dependencies:
@@ -15690,7 +15207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-config@npm:~0.80.12":
+"metro-config@npm:0.80.12, metro-config@npm:^0.80.3":
   version: 0.80.12
   resolution: "metro-config@npm:0.80.12"
   dependencies:
@@ -15750,72 +15267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-react-native-babel-preset@npm:0.74.1":
-  version: 0.74.1
-  resolution: "metro-react-native-babel-preset@npm:0.74.1"
-  dependencies:
-    "@babel/core": "npm:^7.20.0"
-    "@babel/plugin-proposal-async-generator-functions": "npm:^7.0.0"
-    "@babel/plugin-proposal-class-properties": "npm:^7.0.0"
-    "@babel/plugin-proposal-export-default-from": "npm:^7.0.0"
-    "@babel/plugin-proposal-nullish-coalescing-operator": "npm:^7.0.0"
-    "@babel/plugin-proposal-numeric-separator": "npm:^7.0.0"
-    "@babel/plugin-proposal-object-rest-spread": "npm:^7.0.0"
-    "@babel/plugin-proposal-optional-catch-binding": "npm:^7.0.0"
-    "@babel/plugin-proposal-optional-chaining": "npm:^7.0.0"
-    "@babel/plugin-syntax-dynamic-import": "npm:^7.0.0"
-    "@babel/plugin-syntax-export-default-from": "npm:^7.0.0"
-    "@babel/plugin-syntax-flow": "npm:^7.18.0"
-    "@babel/plugin-syntax-nullish-coalescing-operator": "npm:^7.0.0"
-    "@babel/plugin-syntax-optional-chaining": "npm:^7.0.0"
-    "@babel/plugin-transform-arrow-functions": "npm:^7.0.0"
-    "@babel/plugin-transform-async-to-generator": "npm:^7.0.0"
-    "@babel/plugin-transform-block-scoping": "npm:^7.0.0"
-    "@babel/plugin-transform-classes": "npm:^7.0.0"
-    "@babel/plugin-transform-computed-properties": "npm:^7.0.0"
-    "@babel/plugin-transform-destructuring": "npm:^7.0.0"
-    "@babel/plugin-transform-flow-strip-types": "npm:^7.0.0"
-    "@babel/plugin-transform-function-name": "npm:^7.0.0"
-    "@babel/plugin-transform-literals": "npm:^7.0.0"
-    "@babel/plugin-transform-modules-commonjs": "npm:^7.0.0"
-    "@babel/plugin-transform-named-capturing-groups-regex": "npm:^7.0.0"
-    "@babel/plugin-transform-parameters": "npm:^7.0.0"
-    "@babel/plugin-transform-react-display-name": "npm:^7.0.0"
-    "@babel/plugin-transform-react-jsx": "npm:^7.0.0"
-    "@babel/plugin-transform-react-jsx-self": "npm:^7.0.0"
-    "@babel/plugin-transform-react-jsx-source": "npm:^7.0.0"
-    "@babel/plugin-transform-runtime": "npm:^7.0.0"
-    "@babel/plugin-transform-shorthand-properties": "npm:^7.0.0"
-    "@babel/plugin-transform-spread": "npm:^7.0.0"
-    "@babel/plugin-transform-sticky-regex": "npm:^7.0.0"
-    "@babel/plugin-transform-typescript": "npm:^7.5.0"
-    "@babel/plugin-transform-unicode-regex": "npm:^7.0.0"
-    "@babel/template": "npm:^7.0.0"
-    react-refresh: "npm:^0.4.0"
-  peerDependencies:
-    "@babel/core": "*"
-  checksum: 10c0/0df6409262a0c8b5457e30420219bc3f72bf989e7b04600b0b9de9e9ed792b8b7399865463be429706ef01c8c91e33c1dcab20d1c47af34e15631382d128f956
-  languageName: node
-  linkType: hard
-
-"metro-react-native-babel-transformer@npm:^0.74.1":
-  version: 0.74.1
-  resolution: "metro-react-native-babel-transformer@npm:0.74.1"
-  dependencies:
-    "@babel/core": "npm:^7.20.0"
-    babel-preset-fbjs: "npm:^3.4.0"
-    hermes-parser: "npm:0.8.0"
-    metro-babel-transformer: "npm:0.74.1"
-    metro-react-native-babel-preset: "npm:0.74.1"
-    metro-source-map: "npm:0.74.1"
-    nullthrows: "npm:^1.1.1"
-  peerDependencies:
-    "@babel/core": "*"
-  checksum: 10c0/800448e835b30d8b9a1afe3709215044655b012c86cad9e39974998fd122308462f962e8d6cbe29f36ccd60de04392fadf174d3b5f49ed49f627192855db992f
-  languageName: node
-  linkType: hard
-
-"metro-resolver@npm:~0.80.12":
+"metro-resolver@npm:0.80.12":
   version: 0.80.12
   resolution: "metro-resolver@npm:0.80.12"
   dependencies:
@@ -15834,23 +15286,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-source-map@npm:0.74.1":
-  version: 0.74.1
-  resolution: "metro-source-map@npm:0.74.1"
-  dependencies:
-    "@babel/traverse": "npm:^7.20.0"
-    "@babel/types": "npm:^7.20.0"
-    invariant: "npm:^2.2.4"
-    metro-symbolicate: "npm:0.74.1"
-    nullthrows: "npm:^1.1.1"
-    ob1: "npm:0.74.1"
-    source-map: "npm:^0.5.6"
-    vlq: "npm:^1.0.0"
-  checksum: 10c0/def2f3220834e664309ffb74e8e73db3b293955947b351af2a8117986079e5af323e3fbd027e7ee90e6b9bf834195427e901dc6995dfd362277279fd06ab0b89
-  languageName: node
-  linkType: hard
-
-"metro-source-map@npm:0.80.12, metro-source-map@npm:^0.80.3, metro-source-map@npm:~0.80.12":
+"metro-source-map@npm:0.80.12, metro-source-map@npm:^0.80.3":
   version: 0.80.12
   resolution: "metro-source-map@npm:0.80.12"
   dependencies:
@@ -15864,22 +15300,6 @@ __metadata:
     source-map: "npm:^0.5.6"
     vlq: "npm:^1.0.0"
   checksum: 10c0/94239360f6a3e4d64ea8f4d0eddbe4fdd3a160c5c5f6bf4b28ed48c586cf8e37b175d521eb0bad62608bd0ce3262020aebbc1942cf607f34662ca60add9a7db5
-  languageName: node
-  linkType: hard
-
-"metro-symbolicate@npm:0.74.1":
-  version: 0.74.1
-  resolution: "metro-symbolicate@npm:0.74.1"
-  dependencies:
-    invariant: "npm:^2.2.4"
-    metro-source-map: "npm:0.74.1"
-    nullthrows: "npm:^1.1.1"
-    source-map: "npm:^0.5.6"
-    through2: "npm:^2.0.1"
-    vlq: "npm:^1.0.0"
-  bin:
-    metro-symbolicate: src/index.js
-  checksum: 10c0/ef5c585528623e923c8710dba1626310a8940a51660d150e4352022212a60c1b31c73e15fde7ba3a195236b8259159aee58af4e185d121ff98b52e6d910dc0cb
   languageName: node
   linkType: hard
 
@@ -15900,7 +15320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro-transform-plugins@npm:0.80.12, metro-transform-plugins@npm:~0.80.12":
+"metro-transform-plugins@npm:0.80.12":
   version: 0.80.12
   resolution: "metro-transform-plugins@npm:0.80.12"
   dependencies:
@@ -15935,7 +15355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"metro@npm:~0.80.12":
+"metro@npm:0.80.12, metro@npm:^0.80.3":
   version: 0.80.12
   resolution: "metro@npm:0.80.12"
   dependencies:
@@ -16686,13 +16106,6 @@ __metadata:
   version: 2.2.20
   resolution: "nwsapi@npm:2.2.20"
   checksum: 10c0/07f4dafa3186aef7c007863e90acd4342a34ba9d44b22f14f644fdb311f6086887e21c2fc15efaa826c2bc39ab2bc841364a1a630e7c87e0cb723ba59d729297
-  languageName: node
-  linkType: hard
-
-"ob1@npm:0.74.1":
-  version: 0.74.1
-  resolution: "ob1@npm:0.74.1"
-  checksum: 10c0/ebf4cbf6a3d20dc73421ec04e81115eda49e4959b21065d2a00513e8fdb2c2840d88f5773b9d64d832d51fbbb966304a4d5481e93c0425cf0d2c656ce89c7b84
   languageName: node
   linkType: hard
 
@@ -17874,14 +17287,14 @@ __metadata:
   linkType: hard
 
 "react-native-audio-recorder-player@npm:^3.6.12":
-  version: 3.6.13
-  resolution: "react-native-audio-recorder-player@npm:3.6.13"
+  version: 3.6.14
+  resolution: "react-native-audio-recorder-player@npm:3.6.14"
   dependencies:
     hyochan-welcome: "npm:^1.0.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/8de7af4ed6e031b6a43d629ca6110c80b30c43a0a4e3635d78e2aad52082ad6edcaa8fb395803a815f02a1c9feb94443328af59b89038fa80e79b4d4b5aab381
+  checksum: 10c0/e6c262d1d79c368fb24498fd7f251cdbb108d9d74208eaf0b519dcd0f1ff7b13b51422ef8120ecc12a673f5042d5fd4a8e94c076fd12d95e2cbec07030d2486e
   languageName: node
   linkType: hard
 
@@ -18039,12 +17452,12 @@ __metadata:
   linkType: hard
 
 "react-native-is-edge-to-edge@npm:^1.1.6":
-  version: 1.1.7
-  resolution: "react-native-is-edge-to-edge@npm:1.1.7"
+  version: 1.2.1
+  resolution: "react-native-is-edge-to-edge@npm:1.2.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/b7a37437f439b1e27a4d980de01994aa71b9091dc3ed00c21172d5505fb11978cd5ed3a43f97c89d502a3a08cf26e5cea6435b8d6e93d3557a92dd43563f7021
+  checksum: 10c0/87d20b900aded7d44c90afb946a7aa03c23a94ca3dd547bdddc2303b85357e4aab22567a57b19f1558d6c8be7058e3dcf34faa1e15182d1604f90974266d9a1d
   languageName: node
   linkType: hard
 
@@ -18399,12 +17812,12 @@ __metadata:
   linkType: hard
 
 "react-native-toast-message@npm:^2.2.0":
-  version: 2.3.0
-  resolution: "react-native-toast-message@npm:2.3.0"
+  version: 2.3.3
+  resolution: "react-native-toast-message@npm:2.3.3"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/84a4ed66108c7517cfa2e06d6a8a65933ad37d0f21a1ba5674658ad2c8d95a3035c1c7f99e191568d7c5d5328f5aa048e32170b393a90ada2b2bb602f9878d45
+  checksum: 10c0/10c7cad8ce287786c555c032f03040ecbaeaa920f44b08161364408ccd18bd0fc3a3e6622f80724ad2c0c7366f667e0d946317045aec08d934ca73358811f782
   languageName: node
   linkType: hard
 
@@ -18501,14 +17914,14 @@ __metadata:
   linkType: hard
 
 "react-qr-code@npm:^2.0.15":
-  version: 2.0.16
-  resolution: "react-qr-code@npm:2.0.16"
+  version: 2.0.18
+  resolution: "react-qr-code@npm:2.0.18"
   dependencies:
     prop-types: "npm:^15.8.1"
     qr.js: "npm:0.0.0"
   peerDependencies:
     react: "*"
-  checksum: 10c0/2687109eea5db8278ce52403698b6c5f29c9f7305adeba8ed5c9190eb34cb863806717b443381acac5c992af5318a7f3b8d5a41ba0af4c55c0e3109a317f372e
+  checksum: 10c0/4e13b795cbb10f1dcf0e39d682bb59851e4c84010ba2be7225b2ad9d5c1ffea52d2d38f884ee26235b7002b8ca99e83b805f55e877663c39d67496764d975cf1
   languageName: node
   linkType: hard
 
@@ -18537,13 +17950,6 @@ __metadata:
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
   checksum: 10c0/875b72ef56b147a131e33f2abd6ec059d1989854b3ff438898e4f9310bfcc73acff709445b7ba843318a953cb9424bcc2c05af2b3d80011cee28f25aef3e2ebb
-  languageName: node
-  linkType: hard
-
-"react-refresh@npm:^0.4.0":
-  version: 0.4.3
-  resolution: "react-refresh@npm:0.4.3"
-  checksum: 10c0/2b4e4b14b54bfbdfdd6d1c16b8476151b3e61083387061d4e5923b0342c678f6d0f23705835c3a04ab151bd92551d437395da3fb52ea7461a408f457d11ac6fa
   languageName: node
   linkType: hard
 
@@ -18896,7 +18302,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.13.1, resolve@npm:^1.14.2, resolve@npm:^1.20.0, resolve@npm:^1.22.2, resolve@npm:^1.22.4":
+"resolve@npm:^1.13.1, resolve@npm:^1.20.0, resolve@npm:^1.22.10, resolve@npm:^1.22.2, resolve@npm:^1.22.4":
   version: 1.22.10
   resolution: "resolve@npm:1.22.10"
   dependencies:
@@ -18931,7 +18337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@npm%3A^1.13.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.14.2#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.2#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>":
+"resolve@patch:resolve@npm%3A^1.13.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.10#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.2#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>":
   version: 1.22.10
   resolution: "resolve@patch:resolve@npm%3A1.22.10#optional!builtin<compat/resolve>::version=1.22.10&hash=c3c19d"
   dependencies:
@@ -19445,14 +18851,15 @@ __metadata:
   linkType: hard
 
 "sha.js@npm:^2.4.0, sha.js@npm:^2.4.11, sha.js@npm:^2.4.8":
-  version: 2.4.11
-  resolution: "sha.js@npm:2.4.11"
+  version: 2.4.12
+  resolution: "sha.js@npm:2.4.12"
   dependencies:
-    inherits: "npm:^2.0.1"
-    safe-buffer: "npm:^5.0.1"
+    inherits: "npm:^2.0.4"
+    safe-buffer: "npm:^5.2.1"
+    to-buffer: "npm:^1.2.0"
   bin:
-    sha.js: ./bin.js
-  checksum: 10c0/b7a371bca8821c9cc98a0aeff67444a03d48d745cb103f17228b96793f455f0eb0a691941b89ea1e60f6359207e36081d9be193252b0f128e0daf9cfea2815a5
+    sha.js: bin.js
+  checksum: 10c0/9d36bdd76202c8116abbe152a00055ccd8a0099cb28fc17c01fa7bb2c8cffb9ca60e2ab0fe5f274ed6c45dc2633d8c39cf7ab050306c231904512ba9da4d8ab1
   languageName: node
   linkType: hard
 
@@ -21024,7 +20431,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uint8arrays@npm: 3.1.1, uint8arrays@npm:3.1.1, uint8arrays@npm:^3.0.0, uint8arrays@npm:^3.1.1":
+"uint8arrays@npm:3.1.1, uint8arrays@npm:^3.0.0, uint8arrays@npm:^3.1.1":
   version: 3.1.1
   resolution: "uint8arrays@npm:3.1.1"
   dependencies:
@@ -21570,7 +20977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:^3.2.3":
+"webpack-sources@npm:^3.3.3":
   version: 3.3.3
   resolution: "webpack-sources@npm:3.3.3"
   checksum: 10c0/ab732f6933b513ba4d505130418995ddef6df988421fccf3289e53583c6a39e205c4a0739cee98950964552d3006604912679c736031337fb4a9d78d8576ed40
@@ -21578,19 +20985,20 @@ __metadata:
   linkType: hard
 
 "webpack@npm:^5.76.1":
-  version: 5.99.9
-  resolution: "webpack@npm:5.99.9"
+  version: 5.100.0
+  resolution: "webpack@npm:5.100.0"
   dependencies:
     "@types/eslint-scope": "npm:^3.7.7"
-    "@types/estree": "npm:^1.0.6"
+    "@types/estree": "npm:^1.0.8"
     "@types/json-schema": "npm:^7.0.15"
     "@webassemblyjs/ast": "npm:^1.14.1"
     "@webassemblyjs/wasm-edit": "npm:^1.14.1"
     "@webassemblyjs/wasm-parser": "npm:^1.14.1"
-    acorn: "npm:^8.14.0"
+    acorn: "npm:^8.15.0"
+    acorn-import-phases: "npm:^1.0.3"
     browserslist: "npm:^4.24.0"
     chrome-trace-event: "npm:^1.0.2"
-    enhanced-resolve: "npm:^5.17.1"
+    enhanced-resolve: "npm:^5.17.2"
     es-module-lexer: "npm:^1.2.1"
     eslint-scope: "npm:5.1.1"
     events: "npm:^3.2.0"
@@ -21604,13 +21012,13 @@ __metadata:
     tapable: "npm:^2.1.1"
     terser-webpack-plugin: "npm:^5.3.11"
     watchpack: "npm:^2.4.1"
-    webpack-sources: "npm:^3.2.3"
+    webpack-sources: "npm:^3.3.3"
   peerDependenciesMeta:
     webpack-cli:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/34ec3f19b50bccaf27929e5e5b901b25047f2d414acba7d0967dc98eb4f404d107fb1a4b63095edbca2b006ff5815f1720b131e10b20664b074dfc86b7ffa717
+  checksum: 10c0/65e93807985a469b683b6a089e994a3b61c64aa67fa60b4322f6e857cc9b3312080ba1f29041aacb5d382bd16bea1ab6384e149034cdd71ee138a17df295860a
   languageName: node
   linkType: hard
 
@@ -21927,8 +21335,8 @@ __metadata:
   linkType: hard
 
 "ws@npm:^8.11.0, ws@npm:^8.12.1, ws@npm:^8.18.0":
-  version: 8.18.2
-  resolution: "ws@npm:8.18.2"
+  version: 8.18.3
+  resolution: "ws@npm:8.18.3"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ">=5.0.2"
@@ -21937,7 +21345,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10c0/4b50f67931b8c6943c893f59c524f0e4905bbd183016cfb0f2b8653aa7f28dad4e456b9d99d285bbb67cca4fedd9ce90dfdfaa82b898a11414ebd66ee99141e4
+  checksum: 10c0/eac918213de265ef7cb3d4ca348b891a51a520d839aa51cdb8ca93d4fa7ff9f6ccb339ccee89e4075324097f0a55157c89fa3f7147bde9d8d7e90335dc087b53
   languageName: node
   linkType: hard
 
@@ -22192,8 +21600,8 @@ __metadata:
   linkType: hard
 
 "zod@npm:^3.22.4":
-  version: 3.25.67
-  resolution: "zod@npm:3.25.67"
-  checksum: 10c0/80a0cab3033272c4ab9312198081f0c4ea88e9673c059aa36dc32024906363729db54bdb78f3dc9d5529bd1601f74974d5a56c0a23e40c6f04a9270c9ff22336
+  version: 3.25.76
+  resolution: "zod@npm:3.25.76"
+  checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
   languageName: node
   linkType: hard
