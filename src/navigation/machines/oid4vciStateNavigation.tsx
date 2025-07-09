@@ -41,7 +41,17 @@ import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../uti
 import agent from '../../agent';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {
+  ActionType,
+  CredentialMapper,
+  DefaultActionSubType,
+  DocumentFormat,
+  InitiatorType,
+  LogLevel,
+  OriginalVerifiableCredential,
+  SubSystem,
+  System,
+} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
@@ -138,8 +148,8 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  if(contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    trustedAnchors?.push('https://federation.demo.sphereon.com')
+  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    trustedAnchors?.push('https://federation.demo.sphereon.com');
   }
   const getContactsArgs = {
     filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
@@ -284,7 +294,22 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
 const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {oid4vciMachine, navigation, state, onBack, onNext} = args;
   const {credentialsToAccept, contact, credentialBranding} = state.context;
-  const localeBranding: Array<IBasicCredentialLocaleBranding> | undefined = credentialBranding?.[state.context.selectedCredentials[0]];
+  // The selectedCredential from context is the configurationId, whilst we store the branding by type. We need to map
+  const configId = state.context.selectedCredentials[0];
+  const types = credentialsToAccept
+    .find(ac => ac.correlationId === configId || ac.credentialToAccept.id === configId || ac.types.includes(configId))
+    ?.types?.filter(type => type != 'VerifiableCredential') ?? [];
+
+
+  const localeBranding: Array<IBasicCredentialLocaleBranding> = credentialBranding?.[configId] ?? []
+  if (localeBranding.length === 0 ) {
+    for (const type of types) {
+      const branding = credentialBranding?.[type] ?? []
+      if (branding.length > 0) {
+        localeBranding.push(...branding)
+      }
+    }
+  }
 
   const onDecline = async (): Promise<void> => {
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
