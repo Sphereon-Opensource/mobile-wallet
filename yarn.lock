@@ -4892,6 +4892,7 @@ __metadata:
     babel-preset-expo: "npm:~11.0.0"
     base-64: "npm:^1.0.0"
     buffer: "npm:^4.9.1"
+    class-validator: "npm:0.14.1"
     countries-list: "npm:^3.1.1"
     debug: "npm:^4.3.5"
     did-jwt: "npm:6.11.6"
@@ -9126,14 +9127,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"class-validator@npm:^0.14.1":
-  version: 0.14.2
-  resolution: "class-validator@npm:0.14.2"
+"class-validator@npm:0.14.1":
+  version: 0.14.1
+  resolution: "class-validator@npm:0.14.1"
   dependencies:
     "@types/validator": "npm:^13.11.8"
-    libphonenumber-js: "npm:^1.11.1"
+    libphonenumber-js: "npm:^1.10.53"
     validator: "npm:^13.9.0"
-  checksum: 10c0/5bb67389d38fa23d342dffdd8e2dcee8235e1906e59799df5b2050278a6d89292fcaa88167f0215e3ddd684f47dcd51b004efa7be32d8aded91ee06cb317b3b8
+  checksum: 10c0/946e914e47548b5081449c720ea6a4877bac63dc960e14fca4b990b56e64efe3802d12f07ec22d6420c290245b72ea2d646939239f2a3b597794e6c4c2a4f2ae
   languageName: node
   linkType: hard
 
@@ -14632,7 +14633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.11.1":
+"libphonenumber-js@npm:^1.10.53":
   version: 1.12.9
   resolution: "libphonenumber-js@npm:1.12.9"
   checksum: 10c0/77fb86802cdf339f472e6a65394603fec0dabe76faca8b5efb4ebcfada2c11a7b39b6773de400e8ec6528354d4b49317797673b14e921117cadbe6b76f01613d
