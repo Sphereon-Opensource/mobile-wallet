@@ -1,7 +1,7 @@
-diff --git a/node_modules/@bitauth/libauth/build/main/lib/format/log.js b/node_modules/@bitauth/libauth/build/main/lib/format/log.js
+diff --git a/build/main/lib/format/log.js b/build/main/lib/format/log.js
 index 6a1f908..0fedcfc 100644
---- a/node_modules/@bitauth/libauth/build/main/lib/format/log.js
-+++ b/node_modules/@bitauth/libauth/build/main/lib/format/log.js
+--- a/build/main/lib/format/log.js
++++ b/build/main/lib/format/log.js
 @@ -69,8 +69,8 @@ exports.sortObjectKeys = (objectOrArray
          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
          [key]: exports.sortObjectKeys(objectOrArray[key]) })), {});

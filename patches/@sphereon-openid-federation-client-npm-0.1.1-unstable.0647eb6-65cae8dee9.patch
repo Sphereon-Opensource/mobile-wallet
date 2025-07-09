@@ -1,7 +1,7 @@
-diff --git a/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js b/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
+diff --git a/ktor-ktor-client-core.js b/ktor-ktor-client-core.js
 index 4fec6ba..60a503f 100644
---- a/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
-+++ b/node_modules/@sphereon/openid-federation-client/ktor-ktor-client-core.js
+--- a/ktor-ktor-client-core.js
++++ b/ktor-ktor-client-core.js
 @@ -5960,8 +5960,51 @@
      // Inline function 'kotlin.js.asDynamic' call
      return new Int8Array(_this__u8e3s4.buffer, _this__u8e3s4.byteOffset, _this__u8e3s4.length);
@@ -23,7 +23,7 @@ index 4fec6ba..60a503f 100644
 +                    if (isDone) {
 +                        return Promise.resolve({ done: true })
 +                        }
-+      
++
 +                      return new Promise((resolve, reject) => {
 +                          const reader = new FileReader()
 +                          reader.onload = () => {
@@ -37,7 +37,7 @@ index 4fec6ba..60a503f 100644
 +                            reader.readAsArrayBuffer(response._bodyBlob)
 +                          })
 +                    },
-+    
++
 +                  cancel() {
 +                    isDone = true
 +                      return Promise.resolve()
@@ -50,16 +50,16 @@ index 4fec6ba..60a503f 100644
 +      return null
 +    }
 +
-+    
++
 +    function readBodyBrowser(_this__u8e3s4, response) {
 +      var tmp0_elvis_lhs = createReadableStreamFromBlob(response);
      var tmp;
      if (tmp0_elvis_lhs == null) {
        return Companion_getInstance().u19();
-diff --git a/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js b/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
+diff --git a/ktor-ktor-io.js b/ktor-ktor-io.js
 index 75af956..852e910 100644
---- a/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
-+++ b/node_modules/@sphereon/openid-federation-client/ktor-ktor-io.js
+--- a/ktor-ktor-io.js
++++ b/ktor-ktor-io.js
 @@ -5793,7 +5793,7 @@
      // Inline function 'kotlin.with' call
      // Inline function 'kotlin.js.asDynamic' call
