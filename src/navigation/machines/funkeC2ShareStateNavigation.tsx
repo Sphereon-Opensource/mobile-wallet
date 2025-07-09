@@ -125,6 +125,9 @@ const navigateAddContact = async (args: any): Promise<void> => {
   const getContactsArgs = {
     filter: trustedAnchors?.map((trustedAnchor: any) => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
+  if(contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    trustedAnchors?.push('https://federation.demo.sphereon.com')
+  }
   const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
 
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
