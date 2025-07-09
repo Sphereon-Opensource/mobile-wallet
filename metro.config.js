@@ -9,6 +9,7 @@ const defaultConfig = getDefaultConfig(__dirname);
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = {
+  resetCache: true,
   transformer: {
     assetPlugins: ['expo-asset/tools/hashAssetFiles'],
     getTransformOptions: async () => ({

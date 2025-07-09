@@ -75,3 +75,4 @@ out.txt
 /.yarn/
 
 .env*
+/.yarn/
