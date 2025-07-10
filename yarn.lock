@@ -17359,7 +17359,7 @@ __metadata:
   resolution: "react-native-fingerprint-scanner@https://github.com/hieuvp/react-native-fingerprint-scanner.git#commit=3898597b031ebf4b2f685958b7de0a755bb8fb16"
   peerDependencies:
     react-native: ">=0.60 <1.0.0"
-  checksum: 10c0/80d4dbd6b14b5a7c0684a0cba5ab1e2da866e355f36b3a3933e0c3c6f5975603f906a0b54b7e218c951bac785b065a6abedb508abbc471849628cce3911cd3ba
+  checksum: 10c0/6fd23d727b20ec3b6c4165124f9505f6556ea23c33e3256a23ccc1db63979ff7136fc9cc4458fbcc626d756b9e6afa181a9ced79aad5c745aca6df206fe99f6b
   languageName: node
   linkType: hard
 
@@ -17653,7 +17653,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/f4af875f7fb55d6d7340099d95a5d9c66edd527dd093de7581c9253698f9aefd769b11a1982284ec2a70c82fa9b6ff0e916e6feb67d9a9e0d394f31f0e885e0e
+  checksum: 10c0/7e20ec3df6aa7bb9979b9eee4a0b2cd11391f48a81b7ca3fa9bda65378327a4233280a0fa20823d1d0d39aa06bc9ef844b072bee95469eaea81fb484265786b4
   languageName: node
   linkType: hard
 
