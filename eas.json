@@ -4,8 +4,7 @@
   },
   "build": {
     "base": {
-      "node": "20.19.3",
-      "yarn": "4.9.2"
+      "node": "20.19.3"
     },
     "preview": {
       "extends": "base",
