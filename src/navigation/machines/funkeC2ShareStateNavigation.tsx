@@ -122,13 +122,7 @@ const navigateAddContact = async (args: any): Promise<void> => {
     return machine.getSnapshot()?.can(FunkeC2ShareMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  const getContactsArgs = {
-    filter: trustedAnchors?.map((trustedAnchor: any) => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  if(contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    trustedAnchors?.push('https://federation.demo.sphereon.com')
-  }
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -149,7 +143,7 @@ const navigateAddContact = async (args: any): Promise<void> => {
 
 const navigateReviewContact = async (args: any): Promise<void> => {
   const {navigation, context, machine} = args;
-  const {contact} = context;
+  const {contact, trustedAnchors } = context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -159,13 +153,14 @@ const navigateReviewContact = async (args: any): Promise<void> => {
     machine.send(SiopV2MachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       roles: contact.roles,
       uri: contact.uri,
-      federations: [],
+      federations: federationParties,
       onContinue: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
       onDecline,
       onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
@@ -333,3 +328,18 @@ export const FunkeC2ShareProvider = (props: FunkeC2ShareProviderProps): JSX.Elem
 
   return <FunkeC2ShareContext.Provider value={{funkeC2ShareInstance: customFunkeC2ShareInstance}}>{children}</FunkeC2ShareContext.Provider>;
 };
+
+
+async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
+  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    if (!trustedAnchors) {
+      trustedAnchors = [];
+    }
+
+    trustedAnchors?.push('https://federation.demo.sphereon.com');
+  }
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+}

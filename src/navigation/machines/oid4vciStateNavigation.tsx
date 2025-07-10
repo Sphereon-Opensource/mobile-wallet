@@ -148,13 +148,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
@@ -182,7 +176,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
 const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack, onNext} = args;
-  const {contact, issuerBranding} = state.context;
+  const {contact, issuerBranding, trustedAnchors} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -192,12 +186,14 @@ const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promis
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
+
   const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
-      federations: [],
+      federations: federationParties,
       uri: contact.uri,
       logo: branding.logo,
       description: branding.description,
@@ -590,3 +586,18 @@ export const firstPartyStateNavigationListener = async (
     return navigateLoading(nav);
   }
 };
+
+async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
+  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    if (!trustedAnchors) {
+      trustedAnchors = [];
+    }
+
+    trustedAnchors?.push('https://federation.demo.sphereon.com');
+  }
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+}
+

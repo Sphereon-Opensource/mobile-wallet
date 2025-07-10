@@ -58,8 +58,7 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {url, authorizationRequestData, trustedAnchors: ctxTrustedAnchors} = state.context;
-  let trustedAnchors = ctxTrustedAnchors
+  const {url, authorizationRequestData, trustedAnchors} = state.context;
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
@@ -163,7 +162,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
 
 const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack, onNext} = args;
-  const {contact} = state.context;
+  const {contact, trustedAnchors} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -173,13 +172,15 @@ const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise
     siopV2Machine.send(SiopV2MachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
+
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       roles: contact.roles,
       uri: contact.uri,
-      federations: [],
+      federations: federationParties,
       onContinue: onNext,
       onDecline,
       onBack,
@@ -385,3 +386,19 @@ export const SiopV2Provider = (props: SiopV2ProviderProps): JSX.Element => {
 
   return <SiopV2Context.Provider value={{siopV2Instance: customSiopV2Instance}}>{children}</SiopV2Context.Provider>;
 };
+
+
+async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
+  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    if (!trustedAnchors) {
+      trustedAnchors = [];
+    }
+
+    trustedAnchors?.push('https://federation.demo.sphereon.com');
+  }
+  const getContactsArgs = {
+    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
+  };
+  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+}
+
