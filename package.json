@@ -4,6 +4,7 @@
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
+    "eas-build-pre-install": "corepack enable && yarn set version 4",
     "start:dev": "expo start --dev-client",
     "start:prod": "expo start --no-dev",
     "android:dev": "expo run:android --variant debug",
