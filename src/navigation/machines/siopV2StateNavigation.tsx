@@ -58,7 +58,8 @@ const navigateSendingCredentials = async (args: SiopV2MachineNavigationArgs): Pr
 
 const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack} = args;
-  const {url, authorizationRequestData, trustedAnchors} = state.context;
+  const {url, authorizationRequestData, trustedAnchors: ctxTrustedAnchors} = state.context;
+  let trustedAnchors = ctxTrustedAnchors
 
   if (authorizationRequestData === undefined) {
     return Promise.reject(Error('Missing authorization request data in context'));
@@ -132,6 +133,12 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
+  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
+    if(!trustedAnchors) {
+      trustedAnchors = []
+    }
+    trustedAnchors?.push('https://federation.demo.sphereon.com');
+  }
   const getContactsArgs = {
     filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
   };
