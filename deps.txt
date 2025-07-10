@@ -73,7 +73,7 @@ yarn list v1.22.21
 │  ├─ @babel/helper-annotate-as-pure@^7.22.5
 │  ├─ regexpu-core@^5.3.1
 │  └─ semver@^6.3.1
-├─ @babel/helper-define-polyfill-provider@0.5.0
+├─ @babel/helper-define-polyfill-provider@0.5.1
 │  ├─ @babel/helper-compilation-targets@^7.22.6
 │  ├─ @babel/helper-plugin-utils@^7.22.5
 │  ├─ debug@^4.1.1
@@ -2052,7 +2052,7 @@ yarn list v1.22.21
 │  └─ type-detect@4.0.8
 ├─ @sinonjs/fake-timers@10.3.0
 │  └─ @sinonjs/commons@^3.0.0
-├─ @sphereon/did-auth-siop@0.5.0-unstable.7
+├─ @sphereon/did-auth-siop@0.5.1-unstable.7
 │  ├─ @astronautlabs/jsonpath@^1.1.2
 │  ├─ @sphereon/did-uni-client@^0.6.0
 │  ├─ @sphereon/pex-models@^2.1.1
@@ -3552,7 +3552,7 @@ yarn list v1.22.21
 │  └─ resolve@^1.13.1
 ├─ babel-plugin-polyfill-corejs2@0.4.8
 │  ├─ @babel/compat-data@^7.22.6
-│  ├─ @babel/helper-define-polyfill-provider@^0.5.0
+│  ├─ @babel/helper-define-polyfill-provider@^0.5.1
 │  └─ semver@^6.3.1
 ├─ babel-plugin-polyfill-corejs3@0.8.7
 │  ├─ @babel/helper-define-polyfill-provider@^0.4.4
@@ -3564,7 +3564,7 @@ yarn list v1.22.21
 │  │  └─ resolve@^1.14.2
 │  └─ core-js-compat@^3.33.1
 ├─ babel-plugin-polyfill-regenerator@0.5.5
-│  └─ @babel/helper-define-polyfill-provider@^0.5.0
+│  └─ @babel/helper-define-polyfill-provider@^0.5.1
 ├─ babel-plugin-react-native-web@0.18.12
 ├─ babel-plugin-styled-components@2.1.4
 │  ├─ @babel/helper-annotate-as-pure@^7.22.5
@@ -3993,7 +3993,7 @@ yarn list v1.22.21
 │  ├─ on-headers@~1.0.2
 │  └─ safe-buffer@5.2.1
 ├─ cookie-signature@1.0.6
-├─ cookie@0.5.0
+├─ cookie@0.5.1
 ├─ cookies@0.8.0
 │  ├─ depd@~2.0.0
 │  └─ keygrip@~1.1.0
@@ -4067,7 +4067,7 @@ yarn list v1.22.21
 ├─ css-what@6.1.0
 ├─ csso@4.2.0
 │  └─ css-tree@^1.1.2
-├─ cssom@0.5.0
+├─ cssom@0.5.1
 ├─ cssstyle@2.3.0
 │  ├─ cssom@~0.3.6
 │  └─ cssom@0.3.8
@@ -4683,7 +4683,7 @@ yarn list v1.22.21
 │  ├─ content-disposition@0.5.4
 │  ├─ content-type@~1.0.4
 │  ├─ cookie-signature@1.0.6
-│  ├─ cookie@0.5.0
+│  ├─ cookie@0.5.1
 │  ├─ debug@2.6.9
 │  ├─ debug@2.6.9
 │  │  └─ ms@2.0.0
@@ -5487,7 +5487,7 @@ yarn list v1.22.21
 │  ├─ abab@^2.0.6
 │  ├─ acorn-globals@^7.0.0
 │  ├─ acorn@^8.8.1
-│  ├─ cssom@^0.5.0
+│  ├─ cssom@^0.5.1
 │  ├─ cssstyle@^2.3.0
 │  ├─ data-urls@^3.0.2
 │  ├─ decimal.js@^10.4.2
@@ -6938,8 +6938,8 @@ yarn list v1.22.21
 │  ├─ unicode-match-property-ecmascript@^2.0.0
 │  └─ unicode-match-property-value-ecmascript@^2.1.0
 ├─ regjsparser@0.9.1
-│  ├─ jsesc@~0.5.0
-│  └─ jsesc@0.5.0
+│  ├─ jsesc@~0.5.1
+│  └─ jsesc@0.5.1
 ├─ remove-trailing-slash@0.1.1
 ├─ require-directory@2.1.1
 ├─ require-from-string@2.0.2
