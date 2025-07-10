@@ -16,7 +16,7 @@ import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
-import {delay} from '../../utils';
+import {delay, lookupFederationParties} from '../../utils';
 import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
 import {
   ConnectionType,
@@ -29,8 +29,7 @@ import {
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
-import agent from '../../agent';
-import {SiopV2MachineEvents, SiopV2MachineNavigationArgs} from '../../types/machines/siopV2';
+import {SiopV2MachineEvents} from '../../types/machines/siopV2';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
 
@@ -329,17 +328,3 @@ export const FunkeC2ShareProvider = (props: FunkeC2ShareProviderProps): JSX.Elem
   return <FunkeC2ShareContext.Provider value={{funkeC2ShareInstance: customFunkeC2ShareInstance}}>{children}</FunkeC2ShareContext.Provider>;
 };
 
-
-async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    if (!trustedAnchors) {
-      trustedAnchors = [];
-    }
-
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
-}

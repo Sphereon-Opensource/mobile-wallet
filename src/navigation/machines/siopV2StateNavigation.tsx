@@ -29,8 +29,8 @@ import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import agent from '../../agent';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {lookupFederationParties} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -132,16 +132,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    if(!trustedAnchors) {
-      trustedAnchors = []
-    }
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  const federationParties = trustedAnchors && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -386,19 +377,3 @@ export const SiopV2Provider = (props: SiopV2ProviderProps): JSX.Element => {
 
   return <SiopV2Context.Provider value={{siopV2Instance: customSiopV2Instance}}>{children}</SiopV2Context.Provider>;
 };
-
-
-async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    if (!trustedAnchors) {
-      trustedAnchors = [];
-    }
-
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
-}
-

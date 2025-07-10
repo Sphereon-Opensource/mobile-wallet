@@ -19,6 +19,11 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {
   CreateContactEvent,
+  FirstPartyMachineEvents,
+  FirstPartyMachineInterpreter,
+  FirstPartyMachineNavigationArgs,
+  FirstPartyMachineState,
+  FirstPartyMachineStateTypes,
   OID4VCIContext as OID4VCIContextType,
   OID4VCIMachineEvents,
   OID4VCIMachineInterpreter,
@@ -26,32 +31,16 @@ import {
   OID4VCIMachineState,
   OID4VCIMachineStates,
   OID4VCIProviderProps,
-  FirstPartyMachineNavigationArgs,
-  FirstPartyMachineEvents,
-  FirstPartyMachineInterpreter,
-  FirstPartyMachineState,
-  FirstPartyMachineStateTypes,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
-import agent from '../../agent';
+import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederationParties} from '../../utils';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {
-  ActionType,
-  CredentialMapper,
-  DefaultActionSubType,
-  DocumentFormat,
-  InitiatorType,
-  LogLevel,
-  OriginalVerifiableCredential,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
@@ -586,18 +575,3 @@ export const firstPartyStateNavigationListener = async (
     return navigateLoading(nav);
   }
 };
-
-async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    if (!trustedAnchors) {
-      trustedAnchors = [];
-    }
-
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  return Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
-}
-
