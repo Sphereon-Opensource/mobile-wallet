@@ -17,7 +17,7 @@ const DB_CONNECTION_NAME = 'default';
 
 const sqliteConfig: ReactNativeConnectionOptions = {
   type: 'react-native',
-  database: 'funke-wallet-v0.4.12.sqlite',
+  database: 'wallet_0_5_0.sqlite',
   location: '.',
   driver: typeORMDriver,
   entities: [

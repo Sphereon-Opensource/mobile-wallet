@@ -173,9 +173,11 @@ const issuers = [vcdm2Jose, vcdm1Jwt];
 export const createAgentPlugins = ({dbConnection}: {dbConnection: OrPromise<DataSource>}): Array<IAgentPlugin> => {
   buildSphereonKeyManager(dbConnection);
 
+
   return [
     new DataStore(dbConnection),
     new DataStoreORM(dbConnection),
+    // @ts-ignore
     new IdentifierResolution({crypto: global.crypto}),
     // The Animo funke cert is self-signed and not issued by a CA. Since we perform strict checks on certs, we blindly trust if for the Funke
     new MDLMdoc({trustAnchors: [sphereonCA, funkeTestCA, sphereonFunke], opts: {blindlyTrustedAnchors: [animoFunkeCert]}}),
