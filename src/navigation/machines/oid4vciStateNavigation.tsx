@@ -19,6 +19,11 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {
   CreateContactEvent,
+  FirstPartyMachineEvents,
+  FirstPartyMachineInterpreter,
+  FirstPartyMachineNavigationArgs,
+  FirstPartyMachineState,
+  FirstPartyMachineStateTypes,
   OID4VCIContext as OID4VCIContextType,
   OID4VCIMachineEvents,
   OID4VCIMachineInterpreter,
@@ -26,32 +31,16 @@ import {
   OID4VCIMachineState,
   OID4VCIMachineStates,
   OID4VCIProviderProps,
-  FirstPartyMachineNavigationArgs,
-  FirstPartyMachineEvents,
-  FirstPartyMachineInterpreter,
-  FirstPartyMachineState,
-  FirstPartyMachineStateTypes,
 } from '@sphereon/ssi-sdk.oid4vci-holder';
 import {translate} from '../../localization/Localization';
 import RootNavigation from './../rootNavigation';
 import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {getCredentialIssuerContact, getCredentialSubjectContact} from '../../utils';
-import agent from '../../agent';
+import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederationParties} from '../../utils';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {
-  ActionType,
-  CredentialMapper,
-  DefaultActionSubType,
-  DocumentFormat,
-  InitiatorType,
-  LogLevel,
-  OriginalVerifiableCredential,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
@@ -148,13 +137,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
     return oid4vciMachine.getSnapshot()?.can(OID4VCIMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  if (contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    trustedAnchors?.push('https://federation.demo.sphereon.com');
-  }
-  const getContactsArgs = {
-    filter: trustedAnchors?.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
@@ -182,7 +165,7 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
 
 const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack, onNext} = args;
-  const {contact, issuerBranding} = state.context;
+  const {contact, issuerBranding, trustedAnchors} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -192,12 +175,14 @@ const navigateReviewContact = async (args: OID4VCIMachineNavigationArgs): Promis
     oid4vciMachine.send(OID4VCIMachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
+
   const branding = issuerBranding?.[0] ?? {};
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
-      federations: [],
+      federations: federationParties,
       uri: contact.uri,
       logo: branding.logo,
       description: branding.description,

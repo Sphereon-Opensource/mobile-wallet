@@ -29,8 +29,8 @@ import {SimpleEventsOf} from 'xstate';
 import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import agent from '../../agent';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import {lookupFederationParties} from '../../utils';
 
 const debug: Debugger = Debug(`${APP_ID}:siopV2StateNavigation`);
 
@@ -132,10 +132,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
     return siopV2Machine.getSnapshot()?.can(SiopV2MachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  const getContactsArgs = {
-    filter: trustedAnchors && trustedAnchors.map(trustedAnchor => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  const federationParties = trustedAnchors && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -156,7 +153,7 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
 
 const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise<void> => {
   const {navigation, state, siopV2Machine, onBack, onNext} = args;
-  const {contact} = state.context;
+  const {contact, trustedAnchors} = state.context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -166,13 +163,15 @@ const navigateReviewContact = async (args: SiopV2MachineNavigationArgs): Promise
     siopV2Machine.send(SiopV2MachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
+
   navigation.navigate(MainRoutesEnum.SIOPV2, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       roles: contact.roles,
       uri: contact.uri,
-      federations: [],
+      federations: federationParties,
       onContinue: onNext,
       onDecline,
       onBack,

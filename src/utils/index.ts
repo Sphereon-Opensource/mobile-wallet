@@ -13,3 +13,4 @@ export * from './UserUtils';
 export * from './array';
 export * from './number';
 export * from './countries';
+export * from './federation';

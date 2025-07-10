@@ -16,7 +16,7 @@ import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
-import {delay} from '../../utils';
+import {delay, lookupFederationParties} from '../../utils';
 import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
 import {
   ConnectionType,
@@ -29,8 +29,7 @@ import {
   PartyTypeType,
 } from '@sphereon/ssi-sdk.data-store';
 import {SimpleEventsOf} from 'xstate';
-import agent from '../../agent';
-import {SiopV2MachineEvents, SiopV2MachineNavigationArgs} from '../../types/machines/siopV2';
+import {SiopV2MachineEvents} from '../../types/machines/siopV2';
 
 const debug: Debugger = Debug(`${APP_ID}:funkeC2ShareStateNavigation`);
 
@@ -122,13 +121,7 @@ const navigateAddContact = async (args: any): Promise<void> => {
     return machine.getSnapshot()?.can(FunkeC2ShareMachineEvents.CREATE_CONTACT as SimpleEventsOf<CreateContactEvent>) !== true;
   };
 
-  const getContactsArgs = {
-    filter: trustedAnchors?.map((trustedAnchor: any) => ({identities: {identifier: {correlationId: trustedAnchor}}})),
-  };
-  if(contact.uri?.endsWith('.sphereon.com') && !trustedAnchors?.includes('https://federation.demo.sphereon.com')) {
-    trustedAnchors?.push('https://federation.demo.sphereon.com')
-  }
-  const federationParties = Array.isArray(trustedAnchors) && trustedAnchors.length > 0 ? await agent.cmGetContacts(getContactsArgs) : [];
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
 
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
@@ -149,7 +142,7 @@ const navigateAddContact = async (args: any): Promise<void> => {
 
 const navigateReviewContact = async (args: any): Promise<void> => {
   const {navigation, context, machine} = args;
-  const {contact} = context;
+  const {contact, trustedAnchors } = context;
 
   if (!contact) {
     return Promise.reject(Error('Missing contact in context'));
@@ -159,13 +152,14 @@ const navigateReviewContact = async (args: any): Promise<void> => {
     machine.send(SiopV2MachineEvents.DECLINE);
   };
 
+  const federationParties = await lookupFederationParties(contact, trustedAnchors);
   navigation.navigate(MainRoutesEnum.FUNKE_C2_SHARE, {
     screen: ScreenRoutesEnum.NEW_CONTACT_ADD,
     params: {
       name: contact.contact.displayName,
       roles: contact.roles,
       uri: contact.uri,
-      federations: [],
+      federations: federationParties,
       onContinue: async () => machine.send(FunkeC2ShareMachineEvents.NEXT),
       onDecline,
       onBack: async () => machine.send(FunkeC2ShareMachineEvents.PREVIOUS),
@@ -333,3 +327,4 @@ export const FunkeC2ShareProvider = (props: FunkeC2ShareProviderProps): JSX.Elem
 
   return <FunkeC2ShareContext.Provider value={{funkeC2ShareInstance: customFunkeC2ShareInstance}}>{children}</FunkeC2ShareContext.Provider>;
 };
+
