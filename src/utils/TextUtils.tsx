@@ -30,7 +30,7 @@ export const checkAndAddHTTPPrefix = (url: string) => {
   return url;
 };
 
-export function parseValidURL(url: string): boolean {
+export function isValidURL(url: string): boolean {
   if (!url || !url.includes('.') || !/^https?:\/\//.test(url)) {
     return false;
   }
