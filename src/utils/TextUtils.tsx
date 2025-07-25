@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text} from 'react-native';
-import {URL_VALIDATION_REGEX} from '../@config/constants';
 
 const {v4: uuidv4} = require('uuid');
 
@@ -31,19 +30,15 @@ export const checkAndAddHTTPPrefix = (url: string) => {
   return url;
 };
 
-export function parseValidURL(url: string) {
-  // since some values that aren't valid web url could
-  // pass the checks for URL lib, we also use a regex here
+export function parseValidURL(url: string): boolean {
+  if (!url || !url.includes('.') || !/^https?:\/\//.test(url)) {
+    return false;
+  }
 
   try {
-    if (!url || !url.includes('.') || !URL_VALIDATION_REGEX.test(url)) {
-      return false;
-    }
-    const formattedUrl = url.startsWith('http://') ? url : `http://${url}`;
-    const parsedUrl = new URL(formattedUrl);
-
-    return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
-  } catch (e) {
+    const parsedUrl = new URL(url);
+    return parsedUrl.hostname.length > 0;
+  } catch {
     return false;
   }
 }

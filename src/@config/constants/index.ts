@@ -21,10 +21,6 @@ export const PIN_CODE_LENGTH = 6;
 
 export const EMAIL_ADDRESS_VALIDATION_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-// export const URL_VALIDATION_REGEX = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,63})(\/[^\s]*)?$/;
-// The above regex does too much backtracking potentially taking 20 seconds to do one regex, trying a simple faster alternative:
-export const URL_VALIDATION_REGEX = /^(https?:\/\/)?(([a-zA-Z\d]+(-[a-zA-Z\d]+)*\.)+[a-zA-Z]{2,63})(\/\S*)?$/;
-
 export const ONLY_ALLOW_NUMBERS_REGEX = /^\d+$/;
 // TODO probably not supporting all mime variants
 export const IS_IMAGE_URI_REGEX = /^data:image\/(png|jpg|jpeg|bmp|gif|webp);base64,/;
