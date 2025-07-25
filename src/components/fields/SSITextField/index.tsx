@@ -7,7 +7,7 @@ import {SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
 import ClaimTrueIcon from '../../assets/icons/ClaimTrueIcon';
 import ClaimFalseIcon from '../../assets/icons/ClaimFalseIcon';
-import {checkAndAddHTTPPrefix, parseValidURL} from '../../../utils';
+import {checkAndAddHTTPPrefix, isValidURL} from '../../../utils';
 import {fontStyle} from '../../../styles/typography';
 import {
   SSITextFieldContainerStyled as Container,
@@ -65,7 +65,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
   const getValueElements = (item: any): Array<ReactElement> => {
     const values = valueIsArray ? item : [item];
     return values.map((value: any, index: number) => {
-      const validURL = parseValidURL(value);
+      const validURL = isValidURL(value);
       const markdownStyle = {
         body: {
           fontFamily: fontStyle.h7SemiBold.fontFamily,
