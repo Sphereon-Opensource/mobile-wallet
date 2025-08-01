@@ -73,7 +73,7 @@ yarn list v1.22.21
 │  ├─ @babel/helper-annotate-as-pure@^7.22.5
 │  ├─ regexpu-core@^5.3.1
 │  └─ semver@^6.3.1
-├─ @babel/helper-define-polyfill-provider@0.5.1
+├─ @babel/helper-define-polyfill-provider@0.5.2
 │  ├─ @babel/helper-compilation-targets@^7.22.6
 │  ├─ @babel/helper-plugin-utils@^7.22.5
 │  ├─ debug@^4.1.1
@@ -512,7 +512,7 @@ yarn list v1.22.21
 │  ├─ find-cache-dir@^2.0.0
 │  ├─ make-dir@^2.1.0
 │  ├─ pirates@^4.0.6
-│  └─ source-map-support@^0.5.16
+│  └─ source-map-support@^0.5.26
 ├─ @babel/regjsgen@0.8.0
 ├─ @babel/runtime@7.23.8
 │  ├─ regenerator-runtime@^0.14.0
@@ -554,10 +554,10 @@ yarn list v1.22.21
 │  └─ uri-js@4.4.0
 │     └─ punycode@^2.1.0
 ├─ @did-core/data-model@0.1.1-unstable.15
-│  ├─ factory.ts@^0.5.1
+│  ├─ factory.ts@^0.5.2
 │  └─ factory.ts@0.5.2
 │     ├─ clone-deep@^4.0.1
-│     └─ source-map-support@^0.5.19
+│     └─ source-map-support@^0.5.29
 ├─ @did-core/did-ld-json@0.1.1-unstable.15
 │  ├─ @transmute/did-context@^0.6.1-unstable.25
 │  └─ jsonld-checker@^0.1.6
@@ -1096,7 +1096,7 @@ yarn list v1.22.21
 │  ├─ get-port@^3.2.0
 │  ├─ glob@^7.1.2
 │  ├─ lodash@^4.17.4
-│  ├─ mkdirp@^0.5.1
+│  ├─ mkdirp@^0.5.2
 │  ├─ password-prompt@^1.0.4
 │  ├─ rimraf@^2.6.2
 │  ├─ rimraf@2.7.1
@@ -1869,7 +1869,7 @@ yarn list v1.22.21
 │  ├─ glob@^7.1.1
 │  ├─ invariant@^2.2.4
 │  ├─ jscodeshift@^0.14.0
-│  ├─ mkdirp@^0.5.1
+│  ├─ mkdirp@^0.5.2
 │  └─ nullthrows@^1.1.1
 ├─ @react-native/community-cli-plugin@0.73.12
 │  ├─ @jest/types@26.6.2
@@ -2052,7 +2052,7 @@ yarn list v1.22.21
 │  └─ type-detect@4.0.8
 ├─ @sinonjs/fake-timers@10.3.0
 │  └─ @sinonjs/commons@^3.0.0
-├─ @sphereon/did-auth-siop@0.5.1-unstable.7
+├─ @sphereon/did-auth-siop@0.5.2-unstable.7
 │  ├─ @astronautlabs/jsonpath@^1.1.2
 │  ├─ @sphereon/did-uni-client@^0.6.0
 │  ├─ @sphereon/pex-models@^2.1.1
@@ -3037,7 +3037,7 @@ yarn list v1.22.21
 │  │  ├─ memoize-one@^5.0.0
 │  │  ├─ metro-runtime@^0.80.3
 │  │  ├─ metro-source-map@^0.80.3
-│  │  ├─ mkdirp@^0.5.1
+│  │  ├─ mkdirp@^0.5.2
 │  │  ├─ nullthrows@^1.1.1
 │  │  ├─ pretty-format@^26.5.2
 │  │  ├─ promise@^8.3.0
@@ -3552,7 +3552,7 @@ yarn list v1.22.21
 │  └─ resolve@^1.13.1
 ├─ babel-plugin-polyfill-corejs2@0.4.8
 │  ├─ @babel/compat-data@^7.22.6
-│  ├─ @babel/helper-define-polyfill-provider@^0.5.1
+│  ├─ @babel/helper-define-polyfill-provider@^0.5.2
 │  └─ semver@^6.3.1
 ├─ babel-plugin-polyfill-corejs3@0.8.7
 │  ├─ @babel/helper-define-polyfill-provider@^0.4.4
@@ -3564,7 +3564,7 @@ yarn list v1.22.21
 │  │  └─ resolve@^1.14.2
 │  └─ core-js-compat@^3.33.1
 ├─ babel-plugin-polyfill-regenerator@0.5.5
-│  └─ @babel/helper-define-polyfill-provider@^0.5.1
+│  └─ @babel/helper-define-polyfill-provider@^0.5.2
 ├─ babel-plugin-react-native-web@0.18.12
 ├─ babel-plugin-styled-components@2.1.4
 │  ├─ @babel/helper-annotate-as-pure@^7.22.5
@@ -3993,7 +3993,7 @@ yarn list v1.22.21
 │  ├─ on-headers@~1.0.2
 │  └─ safe-buffer@5.2.1
 ├─ cookie-signature@1.0.6
-├─ cookie@0.5.1
+├─ cookie@0.5.2
 ├─ cookies@0.8.0
 │  ├─ depd@~2.0.0
 │  └─ keygrip@~1.1.0
@@ -4067,7 +4067,7 @@ yarn list v1.22.21
 ├─ css-what@6.1.0
 ├─ csso@4.2.0
 │  └─ css-tree@^1.1.2
-├─ cssom@0.5.1
+├─ cssom@0.5.2
 ├─ cssstyle@2.3.0
 │  ├─ cssom@~0.3.6
 │  └─ cssom@0.3.8
@@ -4683,7 +4683,7 @@ yarn list v1.22.21
 │  ├─ content-disposition@0.5.4
 │  ├─ content-type@~1.0.4
 │  ├─ cookie-signature@1.0.6
-│  ├─ cookie@0.5.1
+│  ├─ cookie@0.5.2
 │  ├─ debug@2.6.9
 │  ├─ debug@2.6.9
 │  │  └─ ms@2.0.0
@@ -4776,8 +4776,8 @@ yarn list v1.22.21
 │  ├─ statuses@2.0.1
 │  └─ unpipe@~1.0.0
 ├─ find-babel-config@1.2.0
-│  ├─ json5@^0.5.1
-│  ├─ json5@0.5.1
+│  ├─ json5@^0.5.2
+│  ├─ json5@0.5.2
 │  └─ path-exists@^3.0.0
 ├─ find-cache-dir@2.1.0
 │  ├─ commondir@^1.0.1
@@ -5325,8 +5325,8 @@ yarn list v1.22.21
 │  ├─ jest-watcher@^29.7.0
 │  ├─ jest-worker@^29.7.0
 │  ├─ p-limit@^3.1.0
-│  ├─ source-map-support@0.5.13
-│  └─ source-map-support@0.5.13
+│  ├─ source-map-support@0.5.23
+│  └─ source-map-support@0.5.23
 │     ├─ buffer-from@^1.0.0
 │     └─ source-map@^0.6.0
 ├─ jest-runtime@29.7.0
@@ -5487,7 +5487,7 @@ yarn list v1.22.21
 │  ├─ abab@^2.0.6
 │  ├─ acorn-globals@^7.0.0
 │  ├─ acorn@^8.8.1
-│  ├─ cssom@^0.5.1
+│  ├─ cssom@^0.5.2
 │  ├─ cssstyle@^2.3.0
 │  ├─ data-urls@^3.0.2
 │  ├─ decimal.js@^10.4.2
@@ -6323,7 +6323,7 @@ yarn list v1.22.21
 │  │  ├─ minimatch@2 || 3
 │  │  ├─ once@^1.3.0
 │  │  └─ path-is-absolute@^1.0.0
-│  ├─ mkdirp@~0.5.1
+│  ├─ mkdirp@~0.5.2
 │  ├─ ncp@~2.0.0
 │  ├─ rimraf@~2.4.0
 │  └─ rimraf@2.4.5
@@ -6834,7 +6834,7 @@ yarn list v1.22.21
 │  ├─ metro-react-native-babel-transformer@0.73.10
 │  ├─ metro-runtime@0.73.10
 │  ├─ metro-source-map@0.73.10
-│  ├─ mkdirp@^0.5.1
+│  ├─ mkdirp@^0.5.2
 │  ├─ nullthrows@^1.1.1
 │  ├─ pretty-format@^26.5.2
 │  ├─ pretty-format@26.6.2
@@ -6938,8 +6938,8 @@ yarn list v1.22.21
 │  ├─ unicode-match-property-ecmascript@^2.0.0
 │  └─ unicode-match-property-value-ecmascript@^2.1.0
 ├─ regjsparser@0.9.1
-│  ├─ jsesc@~0.5.1
-│  └─ jsesc@0.5.1
+│  ├─ jsesc@~0.5.2
+│  └─ jsesc@0.5.2
 ├─ remove-trailing-slash@0.1.1
 ├─ require-directory@2.1.1
 ├─ require-from-string@2.0.2
@@ -7284,7 +7284,7 @@ yarn list v1.22.21
 │  ├─ has-flag@3.0.0
 │  ├─ js-yaml@^3.13.1
 │  ├─ mdn-data@2.0.4
-│  ├─ mkdirp@~0.5.1
+│  ├─ mkdirp@~0.5.2
 │  ├─ nth-check@1.0.2
 │  │  └─ boolbase@~1.0.0
 │  ├─ object.values@^1.1.0
