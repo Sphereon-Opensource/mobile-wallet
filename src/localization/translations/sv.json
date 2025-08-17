@@ -1,0 +1,579 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "QR-kodskanner",
+      "activities": "Aktivitetsflöde",
+      "home": "Lista med intyg",
+      "credential_catalog": "Katalog över intyg",
+      "contacts": "Kontaktlista"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Okänd kontakt",
+      "credential": "Okänt intyg",
+      "credential_type": "Okänd intygstyp",
+      "purpose": "Okänt syfte",
+      "issuer": "Okänd utfärdare",
+      "type": "Okänd aktivitetstyp",
+      "date": "Okänt datum",
+      "activity": "Okänd aktivitet"
+    },
+    "feed": {
+      "title": "Aktivitetsflöde",
+      "list": {
+        "title": "Alla aktiviteter",
+        "loading": "Laddar aktiviteter",
+        "search_placeholder": "Sök efter kontakt, kort eller status",
+        "empty_state": {
+          "title": "Inga aktiviteter",
+          "subtitle": "Du har inga aktiviteter just nu.\nAktiviteter visas här automatiskt."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Alla aktiviteter med",
+        "loading": "Laddar aktiviteter för",
+        "search_placeholder": "Sök efter kort eller status"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Alla aktiviteter från",
+        "loading": "Laddar aktiviteter för",
+        "search_placeholder": "Sök efter kontakt eller status"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Delad information",
+      "info_header": {
+        "description": "objekt delade"
+      },
+      "row_description": "Data delad",
+      "detail_title": "Data delad"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Avböjd information",
+      "info_header": {
+        "description": "objekt avböjda"
+      },
+      "row_description": "Delning av data avböjdes",
+      "detail_title": "Delning av data avböjdes"
+    },
+    "VC issue": {
+      "info_list_title": "Utfärdad information",
+      "revealed_info_title": "Utfärdad information",
+      "info_header": {
+        "description": "objekt utfärdade"
+      },
+      "row_description": "Intyg mottaget",
+      "detail_title": "Nytt intyg har lagts till i din plånbok",
+      "description": [
+        "Du kan nu använda ditt",
+        "kort för officiella ändamål."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Avböjd information",
+      "revealed_info_title": "Avböjd information",
+      "info_header": {
+        "description": "objekt inte utfärdade"
+      },
+      "row_description": "Mottagande av intyg avböjdes",
+      "detail_title": "Intyg har inte lagts till i din plånbok",
+      "description": [
+        "Du har avböjt att använda",
+        "kortet för officiella ändamål."
+      ]
+    },
+    "section_titles": {
+      "status": "Status",
+      "purpose": "Syfte",
+      "credential_type": "Typ av intyg",
+      "issued_information": "Utfärdad information"
+    },
+    "contact_link": "Om",
+    "credential_activities_link": "Kortaktiviteter",
+    "credential_claims_link": "Mina påståenden",
+    "support_link": "Något fel?"
+  },
+  "credential_details_title": "Intygsdetaljer",
+  "credentials_overview_title": "Intyg",
+  "credential_details_view_issued_by": "Utfärdad av",
+  "credentials_view_item_expires_on": "Går ut",
+  "swipe_delete_button_caption": "Ta bort",
+  "credential_offer_accepted_toast": "Intyg sparat",
+  "settings_dropdown_item_text": "Inställningar",
+  "settings_dropdown_item_accessibility_hint": "Gå till inställningar",
+  "settings_title": "Inställningar",
+  "account_title": "Konto",
+  "settings_general_section_label": "Allmänt",
+  "settings_privacy_controls_section_label": "Integritetskontroller",
+  "settings_feedback_controls_section_label": "Feedbackkontroller",
+  "settings_logout_label": "Logga ut",
+  "account_personal_section_label": "Personligt",
+  "account_general_section_label": "Allmänt",
+  "account_personal_information_label": "Personlig information",
+  "account_login_and_security_label": "Inloggning och säkerhet",
+  "account_biometric_login_label": "Biometrisk autentisering",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Ta bort plånbok",
+  "age_derived_claims_title": "Åldershärledda påståenden",
+  "age_derived_claims_screen_title": "Åldershärledda påståenden",
+  "age_dervived_claims_screen_description": "Åldershärledda påståenden låter dig styrka din ålder för en annan part utan att avslöja din exakta ålder.",
+  "biometrics_title": "Vill du aktivera biometrisk autentisering?",
+  "biometrics_subtitle": "Använd ansikts- eller fingeravtrycksigenkänning för snabbare och enklare åtkomst till ditt konto.",
+  "biometrics_description": "Dina biometriska uppgifter samlas inte in av Sphereon och används endast lokalt för verifiering.",
+  "biometrics_enable_text": "Aktivera nu",
+  "biometrics_disallow": "Kanske senare",
+  "onboarding_pid_security_model_title": "Vilken PID-säkerhetsmodell vill du använda?",
+  "onboarding_pid_security_model_subtitle": "Observera att detta är ett test-/utvecklingsalternativ. Du kan inte ändra det senare utan att skapa en ny plånbok.",
+  "onboarding_pid_security_model_secure_element": "Säkert element i telefonen",
+  "onboarding_pid_security_model_remote_hardware": "Fjärr-HSM",
+  "onboarding_pid_security_model_mobile_operator": "Mobiloperatörens eSIM",
+  "onboarding_pid_security_model_eid_presentation": "Använd eID-kort vid presentation",
+  "onboarding_pid_security_model_select": "Välj",
+  "authentication_pin_code_title": "Ange din PIN-kod",
+  "authentication_pin_code_subtitle": "För att bekräfta, ange din PIN-kod",
+  "qr_scanner_marker_title": "Skanna QR-kod",
+  "qr_scanner_marker_subtitle": "Placera QR-koden i kamerans synfält",
+  "qr_scanner_qr_not_supported_message": "QR-koden stöds inte. Försök skanna en annan QR-kod för att fortsätta.",
+  "qr_scanner_qr_no_longer_valid_message": "QR-koden är inte längre giltig. Försök skanna en ny QR-kod.",
+  "connection_details_view_details": "Detaljer",
+  "action_confirm_label": "Bekräfta",
+  "action_continue_label": "Fortsätt",
+  "action_cancel_label": "Avbryt",
+  "action_decline_label": "Avböj",
+  "action_abort_label": "Avbryt",
+  "action_accept_label": "Acceptera",
+  "action_sign_label": "Signera",
+  "verification_code_title": "Ange din\nverifikationskod",
+  "verification_code_subtitle": "Du behöver en kod för att hämta intyget {{credentialName}}.",
+  "verification_code_accessibility_label": "Verifikationskod",
+  "verification_code_accessibility_hint": "Ange din verifikationskod",
+  "verification_code_invalid_code_title": "Fel verifikationskod",
+  "verification_code_invalid_code_details": "Det var inte rätt kod. Försök igen genom att begära en ny länk eller skanna QR-koden igen.",
+  "verification_code_invalid_code_details_title": "Extra detaljer",
+  "verification_code_invalid_code_message": "Fel verifikationskod. Försök igen.",
+  "credential_details_info_tab_header_label": "Verifierad info",
+  "credential_details_activity_tab_header_label": "Aktivitet",
+  "action_view_extra_details": "Visa extra detaljer",
+  "action_ok_label": "OK, jag förstår",
+  "error_generic_title": "Oj! Något gick fel.",
+  "error_generic_message": "Kontakta appens utvecklare.",
+  "error_details_generic_title": "Appen stötte på ett oväntat fel",
+  "error_details_generic_message": "Felinformation:",
+  "oidc4vci_error_invalid_request": "Ogiltig begäran",
+  "oidc4vci_error_invalid_client": "Ogiltig klient angiven",
+  "oidc4vci_error_invalid_grant": "Ogiltigt beviljande angivet",
+  "oidc4vci_error_unauthorized_client": "Appen är inte auktoriserad",
+  "oidc4vci_error_unsupported_grant_type": "Ej stödd typ av beviljande",
+  "oidc4vci_error_unsupported_invalid_scope": "Ej stödd omfångstyp",
+  "oidc4vci_error_invalid_or_missing_proof": "Intyget har ogiltigt eller saknat bevis",
+  "credential_select_type_title": "Välj intyg",
+  "credential_select_type_subtitle": "Utfärdaren {{issuerName}} stöder utfärdande av följande intyg. Välj det du vill ta emot i din plånbok.",
+  "raw_credential_title": "Råintyg",
+  "credential_details_subtitle": "Information om intyget du planerar att lägga till anges nedan.",
+  "contacts_overview_title": "Kontakter",
+  "contact_details_title": "Kontakt",
+  "contact_identities_title": "Identiteter",
+  "contact_activities_title": "Kontaktaktiviteter",
+  "contact_details_info_tab_header_label": "Detaljer",
+  "contact_details_activity_tab_header_label": "Aktivitet",
+  "contact_details_identities_tab_header_label": "Identiteter",
+  "intent_share_file_unable_to_receive_message": "Kan inte ta emot intyget",
+  "credential_activities_title": "Kortaktiviteter",
+  "credential_delete_title": "Ta bort intyg",
+  "credential_delete_message": "Är du säker på att du vill ta bort intyget: {{credentialName}}?",
+  "credential_deleted_success_toast": "Intyg borttaget",
+  "credential_deleted_failed_toast": "Kan inte ta bort intyget",
+  "contact_add_new_contact_detected_title": "Ny kontakt upptäckt",
+  "contact_add_new_contact_detected_subtitle": "Vi märkte att motparten i detta intygsutbyte ännu inte finns i dina kontakter. Du måste ange ett namn för den nya kontakten för att slutföra utbytet.",
+  "contact_name_label": "Kontaktnamn",
+  "contact_name_placeholder": "Kontaktnamn",
+  "contact_name_invalid_message": "Ange ett giltigt namn",
+  "contact_add_disclaimer": "Jag bekräftar att denna kontakt skapas till följd av ett intygsutbyte som jag initierat.",
+  "contact_delete_title": "Ta bort kontakt",
+  "contact_delete_message": "Är du säker på att du vill ta bort kontakten: {{contactName}}?",
+  "contact_deleted_success_toast": "Kontakt borttagen",
+  "contact_deleted_failed_toast": "Kan inte ta bort kontakten",
+  "contact_add_success_toast": "Kontakt skapad",
+  "contact_update_success_toast": "Kontakt uppdaterad",
+  "contact_add_no_consent_toast": "Utan godkännande kan du inte fortsätta intygsutbytet och måste använda knappen Avböj.",
+  "contact_add_cancel_title": "Är du säker på att du vill avböja?",
+  "contact_add_cancel_message": "Att lägga till en kontakt är obligatoriskt när du möter en ny part i ett intygsutbyte. Var medveten om att hela utbytet avbryts om du bekräftar.",
+  "onboarding_welcome_header": "Välkommen",
+  "onboarding_welcome_title": "Sphereon-plånbok",
+  "onboarding_welcome_intro_body": "Gör det möjligt att ta emot och dela ackrediteringar, intyg, märken och identitetsattribut.\n\nDessa undertecknas och intygas digitalt av utfärdande organisationer.",
+  "browser_open_title": "Öppna webbläsare",
+  "browser_open_header": "Öppna webbläsare",
+  "browser_open_auth_title": "Autentisering begärd",
+  "browser_open_auth_body": "Den förlitande parten kräver att du autentiserar dig. Din standardwebbläsare används för denna åtgärd",
+  "browser_open_action_next_label": "Öppna webbläsare",
+  "action_next_label": "Nästa",
+  "action_back_label": "Tillbaka",
+  "action_go_label": "Gå!",
+  "onboarding_welcome_store_body": "Lagrar intyg från tredje part krypterat direkt på din enhet. Endast du har åtkomst.\n\nAppen kommunicerar inte med Sphereons servrar om du inte väljer säkerhetskopior eller företagsfunktioner.",
+  "onboarding_welcome_share_body": "Låter dig presentera intyg för granskare från tredje part.\n\nEndast information du samtycker till delas. Ingen automatisk utlämning sker. Du har alltid kontroll.",
+  "terms_and_conditions_agreement_message": "Dessa allmänna villkor (\"Avtalet\") anger de allmänna villkoren för din användning av mobilapplikationen ”Sphereon Wallet” (\"Mobilapplikationen\" eller \"Tjänsten\") och alla relaterade produkter och tjänster (gemensamt kallade \"Tjänster\").\n\nDetta Avtal är juridiskt bindande mellan dig (\"Användare\", \"du\" eller \"din/ditt\") och Sphereon B.V., registrerat i Nederländerna, som utvecklare av Mobilapplikationen (\"Operatören\", \"vi\", \"oss\" eller \"vår\").\n\nOm du ingår detta avtal för ett företags eller en annan juridisk persons räkning intygar du att du har behörighet att binda sådan enhet till detta avtal, i vilket fall termerna \"Användare\", \"du\" eller \"din/ditt\" ska avse denna enhet. Om du inte har sådan behörighet, eller om du inte samtycker till villkoren i detta avtal, får du inte acceptera detta avtal och får inte använda eller få tillgång till Mobilapplikationen och Tjänsterna. Genom att använda Mobilapplikationen och Tjänsterna bekräftar du att du har läst, förstått och godkänner att vara bunden av villkoren i detta Avtal. Du bekräftar att detta Avtal är ett kontrakt mellan dig och Operatören, även om det är elektroniskt och inte är fysiskt undertecknat av dig, och att det reglerar din användning av Mobilapplikationen och Tjänsterna.\n\nLänkar till andra resurser\n\nÄven om Mobilapplikationen och Tjänsterna kan länka till andra resurser (såsom webbplatser, mobilapplikationer etc.), innebär detta inte, direkt eller indirekt, något godkännande, någon anknytning, sponsring, rekommendation eller affiliering med någon länkad resurs, om detta inte uttryckligen anges här. Vi ansvarar inte för att granska eller utvärdera och garanterar inte erbjudandena från några företag eller individer eller innehållet i deras resurser. Vi tar inget ansvar eller ersättningsskyldighet för handlingar, produkter, tjänster eller innehåll från andra tredje parter. Du bör noggrant granska de juridiska villkoren och andra användarvillkor för varje resurs som du får åtkomst till via en länk i Mobilapplikationen. Din länkning till andra externa resurser sker på egen risk.\n\nImmaterialrätt\n\n\"Immaterialrätt\" innebär alla nuvarande och framtida rättigheter som ges genom lag, sedvanerätt eller praxis vad gäller upphovsrätt och relaterade rättigheter, varumärken, mönster, patent, uppfinningar, goodwill och rätten att väcka talan för intrång, rättigheter till uppfinningar, nyttjanderätter och alla andra immateriella rättigheter, vare sig dessa är registrerade eller oregistrerade, inklusive alla ansökningar och rättigheter att ansöka om och beviljas, rätt att hävda prioritet för sådana rättigheter samt alla liknande eller motsvarande rättigheter eller skyddsformer och alla andra resultat av immateriell verksamhet som existerar eller kommer att existera nu eller i framtiden, var som helst i världen.\n\nDetta Avtal överför inte till dig någon immateriell egendom som ägs av Operatören eller tredje part, och alla rättigheter, äganderätter och intressen i och till sådan egendom förblir (mellan parterna) uteslutande hos Operatören.\n\nAlla varumärken, tjänstemärken, grafik och logotyper som används i samband med Mobilapplikationen och Tjänsterna är varumärken eller registrerade varumärken som tillhör Operatören eller dess licensgivare.\nAndra varumärken, tjänstemärken, grafik och logotyper som används i samband med Mobilapplikationen och Tjänsterna kan vara varumärken som tillhör andra tredje parter.\n\nDin användning av Mobilapplikationen och Tjänsterna ger dig ingen rätt eller licens att reproducera eller på annat sätt använda några av Operatörens eller tredje parts varumärken.\n\nAnsvarsbegränsning\n\nI den utsträckning som är tillåten enligt gällande lag ska Operatören, dess dotterbolag, styrelseledamöter, tjänstemän, anställda, agenter, leverantörer eller licensgivare under inga omständigheter vara ansvariga gentemot någon person för några indirekta, tillfälliga, särskilda, straffrättsliga, följd- eller exempelvis skador (inklusive, utan begränsning, skador för utebliven vinst, intäkter, försäljning, goodwill, användning av innehåll, påverkan på verksamhet, driftstopp, uteblivna besparingar eller förlust av affärsmöjligheter), oavsett orsak, enligt någon ansvarsteori, inklusive, utan begränsning, avtal, skadestånd, garanti, brott mot lagstadgad skyldighet, vårdslöshet eller annat, även om den ansvariga parten har informerats om eller kunnat förutse möjligheten till sådana skador.\nI den maximala utsträckning som är tillåten enligt gällande lag ska det sammanlagda ansvaret för Operatören och dess dotterbolag, styrelseledamöter, tjänstemän, anställda, agenter, leverantörer och licensgivare i samband med Tjänsterna vara begränsat till ett belopp som inte överstiger en (1) dollar eller det belopp som du faktiskt betalat kontant till Operatören under den månad som föregick den första händelsen eller omständigheten som gav upphov till sådant ansvar. Begränsningarna och undantagen gäller även om denna åtgärd inte fullt ut kompenserar dig för eventuella förluster eller inte uppfyller sitt väsentliga syfte.\n\nSkadeslöshetsförbindelse\n\nDu samtycker till att ersätta och hålla Operatören och dess dotterbolag, styrelseledamöter, tjänstemän, anställda, agenter, leverantörer och licensgivare skadeslösa från och mot alla ansvar, förluster, skador eller kostnader, inklusive rimliga advokatarvoden, som uppkommer i samband med eller till följd av tredje parts påståenden, krav, rättsliga åtgärder, tvister eller krav som riktas mot någon av dem till följd av eller i samband med ditt Innehåll, din användning av Mobilapplikationen och Tjänsterna eller uppsåtligt fel från din sida.\n\nÄndringar och tillägg\n\nVi förbehåller oss rätten att när som helst, efter eget gottfinnande, ändra detta Avtal eller dess villkor som rör Mobilapplikationen och Tjänsterna. När vi gör det kommer vi att ändra det uppdaterade datumet längst ned på denna sida. Vi kan också meddela dig på andra sätt efter eget gottfinnande, till exempel genom den kontaktinformation du har lämnat. Du bör regelbundet hålla dig informerad om innehållet i dessa villkor.\n\nEn uppdaterad version av detta Avtal träder i kraft omedelbart vid publicering av det reviderade Avtalet, om inget annat anges. Din fortsatta användning av Mobilapplikationen och Tjänsterna efter det att det reviderade Avtalet trätt i kraft (eller någon annan åtgärd som anges vid den tidpunkten) innebär att du samtycker till dessa ändringar.\n\nGodkännande av villkoren\n\nDu bekräftar att du har läst detta Avtal och godkänner alla dess villkor. Genom att använda Mobilapplikationen och Tjänsterna godkänner du att vara bunden av detta Avtal. Om du inte samtycker till att följa villkoren i detta Avtal är du inte behörig att använda eller få tillgång till Mobilapplikationen och/eller Tjänsterna.\n\nKontakta oss\n\nOm du har några frågor, funderingar eller klagomål angående detta Avtal uppmanar vi dig att kontakta oss via följande kontaktuppgifter: support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereon tillhandahåller mobilappen ”Sphereon Wallet” (\"Appen\"), som du kan ladda ner och installera på din mobila enhet.\n\nSkyddet av personuppgifter är mycket viktigt för Sphereon. Huruvida personuppgifter samlas in vid användning av Appen och för vilket syfte de behandlas förklaras i följande dataskyddsdeklaration. Behandling i detta sammanhang innebär varje form av användning av uppgifterna, t.ex. insamling, registrering, lagring, överföring, presentation och radering.\n\nPersonuppgifter behandlas endast i den utsträckning som är nödvändig för kommunikationen med användaren. Vi följer principen om uppgiftsminimering och uppfyller alla tillämpliga lagbestämmelser för skydd av personuppgifter och datasäkerhet. Särskilt gäller att motsvarande uppgifter endast behandlas om det finns en rättslig grund.\n\nDen rättsliga grunden för behandling av personuppgifter är EU:s allmänna dataskyddsförordning (GDPR), närmare bestämt: artikel 6 punkt 1 (a), artikel 7, artikel 6 punkt 1 (b) och (f) samt artikel 6 punkt 1 (c) i EU 2016/679 (nedan ”GDPR”).\n\nI. Namn och kontaktuppgifter till den personuppgiftsansvarige\nDen personuppgiftsansvarige i den mening som avses i artikel 4 GDPR för behandlingen av personuppgifter är:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nNederländerna\ninfo@sphereon.com\n\n2. Typ av uppgifter som behandlas, syfte med behandlingen, rättslig grund\n\n1. Användar- och enhetsdata\nVi kommer aldrig att ha kännedom om eller tillgång till dina personuppgifter, om du inte kontaktar oss via Sphereons kontaktformulär eller den e-postadress som anges i Appen.\n\nNär Appen laddas ner överförs den information som krävs för detta till Apple AppStore eller Google Play Store (\"appbutikerna\"), dvs. i synnerhet användarnamn, e-postadress och kundnummer för ditt konto, tidpunkt för nedladdning och enhetens individuella kod. Dessa uppgifter krävs för att möjliggöra nedladdning av Appen från appbutikerna. Vi får inga personuppgifter från detta.\nVi har ingen påverkan på denna datainsamling och ansvarar inte för den. För mer information om syftet med och omfattningen av databehandlingen i appbutikerna hänvisar vi till respektive appbutiks dataskyddsdeklaration.\n\nEfter att Appen har installerats på din mobila enhet kan den användas utan internetanslutning. När du använder Appen samlar vi inte in några personuppgifter. De person- och intygsinformationer som du gör tillgängliga i Appen (t.ex. namn, adress, körkort, identitetskort, utbildnings- eller andra intygsinformationer) lagras endast lokalt och är krypterade på din mobila enhet. Vi kontrollerar inte uppgifterna.\nDet är också ditt eget ansvar att spara innehållet och att säkerhetskopiera data.\n\nOm du gör denna information tillgänglig för andra parter (\"Utfärdare\", \"Granskare\" eller \"Tredjepartsleverantörer\") för verifiering eller delning gäller den dataskyddsdeklaration som utfärdaren, granskaren eller tredjepartsleverantören tillhandahåller, med avseende på syftet med och omfattningen av databehandlingen. Sphereon har inte heller här tillgång till uppgifterna eller datatrafiken.\n\nPersonuppgifter samlas endast in, lagras och behandlas om du själv initierar kontakt, i den mån det är nödvändigt för att besvara din förfrågan.\n\nDen rättsliga grunden för databehandling är artikel 6 punkt 1 (a), (b) och (f) i EU:s GDPR.\n\n1. Cookies\nInga cookies används i denna App.\n\n1. Kontakt\nOm du kontaktar oss via kontaktformuläret i Appen eller via vår e-postadress kommer vi att använda de kontaktuppgifter du har lämnat, såsom namn, e-postadress och eventuell ytterligare information, för att besvara din förfrågan. På metadatanivå överförs din IP-adress och versionen av Appen.\n\nBehandlingen av de kontaktuppgifter du tillhandahåller är nödvändig för att vi ska kunna kontakta dig och besvara din förfrågan. Om ytterligare uppgifter också har lämnats används dessa för att individualisera din förfrågan och därmed kunna svara på bästa möjliga sätt.\nDen rättsliga grunden för databehandling är artikel 6 punkt 1 (b) och (f) GDPR.\n\nI. Lagringstid\nDina uppgifter lagras endast så länge det är nödvändigt för att uppfylla de ovan nämnda syftena.\n\nNär detta inte längre är fallet, t.ex. efter att din förfrågan har besvarats fullt ut, raderas eller blockeras uppgifterna om och så länge detta krävs av kommersiella eller skattemässiga lagstadgade lagringskrav (artikel 6 punkt 1 (c) GDPR).\nFrån och med den tidpunkt då det inte längre finns några lagstadgade lagringskrav raderas uppgifterna, såvida du inte uttryckligen har samtyckt till fortsatt användning (artikel 6 punkt 1 (a) GDPR).\n\nI. Utlämnande av uppgifter till tredje part, överföring till tredjeländer\n\nGrundprincipen är att de uppgifter du lagrar eller överför inte görs tillgängliga för tredje part.\nI enskilda fall kan det dock vara nödvändigt för att fullgöra avtalet att lämna ut dina personuppgifter till företag som vi har anförtrott att tillhandahålla enskilda tjänster (t.ex. molnleverantörer). Om vi lämnar ut uppgifter till tredje part som en del av vår behandling, överför dem eller på annat sätt ger dem tillgång till uppgifterna, sker detta endast med rättsligt tillstånd, med ditt samtycke, enligt lagstadgad skyldighet eller baserat på våra berättigade intressen.\nOm vi anlitar tredjepartsleverantörer för att behandla data baserat på ett så kallat \"personuppgiftsbiträdesavtal\" sker detta enligt artikel 28 GDPR.\n\nTredje part är å sin sida skyldig att följa gällande lagar vid hantering och behandling av dessa uppgifter. Om tredje part är etablerad i ett tredjeland, dvs. ett land där GDPR inte har direkt rättsverkan, kommer uppgifter endast att överföras om du har gett ditt samtycke, om en lämplig skyddsnivå föreligger, t.ex. genom individuella avtal, användning av EU:s standardavtalsklausuler, förekomsten av ett EU-beslut om adekvat skyddsnivå eller annat rättsligt tillstånd.\n\nÖverföring till myndigheter och statliga institutioner som är berättigade att ta emot information är också möjlig, men endast inom ramen för lagstadgade informationsskyldigheter och vid ett bindande domstolsbeslut. I dessa fall kan Sphereon B.V. lämna information, t.ex. för att hävda, utöva eller försvara rättsliga anspråk, genomdriva befintliga avtal, i samband med bedrägerianklagelser, säkerhetsåtgärder eller allmänt tillämpliga lagstadgade bestämmelser.\n\nPersonuppgifter kommer inte att lämnas ut utanför den omfattning som beskrivs här utan användarens uttryckliga samtycke.\n\nUnder inga omständigheter kommer vi att sälja eller hyra ut personuppgifter till tredje part.\n\nI. Tredjepartstjänster vid drift av Appen\nVi vill uppmärksamma dig på följande tredjepartsleverantörer vars tjänster vi använder för att driva Appen och tillhandahålla våra tjänster, och som kan komma i kontakt med ovan nämnda personuppgifter:\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irland\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Australien\n\nVi påpekar uttryckligen att vi inte har någon påverkan på omfattningen av de uppgifter som dessa företag samlar in. När det gäller dataskydd måste vi därför förlita oss på den information som tillhandahålls av respektive företag, vilket vi hänvisar till i förklaringen nedan.\n\nVid behov, vänligen inhämta ytterligare information från företaget om syftet med och omfattningen av datainsamlingen samt dina rättigheter i detta avseende och inställningsmöjligheter för att skydda din integritet. Vi har tillhandahållit länkarna till dataskyddsdeklarationerna här.\n\nNedan hittar du information om möjliga dataskyddseffekter av samarbetet med tredjepartsleverantörerna samt ytterligare länkar.\n\nMicrosoft\nVi använder Microsofts tjänster, såsom Office 365, för att säkerställa vår tillgänglighet via e-post.\nMer information om Microsofts dataskyddsbestämmelser hittar du här: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nVi använder Atlassians tjänster, såsom Jira, för att strukturera och optimera hanteringen av dina tekniska förfrågningar. Det kan vara nödvändigt att enstaka data om de beskrivna problemen sparas och lagras på Atlassians molnservrar.\nMer information om Atlassians integritetspolicy hittar du här: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Registrerades rättigheter\nSom person vars personuppgifter behandlas har du rättigheter enligt nedan. Dessa rättigheter följer av bestämmelserna i GDPR och återges här i delvis förenklad form.\n\nRätt att återkalla samtycke\nEnligt artikel 7 punkt (3) GDPR har du rätt att när som helst återkalla ditt samtycke till behandling. Lagligheten av den behandling som skett före återkallelsen påverkas inte. Återkallelsen kan göras genom en informell förklaring. En skriftlig förklaring eller alternativt ett e-postmeddelande till ovanstående kontaktadress är tillräckligt.\n\nRätt till information\nEnligt artikel 15 GDPR har du rätt att begära bekräftelse från oss på om personuppgifter som rör dig behandlas. Om så är fallet har du rätt till information om dessa personuppgifter och den information som anges i artikel 15 punkt 1 GDPR. Detta inkluderar syftet med behandlingen, kategorierna av behandlade uppgifter, mottagarna till vilka uppgifter har eller kommer att lämnas ut, så långt det är möjligt den planerade lagringsperioden eller kriterierna för denna.\n\nRätt till rättelse\nEnligt artikel 16 GDPR har du rätt att utan onödigt dröjsmål begära att vi rättar felaktiga personuppgifter om dig. Med beaktande av ändamålen med behandlingen har du rätt att begära komplettering av ofullständiga personuppgifter – även genom en kompletterande förklaring.\n\nRätt till radering\nEnligt artikel 17 GDPR har du rätt att kräva att personuppgifter om dig raderas omedelbart. Vi är skyldiga att radera personuppgifter omedelbart om något av villkoren i artikel 17 punkt (1) GDPR är uppfyllt, t.ex. att uppgifterna inte längre är nödvändiga för de ändamål för vilka de samlades in eller på annat sätt behandlades.\n\nRätt att begränsa behandling\nEnligt artikel 18 GDPR har du rätt att begära att vi begränsar behandlingen om något av villkoren i artikel 18 GDPR är uppfyllt. Detta inkluderar t.ex. att du bestrider riktigheten i personuppgifterna. Då får vi endast behandla uppgifterna i begränsad omfattning under den tid det tar att kontrollera riktigheten i personuppgifterna.\n\nRätt till dataportabilitet\nEnligt artikel 20 GDPR har du rätt att få de personuppgifter som du har lämnat till oss i ett strukturerat, allmänt använt och maskinläsbart format. Du har rätt att överföra dessa uppgifter till en annan personuppgiftsansvarig utan hinder, under förutsättning att den ursprungliga behandlingen baserades på samtycke eller var nödvändig för fullgörandet av ett avtal.\n\nRätt att invända\nEnligt artikel 21 GDPR har du rätt att när som helst invända mot behandling av dina personuppgifter om denna behandling sker med stöd av artikel 6 punkt 1 (e) eller (f) GDPR och det finns skäl som hänför sig till din specifika situation. Du kan när som helst invända mot behandling av uppgifter för direktmarknadsföring. Personuppgifter kommer då inte längre att behandlas för detta ändamål. Rätten att invända kan utövas genom en informell förklaring. En skriftlig förklaring eller alternativt ett e-postmeddelande till den kontaktadress som anges i Appen är tillräckligt.\nAutomatiserat beslutsfattande i enskilda fall, inklusive profilering\n\nEnligt artikel 22 GDPR har du rätt att inte bli föremål för ett beslut som enbart grundas på automatiserad behandling – inklusive profilering – som har rättslig verkan för dig eller på liknande sätt i betydande grad påverkar dig. Artikel 22 punkt (1) GDPR medger undantag från detta, där artikel 22 punkt (4) GDPR innehåller delvisa undantag.\n\nRätt att inge klagomål till en tillsynsmyndighet\nEnligt artikel 77 GDPR har du, utan att det påverkar andra administrativa eller rättsliga åtgärder, rätt att inge klagomål till en tillsynsmyndighet i den medlemsstat där du är bosatt, arbetar eller där det påstådda intrånget har skett, om du anser att behandlingen av dina personuppgifter strider mot denna förordning.\n\nII. Tekniska och organisatoriska åtgärder\nVi vidtar tekniska och organisatoriska åtgärder för att säkerställa att kraven på säkerhet och skydd i GDPR uppfylls och att personuppgifter skyddas mot förlust, förstöring, manipulation eller åtkomst av obehöriga.\n\nIII. Ändringar av denna dataskyddsdeklaration\nVi förbehåller oss rätten att ändra denna dataskyddsdeklaration när som helst. Du bör regelbundet hålla dig informerad om innehållet i vår dataskyddsdeklaration.\n\nIV. Slutbestämmelse\nDenna text omfattas av Nederländernas lagar och ska tolkas i enlighet med nederländsk rättsförståelse. Denna engelska version är endast för information. Vid skillnader mellan den nederländska och den engelska versionen gäller endast den nederländska versionen.",
+  "terms_of_service_terms_tab_header_label": "Villkor",
+  "terms_of_service_privacy_tab_header_label": "Integritetspolicy",
+  "terms_of_service_consent_terms_message": "Jag har läst och accepterar villkoren.",
+  "terms_of_service_consent_privacy_message": "Jag har läst och accepterar integritetspolicyn.",
+  "terms_of_service_decline_title": "Du avböjde villkoren",
+  "terms_of_service_decline_message": "Du har avböjt, vilket innebär att onboarding av plånboken inte slutfördes. Ta bort Sphereon-plånboken från din enhet, eller börja om när du öppnar plånboken.",
+  "terms_of_service_decline_action_caption": "Avsluta app",
+  "terms_of_service_title": "Villkor",
+  "terms_of_service_subtitle": "Detta dokument uppdaterades senast den 5 november 2024.",
+  "pid_security_model_warning": "EID läses in endast vid presentation",
+  "import_data_auth_title": "Ange din Sphereon-PIN",
+  "import_data_auth_next": "Fortsätt",
+  "import_data_auth_biometrics_title": "Autentisera med biometrik",
+  "import_data_auth_failure_title": "Biometrisk autentisering misslyckades, vi kände inte igen dig",
+  "import_data_auth_failure_description": "Du kan inte fortsätta just nu. Det enda sättet att slutföra uppgiften är att börja om. Stäng appen och öppna den igen för att starta onboardingen på nytt.",
+  "import_data_auth_step_title": "Ange din Sphereon-PIN",
+  "import_data_consent_button_accept": "Ja, det är jag",
+  "import_data_consent_button_decline": "Allt stämmer inte",
+  "import_data_loader_step_title": "Ett ögonblick",
+  "import_data_loader_step_subtitle": "Hämtar dina personuppgifter.",
+  "import_data_final_step_title": "Dina uppgifter har importerats. Är allt korrekt?",
+  "import_data_setup_complete_title": "Konfiguration klar",
+  "incorrect_data_title": "Är vissa uppgifter felaktiga?",
+  "incorrect_data_description": "Om dina personuppgifter är felaktiga kan det orsaka problem. Lägg därför inte till dessa uppgifter.",
+  "incorrect_data_bullet_content_heading": "Vad kan du göra",
+  "incorrect_data_bullet_content": "Kontakta din kommun för att ändra uppgifterna.\nVänta på ett meddelande från kommunen som bekräftar uppdateringen.\nFörsök att lägga till uppgifterna igen. Du hittar dem i katalogen.",
+  "incorrect_data_back": "Tillbaka",
+  "incorrect_data_dont_add_info": "Lägg inte till dessa uppgifter",
+  "incorrect_data_after_bullet_heading": "Om det inte är dina",
+  "incorrect_data_after_bullet_content": "Om uppgifterna inte är dina, lägg dem inte i din plånbok.",
+  "onboarding_esim_enter_details_title": "Ange eSIM‑uppgifter",
+  "onboarding_esim_enter_details_description": "Ange ditt telefonnummer och kopplingskod",
+  "onboarding_esim_enter_details_msisdn_label": "Telefonnummer (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Ange telefonnummer",
+  "onboarding_esim_enter_details_coupling_code_label": "Kopplingskod",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Ange kopplingskod",
+  "onboarding_esim_enter_details_continue": "Fortsätt",
+  "onboarding_esim_enter_details_back": "Tillbaka",
+  "onboarding_machine_activate_esim_error_title": "eSIM-aktiveringen misslyckades",
+
+  "onboarding_esim_error_couple_rp_failed": "RP‑kopplingssteget i eSIM‑aktiveringen misslyckades",
+  "onboarding_esim_error_bindkey_failed": "Bind‑key‑steget i eSIM‑aktiveringen misslyckades",
+  "onboarding_esim_error_create_link_failed": "Create‑link‑steget i eSIM‑aktiveringen misslyckades",
+  "onboarding_esim_error_check_sscd_failed": "Check‑sscd‑steget i eSIM‑aktiveringen misslyckades",
+  "onboarding_esim_error_enable_sscd_failed": "Enable‑sscd‑steget i eSIM‑aktiveringen misslyckades",
+  "onboarding_esim_error_cleanup_keys_failed": "Cleanup‑keys‑steget i eSIM‑aktiveringen misslyckades",
+  
+  "import_data_title": "Importera personuppgifter",
+  "onboarding_complete_title": "Klart!",
+  "onboarding_complete_description": "Du är redo att ta emot och dela identitetsuppgifter, intyg och mer.",
+  "onboarding_complete_next": "Börja använda min plånbok",
+  "scan_card_step_subtitle": "Håll kortet mot baksidan av telefonen och tryck på börja läsa.",
+  "scan_card_step_title": "Skanna för att importera dina uppgifter",
+  "personal_data_title": "Ange personuppgifter",
+  "personal_data_subtitle": "Anpassa din plånbok genom att ange namn och e‑postadress. Vi skapar ett självintygt intyg åt dig. Uppgifterna lämnar inte din enhet!",
+  "first_name_label": "Förnamn",
+  "first_name_placeholder": "Förnamn",
+  "first_name_invalid_message": "Ange ett giltigt förnamn",
+  "last_name_label": "Efternamn",
+  "last_name_placeholder": "Efternamn",
+  "last_name_invalid_message": "Ange ett giltigt efternamn",
+  "email_address_label": "E‑postadress",
+  "email_address_placeholder": "E‑postadress",
+  "email_address_invalid_message": "Ange en giltig e‑postadress",
+  "pin_code_choose_pin_code_title": "Välj din PIN‑kod",
+  "pin_code_choose_pin_code_subtitle": "Välj en PIN‑kod för att hålla din plånbok säker.",
+  "pin_code_confirm_pin_code_title": "Bekräfta din PIN‑kod",
+  "pin_code_confirm_pin_code_subtitle": "Ange din PIN‑kod för att bekräfta den första.",
+  "pin_code_accessibility_label": "PIN‑kod",
+  "pin_code_accessibility_hint": "Ange din PIN‑kod",
+  "pin_code_invalid_code_message": "PIN‑koderna matchar inte. Försök igen.",
+  "pin_code_attempts_left_message": "Försök kvar:",
+  "lock_title": "Logga in i\nSphereon‑plånboken",
+  "lock_subtitle": "Ange din PIN‑kod.",
+  "lock_emergency_button_caption": "Nödsamtal",
+  "show_raw_credential_button_caption": "Intygets källkod",
+  "onboard_create_wallet_step_title": "Skapa plånbok",
+  "onboard_secure_wallet_step_title": "Säkra plånbok",
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "Kom igång",
+      "description": "Varje del tar bara ett par minuter att slutföra.",
+      "accessibility_label": "Kom igång. Onboardingens framsteg är nu på steg"
+    },
+    "secure_wallet": {
+      "title": "Du är halvvägs",
+      "description": null,
+      "accessibility_label": "Du är nästan klar. Onboardingens framsteg är nu på steg"
+    },
+    "import_personal_data": {
+      "title": "Snart klar, sista delen",
+      "description": null,
+      "accessibility_label": "Snart klar, sista delen. Onboardingens framsteg är nu på steg"
+    }
+  },
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "steg",
+      "of": "av",
+      "and_final": "och sista"
+    },
+    "create_wallet": {
+      "title": "Skapa plånbok",
+      "description": "Skapa ett konto med ditt namn, din e‑postadress och bosättningsland.",
+      "accessibility": {
+        "button_hint": "Börja skapa din plånbok"
+      }
+    },
+    "secure_wallet": {
+      "title": "Säkra plånbok",
+      "description": "Skapa en unik Sphereon‑PIN som du ska hålla säker. Aktivera gärna biometrisk inloggning.",
+      "accessibility": {
+        "button_hint": "Börja säkra din plånbok"
+      }
+    },
+    "import_personal_data": {
+      "title": "Importera personuppgifter",
+      "description": {
+        "default": "Importera dina personuppgifter från din nationella eID‑leverantör.",
+        "de": "Skanna ditt digitala eID‑kort. Ha kort och PIN redo."
+      },
+      "accessibility": {
+        "button_hint": "Börja importera dina personuppgifter"
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Välkommen till din Sphereon‑plånbok",
+      "description": "Ta emot och dela ackrediteringar, intyg, märken och identitetsuppgifter.",
+      "button_caption": "Kom igång",
+      "accessibility": {
+        "hint": "Svep åt vänster för att fortsätta",
+        "label": "Välkommen till din Sphereon‑plånbok"
+      }
+    },
+    "enter_name": {
+      "title": "Ange ditt namn",
+      "text_field": {
+        "label": "Namn",
+        "placeholder": "Ditt namn",
+        "accessibility": {
+          "label": "Ange ditt namn"
+        },
+        "errors": {
+          "missing": "Ange ett namn"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Ange din e‑postadress",
+      "text_field": {
+        "label": "E‑postadress",
+        "placeholder": "Din e‑postadress",
+        "accessibility": {
+          "label": "Ange din e‑postadress"
+        },
+        "errors": {
+          "missing": "Ange en e‑postadress",
+          "invalid": "Ange en giltig e‑postadress"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Ditt bosättningsland",
+      "select": {
+        "label": "Land",
+        "accessibility": {
+          "select": "Valt land"
+        },
+        "placeholder": "Ditt bosättningsland",
+        "errors": {
+          "missing": "Välj ett land"
+        }
+      },
+      "modal": {
+        "title": "Välj land",
+        "search_placeholder": "Sök"
+      }
+    },
+    "enter_pin": {
+      "title": "Ställ in en sexsiffrig Sphereon‑PIN",
+      "requirements": {
+        "title": "Din PIN får inte innehålla:",
+        "not_same_digits": "liknande siffror",
+        "not_sequential_digits": "en följd av siffror",
+        "invalid_example_prefix": "Som: ",
+        "invalid_example_delimiter": " eller "
+      },
+      "success": "Det är en stark PIN, anteckna den på ett säkert ställe",
+      "button_caption": "Ställ in din PIN"
+    },
+    "verify_pin": {
+      "title": "Upprepa din Sphereon‑PIN",
+      "match": "Dina PIN‑koder matchar. Klart att fortsätta!",
+      "mismatch": "Oj! PIN‑koderna matchar inte.\nFörsök igen.",
+      "button_caption": "Upprepa din PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Villkor & integritet",
+      "description": "Din tillit är viktig för oss. Därför hanterar vi dina personuppgifter säkert och konfidentiellt.",
+      "features": {
+        "secure_data_storage": "Säker datalagring",
+        "strict_access_control": "Strikt åtkomstkontroll",
+        "selective_data_sharing": "Selektiv datadelning",
+        "strong_privacy_compliance": "Starkt integritetsskydd",
+        "no_3rdparty_data_sharing": "Ingen datadelning till tredje part",
+        "no_tracking_profiling": "Ingen spårning eller profilering"
+      },
+      "footer": {
+        "prefix": "Vill du läsa alla detaljer? Se vår",
+        "links": {
+          "terms": "Användarvillkor",
+          "privacy": "Integritetspolicy",
+          "delimiter": "och"
+        }
+      },
+      "button_caption": "Acceptera villkor & integritetspolicy"
+    },
+    "read_terms_and_privacy": {
+      "title": "Tjänstevillkor",
+      "description": "Detta dokument uppdaterades senast den",
+      "terms": {
+        "tab_title": "Villkor",
+		"text": "Dessa allmänna villkor (\"Avtalet\") anger de allmänna villkoren för din användning av mobilapplikationen ”Sphereon Wallet” (\"Mobilapplikationen\" eller \"Tjänsten\") och alla tillhörande produkter och tjänster (gemensamt kallade \"Tjänster\").\n\nDetta Avtal är juridiskt bindande mellan dig (\"Användare\", \"du\" eller \"din/ditt\") och Sphereon B.V., registrerat i Nederländerna, som utvecklare av Mobilapplikationen (\"Operatören\", \"vi\", \"oss\" eller \"vår\").\n\nOm du ingår detta avtal för ett företags eller annan juridisk persons räkning, intygar du att du har behörighet att binda sådan enhet till detta avtal. I så fall ska termerna \"Användare\", \"du\" eller \"din/ditt\" avse denna enhet. Om du inte har sådan behörighet, eller om du inte samtycker till villkoren i detta avtal, får du inte acceptera detta avtal och får inte använda eller få tillgång till Mobilapplikationen och Tjänsterna. Genom att få tillgång till och använda Mobilapplikationen och Tjänsterna bekräftar du att du har läst, förstått och godkänner att vara bunden av villkoren i detta Avtal. Du bekräftar att detta Avtal är ett kontrakt mellan dig och Operatören, även om det är elektroniskt och inte är fysiskt undertecknat av dig, och att det reglerar din användning av Mobilapplikationen och Tjänsterna.\n\nLänkar till andra resurser\n\nÄven om Mobilapplikationen och Tjänsterna kan länka till andra resurser (såsom webbplatser, mobilapplikationer etc.), innebär detta inte, direkt eller indirekt, något godkännande, någon anknytning, sponsring, rekommendation eller affiliering med någon länkad resurs, om detta inte uttryckligen anges här. Vi ansvarar inte för att granska eller utvärdera och garanterar inte erbjudandena från några företag eller individer eller innehållet i deras resurser. Vi tar inget ansvar eller ersättningsskyldighet för handlingar, produkter, tjänster eller innehåll från andra tredje parter. Du bör noggrant granska de juridiska villkoren och andra användarvillkor för varje resurs som du får åtkomst till via en länk i Mobilapplikationen. Din länkning till andra externa resurser sker på egen risk.\n\nImmaterialrätt"
+      },
+      "privacy": {
+        "tab_title": "Integritetspolicy",
+		"text": "Sphereon tillhandahåller mobilappen ”Sphereon Wallet” (\"Appen\"), som du kan ladda ner och installera på din mobila enhet.\n\nSkyddet av personuppgifter är mycket viktigt för Sphereon. Huruvida personuppgifter samlas in vid användning av Appen och för vilket syfte de behandlas förklaras i följande dataskyddsdeklaration. Behandling i detta sammanhang innebär varje form av användning av uppgifterna, t.ex. insamling, registrering, lagring, överföring, presentation och radering.\n\nPersonuppgifter behandlas endast i den utsträckning som är nödvändig för kommunikationen med användaren. Vi följer principen om uppgiftsminimering och uppfyller alla tillämpliga lagbestämmelser för skydd av personuppgifter och datasäkerhet. Särskilt gäller att motsvarande uppgifter endast behandlas om det finns en rättslig grund.\n\nDen rättsliga grunden för behandling av personuppgifter är EU:s allmänna dataskyddsförordning (GDPR), närmare bestämt: artikel 6 punkt 1 (a), artikel 7, artikel 6 punkt 1 (b) och (f) samt artikel 6 punkt 1 (c) i EU 2016/679 (nedan ”GDPR”).\n\nI. Namn och kontaktuppgifter till den personuppgiftsansvarige\nDen personuppgiftsansvarige i den mening som avses i artikel 4 GDPR för behandlingen av personuppgifter är:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nNederländerna\ninfo@sphereon.com\n\n2. Typ av uppgifter som behandlas, syfte med behandlingen, rättslig grund\n\n1. Användar- och enhetsdata\nVi kommer aldrig att ha kännedom om eller tillgång till dina personuppgifter, om du inte kontaktar oss via Sphereons kontaktformulär eller den e-postadress som anges i Appen."
+      }
+    },
+    "import_data_consent": {
+      "title": "Vill du lägga till dessa uppgifter?",
+      "subtitle": "Personuppgifterna är viktiga att ha i din plånbok. Är du säker på att du vill lägga till dem?",
+      "pid_provider_title": "PID‑leverantör",
+      "pid_provider_subheading": "Leverantör av personidentifieringsuppgifter",
+      "offered_data_title": "Erbjudna uppgifter",
+      "labels": {
+        "given_name": "Förnamn",
+        "family_name": "Efternamn",
+        "also_known_as": "Även känd som",
+        "gender": "Kön",
+        "birthdate": "Födelsedatum",
+        "birthplace": "Födelseort",
+        "nationality": "Nationalitet",
+        "address": "Adress"
+      },
+      "button_accept": "Ja, jag vill lägga till detta",
+      "button_decline": "Avböj"
+    },
+    "import_scan_card": {
+      "title": "Ha ditt Ausweis‑kort redo",
+      "description": "Börja med att ange eID‑PIN för ditt Ausweis‑kort.",
+      "nfc_step_title": "Håll nu kortet mot baksidan av telefonen",
+      "button_caption": "Börja ange eID‑PIN",
+      "nfc_caption": "NFC‑skannern aktiveras snart...",
+      "card_locked_message": "Ditt kort har låsts.",
+      "incorrect_pin_message": "Fel PIN‑kod. Försök igen.",
+      "unknown_scan_card_error_message": "Ett okänt fel uppstod."
+    }
+  },
+  "onboard_summary_title": "Dina angivna uppgifter",
+  "onboard_summary_subtitle": "När du trycker på slutför godkänner du uppgifterna du angett och går vidare till inloggningsskärmen. Personuppgifter kan ändras i inställningarna.",
+  "onboard_summary_info_tab_header_label": "Dina uppgifter",
+  "onboard_summary_button_caption": "Slutför och gå till min plånbok",
+  "credentials_required_title": "Krav på intyg",
+  "credentials_required_subtitle": "{{verifierName}} vill få följande uppgifter från dig för verifiering.",
+  "credentials_required_selected_label": "vald",
+  "credentials_required_available_label": "tillgänglig",
+  "credentials_required_credential_select_label": "Välj ett intyg",
+  "credentials_select_title": "Välj intyg",
+  "credentials_select_subtitle": "Du har fler än ett intyg som kan uppfylla begäran. Välj ett att skicka till granskaren.",
+  "credentials_required_checking_label": "...kontrollerar",
+  "credentials_required_no_available_label": "Det finns inget lämpligt intyg",
+  "credentials_required_no_available_additional_label": "Du har inget intyg att dela med granskaren. Kontakta en utfärdare för att få ett nytt intyg utfärdat.",
+  "action_share_label": "Dela",
+  "credentials_share_success_toast_title": "Delning lyckades",
+  "credentials_share_success_toast_message": "Du har framgångsrikt presenterat dina valda intyg för {{verifierName}}.",
+  "action_select_label": "Välj",
+  "action_onboarding_setup_message": "Konfigurerar plånbok...",
+  "action_getting_information_message": "Hämtar information...",
+  "action_sharing_credentials_message": "Delar intyg...",
+  "profile_logout_action_caption": "Logga ut",
+  "action_getting_credentials_message": "Hämtar intyg...",
+  "credentials_share_failed_toast_message": "Kan inte presentera intyg. Fel: {{errorMessage}}.",
+  "information_retrieve_failed_toast_message": "Kan inte hämta information. Fel: {{errorMessage}}.",
+  "credential_verification_failed_message": "Verifieringen av intyget resulterade i ett fel.",
+  "credential_offer_title": "Intygserbjudande",
+  "credential_sign_title": "Signatur begärd",
+  "profile_delete_wallet_action_caption": "Ta bort plånbok",
+  "profile_delete_wallet_action_title": "Är du säker på att du vill ta bort din plånbok?",
+  "profile_delete_wallet_action_subtitle": "Är du säker på att du vill ta bort din plånbok: {{userName}}?",
+  "credential_status_never_expires_date_label": "Upphör aldrig",
+  "oid4vci_machine_initiation_error_title": "Initiera OID4VCI‑leverantör",
+  "oid4vci_machine_credential_selection_error_title": "Intygsval",
+  "oid4vci_machine_retrieve_contact_error_title": "Hämta kontakt",
+  "oid4vci_machine_retrieve_credentials_error_title": "Hämta intyg",
+  "oid4vci_machine_verify_credentials_error_title": "Verifiera intyg",
+  "oid4vci_machine_add_contact_identity_error_title": "Lägg till kontaktidentitet",
+  "oid4vci_machine_store_credential_branding_error_title": "Spara intygsbranding",
+  "oid4vci_machine_store_credential_error_title": "Spara intyg",
+  "emergency_send_button_caption": "Utlös nu!",
+  "emergency_abort_button_caption": "Avbryt larm",
+  "emergency_title": "Skicka nödlarm",
+  "emergency_subtitle": "Ditt nödanrop skickas om {{emergencyAlertDelay}} sekunder, eller så kan du utlösa det omedelbart genom att klicka på knappen ’Utlös nu!’.",
+  "siopV2_machine_identifier_error_title": "Hämta identifierare",
+  "siopV2_machine_create_config_error_title": "Skapa SiopV2‑konfiguration",
+  "siopV2_machine_get_request_error_title": "Hämta SiopV2‑begäran",
+  "siopV2_machine_retrieve_contact_error_title": "Hämta kontakt",
+  "siopV2_machine_add_contact_identity_error_title": "Lägg till kontaktidentitet",
+  "siopV2_machine_send_response_error_title": "Skicka SiopV2‑svar",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Hämta federationsförtroende",
+  "action_view_all_label": "Visa alla",
+  "filter_all_label": "Visa alla",
+  "filter_other_label": "Annat",
+  "filter_new_label": "Ny",
+  "search_field_default_caption": "Sök",
+  "credential_catalog_most_relevant_header_label": "Mest relevanta intyg",
+  "credential_catalog_discover_header_label": "Upptäck fler intyg",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Dina personuppgifter från den nationella eID‑leverantören Ausweis.",
+  "ausweis_eid_preview_card_issuer": "Tyska Bundesdruckerei",
+  "ausweis_eid_modal_title": "Hämta Ausweis eID‑uppgifter",
+  "ausweis_eid_modal_description": "Personidentifieringsuppgifterna är grunden för din plånbok och därför viktiga för att kunna få andra intyg.\n\nÄr du säker på att du vill ha dessa uppgifter i din plånbok?",
+  "ausweis_eid_modal_accept_label": "Importera personuppgifter",
+  "action_maybe_later_label": "Kanske senare",
+  "item_not_yet_available_message": "Detta objekt är ännu inte tillgängligt.",
+  "onboarding_machine_store_credential_error_title": "Spara intyg",
+  "onboarding_machine_retrieve_credentials_error_title": "Hämta intyg",
+  "onboarding_skip_credential_import_step3_caption": "Jag slutför detta avsnitt senare",
+  "onboarding_store_credential_branding_error_title": "Spara intygsbranding",
+  "share_credential_c2_flow_title": "Följande information kommer att delas",
+  "new_contact_add_new_contact_detected_title": "Känner du igen {{partyName}}",
+  "new_contact_add_new_contact_detected_subtitle": "Detta är första interaktionen med denna part. Vill du fortsätta?",
+  "federation_view_untrusted_title": "{{partyName}} har låg förtroendenivå",
+  "federation_view_trusted_title": "{{partyName}} har hög förtroendenivå",
+  "federation_view_untrusted_description": "Parten ingår inte i en federation som plånboken litar på",
+  "federation_view_trusted_description": "Parten ingår i en federation som plånboken litar på",
+  "new_contact_add_new_contact_continue_caption": "Ja, fortsätt",
+  "new_contact_add_new_contact_abort_caption": "Nej, avbryt",
+  "new_contact_add_new_contact_abort_cancel_caption": "Nej, avbryt",
+  "new_contact_add_new_contact_abort_continue_caption": "Ja, jag vill avbryta",
+  "new_contact_add_new_contact_create_title": "Aliasnamn för kontakt",
+  "new_contact_add_new_contact_create_description": "Du kan skapa ett aliasnamn för kontakten genom att skriva ett nytt namn i textfältet nedan.",
+  "new_contact_add_new_contact_abort_title": "Är du säker på att du vill avbryta?",
+  "new_contact_add_new_contact_abort_description": "Om du avbryter stoppas interaktionsprocessen med {{partyName}}.",
+  "new_contact_add_new_contact_contact_details_description_label": "Beskrivning",
+  "new_contact_add_new_contact_contact_details_name_label": "Namn",
+  "new_contact_add_new_contact_contact_details_website_label": "Webbplats",
+  "new_contact_add_new_contact_contact_details_tos_label": "Tjänstevillkor",
+  "new_contact_add_new_contact_contact_details_policy_label": "Integritetspolicy",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Kontakter",
+  "new_contact_add_new_contact_low_level_trust_title": "Är du säker på att du vill fortsätta?",
+  "new_contact_add_new_contact_low_level_trust_description": "Du kommer att interagera med en part som har låg förtroendenivå.",
+  "present_qr_code_screen_header_title": "Visa QR‑kod",
+  "present_qr_code_screen_subtitle": "Visa QR‑koden för den berörda parten så att de kan skanna din QR‑kod.",
+  "present_qr_code_dropdown_item_text": "Visa QR‑kod",
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigera till en skärm som visar QR‑koden"
+}

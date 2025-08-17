@@ -1,0 +1,607 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "QR-koodin lukija",
+      "activities": "Toimintasyöte",
+      "home": "Todistusluettelo",
+      "credential_catalog": "Todistuskatalogi",
+      "contacts": "Yhteystietoluettelo"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Tuntematon yhteystieto",
+      "credential": "Tuntematon todistus",
+      "credential_type": "Tuntematon todistustyyppi",
+      "purpose": "Tuntematon tarkoitus",
+      "issuer": "Tuntematon myöntäjä",
+      "type": "Tuntematon toimintatyyppi",
+      "date": "Tuntematon päivämäärä",
+      "activity": "Tuntematon toiminta"
+    },
+    "feed": {
+      "title": "Toimintasyöte",
+      "list": {
+        "title": "Kaikki toiminnot",
+        "loading": "Ladataan toimintoja",
+        "search_placeholder": "Hae yhteystietoa, korttia tai tilaa",
+        "empty_state": {
+          "title": "Ei toimintoja",
+          "subtitle": "Sinulla ei tällä hetkellä ole toimintoja.\nToiminnot näkyvät täällä automaattisesti."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Kaikki toiminnot kohteen kanssa",
+        "loading": "Ladataan toimintoja kohteelle",
+        "search_placeholder": "Hae korttia tai tilaa"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Kaikki toiminnot kohteesta",
+        "loading": "Ladataan toimintoja kohteelle",
+        "search_placeholder": "Hae yhteystietoa tai tilaa"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Jaettu tieto",
+      "info_header": {
+        "description": "jaetut kohteet"
+      },
+      "row_description": "Jaettu data",
+      "detail_title": "Jaettu data"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Hylätty tieto",
+      "info_header": {
+        "description": "hylätyt kohteet"
+      },
+      "row_description": "Tietojen jakaminen hylätty",
+      "detail_title": "Tietojen jakaminen hylätty"
+    },
+    "VC issue": {
+      "info_list_title": "Myönnetty tieto",
+      "revealed_info_title": "Myönnetty tieto",
+      "info_header": {
+        "description": "myönnetyt kohteet"
+      },
+      "row_description": "Todistus vastaanotettu",
+      "detail_title": "Uusi todistus lisätty lompakkoosi",
+      "description": [
+        "Voit nyt käyttää",
+        "korttiasi virallisiin jakamistarkoituksiin."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Hylätty tieto",
+      "revealed_info_title": "Hylätty tieto",
+      "info_header": {
+        "description": "myöntämättömät kohteet"
+      },
+      "row_description": "Todistuksen vastaanotto hylätty",
+      "detail_title": "Todistusta ei lisätty lompakkoosi",
+      "description": [
+        "Olet kieltäytynyt käyttämästä",
+        "korttiasi virallisiin jakamistarkoituksiin."
+      ]
+    },
+    "section_titles": {
+      "status": "Tila",
+      "purpose": "Tarkoitus",
+      "credential_type": "Todistuksen tyyppi",
+      "issued_information": "Myönnetty tieto"
+    },
+    "contact_link": "Tietoja",
+    "credential_activities_link": "Kortin toiminnot",
+    "credential_claims_link": "Omat väittämät",
+    "support_link": "Onko jokin vialla?"
+  },
+  "credential_details_title": "Todistuksen tiedot",
+  "credentials_overview_title": "Todistukset",
+  "credential_details_view_issued_by": "Myöntäjä",
+  "credentials_view_item_expires_on": "Vanhenee",
+  "swipe_delete_button_caption": "Poista",
+  "credential_offer_accepted_toast": "Todistus tallennettu",
+  "settings_dropdown_item_text": "Asetukset",
+  "settings_dropdown_item_accessibility_hint": "Siirry asetuksiin",
+  "settings_title": "Asetukset",
+  "account_title": "Tili",
+  "settings_general_section_label": "Yleiset",
+  "settings_privacy_controls_section_label": "Tietosuoja-asetukset",
+  "settings_feedback_controls_section_label": "Palauteasetukset",
+  "settings_logout_label": "Kirjaudu ulos",
+  "account_personal_section_label": "Henkilökohtainen",
+  "account_general_section_label": "Yleiset",
+  "account_personal_information_label": "Henkilötiedot",
+  "account_login_and_security_label": "Kirjautuminen ja turvallisuus",
+  "account_biometric_login_label": "Biometrinen tunnistus",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Poista lompakko",
+  "age_derived_claims_title": "Iästä johdetut väittämät",
+  "age_derived_claims_screen_title": "Iästä johdetut väittämät",
+  "age_dervived_claims_screen_description": "Iästä johdetut väittämät mahdollistavat iän todistamisen toiselle osapuolelle ilman, että paljastetaan tarkkaa ikääsi.",
+  "biometrics_title": "Haluatko ottaa biometrisen tunnistuksen käyttöön?",
+  "biometrics_subtitle": "Käytä kasvo- tai sormenjälkitunnistusta nopeampaan ja helpompaan pääsyyn tiliisi.",
+  "biometrics_description": "Sphereon ei kerää biometrisiä tietojasi ja niitä käytetään vain paikallisesti tunnistamiseen.",
+  "biometrics_enable_text": "Ota käyttöön nyt",
+  "biometrics_disallow": "Ehkä myöhemmin",
+  "onboarding_pid_security_model_title": "Mitä PID-turvamallia käyttäisit?",
+  "onboarding_pid_security_model_subtitle": "Huomaa, että tämä on testi-/kehitysvaihtoehto. Et voi muuttaa sitä myöhemmin ilman uuden lompakon luontia.",
+  "onboarding_pid_security_model_secure_element": "Suojattu elementti puhelimessa",
+  "onboarding_pid_security_model_remote_hardware": "Etäinen laitteistoturvamoduuli",
+  "onboarding_pid_security_model_mobile_operator": "Mobiilioperaattorin eSIM",
+  "onboarding_pid_security_model_eid_presentation": "Käytä eID-korttia esittämisen aikana",
+  "onboarding_pid_security_model_select": "Valitse",
+  "authentication_pin_code_title": "Anna PIN-koodisi",
+  "authentication_pin_code_subtitle": "Vahvista syöttämällä PIN-koodisi",
+  "qr_scanner_marker_title": "Skannaa QR-koodi",
+  "qr_scanner_marker_subtitle": "Aseta QR-koodi kameran näkökenttään",
+  "qr_scanner_qr_not_supported_message": "QR-koodia ei tueta. Yritä skannata toinen QR-koodi jatkaaksesi.",
+  "qr_scanner_qr_no_longer_valid_message": "QR-koodi ei ole enää voimassa. Skannaa uusi QR-koodi.",
+  "connection_details_view_details": "Tiedot",
+  "action_confirm_label": "Vahvista",
+  "action_continue_label": "Jatka",
+  "action_cancel_label": "Peruuta",
+  "action_decline_label": "Hylkää",
+  "action_abort_label": "Keskeytä",
+  "action_accept_label": "Hyväksy",
+  "action_sign_label": "Allekirjoita",
+  "verification_code_title": "Anna\nvahvistuskoodisi",
+  "verification_code_subtitle": "Tarvitset koodin noutaaksesi {{credentialName}}-todistuksen.",
+  "verification_code_accessibility_label": "Vahvistuskoodi",
+  "verification_code_accessibility_hint": "Anna vahvistuskoodisi",
+  "verification_code_invalid_code_title": "Virheellinen vahvistuskoodi",
+  "verification_code_invalid_code_details": "Se ei ollut oikea koodi. Pyydä uusi linkki tai skannaa QR-koodi uudelleen.",
+  "verification_code_invalid_code_details_title": "Lisätiedot",
+  "verification_code_invalid_code_message": "Virheellinen vahvistuskoodi. Yritä uudelleen.",
+  "credential_details_info_tab_header_label": "Vahvistettu tieto",
+  "credential_details_activity_tab_header_label": "Toiminta",
+  "action_view_extra_details": "Näytä lisätiedot",
+  "action_ok_label": "OK, ymmärrän",
+  "error_generic_title": "Hups! Jokin meni vikaan.",
+  "error_generic_message": "Ota yhteyttä tämän sovelluksen kehittäjään.",
+  "error_details_generic_title": "Sovellus kohtasi odottamattoman virheen",
+  "error_details_generic_message": "Virheen tiedot:",
+  "oidc4vci_error_invalid_request": "Virheellinen pyyntö",
+  "oidc4vci_error_invalid_client": "Virheellinen asiakas määritetty",
+  "oidc4vci_error_invalid_grant": "Virheellinen valtuutus määritetty",
+  "oidc4vci_error_unauthorized_client": "Sovellusta ei ole valtuutettu",
+  "oidc4vci_error_unsupported_grant_type": "Tukematon valtuutustyyppi",
+  "oidc4vci_error_unsupported_invalid_scope": "Tukematon laajuustyyppi",
+  "oidc4vci_error_invalid_or_missing_proof": "Todistuksella on virheellinen tai puuttuva todiste",
+  "credential_select_type_title": "Valitse todistukset",
+  "credential_select_type_subtitle": "Myöntäjä {{issuerName}} tukee seuraavia todistuksia. Valitse se, jonka haluat lompakkoosi.",
+  "raw_credential_title": "Raakatodistus",
+  "credential_details_subtitle": "Alla on tiedot todistuksesta, jonka aiot lisätä.",
+  "contacts_overview_title": "Yhteystiedot",
+  "contact_details_title": "Yhteystieto",
+  "contact_identities_title": "Henkilöllisyydet",
+  "contact_activities_title": "Yhteystiedon toiminnot",
+  "contact_details_info_tab_header_label": "Tiedot",
+  "contact_details_activity_tab_header_label": "Toiminta",
+  "contact_details_identities_tab_header_label": "Henkilöllisyydet",
+  "intent_share_file_unable_to_receive_message": "Todistusta ei voida vastaanottaa",
+  "credential_activities_title": "Kortin toiminnot",
+  "credential_delete_title": "Poista todistus",
+  "credential_delete_message": "Haluatko varmasti poistaa todistuksen: {{credentialName}}?",
+  "credential_deleted_success_toast": "Todistus poistettu",
+  "credential_deleted_failed_toast": "Todistusta ei voitu poistaa",
+  "contact_add_new_contact_detected_title": "Uusi yhteystieto havaittu",
+  "contact_add_new_contact_detected_subtitle": "Toinen osapuoli tässä todistusvaihdossa ei ole vielä yhteystiedoissasi. Anna nimi tälle uudelle yhteystiedolle vaihdon viimeistelemiseksi.",
+  "contact_name_label": "Yhteystiedon nimi",
+  "contact_name_placeholder": "Yhteystiedon nimi",
+  "contact_name_invalid_message": "Anna kelvollinen yhteystiedon nimi",
+  "contact_add_disclaimer": "Hyväksyn, että tämä yhteystieto luodaan oman aloittamani todistusvaihdon seurauksena.",
+  "contact_delete_title": "Poista yhteystieto",
+  "contact_delete_message": "Haluatko varmasti poistaa yhteystiedon: {{contactName}}?",
+  "contact_deleted_success_toast": "Yhteystieto poistettu",
+  "contact_deleted_failed_toast": "Yhteystietoa ei voitu poistaa",
+  "contact_add_success_toast": "Yhteystieto luotu",
+  "contact_update_success_toast": "Yhteystieto päivitetty",
+  "contact_add_no_consent_toast": "Ilman hyväksyntää et voi jatkaa todistusvaihtoa; käytä Hylkää-painiketta.",
+  "contact_add_cancel_title": "Haluatko varmasti hylätä?",
+  "contact_add_cancel_message": "Yhteystiedon lisääminen on pakollista, kun kohtaat uuden osapuolen todistusvaihdossa. Koko prosessi keskeytetään, jos vahvistat hylkäämisen.",
+  "onboarding_welcome_header": "Tervetuloa",
+  "onboarding_welcome_title": "Sphereon-lompakko",
+  "onboarding_welcome_intro_body": "Mahdollistaa akkreditointien, todistusten, merkkien ja identiteettiattribuuttien vastaanoton ja jakamisen.\n\nNämä allekirjoitetaan ja vahvistetaan digitaalisesti kolmansien osapuolten toimesta.",
+  "browser_open_title": "Avataan selainta",
+  "browser_open_header": "Avataan selainta",
+  "browser_open_auth_title": "Todennus pyydetty",
+  "browser_open_auth_body": "Luottava osapuoli vaatii todennuksen. Oletusselaintasi käytetään tähän toimintaan.",
+  "browser_open_action_next_label": "Avaa selain",
+  "action_next_label": "Seuraava",
+  "action_back_label": "Takaisin",
+  "action_go_label": "Siirry!",
+  "onboarding_welcome_store_body": "Tallentaa kolmansien osapuolten myöntämät todistukset salattuina suoraan laitteellesi. Vain sinulla on pääsy tietoihisi.\n\nSe ei kommunikoi Sphereonin palvelimien kanssa, ellei esimerkiksi varmuuskopioita tai yritysominaisuuksia ole otettu käyttöön.",
+  "onboarding_welcome_share_body": "Mahdollistaa todistusten esittämisen kolmansien osapuolten varmentajille.\n\nJaetaan vain tiedot, joihin annat luvan. Automaattista paljastusta ei tapahdu. Olet aina hallinnassa.",
+  "terms_and_conditions_agreement_message": "Nämä yleiset ehdot (\"Sopimus\") määrittävät yleiset ehdot Sphereon Wallet -mobiilisovelluksen (\"Mobiilisovellus\" tai \"Palvelu\") käytöllesi sekä kaikkien siihen liittyvien tuotteiden ja palveluiden (yhdessä \"Palvelut\") käytölle.\n\nTämä Sopimus on oikeudellisesti sitova sinun (\"Käyttäjä\", \"sinä\" tai \"sinun\") ja Sphereon B.V.:n, joka on rekisteröity Alankomaissa ja toimii Mobiilisovelluksen kehittäjänä (\"Toimija\", \"me\", \"meidät\" tai \"meidän\"), välillä.\n\nJos teet tämän sopimuksen yrityksen tai muun oikeushenkilön puolesta, vakuutat, että sinulla on valtuudet sitoa kyseinen taho tähän sopimukseen. Siinä tapauksessa termit \"Käyttäjä\", \"sinä\" tai \"sinun\" viittaavat kyseiseen tahoon. Jos sinulla ei ole tällaista valtuutusta tai jos et hyväksy tämän sopimuksen ehtoja, et saa hyväksyä tätä sopimusta etkä käyttää Mobiilisovellusta ja Palveluita. Käyttämällä Mobiilisovellusta ja Palveluita vahvistat, että olet lukenut, ymmärtänyt ja hyväksynyt tämän Sopimuksen ehdot. Hyväksyt, että tämä Sopimus on sinun ja Toimijan välinen sopimus, vaikka se on sähköinen eikä fyysisesti allekirjoitettu, ja että se säätelee Mobiilisovelluksen ja Palveluiden käyttöäsi.\n\nLinkit muihin resursseihin\n\nVaikka Mobiilisovellus ja Palvelut voivat sisältää linkkejä muihin resursseihin (kuten verkkosivustoihin tai mobiilisovelluksiin), tämä ei tarkoita, suoraan tai epäsuorasti, mitään hyväksyntää, yhteyttä, sponsorointia, suositusta tai yhteistyötä linkitetyn resurssin kanssa, ellei tässä nimenomaisesti mainita. Emme vastaa minkään yrityksen tai henkilön tarjousten tutkimisesta tai arvioimisesta emmekä takaa niiden sisältöä. Emme ota vastuuta tai korvausvelvollisuutta muiden kolmansien osapuolten toimista, tuotteista, palveluista tai sisällöstä. Sinun tulee huolellisesti tarkistaa kunkin resurssin oikeudelliset ehdot ja muut käyttöehdot, joihin pääset Mobiilisovelluksen linkkien kautta. Linkittäminen muihin resursseihin tapahtuu omalla vastuullasi.\n\nImmateriaalioikeudet\n\n\"Immateriaalioikeudet\" tarkoittavat kaikkia nykyisiä ja tulevia oikeuksia, jotka perustuvat lakiin, tapaoikeuteen tai oikeuskäytäntöön, liittyen tekijänoikeuksiin ja niihin liittyviin oikeuksiin, tavaramerkkeihin, malleihin, patentteihin, keksintöihin, goodwill-arvoon ja oikeuteen nostaa kanne loukkauksesta, keksintöihin liittyviin oikeuksiin, käyttöoikeuksiin ja kaikkiin muihin immateriaalioikeuksiin, olivatpa ne rekisteröityjä tai rekisteröimättömiä, mukaan lukien kaikki hakemukset ja oikeudet hakea ja saada suojaa, oikeudet vedota etusijaan sekä kaikki vastaavat tai samankaltaiset oikeudet tai suojamuodot sekä kaikki muut henkisen toiminnan tulokset, jotka ovat olemassa tai tulevat olemaan olemassa missä tahansa maailman osassa.\n\nTämä Sopimus ei siirrä sinulle mitään Toimijan tai kolmansien osapuolten omistamia immateriaalioikeuksia, ja kaikki oikeudet, omistusoikeudet ja intressit tällaiseen omaisuuteen säilyvät (osapuolten välillä) yksinomaan Toimijalla.\n\nKaikki Mobiilisovelluksen ja Palveluiden yhteydessä käytetyt tavaramerkit, palvelumerkit, grafiikat ja logot ovat Toimijan tai sen lisenssinantajien tavaramerkkejä tai rekisteröityjä tavaramerkkejä. Muut Mobiilisovelluksessa ja Palveluissa käytetyt tavaramerkit, palvelumerkit, grafiikat ja logot voivat olla muiden kolmansien osapuolten tavaramerkkejä.\n\nMobiilisovelluksen ja Palveluiden käyttö ei anna sinulle oikeutta tai lisenssiä jäljentää tai muutoin käyttää Toimijan tai kolmansien osapuolten tavaramerkkejä.\n\nVastuunrajoitus\n\nSovellettavan lain sallimassa laajuudessa Toimija, sen tytäryhtiöt, johtajat, toimihenkilöt, työntekijät, agentit, toimittajat tai lisenssinantajat eivät missään tapauksessa ole vastuussa kenellekään henkilölle mistään epäsuorista, satunnaisista, erityisistä, rankaisevista, esimerkinomaisista tai välillisistä vahingoista (mukaan lukien, rajoituksetta, voittojen, tulojen, myynnin, goodwill-arvon, sisällön käytön, liiketoiminnan jatkuvuuden, odotettujen säästöjen tai liiketoimintamahdollisuuksien menetyksestä aiheutuneet vahingot), riippumatta siitä, mikä vastuuperuste on kyseessä, kuten sopimus, vahingonkorvaus, takuu, lakisääteisen velvoitteen rikkominen, huolimattomuus tai muu, vaikka vastuullista osapuolta olisi informoitu tällaisten vahinkojen mahdollisuudesta tai niiden olisi voinut kohtuudella ennakoida.\n\nSovellettavan lain sallimassa laajuudessa Toimijan ja sen tytäryhtiöiden, johtajien, toimihenkilöiden, työntekijöiden, agenttien, toimittajien ja lisenssinantajien kokonaisvastuu liittyen Palveluihin rajoittuu määrään, joka ei ylitä yhtä (1) Yhdysvaltain dollaria tai määrää, jonka olet tosiasiallisesti maksanut käteisellä Toimijalle yhtä (1) kuukautta ennen ensimmäistä vastuuta aiheuttanutta tapahtumaa tai tapausta. Rajoitukset ja poissulkemiset koskevat myös silloin, kun tämä korvaus ei täysin kata menetyksiäsi tai ei saavuta olennaista tarkoitustaan.\n\nVahingonkorvaus\n\nHyväksyt vapauttavasi ja pitäväsi Toimijan ja sen tytäryhtiöt, johtajat, toimihenkilöt, työntekijät, agentit, toimittajat ja lisenssinantajat vahingosta vastuussa kaikista vastuista, menetyksistä, vahingoista tai kustannuksista, mukaan lukien kohtuulliset asianajopalkkiot, jotka syntyvät tai liittyvät kolmansien osapuolten väitteisiin, vaatimuksiin, oikeustoimiin, riitoihin tai vaateisiin, jotka kohdistuvat johonkin heistä sisältösi, Mobiilisovelluksen ja Palveluiden käytön tai tahallisen väärinkäytöksesi seurauksena.\n\nMuutokset ja lisäykset\n\nPidätämme oikeuden muuttaa tätä Sopimusta tai sen ehtoja, jotka liittyvät Mobiilisovellukseen ja Palveluihin, milloin tahansa oman harkintamme mukaan. Kun teemme muutoksia, päivitämme tämän sivun alareunassa olevan päivityspäivämäärän. Voimme myös ilmoittaa sinulle muilla tavoin oman harkintamme mukaan, esimerkiksi antamiesi yhteystietojen kautta. Sinun tulee säännöllisesti pitää itsesi ajan tasalla näiden ehtojen sisällöstä.\n\nPäivitetty versio tästä Sopimuksesta tulee voimaan välittömästi sen julkaisemisen jälkeen, ellei toisin mainita. Jatkamalla Mobiilisovelluksen ja Palveluiden käyttöä sen jälkeen, kun päivitetty Sopimus on tullut voimaan (tai muun ilmoitetun toimenpiteen jälkeen), hyväksyt nämä muutokset.\n\nEhtojen hyväksyminen\n\nHyväksyt, että olet lukenut tämän Sopimuksen ja hyväksyt kaikki sen ehdot. Käyttämällä Mobiilisovellusta ja Palveluita hyväksyt sitoutuvasi tähän Sopimukseen. Jos et hyväksy tämän Sopimuksen ehtoja, et ole oikeutettu käyttämään Mobiilisovellusta ja/tai Palveluita.\n\nOta yhteyttä\n\nJos sinulla on kysyttävää, huolenaiheita tai valituksia tähän Sopimukseen liittyen, kehotamme sinua ottamaan meihin yhteyttä seuraavalla osoitteella: support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereon tarjoaa sinulle Sphereon Wallet -mobiilisovelluksen (\"Sovellus\"), jonka voit ladata ja asentaa mobiililaitteellesi.\n\nHenkilötietojen suojaaminen on Sphereonille erittäin tärkeää. Se, kerätäänkö henkilötietoja Sovellusta käytettäessä ja mihin tarkoitukseen niitä käsitellään, selitetään seuraavassa tietosuojailmoituksessa. Käsittely tässä yhteydessä tarkoittaa mitä tahansa tietojen käyttöä, kuten keräämistä, tallentamista, säilyttämistä, siirtämistä, esittämistä ja poistamista.\n\nHenkilötietoja käsitellään vain siltä osin kuin se on tarpeen käyttäjän kanssa viestimistä varten. Noudatamme tietojen minimoinnin periaatetta ja kaikkia sovellettavia lakisääteisiä säännöksiä henkilötietojen suojaamisesta ja tietoturvasta. Erityisesti tietoja käsitellään vain, jos käsittelylle on laillinen peruste.\n\nTietojen käsittelyn oikeusperusta on EU:n yleinen tietosuoja-asetus (GDPR), tarkemmin: artikla 6 kohta 1 (a), artikla 7, artikla 6 kohta 1 (b) ja (f) sekä artikla 6 kohta 1 (c) asetuksesta EU 2016/679 (jäljempänä ”GDPR”).\n\nI. Rekisterinpitäjän nimi ja yhteystiedot\nGDPR:n artiklan 4 mukainen rekisterinpitäjä henkilötietojen käsittelyssä on:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nAlankomaat\ninfo@sphereon.com\n\n2. Käsiteltyjen tietojen tyyppi, käsittelyn tarkoitus, oikeusperusta\n\n1. Käyttäjä- ja laitetiedot\nEmme saa koskaan tietää henkilötiedoistasi emmekä pääse niihin käsiksi, ellei sinä ota meihin yhteyttä Sphereonin yhteydenottolomakkeen kautta tai Sovelluksessa annetun sähköpostiosoitteen avulla.\n\nSovelluksen lataamisen yhteydessä tarvittavat tiedot siirtyvät Apple AppStoreen tai Google Play Storeen (\"sovelluskauppoihin\"), kuten käyttäjänimi, sähköpostiosoite ja asiakasnumerosi, latausajankohta ja laitteen yksilöivä tunniste. Näitä tietoja tarvitaan, jotta Sovelluksen lataaminen sovelluskaupoista on mahdollista. Emme saa näistä tiedoista mitään henkilötietoja.\nEmme voi vaikuttaa tähän tietojen keräämiseen emmekä ole siitä vastuussa. Lisätietoja sovelluskauppojen tietojen käsittelyn tarkoituksesta ja laajuudesta löytyy kyseisten sovelluskauppojen tietosuojakäytännöistä.\n\nKun Sovellus on onnistuneesti asennettu mobiililaitteellesi, sitä voidaan käyttää ilman internet-yhteyttä. Käyttäessäsi Sovellusta emme kerää mitään henkilötietoja. Sovellukseen itse syöttämäsi henkilö- ja todistustiedot (esim. nimi, osoite, ajokortti, henkilökortti, koulutus- tai muut todistustiedot) tallennetaan vain paikallisesti ja ne salataan mobiililaitteellasi. Emme tarkista näitä tietoja.\nOn myös yksin sinun vastuullasi tallentaa sisältö ja huolehtia tietojen varmuuskopioinnista.\n\nJos teet nämä tiedot saataville muille osapuolille (\"Myöntäjille\", \"Tarkastajille\" tai \"Kolmannen osapuolen palveluntarjoajille\") vahvistusta tai jakamista varten, kyseisen osapuolen tietosuojakäytäntö soveltuu käsittelyn tarkoituksen ja laajuuden osalta. Sphereonilla ei tällöinkään ole pääsyä tietoihin tai tietovirtaan.\n\nHenkilötietoja kerätään, tallennetaan ja käsitellään vain, jos otat meihin yhteyttä, siltä osin kuin se on tarpeen pyyntösi käsittelemiseksi.\n\nTietojen käsittelyn oikeusperusta on GDPR:n artikla 6 kohta 1 (a), (b) ja (f).\n\n1. Evästeet\nTässä Sovelluksessa ei käytetä evästeitä.\n\n1. Yhteydenotto\nJos otat meihin yhteyttä Sovelluksen yhteydenottolomakkeen kautta tai sähköpostitse, käytämme antamiasi yhteystietoja, kuten nimeäsi, sähköpostiosoitettasi ja muita antamiasi tietoja, vastataksemme pyyntöösi. Metatietotasolla välitetään myös IP-osoitteesi ja Sovelluksen versio.\n\nAntamiesi yhteystietojen käsittely on välttämätöntä, jotta voimme ottaa sinuun yhteyttä ja vastata pyyntöösi. Jos olet toimittanut myös muita tietoja, niiden käsittely palvelee pyyntösi yksilöintiä ja siten mahdollistaa parhaan mahdollisen vastauksen. Oikeusperusta on GDPR:n artikla 6 kohta 1 (b) ja (f).\n\nI. Säilytysaika\nTietojasi säilytetään vain niin kauan kuin on tarpeen edellä mainittujen tarkoitusten toteuttamiseksi.\n\nKun näin ei enää ole, esimerkiksi kun pyyntösi on käsitelty kokonaan, tiedot poistetaan tai estetään, jos ja niin kauan kuin se on tarpeen kaupallisten tai verotuksellisten lakisääteisten säilytysvaatimusten vuoksi (GDPR artikla 6 kohta 1 (c)). Siitä hetkestä, kun lakisääteiset säilytysvelvoitteet eivät enää ole esteenä, tiedot poistetaan, ellei olet nimenomaisesti antanut suostumustasi jatkokäyttöön (GDPR artikla 6 kohta 1 (a)).\n\nI. Tietojen luovutus kolmansille osapuolille, siirto kolmansiin maihin\n\nPerusperiaatteena on, että tallentamiasi tai siirtämiäsi tietoja ei luovuteta kolmansille osapuolille.\nYksittäistapauksissa voi kuitenkin olla tarpeen sopimuksen täytäntöönpanemiseksi siirtää henkilötietojasi yrityksille, jotka olemme valtuuttaneet tarjoamaan tiettyjä palveluja (esim. pilvipalveluntarjoajat). Jos luovutamme tietoja kolmansille osapuolille käsittelyn yhteydessä, siirrämme niitä tai muuten annamme niihin pääsyn, tämä tapahtuu vain lain sallimalla tavalla, suostumuksesi perusteella, lakisääteisen velvoitteen nojalla tai oikeutettujen etujemme perusteella.\nJos käytämme kolmannen osapuolen palveluntarjoajia tietojen käsittelyyn niin sanotun \"tietojenkäsittelysopimuksen\" perusteella, tämä tapahtuu GDPR:n artiklan 28 mukaisesti.\n\nKolmannen osapuolen on noudatettava lakisääteisiä määräyksiä näitä tietoja käsitellessään. Jos kolmas osapuoli sijaitsee kolmannessa maassa, eli maassa, jossa GDPR:llä ei ole suoraa oikeusvaikutusta, tietoja siirretään vain, jos olet antanut siihen suostumuksesi, jos asianmukainen tietosuojan taso on olemassa (esimerkiksi yksittäissopimusten, EU:n vakiolausekkeiden, EU:n riittävyyspäätöksen tai muun oikeusperustan perusteella).\n\nTietojen siirto viranomaisille ja valtion laitoksille, joilla on oikeus saada tietoja, on myös mahdollista, mutta vain lakisääteisten tiedonantovelvoitteiden puitteissa ja sitovan tuomioistuimen päätöksen perusteella. Näissä tapauksissa Sphereon B.V. voi toimittaa tietoja esimerkiksi oikeudellisten vaatimusten esittämiseksi, käyttämiseksi ja puolustamiseksi, olemassa olevien sopimusten täytäntöönpanemiseksi, petosepäilyjen, turvallisuustoimenpiteiden tai yleisesti sovellettavien lakien yhteydessä.\n\nHenkilötietoja ei missään tapauksessa luovuteta tässä kuvatun laajuuden ulkopuolella ilman käyttäjän nimenomaista suostumusta.\n\nEmme missään tapauksessa myy tai vuokraa henkilötietoja kolmansille osapuolille.\n\nI. Kolmannen osapuolen palvelut Sovelluksen käytössä\nHaluamme kiinnittää huomiosi seuraaviin kolmannen osapuolen palveluntarjoajiin, joiden palveluja käytämme Sovelluksen toiminnassa ja palvelujemme tarjoamisessa, ja jotka saattavat joutua kosketuksiin edellä mainittujen henkilötietojen kanssa:\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irlanti\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Australia\n\nHuomautamme nimenomaisesti, että meillä ei ole vaikutusta siihen, mitä tietoja nämä yritykset keräävät. Tietosuojan osalta meidän on siten luotettava kunkin yrityksen antamiin tietoihin, joihin viittaamme alla.\n\nTarvittaessa hanki yritykseltä lisätietoja tietojen keräämisen tarkoituksesta ja laajuudesta sekä oikeuksistasi tässä suhteessa ja vaihtoehdoista yksityisyytesi suojaamiseksi. Olemme liittäneet linkit tietosuojakäytäntöihin tähän.\n\nSeuraavassa löydät tietoja yhteistyön mahdollisista tietosuoja-vaikutuksista kolmannen osapuolen toimittajien kanssa sekä lisälinkkejä.\n\nMicrosoft\nKäytämme Microsoftin palveluja, kuten Office 365, varmistaaksemme sähköpostiyhteyden.\nLisätietoja Microsoftin tietosuojakäytännöistä: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nKäytämme Atlassianin palveluja, kuten Jiraa, teknisten tukipyyntöjesi käsittelyn jäsentämiseen ja optimointiin. Joitakin ongelmakuvauksia koskevia tietoja voidaan joutua tallentamaan Atlassianin pilvipalvelimille.\nLisätietoja Atlassianin tietosuojakäytännöstä: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Rekisteröidyn oikeudet\nGDPR:n mukaisesti sinulla on seuraavat oikeudet. Oikeudet esitetään tässä osittain yksinkertaistetussa muodossa.\n\nOikeus peruuttaa suostumus\nGDPR:n artiklan 7 kohdan (3) mukaisesti sinulla on oikeus peruuttaa suostumuksesi milloin tahansa. Peruuttaminen ei vaikuta ennen peruuttamista tehtyyn käsittelyyn. Peruuttaminen voidaan tehdä vapaamuotoisesti. Riittää kirjallinen ilmoitus tai sähköposti yllä olevaan osoitteeseen.\n\nOikeus saada tietoa\nGDPR:n artiklan 15 mukaan sinulla on oikeus pyytää vahvistusta siitä, käsitelläänkö sinua koskevia henkilötietoja. Jos näin on, sinulla on oikeus saada pääsy kyseisiin tietoihin ja muihin artiklassa 15 (1) määriteltyihin tietoihin.\n\nOikeus oikaisuun\nGDPR:n artiklan 16 mukaan sinulla on oikeus vaatia, että korjaamme ilman aiheetonta viivytystä sinua koskevat virheelliset henkilötiedot. Ottaen huomioon käsittelyn tarkoitukset, sinulla on oikeus vaatia myös puutteellisten tietojen täydentämistä.\n\nOikeus poistamiseen\nGDPR:n artiklan 17 mukaan sinulla on oikeus vaatia sinua koskevien henkilötietojen poistamista välittömästi, jos jokin artiklan 17 (1) perusteista täyttyy, esim. tiedot eivät enää ole tarpeen tarkoituksiin, joihin ne kerättiin.\n\nOikeus käsittelyn rajoittamiseen\nGDPR:n artiklan 18 mukaan sinulla on oikeus vaatia käsittelyn rajoittamista, jos jokin artiklassa 18 määritellyistä edellytyksistä täyttyy, esim. jos kiistät tietojen paikkansapitävyyden. Tällöin tietoja saa käsitellä vain rajoitetusti tarkistusajan kuluessa.\n\nOikeus tietojen siirrettävyyteen\nGDPR:n artiklan 20 mukaan sinulla on oikeus saada meille toimittamasi henkilötiedot jäsennellyssä, yleisesti käytetyssä ja koneellisesti luettavassa muodossa sekä oikeus siirtää tiedot toiselle rekisterinpitäjälle ilman estettä, jos alkuperäinen käsittely perustui suostumukseen tai oli tarpeen sopimuksen täytäntöönpanemiseksi.\n\nOikeus vastustaa\nGDPR:n artiklan 21 mukaan sinulla on oikeus milloin tahansa vastustaa henkilötietojesi käsittelyä, jos käsittely perustuu artiklaan 6 kohta 1 (e) tai (f), ja jos siihen on perusteltu syy, joka liittyy tilanteeseesi. Voit myös milloin tahansa vastustaa henkilötietojen käsittelyä suoramarkkinointia varten. Tällöin henkilötietoja ei enää käsitellä tähän tarkoitukseen. Vastustaminen voidaan tehdä vapaamuotoisesti. Riittää kirjallinen ilmoitus tai sähköposti Sovelluksessa mainittuun osoitteeseen.\n\nAutomaattinen päätöksenteko, mukaan lukien profilointi\nGDPR:n artiklan 22 mukaan sinulla on oikeus olla joutumatta päätöksen kohteeksi, joka perustuu yksinomaan automaattiseen käsittelyyn – mukaan lukien profilointi – ja jolla on oikeusvaikutuksia tai joka vaikuttaa sinuun merkittävästi samalla tavalla. Artikla 22 (1) määrittää tästä poikkeuksia, joista artikla 22 (4) sisältää osapoikkeuksia.\n\nOikeus tehdä valitus valvontaviranomaiselle\nGDPR:n artiklan 77 mukaisesti sinulla on oikeus tehdä valitus valvontaviranomaiselle asuinjäsenvaltiossasi, työpaikallasi tai väitetyn rikkomuksen tapahtumapaikalla, jos katsot, että henkilötietojesi käsittely rikkoo asetusta.\n\nII. Tekniset ja organisatoriset toimenpiteet\nRyhdymme teknisiin ja organisatorisiin toimiin varmistaaksemme, että GDPR:n turvallisuus- ja suojausvaatimukset täyttyvät ja että henkilötiedot suojataan menetykseltä, tuhoutumiselta, manipuloinnilta tai luvattomalta pääsyltä.\n\nIII. Muutokset tähän tietosuojailmoitukseen\nPidätämme oikeuden muuttaa tätä tietosuojailmoitusta milloin tahansa. Sinun tulee säännöllisesti tarkistaa tämän ilmoituksen sisältö.\n\nIV. Loppumääräys\nTähän tekstiin sovelletaan Alankomaiden lakeja ja se on tulkittava Alankomaiden oikeuskäytännön mukaisesti. Tämä englanninkielinen versio on vain tiedoksi. Jos englanninkielisen ja hollanninkielisen version välillä on ristiriita, vain hollanninkielinen versio on voimassa.",
+  "terms_of_service_terms_tab_header_label": "Käyttöehdot",
+  "terms_of_service_privacy_tab_header_label": "Tietosuojakäytäntö",
+  "terms_of_service_consent_terms_message": "Olen lukenut ja hyväksyn käyttöehdot.",
+  "terms_of_service_consent_privacy_message": "Olen lukenut ja hyväksyn tietosuojakäytännön.",
+  "terms_of_service_decline_title": "Olet hylännyt käyttöehdot",
+  "terms_of_service_decline_message": "Kieltäydyit ehdoista, joten lompakon käyttöönotto ei valmistunut. Poista Sphereon-lompakko laitteeltasi tai aloita alusta avatessasi lompakon.",
+  "terms_of_service_decline_action_caption": "Poistu sovelluksesta",
+  "terms_of_service_title": "Käyttöehdot",
+  "terms_of_service_subtitle": "Tämä asiakirja on päivitetty viimeksi 5. marraskuuta 2024.",
+  "pid_security_model_warning": "EID ladataan vain esittämisen aikana",
+  "import_data_auth_title": "Anna Sphereon-PIN",
+  "import_data_auth_next": "Jatka",
+  "import_data_auth_biometrics_title": "Todenna biometrisilla tiedoilla",
+  "import_data_auth_failure_title": "Biometrinen todennus epäonnistui, emme tunnistaneet sinua",
+  "import_data_auth_failure_description": "Et voi jatkaa tässä vaiheessa. Ainoa tapa suorittaa tehtävä loppuun on aloittaa alusta. Sulje sovellus ja avaa se uudelleen aloittaaksesi käyttöönoton.",
+  "import_data_auth_step_title": "Anna Sphereon-PIN",
+  "import_data_consent_button_accept": "Kyllä, se olen minä",
+  "import_data_consent_button_decline": "Kaikki ei pidä paikkaansa",
+  "import_data_loader_step_title": "Hetkinen",
+  "import_data_loader_step_subtitle": "Haetaan henkilökohtaisia tietojasi.",
+  "import_data_final_step_title": "Tietosi on tuotu. Onko kaikki oikein?",
+  "import_data_setup_complete_title": "Määritys valmis",
+  
+  "incorrect_data_title": "Onko joissakin tiedoissasi virheitä?",
+  "incorrect_data_description": "Virheelliset henkilötiedot voivat aiheuttaa ongelmia. Älä lisää näitä tietoja.",
+  "incorrect_data_bullet_content_heading": "Mitä voit tehdä",
+  "incorrect_data_bullet_content": "Ota yhteyttä kuntaasi tietojen muuttamiseksi.\nOdota viestiä kunnaltasi, joka vahvistaa päivityksen.\nYritä lisätä tiedot uudelleen. Löydät ne katalogista.",
+  "incorrect_data_back": "Takaisin",
+  "incorrect_data_dont_add_info": "Älä lisää näitä tietoja",
+  "incorrect_data_after_bullet_heading": "Jos tiedot eivät ole omasi",
+  "incorrect_data_after_bullet_content": "Jos tiedot eivät kuulu sinulle, älä lisää niitä lompakkoosi.",
+
+  "onboarding_esim_enter_details_title": "Anna eSIM-tiedot",
+  "onboarding_esim_enter_details_description": "Anna puhelinnumerosi ja kytkentäkoodi",
+  "onboarding_esim_enter_details_msisdn_label": "Puhelinnumero (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Syötä puhelinnumero",
+  "onboarding_esim_enter_details_coupling_code_label": "Kytkentäkoodi",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Syötä kytkentäkoodi",
+  "onboarding_esim_enter_details_continue": "Jatka",
+  "onboarding_esim_enter_details_back": "Takaisin",
+  "onboarding_machine_activate_esim_error_title": "eSIM-aktivointi epäonnistui",
+
+  "onboarding_esim_error_couple_rp_failed": "eSIM-aktivoinnin RP-kytkentävaihe epäonnistui",
+  "onboarding_esim_error_bindkey_failed": "eSIM-aktivoinnin bind-key-vaihe epäonnistui",
+  "onboarding_esim_error_create_link_failed": "eSIM-aktivoinnin create-link-vaihe epäonnistui",
+  "onboarding_esim_error_check_sscd_failed": "eSIM-aktivoinnin check-sscd-vaihe epäonnistui",
+  "onboarding_esim_error_enable_sscd_failed": "eSIM-aktivoinnin enable-sscd-vaihe epäonnistui",
+  "onboarding_esim_error_cleanup_keys_failed": "eSIM-aktivoinnin cleanup-keys-vaihe epäonnistui",
+
+  "import_data_title": "Tuo henkilötiedot",
+  "onboarding_complete_title": "Valmista!",
+  "onboarding_complete_description": "Olet valmis vastaanottamaan ja jakamaan identiteettitietoja, todistuksia ja paljon muuta.",
+  "onboarding_complete_next": "Aloita lompakon käyttö",
+
+  "scan_card_step_subtitle": "Pidä korttia puhelimen takana ja paina Aloita luku.",
+  "scan_card_step_title": "Skannaa tuodaksesi tiedot",
+  "personal_data_title": "Syötä henkilötiedot",
+  "personal_data_subtitle": "Personoi lompakkosi antamalla nimesi ja sähköpostiosoitteesi. Luomme sinulle itsevakuutetun todistuksen. Antamasi tiedot eivät poistu laitteeltasi!",
+  "first_name_label": "Etunimi",
+  "first_name_placeholder": "Etunimi",
+  "first_name_invalid_message": "Anna kelvollinen etunimi",
+  "last_name_label": "Sukunimi",
+  "last_name_placeholder": "Sukunimi",
+  "last_name_invalid_message": "Anna kelvollinen sukunimi",
+  "email_address_label": "Sähköpostiosoite",
+  "email_address_placeholder": "Sähköpostiosoite",
+  "email_address_invalid_message": "Anna kelvollinen sähköpostiosoite",
+
+  "pin_code_choose_pin_code_title": "Valitse PIN-koodisi",
+  "pin_code_choose_pin_code_subtitle": "Valitse PIN-koodi lompakkosi suojaamiseksi.",
+  "pin_code_confirm_pin_code_title": "Vahvista PIN-koodisi",
+  "pin_code_confirm_pin_code_subtitle": "Syötä PIN-koodisi vahvistaaksesi ensimmäisen.",
+  "pin_code_accessibility_label": "PIN-koodi",
+  "pin_code_accessibility_hint": "Syötä PIN-koodisi",
+  "pin_code_invalid_code_message": "PIN-koodit eivät täsmää. Yritä uudelleen.",
+  "pin_code_attempts_left_message": "Yrityksiä jäljellä:",
+
+  "lock_title": "Kirjaudu sisään\nSphereon-lompakkoon",
+  "lock_subtitle": "Syötä PIN-koodisi.",
+  "lock_emergency_button_caption": "Hätäpuhelu",
+
+  "show_raw_credential_button_caption": "Raakatodistus",
+
+  "onboard_create_wallet_step_title": "Luo lompakko",
+  "onboard_secure_wallet_step_title": "Suojaa lompakko",
+
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "Aloitetaan",
+      "description": "Jokainen vaihe kestää vain muutaman minuutin.",
+      "accessibility_label": "Aloitetaan. Käyttöönoton eteneminen on nyt vaiheessa"
+    },
+    "secure_wallet": {
+      "title": "Olet puolivälissä",
+      "description": null,
+      "accessibility_label": "Olet melkein valmis. Käyttöönoton eteneminen on nyt vaiheessa"
+    },
+    "import_personal_data": {
+      "title": "Melkein valmis, viimeinen osio",
+      "description": null,
+      "accessibility_label": "Melkein valmis, viimeinen osio. Käyttöönoton eteneminen on nyt vaiheessa"
+    }
+  },
+
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "vaihe",
+      "of": " / ",
+      "and_final": "ja viimeinen"
+    },
+    "create_wallet": {
+      "title": "Luo lompakko",
+      "description": "Luo tili nimelläsi, sähköpostiosoitteellasi ja asuinmaallasi.",
+      "accessibility": {
+        "button_hint": "Aloita lompakon luonti"
+      }
+    },
+    "secure_wallet": {
+      "title": "Suojaa lompakko",
+      "description": "Luo yksilöllinen Sphereon-PIN ja pidä se turvassa. Voit halutessasi ottaa käyttöön biometrisen kirjautumisen.",
+      "accessibility": {
+        "button_hint": "Aloita lompakon suojaaminen"
+      }
+    },
+    "import_personal_data": {
+      "title": "Tuo henkilötiedot",
+      "description": {
+        "default": "Tuo henkilötietosi kansalliselta eID-palveluntarjoajalta.",
+        "de": "Skannaa digitaalinen eID-korttisi. Pidä kortti ja PIN valmiina."
+      },
+      "accessibility": {
+        "button_hint": "Aloita henkilötietojen tuonti"
+      }
+    }
+  },
+
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Tervetuloa Sphereon-lompakkoosi",
+      "description": "Vastaanota ja jaa akkreditointeja, todistuksia, merkkejä ja identiteettitietoja.",
+      "button_caption": "Aloita",
+      "accessibility": {
+        "hint": "Pyyhkäise vasemmalle jatkaaksesi",
+        "label": "Tervetuloa Sphereon-lompakkoosi"
+      }
+    },
+    "enter_name": {
+      "title": "Syötä nimesi",
+      "text_field": {
+        "label": "Nimi",
+        "placeholder": "Nimesi",
+        "accessibility": {
+          "label": "Syötä nimesi"
+        },
+        "errors": {
+          "missing": "Anna nimi"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Syötä sähköpostiosoitteesi",
+      "text_field": {
+        "label": "Sähköpostiosoite",
+        "placeholder": "Sähköpostiosoitteesi",
+        "accessibility": {
+          "label": "Syötä sähköpostiosoitteesi"
+        },
+        "errors": {
+          "missing": "Anna sähköpostiosoite",
+          "invalid": "Anna kelvollinen sähköpostiosoite"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Asuinmaasi",
+      "select": {
+        "label": "Maa",
+        "accessibility": {
+          "select": "Valittu maa"
+        },
+        "placeholder": "Asuinmaasi",
+        "errors": {
+          "missing": "Valitse maa"
+        }
+      },
+      "modal": {
+        "title": "Valitse maa",
+        "search_placeholder": "Haku"
+      }
+    },
+    "enter_pin": {
+      "title": "Aseta kuusinumeroinen Sphereon-PIN",
+      "requirements": {
+        "title": "PIN-koodisi ei saa sisältää:",
+        "not_same_digits": "samanlaisia numeroita",
+        "not_sequential_digits": "peräkkäisiä numeroita",
+        "invalid_example_prefix": "Kuten: ",
+        "invalid_example_delimiter": " tai "
+      },
+      "success": "Vahva PIN — kirjaa se talteen turvallisesti",
+      "button_caption": "Aseta PIN"
+    },
+    "verify_pin": {
+      "title": "Toista Sphereon-PIN",
+      "match": "PIN-koodit täsmäävät. Voit jatkaa!",
+      "mismatch": "Hups! PIN-koodit eivät täsmää.\nYritetään uudelleen.",
+      "button_caption": "Toista PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Ehdot ja tietosuoja",
+      "description": "Luottamuksesi on meille tärkeää. Käsittelemme henkilötietojasi turvallisesti ja luottamuksellisesti.",
+      "features": {
+        "secure_data_storage": "Turvallinen tietojen säilytys",
+        "strict_access_control": "Tiukka pääsynhallinta",
+        "selective_data_sharing": "Valikoiva tietojen jakaminen",
+        "strong_privacy_compliance": "Vahva tietosuojan noudattaminen",
+        "no_3rdparty_data_sharing": "Ei tietojen jakamista kolmansille osapuolille",
+        "no_tracking_profiling": "Ei seurantaa tai profilointia"
+      },
+      "footer": {
+        "prefix": "Haluatko lukea kaikki yksityiskohdat? Katso",
+        "links": {
+          "terms": "Käyttöehdot",
+          "privacy": "Tietosuojakäytäntö",
+          "delimiter": "ja"
+        }
+      },
+      "button_caption": "Hyväksy ehdot ja tietosuoja"
+    },
+    "read_terms_and_privacy": {
+      "title": "Käyttöehdot",
+      "description": "Tämä asiakirja on päivitetty viimeksi",
+      "terms": {
+        "tab_title": "Ehdot",
+        "text": "Nämä yleiset ehdot (\"Sopimus\") määrittävät yleiset ehdot Sphereon Wallet -mobiilisovelluksen (\"Mobiilisovellus\" tai \"Palvelu\") käytöllesi sekä kaikkien siihen liittyvien tuotteiden ja palveluiden (yhdessä \"Palvelut\") käytölle.\n\nTämä Sopimus on oikeudellisesti sitova sinun (\"Käyttäjä\", \"sinä\" tai \"sinun\") ja Sphereon B.V.:n, joka on rekisteröity Alankomaissa ja toimii Mobiilisovelluksen kehittäjänä (\"Toimija\", \"me\", \"meidät\" tai \"meidän\"), välillä.\n\nJos teet tämän sopimuksen yrityksen tai muun oikeushenkilön puolesta, vakuutat, että sinulla on valtuudet sitoa kyseinen taho tähän sopimukseen. Siinä tapauksessa termit \"Käyttäjä\", \"sinä\" tai \"sinun\" viittaavat kyseiseen tahoon. Jos sinulla ei ole tällaista valtuutusta tai jos et hyväksy tämän sopimuksen ehtoja, et saa hyväksyä tätä sopimusta etkä käyttää Mobiilisovellusta ja Palveluita. Käyttämällä Mobiilisovellusta ja Palveluita vahvistat, että olet lukenut, ymmärtänyt ja hyväksynyt tämän Sopimuksen ehdot. Hyväksyt, että tämä Sopimus on sinun ja Toimijan välinen sopimus, vaikka se on sähköinen eikä fyysisesti allekirjoitettu, ja että se säätelee Mobiilisovelluksen ja Palveluiden käyttöäsi.\n\nLinkit muihin resursseihin\n\nVaikka Mobiilisovellus ja Palvelut voivat sisältää linkkejä muihin resursseihin (kuten verkkosivustoihin tai mobiilisovelluksiin), tämä ei tarkoita, suoraan tai epäsuorasti, mitään hyväksyntää, yhteyttä, sponsorointia, suositusta tai yhteistyötä linkitetyn resurssin kanssa, ellei tässä nimenomaisesti mainita. Emme vastaa minkään yrityksen tai henkilön tarjousten tutkimisesta tai arvioimisesta emmekä takaa niiden sisältöä. Emme ota vastuuta tai korvausvelvollisuutta muiden kolmansien osapuolten toimista, tuotteista, palveluista tai sisällöstä. Sinun tulee huolellisesti tarkistaa kunkin resurssin oikeudelliset ehdot ja muut käyttöehdot, joihin pääset Mobiilisovelluksen linkkien kautta. Linkittäminen muihin resursseihin tapahtuu omalla vastuullasi.\n\nImmateriaalioikeudet\n\n\"Immateriaalioikeudet\" tarkoittavat kaikkia nykyisiä ja tulevia oikeuksia, jotka perustuvat lakiin, tapaoikeuteen tai oikeuskäytäntöön, liittyen tekijänoikeuksiin ja niihin liittyviin oikeuksiin, tavaramerkkeihin, malleihin, patentteihin, keksintöihin, goodwill-arvoon ja oikeuteen nostaa kanne loukkauksesta, keksintöihin liittyviin oikeuksiin, käyttöoikeuksiin ja kaikkiin muihin immateriaalioikeuksiin, olivatpa ne rekisteröityjä tai rekisteröimättömiä, mukaan lukien kaikki hakemukset ja oikeudet hakea ja saada suojaa, oikeudet vedota etusijaan sekä kaikki vastaavat tai samankaltaiset oikeudet tai suojamuodot sekä kaikki muut henkisen toiminnan tulokset, jotka ovat olemassa tai tulevat olemaan olemassa missä tahansa maailman osassa.\n\nTämä Sopimus ei siirrä sinulle mitään Toimijan tai kolmansien osapuolten omistamia immateriaalioikeuksia, ja kaikki oikeudet, omistusoikeudet ja intressit tällaiseen omaisuuteen säilyvät (osapuolten välillä) yksinomaan Toimijalla.\n\nKaikki Mobiilisovelluksen ja Palveluiden yhteydessä käytetyt tavaramerkit, palvelumerkit, grafiikat ja logot ovat Toimijan tai sen lisenssinantajien tavaramerkkejä tai rekisteröityjä tavaramerkkejä. Muut Mobiilisovelluksessa ja Palveluissa käytetyt tavaramerkit, palvelumerkit, grafiikat ja logot voivat olla muiden kolmansien osapuolten tavaramerkkejä.\n\nMobiilisovelluksen ja Palveluiden käyttö ei anna sinulle oikeutta tai lisenssiä jäljentää tai muutoin käyttää Toimijan tai kolmansien osapuolten tavaramerkkejä.\n\nVastuunrajoitus\n\nSovellettavan lain sallimassa laajuudessa Toimija, sen tytäryhtiöt, johtajat, toimihenkilöt, työntekijät, agentit, toimittajat tai lisenssinantajat eivät missään tapauksessa ole vastuussa kenellekään henkilölle mistään epäsuorista, satunnaisista, erityisistä, rankaisevista, esimerkinomaisista tai välillisistä vahingoista (mukaan lukien, rajoituksetta, voittojen, tulojen, myynnin, goodwill-arvon, sisällön käytön, liiketoiminnan jatkuvuuden, odotettujen säästöjen tai liiketoimintamahdollisuuksien menetyksestä aiheutuneet vahingot), riippumatta siitä, mikä vastuuperuste on kyseessä, kuten sopimus, vahingonkorvaus, takuu, lakisääteisen velvoitteen rikkominen, huolimattomuus tai muu, vaikka vastuullista osapuolta olisi informoitu tällaisten vahinkojen mahdollisuudesta tai niiden olisi voinut kohtuudella ennakoida.\n\nSovellettavan lain sallimassa laajuudessa Toimijan ja sen tytäryhtiöiden, johtajien, toimihenkilöiden, työntekijöiden, agenttien, toimittajien ja lisenssinantajien kokonaisvastuu liittyen Palveluihin rajoittuu määrään, joka ei ylitä yhtä (1) Yhdysvaltain dollaria tai määrää, jonka olet tosiasiallisesti maksanut käteisellä Toimijalle yhtä (1) kuukautta ennen ensimmäistä vastuuta aiheuttanutta tapahtumaa tai tapausta. Rajoitukset ja poissulkemiset koskevat myös silloin, kun tämä korvaus ei täysin kata menetyksiäsi tai ei saavuta olennaista tarkoitustaan.\n\nVahingonkorvaus\n\nHyväksyt vapauttavasi ja pitäväsi Toimijan ja sen tytäryhtiöt, johtajat, toimihenkilöt, työntekijät, agentit, toimittajat ja lisenssinantajat vahingosta vastuussa kaikista vastuista, menetyksistä, vahingoista tai kustannuksista, mukaan lukien kohtuulliset asianajopalkkiot, jotka syntyvät tai liittyvät kolmansien osapuolten väitteisiin, vaatimuksiin, oikeustoimiin, riitoihin tai vaateisiin, jotka kohdistuvat johonkin heistä sisältösi, Mobiilisovelluksen ja Palveluiden käytön tai tahallisen väärinkäytöksesi seurauksena.\n\nMuutokset ja lisäykset\n\nPidätämme oikeuden muuttaa tätä Sopimusta tai sen ehtoja, jotka liittyvät Mobiilisovellukseen ja Palveluihin, milloin tahansa oman harkintamme mukaan. Kun teemme muutoksia, päivitämme tämän sivun alareunassa olevan päivityspäivämäärän. Voimme myös ilmoittaa sinulle muilla tavoin oman harkintamme mukaan, esimerkiksi antamiesi yhteystietojen kautta. Sinun tulee säännöllisesti pitää itsesi ajan tasalla näiden ehtojen sisällöstä.\n\nPäivitetty versio tästä Sopimuksesta tulee voimaan välittömästi sen julkaisemisen jälkeen, ellei toisin mainita. Jatkamalla Mobiilisovelluksen ja Palveluiden käyttöä sen jälkeen, kun päivitetty Sopimus on tullut voimaan (tai muun ilmoitetun toimenpiteen jälkeen), hyväksyt nämä muutokset.\n\nEhtojen hyväksyminen\n\nHyväksyt, että olet lukenut tämän Sopimuksen ja hyväksyt kaikki sen ehdot. Käyttämällä Mobiilisovellusta ja Palveluita hyväksyt sitoutuvasi tähän Sopimukseen. Jos et hyväksy tämän Sopimuksen ehtoja, et ole oikeutettu käyttämään Mobiilisovellusta ja/tai Palveluita.\n\nOta yhteyttä\n\nJos sinulla on kysyttävää, huolenaiheita tai valituksia tähän Sopimukseen liittyen, kehotamme sinua ottamaan meihin yhteyttä seuraavalla osoitteella: support@sphereon.com"
+      },
+      "privacy": {
+        "tab_title": "Tietosuoja",
+        "text": "Sphereon tarjoaa sinulle Sphereon Wallet -mobiilisovelluksen (\"Sovellus\"), jonka voit ladata ja asentaa mobiililaitteellesi.\n\nHenkilötietojen suojaaminen on Sphereonille erittäin tärkeää. Se, kerätäänkö henkilötietoja Sovellusta käytettäessä ja mihin tarkoitukseen niitä käsitellään, selitetään seuraavassa tietosuojailmoituksessa. Käsittely tässä yhteydessä tarkoittaa mitä tahansa tietojen käyttöä, kuten keräämistä, tallentamista, säilyttämistä, siirtämistä, esittämistä ja poistamista.\n\nHenkilötietoja käsitellään vain siltä osin kuin se on tarpeen käyttäjän kanssa viestimistä varten. Noudatamme tietojen minimoinnin periaatetta ja kaikkia sovellettavia lakisääteisiä säännöksiä henkilötietojen suojaamisesta ja tietoturvasta. Erityisesti tietoja käsitellään vain, jos käsittelylle on laillinen peruste.\n\nTietojen käsittelyn oikeusperusta on EU:n yleinen tietosuoja-asetus (GDPR), tarkemmin: artikla 6 kohta 1 (a), artikla 7, artikla 6 kohta 1 (b) ja (f) sekä artikla 6 kohta 1 (c) asetuksesta EU 2016/679 (jäljempänä ”GDPR”).\n\nI. Rekisterinpitäjän nimi ja yhteystiedot\nGDPR:n artiklan 4 mukainen rekisterinpitäjä henkilötietojen käsittelyssä on:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nAlankomaat\ninfo@sphereon.com\n\n2. Käsiteltyjen tietojen tyyppi, käsittelyn tarkoitus, oikeusperusta\n\n1. Käyttäjä- ja laitetiedot\nEmme saa koskaan tietää henkilötiedoistasi emmekä pääse niihin käsiksi, ellei sinä ota meihin yhteyttä Sphereonin yhteydenottolomakkeen kautta tai Sovelluksessa annetun sähköpostiosoitteen avulla.\n\nSovelluksen lataamisen yhteydessä tarvittavat tiedot siirtyvät Apple AppStoreen tai Google Play Storeen (\"sovelluskauppoihin\"), kuten käyttäjänimi, sähköpostiosoite ja asiakasnumerosi, latausajankohta ja laitteen yksilöivä tunniste. Näitä tietoja tarvitaan, jotta Sovelluksen lataaminen sovelluskaupoista on mahdollista. Emme saa näistä tiedoista mitään henkilötietoja.\nEmme voi vaikuttaa tähän tietojen keräämiseen emmekä ole siitä vastuussa. Lisätietoja sovelluskauppojen tietojen käsittelyn tarkoituksesta ja laajuudesta löytyy kyseisten sovelluskauppojen tietosuojakäytännöistä.\n\nKun Sovellus on onnistuneesti asennettu mobiililaitteellesi, sitä voidaan käyttää ilman internet-yhteyttä. Käyttäessäsi Sovellusta emme kerää mitään henkilötietoja. Sovellukseen itse syöttämäsi henkilö- ja todistustiedot (esim. nimi, osoite, ajokortti, henkilökortti, koulutus- tai muut todistustiedot) tallennetaan vain paikallisesti ja ne salataan mobiililaitteellasi. Emme tarkista näitä tietoja.\nOn myös yksin sinun vastuullasi tallentaa sisältö ja huolehtia tietojen varmuuskopioinnista.\n\nJos teet nämä tiedot saataville muille osapuolille (\"Myöntäjille\", \"Tarkastajille\" tai \"Kolmannen osapuolen palveluntarjoajille\") vahvistusta tai jakamista varten, kyseisen osapuolen tietosuojakäytäntö soveltuu käsittelyn tarkoituksen ja laajuuden osalta. Sphereonilla ei tällöinkään ole pääsyä tietoihin tai tietovirtaan.\n\nHenkilötietoja kerätään, tallennetaan ja käsitellään vain, jos otat meihin yhteyttä, siltä osin kuin se on tarpeen pyyntösi käsittelemiseksi.\n\nTietojen käsittelyn oikeusperusta on GDPR:n artikla 6 kohta 1 (a), (b) ja (f).\n\n1. Evästeet\nTässä Sovelluksessa ei käytetä evästeitä.\n\n1. Yhteydenotto\nJos otat meihin yhteyttä Sovelluksen yhteydenottolomakkeen kautta tai sähköpostitse, käytämme antamiasi yhteystietoja, kuten nimeäsi, sähköpostiosoitettasi ja muita antamiasi tietoja, vastataksemme pyyntöösi. Metatietotasolla välitetään myös IP-osoitteesi ja Sovelluksen versio.\n\nAntamiesi yhteystietojen käsittely on välttämätöntä, jotta voimme ottaa sinuun yhteyttä ja vastata pyyntöösi. Jos olet toimittanut myös muita tietoja, niiden käsittely palvelee pyyntösi yksilöintiä ja siten mahdollistaa parhaan mahdollisen vastauksen. Oikeusperusta on GDPR:n artikla 6 kohta 1 (b) ja (f).\n\nI. Säilytysaika\nTietojasi säilytetään vain niin kauan kuin on tarpeen edellä mainittujen tarkoitusten toteuttamiseksi.\n\nKun näin ei enää ole, esimerkiksi kun pyyntösi on käsitelty kokonaan, tiedot poistetaan tai estetään, jos ja niin kauan kuin se on tarpeen kaupallisten tai verotuksellisten lakisääteisten säilytysvaatimusten vuoksi (GDPR artikla 6 kohta 1 (c)). Siitä hetkestä, kun lakisääteiset säilytysvelvoitteet eivät enää ole esteenä, tiedot poistetaan, ellei olet nimenomaisesti antanut suostumustasi jatkokäyttöön (GDPR artikla 6 kohta 1 (a)).\n\nI. Tietojen luovutus kolmansille osapuolille, siirto kolmansiin maihin\n\nPerusperiaatteena on, että tallentamiasi tai siirtämiäsi tietoja ei luovuteta kolmansille osapuolille.\nYksittäistapauksissa voi kuitenkin olla tarpeen sopimuksen täytäntöönpanemiseksi siirtää henkilötietojasi yrityksille, jotka olemme valtuuttaneet tarjoamaan tiettyjä palveluja (esim. pilvipalveluntarjoajat). Jos luovutamme tietoja kolmansille osapuolille käsittelyn yhteydessä, siirrämme niitä tai muuten annamme niihin pääsyn, tämä tapahtuu vain lain sallimalla tavalla, suostumuksesi perusteella, lakisääteisen velvoitteen nojalla tai oikeutettujen etujemme perusteella.\nJos käytämme kolmannen osapuolen palveluntarjoajia tietojen käsittelyyn niin sanotun \"tietojenkäsittelysopimuksen\" perusteella, tämä tapahtuu GDPR:n artiklan 28 mukaisesti.\n\nKolmannen osapuolen on noudatettava lakisääteisiä määräyksiä näitä tietoja käsitellessään. Jos kolmas osapuoli sijaitsee kolmannessa maassa, eli maassa, jossa GDPR:llä ei ole suoraa oikeusvaikutusta, tietoja siirretään vain, jos olet antanut siihen suostumuksesi, jos asianmukainen tietosuojan taso on olemassa (esimerkiksi yksittäissopimusten, EU:n vakiolausekkeiden, EU:n riittävyyspäätöksen tai muun oikeusperustan perusteella).\n\nTietojen siirto viranomaisille ja valtion laitoksille, joilla on oikeus saada tietoja, on myös mahdollista, mutta vain lakisääteisten tiedonantovelvoitteiden puitteissa ja sitovan tuomioistuimen päätöksen perusteella. Näissä tapauksissa Sphereon B.V. voi toimittaa tietoja esimerkiksi oikeudellisten vaatimusten esittämiseksi, käyttämiseksi ja puolustamiseksi, olemassa olevien sopimusten täytäntöönpanemiseksi, petosepäilyjen, turvallisuustoimenpiteiden tai yleisesti sovellettavien lakien yhteydessä.\n\nHenkilötietoja ei missään tapauksessa luovuteta tässä kuvatun laajuuden ulkopuolella ilman käyttäjän nimenomaista suostumusta.\n\nEmme missään tapauksessa myy tai vuokraa henkilötietoja kolmansille osapuolille.\n\nI. Kolmannen osapuolen palvelut Sovelluksen käytössä\nHaluamme kiinnittää huomiosi seuraaviin kolmannen osapuolen palveluntarjoajiin, joiden palveluja käytämme Sovelluksen toiminnassa ja palvelujemme tarjoamisessa, ja jotka saattavat joutua kosketuksiin edellä mainittujen henkilötietojen kanssa:\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irlanti\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Australia\n\nHuomautamme nimenomaisesti, että meillä ei ole vaikutusta siihen, mitä tietoja nämä yritykset keräävät. Tietosuojan osalta meidän on siten luotettava kunkin yrityksen antamiin tietoihin, joihin viittaamme alla.\n\nTarvittaessa hanki yritykseltä lisätietoja tietojen keräämisen tarkoituksesta ja laajuudesta sekä oikeuksistasi tässä suhteessa ja vaihtoehdoista yksityisyytesi suojaamiseksi. Olemme liittäneet linkit tietosuojakäytäntöihin tähän.\n\nSeuraavassa löydät tietoja yhteistyön mahdollisista tietosuoja-vaikutuksista kolmannen osapuolen toimittajien kanssa sekä lisälinkkejä.\n\nMicrosoft\nKäytämme Microsoftin palveluja, kuten Office 365, varmistaaksemme sähköpostiyhteyden.\nLisätietoja Microsoftin tietosuojakäytännöistä: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nKäytämme Atlassianin palveluja, kuten Jiraa, teknisten tukipyyntöjesi käsittelyn jäsentämiseen ja optimointiin. Joitakin ongelmakuvauksia koskevia tietoja voidaan joutua tallentamaan Atlassianin pilvipalvelimille.\nLisätietoja Atlassianin tietosuojakäytännöstä: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Rekisteröidyn oikeudet\nGDPR:n mukaisesti sinulla on seuraavat oikeudet. Oikeudet esitetään tässä osittain yksinkertaistetussa muodossa.\n\nOikeus peruuttaa suostumus\nGDPR:n artiklan 7 kohdan (3) mukaisesti sinulla on oikeus peruuttaa suostumuksesi milloin tahansa. Peruuttaminen ei vaikuta ennen peruuttamista tehtyyn käsittelyyn. Peruuttaminen voidaan tehdä vapaamuotoisesti. Riittää kirjallinen ilmoitus tai sähköposti yllä olevaan osoitteeseen.\n\nOikeus saada tietoa\nGDPR:n artiklan 15 mukaan sinulla on oikeus pyytää vahvistusta siitä, käsitelläänkö sinua koskevia henkilötietoja. Jos näin on, sinulla on oikeus saada pääsy kyseisiin tietoihin ja muihin artiklassa 15 (1) määriteltyihin tietoihin.\n\nOikeus oikaisuun\nGDPR:n artiklan 16 mukaan sinulla on oikeus vaatia, että korjaamme ilman aiheetonta viivytystä sinua koskevat virheelliset henkilötiedot. Ottaen huomioon käsittelyn tarkoitukset, sinulla on oikeus vaatia myös puutteellisten tietojen täydentämistä.\n\nOikeus poistamiseen\nGDPR:n artiklan 17 mukaan sinulla on oikeus vaatia sinua koskevien henkilötietojen poistamista välittömästi, jos jokin artiklan 17 (1) perusteista täyttyy, esim. tiedot eivät enää ole tarpeen tarkoituksiin, joihin ne kerättiin.\n\nOikeus käsittelyn rajoittamiseen\nGDPR:n artiklan 18 mukaan sinulla on oikeus vaatia käsittelyn rajoittamista, jos jokin artiklassa 18 määritellyistä edellytyksistä täyttyy, esim. jos kiistät tietojen paikkansapitävyyden. Tällöin tietoja saa käsitellä vain rajoitetusti tarkistusajan kuluessa.\n\nOikeus tietojen siirrettävyyteen\nGDPR:n artiklan 20 mukaan sinulla on oikeus saada meille toimittamasi henkilötiedot jäsennellyssä, yleisesti käytetyssä ja koneellisesti luettavassa muodossa sekä oikeus siirtää tiedot toiselle rekisterinpitäjälle ilman estettä, jos alkuperäinen käsittely perustui suostumukseen tai oli tarpeen sopimuksen täytäntöönpanemiseksi.\n\nOikeus vastustaa\nGDPR:n artiklan 21 mukaan sinulla on oikeus milloin tahansa vastustaa henkilötietojesi käsittelyä, jos käsittely perustuu artiklaan 6 kohta 1 (e) tai (f), ja jos siihen on perusteltu syy, joka liittyy tilanteeseesi. Voit myös milloin tahansa vastustaa henkilötietojen käsittelyä suoramarkkinointia varten. Tällöin henkilötietoja ei enää käsitellä tähän tarkoitukseen. Vastustaminen voidaan tehdä vapaamuotoisesti. Riittää kirjallinen ilmoitus tai sähköposti Sovelluksessa mainittuun osoitteeseen.\n\nAutomaattinen päätöksenteko, mukaan lukien profilointi\nGDPR:n artiklan 22 mukaan sinulla on oikeus olla joutumatta päätöksen kohteeksi, joka perustuu yksinomaan automaattiseen käsittelyyn – mukaan lukien profilointi – ja jolla on oikeusvaikutuksia tai joka vaikuttaa sinuun merkittävästi samalla tavalla. Artikla 22 (1) määrittää tästä poikkeuksia, joista artikla 22 (4) sisältää osapoikkeuksia.\n\nOikeus tehdä valitus valvontaviranomaiselle\nGDPR:n artiklan 77 mukaisesti sinulla on oikeus tehdä valitus valvontaviranomaiselle asuinjäsenvaltiossasi, työpaikallasi tai väitetyn rikkomuksen tapahtumapaikalla, jos katsot, että henkilötietojesi käsittely rikkoo asetusta.\n\nII. Tekniset ja organisatoriset toimenpiteet\nRyhdymme teknisiin ja organisatorisiin toimiin varmistaaksemme, että GDPR:n turvallisuus- ja suojausvaatimukset täyttyvät ja että henkilötiedot suojataan menetykseltä, tuhoutumiselta, manipuloinnilta tai luvattomalta pääsyltä.\n\nIII. Muutokset tähän tietosuojailmoitukseen\nPidätämme oikeuden muuttaa tätä tietosuojailmoitusta milloin tahansa. Sinun tulee säännöllisesti tarkistaa tämän ilmoituksen sisältö.\n\nIV. Loppumääräys\nTähän tekstiin sovelletaan Alankomaiden lakeja ja se on tulkittava Alankomaiden oikeuskäytännön mukaisesti. Tämä englanninkielinen versio on vain tiedoksi. Jos englanninkielisen ja hollanninkielisen version välillä on ristiriita, vain hollanninkielinen versio on voimassa."
+      }
+    },
+    "import_data_consent": {
+      "title": "Haluatko lisätä nämä tiedot?",
+      "subtitle": "Henkilötiedot ovat tärkeitä lompakossasi. Haluatko varmasti lisätä ne?",
+      "pid_provider_title": "PID-palveluntarjoaja",
+      "pid_provider_subheading": "Henkilötunnistetietojen tarjoaja",
+      "offered_data_title": "Tarjotut tiedot",
+      "labels": {
+        "given_name": "Etunimi",
+        "family_name": "Sukunimi",
+        "also_known_as": "Tunnetaan myös nimellä",
+        "gender": "Sukupuoli",
+        "birthdate": "Syntymäaika",
+        "birthplace": "Syntymäpaikka",
+        "nationality": "Kansalaisuus",
+        "address": "Osoite"
+      },
+      "button_accept": "Kyllä, haluan lisätä tämän",
+      "button_decline": "Hylkää"
+    },
+    "import_scan_card": {
+      "title": "Pidä Ausweis-kortti valmiina",
+      "description": "Aloita syöttämällä Ausweis-korttisi eID-PIN.",
+      "nfc_step_title": "Pidä korttia puhelimen takana",
+      "button_caption": "Aloita eID-PINin syöttö",
+      "nfc_caption": "NFC-lukija aktivoidaan pian...",
+      "card_locked_message": "Korttisi on lukittu.",
+      "incorrect_pin_message": "Väärä PIN-koodi. Yritä uudelleen.",
+      "unknown_scan_card_error_message": "Tapahtui tuntematon virhe."
+    }
+  },
+
+  "onboard_summary_title": "Antamasi tiedot",
+  "onboard_summary_subtitle": "Kun painat Valmis, hyväksyt antamasi tiedot ja siirryt kirjautumisnäyttöön. Henkilötietoja voi muuttaa asetuksissa.",
+  "onboard_summary_info_tab_header_label": "Tietosi",
+  "onboard_summary_button_caption": "Viimeistele ja siirry lompakkoon",
+
+  "credentials_required_title": "Vaaditut todistukset",
+  "credentials_required_subtitle": "{{verifierName}} haluaa seuraavat tiedot tarkistusta varten.",
+  "credentials_required_selected_label": "valittu",
+  "credentials_required_available_label": "saatavilla",
+  "credentials_required_credential_select_label": "Valitse todistus",
+  "credentials_select_title": "Valitse todistus",
+  "credentials_select_subtitle": "Sinulla on useampi kuin yksi todistus, joka voi täyttää pyynnön. Valitse yksi lähetettäväksi tarkastajalle.",
+  "credentials_required_checking_label": "...tarkistetaan",
+  "credentials_required_no_available_label": "Sopivia todistuksia ei ole",
+  "credentials_required_no_available_additional_label": "Sinulla ei ole todistusta jaettavaksi tarkastajalle. Ota yhteyttä myöntäjään saadaksesi uuden todistuksen.",
+
+  "action_share_label": "Jaa",
+  "credentials_share_success_toast_title": "Jakaminen onnistui",
+  "credentials_share_success_toast_message": "Esitit valitsemasi todistukset onnistuneesti tarkastajalle {{verifierName}}.",
+  "action_select_label": "Valitse",
+  "action_onboarding_setup_message": "Määritetään lompakkoa...",
+  "action_getting_information_message": "Haetaan tietoja...",
+  "action_sharing_credentials_message": "Jaetaan todistuksia...",
+  "profile_logout_action_caption": "Kirjaudu ulos",
+  "action_getting_credentials_message": "Haetaan todistuksia...",
+  "credentials_share_failed_toast_message": "Todistusten esittäminen epäonnistui. Virhe: {{errorMessage}}.",
+  "information_retrieve_failed_toast_message": "Tietojen hakeminen epäonnistui. Virhe: {{errorMessage}}.",
+  "credential_verification_failed_message": "Todistuksen tarkistus johti virheeseen.",
+
+  "credential_offer_title": "Todistustarjous",
+  "credential_sign_title": "Allekirjoituspyyntö",
+
+  "profile_delete_wallet_action_caption": "Poista lompakko",
+  "profile_delete_wallet_action_title": "Haluatko varmasti poistaa lompakkosi?",
+  "profile_delete_wallet_action_subtitle": "Haluatko varmasti poistaa lompakkosi: {{userName}}?",
+
+  "credential_status_never_expires_date_label": "Ei vanhene koskaan",
+
+  "oid4vci_machine_initiation_error_title": "OID4VCI-palvelun alustus",
+  "oid4vci_machine_credential_selection_error_title": "Todistuksen valinta",
+  "oid4vci_machine_retrieve_contact_error_title": "Hae yhteystieto",
+  "oid4vci_machine_retrieve_credentials_error_title": "Hae todistukset",
+  "oid4vci_machine_verify_credentials_error_title": "Varmenna todistukset",
+  "oid4vci_machine_add_contact_identity_error_title": "Lisää yhteystiedon identiteetti",
+  "oid4vci_machine_store_credential_branding_error_title": "Tallenna todistuksen brändäys",
+  "oid4vci_machine_store_credential_error_title": "Tallenna todistus",
+
+  "emergency_send_button_caption": "Laukaise nyt!",
+  "emergency_abort_button_caption": "Peruuta hälytys",
+  "emergency_title": "Lähetä hätäilmoitus",
+  "emergency_subtitle": "Hätäilmoituksesi lähetetään {{emergencyAlertDelay}} sekunnin kuluttua, tai voit laukaista sen heti painamalla ’Laukaise nyt!’-painiketta.",
+
+  "siopV2_machine_identifier_error_title": "Hae tunniste",
+  "siopV2_machine_create_config_error_title": "Luo SiopV2-kokoonpano",
+  "siopV2_machine_get_request_error_title": "Hae SiopV2-pyyntö",
+  "siopV2_machine_retrieve_contact_error_title": "Hae yhteystieto",
+  "siopV2_machine_add_contact_identity_error_title": "Lisää yhteystiedon identiteetti",
+  "siopV2_machine_send_response_error_title": "Lähetä SiopV2-vastaus",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Hae federaatioluottamus",
+
+  "action_view_all_label": "Näytä kaikki",
+  "filter_all_label": "Näytä kaikki",
+  "filter_other_label": "Muu",
+  "filter_new_label": "Uusi",
+  "search_field_default_caption": "Haku",
+
+  "credential_catalog_most_relevant_header_label": "Merkityksellisimmät todistukset",
+  "credential_catalog_discover_header_label": "Löydä lisää todistuksia",
+
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Henkilötietosi kansalliselta eID-palveluntarjoajalta Ausweisilta.",
+  "ausweis_eid_preview_card_issuer": "Saksan Bundesdruckerei",
+  "ausweis_eid_modal_title": "Hae Ausweis eID -tiedot",
+  "ausweis_eid_modal_description": "Henkilö- ja tunnistetiedot ovat lompakkosi perusta ja siten tärkeitä muiden todistusten saamiseksi.\n\nHaluatko varmasti, että nämä tiedot lisätään lompakkoosi?",
+  "ausweis_eid_modal_accept_label": "Tuo henkilötiedot",
+
+  "action_maybe_later_label": "Ehkä myöhemmin",
+  "item_not_yet_available_message": "Tämä kohde ei ole vielä saatavilla.",
+
+  "onboarding_machine_store_credential_error_title": "Tallenna todistus",
+  "onboarding_machine_retrieve_credentials_error_title": "Hae todistukset",
+  "onboarding_skip_credential_import_step3_caption": "Viimeistelen tämän osion myöhemmin",
+  "onboarding_store_credential_branding_error_title": "Tallenna todistuksen brändäys",
+
+  "share_credential_c2_flow_title": "Seuraavat tiedot jaetaan",
+
+  "new_contact_add_new_contact_detected_title": "Tunnistatko {{partyName}}",
+  "new_contact_add_new_contact_detected_subtitle": "Tämä on ensimmäinen vuorovaikutus tämän osapuolen kanssa. Haluatko jatkaa?",
+  "federation_view_untrusted_title": "{{partyName}} on matalan luottamuksen tasolla",
+  "federation_view_trusted_title": "{{partyName}} on korkean luottamuksen tasolla",
+  "federation_view_untrusted_description": "Osapuoli ei kuulu federaatioon, johon lompakko luottaa",
+  "federation_view_trusted_description": "Osapuoli kuuluu federaatioon, johon lompakko luottaa",
+  "new_contact_add_new_contact_continue_caption": "Kyllä, jatka",
+  "new_contact_add_new_contact_abort_caption": "Ei, peruuta",
+  "new_contact_add_new_contact_abort_cancel_caption": "Ei, peruuta",
+  "new_contact_add_new_contact_abort_continue_caption": "Kyllä, haluan peruuttaa",
+  "new_contact_add_new_contact_create_title": "Yhteyshenkilön aliasnimi",
+  "new_contact_add_new_contact_create_description": "Voit luoda yhteyshenkilölle aliasnimen kirjoittamalla uuden nimen alla olevaan tekstikenttään.",
+  "new_contact_add_new_contact_abort_title": "Haluatko varmasti peruuttaa?",
+  "new_contact_add_new_contact_abort_description": "Jos peruutat, vuorovaikutusprosessi osapuolen {{partyName}} kanssa keskeytetään.",
+  "new_contact_add_new_contact_contact_details_description_label": "Kuvaus",
+  "new_contact_add_new_contact_contact_details_name_label": "Nimi",
+  "new_contact_add_new_contact_contact_details_website_label": "Verkkosivusto",
+  "new_contact_add_new_contact_contact_details_tos_label": "Käyttöehdot",
+  "new_contact_add_new_contact_contact_details_policy_label": "Tietosuojakäytäntö",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Yhteystiedot",
+  "new_contact_add_new_contact_low_level_trust_title": "Haluatko varmasti jatkaa?",
+  "new_contact_add_new_contact_low_level_trust_description": "Tulet asioimaan osapuolen kanssa, jonka luottamustaso on matala.",
+
+  "present_qr_code_screen_header_title": "Näytä QR-koodi",
+  "present_qr_code_screen_subtitle": "Näytä QR-koodi toiselle osapuolelle, jotta he voivat skannata sen.",
+  "present_qr_code_dropdown_item_text": "Näytä QR-koodi",
+  "present_qr_code_dropdown_item_accessibility_hint": "Siirry näyttöön, joka näyttää QR-koodin"
+}
+

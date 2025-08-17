@@ -1,6 +1,6 @@
 {
   "name": "@sphereon/sphereon-wallet",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {

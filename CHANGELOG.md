@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.5.3](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.5.2...v0.5.3) (2025-08-17)
+
+### Improvements
+
+- Add support for Finish and Swedish localization
+
 # [0.3.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.1.3...v0.2.0) (2024-08-01)
 
 The license of the wallet has been made more permissive. We moved from GPLv3 to Apache2.
