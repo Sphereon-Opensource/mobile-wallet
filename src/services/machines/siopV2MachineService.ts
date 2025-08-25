@@ -87,10 +87,15 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     : verifiedAuthorizationRequest.issuer
     ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
     : name;
-  const correlationId: string = uri?.hostname ?? correlationIdName;
-  const clientIdScheme: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
-  const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
-  const entityId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
+  const correlationId: string | undefined = uri?.hostname ?? correlationIdName;
+
+  if (!correlationId) {
+    return Promise.reject(Error('Unable to determine correlation id'));
+  }
+
+  const clientIdScheme: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
+  const clientId: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
+  const entityId: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -101,13 +106,14 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     clientIdScheme,
     clientId,
     entityId,
-    presentationDefinitions:
-      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
-      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
-        verifiedAuthorizationRequest.presentationDefinitions &&
-        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
-        ? verifiedAuthorizationRequest.presentationDefinitions
-        : undefined,
+    dcqlQuery: verifiedAuthorizationRequest.dcqlQuery,
+    // presentationDefinitions:
+    //   (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
+    //   (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
+    //     verifiedAuthorizationRequest.presentationDefinitions &&
+    //     verifiedAuthorizationRequest.presentationDefinitions.length > 0)
+    //     ? verifiedAuthorizationRequest.presentationDefinitions
+    //     : undefined,
   };
 };
 
@@ -181,31 +187,32 @@ export const sendResponse = async (
 
   const response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
     sessionId: didAuthConfig.sessionId,
-    ...(authorizationRequestData.presentationDefinitions !== undefined && {
-      verifiableCredentialsWithDefinition: [
-        {
-          definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
-          credentials: selectedCredentials as Array<UniqueDigitalCredential>,
-        },
-      ],
-    }),
+    credentials: selectedCredentials,
+    // ...(authorizationRequestData.presentationDefinitions !== undefined && {
+    //   verifiableCredentialsWithDefinition: [
+    //     {
+    //       definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
+    //       credentials: selectedCredentials as Array<UniqueDigitalCredential>,
+    //     },
+    //   ],
+    // }),
   });
 
-  const pd = authorizationRequestData.presentationDefinitions?.[0].definition;
-  const pex: PEX = new PEX({hasher: generateDigest});
+  // const pd = authorizationRequestData.presentationDefinitions?.[0].definition;
+  // const pex: PEX = new PEX({hasher: generateDigest});
   for (const credential of selectedCredentials) {
     let sharedClaims;
-    if (pd) {
-      if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-        const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
-        const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
-        sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc);
-      } else {
-        const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
-        const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject;
-        sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject;
-      }
-    }
+    // if (pd) {
+    //   if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
+    //     const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
+    //     const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
+    //     sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc);
+    //   } else {
+    //     const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
+    //     const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject;
+    //     sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject;
+    //   }
+    // }
 
     const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
     const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
@@ -229,7 +236,8 @@ export const sendResponse = async (
         actionType: ActionType.READ,
         actionSubType: DefaultActionSubType.VC_SHARE,
         correlationId: didAuthConfig.sessionId,
-        sharePurpose: pd?.purpose,
+        // FIXME we need the verifier info from the OID4VP v1 spec implementation to get the purpose (no pd as dcql is now used)
+        //sharePurpose: pd?.purpose,
         // @ts-ignore
         credentialType: credential.digitalCredential.documentFormat, // TODO fix types
         credentialHash: credential.hash,

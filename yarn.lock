@@ -4580,18 +4580,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/did-auth-siop@npm:0.19.1-next.2":
-  version: 0.19.1-next.2
-  resolution: "@sphereon/did-auth-siop@npm:0.19.1-next.2"
+"@sphereon/did-auth-siop@npm:0.19.1-fix.37":
+  version: 0.19.1-fix.37
+  resolution: "@sphereon/did-auth-siop@npm:0.19.1-fix.37"
   dependencies:
     "@astronautlabs/jsonpath": "npm:^1.1.2"
-    "@sphereon/jarm": "npm:^0.19.1-next.2+4c0450e"
-    "@sphereon/oid4vc-common": "npm:^0.19.1-next.2+4c0450e"
+    "@sphereon/jarm": "npm:^0.19.1-fix.37+ea6f85f2"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-fix.37+ea6f85f2"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
     "@sphereon/ssi-types": "npm:0.34.1-next.3"
     cross-fetch: "npm:^4.0.0"
-    dcql: "npm:0.2.22"
+    dcql: "npm:1.0.1"
     debug: "npm:^4.4.0"
     events: "npm:^3.3.0"
     jwt-decode: "npm:^4.0.0"
@@ -4599,7 +4599,7 @@ __metadata:
     multiformats: "npm:^12.1.3"
     qs: "npm:^6.11.2"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/fb69c22b85992d91ef06d979c86c0eca3213c3e2c67723d7e071194f013a048707d3036b180da8ee57f1022723be10d092f065c9f5f64e28691c334677619be5
+  checksum: 10c0/f75e39704ef4ae11321d77f504e9223cf637fcfb1fc8bbb36d23c3b61d1602ac5c2823060fdd2fb3fedf13286b01675fcb67fa627104ac22ed14a4877913f40c
   languageName: node
   linkType: hard
 
@@ -4630,7 +4630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/jarm@npm:^0.19.1-next.2+4c0450e":
+"@sphereon/jarm@npm:^0.19.1-fix.37+ea6f85f2":
   version: 0.19.1-next.2
   resolution: "@sphereon/jarm@npm:0.19.1-next.2"
   dependencies:
@@ -4670,7 +4670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/oid4vc-common@npm:0.19.1-next.2, @sphereon/oid4vc-common@npm:^0.19.1-next.2+4c0450e":
+"@sphereon/oid4vc-common@npm:0.19.1-next.2, @sphereon/oid4vc-common@npm:^0.19.1-fix.37+ea6f85f2, @sphereon/oid4vc-common@npm:^0.19.1-next.2+4c0450e":
   version: 0.19.1-next.2
   resolution: "@sphereon/oid4vc-common@npm:0.19.1-next.2"
   dependencies:
@@ -4811,7 +4811,7 @@ __metadata:
     "@scure/base": "npm:^1.1.7"
     "@sd-jwt/sd-jwt-vc": "npm:^0.7.2"
     "@sd-jwt/types": "npm:^0.7.2"
-    "@sphereon/did-auth-siop": "npm:0.19.1-next.2"
+    "@sphereon/did-auth-siop": "npm:0.19.1-fix.37"
     "@sphereon/did-auth-siop-adapter": "npm:0.19.1-next.2"
     "@sphereon/did-provider-oyd": "npm:0.29.1-next.3"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.27"
@@ -4850,7 +4850,7 @@ __metadata:
     "@sphereon/ssi-sdk.qr-code-generator": "npm:0.34.1-next.7"
     "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-next.7"
     "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-next.7"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-next.7"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "file:/C:/Git/Sphereon-Opensource/ssi-sdk/packages/siopv2-oid4vp-op-auth/sphereon-ssi-sdk.siopv2-oid4vp-op-auth-0.35.3-bram.tgz"
     "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-next.7"
     "@sphereon/ssi-types": "npm:0.34.1-next.7"
     "@sphereon/ui-components.core": "npm:0.3.1-next.28"
@@ -4894,6 +4894,7 @@ __metadata:
     buffer: "npm:^4.9.1"
     class-validator: "npm:0.14.1"
     countries-list: "npm:^3.1.1"
+    dcql: "npm:1.0.1"
     debug: "npm:^4.3.5"
     did-jwt: "npm:6.11.6"
     did-resolver: "npm:^4.1.0"
@@ -5342,6 +5343,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.merge.crypto.extensions.modules.39, @sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/pex": "npm:5.0.0-unstable.28"
+    "@sphereon/pex-models": "npm:^2.3.2"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.4"
+    typeorm: "npm:0.3.20"
+    uuid: "npm:^9.0.1"
+  checksum: 10c0/ef0356998cfa64442cb406cb7ccac22f0fc663a6ebe6743b06c09ad8b8f86f43a7238e5282f7847190f511868442131a3e2b33a4120ec1f80a816f17385cd957
+  languageName: node
+  linkType: hard
+
 "@sphereon/ssi-sdk.credential-store@npm:0.34.1-next.7, @sphereon/ssi-sdk.credential-store@npm:0.34.1-next.7+abc1dfeb":
   version: 0.34.1-next.7
   resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.1-next.7"
@@ -5355,6 +5372,28 @@ __metadata:
     typeorm: "npm:0.3.20"
     uuid: "npm:^9.0.1"
   checksum: 10c0/63fdd6b5bb9a9acc7c7fe454e84674e57040830f0f0e24639e6630c28204b415cefcb6e8dff3efb963fdb131b23127d32f51d9f3b715ab175f8899398b67133b
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feature.merge.crypto.extensions.modules.39":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@veramo/core": "npm:4.2.0"
+    "@veramo/data-store": "npm:4.2.0"
+    "@veramo/utils": "npm:4.2.0"
+    ajv: "npm:^8.17.1"
+    ajv-formats: "npm:^3.0.1"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.5"
+    typeorm: "npm:0.3.20"
+  checksum: 10c0/eb7103b811d12b5d4e7f4353190e9b516139aac00c0b81649d5ff0ddf9421f4750e1cd03d580df2d9c3d9290e80ae380987e77762c15961bdab39f2fd367fb8c
   languageName: node
   linkType: hard
 
@@ -5539,6 +5578,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feature.merge.crypto.extensions.modules.39":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    debug: "npm:^4.3.5"
+    typeorm: "npm:0.3.20"
+  checksum: 10c0/3df3a581d2e968ab387453446db44ba46c5aa0726ad1f0c66bbdada7a54f4e55896ad09d792bee6982bd6b6c610d6b71a98acd1cb3a1a70b1664f7fa781e7ca9
+  languageName: node
+  linkType: hard
+
 "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.7, @sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.7+abc1dfeb":
   version: 0.34.1-next.7
   resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-next.7"
@@ -5578,6 +5629,33 @@ __metadata:
     typeorm: "npm:0.3.20"
     uint8arrays: "npm:^3.1.1"
   checksum: 10c0/06852519774712f7f415b62949069e00c6ade5fd08919f29abb25ae83d3ff5b551ed0d397cd998cbc74cf8d604008d1ac4c6c1e588dfae82bec3256465764d09
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-next.2"
+    "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
+    "@sphereon/pex": "npm:5.0.0-unstable.28"
+    "@sphereon/pex-models": "npm:^2.3.2"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@veramo/core": "npm:4.2.0"
+    "@veramo/did-manager": "npm:4.2.0"
+    "@veramo/utils": "npm:4.2.0"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.5"
+    did-resolver: "npm:^4.1.0"
+    multiformats: "npm:9.9.0"
+    pkijs: "npm:^3.2.4"
+    uint8arrays: "npm:^3.1.1"
+    uuid: "npm:^9.0.1"
+  checksum: 10c0/564bb93086c40f181319f5d7f214891ab76d66be164700df61711a36ddeb3cb9f4f294f4f62770cb613efcd050f98b4f27ea376b44a9627b6243f7d308670d1f
   languageName: node
   linkType: hard
 
@@ -5674,6 +5752,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feature.merge.crypto.extensions.modules.39":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/pex": "npm:5.0.0-unstable.28"
+    "@sphereon/pex-models": "npm:^2.3.2"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    cross-fetch: "npm:^3.1.8"
+    debug: "npm:^4.3.5"
+    semver: "npm:^7.6.3"
+    typeorm: "npm:0.3.20"
+  checksum: 10c0/154bd82d7fb4378fc387a9583d630b498a2db44ff5642c626aa6052618177f4d9f5abe26a1b1bfa767602682012c3c7d668f37b25a2c98cca2711d2a67bd0760
+  languageName: node
+  linkType: hard
+
 "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-next.7+abc1dfeb":
   version: 0.34.1-next.7
   resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-next.7"
@@ -5686,6 +5779,23 @@ __metadata:
     semver: "npm:^7.6.3"
     typeorm: "npm:0.3.20"
   checksum: 10c0/46b4ad58dbf24fe61c6d9c4f63d14ded269881b680c483e0c6511d700d7706cb5cb0f3015264d30387ec1e9533c404c5e34b5d61b9ddaabc32b8bbfb43b6dd2f
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feature.merge.crypto.extensions.modules.39":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/pex": "npm:5.0.0-unstable.28"
+    "@sphereon/pex-models": "npm:^2.3.2"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@veramo/core": "npm:4.2.0"
+  checksum: 10c0/a5b13a520b1cb3499b005b0505b1e6c67d66dc1c989d0ebabfdd9906d07faa0f9f8f22d0f94674738158b65fc2d9e1974d0b7471afa6a81701e105dfed917528
   languageName: node
   linkType: hard
 
@@ -5768,6 +5878,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feature.merge.crypto.extensions.modules.39":
+  version: 0.34.1-feature.merge.crypto.extensions.modules.39
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+  dependencies:
+    "@sphereon/did-auth-siop": "npm:0.19.1-next.2"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.merge.crypto.extensions.modules.39+dea3b6de"
+    uint8arrays: "npm:^3.1.1"
+  checksum: 10c0/9c67531359fb2aac2ed2233ae55397c9e0b9221c180073496b7becbd90caedf59782f3653cb6b0b2e5b00c71809827b67c3cf336f1a778ae157727a096fafb2b
+  languageName: node
+  linkType: hard
+
 "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-next.7+abc1dfeb":
   version: 0.34.1-next.7
   resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-next.7"
@@ -5780,7 +5902,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.7, @sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.7+abc1dfeb":
+"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@file:/C:/Git/Sphereon-Opensource/ssi-sdk/packages/siopv2-oid4vp-op-auth/sphereon-ssi-sdk.siopv2-oid4vp-op-auth-0.35.3-bram.tgz::locator=%40sphereon%2Fsphereon-wallet%40workspace%3A.":
+  version: 0.35.3-bram
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@file:/C%3A/Git/Sphereon-Opensource/ssi-sdk/packages/siopv2-oid4vp-op-auth/sphereon-ssi-sdk.siopv2-oid4vp-op-auth-0.35.3-bram.tgz#/C%3A/Git/Sphereon-Opensource/ssi-sdk/packages/siopv2-oid4vp-op-auth/sphereon-ssi-sdk.siopv2-oid4vp-op-auth-0.35.3-bram.tgz::hash=b16f90&locator=%40sphereon%2Fsphereon-wallet%40workspace%3A."
+  dependencies:
+    "@sphereon/did-auth-siop": "npm:0.19.1-fix.37"
+    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-next.2"
+    "@sphereon/oid4vc-common": "npm:0.19.1-next.2"
+    "@sphereon/pex-models": "npm:^2.3.2"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.pd-manager": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.presentation-exchange": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.merge.crypto.extensions.modules.39"
+    "@sphereon/wellknown-dids-client": "npm:^0.1.3"
+    "@veramo/core": "npm:4.2.0"
+    "@veramo/credential-w3c": "npm:4.2.0"
+    cross-fetch: "npm:^3.1.8"
+    dcql: "npm:1.0.1"
+    did-jwt-vc: "npm:3.1.3"
+    i18n-js: "npm:^3.9.2"
+    lodash.memoize: "npm:^4.1.2"
+    uuid: "npm:^9.0.1"
+    xstate: "npm:^4.38.3"
+  checksum: 10c0/fe631b63fbacd18529efba226f0924ed2dc85de5a023e02dc6654796299f61983082ecd455596633da6116d61e3a9eaf30d6f680749000b9ef56db7cbbed5a85
+  languageName: node
+  linkType: hard
+
+"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.7+abc1dfeb":
   version: 0.34.1-next.7
   resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-next.7"
   dependencies:
@@ -9901,12 +10060,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dcql@npm:0.2.22":
-  version: 0.2.22
-  resolution: "dcql@npm:0.2.22"
+"dcql@npm:1.0.1":
+  version: 1.0.1
+  resolution: "dcql@npm:1.0.1"
   dependencies:
     valibot: "npm:1.0.0-beta.8"
-  checksum: 10c0/cb03a2b7bb759b9e4f52e81ac3d19cdd738f3e3cbf6f890b3efe979a4339c2d6267ed2b857eb2ddb42ac7b7a963a73a9a3b8f0665b164efaa0e2f388682784e6
+  checksum: 10c0/d042362e0471565afea95e096fa8ba0a2d1b5a420a809fffd241d58e064ab49c7f2279fa04c18bb67b97f85de1f5dab0d99b497b94ef47223f429b069af6114a
   languageName: node
   linkType: hard
 

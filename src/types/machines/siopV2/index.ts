@@ -13,6 +13,7 @@ import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
+import { DcqlQuery } from 'dcql'
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -24,6 +25,7 @@ export type SiopV2AuthorizationRequestData = {
   clientId?: string;
   entityId?: string;
   presentationDefinitions?: PresentationDefinitionWithLocation[];
+  dcqlQuery: DcqlQuery
 };
 
 export type SiopV2MachineContext = {
