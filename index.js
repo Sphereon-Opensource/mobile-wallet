@@ -2,6 +2,7 @@ import 'reflect-metadata'; // needed for typeorm migrations
 import { shim } from 'react-native-quick-base64';
 shim()
 import 'react-native-get-random-values';
+import 'react-native-url-polyfill/auto';
 // exports.url = require.resolve("url/");
 import './shim';
 import '@ethersproject/shims';
