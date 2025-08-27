@@ -6,11 +6,17 @@ class Localization {
   public static supportedLanguages = {
     ENGLISH: 'en',
     DUTCH: 'nl',
+    GERMAN: 'de',
+    FINISH: 'fi',
+    SWEDISH: 'sv',
   } as const;
 
   private static translationGetters: {[locale: string]: () => object} = {
     [Localization.supportedLanguages.ENGLISH]: () => require('./translations/en.json'),
     [Localization.supportedLanguages.DUTCH]: () => require('./translations/nl.json'),
+    [Localization.supportedLanguages.GERMAN]: () => require('./translations/de.json'),
+    [Localization.supportedLanguages.FINISH]: () => require('./translations/fi.json'),
+    [Localization.supportedLanguages.SWEDISH]: () => require('./translations/sv.json'),
   };
 
   public static translate = memoize(
