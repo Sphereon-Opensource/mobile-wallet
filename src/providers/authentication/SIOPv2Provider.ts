@@ -18,6 +18,11 @@ import {APP_ID} from '../../@config/constants';
 import agent, {didMethodsSupported, didResolver} from '../../agent';
 import {generateDigest} from '../../utils';
 import { DcqlPresentation, DcqlQuery } from 'dcql';
+import {
+  PartialSdJwtDecodedVerifiableCredential,
+  PartialSdJwtKbJwt
+} from '@sphereon/pex/dist/main/lib'
+import { calculateSdHash } from '@sphereon/pex/dist/main/lib/utils'
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -158,7 +163,7 @@ export const siopSendAuthorizationResponse = async (
     }
   */
   const request = await session.getAuthorizationRequest();
-  const aud = await request.authorizationRequest.getMergedProperty<string>('aud');
+  const aud = request.authorizationRequest.getMergedProperty<string>('aud');
   console.log(`AUD: ${aud}`);
   console.log(JSON.stringify(request.authorizationRequest));
   /* const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
@@ -344,8 +349,20 @@ export const siopSendAuthorizationResponse = async (
       if (!originalVc) {
         continue
       }
+
+
+
+      // TODO update sd-jwt
+      //const vc = originalVc as | string | { [x: string]: Json }
+
+      const decoded = await CredentialMapper.decodeSdJwtVcAsync(originalVc as string, generateDigest)
+      const xx = [decoded]
+      updateSdJwtCredentials(xx, request.requestObject?.getPayload()?.nonce)
+
+
       if (originalVc) {
-        presentation[key] = originalVc as | string | { [x: string]: Json }
+        // @ts-ignore
+        presentation[key] = xx[0] as { [x: string]: Json }//as unknown as Array<{ [x: string]: Json }>//originalVc as | string | { [x: string]: Json }
       }
     }
   }
@@ -384,4 +401,39 @@ const retrieveEncodedCredential = (credential: UniqueDigitalCredential): Origina
   (credential?.originalVerifiableCredential as SdJwtDecodedVerifiableCredential)?.compactSdJwtVc !== null
     ? (credential.originalVerifiableCredential as SdJwtDecodedVerifiableCredential).compactSdJwtVc
     : credential.originalVerifiableCredential
+}
+
+//IPresentation | PartialSdJwtDecodedVerifiableCredential
+const updateSdJwtCredentials = (presentations: Array<SdJwtDecodedVerifiableCredential |  PartialSdJwtDecodedVerifiableCredential>, nonce?: string) => {
+  presentations.forEach((presentation, index) => {
+    // Select type without kbJwt as isSdJwtDecodedCredential and won't accept the partial sdvc type
+    if (CredentialMapper.isSdJwtDecodedCredential(presentation as SdJwtDecodedVerifiableCredential)) {
+      const sdJwtCredential = presentation as SdJwtDecodedVerifiableCredential;
+      // if (!this.options?.hasher) {
+      //   throw new Error('Hasher must be provided when creating a presentation with an SD-JWT VC');
+      // }
+
+      // extract sd_alg or default to sha-256
+      const hashAlg = sdJwtCredential.signedPayload._sd_alg ?? 'sha-256';
+      const sdHash = calculateSdHash(sdJwtCredential.compactSdJwtVc, hashAlg, generateDigest);
+
+      const kbJwt = {
+        // alg MUST be set by the signer
+        header: {
+          typ: 'kb+jwt',
+        },
+        // aud MUST be set by the signer or provided by e.g. SIOP/OpenID4VP lib
+        payload: {
+          iat: Math.floor(new Date().getTime() / 1000),
+          nonce: nonce,
+          sd_hash: sdHash,
+        },
+      } satisfies PartialSdJwtKbJwt;
+
+      presentations[index] = {
+        ...sdJwtCredential,
+        kbJwt,
+      } satisfies PartialSdJwtDecodedVerifiableCredential;
+    }
+  });
 }
