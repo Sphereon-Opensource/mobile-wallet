@@ -27,18 +27,20 @@ import {RootState} from '../../../types';
 import {IPresentationDefinition} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';
 import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
+import { DcqlQuery } from 'dcql';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
   credentials: UniqueDigitalCredential[];
-  presentationDefinition: IPresentationDefinition;
+  //presentationDefinition: IPresentationDefinition;
+  dcqlQuery: DcqlQuery;
   purpose?: string;
   verifier?: Party;
   style?: StyleProp<ViewStyle>;
 };
 
 const CredentialSelectView = (props: CredentialSelectViewProps) => {
-  const {purpose, verifier, credentials, onSelect, style, presentationDefinition} = props;
+  const {purpose, verifier, credentials, onSelect, style, dcqlQuery} = props;
   const accordionExpanded = useSharedValue(true);
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
@@ -76,10 +78,10 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const onPressCredential = async (credential: UniqueDigitalCredential): Promise<void> => {
     onSelect(credential);
     setSelectedCredential(credential);
-    await loadCredentialContent(credential, presentationDefinition);
+    await loadCredentialContent(credential, dcqlQuery);
   };
 
-  const loadCredentialContent = async (credential: UniqueDigitalCredential, pd: IPresentationDefinition): Promise<void> => {
+  const loadCredentialContent = async (credential: UniqueDigitalCredential, dcqlQuery: DcqlQuery): Promise<void> => {
     const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
     // FIXME disabled this as a PID is just another credential
     //const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
@@ -87,22 +89,24 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     // if (isPIDCredential) {
     //   setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
     // } else {
-    if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-      const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
-      const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
-      const payload = getMdocDecodedPayload(limitDisclosedMdoc);
-      setCredentialContent(
-        await toCredentialDetailsRow({
-          object: payload,
-        }),
-      );
-    } else {
+
+    // TODO apply select disclosure
+    // if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
+    //   const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
+    //   const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
+    //   const payload = getMdocDecodedPayload(limitDisclosedMdoc);
+    //   setCredentialContent(
+    //     await toCredentialDetailsRow({
+    //       object: payload,
+    //     }),
+    //   );
+    // } else {
       setCredentialContent(
         await toCredentialDetailsRow({
           object: {...uniformCredential.credentialSubject},
         }),
       );
-    }
+    // }
     // }
   };
 
@@ -114,7 +118,7 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     if (credentials.length === 1) {
       onSelect(credentials[0]);
       setSelectedCredential(credentials[0]);
-      void loadCredentialContent(credentials[0], presentationDefinition);
+      void loadCredentialContent(credentials[0], dcqlQuery);
     }
   }, []);
 

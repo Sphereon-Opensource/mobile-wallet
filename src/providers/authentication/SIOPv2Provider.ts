@@ -1,31 +1,22 @@
 import {Json, SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
-import {com} from '@sphereon/kmp-mdoc-core';
 import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, CredentialDocumentFormat, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition, convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {OpSession, convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {
   CredentialMapper,
-  MdocDocument,
   OriginalVerifiableCredential,
-  OriginalVerifiablePresentation,
-  PresentationSubmission,
   SdJwtDecodedVerifiableCredential
 } from '@sphereon/ssi-types' // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
 import {APP_ID} from '../../@config/constants';
-import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
+import agent, {didMethodsSupported, didResolver} from '../../agent';
 import {generateDigest} from '../../utils';
-import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
-import DeviceResponseCbor = com.sphereon.mdoc.data.device.DeviceResponseCbor;
-import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
-import decodeFrom = com.sphereon.kmp.decodeFrom;
-import Encoding = com.sphereon.kmp.Encoding;
 import { DcqlPresentation, DcqlQuery } from 'dcql';
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
@@ -64,27 +55,27 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
 };
 
 // FIX Funke START of temp code
-const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWithDefinition[]): boolean => {
-  return credentialsAndDefinitions.some(vcWithDef =>
-    vcWithDef.credentials.some(
-      credential =>
-        (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
-        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
-    ),
-  );
-};
+// const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWithDefinition[]): boolean => {
+//   return credentialsAndDefinitions.some(vcWithDef =>
+//     vcWithDef.credentials.some(
+//       (credential: any) =>
+//         (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
+//         (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
+//     ),
+//   );
+// };
 
-const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | OriginalVerifiableCredential): credential is UniqueDigitalCredential => {
-  return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
-};
+// const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | OriginalVerifiableCredential): credential is UniqueDigitalCredential => {
+//   return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
+// };
 
-const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
-  if ('id' in definition) {
-    return definition.id;
-  } else {
-    throw new Error('Invalid presentation definition: missing id');
-  }
-};
+// const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
+//   if ('id' in definition) {
+//     return definition.id;
+//   } else {
+//     throw new Error('Invalid presentation definition: missing id');
+//   }
+// };
 
 // Outdated by OID4VP v1 spec
 /*
@@ -199,10 +190,10 @@ export const siopSendAuthorizationResponse = async (
   //let presentationsAndDefs: VerifiablePresentationWithDefinition[] | undefined;
   //fixme: make these next two lines unifrom. they should return the same type
   //let identifier: IIdentifier = identifiers[0];
-  let managedIdentifier: ManagedIdentifierResult | undefined;
+  //let managedIdentifier: ManagedIdentifierResult | undefined;
   //let presentationSubmission: PresentationSubmission | undefined;
   //if (await session.hasPresentationDefinitions()) {
-    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
+    //const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
     // const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
     //   ? args.verifiableCredentialsWithDefinition

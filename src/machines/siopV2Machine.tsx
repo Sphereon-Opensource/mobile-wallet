@@ -1,4 +1,4 @@
-import {ClientMetadataOpts, PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {ClientMetadataOpts, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
@@ -30,7 +30,6 @@ import {
   SiopV2MachineStates,
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
-import {EvaluationResults, PEX, Status} from '@sphereon/pex';
 import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import store from '../store';
@@ -60,14 +59,14 @@ const siopV2CreateContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Mach
 };
 
 const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
-  const {selectedCredentials, authorizationRequestData} = _ctx;
+  const { authorizationRequestData } = _ctx;
 
   if (authorizationRequestData === undefined) {
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present');
+  if (authorizationRequestData.dcqlQuery === undefined) {
+    throw Error('No DCQL query present');
   }
 
   // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway
@@ -86,8 +85,8 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present');
+  if (authorizationRequestData.dcqlQuery === undefined) {
+    throw Error('No DCQL query present');
   }
 
   const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
@@ -95,16 +94,20 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     udcMap.set(credential.originalVerifiableCredential!, credential);
   });
 
-  const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(
-    definitionWithLocation.definition,
-    selectedCredentials.map(udc => udc.originalVerifiableCredential!),
-  );
+  // TODO
+  console.log(`HAS ONLY ONE MATCH`)
+  return true
 
-  // @ts-ignore FIXME Funke
-  _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
+  // const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+  // const pex: PEX = new PEX();
+  // const evaluationResults: EvaluationResults = pex.evaluateCredentials(
+  //   definitionWithLocation.definition,
+  //   selectedCredentials.map(udc => udc.originalVerifiableCredential!),
+  // );
+  //
+  // // @ts-ignore FIXME Funke
+  // _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
+  // return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -114,7 +117,7 @@ const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machine
     throw new Error('Missing authorization request data in context');
   }
 
-  return authorizationRequestData.presentationDefinitions === undefined;
+  return authorizationRequestData.dcqlQuery === undefined;
 };
 
 const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -124,7 +127,7 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
     throw new Error('Missing authorization request data in context');
   }
 
-  return authorizationRequestData.presentationDefinitions !== undefined;
+  return authorizationRequestData.dcqlQuery !== undefined;
 };
 
 const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -484,7 +487,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
     {
       actions: {
         logDeclineShare: async (context, event) => {
-          const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition;
+          //const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition;
           store.dispatch<any>(
             storeActivityLogging({
               level: LogLevel.INFO,
@@ -495,8 +498,9 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
               actionType: ActionType.READ,
               actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
               correlationId: context.didAuthConfig?.sessionId,
-              sharePurpose: pd?.purpose,
-              diagnosticData: context.authorizationRequestData?.presentationDefinitions,
+              // FIXME
+              //sharePurpose: pd?.purpose,
+              diagnosticData: context.authorizationRequestData?.dcqlQuery,
               // @ts-ignore
               partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
               partyCorrelationId: context.contact?.identities[0].identifier.correlationId,

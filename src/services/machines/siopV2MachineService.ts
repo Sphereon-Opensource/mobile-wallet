@@ -242,7 +242,8 @@ export const sendResponse = async (
         credentialType: credential.digitalCredential.documentFormat, // TODO fix types
         credentialHash: credential.hash,
         originalCredential: JSON.stringify(credential.digitalCredential),
-        diagnosticData: authorizationRequestData.presentationDefinitions,
+        // TODO
+        //diagnosticData: authorizationRequestData.presentationDefinitions,
         data: {
           credential: credentialSummary,
           sharedClaims,

@@ -4,7 +4,6 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
 import {
   ClientMetadataOpts,
-  PresentationDefinitionWithLocation,
   RPRegistrationMetadataPayload,
   VerifiedAuthorizationRequest,
 } from '@sphereon/did-auth-siop';
@@ -24,7 +23,7 @@ export type SiopV2AuthorizationRequestData = {
   clientIdScheme?: string;
   clientId?: string;
   entityId?: string;
-  presentationDefinitions?: PresentationDefinitionWithLocation[];
+  // presentationDefinitions?: PresentationDefinitionWithLocation[];
   dcqlQuery: DcqlQuery
 };
 
