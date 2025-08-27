@@ -6,7 +6,12 @@ import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {ConnectionType, CredentialDocumentFormat, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
 import {DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {OpSession, convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {
+  OID4VP,
+  OpSession,
+  convertToDcqlCredentials,
+  createOID4VPPresentationSignCallback
+} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth'
 import {
   CredentialMapper,
   OriginalVerifiableCredential,
@@ -198,7 +203,7 @@ export const siopSendAuthorizationResponse = async (
   //let managedIdentifier: ManagedIdentifierResult | undefined;
   //let presentationSubmission: PresentationSubmission | undefined;
   //if (await session.hasPresentationDefinitions()) {
-    //const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
+    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
     // const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
     //   ? args.verifiableCredentialsWithDefinition
@@ -359,10 +364,38 @@ export const siopSendAuthorizationResponse = async (
       const xx = [decoded]
       updateSdJwtCredentials(xx, request.requestObject?.getPayload()?.nonce)
 
+      // @ts-ignore
+      const presentationResult = await agent.createSdJwtPresentation({
+        //...(idOpts?.method === 'oid4vci-issuer' && { holder: idOpts?.issuer as string }),
+        // @ts-ignore
+        presentation: xx[0].compactSdJwtVc,
+        kb: {
+          payload: {
+            // @ts-ignore
+            ...xx[0].kbJwt?.payload,
+            // @ts-ignore
+            iat: xx[0].kbJwt?.payload?.iat ?? Math.floor(Date.now() / 1000 - 120), //120 CLOCK_SKEW
+            // @ts-ignore
+            nonce: xx[0].kbJwt?.payload?.nonce, // challenge ??
+            aud: aud,//presentation.kbJwt?.payload?.aud ?? domain ?? args.domain,
+          },
+        },
+      })
+
+      // const signCallback = await createOID4VPPresentationSignCallback({
+      //   presentationSignCallback: session.options.presentationSignCallback,
+      //   idOpts,
+      //   context: this.session.context,
+      //   domain: proofOptions.domain,
+      //   challenge: proofOptions.challenge,
+      //   format: opts?.restrictToFormats ?? selectedVerifiableCredentials.dcqlQuery.dcqlQuery.format,
+      //   skipDidResolution: opts?.skipDidResolution ?? false,
+      // })
+
 
       if (originalVc) {
         // @ts-ignore
-        presentation[key] = xx[0] as { [x: string]: Json }//as unknown as Array<{ [x: string]: Json }>//originalVc as | string | { [x: string]: Json }
+        presentation[key] = presentationResult.presentation //as { [x: string]: Json }//as unknown as Array<{ [x: string]: Json }>//originalVc as | string | { [x: string]: Json } xx[0]
       }
     }
   }
@@ -437,3 +470,5 @@ const updateSdJwtCredentials = (presentations: Array<SdJwtDecodedVerifiableCrede
     }
   });
 }
+
+
