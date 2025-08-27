@@ -30,12 +30,13 @@ import {
   SiopV2MachineStates,
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
-import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
+import { DcqlQuery } from 'dcql'
+import { convertToDcqlCredentials } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth'
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -70,12 +71,8 @@ const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _
   }
 
   // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway
+  // TODO we need dcql query can_be_satisfied check here
   return true;
-  /*const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
-
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO;*/
 };
 
 const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -89,25 +86,13 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     throw Error('No DCQL query present');
   }
 
-  const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
-  selectedCredentials.forEach(credential => {
-    udcMap.set(credential.originalVerifiableCredential!, credential);
-  });
+  const queryResult = DcqlQuery.query(authorizationRequestData.dcqlQuery, selectedCredentials.map((vc) => convertToDcqlCredentials(vc)))
 
-  // TODO
-  console.log(`HAS ONLY ONE MATCH`)
-  return true
+  const hasOnlyOneMatch = Object.values(queryResult.credential_matches).every(entry =>
+    entry.valid_credentials && entry.valid_credentials.length === 1
+  )
 
-  // const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  // const pex: PEX = new PEX();
-  // const evaluationResults: EvaluationResults = pex.evaluateCredentials(
-  //   definitionWithLocation.definition,
-  //   selectedCredentials.map(udc => udc.originalVerifiableCredential!),
-  // );
-  //
-  // // @ts-ignore FIXME Funke
-  // _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
-  // return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
+  return hasOnlyOneMatch && queryResult.can_be_satisfied
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {

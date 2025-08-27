@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton, SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, { FC, ReactElement, useMemo, useState } from 'react'
 import {View} from 'react-native';
 import ScreenContainer from '../../components/containers/ScreenContainer';
@@ -8,14 +8,10 @@ import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {generateDigest} from '../../utils';
-import {ProviderContainer, ProviderDescription} from '../Onboarding/ImportDataConsentScreen/components/styles';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
-// import {IPresentationDefinition, PEX, SelectResults} from '@sphereon/pex';
 import CredentialSelectView from '../../components/views/CredentialSelectView';
-import { DcqlQuery } from 'dcql';
-import { convertToDcqlCredentials } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {DcqlQuery} from 'dcql';
+import {convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
@@ -51,7 +47,7 @@ const filterCredentialsByCredentialSet = (credentials: UniqueDigitalCredential[]
   //   }
   // }
 
-  return []//subsetCredentials;
+  return []
 };
 
 const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], dcqlQuery: DcqlQuery) => {
@@ -65,24 +61,14 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
 
   const queryResult = DcqlQuery.query(dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()))
 
-
   const selectableCredentialsMap = new Map()
   for (const [key, value] of Object.entries(queryResult.credential_matches)) {
     if (!value.valid_credentials) {
       continue
     }
-
     const matchedCredentials = value.valid_credentials.map(cred => credentials[cred.input_credential_index])
-
-    //const selectableCredentials: Array<SelectableCredential> = mapSelectableCredentialPromises
     selectableCredentialsMap.set(key, matchedCredentials)
   }
-
-  //const udcIDMap = new Map(input_descriptors.map(input => [input.id, [] as UniqueDigitalCredential[]]));
-  //input_descriptors.forEach(input => {
-    //const results = filterCredentialsByCredentialSet(credentials, input);
-    //udcIDMap.set(input.id, results);
-  //});
 
   return selectableCredentialsMap;
 };
@@ -90,8 +76,6 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
 const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
   // memoize filtered and other values
   const {credentials, verifier, dcqlQuery, onSelectAndSend, onDecline} = props.route.params;
-  //const input_descriptors = []//presentationDefinition.input_descriptors;
-  //const requestedCredentials = dcqlQuery.credentials // TODO can shorthand this
   const credsPerRequestedCredential = useMemo(
     //@ts-ignore
     () => matchCredentialsWithDcqlQuery(credentials, dcqlQuery),
@@ -100,7 +84,7 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
 
   //FIXME Funke, make this support multi credential selection per input descriptor
   const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
-    dcqlQuery.credentials.reduce( //input_descriptors
+    dcqlQuery.credentials.reduce(
       (prev, curr) => ({
         ...prev,
         [curr.id]: null,
@@ -133,7 +117,11 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
           if (!selected.length) {
             return;
           }
-          await onSelectAndSend(Object.values(selectedCredentials).filter(s => !!s));
+          await onSelectAndSend(
+            Object.values(selectedCredentials).filter(
+              (s): s is UniqueDigitalCredential => s !== null
+            )
+          );
         }}
       />
       <SecondaryButton
@@ -177,8 +165,7 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
               selectCredential(requestedCredential.id, credential);
             }}
             dcqlQuery={dcqlQuery}
-            //presentationDefinition={presentationDefinition}
-            //purpose={inputDescriptor.purpose}
+            //purpose={inputDescriptor.purpose} // FIXME
             verifier={verifier}
           />
         </View>
