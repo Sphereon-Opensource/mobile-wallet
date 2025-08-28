@@ -277,11 +277,12 @@ export const siopSendAuthorizationResponse = async (
       if (!vc) {
         continue
       }
-      const originalVc = retrieveEncodedCredential(vc as UniqueDigitalCredential) // TODO this is not nice // also always a UniqueDigitalCredential
+      const originalVc = retrieveEncodedCredential(vc as UniqueDigitalCredential)
       if (!originalVc) {
         continue
       }
 
+      // FIXME SSISDK-44
       const decodedSdJwt = await CredentialMapper.decodeSdJwtVcAsync(originalVc as string, generateDigest)
       const updatedSdJwt = updateSdJwtCredential(decodedSdJwt, request.requestObject?.getPayload()?.nonce, domain)
 

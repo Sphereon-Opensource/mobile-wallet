@@ -15,7 +15,7 @@ import {convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth'
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
-// TODO any
+// TODO SSISDK-41
 const filterCredentialsByCredentialSet = (credentials: UniqueDigitalCredential[], credentialSet: any) => {
   // const presentationDefinition: IPresentationDefinition = {
   //   id: inputDescriptor.id,
@@ -52,7 +52,7 @@ const filterCredentialsByCredentialSet = (credentials: UniqueDigitalCredential[]
 
 const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], dcqlQuery: DcqlQuery) => {
   if (dcqlQuery.credential_sets) {
-    // TODO match on credential sets
+    // TODO SSISDK-41 match on credential sets
   }
 
   const dcqlCredentialsWithCredentials = new Map(
@@ -143,7 +143,7 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
         <RelyingPartyView party={verifier} onPress={onPressRP} />
       </View>
       {/*<View style={{paddingHorizontal: 16}}>*/}
-        {/*// FIXME purpose */}
+        {/*// FIXME SSISDK-42 purpose */}
         {/*{presentationDefinition.purpose && (*/}
         {/*  <ProviderContainer style={{marginBottom: 0}}>*/}
         {/*    <ProviderDescription>*/}
@@ -165,7 +165,7 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
               selectCredential(requestedCredential.id, credential);
             }}
             dcqlQuery={dcqlQuery}
-            //purpose={inputDescriptor.purpose} // FIXME
+            //purpose={inputDescriptor.purpose} // FIXME SSISDK-42
             verifier={verifier}
           />
         </View>

@@ -86,11 +86,12 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     // FIXME disabled this as a PID is just another credential
     //const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
 
+    // FIXME SSISDK-43 apply select disclosure
     // if (isPIDCredential) {
     //   setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
     // } else {
 
-    // TODO apply select disclosure
+    // FIXME SSISDK-43 apply select disclosure
     // if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
     //   const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
     //   const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
