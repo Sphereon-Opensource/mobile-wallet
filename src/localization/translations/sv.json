@@ -346,12 +346,12 @@
   },
   "onboarding_pages": {
     "welcome": {
-      "title": "Välkommen till din Sphereon‑plånbok",
+      "title": "Välkommen till identitetsplånboken",
       "description": "Ta emot och dela ackrediteringar, intyg, märken och identitetsuppgifter.",
       "button_caption": "Kom igång",
       "accessibility": {
         "hint": "Svep åt vänster för att fortsätta",
-        "label": "Välkommen till din Sphereon‑plånbok"
+        "label": "Välkommen till identitetsplånboken"
       }
     },
     "enter_name": {

@@ -203,7 +203,6 @@
   "browser_open_title": "Browser openen",
   "browser_open_header": "Browser openen",
   "browser_open_auth_title": "Authenticatie gevraagd",
-  "browser_open_auth_body": "De vertrouwende partij vereist dat je je authenticeert. Je standaardbrowser zal worden gebruikt voor deze actie",
   "browser_open_action_next_label": "Browser openen",
   "action_next_label": "Volgende",
   "action_back_label": "Terug",
@@ -221,7 +220,6 @@
   "terms_of_service_decline_action_caption": "App verlaten",
   "terms_of_service_title": "Algemene voorwaarden",
   "terms_of_service_subtitle": "Dit document is voor het laatst bijgewerkt op 5 November 2024.",
-  "pid_security_model_warning": "EID wordt alleen geladen tijdens presentatie",
   "import_data_auth_title": "Voer je Sphereon PIN in",
   "import_data_auth_next": "Doorgaan",
   "import_data_auth_biometrics_title": "Authenticeren met biometrie",
@@ -242,14 +240,20 @@
   "incorrect_data_dont_add_info": "Voeg deze informatie niet toe",
   "incorrect_data_after_bullet_heading": "Als het niet van jou is",
   "incorrect_data_after_bullet_content": "Als de informatie niet van jou is, voeg het dan niet toe aan je wallet.",
-  "onboarding_esim_enter_details_title": "eSim gegevens invoeren",
-  "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
-  "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
-  "onboarding_esim_enter_details_msisdn_placeholder": "Enter phone number",
-  "onboarding_esim_enter_details_coupling_code_label": "Coupling Code",
-  "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
-  "onboarding_esim_enter_details_continue": "Continue",
-  "onboarding_esim_enter_details_back": "Back",
+
+  "onboarding_esim_enter_details_title": "eSIM-gegevens invoeren",
+  "onboarding_esim_enter_details_description": "Vul je telefoonnummer en koppelcode in",
+  "onboarding_esim_enter_details_msisdn_label": "Telefoonnummer (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Voer telefoonnummer in",
+  "onboarding_esim_enter_details_coupling_code_label": "Koppelcode",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Voer koppelcode in",
+  "onboarding_esim_enter_details_continue": "Doorgaan",
+  "onboarding_esim_enter_details_back": "Terug",
+
+  "browser_open_auth_body": "De andere partij vraagt je om jezelf te authenticeren. Je standaardbrowser wordt hiervoor gebruikt",
+
+  "pid_security_model_warning": "EID wordt alleen geladen tijdens de presentatie",
+
   "onboarding_esim_error_couple_rp_failed": "De RP-koppelingsstap van de eSim-activatie is mislukt",
   "onboarding_esim_error_bindkey_failed": "De bind-key-stap van de eSim-activatie is mislukt",
   "onboarding_esim_error_create_link_failed": "De create-link-stap van de eSim-activatie is mislukt",
@@ -471,6 +475,7 @@
       "unknown_scan_card_error_message": "Er is een onbekende fout opgetreden."
     }
   },
+  
   "onboard_summary_title": "Jouw ingevoerde gegevens",
   "onboard_summary_subtitle": "Wanneer je op voltooien drukt, accepteer je de ingevoerde gegevens en ga je door naar het inlogscherm. De persoonlijke gegevens kunnen in de instellingen worden gewijzigd.",
   "onboard_summary_info_tab_header_label": "Jouw informatie",
