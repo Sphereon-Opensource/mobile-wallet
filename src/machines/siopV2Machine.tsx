@@ -1,4 +1,4 @@
-import {ClientMetadataOpts, PresentationDefinitionWithLocation, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {ClientMetadataOpts, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {DidAuthConfig, Identity, Party} from '@sphereon/ssi-sdk.data-store';
 import {assign, createMachine, DoneInvokeEvent, interpret} from 'xstate';
 import {translate} from '../localization/Localization';
@@ -30,13 +30,13 @@ import {
   SiopV2MachineStates,
   SiopV2StateMachine,
 } from '../types/machines/siopV2';
-import {EvaluationResults, PEX, Status} from '@sphereon/pex';
-import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, OriginalVerifiableCredential, SubSystem, System} from '@sphereon/ssi-types';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {ActionType, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {ExternalIdentifierOIDFEntityIdResult, TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
+import { DcqlQuery } from 'dcql'
+import { convertToDcqlCredentials } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth'
 
 const siopV2HasNoContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
   const {contact} = _ctx;
@@ -60,23 +60,19 @@ const siopV2CreateContactGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Mach
 };
 
 const siopV2HasSelectedRequiredCredentialsGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
-  const {selectedCredentials, authorizationRequestData} = _ctx;
+  const { authorizationRequestData } = _ctx;
 
   if (authorizationRequestData === undefined) {
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present');
+  if (authorizationRequestData.dcqlQuery === undefined) {
+    throw Error('No DCQL query present');
   }
 
   // FIXME: Return true for now, given this is a really expensive operation and will be called in the next phase anyway
+  // TODO we need dcql query can_be_satisfied check here
   return true;
-  /*const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(definitionWithLocation.definition, selectedCredentials);
-
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO;*/
 };
 
 const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -86,25 +82,17 @@ const siopV2HasJustOneMatchGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Ma
     throw new Error('Missing authorization request data in context');
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    throw Error('No presentation definitions present');
+  if (authorizationRequestData.dcqlQuery === undefined) {
+    throw Error('No DCQL query present');
   }
 
-  const udcMap = new Map<OriginalVerifiableCredential, UniqueDigitalCredential>();
-  selectedCredentials.forEach(credential => {
-    udcMap.set(credential.originalVerifiableCredential!, credential);
-  });
+  const queryResult = DcqlQuery.query(authorizationRequestData.dcqlQuery, selectedCredentials.map((vc) => convertToDcqlCredentials(vc)))
 
-  const definitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
-  const pex: PEX = new PEX();
-  const evaluationResults: EvaluationResults = pex.evaluateCredentials(
-    definitionWithLocation.definition,
-    selectedCredentials.map(udc => udc.originalVerifiableCredential!),
-  );
+  const hasOnlyOneMatch = Object.values(queryResult.credential_matches).every(entry =>
+    entry.valid_credentials && entry.valid_credentials.length === 1
+  )
 
-  // @ts-ignore FIXME Funke
-  _ctx.selectedCredentials = [udcMap.get(evaluationResults.verifiableCredential)!];
-  return evaluationResults.areRequiredCredentialsPresent === Status.INFO && evaluationResults.verifiableCredential.length === 1;
+  return hasOnlyOneMatch && queryResult.can_be_satisfied
 };
 
 const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -114,7 +102,7 @@ const siopV2IsSiopOnlyGuard = (_ctx: SiopV2MachineContext, _event: SiopV2Machine
     throw new Error('Missing authorization request data in context');
   }
 
-  return authorizationRequestData.presentationDefinitions === undefined;
+  return authorizationRequestData.dcqlQuery === undefined;
 };
 
 const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -124,7 +112,7 @@ const siopV2IsSiopWithOID4VPGuard = (_ctx: SiopV2MachineContext, _event: SiopV2M
     throw new Error('Missing authorization request data in context');
   }
 
-  return authorizationRequestData.presentationDefinitions !== undefined;
+  return authorizationRequestData.dcqlQuery !== undefined;
 };
 
 const siopV2IsOIDFOriginGuard = (_ctx: SiopV2MachineContext, _event: SiopV2MachineEventTypes): boolean => {
@@ -484,7 +472,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
     {
       actions: {
         logDeclineShare: async (context, event) => {
-          const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition;
+          //const pd = context.authorizationRequestData?.presentationDefinitions?.[0]?.definition;
           store.dispatch<any>(
             storeActivityLogging({
               level: LogLevel.INFO,
@@ -495,8 +483,9 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
               actionType: ActionType.READ,
               actionSubType: DefaultActionSubType.VC_SHARE_DECLINE,
               correlationId: context.didAuthConfig?.sessionId,
-              sharePurpose: pd?.purpose,
-              diagnosticData: context.authorizationRequestData?.presentationDefinitions,
+              // FIXME
+              //sharePurpose: pd?.purpose,
+              diagnosticData: context.authorizationRequestData?.dcqlQuery,
               // @ts-ignore
               partyCorrelationType: context.contact?.identities[0].identifier.type, // TODO fix types
               partyCorrelationId: context.contact?.identities[0].identifier.correlationId,

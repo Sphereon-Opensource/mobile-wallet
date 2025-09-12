@@ -4,7 +4,6 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {IIdentifier} from '@veramo/core';
 import {
   ClientMetadataOpts,
-  PresentationDefinitionWithLocation,
   RPRegistrationMetadataPayload,
   VerifiedAuthorizationRequest,
 } from '@sphereon/did-auth-siop';
@@ -13,6 +12,7 @@ import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
+import { DcqlQuery } from 'dcql'
 
 export type SiopV2AuthorizationRequestData = {
   correlationId: string;
@@ -23,7 +23,8 @@ export type SiopV2AuthorizationRequestData = {
   clientIdScheme?: string;
   clientId?: string;
   entityId?: string;
-  presentationDefinitions?: PresentationDefinitionWithLocation[];
+  // presentationDefinitions?: PresentationDefinitionWithLocation[];
+  dcqlQuery: DcqlQuery
 };
 
 export type SiopV2MachineContext = {

@@ -1,30 +1,29 @@
 import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
-import {com} from '@sphereon/kmp-mdoc-core';
-import {PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
-import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult, ManagedIdentifierResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {ConnectionType, CredentialDocumentFormat, CredentialRole, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
-import {DocumentType} from '@sphereon/ssi-sdk.data-store';
-import {OID4VP, OpSession, VerifiableCredentialsWithDefinition, VerifiablePresentationWithDefinition} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {
+  OpSession,
+  convertToDcqlCredentials,
+} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth'
 import {
   CredentialMapper,
-  MdocDocument,
   OriginalVerifiableCredential,
-  OriginalVerifiablePresentation,
-  PresentationSubmission,
-} from '@sphereon/ssi-types'; // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
+  SdJwtDecodedVerifiableCredential
+} from '@sphereon/ssi-types' // FIXME we should fix the export of these objects // FIXME we should fix the export of these objects
 import Debug, {Debugger} from 'debug';
 import {EventEmitter} from 'events';
 import {APP_ID} from '../../@config/constants';
-import agent, {agentContext, didMethodsSupported, didResolver} from '../../agent';
+import agent, {didMethodsSupported, didResolver} from '../../agent';
 import {generateDigest} from '../../utils';
-import Oid4VPPresentationSubmission = com.sphereon.mdoc.oid4vp.Oid4VPPresentationSubmission;
-import DeviceResponseCbor = com.sphereon.mdoc.data.device.DeviceResponseCbor;
-import IssuerSignedCbor = com.sphereon.mdoc.data.device.IssuerSignedCbor;
-import decodeFrom = com.sphereon.kmp.decodeFrom;
-import Encoding = com.sphereon.kmp.Encoding;
+import {DcqlPresentation, DcqlQuery} from 'dcql';
+import {
+  PartialSdJwtDecodedVerifiableCredential,
+  PartialSdJwtKbJwt
+} from '@sphereon/pex/dist/main/lib'
+import { calculateSdHash } from '@sphereon/pex/dist/main/lib/utils'
 
 const debug: Debugger = Debug(`${APP_ID}:authentication`);
 
@@ -61,29 +60,8 @@ export const siopRegisterSession = async ({requestJwtOrUri, sessionId}: {request
   });
 };
 
-// FIX Funke START of temp code
-const hasMDocCredentials = (credentialsAndDefinitions: VerifiableCredentialsWithDefinition[]): boolean => {
-  return credentialsAndDefinitions.some(vcWithDef =>
-    vcWithDef.credentials.some(
-      credential =>
-        (credential as UniqueDigitalCredential).digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC &&
-        (credential as UniqueDigitalCredential).digitalCredential.documentType === DocumentType.VC,
-    ),
-  );
-};
-
-const isUniqueDigitalCredential = (credential: UniqueDigitalCredential | OriginalVerifiableCredential): credential is UniqueDigitalCredential => {
-  return (credential as UniqueDigitalCredential).digitalCredential !== undefined;
-};
-
-const getDefinitionId = (definition: PresentationDefinitionV1 | PresentationDefinitionV2): string => {
-  if ('id' in definition) {
-    return definition.id;
-  } else {
-    throw new Error('Invalid presentation definition: missing id');
-  }
-};
-
+// Outdated by OID4VP v1 spec
+/*
 const createMDocPresentation = async (
   vcWithDef: VerifiableCredentialsWithDefinition,
   identifier: ManagedIdentifierOptsOrResult,
@@ -141,15 +119,17 @@ const createMDocPresentation = async (
     },
   };
 };
+ */
 // FIX Funke END of temp code
 
 export const siopSendAuthorizationResponse = async (
   connectionType: ConnectionType,
   args: {
     sessionId: string;
-    verifiableCredentialsWithDefinition?: VerifiableCredentialsWithDefinition[];
+    credentials: Array<UniqueDigitalCredential | OriginalVerifiableCredential>
   },
 ) => {
+  const CLOCK_SKEW = 120
   if (connectionType !== ConnectionType.SIOPv2_OpenID4VP) {
     return Promise.reject(Error(`No supported authentication provider for type: ${connectionType}`));
   }
@@ -161,7 +141,7 @@ export const siopSendAuthorizationResponse = async (
     }
   */
   const request = await session.getAuthorizationRequest();
-  const aud = await request.authorizationRequest.getMergedProperty<string>('aud');
+  const aud = request.authorizationRequest.getMergedProperty<string>('aud');
   console.log(`AUD: ${aud}`);
   console.log(JSON.stringify(request.authorizationRequest));
   /* const clientId = await request.authorizationRequest.getMergedProperty<string>('client_id');
@@ -189,28 +169,16 @@ export const siopSendAuthorizationResponse = async (
      identifiers = [identifiers.find(id => id.did === aud) as IIdentifier];
    }
  */
-  // todo: This should be moved to code calling the sendAuthorizationResponse (this) method, as to allow the user to subselect and approve credentials!
-  let presentationsAndDefs: VerifiablePresentationWithDefinition[] | undefined;
-  //fixme: make these next two lines unifrom. they should return the same type
-  //let identifier: IIdentifier = identifiers[0];
-  let managedIdentifier: ManagedIdentifierResult | undefined;
-  let presentationSubmission: PresentationSubmission | undefined;
-  if (await session.hasPresentationDefinitions()) {
-    const oid4vp: OID4VP = await session.getOID4VP({hasher: generateDigest});
 
-    const credentialsAndDefinitions = args.verifiableCredentialsWithDefinition
-      ? args.verifiableCredentialsWithDefinition
-      : await oid4vp.filterCredentialsAgainstAllDefinitions(CredentialRole.HOLDER);
-    const domain =
-      ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
-      request.issuer ??
-      (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
-        ? 'https://self-issued.me/v2/openid-vc'
-        : 'https://self-issued.me/v2');
-    debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+  const domain =
+    ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
+    request.issuer ??
+    (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
+      ? 'https://self-issued.me/v2/openid-vc'
+      : 'https://self-issued.me/v2');
+  debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
-    /*
-
+  /*
         const firstUniqueDC = credentialsAndDefinitions[0].credentials[0] as UniqueDigitalCredential;
         const firstVC = firstUniqueDC.uniformVerifiableCredential;
         const holder = CredentialMapper.isSdJwtDecodedCredential(firstVC)
@@ -228,9 +196,9 @@ export const siopSendAuthorizationResponse = async (
         } catch (e) {
           debug(`Holder DID not found: ${holder}`);
         }
-      }*/
+  }*/
 
-    const firstUniqueDC = credentialsAndDefinitions[0].credentials[0];
+    const firstUniqueDC = args.credentials[0]//credentialsAndDefinitions[0].credentials[0];
     // FIXME Funke EBSI needs to be fixed
 
     if (!firstUniqueDC) {
@@ -292,54 +260,97 @@ export const siopSendAuthorizationResponse = async (
             });
           }
       }
-    }
-    console.log(`Identifier`, identifier);
-
-    if (hasMDocCredentials(credentialsAndDefinitions)) {
-      // FIXME Funke We need mdoc support inside the PEX library, after done this needs to be removed
-      presentationsAndDefs = await Promise.all(
-        credentialsAndDefinitions.map((vcWithDef: VerifiableCredentialsWithDefinition) =>
-          createMDocPresentation(vcWithDef, identifier, session, request),
-        ),
-      );
-    } else {
-      const authRequest = await session.getAuthorizationRequest();
-      const vpFormats = authRequest.registrationMetadataPayload?.vp_formats;
-      presentationsAndDefs = await oid4vp.createVerifiablePresentations(CredentialRole.HOLDER, credentialsAndDefinitions, {
-        idOpts: identifier,
-        proofOpts: {
-          nonce: session.nonce,
-          domain,
-        },
-        restrictToFormats: vpFormats,
-      });
-      console.log(presentationsAndDefs);
-    }
-    if (!presentationsAndDefs || presentationsAndDefs.length === 0) {
-      throw Error('No verifiable presentations could be created');
-    } else if (presentationsAndDefs.length > 1) {
-      throw Error(`Only one verifiable presentation supported for now. Got ${presentationsAndDefs.length}`);
-    }
-
-    managedIdentifier = await agentContext.agent.identifierManagedGet(presentationsAndDefs[0].idOpts);
-    presentationSubmission = presentationsAndDefs[0].presentationSubmission;
-
-    /*const key = await getKey({identifier, vmRelationship: 'authentication'}, session.context);
-    const kmsKeyRef = key.kid;
-    const kid = managedIdentifier?.kid;*/
-
-    debug(`Definitions and locations:`, JSON.stringify(presentationsAndDefs?.[0]?.verifiablePresentations, null, 2));
-    debug(`Presentation Submission:`, JSON.stringify(presentationSubmission, null, 2));
-    const response = await session.sendAuthorizationResponse({
-      ...(presentationsAndDefs && {verifiablePresentations: presentationsAndDefs?.flatMap(pd => pd.verifiablePresentations)}),
-      ...(presentationSubmission && {presentationSubmission}),
-      responseSignerOpts: identifier,
-    });
-
-    debug(`Response: `, response);
-
-    return response;
   }
 
-  return undefined;
+  const dcqlCredentialsWithCredentials = new Map(
+    args.credentials.map((vc) => [convertToDcqlCredentials(vc), vc])
+  )
+
+  const queryResult = DcqlQuery.query(request.dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()))
+
+  const presentation: DcqlPresentation.Output = {}
+  const uniqueCredentials = Array.from(dcqlCredentialsWithCredentials.values())
+  for (const [key, value] of Object.entries(queryResult.credential_matches)) {
+    if (value.success) {
+      const matchedCredentials = value.valid_credentials.map(cred => uniqueCredentials[cred.input_credential_index])
+      const vc = matchedCredentials[0] // taking the first match for now
+      if (!vc) {
+        continue
+      }
+      const originalVc = retrieveEncodedCredential(vc as UniqueDigitalCredential)
+      if (!originalVc) {
+        continue
+      }
+
+      // FIXME SSISDK-44
+      const decodedSdJwt = await CredentialMapper.decodeSdJwtVcAsync(originalVc as string, generateDigest)
+      const updatedSdJwt = updateSdJwtCredential(decodedSdJwt, request.requestObject?.getPayload()?.nonce, domain)
+
+      const presentationResult = await agent.createSdJwtPresentation({
+        presentation: updatedSdJwt.compactSdJwtVc,
+        kb: {
+          payload: {
+            ...updatedSdJwt.kbJwt?.payload,
+            iat: updatedSdJwt.kbJwt?.payload?.iat ?? Math.floor(Date.now() / 1000 - CLOCK_SKEW)
+          }
+        }
+      })
+
+      if (originalVc) {
+        presentation[key] = presentationResult.presentation
+      }
+    }
+  }
+
+  const dcqlPresentation = DcqlPresentation.parse(presentation)
+  debug(`Presentation:`, JSON.stringify(dcqlPresentation, null, 2));
+
+  const response = session.sendAuthorizationResponse({
+    responseSignerOpts: identifier,
+    dcqlResponse: {
+      dcqlPresentation
+    }
+  })
+
+  debug(`Response: `, response);
+  return response;
 };
+
+const retrieveEncodedCredential = (credential: UniqueDigitalCredential): OriginalVerifiableCredential | undefined => {
+  return credential.originalVerifiableCredential !== undefined &&
+  credential.originalVerifiableCredential !== null &&
+  (credential?.originalVerifiableCredential as SdJwtDecodedVerifiableCredential)?.compactSdJwtVc !== undefined &&
+  (credential?.originalVerifiableCredential as SdJwtDecodedVerifiableCredential)?.compactSdJwtVc !== null
+    ? (credential.originalVerifiableCredential as SdJwtDecodedVerifiableCredential).compactSdJwtVc
+    : credential.originalVerifiableCredential
+}
+
+const updateSdJwtCredential = (
+  credential: SdJwtDecodedVerifiableCredential | PartialSdJwtDecodedVerifiableCredential,
+  nonce?: string,
+  aud?: string
+): PartialSdJwtDecodedVerifiableCredential => {
+  const sdJwtCredential = credential as SdJwtDecodedVerifiableCredential;
+
+  // extract sd_alg or default to sha-256
+  const hashAlg = sdJwtCredential.signedPayload._sd_alg ?? 'sha-256';
+  const sdHash = calculateSdHash(sdJwtCredential.compactSdJwtVc, hashAlg, generateDigest);
+
+  const kbJwt = {
+    // alg MUST be set by the signer
+    header: {
+      typ: 'kb+jwt',
+    },
+    payload: {
+      iat: Math.floor(new Date().getTime() / 1000),
+      sd_hash: sdHash,
+      ...(nonce && { nonce }),
+      ...(aud && { aud })
+    },
+  } satisfies PartialSdJwtKbJwt;
+
+  return {
+    ...sdJwtCredential,
+    kbJwt,
+  } satisfies PartialSdJwtDecodedVerifiableCredential;
+}
