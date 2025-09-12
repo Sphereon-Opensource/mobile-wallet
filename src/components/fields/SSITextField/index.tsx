@@ -65,7 +65,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
   const getValueElements = (item: any): Array<ReactElement> => {
     const values = valueIsArray ? item : [item];
     return values.map((value: any, index: number) => {
-      const validURL = isValidURL(value);
+      const validURL = typeof value === 'string' && isValidURL(value); // compiler is allowing function with string parameter to be called with any? had to add the typeof
       const markdownStyle = {
         body: {
           fontFamily: fontStyle.h7SemiBold.fontFamily,
