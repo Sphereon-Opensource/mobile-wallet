@@ -4373,6 +4373,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sd-jwt/core@npm:0.15.0, @sd-jwt/core@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/core@npm:0.15.0"
+  dependencies:
+    "@sd-jwt/decode": "npm:0.15.0"
+    "@sd-jwt/present": "npm:0.15.0"
+    "@sd-jwt/types": "npm:0.15.0"
+    "@sd-jwt/utils": "npm:0.15.0"
+  checksum: 10c0/3c7fc18a237f80ab5fece4b9f82068c40638110b650a94ed0a662f4e7baada7877f31adaa7fc3d83adb80558d420be251553ce308e6774d3aeafeffa177f0e4b
+  languageName: node
+  linkType: hard
+
 "@sd-jwt/core@npm:0.7.2":
   version: 0.7.2
   resolution: "@sd-jwt/core@npm:0.7.2"
@@ -4385,15 +4397,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/core@npm:0.9.2, @sd-jwt/core@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/core@npm:0.9.2"
+"@sd-jwt/decode@npm:0.15.0, @sd-jwt/decode@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/decode@npm:0.15.0"
   dependencies:
-    "@sd-jwt/decode": "npm:0.9.2"
-    "@sd-jwt/present": "npm:0.9.2"
-    "@sd-jwt/types": "npm:0.9.2"
-    "@sd-jwt/utils": "npm:0.9.2"
-  checksum: 10c0/39af8944d7cea7fae025efd0029456b167a37a88b13deac184b0a0418930e6e2bb7bff3a4da58715e519d4e78cda9760ace712d405cbb7aa15c5b31863fd458a
+    "@sd-jwt/types": "npm:0.15.0"
+    "@sd-jwt/utils": "npm:0.15.0"
+  checksum: 10c0/714f7699db06d063fd503d30acdceb4a2baa01fe735183a364ea38901ec50ac94284ec1b59dd0c3a47522fd5e64846dbefb0b515526870a2d28a824712e82368
   languageName: node
   linkType: hard
 
@@ -4407,13 +4417,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/decode@npm:0.9.2, @sd-jwt/decode@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/decode@npm:0.9.2"
+"@sd-jwt/jwt-status-list@npm:0.15.0, @sd-jwt/jwt-status-list@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/jwt-status-list@npm:0.15.0"
   dependencies:
-    "@sd-jwt/types": "npm:0.9.2"
-    "@sd-jwt/utils": "npm:0.9.2"
-  checksum: 10c0/d9fda01ff34706481d0abc258adc564a9e8a00a63c92b868de9d067234f3b694e971dd8747b06a1634409aca32d467e8ef7c3547f9e3deef4a486243c4546413
+    "@sd-jwt/types": "npm:0.15.0"
+    base64url: "npm:^3.0.1"
+    pako: "npm:^2.1.0"
+  checksum: 10c0/1abf4188129b30afa4508c1be649cde1c03fcc89bd79e568f672e4bd31ec8e8c00b22588da34ab646ef97844d67a9768b5d947e973cf7512b6490cd55383de34
   languageName: node
   linkType: hard
 
@@ -4428,14 +4439,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/jwt-status-list@npm:0.9.2, @sd-jwt/jwt-status-list@npm:^0.9.1":
-  version: 0.9.2
-  resolution: "@sd-jwt/jwt-status-list@npm:0.9.2"
+"@sd-jwt/present@npm:0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/present@npm:0.15.0"
   dependencies:
-    "@sd-jwt/types": "npm:0.9.2"
-    base64url: "npm:^3.0.1"
-    pako: "npm:^2.1.0"
-  checksum: 10c0/8f361193c1efbd3c446db122b9aa00f099ae6ce034da5c7bf368c1687f1e3d6d5d49cdc67d91be5f94db041ffa5754712cdb99ecfdff3c3922406720f4ee0eee
+    "@sd-jwt/decode": "npm:0.15.0"
+    "@sd-jwt/types": "npm:0.15.0"
+    "@sd-jwt/utils": "npm:0.15.0"
+  checksum: 10c0/6563f4113a3c4fcc460bddf067cf9e3d3f8f5875ceeb113cf3d2cb16e2329c413a159326957ab21c41e8b71358323b9d7c2ad695a8b8f6f5c322650b9cf09719
   languageName: node
   linkType: hard
 
@@ -4450,14 +4461,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/present@npm:0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/present@npm:0.9.2"
+"@sd-jwt/sd-jwt-vc@npm:^0.15.1":
+  version: 0.15.1
+  resolution: "@sd-jwt/sd-jwt-vc@npm:0.15.1"
   dependencies:
-    "@sd-jwt/decode": "npm:0.9.2"
-    "@sd-jwt/types": "npm:0.9.2"
-    "@sd-jwt/utils": "npm:0.9.2"
-  checksum: 10c0/8edc1d9c5f9d641c0eabf3f94f2d2c5f4dc1596403838fb845be1000afee7be4212653535585a88d5bce2e0776fe0d8c9e43677e18812481951ea8cd44aab270
+    "@sd-jwt/core": "npm:0.15.0"
+    "@sd-jwt/jwt-status-list": "npm:0.15.0"
+    "@sd-jwt/utils": "npm:0.15.0"
+    ajv: "npm:^8.17.1"
+    ajv-formats: "npm:^3.0.1"
+  checksum: 10c0/b4504d5e557cf393551feb537ef151f5a23dfb14437abda8622fa722c6da6ec12b37d9c3d279d32f332b2cccb8e93b42b7f5b9e88af8495f5bbb092e997afdd9
   languageName: node
   linkType: hard
 
@@ -4472,16 +4485,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/sd-jwt-vc@npm:^0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/sd-jwt-vc@npm:0.9.2"
-  dependencies:
-    "@sd-jwt/core": "npm:0.9.2"
-    "@sd-jwt/jwt-status-list": "npm:0.9.2"
-    "@sd-jwt/utils": "npm:0.9.2"
-    ajv: "npm:^8.17.1"
-    ajv-formats: "npm:^3.0.1"
-  checksum: 10c0/ed1f94fe674cc4248cbdc3eb276a0a982e1f258d4d04d9187be3ec7d52f1ff380d7dba772fab0bf86f4e3119da90030f32c455ced59185c63b97a06531b0661a
+"@sd-jwt/types@npm:0.15.0, @sd-jwt/types@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/types@npm:0.15.0"
+  checksum: 10c0/8d275d0269287ee8bf7ef23b5bdf44cb291030e394665164a7daa356caeae26d5ac42fbf6e3358b45697f026165367b96ca2d778281dce3a4b3e7ddc2355ebf7
   languageName: node
   linkType: hard
 
@@ -4492,10 +4499,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sd-jwt/types@npm:0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/types@npm:0.9.2"
-  checksum: 10c0/fed919d475c4036e4d022850eb8e65b943d16d88b2e6fbe9cb329056479f116e85bd0132796ffac4c299569fd79f53d1604232a9f5757feb83ffcef189cb2262
+"@sd-jwt/utils@npm:0.15.0":
+  version: 0.15.0
+  resolution: "@sd-jwt/utils@npm:0.15.0"
+  dependencies:
+    "@sd-jwt/types": "npm:0.15.0"
+    js-base64: "npm:^3.7.6"
+  checksum: 10c0/618ddf55d165dd6eafa8827e34184178a3c7a50546175647f5b82b26c5654a981704c37c901c478ccc0ca4c1e4b566d83056293eaa1bf8c8267698a7209adb15
   languageName: node
   linkType: hard
 
@@ -4506,16 +4516,6 @@ __metadata:
     "@sd-jwt/types": "npm:0.7.2"
     js-base64: "npm:^3.7.6"
   checksum: 10c0/e1e49448a5d5e8092bbb45c309e478e2f3bfb77113793ed36b417e7a9c8f51a00344a980ee998cf90db7db42f43c0fb13afc7cef9774fef5e1cb12eaf47a3cda
-  languageName: node
-  linkType: hard
-
-"@sd-jwt/utils@npm:0.9.2":
-  version: 0.9.2
-  resolution: "@sd-jwt/utils@npm:0.9.2"
-  dependencies:
-    "@sd-jwt/types": "npm:0.9.2"
-    js-base64: "npm:^3.7.6"
-  checksum: 10c0/3404b676bf000f5dc1ac7e3e9f8339b09fb04238bc8232ad9bdbdb5e1f078ccea8abd587fea0a48ccecbca8ca9caf86350b7bd499a356ac5299e38e7178973bf
   languageName: node
   linkType: hard
 
@@ -4577,41 +4577,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/did-auth-siop-adapter@npm:0.19.1-feat.SSISDK.34.74":
-  version: 0.19.1-feat.SSISDK.34.74
-  resolution: "@sphereon/did-auth-siop-adapter@npm:0.19.1-feat.SSISDK.34.74"
+"@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.DIIPv4.100":
+  version: 0.19.1-feature.DIIPv4.100
+  resolution: "@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.DIIPv4.100"
   dependencies:
-    "@sphereon/did-auth-siop": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
+    "@sphereon/did-auth-siop": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
     "@sphereon/did-uni-client": "npm:^0.6.2"
-    "@sphereon/oid4vc-common": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
     "@sphereon/wellknown-dids-client": "npm:^0.1.3"
     did-jwt: "npm:6.11.6"
     did-resolver: "npm:^4.1.0"
-  checksum: 10c0/3e6d47c75058c6387dd727f34f56c229094bfc4b06a5e9433fd30bd4f14f717cc09306521ff3cab5624c82b6468366eb6971042cab747741c40f14210017cc71
+  checksum: 10c0/5cae019bdf544bc5432ae902477d40ebfffcd28e7379a6534cf0555f693cb6d5a04c161e944269847799eb882887b88561b57a2e413abf2659753511a7273422
   languageName: node
   linkType: hard
 
-"@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.SSISDK.13.32":
-  version: 0.19.1-feature.SSISDK.13.32
-  resolution: "@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.SSISDK.13.32"
+"@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.DIIPv4.86":
+  version: 0.19.1-feature.DIIPv4.86
+  resolution: "@sphereon/did-auth-siop-adapter@npm:0.19.1-feature.DIIPv4.86"
   dependencies:
-    "@sphereon/did-auth-siop": "npm:^0.19.1-feature.SSISDK.13.32+0a4ae3ae"
+    "@sphereon/did-auth-siop": "npm:^0.19.1-feature.DIIPv4.86+0bdec148"
     "@sphereon/did-uni-client": "npm:^0.6.2"
-    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.SSISDK.13.32+0a4ae3ae"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.DIIPv4.86+0bdec148"
     "@sphereon/wellknown-dids-client": "npm:^0.1.3"
     did-jwt: "npm:6.11.6"
     did-resolver: "npm:^4.1.0"
-  checksum: 10c0/a9604970fdcb974ebded4618d67595349743b79c7a64bc0e14aad3c68207529fd78bb70d512426a8baeaf01539c7425d28b4efd6322c49c3bdb85abf59da3c21
+  checksum: 10c0/e1512eab5e972c9a1e548a3fd6d3ac0c4fd8d6d03106a697ff151699518f2251b346455784f53362bab76e5335b010c711f97a7bfb29e0c7106d15937d59b160
   languageName: node
   linkType: hard
 
-"@sphereon/did-auth-siop@npm:0.19.1-feat.SSISDK.34.74":
-  version: 0.19.1-feat.SSISDK.34.74
-  resolution: "@sphereon/did-auth-siop@npm:0.19.1-feat.SSISDK.34.74"
+"@sphereon/did-auth-siop@npm:0.19.1-feature.DIIPv4.100":
+  version: 0.19.1-feature.DIIPv4.100
+  resolution: "@sphereon/did-auth-siop@npm:0.19.1-feature.DIIPv4.100"
   dependencies:
     "@astronautlabs/jsonpath": "npm:^1.1.2"
-    "@sphereon/jarm": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
-    "@sphereon/oid4vc-common": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
+    "@sphereon/jarm": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
     "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.61"
@@ -4624,15 +4624,15 @@ __metadata:
     multiformats: "npm:^12.1.3"
     qs: "npm:^6.11.2"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/81835cc2d198212add65730517ed052ac7d8c7176a649db8070ec73316b504130cf123f231e018f06d4771d0cac2d8b649cd1b1aa5fef43f1dd1cb10d8ee1eaf
+  checksum: 10c0/c075abc746b2956a8da0b4cbef5b897a146550f62295853d6fedc3ae602fc998c6a8fced52ecb28e62e16de4ef367b8b7293a91e1c7713d1e82e7fed2fd45dd1
   languageName: node
   linkType: hard
 
-"@sphereon/did-provider-oyd@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/did-provider-oyd@npm:0.29.1-next.3"
+"@sphereon/did-provider-oyd@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/did-provider-oyd@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
     cross-fetch: "npm:^4.0.0"
@@ -4641,7 +4641,7 @@ __metadata:
     multibase: "npm:^4.0.6"
     multicodec: "npm:^3.2.1"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/e3495c35a87d38d75e6f16b0f4e9ba756aea8a36e3b4c25f5e06fc61fdd17358e3338ee8d3046fab5a3a67a8b94e95c81414679f77cb072205dc5922e4fb71bd
+  checksum: 10c0/b805cd2772e89e50b7e4e47c4d12aef9229fc063e5f1499e28218356b1320f7225cf805f035b3f0f86d5eb27a9c4a5934e5603a9ef6f877a5b7197c125208d52
   languageName: node
   linkType: hard
 
@@ -4655,7 +4655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/jarm@npm:^0.19.1-feat.SSISDK.34.74+9b92f697":
+"@sphereon/jarm@npm:^0.19.1-feature.DIIPv4.100+8d4da133":
   version: 0.19.1-next.2
   resolution: "@sphereon/jarm@npm:0.19.1-next.2"
   dependencies:
@@ -4695,19 +4695,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/oid4vc-common@npm:0.19.1-feat.SSISDK.34.74":
-  version: 0.19.1-feat.SSISDK.34.74
-  resolution: "@sphereon/oid4vc-common@npm:0.19.1-feat.SSISDK.34.74"
+"@sphereon/oid4vc-common@npm:0.19.1-feature.DIIPv4.86":
+  version: 0.19.1-feature.DIIPv4.86
+  resolution: "@sphereon/oid4vc-common@npm:0.19.1-feature.DIIPv4.86"
   dependencies:
     "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.61"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.0"
-  checksum: 10c0/57d755420c6751c49a13230ba4c65d19a4a2461eb8b41bc8575b98af618d62a73a0870f052165949186b8bf26bd7fd221c9bb3ee37baef01cab88a7c969dd0b4
+  checksum: 10c0/2c040bd311868f4f8658bed6f0904a707ad18c3ca04799e1cefa105085a2a325919fc3ace53116130502b962ee13313a65fbe7dde03a463f00fe2fa2d22ec398
   languageName: node
   linkType: hard
 
-"@sphereon/oid4vc-common@npm:^0.19.1-feat.SSISDK.34.74+9b92f697, @sphereon/oid4vc-common@npm:^0.19.1-feature.SSISDK.13.32+0a4ae3ae, @sphereon/oid4vc-common@npm:^0.19.1-next.2+4c0450e":
+"@sphereon/oid4vc-common@npm:^0.19.1-feature.DIIPv4.100+8d4da133, @sphereon/oid4vc-common@npm:^0.19.1-feature.DIIPv4.86+0bdec148, @sphereon/oid4vc-common@npm:^0.19.1-next.2+4c0450e":
   version: 0.19.1-next.2
   resolution: "@sphereon/oid4vc-common@npm:0.19.1-next.2"
   dependencies:
@@ -4719,31 +4719,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/oid4vci-client@npm:0.19.1-feat.SSISDK.34.74":
-  version: 0.19.1-feat.SSISDK.34.74
-  resolution: "@sphereon/oid4vci-client@npm:0.19.1-feat.SSISDK.34.74"
+"@sphereon/oid4vci-client@npm:0.19.1-feature.DIIPv4.100":
+  version: 0.19.1-feature.DIIPv4.100
+  resolution: "@sphereon/oid4vci-client@npm:0.19.1-feature.DIIPv4.100"
   dependencies:
-    "@sphereon/oid4vc-common": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
-    "@sphereon/oid4vci-common": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
+    "@sphereon/oid4vci-common": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
     "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.61"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.4.0"
-  checksum: 10c0/4df2af32f37fab24f08a72ac1e6b5cfcd98b88e51250c82cba83334da032987bcdb79605869bf836f75e4c65392bcd1abff10172959b3b70f99710ac958eb36e
+  checksum: 10c0/527d4868f58b87d1f39936f2486d29f5f12597f3c487d90222173ab3d9aefcadac66b070b8232f0b2e419669bfa71809c023d451ebcafcf9f676ad4a487c020a
   languageName: node
   linkType: hard
 
-"@sphereon/oid4vci-common@npm:0.19.1-feat.SSISDK.34.74":
-  version: 0.19.1-feat.SSISDK.34.74
-  resolution: "@sphereon/oid4vci-common@npm:0.19.1-feat.SSISDK.34.74"
+"@sphereon/oid4vci-common@npm:0.19.1-feature.DIIPv4.100":
+  version: 0.19.1-feature.DIIPv4.100
+  resolution: "@sphereon/oid4vci-common@npm:0.19.1-feature.DIIPv4.100"
   dependencies:
-    "@sphereon/oid4vc-common": "npm:^0.19.1-feat.SSISDK.34.74+9b92f697"
+    "@sphereon/oid4vc-common": "npm:^0.19.1-feature.DIIPv4.100+8d4da133"
     "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.61"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.4.0"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.0"
-  checksum: 10c0/a3f03c727db1271da989a228c29a3f2bf7e7632f418bf4b8814fec561bd2cc6a390c93b9ae2ef40b09d98247b2584b17c1484bc3a1e7bd6e70d99d0c14997aee
+  checksum: 10c0/ff8906683a5813a91509f2dcabf7760e5ad3fdae15dc513d26b9e26817f78564060514d1bc036f2a9cdccb789d9217cb0224961c6a210f2023c9dc41ea632afe
   languageName: node
   linkType: hard
 
@@ -4848,48 +4848,48 @@ __metadata:
     "@scure/base": "npm:^1.1.7"
     "@sd-jwt/sd-jwt-vc": "npm:^0.7.2"
     "@sd-jwt/types": "npm:^0.7.2"
-    "@sphereon/did-auth-siop": "npm:0.19.1-feat.SSISDK.34.74"
-    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feat.SSISDK.34.74"
-    "@sphereon/did-provider-oyd": "npm:0.29.1-next.3"
+    "@sphereon/did-auth-siop": "npm:0.19.1-feature.DIIPv4.100"
+    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feature.DIIPv4.100"
+    "@sphereon/did-provider-oyd": "npm:0.34.1-feature.DIIPv4.104"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.27"
     "@sphereon/musap-native": "npm:0.2.1-next.183"
     "@sphereon/musap-react-native": "npm:0.2.1-next.183"
-    "@sphereon/oid4vci-client": "npm:0.19.1-feat.SSISDK.34.74"
-    "@sphereon/oid4vci-common": "npm:0.19.1-feat.SSISDK.34.74"
+    "@sphereon/oid4vci-client": "npm:0.19.1-feature.DIIPv4.100"
+    "@sphereon/oid4vci-common": "npm:0.19.1-feature.DIIPv4.100"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.29.1-next.3"
+    "@sphereon/ssi-sdk-ext.did-provider-jwk": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.did-provider-key": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.did-resolver-ebsi": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.did-resolver-jwk": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.kms-azure-rest-client": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.kms-local": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk-ext.kms-musap-rn": "npm:0.34.1-feature.DIIPv4.104"
     "@sphereon/ssi-sdk.agent-config": "patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.credential-vcdm2-jose-provider": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.event-logger": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.oid4vci-holder": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.qr-code-generator": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feat.SSISDK.35.64"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.credential-vcdm2-jose-provider": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.event-logger": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.oid4vci-holder": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.qr-code-generator": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feature.DIIPv4.104"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104"
     "@sphereon/ui-components.core": "npm:0.3.1-next.28"
     "@sphereon/ui-components.credential-branding": "npm:0.3.1-next.28"
     "@sphereon/ui-components.ssi-react-native": "npm:0.3.1-next.28"
@@ -5044,14 +5044,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-jwk@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
@@ -5059,16 +5059,16 @@ __metadata:
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
-  checksum: 10c0/557808f84410bfb5b75be4eabeb09b279f3e5734c6c4b4e89c2edbde9ba08f89c9e60b3560471d82b3f49a7a6c2a13ba5e22d7404d42e0485529e712a434febf
+  checksum: 10c0/36c89d02e04cfc3dc145efdcc74aa2e1d557a6fc67744635654e8e6c16393bb7f6313a829f9a0a982579380ac4beab34d0b7c1ba4ceaca5a7072c501353ac836
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-provider-key@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-provider-key@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.did-resolver-key": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@transmute/did-key-bls12381": "npm:0.3.0-unstable.10"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
@@ -5078,39 +5078,39 @@ __metadata:
     multibase: "npm:^4.0.6"
     multicodec: "npm:^3.2.1"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/96e39df8e6bb44237d3b0037ec856c4a42849db3c9161bf4847784fdc2f315adfd64314803cb92378a63f1fec86c61bc031d910aad39f03afaa68303d47a8e8b
+  checksum: 10c0/b6741269fa0689ecbd624609500200806562c091898662ebfaf90e8b2496c996c2b8980a50e456f2e5ce7edc93919e017defdb6d62e4125d68e5e992b5557c7c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-ebsi@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     cross-fetch: "npm:^3.1.8"
     did-resolver: "npm:^4.1.0"
     dotenv: "npm:^16.3.1"
-  checksum: 10c0/5e807bda36ae14e2583c376aee5a85151ad88bcb2b433596d3d040f406e4936cc0b0ccf6eab38b7967af7bc645e03694ee94eafc224f3b40323ed15c654b936f
+  checksum: 10c0/6e4e43c54f818fb4b57f99cd9a10cfc172e7af6083c40ecc350e72386a82a3e7359812ddfaf671c09bb295bbc9f8f455c2bb60e1c2bb8f528cfa5cfd46e349fd
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-jwk@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     base64url: "npm:^3.0.1"
     debug: "npm:^4.3.4"
     did-resolver: "npm:^4.1.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/9d09e695b2af44b04b534ba7591fc9c8ae13d92aad368c4a4c24d61c2ae814c5a5b1bca64cfb8b9261446b663b281148d97deb5c5027c4aa2eedd6a7a9e8c123
+  checksum: 10c0/31df1921175ac7caecade77af0888bd439f924073a7de640dcd800edb6a30c84d4113ac2ce8522d54c3997b7c2b435900c5e6ea5a41f5c7a084887e7d8841155
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3, @sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3+2e81aa3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk-ext.did-resolver-key@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-resolver-key@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@stablelib/ed25519": "npm:^1.0.3"
     bigint-mod-arith: "npm:^3.3.1"
     did-resolver: "npm:^4.1.0"
@@ -5121,22 +5121,22 @@ __metadata:
     uint8arrays: "npm:3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/ed257c61dc4cad285ad531dde67bd7d09078690b254aa60423e01824844fcf6418ada7052e4121eaf5944cd2c55c36c11f4cfc8146a1b8d09d2a9e1bf3e15eeb
+  checksum: 10c0/8e8824c535276823216bb7224907652ded58ac7549ce085ef583f9aa0ba56b918f72955721667b95ad64b7c1a83de81422a6856dcd862bf29ba6ff7513e5b63f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.did-utils@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.did-utils@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.did-utils@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@ethersproject/networks": "npm:^5.7.1"
     "@ethersproject/transactions": "npm:^5.7.0"
     "@sphereon/did-uni-client": "npm:^0.6.3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.core": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5144,40 +5144,40 @@ __metadata:
     did-resolver: "npm:^4.1.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/e430caad8ae8c1c006c001818513342419c8684d3d53c1141a6aa048c2c8aea85f413bf65de2e8602919892a086265269bca65b7243d9b8b8256674e1fb7adeb
+  checksum: 10c0/da4abaa22183f77195b77f1ca6c2f79b2e2ea7c7599d3df2aec16288061b936e89827bd5b1e6779638f29414db3b77486b8a81aa4abce29dfcc11a01c805c936
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.identifier-resolution@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-sdk.oidf-client": "npm: 0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.oidf-client": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     debug: "npm:^4.3.4"
     pkijs: "npm:^3.2.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/a4975a7d6afd5d38e72540071820016fae65941006c8e6272ea2397364239305e7585f197066243411fa9d21a6b164c177ed63f238557aa46a5f3cbb431e4d55
+  checksum: 10c0/a755a22bdc9d6c2dbc35c20a0f1e655148c92798133c8120f304887f8e47fddc17ef4296da27d2834030733b4c33d27365be8197542d11ea1f89bc496d59a543
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.jwt-service@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.jwt-service@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-manager": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@stablelib/random": "npm:^1.0.2"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5185,30 +5185,30 @@ __metadata:
     jose: "npm:^5.10.0"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/8f261002850580510136e3ed300161f18424ba87b7f8d1bf2477c65ef9e8408297a779e5eccc47a080367c9e54e3c7dfb9a4dc8b756504aace7a050fd1dcdd33
+  checksum: 10c0/8e08c79db5ae92a222e41072c25ca3d866402998260856441c66ad17df743d1bbe37604f73a4e41143cb7be1daa3a7d554f734b8221756dc7b3be2123e24ee99
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.key-manager@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.key-manager@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.key-manager@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/3e6ae89ef5df5a28920f8545fad1ad8ccd3d7cb599c552da3978b0261d7070fd4645eeea9cf3f0a8bde9e52edd40e8f8d74ba666453d8c834f5763d7bab6905a
+  checksum: 10c0/aed21ec1dd383d539523a2efd32393b9f61cbf95c5fa2fca4072bfdf4e31bb0956645a59526d5c94832f1057bdef4000d267f796e2252ba2d06826691678ba6e
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.key-utils@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.key-utils@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.key-utils@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@ethersproject/random": "npm:^5.7.0"
     "@noble/curves": "npm:1.7.0"
     "@noble/hashes": "npm:1.6.1"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@stablelib/ed25519": "npm:^1.0.3"
     "@trust/keyto": "npm:^1.0.1"
     "@veramo/core": "npm:4.2.0"
@@ -5222,31 +5222,31 @@ __metadata:
     uint8arrays: "npm:3.1.1"
     varint: "npm:^6.0.0"
     web-encoding: "npm:^1.1.5"
-  checksum: 10c0/bc63fddb5c62de3e816bad7b7b0e625a5ce30ce9fada47fe13b398eee749832c151557588a5b31bd63b2d3e8fae9b8beeb9909f0699075ea9720949939130a0a
+  checksum: 10c0/d8e0ca7c66cd4952ac5f69bb5f1ae312f1081db31a52a4958f633eb25f8b412214f5d65e3384ac53c38362ce929cdf306602d704838b5c7aaad92327c1f2dd8c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.kms-azure-rest-client@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/1e7ea0f65801021acdeeeb67835a8deda7b302b55b261ee67aa47b153d4c5d04faebbe67bedd52ec0842342e325fb7c24b8395ef5cd6580a99e78d9cfa767e8f
+  checksum: 10c0/62aa0be5a88de9263f24d669c3a8cbdcd9124025d640925378c185b0ccea61ea14846ed269b743c4e42d972ff8ba505ea4f78fb2593c25c1a507ea26b0144f42
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-local@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.kms-local@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.kms-local@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@trust/keyto": "npm:2.0.0-alpha1"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
@@ -5254,42 +5254,42 @@ __metadata:
     debug: "npm:^4.4.0"
     elliptic: "npm:^6.5.4"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/1a7261ca68fc4c2fe291abc43afb57050a48b58e2155c8dd2f4adfc3c96fd56a9b0f08003b597813d1aee08ddd04a676275aef133bb017d11db4f2e3098e2d99
+  checksum: 10c0/4e2b1d9f61ca54a93ca653a52e4d0384e694b35efe21818c065c6d239748455c74563c767bde6f6da6ae3e23c99d75c97d93baba8ce4c90c10272535847d582f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.kms-musap-rn@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/musap-react-native": "npm:0.2.1-next.170"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.29.1-next.3+2e81aa3"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/key-manager": "npm:4.2.0"
     "@veramo/kms-local": "npm:4.2.0"
     text-encoding: "npm:^0.7.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/1c3d1158d67588a827bc316f40c8131d4de1a116c1e98f2fcb6e36e7d176a9967c87ab9f7e4a35e044ce4bcb546fd6a4c7d27b758181ae16794077c7a39e5ff6
+  checksum: 10c0/e72901c8f02dc8eaca16b6fc3e791d318b31bfd33f56ace30ee2ee3ee2f1fb08a7a142f9dea168b9209a2e18de9428b7c30c3f1711097ced18f3acdeb7fcd8e6
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.1-next.3":
-  version: 0.29.1-next.3
-  resolution: "@sphereon/ssi-sdk-ext.x509-utils@npm:0.29.1-next.3"
+"@sphereon/ssi-sdk-ext.x509-utils@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk-ext.x509-utils@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@peculiar/asn1-schema": "npm:^2.3.13"
     "@peculiar/asn1-x509": "npm:^2.3.13"
     "@peculiar/x509": "npm:^1.12.3"
-    "@sphereon/ssi-types": "npm:0.34.0"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@trust/keyto": "npm:^1.0.1"
     debug: "npm:^4.3.4"
     js-x509-utils: "npm:^1.0.7"
     pkijs: "npm:^3.2.4"
     tsyringe: "npm:^4.8.0"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/d7462a356774f6c50d98942d89d928515efb181519ed9aa2cb05b6d40a30e608253bf0e3e2805af02a92c0ef91cc0c93055e0892d8785b68558ccf9246741801
+  checksum: 10c0/c7a448498ce849fda5c13fd0e57919e4253c6a7af8340fa16c330ba427e736c707a118d2b70125d76bcb8a3cda5f5908e2b9637b2ca5ef96149530d629bafd6b
   languageName: node
   linkType: hard
 
@@ -5323,89 +5323,74 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.0"
+"@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.34.0"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.0"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    dns-query: "npm:^0.11.2"
-    mmdb-lib: "npm:^2.1.1"
-    typeorm: "npm:0.3.20"
-  checksum: 10c0/c25c889debe092a7076693c943b7a311155b7e042a73909cfec8951a5d9d581fd19326fad541cd3731efd273d796a05533227729be5befa36a38fda373fa7212
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.anomaly-detection@npm:0.34.1-feat.SSISDK.35.64"
-  dependencies:
-    "@sphereon/ssi-sdk.geolocation-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.geolocation-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     dns-query: "npm:^0.11.2"
     mmdb-lib: "npm:^2.1.1"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/8d19f606d81fa94d157071eb043f567a8fea93fd06ffde53e32fa8cdd28f8ef121c901269fe63aa76b0a7ae07b155ebeca6b02e29141e2ca45fc8c794ee3280b
+  checksum: 10c0/1f333ce255c989713edd16f4978b510e919abe8f7aedd57110698af32bfe24f567369b2943f4fdb7bfd5f212315c613173a7914af07c8ba37b0d6d8889d1a85e
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.contact-manager@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.contact-manager@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.contact-manager@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/bf5e09cb1440e55a3d33caf0f1cac67888242cfd7aa20a47802f542ce94689452fcd1665d59cdb502e13a14bb695989d09cdea27fb2f84b8ea45d69e5adac04d
+  checksum: 10c0/30b9574bc3c6e7a7bdaf70e554906dd4af6602c902e2a885ea19fa1b386eb32bea1619f559adfe52ac2af89e05be64b343a956aeec95ec92ebd62293c22aadae
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.core@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.core@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.core@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.core@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@noble/hashes": "npm:^1.6.1"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     image-size: "npm:2.0.1"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/59a2ae454ed1b606ed9a36fb33f0c62c11e1d84cde3f037242ebce626a74737fb0936dbc5b82cc35e3d16d261e778f2aec22d99dbd01fe87aa56f3ace238d19c
+  checksum: 10c0/d7f441d143a3abc92663420d74a10ce9598e99dfa9ca023e6447876a56abbf0c4fa834476b9bfd1f66aac54bb2fb210cdbc98dc5072473deec98e8f618df1c2c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-store@npm:0.34.1-feat.SSISDK.35.64, @sphereon/ssi-sdk.credential-store@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-store@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.4"
     typeorm: "npm:0.3.20"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/745e7f3023aaf93d2eb593566154cb954c1c62903aa98d2185898d596631bc24af7b08a66f70be02be15fe0c8cdaeb61a2ce3e3926cc6910df3bfd313c91bbc0
+  checksum: 10c0/1c0e3183786594f0039991516439002950f08863382407b3fc5306d1a81500eba8881a3ff3ccf631566a5cf5b9777444ba9d5bdd19c526ac6bf16b771e96f6bd
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-validation@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/data-store": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5414,13 +5399,13 @@ __metadata:
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/cebfb17555933d0b38c558b8a7c0861aa6f3378bdd494331e246c08135ec2312ceab41bc347232e34939ae581f7877d924ed10349de333a430a378715d70e2ae
+  checksum: 10c0/a97144de3201c1b1ad9805a0ef442c445e754f9e4b537008bc20291f3e93f712e21de6e39cc1079fa222ef17a3399ac7cbe9d972df29b8ddd877ddb555bc9a0f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-vcdm-jsonld-provider@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@digitalbazaar/ed25519-signature-2018": "npm:^4.1.0"
     "@digitalbazaar/ed25519-verification-key-2018": "npm:^4.0.0"
@@ -5435,14 +5420,14 @@ __metadata:
     "@digitalcredentials/vc": "npm:^9.0.1"
     "@digitalcredentials/x25519-key-agreement-2020-context": "npm:^1.0.0"
     "@noble/hashes": "npm:1.6.1"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.vc-status-list": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo-community/lds-ecdsa-secp256k1-recovery2020": "github:uport-project/EcdsaSecp256k1RecoverySignature2020"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5454,42 +5439,42 @@ __metadata:
     ed25519-signature-2020-context: "npm:^1.1.0"
   peerDependencies:
     react-native-securerandom: ^1.0.1
-  checksum: 10c0/2145205c64cdb37bbe1733f05762652e42631554a1894a1c51289b3b9a227f03c3fd46c31a39ad0038110aea33d8f21610a38e98cfd90e5d10059cd5a8169e1e
+  checksum: 10c0/5764c85c2bbd24e78689bcb685c292fd349f31f114a5725dd4e2b8d509cb60bae3c70615efa4e4b97839def184eb2b79bae89452906903472fc5249a5185a34d
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-vcdm1-jwt-provider@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     canonicalize: "npm:^2.0.0"
     debug: "npm:^4.3.3"
     did-jwt-vc: "npm:3.1.3"
     did-resolver: "npm:^4.1.0"
-  checksum: 10c0/98166d35a21ee9cb955ff11155120a3f3991f337ad819b3dbf41cf3e6d5ca1eb6b557d497711c62b2ed7d2e9ceed3ad877d73a3863a86dc8e762156c0f7a5004
+  checksum: 10c0/4eedb0a2acedb9f98ffd2f2478a5dc868778b22b7fc7f6782490ca73c6d1f91dbf4e0911211b865e7648814f382d059000f8d45a5ea37d835b5f6f5f46d4c34f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-vcdm2-jose-provider@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@noble/ciphers": "npm:^1.0.0"
     "@noble/curves": "npm:1.7.0"
     "@noble/hashes": "npm:^1.6.1"
     "@scure/base": "npm:^1.1.3"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     canonicalize: "npm:^2.0.0"
@@ -5499,19 +5484,19 @@ __metadata:
     multibase: "npm:^4.0.6"
     multiformats: "npm:^9.6.2"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/e3d8158725353a014d5eef4546fac353ba5fce1c32950f125433aa267a7fa83b17f970f795b7f33fc6656196cf4fd2d20d47a2cbd52b6017e15a6584e49639f4
+  checksum: 10c0/d85df09a594b525117eb87dee2583481079f30df6c741c364390df49f726616b6091d2a511649c9b31618bb43e6db8d226246902ada801afedcd4b28ccdc8f9e
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.credential-vcdm@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.29.1-next.3"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/message-handler": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5521,21 +5506,21 @@ __metadata:
     did-jwt-vc: "npm:3.1.3"
     did-resolver: "npm:^4.1.0"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/dcf6da4aff59dc650a6905af02e7386bea2ed54760826f5ff86ba6d2d40235467a0e362d3ca22f5e893121167a0b76d5c140c83481829e52067a429295da2c8b
+  checksum: 10c0/a3b47a0a0fa2ea67f6d34d38b91781717bb7da1bb37052beffdd1ccb95e89fc64cbcb1c1f45938fd9f23a3873226f9a6977a30fc1a8cb7c509903297bd0c2554
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.data-store@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.data-store@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.data-store@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.data-store@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     blakejs: "npm:^1.2.1"
@@ -5543,54 +5528,45 @@ __metadata:
     dcql: "npm:0.2.19"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/736e2f91bf0313d48551e21781a418b53725ff0664f1f7935557d7c701c3c45513056e978e1594ed9243b945e2f9be4e55fce14eded6a051966440b3275bf540
+  checksum: 10c0/c59c2126503265d0e8ab6fe72d6718f5f7f8a155c423e79611bcb43744cb3c7e06505891042537b4553f0f7b3d11d7d628caa91d13d13ac4cbf6fa4b6a39de9c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.event-logger@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.event-logger@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.event-logger@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.event-logger@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/790bf761696f65923679511c14b26c8e7c01192f3203668ab92ab9274dca6bf1b8e679e71ce78c267ba4c901c76b66803adca725ed178f6e2ef7f0771ee0946e
+  checksum: 10c0/7ed2a43efc7eca58a11413fb067c46b17bc4251917bef79a0b58890dbdf3d548081bcbdc7ba8f23df98da976ffb67a9bc295a06afdd32fd6ad720f2cb590565b
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.geolocation-store@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.34.0"
+"@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.0"
-  checksum: 10c0/92ba57274da9232df89a92f560889357daafdc1510b01545aa63e3e0286603a3ebed92650f8b199c3ac7381f97fd0f658b6cead3a71586b5a83b756084102fb0
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+  checksum: 10c0/a452e5d6b7623d6b2fe6fcd271373fe6f5ca62137a0d658205efd7271e6439fe220f380cc56306ca403a62ba7f2b41acc3e291293db6019eb81353c7b9fcdc52
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.geolocation-store@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-  checksum: 10c0/802c72053230b425049ff4e93b53cea5565ac4416325fa076d521b9bef14844d70c35b188a8aba7937e9fd4657dda5736d92a0609a6dd0e548a66a734bde1f67
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feat.SSISDK.35.64, @sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.issuance-branding@npm:0.34.1-feat.SSISDK.35.64"
-  dependencies:
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/392684d00d81307268979f3414a436384f49b0832d5ff420a628f2b28f3beb9b4939e83379216755794e243bc7fc2dfef88e35efb81a2d29576dec05c01d623b
+  checksum: 10c0/c304698dc76d8d831ac6a4cbe1e345ad501f51f32601d7af5ae82dc8a72bb6b1bfe725a6b43ed145118e43c1d9fe3581cbc4b1c566c78bb91f9118e34b3ebcd0
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.34.0"
+"@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@veramo/utils": "npm:4.2.0"
     debug: "npm:^4.3.5"
@@ -5599,38 +5575,23 @@ __metadata:
     reflect-metadata: "npm:^0.2.2"
     typeorm: "npm:0.3.20"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/76e55ec736bfdb25d3c4b82636dbd677485f354121572975f223a3f1e830a92d33f1af646011b4fa33b6dd06b4a37a4c74e75c8e3e45bd0c3c1894eeb6412049
+  checksum: 10c0/a46d9969dab61a8d475ffb52b314f2c064b3c91ff2f98c2072f4de35226fd63760f581bd9d691a04234bb145c0d92f361b0bdcc9281d9719d998a02667d8015f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.kv-store-temp@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@veramo/utils": "npm:4.2.0"
-    debug: "npm:^4.3.5"
-    events: "npm:^3.3.0"
-    json-buffer: "npm:^3.0.1"
-    reflect-metadata: "npm:^0.2.2"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/d6c8201af8798e5058dd47b15d6db228a4c5b1bc5c8baa10d253dfb61d657e5ddb92e2790b4622de57a50e5d3884bb136c14f8539aaf432e6668a66386cb0c71
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feat.SSISDK.35.64, @sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.mdl-mdoc@npm:0.34.1-feat.SSISDK.35.64"
-  dependencies:
-    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feature.SSISDK.13.32"
+    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feature.DIIPv4.86"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/did-manager": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5641,35 +5602,35 @@ __metadata:
     pkijs: "npm:^3.2.4"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/fae26de4f7d8d795e5389ed91181e5ef3addc52d7636a5222f180ac80ce46e36546a3ce3b1ec21310d2b32e9d6768c29edfec87a5e2f09ea1928ce54d63d58cc
+  checksum: 10c0/73942a7a0af8adcc2dad80f2c313c94a1d4a63bafdadfa4987ced7abb489bdc9389d7956a872c9ea1e695b36c9e95fcebeb9baa5f944f22b9644a176f0c8e2f2
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.oid4vci-holder@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/did-auth-siop": "npm:0.19.1-feature.SSISDK.13.32"
+    "@sphereon/did-auth-siop": "npm:0.19.1-feature.DIIPv4.86"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
-    "@sphereon/oid4vci-client": "npm:0.19.1-feature.SSISDK.13.32"
-    "@sphereon/oid4vci-common": "npm:0.19.1-feature.SSISDK.13.32"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.oidf-client": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/oid4vci-client": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/oid4vci-common": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.oidf-client": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     "@veramo/data-store": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
@@ -5680,166 +5641,140 @@ __metadata:
     lodash.memoize: "npm:^4.1.2"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/9b54acd6121a8f026216c1b110d994517ccb5564b4a1bf9439f61a1d578c37b2dda8b8a725eea5e76b6358e67dfe4d89f876b3507fbb29e894d403d90fc57424
+  checksum: 10c0/7824c00efdb085af26f0259440700d24e558372e1234ff9e4369d13a142cc4017b88b71288f41e4e9eeb0332c419c503aa658a2bc49ad32ca79c65f86e99d915
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.oidf-client@npm: 0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.34.0"
+"@sphereon/ssi-sdk.oidf-client@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
     "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
     "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.29.0"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.0"
-    "@sphereon/ssi-types": "npm:0.34.0"
-  checksum: 10c0/b1d699097b40704e1d8ba3d6787475953703aa376fd4d22f47d7412520936e7a60c1e7d4a0d80619b023a8d5dff1a60ff8077ee9b800d4ea83095df5b1160d86
+    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+  checksum: 10c0/9173599588869eced5af80adc85666e7b149b42f7038d4f145e9e53a736293b8d57537703ed164cad57847bb94b193d57ce4577d55f1b6832294ff09f670ef8a
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.oidf-client@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.oidf-client@npm:0.34.1-feat.SSISDK.35.64"
-  dependencies:
-    "@sphereon/openid-federation-client": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-common": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/openid-federation-open-api": "npm:0.20.9-unstable.48ddfa1"
-    "@sphereon/ssi-sdk.resource-resolver": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-  checksum: 10c0/ecbca4283d17df3996aa57737bdc05c14107c0d27292bd5f713935673ebff4a4dacbdf594638286e597b1d36861f6d06987554e84c4ac029f06ff797a69f1599
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.pd-manager@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     semver: "npm:^7.6.3"
     typeorm: "npm:0.3.20"
-  checksum: 10c0/267b7a53614ae227d7b2cb58b43933061be9fb95881263494497c1ab977c4b442821719c67f84376dd85a5f25254cbf06689597a7adedadf2a472cca1bead9db
+  checksum: 10c0/e72ed298961f7db9f0e2d4db2e62f2b1a61089e1ee6ea8f2c788308189eae8f84070d97c7246f7827b3915e66ec1faf76beaf3af4b6ecdd51066d26bfd88d8df
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.presentation-exchange@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
-  checksum: 10c0/ebad947c561a7c0cc3c8217bb20cfef47a33a69fbef436bc3ff015a9a1f5d0c81b14373f1bd97a0d25115bebb7e669c50860c09bc87ef3d98c0ae78c8b428fa6
+  checksum: 10c0/b75bcd056042eb7775fbc1d8325d8c333276d87de5f30620625c45e52292584d05824469a4176eab45d1c3a864b233fb67f1009c934580b97e47f87cfacd8d4f
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.qr-code-generator@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     base64url: "npm:^3.0.1"
     react: "npm:^18.3.1"
     react-qr-code: "npm:^2.0.15"
-  checksum: 10c0/44369aa101538f58d8b48b8b91c433306f88e9f7ca90a682f1cabe3824adc8c270a19d7541a4fc7d786c034d701ed747bcd534a871e5c1b305731708b51b92a2
+  checksum: 10c0/01886e1208de5d3ac0481e387b18c8302531ab60483344e548781f6e598edb8fff1ed28f87c72896878537aa521b2877cb630400090d1439884e9013d6149bce
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.resource-resolver@npm:0.34.0":
-  version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.34.0"
+"@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.34.0"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.0"
-    cross-fetch: "npm:^3.1.8"
-    debug: "npm:^4.3.5"
-    typeorm: "npm:0.3.20"
-    uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/307d0d7b9ed5534760f2fbf9166bc2bed193c60dec4285a6356677aae54c9e04aaf69fc8589d7bad49fcb7c1569bf3e39f7164944f1a6de4ce0cd804ac72566c
-  languageName: node
-  linkType: hard
-
-"@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feat.SSISDK.35.64, @sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.resource-resolver@npm:0.34.1-feat.SSISDK.35.64"
-  dependencies:
-    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.anomaly-detection": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.kv-store-temp": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     cross-fetch: "npm:^4.1.0"
     debug: "npm:^4.3.5"
     typeorm: "npm:0.3.20"
     uint8arrays: "npm:3.1.1"
-  checksum: 10c0/d47214748c22e298fd4bb6b9a04628769ba65d21cfc6b00fbf49ca7ad72164aa2db7900bdf7fb125b27af4a46adca9946618b6eaf4adb2b7766265c8ce7285d8
+  checksum: 10c0/584b90b2bdd95eaa36df94e48ae857b6131b1c2a6cf855fae4f99d35fff26b48d438ac9e87fc5103938a23cf65d2d80b15c4234591a19e0137da143d74ac9663
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.sd-jwt@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sd-jwt/core": "npm:^0.9.2"
-    "@sd-jwt/sd-jwt-vc": "npm:^0.9.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@veramo/utils": "npm:4.2.0"
+    "@sd-jwt/core": "npm:^0.15.0"
+    "@sd-jwt/decode": "npm:^0.15.0"
+    "@sd-jwt/sd-jwt-vc": "npm:^0.15.1"
+    "@sd-jwt/types": "npm:^0.15.0"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.key-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.x509-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.agent-config": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.mdl-mdoc": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     debug: "npm:^4.3.5"
     uint8arrays: "npm:^3.1.1"
     uuid: "npm:^9.0.1"
-  checksum: 10c0/4ddf2d95e9fb3127db44b55e908d534fcd59bcf6bead7c6a607080a8259c558a8f794aa508797e656f8bec0986e2e03eb349c0929f5cd6d029375b57132c1f2e
+  checksum: 10c0/69fc7eb2f53f4eaaa437c710921cb3ff7b9291164c4f1ce508565232876a18f8d567d1b0b0dca3ff56e30cec7ffc65641014c3440afeeb1e386f867953e02b0c
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-common@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/did-auth-siop": "npm:0.19.1-feature.SSISDK.13.32"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/did-auth-siop": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/061fce456fda6d78710eaf664e09a651243c33f494630f23ad4e6781cd69b1db3099f2e8e23ee344021e447cc2b535d6e0af6efc1c02b318d52feea45ac315c6
+  checksum: 10c0/3fe3967b20f57e246884ddbd447d1115ac1a643e2734a25c0ec5e7adf0704da9b79187a17050507729527a34c841197d3aba2ebb7d515a03c96fff2b4df8a3f5
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feat.SSISDK.35.64, @sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feature.DIIPv4.104, @sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/did-auth-siop": "npm:0.19.1-feat.SSISDK.34.74"
-    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feat.SSISDK.34.74"
-    "@sphereon/oid4vc-common": "npm:0.19.1-feat.SSISDK.34.74"
+    "@sphereon/did-auth-siop": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/did-auth-siop-adapter": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/oid4vc-common": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/pex": "npm:5.0.0-unstable.28"
     "@sphereon/pex-models": "npm:^2.3.2"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.core": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.pd-manager": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.presentation-exchange": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.contact-manager": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.core": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-validation": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.issuance-branding": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.pd-manager": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.presentation-exchange": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.sd-jwt": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.siopv2-oid4vp-common": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@sphereon/wellknown-dids-client": "npm:^0.1.3"
     "@veramo/core": "npm:4.2.0"
     "@veramo/credential-w3c": "npm:4.2.0"
@@ -5850,26 +5785,26 @@ __metadata:
     lodash.memoize: "npm:^4.1.2"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/4d1bf41f003a83dd39348f2514ef52f2e61a00dc02231d999007eb4162e5838aaa2e1bc8865a264be4cd20938a66dc8ca9126f45b6af587c29cb9459c8b49015
+  checksum: 10c0/9724439b3e9acb4ba446f48d2e49ef932249e4491ef13f818e88a392a9900aff7ed85add9be92ea52ba630c12363ec842c77a280e5edbb1a51de8ff5bfaff692
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-feat.SSISDK.35.64+019dde38":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-feature.DIIPv4.104+b255b339":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.vc-status-list@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@4sure-tech/vc-bitstring-status-lists": "npm:0.1.0-unstable.1"
-    "@sd-jwt/core": "npm:^0.9.2"
-    "@sd-jwt/jwt-status-list": "npm:^0.9.1"
-    "@sd-jwt/sd-jwt-vc": "npm:^0.9.2"
+    "@sd-jwt/core": "npm:^0.15.0"
+    "@sd-jwt/jwt-status-list": "npm:^0.15.0"
+    "@sd-jwt/sd-jwt-vc": "npm:^0.15.1"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
-    "@sphereon/oid4vci-common": "npm:0.19.1-feature.SSISDK.13.32"
-    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
-    "@sphereon/ssi-types": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/oid4vci-common": "npm:0.19.1-feature.DIIPv4.86"
+    "@sphereon/ssi-sdk-ext.did-utils": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.identifier-resolution": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk-ext.jwt-service": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.credential-vcdm": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
+    "@sphereon/ssi-types": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@sphereon/vc-status-list": "npm:7.0.0-next.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/credential-status": "npm:4.2.0"
@@ -5880,35 +5815,36 @@ __metadata:
     pako: "npm:^2.1.0"
     typeorm: "npm:0.3.20"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/f960dd1d172cb4fef6c481b335e640ac0115aef778834d6d34992ee1d6ea2e728b3d0a891f4d5d7f4396d9e9e32d5ec11ce59acc1bf80f1a0b5a99cbe74983a7
+  checksum: 10c0/db420d939aa82aa51e6880b1575428814f3aeb34247caa75bfa93fac09c7bdff6cfaa03bc8c4cc6f9622ae2f931af776d2e9b7e11406b86addebd8fd5d5ca6cd
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-sdk.xstate-machine-persistence@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
-    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feat.SSISDK.35.64+019dde38"
+    "@sphereon/ssi-sdk.data-store": "npm:0.34.1-feature.DIIPv4.104+b255b339"
     "@veramo/core": "npm:4.2.0"
     debug: "npm:^4.3.5"
     uuid: "npm:^9.0.1"
     xstate: "npm:^4.38.3"
-  checksum: 10c0/7303b27c4c91b9eb6f4d09ebafa25e157d988284a302b4e6e9ba345bcd132834a50aed68a2b98c657e2866a8d1c934bd60eabaa419b493dacf2b1a68eaaef384
+  checksum: 10c0/62cf8b9b0aa5f9edb98c4bd30bddd460242c705b3683c7bb47cefd7fd07bc7d1904b2f999f8a88775d1e4e998df28b92b256835cc403fcde7b129f96ae01e980
   languageName: node
   linkType: hard
 
-"@sphereon/ssi-types@npm:0.34.1-feat.SSISDK.35.64":
-  version: 0.34.1-feat.SSISDK.35.64
-  resolution: "@sphereon/ssi-types@npm:0.34.1-feat.SSISDK.35.64"
+"@sphereon/ssi-types@npm:0.34.1-feature.DIIPv4.104":
+  version: 0.34.1-feature.DIIPv4.104
+  resolution: "@sphereon/ssi-types@npm:0.34.1-feature.DIIPv4.104"
   dependencies:
     "@noble/hashes": "npm:1.6.1"
-    "@sd-jwt/decode": "npm:^0.9.2"
+    "@sd-jwt/decode": "npm:^0.15.0"
+    "@sd-jwt/types": "npm:^0.15.0"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.26"
     debug: "npm:^4.3.5"
     events: "npm:^3.3.0"
     jwt-decode: "npm:^4.0.0"
     uint8arrays: "npm:^3.1.1"
-  checksum: 10c0/afad779fff5b8edcbd43336a2152a0fca8a90592a9a267516d5b1735e17b7f7b5f5a99b9b99b9391fca03cea0c70ceeca7b25a1a15c8c60c4321b29b732278cb
+  checksum: 10c0/70c6b6aeeaf0c4a6d6e969445badb101d26018c650f9d18ce830735a51b7bd647ddb71756a71cc3042d4a38103df72e677d51507371cc387a72784fdbdf2ef52
   languageName: node
   linkType: hard
 
