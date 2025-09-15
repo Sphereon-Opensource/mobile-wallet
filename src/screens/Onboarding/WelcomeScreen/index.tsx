@@ -51,12 +51,12 @@ const WelcomeScreen = () => {
           </Svg>
         )}
       </View>
-      <View style={[contentContainerStyle, {marginTop: 24}]}>
+      <View style={[contentContainerStyle, {marginTop: 20}]}>
         <ScreenTitleAndDescription
           title={translate(`${translationPath}.title`)}
           description={translate(`${translationPath}.description`)}
-          titleVariant="h0"
-          containerStyle={{gap: 16}}
+          titleVariant="h1"
+          containerStyle={{gap: 14}}
           accessibilityFocusOnTitle
         />
         <View style={{marginTop: 'auto'}}>

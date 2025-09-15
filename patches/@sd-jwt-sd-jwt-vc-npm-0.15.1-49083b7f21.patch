@@ -1,0 +1,55 @@
+diff --git a/dist/index.js b/dist/index.js
+index b79afc04fc708e9951e34846d57f49e52087e389..92bf28c028bb577a05f480cf8dfb41e59cbcd984 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -338,9 +338,13 @@ var SDJwtVcInstance = class _SDJwtVcInstance extends import_core.SDJwtInstance {
+             options
+           );
+           const currentDate = (_c = options == null ? void 0 : options.currentDate) != null ? _c : Math.floor(Date.now() / 1e3);
++          /**
++           * Already testest above, and we do not want to throw
++           *
+           if (((_d = slJWT.payload) == null ? void 0 : _d.exp) && slJWT.payload.exp < currentDate) {
+             throw new import_utils.SDJWTException("Status list is expired");
+           }
++           */
+           const statusList = (0, import_jwt_status_list.getListFromStatusListJWT)(statusListJWT);
+           const status = statusList.getStatus(
+             result.payload.status.status_list.idx
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 2d2517777132a20767526e4d1b94f2418f81f011..39b24bb04c8938054ee16182a6059e28dd69f122 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -306,9 +306,13 @@ var SDJwtVcInstance = class _SDJwtVcInstance extends SDJwtInstance {
+             options
+           );
+           const currentDate = (_c = options == null ? void 0 : options.currentDate) != null ? _c : Math.floor(Date.now() / 1e3);
++          /**
++           * Already testest above, and we do not want to throw
++           *
+           if (((_d = slJWT.payload) == null ? void 0 : _d.exp) && slJWT.payload.exp < currentDate) {
+             throw new SDJWTException("Status list is expired");
+           }
++          */
+           const statusList = getListFromStatusListJWT(statusListJWT);
+           const status = statusList.getStatus(
+             result.payload.status.status_list.idx
+diff --git a/src/sd-jwt-vc-instance.ts b/src/sd-jwt-vc-instance.ts
+index 76c4085b6c214d2f70787b3da949a20f583a3a84..b2f8a864d90a9461661275061a779cbd946cc7c2 100644
+--- a/src/sd-jwt-vc-instance.ts
++++ b/src/sd-jwt-vc-instance.ts
+@@ -366,10 +366,14 @@ export class SDJwtVcInstance extends SDJwtInstance<SdJwtVcPayload> {
+ 
+         const currentDate =
+           options?.currentDate ?? Math.floor(Date.now() / 1000);
++        /**
++         * Already testest above, and we do not want to throw
++         *
+         //check if the status list is expired
+         if (slJWT.payload?.exp && (slJWT.payload.exp as number) < currentDate) {
+           throw new SDJWTException('Status list is expired');
+         }
++        */
+ 
+         // get the status list from the status list JWT
+         const statusList = getListFromStatusListJWT(statusListJWT);

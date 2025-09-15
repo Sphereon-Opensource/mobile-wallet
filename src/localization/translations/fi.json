@@ -356,12 +356,12 @@
 
   "onboarding_pages": {
     "welcome": {
-      "title": "Tervetuloa Sphereon-lompakkoosi",
+      "title": "Tervetuloa identiteettisalkkuusi",
       "description": "Vastaanota ja jaa akkreditointeja, todistuksia, merkkejä ja identiteettitietoja.",
       "button_caption": "Aloita",
       "accessibility": {
         "hint": "Pyyhkäise vasemmalle jatkaaksesi",
-        "label": "Tervetuloa Sphereon-lompakkoosi"
+        "label": "Tervetuloa identiteettisalkkuusi"
       }
     },
     "enter_name": {

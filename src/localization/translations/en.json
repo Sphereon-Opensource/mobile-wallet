@@ -434,7 +434,7 @@
         "secure_data_storage": "Secure data storage",
         "strict_access_control": "Strict access control",
         "selective_data_sharing": "Selective data sharing",
-        "strong_privacy_compliance": "Strong privacy compliance",
+        "strong_privacy_compliance": "Strong privacy protection",
         "no_3rdparty_data_sharing": "No third-party data sharing",
         "no_tracking_profiling": "No tracking or profiling"
       },
@@ -480,8 +480,8 @@
       "button_decline": "Decline"
     },
     "import_scan_card": {
-      "title": "Have your Ausweis card ready",
-      "description": "Start by entering the eID pin of your Ausweis card.",
+      "title": "Have your eID-card ready",
+      "description": "Start by entering the eID pin of your eID-card.",
       "nfc_step_title": "Now hold the card to the back of the phone",
       "button_caption": "Start entering eID PIN",
       "nfc_caption": "The NFC scanner will soon be activated...",
@@ -506,14 +506,14 @@
   "credentials_required_no_available_additional_label": "You don’t have a credential to share with the verifier. Please contact an issuer to issue a new credential.",
   "action_share_label": "Share",
   "credentials_share_success_toast_title": "Successfully shared",
-  "credentials_share_success_toast_message": "You have successfully presented your selected credentials to {{verifierName}}.",
+  "credentials_share_success_toast_message": "You have successfully shared your selected credentials with {{verifierName}}.",
   "action_select_label": "Select",
   "action_onboarding_setup_message": "Setting up wallet...",
   "action_getting_information_message": "Getting information...",
   "action_sharing_credentials_message": "Sharing credentials...",
   "profile_logout_action_caption": "Log out",
   "action_getting_credentials_message": "Getting credential...",
-  "credentials_share_failed_toast_message": "Unable to present credentials. Error: {{errorMessage}}.",
+  "credentials_share_failed_toast_message": "Unable to share credentials. Error: {{errorMessage}}.",
   "information_retrieve_failed_toast_message": "Unable to retrieve information. Error: {{errorMessage}}.",
   "credential_verification_failed_message": "The credential verification resulted in an error.",
   "credential_offer_title": "Credential offer",
@@ -585,7 +585,7 @@
   "new_contact_add_new_contact_low_level_trust_description": "You are going to interact with a party that has a low level of trust.",
 
   "present_qr_code_screen_header_title": "Present QR code",
-  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest. So they can scan your QR code.",
+  "present_qr_code_screen_subtitle": "Show the QR code to the party of interest, so they can scan your QR code.",
   "present_qr_code_dropdown_item_text": "Present QR code",
   "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest."
 }
