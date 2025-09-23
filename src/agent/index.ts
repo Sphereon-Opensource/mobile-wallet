@@ -1,5 +1,4 @@
 import {getDidOydResolver, OydDIDProvider} from '@sphereon/did-provider-oyd';
-
 import {com} from '@sphereon/kmp-mdoc-core';
 import {JwkDIDProvider} from '@sphereon/ssi-sdk-ext.did-provider-jwk';
 import {getDidKeyResolver, SphereonKeyDidProvider} from '@sphereon/ssi-sdk-ext.did-provider-key';
@@ -15,7 +14,7 @@ import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
-import {createAgentPlugins, sphereonKeyManager} from './plugins';
+import {createAgentPlugins} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
 import {DefaultOydCmsmCallbacks} from '@sphereon/did-provider-oyd';
 import {SphereonKeyManager} from '@sphereon/ssi-sdk-ext.key-manager';

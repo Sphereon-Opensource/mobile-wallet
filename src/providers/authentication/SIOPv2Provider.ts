@@ -173,9 +173,7 @@ export const siopSendAuthorizationResponse = async (
   const domain =
     ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
     request.issuer ??
-    (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
-      ? 'https://self-issued.me/v2/openid-vc'
-      : 'https://self-issued.me/v2');
+    'https://self-issued.me/v2'
   debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
   /*
@@ -291,6 +289,10 @@ export const siopSendAuthorizationResponse = async (
         kb: {
           payload: {
             ...updatedSdJwt.kbJwt?.payload,
+            // FIXME SSISDK-44
+            nonce: updatedSdJwt.kbJwt?.payload.nonce ?? request.requestObject!.getPayload()!.nonce,
+            // FIXME SSISDK-44
+            aud: updatedSdJwt.kbJwt?.payload.aud ?? domain,
             iat: updatedSdJwt.kbJwt?.payload?.iat ?? Math.floor(Date.now() / 1000 - CLOCK_SKEW)
           }
         }

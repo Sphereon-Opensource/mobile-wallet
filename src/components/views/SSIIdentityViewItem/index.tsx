@@ -1,13 +1,14 @@
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+
 import React, {FC, ForwardedRef} from 'react';
 import {ViewStyle} from 'react-native';
-
+import {CredentialRole} from '@sphereon/ssi-types';
 import {
   SSIIdentityViewItemContainerStyled as Container,
   SSIIdentityViewItemContactDetailsContainerStyled as IdentityDetailsContainer,
   SSITextH3LightStyled as NameCaption,
   SSITextH4LightStyled as RolesCaption,
 } from '../../../styles/components';
+
 
 export interface IProps {
   name: string;

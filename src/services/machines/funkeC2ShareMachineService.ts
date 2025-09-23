@@ -2,20 +2,18 @@ import {
   CreateConfigResult,
   OpSession,
   Siopv2AuthorizationRequestData,
-  Siopv2AuthorizationResponseData,
-  VerifiableCredentialsWithDefinition,
+  Siopv2AuthorizationResponseData
 } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {v4 as uuidv4} from 'uuid';
 import {siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
 import {FunkeC2ShareMachineContext} from '../../types/machines/funkeC2ShareMachine';
 import agent from '../../agent';
-import {decodeUriAsJson, SupportedVersion} from '@sphereon/did-auth-siop';
+import {decodeUriAsJson} from '@sphereon/did-auth-siop';
 import {generateDigest, getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {
   ConnectionType,
   CredentialCorrelationType,
   CredentialDocumentFormat,
-  CredentialRole,
   ICredentialBranding,
   Party,
   RegulationType,
@@ -24,6 +22,7 @@ import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {
   ActionType,
   CredentialMapper,
+  CredentialRole,
   decodeMdocIssuerSigned,
   DefaultActionSubType,
   getMdocDecodedPayload,
@@ -32,8 +31,8 @@ import {
   LogLevel,
   MdocOid4vpIssuerSigned,
   SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+  System
+} from '@sphereon/ssi-types'
 import {getMatchingPidCredentials} from '../pexService';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import store from '../../store';
@@ -96,9 +95,9 @@ export const siopGetSiopRequest = async (
     (context.url.includes('request_uri')
       ? decodeURIComponent(context.url.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
-  const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
+  const uri: URL | undefined = url?.includes('://') ? new URL(url) : undefined;
   const correlationId: string = uri?.hostname ?? (await determineCorrelationId(uri, verifiedAuthorizationRequest, clientName));
-  const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
+  const clientId: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -107,13 +106,7 @@ export const siopGetSiopRequest = async (
     uri,
     name: clientName,
     clientId,
-    presentationDefinitions:
-      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
-      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
-        verifiedAuthorizationRequest.presentationDefinitions &&
-        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
-        ? verifiedAuthorizationRequest.presentationDefinitions
-        : undefined,
+    dcqlQuery: verifiedAuthorizationRequest.dcqlQuery,
   };
 };
 
@@ -153,7 +146,7 @@ export const retrievePIDCredentials = async (context: Pick<FunkeC2ShareMachineCo
     .then((authorizationCode: string) => funkeProvider.getPids({authorizationCode}))
     .then(pidResponses => {
       return pidResponses.map(pidResponse => {
-        const credential = pidResponse.credential;
+        const credential = pidResponse.credentials?.[0];
         const identifier = pidResponse.identifier;
         const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
         const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
@@ -180,7 +173,7 @@ export const siopSendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
+  const verifiableCredentialsWithDefinition: Array<any> = [];
   const sharedCredentials = new Map<string, UniqueDigitalCredential>();
 
   if (authorizationRequestData.presentationDefinitions) {
@@ -272,8 +265,7 @@ export const siopSendResponse = async (
   try {
     response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
       sessionId: didAuthConfig.sessionId,
-      ...(context.idOpts && {idOpts: context.idOpts}),
-      ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
+      credentials: [], // FIXME look at siop machine on how to do the credential selection and add them here
     });
   } catch (e) {
     console.log(e);

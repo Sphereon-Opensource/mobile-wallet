@@ -18,10 +18,10 @@ import {translate} from '../../localization/Localization';
 import {FunkeC2ShareMachine} from '../../machines/funkeC2ShareMachine';
 import {delay, lookupFederationParties} from '../../utils';
 import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredentialMachine';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  CredentialRole,
   IdentityOrigin,
   NonPersistedParty,
   Party,

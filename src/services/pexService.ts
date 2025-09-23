@@ -1,11 +1,21 @@
-import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {com} from '@sphereon/kmp-mdoc-core';
 import {PEX, SelectResults} from '@sphereon/pex';
 import {PEXOptions} from '@sphereon/pex/dist/main/lib/PEX';
-import {CredentialRole, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {DigitalCredential, NonPersistedDigitalCredential, nonPersistedDigitalCredentialEntityFromAddArgs} from '@sphereon/ssi-sdk.data-store';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import {
+  DigitalCredential,
+  NonPersistedDigitalCredential,
+  nonPersistedDigitalCredentialEntityFromAddArgs
+} from '@sphereon/ssi-sdk.data-store';
 import {CredentialCorrelationType} from '@sphereon/ssi-sdk.data-store'
-import {CredentialMapper, decodeMdocIssuerSigned, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {
+  CredentialMapper,
+  CredentialRole,
+  decodeMdocIssuerSigned,
+  HasherSync,
+  Loggers,
+  OriginalVerifiableCredential
+} from '@sphereon/ssi-types';
 import {MdocOid4vpIssuerSigned} from '@sphereon/ssi-types';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
 import {generateDigest} from '../utils';
@@ -18,13 +28,13 @@ import MdocOid4vpService = com.sphereon.mdoc.oid4vp.MdocOid4vpServiceJs;
 
 const logger = Loggers.DEFAULT.get('sphereon:pexService');
 
-const collectFormats = (presentationDefinitionWithLocation: PresentationDefinitionWithLocation): string[] => {
+const collectFormats = (presentationDefinitionWithLocation: any): string[] => {
   const formats: string[] = [];
   if (typeof presentationDefinitionWithLocation.definition.format === 'object') {
     Object.keys(presentationDefinitionWithLocation.definition.format).forEach(fmtKey => formats.push(fmtKey));
   }
 
-  presentationDefinitionWithLocation.definition.input_descriptors.forEach(pd => {
+  presentationDefinitionWithLocation.definition.input_descriptors.forEach((pd: any) => {
     if ('format' in pd && typeof pd.format === 'object') {
       Object.keys(pd.format).forEach(fmtKey => formats.push(fmtKey));
     }
@@ -37,7 +47,7 @@ export const getMatchingCredentials = async ({
   presentationDefinitionWithLocation,
   opts,
 }: {
-  presentationDefinitionWithLocation: PresentationDefinitionWithLocation;
+  presentationDefinitionWithLocation: any;
   opts?: PEXOptions;
 }): Promise<Array<UniqueDigitalCredential>> => {
   if (!opts?.hasher) {
@@ -107,7 +117,7 @@ export const getMatchingPidCredentials = async ({
   issuerCorrelationId, // FIXME this is not an issuer correlation id, in case of https://funke.demo.sphereon.com/ it is funke.demo.sphereon.com, which is a verifier
   opts,
 }: {
-  presentationDefinitionWithLocation: PresentationDefinitionWithLocation;
+  presentationDefinitionWithLocation: any;
   pidCredentials: Array<MappedCredential>;
   issuerCorrelationId: string;
   opts?: PEXOptions;
@@ -132,7 +142,7 @@ export const getMatchingPidCredentials = async ({
       issuerCorrelationId: issuerCorrelationId,
       credentialRole: CredentialRole.HOLDER,
       opts: {
-        hasher: opts?.hasher,
+        hasher: opts?.hasher as HasherSync,
       },
     });
     const uniqueDC: UniqueDigitalCredential = {

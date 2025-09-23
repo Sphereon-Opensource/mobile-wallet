@@ -1,7 +1,6 @@
 import {
   CorrelationIdentifierType,
   Party,
-  CredentialRole,
   Identity,
   PartyTypeType,
   PartyOrigin,
@@ -41,7 +40,7 @@ import {showToast} from '../../utils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
-import {NonPersistedIdentity} from '@sphereon/ssi-sdk.data-store/dist/types/contact/contact';
+import { CredentialRole } from '@sphereon/ssi-types'
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {

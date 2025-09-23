@@ -1,9 +1,8 @@
 import {NavigationHelpers} from '@react-navigation/native';
-import {IPresentationDefinition} from '@sphereon/pex';
 import {Format, PresentationDefinitionV1, PresentationDefinitionV2} from '@sphereon/pex-models';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {CredentialRole, NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {NonPersistedIdentity, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {ImageAttributes} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {VerifiableCredential} from '@veramo/core';

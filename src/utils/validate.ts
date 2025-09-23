@@ -1,5 +1,5 @@
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
 import {CredentialStatus} from '@sphereon/ui-components.core';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {CredentialSummary, IssuerSummary} from '@sphereon/ui-components.credential-branding';
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';
 import {isDecreasingSequenceNumber, isIncreasingSequenceNumber, isSameDigitNumber} from './number';

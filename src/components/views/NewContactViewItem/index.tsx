@@ -1,4 +1,4 @@
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-types'
 import {backgroundColors, ImageAttributes, LabelStatus} from '@sphereon/ui-components.core';
 import {SSILogo as Logo, SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {useMemo} from 'react';

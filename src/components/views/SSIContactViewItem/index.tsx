@@ -1,7 +1,7 @@
-import {CredentialRole, IImageAttributes} from '@sphereon/ssi-sdk.data-store';
+import {IImageAttributes} from '@sphereon/ssi-sdk.data-store';
 import React, {FC} from 'react';
 import {View} from 'react-native';
-
+import {CredentialRole} from '@sphereon/ssi-types'
 import {SSILogo as Logo} from '@sphereon/ui-components.ssi-react-native';
 import Debug, {Debugger} from 'debug';
 import styled from 'styled-components/native';

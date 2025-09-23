@@ -2,7 +2,6 @@ import {IAgentContext, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager
 import {IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {IContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {ICredentialIssuer} from '@veramo/credential-w3c';
-import {ICredentialHandlerLDLocal} from '@sphereon/ssi-sdk.vc-handler-ld-local';
 import {IIssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {IOID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IMachineStatePersistence} from '@sphereon/ssi-sdk.xstate-machine-persistence';
@@ -15,6 +14,7 @@ import {IOIDFClient} from '@sphereon/ssi-sdk.oidf-client';
 import {IQRCodeGenerator} from '@sphereon/ssi-sdk.qr-code-generator';
 import {IEventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IResourceResolver} from '@sphereon/ssi-sdk.resource-resolver';
+import {ISphereonKeyManager } from '@sphereon/ssi-sdk-ext.key-manager';
 
 export type TAgentTypes = IDIDManager &
   IKeyManager &
@@ -28,7 +28,6 @@ export type TAgentTypes = IDIDManager &
   IContactManager &
   ICredentialPlugin &
   ICredentialIssuer &
-  ICredentialHandlerLDLocal &
   IIssuanceBranding &
   IOID4VCIHolder &
   IMachineStatePersistence &
@@ -37,6 +36,7 @@ export type TAgentTypes = IDIDManager &
   ISDJwtPlugin &
   IOIDFClient &
   IResourceResolver &
-  IQRCodeGenerator;
+  IQRCodeGenerator &
+  ISphereonKeyManager;
 
 export type IRequiredContext = IAgentContext<TAgentTypes>;

@@ -1,6 +1,5 @@
 import {IOSAccessibleStates, MMKVLoader} from 'react-native-mmkv-storage';
 import Debug, {Debugger} from 'debug';
-
 import {APP_ID} from '../@config/constants';
 import {IStorePinArgs, IStoreUserArgs, IUser, KeyManagementSystemEnum} from '../types';
 import {sphereonKeyManager} from '../agent/plugins';

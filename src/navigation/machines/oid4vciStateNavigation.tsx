@@ -9,7 +9,6 @@ import {
   ConnectionType,
   CorrelationIdentifierType,
   CredentialDocumentFormat,
-  CredentialRole,
   IBasicCredentialLocaleBranding,
   IdentityOrigin,
   NonPersistedParty,
@@ -40,10 +39,19 @@ import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui
 import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederationParties} from '../../utils';
 import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {
+  ActionType,
+  CredentialMapper,
+  CredentialRole,
+  DefaultActionSubType,
+  DocumentFormat,
+  InitiatorType,
+  LogLevel,
+  SubSystem,
+  System
+} from '@sphereon/ssi-types'
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
-import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {authenticate} from '../../services/authenticationService';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
@@ -389,14 +397,14 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  if (authorizationRequestData.presentationDefinitions === undefined || authorizationRequestData.presentationDefinitions.length === 0) {
-    return Promise.reject(Error('No presentation definitions present'));
+  if (authorizationRequestData.dcqlQuery === undefined) {
+    return Promise.reject(Error('No dcql query present'));
   }
   // FIXME MWALL-720 currently only supporting 1 presentation definition
-  if (authorizationRequestData.presentationDefinitions.length > 1) {
-    return Promise.reject(Error('Multiple presentation definitions present'));
-  }
-  const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+  // if (authorizationRequestData.presentationDefinitions.length > 1) {
+  //   return Promise.reject(Error('Multiple presentation definitions present'));
+  // }
+  const dcqlQuery = authorizationRequestData.dcqlQuery;
 
   const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     firstPartyMachine.send({
@@ -430,7 +438,7 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
     screen: ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW,
     params: {
       verifier: contact,
-      presentationDefinition: presentationDefinitionWithLocation.definition,
+      presentationDefinition: dcqlQuery,
       credentials,
       onBack,
       onDecline,

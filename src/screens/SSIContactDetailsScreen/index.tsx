@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {IssuerStatus} from '@sphereon/ui-components.core';
 import React from 'react';
 import NavigationButton from '../../components/buttons/NavigationButton';

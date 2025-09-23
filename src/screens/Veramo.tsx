@@ -1,12 +1,15 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CredentialRole, Party} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {Party} from '@sphereon/ssi-sdk.data-store';
+import {
+  CredentialMapper,
+  CredentialRole,
+  OriginalVerifiableCredential
+} from '@sphereon/ssi-types'
 import {IIdentifier} from '@veramo/core';
 import React, {PureComponent} from 'react';
 import {Button, Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import {agentContext} from '../agent';
-
 import {createIdentifier, getIdentifiers} from '../services/identityService';
 import {CredentialIssuanceStateEnum, RootState, ScreenRoutesEnum, StackParamList} from '../types';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';

@@ -1,9 +1,7 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  CredentialDocumentFormat,
-  CredentialRole,
   DidAuthConfig,
   ICredentialBranding,
   IdentityOrigin,
@@ -18,27 +16,20 @@ import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/aut
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
-import {generateDigest, getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
+import {getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier, VerifiableCredential} from '@veramo/core';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {
   ActionType,
-  CredentialMapper,
-  decodeMdocIssuerSigned,
+  CredentialRole,
   DefaultActionSubType,
-  getMdocDecodedPayload,
   InitiatorType,
   Loggers,
   LogLevel,
-  MdocOid4vpIssuerSigned,
   SubSystem,
-  System,
-} from '@sphereon/ssi-types';
+  System
+} from '@sphereon/ssi-types'
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {PEX, SelectResults} from '@sphereon/pex';
-import {com} from '@sphereon/kmp-mdoc-core';
-import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
@@ -81,7 +72,7 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     (context.url.includes('request_uri')
       ? decodeURIComponent(context.url.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
-  const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
+  const uri: URL | undefined = url?.includes('://') ? new URL(url) : undefined;
   const correlationIdName = uri
     ? translateCorrelationIdToName(uri.hostname)
     : verifiedAuthorizationRequest.issuer
@@ -107,13 +98,6 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     clientId,
     entityId,
     dcqlQuery: verifiedAuthorizationRequest.dcqlQuery,
-    // presentationDefinitions:
-    //   (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
-    //   (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
-    //     verifiedAuthorizationRequest.presentationDefinitions &&
-    //     verifiedAuthorizationRequest.presentationDefinitions.length > 0)
-    //     ? verifiedAuthorizationRequest.presentationDefinitions
-    //     : undefined,
   };
 };
 
@@ -312,10 +296,10 @@ export const getFederationTrust = async (
   });
   return {
     trustedAnchors: result.trustedAnchors,
-    federation_entity: result.jwtPayload.federation_entity,
-    openid_wallet_provider: result.jwtPayload.metadata.openid_wallet_provider,
-    oauth_authorization_server: result.jwtPayload.metadata.oauth_authorization_server,
-    openid_credential_issuer: result.jwtPayload.metadata.openid_credential_issuer,
-    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier,
+    federation_entity: result.jwtPayload?.federation_entity,
+    openid_wallet_provider: (result.jwtPayload?.metadata as any).openid_wallet_provider,
+    oauth_authorization_server: (result.jwtPayload?.metadata as any).oauth_authorization_server,
+    openid_credential_issuer: (result.jwtPayload?.metadata as any).openid_credential_issuer,
+    openid_credential_verifier: (result.jwtPayload?.metadata as any).openid_credential_verifier,
   };
 };
