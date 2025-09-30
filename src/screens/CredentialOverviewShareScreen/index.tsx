@@ -1,60 +1,28 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {fontColors} from '@sphereon/ui-components.core';
-import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, { FC, ReactElement, useMemo, useState } from 'react'
 import {View} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {DcqlQuery} from 'dcql';
+import {fontColors} from '@sphereon/ui-components.core';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
+import CredentialSelectView from '../../components/views/CredentialSelectView';
 import ScreenContainer from '../../components/containers/ScreenContainer';
 import RelyingPartyView from '../../components/views/RelyingPartyView';
 import {translate} from '../../localization/Localization';
 import {SSITextH2SemiBoldLightStyled} from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import CredentialSelectView from '../../components/views/CredentialSelectView';
-import {DcqlQuery} from 'dcql';
-import {convertToDcqlCredentials} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
-// TODO SSISDK-41
-const filterCredentialsByCredentialSet = (credentials: UniqueDigitalCredential[], credentialSet: any) => {
-  // const presentationDefinition: IPresentationDefinition = {
-  //   id: inputDescriptor.id,
-  //   //@ts-ignore
-  //   input_descriptors: [inputDescriptor],
-  // };
-
-  // const pex: PEX = new PEX({hasher: generateDigest});
-  // const result: SelectResults = pex.selectFrom(
-  //   presentationDefinition,
-  //   credentials.map(c => c.originalVerifiableCredential!),
-  // );
-
-  // const subsetCredentials = [];
-  // if (
-  //   result.areRequiredCredentialsPresent !== 'error' &&
-  //   result.verifiableCredential &&
-  //   result.vcIndexes &&
-  //   result.vcIndexes.length === result.verifiableCredential?.length
-  // ) {
-  //   for (let i = 0; i < result.vcIndexes.length; i++) {
-  //     const index = result.vcIndexes[i];
-  //     if (index < 0 || index >= credentials.length) {
-  //       throw new Error(`Index ${index} at position ${i} is out of bounds. Valid range is 0 to ${credentials.length - 1}.`);
-  //     }
-  //     const selectedCredential = credentials[index];
-  //     selectedCredential.originalVerifiableCredential = result.verifiableCredential?.[i];
-  //     subsetCredentials.push(selectedCredential);
-  //   }
-  // }
-
-  return []
-};
+type GetCredentialSelectViewElement = {
+  index: number
+  itemId: string | number
+  credentials?: Array<UniqueDigitalCredential>
+  purpose?: string  // FIXME SSISDK-42, we need a map purpose function
+}
 
 const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], dcqlQuery: DcqlQuery) => {
-  if (dcqlQuery.credential_sets) {
-    // TODO SSISDK-41 match on credential sets
-  }
-
   const dcqlCredentialsWithCredentials = new Map(
     credentials.map((vc) => [convertToDcqlCredentials(vc), vc])
   )
@@ -62,12 +30,29 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
   const queryResult = DcqlQuery.query(dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()))
 
   const selectableCredentialsMap = new Map()
-  for (const [key, value] of Object.entries(queryResult.credential_matches)) {
-    if (!value.valid_credentials) {
-      continue
+  if (queryResult.credential_sets) {
+    queryResult.credential_sets.forEach((credentialSet, index) => {
+      if (!credentialSet.matching_options) {
+        return
+      }
+      const credentialSetMatches: Array<UniqueDigitalCredential> = [];
+      credentialSet.matching_options.forEach(options => {
+        options.flat().forEach(option => {
+          const matchedCredentials = queryResult.credential_matches[option].valid_credentials?.map(cred => credentials[cred.input_credential_index]) ?? []
+          credentialSetMatches.push(...matchedCredentials);
+        })
+      })
+
+      selectableCredentialsMap.set(index, credentialSetMatches);
+    })
+  } else {
+    for (const [key, value] of Object.entries(queryResult.credential_matches)) {
+      if (!value.valid_credentials) {
+        continue
+      }
+      const matchedCredentials = value.valid_credentials.map(cred => credentials[cred.input_credential_index])
+      selectableCredentialsMap.set(key, matchedCredentials)
     }
-    const matchedCredentials = value.valid_credentials.map(cred => credentials[cred.input_credential_index])
-    selectableCredentialsMap.set(key, matchedCredentials)
   }
 
   return selectableCredentialsMap;
@@ -83,20 +68,34 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
   );
 
   //FIXME Funke, make this support multi credential selection per input descriptor
-  const [selectedCredentials, setSelectedCredentials] = useState<{[key: string]: UniqueDigitalCredential | null}>(
-    dcqlQuery.credentials.reduce(
-      (prev, curr) => ({
-        ...prev,
-        [curr.id]: null,
-      }),
-      {},
-    ),
+  const [selectedCredentials, setSelectedCredentials] = useState<{[key: string | number]: UniqueDigitalCredential | null}>(
+    dcqlQuery.credential_sets
+     ? dcqlQuery.credential_sets.reduce(
+        (prev, _curr, index) => ({
+          ...prev,
+          [index]: null,
+        }),
+        {},
+      )
+     : dcqlQuery.credentials.reduce(
+        (prev, curr) => ({
+          ...prev,
+          [curr.id]: null,
+        }),
+        {},
+      )
   );
 
   //FIXME Funke, make this support multi credential selection per input descriptor
-  const selectCredential = (inputDescriptorId: string, credential: UniqueDigitalCredential) => {
-    const exists = selectedCredentials[inputDescriptorId]?.hash === credential.hash;
-    if (!exists) setSelectedCredentials(creds => ({...creds, [inputDescriptorId]: credential}));
+  const selectCredential = (id: string | number, credential: UniqueDigitalCredential) => {
+    setSelectedCredentials(prev => {
+      const exists = prev[id]?.hash === credential.hash;
+
+      return {
+        ...prev,
+        [id]: exists && credsPerRequestedCredential.get(id)?.length > 1 ? null : credential,
+      };
+    });
   };
 
   if (credentials.length === 0) {
@@ -137,6 +136,31 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
     props.navigation.navigate(ScreenRoutesEnum.CONTACT_DETAILS, {contact: verifier});
   };
 
+  const getCredentialSelectViewElement = (args: GetCredentialSelectViewElement): ReactElement => {
+    const {
+      credentials = [],
+      index,
+      itemId,
+      purpose
+    } = args
+
+    return (
+      <View key={index}>
+        <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
+          {index === 0 ? 'The following information will be shared' : `Item ${index + 1}`}
+        </SSITextH2SemiBoldLightStyled>
+        <CredentialSelectView
+          style={{marginTop: 5}}
+          credentials={credentials}
+          onSelect={(credential: UniqueDigitalCredential) => selectCredential(itemId, credential)}
+          dcqlQuery={dcqlQuery}
+          {...(purpose&& { purpose })}
+          verifier={verifier}
+        />
+      </View>
+    )
+  }
+
   return (
     <ScreenContainer footer={footer} style={{paddingHorizontal: 0}}>
       <View style={{paddingHorizontal: 20, paddingTop: 20}}>
@@ -153,23 +177,22 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
         {/*  </ProviderContainer>*/}
         {/*)}*/}
       {/*</View>*/}
-      {dcqlQuery.credentials.map((requestedCredential, idx) => ( //input_descriptors
-        <View key={idx}>
-          <SSITextH2SemiBoldLightStyled style={{marginTop: 10, paddingLeft: 24}}>
-            {idx === 0 ? 'The following information will be shared' : `Item ${idx + 1}`}
-          </SSITextH2SemiBoldLightStyled>
-          <CredentialSelectView
-            style={{marginTop: 5}}
-            credentials={credsPerRequestedCredential.get(requestedCredential.id) ?? []}
-            onSelect={(credential: UniqueDigitalCredential) => {
-              selectCredential(requestedCredential.id, credential);
-            }}
-            dcqlQuery={dcqlQuery}
-            //purpose={inputDescriptor.purpose} // FIXME SSISDK-42
-            verifier={verifier}
-          />
-        </View>
-      ))}
+
+      { dcqlQuery.credential_sets
+        ? dcqlQuery.credential_sets!.map((credentialSet, index) => getCredentialSelectViewElement({
+            index,
+            itemId: index,
+            credentials: credsPerRequestedCredential.get(index),
+            purpose: credentialSet.purpose?.toString() // FIXME SSISDK-42, we need a map purpose function
+          })
+        )
+        : dcqlQuery.credentials.map((requestedCredential, index) => getCredentialSelectViewElement({
+            index,
+            itemId: requestedCredential.id,
+            credentials: credsPerRequestedCredential.get(requestedCredential.id),
+          })
+        )
+      }
     </ScreenContainer>
   );
 };

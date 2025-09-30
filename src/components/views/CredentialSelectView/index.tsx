@@ -31,8 +31,7 @@ import { DcqlQuery } from 'dcql';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
-  credentials: UniqueDigitalCredential[];
-  //presentationDefinition: IPresentationDefinition;
+  credentials: Array<UniqueDigitalCredential>;
   dcqlQuery: DcqlQuery;
   purpose?: string;
   verifier?: Party;
@@ -77,8 +76,16 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
 
   const onPressCredential = async (credential: UniqueDigitalCredential): Promise<void> => {
     onSelect(credential);
-    setSelectedCredential(credential);
-    await loadCredentialContent(credential, dcqlQuery);
+    setSelectedCredential(prev => {
+      if (prev?.hash === credential.hash && credentials.length > 1) {
+        return null;
+      }
+      return credential;
+    });
+
+    if (selectedCredential?.hash !== credential.hash) {
+      await loadCredentialContent(credential, dcqlQuery);
+    }
   };
 
   const loadCredentialContent = async (credential: UniqueDigitalCredential, dcqlQuery: DcqlQuery): Promise<void> => {
