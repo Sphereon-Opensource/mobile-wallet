@@ -31,7 +31,7 @@ import { DcqlQuery } from 'dcql';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
-  credentials: Array<UniqueDigitalCredential>;
+  credentials: ReadonlyArray<UniqueDigitalCredential>;
   dcqlQuery: DcqlQuery;
   purpose?: string;
   verifier?: Party;
@@ -78,12 +78,14 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
     onSelect(credential);
     setSelectedCredential(prev => {
       if (prev?.hash === credential.hash && credentials.length > 1) {
+        // If selected credential has already been selected and there are 2 or more options to match, we deselect it
         return null;
       }
       return credential;
     });
 
     if (selectedCredential?.hash !== credential.hash) {
+      // If a new credential is selected, we load the credential content to display
       await loadCredentialContent(credential, dcqlQuery);
     }
   };

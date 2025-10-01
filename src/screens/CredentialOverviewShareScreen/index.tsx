@@ -38,7 +38,7 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
       const credentialSetMatches: Array<UniqueDigitalCredential> = [];
       credentialSet.matching_options.forEach(options => {
         options.flat().forEach(option => {
-          const matchedCredentials = queryResult.credential_matches[option].valid_credentials?.map(cred => credentials[cred.input_credential_index]) ?? []
+          const matchedCredentials = queryResult.credential_matches[option]?.valid_credentials?.map(cred => credentials[cred.input_credential_index]) ?? []
           credentialSetMatches.push(...matchedCredentials);
         })
       })
