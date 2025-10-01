@@ -30,6 +30,13 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
   const queryResult = DcqlQuery.query(dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()))
 
   const selectableCredentialsMap = new Map()
+/**
+ * DCQL → UI mapping:
+ * Populate `selectableCredentialsMap` from a DCQL `queryResult`.
+ * - With `credential_sets`: map each set index to all local credentials that satisfy any option.
+ * - Without sets: map each requirement key to its validated local credentials.
+ * Result: per-requirement pick lists of eligible credentials for the UI.
+ */
   if (queryResult.credential_sets) {
     queryResult.credential_sets.forEach((credentialSet, index) => {
       if (!credentialSet.matching_options) {
