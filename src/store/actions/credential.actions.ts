@@ -1,6 +1,6 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {CredentialCorrelationType, CredentialRole, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
-import {CredentialMapper, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
+import {CredentialCorrelationType, DigitalCredential, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialMapper, CredentialRole, Loggers, OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import {CredentialSummary, toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {ICreateVerifiableCredentialArgs, VerifiableCredential} from '@veramo/core';
 import {Action} from 'redux';

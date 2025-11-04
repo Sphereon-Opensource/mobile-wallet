@@ -1,4 +1,4 @@
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store-types';
 import {SSILogo as Logo, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, ReactElement} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';

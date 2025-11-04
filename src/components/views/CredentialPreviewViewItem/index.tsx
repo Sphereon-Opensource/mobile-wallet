@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {
   CredentialPreviewViewItemContainerStyled as Container,
   SSITextH4LightStyled as IssuerCaption,

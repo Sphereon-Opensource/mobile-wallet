@@ -1,7 +1,4 @@
-import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
-
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {DigitalCredential} from '@sphereon/ssi-sdk.data-store';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 
 export enum CredentialIssuanceStateEnum {

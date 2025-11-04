@@ -1,4 +1,4 @@
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-types';
 import React, {FC, ForwardedRef} from 'react';
 import {ViewStyle} from 'react-native';
 

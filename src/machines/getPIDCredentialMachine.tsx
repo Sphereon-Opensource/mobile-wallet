@@ -26,7 +26,7 @@ import {
 } from '../types/machines/getPIDCredentialMachine';
 import {ErrorDetails} from '../types';
 import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
-import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store-types';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 import {computeEntryHash} from '@veramo/utils';

@@ -3,7 +3,6 @@ import {
   OpSession,
   Siopv2AuthorizationRequestData,
   Siopv2AuthorizationResponseData,
-  VerifiableCredentialsWithDefinition,
 } from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {v4 as uuidv4} from 'uuid';
 import {siopGetSession, siopRegisterSession, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
@@ -15,15 +14,14 @@ import {
   ConnectionType,
   CredentialCorrelationType,
   CredentialDocumentFormat,
-  CredentialRole,
   ICredentialBranding,
   Party,
   RegulationType,
-} from '@sphereon/ssi-sdk.data-store';
+} from '@sphereon/ssi-sdk.data-store-types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {
   ActionType,
-  CredentialMapper,
+  CredentialMapper, CredentialRole,
   decodeMdocIssuerSigned,
   DefaultActionSubType,
   getMdocDecodedPayload,
@@ -96,7 +94,7 @@ export const siopGetSiopRequest = async (
     (context.url.includes('request_uri')
       ? decodeURIComponent(context.url.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
-  const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
+  const uri: URL | undefined = url?.includes('://') ? new URL(url) : undefined;
   const correlationId: string = uri?.hostname ?? (await determineCorrelationId(uri, verifiedAuthorizationRequest, clientName));
   const clientId: string | undefined = await verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
 
@@ -107,13 +105,7 @@ export const siopGetSiopRequest = async (
     uri,
     name: clientName,
     clientId,
-    presentationDefinitions:
-      (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
-      (verifiedAuthorizationRequest.versions.every(version => version <= SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1) &&
-        verifiedAuthorizationRequest.presentationDefinitions &&
-        verifiedAuthorizationRequest.presentationDefinitions.length > 0)
-        ? verifiedAuthorizationRequest.presentationDefinitions
-        : undefined,
+    dcqlQuery: verifiedAuthorizationRequest.dcqlQuery
   };
 };
 
@@ -153,7 +145,7 @@ export const retrievePIDCredentials = async (context: Pick<FunkeC2ShareMachineCo
     .then((authorizationCode: string) => funkeProvider.getPids({authorizationCode}))
     .then(pidResponses => {
       return pidResponses.map(pidResponse => {
-        const credential = pidResponse.credential;
+        const credential = pidResponse.credentials?.find(c => c);
         const identifier = pidResponse.identifier;
         const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
         const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});
@@ -180,7 +172,7 @@ export const siopSendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
+//  const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
   const sharedCredentials = new Map<string, UniqueDigitalCredential>();
 
   if (authorizationRequestData.presentationDefinitions) {
@@ -196,11 +188,11 @@ export const siopSendResponse = async (
           sharedCredentials.set(credential.hash, credential);
         });
 
-        verifiableCredentialsWithDefinition.push({
+  /*      verifiableCredentialsWithDefinition.push({  // FIXME dcql
           definition: presentationDefinition,
           credentials: matchingCredentials,
         });
-      }
+  */    }
     }
   }
 
@@ -259,6 +251,7 @@ export const siopSendResponse = async (
       }),
     );
   }
+/*
 
   console.log(
     `siopSendResponse siopSendAuthorizationResponse ${JSON.stringify({
@@ -267,13 +260,15 @@ export const siopSendResponse = async (
       ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
     })}`,
   );
+*/
 
   let response: Response | undefined = undefined;
   try {
     response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
+      credentials: [], // FIXME dcql
       sessionId: didAuthConfig.sessionId,
-      ...(context.idOpts && {idOpts: context.idOpts}),
-      ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
+      ...(context.idOpts && {idOpts: context.idOpts})
+      // ...(authorizationRequestData.presentationDefinitions !== undefined && {verifiableCredentialsWithDefinition}),
     });
   } catch (e) {
     console.log(e);

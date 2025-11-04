@@ -1,5 +1,5 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {useEffect, useState} from 'react';
 import agent from '../../../agent';
 import {Pressable} from 'react-native';

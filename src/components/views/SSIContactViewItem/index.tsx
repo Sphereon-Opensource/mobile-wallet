@@ -1,4 +1,5 @@
-import {CredentialRole, IImageAttributes} from '@sphereon/ssi-sdk.data-store';
+import {IImageAttributes} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialRole} from '@sphereon/ssi-types';
 import React, {FC} from 'react';
 import {View} from 'react-native';
 
@@ -9,12 +10,12 @@ import {APP_ID} from '../../../@config/constants';
 import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
-  SSITextH3LightStyled as ContactNameCaption,
-  SSITextH4LightStyled as ContactRolesCaption,
   SSIContactViewItemContactUriCaptionStyled as ContactUriCaption,
   SSIContactViewItemContainerStyled as Container,
   SSIContactViewItemLogoContainerStyled as LogoContainer,
   SSIContactViewItemNewStatusContainerStyled as StatusContainer,
+  SSITextH3LightStyled as ContactNameCaption,
+  SSITextH4LightStyled as ContactRolesCaption,
 } from '../../../styles/components';
 
 const debug: Debugger = Debug(`${APP_ID}:SSIContactViewItem`);

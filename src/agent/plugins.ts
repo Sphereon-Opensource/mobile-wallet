@@ -10,11 +10,13 @@ import {
   ContactStore,
   DigitalCredentialStore,
   EventLoggerStore,
-  ICredentialBranding,
   IssuanceBrandingStore,
   MachineStateStore,
-  Party,
 } from '@sphereon/ssi-sdk.data-store';
+import {
+  ICredentialBranding,
+  Party,
+} from '@sphereon/ssi-sdk.data-store-types';
 import {EventLogger} from '@sphereon/ssi-sdk.event-logger';
 import {IssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {MDLMdoc} from '@sphereon/ssi-sdk.mdl-mdoc';
@@ -63,7 +65,7 @@ export const oid4vciHolder = new OID4VCIHolder({
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
     const contact = store
       .getState()
-      .contact.contacts.find(contact => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
+    .contact.contacts.find((contact: Party) => contact.identities.some(identity => identity.identifier.correlationId === credential.issuerCorrelationId));
 
     const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash}]});
     const uniform = JSON.parse(credential.uniformDocument) as VerifiableCredential;

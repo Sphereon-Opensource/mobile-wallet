@@ -1,5 +1,5 @@
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
-import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store';
+import {CredentialDocumentFormat, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {ActionType, CredentialMapper, DefaultActionSubType, DocumentFormat, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import Debug, {Debugger} from 'debug';

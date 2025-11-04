@@ -1,4 +1,4 @@
-import {Identity, MetadataItem, MetadataTypes} from '@sphereon/ssi-sdk.data-store';
+import {Identity, MetadataItem, MetadataTypes} from '@sphereon/ssi-sdk.data-store-types';
 import React, {FC} from 'react';
 import {ListRenderItemInfo} from 'react-native';
 import {toLocalDateString} from '../../../utils';

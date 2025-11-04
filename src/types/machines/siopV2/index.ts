@@ -7,7 +7,7 @@ import {
   RPRegistrationMetadataPayload,
   VerifiedAuthorizationRequest,
 } from '@sphereon/did-auth-siop';
-import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
+import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {ErrorDetails} from '../../error';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {TrustedAnchor} from '@sphereon/ssi-sdk-ext.identifier-resolution';
