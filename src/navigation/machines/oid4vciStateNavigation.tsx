@@ -52,7 +52,6 @@ import store from '../../store';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
-import {PresentationDefinitionWithLocation} from '@sphereon/did-auth-siop';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {authenticate} from '../../services/authenticationService';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
