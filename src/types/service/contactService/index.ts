@@ -6,7 +6,7 @@ import {
   NonPersistedParty,
   NonPersistedContact,
   NonPersistedPartyType as NonPersistedContactType,
-} from '@sphereon/ssi-sdk.data-store';
+} from '@sphereon/ssi-sdk.data-store-types';
 
 export type ICreateContactArgs = Omit<NonPersistedParty, 'contact' | 'partyType'> &
   NonPersistedContact & {

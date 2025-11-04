@@ -1,4 +1,4 @@
-import {FindCredentialBrandingArgs, IBasicCredentialLocaleBranding, IBasicIssuerLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {FindCredentialBrandingArgs, IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store-types';
 
 export interface IAddCredentialBrandingArgs {
   issuerCorrelationId: string;

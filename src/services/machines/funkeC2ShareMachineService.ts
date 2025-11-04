@@ -32,7 +32,6 @@ import {
   SubSystem,
   System,
 } from '@sphereon/ssi-types';
-import {getMatchingPidCredentials} from '../pexService';
 import {getVerifiableCredentialsFromStorage} from '../credentialService';
 import store from '../../store';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
@@ -174,7 +173,7 @@ export const siopSendResponse = async (
 
 //  const verifiableCredentialsWithDefinition: Array<VerifiableCredentialsWithDefinition> = [];
   const sharedCredentials = new Map<string, UniqueDigitalCredential>();
-
+/*   // FIXME dcql
   if (authorizationRequestData.presentationDefinitions) {
     for (const presentationDefinition of authorizationRequestData.presentationDefinitions) {
       const matchingCredentials = await getMatchingPidCredentials({
@@ -188,11 +187,11 @@ export const siopSendResponse = async (
           sharedCredentials.set(credential.hash, credential);
         });
 
-  /*      verifiableCredentialsWithDefinition.push({  // FIXME dcql
+  /!*      verifiableCredentialsWithDefinition.push({  // FIXME dcql
           definition: presentationDefinition,
           credentials: matchingCredentials,
         });
-  */    }
+  *!/    }
     }
   }
 

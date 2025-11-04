@@ -1,4 +1,4 @@
-import {NonPersistedParty, Party} from '@sphereon/ssi-sdk.data-store';
+import {NonPersistedParty, Party} from '@sphereon/ssi-sdk.data-store-types';
 import agent from '../agent';
 
 export async function lookupFederationParties(contact: NonPersistedParty | Party, trustedAnchors?: Array<string>) {

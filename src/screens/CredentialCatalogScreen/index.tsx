@@ -2,7 +2,7 @@ import React, {FC, ReactElement, useMemo} from 'react';
 import {RefreshControl, ListRenderItemInfo, TouchableWithoutFeedback} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
 import {SSITextH2SemiBoldLightStyled as HeaderCaption} from '@sphereon/ui-components.ssi-react-native';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';

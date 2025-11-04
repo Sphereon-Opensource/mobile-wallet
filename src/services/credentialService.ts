@@ -1,6 +1,6 @@
 import {DocumentType, OptionalUniqueDigitalCredential, UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {AddDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store';
+import {DigitalCredential, RegulationType} from '@sphereon/ssi-sdk.data-store-types';
 import {
   ActionType,
   CredentialMapper,

@@ -2,7 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useBackHandler} from '@react-native-community/hooks';
 import {PEX, SelectResults, SubmissionRequirementMatch, Status, IPresentationDefinition} from '@sphereon/pex';
 import {InputDescriptorV1, InputDescriptorV2} from '@sphereon/pex-models';
-import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {OriginalVerifiableCredential} from '@sphereon/ssi-types';
 import React, {FC, useEffect, useState} from 'react';
 import {ListRenderItemInfo} from 'react-native';

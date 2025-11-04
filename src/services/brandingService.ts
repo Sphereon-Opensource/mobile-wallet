@@ -1,4 +1,4 @@
-import {ICredentialBranding, IGetIssuerBrandingArgs, IIssuerBranding} from '@sphereon/ssi-sdk.data-store';
+import {ICredentialBranding, IGetIssuerBrandingArgs, IIssuerBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {IDeletionResult} from '@sphereon/ssi-sdk.issuance-branding';
 import Debug, {Debugger} from 'debug';
 

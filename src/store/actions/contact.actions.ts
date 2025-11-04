@@ -1,24 +1,24 @@
 import {
   CorrelationIdentifierType,
-  Party,
-  CredentialRole,
   Identity,
-  PartyTypeType,
-  PartyOrigin,
   IdentityOrigin,
   IIssuerBranding,
-} from '@sphereon/ssi-sdk.data-store';
+  Party,
+  PartyOrigin,
+  PartyTypeType,
+} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {v4 as uuidv4} from 'uuid';
 import agent, {agentContext} from '../../agent';
 import {translate} from '../../localization/Localization';
 import {
-  updateContact as editContact,
-  getContacts as getContactsFromStorage,
   addIdentity as identityAdd,
   createContact as storeContact,
+  getContacts as getContactsFromStorage,
   removeContact,
+  updateContact as editContact,
 } from '../../services/contactService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
@@ -41,7 +41,6 @@ import {showToast} from '../../utils';
 import store from '../index';
 import {IUserState} from '../../types/store/user.types';
 import {getIssuerBrandingFromStorage} from '../../services/brandingService';
-import {NonPersistedIdentity} from '@sphereon/ssi-sdk.data-store/dist/types/contact/contact';
 
 export const getContacts = (): ThunkAction<Promise<Array<Party>>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<Array<Party>> => {

@@ -1,5 +1,5 @@
 import {RemoveContactArgs} from '@sphereon/ssi-sdk.contact-manager';
-import {Party, Identity} from '@sphereon/ssi-sdk.data-store';
+import {Party, Identity} from '@sphereon/ssi-sdk.data-store-types';
 import Debug, {Debugger} from 'debug';
 
 import {APP_ID} from '../@config/constants';

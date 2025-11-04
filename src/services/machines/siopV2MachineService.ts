@@ -1,15 +1,14 @@
-import {SupportedVersion, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {ClientMetadataOpts, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  CredentialDocumentFormat,
-  CredentialRole,
   DidAuthConfig,
   ICredentialBranding,
   IdentityOrigin,
   NonPersistedIdentity,
   Party,
-} from '@sphereon/ssi-sdk.data-store';
+} from '@sphereon/ssi-sdk.data-store-types';
+import {ActionType, CredentialRole, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
@@ -18,28 +17,13 @@ import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/aut
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
-import {generateDigest, getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
+import {getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
 import {IIdentifier, VerifiableCredential} from '@veramo/core';
-import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {
-  ActionType,
-  CredentialMapper,
-  decodeMdocIssuerSigned,
-  DefaultActionSubType,
-  getMdocDecodedPayload,
-  InitiatorType,
-  Loggers,
-  LogLevel,
-  MdocOid4vpIssuerSigned,
-  SubSystem,
-  System,
-} from '@sphereon/ssi-types';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {PEX, SelectResults} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';
-import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
 
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
@@ -81,7 +65,7 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     (context.url.includes('request_uri')
       ? decodeURIComponent(context.url.split('?request_uri=')[1].trim())
       : verifiedAuthorizationRequest.issuer ?? verifiedAuthorizationRequest.registrationMetadataPayload?.client_id);
-  const uri: URL | undefined = url.includes('://') ? new URL(url) : undefined;
+  const uri: URL | undefined = url?.includes('://') ? new URL(url) : undefined;
   const correlationIdName = uri
     ? translateCorrelationIdToName(uri.hostname)
     : verifiedAuthorizationRequest.issuer
@@ -310,12 +294,17 @@ export const getFederationTrust = async (
     trustAnchors: trustAnchors,
     identifier: entityIdentifier,
   });
+
   return {
     trustedAnchors: result.trustedAnchors,
-    federation_entity: result.jwtPayload.federation_entity,
-    openid_wallet_provider: result.jwtPayload.metadata.openid_wallet_provider,
-    oauth_authorization_server: result.jwtPayload.metadata.oauth_authorization_server,
-    openid_credential_issuer: result.jwtPayload.metadata.openid_credential_issuer,
-    openid_credential_verifier: result.jwtPayload.metadata.openid_credential_verifier,
+    federation_entity: result.jwtPayload?.federation_entity,
+    openid_wallet_provider: getMetadataField<AuthorizationServerMetadata>(result.jwtPayload?.metadata, 'openid_wallet_provider'),
+    oauth_authorization_server: getMetadataField<AuthorizationServerMetadata>(result.jwtPayload?.metadata, 'oauth_authorization_server'),
+    openid_credential_issuer: getMetadataField<CredentialIssuerMetadata>(result.jwtPayload?.metadata, 'openid_credential_issuer'),
+    openid_credential_verifier: getMetadataField<ClientMetadataOpts>(result.jwtPayload?.metadata, 'openid_credential_verifier'),
   };
 };
+
+const getMetadataField = <T>(metadata: unknown, field: string): T | undefined => metadata && typeof metadata === 'object' && field in metadata
+  ? (metadata as Record<string, unknown>)[field] as T
+  : undefined;
