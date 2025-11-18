@@ -1,6 +1,7 @@
 import {ClientMetadataOpts, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
+import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
+import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {
-  ConnectionType,
   CorrelationIdentifierType,
   DidAuthConfig,
   ICredentialBranding,
@@ -8,23 +9,35 @@ import {
   NonPersistedIdentity,
   Party,
 } from '@sphereon/ssi-sdk.data-store-types';
-import {ActionType, CredentialRole, DefaultActionSubType, InitiatorType, Loggers, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {
+  ActionType,
+  CredentialMapper,
+  CredentialRole,
+  DefaultActionSubType,
+  InitiatorType,
+  Loggers,
+  LogLevel,
+  SubSystem,
+  System,
+} from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
+import {DcqlPresentation, DcqlQuery} from 'dcql';
+import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
+import {IIdentifier, VerifiableCredential} from '@veramo/core';
+import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import agent, {agentContext} from '../../agent';
-import {siopGetRequest, siopSendAuthorizationResponse} from '../../providers/authentication/SIOPv2Provider';
+import {convertToDcqlCredentials, createVerifiablePresentationForFormat, PresentationBuilderContext} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
+import {siopGetRequest} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
+import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
-import {IIdentifier, VerifiableCredential} from '@veramo/core';
-import {storeActivityLogging} from '../../store/actions/logging.actions';
-import {com} from '@sphereon/kmp-mdoc-core';
-import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
-import {AuthorizationServerMetadata, CredentialIssuerMetadata} from '@sphereon/oid4vci-common';
 
+const CLOCK_SKEW = 120;
 const logger = Loggers.DEFAULT.get('sphereon:siopV2MachineService');
 
 export const createConfig = async (
@@ -69,8 +82,8 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
   const correlationIdName = uri
     ? translateCorrelationIdToName(uri.hostname)
     : verifiedAuthorizationRequest.issuer
-    ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
-    : name;
+      ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
+      : name;
   const correlationId: string | undefined = uri?.hostname ?? correlationIdName;
 
   if (!correlationId) {
@@ -169,34 +182,122 @@ export const sendResponse = async (
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-  const response = await siopSendAuthorizationResponse(ConnectionType.SIOPv2_OpenID4VP, {
-    sessionId: didAuthConfig.sessionId,
-    credentials: selectedCredentials,
-    // ...(authorizationRequestData.presentationDefinitions !== undefined && {
-    //   verifiableCredentialsWithDefinition: [
-    //     {
-    //       definition: authorizationRequestData.presentationDefinitions[0], // TODO 0 check, check siop only
-    //       credentials: selectedCredentials as Array<UniqueDigitalCredential>,
-    //     },
-    //   ],
-    // }),
+  const credentials = selectedCredentials;
+
+  // Get session and request
+  const session = await agent.siopGetOPSession({sessionId: didAuthConfig.sessionId});
+  const request = await session.getAuthorizationRequest();
+  const domain =
+    ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ?? request.issuer ?? 'https://self-issued.me/v2';
+
+  logger.debug(`NONCE: ${session.nonce}, domain: ${domain}`);
+
+  const firstUniqueDC = credentials[0];
+  if (typeof firstUniqueDC !== 'object' || !('digitalCredential' in firstUniqueDC)) {
+    return Promise.reject(Error('Mobile wallet only supports UniqueDigitalCredentials'));
+  }
+
+  let identifier: ManagedIdentifierOptsOrResult;
+  const digitalCredential = firstUniqueDC.digitalCredential;
+  const firstVC = firstUniqueDC.uniformVerifiableCredential;
+
+  if (!firstVC) {
+    return Promise.reject(Error('No uniform verifiable credential found'));
+  }
+
+  // Determine holder DID for identifier resolution
+  let holder: string | undefined;
+  if (CredentialMapper.isSdJwtDecodedCredential(firstVC)) {
+    holder = firstVC.decodedPayload.cnf?.jwk ? `did:jwk:${encodeJoseBlob(firstVC.decodedPayload.cnf?.jwk)}#0` : firstVC.decodedPayload.sub;
+  } else {
+    holder = Array.isArray(firstVC.credentialSubject) ? firstVC.credentialSubject[0].id : firstVC.credentialSubject.id;
+  }
+
+  // Resolve identifier
+  if (!digitalCredential.kmsKeyRef) {
+    if (!holder) {
+      return Promise.reject(Error('No holder found and no kmsKeyRef in DB. Cannot determine identifier to use'));
+    }
+    try {
+      identifier = await agent.identifierManagedGet({identifier: holder});
+    } catch (e) {
+      logger.debug(`Holder DID not found: ${holder}`);
+      throw e;
+    }
+  } else if (isOID4VCIssuerIdentifier(digitalCredential.kmsKeyRef)) {
+    if (!digitalCredential.kmsKeyRef) {
+      return Promise.reject(Error('kmsKeyRef is required for OID4VCI issuer identifier'));
+    }
+    identifier = await agent.identifierManagedGetByOID4VCIssuer({
+      identifier: digitalCredential.kmsKeyRef,
+    });
+  } else {
+    switch (digitalCredential.subjectCorrelationType) {
+      case 'DID':
+        identifier = await agent.identifierManagedGetByDid({
+          identifier: digitalCredential.subjectCorrelationId ?? holder ?? '',
+          kmsKeyRef: digitalCredential.kmsKeyRef,
+        });
+        break;
+      default:
+        identifier = await agent.identifierManagedGetByKid({
+          identifier: digitalCredential.subjectCorrelationId ?? holder ?? digitalCredential.kmsKeyRef,
+          kmsKeyRef: digitalCredential.kmsKeyRef,
+        });
+    }
+  }
+
+  const dcqlCredentialsWithCredentials = new Map(credentials.map((vc) => [convertToDcqlCredentials(vc), vc]));
+
+  const queryResult = DcqlQuery.query(request.dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()));
+
+  if (!queryResult.can_be_satisfied) {
+    return Promise.reject(Error('Credentials do not match required query request'));
+  }
+
+  // Build presentation context for format-aware VP creation
+  const presentationContext: PresentationBuilderContext = {
+    nonce: request.requestObject?.getPayload()?.nonce ?? session.nonce,
+    audience: domain,
+    agent: agent,
+    clockSkew: CLOCK_SKEW,
+  };
+
+  // Build DCQL presentation with format-aware VPs
+  const presentation: DcqlPresentation.Output = {};
+  const uniqueCredentials = Array.from(dcqlCredentialsWithCredentials.values());
+
+  for (const [key, value] of Object.entries(queryResult.credential_matches)) {
+    if (value.success) {
+      const matchedCredentials = value.valid_credentials.map((cred) => uniqueCredentials[cred.input_credential_index]);
+      const vc = matchedCredentials[0];
+
+      if (!vc) {
+        continue;
+      }
+
+      try {
+        const vp = await createVerifiablePresentationForFormat(vc, identifier, presentationContext);
+        presentation[key] = vp as any;
+      } catch (error) {
+        logger.error(`Failed to create VP for credential ${key}:`, error);
+        throw error;
+      }
+    }
+  }
+
+  const dcqlPresentation = DcqlPresentation.parse(presentation);
+
+  const response = await session.sendAuthorizationResponse({
+    responseSignerOpts: identifier,
+    dcqlResponse: {
+      dcqlPresentation,
+    },
   });
 
-  // const pd = authorizationRequestData.presentationDefinitions?.[0].definition;
-  // const pex: PEX = new PEX({hasher: generateDigest});
+  // Log activity for each credential
   for (const credential of selectedCredentials) {
     let sharedClaims;
-    // if (pd) {
-    //   if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-    //     const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
-    //     const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
-    //     sharedClaims = getMdocDecodedPayload(limitDisclosedMdoc);
-    //   } else {
-    //     const result: SelectResults = pex.selectFrom(pd, [credential.originalVerifiableCredential!]);
-    //     const credentialSubject = CredentialMapper.toUniformCredential(result.verifiableCredential![0], {hasher: generateDigest}).credentialSubject;
-    //     sharedClaims = Array.isArray(credentialSubject) ? credentialSubject[0] : credentialSubject;
-    //   }
-    // }
 
     const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
     const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
@@ -243,6 +344,8 @@ export const sendResponse = async (
   if (!response) {
     return Promise.reject(Error('Missing SIOP authentication response'));
   }
+
+  // Handle redirect
   if (response.status === 302 && response.headers.has('location')) {
     const url = response.headers.get('location') as string;
     console.log(`Redirecting to: ${url}`);
