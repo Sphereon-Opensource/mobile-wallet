@@ -172,10 +172,7 @@ export const siopSendAuthorizationResponse = async (
 
   const domain =
     ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ??
-    request.issuer ??
-    (request.versions.includes(SupportedVersion.JWT_VC_PRESENTATION_PROFILE_v1)
-      ? 'https://self-issued.me/v2/openid-vc'
-      : 'https://self-issued.me/v2');
+    request.issuer ?? 'https://self-issued.me/v2';
   debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
   /*

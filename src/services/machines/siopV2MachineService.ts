@@ -184,6 +184,9 @@ export const sendResponse = async (
 
   const credentials = selectedCredentials;
 
+  if (credentials.length === 0) {
+    return Promise.reject(Error('No credentials selected or available for sharing'));
+  }
   // Get session and request
   const session = await agent.siopGetOPSession({sessionId: didAuthConfig.sessionId});
   const request = await session.getAuthorizationRequest();

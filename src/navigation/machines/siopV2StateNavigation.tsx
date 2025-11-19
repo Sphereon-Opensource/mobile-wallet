@@ -192,13 +192,9 @@ const navigateSelectCredentials = async (args: SiopV2MachineNavigationArgs): Pro
   }
 
   if (authorizationRequestData.dcqlQuery === undefined) {
-    return Promise.reject(Error('No presentation definitions present'));
+    return Promise.reject(Error('No credential query present'));
   }
-  // FIXME MWALL-720 currently only supporting 1 presentation definition
-  // if (authorizationRequestData.presentationDefinitions.length > 1) {
-  //   return Promise.reject(Error('Multiple presentation definitions present'));
-  // }
-  // const presentationDefinitionWithLocation: PresentationDefinitionWithLocation = authorizationRequestData.presentationDefinitions[0];
+
 
   const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     siopV2Machine.send({
