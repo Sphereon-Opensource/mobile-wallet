@@ -32,7 +32,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {AgeDerivedClaimsPreview} from '../AgeDerivedClaimsScreen';
 import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
 import {getVerifiableCredentialsFromStorage} from '../../../services/credentialService';
-import {RegulationType} from '@sphereon/ssi-sdk.data-store';
+import {RegulationType} from '@sphereon/ssi-sdk.data-store-types';
 import React, {useEffect, useState} from 'react';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {convertFromPIDPayload} from '../../Onboarding/ImportDataConsentScreen/util';

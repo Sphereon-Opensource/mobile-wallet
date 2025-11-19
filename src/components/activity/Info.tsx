@@ -1,4 +1,4 @@
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';

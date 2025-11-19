@@ -3,7 +3,7 @@ import {CheckLinkedDomain} from '@sphereon/did-auth-siop-adapter';
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, DidAuthConfig} from '@sphereon/ssi-sdk.data-store-types';
 import {
   OpSession,
   convertToDcqlCredentials,

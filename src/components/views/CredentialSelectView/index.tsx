@@ -1,22 +1,13 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {Party, CredentialDocumentFormat} from '@sphereon/ssi-sdk.data-store';
-import {
-  CredentialMapper,
-  decodeMdocIssuerSigned,
-  getMdocDecodedPayload,
-  mdocDecodedCredentialToUniformCredential,
-  MdocDocument,
-  MdocOid4vpIssuerSigned,
-} from '@sphereon/ssi-types';
+import {Party} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialMapper} from '@sphereon/ssi-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {useEffect, useMemo, useState} from 'react';
 import {Pressable, ScrollView, StyleProp, View, ViewStyle} from 'react-native';
 import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import ChevronIcon from '../../assets/icons/ChevronIcon';
-import {ImportInformationSummary} from '../../../screens/Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {AusweisRequestedInfoItem} from '../../../screens/Onboarding/ImportDataConsentScreen/constants';
-import {convertFromPIDPayload} from '../../../screens/Onboarding/ImportDataConsentScreen/util';
 import {SSITextH3LightStyled, SSITextH4LightStyled, SSITextH5Styled} from '../../../styles/components';
 import {generateDigest} from '../../../utils';
 import SelectedCredentialDetailsView from '../SelectedCredentialDetailsView';
@@ -24,10 +15,8 @@ import {PressableCredentialMiniCard} from '../PressableCredentialMiniCard';
 import {ICredentialState} from '../../../types/store/credential.types';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../types';
-import {IPresentationDefinition} from '@sphereon/pex';
 import {com} from '@sphereon/kmp-mdoc-core';
-import IOid4VPPresentationDefinition = com.sphereon.mdoc.oid4vp.IOid4VPPresentationDefinition;
-import { DcqlQuery } from 'dcql';
+import {DcqlQuery} from 'dcql';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;

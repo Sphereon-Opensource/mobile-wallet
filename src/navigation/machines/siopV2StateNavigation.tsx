@@ -18,13 +18,13 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  CredentialRole,
   IdentityOrigin,
   NonPersistedParty,
   Party,
   PartyOrigin,
   PartyTypeType,
-} from '@sphereon/ssi-sdk.data-store';
+} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialRole} from '@sphereon/ssi-types'
 import {SimpleEventsOf} from 'xstate';
 import {authenticate} from '../../services/authenticationService';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';

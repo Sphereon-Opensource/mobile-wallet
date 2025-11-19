@@ -1,5 +1,5 @@
-import {CredentialCorrelationType, CredentialRole, Party, RegulationType} from '@sphereon/ssi-sdk.data-store';
-import {ActionType, CredentialMapper, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
+import {CredentialCorrelationType, Party, RegulationType} from '@sphereon/ssi-sdk.data-store-types';
+import {ActionType, CredentialMapper, CredentialRole, DefaultActionSubType, InitiatorType, LogLevel, SubSystem, System} from '@sphereon/ssi-types';
 import {computeEntryHash} from '@veramo/utils';
 import agent from '../../agent';
 import store from '../../store';
@@ -25,7 +25,7 @@ export const retrievePIDCredentials = async (context: Pick<GetPIDCredentialsMach
     .then((authorizationCode: string) => funkeProvider.getPids({authorizationCode}))
     .then(pidResponses => {
       return pidResponses.map(pidResponse => {
-        const credential = pidResponse.credential;
+        const credential = pidResponse.credentials?.find(c => c);
         const identifier = pidResponse.identifier;
         const rawCredential = typeof credential === 'string' ? credential : JSON.stringify(credential);
         const uniformCredential = CredentialMapper.toUniformCredential(rawCredential, {hasher: generateDigest});

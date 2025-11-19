@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {BackHandler, Keyboard, NativeEventSubscription, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store-types';
 import {agentContext} from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICheckbox from '../../components/fields/SSICheckbox';

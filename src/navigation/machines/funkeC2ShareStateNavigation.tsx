@@ -21,13 +21,13 @@ import {GetPIDCredentialsMachineEvents} from '../../types/machines/getPIDCredent
 import {
   ConnectionType,
   CorrelationIdentifierType,
-  CredentialRole,
   IdentityOrigin,
   NonPersistedParty,
   Party,
   PartyOrigin,
   PartyTypeType,
-} from '@sphereon/ssi-sdk.data-store';
+} from '@sphereon/ssi-sdk.data-store-types';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {SimpleEventsOf} from 'xstate';
 import {SiopV2MachineEvents} from '../../types/machines/siopV2';
 

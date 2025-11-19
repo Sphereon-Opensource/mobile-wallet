@@ -1,6 +1,6 @@
 import {VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
-import {ConnectionType, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store';
+import {ConnectionType, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store-types';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
 import {URL} from 'react-native-url-polyfill';
@@ -97,7 +97,7 @@ const connectDidAuth = async (args: IQrDataArgs): Promise<void> => {
     } as DidAuthConfig);
     args.navigation.navigate(ScreenRoutesEnum.CREDENTIALS_REQUIRED, {
       verifier,
-      presentationDefinition: verifiedAuthorizationRequest.presentationDefinitions![0].definition,
+      dcqlQuery: verifiedAuthorizationRequest.dcqlQuery,
     });
   };
 

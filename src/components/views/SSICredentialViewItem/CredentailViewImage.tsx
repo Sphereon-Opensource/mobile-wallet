@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store';
+import {IBasicCredentialLocaleBranding} from '@sphereon/ssi-sdk.data-store-types';
 import {
   SSICredentialViewItemBackgroundImageStyled as BackgroundImage,
   SSICredentialViewItemCardStyled as Card,

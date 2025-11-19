@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Party} from '@sphereon/ssi-sdk.data-store';
+import {Party} from '@sphereon/ssi-sdk.data-store-types';
 import {SSILogo as Logo, SSICheckmarkBadge, SSITextH7LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, ReactElement} from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';

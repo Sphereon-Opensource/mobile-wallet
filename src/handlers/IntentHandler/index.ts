@@ -14,7 +14,7 @@ import {NavigationBarRoutesEnum, ScreenRoutesEnum, ToastTypeEnum} from '../../ty
 import {parseDeepLink, showToast} from '../../utils';
 import {toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import LockingHandler from '../LockingHandler';
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-types';
 
 const debug: Debugger = Debug(`${APP_ID}:IntentHandler`);
 

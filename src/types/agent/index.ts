@@ -2,7 +2,6 @@ import {IAgentContext, ICredentialPlugin, IDataStore, IDataStoreORM, IDIDManager
 import {IDidAuthSiopOpAuthenticator} from '@sphereon/ssi-sdk.siopv2-oid4vp-op-auth';
 import {IContactManager} from '@sphereon/ssi-sdk.contact-manager';
 import {ICredentialIssuer} from '@veramo/credential-w3c';
-import {ICredentialHandlerLDLocal} from '@sphereon/ssi-sdk.vc-handler-ld-local';
 import {IIssuanceBranding} from '@sphereon/ssi-sdk.issuance-branding';
 import {IOID4VCIHolder} from '@sphereon/ssi-sdk.oid4vci-holder';
 import {IMachineStatePersistence} from '@sphereon/ssi-sdk.xstate-machine-persistence';
@@ -28,7 +27,6 @@ export type TAgentTypes = IDIDManager &
   IContactManager &
   ICredentialPlugin &
   ICredentialIssuer &
-  ICredentialHandlerLDLocal &
   IIssuanceBranding &
   IOID4VCIHolder &
   IMachineStatePersistence &

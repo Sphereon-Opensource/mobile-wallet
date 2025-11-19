@@ -1,4 +1,4 @@
-import {CredentialRole} from '@sphereon/ssi-sdk.data-store';
+import {CredentialRole} from '@sphereon/ssi-types';
 import {CredentialStatus} from '@sphereon/ui-components.core';
 import {CredentialSummary, IssuerSummary} from '@sphereon/ui-components.credential-branding';
 import {EMAIL_ADDRESS_VALIDATION_REGEX} from '../@config/constants';

@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store';
+import {Party, PartyOrigin, PartyTypeType} from '@sphereon/ssi-sdk.data-store-types';
 import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {BackHandler} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';

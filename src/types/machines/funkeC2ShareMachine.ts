@@ -10,12 +10,13 @@ import {
   StatesConfig,
   TypegenDisabled,
 } from 'xstate';
-import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
+import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {ManagedIdentifierOpts} from '@sphereon/ssi-sdk-ext.identifier-resolution';
 import VciServiceFunkeCProvider from '../../providers/authentication/funke/VciServiceFunkeCProvider';
 import {ErrorDetails} from '../error';
 import {MappedCredential} from './getPIDCredentialMachine';
-import {PresentationDefinitionWithLocation, RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
+import {RPRegistrationMetadataPayload} from '@sphereon/did-auth-siop';
+import {DcqlQuery} from 'dcql';
 
 export enum FunkeC2ShareMachineStateTypes {
   createConfig = 'createConfig',
@@ -178,5 +179,5 @@ export type SiopV2AuthorizationRequestData = {
   name?: string;
   uri?: URL;
   clientId?: string;
-  presentationDefinitions?: PresentationDefinitionWithLocation[];
+  dcqlQuery: DcqlQuery;
 };

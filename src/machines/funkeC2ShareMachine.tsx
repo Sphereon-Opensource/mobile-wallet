@@ -20,7 +20,7 @@ import {
   InstanceFunkeC2ShareMachineOpts,
   SiopV2AuthorizationRequestData,
 } from '../types/machines/funkeC2ShareMachine';
-import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store';
+import {DidAuthConfig, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {ErrorDetails} from '../types';
 import {translate} from '../localization/Localization';
 import {MappedCredential} from '../types/machines/getPIDCredentialMachine';
