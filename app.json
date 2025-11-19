@@ -31,7 +31,7 @@
         "expo-build-properties",
         {
           "android": {
-            "minSdkVersion": 34,
+            "minSdkVersion": 31,
             "useLegacyPackaging": true
           }
         }
