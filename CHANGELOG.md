@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.7.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.5.2...v0.5.3) (2025-11-19)
+- DIIPv4 compliant, supporting OID4VP draft 28 and final 1.0, as well as OID4VCI draft 15 (1.0 final to follow)
+- This release removes legacy draft support for the OID4VC set of specifications, as they are at or near final.
+- No more presentation exchange, as it is not part of the OID4VC specification anymore.
+
+# [0.6.0](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.5.2...v0.5.3) (internal test release)
+
 # [0.5.3](https://github.com/Sphereon-Opensource/mobile-wallet/compare/v0.5.2...v0.5.3) (2025-08-17)
 
 ### Improvements

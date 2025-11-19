@@ -52,7 +52,7 @@ Issuer and Verifier agents as well as mobile and web wallets.
 The wallet supports or soon (\*) will the following features:
 
 - [W3C JWT and LDP/JSON-LD](https://www.w3.org/TR/vc-data-model/) credentials
-- [DID](https://www.w3.org/TR/did-core/) methods: ion, jwk, key, web, ethr<sup>_</sup>,
+- [DID](https://www.w3.org/TR/did-core/) methods: jwk, key, web, ethr<sup>_</sup>,
   cheqd <sup>_</sup>, ebsi<sup>\*</sup>
 - Uniform rendering and representation library<sup>\*</sup>
 - Card/Graphical and textual views<sup>\*</sup>
@@ -142,16 +142,9 @@ demo/testing purposes.
 
 These 4 links are Sphereon demo issuers, branded differently
 
-- [Sphereon (branded credentials)](https://ssi.sphereon.com/demo/issuer/)
-- [Dutch Blockchain Coalition (branded credentials)](https://ssi.dutchblockchaincoalition.org/demo/issuer/)
-- [Future Mobility Alliance (branded credentials)](https://ssi.future-mobility-alliance.org/demo/issuer/)
-
-Other issuers:
-
-- [Diwala](https://oidc4vc.diwala.io/issue)
-- [Walt.id](https://jff.walt.id) (<= has some issues in their environment currently (proofPurpose is missing))
-- [Mattr](https://launchpad.mattrlabs.com/)
-
+- [Eduskils issuer](https://issuer.eduskills.demo.sphereon.com/)
+- [Eduskils verifier](https://rp.eduskills.demo.sphereon.com/)
+- [DIIPv4 conformance testbed](https://itb.ilabs.ai/)
    <br>
    <img src="./docs/img/issuance/1_qr_reader.jpg" width=33% height=33%>
 
@@ -199,10 +192,7 @@ demo/testing purposes.
 2. Navigate to the QR reader at the bottom left.
 3. Scan one of the QR codes of the following verifiers:
 
-   - [Sphereon](https://ssi.sphereon.com/demo/verifier/) (needs the branded Sphereon credential from the Sphereon issuer)
-   - [Dutch Blockchain Coalition](https://dutchblockchaincoalition.org/en/userlogin) (Use the login button/screen. It needs the branded DBC credential from the Dutch Blockchain Coalition issuer)
-   - [Future Mobility Data Marketplace](https://marketplace.future-mobility-alliance.org/) (Use the login button top-right. It needs the branded FMDM credential from the Future Mobility Alliance issuer)
-   - [Auth0](https://verifiablecredentials.dev/presentation) (change the uri: `"uri": "<CREDENTIAL_TYPE>"` to `"uri": "SphereonWalletIdentityCredential"`)
+    - [Eduskils verifier](https://rp.eduskills.demo.sphereon.com/)
 
    <br>
    <img src="./docs/img/share/1_qr_reader.jpg" width=33% height=33%>
@@ -252,16 +242,15 @@ There are several other utility scripts that help with development.
 
 ## Requirements
 
-SSI Wallet uses Expo SDK v48 and React-Native v0.71.
+SSI Wallet uses Expo SDK v51 and React-Native v0.74.
 
 - Node v20.x.x
-- Expo CLI v6.0.1 or above
-- Yarn
+- Yarn v4.9.2 or newer
 
 ### Node
 
-Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 18.x.x
-which is required for RN 0.71 to work. The app is not guaranteed to work with higher Node versions and it will
+Use a nvm (Node Version Manager) or directly install a LTS version of NodeJS. The version of NodeJS should be 20.x.x
+which is required for RN 0.74 to work. The app is not guaranteed to work with higher Node versions and it will
 certainly not work with lower Node versions.
 
 Use <code>nvm list available</code> to list the available versions of Node.
@@ -287,10 +276,12 @@ IDE and start it (do not restart, as it might not pick up the latest environment
 
 ### Yarn
 
-We use Yarn as package manager. Install it with the following command:
+We use Yarn v4 (so not classic/v1!) as package manager. Install it with the following command:
 
 ```shell
-npm install --global yarn
+npm install -g corepack
+yarn set version berry
+yarn install
 ```
 
 <b>NOTE</b>: After installation be sure to close the terminal window. If installed from your IDE, be sure to close the
@@ -303,10 +294,10 @@ The SSI-Wallet can be started by running one of the following commands.
 ### Android
 
 ```shell
-expo android:start
+yarn run android:dev
 ```
 
-For Android you need to make sure that your wallet is connect using a USB cable and that developer options are enabled.
+For Android you need to make sure that your wallet is connected using a USB cable and that developer options are enabled.
 If you do not connect the phone using USB it will start the Android emulator instead
 
 By default, it uses port 8081.
@@ -320,7 +311,7 @@ By default, it uses port 8081.
 You will have to use Xcode directly for now. We will work on getting the below command working.
 
 ```shell
-expo ios:start  // Please note this command currently doesn't work
+yarn run ios  // Please note this command currently doesn't work
 ```
 
 Run the below commands on the command line to update all dependencies.
@@ -336,3 +327,26 @@ you can choose `Product -> Archive`).
 It will take some time for the app to start. In some circumstances you might not get directly to the app. If that is the
 case lookup whether the Sphereon Wallet application can be found in you apps. If so start it from there. You should see
 the bundler starting.
+
+### Debug Logging
+
+To enable verbose debug logging on the console (visible in Xcode console for iOS or ADB logcat for Android), set the `DEBUG` environment variable:
+
+**For Xcode (iOS):**
+1. In Xcode, go to `Product -> Scheme -> Edit Scheme`
+2. Select `Run` in the left sidebar
+3. Go to the `Arguments` tab
+4. Under `Environment Variables`, add a new variable:
+   - Name: `DEBUG`
+   - Value: `*` (for all debug logs) or `sphereon:*` (for Sphereon-specific logs only)
+
+**For Android (USB debugging):**
+1. Set the environment variable before running the app:
+   ```shell
+   export DEBUG=*  # or export DEBUG=sphereon:*
+   yarn run android:dev
+   ```
+2. View logs using ADB:
+   ```shell
+   adb logcat
+   ```
