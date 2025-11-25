@@ -1090,7 +1090,7 @@ PODS:
     - React
   - react-native-get-random-values (1.11.0):
     - React-Core
-  - react-native-keyboard-controller (1.17.5):
+  - react-native-keyboard-controller (1.18.6):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1160,7 +1160,7 @@ PODS:
   - react-native-pure-jwt (3.0.3):
     - JWT (= 3.0.0-beta.12)
     - React
-  - react-native-quick-base64 (2.2.0):
+  - react-native-quick-base64 (2.2.2):
     - React-Core
   - react-native-quick-sqlite (8.1.0):
     - DoubleConversion
@@ -1937,12 +1937,12 @@ SPEC CHECKSUMS:
   react-native-blur: 30d91a67da86a4d4d924b0c7c36f6e01479a246b
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
-  react-native-keyboard-controller: 5532662ccf842a0f4354f9c7cd817cb78691b878
+  react-native-keyboard-controller: 59a74393a40e6a8014805972de1b1300926267a4
   react-native-linear-gradient-text: c605af2b5725a2f0e0e05a1e033652c194c966df
   react-native-mmkv-storage: 36fcafe92a2c4cf19bce96be0b5d587f7a62a2c6
   react-native-pager-view: c1e29e1a6105a02807392ba822ad322447a72f55
   react-native-pure-jwt: 0d332f378799316e6e7a79a7e262a246d907cdfb
-  react-native-quick-base64: 40a87a8bd5d23b649e570f6f0be3c759281e3e40
+  react-native-quick-base64: ad4ef249fdf5a82670fd3d606e7a596f16c945c8
   react-native-quick-sqlite: 7bccedbaa812b3a154b1505d8d1db4c12842e60b
   react-native-randombytes: ddf6edfd3fb9091af8c6ed1b35e57c308b5f5f2c
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
