@@ -35,7 +35,9 @@
             "useLegacyPackaging": true
           }
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-localization"
     ]
   }
 }

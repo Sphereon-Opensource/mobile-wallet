@@ -2,6 +2,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {fontColors} from '@sphereon/ui-components.core';
 import React from 'react';
 import {TouchableOpacity, View, ViewStyle} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useAssistant} from '../../../providers/chat/AssistantProvider';
 
 export type ChatButtonPosition = {
@@ -18,12 +19,13 @@ type Props = {
 
 const ChatButton = ({style, position, onTextPress}: Props) => {
   const {chatMode} = useAssistant();
+  const insets = useSafeAreaInsets();
 
   return (
     <View
       style={{
         position: 'absolute',
-        bottom: position ? position.bottom : 16,
+        bottom: (position ? position.bottom : 16) + insets.bottom,
         right: position ? position.right : 16,
         alignItems: 'center',
         ...style,

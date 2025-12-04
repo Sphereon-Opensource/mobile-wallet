@@ -1,8 +1,9 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import {FC, ReactElement} from 'react';
+import React, {FC, ReactElement} from 'react';
 import {ListRenderItemInfo, View, ViewStyle} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
 import {SSICredentialDetailsViewContainerStyled as Container, SSIDetailsViewDetailsListStyled as DetailsList} from '../../../styles/components';
 import {IButton} from '../../../types';
@@ -18,6 +19,13 @@ export interface IContactDetailsViewProps {
 
 export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContactDetailsViewProps): ReactElement => {
   const {style, properties, secondaryButton, primaryButton} = props;
+  const insets = useSafeAreaInsets();
+
+  React.useEffect(() => {
+    console.log('[ContactDetailsView] Safe area insets:', insets);
+    console.log('[ContactDetailsView] Calculated bottom padding:', Math.max(36, insets.bottom));
+  }, [insets.bottom]);
+
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
       return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
@@ -42,18 +50,20 @@ export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContact
         //   height: 1000,
         // }}
         contentContainerStyle={{flexGrow: 1}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
-        ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
+        ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end', paddingBottom: insets.bottom}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
         ListFooterComponent={
           primaryButton || secondaryButton ? (
             <View
               style={{
-                paddingTop: 36,
-                paddingBottom: 36,
+                paddingTop: 12,
+                paddingBottom: 12,
                 paddingLeft: 24,
                 paddingRight: 24,
                 gap: 12,
                 backgroundColor: backgroundColors.primaryDark,
                 marginTop: 20,
+                borderWidth: 3,
+                borderColor: 'red',
               }}>
               {primaryButton && <PrimaryButton accessibilityRole="button" caption={primaryButton.caption} onPress={primaryButton.onPress} />}
               {secondaryButton && <SecondaryButton accessibilityRole="button" caption={secondaryButton.caption} onPress={secondaryButton.onPress} />}

@@ -2,6 +2,7 @@ import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useContext, useState} from 'react';
 import {LayoutChangeEvent, Platform, StatusBar, View, Image} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Svg from 'react-native-svg';
 import WelcomeBackground from '../../../assets/images/welcomeBackground.svg';
 import {contentContainerStyle} from '../../../components/containers/ScreenContainer';
@@ -20,6 +21,7 @@ const CompleteOnboardingScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const [svgDimensions, setSVGDimensions] = useState<null | {width: number; height: number}>(null);
   const isAndroid = Platform.OS === 'android';
+  const insets = useSafeAreaInsets();
   const handleSVGContainerLayout = (event: LayoutChangeEvent) => {
     event.target.measure((_, __, width, height) => {
       if (typeof width !== 'number' || typeof height !== 'number') {
@@ -40,7 +42,7 @@ const CompleteOnboardingScreen = () => {
   });
 
   return (
-    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor: backgroundColors.primaryDark, paddingBottom: 32}}>
+    <View style={{flex: 1, justifyContent: 'space-between', backgroundColor: backgroundColors.primaryDark, paddingBottom: Math.max(32, insets.bottom)}}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
       <View style={{flex: 1, overflow: 'hidden'}} onLayout={handleSVGContainerLayout}>
         {svgDimensions && (

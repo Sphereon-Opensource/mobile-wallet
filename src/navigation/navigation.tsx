@@ -2,10 +2,8 @@ import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bot
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
 import React, {ReactElement, useEffect} from 'react';
-import Toast from 'react-native-toast-message';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
-import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../@config/toasts';
 import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
 import ActivityRevealedInfoHeader from '../components/bars/activity/ActivityRevealedInfoHeader';
 import ContactsHeader from '../components/bars/ContactsHeader';
@@ -127,7 +125,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={({navigation, route}) => (
               <>
                 <SSIAlertModal navigation={navigation} route={route} />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
             options={{
@@ -140,7 +137,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={({navigation, route}) => (
               <>
                 <SSIPopupModal navigation={navigation} route={route} />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
             options={{
@@ -160,7 +156,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <OID4VCIStackWithContext />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
           />
@@ -169,7 +164,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <SiopV2StackWithContext />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
           />
@@ -178,7 +172,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <GetPIDCredentialsStackScreenWithContext />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
           />
@@ -187,7 +180,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <FunkeC2ShareStackScreenWithContext />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
           />
@@ -196,7 +188,6 @@ const MainStackNavigator = (): JSX.Element => {
             children={() => (
               <>
                 <ESIMActivationStackWithContext />
-                <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
               </>
             )}
           />
@@ -232,7 +223,6 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <QRStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -244,7 +234,6 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <ActivitiesStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -256,7 +245,6 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <CredentialsStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />
@@ -269,8 +257,7 @@ const TabStackNavigator = (): JSX.Element => {
           children={() => (
             <>
               <CredentialCatalogStack />
-              <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
-            </>
+              </>
           )}
         />
       )}
@@ -282,7 +269,6 @@ const TabStackNavigator = (): JSX.Element => {
         children={() => (
           <>
             <ContactsStack />
-            <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
           </>
         )}
       />

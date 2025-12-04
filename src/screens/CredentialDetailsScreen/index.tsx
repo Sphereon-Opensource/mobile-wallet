@@ -6,6 +6,7 @@ import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerL
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import React, {FC, useMemo} from 'react';
 import {FlatList, ListRenderItemInfo, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import NavigationButton from '../../components/buttons/NavigationButton';
 import {Chat, ChatTools} from '../../components/chat/Chat';
@@ -46,6 +47,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {credential, onBack, primaryAction, secondaryAction, hideLinks} = route.params;
   const issuer: string = credential.issuer.alias;
   const {announce} = useAccessibility();
+  const insets = useSafeAreaInsets();
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
   const contacts = useAppSelector(state => state.contact.contacts);
   const contact = contacts.find(c => c.contact.displayName === issuer);
@@ -224,7 +226,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           keyExtractor={(item: CredentialDetailsRow) => item.id}
           initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
           removeClippedSubviews
-          contentContainerStyle={{flexGrow: 1}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
+          contentContainerStyle={{flexGrow: 1, paddingBottom: (primaryAction || secondaryAction) ? 0 : Math.max(0, insets.bottom)}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
           ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}} // used to put tthe footer at the bottom of the screen if flatlist does not fill space available
           ListFooterComponent={renderFooter}
         />
@@ -232,10 +234,13 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           <View
             style={{
               padding: 24,
-              paddingVertical: 32,
+              paddingTop: 32,
+              paddingBottom: Math.max(32, insets.bottom),
               alignItems: 'center',
               justifyContent: 'center',
               gap: 10,
+              borderWidth: 3,
+              borderColor: 'lime',
             }}>
             {primaryAction && (
               <PrimaryButton

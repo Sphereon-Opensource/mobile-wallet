@@ -1,5 +1,6 @@
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {useFocusEffect} from '@react-navigation/native';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
@@ -54,6 +55,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsButton, primaryButton, secondaryButton, darkMode = false, input} = props;
   const [value, setValue] = useState<string | undefined>();
   const {setFocus} = useAccessibility();
+  const insets = useSafeAreaInsets();
   const titleRef = useRef(null);
   const focusOnTitle = useCallback(() => {
     if (titleRef.current) {
@@ -66,7 +68,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
     return typeof primaryButton?.disabled === 'function' ? primaryButton.disabled() : primaryButton?.disabled;
   }, [value]); // Add dependencies here
   return (
-    <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight}}>
+    <Container style={{backgroundColor: darkMode ? backgroundColors.primaryDark : backgroundColors.primaryLight, marginBottom: insets.bottom}}>
       <HeaderContainer>
         {onClose && (
           <CloseButtonContainer>
@@ -111,7 +113,7 @@ const SSIPopup: FC<IProps> = (props: IProps): JSX.Element => {
         )}
       </ContentContainer>
       <SSIButtonsContainer
-        style={{paddingLeft: 18, paddingRight: 18, paddingBottom: 16}} // FIXME create a styling component for this or align design with other button placements
+        style={{paddingLeft: 18, paddingRight: 18}} // paddingBottom is handled by SSIButtonsContainer with safe areas
         {...(secondaryButton && {
           secondaryButton: {
             caption: secondaryButton.caption,

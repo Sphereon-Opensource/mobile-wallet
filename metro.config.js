@@ -2,8 +2,6 @@
 const path = require('path');
 const {getDefaultConfig} = require('expo/metro-config');
 const {mergeConfig} = require('metro-config');
-const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
-const defaultAssetExts = require('metro-config/src/defaults/defaults').assetExts;
 
 const defaultConfig = getDefaultConfig(__dirname);
 
@@ -42,8 +40,8 @@ const config = {
     },
   },
   resolver: {
-    assetExts: defaultAssetExts.filter(ext => ext !== 'svg'),
-    sourceExts: [...defaultSourceExts, 'svg', 'mjs', 'cjs', 'json'],
+    assetExts: defaultConfig.resolver.assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...defaultConfig.resolver.sourceExts, 'svg', 'mjs', 'cjs', 'json'],
     unstable_enableSymlinks: true,
     extraNodeModules: {
       // shim: path.resolve(__dirname, 'shim.js'),
