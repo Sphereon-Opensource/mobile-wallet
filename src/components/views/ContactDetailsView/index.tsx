@@ -1,7 +1,7 @@
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC, ReactElement} from 'react';
+import {FC, ReactElement} from 'react';
 import {ListRenderItemInfo, View, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../../@config/constants';
@@ -20,11 +20,6 @@ export interface IContactDetailsViewProps {
 export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContactDetailsViewProps): ReactElement => {
   const {style, properties, secondaryButton, primaryButton} = props;
   const insets = useSafeAreaInsets();
-
-  React.useEffect(() => {
-    console.log('[ContactDetailsView] Safe area insets:', insets);
-    console.log('[ContactDetailsView] Calculated bottom padding:', Math.max(36, insets.bottom));
-  }, [insets.bottom]);
 
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
