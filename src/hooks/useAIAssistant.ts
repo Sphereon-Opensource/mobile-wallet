@@ -2,7 +2,6 @@ import {RealtimeClient, RealtimeUtils} from '@openai/realtime-api-beta';
 import {ItemType} from '@openai/realtime-api-beta/dist/lib/client.js';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {OPENAI_API_KEY} from 'react-native-dotenv';
-import {useSelector} from 'react-redux';
 import {ChatTools} from '../components/chat/Chat';
 import {basicInstructions, reopenChatPrompt} from '../instructions';
 import {translate} from '../localization/Localization';
@@ -25,7 +24,17 @@ console.log('==============================');
 
 const useAIAssistant = () => {
   const [isConnected, setIsConnected] = useState(false);
-  const state = useSelector((state: RootState) => state);
+  // Only select minimal state needed for AI context - using a ref to avoid re-renders
+  const stateRef = useRef<RootState | null>(null)
+  // Subscribe to store changes without triggering re-renders
+  useEffect(() => {
+    const {getState, subscribe} = require('../store').default
+    stateRef.current = getState()
+    const unsubscribe = subscribe(() => {
+      stateRef.current = getState()
+    })
+    return unsubscribe
+  }, [])
   const [items, setItems] = useState<ItemType[]>([]);
   const [chatMode, setChatMode] = useState<ChatMode>('text');
   const wavStreamPlayerRef = useRef<WavStreamPlayer>(new WavStreamPlayer());
@@ -90,7 +99,7 @@ const useAIAssistant = () => {
 
       updateSession({
         baseInstructions: basicInstructions,
-        appState: stringifyState(state),
+        appState: stringifyState(stateRef.current ?? {}),
         route: stringifyState(navigationRef?.current?.getCurrentRoute() || {}),
         screenContext,
         instructions:
@@ -189,7 +198,7 @@ const useAIAssistant = () => {
         client.createResponse();
       }
     },
-    [state],
+    [],
   );
 
   const connectVoice = useCallback(async () => {

@@ -19,7 +19,7 @@ const Container = styled(SSIBasicContainerStyled)`
 export const ActivityDetailScreen = (navProps: Props) => {
   const {activity} = navProps.route.params;
   const {announce} = useAccessibility();
-  useEffect(() => announce({message: 'Activity details'}));
+  useEffect(() => announce({message: 'Activity details'}), []);
   if (!activity) return null;
   const isShare = activity.action === DefaultActionSubType.VC_SHARE || activity.action === DefaultActionSubType.VC_SHARE_DECLINE;
   const isIssue = activity.action === DefaultActionSubType.VC_ISSUE || activity.action === DefaultActionSubType.VC_ISSUE_DECLINE;
