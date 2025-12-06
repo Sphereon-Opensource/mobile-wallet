@@ -2,6 +2,12 @@ import * as ExpoLocalization from 'expo-localization';
 import i18n, {Scope, TranslateOptions} from 'i18n-js';
 import memoize from 'lodash.memoize';
 
+import en from './translations/en.json';
+import nl from './translations/nl.json';
+import de from './translations/de.json';
+import fi from './translations/fi.json';
+import sv from './translations/sv.json';
+
 class Localization {
   public static supportedLanguages = {
     ENGLISH: 'en',
@@ -12,11 +18,11 @@ class Localization {
   } as const;
 
   private static translationGetters: {[locale: string]: () => object} = {
-    [Localization.supportedLanguages.ENGLISH]: () => require('./translations/en.json'),
-    [Localization.supportedLanguages.DUTCH]: () => require('./translations/nl.json'),
-    [Localization.supportedLanguages.GERMAN]: () => require('./translations/de.json'),
-    [Localization.supportedLanguages.FINISH]: () => require('./translations/fi.json'),
-    [Localization.supportedLanguages.SWEDISH]: () => require('./translations/sv.json'),
+    [Localization.supportedLanguages.ENGLISH]: () => en,
+    [Localization.supportedLanguages.DUTCH]: () => nl,
+    [Localization.supportedLanguages.GERMAN]: () => de,
+    [Localization.supportedLanguages.FINISH]: () => fi,
+    [Localization.supportedLanguages.SWEDISH]: () => sv,
   };
 
   public static translate = memoize(
@@ -24,7 +30,10 @@ class Localization {
     (key: Scope, config?: TranslateOptions) => (config ? key + JSON.stringify(config) : key),
   );
 
-  private static findSupportedLanguage = (locale: string): string | undefined => {
+  private static findSupportedLanguage = (locale: string | undefined): string | undefined => {
+    if (!locale) {
+      return undefined;
+    }
     for (const language of Object.values(Localization.supportedLanguages)) {
       if (language === locale.split('-')[0]) {
         return language;
@@ -63,6 +72,10 @@ class Localization {
     return i18n.locale;
   };
 }
+
+// Initialize i18n configuration immediately at module load time
+// This ensures translations are available before the first render
+Localization.setI18nConfig();
 
 export const translate = Localization.translate;
 export default Localization;

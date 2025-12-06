@@ -62,8 +62,6 @@ export const ContactDetailsView: FC<IContactDetailsViewProps> = (props: IContact
                 gap: 12,
                 backgroundColor: backgroundColors.primaryDark,
                 marginTop: 20,
-                borderWidth: 3,
-                borderColor: 'red',
               }}>
               {primaryButton && <PrimaryButton accessibilityRole="button" caption={primaryButton.caption} onPress={primaryButton.onPress} />}
               {secondaryButton && <SecondaryButton accessibilityRole="button" caption={secondaryButton.caption} onPress={secondaryButton.onPress} />}

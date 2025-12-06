@@ -239,8 +239,6 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: 10,
-              borderWidth: 3,
-              borderColor: 'lime',
             }}>
             {primaryAction && (
               <PrimaryButton

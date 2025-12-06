@@ -128,7 +128,7 @@ const OnboardingPinCode = ({
         {maxRetries && <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${retriesLeft}`}</AttemptsLeftText>}
         <TextInput
           ref={inputRef}
-          style={{display: 'none'}}
+          style={{position: 'absolute', opacity: 0, width: 1, height: 1}}
           autoFocus
           accessible
           accessibilityRole={'text'}

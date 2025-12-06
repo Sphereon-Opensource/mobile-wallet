@@ -12,6 +12,7 @@
     "removeComments": true /* Removes all comments. */,
     "strictPropertyInitialization": false /* Disables the need to initialize every property */,
     "allowJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "resolveJsonModule": true /* Enable importing .json files */
   }
 }
