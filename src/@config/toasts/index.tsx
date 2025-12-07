@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {memo, useEffect} from 'react';
 import {View, Platform} from 'react-native'; // Import View and Platform
 import {ToastConfigParams} from 'react-native-toast-message';
 import {useSafeAreaInsets} from 'react-native-safe-area-context'; // Import hook
@@ -8,7 +8,7 @@ import {useAccessibility} from '../../hooks/useAccessibility';
 import {IToastCustomProps, ToastTypeEnum} from '../../types';
 
 // Helper component to wrap toast with safe area logic
-const SafeToastWrapper = ({children}: {children: React.ReactNode}) => {
+const SafeToastWrapper = memo(({children}: {children: React.ReactNode}) => {
   const insets = useSafeAreaInsets();
 
   // Calculate margin: Inset + 10px spacing
@@ -20,7 +20,8 @@ const SafeToastWrapper = ({children}: {children: React.ReactNode}) => {
       {children}
     </View>
   );
-};
+});
+SafeToastWrapper.displayName = 'SafeToastWrapper';
 
 export const toastsAutoHide = true;
 export const toastsVisibilityTime = 6000;

@@ -6,7 +6,38 @@ import {QrTypesEnum} from '../../types';
 import {SIOPv2OID4VPLinkHandler} from './SIOPLinkHandler';
 import {DefaultURISchemes} from '@sphereon/oid4vci-common';
 
-export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentContext<any>): void => {
+let listenersAdded = false;
+
+const cleanupStaleOID4VCIMachines = async (context: IAgentContext<any>): Promise<void> => {
+  // Defensive: only try to clean when the persistence methods are available
+  const agent: any = context.agent;
+  if (!agent?.availableMethods || typeof agent.machineStatesFindActive !== 'function' || typeof agent.machineStateDelete !== 'function') {
+    return;
+  }
+
+  const available = agent.availableMethods();
+  if (!available.includes('machineStatesFindActive') || !available.includes('machineStateDelete')) {
+    return;
+  }
+
+  const activeStates = await agent.machineStatesFindActive({machineName: 'OID4VCIHolder'});
+  if (!activeStates || activeStates.length === 0) {
+    return;
+  }
+
+  await Promise.all(
+    activeStates.map((state: any) =>
+      agent.machineStateDelete({machineName: 'OID4VCIHolder', instanceId: state.instanceId}).catch(() => undefined),
+    ),
+  );
+};
+
+export const addLinkListeners = async (linkHandlers: LinkHandlers, context: IAgentContext<any>): Promise<void> => {
+  if (listenersAdded) {
+    return;
+  }
+  listenersAdded = true;
+  await cleanupStaleOID4VCIMachines(context);
   linkHandlers.add([
     new OID4VCIHolderLinkHandler({
       protocols: [`${QrTypesEnum.OPENID_CREDENTIAL_OFFER}:`, `${QrTypesEnum.OPENID_INITIATE_ISSUANCE}:`],
@@ -20,6 +51,7 @@ export const addLinkListeners = (linkHandlers: LinkHandlers, context: IAgentCont
       trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
       stateNavigationListener: oid4vciStateNavigationListener,
       firstPartyStateNavigationListener: firstPartyStateNavigationListener,
+      walletType: 'NATURAL_PERSON',
       context,
     }),
     new SIOPv2OID4VPLinkHandler({

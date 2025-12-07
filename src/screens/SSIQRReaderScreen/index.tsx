@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {BarcodeScanningResult, Camera} from 'expo-camera';
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {Platform, StatusBar, Text} from 'react-native';
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker';
 import {translate} from '../../localization/Localization';
@@ -12,7 +12,13 @@ import {Chat} from '../../components/chat/Chat';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.QR_READER>;
 
 const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
+  const hasScannedRef = useRef(false);
+
   const onBarcodeScanned = async (readEvent: BarcodeScanningResult): Promise<void> => {
+    if (hasScannedRef.current) {
+      return;
+    }
+    hasScannedRef.current = true;
     setScanned(true);
     await onQRScanned({qrData: readEvent.data, navigation: props.navigation});
   };

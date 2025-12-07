@@ -153,11 +153,7 @@ const MainStackNavigator = (): JSX.Element => {
           />
           <Stack.Screen
             name={MainRoutesEnum.OID4VCI}
-            children={() => (
-              <>
-                <OID4VCIStackWithContext />
-              </>
-            )}
+            component={OID4VCIStackWithContext}
           />
           <Stack.Screen
             name={MainRoutesEnum.SIOPV2}

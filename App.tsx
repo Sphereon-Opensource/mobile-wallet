@@ -70,7 +70,7 @@ export default function App() {
           // @ts-ignore
           global.crypto = global.window.crypto;
         }
-        addLinkListeners(linkHandlers, agentContext);
+        await addLinkListeners(linkHandlers, agentContext);
 
         await IntentHandler.getInstance().enable();
         await LockingHandler.getInstance().enableLocking();
