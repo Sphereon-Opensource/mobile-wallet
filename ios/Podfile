@@ -15,13 +15,24 @@ def node_require(script)
      )", __dir__]).strip
  end
 
+def min_ios_version_supported
+  require 'json'
+
+  # Read the version from React Native's config (go up one level to project root)
+  react_native_package = JSON.parse(File.read(File.join(__dir__, '..', 'package.json')))
+  react_version = react_native_package['dependencies']['react-native']
+
+  # For React Native 0.79+, minimum is 15.1
+  return '15.1'
+end
+
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
 
 ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '1' : '0'
 ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] = podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
 
-platform :ios, podfile_properties['ios.deploymentTarget'] || '15.0'
+platform :ios, podfile_properties['ios.deploymentTarget'] || min_ios_version_supported
 install! 'cocoapods',
   :deterministic_uuids => false
 
