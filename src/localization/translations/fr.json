@@ -1,0 +1,622 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "Scanner QR code",
+      "activities": "Fil d’activités",
+      "home": "Liste des justificatifs",
+      "credential_catalog": "Catalogue des justificatifs",
+      "contacts": "Liste de contacts"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Contact inconnu",
+      "credential": "Justificatif inconnu",
+      "credential_type": "Type de justificatif inconnu",
+      "purpose": "But inconnu",
+      "issuer": "Émetteur inconnu",
+      "type": "Type d’activité inconnu",
+      "date": "Date inconnue",
+      "activity": "Activité inconnue"
+    },
+    "feed": {
+      "title": "Fil d’activités",
+      "list": {
+        "title": "Toutes les activités",
+        "loading": "Chargement des activités",
+        "search_placeholder": "Rechercher un contact, une carte ou un statut",
+        "empty_state": {
+          "title": "Aucune activité",
+          "subtitle": "Vous n’avez actuellement aucune activité.\nElles apparaîtront automatiquement ici."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Toutes les activités avec",
+        "loading": "Chargement des activités pour",
+        "search_placeholder": "Rechercher une carte ou un statut"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Toutes les activités de",
+        "loading": "Chargement des activités pour",
+        "search_placeholder": "Rechercher un contact ou un statut"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Informations partagées",
+      "info_header": {
+        "description": "éléments partagés"
+      },
+      "row_description": "Données partagées",
+      "detail_title": "Données partagées"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Informations refusées",
+      "info_header": {
+        "description": "éléments refusés"
+      },
+      "row_description": "Partage des données refusé",
+      "detail_title": "Partage des données refusé"
+    },
+    "VC issue": {
+      "info_list_title": "Informations émises",
+      "revealed_info_title": "Informations émises",
+      "info_header": {
+        "description": "éléments émis"
+      },
+      "row_description": "Justificatif reçu",
+      "detail_title": "Nouveau justificatif ajouté à votre portefeuille",
+      "description": [
+        "Vous pouvez maintenant utiliser votre",
+        "carte à des fins officielles de partage."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Informations refusées",
+      "revealed_info_title": "Informations refusées",
+      "info_header": {
+        "description": "éléments non émis"
+      },
+      "row_description": "Réception du justificatif refusée",
+      "detail_title": "Le justificatif n’a pas été ajouté à votre portefeuille",
+      "description": [
+        "Vous avez refusé d’utiliser la",
+        "carte à des fins officielles."
+      ]
+    },
+    "section_titles": {
+      "status": "Statut",
+      "purpose": "But",
+      "credential_type": "Type de justificatif",
+      "issued_information": "Informations émises"
+    },
+    "contact_link": "À propos",
+    "credential_activities_link": "Activités de la carte",
+    "credential_claims_link": "Mes attestations",
+    "support_link": "Un problème ?"
+  },
+  "credential_details_title": "Détails du justificatif",
+  "credentials_overview_title": "Justificatifs",
+  "credential_details_view_issued_by": "Émis par",
+  "credentials_view_item_expires_on": "Expire le",
+  "swipe_delete_button_caption": "Supprimer",
+  "credential_offer_accepted_toast": "Justificatif enregistré",
+  "settings_dropdown_item_text": "Paramètres",
+  "settings_dropdown_item_accessibility_hint": "Aller aux paramètres",
+  "settings_title": "Paramètres",
+  "account_title": "Compte",
+  "settings_general_section_label": "Général",
+  "settings_privacy_controls_section_label": "Contrôles de confidentialité",
+  "settings_feedback_controls_section_label": "Contrôles de retour",
+  "settings_logout_label": "Se déconnecter",
+  "account_personal_section_label": "Personnel",
+  "account_general_section_label": "Général",
+  "account_personal_information_label": "Informations personnelles",
+  "account_login_and_security_label": "Connexion et sécurité",
+  "account_biometric_login_label": "Authentification biométrique",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Supprimer le portefeuille",
+  "age_derived_claims_title": "Attestations dérivées de l’âge",
+  "age_derived_claims_screen_title": "Attestations dérivées de l’âge",
+  "age_dervived_claims_screen_description": "Les attestations dérivées de l’âge permettent de prouver votre âge à un tiers sans divulguer votre âge exact.",
+  "biometrics_title": "Voulez-vous activer l’authentification biométrique ?",
+  "biometrics_subtitle": "Utilisez la reconnaissance faciale ou d’empreinte digitale pour un accès plus rapide et plus simple à votre compte.",
+  "biometrics_description": "Vos données biométriques ne sont pas collectées par Sphereon et sont utilisées uniquement localement pour la vérification.",
+  "biometrics_enable_text": "Activer maintenant",
+  "biometrics_disallow": "Peut-être plus tard",
+  "onboarding_pid_security_model_title": "Quel modèle de sécurité PID souhaitez-vous utiliser ?",
+  "onboarding_pid_security_model_subtitle": "Veuillez noter qu’il s’agit d’une option de test/développement. Vous ne pourrez pas la modifier ultérieurement sans créer un nouveau portefeuille.",
+  "onboarding_pid_security_model_secure_element": "Élément sécurisé sur le téléphone",
+  "onboarding_pid_security_model_remote_hardware": "Module matériel distant (HSM)",
+  "onboarding_pid_security_model_mobile_operator": "eSIM de l’opérateur mobile",
+  "onboarding_pid_security_model_eid_presentation": "Utiliser la carte eID lors de la présentation",
+  "onboarding_pid_security_model_select": "Sélectionner",
+  "authentication_pin_code_title": "Saisissez votre code PIN",
+  "authentication_pin_code_subtitle": "Pour confirmer, saisissez votre code PIN",
+  "qr_scanner_marker_title": "Scanner le QR code",
+  "qr_scanner_marker_subtitle": "Placez le QR code dans le champ de vision de la caméra",
+  "qr_scanner_qr_not_supported_message": "QR code non pris en charge. Essayez d’en scanner un autre pour continuer.",
+  "qr_scanner_qr_no_longer_valid_message": "Le QR code n’est plus valide. Veuillez en scanner un nouveau.",
+  "connection_details_view_details": "Détails",
+  "action_confirm_label": "Confirmer",
+  "action_continue_label": "Continuer",
+  "action_cancel_label": "Annuler",
+  "action_decline_label": "Refuser",
+  "action_abort_label": "Abandonner",
+  "action_accept_label": "Accepter",
+  "action_sign_label": "Signer",
+  "verification_code_title": "Saisissez\nvotre code de vérification",
+  "verification_code_subtitle": "Vous aurez besoin d’un code pour réclamer le justificatif {{credentialName}}.",
+  "verification_code_accessibility_label": "Code de vérification",
+  "verification_code_accessibility_hint": "Saisissez votre code de vérification",
+  "verification_code_invalid_code_title": "Code de vérification incorrect",
+  "verification_code_invalid_code_details": "Ce n’était pas le bon code. Réessayez en demandant un nouveau lien ou en scannant de nouveau le QR code.",
+  "verification_code_invalid_code_details_title": "Détails supplémentaires",
+  "verification_code_invalid_code_message": "Code de vérification incorrect. Veuillez réessayer.",
+  "credential_details_info_tab_header_label": "Informations vérifiées",
+  "credential_details_activity_tab_header_label": "Activité",
+  "action_view_extra_details": "Voir plus de détails",
+  "action_ok_label": "OK, j’ai compris",
+  "error_generic_title": "Oups ! Une erreur est survenue.",
+  "error_generic_message": "Veuillez contacter l’auteur de cette application.",
+  "error_details_generic_title": "L’application a rencontré une erreur inattendue",
+  "error_details_generic_message": "Détails de l’erreur :",
+  "oidc4vci_error_invalid_request": "Requête invalide",
+  "oidc4vci_error_invalid_client": "Client invalide",
+  "oidc4vci_error_invalid_grant": "Autorisation invalide",
+  "oidc4vci_error_unauthorized_client": "Application non autorisée",
+  "oidc4vci_error_unsupported_grant_type": "Type d’autorisation non pris en charge",
+  "oidc4vci_error_unsupported_invalid_scope": "Type de portée non pris en charge",
+  "oidc4vci_error_invalid_or_missing_proof": "Le justificatif est invalide ou la preuve est manquante",
+
+  "credential_select_type_title": "Sélectionner des justificatifs",
+  "credential_select_type_subtitle": "L’émetteur {{issuerName}} prend en charge l’émission des justificatifs suivants. Sélectionnez celui que vous souhaitez recevoir dans votre portefeuille.",
+  "raw_credential_title": "Justificatif brut",
+  "credential_details_subtitle": "Les informations relatives au justificatif que vous envisagez d’ajouter sont détaillées ci-dessous.",
+
+  "contacts_overview_title": "Contacts",
+  "contact_details_title": "Contact",
+  "contact_identities_title": "Identités",
+  "contact_activities_title": "Activités du contact",
+  "contact_details_info_tab_header_label": "Détails",
+  "contact_details_activity_tab_header_label": "Activité",
+  "contact_details_identities_tab_header_label": "Identités",
+
+  "intent_share_file_unable_to_receive_message": "Impossible de recevoir le justificatif",
+  "credential_activities_title": "Activités de la carte",
+  "credential_delete_title": "Supprimer le justificatif",
+  "credential_delete_message": "Voulez-vous vraiment supprimer le justificatif : {{credentialName}} ?",
+  "credential_deleted_success_toast": "Justificatif supprimé",
+  "credential_deleted_failed_toast": "Impossible de supprimer le justificatif",
+
+  "contact_add_new_contact_detected_title": "Nouveau contact détecté",
+  "contact_add_new_contact_detected_subtitle": "Nous avons constaté que l’autre partie de cet échange de justificatifs n’est pas encore dans vos contacts. Vous devez indiquer un nom pour ce nouveau contact afin de finaliser l’échange.",
+
+  "contact_name_label": "Nom du contact",
+  "contact_name_placeholder": "Nom du contact",
+  "contact_name_invalid_message": "Veuillez saisir un nom de contact valide",
+  "contact_add_disclaimer": "Je reconnais que ce contact sera créé à la suite d’un échange de justificatifs que j’ai initié.",
+
+  "contact_delete_title": "Supprimer le contact",
+  "contact_delete_message": "Voulez-vous vraiment supprimer le contact : {{contactName}} ?",
+  "contact_deleted_success_toast": "Contact supprimé",
+  "contact_deleted_failed_toast": "Impossible de supprimer le contact",
+  "contact_add_success_toast": "Contact créé",
+  "contact_update_success_toast": "Contact mis à jour",
+  "contact_add_no_consent_toast": "Sans approbation, vous ne pouvez pas poursuivre l’échange de justificatifs ; utilisez le bouton Refuser.",
+  "contact_add_cancel_title": "Voulez-vous vraiment refuser ?",
+  "contact_add_cancel_message": "L’ajout d’un contact est obligatoire lors d’un premier échange avec une nouvelle partie. L’ensemble du processus d’échange sera interrompu si vous confirmez.",
+
+  "onboarding_welcome_header": "Bienvenue",
+  "onboarding_welcome_title": "Portefeuille Sphereon",
+  "onboarding_welcome_intro_body": "Permet de recevoir et de partager des accréditations, justificatifs, badges et attributs d’identité.\n\nIls sont signés et attestés numériquement par des organismes émetteurs tiers.",
+  "browser_open_title": "Ouverture du navigateur",
+  "browser_open_header": "Ouverture du navigateur",
+  "browser_open_auth_title": "Authentification requise",
+  "browser_open_auth_body": "La partie de confiance exige que vous vous authentifiiez. Votre navigateur par défaut sera utilisé pour cette action",
+  "browser_open_action_next_label": "Ouvrir le navigateur",
+  "action_next_label": "Suivant",
+  "action_back_label": "Retour",
+  "action_go_label": "Aller !",
+  "onboarding_welcome_store_body": "Stocke les justificatifs émis par des tiers sous forme chiffrée, directement sur votre appareil. Vous seul avez accès à vos données.\n\nAucune interaction avec les serveurs de Sphereon, sauf si vous activez par exemple des sauvegardes ou des fonctionnalités d’entreprise.",
+  "onboarding_welcome_share_body": "Permet de présenter des justificatifs à des vérificateurs tiers.\n\nSeules les informations auxquelles vous consentez seront partagées. Aucune divulgation automatique. Vous gardez toujours le contrôle.",
+
+  "terms_of_service_terms_tab_header_label": "Conditions générales",
+  "terms_of_service_privacy_tab_header_label": "Politique de confidentialité",
+  "terms_of_service_consent_terms_message": "J’ai lu et j’accepte les conditions générales.",
+  "terms_of_service_consent_privacy_message": "J’ai lu et j’accepte la politique de confidentialité.",
+  "terms_of_service_decline_title": "Vous avez refusé les conditions d’utilisation",
+  "terms_of_service_decline_message": "Vous avez refusé ; l’onboarding du portefeuille n’est donc pas terminé. Supprimez l’application Sphereon Wallet de votre appareil ou recommencez depuis le début en ouvrant à nouveau le portefeuille.",
+  "terms_of_service_decline_action_caption": "Quitter l’application",
+  "terms_of_service_title": "Conditions d’utilisation",
+  "terms_of_service_subtitle": "Ce document a été mis à jour pour la dernière fois le 5 janvier 2023.",
+
+  "pid_security_model_warning": "L’EID ne sera chargé que lors de la présentation",
+
+  "import_data_auth_title": "Saisissez votre PIN Sphereon",
+  "import_data_auth_next": "Continuer",
+
+  "import_data_auth_biometrics_title": "S’authentifier avec la biométrie",
+  "import_data_auth_failure_title": "Échec de l’authentification biométrique, nous ne vous avons pas reconnu",
+  "import_data_auth_failure_description": "Vous ne pouvez pas continuer à ce stade. La seule façon de terminer la tâche en cours est de recommencer. Fermez l’application et rouvrez-la pour relancer l’onboarding.",
+
+  "import_data_auth_step_title": "Saisissez votre PIN Sphereon",
+  "import_data_consent_button_accept": "Oui, c’est bien moi",
+  "import_data_consent_button_decline": "Tout n’est pas correct",
+  "import_data_loader_step_title": "Un instant",
+  "import_data_loader_step_subtitle": "Récupération de vos informations personnelles.",
+
+  "import_data_final_step_title": "Vos informations ont été importées. Est-ce exact ?",
+
+  "import_data_setup_complete_title": "Configuration terminée",
+
+  "incorrect_data_title": "Certaines de vos informations sont-elles incorrectes ?",
+  "incorrect_data_description": "Si vos informations personnelles sont incorrectes, cela peut provoquer des problèmes. N’ajoutez donc pas ces données.",
+  "incorrect_data_bullet_content_heading": "Que pouvez-vous faire",
+  "incorrect_data_bullet_content": "Contactez votre mairie pour faire modifier vos informations.\nAttendez un message de confirmation de la mise à jour par votre mairie.\nEssayez d’ajouter à nouveau les informations personnelles. Vous les trouverez dans le catalogue.",
+  "incorrect_data_back": "Retour",
+  "incorrect_data_dont_add_info": "Ne pas ajouter ces informations",
+  "incorrect_data_after_bullet_heading": "Si ce ne sont pas les vôtres",
+  "incorrect_data_after_bullet_content": "Si les informations ne vous appartiennent pas, ne les ajoutez pas à votre portefeuille.",
+
+  "onboarding_esim_enter_details_title": "Saisir les informations eSIM",
+  "onboarding_esim_enter_details_description": "Veuillez indiquer votre numéro de téléphone et le code d’association",
+  "onboarding_esim_enter_details_msisdn_label": "Numéro de téléphone (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Saisir le numéro de téléphone",
+  "onboarding_esim_enter_details_coupling_code_label": "Code d’association",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Saisir le code d’association",
+  "onboarding_esim_enter_details_continue": "Continuer",
+  "onboarding_esim_enter_details_back": "Retour",
+
+  "onboarding_machine_activate_esim_error_title": "Échec de l’activation eSIM",
+  "onboarding_esim_error_couple_rp_failed": "L’étape de couplage RP de l’activation eSIM a échoué",
+  "onboarding_esim_error_bindkey_failed": "L’étape bind-key de l’activation eSIM a échoué",
+  "onboarding_esim_error_create_link_failed": "L’étape create-link de l’activation eSIM a échoué",
+  "onboarding_esim_error_check_sscd_failed": "L’étape check-sscd de l’activation eSIM a échoué",
+  "onboarding_esim_error_enable_sscd_failed": "L’étape enable-sscd de l’activation eSIM a échoué",
+  "onboarding_esim_error_cleanup_keys_failed": "L’étape cleanup-keys de l’activation eSIM a échoué",
+
+  "import_data_title": "Importer des données personnelles",
+
+  "onboarding_complete_title": "Terminé !",
+  "onboarding_complete_description": "Vous êtes prêt à recevoir et partager des informations d’identité, des justificatifs et plus encore.",
+  "onboarding_complete_next": "Commencer à explorer mon portefeuille",
+
+  "scan_card_step_subtitle": "Tenez votre carte au dos du téléphone et appuyez sur Démarrer la lecture.",
+  "scan_card_step_title": "Scanner pour importer vos données",
+  "personal_data_title": "Saisir les données personnelles",
+  "personal_data_subtitle": "Personnalisez votre portefeuille en indiquant votre nom et votre e-mail. Nous créerons un justificatif auto-attesté pour votre usage. Les informations fournies ne quittent jamais votre appareil !",
+  "first_name_label": "Prénom",
+  "first_name_placeholder": "Prénom",
+  "first_name_invalid_message": "Veuillez saisir un prénom valide",
+  "last_name_label": "Nom",
+  "last_name_placeholder": "Nom",
+  "last_name_invalid_message": "Veuillez saisir un nom valide",
+  "email_address_label": "Adresse e-mail",
+  "email_address_placeholder": "Adresse e-mail",
+  "email_address_invalid_message": "Veuillez saisir une adresse e-mail valide",
+
+  "pin_code_choose_pin_code_title": "Choisissez votre code PIN",
+  "pin_code_choose_pin_code_subtitle": "Choisissez un code PIN pour sécuriser votre portefeuille.",
+  "pin_code_confirm_pin_code_title": "Confirmez votre code PIN",
+  "pin_code_confirm_pin_code_subtitle": "Saisissez votre code PIN pour confirmer le premier.",
+  "pin_code_accessibility_label": "Code PIN",
+  "pin_code_accessibility_hint": "Saisissez votre code PIN",
+  "pin_code_invalid_code_message": "Ce code PIN ne correspond pas. Veuillez réessayer.",
+  "pin_code_attempts_left_message": "Tentatives restantes :",
+
+  "lock_title": "Connexion au\nportefeuille Sphereon",
+  "lock_subtitle": "Saisissez votre code PIN.",
+  "lock_emergency_button_caption": "Appel d’urgence",
+  "show_raw_credential_button_caption": "Justificatif brut",
+
+  "onboard_create_wallet_step_title": "Créer le portefeuille",
+  "onboard_secure_wallet_step_title": "Sécuriser le portefeuille",
+
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "Premiers pas",
+      "description": "Chaque section ne prend que quelques minutes.",
+      "accessibility_label": "Premiers pas. Progression de l’onboarding, étape"
+    },
+    "secure_wallet": {
+      "title": "Vous êtes à mi-chemin",
+      "description": null,
+      "accessibility_label": "Vous êtes à mi-chemin. Progression de l’onboarding, étape"
+    },
+    "import_personal_data": {
+      "title": "Presque fini, dernière section",
+      "description": null,
+      "accessibility_label": "Presque fini, dernière section. Progression de l’onboarding, étape"
+    }
+  },
+
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "étape",
+      "of": "sur",
+      "and_final": "et dernière"
+    },
+    "create_wallet": {
+      "title": "Créer le portefeuille",
+      "description": "Créez un compte avec votre nom, votre adresse e-mail et votre pays de résidence.",
+      "accessibility": {
+        "button_hint": "Commencer la création du portefeuille"
+      }
+    },
+    "secure_wallet": {
+      "title": "Sécuriser le portefeuille",
+      "description": "Créez un PIN Sphereon unique et gardez-le en sécurité. Activez éventuellement la connexion biométrique.",
+      "accessibility": {
+        "button_hint": "Commencer la sécurisation du portefeuille"
+      }
+    },
+    "import_personal_data": {
+      "title": "Importer des informations personnelles",
+      "description": {
+        "default": "Importez vos informations personnelles depuis votre fournisseur d’eID national.",
+        "de": "Scannez votre carte eID Ausweis. Gardez la carte et le PIN eID prêts."
+      },
+      "accessibility": {
+        "button_hint": "Commencer l’import des données personnelles"
+      }
+    }
+  },
+
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Bienvenue dans votre portefeuille Sphereon",
+      "description": "Recevez et partagez des accréditations, justificatifs, badges et détails d’identité.",
+      "button_caption": "Commencer",
+      "accessibility": {
+        "hint": "Balayez vers la gauche pour continuer",
+        "label": "Bienvenue dans votre portefeuille Sphereon"
+      }
+    },
+    "enter_name": {
+      "title": "Saisissez votre nom",
+      "text_field": {
+        "label": "Nom",
+        "placeholder": "Votre nom",
+        "accessibility": {
+          "label": "Saisissez votre nom"
+        },
+        "errors": {
+          "missing": "Veuillez saisir un nom"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Saisissez votre adresse e-mail",
+      "text_field": {
+        "label": "Adresse e-mail",
+        "placeholder": "Votre adresse e-mail",
+        "accessibility": {
+          "label": "Saisissez votre adresse e-mail"
+        },
+        "errors": {
+          "missing": "Veuillez saisir une adresse e-mail",
+          "invalid": "Veuillez saisir une adresse e-mail valide"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "Votre pays de résidence",
+      "select": {
+        "label": "Pays",
+        "accessibility": {
+          "select": "Pays sélectionné"
+        },
+        "placeholder": "Votre pays de résidence",
+        "errors": {
+          "missing": "Veuillez sélectionner un pays"
+        }
+      },
+      "modal": {
+        "title": "Sélectionner un pays",
+        "search_placeholder": "Rechercher"
+      }
+    },
+    "enter_pin": {
+      "title": "Définir un PIN Sphereon à 6 chiffres",
+      "requirements": {
+        "title": "Votre PIN ne doit pas contenir :",
+        "not_same_digits": "des chiffres identiques",
+        "not_sequential_digits": "une séquence consécutive",
+        "invalid_example_prefix": "Par ex. : ",
+        "invalid_example_delimiter": " ou "
+      },
+      "success": "Excellent PIN, notez-le en lieu sûr",
+      "button_caption": "Définir votre PIN"
+    },
+    "verify_pin": {
+      "title": "Répétez votre PIN Sphereon",
+      "match": "Vos PIN correspondent. Vous pouvez continuer !",
+      "mismatch": "Oups ! Vos PIN ne correspondent pas.\nRéessayons.",
+      "button_caption": "Répétez votre PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Conditions & confidentialité",
+      "description": "Votre confiance compte pour nous. C’est pourquoi nous traitons vos informations personnelles avec sécurité et confidentialité.",
+      "features": {
+        "secure_data_storage": "Stockage sécurisé des données",
+        "strict_access_control": "Contrôle strict des accès",
+        "selective_data_sharing": "Partage sélectif des données",
+        "strong_privacy_compliance": "Conformité renforcée à la confidentialité",
+        "no_3rdparty_data_sharing": "Aucun partage avec des tiers",
+        "no_tracking_profiling": "Pas de suivi ni de profilage"
+      },
+      "footer": {
+        "prefix": "Envie de lire tous les détails ? Consultez nos",
+        "links": {
+          "terms": "Conditions d’utilisation",
+          "privacy": "Politique de confidentialité",
+          "delimiter": "et"
+        }
+      },
+      "button_caption": "Accepter les Conditions & la Confidentialité"
+    },
+    "read_terms_and_privacy": {
+      "title": "Conditions d’utilisation",
+      "description": "Ce document a été mis à jour pour la dernière fois le",
+      "terms": {
+        "tab_title": "Conditions générales",
+        "text": ""
+      },
+      "privacy": {
+        "tab_title": "Politique de confidentialité",
+        "text": ""
+      }
+    },
+    "import_data_consent": {
+      "title": "Souhaitez-vous ajouter ces informations ?",
+      "subtitle": "Ces informations personnelles sont importantes dans votre portefeuille. Confirmez-vous vouloir les ajouter ?",
+      "pid_provider_title": "Fournisseur PID",
+      "pid_provider_subheading": "Fournisseur de données d’identification personnelle",
+      "offered_data_title": "Données proposées",
+      "labels": {
+        "given_name": "Prénom",
+        "family_name": "Nom",
+        "also_known_as": "Aussi connu sous le nom",
+        "gender": "Genre",
+        "birthdate": "Date de naissance",
+        "birthplace": "Lieu de naissance",
+        "nationality": "Nationalité",
+        "address": "Adresse"
+      },
+      "button_accept": "Oui, je souhaite ajouter",
+      "button_decline": "Refuser"
+    },
+    "import_scan_card": {
+      "title": "Préparez votre carte Ausweis",
+      "description": "Commencez par saisir le PIN eID de votre carte Ausweis.",
+      "nfc_step_title": "Tenez maintenant la carte au dos du téléphone",
+      "button_caption": "Commencer la saisie du PIN eID",
+      "nfc_caption": "Le lecteur NFC sera bientôt activé...",
+      "card_locked_message": "Votre carte a été verrouillée.",
+      "incorrect_pin_message": "PIN incorrect. Veuillez réessayer.",
+      "unknown_scan_card_error_message": "Une erreur inconnue s’est produite."
+    }
+  },
+
+  "onboard_summary_title": "Vos informations saisies",
+  "onboard_summary_subtitle": "En appuyant sur Finaliser, vous acceptez les données saisies et passerez à l’écran de connexion. Les informations personnelles peuvent être modifiées dans les paramètres.",
+  "onboard_summary_info_tab_header_label": "Vos informations",
+  "onboard_summary_button_caption": "Finaliser et aller à mon portefeuille",
+
+  "credentials_required_title": "Justificatifs requis",
+  "credentials_required_subtitle": "{{verifierName}} souhaite recevoir les informations suivantes pour vérification.",
+  "credentials_required_selected_label": "sélectionné",
+  "credentials_required_available_label": "disponible",
+  "credentials_required_credential_select_label": "Sélectionner un justificatif",
+  "credentials_select_title": "Sélectionner des justificatifs",
+  "credentials_select_subtitle": "Vous avez plusieurs justificatifs pouvant répondre à cette demande. Choisissez-en un à envoyer au vérificateur.",
+  "credentials_required_checking_label": "...vérification",
+  "credentials_required_no_available_label": "Aucun justificatif approprié",
+  "credentials_required_no_available_additional_label": "Vous n’avez pas de justificatif à partager avec le vérificateur. Veuillez contacter un émetteur pour en obtenir un nouveau.",
+
+  "action_share_label": "Partager",
+  "credentials_share_success_toast_title": "Partage réussi",
+  "credentials_share_success_toast_message": "Vous avez présenté avec succès vos justificatifs sélectionnés à {{verifierName}}.",
+  "action_select_label": "Sélectionner",
+  "action_onboarding_setup_message": "Configuration du portefeuille...",
+  "action_getting_information_message": "Récupération des informations...",
+  "action_sharing_credentials_message": "Partage des justificatifs...",
+  "profile_logout_action_caption": "Se déconnecter",
+  "action_getting_credentials_message": "Récupération du justificatif...",
+  "credentials_share_failed_toast_message": "Impossible de présenter les justificatifs. Erreur : {{errorMessage}}.",
+  "information_retrieve_failed_toast_message": "Impossible de récupérer les informations. Erreur : {{errorMessage}}.",
+  "credential_verification_failed_message": "La vérification du justificatif a échoué.",
+
+  "credential_offer_title": "Offre de justificatif",
+  "credential_sign_title": "Signature demandée",
+
+  "profile_delete_wallet_action_caption": "Supprimer le portefeuille",
+  "profile_delete_wallet_action_title": "Voulez-vous vraiment supprimer votre portefeuille ?",
+  "profile_delete_wallet_action_subtitle": "Voulez-vous vraiment supprimer votre portefeuille : {{userName}} ?",
+
+  "credential_status_never_expires_date_label": "N’expire jamais",
+
+  "oid4vci_machine_initiation_error_title": "Initialiser le fournisseur OID4VCI",
+  "oid4vci_machine_credential_selection_error_title": "Sélection du justificatif",
+  "oid4vci_machine_retrieve_contact_error_title": "Récupérer le contact",
+  "oid4vci_machine_retrieve_credentials_error_title": "Récupérer les justificatifs",
+  "oid4vci_machine_verify_credentials_error_title": "Vérifier les justificatifs",
+  "oid4vci_machine_add_contact_identity_error_title": "Ajouter l’identité du contact",
+  "oid4vci_machine_store_credential_branding_error_title": "Enregistrer l’habillage du justificatif",
+  "oid4vci_machine_store_credential_error_title": "Enregistrer le justificatif",
+
+  "emergency_send_button_caption": "Déclencher maintenant !",
+  "emergency_abort_button_caption": "Annuler l’alerte",
+  "emergency_title": "Envoyer une alerte d’urgence",
+  "emergency_subtitle": "Votre appel de détresse sera envoyé dans {{emergencyAlertDelay}} secondes, ou vous pouvez le déclencher immédiatement en appuyant sur « Déclencher maintenant ! ».",
+
+  "siopV2_machine_identifier_error_title": "Récupération de l’identifiant",
+  "siopV2_machine_create_config_error_title": "Création de la configuration siopV2",
+  "siopV2_machine_get_request_error_title": "Récupération de la requête siopV2",
+  "siopV2_machine_retrieve_contact_error_title": "Récupérer le contact",
+  "siopV2_machine_add_contact_identity_error_title": "Ajouter l’identité du contact",
+  "siopV2_machine_send_response_error_title": "Envoi de la réponse siopV2",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Récupérer la confiance de fédération",
+
+  "action_view_all_label": "Tout afficher",
+  "filter_all_label": "Tout afficher",
+  "filter_other_label": "Autre",
+  "filter_new_label": "Nouveau",
+  "search_field_default_caption": "Rechercher",
+
+  "credential_catalog_most_relevant_header_label": "Justificatifs les plus pertinents",
+  "credential_catalog_discover_header_label": "Découvrir d’autres justificatifs",
+
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Vos informations personnelles provenant du fournisseur eID national Ausweis.",
+  "ausweis_eid_preview_card_issuer": "Bundesdruckerei (Allemagne)",
+  "ausweis_eid_modal_title": "Obtenir les données Ausweis eID",
+  "ausweis_eid_modal_description": "Les données d’identification personnelle sont la base de votre portefeuille et sont donc essentielles pour obtenir d’autres justificatifs.\n\nConfirmez-vous l’ajout de ces informations à votre portefeuille ?",
+  "ausweis_eid_modal_accept_label": "Importer les informations personnelles",
+
+  "action_maybe_later_label": "Peut-être plus tard",
+  "item_not_yet_available_message": "Cet élément n’est pas encore disponible.",
+
+  "onboarding_machine_store_credential_error_title": "Enregistrer le justificatif",
+  "onboarding_machine_retrieve_credentials_error_title": "Récupérer les justificatifs",
+  "onboarding_skip_credential_import_step3_caption": "Je terminerai cette section plus tard",
+  "onboarding_store_credential_branding_error_title": "Enregistrer l’habillage du justificatif",
+
+  "share_credential_c2_flow_title": "Les informations suivantes seront partagées",
+
+  "new_contact_add_new_contact_detected_title": "Reconnaissez-vous {{partyName}}",
+  "new_contact_add_new_contact_detected_subtitle": "Il s’agit d’une première interaction avec cette partie. Voulez-vous continuer ?",
+  "federation_view_untrusted_title": "{{partyName}} a un faible niveau de confiance",
+  "federation_view_trusted_title": "{{partyName}} a un niveau de confiance élevé",
+  "federation_view_untrusted_description": "Cette partie ne fait pas partie d’une fédération approuvée par le portefeuille",
+  "federation_view_trusted_description": "Cette partie fait partie d’une fédération approuvée par le portefeuille",
+  "new_contact_add_new_contact_continue_caption": "Oui, continuer",
+  "new_contact_add_new_contact_abort_caption": "Non, abandonner",
+  "new_contact_add_new_contact_abort_cancel_caption": "Non, annuler",
+  "new_contact_add_new_contact_abort_continue_caption": "Oui, je veux abandonner",
+  "new_contact_add_new_contact_create_title": "Nom d’alias du contact",
+  "new_contact_add_new_contact_create_description": "Vous pouvez créer un nom d’alias pour le contact en saisissant un nouveau nom dans le champ ci-dessous.",
+  "new_contact_add_new_contact_abort_title": "Voulez-vous vraiment abandonner ?",
+  "new_contact_add_new_contact_abort_description": "Si vous abandonnez, le processus d’interaction avec {{partyName}} s’arrêtera.",
+  "new_contact_add_new_contact_contact_details_description_label": "Description",
+  "new_contact_add_new_contact_contact_details_name_label": "Nom",
+  "new_contact_add_new_contact_contact_details_website_label": "Site web",
+  "new_contact_add_new_contact_contact_details_tos_label": "Conditions d’utilisation",
+  "new_contact_add_new_contact_contact_details_policy_label": "Politique de confidentialité",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contacts",
+  "new_contact_add_new_contact_low_level_trust_title": "Voulez-vous vraiment continuer ?",
+  "new_contact_add_new_contact_low_level_trust_description": "Vous allez interagir avec une partie ayant un faible niveau de confiance.",
+
+  "present_qr_code_screen_header_title": "Présenter le QR code",
+  "present_qr_code_screen_subtitle": "Montrez le QR code à l’autre partie afin qu’elle puisse le scanner.",
+  "present_qr_code_dropdown_item_text": "Présenter le QR code",
+  "present_qr_code_dropdown_item_accessibility_hint": "Aller à un écran qui affiche le QR code à l’autre partie",
+
+  "terms_and_conditions_agreement_message": "Ces conditions générales (\"Accord\") définissent les conditions générales de votre utilisation de l’application mobile « Sphereon Wallet » (\"Application mobile\" ou \"Service\") ainsi que de tous les produits et services associés (collectivement, les \"Services\").\n\nCet Accord est juridiquement contraignant entre vous (\"Utilisateur\", \"vous\" ou \"votre\") et Sphereon B.V., constituée aux Pays-Bas, en tant que développeur de l’Application mobile (\"Opérateur\", \"nous\", \"notre\" ou \"nos\").\n\nSi vous concluez cet accord au nom d’une entreprise ou d’une autre entité juridique, vous déclarez avoir le pouvoir de lier cette entité au présent accord, auquel cas les termes « Utilisateur », « vous » ou « votre » feront référence à ladite entité. Si vous n’avez pas une telle autorité ou si vous n’acceptez pas les conditions du présent accord, vous ne devez pas l’accepter et ne pouvez pas accéder à l’Application mobile ni utiliser les Services. En accédant à l’Application mobile et aux Services et en les utilisant, vous reconnaissez avoir lu, compris et accepté d’être lié par les termes du présent Accord. Vous reconnaissez que cet Accord constitue un contrat entre vous et l’Opérateur, bien qu’il soit électronique et non physiquement signé par vous, et qu’il régit votre utilisation de l’Application mobile et des Services.\n\nLiens vers d’autres ressources\n\nBien que l’Application mobile et les Services puissent contenir des liens vers d’autres ressources (telles que sites web, applications mobiles, etc.), cela n’implique pas, directement ou indirectement, une approbation, une association, un parrainage, une recommandation ou une affiliation avec une ressource liée, sauf indication expresse. Nous ne sommes pas responsables d’examiner ou d’évaluer, et nous ne garantissons pas les offres de quelconques entreprises ou individus ni le contenu de leurs ressources. Nous n’assumons aucune responsabilité ni obligation pour les actions, produits, services et contenus de tiers. Vous devez examiner attentivement les déclarations légales et autres conditions d’utilisation de toute ressource à laquelle vous accédez via un lien dans l’Application mobile. Tout lien vers d’autres ressources externes se fait à vos propres risques.\n\nDroits de propriété intellectuelle\n\nLes « Droits de propriété intellectuelle » désignent tous les droits actuels et futurs conférés par la loi, la jurisprudence ou l’équité relatifs à tout droit d’auteur et droits connexes, marques, dessins et modèles, brevets, inventions, goodwill et droit d’intenter une action en contrefaçon, droits sur les inventions, droits d’utilisation, et tous les autres droits de propriété intellectuelle, qu’ils soient enregistrés ou non, y compris toutes les demandes et droits de demander et d’obtenir, les droits de revendiquer la priorité de tels droits et tous les droits similaires ou équivalents ou formes de protection, ainsi que tout autre résultat d’activité intellectuelle qui existe ou existera à l’avenir dans toute partie du monde.\n\nLe présent Accord ne vous transfère aucun droit de propriété intellectuelle détenu par l’Opérateur ou par des tiers, et tous les droits, titres et intérêts relatifs à ces biens restent (entre les parties) exclusivement avec l’Opérateur.\n\nToutes les marques, marques de service, graphiques et logos utilisés en lien avec l’Application mobile et les Services sont des marques ou des marques déposées de l’Opérateur ou de ses concédants. Les autres marques, marques de service, graphiques et logos utilisés en lien avec l’Application mobile et les Services peuvent être des marques appartenant à d’autres tiers.\n\nVotre utilisation de l’Application mobile et des Services ne vous accorde aucun droit ni licence de reproduire ou d’utiliser autrement l’une des marques de l’Opérateur ou de tiers.\n\nLimitation de responsabilité\n\nDans la mesure maximale permise par la loi applicable, en aucun cas l’Opérateur, ses sociétés affiliées, administrateurs, dirigeants, employés, agents, fournisseurs ou concédants ne pourront être tenus responsables envers une quelconque personne de dommages indirects, accessoires, spéciaux, punitifs, exemplaires ou consécutifs (y compris, sans limitation, les pertes de bénéfices, revenus, ventes, goodwill, utilisation de contenu, impact sur l’entreprise, interruption d’activité, perte d’économies anticipées ou perte d’opportunité commerciale), quelle qu’en soit la cause, en vertu de toute théorie de responsabilité, y compris, sans limitation, le contrat, le délit, la garantie, la violation d’obligation légale, la négligence ou autre, même si la partie responsable a été avisée de la possibilité de tels dommages ou aurait pu les prévoir.\n\nDans la mesure maximale permise par la loi applicable, la responsabilité globale de l’Opérateur et de ses sociétés affiliées, dirigeants, employés, agents, fournisseurs et concédants relative aux Services sera limitée à un montant ne dépassant pas un dollar ou les montants effectivement payés en espèces par vous à l’Opérateur au cours du mois précédent le premier événement ou incident donnant lieu à une telle responsabilité. Les limitations et exclusions s’appliquent également si ce recours ne vous compense pas pleinement pour les pertes subies ou n’atteint pas son objectif essentiel.\n\nIndemnisation\n\nVous acceptez d’indemniser et de dégager l’Opérateur et ses sociétés affiliées, administrateurs, dirigeants, employés, agents, fournisseurs et concédants de toute responsabilité, perte, dommage ou coût, y compris des honoraires raisonnables d’avocat, encourus en relation avec ou résultant de toute allégation, réclamation, action, litige ou demande d’un tiers à leur encontre découlant de ou liée à votre Contenu, à votre utilisation de l’Application mobile et des Services ou à une faute intentionnelle de votre part.\n\nModifications et amendements\n\nNous nous réservons le droit de modifier le présent Accord ou ses conditions relatives à l’Application mobile et aux Services à tout moment, à notre discrétion. Lorsque nous le faisons, nous réviserons la date de mise à jour indiquée au bas de cette page. Nous pouvons également vous en informer par d’autres moyens à notre discrétion, par exemple via les coordonnées que vous nous avez fournies. Vous devez vous informer régulièrement du contenu de ces conditions générales.\n\nUne version mise à jour du présent Accord entrera en vigueur immédiatement après sa publication, sauf indication contraire. Votre utilisation continue de l’Application mobile et des Services après la date d’entrée en vigueur de l’Accord révisé (ou tout autre acte spécifié à ce moment-là) constituera votre consentement à ces modifications.\n\nAcceptation des conditions\n\nVous reconnaissez avoir lu le présent Accord et accepter toutes ses conditions. En accédant à l’Application mobile et aux Services et en les utilisant, vous acceptez d’être lié par le présent Accord. Si vous n’acceptez pas de respecter les termes de cet Accord, vous n’êtes pas autorisé à accéder à l’Application mobile et/ou aux Services.\n\nNous contacter\n\nSi vous avez des questions, préoccupations ou plaintes concernant le présent Accord, nous vous encourageons à nous contacter en utilisant les coordonnées suivantes : support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereon vous fournit l’application mobile « Sphereon Wallet » (\"App\"), que vous pouvez télécharger et installer sur votre appareil mobile.\n\nLa protection des données personnelles est très importante pour Sphereon. La collecte éventuelle de données personnelles lors de l’utilisation de l’App et la finalité de leur traitement sont expliquées dans la présente déclaration de protection des données. Le traitement, en ce sens, désigne toute forme d’utilisation des données, par ex. collecte, enregistrement, stockage, transmission, présentation et suppression.\n\nLes données personnelles ne sont traitées que dans la mesure nécessaire à la communication avec l’utilisateur. Nous respectons le principe de minimisation des données et nous conformons à toutes les dispositions légales applicables en matière de protection des données personnelles et de sécurité des données. En particulier, les données correspondantes ne seront traitées que s’il existe une base légale.\n\nLa base légale du traitement des données est le Règlement général sur la protection des données de l’UE (RGPD), plus précisément : art. 6 §1 (a), art. 7, art. 6 §1 (b) et (f), et art. 6 §1 (c) du règlement UE 2016/679 (ci-après « RGPD »).\n\nI. Nom et coordonnées du responsable du traitement\nLe responsable du traitement au sens de l’art. 4 RGPD pour le traitement des données personnelles est :\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nPays-Bas\ninfo@sphereon.com\n\n2. Type de données traitées, finalité du traitement, base légale\n\n1. Données utilisateur et appareil\nNous n’aurons jamais connaissance de vos données personnelles ni n’y aurons accès, sauf si vous nous contactez via le formulaire de contact Sphereon ou l’adresse e-mail fournie dans l’App.\n\nLors du téléchargement de l’App, les informations nécessaires à ce processus sont transférées à l’Apple App Store ou au Google Play Store (les « boutiques d’applications »), c’est-à-dire notamment le nom d’utilisateur, l’adresse e-mail et le numéro de client de votre compte, l’heure du téléchargement et le code individuel de l’appareil. Ces données sont nécessaires pour permettre le téléchargement de l’App depuis les boutiques. Nous ne recevons aucune donnée personnelle de ce processus.\nNous n’avons aucune influence sur cette collecte de données et n’en sommes pas responsables. Pour plus d’informations sur la finalité et l’étendue du traitement des données dans les boutiques d’applications, nous vous renvoyons aux déclarations de protection des données correspondantes.\n\nUne fois l’App installée avec succès sur votre appareil mobile, elle peut être utilisée sans accès à Internet. Lorsque vous utilisez l’App, nous ne collectons aucune donnée personnelle. Les informations personnelles et justificatives que vous mettez à disposition de l’App (par ex. nom, adresse, permis de conduire, carte d’identité, informations éducatives ou autres justificatifs) sont uniquement stockées localement et chiffrées sur votre appareil. Nous ne vérifions pas les données.\nIl vous incombe également de sauvegarder le contenu stocké et d’effectuer des sauvegardes de vos données.\n\nSi vous mettez ces informations à disposition d’autres parties (« Émetteurs », « Vérificateurs » ou « Fournisseurs tiers ») pour vérification ou partage, la déclaration de protection des données de l’Émetteur, du Vérificateur ou du Fournisseur tiers s’applique quant à la finalité et l’étendue du traitement des données. Sphereon n’a pas non plus accès aux données ou au flux de données dans ce cas.\n\nLes données personnelles ne seront collectées, stockées et traitées qu’en cas de prise de contact initiée par vous, dans la mesure où cela est nécessaire pour répondre à votre demande.\n\nLa base légale du traitement des données est l’art. 6 §1 (a), (b) et (f) du RGPD.\n\n1. Cookies\nAucun cookie n’est utilisé avec cette App.\n\n1. Contact\nSi vous nous contactez via le formulaire de contact fourni dans l’App ou via notre adresse e-mail, nous utiliserons les coordonnées que vous avez fournies, telles que votre nom, votre adresse e-mail et toute information complémentaire, dans le but de répondre à votre demande. Au niveau des métadonnées, votre adresse IP et la version de l’App sont transmises.\n\nLe traitement des données de contact que vous fournissez est essentiel pour pouvoir vous contacter et répondre à votre demande. Si d’autres données ont également été communiquées, leur traitement sert à individualiser votre demande et à y répondre de la meilleure manière possible. La base légale du traitement des données est l’art. 6 §1 (b) et (f) RGPD.\n\nI. Durée de conservation\nVos données ne seront conservées que le temps nécessaire pour atteindre les objectifs mentionnés ci-dessus.\n\nDès que ce n’est plus le cas, par ex. après que votre demande a été entièrement traitée, les données seront supprimées ou bloquées si et tant que cela est requis par les obligations légales commerciales ou fiscales de conservation (art. 6 §1 (c) RGPD). À partir du moment où ces obligations de conservation ne s’appliquent plus, les données seront supprimées, sauf si vous avez expressément consenti à leur utilisation ultérieure (art. 6 §1 (a) RGPD).\n\nI. Communication de données à des tiers, transfert vers des pays tiers\n\nLe principe fondamental est que les données que vous stockez ou transmettez ne seront pas mises à la disposition de tiers.\nDans certains cas, il peut cependant être nécessaire, pour l’exécution du contrat, de transmettre vos données personnelles à des entreprises auxquelles nous avons confié la fourniture de services spécifiques (par ex. fournisseurs cloud). Si nous divulguons des données à des tiers dans le cadre de notre traitement, les leur transmettons ou leur donnons autrement accès, cela se fait uniquement sur la base d’une autorisation légale, de votre consentement, d’une obligation légale ou de nos intérêts légitimes.\nSi nous mandatons des fournisseurs tiers pour traiter des données sur la base d’un « contrat de traitement des données », cela se fait conformément à l’art. 28 RGPD.\n\nCes tiers sont tenus, de leur côté, de respecter les dispositions légales lorsqu’ils manipulent et traitent ces données. Le siège d’un tiers peut se trouver dans un pays tiers, c’est-à-dire un pays où le RGPD n’a pas d’effet juridique direct. Dans ce cas, les données ne seront transmises que si vous avez donné votre consentement, si un niveau de protection adéquat prévaut (par ex. via des accords individuels, l’utilisation des clauses contractuelles types de l’UE, l’existence d’une décision d’adéquation de l’UE ou toute autre autorisation légale).\n\nLa transmission aux autorités et institutions étatiques habilitées à recevoir des informations est également possible, mais uniquement dans le cadre des obligations légales d’information et en cas de décision judiciaire contraignante. Dans ces cas, Sphereon B.V. peut fournir des informations, par ex. pour faire valoir, exercer et défendre des droits légaux, exécuter des contrats existants, dans le cadre d’allégations de fraude, de mesures de sécurité ou de dispositions légales généralement applicables.\n\nLes données personnelles ne seront pas transmises en dehors du cadre décrit ici sans le consentement exprès de l’utilisateur.\n\nEn aucun cas nous ne vendrons ou ne louerons de données personnelles à des tiers.\n\nI. Services tiers lors de l’utilisation de l’App\nNous attirons votre attention sur les fournisseurs tiers suivants, dont nous utilisons les services pour exploiter l’App et fournir nos services, et qui peuvent avoir accès aux données personnelles susmentionnées :\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irlande\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Australie\n\nNous soulignons expressément que nous n’avons aucune influence sur l’étendue des données collectées par ces sociétés. En matière de protection des données, nous devons donc nous fier aux informations fournies par ces sociétés, auxquelles nous faisons référence dans l’explication ci-dessous.\n\nLe cas échéant, veuillez obtenir auprès de la société de plus amples informations sur la finalité et l’étendue de la collecte des données, vos droits à cet égard et les options de paramétrage pour protéger votre vie privée. Nous avons fourni les liens vers leurs déclarations de protection des données ici.\n\nVous trouverez ci-dessous des informations sur les effets possibles en matière de protection des données de la coopération avec ces fournisseurs tiers, ainsi que des liens supplémentaires.\n\nMicrosoft\nNous utilisons les services de Microsoft, un fournisseur cloud, tels que Office 365, pour garantir notre accessibilité par e-mail.\nVous pouvez en savoir plus sur la politique de confidentialité de Microsoft ici : https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nNous utilisons les services d’Atlassian, tels que Jira, pour structurer et optimiser le traitement de vos demandes techniques. Il peut être nécessaire que certaines données relatives aux problèmes décrits soient enregistrées et stockées sur les serveurs cloud d’Atlassian.\nVous pouvez en savoir plus sur la politique de confidentialité d’Atlassian ici : https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Droits des personnes concernées\nEn tant que personne concernée par le traitement de données personnelles, vous avez les droits énumérés ci-dessous. Ces droits résultent des dispositions du RGPD et sont reproduits ici sous une forme partiellement simplifiée.\n\nDroit de retirer le consentement\nConformément à l’art. 7 §3 RGPD, vous avez le droit de retirer votre consentement au traitement à tout moment. La licéité du traitement effectué sur la base du consentement jusqu’au retrait n’en est pas affectée. Le retrait peut être exercé par une déclaration informelle. Une déclaration écrite ou un e-mail à l’adresse de contact ci-dessus est suffisant.\n\nDroit d’accès\nConformément à l’art. 15 RGPD, vous avez le droit de demander confirmation si des données personnelles vous concernant sont traitées. Le cas échéant, vous avez le droit d’accéder à ces données personnelles ainsi qu’aux informations spécifiées à l’art. 15 §1 RGPD. Cela inclut la finalité du traitement, les catégories de données traitées, les destinataires auxquels les données ont été ou seront divulguées, dans la mesure du possible la durée de conservation prévue ou les critères utilisés pour déterminer cette durée.\n\nDroit de rectification\nConformément à l’art. 16 RGPD, vous avez le droit d’exiger que nous rectifiions sans délai les données personnelles inexactes vous concernant. Compte tenu des finalités du traitement, vous avez le droit d’obtenir que les données personnelles incomplètes soient complétées, y compris par une déclaration complémentaire.\n\nDroit à l’effacement\nConformément à l’art. 17 RGPD, vous avez le droit d’exiger que les données personnelles vous concernant soient effacées immédiatement. Nous sommes tenus de supprimer immédiatement les données personnelles si l’un des motifs de l’art. 17 §1 RGPD s’applique. Ces motifs incluent, par exemple, que les données ne sont plus nécessaires aux fins pour lesquelles elles ont été collectées ou traitées.\n\nDroit à la limitation du traitement\nConformément à l’art. 18 RGPD, vous avez le droit d’exiger que nous limitions le traitement si l’une des conditions énoncées à l’art. 18 RGPD s’applique. Cela inclut, par exemple, que vous contestiez l’exactitude des données personnelles. Dans ce cas, nous ne pouvons traiter les données que de manière limitée pendant la durée nécessaire à la vérification de l’exactitude.\n\nDroit à la portabilité des données\nConformément à l’art. 20 RGPD, vous avez le droit de recevoir les données personnelles que vous nous avez fournies dans un format structuré, couramment utilisé et lisible par machine. Vous avez le droit de transmettre ces données à un autre responsable du traitement sans entrave, à condition que le traitement initial ait été fondé sur votre consentement ou ait été nécessaire à l’exécution d’un contrat.\n\nDroit d’opposition\nConformément à l’art. 21 RGPD, vous avez le droit de vous opposer à tout moment au traitement de vos données personnelles si ces données sont traitées sur la base de l’art. 6 §1 (e) ou (f) RGPD et s’il existe des raisons tenant à votre situation particulière. Vous pouvez à tout moment vous opposer au traitement des données à des fins de prospection. Les données personnelles ne seront alors plus traitées à cette fin. Le droit d’opposition peut être exercé par une déclaration informelle. Une déclaration écrite ou un e-mail à l’adresse de contact indiquée dans l’App est suffisant.\n\nDécision automatisée individuelle, y compris le profilage\nConformément à l’art. 22 RGPD, vous avez le droit de ne pas faire l’objet d’une décision fondée exclusivement sur un traitement automatisé – y compris le profilage – produisant des effets juridiques vous concernant ou vous affectant de manière significative de façon similaire. L’art. 22 §1 RGPD prévoit des exceptions, l’art. 22 §4 RGPD contenant des exceptions partielles.\n\nDroit d’introduire une réclamation auprès d’une autorité de contrôle\nConformément à l’art. 77 RGPD, sans préjudice de tout autre recours administratif ou judiciaire, vous avez le droit d’introduire une réclamation auprès d’une autorité de contrôle dans l’État membre de votre résidence, de votre lieu de travail ou du lieu de l’infraction présumée, si vous estimez que le traitement de vos données personnelles enfreint le présent règlement.\n\nII. Mesures techniques et organisationnelles\nNous prenons des mesures techniques et organisationnelles pour garantir que les exigences de sécurité et de protection du RGPD soient respectées et que les données personnelles soient protégées contre la perte, la destruction, la manipulation ou l’accès par des personnes non autorisées.\n\nIII. Modifications de la déclaration de protection des données\nNous nous réservons le droit de modifier la présente déclaration de protection des données à tout moment. Vous devez vous informer régulièrement sur le contenu de notre déclaration de protection des données.\n\nIV. Disposition finale\nLe présent texte est soumis aux lois des Pays-Bas et doit être interprété conformément à la compréhension juridique néerlandaise. La version anglaise est fournie à titre informatif uniquement. En cas de divergence entre les versions néerlandaise et anglaise, seule la version néerlandaise prévaut."
+}
+
