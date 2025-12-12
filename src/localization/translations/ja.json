@@ -1,0 +1,613 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "QRコードスキャナー",
+      "activities": "アクティビティフィード",
+      "home": "資格リスト",
+      "credential_catalog": "資格カタログ",
+      "contacts": "連絡先リスト"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "不明な連絡先",
+      "credential": "不明な資格",
+      "credential_type": "不明な資格タイプ",
+      "purpose": "不明な目的",
+      "issuer": "不明な発行者",
+      "type": "不明なアクティビティタイプ",
+      "date": "不明な日付",
+      "activity": "不明なアクティビティ"
+    },
+    "feed": {
+      "title": "アクティビティフィード",
+      "list": {
+        "title": "すべてのアクティビティ",
+        "loading": "アクティビティを読み込み中",
+        "search_placeholder": "連絡先、カード、またはステータスを検索",
+        "empty_state": {
+          "title": "アクティビティなし",
+          "subtitle": "現在アクティビティはありません。\nアクティビティは自動的にここに表示されます。"
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "すべてのアクティビティ（相手別）",
+        "loading": "アクティビティを読み込み中",
+        "search_placeholder": "カードまたはステータスを検索"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "すべてのアクティビティ（資格別）",
+        "loading": "アクティビティを読み込み中",
+        "search_placeholder": "連絡先またはステータスを検索"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "共有された情報",
+      "info_header": {
+        "description": "共有項目"
+      },
+      "row_description": "共有データ",
+      "detail_title": "共有データ"
+    },
+    "VC share decline": {
+      "revealed_info_title": "拒否された情報",
+      "info_header": {
+        "description": "拒否された項目"
+      },
+      "row_description": "データ共有が拒否されました",
+      "detail_title": "データ共有が拒否されました"
+    },
+    "VC issue": {
+      "info_list_title": "発行された情報",
+      "revealed_info_title": "発行された情報",
+      "info_header": {
+        "description": "発行項目"
+      },
+      "row_description": "資格を受領しました",
+      "detail_title": "新しい資格がウォレットに追加されました",
+      "description": [
+        "これであなたの",
+        "カードを公式の目的で使用できます。"
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "拒否された情報",
+      "revealed_info_title": "拒否された情報",
+      "info_header": {
+        "description": "未発行項目"
+      },
+      "row_description": "資格の受領が拒否されました",
+      "detail_title": "資格はウォレットに追加されませんでした",
+      "description": [
+        "あなたは次の使用を拒否しました:",
+        "公式用途でのカード"
+      ]
+    },
+    "section_titles": {
+      "status": "ステータス",
+      "purpose": "目的",
+      "credential_type": "資格タイプ",
+      "issued_information": "発行された情報"
+    },
+    "contact_link": "情報",
+    "credential_activities_link": "カードアクティビティ",
+    "credential_claims_link": "自分の主張",
+    "support_link": "問題がありますか？"
+  },
+  "credential_details_title": "資格の詳細",
+  "credentials_overview_title": "資格",
+  "credential_details_view_issued_by": "発行者",
+  "credentials_view_item_expires_on": "有効期限",
+  "swipe_delete_button_caption": "削除",
+  "credential_offer_accepted_toast": "資格を保存しました",
+  "settings_dropdown_item_text": "設定",
+  "settings_dropdown_item_accessibility_hint": "設定に移動",
+  "settings_title": "設定",
+  "account_title": "アカウント",
+  "settings_general_section_label": "一般",
+  "settings_privacy_controls_section_label": "プライバシー設定",
+  "settings_feedback_controls_section_label": "フィードバック設定",
+  "settings_logout_label": "ログアウト",
+  "account_personal_section_label": "個人",
+  "account_general_section_label": "一般",
+  "account_personal_information_label": "個人情報",
+  "account_login_and_security_label": "ログインとセキュリティ",
+  "account_biometric_login_label": "生体認証",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "ウォレットを削除",
+  "age_derived_claims_title": "年齢由来の資格",
+  "age_derived_claims_screen_title": "年齢由来の資格",
+  "age_dervived_claims_screen_description": "年齢由来の資格は、正確な年齢を開示せずに年齢を証明できます。",
+  "biometrics_title": "生体認証を有効にしますか？",
+  "biometrics_subtitle": "顔または指紋認証を使用して、アカウントにより速く簡単にアクセスできます。",
+  "biometrics_description": "Sphereonはあなたの生体情報を収集しません。ローカルでのみ検証に使用されます。",
+  "biometrics_enable_text": "今すぐ有効化",
+  "biometrics_disallow": "後で",
+  "onboarding_pid_security_model_title": "どのPIDセキュリティモデルを使用しますか？",
+  "onboarding_pid_security_model_subtitle": "これはテスト/開発用オプションです。新しいウォレットを作成しない限り後から変更できません。",
+  "onboarding_pid_security_model_secure_element": "電話内のセキュアエレメント",
+  "onboarding_pid_security_model_remote_hardware": "リモートHSM",
+  "onboarding_pid_security_model_mobile_operator": "モバイル事業者のeSIM",
+  "onboarding_pid_security_model_eid_presentation": "提示中にeIDカードを使用",
+  "onboarding_pid_security_model_select": "選択",
+  "authentication_pin_code_title": "PINコードを入力",
+  "authentication_pin_code_subtitle": "確認のため、PINコードを入力してください",
+  "qr_scanner_marker_title": "QRコードをスキャン",
+  "qr_scanner_marker_subtitle": "QRコードをカメラに合わせてください",
+  "qr_scanner_qr_not_supported_message": "QRコードはサポートされていません。別のコードを試してください。",
+  "qr_scanner_qr_no_longer_valid_message": "QRコードは無効になりました。新しいコードをスキャンしてください。",
+  "connection_details_view_details": "詳細",
+  "action_confirm_label": "確認",
+  "action_continue_label": "続行",
+  "action_cancel_label": "キャンセル",
+  "action_decline_label": "拒否",
+  "action_abort_label": "中止",
+  "action_accept_label": "承認",
+  "action_sign_label": "署名",
+  "verification_code_title": "確認コードを入力",
+  "verification_code_subtitle": "資格 {{credentialName}} を取得するにはコードが必要です。",
+  "verification_code_accessibility_label": "確認コード",
+  "verification_code_accessibility_hint": "確認コードを入力",
+  "verification_code_invalid_code_title": "無効な確認コード",
+  "verification_code_invalid_code_details": "それは正しいコードではありませんでした。新しいリンクを要求するか、QRコードを再スキャンしてください。",
+  "verification_code_invalid_code_details_title": "追加の詳細",
+  "verification_code_invalid_code_message": "確認コードが無効です。もう一度お試しください。",
+  "credential_details_info_tab_header_label": "確認済み情報",
+  "credential_details_activity_tab_header_label": "アクティビティ",
+  "action_view_extra_details": "追加の詳細を表示",
+  "action_ok_label": "OK、理解しました",
+  "error_generic_title": "エラーが発生しました",
+  "error_generic_message": "アプリの開発者にお問い合わせください。",
+  "error_details_generic_title": "アプリが予期しないエラーに遭遇しました",
+  "error_details_generic_message": "エラーの詳細:",
+  "oidc4vci_error_invalid_request": "無効なリクエスト",
+  "oidc4vci_error_invalid_client": "無効なクライアント",
+  "oidc4vci_error_invalid_grant": "無効な認可",
+  "oidc4vci_error_unauthorized_client": "アプリは認可されていません",
+  "oidc4vci_error_unsupported_grant_type": "サポートされていない認可タイプ",
+  "oidc4vci_error_unsupported_invalid_scope": "サポートされていないスコープタイプ",
+  "oidc4vci_error_invalid_or_missing_proof": "資格が無効、または証明が不足しています",
+
+  "credential_select_type_title": "資格を選択",
+  "credential_select_type_subtitle": "発行者 {{issuerName}} は以下の資格を発行できます。ウォレットに受け取りたいものを選択してください。",
+  "raw_credential_title": "生の資格",
+  "credential_details_subtitle": "追加しようとしている資格の情報は以下に記載されています。",
+
+  "contacts_overview_title": "連絡先",
+  "contact_details_title": "連絡先",
+  "contact_identities_title": "ID",
+  "contact_activities_title": "連絡先のアクティビティ",
+  "contact_details_info_tab_header_label": "詳細",
+  "contact_details_activity_tab_header_label": "アクティビティ",
+  "contact_details_identities_tab_header_label": "ID",
+
+  "intent_share_file_unable_to_receive_message": "資格を受け取ることができません",
+  "credential_activities_title": "カードアクティビティ",
+  "credential_delete_title": "資格を削除",
+  "credential_delete_message": "資格 {{credentialName}} を本当に削除しますか？",
+  "credential_deleted_success_toast": "資格を削除しました",
+  "credential_deleted_failed_toast": "資格を削除できませんでした",
+
+  "contact_add_new_contact_detected_title": "新しい連絡先を検出しました",
+  "contact_add_new_contact_detected_subtitle": "この資格交換プロセスの相手はまだ連絡先にありません。交換を完了するには新しい連絡先の名前を入力する必要があります。",
+
+  "contact_name_label": "連絡先名",
+  "contact_name_placeholder": "連絡先名",
+  "contact_name_invalid_message": "有効な名前を入力してください",
+  "contact_add_disclaimer": "この連絡先は、私が開始した資格交換の結果として作成されることを承認します。",
+
+  "contact_delete_title": "連絡先を削除",
+  "contact_delete_message": "連絡先 {{contactName}} を本当に削除しますか？",
+  "contact_deleted_success_toast": "連絡先を削除しました",
+  "contact_deleted_failed_toast": "連絡先を削除できませんでした",
+  "contact_add_success_toast": "連絡先を作成しました",
+  "contact_update_success_toast": "連絡先を更新しました",
+  "contact_add_no_consent_toast": "承認しないと資格交換を続けられません。「拒否」ボタンを使用してください。",
+  "contact_add_cancel_title": "本当に拒否しますか？",
+  "contact_add_cancel_message": "新しい相手と資格交換する際、連絡先の追加は必須です。確認するとプロセス全体が中止されます。",
+
+  "onboarding_welcome_header": "ようこそ",
+  "onboarding_welcome_title": "Sphereonウォレット",
+  "onboarding_welcome_intro_body": "認定証、資格、バッジ、身元属性を受け取り、共有できます。\n\nこれらは第三者の発行機関によってデジタル署名・証明されます。",
+  "browser_open_title": "ブラウザを開く",
+  "browser_open_header": "ブラウザを開く",
+  "browser_open_auth_title": "認証が必要です",
+  "browser_open_auth_body": "リライングパーティが認証を要求しています。この操作にはデフォルトブラウザが使用されます",
+  "browser_open_action_next_label": "ブラウザを開く",
+  "action_next_label": "次へ",
+  "action_back_label": "戻る",
+  "action_go_label": "実行",
+  "onboarding_welcome_store_body": "第三者が発行した資格を暗号化して直接デバイスに保存します。あなたのみがデータにアクセスできます。\n\nバックアップや企業向け機能を有効にしない限り、Sphereonのサーバーとは通信しません。",
+  "onboarding_welcome_share_body": "第三者の検証者に資格を提示できます。\n\nあなたが同意した情報のみが共有されます。自動的に開示されることはありません。常にあなたがコントロールします。",
+  "terms_of_service_terms_tab_header_label": "利用規約",
+  "terms_of_service_privacy_tab_header_label": "プライバシーポリシー",
+  "terms_of_service_consent_terms_message": "利用規約を読み、同意します。",
+  "terms_of_service_consent_privacy_message": "プライバシーポリシーを読み、同意します。",
+  "terms_of_service_decline_title": "利用規約が拒否されました",
+  "terms_of_service_decline_message": "拒否したため、ウォレットのオンボーディングは完了していません。Sphereonウォレットをデバイスから削除するか、再度開いて最初からやり直してください。",
+  "terms_of_service_decline_action_caption": "アプリを終了",
+  "terms_of_service_title": "利用規約",
+  "terms_of_service_subtitle": "このドキュメントは2023年1月5日に最終更新されました。",
+
+  "pid_security_model_warning": "EIDは提示中のみ読み込まれます",
+
+  "import_data_auth_title": "Sphereon PINを入力",
+  "import_data_auth_next": "続行",
+  "import_data_auth_biometrics_title": "生体認証で認証",
+  "import_data_auth_failure_title": "生体認証に失敗しました。認識できませんでした",
+  "import_data_auth_failure_description": "この時点では続行できません。タスクを完了する唯一の方法は最初からやり直すことです。アプリを閉じて再度開き、オンボーディングを再開してください。",
+
+  "import_data_auth_step_title": "Sphereon PINを入力",
+  "import_data_consent_button_accept": "はい、それは私です",
+  "import_data_consent_button_decline": "正しくありません",
+  "import_data_loader_step_title": "少々お待ちください",
+  "import_data_loader_step_subtitle": "個人情報を取得しています。",
+  "import_data_final_step_title": "あなたの情報がインポートされました。正しいですか？",
+  "import_data_setup_complete_title": "設定完了",
+
+  "incorrect_data_title": "一部の情報が正しくありませんか？",
+  "incorrect_data_description": "個人情報が正しくない場合、問題が発生する可能性があります。したがって、このデータを追加しないでください。",
+  "incorrect_data_bullet_content_heading": "できること",
+  "incorrect_data_bullet_content": "市区町村に連絡して情報を変更してください。\n市区町村から更新の確認メッセージを待ちます。\nもう一度個人情報を追加してください。カタログで見つけられます。",
+  "incorrect_data_back": "戻る",
+  "incorrect_data_dont_add_info": "この情報を追加しない",
+  "incorrect_data_after_bullet_heading": "自分のものでない場合",
+  "incorrect_data_after_bullet_content": "情報が自分のものでない場合はウォレットに追加しないでください。",
+
+  "onboarding_esim_enter_details_title": "eSIM情報を入力",
+  "onboarding_esim_enter_details_description": "電話番号とペアリングコードを入力してください",
+  "onboarding_esim_enter_details_msisdn_label": "電話番号 (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "電話番号を入力",
+  "onboarding_esim_enter_details_coupling_code_label": "ペアリングコード",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "ペアリングコードを入力",
+  "onboarding_esim_enter_details_continue": "続行",
+  "onboarding_esim_enter_details_back": "戻る",
+  "onboarding_machine_activate_esim_error_title": "eSIMの有効化に失敗しました",
+  "onboarding_esim_error_couple_rp_failed": "eSIM有効化のRPペアリングステップに失敗しました",
+  "onboarding_esim_error_bindkey_failed": "eSIM有効化のbind-keyステップに失敗しました",
+  "onboarding_esim_error_create_link_failed": "eSIM有効化のcreate-linkステップに失敗しました",
+  "onboarding_esim_error_check_sscd_failed": "eSIM有効化のcheck-sscdステップに失敗しました",
+  "onboarding_esim_error_enable_sscd_failed": "eSIM有効化のenable-sscdステップに失敗しました",
+  "onboarding_esim_error_cleanup_keys_failed": "eSIM有効化のcleanup-keysステップに失敗しました",
+
+  "import_data_title": "個人データをインポート",
+  "onboarding_complete_title": "完了！",
+  "onboarding_complete_description": "あなたは身元情報、資格などを受け取り、共有する準備ができました。",
+  "onboarding_complete_next": "ウォレットの利用を開始",
+  "scan_card_step_subtitle": "カードを電話の背面にかざし、「読み取り開始」を押してください。",
+  "scan_card_step_title": "スキャンしてデータをインポート",
+  "personal_data_title": "個人情報を入力",
+  "personal_data_subtitle": "名前とメールアドレスを入力してウォレットをパーソナライズします。自己証明の資格を作成します。入力した情報はデバイスを離れません！",
+  "first_name_label": "名",
+  "first_name_placeholder": "名",
+  "first_name_invalid_message": "有効な名を入力してください",
+  "last_name_label": "姓",
+  "last_name_placeholder": "姓",
+  "last_name_invalid_message": "有効な姓を入力してください",
+  "email_address_label": "メールアドレス",
+  "email_address_placeholder": "メールアドレス",
+  "email_address_invalid_message": "有効なメールアドレスを入力してください",
+
+  "pin_code_choose_pin_code_title": "PINコードを選択",
+  "pin_code_choose_pin_code_subtitle": "ウォレットを安全に保つためにPINコードを選択してください。",
+  "pin_code_confirm_pin_code_title": "PINコードを確認",
+  "pin_code_confirm_pin_code_subtitle": "最初のPINコードを確認するために再入力してください。",
+  "pin_code_accessibility_label": "PINコード",
+  "pin_code_accessibility_hint": "PINコードを入力",
+  "pin_code_invalid_code_message": "PINコードが一致しません。もう一度試してください。",
+  "pin_code_attempts_left_message": "残り試行回数:",
+
+  "lock_title": "Sphereonウォレットにログイン",
+  "lock_subtitle": "PINコードを入力してください。",
+  "lock_emergency_button_caption": "緊急通話",
+  "show_raw_credential_button_caption": "生の資格",
+
+  "onboard_create_wallet_step_title": "ウォレットを作成",
+  "onboard_secure_wallet_step_title": "ウォレットを保護",
+
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "はじめに",
+      "description": "各セクションは数分で完了します。",
+      "accessibility_label": "はじめに。オンボーディングの進行状況 現在のステップ"
+    },
+    "secure_wallet": {
+      "title": "半分まで完了しました",
+      "description": null,
+      "accessibility_label": "ほぼ完了。オンボーディングの進行状況 現在のステップ"
+    },
+    "import_personal_data": {
+      "title": "ほぼ完了、最後のセクション",
+      "description": null,
+      "accessibility_label": "ほぼ完了、最後のセクション。オンボーディングの進行状況 現在のステップ"
+    }
+  },
+
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "ステップ",
+      "of": "／",
+      "and_final": "最終"
+    },
+    "create_wallet": {
+      "title": "ウォレットを作成",
+      "description": "氏名、メールアドレス、居住国でアカウントを作成します。",
+      "accessibility": {
+        "button_hint": "ウォレットの作成を開始"
+      }
+    },
+    "secure_wallet": {
+      "title": "ウォレットを保護",
+      "description": "一意のSphereon PINを作成し、安全に保管してください。オプションで生体認証ログインを有効にできます。",
+      "accessibility": {
+        "button_hint": "ウォレットの保護を開始"
+      }
+    },
+    "import_personal_data": {
+      "title": "個人情報をインポート",
+      "description": {
+        "default": "国のeIDプロバイダーから個人情報をインポートします。",
+        "de": "Ausweis eIDカードをスキャンしてください。カードとPINを準備してください。"
+      },
+      "accessibility": {
+        "button_hint": "個人情報のインポートを開始"
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Sphereonウォレットへようこそ",
+      "description": "認定証、資格、バッジ、身元情報を受け取り、共有できます。",
+      "button_caption": "開始",
+      "accessibility": {
+        "hint": "続行するには左にスワイプ",
+        "label": "Sphereonウォレットへようこそ"
+      }
+    },
+    "enter_name": {
+      "title": "名前を入力",
+      "text_field": {
+        "label": "名前",
+        "placeholder": "あなたの名前",
+        "accessibility": {
+          "label": "名前を入力"
+        },
+        "errors": {
+          "missing": "名前を入力してください"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "メールアドレスを入力",
+      "text_field": {
+        "label": "メールアドレス",
+        "placeholder": "あなたのメールアドレス",
+        "accessibility": {
+          "label": "メールアドレスを入力"
+        },
+        "errors": {
+          "missing": "メールアドレスを入力してください",
+          "invalid": "有効なメールアドレスを入力してください"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "居住国",
+      "select": {
+        "label": "国",
+        "accessibility": {
+          "select": "選択された国"
+        },
+        "placeholder": "居住国",
+        "errors": {
+          "missing": "国を選択してください"
+        }
+      },
+      "modal": {
+        "title": "国を選択",
+        "search_placeholder": "検索"
+      }
+    },
+    "enter_pin": {
+      "title": "6桁のSphereon PINを設定",
+      "requirements": {
+        "title": "PINコードには以下を含めないでください:",
+        "not_same_digits": "同じ数字",
+        "not_sequential_digits": "連続した数字",
+        "invalid_example_prefix": "例: ",
+        "invalid_example_delimiter": " または "
+      },
+      "success": "強力なPINです。安全な場所に記録してください",
+      "button_caption": "PINを設定"
+    },
+    "verify_pin": {
+      "title": "Sphereon PINを再入力",
+      "match": "PINが一致しました。続行できます！",
+      "mismatch": "PINが一致しません。もう一度試してください。",
+      "button_caption": "PINを再入力"
+    },
+    "terms_and_privacy": {
+      "title": "利用規約とプライバシー",
+      "description": "私たちはあなたの個人情報を安全かつ秘密に扱います。",
+      "features": {
+        "secure_data_storage": "安全なデータ保存",
+        "strict_access_control": "厳格なアクセス制御",
+        "selective_data_sharing": "選択的なデータ共有",
+        "strong_privacy_compliance": "強力なプライバシー遵守",
+        "no_3rdparty_data_sharing": "第三者への共有なし",
+        "no_tracking_profiling": "トラッキングやプロファイリングなし"
+      },
+      "footer": {
+        "prefix": "詳細は",
+        "links": {
+          "terms": "利用規約",
+          "privacy": "プライバシーポリシー",
+          "delimiter": "と"
+        }
+      },
+      "button_caption": "利用規約とプライバシーを承認"
+    },
+    "read_terms_and_privacy": {
+      "title": "利用規約",
+      "description": "このドキュメントは最終更新日",
+      "terms": {
+        "tab_title": "利用規約",
+        "text": ""
+      },
+      "privacy": {
+        "tab_title": "プライバシーポリシー",
+        "text": ""
+      }
+    },
+    "import_data_consent": {
+      "title": "この情報を追加しますか？",
+      "subtitle": "個人情報はウォレットにとって重要です。本当に追加しますか？",
+      "pid_provider_title": "PIDプロバイダー",
+      "pid_provider_subheading": "個人識別データ提供者",
+      "offered_data_title": "提供されたデータ",
+      "labels": {
+        "given_name": "名",
+        "family_name": "姓",
+        "also_known_as": "別名",
+        "gender": "性別",
+        "birthdate": "生年月日",
+        "birthplace": "出生地",
+        "nationality": "国籍",
+        "address": "住所"
+      },
+      "button_accept": "はい、追加します",
+      "button_decline": "拒否"
+    },
+    "import_scan_card": {
+      "title": "Ausweisカードを準備",
+      "description": "まずカードのeID PINを入力してください。",
+      "nfc_step_title": "カードを電話の背面にかざしてください",
+      "button_caption": "eID PINの入力を開始",
+      "nfc_caption": "NFCスキャナーがまもなく有効になります...",
+      "card_locked_message": "カードがロックされました。",
+      "incorrect_pin_message": "PINが間違っています。再試行してください。",
+      "unknown_scan_card_error_message": "不明なエラーが発生しました。"
+    }
+  },
+
+  "onboard_summary_title": "入力した情報",
+  "onboard_summary_subtitle": "「完了」を押すと入力した情報を承認し、ログイン画面に進みます。個人情報は設定で変更できます。",
+  "onboard_summary_info_tab_header_label": "あなたの情報",
+  "onboard_summary_button_caption": "完了してウォレットへ",
+
+  "credentials_required_title": "必要な資格",
+  "credentials_required_subtitle": "{{verifierName}} は次の情報を確認のために要求しています。",
+  "credentials_required_selected_label": "選択済み",
+  "credentials_required_available_label": "利用可能",
+  "credentials_required_credential_select_label": "資格を選択",
+  "credentials_select_title": "資格を選択",
+  "credentials_select_subtitle": "複数の資格が利用可能です。提示するものを選択してください。",
+  "credentials_required_checking_label": "...確認中",
+  "credentials_required_no_available_label": "適切な資格がありません",
+  "credentials_required_no_available_additional_label": "提示できる資格がありません。発行者に連絡して新しい資格を取得してください。",
+
+  "action_share_label": "共有",
+  "credentials_share_success_toast_title": "共有成功",
+  "credentials_share_success_toast_message": "選択した資格を {{verifierName}} に提示しました。",
+  "action_select_label": "選択",
+  "action_onboarding_setup_message": "ウォレットを設定中...",
+  "action_getting_information_message": "情報を取得中...",
+  "action_sharing_credentials_message": "資格を共有中...",
+  "profile_logout_action_caption": "ログアウト",
+  "action_getting_credentials_message": "資格を取得中...",
+  "credentials_share_failed_toast_message": "資格を提示できませんでした。エラー: {{errorMessage}}。",
+  "information_retrieve_failed_toast_message": "情報を取得できませんでした。エラー: {{errorMessage}}。",
+  "credential_verification_failed_message": "資格の検証でエラーが発生しました。",
+
+  "credential_offer_title": "資格オファー",
+  "credential_sign_title": "署名が要求されました",
+
+  "profile_delete_wallet_action_caption": "ウォレットを削除",
+  "profile_delete_wallet_action_title": "ウォレットを本当に削除しますか？",
+  "profile_delete_wallet_action_subtitle": "ウォレット {{userName}} を本当に削除しますか？",
+
+  "credential_status_never_expires_date_label": "有効期限なし",
+
+  "oid4vci_machine_initiation_error_title": "OID4VCIプロバイダーの初期化",
+  "oid4vci_machine_credential_selection_error_title": "資格選択",
+  "oid4vci_machine_retrieve_contact_error_title": "連絡先を取得",
+  "oid4vci_machine_retrieve_credentials_error_title": "資格を取得",
+  "oid4vci_machine_verify_credentials_error_title": "資格を検証",
+  "oid4vci_machine_add_contact_identity_error_title": "連絡先IDを追加",
+  "oid4vci_machine_store_credential_branding_error_title": "資格ブランディングを保存",
+  "oid4vci_machine_store_credential_error_title": "資格を保存",
+
+  "emergency_send_button_caption": "今すぐ発動！",
+  "emergency_abort_button_caption": "アラートをキャンセル",
+  "emergency_title": "緊急アラートを送信",
+  "emergency_subtitle": "緊急アラートは {{emergencyAlertDelay}} 秒後に送信されます。すぐに送信するには「今すぐ発動！」を押してください。",
+
+  "siopV2_machine_identifier_error_title": "識別子を取得",
+  "siopV2_machine_create_config_error_title": "SiopV2設定を作成",
+  "siopV2_machine_get_request_error_title": "SiopV2リクエストを取得",
+  "siopV2_machine_retrieve_contact_error_title": "連絡先を取得",
+  "siopV2_machine_add_contact_identity_error_title": "連絡先IDを追加",
+  "siopV2_machine_send_response_error_title": "SiopV2応答を送信",
+  "siopV2_machine_retrieve_federation_trust_error_title": "フェデレーション信頼を取得",
+
+  "action_view_all_label": "すべて表示",
+  "filter_all_label": "すべて表示",
+  "filter_other_label": "その他",
+  "filter_new_label": "新規",
+  "search_field_default_caption": "検索",
+
+  "credential_catalog_most_relevant_header_label": "最も関連性の高い資格",
+  "credential_catalog_discover_header_label": "さらに資格を探す",
+
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "国のeIDプロバイダーAusweisからの個人情報。",
+  "ausweis_eid_preview_card_issuer": "ドイツ連邦印刷局",
+  "ausweis_eid_modal_title": "Ausweis eIDデータを取得",
+  "ausweis_eid_modal_description": "個人識別データはウォレットの基盤であり、他の資格を得るために重要です。\n\n本当にこの情報をウォレットに追加しますか？",
+  "ausweis_eid_modal_accept_label": "個人情報をインポート",
+
+  "action_maybe_later_label": "後で",
+  "item_not_yet_available_message": "この項目はまだ利用できません。",
+
+  "onboarding_machine_store_credential_error_title": "資格を保存",
+  "onboarding_machine_retrieve_credentials_error_title": "資格を取得",
+  "onboarding_skip_credential_import_step3_caption": "このセクションは後で完了します",
+  "onboarding_store_credential_branding_error_title": "資格ブランディングを保存",
+
+  "share_credential_c2_flow_title": "次の情報が共有されます",
+
+  "new_contact_add_new_contact_detected_title": "{{partyName}} を認識しますか？",
+  "new_contact_add_new_contact_detected_subtitle": "これはこの相手との最初のやりとりです。続行しますか？",
+  "federation_view_untrusted_title": "{{partyName}} は低い信頼レベルです",
+  "federation_view_trusted_title": "{{partyName}} は高い信頼レベルです",
+  "federation_view_untrusted_description": "この相手はウォレットが信頼するフェデレーションに属していません",
+  "federation_view_trusted_description": "この相手はウォレットが信頼するフェデレーションに属しています",
+  "new_contact_add_new_contact_continue_caption": "はい、続行",
+  "new_contact_add_new_contact_abort_caption": "いいえ、中止",
+  "new_contact_add_new_contact_abort_cancel_caption": "いいえ、キャンセル",
+  "new_contact_add_new_contact_abort_continue_caption": "はい、中止します",
+  "new_contact_add_new_contact_create_title": "連絡先の別名",
+  "new_contact_add_new_contact_create_description": "新しい名前を入力して連絡先に別名を作成できます。",
+  "new_contact_add_new_contact_abort_title": "本当に中止しますか？",
+  "new_contact_add_new_contact_abort_description": "中止すると {{partyName}} とのやりとりは停止します。",
+  "new_contact_add_new_contact_contact_details_description_label": "説明",
+  "new_contact_add_new_contact_contact_details_name_label": "名前",
+  "new_contact_add_new_contact_contact_details_website_label": "ウェブサイト",
+  "new_contact_add_new_contact_contact_details_tos_label": "利用規約",
+  "new_contact_add_new_contact_contact_details_policy_label": "プライバシーポリシー",
+  "new_contact_add_new_contact_contact_details_contacts_label": "連絡先",
+  "new_contact_add_new_contact_low_level_trust_title": "本当に続行しますか？",
+  "new_contact_add_new_contact_low_level_trust_description": "信頼レベルが低い相手とやりとりすることになります。",
+
+  "present_qr_code_screen_header_title": "QRコードを提示",
+  "present_qr_code_screen_subtitle": "QRコードを相手に提示してスキャンさせます。",
+  "present_qr_code_dropdown_item_text": "QRコードを提示",
+  "present_qr_code_dropdown_item_accessibility_hint": "QRコードを表示する画面に移動",
+  
+  "terms_and_conditions_agreement_message": "これらの利用規約（「本契約」）は、モバイルアプリケーション「Sphereon Wallet」（「モバイルアプリケーション」または「サービス」）および関連するすべての製品とサービス（総称して「サービス」）の使用に関する一般条件を定めています。\n\n本契約は、あなた（「ユーザー」、「あなた」または「あなたの」）と、オランダで設立されたSphereon B.V.（モバイルアプリケーションの開発者、以下「運営者」、「当社」、「私たち」）との間で法的に拘束力を持ちます。\n\nあなたが法人やその他の法的実体を代表して本契約を締結する場合、あなたはその実体を本契約に拘束する権限を有することを表明し、その場合「ユーザー」、「あなた」または「あなたの」という用語はその実体を指します。あなたがそのような権限を持たない場合、または本契約の条件に同意しない場合は、本契約を承認してはならず、モバイルアプリケーションおよびサービスにアクセスまたは使用することはできません。モバイルアプリケーションおよびサービスにアクセスし使用することにより、あなたは本契約の条項を読み、理解し、それに拘束されることに同意したことを認めます。本契約は電子的なものであり、あなたによる物理的な署名がなくても、あなたと運営者との間の契約であり、モバイルアプリケーションおよびサービスの利用を規定します。\n\n他のリソースへのリンク\n\nモバイルアプリケーションやサービスには、他のリソース（ウェブサイトやモバイルアプリなど）へのリンクが含まれている場合がありますが、ここで明示的に述べられていない限り、それらのリソースとの承認、提携、スポンサーシップ、推奨、または関係を直接的または間接的に意味するものではありません。当社は、いかなる企業や個人の提供するものやそのリソースの内容についても審査や評価を行わず、保証しません。当社は、第三者の行為、製品、サービス、コンテンツについて一切の責任や義務を負いません。モバイルアプリケーション内のリンクを通じてアクセスするすべてのリソースの法的声明やその他の利用条件を注意深く確認する必要があります。他の外部リソースへのリンクは、自己責任で行ってください。\n\n知的財産権\n\n「知的財産権」とは、著作権および関連権利、商標、意匠、特許、発明、営業権、不正競争行為に対する訴権、発明に関する権利、使用権、その他すべての知的財産権を含む、法律、衡平法、慣習法によって現在および将来付与されるすべての権利を意味します。これには、登録の有無を問わず、出願や優先権の請求に関する権利、類似または同等の権利、保護形態、ならびに知的活動の成果が含まれ、現在および将来、世界のいずれの地域にも存在し得るものです。\n\n本契約は、運営者または第三者が所有する知的財産をあなたに譲渡するものではなく、当該財産に関するすべての権利、権原、および利益は（当事者間で）専ら運営者に留まります。\n\nモバイルアプリケーションおよびサービスに関連して使用されるすべての商標、サービスマーク、グラフィックおよびロゴは、運営者またはそのライセンサーの商標または登録商標です。モバイルアプリケーションおよびサービスに関連して使用されるその他の商標、サービスマーク、グラフィックおよびロゴは、他の第三者の商標である場合があります。\n\nあなたによるモバイルアプリケーションおよびサービスの使用は、運営者または第三者の商標を複製またはその他の方法で使用する権利やライセンスを付与するものではありません。\n\n責任の制限\n\n適用法で認められる最大限の範囲において、いかなる場合も、運営者、その関連会社、取締役、役員、従業員、代理人、供給業者またはライセンサーは、間接的、偶発的、特別、懲罰的、結果的損害（利益、収益、販売、営業権、コンテンツの使用、事業への影響、業務中断、期待された節約の損失、ビジネス機会の損失を含むがこれに限定されない）について、責任理論を問わず、一切の責任を負いません。たとえ責任を負う当事者がそのような損害の可能性について知らされていた場合、または予見できた場合でも同様です。\n\n適用法で認められる最大限の範囲において、サービスに関連して運営者およびその関連会社、役員、従業員、代理人、供給業者およびライセンサーが負う総責任は、1米ドルまたは直前の1か月間にあなたが運営者に現金で実際に支払った金額のいずれか高い方を超えないものとします。これらの制限および除外は、この救済措置があなたの損失を完全に補償しない場合や、本質的な目的を果たさない場合にも適用されます。\n\n補償\n\nあなたは、運営者およびその関連会社、取締役、役員、従業員、代理人、供給業者およびライセンサーを、第三者による申し立て、請求、訴訟、紛争または要求に起因または関連して生じるあらゆる責任、損失、損害または費用（合理的な弁護士費用を含む）から免責し、防御し、損害を与えないことに同意します。これには、あなたのコンテンツ、モバイルアプリケーションおよびサービスの使用、またはあなたによる故意の不正行為が含まれます。\n\n変更と修正\n\n当社は、モバイルアプリケーションおよびサービスに関連する本契約またはその条件を、当社の裁量によりいつでも修正する権利を留保します。その場合、当社はこのページの下部に記載された更新日を修正します。当社は、提供された連絡先情報を通じてなど、当社の裁量により他の方法で通知することもできます。ユーザーは、これらの利用規約の内容を定期的に確認する必要があります。\n\n改訂された本契約は、特に明記されていない限り、掲載後直ちに有効になります。改訂後にモバイルアプリケーションおよびサービスを継続して使用することは、その変更に同意したものとみなされます。\n\n条項の承認\n\nあなたは本契約を読み、すべての条件に同意したことを認めます。モバイルアプリケーションおよびサービスにアクセスし、使用することにより、あなたは本契約に拘束されることに同意します。本契約の条件を遵守しない場合、モバイルアプリケーションおよびサービスにアクセスまたは使用する権限はありません。\n\nお問い合わせ\n\n本契約に関する質問、懸念、または苦情がある場合は、次の連絡先を使用して当社にご連絡ください: support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereonはモバイルアプリ「Sphereon Wallet」（「App」）を提供します。これはモバイルデバイスにダウンロードしてインストールできます。\n\n個人データの保護はSphereonにとって非常に重要です。App使用時に個人データが収集されるかどうか、またその処理目的については以下のデータ保護宣言に説明されています。本書における「処理」とは、収集、記録、保存、送信、表示、削除など、あらゆる形式のデータ使用を意味します。\n\n個人データはユーザーとの通信に必要な範囲でのみ処理されます。私たちはデータ最小化の原則を遵守し、個人データおよびデータセキュリティの保護に関するすべての適用法令を遵守します。特に、適切な法的根拠がある場合にのみ処理されます。\n\nデータ処理の法的根拠は、EU一般データ保護規則（GDPR）です。具体的には、EU規則2016/679の第6条第1項(a)、第7条、第6条第1項(b)および(f)、第6条第1項(c)です（以下「GDPR」）。\n\nI. 管理者の名称と連絡先\nGDPR第4条に基づく個人データ処理の管理者は次のとおりです：\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nオランダ\ninfo@sphereon.com\n\n2. 処理されるデータの種類、処理目的、法的根拠\n\n1. ユーザーデータおよびデバイスデータ\nSphereonは、あなたがApp内の連絡フォームまたは提供されたメールアドレスで私たちに連絡しない限り、あなたの個人データを知ることもアクセスすることもありません。\n\nAppをダウンロードすると、必要な情報がApple AppStoreまたはGoogle Play Store（「アプリストア」）に送信されます。具体的には、アカウントのユーザー名、メールアドレス、顧客番号、ダウンロード時間、デバイス固有コードです。これらのデータはAppのダウンロードを可能にするために必要です。Sphereonはこれらのデータを受け取りません。\nこのデータ収集は私たちの管理下にないため責任を負いません。データ処理の目的と範囲については、各アプリストアのデータ保護宣言を参照してください。\n\nAppがモバイルデバイスに正しくインストールされた後、インターネット接続なしで使用できます。App使用時にSphereonが個人データを収集することはありません。Appに提供した個人情報や資格情報（名前、住所、運転免許証、身分証明書、学歴やその他の資格情報など）はローカルに保存され、モバイルデバイス上で暗号化されます。Sphereonはこれらのデータを確認しません。\nまた、保存されたコンテンツの保管およびデータのバックアップは利用者自身の責任です。\n\nもしあなたがこれらの情報を他の当事者（「発行者」、「検証者」、「第三者提供者」）に提示または共有する場合、その処理目的と範囲についてはその発行者、検証者、または提供者のデータ保護宣言が適用されます。Sphereonはこの場合もデータやデータフローにアクセスしません。\n\n個人データは、あなたからの問い合わせがある場合にのみ収集・保存・処理されます。その際には問い合わせに対応するために必要な範囲で処理されます。\n\nデータ処理の法的根拠はGDPR第6条第1項(a)、(b)、(f)です。\n\n1. クッキー\nこのAppではクッキーは使用されません。\n\n1. 連絡\nApp内の連絡フォームやメールで私たちに連絡した場合、名前、メールアドレス、追加情報などあなたが提供した連絡先情報を使用して返信します。メタデータとしてIPアドレスとAppのバージョンが送信されます。\n\n提供された連絡先データの処理は、あなたに連絡し、リクエストに応答するために不可欠です。追加データが提供された場合、その処理はリクエストを個別化し、最適に対応するために使用されます。データ処理の法的根拠はGDPR第6条第1項(b)および(f)です。\n\nI. 保存期間\nデータは上記の目的を達成するために必要な期間のみ保存されます。\n\n問い合わせが完全に処理された場合など、不要になればデータは削除またはブロックされます。商業法または税法による保存義務がある場合（GDPR第6条第1項(c)）、その期間は保持されます。それがなくなれば、明示的な同意がない限り（GDPR第6条第1項(a)）、データは削除されます。\n\nI. 第三者へのデータ提供、第三国への転送\n\n原則として、あなたが保存または送信したデータは第三者に提供されません。\nただし、契約履行のために特定のサービスを委託した企業（例：クラウド提供者）に個人データを転送する必要がある場合があります。私たちが処理の一環として第三者にデータを開示または転送したりアクセスを許可するのは、法的許可、同意、法的義務、または正当な利益に基づく場合のみです。\n第三者に処理を委託する場合、GDPR第28条に基づく「データ処理契約」に従って行われます。\n\nこれら第三者は法律に従ってデータを取り扱う義務があります。第三者の所在地がGDPRが直接適用されない第三国である場合、データはあなたの同意、適切な保護水準（例：個別契約、EU標準契約条項、EUの適正性認定、その他の法的許可）に基づいてのみ転送されます。\n\nまた、情報提供権限を持つ当局や国家機関への提供も可能ですが、法的義務や拘束力のある裁判所命令に限られます。その場合Sphereon B.V.は、法的請求の行使や防御、既存契約の履行、詐欺疑惑やセキュリティ対策、一般的な法令遵守のために情報を提供できます。\n\nここで記載した範囲を超えて個人データが提供されることはなく、利用者の明示的な同意なしには行いません。\n\n私たちはいかなる場合も個人データを第三者に販売または貸与しません。\n\nI. サードパーティサービス\nAppを運営しサービスを提供するために使用するサードパーティサービスと、それらが前述の個人データに接触する可能性があります：\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, アイルランド\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, オーストラリア\n\nこれら企業が収集するデータの範囲に関して私たちは影響を与えることはできません。したがってデータ保護に関しては、各企業の提供する情報に依拠します。詳細は各企業のプライバシーポリシーを参照してください。\n\n必要に応じて、データ収集の目的と範囲、関連する権利、プライバシー保護設定については各企業から情報を入手してください。リンクは以下に記載します。\n\nMicrosoft\n当社は、クラウド提供者であるMicrosoftのサービス（Office 365など）を利用し、メールによる連絡可能性を確保しています。\nMicrosoftのプライバシーポリシーはこちら: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\n当社はAtlassianのサービス（Jiraなど）を利用し、技術的なお問い合わせの処理を構造化・最適化しています。記述された問題に関する一部のデータがAtlassianのクラウドサーバーに保存される場合があります。\nAtlassianのプライバシーポリシーはこちら: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. データ主体の権利\nGDPRに基づき、あなたには以下の権利があります。ここでは簡略化して記載します。\n\n同意の撤回権\nGDPR第7条第3項に従い、処理に対する同意をいつでも撤回できます。撤回前の処理の適法性には影響しません。撤回は簡易な宣言で行えます。書面または上記連絡先への電子メールで十分です。\n\nアクセス権\nGDPR第15条に従い、あなたに関する個人データが処理されているか確認を要求する権利があります。処理されている場合、そのデータおよび処理目的、処理されるデータのカテゴリ、データの受領者、保存期間などに関する情報を要求できます。\n\n訂正権\nGDPR第16条に従い、不正確な個人データを速やかに訂正するよう要求できます。不完全なデータについては補足的な声明により補完を求める権利があります。\n\n削除権\nGDPR第17条に従い、あなたに関する個人データを直ちに削除するよう要求できます。第17条第1項に規定された事由に該当する場合、私たちは直ちに削除します。\n\n処理制限権\nGDPR第18条に従い、特定の条件に該当する場合は処理の制限を要求できます。例：データの正確性を争う場合、その確認期間中は処理を制限します。\n\nデータポータビリティ権\nGDPR第20条に従い、提供した個人データを構造化された一般的に使用される機械可読形式で受け取り、他の管理者に転送する権利があります。\n\n異議申立権\nGDPR第21条に従い、特定の理由に基づき、個人データの処理に異議を唱える権利があります。特にダイレクトマーケティング目的の処理に対しては、いつでも異議を申し立てることができます。その場合、個人データは当該目的で処理されなくなります。\n\n自動化された意思決定を受けない権利\nGDPR第22条に従い、あなたは自動化された処理（プロファイリングを含む）のみに基づく決定の対象とならず、それによって法的効果や重大な影響を受けない権利を有します。\n\n監督機関への苦情申立権\nGDPR第77条に従い、居住国や勤務先、または違反があったとされる場所の監督機関に苦情を申し立てる権利があります。\n\nII. 技術的および組織的措置\n私たちはGDPRのセキュリティ・保護要件を満たすための技術的および組織的措置を講じ、個人データを喪失、破壊、改ざん、または不正アクセスから保護します。\n\nIII. データ保護宣言の変更\n当社は本データ保護宣言をいつでも変更する権利を留保します。内容を定期的に確認してください。\n\nIV. 最終条項\n本テキストはオランダの法律に準拠し、オランダの法的理解に従って解釈されます。この英語版は参考情報のみです。オランダ語版と英語版に相違がある場合は、オランダ語版のみが適用されます。"
+}
