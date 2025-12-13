@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {FC, useEffect} from 'react';
+import React, {FC, JSX, useEffect, useRef, useState} from 'react';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
@@ -18,6 +18,9 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.LOCK>;
 
 // TODO This screen should be extended to do pin code or biometrics authentication
 const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
+  const [shouldAutoFocus, setShouldAutoFocus] = useState(false);
+  const pinCodeRef = useRef<any>(null);
+
   // FIXME WAL-681 remove work around https://github.com/react-navigation/react-navigation/issues/11139
   useEffect((): void => {
     props.navigation.addListener('focus', (): void => {
@@ -29,6 +32,11 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
     if (success) {
       const {onAuthenticate} = props.route.params;
       await onAuthenticate();
+    } else {
+      setShouldAutoFocus(true);
+      if (pinCodeRef.current?.setInputFocus) {
+        pinCodeRef.current.setInputFocus();
+      }
     }
   });
 
@@ -51,12 +59,13 @@ const SSILockScreen: FC<Props> = (props: Props): JSX.Element => {
       <StatusBar />
       <PinCodeContainer>
         <SSIPinCode
+          ref={pinCodeRef}
           length={PIN_CODE_LENGTH}
           accessibilityLabel={translate('pin_code_accessibility_label')}
           accessibilityHint={translate('pin_code_accessibility_hint')}
           errorMessage={translate('pin_code_invalid_code_message')}
           onVerification={onVerification}
-          autoFocus={!biometricsEnabled}
+          autoFocus={!biometricsEnabled || shouldAutoFocus}
         />
       </PinCodeContainer>
       {/*<BadgeButton*/}

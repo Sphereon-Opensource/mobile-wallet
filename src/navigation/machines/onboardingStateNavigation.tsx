@@ -1,5 +1,5 @@
 import Debug, {Debugger} from 'debug';
-import React, {Context, createContext} from 'react';
+import React, {Context, createContext, JSX} from 'react';
 import {APP_ID} from '../../@config/constants';
 import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {
@@ -13,7 +13,7 @@ import {
   OnboardingProviderProps,
 } from '../../types/machines/onboarding';
 import RootNavigation from './../rootNavigation';
-import {MainRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
+import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
 import store from '../../store';
 import {LOGIN_SUCCESS} from '../../types/store/user.action.types';

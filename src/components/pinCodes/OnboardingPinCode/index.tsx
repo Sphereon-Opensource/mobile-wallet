@@ -23,7 +23,7 @@ type Props = TextInputProps & {
   length?: number;
   secureCode?: boolean;
   validation?: ValidationConfig;
-  inputRef?: RefObject<TextInput>;
+  inputRef?: RefObject<TextInput | null>;
 };
 
 const failureAnimationConfig = {

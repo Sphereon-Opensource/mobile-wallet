@@ -1,5 +1,6 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {TextInput, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {PIN_CODE_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -14,6 +15,8 @@ import {OnboardingBiometricsStatus, OnboardingMachineEvents} from '../../../type
 const VerifyPinCodeScreen = () => {
   const {onboardingInstance} = useContext(OnboardingContext);
   const {announce} = useAccessibility();
+  const navigation = useNavigation();
+  const PinCodeRef = useRef<TextInput | null>(null);
   useHasStrongBiometrics({
     onBiometricsConfirmed: (isSecure: boolean) => {
       if (!isSecure)
@@ -31,6 +34,15 @@ const VerifyPinCodeScreen = () => {
   const translationsPath = 'onboarding_pages.verify_pin';
 
   const doPinsCompletelyMatch = useMemo(() => pinCode === pinCodeContext, [pinCode, pinCodeContext]);
+
+  useEffect(() => {
+    if (PinCodeRef.current) {
+      const unsubscribe = navigation.addListener('focus', () => {
+        PinCodeRef.current?.focus();
+      });
+      return unsubscribe;
+    }
+  }, [navigation, PinCodeRef.current]);
 
   useEffect(() => {
     if (isComplete && doPinsCompletelyMatch) {
@@ -53,6 +65,7 @@ const VerifyPinCodeScreen = () => {
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} accessibilityFocusOnTitle />
       <View style={{marginBottom: 32, flex: 1, gap: 48}}>
         <PinCode
+          inputRef={PinCodeRef}
           pin={pinCode}
           onPinChange={setPinCode}
           length={PIN_CODE_LENGTH}
