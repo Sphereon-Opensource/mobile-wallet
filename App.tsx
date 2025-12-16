@@ -68,7 +68,9 @@ export default function App() {
       try {
         if (typeof global.crypto === 'undefined') {
           // @ts-ignore
-          global.crypto = global.window.crypto;
+          if (typeof global.window !== 'undefined' && global.window.crypto) {
+            global.crypto = global.window.crypto;
+          }
         }
         await addLinkListeners(linkHandlers, agentContext);
 

@@ -32,7 +32,12 @@
         {
           "android": {
             "minSdkVersion": 31,
-            "useLegacyPackaging": true
+            "useLegacyPackaging": true,
+            "newArchEnabled": true
+          },
+          "ios": {
+            "newArchEnabled": true,
+            "deploymentTarget": "16.0"
           }
         }
       ],

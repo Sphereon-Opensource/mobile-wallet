@@ -8,7 +8,7 @@ import {
 } from '@sphereon/ssi-sdk.data-store';
 import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store';
 // @ts-ignore
-import {typeORMDriver} from 'react-native-quick-sqlite';
+import {typeORMDriver} from 'react-native-nitro-sqlite';
 import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
 import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact';
 import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts';
