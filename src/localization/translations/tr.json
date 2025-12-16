@@ -1,0 +1,577 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "QR kod tarayıcı",
+      "activities": "Etkinlik akışı",
+      "home": "Kimlik bilgileri listesi",
+      "credential_catalog": "Kimlik bilgileri kataloğu",
+      "contacts": "Kişi listesi"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Bilinmeyen kişi",
+      "credential": "Bilinmeyen kimlik bilgisi",
+      "credential_type": "Bilinmeyen kimlik bilgisi türü",
+      "purpose": "Bilinmeyen amaç",
+      "issuer": "Bilinmeyen düzenleyici",
+      "type": "Bilinmeyen etkinlik türü",
+      "date": "Bilinmeyen tarih",
+      "activity": "Bilinmeyen etkinlik"
+    },
+    "feed": {
+      "title": "Etkinlik akışı",
+      "list": {
+        "title": "Tüm etkinlikler",
+        "loading": "Etkinlikler yükleniyor",
+        "search_placeholder": "Kişi, kart veya durum ara",
+        "empty_state": {
+          "title": "Etkinlik yok",
+          "subtitle": "Şu anda etkinliğiniz yok.\nEtkinlikler burada otomatik olarak görünecek."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Şununla tüm etkinlikler",
+        "loading": "Etkinlikler yükleniyor:",
+        "search_placeholder": "Kart veya durum ara"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Şunun tüm etkinlikleri",
+        "loading": "Etkinlikler yükleniyor:",
+        "search_placeholder": "Kişi veya durum ara"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Paylaşılan bilgiler",
+      "info_header": {
+        "description": "paylaşılan öğeler"
+      },
+      "row_description": "Paylaşılan veriler",
+      "detail_title": "Paylaşılan veriler"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Reddedilen bilgiler",
+      "info_header": {
+        "description": "reddedilen öğeler"
+      },
+      "row_description": "Veri paylaşımı reddedildi",
+      "detail_title": "Veri paylaşımı reddedildi"
+    },
+    "VC issue": {
+      "info_list_title": "Düzenlenen bilgiler",
+      "revealed_info_title": "Düzenlenen bilgiler",
+      "info_header": {
+        "description": "düzenlenen öğeler"
+      },
+      "row_description": "Kimlik bilgisi alındı",
+      "detail_title": "Yeni kimlik bilgisi cüzdanına eklendi",
+      "description": [
+        "Artık",
+        "kartınızı resmi paylaşım amacıyla kullanabilirsiniz."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Reddedilen bilgiler",
+      "revealed_info_title": "Reddedilen bilgiler",
+      "info_header": {
+        "description": "düzenlenmeyen öğeler"
+      },
+      "row_description": "Kimlik bilgisi reddedildi",
+      "detail_title": "Kimlik bilgisi cüzdanınıza eklenmedi",
+      "description": [
+        "Şunu kullanmayı reddettiniz:",
+        "resmî amaçlar için kart"
+      ]
+    },
+    "section_titles": {
+      "status": "Durum",
+      "purpose": "Amaç",
+      "credential_type": "Kimlik bilgisi türü",
+      "issued_information": "Düzenlenen bilgiler"
+    },
+    "contact_link": "Hakkında",
+    "credential_activities_link": "Kart etkinlikleri",
+    "credential_claims_link": "Beyanlarım",
+    "support_link": "Bir sorun mu var?"
+  },
+  "credential_details_title": "Kimlik bilgisi ayrıntıları",
+  "credentials_overview_title": "Kimlik bilgileri",
+  "credential_details_view_issued_by": "Düzenleyen",
+  "credentials_view_item_expires_on": "Son kullanma tarihi",
+  "swipe_delete_button_caption": "Sil",
+  "credential_offer_accepted_toast": "Kimlik bilgisi kaydedildi",
+  "settings_dropdown_item_text": "Ayarlar",
+  "settings_dropdown_item_accessibility_hint": "Ayarlar’a git",
+  "settings_title": "Ayarlar",
+  "account_title": "Hesap",
+  "settings_general_section_label": "Genel",
+  "settings_privacy_controls_section_label": "Gizlilik kontrolleri",
+  "settings_feedback_controls_section_label": "Geri bildirim kontrolleri",
+  "settings_logout_label": "Oturumu kapat",
+  "account_personal_section_label": "Kişisel",
+  "account_general_section_label": "Genel",
+  "account_personal_information_label": "Kişisel bilgiler",
+  "account_login_and_security_label": "Giriş ve güvenlik",
+  "account_biometric_login_label": "Biyometrik giriş",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Cüzdanı sil",
+  "age_derived_claims_title": "Yaş bazlı beyanlar",
+  "age_derived_claims_screen_title": "Yaş bazlı beyanlar",
+  "age_dervived_claims_screen_description": "Yaş bazlı beyanlar, tam yaşınızı açıklamadan yaşınızı kanıtlamanıza imkân tanır.",
+  "biometrics_title": "Biyometrik doğrulamayı etkinleştirmek istiyor musunuz?",
+  "biometrics_subtitle": "Yüz veya parmak iziyle hesabınıza daha hızlı ve kolay erişim sağlayın.",
+  "biometrics_description": "Sphereon biyometrik verilerinizi toplamaz. Bunlar yalnızca yerel olarak doğrulama için kullanılır.",
+  "biometrics_enable_text": "Şimdi etkinleştir",
+  "biometrics_disallow": "Belki sonra",
+  "onboarding_pid_security_model_title": "Hangi PID güvenlik modelini kullanmak istiyorsunuz?",
+  "onboarding_pid_security_model_subtitle": "Bu bir test/geliştirme seçeneğidir. Yeni bir cüzdan oluşturmadıkça daha sonra değiştirilemez.",
+  "onboarding_pid_security_model_secure_element": "Telefondaki güvenli öğe",
+  "onboarding_pid_security_model_remote_hardware": "Uzak HSM",
+  "onboarding_pid_security_model_mobile_operator": "Mobil operatör eSIM’i",
+  "onboarding_pid_security_model_eid_presentation": "Sunum sırasında eID kartını kullan",
+  "onboarding_pid_security_model_select": "Seç",
+  "authentication_pin_code_title": "PIN kodunu girin",
+  "authentication_pin_code_subtitle": "Onaylamak için PIN kodunuzu girin",
+  "qr_scanner_marker_title": "QR kodu tara",
+  "qr_scanner_marker_subtitle": "QR kodunu kamera görüş alanına yerleştirin",
+  "qr_scanner_qr_not_supported_message": "QR kodu desteklenmiyor. Başka bir kod deneyin.",
+  "qr_scanner_qr_no_longer_valid_message": "QR kodu artık geçerli değil. Yeni bir kod tarayın.",
+  "connection_details_view_details": "Ayrıntılar",
+  "action_confirm_label": "Onayla",
+  "action_continue_label": "Devam et",
+  "action_cancel_label": "İptal",
+  "action_decline_label": "Reddet",
+  "action_abort_label": "Durdur",
+  "action_accept_label": "Kabul et",
+  "action_sign_label": "İmzala",
+  "verification_code_title": "Doğrulama kodunu gir",
+  "verification_code_subtitle": "Kimlik bilgisi {{credentialName}} talep etmek için bir koda ihtiyacınız var.",
+  "verification_code_accessibility_label": "Doğrulama kodu",
+  "verification_code_accessibility_hint": "Doğrulama kodunu girin",
+  "verification_code_invalid_code_title": "Geçersiz doğrulama kodu",
+  "verification_code_invalid_code_details": "Bu doğru kod değildi. Yeni bir bağlantı isteyin veya QR kodunu tekrar tarayın.",
+  "verification_code_invalid_code_details_title": "Ek ayrıntılar",
+  "verification_code_invalid_code_message": "Geçersiz doğrulama kodu. Lütfen tekrar deneyin.",
+  "credential_details_info_tab_header_label": "Doğrulanmış bilgiler",
+  "credential_details_activity_tab_header_label": "Etkinlik",
+  "action_view_extra_details": "Ek ayrıntıları gör",
+  "action_ok_label": "Tamam, anladım",
+  "error_generic_title": "Bir hata oluştu",
+  "error_generic_message": "Lütfen bu uygulamanın geliştiricisiyle iletişime geçin.",
+  "error_details_generic_title": "Uygulama beklenmedik bir hatayla karşılaştı",
+  "error_details_generic_message": "Hata ayrıntıları:",
+  "oidc4vci_error_invalid_request": "Geçersiz istek",
+  "oidc4vci_error_invalid_client": "Geçersiz istemci",
+  "oidc4vci_error_invalid_grant": "Geçersiz yetkilendirme",
+  "oidc4vci_error_unauthorized_client": "Uygulama yetkilendirilmemiş",
+  "oidc4vci_error_unsupported_grant_type": "Desteklenmeyen yetkilendirme türü",
+  "oidc4vci_error_unsupported_invalid_scope": "Desteklenmeyen kapsam türü",
+  "oidc4vci_error_invalid_or_missing_proof": "Kimlik bilgisi geçersiz veya kanıt eksik",
+  "credential_select_type_title": "Kimlik bilgisi seç",
+  "credential_select_type_subtitle": "Düzenleyici {{issuerName}}, aşağıdaki kimlik bilgilerini düzenleyebilir. Cüzdanınıza almak istediğinizi seçin.",
+  "raw_credential_title": "Ham kimlik bilgisi",
+  "credential_details_subtitle": "Eklemek üzere olduğunuz kimlik bilgisine ilişkin bilgiler aşağıda gösterilmiştir.",
+  "contacts_overview_title": "Kişiler",
+  "contact_details_title": "Kişi",
+  "contact_identities_title": "Kimlikler",
+  "contact_activities_title": "Kişi etkinlikleri",
+  "contact_details_info_tab_header_label": "Ayrıntılar",
+  "contact_details_activity_tab_header_label": "Etkinlik",
+  "contact_details_identities_tab_header_label": "Kimlikler",
+  "intent_share_file_unable_to_receive_message": "Kimlik bilgisi alınamıyor",
+  "credential_activities_title": "Kart etkinlikleri",
+  "credential_delete_title": "Kimlik bilgisini sil",
+  "credential_delete_message": "Kimlik bilgisi {{credentialName}} gerçekten silinsin mi?",
+  "credential_deleted_success_toast": "Kimlik bilgisi silindi",
+  "credential_deleted_failed_toast": "Kimlik bilgisi silinemedi",
+  "contact_add_new_contact_detected_title": "Yeni kişi algılandı",
+  "contact_add_new_contact_detected_subtitle": "Bu kimlik bilgisi alışverişindeki diğer taraf henüz kişilerinizde değil. Alışverişi tamamlamak için bu yeni kişi için bir ad girmeniz gerekir.",
+  "contact_name_label": "Kişi adı",
+  "contact_name_placeholder": "Kişi adı",
+  "contact_name_invalid_message": "Lütfen geçerli bir kişi adı girin",
+  "contact_add_disclaimer": "Bu kişi, başlattığım bir kimlik bilgisi alışverişinin sonucu olarak oluşturulacaktır.",
+  "contact_delete_title": "Kişiyi sil",
+  "contact_delete_message": "Kişi {{contactName}} gerçekten silinsin mi?",
+  "contact_deleted_success_toast": "Kişi silindi",
+  "contact_deleted_failed_toast": "Kişi silinemedi",
+  "contact_add_success_toast": "Kişi oluşturuldu",
+  "contact_update_success_toast": "Kişi güncellendi",
+  "contact_add_no_consent_toast": "Onay olmadan kimlik bilgisi alışverişine devam edemezsiniz; Reddet düğmesini kullanın.",
+  "contact_add_cancel_title": "Gerçekten reddetmek istiyor musunuz?",
+  "contact_add_cancel_message": "Yeni bir tarafla kimlik bilgisi alışverişinde kişi eklemek zorunludur. Onaylarsanız tüm süreç iptal edilir.",
+  "onboarding_welcome_header": "Hoş geldiniz",
+  "onboarding_welcome_title": "Sphereon Cüzdan",
+  "onboarding_welcome_intro_body": "Akreditasyonlar, kimlik bilgileri, rozetler ve kimlik özniteliklerini alın ve paylaşın.\n\nBunlar üçüncü taraf düzenleyiciler tarafından dijital olarak imzalanır ve doğrulanır.",
+  "browser_open_title": "Tarayıcı açılıyor",
+  "browser_open_header": "Tarayıcı açılıyor",
+  "browser_open_auth_title": "Kimlik doğrulama gerekli",
+  "browser_open_auth_body": "Güvenilen taraf kimlik doğrulamanızı istiyor. Bu işlem için varsayılan tarayıcınız kullanılacaktır",
+  "browser_open_action_next_label": "Tarayıcıyı aç",
+  "action_next_label": "Sonraki",
+  "action_back_label": "Geri",
+  "action_go_label": "Git!",
+  "onboarding_welcome_store_body": "Üçüncü taraflarca düzenlenen kimlik bilgilerini şifrelenmiş olarak doğrudan cihazınıza kaydeder. Sadece sizin erişiminiz vardır.\n\nSphereon sunucularıyla iletişim kurulmaz, yalnızca yedekleme veya kurumsal işlevleri etkinleştirirseniz.",
+  "onboarding_welcome_share_body": "Üçüncü taraf doğrulayıcılara kimlik bilgileri sunmanıza imkân verir.\n\nYalnızca onay verdiğiniz bilgiler paylaşılır. Otomatik ifşa yoktur. Kontrol her zaman sizde kalır.",
+  "terms_of_service_terms_tab_header_label": "Şartlar ve koşullar",
+  "terms_of_service_privacy_tab_header_label": "Gizlilik politikası",
+  "terms_of_service_consent_terms_message": "Şartlar ve koşulları okudum ve kabul ediyorum.",
+  "terms_of_service_consent_privacy_message": "Gizlilik politikasını okudum ve kabul ediyorum.",
+  "terms_of_service_decline_title": "Hizmet şartlarını reddettiniz",
+  "terms_of_service_decline_message": "Reddettiniz, bu nedenle cüzdanın kurulumu tamamlanmadı. Sphereon Wallet uygulamasını cihazınızdan kaldırın veya cüzdanı tekrar açarak baştan başlayın.",
+  "terms_of_service_decline_action_caption": "Uygulamadan çık",
+  "terms_of_service_title": "Hizmet şartları",
+  "terms_of_service_subtitle": "Bu belge en son 5 Ocak 2023 tarihinde güncellendi.",
+  "pid_security_model_warning": "EID yalnızca sunum sırasında yüklenecektir",
+  "import_data_auth_title": "Sphereon PIN’inizi girin",
+  "import_data_auth_next": "Devam et",
+  "import_data_auth_biometrics_title": "Biyometri ile doğrula",
+  "import_data_auth_failure_title": "Biyometrik doğrulama başarısız, tanınmadınız",
+  "import_data_auth_failure_description": "Bu noktada devam edemezsiniz. Görevi tamamlamanın tek yolu yeniden başlamaktır. Uygulamayı kapatıp tekrar açarak kurulumu yeniden başlatın.",
+  "import_data_auth_step_title": "Sphereon PIN’inizi girin",
+  "import_data_consent_button_accept": "Evet, benim",
+  "import_data_consent_button_decline": "Her şey doğru değil",
+  "import_data_loader_step_title": "Bir saniye",
+  "import_data_loader_step_subtitle": "Kişisel bilgileriniz alınıyor.",
+  "import_data_final_step_title": "Bilgileriniz içe aktarıldı. Doğru mu?",
+  "import_data_setup_complete_title": "Kurulum tamamlandı",
+  "incorrect_data_title": "Bazı bilgileriniz yanlış mı?",
+  "incorrect_data_description": "Kişisel bilgiler yanlışsa sorunlara neden olabilir. Bu verileri eklemeyin.",
+  "incorrect_data_bullet_content_heading": "Ne yapabilirsiniz",
+  "incorrect_data_bullet_content": "Bilgilerinizi değiştirmek için belediyenizle iletişime geçin.\nBelediyenizden güncellemeyi onaylayan bir mesaj bekleyin.\nKişisel bilgileri yeniden eklemeyi deneyin. Bunları katalogda bulabilirsiniz.",
+  "incorrect_data_back": "Geri",
+  "incorrect_data_dont_add_info": "Bu bilgileri ekleme",
+  "incorrect_data_after_bullet_heading": "Eğer size ait değilse",
+  "incorrect_data_after_bullet_content": "Bilgiler size ait değilse, cüzdanınıza eklemeyin.",
+  "onboarding_esim_enter_details_title": "eSIM bilgilerini gir",
+  "onboarding_esim_enter_details_description": "Telefon numaranızı ve eşleştirme kodunu girin",
+  "onboarding_esim_enter_details_msisdn_label": "Telefon numarası (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Telefon numarası girin",
+  "onboarding_esim_enter_details_coupling_code_label": "Eşleştirme kodu",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Eşleştirme kodunu girin",
+  "onboarding_esim_enter_details_continue": "Devam et",
+  "onboarding_esim_enter_details_back": "Geri",
+  "onboarding_machine_activate_esim_error_title": "eSIM etkinleştirme başarısız",
+  "onboarding_esim_error_couple_rp_failed": "eSIM etkinleştirmede RP eşleştirme adımı başarısız",
+  "onboarding_esim_error_bindkey_failed": "eSIM etkinleştirmede bind-key adımı başarısız",
+  "onboarding_esim_error_create_link_failed": "eSIM etkinleştirmede create-link adımı başarısız",
+  "onboarding_esim_error_check_sscd_failed": "eSIM etkinleştirmede check-sscd adımı başarısız",
+  "onboarding_esim_error_enable_sscd_failed": "eSIM etkinleştirmede enable-sscd adımı başarısız",
+  "onboarding_esim_error_cleanup_keys_failed": "eSIM etkinleştirmede cleanup-keys adımı başarısız",
+  "import_data_title": "Kişisel verileri içe aktar",
+  "onboarding_complete_title": "Hazır!",
+  "onboarding_complete_description": "Kimlik bilgilerini, kimlik detaylarını ve daha fazlasını almak ve paylaşmak için hazırsınız.",
+  "onboarding_complete_next": "Cüzdanı kullanmaya başla",
+  "scan_card_step_subtitle": "Kartı telefonun arkasına tutun ve Okumayı Başlat’a basın.",
+  "scan_card_step_title": "Verileri içe aktarmak için tara",
+  "personal_data_title": "Kişisel bilgileri gir",
+  "personal_data_subtitle": "Adınızı ve e-postanızı girerek cüzdanınızı kişiselleştirin. Size kendi beyanlı bir kimlik belgesi oluşturacağız. Verdiğiniz bilgiler cihazınızdan çıkmaz!",
+  "first_name_label": "Ad",
+  "first_name_placeholder": "Ad",
+  "first_name_invalid_message": "Geçerli bir ad girin",
+  "last_name_label": "Soyad",
+  "last_name_placeholder": "Soyad",
+  "last_name_invalid_message": "Geçerli bir soyad girin",
+  "email_address_label": "E-posta adresi",
+  "email_address_placeholder": "E-posta adresi",
+  "email_address_invalid_message": "Geçerli bir e-posta adresi girin",
+  "pin_code_choose_pin_code_title": "PIN’inizi seçin",
+  "pin_code_choose_pin_code_subtitle": "Cüzdanınızı korumak için bir PIN seçin.",
+  "pin_code_confirm_pin_code_title": "PIN’inizi onaylayın",
+  "pin_code_confirm_pin_code_subtitle": "İlkini onaylamak için PIN’inizi yeniden girin.",
+  "pin_code_accessibility_label": "PIN kodu",
+  "pin_code_accessibility_hint": "PIN kodunuzu girin",
+  "pin_code_invalid_code_message": "PIN kodları eşleşmiyor. Tekrar deneyin.",
+  "pin_code_attempts_left_message": "Kalan deneme:",
+  "lock_title": "Sphereon Cüzdan’a giriş",
+  "lock_subtitle": "PIN kodunuzu girin.",
+  "lock_emergency_button_caption": "Acil arama",
+  "show_raw_credential_button_caption": "Ham kimlik bilgisi",
+  "onboard_create_wallet_step_title": "Cüzdan oluştur",
+  "onboard_secure_wallet_step_title": "Cüzdanı güvene al",
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "Başlangıç",
+      "description": "Her bölüm yalnızca birkaç dakika sürer.",
+      "accessibility_label": "Başlangıç. Kurulum ilerlemesi şu anda adımda"
+    },
+    "secure_wallet": {
+      "title": "Yarısına geldiniz",
+      "description": null,
+      "accessibility_label": "Neredeyse bitti. Kurulum ilerlemesi şu anda adımda"
+    },
+    "import_personal_data": {
+      "title": "Neredeyse bitti, son bölüm",
+      "description": null,
+      "accessibility_label": "Neredeyse bitti, son bölüm. Kurulum ilerlemesi şu anda adımda"
+    }
+  },
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "adım",
+      "of": " / ",
+      "and_final": "ve son"
+    },
+    "create_wallet": {
+      "title": "Cüzdan oluştur",
+      "description": "Adınız, e-posta adresiniz ve ikamet ettiğiniz ülke ile bir hesap oluşturun.",
+      "accessibility": {
+        "button_hint": "Cüzdan oluşturmayı başlat"
+      }
+    },
+    "secure_wallet": {
+      "title": "Cüzdanı güvene al",
+      "description": "Benzersiz bir Sphereon PIN oluşturun ve güvende tutun. İsteğe bağlı olarak biyometrik girişi etkinleştirebilirsiniz.",
+      "accessibility": {
+        "button_hint": "Cüzdanı güvene almayı başlat"
+      }
+    },
+    "import_personal_data": {
+      "title": "Kişisel verileri içe aktar",
+      "description": {
+        "default": "Kişisel verilerinizi ulusal eID sağlayıcınızdan içe aktarın.",
+        "de": "Ausweis eID kartınızı tarayın. Kartınızı ve PIN’inizi hazır tutun."
+      },
+      "accessibility": {
+        "button_hint": "Kişisel veri içe aktarmayı başlat"
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Sphereon Cüzdan’a hoş geldiniz",
+      "description": "Akreditasyonlar, kimlik bilgileri, rozetler ve kimlik ayrıntılarını alın ve paylaşın.",
+      "button_caption": "Başla",
+      "accessibility": {
+        "hint": "Devam etmek için sola kaydırın",
+        "label": "Sphereon Cüzdan’a hoş geldiniz"
+      }
+    },
+    "enter_name": {
+      "title": "Adınızı girin",
+      "text_field": {
+        "label": "Ad",
+        "placeholder": "Adınız",
+        "accessibility": {
+          "label": "Adınızı girin"
+        },
+        "errors": {
+          "missing": "Lütfen bir ad girin"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "E-posta adresinizi girin",
+      "text_field": {
+        "label": "E-posta",
+        "placeholder": "E-posta adresiniz",
+        "accessibility": {
+          "label": "E-posta adresinizi girin"
+        },
+        "errors": {
+          "missing": "Lütfen bir e-posta adresi girin",
+          "invalid": "Lütfen geçerli bir e-posta adresi girin"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "İkamet ettiğiniz ülke",
+      "select": {
+        "label": "Ülke",
+        "accessibility": {
+          "select": "Seçilen ülke"
+        },
+        "placeholder": "Ülkeniz",
+        "errors": {
+          "missing": "Lütfen bir ülke seçin"
+        }
+      },
+      "modal": {
+        "title": "Ülke seç",
+        "search_placeholder": "Ara"
+      }
+    },
+    "enter_pin": {
+      "title": "6 haneli Sphereon PIN’inizi belirleyin",
+      "requirements": {
+        "title": "PIN kodunuz şunları içermemelidir:",
+        "not_same_digits": "aynı rakamlar",
+        "not_sequential_digits": "ardışık rakamlar",
+        "invalid_example_prefix": "Örn: ",
+        "invalid_example_delimiter": " veya "
+      },
+      "success": "Güçlü PIN — lütfen güvenli bir yere not edin",
+      "button_caption": "PIN belirle"
+    },
+    "verify_pin": {
+      "title": "Sphereon PIN’inizi tekrar girin",
+      "match": "PIN’ler eşleşiyor. Devam edebilirsiniz!",
+      "mismatch": "PIN’ler eşleşmiyor. Tekrar deneyelim.",
+      "button_caption": "PIN’i tekrar gir"
+    },
+    "terms_and_privacy": {
+      "title": "Şartlar ve gizlilik",
+      "description": "Kişisel verilerinizi güvenli ve gizli bir şekilde işliyoruz.",
+      "features": {
+        "secure_data_storage": "Güvenli veri depolama",
+        "strict_access_control": "Sıkı erişim kontrolü",
+        "selective_data_sharing": "Seçici veri paylaşımı",
+        "strong_privacy_compliance": "Güçlü gizlilik uyumu",
+        "no_3rdparty_data_sharing": "Üçüncü taraflarla veri paylaşımı yok",
+        "no_tracking_profiling": "İzleme veya profilleme yok"
+      },
+      "footer": {
+        "prefix": "Tüm ayrıntıları okumak ister misiniz? Bakınız:",
+        "links": {
+          "terms": "Kullanım Şartları",
+          "privacy": "Gizlilik Politikası",
+          "delimiter": "ve"
+        }
+      },
+      "button_caption": "Şartları ve Gizliliği kabul et"
+    },
+    "read_terms_and_privacy": {
+      "title": "Kullanım şartları",
+      "description": "Bu belge en son güncellendi:",
+      "terms": {
+        "tab_title": "Şartlar ve koşullar",
+        "text": ""
+      },
+      "privacy": {
+        "tab_title": "Gizlilik politikası",
+        "text": ""
+      }
+    },
+    "import_data_consent": {
+      "title": "Bu bilgileri eklemek istiyor musunuz?",
+      "subtitle": "Bu kişisel bilgiler cüzdanınızda önemlidir. Eklemek istediğinize emin misiniz?",
+      "pid_provider_title": "PID sağlayıcı",
+      "pid_provider_subheading": "Kişisel kimlik verileri sağlayıcı",
+      "offered_data_title": "Sunulan veriler",
+      "labels": {
+        "given_name": "Ad",
+        "family_name": "Soyad",
+        "also_known_as": "Diğer ad",
+        "gender": "Cinsiyet",
+        "birthdate": "Doğum tarihi",
+        "birthplace": "Doğum yeri",
+        "nationality": "Uyruk",
+        "address": "Adres"
+      },
+      "button_accept": "Evet, ekle",
+      "button_decline": "Reddet"
+    },
+    "import_scan_card": {
+      "title": "Ausweis kartınızı hazır tutun",
+      "description": "Öncelikle Ausweis kartınızın eID PIN’ini girin.",
+      "nfc_step_title": "Kartı telefonun arkasına tutun",
+      "button_caption": "eID PIN girişini başlat",
+      "nfc_caption": "NFC tarayıcı yakında etkinleştirilecek...",
+      "card_locked_message": "Kartınız kilitlendi.",
+      "incorrect_pin_message": "Hatalı PIN. Lütfen tekrar deneyin.",
+      "unknown_scan_card_error_message": "Bilinmeyen bir hata oluştu."
+    }
+  },
+  "onboard_summary_title": "Girdiğiniz bilgiler",
+  "onboard_summary_subtitle": "Bitir’e basarak girdiğiniz verileri onaylıyorsunuz ve giriş ekranına yönlendirileceksiniz. Kişisel bilgiler ayarlardan değiştirilebilir.",
+  "onboard_summary_info_tab_header_label": "Bilgileriniz",
+  "onboard_summary_button_caption": "Bitir ve cüzdana git",
+  "credentials_required_title": "Gerekli kimlik bilgileri",
+  "credentials_required_subtitle": "{{verifierName}} doğrulama için aşağıdaki bilgileri istiyor.",
+  "credentials_required_selected_label": "seçildi",
+  "credentials_required_available_label": "mevcut",
+  "credentials_required_credential_select_label": "Kimlik bilgisi seç",
+  "credentials_select_title": "Kimlik bilgilerini seç",
+  "credentials_select_subtitle": "Bu isteği karşılayabilecek birden fazla kimlik bilginiz var. Doğrulayıcıya göndermek için birini seçin.",
+  "credentials_required_checking_label": "...kontrol ediliyor",
+  "credentials_required_no_available_label": "Uygun kimlik bilgisi yok",
+  "credentials_required_no_available_additional_label": "Doğrulayıcıyla paylaşabileceğiniz bir kimlik bilginiz yok. Yeni kimlik bilgisi almak için bir düzenleyiciyle iletişime geçin.",
+  "action_share_label": "Paylaş",
+  "credentials_share_success_toast_title": "Başarıyla paylaşıldı",
+  "credentials_share_success_toast_message": "Seçilen kimlik bilgilerini {{verifierName}} ile başarıyla paylaştınız.",
+  "action_select_label": "Seç",
+  "action_onboarding_setup_message": "Cüzdan kuruluyor...",
+  "action_getting_information_message": "Bilgiler alınıyor...",
+  "action_sharing_credentials_message": "Kimlik bilgileri paylaşılıyor...",
+  "profile_logout_action_caption": "Oturumu kapat",
+  "action_getting_credentials_message": "Kimlik bilgisi alınıyor...",
+  "credentials_share_failed_toast_message": "Kimlik bilgileri sunulamadı. Hata: {{errorMessage}}.",
+  "information_retrieve_failed_toast_message": "Bilgiler alınamadı. Hata: {{errorMessage}}.",
+  "credential_verification_failed_message": "Kimlik bilgisi doğrulaması başarısız oldu.",
+  "credential_offer_title": "Kimlik bilgisi teklifi",
+  "credential_sign_title": "İmza talep edildi",
+  "profile_delete_wallet_action_caption": "Cüzdanı sil",
+  "profile_delete_wallet_action_title": "Cüzdanınızı gerçekten silmek istiyor musunuz?",
+  "profile_delete_wallet_action_subtitle": "Cüzdanınız silinsin mi: {{userName}}?",
+  "credential_status_never_expires_date_label": "Asla sona ermeyecek",
+  "oid4vci_machine_initiation_error_title": "OID4VCI sağlayıcısını başlat",
+  "oid4vci_machine_credential_selection_error_title": "Kimlik bilgisi seçimi",
+  "oid4vci_machine_retrieve_contact_error_title": "Kişiyi getir",
+  "oid4vci_machine_retrieve_credentials_error_title": "Kimlik bilgilerini getir",
+  "oid4vci_machine_verify_credentials_error_title": "Kimlik bilgilerini doğrula",
+  "oid4vci_machine_add_contact_identity_error_title": "Kişi kimliği ekle",
+  "oid4vci_machine_store_credential_branding_error_title": "Kimlik bilgisi markasını kaydet",
+  "oid4vci_machine_store_credential_error_title": "Kimlik bilgisini kaydet",
+  "emergency_send_button_caption": "Hemen gönder!",
+  "emergency_abort_button_caption": "Alarmı iptal et",
+  "emergency_title": "Acil durum alarmı gönder",
+  "emergency_subtitle": "Acil çağrınız {{emergencyAlertDelay}} saniye içinde gönderilecek veya 'Hemen gönder!' düğmesine basarak hemen gönderebilirsiniz.",
+  "siopV2_machine_identifier_error_title": "Tanımlayıcı alınıyor",
+  "siopV2_machine_create_config_error_title": "SiopV2 yapılandırması oluşturuluyor",
+  "siopV2_machine_get_request_error_title": "SiopV2 isteği alınıyor",
+  "siopV2_machine_retrieve_contact_error_title": "Kişi getir",
+  "siopV2_machine_add_contact_identity_error_title": "Kişi kimliği ekle",
+  "siopV2_machine_send_response_error_title": "SiopV2 yanıtı gönderiliyor",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Federasyon güveni alınıyor",
+  "action_view_all_label": "Tümünü gör",
+  "filter_all_label": "Tümünü gör",
+  "filter_other_label": "Diğer",
+  "filter_new_label": "Yeni",
+  "search_field_default_caption": "Ara",
+  "credential_catalog_most_relevant_header_label": "En ilgili kimlik bilgileri",
+  "credential_catalog_discover_header_label": "Daha fazla kimlik bilgisi keşfet",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Ulusal Ausweis eID sağlayıcısından kişisel bilgileriniz.",
+  "ausweis_eid_preview_card_issuer": "Bundesdruckerei (Almanya)",
+  "ausweis_eid_modal_title": "Ausweis eID verilerini al",
+  "ausweis_eid_modal_description": "Kişisel Kimlik Verileri cüzdanınızın temelidir ve diğer kimlik bilgilerini almak için önemlidir.\n\nBu bilgileri cüzdanınıza eklemek istediğinizden emin misiniz?",
+  "ausweis_eid_modal_accept_label": "Kişisel verileri içe aktar",
+  "action_maybe_later_label": "Belki sonra",
+  "item_not_yet_available_message": "Bu öğe henüz mevcut değil.",
+  "onboarding_machine_store_credential_error_title": "Kimlik bilgisi kaydet",
+  "onboarding_machine_retrieve_credentials_error_title": "Kimlik bilgilerini getir",
+  "onboarding_skip_credential_import_step3_caption": "Bu bölümü daha sonra tamamlayacağım",
+  "onboarding_store_credential_branding_error_title": "Kimlik bilgisi markasını kaydet",
+  "share_credential_c2_flow_title": "Aşağıdaki bilgiler paylaşılacak",
+  "new_contact_add_new_contact_detected_title": "{{partyName}} tanıyor musunuz?",
+  "new_contact_add_new_contact_detected_subtitle": "Bu, bu tarafla ilk etkileşimdir. Devam etmek istiyor musunuz?",
+  "federation_view_untrusted_title": "{{partyName}} düşük güven seviyesine sahip",
+  "federation_view_trusted_title": "{{partyName}} yüksek güven seviyesine sahip",
+  "federation_view_untrusted_description": "Bu taraf cüzdanın güvendiği bir federasyona ait değil",
+  "federation_view_trusted_description": "Bu taraf cüzdanın güvendiği bir federasyona ait",
+  "new_contact_add_new_contact_continue_caption": "Evet, devam et",
+  "new_contact_add_new_contact_abort_caption": "Hayır, iptal et",
+  "new_contact_add_new_contact_abort_cancel_caption": "Hayır, vazgeç",
+  "new_contact_add_new_contact_abort_continue_caption": "Evet, vazgeçmek istiyorum",
+  "new_contact_add_new_contact_create_title": "Kişi takma adı",
+  "new_contact_add_new_contact_create_description": "Aşağıdaki alana yeni bir ad yazarak kişi için takma ad oluşturabilirsiniz.",
+  "new_contact_add_new_contact_abort_title": "Gerçekten vazgeçmek istiyor musunuz?",
+  "new_contact_add_new_contact_abort_description": "Vazgeçerseniz {{partyName}} ile etkileşim sona erecek.",
+  "new_contact_add_new_contact_contact_details_description_label": "Açıklama",
+  "new_contact_add_new_contact_contact_details_name_label": "Ad",
+  "new_contact_add_new_contact_contact_details_website_label": "Web sitesi",
+  "new_contact_add_new_contact_contact_details_tos_label": "Kullanım şartları",
+  "new_contact_add_new_contact_contact_details_policy_label": "Gizlilik politikası",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Kişiler",
+  "new_contact_add_new_contact_low_level_trust_title": "Gerçekten devam etmek istiyor musunuz?",
+  "new_contact_add_new_contact_low_level_trust_description": "Düşük güven seviyesine sahip bir tarafla etkileşimde bulunacaksınız.",
+  "present_qr_code_screen_header_title": "QR kodu sun",
+  "present_qr_code_screen_subtitle": "QR kodunu karşı tarafa gösterin, böylece tarayabilir.",
+  "present_qr_code_dropdown_item_text": "QR kodu sun",
+  "present_qr_code_dropdown_item_accessibility_hint": "QR kodunu gösteren ekrana git",
+  "terms_and_conditions_agreement_message": "Bu şartlar ve koşullar (\"Sözleşme\"), \"Sphereon Wallet\" mobil uygulamasının (\"Mobil Uygulama\" veya \"Hizmet\") ve onunla ilgili tüm ürün ve hizmetlerin (topluca \"Hizmetler\") kullanımına ilişkin genel şartları belirler.\n\nBu Sözleşme, siz (\"Kullanıcı\", \"siz\" veya \"sizin\") ile Mobil Uygulamanın geliştiricisi olarak Hollanda’da kurulmuş Sphereon B.V. (\"Operatör\", \"biz\", \"bize\" veya \"bizim\") arasında yasal olarak bağlayıcıdır.\n\nBu sözleşmeyi bir işletme veya başka bir tüzel kişi adına imzalıyorsanız, o kurumu bu sözleşmeye bağlama yetkisine sahip olduğunuzu beyan edersiniz. Bu durumda \"Kullanıcı\", \"siz\" veya \"sizin\" terimleri o kuruma atıfta bulunur. Bu tür bir yetkiniz yoksa veya bu sözleşmenin şartlarını kabul etmiyorsanız, bu sözleşmeyi kabul etmemeli ve Mobil Uygulama ile Hizmetlere erişmemeli veya bunları kullanmamalısınız. Mobil Uygulamaya ve Hizmetlere erişerek ve bunları kullanarak, bu Sözleşmeyi okuduğunuzu, anladığınızı ve şartlarına bağlı kalmayı kabul ettiğinizi kabul etmiş olursunuz. Bu Sözleşmenin elektronik olduğunu ve fiziksel olarak imzalanmadığını, ancak sizinle Operatör arasında bir sözleşme olduğunu ve Mobil Uygulama ile Hizmetlerin kullanımınızı düzenlediğini kabul edersiniz.\n\nDiğer kaynaklara bağlantılar\n\nMobil Uygulama ve Hizmetler, başka kaynaklara (web siteleri, mobil uygulamalar vb.) bağlantılar içerebilir; ancak bu, burada açıkça belirtilmedikçe, herhangi bir onay, ilişki, sponsor, tavsiye veya bağlılık anlamına gelmez. Hiçbir işletmenin veya bireyin sunduğu içerikleri incelemekten veya değerlendirmekten sorumlu değiliz ve bunların tekliflerini garanti etmiyoruz. Üçüncü tarafların eylemleri, ürünleri, hizmetleri ve içerikleri için hiçbir sorumluluk veya yükümlülük üstlenmiyoruz. Mobil Uygulamadaki bir bağlantı aracılığıyla eriştiğiniz her kaynağın yasal açıklamalarını ve kullanım koşullarını dikkatle incelemelisiniz. Harici kaynaklara bağlanmak kendi sorumluluğunuzdadır.\n\nFikri mülkiyet hakları\n\n(\"Fikri Mülkiyet Hakları\"), telif hakları ve ilgili haklar, ticari markalar, tasarımlar, patentler, icatlar, itibar ve haksız rekabete karşı dava hakkı, buluş hakları, kullanım hakları ve tüm diğer fikri mülkiyet hakları da dâhil olmak üzere, yasa, örf ve âdet hukuku veya hakkaniyet tarafından verilen mevcut ve gelecekteki tüm hakları ifade eder. Bunlar kayıtlı olsun ya da olmasın, başvuru ve öncelik talep etme hakkını, benzer veya eşdeğer hakları veya koruma biçimlerini ve dünyanın herhangi bir yerinde şu anda veya gelecekte var olan tüm fikri faaliyetlerin sonuçlarını içerir.\n\nBu Sözleşme, Operatör veya üçüncü taraflara ait hiçbir fikri mülkiyet hakkını size devretmez; bu tür tüm haklar, unvanlar ve menfaatler yalnızca Operatörde kalır.\n\nMobil Uygulama ve Hizmetlerle bağlantılı olarak kullanılan tüm ticari markalar, hizmet markaları, grafikler ve logolar, Operatörün veya lisans verenlerinin ticari markaları veya tescilli ticari markalarıdır. Mobil Uygulama ve Hizmetlerle bağlantılı olarak kullanılan diğer ticari markalar, hizmet markaları, grafikler ve logolar üçüncü tarafların ticari markaları olabilir.\n\nMobil Uygulama ve Hizmetleri kullanmanız size Operatör veya üçüncü tarafların herhangi bir ticari markasını çoğaltma veya başka şekilde kullanma hakkı veya lisansı vermez.\n\nSorumluluğun sınırlanması\n\nYürürlükteki kanunların izin verdiği azami ölçüde, hiçbir durumda Operatör, bağlı kuruluşları, yöneticileri, çalışanları, temsilcileri, tedarikçileri veya lisans verenleri; doğrudan veya dolaylı, tesadüfi, özel, cezai, örnek niteliğinde veya sonuç olarak ortaya çıkan zararlar (kâr, gelir, satış, itibar, içerik kullanımı, iş üzerindeki etkiler, işin kesintiye uğraması, beklenen tasarruf kaybı veya iş fırsatı kaybı dahil ancak bunlarla sınırlı olmamak üzere) nedeniyle hiçbir kişiye karşı sorumlu tutulamaz. Bu, sorumlu tarafın bu tür zararların olasılığından haberdar edilmiş veya öngörmüş olması durumunda da geçerlidir.\n\nYürürlükteki kanunların izin verdiği azami ölçüde, Operatörün ve bağlı kuruluşlarının, yöneticilerinin, çalışanlarının, temsilcilerinin, tedarikçilerinin ve lisans verenlerinin Hizmetlerle ilgili toplam sorumluluğu, bir ABD doları veya sizden Operatöre, sorumluluk doğuran ilk olaydan önceki bir aylık süre içinde fiilen ödenmiş tutardan hangisi daha büyükse onunla sınırlıdır. Bu sınırlamalar ve istisnalar, bu çözüm sizi tamamen tazmin etmese veya esas amacını yerine getirmese dahi geçerlidir.\n\nTazminat\n\nOperatörü ve bağlı kuruluşlarını, yöneticilerini, çalışanlarını, temsilcilerini, tedarikçilerini ve lisans verenlerini, içeriğinizden, Mobil Uygulama ve Hizmetleri kullanımınızdan veya sizin kasıtlı kötü niyetli davranışınızdan kaynaklanan veya bunlarla ilgili herhangi bir üçüncü taraf iddiası, talebi, davası, anlaşmazlığı veya talebinden kaynaklanan her türlü yükümlülük, kayıp, zarar veya masraftan (makul avukat ücretleri dâhil) tazmin etmeyi ve zararsız tutmayı kabul edersiniz.\n\nDeğişiklikler ve eklemeler\n\nOperatör, bu Sözleşmeyi veya Mobil Uygulama ve Hizmetlerle ilgili şartlarını, kendi takdirine bağlı olarak, istediği zaman değiştirme hakkını saklı tutar. Bunu yaptığımızda, bu sayfanın altındaki güncellenmiş tarihi değiştireceğiz. Ayrıca bize verdiğiniz iletişim bilgileri üzerinden bildirimde bulunmak gibi kendi takdirimize bağlı olarak sizi başka yollarla da bilgilendirebiliriz. Kullanıcı, bu şartların içeriğini düzenli olarak kontrol etmelidir.\n\nGözden geçirilmiş bu Sözleşmenin güncellenmiş bir sürümü, aksi belirtilmedikçe, yayınlandıktan hemen sonra yürürlüğe girer. Revize edilmiş Sözleşmeden sonra Mobil Uygulama ve Hizmetleri kullanmaya devam etmeniz, bu değişiklikleri kabul ettiğiniz anlamına gelir.\n\nBu şartların kabulü\n\nBu Sözleşmeyi okuduğunuzu ve tüm şartlarını kabul ettiğinizi onaylıyorsunuz. Mobil Uygulama ve Hizmetlere erişerek ve bunları kullanarak bu Sözleşmeye bağlı kalmayı kabul ediyorsunuz. Bu Sözleşmenin şartlarına uymayı kabul etmiyorsanız, Mobil Uygulama ve/veya Hizmetlere erişme veya bunları kullanma yetkiniz yoktur.\n\nİletişim\n\nBu Sözleşme ile ilgili herhangi bir sorunuz, endişeniz veya şikâyetiniz varsa, lütfen şu adresten bize ulaşın: support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereon size \\\"Sphereon Wallet\\\" mobil uygulamasını (\\\"App\\\") sağlar; bunu mobil cihazınıza indirip kurabilirsiniz.\n\nKişisel verilerin korunması Sphereon için çok önemlidir. App kullanılırken kişisel verilerin toplanıp toplanmadığı ve hangi amaçla işlendiği aşağıdaki veri koruma bildirisinde açıklanmıştır. Bu bağlamda \\\"işleme\\\", verilerin toplanması, kaydedilmesi, saklanması, iletilmesi, sunulması ve silinmesi gibi her türlü kullanımı ifade eder.\n\nKişisel veriler yalnızca kullanıcıyla iletişim için gerekli olduğu ölçüde işlenir. Veri minimizasyonu ilkesine uyarız ve kişisel verilerin korunması ve veri güvenliği için geçerli tüm yasal hükümlere riayet ederiz. Özellikle, yalnızca yasal bir dayanak varsa işlenir.\n\nVeri işlemenin yasal dayanağı, AB Genel Veri Koruma Tüzüğü’dür (GDPR). Özellikle: AB 2016/679 sayılı Yönetmeliğin 6. madde 1 (a), 7. madde, 6. madde 1 (b) ve (f) ve 6. madde 1 (c) bentleri (bundan böyle \\\"GDPR\\\").\n\nI. Sorumlunun adı ve iletişim bilgileri\nGDPR madde 4 anlamında kişisel verilerin işlenmesinden sorumlu kişi:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nHollanda\ninfo@sphereon.com\n..."
+}

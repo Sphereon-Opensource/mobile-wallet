@@ -1,0 +1,615 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "Escàner de codi QR",
+      "activities": "Fil d’activitats",
+      "home": "Llista de credencials",
+      "credential_catalog": "Catàleg de credencials",
+      "contacts": "Llista de contactes"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "Contacte desconegut",
+      "credential": "Credencial desconeguda",
+      "credential_type": "Tipus de credencial desconegut",
+      "purpose": "Propòsit desconegut",
+      "issuer": "Emissor desconegut",
+      "type": "Tipus d’activitat desconeguda",
+      "date": "Data desconeguda",
+      "activity": "Activitat desconeguda"
+    },
+    "feed": {
+      "title": "Fil d’activitats",
+      "list": {
+        "title": "Totes les activitats",
+        "loading": "Carregant activitats",
+        "search_placeholder": "Cerca contacte, targeta o estat",
+        "empty_state": {
+          "title": "Sense activitats",
+          "subtitle": "Actualment no tens activitats.\nApareixeran automàticament aquí."
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "Totes les activitats amb",
+        "loading": "Carregant activitats per a",
+        "search_placeholder": "Cerca targeta o estat"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "Totes les activitats de",
+        "loading": "Carregant activitats per a",
+        "search_placeholder": "Cerca contacte o estat"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "Informació compartida",
+      "info_header": {
+        "description": "elements compartits"
+      },
+      "row_description": "Dades compartides",
+      "detail_title": "Dades compartides"
+    },
+    "VC share decline": {
+      "revealed_info_title": "Informació rebutjada",
+      "info_header": {
+        "description": "elements rebutjats"
+      },
+      "row_description": "Compartició de dades rebutjada",
+      "detail_title": "Compartició de dades rebutjada"
+    },
+    "VC issue": {
+      "info_list_title": "Informació emesa",
+      "revealed_info_title": "Informació emesa",
+      "info_header": {
+        "description": "elements emesos"
+      },
+      "row_description": "Credencial rebuda",
+      "detail_title": "Nova credencial afegida a la teva cartera",
+      "description": [
+        "Ara pots utilitzar la teva",
+        "targeta per a propòsits oficials de compartició."
+      ]
+    },
+    "VC issue decline": {
+      "info_list_title": "Informació rebutjada",
+      "revealed_info_title": "Informació rebutjada",
+      "info_header": {
+        "description": "elements no emesos"
+      },
+      "row_description": "Rebuda de credencial rebutjada",
+      "detail_title": "La credencial no s’ha afegit a la teva cartera",
+      "description": [
+        "Has rebutjat utilitzar la",
+        "targeta per a propòsits oficials."
+      ]
+    },
+    "section_titles": {
+      "status": "Estat",
+      "purpose": "Propòsit",
+      "credential_type": "Tipus de credencial",
+      "issued_information": "Informació emesa"
+    },
+    "contact_link": "Quant a",
+    "credential_activities_link": "Activitats de la targeta",
+    "credential_claims_link": "Les meves declaracions",
+    "support_link": "Hi ha algun problema?"
+  },
+  "credential_details_title": "Detalls de la credencial",
+  "credentials_overview_title": "Credencials",
+  "credential_details_view_issued_by": "Emès per",
+  "credentials_view_item_expires_on": "Caduca el",
+  "swipe_delete_button_caption": "Eliminar",
+  "credential_offer_accepted_toast": "Credencial desada",
+  "settings_dropdown_item_text": "Configuració",
+  "settings_dropdown_item_accessibility_hint": "Anar a configuració",
+  "settings_title": "Configuració",
+  "account_title": "Compte",
+  "settings_general_section_label": "General",
+  "settings_privacy_controls_section_label": "Controls de privacitat",
+  "settings_feedback_controls_section_label": "Controls de comentaris",
+  "settings_logout_label": "Tancar sessió",
+  "account_personal_section_label": "Personal",
+  "account_general_section_label": "General",
+  "account_personal_information_label": "Informació personal",
+  "account_login_and_security_label": "Inici de sessió i seguretat",
+  "account_biometric_login_label": "Inici de sessió biomètric",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "Eliminar cartera",
+  "age_derived_claims_title": "Declaracions derivades de l’edat",
+  "age_derived_claims_screen_title": "Declaracions derivades de l’edat",
+  "age_dervived_claims_screen_description": "Les declaracions d’edat et permeten demostrar la teva edat sense revelar l’edat exacta.",
+  "biometrics_title": "Vols activar l’autenticació biomètrica?",
+  "biometrics_subtitle": "Fes servir reconeixement facial o empremta digital per accedir al teu compte més ràpidament i fàcilment.",
+  "biometrics_description": "Sphereon no recull les teves dades biomètriques. Només s’utilitzen localment per a la verificació.",
+  "biometrics_enable_text": "Activar ara",
+  "biometrics_disallow": "Potser més tard",
+  "onboarding_pid_security_model_title": "Quin model de seguretat PID vols utilitzar?",
+  "onboarding_pid_security_model_subtitle": "Aquesta és una opció de prova/desenvolupament. No es pot canviar més endavant sense crear una nova cartera.",
+  "onboarding_pid_security_model_secure_element": "Element segur al telèfon",
+  "onboarding_pid_security_model_remote_hardware": "Mòdul de seguretat remot (HSM)",
+  "onboarding_pid_security_model_mobile_operator": "eSIM de l’operador mòbil",
+  "onboarding_pid_security_model_eid_presentation": "Utilitzar la targeta eID durant la presentació",
+  "onboarding_pid_security_model_select": "Seleccionar",
+  "authentication_pin_code_title": "Introdueix el teu PIN",
+  "authentication_pin_code_subtitle": "Per confirmar, introdueix el teu PIN",
+  "qr_scanner_marker_title": "Escanejar codi QR",
+  "qr_scanner_marker_subtitle": "Col·loca el codi QR dins el camp de visió de la càmera",
+  "qr_scanner_qr_not_supported_message": "Codi QR no suportat. Prova amb un altre.",
+  "qr_scanner_qr_no_longer_valid_message": "El codi QR ja no és vàlid. Escaneja’n un de nou.",
+  "connection_details_view_details": "Detalls",
+  "action_confirm_label": "Confirmar",
+  "action_continue_label": "Continuar",
+  "action_cancel_label": "Cancel·lar",
+  "action_decline_label": "Rebutjar",
+  "action_abort_label": "Avortar",
+  "action_accept_label": "Acceptar",
+  "action_sign_label": "Signar",
+  "verification_code_title": "Introdueix el teu\ncodi de verificació",
+  "verification_code_subtitle": "Necessites un codi per reclamar la credencial {{credentialName}}.",
+  "verification_code_accessibility_label": "Codi de verificació",
+  "verification_code_accessibility_hint": "Introdueix el codi de verificació",
+  "verification_code_invalid_code_title": "Codi de verificació incorrecte",
+  "verification_code_invalid_code_details": "Aquest no era el codi correcte. Sol·licita un nou enllaç o torna a escanejar el codi QR.",
+  "verification_code_invalid_code_details_title": "Detalls addicionals",
+  "verification_code_invalid_code_message": "Codi de verificació incorrecte. Torna-ho a provar.",
+  "credential_details_info_tab_header_label": "Informació verificada",
+  "credential_details_activity_tab_header_label": "Activitat",
+  "action_view_extra_details": "Veure detalls addicionals",
+  "action_ok_label": "D’acord, entès",
+  "error_generic_title": "S’ha produït un error",
+  "error_generic_message": "Contacta amb el desenvolupador d’aquesta aplicació.",
+  "error_details_generic_title": "L’aplicació ha trobat un error inesperat",
+  "error_details_generic_message": "Detalls de l’error:",
+  
+  "oidc4vci_error_invalid_request": "Sol·licitud no vàlida",
+  "oidc4vci_error_invalid_client": "Client no vàlid",
+  "oidc4vci_error_invalid_grant": "Autorització no vàlida",
+  "oidc4vci_error_unauthorized_client": "L’aplicació no està autoritzada",
+  "oidc4vci_error_unsupported_grant_type": "Tipus d’autorització no suportat",
+  "oidc4vci_error_unsupported_invalid_scope": "Tipus d’àmbit no suportat",
+  "oidc4vci_error_invalid_or_missing_proof": "Credencial no vàlida o manca de prova",
+
+  "credential_select_type_title": "Selecciona credencials",
+  "credential_select_type_subtitle": "L’emissor {{issuerName}} admet l’emissió de les credencials següents. Selecciona la que vulguis rebre a la teva cartera.",
+  "raw_credential_title": "Credencial en brut",
+  "credential_details_subtitle": "La informació sobre la credencial que afegiràs es mostra a continuació.",
+
+  "contacts_overview_title": "Contactes",
+  "contact_details_title": "Contacte",
+  "contact_identities_title": "Identitats",
+  "contact_activities_title": "Activitats del contacte",
+  "contact_details_info_tab_header_label": "Detalls",
+  "contact_details_activity_tab_header_label": "Activitat",
+  "contact_details_identities_tab_header_label": "Identitats",
+
+  "intent_share_file_unable_to_receive_message": "No es pot rebre la credencial",
+  "credential_activities_title": "Activitats de la targeta",
+  "credential_delete_title": "Eliminar credencial",
+  "credential_delete_message": "Segur que vols eliminar la credencial: {{credentialName}}?",
+  "credential_deleted_success_toast": "Credencial eliminada",
+  "credential_deleted_failed_toast": "No s’ha pogut eliminar la credencial",
+
+  "contact_add_new_contact_detected_title": "Nou contacte detectat",
+  "contact_add_new_contact_detected_subtitle": "Hem detectat que l’altra part en aquest intercanvi de credencials encara no és als teus contactes. Introdueix un nom per a aquest nou contacte per completar l’intercanvi.",
+
+  "contact_name_label": "Nom del contacte",
+  "contact_name_placeholder": "Nom del contacte",
+  "contact_name_invalid_message": "Si us plau, introdueix un nom de contacte vàlid",
+  "contact_add_disclaimer": "Reconec que aquest contacte es crearà com a resultat d’un intercanvi de credencials que he iniciat.",
+
+  "contact_delete_title": "Eliminar contacte",
+  "contact_delete_message": "Segur que vols eliminar el contacte: {{contactName}}?",
+  "contact_deleted_success_toast": "Contacte eliminat",
+  "contact_deleted_failed_toast": "No s’ha pogut eliminar el contacte",
+  "contact_add_success_toast": "Contacte creat",
+  "contact_update_success_toast": "Contacte actualitzat",
+  "contact_add_no_consent_toast": "Sense consentiment no pots continuar l’intercanvi de credencials; fes servir el botó Rebutjar.",
+  "contact_add_cancel_title": "Segur que vols rebutjar?",
+  "contact_add_cancel_message": "Afegir un contacte és obligatori en trobar-se amb una nova part en un intercanvi de credencials. Tot el procés s’avortarà si confirmes.",
+
+  "onboarding_welcome_header": "Benvingut",
+  "onboarding_welcome_title": "Cartera Sphereon",
+  "onboarding_welcome_intro_body": "Permet rebre i compartir acreditacions, credencials, insígnies i atributs d’identitat.\n\nAquestes són signades i verificades digitalment per tercers emissors.",
+  "browser_open_title": "Obrint navegador",
+  "browser_open_header": "Obrint navegador",
+  "browser_open_auth_title": "Autenticació requerida",
+  "browser_open_auth_body": "La part de confiança requereix que t’autentiquis. Es farà servir el navegador per defecte per a aquesta acció",
+  "browser_open_action_next_label": "Obrir navegador",
+  "action_next_label": "Següent",
+  "action_back_label": "Enrere",
+  "action_go_label": "Anar!",
+  "onboarding_welcome_store_body": "Emmagatzema les credencials emeses per tercers de forma xifrada directament al teu dispositiu. Només tu hi tens accés.\n\nNo es comunica amb els servidors de Sphereon, excepte si actives, per exemple, còpies de seguretat o funcions corporatives.",
+  "onboarding_welcome_share_body": "Permet presentar credencials a verificadors de tercers.\n\nNomés es compartiran les dades a les quals donis consentiment. No hi ha divulgació automàtica. Sempre tens el control.",
+
+  "terms_of_service_terms_tab_header_label": "Termes i condicions",
+  "terms_of_service_privacy_tab_header_label": "Política de privacitat",
+  "terms_of_service_consent_terms_message": "He llegit i accepto els termes i condicions.",
+  "terms_of_service_consent_privacy_message": "He llegit i accepto la política de privacitat.",
+  "terms_of_service_decline_title": "Has rebutjat els termes del servei",
+  "terms_of_service_decline_message": "Has rebutjat, per tant la configuració de la cartera no s’ha completat. Elimina l’aplicació Sphereon Wallet del dispositiu o torna a començar quan obris la cartera.",
+  "terms_of_service_decline_action_caption": "Sortir de l’aplicació",
+  "terms_of_service_title": "Termes del servei",
+  "terms_of_service_subtitle": "Aquest document es va actualitzar per última vegada el 5 de gener de 2023.",
+
+  "pid_security_model_warning": "L’EID només es carregarà durant la presentació",
+
+  "import_data_auth_title": "Introdueix el PIN de Sphereon",
+  "import_data_auth_next": "Continuar",
+  "import_data_auth_biometrics_title": "Autenticar amb biometria",
+  "import_data_auth_failure_title": "Error d’autenticació biomètrica, no t’hem reconegut",
+  "import_data_auth_failure_description": "No pots continuar en aquest punt. L’única manera de completar la tasca és començar de nou. Tanca l’aplicació i torna-la a obrir per reiniciar la configuració.",
+
+  "import_data_auth_step_title": "Introdueix el PIN de Sphereon",
+  "import_data_consent_button_accept": "Sí, sóc jo",
+  "import_data_consent_button_decline": "No tot és correcte",
+  "import_data_loader_step_title": "Un moment",
+  "import_data_loader_step_subtitle": "S’estan recuperant les teves dades personals.",
+  "import_data_final_step_title": "Les teves dades s’han importat. És correcte?",
+  "import_data_setup_complete_title": "Configuració completada",
+
+  "incorrect_data_title": "Algunes de les teves dades són incorrectes?",
+  "incorrect_data_description": "Si la informació personal és incorrecta, pot causar problemes. No afegeixis aquestes dades.",
+  "incorrect_data_bullet_content_heading": "Què pots fer",
+  "incorrect_data_bullet_content": "Posa’t en contacte amb el teu municipi per canviar les dades.\nEspera un missatge de confirmació del municipi.\nTorna a intentar afegir les dades. Les trobaràs al catàleg.",
+  "incorrect_data_back": "Enrere",
+  "incorrect_data_dont_add_info": "No afegir aquestes dades",
+  "incorrect_data_after_bullet_heading": "Si no són teves",
+  "incorrect_data_after_bullet_content": "Si les dades no són teves, no les afegeixis a la cartera.",
+
+  "onboarding_esim_enter_details_title": "Introdueix les dades de l’eSIM",
+  "onboarding_esim_enter_details_description": "Introdueix el teu número de telèfon i codi de vinculació",
+  "onboarding_esim_enter_details_msisdn_label": "Número de telèfon (MSISDN)",
+  "onboarding_esim_enter_details_msisdn_placeholder": "Introdueix el número de telèfon",
+  "onboarding_esim_enter_details_coupling_code_label": "Codi de vinculació",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "Introdueix el codi de vinculació",
+  "onboarding_esim_enter_details_continue": "Continuar",
+  "onboarding_esim_enter_details_back": "Enrere",
+  "onboarding_machine_activate_esim_error_title": "L’activació de l’eSIM ha fallat",
+  "onboarding_esim_error_couple_rp_failed": "Error en el pas de vinculació RP de l’activació eSIM",
+  "onboarding_esim_error_bindkey_failed": "Error en el pas bind-key de l’activació eSIM",
+  "onboarding_esim_error_create_link_failed": "Error en el pas create-link de l’activació eSIM",
+  "onboarding_esim_error_check_sscd_failed": "Error en el pas check-sscd de l’activació eSIM",
+  "onboarding_esim_error_enable_sscd_failed": "Error en el pas enable-sscd de l’activació eSIM",
+  "onboarding_esim_error_cleanup_keys_failed": "Error en el pas cleanup-keys de l’activació eSIM",
+
+  "import_data_title": "Importar dades personals",
+  "onboarding_complete_title": "Tot llest!",
+  "onboarding_complete_description": "Estàs preparat per rebre i compartir detalls d’identitat, credencials i molt més.",
+  "onboarding_complete_next": "Comença a utilitzar la cartera",
+  "scan_card_step_subtitle": "Mantén la targeta a la part posterior del telèfon i prem Inicia lectura.",
+  "scan_card_step_title": "Escaneja per importar dades",
+  "personal_data_title": "Introdueix dades personals",
+  "personal_data_subtitle": "Personalitza la teva cartera proporcionant el teu nom i correu electrònic. Crearem una credencial autoafirmada per a tu. La informació no surt del dispositiu!",
+  "first_name_label": "Nom",
+  "first_name_placeholder": "Nom",
+  "first_name_invalid_message": "Introdueix un nom vàlid",
+  "last_name_label": "Cognom",
+  "last_name_placeholder": "Cognom",
+  "last_name_invalid_message": "Introdueix un cognom vàlid",
+  "email_address_label": "Correu electrònic",
+  "email_address_placeholder": "Correu electrònic",
+  "email_address_invalid_message": "Introdueix un correu electrònic vàlid",
+
+  "pin_code_choose_pin_code_title": "Tria el teu PIN",
+  "pin_code_choose_pin_code_subtitle": "Tria un PIN per mantenir segura la teva cartera.",
+  "pin_code_confirm_pin_code_title": "Confirma el teu PIN",
+  "pin_code_confirm_pin_code_subtitle": "Introdueix el teu PIN per confirmar el primer.",
+  "pin_code_accessibility_label": "PIN",
+  "pin_code_accessibility_hint": "Introdueix el teu PIN",
+  "pin_code_invalid_code_message": "El PIN no coincideix. Torna-ho a provar.",
+  "pin_code_attempts_left_message": "Intents restants:",
+
+  "lock_title": "Inicia sessió a\nla Cartera Sphereon",
+  "lock_subtitle": "Introdueix el teu PIN.",
+  "lock_emergency_button_caption": "Trucada d’emergència",
+  "show_raw_credential_button_caption": "Credencial en brut",
+
+  "onboard_create_wallet_step_title": "Crear cartera",
+  "onboard_secure_wallet_step_title": "Assegurar cartera",
+
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "Primers passos",
+      "description": "Cada secció dura només uns minuts.",
+      "accessibility_label": "Primers passos. Progrés de la configuració ara al pas"
+    },
+    "secure_wallet": {
+      "title": "Ja vas per la meitat",
+      "description": null,
+      "accessibility_label": "Gairebé fet. Progrés de la configuració ara al pas"
+    },
+    "import_personal_data": {
+      "title": "Gairebé llest, última secció",
+      "description": null,
+      "accessibility_label": "Gairebé llest, última secció. Progrés de la configuració ara al pas"
+    }
+  },
+
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "pas",
+      "of": "de",
+      "and_final": "i final"
+    },
+    "create_wallet": {
+      "title": "Crear cartera",
+      "description": "Configura un compte amb el teu nom, correu electrònic i país de residència.",
+      "accessibility": {
+        "button_hint": "Comença a crear la cartera"
+      }
+    },
+    "secure_wallet": {
+      "title": "Assegurar cartera",
+      "description": "Crea un PIN únic de Sphereon i mantén-lo segur. Opcionalment activa l’inici de sessió biomètric.",
+      "accessibility": {
+        "button_hint": "Comença a assegurar la cartera"
+      }
+    },
+    "import_personal_data": {
+      "title": "Importar dades personals",
+      "description": {
+        "default": "Importa les teves dades personals del teu proveïdor nacional d’eID.",
+        "de": "Escaneja la teva targeta d’eID Ausweis. Tingues preparada la targeta i el PIN eID."
+      },
+      "accessibility": {
+        "button_hint": "Comença a importar dades personals"
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "Benvingut a la teva Cartera Sphereon",
+      "description": "Rep i comparteix acreditacions, credencials, insígnies i dades d’identitat.",
+      "button_caption": "Començar",
+      "accessibility": {
+        "hint": "Llisca cap a l’esquerra per continuar",
+        "label": "Benvingut a la teva Cartera Sphereon"
+      }
+    },
+    "enter_name": {
+      "title": "Introdueix el teu nom",
+      "text_field": {
+        "label": "Nom",
+        "placeholder": "El teu nom",
+        "accessibility": {
+          "label": "Introdueix el teu nom"
+        },
+        "errors": {
+          "missing": "Introdueix un nom"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "Introdueix el teu correu electrònic",
+      "text_field": {
+        "label": "Correu electrònic",
+        "placeholder": "El teu correu electrònic",
+        "accessibility": {
+          "label": "Introdueix el teu correu electrònic"
+        },
+        "errors": {
+          "missing": "Introdueix un correu electrònic",
+          "invalid": "Introdueix un correu electrònic vàlid"
+        }
+      }
+    },
+    "enter_country": {
+      "title": "El teu país de residència",
+      "select": {
+        "label": "País",
+        "accessibility": {
+          "select": "País seleccionat"
+        },
+        "placeholder": "País de residència",
+        "errors": {
+          "missing": "Selecciona un país"
+        }
+      },
+      "modal": {
+        "title": "Selecciona un país",
+        "search_placeholder": "Cerca"
+      }
+    },
+    "enter_pin": {
+      "title": "Configura un PIN de 6 dígits de Sphereon",
+      "requirements": {
+        "title": "El teu PIN no ha de contenir:",
+        "not_same_digits": "xifres idèntiques",
+        "not_sequential_digits": "xifres consecutives",
+        "invalid_example_prefix": "Com ara: ",
+        "invalid_example_delimiter": " o "
+      },
+      "success": "PIN fort. Anota’l en un lloc segur",
+      "button_caption": "Establir PIN"
+    },
+    "verify_pin": {
+      "title": "Repeteix el teu PIN de Sphereon",
+      "match": "Els PIN coincideixen. Pots continuar!",
+      "mismatch": "Els PIN no coincideixen. Torna-ho a provar.",
+      "button_caption": "Repeteix el PIN"
+    },
+    "terms_and_privacy": {
+      "title": "Termes i privacitat",
+      "description": "Tractem les teves dades personals de manera segura i confidencial.",
+      "features": {
+        "secure_data_storage": "Emmagatzematge segur de dades",
+        "strict_access_control": "Control estricte d’accés",
+        "selective_data_sharing": "Compartició selectiva de dades",
+        "strong_privacy_compliance": "Compliment sòlid de privacitat",
+        "no_3rdparty_data_sharing": "No compartim dades amb tercers",
+        "no_tracking_profiling": "Sense seguiment ni perfilat"
+      },
+      "footer": {
+        "prefix": "Vols llegir tots els detalls? Consulta els nostres",
+        "links": {
+          "terms": "Termes d’ús",
+          "privacy": "Política de privacitat",
+          "delimiter": "i"
+        }
+      },
+      "button_caption": "Acceptar Termes i Privacitat"
+    },
+    "read_terms_and_privacy": {
+      "title": "Termes de servei",
+      "description": "Aquest document es va actualitzar per última vegada el",
+      "terms": {
+        "tab_title": "Termes i condicions",
+        "text": ""
+      },
+      "privacy": {
+        "tab_title": "Política de privacitat",
+        "text": ""
+      }
+    },
+    "import_data_consent": {
+      "title": "Vols afegir aquesta informació?",
+      "subtitle": "Aquesta informació personal és important a la teva cartera. Segur que vols afegir-la?",
+      "pid_provider_title": "Proveïdor PID",
+      "pid_provider_subheading": "Proveïdor de dades d’identificació personal",
+      "offered_data_title": "Dades ofertes",
+      "labels": {
+        "given_name": "Nom",
+        "family_name": "Cognom",
+        "also_known_as": "També conegut com",
+        "gender": "Gènere",
+        "birthdate": "Data de naixement",
+        "birthplace": "Lloc de naixement",
+        "nationality": "Nacionalitat",
+        "address": "Adreça"
+      },
+      "button_accept": "Sí, vull afegir-ho",
+      "button_decline": "Rebutjar"
+    },
+    "import_scan_card": {
+      "title": "Tingues preparada la targeta Ausweis",
+      "description": "Comença introduint el PIN eID de la targeta Ausweis.",
+      "nfc_step_title": "Ara col·loca la targeta a la part posterior del telèfon",
+      "button_caption": "Comença a introduir el PIN eID",
+      "nfc_caption": "L’escàner NFC s’activarà aviat...",
+      "card_locked_message": "La targeta s’ha bloquejat.",
+      "incorrect_pin_message": "PIN incorrecte. Torna-ho a provar.",
+      "unknown_scan_card_error_message": "S’ha produït un error desconegut."
+    }
+  },
+
+  "onboard_summary_title": "Les teves dades introduïdes",
+  "onboard_summary_subtitle": "En prémer Finalitzar, acceptes les dades introduïdes i passaràs a la pantalla d’inici de sessió. Les dades personals es poden canviar a la configuració.",
+  "onboard_summary_info_tab_header_label": "La teva informació",
+  "onboard_summary_button_caption": "Finalitzar i anar a la cartera",
+
+  "credentials_required_title": "Credencials requerides",
+  "credentials_required_subtitle": "{{verifierName}} vol rebre la informació següent per a verificació.",
+  "credentials_required_selected_label": "seleccionada",
+  "credentials_required_available_label": "disponible",
+  "credentials_required_credential_select_label": "Selecciona una credencial",
+  "credentials_select_title": "Selecciona credencials",
+  "credentials_select_subtitle": "Tens més d’una credencial que pot satisfer la sol·licitud. Tria’n una per enviar al verificador.",
+  "credentials_required_checking_label": "...comprovant",
+  "credentials_required_no_available_label": "No hi ha credencial adequada",
+  "credentials_required_no_available_additional_label": "No tens una credencial per compartir amb el verificador. Contacta amb un emissor per obtenir-ne una de nova.",
+
+  "action_share_label": "Compartir",
+  "credentials_share_success_toast_title": "Compartició correcta",
+  "credentials_share_success_toast_message": "Has presentat correctament les credencials seleccionades a {{verifierName}}.",
+  "action_select_label": "Seleccionar",
+  "action_onboarding_setup_message": "S’està configurant la cartera...",
+  "action_getting_information_message": "S’està obtenint informació...",
+  "action_sharing_credentials_message": "S’estan compartint credencials...",
+  "profile_logout_action_caption": "Tancar sessió",
+  "action_getting_credentials_message": "S’està obtenint la credencial...",
+  "credentials_share_failed_toast_message": "No s’han pogut presentar les credencials. Error: {{errorMessage}}.",
+  "information_retrieve_failed_toast_message": "No s’ha pogut recuperar la informació. Error: {{errorMessage}}.",
+  "credential_verification_failed_message": "La verificació de la credencial ha fallat.",
+
+  "credential_offer_title": "Oferta de credencial",
+  "credential_sign_title": "Signatura sol·licitada",
+
+  "profile_delete_wallet_action_caption": "Eliminar cartera",
+  "profile_delete_wallet_action_title": "Segur que vols eliminar la cartera?",
+  "profile_delete_wallet_action_subtitle": "Segur que vols eliminar la cartera: {{userName}}?",
+
+  "credential_status_never_expires_date_label": "Mai caduca",
+
+  "oid4vci_machine_initiation_error_title": "Inicialitzar proveïdor OID4VCI",
+  "oid4vci_machine_credential_selection_error_title": "Selecció de credencial",
+  "oid4vci_machine_retrieve_contact_error_title": "Recuperar contacte",
+  "oid4vci_machine_retrieve_credentials_error_title": "Recuperar credencials",
+  "oid4vci_machine_verify_credentials_error_title": "Verificar credencials",
+  "oid4vci_machine_add_contact_identity_error_title": "Afegir identitat de contacte",
+  "oid4vci_machine_store_credential_branding_error_title": "Desar marca de credencial",
+  "oid4vci_machine_store_credential_error_title": "Desar credencial",
+
+  "emergency_send_button_caption": "Activar ara!",
+  "emergency_abort_button_caption": "Cancel·lar alerta",
+  "emergency_title": "Enviar alerta d’emergència",
+  "emergency_subtitle": "La teva alerta s’enviarà en {{emergencyAlertDelay}} segons, o pots activar-la immediatament prement 'Activar ara!'.",
+
+  "siopV2_machine_identifier_error_title": "Obtenint identificador",
+  "siopV2_machine_create_config_error_title": "Creant configuració SiopV2",
+  "siopV2_machine_get_request_error_title": "Obtenint sol·licitud SiopV2",
+  "siopV2_machine_retrieve_contact_error_title": "Recuperar contacte",
+  "siopV2_machine_add_contact_identity_error_title": "Afegir identitat de contacte",
+  "siopV2_machine_send_response_error_title": "Enviant resposta SiopV2",
+  "siopV2_machine_retrieve_federation_trust_error_title": "Recuperar confiança de federació",
+
+  "action_view_all_label": "Veure-ho tot",
+  "filter_all_label": "Veure-ho tot",
+  "filter_other_label": "Altres",
+  "filter_new_label": "Nou",
+  "search_field_default_caption": "Cerca",
+
+  "credential_catalog_most_relevant_header_label": "Credencials més rellevants",
+  "credential_catalog_discover_header_label": "Descobreix més credencials",
+
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "Les teves dades personals del proveïdor nacional d’eID Ausweis.",
+  "ausweis_eid_preview_card_issuer": "Bundesdruckerei d’Alemanya",
+  "ausweis_eid_modal_title": "Obtenir dades Ausweis eID",
+  "ausweis_eid_modal_description": "Les dades d’identificació personal són la base de la teva cartera i per tant molt importants per obtenir altres credencials.\n\nSegur que vols afegir aquesta informació a la teva cartera?",
+  "ausweis_eid_modal_accept_label": "Importar dades personals",
+
+  "action_maybe_later_label": "Potser més tard",
+  "item_not_yet_available_message": "Aquest element encara no està disponible.",
+
+  "onboarding_machine_store_credential_error_title": "Desar credencial",
+  "onboarding_machine_retrieve_credentials_error_title": "Recuperar credencials",
+  "onboarding_skip_credential_import_step3_caption": "Acabaré aquesta secció més tard",
+  "onboarding_store_credential_branding_error_title": "Desar marca de credencial",
+
+  "share_credential_c2_flow_title": "Es compartirà la informació següent",
+
+  "new_contact_add_new_contact_detected_title": "Reconeixes {{partyName}}?",
+  "new_contact_add_new_contact_detected_subtitle": "Aquesta és la primera interacció amb aquesta part. Vols continuar?",
+  "federation_view_untrusted_title": "{{partyName}} té un nivell de confiança baix",
+  "federation_view_trusted_title": "{{partyName}} té un nivell de confiança alt",
+  "federation_view_untrusted_description": "La part no pertany a una federació en què la cartera confiï",
+  "federation_view_trusted_description": "La part pertany a una federació en què la cartera confiï",
+  "new_contact_add_new_contact_continue_caption": "Sí, continuar",
+  "new_contact_add_new_contact_abort_caption": "No, cancel·lar",
+  "new_contact_add_new_contact_abort_cancel_caption": "No, cancel·lar",
+  "new_contact_add_new_contact_abort_continue_caption": "Sí, vull cancel·lar",
+  "new_contact_add_new_contact_create_title": "Àlies de contacte",
+  "new_contact_add_new_contact_create_description": "Pots crear un àlies de contacte escrivint un nou nom al camp de text.",
+  "new_contact_add_new_contact_abort_title": "Segur que vols cancel·lar?",
+  "new_contact_add_new_contact_abort_description": "Si cancel·les, s’interromprà la interacció amb {{partyName}}.",
+  "new_contact_add_new_contact_contact_details_description_label": "Descripció",
+  "new_contact_add_new_contact_contact_details_name_label": "Nom",
+  "new_contact_add_new_contact_contact_details_website_label": "Lloc web",
+  "new_contact_add_new_contact_contact_details_tos_label": "Termes de servei",
+  "new_contact_add_new_contact_contact_details_policy_label": "Política de privacitat",
+  "new_contact_add_new_contact_contact_details_contacts_label": "Contactes",
+  "new_contact_add_new_contact_low_level_trust_title": "Segur que vols continuar?",
+  "new_contact_add_new_contact_low_level_trust_description": "Interaccionaràs amb una part amb un nivell de confiança baix.",
+
+  "present_qr_code_screen_header_title": "Presentar codi QR",
+  "present_qr_code_screen_subtitle": "Mostra el codi QR a l’altra part perquè el pugui escanejar.",
+  "present_qr_code_dropdown_item_text": "Presentar codi QR",
+  "present_qr_code_dropdown_item_accessibility_hint": "Ves a una pantalla que mostri el codi QR",
+
+  "terms_and_conditions_agreement_message": "Aquests termes i condicions (“Acord”) estableixen les condicions generals d’ús de l’aplicació mòbil «Sphereon Wallet» (“Aplicació mòbil” o “Servei”) i de tots els seus productes i serveis relacionats (conjuntament, els “Serveis”).\n\nAquest Acord és legalment vinculant entre tu (“Usuari”, “tu” o “teu/teva”) i Sphereon B.V., constituïda als Països Baixos, com a desenvolupador de l’Aplicació mòbil (“Operador”, “nosaltres”, “ens” o “nostre/a”).\n\nSi signes aquest acord en nom d’una empresa o d’una altra entitat jurídica, declares que tens l’autoritat per vincular-hi aquesta entitat. En aquest cas, els termes «Usuari», «tu» o «teu/teva» faran referència a aquesta entitat. Si no tens aquesta autoritat, o si no estàs d’acord amb els termes d’aquest acord, no l’has d’acceptar i no pots accedir ni utilitzar l’Aplicació mòbil i els Serveis. En accedir i utilitzar l’Aplicació mòbil i els Serveis, reconeixes que has llegit, entès i acceptes quedar vinculat pels termes d’aquest Acord. Reconeixes que aquest Acord és un contracte entre tu i l’Operador, encara que sigui electrònic i no estigui signat físicament per tu, i que regeix l’ús que fas de l’Aplicació mòbil i dels Serveis.\n\nEnllaços a altres recursos\n\nEncara que l’Aplicació mòbil i els Serveis puguin contenir enllaços a altres recursos (com ara llocs web, aplicacions mòbils, etc.), això no implica, directament o indirectament, cap aprovació, associació, patrocini, recomanació ni afiliació amb cap recurs enllaçat, llevat que s’hi indiqui explícitament. No som responsables d’examinar o avaluar, ni garantim les ofertes de cap empresa o individu ni el contingut dels seus recursos. No assumim cap responsabilitat ni obligació per les accions, productes, serveis o continguts de tercers. Hauries de revisar amb cura les declaracions legals i altres condicions d’ús de qualsevol recurs al qual accedeixis a través d’un enllaç dins de l’Aplicació mòbil. Qualsevol enllaç a recursos externs es fa sota la teva exclusiva responsabilitat.\n\nDrets de propietat intel·lectual\n\nPer “Drets de propietat intel·lectual” s’entenen tots els drets presents i futurs conferits per llei, dret consuetudinari o equitat en relació amb qualsevol dret d’autor i drets connexos, marques, dissenys, patents, invencions, fons de comerç i el dret d’exercir accions per competència deslleial o apropiació indeguda, drets sobre invencions, drets d’ús i tots els altres drets de propietat intel·lectual, registrats o no, incloses totes les sol·licituds i els drets de sol·licitar i obtenir-ne el registre, els drets de reivindicar prioritat i tots els drets o formes de protecció similars o equivalents, així com qualsevol altre resultat de l’activitat intel·lectual que existeixi o pugui existir ara o en el futur a qualsevol part del món.\n\nAquest Acord no et transfereix cap dret de propietat intel·lectual de l’Operador o de tercers, i tots els drets, títols i interessos sobre aquests béns romandran (entre les parts) exclusivament en l’Operador.\n\nTotes les marques, marques de servei, gràfics i logotips utilitzats en relació amb l’Aplicació mòbil i els Serveis són marques o marques registrades de l’Operador o dels seus llicenciadors. Altres marques, marques de servei, gràfics i logotips utilitzats en relació amb l’Aplicació mòbil i els Serveis poden ser marques de tercers.\n\nL’ús que facis de l’Aplicació mòbil i dels Serveis no et concedeix cap dret o llicència per reproduir o utilitzar d’una altra manera cap marca de l’Operador o de tercers.\n\nLimitació de responsabilitat\n\nEn la màxima mesura permesa per la legislació aplicable, en cap cas l’Operador, les seves afiliades, directors, càrrecs, empleats, agents, proveïdors o llicenciadors seran responsables davant de cap persona per danys indirectes, incidentals, especials, punitius, exemplars o conseqüents (incloent-hi, sense limitació, danys per lucres cessants, ingressos, vendes, fons de comerç, ús de contingut, impacte en el negoci, interrupció de negoci, pèrdua d’estalvis previstos o pèrdua d’oportunitats de negoci), sigui quina sigui la causa, sota qualsevol teoria de responsabilitat, incloent-hi, sense limitació, contracte, greuge, garantia, incompliment d’un deure legal, negligència o altres, fins i tot si la part responsable ha estat advertida de la possibilitat d’aquests danys o hagués pogut preveure’ls.\n\nEn la màxima mesura que permet la llei aplicable, la responsabilitat total de l’Operador i de les seves afiliades, càrrecs, empleats, agents, proveïdors i llicenciadors relacionada amb els Serveis estarà limitada a un import no superior a un dòlar o a les quantitats que realment li hagis pagat en efectiu a l’Operador durant el mes anterior a l’esdeveniment o la incidència que hagi donat lloc a aquesta responsabilitat (el que sigui més alt). Les limitacions i exclusions també s’apliquen si aquest remei no et compensa completament per les pèrdues o no n’assoleix la finalitat essencial.\n\nIndemnització\n\nAcceptes indemnitzar i mantenir indemnes l’Operador i les seves afiliades, directors, càrrecs, empleats, agents, proveïdors i llicenciadors de qualsevol responsabilitat, pèrdua, dany o cost, incloent-hi honoraris raonables d’advocats, originats en relació amb o com a resultat d’aliances, reclamacions, accions, disputes o demandes de tercers dirigides contra qualsevol d’ells com a conseqüència de o relacionades amb el teu Contingut, l’ús que facis de l’Aplicació mòbil i els Serveis, o qualsevol conducta dolosa per part teva.\n\nCanvis i modificacions\n\nEns reservem el dret de modificar aquest Acord o els seus termes relacionats amb l’Aplicació mòbil i els Serveis en qualsevol moment, a la nostra discreció. Quan ho fem, revisarem la data d’actualització que figura al peu d’aquesta pàgina. També et podem notificar d’altres maneres, a la nostra discreció, com ara a través de la informació de contacte que ens hagis facilitat. Hauries d’informar-te regularment sobre el contingut d’aquests termes i condicions.\n\nUna versió actualitzada d’aquest Acord entrarà en vigor immediatament un cop publicada la versió revisada, llevat que s’indiqui el contrari. El teu ús continuat de l’Aplicació mòbil i dels Serveis després de la data d’entrada en vigor de l’Acord revisat (o de qualsevol altra acció especificada en aquell moment) constituirà el teu consentiment a aquests canvis.\n\nAcceptació d’aquests termes\n\nReconeixes que has llegit aquest Acord i que n’acceptes tots els termes i condicions. En accedir i utilitzar l’Aplicació mòbil i els Serveis, acceptes quedar vinculat per aquest Acord. Si no estàs d’acord a complir els termes d’aquest Acord, no estàs autoritzat a accedir o utilitzar l’Aplicació mòbil i/o els Serveis.\n\nContacte\n\nSi tens preguntes, inquietuds o queixes sobre aquest Acord, et convidem a contactar-nos mitjançant: support@sphereon.com",
+  "privacy_policy_agreement_message": "Sphereon et proporciona l’aplicació mòbil «Sphereon Wallet» (\"App\"), que pots descarregar i instal·lar al teu dispositiu mòbil.\n\nLa protecció de les dades personals és molt important per a Sphereon. Si es recullen dades personals en utilitzar l’App i amb quina finalitat es processen s’explica en la següent declaració de protecció de dades. «Processament» en aquest sentit significa qualsevol forma d’ús de les dades, p. ex. recollida, registre, emmagatzematge, transmissió, presentació i eliminació.\n\nLes dades personals només es processen en la mesura necessària per comunicar-nos amb l’usuari. Observem el principi de minimització de dades i complim totes les disposicions legals aplicables per a la protecció de dades personals i la seguretat de les dades. En particular, les dades corresponents només es processaran si hi ha una base legal.\n\nLa base legal per al processament de dades és el Reglament General de Protecció de Dades de la UE (RGPD), concretament: art. 6 apartat 1 (a), art. 7, art. 6 apartat 1 (b) i (f), i art. 6 apartat 1 (c) del Reglament (UE) 2016/679 (d’ara endavant «RGPD»).\n\nI. Nom i dades de contacte del responsable\nLa persona responsable en el sentit de l’art. 4 RGPD per al processament de dades personals és:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nPaïsos Baixos\ninfo@sphereon.com\n\n2. Tipus de dades processades, finalitat del processament, base legal\n\n1. Dades d’usuari i de dispositiu\nMai no tindrem coneixement de les teves dades personals ni hi tindrem accés, llevat que ens contactis mitjançant el formulari de contacte Sphereon o l’adreça de correu electrònic proporcionada a l’App.\n\nQuan descarregues l’App, la informació necessària per a això es transfereix a Apple AppStore o Google Play Store (les «botigues d’aplicacions»), és a dir, en particular el nom d’usuari, l’adreça de correu electrònic i el número de client del teu compte, l’hora de la descàrrega i el codi individual del dispositiu. Aquestes dades són necessàries per permetre la descàrrega de l’App des de les botigues. No rebem cap dada personal d’això.\nNo tenim cap influència sobre aquesta recollida de dades i no en som responsables. Per a més informació sobre la finalitat i l’abast del processament de dades a les botigues d’aplicacions, consulta les declaracions de protecció de dades corresponents.\n\nUn cop instal·lada correctament l’App al dispositiu mòbil, es pot utilitzar sense accés a Internet. Quan utilitzes l’App, no recollim cap dada personal. La informació personal i les credencials que poses a disposició de l’App (p. ex. nom, adreça, carnet de conduir, document d’identitat, informació educativa o altra informació de credencials) només s’emmagatzemen localment i s’encripten al teu dispositiu mòbil. No comprovem les dades.\nTambé és la teva responsabilitat desar el contingut emmagatzemat i fer còpies de seguretat de les dades.\n\nSi poses aquesta informació a disposició d’altres parts («Emissors», «Verificadors» o «Proveïdors externs») per a la verificació o compartició, s’aplica la declaració de protecció de dades d’aquest emissor, verificador o proveïdor extern pel que fa a la finalitat i l’abast del processament de dades. Sphereon tampoc té accés a les dades ni al flux de dades en aquest cas.\n\nLes dades personals només es recolliran, emmagatzemaran i processaran en cas que siguis tu qui iniciï el contacte, en la mesura necessària per respondre a la teva sol·licitud.\n\nLa base legal per al processament de dades és l’art. 6 apartat 1 (a), (b) i (f) del RGPD.\n\n1. Cookies\nNo s’utilitzen cookies amb aquesta App.\n\n1. Contacte\nSi ens contactes a través del formulari de contacte proporcionat a l’App o mitjançant la nostra adreça de correu electrònic, farem servir les dades de contacte que hagis proporcionat, com ara nom, correu electrònic i qualsevol informació addicional, amb la finalitat de respondre a la teva sol·licitud. A nivell de metadades, s’envien la teva adreça IP i la versió de l’App.\n\nAquí, el processament de les dades de contacte que proporciones és essencial per poder contactar-te i respondre a la teva sol·licitud. Si també s’han comunicat dades addicionals, el processament serveix per individualitzar la teva sol·licitud i poder respondre de la millor manera possible. La base legal per al processament de dades és l’art. 6 apartat 1 (b) i (f) RGPD.\n\nI. Durada de l’emmagatzematge\nLes teves dades només es conservaran mentre sigui necessari per complir les finalitats esmentades anteriorment.\n\nTan aviat com això ja no sigui el cas, p. ex. després que la teva sol·licitud hagi estat completament atesa, les dades s’eliminaran o es bloquejaran si i mentre així ho requereixin les obligacions legals de conservació comercials o fiscals (art. 6 apartat 1 (c) RGPD). A partir del moment en què aquestes obligacions legals de conservació ja no siguin aplicables, les dades s’eliminaran, llevat que hagis donat el teu consentiment exprés per al seu ús posterior (art. 6 apartat 1 (a) RGPD).\n\nI. Divulgació de dades a tercers, transmissió a tercers països\n\nEl principi fonamental és que les dades que emmagatzemes o transmets no es posaran a disposició de tercers.\nEn casos individuals, però, pot ser necessari per a l’execució del contracte transmetre les teves dades personals a empreses a les quals hàgim confiat la prestació de serveis individuals (p. ex. proveïdors de núvol). Si revelem dades a tercers en el marc del nostre processament, les transmetem o els donem accés d’una altra manera a les dades, això només es fa sobre la base d’una autorització legal, el teu consentiment, una obligació legal o els nostres interessos legítims.\nSi encarreguem a proveïdors externs el processament de dades sobre la base d’un «contracte de processament de dades», això es fa de conformitat amb l’art. 28 RGPD.\n\nPer la seva banda, els tercers estan obligats a complir les disposicions legals en manipular i processar aquestes dades. El domicili d’un tercer pot estar en un tercer país, és a dir, en un país en què el RGPD no tingui efecte jurídic directe. En aquest cas, les dades només es transmetran si has donat el teu consentiment, hi ha un nivell adequat de protecció de dades (per exemple, a través d’acords individuals, ús de clàusules contractuals tipus de la UE, existència d’una decisió d’adequació de la UE o una altra autorització legal).\n\nLa transmissió a autoritats i institucions estatals amb dret a rebre informació també és possible, però només en el marc de les obligacions legals d’informació i en cas de resolució judicial vinculant. En aquests casos, Sphereon B.V. pot proporcionar la informació, p. ex. per fer valer, exercir i defensar reclamacions legals, fer complir contractes existents, en el context d’acusacions de frau, mesures de seguretat o disposicions legals generalment aplicables.\n\nLes dades personals no es transferiran fora de l’àmbit descrit aquí sense el consentiment exprés de l’usuari.\n\nEn cap cas vendrem o llogarem dades personals a tercers.\n\nI. Serveis de tercers en operar l’App\nVolem cridar la teva atenció sobre els següents proveïdors externs, els serveis dels quals utilitzem per operar l’App i per oferir els nostres serveis, i que poden entrar en contacte amb les dades personals esmentades anteriorment:\na. Microsoft 365, Microsoft Ireland Operations Limited, Attn: Data Protection Officer, One Microsoft Place, South County Business Park, Leopardstown, Dublín 18, Irlanda\nb. Atlassian Ltd., Level 6, 341 George Street, Sydney, NSW 2000, Austràlia\n\nDestacem expressament que no tenim cap influència sobre l’abast de les dades que aquestes empreses recullen. Pel que fa a la protecció de dades, hem de confiar en la informació proporcionada per aquestes empreses, a les quals fem referència a l’explicació següent.\n\nSi cal, obtén més informació de l’empresa sobre la finalitat i l’abast de la recollida de dades, els teus drets al respecte i opcions de configuració per protegir la teva privacitat. Hem proporcionat els enllaços a les declaracions de protecció de dades aquí.\n\nMicrosoft\nUtilitzem el servei de Microsoft, un proveïdor de núvol, com ara Office 365, per garantir la nostra accessibilitat per correu electrònic.\nPots obtenir més informació sobre la política de privacitat de Microsoft aquí: https://privacy.microsoft.com/nl-nl/\n\nAtlassian Ltd.\nUtilitzem els serveis d’Atlassian, com ara Jira, per estructurar i optimitzar la tramitació de les consultes tècniques. Pot ser necessari que algunes dades sobre els problemes descrits es desin i s’emmagatzemin als servidors al núvol d’Atlassian.\nPots obtenir més informació sobre la política de privacitat d’Atlassian aquí: https://www.atlassian.com/nl/legal/privacy-policy\n\nI. Drets dels interessats\nCom a persona afectada pel processament de dades personals, tens els drets següents. Aquests drets resulten de les disposicions del RGPD i aquí es reprodueixen de forma simplificada.\n\nDret a revocar el consentiment\nD’acord amb l’art. 7, apartat 3 RGPD, tens dret a revocar el teu consentiment per al processament en qualsevol moment. La legalitat del processament realitzat fins a la revocació no es veu afectada. El dret de revocació pot exercir-se mitjançant una declaració informal. N’hi ha prou amb una declaració escrita o, alternativament, un correu electrònic a l’adreça de contacte indicada anteriorment.\n\nDret d’accés\nSegons l’art. 15 RGPD, tens dret a sol·licitar confirmació de si es processen dades personals que et concerneixen. Si és així, tens dret a obtenir informació sobre aquestes dades personals i la informació especificada a l’article 15 (1) RGPD. Això inclou la finalitat del processament, les categories de dades processades, els destinataris a qui s’han revelat o es revelaran les dades, sempre que sigui possible, la durada prevista de conservació o els criteris utilitzats per determinar aquesta durada.\n\nDret de rectificació\nSegons l’art. 16 RGPD, tens dret a exigir la rectificació sense demora indeguda de les dades personals inexactes que et concerneixen. Tenint en compte les finalitats del processament, tens dret a que es completin les dades personals incompletes, també mitjançant una declaració complementària.\n\nDret de supressió\nSegons l’art. 17 RGPD, tens dret a exigir que s’eliminin immediatament les dades personals que et concerneixen. Estem obligats a eliminar immediatament les dades personals si es compleix una de les condicions de l’art. 17 apartat (1) RGPD. Aquests motius inclouen, per exemple, que les dades ja no siguin necessàries per als fins per als quals van ser recollides o processades.\n\nDret a la limitació del processament\nSegons l’art. 18 RGPD, tens dret a exigir que limitem el processament si es compleix una de les condicions especificades a l’article 18 RGPD. Això inclou, per exemple, que impugnis l’exactitud de les dades personals. Llavors només podrem processar les dades de manera limitada mentre es comprova l’exactitud.\n\nDret a la portabilitat de les dades\nSegons l’art. 20 RGPD, tens dret a rebre les dades personals que ens has facilitat en un format estructurat, d’ús comú i lectura mecànica. Tens dret a transmetre aquestes dades a un altre responsable del processament sense impediments, sempre que el processament inicial s’hagi basat en el consentiment o fos necessari per a l’execució d’un contracte.\n\nDret d’oposició\nSegons l’art. 21 RGPD, tens dret a oposar-te en qualsevol moment al processament de les teves dades personals si aquestes es processen sobre la base de l’art. 6 apartat 1 (e) o (f) RGPD i hi ha motius relacionats amb la teva situació particular. Pots oposar-te en qualsevol moment al processament de dades amb finalitats de màrqueting directe. Les dades personals ja no es processaran amb aquesta finalitat. El dret d’oposició pot exercir-se mitjançant una declaració informal. N’hi ha prou amb una declaració escrita o, alternativament, un correu electrònic a l’adreça de contacte indicada a l’App.\n\nDecisió automatitzada individual, incloent el perfilat\nSegons l’art. 22 RGPD, tens dret a no ser objecte d’una decisió basada únicament en el processament automatitzat –incloent-hi el perfilat– que produeixi efectes jurídics sobre tu o t’afecti significativament de manera similar. L’art. 22 apartat (1) RGPD preveu excepcions, mentre que l’art. 22 apartat (4) RGPD conté excepcions parcials.\n\nDret a presentar una reclamació davant una autoritat de control\nSegons l’art. 77 RGPD, sense perjudici de qualsevol altre recurs administratiu o judicial, tens dret a presentar una reclamació davant una autoritat de control a l’Estat membre de la teva residència, lloc de treball o lloc de la presumpta infracció, si consideres que el processament de les teves dades personals incompleix aquest reglament.\n\nII. Mesures tècniques i organitzatives\nPrenem mesures tècniques i organitzatives per garantir que es compleixin els requisits de seguretat i protecció del RGPD i que les dades personals estiguin protegides contra pèrdua, destrucció, manipulació o accés no autoritzat.\n\nIII. Canvis a la declaració de protecció de dades\nEns reservem el dret de canviar aquesta declaració de protecció de dades en qualsevol moment. Has d’informar-te regularment sobre el contingut de la nostra declaració de protecció de dades.\n\nIV. Disposició final\nAquest text està subjecte a les lleis dels Països Baixos i s’ha d’interpretar d’acord amb la comprensió jurídica neerlandesa. Aquesta versió en anglès és només per a informació. En cas de discrepàncies entre la versió neerlandesa i l’anglesa, només s’aplicarà la versió neerlandesa."
+}
