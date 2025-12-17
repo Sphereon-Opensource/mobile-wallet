@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import * as Auth from 'expo-local-authentication';
 import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
+import {AppState, NativeEventSubscription} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
 import {setBiometrics} from '../store/actions/user.actions';
@@ -66,23 +67,50 @@ type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => 
 export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
   const navigation = useNavigation();
   const biometricsEnabled = useBiometricsEnabledContext();
+  const [hasPrompted, setHasPrompted] = useState(false);
 
   const {prompt} = useBiometrics();
 
+  const handleAuthentication = useCallback(() => {
+    if (biometricsEnabled) {
+      setHasPrompted(true);
+      prompt().then((result: boolean) => {
+        void effect(result);
+      });
+    }
+  }, [biometricsEnabled, prompt, effect]);
+
   useEffect(() => {
     const handleFocus = () => {
-      if (biometricsEnabled) {
-        prompt().then((result: boolean) => {
-          void effect(result);
-        });
-      }
+      handleAuthentication();
     };
-    navigation.addListener('focus', handleFocus);
+    const unsubscribe = navigation.addListener('focus', handleFocus);
 
     return () => {
-      navigation.removeListener('focus', handleFocus);
+      unsubscribe();
     };
-  }, []);
+  }, [navigation, handleAuthentication]);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState: string) => {
+      if (nextAppState === 'active') {
+        setHasPrompted(false);
+        handleAuthentication();
+      }
+    };
+
+    const subscription: NativeEventSubscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription?.remove();
+    };
+  }, [handleAuthentication]);
+
+  useEffect(() => {
+    if (biometricsEnabled && !hasPrompted) {
+      handleAuthentication();
+    }
+  }, [biometricsEnabled, hasPrompted, handleAuthentication]);
 
   return {
     prompt,
