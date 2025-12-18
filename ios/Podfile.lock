@@ -2771,6 +2771,7 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - React-Codegen
+    - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
     - ZXingObjC

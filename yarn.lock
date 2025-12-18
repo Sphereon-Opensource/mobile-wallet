@@ -4782,22 +4782,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/musap-native@npm:0.2.1-next.197":
-  version: 0.2.1-next.197
-  resolution: "@sphereon/musap-native@npm:0.2.1-next.197"
-  checksum: 10c0/dc94c5e8521b1a1d1efee475f57e97d5447f9794587493cfb7db8db2110b1ba3f384d024504014461da2c612fb51653dda757372bc2c4d671141c249ba3f34be
+"@sphereon/musap-native@npm:0.2.1-next.198":
+  version: 0.2.1-next.198
+  resolution: "@sphereon/musap-native@npm:0.2.1-next.198"
+  checksum: 10c0/90b38b0f95f56687e7a05ecff49f2c138c0336969e5a206a5f7d82174218433b10b66fce8d08b39788ad696f45cbb10d4660743ec871032be234a4f3981f5494
   languageName: node
   linkType: hard
 
-"@sphereon/musap-react-native@npm:0.2.1-next.197":
-  version: 0.2.1-next.197
-  resolution: "@sphereon/musap-react-native@npm:0.2.1-next.197"
+"@sphereon/musap-react-native@npm:0.2.1-next.198":
+  version: 0.2.1-next.198
+  resolution: "@sphereon/musap-react-native@npm:0.2.1-next.198"
   dependencies:
     "@sphereon/musap-native": "npm:^0.2.1-unstable.194+6d9d72dc"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/ef47d140f707734dfa65436fc1045c04e3e4091286d0f9e1d1f40c2d758089647c9ce9d59be59b52b0cbe21358b22ad2e4aae4e09e1ffd59ae4e83f5338392e2
+  checksum: 10c0/5c7b5a62478e2bc7aa313d8d4ebdca07681ba812d229e298c301907d9fd04707e5819bebb7873d94d935a760a7a519f6443f73d85ed671f5ca55f0f71b96db99
   languageName: node
   linkType: hard
 
@@ -4947,8 +4947,8 @@ __metadata:
     "@sphereon/did-auth-siop-adapter": "npm:0.20.1-next.8"
     "@sphereon/did-provider-oyd": "npm:0.36.1-next.108"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.27"
-    "@sphereon/musap-native": "npm:0.2.1-next.197"
-    "@sphereon/musap-react-native": "npm:0.2.1-next.197"
+    "@sphereon/musap-native": "npm:0.2.1-next.198"
+    "@sphereon/musap-react-native": "npm:0.2.1-next.198"
     "@sphereon/oid4vci-client": "npm:0.20.1-next.8"
     "@sphereon/oid4vci-common": "npm:0.20.1-next.8"
     "@sphereon/pex": "npm:5.0.0-unstable.28"
