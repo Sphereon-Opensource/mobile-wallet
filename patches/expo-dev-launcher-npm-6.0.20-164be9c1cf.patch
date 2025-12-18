@@ -1,10 +1,8 @@
 diff --git a/android/src/debug/java/expo/modules/devlauncher/compose/ui/FetchDevelopmentServersButton.kt b/android/src/debug/java/expo/modules/devlauncher/compose/ui/FetchDevelopmentServersButton.kt
-index 1234567..abcdefg 100644
+index 25d85a460661838cc151e0574a1319966f604d51..7b884e56fa675fd03521714d6ed176c3b5cf0310 100644
 --- a/android/src/debug/java/expo/modules/devlauncher/compose/ui/FetchDevelopmentServersButton.kt
 +++ b/android/src/debug/java/expo/modules/devlauncher/compose/ui/FetchDevelopmentServersButton.kt
-@@ -21,10 +21,9 @@ import expo.modules.devlauncher.compose.models.HomeAction
- import expo.modules.devlauncher.compose.primitives.CircularProgressBar
- import expo.modules.devmenu.compose.newtheme.NewAppTheme
+@@ -21,13 +21,10 @@ import expo.modules.devmenu.compose.newtheme.NewAppTheme
  import expo.modules.devmenu.compose.primitives.NewText
  import expo.modules.devmenu.compose.primitives.RoundedSurface
  import kotlinx.coroutines.delay
@@ -14,13 +12,13 @@ index 1234567..abcdefg 100644
 -import kotlin.time.Instant
 +import java.time.Instant
 +import java.time.Duration
-
+ 
  @Composable
 -@OptIn(ExperimentalTime::class)
  private fun rememberIsFetchingState(isFetching: Boolean): Boolean {
  // Users might spam the button, so after debouncing we need to get the current state.
    // We can't use `isFetching` directly in the `LaunchedEffect` as it would be captured in the lambda.
-@@ -42,7 +41,7 @@ private fun rememberIsFetchingState(isFetching: Boolean): Boolean {
+@@ -42,7 +39,7 @@ private fun rememberIsFetchingState(isFetching: Boolean): Boolean {
    LaunchedEffect(isFetching) {
      if (isFetching) {
        isFetchingUIState = true
@@ -28,74 +26,72 @@ index 1234567..abcdefg 100644
 +      fetchStartTime = Instant.now()
        return@LaunchedEffect
      }
-
-@@ -52,8 +51,8 @@ private fun rememberIsFetchingState(isFetching: Boolean): Boolean {
+ 
+@@ -52,10 +49,10 @@ private fun rememberIsFetchingState(isFetching: Boolean): Boolean {
        return@LaunchedEffect
      }
-
+ 
 -    val elapsedTime = Clock.System.now() - startTime
 -    val remainingTime = 2.seconds - elapsedTime
 +    val elapsedTime = Duration.between(startTime, Instant.now())
 +    val remainingTime = Duration.ofSeconds(2).minus(elapsedTime)
-
+ 
 -    delay(remainingTime)
 +    delay(remainingTime.toMillis().coerceAtLeast(0))
-
+ 
      isFetchingUIState = getCurrentState()
    }
 diff --git a/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgeDevSupportManager.kt b/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgeDevSupportManager.kt
-index 1234567..abcdefg 100644
+index 2522b4d135295c3c13dae48011c6c87a4859b5de..090f34b4a75237ae59fdc788b9434ca39f49c767 100644
 --- a/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgeDevSupportManager.kt
 +++ b/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgeDevSupportManager.kt
 @@ -50,7 +50,7 @@ class DevLauncherBridgeDevSupportManager(
    @get:JvmName("getjSBundleURLForRemoteDebugging")
    override val jSBundleURLForRemoteDebugging: String? = null
-
+ 
 -  override fun showNewJavaError(message: String?, e: Throwable) {
 +  override fun showNewJavaError(message: String?, e: Throwable?) {
      Log.e("DevLauncher", "$message", e)
      if (!DevLauncherController.wasInitialized()) {
        Log.e(
-@@ -71,8 +71,8 @@ class DevLauncherBridgeDevSupportManager(
+@@ -71,8 +71,7 @@ class DevLauncherBridgeDevSupportManager(
      DevLauncherErrorActivity.showError(activity, DevLauncherAppError(message, cause))
    }
-
+ 
 -  override val uniqueTag: String
 -    get() = "DevLauncherApp-Bridge"
-+  override fun getUniqueTag(): String =
-+    "DevLauncherApp-Bridge"
-
++  override fun getUniqueTag(): String = "DevLauncherApp-Bridge"
+ 
    override fun startInspector() {
      // no-op for the default `startInspector` which would be implicitly called
 diff --git a/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgelessDevSupportManager.kt b/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgelessDevSupportManager.kt
-index 1234567..abcdefg 100644
+index 4467e5200b42c41776bc00d5def202052cce5f5d..5f44fa9d0e5c3ed07f36e8ce82a2e8718160683b 100644
 --- a/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgelessDevSupportManager.kt
 +++ b/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgelessDevSupportManager.kt
 @@ -49,7 +49,7 @@ class DevLauncherBridgelessDevSupportManager(
    @get:JvmName("getjSBundleURLForRemoteDebugging")
    override val jSBundleURLForRemoteDebugging: String? = null
-
+ 
 -  override fun showNewJavaError(message: String?, e: Throwable) {
 +  override fun showNewJavaError(message: String?, e: Throwable?) {
      Log.e("DevLauncher", "$message", e)
      if (!DevLauncherController.wasInitialized()) {
        Log.e("DevLauncher", "DevLauncher wasn't initialized. Couldn't intercept native error handling.")
-@@ -66,8 +66,8 @@ class DevLauncherBridgelessDevSupportManager(
+@@ -66,8 +66,7 @@ class DevLauncherBridgelessDevSupportManager(
      DevLauncherErrorActivity.showError(activity, DevLauncherAppError(message, e))
    }
-
+ 
 -  override val uniqueTag: String
 -    get() = "DevLauncherApp-Bridgeless"
-+  override fun getUniqueTag(): String =
-+    "DevLauncherApp-Bridgeless"
-
++  override fun getUniqueTag(): String = "DevLauncherApp-Bridgeless"
+ 
    override fun startInspector() {
      // no-op for the default `startInspector` which would be implicitly called
 diff --git a/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgeDevSupportManager.kt b/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgeDevSupportManager.kt
-index 1234567..abcdefg 100644
+index 44458f911c76af183ef28ec54224ddefbbc62e81..f94fc5363ed459ce6203c4a13199e2f5df1a718e 100644
 --- a/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgeDevSupportManager.kt
 +++ b/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgeDevSupportManager.kt
-@@ -13,9 +13,6 @@ import com.facebook.react.bridge.ReactMarker
+@@ -13,12 +13,10 @@ import com.facebook.react.bridge.ReactMarker
  import com.facebook.react.bridge.ReactMarkerConstants
  import com.facebook.react.bridge.UiThreadUtil
  import com.facebook.react.common.SurfaceDelegateFactory
@@ -105,8 +101,11 @@ index 1234567..abcdefg 100644
  import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener
  import com.facebook.react.devsupport.interfaces.DevLoadingViewManager
  import com.facebook.react.devsupport.interfaces.PausedInDebuggerOverlayManager
-@@ -54,7 +51,6 @@ import com.facebook.react.packagerconnection.RequestHandler
-  * whenever instance manager recreates it (through [onNewReactContextCreated]). Also, instance
++import com.facebook.react.devsupport.interfaces.DevSplitBundleCallback
+ import com.facebook.react.devsupport.interfaces.RedBoxHandler
+ import com.facebook.react.packagerconnection.RequestHandler
+ 
+@@ -54,7 +52,6 @@ import com.facebook.react.packagerconnection.RequestHandler
   * manager is responsible for enabling/disabling dev support in case when app is backgrounded or
   * when all the views has been detached from the instance (through `setDevSupportEnabled` method).
   */
@@ -114,18 +113,42 @@ index 1234567..abcdefg 100644
  open class NonFinalBridgeDevSupportManager(
    applicationContext: Context,
    reactInstanceManagerHelper: ReactInstanceDevHelper,
-@@ -82,8 +78,8 @@ open class NonFinalBridgeDevSupportManager(
+@@ -82,14 +79,31 @@ open class NonFinalBridgeDevSupportManager(
      pausedInDebuggerOverlayManager
    ) {
-
+ 
 -  override val uniqueTag: String
 -    get() = "Bridge"
-+  override fun getUniqueTag(): String =
-+    "Bridge"
-
++  override fun getUniqueTag(): String = "Bridge"
++
++  override fun loadSplitBundleFromServer(bundlePath: String, callback: DevSplitBundleCallback) {
++    fetchSplitBundleAndCreateBundleLoader(
++      bundlePath,
++      object : CallbackWithBundleLoader {
++        override fun onSuccess(bundleLoader: com.facebook.react.bridge.JSBundleLoader) {
++          bundleLoader.loadScript(currentReactContext?.catalystInstance)
++          currentReactContext?.getJSModule(HMRClient::class.java)
++            ?.registerBundle(devServerHelper.getDevServerSplitBundleURL(bundlePath))
++          callback.onSuccess()
++        }
++
++        override fun onError(url: String, cause: Throwable) {
++          callback.onError(url, cause)
++        }
++      }
++    )
++  }
+ 
    override fun handleReloadJS() {
      UiThreadUtil.assertOnUiThread()
-@@ -100,10 +96,4 @@ open class NonFinalBridgeDevSupportManager(
+     ReactMarker.logMarker(
+       ReactMarkerConstants.RELOAD,
+-      devSettings.packagerConnectionSettings.debugServerHost
++      devSettings?.packagerConnectionSettings?.debugServerHost
+     )
+ 
+     // dismiss redbox if exists
+@@ -100,10 +114,4 @@ open class NonFinalBridgeDevSupportManager(
        UiThreadUtil.runOnUiThread { reactInstanceDevHelper.onJSBundleLoadedFromServer() }
      }
    }
@@ -137,35 +160,64 @@ index 1234567..abcdefg 100644
 -  }
  }
 diff --git a/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgelessDevSupportManager.kt b/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgelessDevSupportManager.kt
-index 1234567..abcdefg 100644
+index 834fdd7e91d6669f18508b21b56abcd80f9b49bb..2a28259962a8eed56d4342f820c5d85e31f3f9ff 100644
 --- a/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgelessDevSupportManager.kt
 +++ b/android/src/main/java/com/facebook/react/devsupport/NonFinalBridgelessDevSupportManager.kt
-@@ -81,8 +81,8 @@ open class NonFinalBridgelessDevSupportManager(
+@@ -13,6 +13,7 @@ import com.facebook.react.common.SurfaceDelegateFactory
+ import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener
+ import com.facebook.react.devsupport.interfaces.DevLoadingViewManager
+ import com.facebook.react.devsupport.interfaces.DevSupportManager
++import com.facebook.react.devsupport.interfaces.DevSplitBundleCallback
+ import com.facebook.react.devsupport.interfaces.PausedInDebuggerOverlayManager
+ import com.facebook.react.devsupport.interfaces.RedBoxHandler
+ import com.facebook.react.packagerconnection.RequestHandler
+@@ -81,8 +82,30 @@ open class NonFinalBridgelessDevSupportManager(
      pausedInDebuggerOverlayManager = null
    )
-
+ 
 -  override val uniqueTag: String
 -    get() = "Bridgeless"
-+  override fun getUniqueTag(): String =
-+    "Bridgeless"
-
++  override fun getUniqueTag(): String = "Bridgeless"
++
++  override fun loadSplitBundleFromServer(bundlePath: String, callback: DevSplitBundleCallback) {
++    fetchSplitBundleAndCreateBundleLoader(
++      bundlePath,
++      object : CallbackWithBundleLoader {
++        override fun onSuccess(bundleLoader: com.facebook.react.bridge.JSBundleLoader) {
++          try {
++            reactInstanceDevHelper.loadBundle(bundleLoader).waitForCompletion()
++            val bundleURL = devServerHelper.getDevServerSplitBundleURL(bundlePath)
++            currentReactContext?.getJSModule(HMRClient::class.java)?.registerBundle(bundleURL)
++            callback.onSuccess()
++          } catch (e: InterruptedException) {
++            Thread.currentThread().interrupt()
++            throw RuntimeException("[BridgelessDevSupportManager]: Got interrupted while loading bundle", e)
++          }
++        }
++
++        override fun onError(url: String, cause: Throwable) {
++          callback.onError(url, cause)
++        }
++      }
++    )
++  }
+ 
    override fun handleReloadJS() {
      UiThreadUtil.assertOnUiThread()
 diff --git a/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift b/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
-index 1234567..abcdefg 100644
+index 306aad63c45d07170c8f2fd08eb6e3611a0ff1c1..d50a7dfab2eb16667fadd36adedb64a1cd8ab7df 100644
 --- a/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
 +++ b/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
 @@ -55,7 +55,7 @@ public class ExpoDevLauncherReactDelegateHandler: ExpoReactDelegateHandler, EXDe
-     (UIApplication.shared.delegate?.responds(to: Selector(("_expoAppDelegate"))) ?? false ?
      ((UIApplication.shared.delegate as? NSObject)?.value(forKey: "_expoAppDelegate") as? (any ReactNativeFactoryProvider)) : nil)
      let reactDelegate = self.reactDelegate
-
+ 
 -    guard let reactNativeFactory = appDelegate?.factory as? RCTReactNativeFactory ?? reactDelegate?.reactNativeFactory as? RCTReactNativeFactory else {
 +    guard let reactNativeFactory = appDelegate?.factory as? RCTReactNativeFactory else {
        fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
      }
      self.reactNativeFactory = reactNativeFactory
-@@ -82,14 +82,7 @@ public class ExpoDevLauncherReactDelegateHandler: ExpoReactDelegateHandler, EXDe
+@@ -82,15 +82,6 @@ public class ExpoDevLauncherReactDelegateHandler: ExpoReactDelegateHandler, EXDe
            launchOptions: launchOptions
          )
        }
@@ -177,13 +229,13 @@ index 1234567..abcdefg 100644
 -          launchOptions: launchOptions
 -        )
 -      }
-+      fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
+-
+       fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
      }
-
-     let rootView = recreateRootView(
+ 
 diff --git a/ios/SwiftUI/Colors.swift b/ios/SwiftUI/Colors.swift
 new file mode 100644
-index 0000000..1234567
+index 0000000000000000000000000000000000000000..175c4d66ada1ddf52ae60651756927bb1958a5a8
 --- /dev/null
 +++ b/ios/SwiftUI/Colors.swift
 @@ -0,0 +1,54 @@

@@ -47,6 +47,11 @@
     <string>Camera is used to scan QR codes for receiving and presenting credentials</string>
     <key>NFCReaderUsageDescription</key>
     <string>NFC is used for authentication using your eID card</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Access to the photo library is required to scan QR codes.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>The microphone is used for audio capture by the AI assitant.</string>
+
     <key>NSAppTransportSecurity</key>
     <dict>
       <key>NSAllowsArbitraryLoads</key>
