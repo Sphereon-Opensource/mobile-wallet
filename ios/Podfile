@@ -117,6 +117,49 @@ source 'https://cdn.cocoapods.org'
       :ccache_enabled => podfile_properties['apple.ccacheEnabled'] == 'true',
     )
 
+    # CRITICAL: Remove glog module.modulemap to prevent C++ module namespace issues
+    # The error "import of module 'glog.glog.log_severity' appears within namespace 'google'"
+    # occurs because glog's modulemap conflicts with #include inside a namespace
+    glog_modulemap = File.join(installer.sandbox.root, 'glog', 'module.modulemap')
+    if File.exist?(glog_modulemap)
+      File.delete(glog_modulemap)
+      Pod::UI.puts "Removed glog module.modulemap to fix C++ namespace issues"
+    end
+
+    # Also remove glog modulemap from Headers/Public if it exists
+    glog_public_modulemap = File.join(installer.sandbox.root, 'Headers', 'Public', 'glog', 'module.modulemap')
+    if File.exist?(glog_public_modulemap)
+      File.delete(glog_public_modulemap)
+    end
+
+    # Force iOS 16.0 deployment target for all pods
+    # Required for C++ features like CxxStdlib
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+          config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+
+          # Define FOLLY_NO_CONFIG to skip folly-config.h which isn't generated
+          # Define FOLLY_CFG_NO_COROUTINES to skip coroutine support
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+
+          # Disable C++ modules entirely - use textual includes instead
+          # This is the most reliable fix for glog namespace issues
+          config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+          config.build_settings['CLANG_ENABLE_MODULE_DEBUGGING'] = 'NO'
+
+          # Do NOT enable Swift-C++ interop for musap-ios or YubiKit
+          # They use Objective-C bridge pattern instead
+          if target.name.include?('musap-ios') || target.name.include?('YubiKit')
+            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
+          end
+        end
+      end
+    end
+
     # This is necessary for Xcode 14, because it signs resource bundles by default
     # when building for devices.
     installer.target_installation_results.pod_target_installation_results

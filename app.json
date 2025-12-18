@@ -11,7 +11,11 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sphereon.ssi.wallet"
+      "bundleIdentifier": "com.sphereon.ssi.wallet",
+      "useFrameworks": "static",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Camera is used to scan QR codes for receiving and presenting credentials"
+      }
     },
     "android": {
       "package": "com.sphereon.ssi.wallet"
@@ -42,7 +46,8 @@
         }
       ],
       "expo-asset",
-      "expo-localization"
+      "expo-localization",
+      "./withSphereonWalletPods"
     ]
   }
 }

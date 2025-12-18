@@ -18,6 +18,9 @@ PODS:
     - ReactCommon/turbomodule/core
   - EXConstants (17.1.7):
     - ExpoModulesCore
+  - EXJSONUtils (0.15.0)
+  - EXManifests (1.0.10):
+    - ExpoModulesCore
   - Expo (53.0.24):
     - DoubleConversion
     - ExpoModulesCore
@@ -41,6 +44,189 @@ PODS:
     - React-rendererdebug
     - React-utils
     - ReactAppDependencyProvider
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-client (6.0.20):
+    - EXManifests
+    - expo-dev-launcher
+    - expo-dev-menu
+    - expo-dev-menu-interface
+    - EXUpdatesInterface
+  - expo-dev-launcher (6.0.20):
+    - DoubleConversion
+    - EXManifests
+    - expo-dev-launcher/Main (= 6.0.20)
+    - expo-dev-menu
+    - expo-dev-menu-interface
+    - ExpoModulesCore
+    - EXUpdatesInterface
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTAppDelegate
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactAppDependencyProvider
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-launcher/Main (6.0.20):
+    - DoubleConversion
+    - EXManifests
+    - expo-dev-launcher/Unsafe
+    - expo-dev-menu
+    - expo-dev-menu-interface
+    - ExpoModulesCore
+    - EXUpdatesInterface
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTAppDelegate
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactAppDependencyProvider
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-launcher/Unsafe (6.0.20):
+    - DoubleConversion
+    - EXManifests
+    - expo-dev-menu
+    - expo-dev-menu-interface
+    - ExpoModulesCore
+    - EXUpdatesInterface
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTAppDelegate
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactAppDependencyProvider
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-menu (7.0.18):
+    - DoubleConversion
+    - expo-dev-menu/Main (= 7.0.18)
+    - expo-dev-menu/ReactNativeCompatibles (= 7.0.18)
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-menu-interface (2.0.0)
+  - expo-dev-menu/Main (7.0.18):
+    - DoubleConversion
+    - EXManifests
+    - expo-dev-menu-interface
+    - ExpoModulesCore
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - expo-dev-menu/ReactNativeCompatibles (7.0.18):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
@@ -94,6 +280,8 @@ PODS:
     - ExpoModulesCore
   - ExpoSplashScreen (0.30.10):
     - ExpoModulesCore
+  - EXUpdatesInterface (2.0.0):
+    - ExpoModulesCore
   - fast_float (6.1.4)
   - FBLazyVector (0.79.6)
   - fmt (11.0.2)
@@ -119,8 +307,8 @@ PODS:
     - MMKVCore (~> 1.3.16)
   - MMKVCore (1.3.16)
   - musap-ios (0.1.0):
-    - YubiKit
-  - "musap-react-native (0.2.1-unstable.189+1ae2421)":
+    - YubiKit (~> 4.4.0)
+  - "musap-react-native (0.2.1-next.197+df23ae26)":
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2448,7 +2636,13 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
+  - EXManifests (from `../node_modules/expo-manifests/ios`)
   - Expo (from `../node_modules/expo`)
+  - expo-dev-client (from `../node_modules/expo-dev-client/ios`)
+  - expo-dev-launcher (from `../node_modules/expo-dev-launcher`)
+  - expo-dev-menu (from `../node_modules/expo-dev-menu`)
+  - expo-dev-menu-interface (from `../node_modules/expo-dev-menu-interface/ios`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
   - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
@@ -2461,6 +2655,7 @@ DEPENDENCIES:
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
   - ExpoSplashScreen (from `../node_modules/expo-splash-screen/ios`)
+  - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -2576,13 +2771,12 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - React-Codegen
-    - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
-    - YubiKit
     - ZXingObjC
   trunk:
     - SDWebImage
+    - YubiKit
 
 EXTERNAL SOURCES:
   AusweisSdk:
@@ -2597,8 +2791,20 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXJSONUtils:
+    :path: "../node_modules/expo-json-utils/ios"
+  EXManifests:
+    :path: "../node_modules/expo-manifests/ios"
   Expo:
     :path: "../node_modules/expo"
+  expo-dev-client:
+    :path: "../node_modules/expo-dev-client/ios"
+  expo-dev-launcher:
+    :path: "../node_modules/expo-dev-launcher"
+  expo-dev-menu:
+    :path: "../node_modules/expo-dev-menu"
+  expo-dev-menu-interface:
+    :path: "../node_modules/expo-dev-menu-interface/ios"
   ExpoAsset:
     :path: "../node_modules/expo-asset/ios"
   ExpoCamera:
@@ -2623,6 +2829,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-random/ios"
   ExpoSplashScreen:
     :path: "../node_modules/expo-splash-screen/ios"
+  EXUpdatesInterface:
+    :path: "../node_modules/expo-updates-interface/ios"
   fast_float:
     :podspec: "../node_modules/react-native/third-party-podspecs/fast_float.podspec"
   FBLazyVector:
@@ -2835,7 +3043,13 @@ SPEC CHECKSUMS:
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXAV: 28241f071fd70ea38d278d94096b61d893645946
   EXConstants: 9d62a46a36eae6d28cb978efcbc68aef354d1704
+  EXJSONUtils: 1d3e4590438c3ee593684186007028a14b3686cd
+  EXManifests: 83ef0844fcf06d6099b12a7bdbd7d36fc0e1dd16
   Expo: 04d7345c6abf641f7bd2358674b8027edad0d8b2
+  expo-dev-client: 12ef7d5b14d93e309922acea78dcd851db583a87
+  expo-dev-launcher: d882e28c2cf73716297190581686ffc03c81d48e
+  expo-dev-menu: b7d7bf70358f1a52fac5218e753d616128688927
+  expo-dev-menu-interface: 600df12ea01efecdd822daaf13cc0ac091775533
   ExpoAsset: 7bdbbacf4e6752ae6e3cf70555cee076f6229e6e
   ExpoCamera: fc1ab0e1c665b543a307c577df107e37cc2edc8e
   ExpoClipboard: 6b9aae54fd48a579473fb101051ad693435b9294
@@ -2848,6 +3062,7 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 16f74d8df26d7e4b6bf7eb3d0effaf0f15df7b80
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
   ExpoSplashScreen: 6f9213be0c60f2756a2f8220c36f4b90c55e3dbd
+  EXUpdatesInterface: 1436757deb0d574b84bba063bd024c315e0ec08b
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 07309209b7b914451b8f822544a18e2a0a85afff
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
@@ -2857,8 +3072,8 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 43cd10be0f925bf3fd5c2bd8bea501a328037b64
   MMKVCore: 13be45a0394861b74836875ac9ec7ee939e86b78
-  musap-ios: d1f24632d1cbb24ccf79e5ac6876d6b1356621d1
-  musap-react-native: dd8b8b062fc2f6256ccc097fa81f8be93e9fdba2
+  musap-ios: e02c775007bce8b6ab5d6e6a98b48930b06c49e2
+  musap-react-native: 7f389f4dd1d4312bb24bdea3e34a3a9b144d6fb0
   NitroModules: 7f50ee216f8403e8eb243acfc504f3f856d6914c
   RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: 9bc64754b40b86fa5e32f293ab3ea8eea2248339
@@ -2959,6 +3174,6 @@ SPEC CHECKSUMS:
   YubiKit: 390e7733942f9518f9b3f5890c60914f7b8d74c8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: af8a4c5644d1584c06199454dbacdd3cbac230fd
+PODFILE CHECKSUM: d68f4e159d7d4956152ab03dac710f374d49ece7
 
 COCOAPODS: 1.15.2

@@ -5,13 +5,18 @@ import {
   DataStoreIssuanceBrandingEntities,
   DataStoreMachineStateEntities,
   DataStoreMigrations,
-} from '@sphereon/ssi-sdk.data-store';
-import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store';
+} from '@sphereon/ssi-sdk.data-store'
+import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store'
 // @ts-ignore
-import {typeORMDriver} from 'react-native-nitro-sqlite';
-import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions';
-import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact';
-import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts';
+import {enableSimpleNullHandling, typeORMDriver} from 'react-native-nitro-sqlite'
+import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions'
+import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact'
+import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts'
+
+// Enable simple null handling for NitroSQLite to return actual null values
+// instead of { isNitroSQLiteNull: true } objects. This is required for TypeORM
+// compatibility, especially during migrations when reading PRAGMA table_xinfo.
+enableSimpleNullHandling(true)
 
 const DB_CONNECTION_NAME = 'default';
 
