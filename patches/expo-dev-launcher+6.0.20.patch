@@ -1,0 +1,90 @@
+diff --git a/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift b/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
+index 1234567..abcdefg 100644
+--- a/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
++++ b/ios/ReactDelegateHandler/ExpoDevLauncherReactDelegateHandler.swift
+@@ -55,7 +55,7 @@ public class ExpoDevLauncherReactDelegateHandler: ExpoReactDelegateHandler, EXDe
+     (UIApplication.shared.delegate?.responds(to: Selector(("_expoAppDelegate"))) ?? false ?
+     ((UIApplication.shared.delegate as? NSObject)?.value(forKey: "_expoAppDelegate") as? (any ReactNativeFactoryProvider)) : nil)
+     let reactDelegate = self.reactDelegate
+
+-    guard let reactNativeFactory = appDelegate?.factory as? RCTReactNativeFactory ?? reactDelegate?.reactNativeFactory as? RCTReactNativeFactory else {
++    guard let reactNativeFactory = appDelegate?.factory as? RCTReactNativeFactory else {
+       fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
+     }
+     self.reactNativeFactory = reactNativeFactory
+@@ -82,14 +82,7 @@ public class ExpoDevLauncherReactDelegateHandler: ExpoReactDelegateHandler, EXDe
+           launchOptions: launchOptions
+         )
+       }
+-      if let factory = reactDelegate?.reactNativeFactory {
+-        return factory.recreateRootView(
+-          withBundleURL: withBundleURL,
+-          moduleName: moduleName,
+-          initialProps: initialProps,
+-          launchOptions: launchOptions
+-        )
+-      }
++      fatalError("`UIApplication.shared.delegate` must be an `ExpoAppDelegate` or `EXAppDelegateWrapper`")
+     }
+
+     let rootView = recreateRootView(
+diff --git a/ios/SwiftUI/Colors.swift b/ios/SwiftUI/Colors.swift
+new file mode 100644
+index 0000000..1234567
+--- /dev/null
++++ b/ios/SwiftUI/Colors.swift
+@@ -0,0 +1,54 @@
++// Copyright 2015-present 650 Industries. All rights reserved.
++
++import SwiftUI
++
++extension Color {
++  static var expoSecondarySystemBackground: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.secondarySystemBackground)
++    }
++    return Color.gray.opacity(0.2)
++  }
++
++  static var expoSystemGroupedBackground: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.systemGroupedBackground)
++    }
++    return Color.gray.opacity(0.1)
++  }
++
++  static var expoSecondarySystemGroupedBackground: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.secondarySystemGroupedBackground)
++    }
++    return Color.gray.opacity(0.15)
++  }
++
++  static var expoSystemBackground: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.systemBackground)
++    }
++    return Color.white
++  }
++
++  static var expoSystemGray4: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.systemGray4)
++    }
++    return Color.gray.opacity(0.4)
++  }
++
++  static var expoSystemGray5: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.systemGray5)
++    }
++    return Color.gray.opacity(0.2)
++  }
++
++  static var expoSystemGray6: Color {
++    if #available(iOS 13.0, *) {
++      return Color(UIColor.systemGray6)
++    }
++    return Color.gray.opacity(0.1)
++  }
++}
