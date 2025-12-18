@@ -1,32 +1,130 @@
 diff --git a/dist/index.cjs b/dist/index.cjs
-index abf8a89..4aa9f00 100644
+index abf8a89b1401ae3e3f3a6a4a62cd8c161d5fdc10..0bd84a8d641cfe72f13876e44d589983868c1443 100644
 --- a/dist/index.cjs
 +++ b/dist/index.cjs
-@@ -292,9 +292,12 @@ async function createObjects(config, pointers) {
-       npmModule = resolve(npmModule);
+@@ -288,41 +288,11 @@ async function createObjects(config, pointers) {
+     });
+     if (npmModule.slice(0, 2) === "./" || npmModule.slice(0, 3) === "../") {
+       console.log("objectFromConfig: Resolving relative path", npmModule);
+-      const { resolve } = await import("path");
+-      npmModule = resolve(npmModule);
++      // Dynamic import of path disabled in React Native
      }
      const resolvedArgs = args !== void 0 ? await resolveRefs(args) : [];
 -    console.error(`npmModule: ${npmModule}`);
-+    console.log(`npmModule: ${npmModule}`);
-+    return Promise.reject(Error("Agent-config dynammic loading disabled in RN")
-+    /*@metro-ignore*/
-+/*
-     return await Promise.resolve(await import(
+-    return await Promise.resolve(await import(
 -      /*@metro-ignore*/
-+      /!*@metro-ignore*!/
-       npmModule
-     ).then((mod) => {
-       if (member) {
-@@ -319,10 +322,11 @@ async function createObjects(config, pointers) {
-         return Promise.reject(Error(`Error creating ${npmModule}['${member}']: Object is undefined and pointer was present requiring an object.`));
-       }
-       return (0, import_jsonpointer.get)(object, pointer);
-+
-     }).catch((e) => {
-       console.error(e);
-       return Promise.reject(Error(`Error creating ${npmModule}['${member}']: ${e.message}`));
+-      npmModule
+-    ).then((mod) => {
+-      if (member) {
+-        return mod[member];
+-      }
+-      return mod;
+-    }).then((required) => {
+-      let object;
+-      if (type === "class") {
+-        object = new required(...resolvedArgs);
+-      } else if (type === "function") {
+-        object = required(...resolvedArgs);
+-      } else if (type === "object") {
+-        object = required;
+-      } else {
+-        console.error(`Likely we have a bug in agent object creation. type = ${type} is not of type class, function or object`);
+-      }
+-      if (!pointer) {
+-        return object;
+-      }
+-      if (!object) {
+-        return Promise.reject(Error(`Error creating ${npmModule}['${member}']: Object is undefined and pointer was present requiring an object.`));
+-      }
+-      return (0, import_jsonpointer.get)(object, pointer);
+-    }).catch((e) => {
+-      console.error(e);
+-      return Promise.reject(Error(`Error creating ${npmModule}['${member}']: ${e.message}`));
 -    }));
-+    })*/);
++    console.log(`npmModule: ${npmModule}`);
++    return Promise.reject(Error("Agent-config dynamic loading disabled in React Native"));
    }
    __name(objectFromConfig, "objectFromConfig");
    async function objectFromPointer(pointer) {
+@@ -376,11 +346,10 @@ __name(createAgent, "createAgent");
+ var getConfig = /* @__PURE__ */ __name(async (filePath) => {
+   let fileContent;
+   try {
+-    const fs = await import(
+-      /* webpackIgnore: true */
+-      "fs"
+-    );
+-    fileContent = await fs.promises.readFile(filePath, "utf8");
++    // Dynamic import of fs disabled in React Native
++    console.log("getConfig is not supported in React Native: " + filePath);
++    console.log('Use "veramo config create" to create one');
++    process.exit(1);
+   } catch (e) {
+     console.log("Config file not found: " + filePath);
+     console.log('Use "veramo config create" to create one');
+diff --git a/dist/index.js b/dist/index.js
+index f9b85542477e167e7223311da7cf4fea66d8467e..f796081f62c04c9df44842bcfde0d70a7314cb46 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -233,41 +233,11 @@ async function createObjects(config, pointers) {
+     });
+     if (npmModule.slice(0, 2) === "./" || npmModule.slice(0, 3) === "../") {
+       console.log("objectFromConfig: Resolving relative path", npmModule);
+-      const { resolve } = await import("path");
+-      npmModule = resolve(npmModule);
++      // Dynamic import of path disabled in React Native
+     }
+     const resolvedArgs = args !== void 0 ? await resolveRefs(args) : [];
+-    console.error(`npmModule: ${npmModule}`);
+-    return await Promise.resolve(await import(
+-      /*@metro-ignore*/
+-      npmModule
+-    ).then((mod) => {
+-      if (member) {
+-        return mod[member];
+-      }
+-      return mod;
+-    }).then((required) => {
+-      let object;
+-      if (type === "class") {
+-        object = new required(...resolvedArgs);
+-      } else if (type === "function") {
+-        object = required(...resolvedArgs);
+-      } else if (type === "object") {
+-        object = required;
+-      } else {
+-        console.error(`Likely we have a bug in agent object creation. type = ${type} is not of type class, function or object`);
+-      }
+-      if (!pointer) {
+-        return object;
+-      }
+-      if (!object) {
+-        return Promise.reject(Error(`Error creating ${npmModule}['${member}']: Object is undefined and pointer was present requiring an object.`));
+-      }
+-      return get(object, pointer);
+-    }).catch((e) => {
+-      console.error(e);
+-      return Promise.reject(Error(`Error creating ${npmModule}['${member}']: ${e.message}`));
+-    }));
++    console.log(`npmModule: ${npmModule}`);
++    return Promise.reject(Error("Agent-config dynamic loading disabled in React Native"));
+   }
+   __name(objectFromConfig, "objectFromConfig");
+   async function objectFromPointer(pointer) {
+@@ -321,11 +291,10 @@ __name(createAgent, "createAgent");
+ var getConfig = /* @__PURE__ */ __name(async (filePath) => {
+   let fileContent;
+   try {
+-    const fs = await import(
+-      /* webpackIgnore: true */
+-      "fs"
+-    );
+-    fileContent = await fs.promises.readFile(filePath, "utf8");
++    // Dynamic import of fs disabled in React Native
++    console.log("getConfig is not supported in React Native: " + filePath);
++    console.log('Use "veramo config create" to create one');
++    process.exit(1);
+   } catch (e) {
+     console.log("Config file not found: " + filePath);
+     console.log('Use "veramo config create" to create one');

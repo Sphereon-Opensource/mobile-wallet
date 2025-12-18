@@ -1,0 +1,57 @@
+diff --git a/lib/api.js b/lib/api.js
+index cc8f904edacab8ad06429ad942d083feea1c8723..397752a318c24ff817be3ab6ff226f588b4d29c2 100644
+--- a/lib/api.js
++++ b/lib/api.js
+@@ -107,50 +107,9 @@ export class RealtimeAPI extends RealtimeEventHandler {
+       });
+     } else {
+       /**
+-       * Node.js
++       * Node.js - disabled in React Native
+        */
+-      const moduleName = 'ws';
+-      const wsModule = await import(/* webpackIgnore: true */ moduleName);
+-      const WebSocket = wsModule.default;
+-      const ws = new WebSocket(
+-        'wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01',
+-        [],
+-        {
+-          finishRequest: (request) => {
+-            // Auth
+-            request.setHeader('Authorization', `Bearer ${this.apiKey}`);
+-            request.setHeader('OpenAI-Beta', 'realtime=v1');
+-            request.end();
+-          },
+-        },
+-      );
+-      ws.on('message', (data) => {
+-        const message = JSON.parse(data.toString());
+-        this.receive(message.type, message);
+-      });
+-      return new Promise((resolve, reject) => {
+-        const connectionErrorHandler = () => {
+-          this.disconnect(ws);
+-          reject(new Error(`Could not connect to "${this.url}"`));
+-        };
+-        ws.on('error', connectionErrorHandler);
+-        ws.on('open', () => {
+-          this.log(`Connected to "${this.url}"`);
+-          ws.removeListener('error', connectionErrorHandler);
+-          ws.on('error', () => {
+-            this.disconnect(ws);
+-            this.log(`Error, disconnected from "${this.url}"`);
+-            this.dispatch('close', { error: true });
+-          });
+-          ws.on('close', () => {
+-            this.disconnect(ws);
+-            this.log(`Disconnected from "${this.url}"`);
+-            this.dispatch('close', { error: false });
+-          });
+-          this.ws = ws;
+-          resolve(true);
+-        });
+-      });
++      throw new Error('WebSocket not available. Node.js ws module is not supported in React Native.');
+     }
+   }
+ 

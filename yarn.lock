@@ -3655,12 +3655,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openai/realtime-api-beta@github:openai/openai-realtime-api-beta":
+"@openai/realtime-api-beta@https://github.com/openai/openai-realtime-api-beta.git#commit=a5cb94824f625423858ebacb9f769226ca98945f":
   version: 0.0.0
   resolution: "@openai/realtime-api-beta@https://github.com/openai/openai-realtime-api-beta.git#commit=a5cb94824f625423858ebacb9f769226ca98945f"
   dependencies:
     ws: "npm:^8.18.0"
   checksum: 10c0/35f8eee139d35f3a0cce7f5be846aad0512b87bea68ca9544da879cc9bfc4d2817901007aebcc8f9992144b84f8329ed6f0f264bec7969678d58d9161fb771c9
+  languageName: node
+  linkType: hard
+
+"@openai/realtime-api-beta@patch:@openai/realtime-api-beta@https%3A//github.com/openai/openai-realtime-api-beta.git%23commit=a5cb94824f625423858ebacb9f769226ca98945f#~/patches/@openai-realtime-api-beta-https-689b3a705f.patch":
+  version: 0.0.0
+  resolution: "@openai/realtime-api-beta@patch:@openai/realtime-api-beta@https%3A//github.com/openai/openai-realtime-api-beta.git%23commit=a5cb94824f625423858ebacb9f769226ca98945f#~/patches/@openai-realtime-api-beta-https-689b3a705f.patch::version=0.0.0&hash=b6ebec"
+  dependencies:
+    ws: "npm:^8.18.0"
+  checksum: 10c0/86769a4cb7f413e4b265932fd9d7daa4ec70f8ce7cdc721a61503e14b714da2a0a6728b087485debae2ee2344c4d7d37e11f67d73cd6ac1d1b5b26a1222a5e88
   languageName: node
   linkType: hard
 
@@ -4926,7 +4935,7 @@ __metadata:
     "@craftzdog/react-native-buffer": "npm:^6.1.0"
     "@digitalbazaar/security-context": "npm:^1.0.1"
     "@ethersproject/shims": "npm:^5.7.0"
-    "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta"
+    "@openai/realtime-api-beta": "patch:@openai/realtime-api-beta@https%3A//github.com/openai/openai-realtime-api-beta.git%23commit=a5cb94824f625423858ebacb9f769226ca98945f#~/patches/@openai-realtime-api-beta-https-689b3a705f.patch"
     "@pakenfit/react-native-pin-input": "npm:^1.4.0"
     "@react-native-community/blur": "npm:^4.4.0"
     "@react-native-community/cli": "npm:^20.0.2"
@@ -5408,7 +5417,7 @@ __metadata:
 
 "@sphereon/ssi-sdk.agent-config@patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch":
   version: 0.34.0
-  resolution: "@sphereon/ssi-sdk.agent-config@patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch::version=0.34.0&hash=aeef4c"
+  resolution: "@sphereon/ssi-sdk.agent-config@patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch::version=0.34.0&hash=a353bb"
   dependencies:
     "@veramo/core": "npm:4.2.0"
     debug: "npm:^4.3.5"
@@ -5417,7 +5426,7 @@ __metadata:
     typeorm: "npm:0.3.20"
     url-parse: "npm:^1.5.10"
     yaml: "npm:^2.4.5"
-  checksum: 10c0/bbdf828898a79d4325831cf00a29e11a2fdbd0d2ae42785ee5cfcb9cc418854832be6d61696791b3453129210b0aca4f088339321b259f0f3b1341f46f8cd9db
+  checksum: 10c0/950c69a4116c3d3e847761d2b1ea41cfb45d49ba4238a84d8541b42ae3b0c0382ba5872115f87f33c13ba596bb4e67f4fbd6243db62b01cc3ae99908b8d7bd7e
   languageName: node
   linkType: hard
 
