@@ -379,7 +379,8 @@
     "jose@npm:^4.3.8": "patch:jose@npm%3A5.10.0#~/patches/jose-npm-5.10.0-4ce825ae05.patch",
     "jose@npm:^5.9.3": "patch:jose@npm%3A5.10.0#~/patches/jose-npm-5.10.0-4ce825ae05.patch",
     "@sd-jwt/sd-jwt-vc@npm:^0.15.0": "patch:@sd-jwt/sd-jwt-vc@npm%3A0.15.1#~/patches/@sd-jwt-sd-jwt-vc-npm-0.15.1-49083b7f21.patch",
-    "@sphereon/ssi-sdk.agent-config@npm:0.36.1-next.108+018fccc6": "patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch"
+    "@sphereon/ssi-sdk.agent-config@npm:0.36.1-next.108+018fccc6": "patch:@sphereon/ssi-sdk.agent-config@npm%3A0.34.0#~/patches/@sphereon-ssi-sdk.agent-config-npm-0.34.0-93ec08ceaa.patch",
+    "expo-dev-launcher@npm:6.0.20": "patch:expo-dev-launcher@npm%3A6.0.20#~/patches/expo-dev-launcher-npm-6.0.20-164be9c1cf.patch"
   },
   "engines": {
     "node": ">=20.0.0"
