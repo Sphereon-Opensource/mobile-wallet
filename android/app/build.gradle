@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
@@ -9,7 +11,7 @@ def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
 react {
-    entryFile = file(["node", "-e", "require('expo/scripts/resolveAppEntry')", projectRoot, "android", "absolute"].execute(null, rootDir).text.trim())
+    entryFile = file("../../index.js")
     reactNativeDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
     hermesCommand = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim()).getParentFile().getAbsolutePath() + "/sdks/hermesc/%OS-BIN%/hermesc"
     codegenDir = new File(["node", "--print", "require.resolve('@react-native/codegen/package.json', { paths: [require.resolve('react-native/package.json')] })"].execute(null, rootDir).text.trim()).getParentFile().getAbsoluteFile()
@@ -101,6 +103,16 @@ android {
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.sphereon.ssi.wallet'
         ]
+        externalNativeBuild {
+            cmake {
+                def cmakeDir = "${android.sdkDirectory}/cmake/4.1.1/bin"
+                def ninjaExecutable = Os.isFamily(Os.FAMILY_WINDOWS) ? "ninja.exe" : "ninja"
+                def ninjaPath = "${cmakeDir}/${ninjaExecutable}".replace("\\", "/")
+
+                arguments "-DCMAKE_MAKE_PROGRAM=${ninjaPath}",
+                        "-DCMAKE_OBJECT_PATH_MAX=1024"
+            }
+        }
     }
     signingConfigs {
         debug {

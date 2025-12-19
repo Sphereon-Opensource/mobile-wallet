@@ -1,13 +1,13 @@
 import {useBackHandler} from '@react-native-community/hooks';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC} from 'react';
+import React, {FC, JSX} from 'react';
+import {View} from 'react-native';
 import ActivitiesImage from '../../components/assets/images/ActivitiesImage';
 import {translate} from '../../localization/Localization';
 import {
   SSIWelcomeViewBodyContainerStyled as BodyContainer,
   SSITextH3RegularLightStyled as BodyText,
-  SSIButtonBottomContainerStyled as ButtonContainer,
   SSIBasicHorizontalCenterContainerStyled as Container,
   SSIWelcomeViewContentContainerStyled as ContentContainer,
   OpenBrowserScreenEmptyStateImageContainerStyled as EmptyStateImageContainer,
@@ -35,24 +35,28 @@ const OpenBrowserScreen: FC<Props> = (props: Props): JSX.Element => {
 
   return (
     <Container>
-      <ContentContainer>
-        <HeaderCaption>{translate(headerCaptioni18n ?? 'browser_open_header')}</HeaderCaption>
-        <TitleCaption>{translate(titleCaptioni18n ?? 'browser_open_auth_title')}</TitleCaption>
-        <BodyContainer>
+      <ContentContainer style={{alignItems: 'center', paddingHorizontal: 24}}>
+        <HeaderCaption style={{textAlign: 'center'}}>{translate(headerCaptioni18n ?? 'browser_open_header')}</HeaderCaption>
+        <TitleCaption style={{textAlign: 'center'}}>{translate(titleCaptioni18n ?? 'browser_open_auth_title')}</TitleCaption>
+        <BodyContainer style={{alignItems: 'center'}}>
           <EmptyStateImageContainer>
             <ActivitiesImage />
           </EmptyStateImageContainer>
-          <BodyText>{translate(bodyTexti18n ?? 'browser_open_auth_body')}</BodyText>
+          <View style={{paddingHorizontal: 16, alignItems: 'center'}}>
+            <BodyText style={{paddingRight: 0, marginRight: 0, textAlign: 'center'}}>
+              {translate(bodyTexti18n ?? 'browser_open_auth_body')}
+            </BodyText>
+          </View>
         </BodyContainer>
       </ContentContainer>
-      <ButtonContainer>
+      <View style={{marginTop: 'auto', alignItems: 'center', justifyContent: 'center', gap: 6, paddingBottom: 60}}>
         <PrimaryButton
           // TODO move styling to styled components (currently there is an issue where this styling prop is not being set correctly)
           style={{height: 42, width: 300}}
           caption={translate(actionNextLabeli18n ?? 'browser_open_action_next_label')}
           onPress={onNext}
         />
-      </ButtonContainer>
+      </View>
     </Container>
   );
 };
