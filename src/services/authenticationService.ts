@@ -27,17 +27,22 @@ export const login = async (): Promise<void> => {
   store.dispatch<any>(loginAction(userId));
 };
 
-export const walletAuthLockState = (): WalletAuthLockState => {
-  const userState: IUserState = useSelector((state: RootState) => state.user);
+export const walletAuthLockState = (navigationIsReady: boolean): WalletAuthLockState => {
+  const {loading, activeUser, loginTime, users} = useSelector((state: RootState) => state.user);
+
+  const isAuthenticated = !!activeUser?.id && !!loginTime;
+  const shouldOnboard = users.size === 0 || OnboardingMachine.hasInstance() || !storageHasPin();
+
   let lockState: WalletAuthLockState;
-  if (userState.users.size === 0 || OnboardingMachine.hasInstance() || !storageHasPin()) {
+  if (!loading && shouldOnboard) {
     lockState = WalletAuthLockState.ONBOARDING;
-  } else if (userState.activeUser?.id && !!userState.loginTime) {
+  } else if (isAuthenticated) {
     lockState = WalletAuthLockState.AUTHENTICATED;
+  } else if (loading) {
+    lockState = WalletAuthLockState.LOADING;
   } else {
     lockState = WalletAuthLockState.LOCKED;
   }
   debug(`AUTH Lock state: ${lockState}`);
-
   return lockState;
 };

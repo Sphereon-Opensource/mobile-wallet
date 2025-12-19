@@ -30,4 +30,5 @@ export enum WalletAuthLockState {
   ONBOARDING = 'onboarding',
   AUTHENTICATED = 'authenticated',
   LOCKED = 'locked',
+  LOADING = 'loading',
 }
