@@ -46,7 +46,8 @@ export const addLinkListeners = async (linkHandlers: LinkHandlers, context: IAge
       //   kms: KeyManagementSystemEnum.MUSAP,
       // },
       authorizationRequestOpts: {
-        redirectUri: `${DefaultURISchemes.CREDENTIAL_OFFER}://com.sphereon.wallet`, // We add the suffix as Keycloak root URL wildcard does not work on openid-credential-offer:// alone
+        clientId: 'https://sphereon.com/ssi-wallet',
+        redirectUri: 'https://sphereon.com/ssi-wallet/oid4vci-callback',
       },
       trustAnchors: ['https://federation.demo.sphereon.com', 'https://federation.dev.findy.fi'],
       stateNavigationListener: oid4vciStateNavigationListener,

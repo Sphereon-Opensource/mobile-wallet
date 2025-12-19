@@ -5,6 +5,7 @@
     "version": "0.7.1",
     "orientation": "portrait",
     "entryPoint": "index.js",
+    "scheme": "com.sphereon.ssi.wallet",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -13,12 +14,27 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.sphereon.ssi.wallet",
       "useFrameworks": "static",
+      "associatedDomains": ["applinks:sphereon.com"],
       "infoPlist": {
         "NSCameraUsageDescription": "Camera is used to scan QR codes for receiving and presenting credentials"
       }
     },
     "android": {
-      "package": "com.sphereon.ssi.wallet"
+      "package": "com.sphereon.ssi.wallet",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "sphereon.com",
+              "pathPrefix": "/ssi-wallet"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "androidNavigationBar": {
       "barStyle": "light-content",
