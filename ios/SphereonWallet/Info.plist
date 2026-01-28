@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+	<!-- Standard RN Key: Allows native UI like the image picker to show localized text -->
+	<key>CFBundleAllowMixedLocalizations</key>
+	<true/>
+
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -10,6 +14,8 @@
     <string>SphereonWallet</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
     <key>CFBundleInfoDictionaryVersion</key>
@@ -18,8 +24,12 @@
     <string>$(PRODUCT_NAME)</string>
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+
     <key>CFBundleShortVersionString</key>
-    <string>0.7.1</string>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -28,6 +38,9 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>com.sphereon.ssi.wallet</string>
+				<string>openid4vp</string>
+				<string>openid-credential-offer</string>
+				<string>openid-vc</string>
         </array>
       </dict>
       <dict>
@@ -37,6 +50,10 @@
         </array>
       </dict>
     </array>
+    	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+		<key>LSRequiresIPhoneOS</key>
+	<true/>
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>com.apple.developer.associated-domains</key>
@@ -63,6 +80,43 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+
+	<key>NSCameraUsageDescription</key>
+	<string>To receive or send digital credential cross device using QR codes</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Used as optional login method next to the PIN code</string>
+
+	<!-- ADDED: Even if you don't use Location, this is often required by Apple if libraries reference it.
+	     Remove if you are 100% sure no library (like permissions handler) links CoreLocation. -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to provide relevant wallet services.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access your microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) does not need access to your photo library</string>
+
+	<key>UIAppFonts</key>
+	<array>
+		<string>Poppins-Black.ttf</string>
+		<string>Poppins-BlackItalic.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-BoldItalic.ttf</string>
+		<string>Poppins-ExtraBold.ttf</string>
+		<string>Poppins-ExtraBoldItalic.ttf</string>
+		<string>Poppins-ExtraLight.ttf</string>
+		<string>Poppins-ExtraLightItalic.ttf</string>
+		<string>Poppins-Italic.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-LightItalic.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>Poppins-MediumItalic.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>Poppins-SemiBoldItalic.ttf</string>
+		<string>Poppins-Thin.ttf</string>
+		<string>Poppins-ThinItalic.ttf</string>
+	</array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

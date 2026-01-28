@@ -122,7 +122,7 @@ export default function App() {
           <OnTouchProvider>
             <GestureHandlerRootView style={{flex: 1}}>
               <AccessibilityProvider>
-                <AppNavigator />
+                <AppNavigator navigationIsReady={navigationIsReady} />
 
                 {/* 2. USE THE LOCAL COMPONENT HERE */}
                 <SafeToast />

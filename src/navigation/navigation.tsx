@@ -1,7 +1,7 @@
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack';
 import Debug, {Debugger} from 'debug';
-import React, {ReactElement, useEffect} from 'react';
+import React, {JSX, ReactElement, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {APP_ID, EMERGENCY_ALERT_DELAY} from '../@config/constants';
 import ActivityDetailHeader from '../components/bars/activity/ActivityDetailHeader';
@@ -36,6 +36,7 @@ import EmergencyScreen from '../screens/EmergencyScreen';
 import NewContactAddScreen from '../screens/NewContactAddScreen';
 import {
   AcceptTermsAndPrivacyScreen,
+  CompleteOnboardingScreen,
   EnableBiometricsScreen,
   EnterCountryScreen,
   EnterEmailScreen,
@@ -46,12 +47,12 @@ import {
   ImportDataFinalScreen,
   ImportDataLoaderScreen,
   ImportPersonalDataScreen,
+  IncorrectInformationScreen,
   ReadTermsAndPrivacyScreen,
   ShowProgressScreen,
   VerifyPinCodeScreen,
   WelcomeScreen,
 } from '../screens/Onboarding';
-import {CompleteOnboardingScreen, IncorrectInformationScreen} from '../screens/Onboarding';
 import EnterESimDetailsScreen from '../screens/Onboarding/EnterESimDetailsScreen';
 import OpenBrowserScreen from '../screens/OpenBrowserScreen';
 import QRPresentationScreen from '../screens/QRPresentationScreen';
@@ -1623,8 +1624,8 @@ export const ESIMActivationStackWithContext = (props: any): ReactElement => (
  * Solution below allows to navigate based on the redux state. so there is no need to specifically navigate to another stack, as setting the state does that already
  * https://reactnavigation.org/docs/auth-flow/
  */
-const AppNavigator = (): JSX.Element => {
-  const lockState: WalletAuthLockState = walletAuthLockState();
+const AppNavigator = ({navigationIsReady}: {navigationIsReady: boolean}): JSX.Element => {
+  const lockState: WalletAuthLockState = walletAuthLockState(navigationIsReady);
 
   if (lockState === WalletAuthLockState.ONBOARDING) {
     if (!OnboardingMachine.hasInstance()) {
@@ -1633,7 +1634,7 @@ const AppNavigator = (): JSX.Element => {
   }
 
   useEffect((): void => {
-    if (!RootNavigation.isReady()) {
+    if (!navigationIsReady || lockState === WalletAuthLockState.LOADING) {
       debug(`app or navigation not ready (yet)`);
       return;
     } else if (lockState !== WalletAuthLockState.ONBOARDING) {
@@ -1650,7 +1651,7 @@ const AppNavigator = (): JSX.Element => {
       onboardingInstance.start();
       debug(`ONBOARDING started`);
     }
-  }, []);
+  }, [lockState, navigationIsReady]);
 
   return (
     <Stack.Navigator
@@ -1658,7 +1659,9 @@ const AppNavigator = (): JSX.Element => {
         animation: 'none',
         headerShown: false,
       }}>
-      {lockState === WalletAuthLockState.ONBOARDING ? (
+      {lockState === WalletAuthLockState.LOADING ? (
+        <Stack.Screen name={ScreenRoutesEnum.LOADING} component={SSILoadingScreen} initialParams={{message: translate('action_getting_information_message')}}/>
+      ) : lockState === WalletAuthLockState.ONBOARDING ? (
         <>
           <Stack.Screen
             name={SwitchRoutesEnum.ONBOARDING}
