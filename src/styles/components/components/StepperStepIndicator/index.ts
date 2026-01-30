@@ -1,5 +1,8 @@
-import {LinearGradient} from 'expo-linear-gradient';
+import {LinearGradient, LinearGradientProps} from 'expo-linear-gradient';
+import React from 'react';
 import styled, {css} from 'styled-components/native';
+
+const LinearGradientWithOptionalColors = LinearGradient as unknown as React.ComponentType<Omit<LinearGradientProps, 'colors'> & {colors?: string[]}>;
 
 const dotBaseStyle = css`
   width: 34px;
@@ -10,7 +13,7 @@ const dotBaseStyle = css`
   position: relative;
 `;
 
-export const StepGradientDot = styled(LinearGradient).attrs(_ => ({
+export const StepGradientDot = styled(LinearGradientWithOptionalColors).attrs(_ => ({
   colors: ['#4347E1', '#4C16AE'],
   start: {x: 0, y: 0},
   end: {x: 1, y: 1},

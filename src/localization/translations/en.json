@@ -99,6 +99,9 @@
   "credential_details_open_link_warning_description": "Opening this link could pose a privacy risk if the URL is unique to this credential. The external party may be able to identify you.",
   "credential_details_open_link_warning_proceed": "Open link",
   "credential_details_open_link_warning_cancel": "Cancel",
+  "credential_details_show_values": "Show values",
+  "credential_details_hide_values": "Hide values",
+  "credential_details_values_redacted": "Values are redacted",
   "credentials_view_item_expires_on": "Expires on",
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
@@ -591,5 +594,21 @@
   "present_qr_code_screen_header_title": "Present QR code",
   "present_qr_code_screen_subtitle": "Show the QR code to the party of interest, so they can scan your QR code.",
   "present_qr_code_dropdown_item_text": "Present QR code",
-  "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest."
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest.",
+
+  "lock_dropdown_item_text": "Lock",
+  "lock_dropdown_item_accessibility_hint": "Lock the wallet and return to the lock screen",
+
+  "settings_language_section_label": "Language",
+  "settings_language_system_default": "System default",
+
+  "settings_privacy_security_section_label": "Privacy & Security",
+  "settings_warn_on_external_link_label": "Warn when opening external links",
+  "settings_warn_on_external_link_description": "Show a warning when opening external links from credentials",
+  "settings_warn_on_low_trust_label": "Warn on low trust contacts",
+  "settings_warn_on_low_trust_description": "Show a warning when interacting with low-trust contacts",
+  "settings_confirm_browser_open_label": "Confirm before opening browser",
+  "settings_confirm_browser_open_description": "Ask for confirmation before opening the browser",
+  "settings_show_claim_values_by_default_label": "Show claim values by default",
+  "settings_show_claim_values_by_default_description": "Display claim values without requiring a tap to reveal"
 }

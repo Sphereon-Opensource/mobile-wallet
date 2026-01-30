@@ -750,16 +750,16 @@ const step1GroupConfig: StackGroupConfig = {
   titleKey: 'onboard_create_wallet_step_title',
   screens: [
     {
+      name: 'EnterCountry',
+      component: EnterCountryScreen,
+    },
+    {
       name: 'EnterName',
       component: EnterNameScreen,
     },
     {
       name: 'EnterEmailAddress',
       component: EnterEmailScreen,
-    },
-    {
-      name: 'EnterCountry',
-      component: EnterCountryScreen,
     },
   ],
 };
@@ -817,9 +817,9 @@ const stackGroupsConfig = [step1GroupConfig, step2GroupConfig, step3GroupConfig]
 export const OnboardingStack = (): JSX.Element => (
   <OnboardingBaseStack.Navigator screenOptions={{animation: 'none'}}>
     <OnboardingBaseStack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingDefaultHeader}} />
-    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingDefaultHeader}} />
-    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingDefaultHeader}} />
+    <OnboardingBaseStack.Screen name="ShowProgress" component={ShowProgressScreen} options={{header: OnboardingDefaultHeader as any}} />
+    <OnboardingBaseStack.Screen name="ReadTermsAndPrivacy" component={ReadTermsAndPrivacyScreen} options={{header: OnboardingDefaultHeader as any}} />
+    <OnboardingBaseStack.Screen name="IncorrectPersonalData" component={IncorrectInformationScreen} options={{header: OnboardingDefaultHeader as any}} />
     <OnboardingBaseStack.Screen name="CompleteOnboarding" component={CompleteOnboardingScreen} options={{headerShown: false}} />
     {stackGroupsConfig.map(group => (
       <OnboardingBaseStack.Group key={group.titleKey}>
@@ -1644,7 +1644,7 @@ const AppNavigator = ({navigationIsReady}: {navigationIsReady: boolean}): JSX.El
     debug(`app and navigation ready`);
 
     // Existing instance is already created by the provider. So we make sure by requiring an existing instance
-    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance({requireExisting: true});
+    const onboardingInstance: OnboardingMachineInterpreter = OnboardingMachine.getInstance();
     const snapshot = onboardingInstance.getSnapshot();
     if (!snapshot || snapshot.done || snapshot.events.length === 0) {
       debug(`ONBOARDING starting...`);
@@ -1667,7 +1667,7 @@ const AppNavigator = ({navigationIsReady}: {navigationIsReady: boolean}): JSX.El
             name={SwitchRoutesEnum.ONBOARDING}
             component={OnboardingStackScreenWithContext}
             initialParams={{
-              customOnboardingInstance: OnboardingMachine.getInstance({requireExisting: true}),
+              customOnboardingInstance: OnboardingMachine.getInstance(),
             }}
           />
           <Stack.Screen name={SwitchRoutesEnum.ACTIVATE_ESIM} component={ESIMActivationStackWithContext} />

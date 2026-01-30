@@ -13,12 +13,14 @@ import {getContacts} from '../../services/contactService';
 import {createContact, fetchBrandingForContact, updateContact} from '../../store/actions/contact.actions';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {MainRoutesEnum, RootState, ScreenRoutesEnum, StackParamList} from '../../types';
+import {useUserPreference} from '../../hooks/useUserPreference';
 import {Chat} from '../../components/chat/Chat';
 import {stringifyState} from '../../utils/stringifyState';
 import {useChat} from '../../providers/chat/chatProvider';
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.NEW_CONTACT_ADD>;
 
 const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
+  const warnOnLowTrust = useUserPreference('warnOnLowTrust') ?? true;
   const {
     name,
     uri,
@@ -146,7 +148,7 @@ const NewContactAddScreen: FC<Props> = (props: Props): ReactElement => {
       }
     };
 
-    if (federations !== undefined && federations.length === 0) {
+    if (federations !== undefined && federations.length === 0 && warnOnLowTrust) {
       props.navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
         title: translate('new_contact_add_new_contact_low_level_trust_title'),
         details: translate('new_contact_add_new_contact_low_level_trust_description'),

@@ -15,8 +15,6 @@ import {
 import RootNavigation from './../rootNavigation';
 import {PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {translate} from '../../localization/Localization';
-import store from '../../store';
-import {LOGIN_SUCCESS} from '../../types/store/user.action.types';
 
 const debug: Debugger = Debug(`${APP_ID}:onboardingStateNavigation`);
 
@@ -133,9 +131,10 @@ export const onboardingStateNavigationListener = (onboardingMachine: OnboardingM
       break;
     }
     case OnboardingMachineStateType.done: {
-      OnboardingMachine.clearInstance({stop: true});
-      // Yuck, but we need a rerender. The retrieval of contacts etc is already done in the setupWallet service
-      store.dispatch<any>({type: LOGIN_SUCCESS});
+      // Instance is already cleared in setupWallet before login(). Stop any remnant.
+      if (OnboardingMachine.hasInstance()) {
+        OnboardingMachine.clearInstance({stop: true});
+      }
       break;
     }
     case OnboardingMachineStateType.storePIDCredentials:
@@ -156,7 +155,7 @@ export const OnboardingProvider = (props: OnboardingProviderProps): JSX.Element 
   const {children, customOnboardingInstance} = props;
 
   return (
-    <OnboardingContext.Provider value={{onboardingInstance: customOnboardingInstance ?? OnboardingMachine.getInstance({requireExisting: true})}}>
+    <OnboardingContext.Provider value={{onboardingInstance: customOnboardingInstance ?? OnboardingMachine.getInstance()}}>
       {children}
     </OnboardingContext.Provider>
   );

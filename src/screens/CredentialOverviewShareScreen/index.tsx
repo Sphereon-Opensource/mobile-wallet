@@ -135,7 +135,7 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
 
       return {
         ...prev,
-        [id]: exists && credsPerRequestedCredential.get(id)?.length > 1 ? null : credential,
+        [id]: exists && (credsPerRequestedCredential.get(id)?.length ?? 0) > 1 ? null : credential,
       };
     });
   };

@@ -101,6 +101,9 @@
   "credential_details_title": "Intygsdetaljer",
   "credentials_overview_title": "Intyg",
   "credential_details_view_issued_by": "Utfärdad av",
+  "credential_details_show_values": "Visa värden",
+  "credential_details_hide_values": "Dölj värden",
+  "credential_details_values_redacted": "Värden är dolda",
   "credentials_view_item_expires_on": "Går ut",
   "swipe_delete_button_caption": "Ta bort",
   "credential_offer_accepted_toast": "Intyg sparat",
@@ -257,14 +260,12 @@
   "onboarding_esim_enter_details_continue": "Fortsätt",
   "onboarding_esim_enter_details_back": "Tillbaka",
   "onboarding_machine_activate_esim_error_title": "eSIM-aktiveringen misslyckades",
-
   "onboarding_esim_error_couple_rp_failed": "RP‑kopplingssteget i eSIM‑aktiveringen misslyckades",
   "onboarding_esim_error_bindkey_failed": "Bind‑key‑steget i eSIM‑aktiveringen misslyckades",
   "onboarding_esim_error_create_link_failed": "Create‑link‑steget i eSIM‑aktiveringen misslyckades",
   "onboarding_esim_error_check_sscd_failed": "Check‑sscd‑steget i eSIM‑aktiveringen misslyckades",
   "onboarding_esim_error_enable_sscd_failed": "Enable‑sscd‑steget i eSIM‑aktiveringen misslyckades",
   "onboarding_esim_error_cleanup_keys_failed": "Cleanup‑keys‑steget i eSIM‑aktiveringen misslyckades",
-  
   "import_data_title": "Importera personuppgifter",
   "onboarding_complete_title": "Klart!",
   "onboarding_complete_description": "Du är redo att ta emot och dela identitetsuppgifter, intyg och mer.",
@@ -442,11 +443,11 @@
       "description": "Detta dokument uppdaterades senast den",
       "terms": {
         "tab_title": "Villkor",
-		"text": "Dessa allmänna villkor (\"Avtalet\") anger de allmänna villkoren för din användning av mobilapplikationen ”Sphereon Wallet” (\"Mobilapplikationen\" eller \"Tjänsten\") och alla tillhörande produkter och tjänster (gemensamt kallade \"Tjänster\").\n\nDetta Avtal är juridiskt bindande mellan dig (\"Användare\", \"du\" eller \"din/ditt\") och Sphereon B.V., registrerat i Nederländerna, som utvecklare av Mobilapplikationen (\"Operatören\", \"vi\", \"oss\" eller \"vår\").\n\nOm du ingår detta avtal för ett företags eller annan juridisk persons räkning, intygar du att du har behörighet att binda sådan enhet till detta avtal. I så fall ska termerna \"Användare\", \"du\" eller \"din/ditt\" avse denna enhet. Om du inte har sådan behörighet, eller om du inte samtycker till villkoren i detta avtal, får du inte acceptera detta avtal och får inte använda eller få tillgång till Mobilapplikationen och Tjänsterna. Genom att få tillgång till och använda Mobilapplikationen och Tjänsterna bekräftar du att du har läst, förstått och godkänner att vara bunden av villkoren i detta Avtal. Du bekräftar att detta Avtal är ett kontrakt mellan dig och Operatören, även om det är elektroniskt och inte är fysiskt undertecknat av dig, och att det reglerar din användning av Mobilapplikationen och Tjänsterna.\n\nLänkar till andra resurser\n\nÄven om Mobilapplikationen och Tjänsterna kan länka till andra resurser (såsom webbplatser, mobilapplikationer etc.), innebär detta inte, direkt eller indirekt, något godkännande, någon anknytning, sponsring, rekommendation eller affiliering med någon länkad resurs, om detta inte uttryckligen anges här. Vi ansvarar inte för att granska eller utvärdera och garanterar inte erbjudandena från några företag eller individer eller innehållet i deras resurser. Vi tar inget ansvar eller ersättningsskyldighet för handlingar, produkter, tjänster eller innehåll från andra tredje parter. Du bör noggrant granska de juridiska villkoren och andra användarvillkor för varje resurs som du får åtkomst till via en länk i Mobilapplikationen. Din länkning till andra externa resurser sker på egen risk.\n\nImmaterialrätt"
+        "text": "Dessa allmänna villkor (\"Avtalet\") anger de allmänna villkoren för din användning av mobilapplikationen ”Sphereon Wallet” (\"Mobilapplikationen\" eller \"Tjänsten\") och alla tillhörande produkter och tjänster (gemensamt kallade \"Tjänster\").\n\nDetta Avtal är juridiskt bindande mellan dig (\"Användare\", \"du\" eller \"din/ditt\") och Sphereon B.V., registrerat i Nederländerna, som utvecklare av Mobilapplikationen (\"Operatören\", \"vi\", \"oss\" eller \"vår\").\n\nOm du ingår detta avtal för ett företags eller annan juridisk persons räkning, intygar du att du har behörighet att binda sådan enhet till detta avtal. I så fall ska termerna \"Användare\", \"du\" eller \"din/ditt\" avse denna enhet. Om du inte har sådan behörighet, eller om du inte samtycker till villkoren i detta avtal, får du inte acceptera detta avtal och får inte använda eller få tillgång till Mobilapplikationen och Tjänsterna. Genom att få tillgång till och använda Mobilapplikationen och Tjänsterna bekräftar du att du har läst, förstått och godkänner att vara bunden av villkoren i detta Avtal. Du bekräftar att detta Avtal är ett kontrakt mellan dig och Operatören, även om det är elektroniskt och inte är fysiskt undertecknat av dig, och att det reglerar din användning av Mobilapplikationen och Tjänsterna.\n\nLänkar till andra resurser\n\nÄven om Mobilapplikationen och Tjänsterna kan länka till andra resurser (såsom webbplatser, mobilapplikationer etc.), innebär detta inte, direkt eller indirekt, något godkännande, någon anknytning, sponsring, rekommendation eller affiliering med någon länkad resurs, om detta inte uttryckligen anges här. Vi ansvarar inte för att granska eller utvärdera och garanterar inte erbjudandena från några företag eller individer eller innehållet i deras resurser. Vi tar inget ansvar eller ersättningsskyldighet för handlingar, produkter, tjänster eller innehåll från andra tredje parter. Du bör noggrant granska de juridiska villkoren och andra användarvillkor för varje resurs som du får åtkomst till via en länk i Mobilapplikationen. Din länkning till andra externa resurser sker på egen risk.\n\nImmaterialrätt"
       },
       "privacy": {
         "tab_title": "Integritetspolicy",
-		"text": "Sphereon tillhandahåller mobilappen ”Sphereon Wallet” (\"Appen\"), som du kan ladda ner och installera på din mobila enhet.\n\nSkyddet av personuppgifter är mycket viktigt för Sphereon. Huruvida personuppgifter samlas in vid användning av Appen och för vilket syfte de behandlas förklaras i följande dataskyddsdeklaration. Behandling i detta sammanhang innebär varje form av användning av uppgifterna, t.ex. insamling, registrering, lagring, överföring, presentation och radering.\n\nPersonuppgifter behandlas endast i den utsträckning som är nödvändig för kommunikationen med användaren. Vi följer principen om uppgiftsminimering och uppfyller alla tillämpliga lagbestämmelser för skydd av personuppgifter och datasäkerhet. Särskilt gäller att motsvarande uppgifter endast behandlas om det finns en rättslig grund.\n\nDen rättsliga grunden för behandling av personuppgifter är EU:s allmänna dataskyddsförordning (GDPR), närmare bestämt: artikel 6 punkt 1 (a), artikel 7, artikel 6 punkt 1 (b) och (f) samt artikel 6 punkt 1 (c) i EU 2016/679 (nedan ”GDPR”).\n\nI. Namn och kontaktuppgifter till den personuppgiftsansvarige\nDen personuppgiftsansvarige i den mening som avses i artikel 4 GDPR för behandlingen av personuppgifter är:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nNederländerna\ninfo@sphereon.com\n\n2. Typ av uppgifter som behandlas, syfte med behandlingen, rättslig grund\n\n1. Användar- och enhetsdata\nVi kommer aldrig att ha kännedom om eller tillgång till dina personuppgifter, om du inte kontaktar oss via Sphereons kontaktformulär eller den e-postadress som anges i Appen."
+        "text": "Sphereon tillhandahåller mobilappen ”Sphereon Wallet” (\"Appen\"), som du kan ladda ner och installera på din mobila enhet.\n\nSkyddet av personuppgifter är mycket viktigt för Sphereon. Huruvida personuppgifter samlas in vid användning av Appen och för vilket syfte de behandlas förklaras i följande dataskyddsdeklaration. Behandling i detta sammanhang innebär varje form av användning av uppgifterna, t.ex. insamling, registrering, lagring, överföring, presentation och radering.\n\nPersonuppgifter behandlas endast i den utsträckning som är nödvändig för kommunikationen med användaren. Vi följer principen om uppgiftsminimering och uppfyller alla tillämpliga lagbestämmelser för skydd av personuppgifter och datasäkerhet. Särskilt gäller att motsvarande uppgifter endast behandlas om det finns en rättslig grund.\n\nDen rättsliga grunden för behandling av personuppgifter är EU:s allmänna dataskyddsförordning (GDPR), närmare bestämt: artikel 6 punkt 1 (a), artikel 7, artikel 6 punkt 1 (b) och (f) samt artikel 6 punkt 1 (c) i EU 2016/679 (nedan ”GDPR”).\n\nI. Namn och kontaktuppgifter till den personuppgiftsansvarige\nDen personuppgiftsansvarige i den mening som avses i artikel 4 GDPR för behandlingen av personuppgifter är:\n\nSphereon B.V.\nBisonspoor 3002\n3605 LT Maarssen\nNederländerna\ninfo@sphereon.com\n\n2. Typ av uppgifter som behandlas, syfte med behandlingen, rättslig grund\n\n1. Användar- och enhetsdata\nVi kommer aldrig att ha kännedom om eller tillgång till dina personuppgifter, om du inte kontaktar oss via Sphereons kontaktformulär eller den e-postadress som anges i Appen."
       }
     },
     "import_data_consent": {
@@ -575,5 +576,22 @@
   "present_qr_code_screen_header_title": "Visa QR‑kod",
   "present_qr_code_screen_subtitle": "Visa QR‑koden för den berörda parten så att de kan skanna din QR‑kod.",
   "present_qr_code_dropdown_item_text": "Visa QR‑kod",
-  "present_qr_code_dropdown_item_accessibility_hint": "Navigera till en skärm som visar QR‑koden"
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigera till en skärm som visar QR‑koden",
+  "lock_dropdown_item_text": "Lås",
+  "lock_dropdown_item_accessibility_hint": "Lås plånboken och gå tillbaka till låsskärmen",
+  "settings_language_section_label": "Språk",
+  "settings_language_system_default": "Systemstandard",
+  "settings_privacy_security_section_label": "Integritet och säkerhet",
+  "settings_warn_on_external_link_label": "Varna vid externa länkar",
+  "settings_warn_on_external_link_description": "Visa varning vid öppning av externa länkar från intyg",
+  "settings_warn_on_low_trust_label": "Varna vid lågt förtroende",
+  "settings_warn_on_low_trust_description": "Visa varning vid interaktion med kontakter med lågt förtroende",
+  "settings_confirm_browser_open_label": "Bekräfta innan webbläsaren öppnas",
+  "settings_confirm_browser_open_description": "Fråga om bekräftelse innan webbläsaren öppnas",
+  "settings_show_claim_values_by_default_label": "Visa anspråksvärden som standard",
+  "settings_show_claim_values_by_default_description": "Visa anspråksvärden utan att behöva trycka",
+  "credential_details_open_link_warning_title": "Öppna extern länk?",
+  "credential_details_open_link_warning_description": "Att öppna denna länk kan innebära en integritetsrisk om URL:en är unik för denna legitimation. Den externa parten kan eventuellt identifiera dig.",
+  "credential_details_open_link_warning_proceed": "Öppna länk",
+  "credential_details_open_link_warning_cancel": "Avbryt"
 }

@@ -20,6 +20,15 @@ type SupportedLocale = (typeof supportedLocales)[number];
 const timeLocaledDelimiter: Record<SupportedLocale, string> = {
   en: 'at',
   nl: 'om',
+  de: 'um',
+  fi: 'klo',
+  sv: 'kl',
+  ca: 'a les',
+  es: 'a las',
+  fr: 'à',
+  ja: '',
+  tr: 'saat',
+  zh: '',
 };
 
 const getTimeLocaledDelimiter = (locale: string): string =>

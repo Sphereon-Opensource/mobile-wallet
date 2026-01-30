@@ -12,6 +12,7 @@ import {storagePersistPin} from '../storageService';
 import {PartyCorrelationType} from '@sphereon/ssi-sdk.core';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {ESIMActivationMachine} from '../../machines/activateESimMachine';
+import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {CredentialPayload, IIdentifier, VerifiableCredential} from '@veramo/core';
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import PersonalIdentificationDataBranding from '../../@config/branding/PersonalIdentificationDataBranding.json';
@@ -122,10 +123,11 @@ export const storePIDCredentials = async (context: Pick<OnboardingMachineContext
 export const setupWallet = async (
   context: Pick<
     OnboardingMachineContext,
-    'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode' | 'credentialData'
+    'pinCode' | 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode' | 'language' | 'credentialData'
   >,
 ): Promise<WalletSetupServiceResult> => {
   const {pinCode} = context;
+
   const setup = await Promise.all([
     storagePersistPin({
       value: pinCode,
@@ -142,6 +144,11 @@ export const setupWallet = async (
     new Promise(resolve => setTimeout(() => resolve(true), 1000)),
   ]);
 
+  // Clear the machine singleton right before login so intermediate Redux dispatches
+  // from the login thunk don't cause walletAuthLockState to re-enter onboarding.
+  // The login thunk immediately dispatches USERS_LOADING (loading=true) keeping
+  // lockState as LOADING until LOGIN_SUCCESS transitions to AUTHENTICATED.
+  OnboardingMachine.clearInstance({stop: false});
   await store.dispatch<any>(login(setup[2].storedUser.id));
   return setup[2];
 };
@@ -198,9 +205,9 @@ const createSelfIssuedCredential = async (
 };
 
 const storeUser = async (
-  context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode'>,
+  context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'biometricsEnabled' | 'pidCredentials' | 'countryCode' | 'language'>,
 ): Promise<WalletSetupServiceResult> => {
-  const {emailAddress, name, biometricsEnabled, countryCode} = context;
+  const {emailAddress, name, biometricsEnabled, countryCode, language} = context;
 
   const names = parseFullName(name);
 
@@ -210,6 +217,7 @@ const storeUser = async (
     emailAddress,
     biometricsEnabled,
     countryCode: countryCode,
+    language: language ?? undefined,
   };
 
   const storedUser: IUser = await store.dispatch<any>(createUser(user));

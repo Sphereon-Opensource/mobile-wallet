@@ -60,6 +60,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
 
   renderItem = (itemInfo: ListRenderItemInfo<Party>): JSX.Element => {
     const {activeUser, contacts} = this.props;
+    const isHolder = itemInfo.item.id === activeUser.id;
     const contactItem = (
       <SSIContactViewItem
         showArrow
@@ -67,6 +68,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
         uri={itemInfo.item.uri}
         roles={itemInfo.item.roles}
         logo={itemInfo.item.branding?.logo}
+        isHolder={isHolder}
       />
     );
     const backgroundStyle = {
@@ -82,7 +84,7 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
       accessibilityHint: 'Go to contact details',
     };
 
-    return itemInfo.item.id === activeUser.id ? (
+    return isHolder ? (
       <ItemContainer style={style} onPress={() => this.onItemPress(itemInfo.item)} {...accessibility} accessible>
         <View>{contactItem}</View>
       </ItemContainer>

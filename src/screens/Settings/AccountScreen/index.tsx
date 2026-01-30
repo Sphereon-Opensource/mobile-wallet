@@ -73,14 +73,6 @@ const AccountScreen = () => {
                 <SSIPersonIcon color="white" />
                 <MenuItemText>{translate('account_personal_information_label')}</MenuItemText>
               </MenuItemRow>
-              <MenuItemRow>
-                <SSIPersonIcon color="white" />
-                <MenuItemText>{translate('account_login_and_security_label')}</MenuItemText>
-              </MenuItemRow>
-              <MenuItemRow>
-                <SSIPersonIcon color="white" />
-                <MenuItemText>{translate('account_biometric_login_label')}</MenuItemText>
-              </MenuItemRow>
             </SettingsSection>
             {pidInfo.length > 0 && (
               <>
@@ -103,16 +95,16 @@ const AccountScreen = () => {
                       // @ts-ignore // TODO fix types later
                       onPress={() =>
                         navigation.navigate(MainRoutesEnum.AGE_DERIVED_CLAIMS, {
-                          claims: pid?.uniformVerifiableCredential?.credentialSubject.age_equal_or_over,
+                          claims: (pid?.uniformVerifiableCredential?.credentialSubject as any)?.age_equal_or_over,
                         })
                       }
                       left={<AgeIcon width={25} height={25} />}
                       // @ts-ignore // TODO fix types later
                       text={
-                        <AgeDerivedClaimsPreview
-                          age={pid?.uniformVerifiableCredential?.credentialSubject.age_in_years}
-                          claims={pid?.uniformVerifiableCredential?.credentialSubject.age_equal_or_over}
-                        />
+                        React.createElement(AgeDerivedClaimsPreview as any, {
+                          age: (pid?.uniformVerifiableCredential?.credentialSubject as any)?.age_in_years,
+                          claims: (pid?.uniformVerifiableCredential?.credentialSubject as any)?.age_equal_or_over,
+                        })
                       }
                     />
                   </MoreContainer>

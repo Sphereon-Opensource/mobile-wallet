@@ -39,6 +39,12 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
   const titleRef = React.useRef(null);
   const listRef = React.useRef<FlatList>(null);
   React.useEffect(() => {
+    if (open) {
+      setSelectedCountry(selected);
+      setSearch('');
+    }
+  }, [open, selected]);
+  React.useEffect(() => {
     announce({message: 'Modal opened'});
     setFocus(titleRef, 500);
   }, [isScreenReaderEnabled, titleRef.current]);
@@ -79,11 +85,15 @@ const CountrySelectionModal = ({open, selected, onClose, onSelect, onModalHide}:
               keyExtractor={({countryCode}) => countryCode}
               initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
               removeClippedSubviews
+              keyboardShouldPersistTaps="handled"
               data={filteredOptions}
               renderItem={({item}) => (
                 <CountrySelectOption
                   option={{...item, selected: item.countryCode === selectedCountry}}
-                  onSelect={isScreenReaderEnabled ? onSelect : setSelectedCountry}
+                  onSelect={code => {
+                    Keyboard.dismiss();
+                    isScreenReaderEnabled ? onSelect(code) : setSelectedCountry(code);
+                  }}
                 />
               )}
               style={{flex: 1}}

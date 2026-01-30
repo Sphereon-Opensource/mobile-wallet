@@ -9,7 +9,7 @@ import React, {FC, ReactElement, useEffect} from 'react';
 import {TouchableWithoutFeedback, View} from 'react-native';
 import {runOnJS, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
-import {toastConfig, toastsAutoHide, toastsBottomOffset, toastsVisibilityTime} from '../../@config/toasts';
+import {toastConfig, toastsAutoHide, toastsVisibilityTime} from '../../@config/toasts';
 import CredentialCardPreviewView from '../../components/views/CredentialCardPreviewView';
 import Localization, {translate} from '../../localization/Localization';
 import {PIDSecurityModel, storageGetPIDSecurityModel} from '../../services/storageService';
@@ -96,7 +96,7 @@ const AusweisModal: FC<Props> = (props: Props): ReactElement => {
             </ButtonContainer>
           </AnimatedView>
         </TouchableWithoutFeedback>
-        <Toast bottomOffset={toastsBottomOffset} autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
+        <Toast autoHide={toastsAutoHide} visibilityTime={toastsVisibilityTime} config={toastConfig} />
       </Container>
     </TouchableWithoutFeedback>
   );

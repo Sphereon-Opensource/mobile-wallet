@@ -103,9 +103,9 @@ class WavRecorder {
     }
   }
 
-  base64ToFloat32Array(base64Data: WithImplicitCoercion<string>): Float32Array {
+  base64ToFloat32Array(base64Data: string | Buffer | ArrayBuffer): Float32Array {
     // Simple utility to convert from base64 string to Float32Array
-    const rawData: Buffer = Buffer.from(base64Data, 'base64');
+    const rawData: Buffer = Buffer.from(base64Data as string, 'base64');
     const float32Array: Float32Array = new Float32Array(rawData.buffer);
     return float32Array;
   }

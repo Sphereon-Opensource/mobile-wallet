@@ -50,9 +50,9 @@ const Tabs = <T extends ParamsList>({
   accessibilityLabel,
 }: Props<T>) => {
   const numberOfTabs = routes.length;
-  const tabsGap = containerStyle?.gap ?? 0;
+  const tabsGap = (containerStyle?.gap ?? 0) as number;
   const tabsTotalGap = (numberOfTabs - 1) * tabsGap;
-  const tabsHorizontalPadding = containerStyle?.paddingHorizontal ?? 0;
+  const tabsHorizontalPadding = (containerStyle?.paddingHorizontal ?? 0) as number;
   const tabWidth = (containerWidth - tabsTotalGap - tabsHorizontalPadding * 2) / numberOfTabs;
   const indicatorWidth = tabWidth * indicatorProportionalWidth;
   const tabRemainingWidth = tabWidth - indicatorWidth;

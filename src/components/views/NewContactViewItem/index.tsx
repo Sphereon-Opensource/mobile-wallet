@@ -3,6 +3,7 @@ import {backgroundColors, ImageAttributes, LabelStatus} from '@sphereon/ui-compo
 import {SSILogo as Logo, SSIStatusLabel} from '@sphereon/ui-components.ssi-react-native';
 import {useMemo} from 'react';
 import {StyleProp, View, ViewStyle} from 'react-native';
+import SSIProfileIcon from '../../assets/icons/SSIProfileIcon';
 import {ViewProps} from 'react-native-svg/lib/typescript/fabric/utils';
 import {SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer} from '../../../styles/components';
 import {
@@ -21,10 +22,11 @@ export type NewContactViewItemProps = {
   logoSize?: number;
   status?: LabelStatus;
   containerProps?: Omit<ViewProps, 'style'>;
+  isHolder?: boolean;
 };
 
 export const NewContactViewItem = (props: NewContactViewItemProps) => {
-  const {name, roles, logo, status, background = 'dark', logoSize = 55, style} = props;
+  const {name, roles, logo, status, background = 'dark', logoSize = 55, style, isHolder = false} = props;
   const backgroundColor = useMemo(() => {
     return background === 'light' ? '#2C334B' : backgroundColors.primaryDark;
   }, [background]);
@@ -35,7 +37,7 @@ export const NewContactViewItem = (props: NewContactViewItemProps) => {
         accessibilityRole="image"
         accessibilityLabel={`${name} logo`}
         style={{display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
-        <Logo logo={logo} size={logoSize} />
+        {isHolder ? <SSIProfileIcon size={logoSize} /> : <Logo logo={logo} size={logoSize} />}
       </NewContactViewItemLogoContainer>
       <View importantForAccessibility={props.containerProps?.accessible ? 'no-hide-descendants' : 'auto'} style={{flex: 1, justifyContent: 'center'}}>
         <ContactDetailsContainer>

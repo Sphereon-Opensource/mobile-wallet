@@ -7,6 +7,12 @@ import nl from './translations/nl.json';
 import de from './translations/de.json';
 import fi from './translations/fi.json';
 import sv from './translations/sv.json';
+import ca from './translations/ca.json';
+import es from './translations/es.json';
+import fr from './translations/fr.json';
+import ja from './translations/ja.json';
+import tr from './translations/tr.json';
+import zh from './translations/zh.json';
 
 class Localization {
   public static supportedLanguages = {
@@ -15,6 +21,12 @@ class Localization {
     GERMAN: 'de',
     FINISH: 'fi',
     SWEDISH: 'sv',
+    CATALAN: 'ca',
+    SPANISH: 'es',
+    FRENCH: 'fr',
+    JAPANESE: 'ja',
+    TURKISH: 'tr',
+    CHINESE: 'zh',
   } as const;
 
   private static translationGetters: {[locale: string]: () => object} = {
@@ -23,6 +35,12 @@ class Localization {
     [Localization.supportedLanguages.GERMAN]: () => de,
     [Localization.supportedLanguages.FINISH]: () => fi,
     [Localization.supportedLanguages.SWEDISH]: () => sv,
+    [Localization.supportedLanguages.CATALAN]: () => ca,
+    [Localization.supportedLanguages.SPANISH]: () => es,
+    [Localization.supportedLanguages.FRENCH]: () => fr,
+    [Localization.supportedLanguages.JAPANESE]: () => ja,
+    [Localization.supportedLanguages.TURKISH]: () => tr,
+    [Localization.supportedLanguages.CHINESE]: () => zh,
   };
 
   public static translate = memoize(
@@ -41,21 +59,19 @@ class Localization {
     }
   };
 
-  public static setI18nConfig = (): void => {
-    // getPreferredLanguage().then(preferredLanguage => { //TODO add implementation
-    const preferredLanguage = undefined;
+  public static setI18nConfig = (preferredLanguage?: string | null): void => {
     if (Localization.translate.cache.clear) {
       Localization.translate.cache.clear();
     }
     const fallback = Localization.supportedLanguages.ENGLISH;
-    const deviceLocale = Localization.findSupportedLanguage(ExpoLocalization.locale);
-    const languageTag = preferredLanguage ?? deviceLocale ?? fallback;
+    const deviceLocale = Localization.findSupportedLanguage(ExpoLocalization.getLocales()?.[0]?.languageTag);
+    const resolved = preferredLanguage ? Localization.findSupportedLanguage(preferredLanguage) : undefined;
+    const languageTag = resolved ?? deviceLocale ?? fallback;
 
     i18n.translations = {
       [languageTag]: Localization.translationGetters[languageTag](),
     };
     i18n.locale = languageTag;
-    // });
   };
 
   public static switchToLanguage = (languageTag: string = Localization.supportedLanguages.ENGLISH): void => {

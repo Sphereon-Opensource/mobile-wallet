@@ -72,3 +72,36 @@ const createCountryOption = (countryCode: TCountryCode): CountryOption => {
 export const countryOptions = Object.fromEntries(
   Object.entries(countryList).map(([code]) => [code as TCountryCode, createCountryOption(code as TCountryCode)]),
 ) as Record<TCountryCode, CountryOption>;
+
+/**
+ * Returns the first supported wallet language for a given country code,
+ * based on the country's primary languages from countries-list.
+ */
+export const getCountryPrimaryLanguage = (countryCode: TCountryCode): string | undefined => {
+  const country = countryList[countryCode];
+  if (!country) {
+    return undefined;
+  }
+  const supportedSet = new Set(Object.values(SUPPORTED_LANGUAGES));
+  for (const lang of country.languages) {
+    if (supportedSet.has(lang)) {
+      return lang;
+    }
+  }
+  return undefined;
+};
+
+/** Supported wallet language codes, mirroring Localization.supportedLanguages values */
+const SUPPORTED_LANGUAGES: Record<string, string> = {
+  ENGLISH: 'en',
+  DUTCH: 'nl',
+  GERMAN: 'de',
+  FINISH: 'fi',
+  SWEDISH: 'sv',
+  CATALAN: 'ca',
+  SPANISH: 'es',
+  FRENCH: 'fr',
+  JAPANESE: 'ja',
+  TURKISH: 'tr',
+  CHINESE: 'zh',
+};

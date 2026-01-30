@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, ReactNode} from 'react';
-import {Linking, Text, TouchableOpacity, View} from 'react-native';
+import {Linking, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Markdown, {ASTNode} from 'react-native-markdown-display';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
@@ -11,6 +11,7 @@ import ClaimFalseIcon from '../../assets/icons/ClaimFalseIcon';
 import {checkAndAddHTTPPrefix, isValidURL} from '../../../utils';
 import {translate} from '../../../localization/Localization';
 import {MainRoutesEnum} from '../../../types';
+import {useUserPreference} from '../../../hooks/useUserPreference';
 import {fontStyle} from '../../../styles/typography';
 import {
   SSITextFieldContainerStyled as Container,
@@ -25,11 +26,14 @@ import {
 export interface IProps {
   item: CredentialDetailsRow;
   index?: number;
+  valuesVisible?: boolean;
+  onToggleVisibility?: () => void;
 }
 
 const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
-  const {item, index} = props;
+  const {item, index, valuesVisible = true, onToggleVisibility} = props;
   const navigation = useNavigation<any>();
+  const warnOnExternalLink = useUserPreference('warnOnExternalLink') ?? true;
   const valueIsArray = Array.isArray(item.value);
   const markDownRules = {
     link: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any) => {
@@ -67,6 +71,9 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
   };
 
   const onPressLink = async (url: string): Promise<void> => {
+    if (!warnOnExternalLink) {
+      return openLink(url);
+    }
     navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_details_open_link_warning_title'),
       details: translate('credential_details_open_link_warning_description'),
@@ -136,7 +143,8 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
   const depthIndent = (item.depth ?? 0) * 16;
 
   return (
-    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10, marginLeft: depthIndent}}>
+    <Pressable key={item.id} onLongPress={onToggleVisibility}>
+    <Container style={{marginTop: index === 0 ? 16 : 10, marginLeft: depthIndent}}>
       <HeaderContainer>
         <HeaderLabel>{item.label}</HeaderLabel>
         {item.status && (
@@ -147,10 +155,26 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
       </HeaderContainer>
       {/* This forces every field to be a touchable, hence making accessibility misleading */}
       {item.value !== undefined && item.value !== null && <ContentContainer
-        disabled={!item.isEditable}
+        disabled={!item.isEditable || !valuesVisible}
         style={{...(valueIsArray && {flexDirection: 'column', marginLeft: 25})}}
-        {...(item.onPress && {onPress: item.onPress})}>
-        {getValueElements(item.value)}
+        {...(valuesVisible && item.onPress && {onPress: item.onPress})}>
+        <View style={{position: 'relative', overflow: 'hidden', borderRadius: 4}}>
+          {getValueElements(item.value)}
+          {!valuesVisible && (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: backgroundColors.secondaryDark,
+                opacity: 0.98,
+                borderRadius: 4,
+              }}
+            />
+          )}
+        </View>
         <ContentBadgeContainer>
           {item.isEditable && (
             <EditBadgeContainer>
@@ -160,6 +184,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
         </ContentBadgeContainer>
       </ContentContainer>}
     </Container>
+    </Pressable>
   );
 };
 

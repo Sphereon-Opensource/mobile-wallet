@@ -11,11 +11,11 @@ export const credentialLocaleBrandingFrom = async (credentialDisplay: Credential
     }),
     ...(credentialDisplay.logo && {
       logo: {
-        ...(credentialDisplay.logo.url && {
-          uri: credentialDisplay.logo?.url,
+        ...((credentialDisplay.logo as any)?.url && {
+          uri: (credentialDisplay.logo as any)?.url,
         }),
-        ...(credentialDisplay.logo.alt_text && {
-          alt: credentialDisplay.logo?.alt_text,
+        ...((credentialDisplay.logo as any)?.alt_text && {
+          alt: (credentialDisplay.logo as any)?.alt_text,
         }),
       },
     }),
@@ -32,11 +32,11 @@ export const credentialLocaleBrandingFrom = async (credentialDisplay: Credential
       background: {
         ...(credentialDisplay.background_image && {
           image: {
-            ...(credentialDisplay.background_image.url && {
-              uri: credentialDisplay.background_image?.url,
+            ...((credentialDisplay.background_image as any)?.url && {
+              uri: (credentialDisplay.background_image as any)?.url,
             }),
-            ...(credentialDisplay.background_image.alt_text && {
-              alt: credentialDisplay.background_image?.alt_text,
+            ...((credentialDisplay.background_image as any)?.alt_text && {
+              alt: (credentialDisplay.background_image as any)?.alt_text,
             }),
           },
         }),

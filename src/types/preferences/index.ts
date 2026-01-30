@@ -9,4 +9,9 @@ export enum ConfigurableViewKey {
 
 export interface IUserPreferences {
   views: Record<ConfigurableViewKey, ViewPreference>;
+  language: string | null;
+  warnOnExternalLink: boolean;
+  warnOnLowTrust: boolean;
+  confirmBrowserOpen: boolean;
+  showClaimValuesByDefault: boolean;
 }

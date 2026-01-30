@@ -44,7 +44,7 @@ const SSIConnectionDetailsView: FC<IProps> = (props: IProps): JSX.Element => {
           <DetailsItemLabelCaption>{itemInfo.item.label}</DetailsItemLabelCaption>
         </Column>
         <Column>
-          <DetailsItemValueCaption>{itemInfo.item.value}</DetailsItemValueCaption>
+          <DetailsItemValueCaption>{itemInfo.item.value instanceof Date ? itemInfo.item.value.toISOString() : itemInfo.item.value}</DetailsItemValueCaption>
         </Column>
       </LabelRow>
     );

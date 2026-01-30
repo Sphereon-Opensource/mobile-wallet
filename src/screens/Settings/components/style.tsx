@@ -6,6 +6,7 @@ import {
   SSITextH3SemiBoldStyled,
   SSITextH4LightStyled,
   SSITextH4SemiBoldStyled,
+  SSITextH5LightStyled,
 } from '@sphereon/ui-components.ssi-react-native';
 import {Dimensions} from 'react-native';
 import {styled} from 'styled-components/native';
@@ -209,4 +210,25 @@ export const AgeDerivedClaimsScreenDescription = styled.Text`
   font-size: 16px;
   font-weight: 400;
   margin-bottom: 10px;
+`;
+
+export const ToggleRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+`;
+
+export const ToggleTextContainer = styled.View`
+  flex: 1;
+  margin-right: 12px;
+`;
+
+export const ToggleLabel = styled(SSITextH3SemiBoldStyled)`
+  color: white;
+`;
+
+export const ToggleDescription = styled(SSITextH5LightStyled)`
+  color: #fbfbfbcc;
+  margin-top: 2px;
 `;

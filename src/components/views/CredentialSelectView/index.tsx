@@ -1,10 +1,14 @@
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
-import {Party} from '@sphereon/ssi-sdk.data-store-types';
+import {IBasicCredentialLocaleBranding, ICredentialBranding, Party} from '@sphereon/ssi-sdk.data-store-types';
 import {CredentialMapper} from '@sphereon/ssi-types';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
-import {CredentialDetailsRow, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
+import {CredentialDetailsRow, selectAppLocaleBranding, toCredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
 import {useEffect, useMemo, useState} from 'react';
 import {Pressable, ScrollView, StyleProp, View, ViewStyle} from 'react-native';
+import SSIEyeIcon from '../../assets/icons/SSIEyeIcon';
+import SSIEyeOffIcon from '../../assets/icons/SSIEyeOffIcon';
+import {useUserPreference} from '../../../hooks/useUserPreference';
+import {translate} from '../../../localization/Localization';
 import Animated, {interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import ChevronIcon from '../../assets/icons/ChevronIcon';
 import {AusweisRequestedInfoItem} from '../../../screens/Onboarding/ImportDataConsentScreen/constants';
@@ -18,6 +22,7 @@ import {RootState} from '../../../types';
 import {com} from '@sphereon/kmp-mdoc-core';
 import {DcqlQuery} from 'dcql';
 import {RequestedClaimPath} from '../../../screens/CredentialOverviewShareScreen';
+import agent from '../../../agent';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
@@ -76,6 +81,8 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
   const hasNoMatches = credentials.length === 0;
+  const showClaimValuesByDefault = useUserPreference('showClaimValuesByDefault');
+  const [valuesVisible, setValuesVisible] = useState(showClaimValuesByDefault ?? false);
   const credentialState: ICredentialState = useSelector((state: RootState) => state.credential);
 
   const storeCredentialMap = useMemo(() => {
@@ -132,9 +139,14 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
       subjectToDisplay = filterClaimsByRequestedPaths(subjectToDisplay, requestedClaims)
     }
 
+    // Fetch credential branding for localized claim names
+    const credentialBrandings: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
+    const localeBranding = await selectAppLocaleBranding({localeBranding: credentialBrandings.find(b => b.vcHash === credential.hash)?.localeBranding}) as IBasicCredentialLocaleBranding | undefined;
+
     setCredentialContent(
       await toCredentialDetailsRow({
         object: subjectToDisplay,
+        branding: localeBranding?.claims,
       }),
     );
   };
@@ -179,15 +191,28 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
             ? 'No Available Credentials'
             : 'Select a credential'}
         </SSITextH3LightStyled>
-        <Pressable onPress={onToggleAccordion} style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
-          <SSITextH5Styled style={{color: selectedCredential ? '#0B81FF' : fontColors.light}}>
-            {/* Not sure where this "1" refers to */}
-            {hasNoMatches ? '0 available' : `${selectedCredential ? 1 : 0} selected`}
-          </SSITextH5Styled>
-          <Animated.View style={[chevronStyles, {marginTop: 1}]}>
-            <ChevronIcon size={16} color={backgroundColors.primaryLight} />
-          </Animated.View>
-        </Pressable>
+        <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+          <Pressable
+            onPress={() => setValuesVisible(v => !v)}
+            accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+            accessibilityRole="button"
+            hitSlop={8}
+            style={{flexDirection: 'row', alignItems: 'center', gap: 6, padding: 4}}>
+            <SSITextH5Styled style={{color: '#5D6990', fontWeight: '400'}}>
+              {valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+            </SSITextH5Styled>
+            {valuesVisible ? <SSIEyeIcon size={18} /> : <SSIEyeOffIcon size={18} />}
+          </Pressable>
+          <Pressable onPress={onToggleAccordion} style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+            <SSITextH5Styled style={{color: selectedCredential ? '#0B81FF' : fontColors.light}}>
+              {/* Not sure where this "1" refers to */}
+              {hasNoMatches ? '0 available' : `${selectedCredential ? 1 : 0} selected`}
+            </SSITextH5Styled>
+            <Animated.View style={[chevronStyles, {marginTop: 1}]}>
+              <ChevronIcon size={16} color={backgroundColors.primaryLight} />
+            </Animated.View>
+          </Pressable>
+        </View>
       </View>
       {
         // FIXME disabled this as a PID is just another credential
@@ -195,7 +220,7 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
         //   <ImportInformationSummary data={credentialContent as Array<AusweisRequestedInfoItem>} />
         // ) : (
         accordion && selectedCredential && (
-          <SelectedCredentialDetailsView valid={!!selectedCredential} credentialProperties={credentialContent as Array<CredentialDetailsRow>} />
+          <SelectedCredentialDetailsView valid={!!selectedCredential} credentialProperties={credentialContent as Array<CredentialDetailsRow>} valuesVisible={valuesVisible} onToggleVisibility={() => setValuesVisible(v => !v)} />
           // )
         )
       }

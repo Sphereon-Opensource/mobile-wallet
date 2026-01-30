@@ -1,10 +1,10 @@
 import {createDPoP, CreateDPoPJwtPayloadProps, CreateDPoPOpts, getCreateDPoPOptions, SigningAlgo} from '@sphereon/oid4vc-common';
-import {OpenID4VCIClientV1_0_13} from '@sphereon/oid4vci-client';
+import {OpenID4VCIClientV1_0_15} from '@sphereon/oid4vci-client';
 import {
   AuthorizationServerMetadata,
   CredentialResponse,
   DPoPResponseParams,
-  IssuerMetadataV1_0_13,
+  IssuerMetadataV1_0_15,
   OpenId4VCIVersion,
   PARMode,
   ProofOfPossessionCallbacks,
@@ -44,7 +44,7 @@ interface PidRequestInfo {
 export class PidIssuerService {
   private readonly pidProvider: string;
   private readonly credentialOffer?: string;
-  private client: OpenID4VCIClientV1_0_13;
+  private client: OpenID4VCIClientV1_0_15;
   private readonly clientId?: string;
   private dpopService: DpopService;
   private readonly kms: string;
@@ -72,14 +72,14 @@ export class PidIssuerService {
       return Promise.reject(Error(`Please create a new instance of the PID Issuer service instead of reusing an existing instance`));
     }
     if (this.credentialOffer) {
-      this.client = await OpenID4VCIClientV1_0_13.fromURI({
+      this.client = await OpenID4VCIClientV1_0_15.fromURI({
         uri: this.credentialOffer,
         retrieveServerMetadata: true,
         clientId: this.clientId,
         createAuthorizationRequestURL: false,
       });
     } else {
-      this.client = await OpenID4VCIClientV1_0_13.fromCredentialIssuer({
+      this.client = await OpenID4VCIClientV1_0_15.fromCredentialIssuer({
         credentialIssuer: this.pidProvider,
         retrieveServerMetadata: true,
         clientId: this.clientId,
@@ -87,7 +87,7 @@ export class PidIssuerService {
       });
     }
 
-    if (this.client.version() < OpenId4VCIVersion.VER_1_0_13) {
+    if (this.client.version() < OpenId4VCIVersion.VER_1_0_15) {
       return Promise.reject(Error(`Only OpenID Version 13 and higher are supported for PIDs`));
     }
     const metadata = await this.client.retrieveServerMetadata();
@@ -133,7 +133,7 @@ export class PidIssuerService {
     if (!metadata.credentialIssuerMetadata) {
       return Promise.reject(Error(`Could not retrieve credential issuer metadata from PID provider`));
     }
-    return metadata.credentialIssuerMetadata as Partial<AuthorizationServerMetadata> & IssuerMetadataV1_0_13;
+    return metadata.credentialIssuerMetadata as Partial<AuthorizationServerMetadata> & IssuerMetadataV1_0_15;
   }
 
   public async getAuthorizationCode(args: EIDGetAuthorizationCodeArgs): Promise<string> {
@@ -244,13 +244,13 @@ export class PidIssuerService {
         format: pidInfo.format,
         createDPoPOpts: issuerResourceDpop,
       };
-      credentialResponse = await this.client.acquireCredentialsWithoutProof(credentialRequestOpts);
+      credentialResponse = await (this.client as any).acquireCredentialsWithoutProof(credentialRequestOpts);
     } else {
       identifier = await this.createPidKey(pidInfo);
       console.log(`Issuer DPOP: ${JSON.stringify(issuerResourceDpop)}`);
       // const identifier: ManagedIdentifierResult = await this.dpopService.getEphemeralDPoPIdentifier();
       const jwk = identifier.jwk;
-      const callbacks: ProofOfPossessionCallbacks<never> = {
+      const callbacks: ProofOfPossessionCallbacks = {
         signCallback: signCallback(identifier, this.context, currentNonce),
       };
 
@@ -274,7 +274,7 @@ export class PidIssuerService {
 
   async getIssuerSupportedProofAlgs(pidInfo: PidRequestInfo) {
     const metadata = await this.getCredentialIssuerMetadata();
-    const credConfig = Object.values(metadata.credential_configurations_supported).find(conf => conf.format === pidInfo.format);
+    const credConfig = Object.values(metadata.credential_configurations_supported).find((conf: any) => conf.format === pidInfo.format);
     const algsSupported = credConfig?.proof_types_supported?.jwt?.proof_signing_alg_values_supported;
     if (algsSupported && algsSupported.length > 0) {
       return algsSupported;
@@ -285,7 +285,7 @@ export class PidIssuerService {
 
   async getClientSupportedProofAlg(pidInfo: PidRequestInfo) {
     const supported = await this.getIssuerSupportedProofAlgs(pidInfo);
-    const algos = supported.filter(alg => Object.values(SigningAlgo).includes(alg as SigningAlgo)).map(alg => alg as SigningAlgo);
+    const algos = supported.filter((alg: any) => Object.values(SigningAlgo).includes(alg as SigningAlgo)).map((alg: any) => alg as SigningAlgo);
     return algos.length > 0 ? algos[0] : SigningAlgo.ES256;
   }
 

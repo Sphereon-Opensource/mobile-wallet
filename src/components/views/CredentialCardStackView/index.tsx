@@ -1,3 +1,4 @@
+import {LinearGradient} from 'expo-linear-gradient';
 import React, {FC, ReactElement, useEffect, useRef, useState} from 'react';
 import {Animated, ScrollViewProps, View} from 'react-native';
 import {Easing} from 'react-native-reanimated';
@@ -5,6 +6,7 @@ import {Swipeable, Gesture, GestureDetector, TapGesture} from 'react-native-gest
 import {toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
+import {CredentialCardSheen} from '../CredentialCardSheen';
 import {getCardElementArgs} from '../../../types';
 
 type Props = {
@@ -132,33 +134,73 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
 
     return (
       <GestureDetector key={index} gesture={Gesture.Exclusive(...gestures)}>
-        <Animated.View style={{transform: [{translateY}], height: cardAnimatedHeights[index], alignItems: 'center'}} {...accessibility}>
+        <Animated.View
+          style={{
+            transform: [{translateY}],
+            height: cardAnimatedHeights[index],
+            alignItems: 'center',
+          }}
+          {...accessibility}>
           <Swipeable
-            ref={ref => (swipeableRefs[index] = ref)}
+            ref={ref => {swipeableRefs[index] = ref}}
             {...(onSwipe && {
               renderRightActions: () => <View style={{width: CARD_SWIPE_ACTION_WIDTH}} />,
               onSwipeableRightWillOpen: () => onRightSwipe(credential, index),
             })}
-            containerStyle={{width: '100%', flex: 1, alignItems: 'center'}}>
-            <SSICredentialCardView
-              header={{
-                credentialTitle: credential.branding?.alias ?? credential.title,
-                credentialSubtitle: credential.branding?.description,
-                logo: credential.branding?.logo,
-              }}
-              body={{
-                issuerName: credential.issuer.alias ?? credential.issuer.name,
-              }}
-              footer={{
-                credentialStatus: getCredentialStatus(credential),
-                expirationDate: credential.expirationDate,
-              }}
-              display={{
-                backgroundColor: credential.branding?.background?.color,
-                backgroundImage: credential.branding?.background?.image,
-                textColor: credential.branding?.text?.color,
-              }}
-            />
+            containerStyle={{width: '100%', flex: 1, alignItems: 'center', overflow: 'visible'}}>
+            <View style={{overflow: 'visible'}}>
+              {index > 0 && (
+                <>
+                  {/* Main top shadow */}
+                  <LinearGradient
+                    colors={['transparent', 'rgba(0, 0, 0, 0.15)', 'rgba(0, 0, 0, 0.4)']}
+                    locations={[0, 0.5, 1]}
+                    style={{position: 'absolute', top: -10, left: 14, right: 14, height: 10}}
+                  />
+                  {/* Left corner curve */}
+                  <LinearGradient
+                    colors={['transparent', 'rgba(0, 0, 0, 0.3)']}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 1}}
+                    style={{position: 'absolute', top: -10, left: -4, width: 22, height: 18, borderTopLeftRadius: 16}}
+                  />
+                  {/* Right corner curve */}
+                  <LinearGradient
+                    colors={['transparent', 'rgba(0, 0, 0, 0.15)']}
+                    start={{x: 1, y: 0}}
+                    end={{x: 0, y: 1}}
+                    style={{position: 'absolute', top: -8, right: 0, width: 20, height: 16, borderTopRightRadius: 16}}
+                  />
+                  <LinearGradient
+                    colors={['transparent', 'rgba(0, 0, 0, 0.12)']}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={{position: 'absolute', top: 16, right: -4, bottom: 16, width: 4}}
+                  />
+                </>
+              )}
+              <CredentialCardSheen>
+                <SSICredentialCardView
+                  header={{
+                    credentialTitle: credential.branding?.alias ?? credential.title,
+                    credentialSubtitle: credential.branding?.description,
+                    logo: credential.branding?.logo,
+                  }}
+                  body={{
+                    issuerName: credential.issuer.alias ?? credential.issuer.name,
+                  }}
+                  footer={{
+                    credentialStatus: getCredentialStatus(credential),
+                    expirationDate: credential.expirationDate,
+                  }}
+                  display={{
+                    backgroundColor: credential.branding?.background?.color,
+                    backgroundImage: credential.branding?.background?.image,
+                    textColor: credential.branding?.text?.color,
+                  }}
+                />
+              </CredentialCardSheen>
+            </View>
           </Swipeable>
         </Animated.View>
       </GestureDetector>

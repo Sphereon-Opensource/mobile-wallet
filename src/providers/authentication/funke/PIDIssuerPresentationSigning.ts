@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import {IDPOPState} from '../../../types/store/dpop.types';
 import store from '../../../store';
+// @ts-ignore
 import * as u8a from 'uint8arrays';
 import {hash} from '@stablelib/sha256';
 /**

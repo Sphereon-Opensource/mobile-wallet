@@ -1,5 +1,5 @@
 import {CreateDPoPClientOpts, CreateDPoPOpts, getCreateDPoPOptions as getCreateDPoPOptionsLibFunction, SigningAlgo} from '@sphereon/oid4vc-common';
-import {CredentialIssuerMetadataV1_0_13, EndpointMetadataResult} from '@sphereon/oid4vci-common';
+import {CredentialIssuerMetadataV1_0_15, EndpointMetadataResult} from '@sphereon/oid4vci-common';
 import {
   IIdentifierResolution,
   ManagedIdentifierJwkOpts,
@@ -16,7 +16,7 @@ type DpopAgentContext = IAgentContext<IIdentifierResolution & IKeyManager & IJwt
 export type DpopOpts = {
   alg?: SigningAlgo;
   metadata: Pick<EndpointMetadataResult, 'authorizationServerMetadata'> & {
-    credentialIssuerMetadata: CredentialIssuerMetadataV1_0_13;
+    credentialIssuerMetadata: CredentialIssuerMetadataV1_0_15;
   };
   required?: boolean;
   clientId?: string;

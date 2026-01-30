@@ -166,7 +166,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     }
   };
 
-  onRef = async (input: TextInput | null): Promise<void> => {
+  onRef = (input: TextInput | null): void => {
     this.setState({inputRef: input});
   };
 

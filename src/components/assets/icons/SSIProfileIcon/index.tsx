@@ -11,15 +11,16 @@ import {fontColors, profileColors} from '@sphereon/ui-components.core';
 export interface IProps {
   fontColor?: ColorValue;
   backgroundColor?: ColorValue;
+  size?: number;
 }
 
 const SSIProfileIcon: FC<IProps> = (props: IProps): JSX.Element => {
-  const {fontColor = fontColors.light, backgroundColor = profileColors['100']} = props;
+  const {fontColor = fontColors.light, backgroundColor = profileColors['100'], size} = props;
   const {activeUser} = useSelector(mapStateToProps);
 
   return (
-    <Container style={{backgroundColor}}>
-      <ProfileIconText style={{color: fontColor}}>{getInitials(`${activeUser?.firstName} ${activeUser?.lastName}`)}</ProfileIconText>
+    <Container style={{backgroundColor, ...(size && {width: size, borderRadius: size / 2})}}>
+      <ProfileIconText style={{color: fontColor, ...(size && {fontSize: size * 0.4})}}>{getInitials(`${activeUser?.firstName} ${activeUser?.lastName}`)}</ProfileIconText>
     </Container>
   );
 };

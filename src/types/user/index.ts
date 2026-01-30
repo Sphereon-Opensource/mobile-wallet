@@ -22,6 +22,7 @@ export interface BasicUser {
   identifiers?: Array<BasicUserIdentifier>;
   biometricsEnabled: OnboardingBiometricsStatus;
   countryCode: TCountryCode;
+  language?: string;
 }
 
 export interface IUserIdentifier {

@@ -101,6 +101,9 @@
   "credential_details_title": "Todistuksen tiedot",
   "credentials_overview_title": "Todistukset",
   "credential_details_view_issued_by": "Myöntäjä",
+  "credential_details_show_values": "Näytä arvot",
+  "credential_details_hide_values": "Piilota arvot",
+  "credential_details_values_redacted": "Arvot on piilotettu",
   "credentials_view_item_expires_on": "Vanhenee",
   "swipe_delete_button_caption": "Poista",
   "credential_offer_accepted_toast": "Todistus tallennettu",
@@ -240,7 +243,6 @@
   "import_data_loader_step_subtitle": "Haetaan henkilökohtaisia tietojasi.",
   "import_data_final_step_title": "Tietosi on tuotu. Onko kaikki oikein?",
   "import_data_setup_complete_title": "Määritys valmis",
-  
   "incorrect_data_title": "Onko joissakin tiedoissasi virheitä?",
   "incorrect_data_description": "Virheelliset henkilötiedot voivat aiheuttaa ongelmia. Älä lisää näitä tietoja.",
   "incorrect_data_bullet_content_heading": "Mitä voit tehdä",
@@ -249,7 +251,6 @@
   "incorrect_data_dont_add_info": "Älä lisää näitä tietoja",
   "incorrect_data_after_bullet_heading": "Jos tiedot eivät ole omasi",
   "incorrect_data_after_bullet_content": "Jos tiedot eivät kuulu sinulle, älä lisää niitä lompakkoosi.",
-
   "onboarding_esim_enter_details_title": "Anna eSIM-tiedot",
   "onboarding_esim_enter_details_description": "Anna puhelinnumerosi ja kytkentäkoodi",
   "onboarding_esim_enter_details_msisdn_label": "Puhelinnumero (MSISDN)",
@@ -259,19 +260,16 @@
   "onboarding_esim_enter_details_continue": "Jatka",
   "onboarding_esim_enter_details_back": "Takaisin",
   "onboarding_machine_activate_esim_error_title": "eSIM-aktivointi epäonnistui",
-
   "onboarding_esim_error_couple_rp_failed": "eSIM-aktivoinnin RP-kytkentävaihe epäonnistui",
   "onboarding_esim_error_bindkey_failed": "eSIM-aktivoinnin bind-key-vaihe epäonnistui",
   "onboarding_esim_error_create_link_failed": "eSIM-aktivoinnin create-link-vaihe epäonnistui",
   "onboarding_esim_error_check_sscd_failed": "eSIM-aktivoinnin check-sscd-vaihe epäonnistui",
   "onboarding_esim_error_enable_sscd_failed": "eSIM-aktivoinnin enable-sscd-vaihe epäonnistui",
   "onboarding_esim_error_cleanup_keys_failed": "eSIM-aktivoinnin cleanup-keys-vaihe epäonnistui",
-
   "import_data_title": "Tuo henkilötiedot",
   "onboarding_complete_title": "Valmista!",
   "onboarding_complete_description": "Olet valmis vastaanottamaan ja jakamaan identiteettitietoja, todistuksia ja paljon muuta.",
   "onboarding_complete_next": "Aloita lompakon käyttö",
-
   "scan_card_step_subtitle": "Pidä korttia puhelimen takana ja paina Aloita luku.",
   "scan_card_step_title": "Skannaa tuodaksesi tiedot",
   "personal_data_title": "Syötä henkilötiedot",
@@ -285,7 +283,6 @@
   "email_address_label": "Sähköpostiosoite",
   "email_address_placeholder": "Sähköpostiosoite",
   "email_address_invalid_message": "Anna kelvollinen sähköpostiosoite",
-
   "pin_code_choose_pin_code_title": "Valitse PIN-koodisi",
   "pin_code_choose_pin_code_subtitle": "Valitse PIN-koodi lompakkosi suojaamiseksi.",
   "pin_code_confirm_pin_code_title": "Vahvista PIN-koodisi",
@@ -294,16 +291,12 @@
   "pin_code_accessibility_hint": "Syötä PIN-koodisi",
   "pin_code_invalid_code_message": "PIN-koodit eivät täsmää. Yritä uudelleen.",
   "pin_code_attempts_left_message": "Yrityksiä jäljellä:",
-
   "lock_title": "Kirjaudu sisään\nSphereon-lompakkoon",
   "lock_subtitle": "Syötä PIN-koodisi.",
   "lock_emergency_button_caption": "Hätäpuhelu",
-
   "show_raw_credential_button_caption": "Raakatodistus",
-
   "onboard_create_wallet_step_title": "Luo lompakko",
   "onboard_secure_wallet_step_title": "Suojaa lompakko",
-
   "onboard_progress_pages": {
     "create_wallet": {
       "title": "Aloitetaan",
@@ -321,7 +314,6 @@
       "accessibility_label": "Melkein valmis, viimeinen osio. Käyttöönoton eteneminen on nyt vaiheessa"
     }
   },
-
   "onboard_steps": {
     "accessibility_tokens": {
       "step": "vaihe",
@@ -353,7 +345,6 @@
       }
     }
   },
-
   "onboarding_pages": {
     "welcome": {
       "title": "Tervetuloa identiteettisalkkuusi",
@@ -489,12 +480,10 @@
       "unknown_scan_card_error_message": "Tapahtui tuntematon virhe."
     }
   },
-
   "onboard_summary_title": "Antamasi tiedot",
   "onboard_summary_subtitle": "Kun painat Valmis, hyväksyt antamasi tiedot ja siirryt kirjautumisnäyttöön. Henkilötietoja voi muuttaa asetuksissa.",
   "onboard_summary_info_tab_header_label": "Tietosi",
   "onboard_summary_button_caption": "Viimeistele ja siirry lompakkoon",
-
   "credentials_required_title": "Vaaditut todistukset",
   "credentials_required_subtitle": "{{verifierName}} haluaa seuraavat tiedot tarkistusta varten.",
   "credentials_required_selected_label": "valittu",
@@ -505,7 +494,6 @@
   "credentials_required_checking_label": "...tarkistetaan",
   "credentials_required_no_available_label": "Sopivia todistuksia ei ole",
   "credentials_required_no_available_additional_label": "Sinulla ei ole todistusta jaettavaksi tarkastajalle. Ota yhteyttä myöntäjään saadaksesi uuden todistuksen.",
-
   "action_share_label": "Jaa",
   "credentials_share_success_toast_title": "Jakaminen onnistui",
   "credentials_share_success_toast_message": "Esitit valitsemasi todistukset onnistuneesti tarkastajalle {{verifierName}}.",
@@ -518,16 +506,12 @@
   "credentials_share_failed_toast_message": "Todistusten esittäminen epäonnistui. Virhe: {{errorMessage}}.",
   "information_retrieve_failed_toast_message": "Tietojen hakeminen epäonnistui. Virhe: {{errorMessage}}.",
   "credential_verification_failed_message": "Todistuksen tarkistus johti virheeseen.",
-
   "credential_offer_title": "Todistustarjous",
   "credential_sign_title": "Allekirjoituspyyntö",
-
   "profile_delete_wallet_action_caption": "Poista lompakko",
   "profile_delete_wallet_action_title": "Haluatko varmasti poistaa lompakkosi?",
   "profile_delete_wallet_action_subtitle": "Haluatko varmasti poistaa lompakkosi: {{userName}}?",
-
   "credential_status_never_expires_date_label": "Ei vanhene koskaan",
-
   "oid4vci_machine_initiation_error_title": "OID4VCI-palvelun alustus",
   "oid4vci_machine_credential_selection_error_title": "Todistuksen valinta",
   "oid4vci_machine_retrieve_contact_error_title": "Hae yhteystieto",
@@ -536,12 +520,10 @@
   "oid4vci_machine_add_contact_identity_error_title": "Lisää yhteystiedon identiteetti",
   "oid4vci_machine_store_credential_branding_error_title": "Tallenna todistuksen brändäys",
   "oid4vci_machine_store_credential_error_title": "Tallenna todistus",
-
   "emergency_send_button_caption": "Laukaise nyt!",
   "emergency_abort_button_caption": "Peruuta hälytys",
   "emergency_title": "Lähetä hätäilmoitus",
   "emergency_subtitle": "Hätäilmoituksesi lähetetään {{emergencyAlertDelay}} sekunnin kuluttua, tai voit laukaista sen heti painamalla ’Laukaise nyt!’-painiketta.",
-
   "siopV2_machine_identifier_error_title": "Hae tunniste",
   "siopV2_machine_create_config_error_title": "Luo SiopV2-kokoonpano",
   "siopV2_machine_get_request_error_title": "Hae SiopV2-pyyntö",
@@ -549,33 +531,26 @@
   "siopV2_machine_add_contact_identity_error_title": "Lisää yhteystiedon identiteetti",
   "siopV2_machine_send_response_error_title": "Lähetä SiopV2-vastaus",
   "siopV2_machine_retrieve_federation_trust_error_title": "Hae federaatioluottamus",
-
   "action_view_all_label": "Näytä kaikki",
   "filter_all_label": "Näytä kaikki",
   "filter_other_label": "Muu",
   "filter_new_label": "Uusi",
   "search_field_default_caption": "Haku",
-
   "credential_catalog_most_relevant_header_label": "Merkityksellisimmät todistukset",
   "credential_catalog_discover_header_label": "Löydä lisää todistuksia",
-
   "ausweis_eid_preview_card_title": "Ausweis eID",
   "ausweis_eid_preview_card_description": "Henkilötietosi kansalliselta eID-palveluntarjoajalta Ausweisilta.",
   "ausweis_eid_preview_card_issuer": "Saksan Bundesdruckerei",
   "ausweis_eid_modal_title": "Hae Ausweis eID -tiedot",
   "ausweis_eid_modal_description": "Henkilö- ja tunnistetiedot ovat lompakkosi perusta ja siten tärkeitä muiden todistusten saamiseksi.\n\nHaluatko varmasti, että nämä tiedot lisätään lompakkoosi?",
   "ausweis_eid_modal_accept_label": "Tuo henkilötiedot",
-
   "action_maybe_later_label": "Ehkä myöhemmin",
   "item_not_yet_available_message": "Tämä kohde ei ole vielä saatavilla.",
-
   "onboarding_machine_store_credential_error_title": "Tallenna todistus",
   "onboarding_machine_retrieve_credentials_error_title": "Hae todistukset",
   "onboarding_skip_credential_import_step3_caption": "Viimeistelen tämän osion myöhemmin",
   "onboarding_store_credential_branding_error_title": "Tallenna todistuksen brändäys",
-
   "share_credential_c2_flow_title": "Seuraavat tiedot jaetaan",
-
   "new_contact_add_new_contact_detected_title": "Tunnistatko {{partyName}}",
   "new_contact_add_new_contact_detected_subtitle": "Tämä on ensimmäinen vuorovaikutus tämän osapuolen kanssa. Haluatko jatkaa?",
   "federation_view_untrusted_title": "{{partyName}} on matalan luottamuksen tasolla",
@@ -598,10 +573,25 @@
   "new_contact_add_new_contact_contact_details_contacts_label": "Yhteystiedot",
   "new_contact_add_new_contact_low_level_trust_title": "Haluatko varmasti jatkaa?",
   "new_contact_add_new_contact_low_level_trust_description": "Tulet asioimaan osapuolen kanssa, jonka luottamustaso on matala.",
-
   "present_qr_code_screen_header_title": "Näytä QR-koodi",
   "present_qr_code_screen_subtitle": "Näytä QR-koodi toiselle osapuolelle, jotta he voivat skannata sen.",
   "present_qr_code_dropdown_item_text": "Näytä QR-koodi",
-  "present_qr_code_dropdown_item_accessibility_hint": "Siirry näyttöön, joka näyttää QR-koodin"
+  "present_qr_code_dropdown_item_accessibility_hint": "Siirry näyttöön, joka näyttää QR-koodin",
+  "lock_dropdown_item_text": "Lukitse",
+  "lock_dropdown_item_accessibility_hint": "Lukitse lompakko ja palaa lukitusnäyttöön",
+  "settings_language_section_label": "Kieli",
+  "settings_language_system_default": "Järjestelmän oletus",
+  "settings_privacy_security_section_label": "Yksityisyys ja turvallisuus",
+  "settings_warn_on_external_link_label": "Varoita ulkoisista linkeistä",
+  "settings_warn_on_external_link_description": "Näytä varoitus avattaessa ulkoisia linkkejä todistuksista",
+  "settings_warn_on_low_trust_label": "Varoita matalasta luottamuksesta",
+  "settings_warn_on_low_trust_description": "Näytä varoitus asioitaessa matalan luottamuksen yhteystietojen kanssa",
+  "settings_confirm_browser_open_label": "Vahvista ennen selaimen avaamista",
+  "settings_confirm_browser_open_description": "Pyydä vahvistus ennen selaimen avaamista",
+  "settings_show_claim_values_by_default_label": "Näytä vaatimusarvot oletuksena",
+  "settings_show_claim_values_by_default_description": "Näytä vaatimusarvot ilman napautusta",
+  "credential_details_open_link_warning_title": "Avaa ulkoinen linkki?",
+  "credential_details_open_link_warning_description": "Tämän linkin avaaminen voi aiheuttaa tietosuojariskin, jos URL on yksilöllinen tälle todistukselle. Ulkopuolinen osapuoli voi tunnistaa sinut.",
+  "credential_details_open_link_warning_proceed": "Avaa linkki",
+  "credential_details_open_link_warning_cancel": "Peruuta"
 }
-

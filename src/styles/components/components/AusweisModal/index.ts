@@ -1,15 +1,18 @@
 import styled from 'styled-components/native';
 import Animated from 'react-native-reanimated';
+import React from 'react';
 import {fontColors} from '@sphereon/ui-components.core';
-import SSIIconButton from '../../../../components/buttons/SSIIconButton';
+import SSIIconButton, {Props as SSIIconButtonProps} from '../../../../components/buttons/SSIIconButton';
 import {ButtonIconsEnum} from '../../../../types';
 
 export const AusweisModalButtonContainerStyled = styled.View`
   gap: 12px;
 `;
 
-export const AusweisModalIconButtonStyled = styled(SSIIconButton).attrs({
-  // FIXME while using this styled component it is complaining about required properties not being present even if we set it here
+// Cast to make icon optional since it's provided via attrs
+const SSIIconButtonWithOptionalIcon = SSIIconButton as React.ComponentType<Omit<SSIIconButtonProps, 'icon'> & {icon?: SSIIconButtonProps['icon']}>;
+
+export const AusweisModalIconButtonStyled = styled(SSIIconButtonWithOptionalIcon).attrs({
   iconColor: fontColors.light,
   icon: ButtonIconsEnum.CLOSE,
   iconSize: 15,

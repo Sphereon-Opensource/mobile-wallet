@@ -274,6 +274,11 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
     debug('onOpenAuthorizationUrl after openUrl: ', url);
   };
 
+  const confirmBrowserOpen = store.getState().user.activeUser?.preferences?.confirmBrowserOpen ?? true;
+  if (!confirmBrowserOpen) {
+    return onOpenAuthorizationUrl(url);
+  }
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.BROWSER_OPEN,
     params: {

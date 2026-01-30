@@ -69,7 +69,10 @@
       },
       "row_description": "Credential ontvangen",
       "detail_title": "Nieuwe Credential toegevoegd aan je wallet",
-      "description": ["Je kunt nu eindelijk je", "kaart gebruiken voor officiële doeleinden."]
+      "description": [
+        "Je kunt nu eindelijk je",
+        "kaart gebruiken voor officiële doeleinden."
+      ]
     },
     "VC issue decline": {
       "info_list_title": "Informatie geweigerd",
@@ -79,7 +82,10 @@
       },
       "row_description": "Ontvangst van Credential geweigerd",
       "detail_title": "Credential niet toegevoegd aan je wallet",
-      "description": ["Je hebt geweigerd om de", "kaart te gebruiken voor officiële doeleinden."]
+      "description": [
+        "Je hebt geweigerd om de",
+        "kaart te gebruiken voor officiële doeleinden."
+      ]
     },
     "section_titles": {
       "status": "Status",
@@ -99,6 +105,9 @@
   "credential_details_open_link_warning_description": "Het openen van deze link kan een privacyrisico vormen als de URL uniek is voor deze credential. De externe partij kan u mogelijk identificeren.",
   "credential_details_open_link_warning_proceed": "Link openen",
   "credential_details_open_link_warning_cancel": "Annuleren",
+  "credential_details_show_values": "Waarden tonen",
+  "credential_details_hide_values": "Waarden verbergen",
+  "credential_details_values_redacted": "Waarden zijn verborgen",
   "credentials_view_item_expires_on": "Verloopt op",
   "swipe_delete_button_caption": "Verwijderen",
   "credential_offer_accepted_toast": "Credential succesvol opgeslagen",
@@ -244,7 +253,6 @@
   "incorrect_data_dont_add_info": "Voeg deze informatie niet toe",
   "incorrect_data_after_bullet_heading": "Als het niet van jou is",
   "incorrect_data_after_bullet_content": "Als de informatie niet van jou is, voeg het dan niet toe aan je wallet.",
-
   "onboarding_esim_enter_details_title": "eSIM-gegevens invoeren",
   "onboarding_esim_enter_details_description": "Vul je telefoonnummer en koppelcode in",
   "onboarding_esim_enter_details_msisdn_label": "Telefoonnummer (MSISDN)",
@@ -253,18 +261,14 @@
   "onboarding_esim_enter_details_coupling_code_placeholder": "Voer koppelcode in",
   "onboarding_esim_enter_details_continue": "Doorgaan",
   "onboarding_esim_enter_details_back": "Terug",
-
   "browser_open_auth_body": "De andere partij vraagt je om jezelf te authenticeren. Je standaardbrowser wordt hiervoor gebruikt",
-
   "pid_security_model_warning": "EID wordt alleen geladen tijdens de presentatie",
-
   "onboarding_esim_error_couple_rp_failed": "De RP-koppelingsstap van de eSim-activatie is mislukt",
   "onboarding_esim_error_bindkey_failed": "De bind-key-stap van de eSim-activatie is mislukt",
   "onboarding_esim_error_create_link_failed": "De create-link-stap van de eSim-activatie is mislukt",
   "onboarding_esim_error_check_sscd_failed": "De check-sscd-stap van de eSim-activatie is mislukt",
   "onboarding_esim_error_enable_sscd_failed": "De enable-sscd-stap van de eSim-activatie is mislukt",
   "onboarding_esim_error_cleanup_keys_failed": "De cleanup-keys-stap van de eSim-activatie is mislukt",
-
   "import_data_title": "Persoonlijke gegevens importeren",
   "onboarding_complete_title": "Alles klaar!",
   "onboarding_complete_description": "Je bent nu klaar om identiteitsgegevens, credentials en meer te ontvangen en te delen.",
@@ -382,13 +386,13 @@
       }
     },
     "enter_country": {
-      "title": "Je woonland",
+      "title": "Je land van verblijf",
       "select": {
         "label": "Land",
         "accessibility": {
           "select": "Geselecteerd land"
         },
-        "placeholder": "Jouw woonland",
+        "placeholder": "Jouw land van verblijf",
         "errors": {
           "missing": "Selecteer een land"
         }
@@ -479,7 +483,6 @@
       "unknown_scan_card_error_message": "Er is een onbekende fout opgetreden."
     }
   },
-  
   "onboard_summary_title": "Jouw ingevoerde gegevens",
   "onboard_summary_subtitle": "Wanneer je op voltooien drukt, accepteer je de ingevoerde gegevens en ga je door naar het inlogscherm. De persoonlijke gegevens kunnen in de instellingen worden gewijzigd.",
   "onboard_summary_info_tab_header_label": "Jouw informatie",
@@ -576,5 +579,19 @@
   "present_qr_code_screen_header_title": "Presenteer QR-code",
   "present_qr_code_screen_subtitle": "Toon de QR-code aan de geïnteresseerde partij. Zo kunnen zij jouw QR-code scannen.",
   "present_qr_code_dropdown_item_text": "Presenteer QR-code",
-  "present_qr_code_dropdown_item_accessibility_hint": "Navigeer naar een scherm dat de QR-code toont"
+  "present_qr_code_dropdown_item_accessibility_hint": "Navigeer naar een scherm dat de QR-code toont",
+  "lock_dropdown_item_text": "Vergrendelen",
+  "lock_dropdown_item_accessibility_hint": "Vergrendel de wallet en ga terug naar het vergrendelscherm",
+  "settings_language_section_label": "Taal",
+  "settings_language_system_default": "Systeemstandaard",
+  "settings_privacy_security_section_label": "Privacy & Beveiliging",
+  "settings_warn_on_external_link_label": "Waarschuwen bij externe links",
+  "settings_warn_on_external_link_description": "Toon een waarschuwing bij het openen van externe links vanuit credentials",
+  "settings_warn_on_low_trust_label": "Waarschuwen bij laag vertrouwen",
+  "settings_warn_on_low_trust_description": "Toon een waarschuwing bij interactie met contacten met laag vertrouwen",
+  "settings_confirm_browser_open_label": "Bevestigen voor openen browser",
+  "settings_confirm_browser_open_description": "Vraag om bevestiging voordat de browser wordt geopend",
+  "settings_show_claim_values_by_default_label": "Claimwaarden standaard tonen",
+  "settings_show_claim_values_by_default_description": "Claimwaarden weergeven zonder dat een tik nodig is",
+  "onboarding_machine_activate_esim_error_title": "eSim-activering mislukt"
 }

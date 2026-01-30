@@ -8,6 +8,7 @@ import Debug, {Debugger} from 'debug';
 import styled from 'styled-components/native';
 import {APP_ID} from '../../../@config/constants';
 import SSIBackIcon from '../../../components/assets/icons/SSIBackIcon';
+import SSIProfileIcon from '../../../components/assets/icons/SSIProfileIcon';
 import {
   SSIContactViewItemContactDetailsContainerStyled as ContactDetailsContainer,
   SSIContactViewItemContactUriCaptionStyled as ContactUriCaption,
@@ -26,6 +27,7 @@ export interface Props {
   logo?: IImageAttributes;
   roles: Array<CredentialRole>;
   showArrow?: boolean;
+  isHolder?: boolean;
 }
 
 const ChevronRight = styled.View`
@@ -36,12 +38,12 @@ const ChevronRight = styled.View`
 `;
 
 const SSIContactViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {name, uri, roles, logo, showArrow = false} = props;
+  const {name, uri, roles, logo, showArrow = false, isHolder = false} = props;
   return (
     <Container>
       <StatusContainer />
       <LogoContainer>
-        <Logo logo={logo} />
+        {isHolder ? <SSIProfileIcon /> : <Logo logo={logo} />}
       </LogoContainer>
       <View style={{flex: 1}}>
         <ContactDetailsContainer>

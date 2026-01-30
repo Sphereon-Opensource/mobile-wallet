@@ -6,6 +6,7 @@ import {LogBox} from 'react-native';
 // include this line for mocking react-native-gesture-handler
 import 'react-native-gesture-handler/jestSetup';
 import {DataSource} from 'typeorm';
+// @ts-ignore
 import {SqliteConnectionOptions} from 'typeorm/driver/sqlite/SqliteConnectionOptions';
 import {TextDecoder, TextEncoder} from 'util';
 import Localization from './src/localization/Localization';

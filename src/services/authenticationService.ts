@@ -23,7 +23,7 @@ const enterPinCode = async (onAuthenticate: () => Promise<void>): Promise<void> 
 
 export const login = async (): Promise<void> => {
   // TODO currently only supporting 1 user
-  const userId: string = store.getState().user.users.values().next().value.id;
+  const userId: string = store.getState().user.users.values().next().value!.id;
   store.dispatch<any>(loginAction(userId));
 };
 

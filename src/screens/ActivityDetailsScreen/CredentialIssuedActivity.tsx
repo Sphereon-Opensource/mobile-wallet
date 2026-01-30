@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
+import {CredentialCardSheen} from '../../components/views/CredentialCardSheen';
 import {View, useWindowDimensions} from 'react-native';
 import NavigationButton from '../../components/buttons/NavigationButton';
 import {Section} from '../../components/activity/Section';
@@ -47,25 +48,27 @@ const CredentialIssuedActivity = ({activity, navigation}: Props) => {
             marginVertical: 16,
             transform: [{scale}],
           }}>
-          <SSICredentialCardView
-            header={{
-              credentialTitle: credential.branding?.alias ?? credential.title,
-              credentialSubtitle: credential.branding?.description,
-              logo: getCredentialCardLogo(credential),
-            }}
-            body={{
-              issuerName: credential.issuer.alias,
-            }}
-            footer={{
-              credentialStatus: getCredentialStatus(credential),
-              expirationDate: credential.expirationDate,
-            }}
-            display={{
-              backgroundColor: credential.branding?.background?.color,
-              backgroundImage: credential.branding?.background?.image,
-              textColor: credential.branding?.text?.color,
-            }}
-          />
+          <CredentialCardSheen>
+            <SSICredentialCardView
+              header={{
+                credentialTitle: credential.branding?.alias ?? credential.title,
+                credentialSubtitle: credential.branding?.description,
+                logo: getCredentialCardLogo(credential),
+              }}
+              body={{
+                issuerName: credential.issuer.alias,
+              }}
+              footer={{
+                credentialStatus: getCredentialStatus(credential),
+                expirationDate: credential.expirationDate,
+              }}
+              display={{
+                backgroundColor: credential.branding?.background?.color,
+                backgroundImage: credential.branding?.background?.image,
+                textColor: credential.branding?.text?.color,
+              }}
+            />
+          </CredentialCardSheen>
         </View>
       )}
       {/*<Section title={translate('activity.section_titles.issued_information')}>*/}

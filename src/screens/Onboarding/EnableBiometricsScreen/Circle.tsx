@@ -35,9 +35,9 @@ const CircleWithBorder = (props: CircleWithBorderProps) => {
         borderRadius: size / 2,
         ...styles.center,
       }}
-      colors={borderColors}>
+      colors={borderColors as any}>
       <Gradient
-        colors={backgroundColors}
+        colors={backgroundColors as any}
         style={{
           width: innerSize,
           height: innerSize,

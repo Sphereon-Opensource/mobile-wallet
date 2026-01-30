@@ -13,11 +13,11 @@ export interface ContactInformationProps extends Omit<NewContactViewItemProps, '
 }
 
 export const ContactInformationView = (props: ContactInformationProps) => {
-  const {name, logo, roles, status, properties, secondaryButton, primaryButton, style} = props;
+  const {name, logo, roles, status, properties, secondaryButton, primaryButton, style, isHolder} = props;
   return (
     <View style={{...style, flex: 1}}>
       <ContactDetailsHeaderSection>
-        <NewContactViewItem name={name} roles={roles} logo={logo} status={status} logoSize={60} />
+        <NewContactViewItem name={name} roles={roles} logo={logo} status={status} logoSize={60} isHolder={isHolder} />
       </ContactDetailsHeaderSection>
       <SSITextH3LightStyled style={{marginHorizontal: 24}} accessibilityRole="header">
         Details

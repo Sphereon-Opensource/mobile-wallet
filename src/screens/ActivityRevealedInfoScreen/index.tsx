@@ -44,7 +44,7 @@ const getInfoConfigs = (activity: Activity, claimsCount: number): InfoProps[] =>
 };
 
 const ActivityRevealedInfoScreen = (navProps: Props) => {
-  const {activity, claimsCount} = navProps.route.params;
+  const {activity, claimsCount = 0} = navProps.route.params;
   if (!activity) return null;
   return (
     <Container>

@@ -9,6 +9,7 @@ import {
 import {Entities as VeramoDataStoreEntities, migrations as VeramoDataStoreMigrations} from '@veramo/data-store'
 // @ts-ignore
 import {enableSimpleNullHandling, typeORMDriver} from 'react-native-nitro-sqlite'
+// @ts-ignore
 import {ReactNativeConnectionOptions} from 'typeorm/driver/react-native/ReactNativeConnectionOptions'
 import {AddFunkeContact1724156944125} from '../../migrations/AddFunkeContact'
 import {AddTrustAnchorContacts1730209599556} from '../../migrations/AddTrustAnchorContacts'

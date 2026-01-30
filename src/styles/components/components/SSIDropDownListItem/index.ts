@@ -6,16 +6,19 @@ import {backgroundColors} from '@sphereon/ui-components.core';
 
 export const SSIDropDownListItemContainerStyled = styled(SSIFlexDirectionRowViewStyled)`
   flex: 1;
-  background-color: ${backgroundColors.primaryLight};
+  background-color: transparent;
+  align-items: center;
 `;
 
 export const SSIDropDownListItemCaptionContainerStyled = styled(SSITextH2Styled)`
-  margin: 13px 0 11px 16px;
+  margin: 14px 0 14px 18px;
+  font-size: 15px;
 `;
 
 export const SSIDropDownListItemIconContainerStyled = styled.View`
-  width: 42px;
-  margin: 4px 6px 2px auto;
+  width: 36px;
+  margin-left: auto;
+  margin-right: 14px;
   align-items: center;
   justify-content: center;
 `;

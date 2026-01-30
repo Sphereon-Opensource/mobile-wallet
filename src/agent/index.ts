@@ -49,4 +49,4 @@ const agent = createAgent<TAgentTypes>({
 export default agent;
 export const agentContext: IRequiredContext = {...agent.context, agent};
 
-DefaultCallbacks.setCoseCryptoDefault(new CoseCryptoService(agentContext));
+DefaultCallbacks.setCoseCryptoDefault(new CoseCryptoService(agentContext as any));

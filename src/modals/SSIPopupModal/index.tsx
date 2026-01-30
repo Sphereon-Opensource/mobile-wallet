@@ -15,6 +15,19 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton, input} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
+  const dismiss = async () => props.navigation.goBack();
+
+  const wrapWithDismiss = (button: typeof primaryButton) =>
+    button
+      ? {
+          ...button,
+          onPress: async () => {
+            await button.onPress();
+            dismiss();
+          },
+        }
+      : undefined;
+
   const onShowExtraDetails = async (): Promise<void> => {
     setShowExtraDetails(true);
   };
@@ -38,7 +51,7 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
         )}
 
         <SSIPopup
-          onClose={onClose}
+          onClose={onClose ?? dismiss}
           image={image}
           title={title}
           titleBadge={titleBadge}
@@ -51,8 +64,8 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
               onPress: onShowExtraDetails,
             },
           })}
-          primaryButton={primaryButton}
-          secondaryButton={secondaryButton}
+          primaryButton={wrapWithDismiss(primaryButton)}
+          secondaryButton={wrapWithDismiss(secondaryButton)}
         />
       </ModalContentContainer>
     </Container>

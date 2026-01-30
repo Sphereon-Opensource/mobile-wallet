@@ -68,10 +68,6 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
     navigation.navigate(MainRoutesEnum.SETTINGS);
   };
 
-  const onNavigateQrPresentation = () => {
-    navigation.navigate(MainRoutesEnum.SHARE);
-  };
-
   const onMore = async (): Promise<void> => {
     setShowProfileMenu(false);
     setShowMoreMenu(!showMoreMenu);
@@ -103,13 +99,13 @@ const SSIHeaderBar: FC<HeaderBarProps> = (props: HeaderBarProps): JSX.Element =>
         accessibilityHint: translate('settings_dropdown_item_accessibility_hint'),
       },
       {
-        caption: translate('present_qr_code_dropdown_item_text'),
-        onPress: onNavigateQrPresentation,
-        icon: HeaderMenuIconsEnum.QR,
-        accessibilityHint: translate('present_qr_code_dropdown_item_accessibility_hint'),
+        caption: translate('lock_dropdown_item_text'),
+        onPress: onLogout,
+        icon: HeaderMenuIconsEnum.LOGOUT,
+        accessibilityHint: translate('lock_dropdown_item_accessibility_hint'),
       },
     ],
-    [onNavigateProfile, onNavigateQrPresentation],
+    [onNavigateProfile, onLogout],
   );
 
   const titleRef = useRef(null);

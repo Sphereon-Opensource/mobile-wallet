@@ -2,6 +2,15 @@ diff --git a/lib/api.js b/lib/api.js
 index cc8f904edacab8ad06429ad942d083feea1c8723..397752a318c24ff817be3ab6ff226f588b4d29c2 100644
 --- a/lib/api.js
 +++ b/lib/api.js
+@@ -56,7 +56,7 @@ export class RealtimeAPI extends RealtimeEventHandler {
+    * @param {{model?: string}} [settings]
+    * @returns {Promise<true>}
+    */
+-  async connect({ model } = { model: 'gpt-4o-realtime-preview-2024-10-01' }) {
++  async connect({ model } = { model: 'gpt-4o-realtime-preview' }) {
+     if (!this.apiKey && this.url === this.defaultUrl) {
+       console.warn(`No apiKey provided for connection to "${this.url}"`);
+     }
 @@ -107,50 +107,9 @@ export class RealtimeAPI extends RealtimeEventHandler {
        });
      } else {

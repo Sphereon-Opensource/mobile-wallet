@@ -26,6 +26,11 @@ export const createUser = async (args: BasicUser, options?: {credentialOverviewV
       views: {
         [ConfigurableViewKey.CREDENTIAL_OVERVIEW]: credentialOverviewViewPreference,
       },
+      language: args.language ?? null,
+      warnOnExternalLink: true,
+      warnOnLowTrust: true,
+      confirmBrowserOpen: true,
+      showClaimValuesByDefault: false,
     },
   };
 

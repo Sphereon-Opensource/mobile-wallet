@@ -36,6 +36,8 @@ export type OnboardingMachineContext = {
   name: string;
   emailAddress: string;
   countryCode: TCountryCode;
+  language: string | null;
+  languageManuallySelected: boolean;
   pinCode: string;
   biometricsEnabled: OnboardingBiometricsStatus;
   verificationPinCode: string;
@@ -98,6 +100,7 @@ export enum OnboardingMachineEvents {
   SKIP_BIOMETRICS = 'SKIP_BIOMETRICS',
   DECLINE_INFORMATION = 'DECLINE_INFORMATION',
   SET_FUNKE_PROVIDER = 'SET_FUNKE_PROVIDER',
+  SET_LANGUAGE = 'SET_LANGUAGE',
   SET_POPUP_MENU_OPEN = 'SET_POPUP_MENU_OPEN',
 }
 
@@ -115,6 +118,7 @@ export type SkipBiometricsEvent = {type: OnboardingMachineEvents.SKIP_BIOMETRICS
 export type SetBiometricsEvent = {type: OnboardingMachineEvents.SET_BIOMETRICS; data: OnboardingBiometricsStatus};
 export type DeclineInformation = {type: OnboardingMachineEvents.DECLINE_INFORMATION};
 export type SetFunkeProvider = {type: OnboardingMachineEvents.SET_FUNKE_PROVIDER; data: VciServiceFunkeCProvider};
+export type SetLanguageEvent = {type: OnboardingMachineEvents.SET_LANGUAGE; data: string | null};
 export type SetPopupMenuOpen = {type: OnboardingMachineEvents.SET_POPUP_MENU_OPEN; data: boolean};
 export type SetSecurityModel = {
   type: OnboardingMachineEvents.UPDATE_SECURITY_MODEL;
@@ -136,6 +140,7 @@ export type OnboardingMachineEventTypes =
   | SetBiometricsEvent
   | DeclineInformation
   | SetFunkeProvider
+  | SetLanguageEvent
   | SetSecurityModel
   | SetPopupMenuOpen;
 

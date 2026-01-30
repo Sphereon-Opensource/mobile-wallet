@@ -4,15 +4,19 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {ImageAttributes, backgroundColors, fontColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
-import React, {FC, useMemo} from 'react';
-import {FlatList, ListRenderItemInfo, View} from 'react-native';
+import {CredentialCardSheen} from '../../components/views/CredentialCardSheen';
+import React, {FC, useMemo, useState} from 'react';
+import {FlatList, ListRenderItemInfo, Pressable, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {DETAILS_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import NavigationButton from '../../components/buttons/NavigationButton';
 import {Chat, ChatTools} from '../../components/chat/Chat';
+import SSIEyeIcon from '../../components/assets/icons/SSIEyeIcon';
+import SSIEyeOffIcon from '../../components/assets/icons/SSIEyeOffIcon';
 import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
 import {useAccessibility} from '../../hooks/useAccessibility';
+import {useUserPreference} from '../../hooks/useUserPreference';
 import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {
@@ -49,13 +53,16 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const {announce} = useAccessibility();
   const insets = useSafeAreaInsets();
   const credentialCardLogo: ImageAttributes | undefined = getCredentialCardLogo(credential);
+  const showClaimValuesByDefault = useUserPreference('showClaimValuesByDefault');
+  const [valuesVisible, setValuesVisible] = useState(showClaimValuesByDefault ?? false);
   const contacts = useAppSelector(state => state.contact.contacts);
   const contact = contacts.find(c => c.contact.displayName === issuer);
+  const toggleValuesVisible = () => setValuesVisible(v => !v);
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
-      return <SSIImageField item={itemInfo.item} index={itemInfo.index} />;
+      return <SSIImageField item={itemInfo.item} index={itemInfo.index} valuesVisible={valuesVisible} onToggleVisibility={toggleValuesVisible} />;
     } else {
-      return <SSITextField item={itemInfo.item} index={itemInfo.index} />;
+      return <SSITextField item={itemInfo.item} index={itemInfo.index} valuesVisible={valuesVisible} onToggleVisibility={toggleValuesVisible} />;
     }
   };
   // this is a loose differentiation between adding a credential and viewing a credential
@@ -185,51 +192,92 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               credential.issueDate,
             )}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`}>
             <View importantForAccessibility="no-hide-descendants">
-              <SSICredentialCardView
-                header={{
-                  credentialTitle: credential.branding?.alias ?? credential.title,
-                  credentialSubtitle: credential.branding?.description,
-                  logo: credentialCardLogo,
-                }}
-                body={{
-                  issuerName: issuer ?? credential.issuer.name,
-                }}
-                footer={{
-                  credentialStatus: getCredentialStatus(credential),
-                  expirationDate: credential.expirationDate,
-                }}
-                display={{
-                  backgroundColor: credential.branding?.background?.color,
-                  backgroundImage: credential.branding?.background?.image,
-                  textColor: credential.branding?.text?.color,
-                }}
-              />
+              <CredentialCardSheen>
+                <SSICredentialCardView
+                  header={{
+                    credentialTitle: credential.branding?.alias ?? credential.title,
+                    credentialSubtitle: credential.branding?.description,
+                    logo: credentialCardLogo,
+                  }}
+                  body={{
+                    issuerName: issuer ?? credential.issuer.name,
+                  }}
+                  footer={{
+                    credentialStatus: getCredentialStatus(credential),
+                    expirationDate: credential.expirationDate,
+                  }}
+                  display={{
+                    backgroundColor: credential.branding?.background?.color,
+                    backgroundImage: credential.branding?.background?.image,
+                    textColor: credential.branding?.text?.color,
+                  }}
+                />
+              </CredentialCardSheen>
             </View>
           </View>
         </CardContainer>
-        <SSITextH3LightStyled
-          accessibilityRole="header"
+        <View
           style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             marginTop: 24,
             paddingHorizontal: 24,
             borderBottomWidth: 1,
             borderBottomColor: '#404D7A',
           }}>
-          Card information
-        </SSITextH3LightStyled>
-        <FlatList
-          accessibilityRole="list"
-          accessibilityLabel={`${credential.title} details`}
-          style={{backgroundColor: backgroundColors.secondaryDark, flex: 1}}
-          data={credential.properties}
-          renderItem={renderItem}
-          keyExtractor={(item: CredentialDetailsRow) => item.id}
-          initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
-          removeClippedSubviews
-          contentContainerStyle={{flexGrow: 1}}
-          ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}}
-          ListFooterComponent={renderFooter}
-        />
+          <SSITextH3LightStyled accessibilityRole="header">Card information</SSITextH3LightStyled>
+          <Pressable
+            onPress={() => setValuesVisible(v => !v)}
+            accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+            accessibilityRole="button"
+            hitSlop={8}
+            style={{flexDirection: 'row', alignItems: 'center', gap: 8, padding: 4}}>
+            <SSITextH3LightStyled style={{color: '#5D6990', fontSize: 13, fontWeight: '400'}}>
+              {valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+            </SSITextH3LightStyled>
+            {valuesVisible ? <SSIEyeIcon size={20} /> : <SSIEyeOffIcon size={20} />}
+          </Pressable>
+        </View>
+        <View style={{flex: 1, position: 'relative', backgroundColor: backgroundColors.secondaryDark}}>
+          <View
+            style={{
+              position: 'absolute',
+              top: '15%',
+              left: 0,
+              right: 0,
+              alignItems: 'center',
+              zIndex: 0,
+            }}
+            pointerEvents="none">
+            {valuesVisible ? <SSIEyeIcon size={80} color="#2A3048" /> : <SSIEyeOffIcon size={80} color="#2A3048" />}
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              top: '15%',
+              left: 0,
+              right: 0,
+              alignItems: 'center',
+              zIndex: 2,
+            }}
+            pointerEvents="box-none">
+            <Pressable onPress={() => setValuesVisible(v => !v)} hitSlop={24} style={{width: 80, height: 80}} />
+          </View>
+          <FlatList
+            accessibilityRole="list"
+            accessibilityLabel={`${credential.title} details`}
+            style={{flex: 1, zIndex: 1}}
+            data={credential.properties}
+            renderItem={renderItem}
+            keyExtractor={(item: CredentialDetailsRow) => item.id}
+            initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
+            removeClippedSubviews
+            contentContainerStyle={{flexGrow: 1}}
+            ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}}
+            ListFooterComponent={renderFooter}
+          />
+        </View>
         {(primaryAction || secondaryAction) && (
           <View
             style={{

@@ -281,7 +281,7 @@ export const siopSendAuthorizationResponse = async (
 
       // FIXME SSISDK-44
       const decodedSdJwt = await CredentialMapper.decodeSdJwtVcAsync(originalVc as string, generateDigest)
-      const updatedSdJwt = updateSdJwtCredential(decodedSdJwt, request.requestObject?.getPayload()?.nonce, domain)
+      const updatedSdJwt = updateSdJwtCredential(decodedSdJwt, request.requestObject?.getPayload()?.nonce!, domain)
 
       const presentationResult = await agent.createSdJwtPresentation({
         presentation: updatedSdJwt.compactSdJwtVc,
@@ -289,7 +289,7 @@ export const siopSendAuthorizationResponse = async (
           payload: {
             ...updatedSdJwt.kbJwt?.payload,
             iat: updatedSdJwt.kbJwt?.payload?.iat ?? Math.floor(Date.now() / 1000 - CLOCK_SKEW)
-          }
+          } as any
         }
       })
 

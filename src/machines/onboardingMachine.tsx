@@ -35,7 +35,7 @@ import {
 } from '../types/machines/onboarding';
 import {isNonEmptyString, isNotNil, isNotSameDigits, isNotSequentialDigits, isStringOfLength, IsValidEmail, validate} from '../utils/validate';
 import {PIDSecurityModel} from '../services/storageService';
-import {getCredentialSubjectContact} from '../utils';
+import {getCountryPrimaryLanguage, getCredentialSubjectContact} from '../utils';
 import {CredentialPayload, VerifiableCredential} from '@veramo/core';
 import {toCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import agent from '../agent';
@@ -85,7 +85,7 @@ const states: OnboardingStatesConfig = {
   showProgress: {
     on: {
       NEXT: [
-        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterName},
+        {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterCountry},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
         {
           cond: OnboardingMachineGuards.isStepImportPersonalData,
@@ -97,7 +97,7 @@ const states: OnboardingStatesConfig = {
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
         {
           cond: OnboardingMachineGuards.isStepSecureWallet,
-          target: OnboardingMachineStateType.enterCountry,
+          target: OnboardingMachineStateType.enterEmailAddress,
           actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET}),
         },
         {
@@ -116,8 +116,8 @@ const states: OnboardingStatesConfig = {
         actions: assign({popupMenuOpen: (_, event) => event.data}),
       },
       SKIP_IMPORT: {
-        target: OnboardingMachineStateType.setupWallet,
-        actions: assign({skipImport: true}),
+        target: OnboardingMachineStateType.completeOnboarding,
+        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL}),
       },
       UPDATE_SECURITY_MODEL: {
         actions: assign({
@@ -129,13 +129,17 @@ const states: OnboardingStatesConfig = {
   enterName: {
     on: {
       NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
-      PREVIOUS: OnboardingMachineStateType.showProgress,
+      PREVIOUS: OnboardingMachineStateType.enterCountry,
       SET_NAME: {actions: assign({name: (_, event) => event.data})},
     },
   },
   enterEmailAddress: {
     on: {
-      NEXT: {cond: OnboardingMachineGuards.isEmailValid, target: OnboardingMachineStateType.enterCountry},
+      NEXT: {
+        cond: OnboardingMachineGuards.isEmailValid,
+        target: OnboardingMachineStateType.showProgress,
+        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+      },
       PREVIOUS: OnboardingMachineStateType.enterName,
       SET_EMAIL_ADDRESS: {actions: assign({emailAddress: (_, event) => event.data})},
     },
@@ -144,11 +148,16 @@ const states: OnboardingStatesConfig = {
     on: {
       NEXT: {
         cond: OnboardingMachineGuards.isCountryValid,
-        target: OnboardingMachineStateType.showProgress,
-        actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
+        target: OnboardingMachineStateType.enterName,
       },
-      PREVIOUS: OnboardingMachineStateType.enterEmailAddress,
-      SET_COUNTRY: {actions: assign({countryCode: (_, event) => event.data})},
+      PREVIOUS: OnboardingMachineStateType.showProgress,
+      SET_COUNTRY: {
+        actions: assign({
+          countryCode: (_, event) => event.data,
+          language: (ctx, event) => (ctx.languageManuallySelected ? ctx.language : getCountryPrimaryLanguage(event.data) ?? null),
+        }),
+      },
+      SET_LANGUAGE: {actions: assign({language: (_, event) => event.data, languageManuallySelected: true})},
     },
   },
   enterPinCode: {
@@ -219,7 +228,7 @@ const states: OnboardingStatesConfig = {
         },
         {
           cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.setupWallet,
+          target: OnboardingMachineStateType.completeOnboarding,
           actions: assign({currentStep: OnboardingMachineStep.FINAL}),
         },
         {
@@ -250,7 +259,7 @@ const states: OnboardingStatesConfig = {
         },
         {
           cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.setupWallet,
+          target: OnboardingMachineStateType.completeOnboarding,
           actions: assign({currentStep: OnboardingMachineStep.FINAL}),
         },
         {
@@ -272,7 +281,7 @@ const states: OnboardingStatesConfig = {
   importPIDDataConsent: {
     on: {
       SKIP_IMPORT: {
-        target: OnboardingMachineStateType.setupWallet,
+        target: OnboardingMachineStateType.completeOnboarding,
         actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL}),
       },
       PREVIOUS: {
@@ -338,7 +347,7 @@ const states: OnboardingStatesConfig = {
     on: {
       PREVIOUS: OnboardingMachineStateType.reviewPIDCredentials,
       NEXT: {
-        target: OnboardingMachineStateType.setupWallet,
+        target: OnboardingMachineStateType.completeOnboarding,
         actions: ['logDeclinePID', assign({currentStep: OnboardingMachineStep.FINAL, skipImport: true})],
       },
     },
@@ -364,7 +373,7 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.storeCredentialBranding,
       onDone: {
-        target: OnboardingMachineStateType.setupWallet,
+        target: OnboardingMachineStateType.completeOnboarding,
       },
       onError: {
         target: OnboardingMachineStateType.handleError,
@@ -381,7 +390,7 @@ const states: OnboardingStatesConfig = {
     invoke: {
       src: OnboardingMachineServices.setupWallet,
       onDone: {
-        target: OnboardingMachineStateType.completeOnboarding,
+        target: OnboardingMachineStateType.done,
       },
       onError: {
         target: OnboardingMachineStateType.handleError,
@@ -396,7 +405,7 @@ const states: OnboardingStatesConfig = {
   },
   completeOnboarding: {
     on: {
-      NEXT: OnboardingMachineStateType.done,
+      NEXT: OnboardingMachineStateType.setupWallet,
     },
   },
   handleError: {
@@ -447,6 +456,8 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
     name: '',
     emailAddress: '',
     countryCode: 'DE',
+    language: null,
+    languageManuallySelected: false,
     pinCode: '',
     biometricsEnabled: OnboardingBiometricsStatus.INDETERMINATE,
     verificationPinCode: '',

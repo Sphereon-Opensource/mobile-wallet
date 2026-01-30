@@ -35,8 +35,9 @@ import {OnboardingMachine} from '../../machines/onboardingMachine';
 import {getContacts} from './contact.actions';
 import {getVerifiableCredentials} from './credential.actions';
 import {getActivityLogging} from './logging.actions';
-import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {ConfigurableViewKey, IUserPreferences, ViewPreference} from '../../types/preferences';
 import {delay} from '../../utils';
+import Localization from '../../localization/Localization';
 import {OnboardingBiometricsStatus} from '../../types/machines/onboarding';
 
 export const createUser = (
@@ -77,8 +78,8 @@ export const addIdentifier = (args: IAddIdentifierArgs): ThunkAction<Promise<voi
     };
     // We are currently only supporting a single user right now
     const user: IUser = {
-      ...userSate.users.values().next().value,
-      identifiers: [...userSate.users.values().next().value.identifiers, userIdentifier],
+      ...userSate.users.values().next().value!,
+      identifiers: [...userSate.users.values().next().value!.identifiers, userIdentifier],
     };
 
     userServiceUpdateUser(user)
@@ -125,6 +126,8 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
 
         if (user) {
           dispatch({type: LOGIN_SET_ACTIVE_USER, payload: user});
+          // Apply user's language preference before fetching locale-dependent data
+          Localization.setI18nConfig(user.preferences?.language);
           //unlocking immediately to prevent re-locking after login
           lockingHandler.isLocked = false;
 
@@ -197,6 +200,26 @@ export const deleteUser = (userId: string): ThunkAction<Promise<void>, RootState
       .catch(() => {
         dispatch({type: DELETE_USER_FAILED});
       });
+  };
+};
+
+export const updatePreferences = (prefs: Partial<IUserPreferences>): ThunkAction<Promise<void>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
+    const userState: IUserState = getState().user;
+    if (!userState.activeUser) {
+      return;
+    }
+
+    dispatch({type: USERS_LOADING});
+
+    const user: IUser = {
+      ...userState.activeUser,
+      preferences: {...userState.activeUser.preferences, ...prefs},
+    };
+
+    userServiceUpdateUser(user)
+      .then((user: IUser) => dispatch({type: UPDATE_USER_SUCCESS, payload: user}))
+      .catch(() => dispatch({type: UPDATE_USER_FAILED}));
   };
 };
 

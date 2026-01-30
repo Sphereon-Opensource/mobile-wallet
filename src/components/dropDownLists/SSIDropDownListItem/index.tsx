@@ -26,13 +26,13 @@ export interface IProps {
 }
 
 const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
-  const {disabled, caption, icon, showBorder = false, fontColor = fontColors.dark} = props;
+  const {disabled, caption, icon, showBorder = false, fontColor = fontColors.light} = props;
   const onPress = async () => {
     await props.onPress();
   };
 
   const getIcon = (icon: HeaderMenuIconsEnum): JSX.Element => {
-    const {fontColor = fontColors.dark} = props;
+    const {fontColor = fontColors.light} = props;
 
     switch (icon) {
       case HeaderMenuIconsEnum.DELETE:
@@ -61,7 +61,7 @@ const SSIDropDownListItem: FC<IProps> = (props: IProps): JSX.Element => {
       style={{
         ...(disabled && {opacity: OpacityStyleEnum.DISABLED}),
       }}>
-      <Container style={{...(showBorder && {borderBottomWidth: 2, borderBottomColor: borderColors.light})}}>
+      <Container style={{...(showBorder && {borderBottomWidth: 1, borderBottomColor: '#404D7A'})}}>
         <ListItemCaption style={{color: fontColor}}>{caption}</ListItemCaption>
         {icon && <IconContainer>{getIcon(icon)}</IconContainer>}
       </Container>

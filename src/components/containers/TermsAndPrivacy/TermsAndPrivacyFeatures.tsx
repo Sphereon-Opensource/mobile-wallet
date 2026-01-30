@@ -1,6 +1,9 @@
-import {LinearGradient} from 'expo-linear-gradient';
+import {LinearGradient, LinearGradientProps} from 'expo-linear-gradient';
+import React from 'react';
 import {View, ViewProps} from 'react-native';
 import styled from 'styled-components/native';
+
+const LinearGradientWithOptionalColors = LinearGradient as unknown as React.ComponentType<Omit<LinearGradientProps, 'colors'> & {colors?: string[]}>;
 import {SSITextH2SemiBoldLightStyled} from '../../../styles/components';
 import SSICheckmarkIcon from '../../assets/icons/SSICheckmarkIcon';
 
@@ -11,7 +14,7 @@ type Props = {
   style?: ViewProps['style'];
 };
 
-const FeatureDotContainer = styled(LinearGradient).attrs(_ => ({
+const FeatureDotContainer = styled(LinearGradientWithOptionalColors).attrs(_ => ({
   colors: ['#4347E1', '#4C16AE'],
   start: {x: 0, y: 1},
   end: {x: 1, y: 1},
