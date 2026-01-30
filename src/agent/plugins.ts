@@ -110,6 +110,10 @@ export const oid4vciHolder = new OID4VCIHolder({
     }
   },
   hasher: generateDigest,
+  defaultAuthorizationRequestOptions: {
+    clientId: 'https://sphereon.com/ssi-wallet',
+    redirectUri: 'https://sphereon.com/ssi-wallet/oid4vci-callback',
+  },
 });
 
 export const funkeC2Issuer = 'https://demo.pid-issuer.bundesdruckerei.de/c2';

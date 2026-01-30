@@ -17,6 +17,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../types';
 import {com} from '@sphereon/kmp-mdoc-core';
 import {DcqlQuery} from 'dcql';
+import {RequestedClaimPath} from '../../../screens/CredentialOverviewShareScreen';
 
 type CredentialSelectViewProps = {
   onSelect: (credential: UniqueDigitalCredential) => void;
@@ -25,10 +26,52 @@ type CredentialSelectViewProps = {
   purpose?: string;
   verifier?: Party;
   style?: StyleProp<ViewStyle>;
+  requestedClaims?: Array<RequestedClaimPath>;
 };
 
+/**
+ * Filters a credential subject object to only include claims at the given paths.
+ * Each path is an array of string segments (numbers/nulls ignored for SD-JWT).
+ */
+function filterClaimsByRequestedPaths(
+  subject: Record<string, unknown>,
+  requestedClaims: Array<RequestedClaimPath>,
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+
+  for (const claim of requestedClaims) {
+    const segments = claim.path.filter((seg): seg is string => typeof seg === 'string')
+    if (segments.length === 0) continue
+
+    // Walk into the source to get the value
+    let source: unknown = subject
+    for (const seg of segments) {
+      if (source == null || typeof source !== 'object') {
+        source = undefined
+        break
+      }
+      source = (source as Record<string, unknown>)[seg]
+    }
+
+    if (source === undefined) continue
+
+    // Set the value in the result, creating intermediate objects as needed
+    let target: Record<string, unknown> = result
+    for (let i = 0; i < segments.length - 1; i++) {
+      const seg = segments[i]
+      if (!target[seg] || typeof target[seg] !== 'object') {
+        target[seg] = {}
+      }
+      target = target[seg] as Record<string, unknown>
+    }
+    target[segments[segments.length - 1]] = source
+  }
+
+  return result
+}
+
 const CredentialSelectView = (props: CredentialSelectViewProps) => {
-  const {purpose, verifier, credentials, onSelect, style, dcqlQuery} = props;
+  const {purpose, verifier, credentials, onSelect, style, dcqlQuery, requestedClaims} = props;
   const accordionExpanded = useSharedValue(true);
   const chevronRotation = useSharedValue(0);
   const [accordion, setAccordion] = useState(true);
@@ -81,32 +124,19 @@ const CredentialSelectView = (props: CredentialSelectViewProps) => {
 
   const loadCredentialContent = async (credential: UniqueDigitalCredential, dcqlQuery: DcqlQuery): Promise<void> => {
     const uniformCredential = CredentialMapper.toUniformCredential(credential.originalVerifiableCredential!, {hasher: generateDigest});
-    // FIXME disabled this as a PID is just another credential
-    //const isPIDCredential = uniformCredential.type.some(type => type.includes('/pid'));
 
-    // FIXME SSISDK-43 apply select disclosure
-    // if (isPIDCredential) {
-    //   setCredentialContent(convertFromPIDPayload(uniformCredential.credentialSubject, 'disclose'));
-    // } else {
+    let subjectToDisplay: Record<string, unknown> = {...uniformCredential.credentialSubject}
 
-    // FIXME SSISDK-43 apply select disclosure
-    // if (credential.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC) {
-    //   const decodedMdoc = decodeMdocIssuerSigned(credential.originalVerifiableCredential as MdocOid4vpIssuerSigned);
-    //   const limitDisclosedMdoc = decodedMdoc.limitDisclosureFromPresentationDefinition(pd as IOid4VPPresentationDefinition);
-    //   const payload = getMdocDecodedPayload(limitDisclosedMdoc);
-    //   setCredentialContent(
-    //     await toCredentialDetailsRow({
-    //       object: payload,
-    //     }),
-    //   );
-    // } else {
-      setCredentialContent(
-        await toCredentialDetailsRow({
-          object: {...uniformCredential.credentialSubject},
-        }),
-      );
-    // }
-    // }
+    // Apply selective disclosure filtering when DCQL claims are specified
+    if (requestedClaims && requestedClaims.length > 0) {
+      subjectToDisplay = filterClaimsByRequestedPaths(subjectToDisplay, requestedClaims)
+    }
+
+    setCredentialContent(
+      await toCredentialDetailsRow({
+        object: subjectToDisplay,
+      }),
+    );
   };
 
   useEffect((): void => {

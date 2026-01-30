@@ -21,7 +21,7 @@ const SSIImageField: FC<IProps> = (props: IProps): JSX.Element => {
   // TODO fix non-null assertion
   const aspectRatio: number = calculateAspectRatio(item.imageSize!.width, item.imageSize!.height);
   return (
-    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10}}>
+    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10, marginLeft: (item.depth ?? 0) * 16}}>
       <HeaderContainer style={{marginBottom: 4}}>
         <HeaderLabel>{item.label}</HeaderLabel>
       </HeaderContainer>

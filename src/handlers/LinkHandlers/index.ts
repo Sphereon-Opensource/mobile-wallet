@@ -40,7 +40,7 @@ export const addLinkListeners = async (linkHandlers: LinkHandlers, context: IAge
   await cleanupStaleOID4VCIMachines(context);
   linkHandlers.add([
     new OID4VCIHolderLinkHandler({
-      protocols: [`${QrTypesEnum.OPENID_CREDENTIAL_OFFER}:`, `${QrTypesEnum.OPENID_INITIATE_ISSUANCE}:`],
+      protocols: [`${QrTypesEnum.OPENID_CREDENTIAL_OFFER}:`, `${QrTypesEnum.OPENID_INITIATE_ISSUANCE}:`, /^https:\/\/sphereon\.com\/ssi-wallet\//i],
       // FIXME partialIssuanceOpt param does not exist
       // partialIssuanceOpt: {
       //   kms: KeyManagementSystemEnum.MUSAP,

@@ -9,7 +9,7 @@ import {PidIssuerService, PidResponse} from '../../PidIssuerService';
 
 class VciServiceFunkeCProvider {
   private readonly onStateChange?: Dispatch<SetStateAction<EIDFlowState>> | ((status: EIDFlowState) => void);
-  private static readonly _funke_clientId = 'bc11dd24-cbe9-4f13-890b-967e5f900222';
+  private static readonly _funke_clientId = 'https://sphereon.com/ssi-wallet';
   private readonly pidService: PidIssuerService;
   private retryCounter?: number;
   private authFlow: AusweisAuthFlow;
@@ -64,7 +64,7 @@ class VciServiceFunkeCProvider {
   public async start(): Promise<AusweisAuthFlow> {
     await this.pidService.init();
     const tcTokenUrl = await this.pidService.createAuthorizationRequestUrl({
-      redirectUri: 'https://sphereon.com/wallet',
+      redirectUri: 'https://sphereon.com/ssi-wallet/oid4vci-callback',
       scope: 'pid',
       parMode: PARMode.REQUIRE,
     });

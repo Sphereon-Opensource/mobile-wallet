@@ -1,5 +1,6 @@
 import React, {FC, ReactElement, ReactNode} from 'react';
 import {Linking, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Markdown, {ASTNode} from 'react-native-markdown-display';
 import {backgroundColors, fontColors} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow} from '@sphereon/ui-components.credential-branding';
@@ -8,6 +9,8 @@ import SSIEditIcon from '../../../components/assets/icons/SSIEditIcon';
 import ClaimTrueIcon from '../../assets/icons/ClaimTrueIcon';
 import ClaimFalseIcon from '../../assets/icons/ClaimFalseIcon';
 import {checkAndAddHTTPPrefix, isValidURL} from '../../../utils';
+import {translate} from '../../../localization/Localization';
+import {MainRoutesEnum} from '../../../types';
 import {fontStyle} from '../../../styles/typography';
 import {
   SSITextFieldContainerStyled as Container,
@@ -26,6 +29,7 @@ export interface IProps {
 
 const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
   const {item, index} = props;
+  const navigation = useNavigation<any>();
   const valueIsArray = Array.isArray(item.value);
   const markDownRules = {
     link: (node: ASTNode, children: Array<ReactNode>, parent: Array<ASTNode>, styles: any) => {
@@ -51,7 +55,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
     },
   };
 
-  const onPressLink = async (url: string): Promise<void> => {
+  const openLink = async (url: string): Promise<void> => {
     const valueWithPrefix = checkAndAddHTTPPrefix(url);
     return Linking.canOpenURL(valueWithPrefix)
       .then((canOpen: boolean): void => {
@@ -60,6 +64,21 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
         }
       })
       .catch(() => console.log(`SSITextField: unable to open weblink ${url}`));
+  };
+
+  const onPressLink = async (url: string): Promise<void> => {
+    navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
+      title: translate('credential_details_open_link_warning_title'),
+      details: translate('credential_details_open_link_warning_description'),
+      primaryButton: {
+        caption: translate('credential_details_open_link_warning_proceed'),
+        onPress: async () => openLink(url),
+      },
+      secondaryButton: {
+        caption: translate('credential_details_open_link_warning_cancel'),
+        onPress: async () => undefined,
+      },
+    });
   };
 
   const getValueElements = (item: any): Array<ReactElement> => {
@@ -114,8 +133,10 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
     });
   };
 
+  const depthIndent = (item.depth ?? 0) * 16;
+
   return (
-    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10}}>
+    <Container key={item.id} style={{marginTop: index === 0 ? 16 : 10, marginLeft: depthIndent}}>
       <HeaderContainer>
         <HeaderLabel>{item.label}</HeaderLabel>
         {item.status && (
@@ -125,7 +146,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
         )}
       </HeaderContainer>
       {/* This forces every field to be a touchable, hence making accessibility misleading */}
-      <ContentContainer
+      {item.value !== undefined && item.value !== null && <ContentContainer
         disabled={!item.isEditable}
         style={{...(valueIsArray && {flexDirection: 'column', marginLeft: 25})}}
         {...(item.onPress && {onPress: item.onPress})}>
@@ -137,7 +158,7 @@ const SSITextField: FC<IProps> = (props: IProps): ReactElement => {
             </EditBadgeContainer>
           )}
         </ContentBadgeContainer>
-      </ContentContainer>
+      </ContentContainer>}
     </Container>
   );
 };

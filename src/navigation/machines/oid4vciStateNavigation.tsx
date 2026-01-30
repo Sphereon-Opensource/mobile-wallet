@@ -1,5 +1,5 @@
 import {getIssuerName} from '@sphereon/oid4vci-common';
-import React, {Context, createContext} from 'react';
+import React, {Context, createContext, JSX} from 'react';
 import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {SimpleEventsOf} from 'xstate';
@@ -110,11 +110,11 @@ const navigateAddContact = async (args: OID4VCIMachineNavigationArgs): Promise<v
         connection: {
           type: ConnectionType.OPENID_CONNECT,
           config: {
-            clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
-            clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+            clientId: 'https://sphereon.com/ssi-wallet',
+            clientSecret: '',
             scopes: ['auth'],
-            issuer: 'https://example.com/app-test',
-            redirectUrl: 'app:/callback',
+            issuer: correlationId,
+            redirectUrl: 'https://sphereon.com/ssi-wallet/oid4vci-callback',
             dangerouslyAllowInsecureHttpRequests: true,
             clientAuthMethod: 'post' as const,
           },

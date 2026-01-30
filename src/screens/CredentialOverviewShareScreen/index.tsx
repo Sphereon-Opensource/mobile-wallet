@@ -15,21 +15,34 @@ import {ScreenRoutesEnum, StackParamList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_SHARE_OVERVIEW>;
 
+export type RequestedClaimPath = {
+  path: Array<string | number | null>
+  id?: string
+}
+
 type GetCredentialSelectViewElement = {
   index: number
   itemId: string | number
   credentials?: Array<UniqueDigitalCredential>
   purpose?: string  // FIXME SSISDK-42, we need a map purpose function
+  requestedClaims?: Array<RequestedClaimPath>
 }
 
-const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], dcqlQuery: DcqlQuery) => {
+type MatchResult = {
+  selectableCredentialsMap: Map<string | number, Array<UniqueDigitalCredential>>
+  requestedClaimsMap: Map<string | number, Array<RequestedClaimPath>>
+}
+
+const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], dcqlQuery: DcqlQuery): MatchResult => {
   const dcqlCredentialsWithCredentials = new Map(
     credentials.map((vc) => [convertToDcqlCredentials(vc), vc])
   )
 
   const queryResult = DcqlQuery.query(dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()))
 
-  const selectableCredentialsMap = new Map()
+  const selectableCredentialsMap = new Map<string | number, Array<UniqueDigitalCredential>>()
+  const requestedClaimsMap = new Map<string | number, Array<RequestedClaimPath>>()
+
 /**
  * DCQL → UI mapping:
  * Populate `selectableCredentialsMap` from a DCQL `queryResult`.
@@ -45,8 +58,21 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
       const credentialSetMatches: Array<UniqueDigitalCredential> = [];
       credentialSet.matching_options.forEach(options => {
         options.flat().forEach(option => {
-          const matchedCredentials = queryResult.credential_matches[option]?.valid_credentials?.map(cred => credentials[cred.input_credential_index]) ?? []
+          const match = queryResult.credential_matches[option]
+          const matchedCredentials = match?.valid_credentials?.map(cred => credentials[cred.input_credential_index]) ?? []
           credentialSetMatches.push(...matchedCredentials);
+
+          // Extract requested claims for this credential query
+          if (!requestedClaimsMap.has(index)) {
+            const credentialQuery = dcqlQuery.credentials.find(c => c.id === option)
+            if (credentialQuery?.claims && match?.success) {
+              const validClaimIndexes = match.valid_credentials?.[0]?.claims?.valid_claim_sets?.[0]?.valid_claim_indexes
+              const allClaims = credentialQuery.claims as Array<RequestedClaimPath>
+              requestedClaimsMap.set(index, validClaimIndexes
+                ? validClaimIndexes.map(idx => allClaims[idx]).filter(Boolean)
+                : allClaims)
+            }
+          }
         })
       })
 
@@ -59,17 +85,26 @@ const matchCredentialsWithDcqlQuery = (credentials: UniqueDigitalCredential[], d
       }
       const matchedCredentials = value.valid_credentials.map(cred => credentials[cred.input_credential_index])
       selectableCredentialsMap.set(key, matchedCredentials)
+
+      // Extract requested claims for this credential query
+      const credentialQuery = dcqlQuery.credentials.find(c => c.id === key)
+      if (credentialQuery?.claims && value.success) {
+        const validClaimIndexes = value.valid_credentials[0]?.claims?.valid_claim_sets?.[0]?.valid_claim_indexes
+        const allClaims = credentialQuery.claims as Array<RequestedClaimPath>
+        requestedClaimsMap.set(key, validClaimIndexes
+          ? validClaimIndexes.map(idx => allClaims[idx]).filter(Boolean)
+          : allClaims)
+      }
     }
   }
 
-  return selectableCredentialsMap;
+  return { selectableCredentialsMap, requestedClaimsMap };
 };
 
 const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
   // memoize filtered and other values
   const {credentials, verifier, dcqlQuery, onSelectAndSend, onDecline} = props.route.params;
-  const credsPerRequestedCredential = useMemo(
-    //@ts-ignore
+  const { selectableCredentialsMap: credsPerRequestedCredential, requestedClaimsMap } = useMemo(
     () => matchCredentialsWithDcqlQuery(credentials, dcqlQuery),
     [credentials, dcqlQuery],
   );
@@ -148,7 +183,8 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
       credentials = [],
       index,
       itemId,
-      purpose
+      purpose,
+      requestedClaims,
     } = args
 
     return (
@@ -161,7 +197,8 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
           credentials={credentials}
           onSelect={(credential: UniqueDigitalCredential) => selectCredential(itemId, credential)}
           dcqlQuery={dcqlQuery}
-          {...(purpose&& { purpose })}
+          {...(purpose && { purpose })}
+          {...(requestedClaims && { requestedClaims })}
           verifier={verifier}
         />
       </View>
@@ -190,13 +227,15 @@ const SelectOverviewShareScreen: FC<Props> = (props: Props): ReactElement => {
             index,
             itemId: index,
             credentials: credsPerRequestedCredential.get(index),
-            purpose: credentialSet.purpose?.toString() // FIXME SSISDK-42, we need a map purpose function
+            purpose: credentialSet.purpose?.toString(), // FIXME SSISDK-42, we need a map purpose function
+            requestedClaims: requestedClaimsMap.get(index),
           })
         )
         : dcqlQuery.credentials.map((requestedCredential, index) => getCredentialSelectViewElement({
             index,
             itemId: requestedCredential.id,
             credentials: credsPerRequestedCredential.get(requestedCredential.id),
+            requestedClaims: requestedClaimsMap.get(requestedCredential.id),
           })
         )
       }

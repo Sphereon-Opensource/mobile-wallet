@@ -96,11 +96,11 @@ const navigateAddContact = async (args: SiopV2MachineNavigationArgs): Promise<vo
         connection: {
           type: ConnectionType.OPENID_CONNECT,
           config: {
-            clientId: '138d7bf8-c930-4c6e-b928-97d3a4928b01',
-            clientSecret: '03b3955f-d020-4f2a-8a27-4e452d4e27a0',
+            clientId: 'https://sphereon.com/ssi-wallet',
+            clientSecret: '',
             scopes: ['auth'],
-            issuer: 'https://example.com/app-test',
-            redirectUrl: 'app:/callback',
+            issuer: authorizationRequestData.correlationId,
+            redirectUrl: 'https://sphereon.com/ssi-wallet/oid4vci-callback',
             dangerouslyAllowInsecureHttpRequests: true,
             clientAuthMethod: 'post' as const,
           },

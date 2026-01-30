@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CredentialMapper, OriginalVerifiableCredential} from '@sphereon/ssi-types';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import JSONTree from 'react-native-json-tree';
@@ -13,10 +13,9 @@ import {
 } from '../../styles/components';
 import {ScreenRoutesEnum, StackParamList} from '../../types';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {generateDigest} from '../../utils';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_RAW_JSON>;
-
-// The screen is WIP and created for the plugfest demo
 
 const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
   const {route} = props;
@@ -44,10 +43,18 @@ const SSICredentialRawJsonScreen: FC<Props> = (props: Props): JSX.Element => {
 
   const rawCredential = route.params.rawCredential;
 
+  const decodedCredential = useMemo(() => {
+    try {
+      return CredentialMapper.toUniformCredential(rawCredential as OriginalVerifiableCredential, {hasher: generateDigest});
+    } catch (_e) {
+      return undefined;
+    }
+  }, [rawCredential]);
+
   return (
     <Container>
       <ScrollView>
-        <JSONTree theme={theme} data={rawCredential} invertTheme={false} />
+        <JSONTree theme={theme} data={decodedCredential ?? rawCredential} invertTheme={false} />
       </ScrollView>
       <View style={{backgroundColor: '#202537', height: 100, marginTop: 'auto', marginRight: 38, marginLeft: 38}}>
         <SSIBasicHorizontalCenterContainerStyled style={{justifyContent: 'center', flex: 1}}>
