@@ -205,7 +205,7 @@ export const createSelfIssuedCredential = async (
       id: identifier.did,
       iss: (cred?.issuer as string | undefined) ?? identifier.did,
       sub: (cred?.credentialSubject?.id as string | undefined) ?? identifier.did,
-      iat: new Date().getDate(),
+      iat: Math.floor(Date.now() / 1000),
       emailAddress,
       firstName: names.firstName,
       ...(names.lastName && {lastName: names.lastName}),
