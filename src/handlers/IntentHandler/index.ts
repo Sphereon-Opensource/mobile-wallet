@@ -152,6 +152,12 @@ class IntentHandler {
     return this._initialUrl;
   }
 
+  public consumeDeepLink(): string | undefined {
+    const url = this._initialUrl;
+    this._initialUrl = undefined;
+    return url;
+  }
+
   public openDeepLink = async (): Promise<void> => {
     console.log(`Open deeplink for ${this._initialUrl}`);
     const url: string | undefined = this._initialUrl;

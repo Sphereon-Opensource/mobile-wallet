@@ -7,6 +7,85 @@ import {p521} from '@noble/curves/p521';
 
 installCrypto();
 
+// Polyfill subtle.verify for ECDSA on Android
+// react-native-quick-crypto passes P1363 (raw r||s) signatures directly to OpenSSL,
+// but OpenSSL expects DER-encoded ASN.1 signatures, causing verification failures.
+// iOS uses CommonCrypto which handles P1363 natively, so this is Android-only.
+// See: HybridEcKeyPair.cpp verify() → EVP_DigestVerifyFinal expects DER
+if (global.crypto && global.crypto.subtle) {
+  const {Platform} = require('react-native');
+  if (Platform.OS === 'android') {
+    const originalVerify = global.crypto.subtle.verify.bind(global.crypto.subtle);
+
+    // Convert IEEE P1363 signature (r||s) to DER-encoded ASN.1 signature
+    function p1363ToDer(p1363Bytes, curveByteLength) {
+      const r = p1363Bytes.slice(0, curveByteLength);
+      const s = p1363Bytes.slice(curveByteLength, curveByteLength * 2);
+
+      function intToDer(intBytes) {
+        // Strip leading zeros but keep one if high bit is set
+        let start = 0;
+        while (start < intBytes.length - 1 && intBytes[start] === 0) {
+          start++;
+        }
+        const trimmed = intBytes.slice(start);
+        // Prepend 0x00 if high bit set (positive integer in ASN.1)
+        const needsPadding = trimmed[0] & 0x80;
+        const len = trimmed.length + (needsPadding ? 1 : 0);
+        const der = new Uint8Array(2 + len);
+        der[0] = 0x02; // INTEGER tag
+        der[1] = len;
+        if (needsPadding) {
+          der[2] = 0x00;
+          der.set(trimmed, 3);
+        } else {
+          der.set(trimmed, 2);
+        }
+        return der;
+      }
+
+      const rDer = intToDer(r);
+      const sDer = intToDer(s);
+
+      const seqLen = rDer.length + sDer.length;
+      let header;
+      if (seqLen < 128) {
+        header = new Uint8Array([0x30, seqLen]);
+      } else {
+        header = new Uint8Array([0x30, 0x81, seqLen]);
+      }
+
+      const result = new Uint8Array(header.length + seqLen);
+      result.set(header, 0);
+      result.set(rDer, header.length);
+      result.set(sDer, header.length + rDer.length);
+      return result;
+    }
+
+    const ecdsaCurveSizes = {
+      'P-256': 32,
+      'P-384': 48,
+      'P-521': 66,
+    };
+
+    global.crypto.subtle.verify = async function (algorithm, key, signature, data) {
+      const alg = typeof algorithm === 'string' ? {name: algorithm} : algorithm;
+      if (alg.name === 'ECDSA' && key.algorithm && key.algorithm.namedCurve) {
+        const curveByteLength = ecdsaCurveSizes[key.algorithm.namedCurve];
+        if (curveByteLength) {
+          const sigBytes = new Uint8Array(signature instanceof ArrayBuffer ? signature : signature.buffer.slice(signature.byteOffset, signature.byteOffset + signature.byteLength));
+          // Only convert if signature length matches P1363 format (2 * curveByteLength)
+          if (sigBytes.length === curveByteLength * 2) {
+            const derSig = p1363ToDer(sigBytes, curveByteLength);
+            return originalVerify(algorithm, key, derSig.buffer, data);
+          }
+        }
+      }
+      return originalVerify(algorithm, key, signature, data);
+    };
+  }
+}
+
 // Polyfill subtle.deriveBits for ECDH (P-256, P-384, P-521)
 // react-native-quick-crypto does not implement ECDH deriveBits yet
 // See: https://github.com/margelo/react-native-quick-crypto/issues/647

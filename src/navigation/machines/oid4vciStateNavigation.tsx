@@ -55,6 +55,7 @@ import {VerifiableCredential} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {authenticate} from '../../services/authenticationService';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
+import IntentHandler from '../../handlers/IntentHandler';
 
 const debug: Debugger = Debug(`${APP_ID}:oid4vciStateNavigation`);
 
@@ -278,6 +279,21 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
         type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
         data: result.url,
       })
+    } else if (result.type === 'dismiss') {
+      // On iOS, universal links cause the IntentHandler to receive the callback and dismiss the auth session.
+      // The deep link URL (with the authorization code) is stored in IntentHandler and won't reach us via
+      // openAuthSessionAsync. Retrieve it and forward to the machine.
+      const intentHandler = IntentHandler.getInstance();
+      const deepLinkUrl = intentHandler.consumeDeepLink();
+      if (deepLinkUrl && deepLinkUrl.includes('oid4vci-callback')) {
+        debug('Auth session dismissed but deep link contains authorization code, forwarding to machine')
+        oid4vciMachine.send({
+          type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
+          data: deepLinkUrl,
+        })
+      } else {
+        debug('Auth session dismissed without authorization code')
+      }
     } else if (result.type === 'cancel') {
       debug('User cancelled the authorization session')
     }
