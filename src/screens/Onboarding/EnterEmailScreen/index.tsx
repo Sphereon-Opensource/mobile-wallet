@@ -1,6 +1,7 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useCallback, useContext, useState} from 'react';
+import InfoBubble from '../../../components/containers/InfoBubble';
 import {EMAIL_ADDRESS_MAX_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
@@ -32,7 +33,6 @@ const EnterEmailScreen = () => {
   }, [onboardingInstance]);
   const footer = (
     <PrimaryButton
-      style={{height: 42, width: '100%'}}
       caption={translate('action_continue_label')}
       accessibilityState={{disabled: !isValid}}
       accessibilityLabel={!isValid ? 'Fill in a valid email address before continuing' : 'Continue with the creation of your wallet'}
@@ -45,6 +45,7 @@ const EnterEmailScreen = () => {
     <ScreenContainer footer={footer} importantForAccessibility="no">
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} accessibilityFocusOnTitle />
       <TextInputContainer style={{marginBottom: 'auto'}} importantForAccessibility="no">
+        <InfoBubble message={translate('onboarding_data_stored_locally_info')} />
         <SSITextInputControlledField
           autoComplete="email"
           textContentType="emailAddress"

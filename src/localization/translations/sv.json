@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobiloperatörens eSIM",
   "onboarding_pid_security_model_eid_presentation": "Använd eID-kort vid presentation",
   "onboarding_pid_security_model_select": "Välj",
+  "onboarding_data_stored_locally_info": "Dina uppgifter lagras endast lokalt på din telefon och delas aldrig utan ditt samtycke.",
   "authentication_pin_code_title": "Ange din PIN-kod",
   "authentication_pin_code_subtitle": "För att bekräfta, ange din PIN-kod",
   "qr_scanner_marker_title": "Skanna QR-kod",
@@ -323,6 +324,7 @@
     "create_wallet": {
       "title": "Skapa plånbok",
       "description": "Skapa ett konto med ditt namn, din e‑postadress och bosättningsland.",
+      "description_select_language": "Välj ditt föredragna språk, skapa ett konto med ditt namn och din e-postadress.",
       "accessibility": {
         "button_hint": "Börja skapa din plånbok"
       }
@@ -381,6 +383,9 @@
           "invalid": "Ange en giltig e‑postadress"
         }
       }
+    },
+    "select_language": {
+      "title": "Välj ditt språk"
     },
     "enter_country": {
       "title": "Ditt bosättningsland",

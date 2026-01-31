@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "eSIM de l’opérateur mobile",
   "onboarding_pid_security_model_eid_presentation": "Utiliser la carte eID lors de la présentation",
   "onboarding_pid_security_model_select": "Sélectionner",
+  "onboarding_data_stored_locally_info": "Vos données sont uniquement stockées localement sur votre téléphone et ne sont jamais partagées sans votre consentement.",
   "authentication_pin_code_title": "Saisissez votre code PIN",
   "authentication_pin_code_subtitle": "Pour confirmer, saisissez votre code PIN",
   "qr_scanner_marker_title": "Scanner le QR code",
@@ -321,6 +322,7 @@
     "create_wallet": {
       "title": "Créer le portefeuille",
       "description": "Créez un compte avec votre nom, votre adresse e-mail et votre pays de résidence.",
+      "description_select_language": "Sélectionnez votre langue préférée, créez un compte avec votre nom et votre adresse e-mail.",
       "accessibility": {
         "button_hint": "Commencer la création du portefeuille"
       }
@@ -379,6 +381,9 @@
           "invalid": "Veuillez saisir une adresse e-mail valide"
         }
       }
+    },
+    "select_language": {
+      "title": "Sélectionnez votre langue"
     },
     "enter_country": {
       "title": "Votre pays de résidence",

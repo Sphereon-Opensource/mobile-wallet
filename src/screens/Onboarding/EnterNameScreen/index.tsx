@@ -1,11 +1,12 @@
 import {fontColors} from '@sphereon/ui-components.core';
 import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {useCallback, useContext, useState} from 'react';
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
 import {NAME_MAX_LENGTH} from '../../../@config/constants';
 import ScreenContainer from '../../../components/containers/ScreenContainer';
 import ScreenTitleAndDescription from '../../../components/containers/ScreenTitleAndDescription';
 import SSITextInputControlledField from '../../../components/fields/SSITextInputControlledField';
+import InfoBubble from '../../../components/containers/InfoBubble';
 import {useAccessibility} from '../../../hooks/useAccessibility';
 import {translate} from '../../../localization/Localization';
 import {OnboardingContext} from '../../../navigation/machines/onboardingStateNavigation';
@@ -28,7 +29,6 @@ const EnterNameScreen = () => {
   const footer = (
     <PrimaryButton
       accessibilityRole="button"
-      style={{height: 42, width: '100%'}}
       caption={translate('action_continue_label')}
       accessibilityState={{disabled: !isValid}}
       accessibilityLabel={!isValid ? 'Fill in a name before continuing' : 'Continue with the creation of your wallet'}
@@ -41,6 +41,7 @@ const EnterNameScreen = () => {
     <ScreenContainer footer={footer} importantForAccessibility="no">
       <ScreenTitleAndDescription title={translate(`${translationsPath}.title`)} accessibilityFocusOnTitle />
       <View style={{marginBottom: 'auto'}} importantForAccessibility="no">
+        <InfoBubble message={translate('onboarding_data_stored_locally_info')} />
         <SSITextInputControlledField
           accessibilityLabel={translate(`${translationsPath}.text_field.accessibility.label`)}
           accessibilityValue={{text: name}}

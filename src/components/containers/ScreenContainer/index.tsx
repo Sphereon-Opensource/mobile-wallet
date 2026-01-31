@@ -2,7 +2,7 @@ import {useHeaderHeight} from '@react-navigation/elements';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {ReactNode, Ref} from 'react';
 import {Platform, ScrollView, StatusBar, View, ViewProps, ViewStyle} from 'react-native';
-import KeyboardAvoidingView from '../KeyboardAvoidingView';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 type Props = {
   children: ReactNode;
@@ -31,9 +31,8 @@ const ScreenContainer = ({
   importantForAccessibility = 'yes',
 }: Props) => {
   const isAndroid = Platform.OS === 'android';
-  const isIos = Platform.OS === 'ios';
   const headerHeight = useHeaderHeight();
-  const verticalOffset = isIos ? headerHeight + 32 : 0;
+  const bottomOffset = headerHeight + 32;
   return (
     <View
       importantForAccessibility={importantForAccessibility}
@@ -43,18 +42,16 @@ const ScreenContainer = ({
         paddingBottom: 32 + IOS_EXTRA_BOTTOM_PADDING,
       }}>
       {isAndroid && <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />}
-      <KeyboardAvoidingView enabled={!disableKeyboardAvoidingView} verticalOffset={verticalOffset} style={{flex: 1}} importantForAccessibility="no">
-        <ScrollView
-          importantForAccessibility="no"
-          ref={scrollViewRef}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={[contentContainerStyle, style]}
-          accessible={false}>
-          {children}
-        </ScrollView>
-        {footer && <View style={[{paddingHorizontal: 24, paddingTop: 24}, footerStyle]}>{footer}</View>}
-      </KeyboardAvoidingView>
+      <KeyboardAwareScrollView
+        enabled={!disableKeyboardAvoidingView}
+        bottomOffset={bottomOffset}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={[contentContainerStyle, {flexGrow: 1}, style]}
+        accessible={false}>
+        {children}
+        {footer && <View style={[{paddingTop: 24, marginTop: 'auto'}, footerStyle]}>{footer}</View>}
+      </KeyboardAwareScrollView>
     </View>
   );
 };

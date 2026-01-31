@@ -164,6 +164,8 @@ export enum OnboardingMachineGuards {
   isSecureElement = 'isSecureElement',
   isImportData = 'isImportData',
   hasFunkeRefreshUrl = 'hasFunkeRefreshUrl',
+  isStepCreateWalletAndLanguageSelected = 'isStepCreateWalletAndLanguageSelected',
+  languageManuallySelected = 'languageManuallySelected',
 }
 
 export enum OnboardingMachineServices {

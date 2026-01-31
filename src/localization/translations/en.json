@@ -141,6 +141,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobile operator eSIM",
   "onboarding_pid_security_model_eid_presentation": "Use eID card during presentation",
   "onboarding_pid_security_model_select": "Select",
+  "onboarding_data_stored_locally_info": "Your data is only stored locally on your phone and is never shared without your consent.",
 
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
@@ -340,6 +341,7 @@
     "create_wallet": {
       "title": "Create wallet",
       "description": "Set up an account with your name, email address and country of residence.",
+      "description_select_language": "Select your preferred language, set up an account with your name and email address.",
       "accessibility": {
         "button_hint": "Start creating your wallet"
       }
@@ -398,6 +400,9 @@
           "invalid": "Please fill in a valid email address"
         }
       }
+    },
+    "select_language": {
+      "title": "Select your language"
     },
     "enter_country": {
       "title": "Your country of residence",

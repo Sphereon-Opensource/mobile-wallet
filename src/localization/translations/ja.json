@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "モバイル事業者のeSIM",
   "onboarding_pid_security_model_eid_presentation": "提示中にeIDカードを使用",
   "onboarding_pid_security_model_select": "選択",
+  "onboarding_data_stored_locally_info": "あなたのデータはお使いの端末にのみ保存され、同意なしに共有されることはありません。",
   "authentication_pin_code_title": "PINコードを入力",
   "authentication_pin_code_subtitle": "確認のため、PINコードを入力してください",
   "qr_scanner_marker_title": "QRコードをスキャン",
@@ -321,6 +322,7 @@
     "create_wallet": {
       "title": "ウォレットを作成",
       "description": "氏名、メールアドレス、居住国でアカウントを作成します。",
+      "description_select_language": "ご希望の言語を選択し、名前とメールアドレスでアカウントを作成してください。",
       "accessibility": {
         "button_hint": "ウォレットの作成を開始"
       }
@@ -379,6 +381,9 @@
           "invalid": "有効なメールアドレスを入力してください"
         }
       }
+    },
+    "select_language": {
+      "title": "言語を選択"
     },
     "enter_country": {
       "title": "居住国",

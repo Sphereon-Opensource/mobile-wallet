@@ -1,0 +1,619 @@
+{
+  "accessibility": {
+    "tabBar": {
+      "qr": "二维码扫描器",
+      "activities": "活动动态",
+      "home": "凭证列表",
+      "credential_catalog": "凭证目录",
+      "contacts": "联系人列表"
+    }
+  },
+  "activity": {
+    "unknown": {
+      "contact": "未知联系人",
+      "credential": "未知凭证",
+      "credential_type": "未知凭证类型",
+      "purpose": "未知用途",
+      "issuer": "未知签发者",
+      "type": "未知活动类型",
+      "date": "未知日期",
+      "activity": "未知活动"
+    },
+    "feed": {
+      "title": "活动动态",
+      "list": {
+        "title": "所有活动",
+        "loading": "正在加载活动",
+        "search_placeholder": "搜索联系人、卡片或状态",
+        "empty_state": {
+          "title": "暂无活动",
+          "subtitle": "目前您没有任何活动。\n活动将自动显示在此处。"
+        }
+      }
+    },
+    "contact": {
+      "list": {
+        "title": "所有相关活动",
+        "loading": "正在加载活动",
+        "search_placeholder": "搜索卡片或状态"
+      }
+    },
+    "credential": {
+      "list": {
+        "title": "所有相关活动",
+        "loading": "正在加载活动",
+        "search_placeholder": "搜索联系人或状态"
+      }
+    },
+    "VC share": {
+      "revealed_info_title": "共享的信息",
+      "info_header": {
+        "description": "项已共享"
+      },
+      "row_description": "已共享数据",
+      "detail_title": "已共享数据"
+    },
+    "VC share decline": {
+      "revealed_info_title": "已拒绝的信息",
+      "info_header": {
+        "description": "项已拒绝"
+      },
+      "row_description": "已拒绝共享数据",
+      "detail_title": "已拒绝共享数据"
+    },
+    "VC issue": {
+      "info_list_title": "已签发的信息",
+      "revealed_info_title": "已签发的信息",
+      "info_header": {
+        "description": "项已签发"
+      },
+      "row_description": "已接收凭证",
+      "detail_title": "新凭证已添加到您的钱包",
+      "description": ["您现在可以使用您的", "卡进行官方共享了。"]
+    },
+    "VC issue decline": {
+      "info_list_title": "已拒绝的信息",
+      "revealed_info_title": "已拒绝的信息",
+      "info_header": {
+        "description": "项未签发"
+      },
+      "row_description": "已拒绝接收凭证",
+      "detail_title": "凭证未添加到您的钱包",
+      "description": ["您已拒绝使用", "卡进行官方共享。"]
+    },
+    "section_titles": {
+      "status": "状态",
+      "purpose": "用途",
+      "credential_type": "凭证类型",
+      "issued_information": "已签发的信息"
+    },
+    "contact_link": "关于",
+    "credential_activities_link": "卡片活动",
+    "credential_claims_link": "我的声明",
+    "support_link": "有问题？"
+  },
+  "credential_details_title": "凭证详情",
+  "credentials_overview_title": "凭证",
+  "credential_details_view_issued_by": "签发者",
+  "credential_details_open_link_warning_title": "打开外部链接？",
+  "credential_details_open_link_warning_description": "如果此URL对该凭证是唯一的，打开此链接可能会带来隐私风险。外部方可能会识别您的身份。",
+  "credential_details_open_link_warning_proceed": "打开链接",
+  "credential_details_open_link_warning_cancel": "取消",
+  "credential_details_show_values": "显示值",
+  "credential_details_hide_values": "隐藏值",
+  "credential_details_values_redacted": "值已隐去",
+  "credentials_view_item_expires_on": "到期日",
+  "swipe_delete_button_caption": "删除",
+  "credential_offer_accepted_toast": "凭证已成功存储",
+
+  "settings_dropdown_item_text": "设置",
+  "settings_dropdown_item_accessibility_hint": "导航到设置页面",
+  "settings_title": "设置",
+  "account_title": "账户",
+
+  "settings_general_section_label": "通用",
+  "settings_privacy_controls_section_label": "隐私控制",
+  "settings_feedback_controls_section_label": "隐私控制",
+  "settings_logout_label": "退出登录",
+
+  "account_personal_section_label": "个人",
+  "account_general_section_label": "通用",
+  "account_personal_information_label": "个人信息",
+  "account_login_and_security_label": "登录与安全",
+  "account_biometric_login_label": "生物识别认证",
+  "account_pid_section_label": "PID",
+  "account_delete_wallet_label": "删除钱包",
+
+  "age_derived_claims_title": "年龄衍生声明",
+  "age_derived_claims_screen_title": "年龄衍生声明",
+  "age_dervived_claims_screen_description": "年龄衍生声明用于在不透露您确切年龄的情况下向其他方证明您的年龄。",
+
+  "biometrics_title": "是否启用生物识别认证？",
+  "biometrics_subtitle": "使用面部或指纹进行生物识别登录和认证，更快捷地访问您的账户。",
+  "biometrics_description": "Sphereon不会收集您的生物识别信息，仅在本地用于验证目的",
+  "biometrics_enable_text": "立即启用",
+  "biometrics_disallow": "稍后再说",
+
+  "onboarding_pid_security_model_title": "您想使用哪种PID安全模型？",
+  "onboarding_pid_security_model_subtitle": "请注意，这是一个测试/开发选项。设置后无法更改，除非重新初始化钱包。",
+  "onboarding_pid_security_model_secure_element": "手机安全元件",
+  "onboarding_pid_security_model_remote_hardware": "远程硬件安全模块",
+  "onboarding_pid_security_model_mobile_operator": "移动运营商eSIM",
+  "onboarding_pid_security_model_eid_presentation": "出示时使用eID卡",
+  "onboarding_pid_security_model_select": "选择",
+  "onboarding_data_stored_locally_info": "您的数据仅存储在您的手机本地，未经您的同意绝不会被共享。",
+
+  "authentication_pin_code_title": "输入您的PIN码",
+  "authentication_pin_code_subtitle": "请输入您的PIN码以确认",
+  "qr_scanner_marker_title": "扫描二维码",
+  "qr_scanner_marker_subtitle": "将二维码放置在相机视野内",
+  "qr_scanner_qr_not_supported_message": "不支持此二维码。请尝试扫描其他二维码以继续。",
+  "qr_scanner_qr_no_longer_valid_message": "二维码已失效。请尝试扫描新的二维码。",
+  "connection_details_view_details": "详情",
+  "action_confirm_label": "确认",
+  "action_continue_label": "继续",
+  "action_cancel_label": "取消",
+  "action_decline_label": "拒绝",
+  "action_abort_label": "中止",
+  "action_accept_label": "接受",
+  "action_sign_label": "签名",
+  "verification_code_title": "输入您的\n验证码",
+  "verification_code_subtitle": "您需要一个验证码来领取 {{credentialName}} 凭证。",
+  "verification_code_accessibility_label": "验证码",
+  "verification_code_accessibility_hint": "输入您的验证码",
+  "verification_code_invalid_code_title": "验证码错误",
+  "verification_code_invalid_code_details": "验证码不正确。请重新请求链接或再次扫描二维码。",
+  "verification_code_invalid_code_details_title": "更多详情",
+  "verification_code_invalid_code_message": "验证码错误，请重试。",
+  "credential_details_info_tab_header_label": "已验证信息",
+  "credential_details_activity_tab_header_label": "活动",
+  "action_view_extra_details": "查看更多详情",
+  "action_ok_label": "好的，我明白了",
+  "error_generic_title": "哎呀！出了点问题。",
+  "error_generic_message": "请联系此应用的作者。",
+  "error_details_generic_title": "应用遇到了意外错误",
+  "error_details_generic_message": "错误详情：",
+  "oidc4vci_error_invalid_request": "无效请求",
+  "oidc4vci_error_invalid_client": "指定的客户端无效",
+  "oidc4vci_error_invalid_grant": "指定的授权无效",
+  "oidc4vci_error_unauthorized_client": "应用未获授权",
+  "oidc4vci_error_unsupported_grant_type": "指定了不支持的授权类型",
+  "oidc4vci_error_unsupported_invalid_scope": "指定了不支持的范围类型",
+  "oidc4vci_error_invalid_or_missing_proof": "凭证的证明无效或缺失",
+  "credential_select_type_title": "选择凭证",
+  "credential_select_type_subtitle": "签发者 {{issuerName}} 支持签发以下凭证。请选择您想添加到钱包中的凭证。",
+  "raw_credential_title": "原始凭证",
+  "credential_details_subtitle": "您计划添加的凭证信息如下所示。",
+  "contacts_overview_title": "联系人",
+  "contact_details_title": "联系人",
+  "contact_identities_title": "身份",
+  "contact_activities_title": "联系人活动",
+  "contact_details_info_tab_header_label": "详情",
+  "contact_details_activity_tab_header_label": "活动",
+  "contact_details_identities_tab_header_label": "身份",
+  "intent_share_file_unable_to_receive_message": "无法接收凭证",
+  "credential_activities_title": "卡片活动",
+  "credential_delete_title": "删除凭证",
+  "credential_delete_message": "您确定要删除凭证：{{credentialName}}？",
+  "credential_deleted_success_toast": "凭证已成功删除",
+  "credential_deleted_failed_toast": "无法删除凭证",
+  "contact_add_new_contact_detected_title": "检测到新联系人",
+  "contact_add_new_contact_detected_subtitle": "我们注意到此次凭证交换过程中的对方尚不在您的联系人中。您需要为此新联系人提供一个名称以完成交换。",
+  "contact_name_label": "联系人姓名",
+  "contact_name_placeholder": "联系人名称",
+  "contact_name_invalid_message": "请填写有效的联系人姓名",
+  "contact_add_disclaimer": "我确认此联系人将作为由我发起的凭证交换的结果而创建。",
+  "contact_delete_title": "删除联系人",
+  "contact_delete_message": "您确定要删除联系人：{{contactName}}？",
+  "contact_deleted_success_toast": "联系人已成功删除",
+  "contact_deleted_failed_toast": "无法删除联系人",
+  "contact_add_success_toast": "联系人已成功创建",
+  "contact_update_success_toast": "联系人已成功更新",
+  "contact_add_no_consent_toast": "若不同意，您将无法继续凭证交换流程，需使用\u201c拒绝\u201d按钮。",
+  "contact_add_cancel_title": "您确定要拒绝吗？",
+  "contact_add_cancel_message": "在凭证交换过程中遇到新方时，添加联系人是必须的。请注意，如果您确认，整个凭证交换过程将被中止。",
+  "onboarding_welcome_header": "欢迎",
+  "onboarding_welcome_title": "Sphereon 钱包",
+  "onboarding_welcome_intro_body": "允许您接收和共享认证、凭证、徽章和身份属性。\n\n这些由第三方签发机构进行数字签名和认证。",
+  "browser_open_title": "正在打开浏览器",
+  "browser_open_header": "正在打开浏览器",
+  "browser_open_auth_title": "需要认证",
+  "browser_open_auth_body": "依赖方要求您进行认证。将使用您的默认浏览器执行此操作",
+  "browser_open_action_next_label": "打开浏览器",
+  "action_next_label": "下一步",
+  "action_back_label": "返回",
+  "action_go_label": "开始！",
+  "onboarding_welcome_store_body": "以加密形式将第三方签发的凭证直接存储在您的设备上。只有您才能访问您的数据。\n\n除非您选择启用备份或企业功能，否则不会与任何Sphereon服务器交互。",
+  "onboarding_welcome_share_body": "允许您向第三方验证者出示凭证。\n\n只有您同意的信息才会被共享。不会发生自动披露。您将始终拥有控制权。",
+  "terms_and_conditions_agreement_message": "These terms and conditions (\"Agreement\") set forth the general terms and conditions of your use of the \"Sphereon Wallet\" mobile application (\"Mobile Application\" or \"Service\") and any of its related products and services (collectively, \"Services\").\n\nThis Agreement is legally binding between you (\"User\", \"you\" or \"your\") and Sphereon B.V., incorporated in The Netherlands, as the Mobile Application developer (\"Operator\", \"we\", \"us\" or \"our\").\n\nIf you are entering into this agreement on behalf of a business or other legal entity, you represent that you have the authority to bind such entity to this agreement, in which case the terms \"User\", \"you\" or \"your\" shall refer to such entity. If you do not have such authority, or if you do not agree with the terms of this agreement, you must not accept this agreement and may not access and use the Mobile Application and Services. By accessing and using the Mobile Application and Services, you acknowledge that you have read, understood, and agree to be bound by the terms of this Agreement. You acknowledge that this Agreement is a contract between you and the Operator, even though it is electronic and is not physically signed by you, and it governs your use of the Mobile Application and Services.",
+  "privacy_policy_agreement_message": "Sphereon provides you with the Sphereon Wallet mobile App (\"App\"), which you can download and install onto your mobile device.\n\nThe protection of personal data is very important to Sphereon. Whether personal data is collected when using the App and for what purpose it is processed, is explained in the following data protection declaration.",
+  "terms_of_service_terms_tab_header_label": "条款和条件",
+  "terms_of_service_privacy_tab_header_label": "隐私政策",
+  "terms_of_service_consent_terms_message": "我已阅读并接受条款和条件。",
+  "terms_of_service_consent_privacy_message": "我已阅读并接受隐私政策。",
+  "terms_of_service_decline_title": "您已拒绝服务条款",
+  "terms_of_service_decline_message": "您已拒绝，这意味着钱包的初始化尚未完成。请从设备中移除Sphereon钱包，或在打开钱包时重新开始。",
+  "terms_of_service_decline_action_caption": "退出应用",
+  "terms_of_service_title": "服务条款",
+  "terms_of_service_subtitle": "本文件最后更新于2023年1月5日。",
+
+  "pid_security_model_warning": "EID卡仅在出示时加载",
+
+  "import_data_auth_title": "输入您的Sphereon PIN",
+  "import_data_auth_next": "继续",
+
+  "import_data_auth_biometrics_title": "使用生物识别进行认证",
+  "import_data_auth_failure_title": "生物识别认证失败，我们无法识别您",
+  "import_data_auth_failure_description": "您目前无法继续。完成此任务的唯一方法是从头开始。关闭应用并重新打开以重新开始初始化。",
+
+  "import_data_auth_step_title": "输入您的Sphereon PIN",
+  "import_data_consent_button_accept": "是的，这是我",
+  "import_data_consent_button_decline": "不是所有信息都正确",
+  "import_data_loader_step_title": "请稍候",
+  "import_data_loader_step_subtitle": "正在获取您的个人信息。",
+
+  "import_data_final_step_title": "您的信息已导入。全部正确吗？",
+
+  "import_data_setup_complete_title": "设置完成",
+
+  "incorrect_data_title": "您的某些信息不正确？",
+  "incorrect_data_description": "如果您的个人信息不正确，可能会导致问题。因此请不要添加此数据。",
+  "incorrect_data_bullet_content_heading": "您可以做什么",
+  "incorrect_data_bullet_content": "联系您所在的市政府更改您的信息。\n等待市政府确认更新的消息。\n再次尝试添加个人信息。您可以在目录中找到它。",
+  "incorrect_data_back": "返回",
+  "incorrect_data_dont_add_info": "不要添加此信息",
+  "incorrect_data_after_bullet_heading": "如果不是您的信息",
+  "incorrect_data_after_bullet_content": "如果该信息不是您的，请不要将其添加到您的钱包中。",
+
+  "onboarding_esim_enter_details_title": "输入eSim信息",
+  "onboarding_esim_enter_details_description": "请提供您的电话号码和配对码",
+  "onboarding_esim_enter_details_msisdn_label": "电话号码（MSISDN）",
+  "onboarding_esim_enter_details_msisdn_placeholder": "输入电话号码",
+  "onboarding_esim_enter_details_coupling_code_label": "配对码",
+  "onboarding_esim_enter_details_coupling_code_placeholder": "输入配对码",
+  "onboarding_esim_enter_details_continue": "继续",
+  "onboarding_esim_enter_details_back": "返回",
+
+  "onboarding_machine_activate_esim_error_title": "eSim激活失败",
+  "onboarding_esim_error_couple_rp_failed": "eSim激活的RP配对步骤失败",
+  "onboarding_esim_error_bindkey_failed": "eSim激活的密钥绑定步骤失败",
+  "onboarding_esim_error_create_link_failed": "eSim激活的创建链接步骤失败",
+  "onboarding_esim_error_check_sscd_failed": "eSim激活的SSCD检查步骤失败",
+  "onboarding_esim_error_enable_sscd_failed": "eSim激活的启用SSCD步骤失败",
+  "onboarding_esim_error_cleanup_keys_failed": "eSim激活的清理密钥步骤失败",
+
+  "import_data_title": "导入个人数据",
+
+  "onboarding_complete_title": "全部完成！",
+  "onboarding_complete_description": "您已准备好接收和共享身份详情、凭证等。",
+  "onboarding_complete_next": "开始探索我的钱包",
+
+  "scan_card_step_subtitle": "将卡片贴在手机背面并按开始读取。",
+  "scan_card_step_title": "扫描以导入您的数据",
+  "personal_data_title": "输入个人数据",
+  "personal_data_subtitle": "通过提供您的姓名和电子邮件地址来个性化您的钱包。我们将为您创建一个自签发凭证。您提供的信息不会离开您的设备！",
+  "first_name_label": "名字",
+  "first_name_placeholder": "名字",
+  "first_name_invalid_message": "请填写有效的名字",
+  "last_name_label": "姓氏",
+  "last_name_placeholder": "姓氏",
+  "last_name_invalid_message": "请填写有效的姓氏",
+  "email_address_label": "电子邮件地址",
+  "email_address_placeholder": "电子邮件地址",
+  "email_address_invalid_message": "请填写有效的电子邮件地址",
+  "pin_code_choose_pin_code_title": "选择您的PIN码",
+  "pin_code_choose_pin_code_subtitle": "选择一个PIN码来保护您的钱包安全。",
+  "pin_code_confirm_pin_code_title": "确认您的PIN码",
+  "pin_code_confirm_pin_code_subtitle": "再次输入您的PIN码以确认。",
+  "pin_code_accessibility_label": "PIN码",
+  "pin_code_accessibility_hint": "输入您的PIN码",
+  "pin_code_invalid_code_message": "PIN码不匹配。请重试。",
+  "pin_code_attempts_left_message": "剩余尝试次数：",
+  "lock_title": "登录\nSphereon钱包",
+  "lock_subtitle": "输入您的PIN码。",
+  "lock_emergency_button_caption": "紧急呼叫",
+  "show_raw_credential_button_caption": "原始凭证",
+  "onboard_create_wallet_step_title": "创建钱包",
+  "onboard_secure_wallet_step_title": "保护钱包",
+  "onboard_progress_pages": {
+    "create_wallet": {
+      "title": "开始",
+      "description": "每个部分只需几分钟即可完成。",
+      "accessibility_label": "开始。初始化进度当前在第"
+    },
+    "secure_wallet": {
+      "title": "您已完成一半",
+      "description": null,
+      "accessibility_label": "您已完成一半。初始化进度当前在第"
+    },
+    "import_personal_data": {
+      "title": "最后一个部分，即将完成",
+      "description": null,
+      "accessibility_label": "最后一个部分，即将完成。初始化进度当前在第"
+    }
+  },
+  "onboard_steps": {
+    "accessibility_tokens": {
+      "step": "步骤",
+      "of": "共",
+      "and_final": "最后一步"
+    },
+    "create_wallet": {
+      "title": "创建钱包",
+      "description": "使用您的姓名、电子邮件地址和居住国家设置账户。",
+      "description_select_language": "选择您的首选语言，使用您的姓名和电子邮件地址创建账户。",
+      "accessibility": {
+        "button_hint": "开始创建您的钱包"
+      }
+    },
+    "secure_wallet": {
+      "title": "保护钱包",
+      "description": "创建一个您需要妥善保管的唯一Sphereon PIN。可选择启用生物识别登录。",
+      "accessibility": {
+        "button_hint": "开始保护您的钱包"
+      }
+    },
+    "import_personal_data": {
+      "title": "导入个人信息",
+      "description": {
+        "default": "从您的国家eID提供商导入个人信息。",
+        "de": "扫描您的Ausweis eID卡。请准备好卡片和eID PIN。"
+      },
+      "accessibility": {
+        "button_hint": "开始导入您的个人数据"
+      }
+    }
+  },
+  "onboarding_pages": {
+    "welcome": {
+      "title": "欢迎使用您的Sphereon钱包",
+      "description": "接收和共享认证、凭证、徽章和身份详情。",
+      "button_caption": "开始使用",
+      "accessibility": {
+        "hint": "向左滑动以继续",
+        "label": "欢迎使用您的Sphereon钱包"
+      }
+    },
+    "enter_name": {
+      "title": "输入您的姓名",
+      "text_field": {
+        "label": "姓名",
+        "placeholder": "您的姓名",
+        "accessibility": {
+          "label": "输入您的姓名"
+        },
+        "errors": {
+          "missing": "请填写姓名"
+        }
+      }
+    },
+    "enter_email_address": {
+      "title": "输入您的电子邮件地址",
+      "text_field": {
+        "label": "电子邮件地址",
+        "placeholder": "您的电子邮件地址",
+        "accessibility": {
+          "label": "输入您的电子邮件地址"
+        },
+        "errors": {
+          "missing": "请填写电子邮件地址",
+          "invalid": "请填写有效的电子邮件地址"
+        }
+      }
+    },
+    "select_language": {
+      "title": "选择您的语言"
+    },
+    "enter_country": {
+      "title": "您的居住国家",
+      "select": {
+        "label": "国家",
+        "accessibility": {
+          "select": "已选择的国家"
+        },
+        "placeholder": "您的居住国家",
+        "errors": {
+          "missing": "请选择一个国家"
+        }
+      },
+      "modal": {
+        "title": "选择国家",
+        "search_placeholder": "搜索"
+      }
+    },
+    "enter_pin": {
+      "title": "设置6位Sphereon PIN",
+      "requirements": {
+        "title": "您的PIN不应包含：",
+        "not_same_digits": "相同的数字",
+        "not_sequential_digits": "连续的数字序列",
+        "invalid_example_prefix": "如：",
+        "invalid_example_delimiter": " 或 "
+      },
+      "success": "这是一个强PIN码，请将其记录在安全的地方",
+      "button_caption": "设置您的PIN"
+    },
+    "verify_pin": {
+      "title": "重复您的Sphereon PIN",
+      "match": "您的PIN码匹配。可以继续了！",
+      "mismatch": "哎呀！您的PIN码不匹配。\n请重试。",
+      "button_caption": "重复您的PIN"
+    },
+    "terms_and_privacy": {
+      "title": "条款和隐私",
+      "description": "您的信任对我们很重要。因此我们以安全和保密的方式处理您的个人信息。",
+      "features": {
+        "secure_data_storage": "安全数据存储",
+        "strict_access_control": "严格的访问控制",
+        "selective_data_sharing": "选择性数据共享",
+        "strong_privacy_compliance": "强隐私保护",
+        "no_3rdparty_data_sharing": "不与第三方共享数据",
+        "no_tracking_profiling": "无跟踪或分析"
+      },
+      "footer": {
+        "prefix": "想了解所有详情？请查看我们的",
+        "links": {
+          "terms": "使用条款",
+          "privacy": "隐私政策",
+          "delimiter": "和"
+        }
+      },
+      "button_caption": "接受条款和隐私"
+    },
+    "read_terms_and_privacy": {
+      "title": "服务条款",
+      "description": "本文件最后更新于",
+      "terms": {
+        "tab_title": "条款和条件",
+        "text": "These terms and conditions (\"Agreement\") set forth the general terms and conditions of your use of the \"Sphereon Wallet\" mobile application (\"Mobile Application\" or \"Service\") and any of its related products and services (collectively, \"Services\").\n\nThis Agreement is legally binding between you (\"User\", \"you\" or \"your\") and Sphereon B.V., incorporated in The Netherlands, as the Mobile Application developer (\"Operator\", \"we\", \"us\" or \"our\")."
+      },
+      "privacy": {
+        "tab_title": "隐私政策",
+        "text": "Sphereon provides you with the Sphereon Wallet mobile App (\"App\"), which you can download and install onto your mobile device.\n\nThe protection of personal data is very important to Sphereon. Whether personal data is collected when using the App and for what purpose it is processed, is explained in the following data protection declaration."
+      }
+    },
+    "import_data_consent": {
+      "title": "您要添加此信息吗？",
+      "subtitle": "个人信息对您的钱包非常重要。您确定要添加此信息吗？",
+      "pid_provider_title": "PID提供商",
+      "pid_provider_subheading": "个人身份数据提供商",
+      "offered_data_title": "PID提供商",
+      "labels": {
+        "given_name": "名字",
+        "family_name": "姓氏",
+        "also_known_as": "别名",
+        "gender": "性别",
+        "birthdate": "出生日期",
+        "birthplace": "出生地",
+        "nationality": "国籍",
+        "address": "地址"
+      },
+      "button_accept": "是的，我要添加",
+      "button_decline": "拒绝"
+    },
+    "import_scan_card": {
+      "title": "准备好您的eID卡",
+      "description": "首先输入您eID卡的eID PIN。",
+      "nfc_step_title": "现在将卡片贴在手机背面",
+      "button_caption": "开始输入eID PIN",
+      "nfc_caption": "NFC扫描器即将激活...",
+      "card_locked_message": "您的卡已被锁定。",
+      "incorrect_pin_message": "PIN码错误。请重试。",
+      "unknown_scan_card_error_message": "发生了未知错误。"
+    }
+  },
+  "onboard_summary_title": "您输入的信息",
+  "onboard_summary_subtitle": "按下完成后，您将接受所输入的数据并进入登录页面。个人数据可在设置中更改。",
+  "onboard_summary_info_tab_header_label": "您的信息",
+  "onboard_summary_button_caption": "完成并进入我的钱包",
+  "credentials_required_title": "所需凭证",
+  "credentials_required_subtitle": "{{verifierName}} 希望从您那里获取以下信息进行验证。",
+  "credentials_required_selected_label": "已选择",
+  "credentials_required_available_label": "可用",
+  "credentials_required_credential_select_label": "选择凭证",
+  "credentials_select_title": "选择凭证",
+  "credentials_select_subtitle": "您有多个凭证可以满足此请求。请选择一个发送给验证者。",
+  "credentials_required_checking_label": "...正在检查",
+  "credentials_required_no_available_label": "没有合适的凭证",
+  "credentials_required_no_available_additional_label": "您没有可与验证者共享的凭证。请联系签发者签发新凭证。",
+  "action_share_label": "共享",
+  "credentials_share_success_toast_title": "共享成功",
+  "credentials_share_success_toast_message": "您已成功与 {{verifierName}} 共享了您选择的凭证。",
+  "action_select_label": "选择",
+  "action_onboarding_setup_message": "正在设置钱包...",
+  "action_getting_information_message": "正在获取信息...",
+  "action_sharing_credentials_message": "正在共享凭证...",
+  "profile_logout_action_caption": "退出登录",
+  "action_getting_credentials_message": "正在获取凭证...",
+  "credentials_share_failed_toast_message": "无法共享凭证。错误：{{errorMessage}}。",
+  "information_retrieve_failed_toast_message": "无法获取信息。错误：{{errorMessage}}。",
+  "credential_verification_failed_message": "凭证验证出现错误。",
+  "credential_offer_title": "凭证提供",
+  "credential_sign_title": "签名请求",
+  "profile_delete_wallet_action_caption": "删除钱包",
+  "profile_delete_wallet_action_title": "您确定要删除您的钱包吗？",
+  "profile_delete_wallet_action_subtitle": "您确定要删除钱包：{{userName}}？",
+  "credential_status_never_expires_date_label": "永不过期",
+  "oid4vci_machine_initiation_error_title": "初始化OID4VCI提供商",
+  "oid4vci_machine_credential_selection_error_title": "凭证选择",
+  "oid4vci_machine_retrieve_contact_error_title": "获取联系人",
+  "oid4vci_machine_retrieve_credentials_error_title": "获取凭证",
+  "oid4vci_machine_verify_credentials_error_title": "验证凭证",
+  "oid4vci_machine_add_contact_identity_error_title": "添加联系人身份",
+  "oid4vci_machine_store_credential_branding_error_title": "存储凭证品牌",
+  "oid4vci_machine_store_credential_error_title": "存储凭证",
+  "emergency_send_button_caption": "立即触发！",
+  "emergency_abort_button_caption": "取消警报",
+  "emergency_title": "发送紧急警报",
+  "emergency_subtitle": "您的求助信号将在 {{emergencyAlertDelay}} 秒后发送，或者您可以点击\u201c立即触发\u201d按钮立即发送。",
+  "siopV2_machine_identifier_error_title": "获取标识符",
+  "siopV2_machine_create_config_error_title": "创建siopV2配置",
+  "siopV2_machine_get_request_error_title": "获取siopV2请求",
+  "siopV2_machine_retrieve_contact_error_title": "获取联系人",
+  "siopV2_machine_add_contact_identity_error_title": "添加联系人身份",
+  "siopV2_machine_send_response_error_title": "发送siopV2响应",
+  "siopV2_machine_retrieve_federation_trust_error_title": "获取联邦信任",
+  "action_view_all_label": "查看全部",
+  "filter_all_label": "查看全部",
+  "filter_other_label": "其他",
+  "filter_new_label": "新",
+  "search_field_default_caption": "搜索",
+  "credential_catalog_most_relevant_header_label": "最相关的凭证",
+  "credential_catalog_discover_header_label": "发现更多凭证",
+  "ausweis_eid_preview_card_title": "Ausweis eID",
+  "ausweis_eid_preview_card_description": "来自国家eID提供商Ausweis的您的个人信息。",
+  "ausweis_eid_preview_card_issuer": "德国联邦印刷厂",
+  "ausweis_eid_modal_title": "获取Ausweis eID数据",
+  "ausweis_eid_modal_description": "个人身份数据是您钱包的基础，因此能够获取其他凭证非常重要。\n\n您确定要将此信息添加到钱包中吗？",
+  "ausweis_eid_modal_accept_label": "导入个人信息",
+  "action_maybe_later_label": "稍后再说",
+  "item_not_yet_available_message": "此项目目前尚不可用。",
+  "onboarding_machine_store_credential_error_title": "存储凭证",
+  "onboarding_machine_retrieve_credentials_error_title": "获取凭证",
+  "onboarding_skip_credential_import_step3_caption": "我稍后再完成此部分",
+  "onboarding_store_credential_branding_error_title": "存储凭证品牌",
+  "share_credential_c2_flow_title": "以下信息将被共享",
+  "new_contact_add_new_contact_detected_title": "您认识 {{partyName}} 吗",
+  "new_contact_add_new_contact_detected_subtitle": "这是与此方的首次互动。您要继续吗？",
+  "federation_view_untrusted_title": "{{partyName}} 的信任级别较低",
+  "federation_view_trusted_title": "{{partyName}} 的信任级别较高",
+  "federation_view_untrusted_description": "该方不属于钱包信任的联邦",
+  "federation_view_trusted_description": "该方属于钱包信任的联邦",
+  "new_contact_add_new_contact_continue_caption": "是的，继续",
+  "new_contact_add_new_contact_abort_caption": "不，中止",
+  "new_contact_add_new_contact_abort_cancel_caption": "不，取消",
+  "new_contact_add_new_contact_abort_continue_caption": "是的，我要中止",
+  "new_contact_add_new_contact_create_title": "联系人别名",
+  "new_contact_add_new_contact_create_description": "您可以在下方文本框中输入新名称来创建联系人别名。",
+  "new_contact_add_new_contact_abort_title": "您确定要中止吗？",
+  "new_contact_add_new_contact_abort_description": "如果您中止，将停止与 {{partyName}} 的互动过程。",
+  "new_contact_add_new_contact_contact_details_description_label": "描述",
+  "new_contact_add_new_contact_contact_details_name_label": "名称",
+  "new_contact_add_new_contact_contact_details_website_label": "网站",
+  "new_contact_add_new_contact_contact_details_tos_label": "服务条款",
+  "new_contact_add_new_contact_contact_details_policy_label": "隐私政策",
+  "new_contact_add_new_contact_contact_details_contacts_label": "联系方式",
+  "new_contact_add_new_contact_low_level_trust_title": "您确定要继续吗？",
+  "new_contact_add_new_contact_low_level_trust_description": "您将与一个信任级别较低的方进行互动。",
+
+  "present_qr_code_screen_header_title": "出示二维码",
+  "present_qr_code_screen_subtitle": "向相关方展示二维码，以便他们可以扫描您的二维码。",
+  "present_qr_code_dropdown_item_text": "出示二维码",
+  "present_qr_code_dropdown_item_accessibility_hint": "导航到向相关方展示二维码的页面。",
+
+  "lock_dropdown_item_text": "锁定",
+  "lock_dropdown_item_accessibility_hint": "锁定钱包并返回锁定屏幕",
+
+  "settings_language_section_label": "语言",
+  "settings_language_system_default": "系统默认",
+
+  "settings_privacy_security_section_label": "隐私与安全",
+  "settings_warn_on_external_link_label": "打开外部链接时发出警告",
+  "settings_warn_on_external_link_description": "打开凭证中的外部链接时显示警告",
+  "settings_warn_on_low_trust_label": "低信任度联系人时发出警告",
+  "settings_warn_on_low_trust_description": "与低信任度联系人互动时显示警告",
+  "settings_confirm_browser_open_label": "打开浏览器前确认",
+  "settings_confirm_browser_open_description": "打开浏览器前要求确认",
+  "settings_show_claim_values_by_default_label": "默认显示声明值",
+  "settings_show_claim_values_by_default_description": "无需点击即可直接显示声明值"
+}

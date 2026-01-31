@@ -1,19 +1,17 @@
-import {KeyboardAvoidingViewProps, Platform, PlatformOSType, KeyboardAvoidingView as RNKeyboardAvoidingView} from 'react-native';
+import {KeyboardAvoidingView as KCKeyboardAvoidingView} from 'react-native-keyboard-controller';
+import {ViewProps} from 'react-native';
 
-export type Props = KeyboardAvoidingViewProps & {
+export type Props = ViewProps & {
   children: React.ReactNode;
   verticalOffset?: number;
-  activeOn?: PlatformOSType[];
+  enabled?: boolean;
 };
 
-const KeyboardAvoidingView = ({children, verticalOffset = 0, activeOn = ['ios'], ...rest}: Props) => {
-  if (!activeOn.includes(Platform.OS)) {
-    return children;
-  }
+const KeyboardAvoidingView = ({children, verticalOffset = 0, enabled = true, ...rest}: Props) => {
   return (
-    <RNKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={verticalOffset} {...rest}>
+    <KCKeyboardAvoidingView behavior="padding" keyboardVerticalOffset={verticalOffset} enabled={enabled} {...rest}>
       {children}
-    </RNKeyboardAvoidingView>
+    </KCKeyboardAvoidingView>
   );
 };
 

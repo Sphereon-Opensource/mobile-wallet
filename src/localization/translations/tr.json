@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobil operatör eSIM’i",
   "onboarding_pid_security_model_eid_presentation": "Sunum sırasında eID kartını kullan",
   "onboarding_pid_security_model_select": "Seç",
+  "onboarding_data_stored_locally_info": "Verileriniz yalnızca telefonunuzda yerel olarak saklanır ve izniniz olmadan asla paylaşılmaz.",
   "authentication_pin_code_title": "PIN kodunu girin",
   "authentication_pin_code_subtitle": "Onaylamak için PIN kodunuzu girin",
   "qr_scanner_marker_title": "QR kodu tara",
@@ -321,6 +322,7 @@
     "create_wallet": {
       "title": "Cüzdan oluştur",
       "description": "Adınız, e-posta adresiniz ve ikamet ettiğiniz ülke ile bir hesap oluşturun.",
+      "description_select_language": "Tercih ettiğiniz dili seçin, adınız ve e-posta adresinizle bir hesap oluşturun.",
       "accessibility": {
         "button_hint": "Cüzdan oluşturmayı başlat"
       }
@@ -379,6 +381,9 @@
           "invalid": "Lütfen geçerli bir e-posta adresi girin"
         }
       }
+    },
+    "select_language": {
+      "title": "Dilinizi seçin"
     },
     "enter_country": {
       "title": "İkamet ettiğiniz ülke",

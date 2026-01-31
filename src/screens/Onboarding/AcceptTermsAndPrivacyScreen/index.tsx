@@ -15,7 +15,6 @@ const AcceptTermsAndPrivacyScreen = () => {
     <>
       <TermsAndPrivacyFooter style={{marginTop: 'auto', marginBottom: 24}} />
       <PrimaryButton
-        style={{height: 42, width: '100%'}}
         caption={translate(`${translationsPath}.button_caption`)}
         captionColor={fontColors.light}
         onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}

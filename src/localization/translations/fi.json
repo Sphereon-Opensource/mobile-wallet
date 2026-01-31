@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobiilioperaattorin eSIM",
   "onboarding_pid_security_model_eid_presentation": "Käytä eID-korttia esittämisen aikana",
   "onboarding_pid_security_model_select": "Valitse",
+  "onboarding_data_stored_locally_info": "Tietosi tallennetaan vain paikallisesti puhelimeesi eikä niitä jaeta koskaan ilman suostumustasi.",
   "authentication_pin_code_title": "Anna PIN-koodisi",
   "authentication_pin_code_subtitle": "Vahvista syöttämällä PIN-koodisi",
   "qr_scanner_marker_title": "Skannaa QR-koodi",
@@ -323,6 +324,7 @@
     "create_wallet": {
       "title": "Luo lompakko",
       "description": "Luo tili nimelläsi, sähköpostiosoitteellasi ja asuinmaallasi.",
+      "description_select_language": "Valitse haluamasi kieli, luo tili nimellä ja sähköpostiosoitteella.",
       "accessibility": {
         "button_hint": "Aloita lompakon luonti"
       }
@@ -381,6 +383,9 @@
           "invalid": "Anna kelvollinen sähköpostiosoite"
         }
       }
+    },
+    "select_language": {
+      "title": "Valitse kieli"
     },
     "enter_country": {
       "title": "Asuinmaasi",

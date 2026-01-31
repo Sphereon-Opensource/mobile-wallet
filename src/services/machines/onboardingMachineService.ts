@@ -5,6 +5,7 @@ import agent, {agentContext} from '../../agent';
 import store from '../../store';
 import {createUser, login} from '../../store/actions/user.actions';
 import {BasicUser, IUser} from '../../types';
+import {USERS_LOADING} from '../../types/store/user.action.types';
 import {MappedCredential} from '../../types/machines/getPIDCredentialMachine';
 import {OnboardingMachineContext, OnboardingMachineEventTypes, WalletSetupServiceResult} from '../../types/machines/onboarding';
 import {generateDigest, getCredentialSubjectContact} from '../../utils';
@@ -144,10 +145,12 @@ export const setupWallet = async (
     new Promise(resolve => setTimeout(() => resolve(true), 1000)),
   ]);
 
-  // Clear the machine singleton right before login so intermediate Redux dispatches
-  // from the login thunk don't cause walletAuthLockState to re-enter onboarding.
-  // The login thunk immediately dispatches USERS_LOADING (loading=true) keeping
-  // lockState as LOADING until LOGIN_SUCCESS transitions to AUTHENTICATED.
+  // Set loading=true BEFORE clearing the machine singleton. This prevents a race
+  // where walletAuthLockState re-evaluates between clearInstance (hasInstance()=false)
+  // and the login thunk's USERS_LOADING dispatch, which would briefly make
+  // shouldOnboard=false + loading=false + isAuthenticated=false → LOCKED, or worse,
+  // allow the navigation to briefly remount the onboarding stack showing the Welcome screen.
+  store.dispatch({type: USERS_LOADING});
   OnboardingMachine.clearInstance({stop: false});
   await store.dispatch<any>(login(setup[2].storedUser.id));
   return setup[2];

@@ -28,6 +28,7 @@ import store from './src/store';
 import {getUsers} from './src/store/actions/user.actions';
 import {PlatformsEnum} from './src/types';
 // Import useSafeAreaInsets
+import {KeyboardProvider} from 'react-native-keyboard-controller';
 import {initialWindowMetrics, SafeAreaProvider, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/@config/toasts';
@@ -118,6 +119,7 @@ export default function App() {
     <Provider store={store}>
       <PolyfillCrypto />
       <SafeAreaProvider initialMetrics={initialWindowMetrics} onLayout={onLayoutRootView}>
+        <KeyboardProvider>
         <NavigationContainer onReady={() => setNavigationIsReady(true)} ref={navigationRef}>
           <OnTouchProvider>
             <GestureHandlerRootView style={{flex: 1}}>
@@ -131,6 +133,7 @@ export default function App() {
             </GestureHandlerRootView>
           </OnTouchProvider>
         </NavigationContainer>
+        </KeyboardProvider>
       </SafeAreaProvider>
     </Provider>
   );

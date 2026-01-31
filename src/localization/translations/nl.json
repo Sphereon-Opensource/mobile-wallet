@@ -141,6 +141,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobiele operator eSIM",
   "onboarding_pid_security_model_eid_presentation": "Gebruik eID-kaart tijdens presentatie",
   "onboarding_pid_security_model_select": "Selecteren",
+  "onboarding_data_stored_locally_info": "Uw gegevens worden alleen lokaal op uw telefoon opgeslagen en worden nooit zonder uw toestemming gedeeld.",
   "authentication_pin_code_title": "Voer je pincode in",
   "authentication_pin_code_subtitle": "Om te bevestigen, voer je pincode in",
   "qr_scanner_marker_title": "Scan QR-code",
@@ -326,6 +327,7 @@
     "create_wallet": {
       "title": "Maak wallet aan",
       "description": "Stel een account in met je naam, e-mailadres en land.",
+      "description_select_language": "Selecteer uw voorkeurstaal, maak een account aan met uw naam en e-mailadres.",
       "accessibility": {
         "button_hint": "Start met het aanmaken van je wallet"
       }
@@ -384,6 +386,9 @@
           "invalid": "Vul een geldig e-mailadres in"
         }
       }
+    },
+    "select_language": {
+      "title": "Selecteer uw taal"
     },
     "enter_country": {
       "title": "Je land van verblijf",

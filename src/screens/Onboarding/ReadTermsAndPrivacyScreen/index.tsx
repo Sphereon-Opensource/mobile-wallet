@@ -36,7 +36,6 @@ const ReadTermsAndPrivacyScreen = ({
   const {onboardingInstance} = useContext(OnboardingContext);
   const footer = (
     <PrimaryButton
-      style={{height: 42, width: '100%'}}
       caption={translate('action_back_label')}
       captionColor={fontColors.light}
       onPress={() => onboardingInstance.send(OnboardingMachineEvents.PREVIOUS)}

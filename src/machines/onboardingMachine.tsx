@@ -72,6 +72,10 @@ const isESimSecurity: OnboardingGuard = ({pidSecurityModel}) => {
   return pidSecurityModel === PIDSecurityModel.MOBILE_OPERATOR_ESIM;
 };
 
+const isStepCreateWalletAndLanguageSelected: OnboardingGuard = (ctx) =>
+  ctx.currentStep === OnboardingMachineStep.CREATE_WALLET && ctx.languageManuallySelected === true;
+const languageManuallySelected: OnboardingGuard = (ctx) => ctx.languageManuallySelected === true;
+
 const isEidDuringPresentation: OnboardingGuard = ({pidSecurityModel}) => pidSecurityModel === PIDSecurityModel.EID_DURING_PRESENTATION;
 
 const isSecureElement: OnboardingGuard = ({pidSecurityModel}) => pidSecurityModel === PIDSecurityModel.SECURE_ELEMENT;
@@ -80,18 +84,15 @@ const states: OnboardingStatesConfig = {
   showIntro: {
     on: {
       NEXT: OnboardingMachineStateType.showProgress,
+      SET_LANGUAGE: {actions: assign({language: (_, event) => event.data, languageManuallySelected: true})},
     },
   },
   showProgress: {
     on: {
       NEXT: [
+        {cond: OnboardingMachineGuards.isStepCreateWalletAndLanguageSelected, target: OnboardingMachineStateType.enterName},
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.enterCountry},
         {cond: OnboardingMachineGuards.isStepSecureWallet, target: OnboardingMachineStateType.enterPinCode},
-        {
-          cond: OnboardingMachineGuards.isStepImportPersonalData,
-          target: OnboardingMachineStateType.importPIDDataConsent,
-        },
-        {cond: OnboardingMachineGuards.isStepComplete, target: OnboardingMachineStateType.completeOnboarding},
       ],
       PREVIOUS: [
         {cond: OnboardingMachineGuards.isStepCreateWallet, target: OnboardingMachineStateType.showIntro},
@@ -100,24 +101,9 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.enterEmailAddress,
           actions: assign({currentStep: OnboardingMachineStep.CREATE_WALLET}),
         },
-        {
-          cond: ({currentStep}) => currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA,
-          target: OnboardingMachineStateType.acceptTermsAndPrivacy,
-          actions: assign({currentStep: OnboardingMachineStep.SECURE_WALLET}),
-        },
-        {
-          cond: ({currentStep, pidSecurityModel}) =>
-            currentStep === OnboardingMachineStep.IMPORT_PERSONAL_DATA && pidSecurityModel !== PIDSecurityModel.EID_DURING_PRESENTATION, // TODO move to guard
-          target: OnboardingMachineStateType.reviewPIDCredentials,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-        },
       ],
       SET_POPUP_MENU_OPEN: {
         actions: assign({popupMenuOpen: (_, event) => event.data}),
-      },
-      SKIP_IMPORT: {
-        target: OnboardingMachineStateType.completeOnboarding,
-        actions: assign({skipImport: true, currentStep: OnboardingMachineStep.FINAL}),
       },
       UPDATE_SECURITY_MODEL: {
         actions: assign({
@@ -129,7 +115,10 @@ const states: OnboardingStatesConfig = {
   enterName: {
     on: {
       NEXT: {cond: OnboardingMachineGuards.isNameValid, target: OnboardingMachineStateType.enterEmailAddress},
-      PREVIOUS: OnboardingMachineStateType.enterCountry,
+      PREVIOUS: [
+        {cond: OnboardingMachineGuards.languageManuallySelected, target: OnboardingMachineStateType.showProgress},
+        {target: OnboardingMachineStateType.enterCountry},
+      ],
       SET_NAME: {actions: assign({name: (_, event) => event.data})},
     },
   },
@@ -221,21 +210,10 @@ const states: OnboardingStatesConfig = {
           target: OnboardingMachineStateType.enterPinCode,
         },
       ],
-      NEXT: [
-        {
-          cond: OnboardingMachineGuards.isESimSecurity,
-          target: OnboardingMachineStateType.activateESim,
-        },
-        {
-          cond: OnboardingMachineGuards.isSkipImport,
-          target: OnboardingMachineStateType.completeOnboarding,
-          actions: assign({currentStep: OnboardingMachineStep.FINAL}),
-        },
-        {
-          target: OnboardingMachineStateType.showProgress,
-          actions: assign({currentStep: OnboardingMachineStep.IMPORT_PERSONAL_DATA}),
-        },
-      ],
+      NEXT: {
+        target: OnboardingMachineStateType.completeOnboarding,
+        actions: assign({currentStep: OnboardingMachineStep.FINAL}),
+      },
     },
   },
   readTerms: {
@@ -505,6 +483,12 @@ const createOnboardingMachine = (opts?: CreateOnboardingMachineOpts) => {
             }
           | {
               type: OnboardingMachineGuards.hasFunkeRefreshUrl;
+            }
+          | {
+              type: OnboardingMachineGuards.isStepCreateWalletAndLanguageSelected;
+            }
+          | {
+              type: OnboardingMachineGuards.languageManuallySelected;
             },
       },
       states: states,
@@ -646,6 +630,8 @@ export class OnboardingMachine {
           isEidDuringPresentation,
           isSecureElement,
           hasFunkeRefreshUrl,
+          isStepCreateWalletAndLanguageSelected,
+          languageManuallySelected,
           ...opts?.guards,
         },
       }),

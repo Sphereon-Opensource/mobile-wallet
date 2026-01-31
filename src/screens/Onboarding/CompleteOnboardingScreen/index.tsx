@@ -62,7 +62,6 @@ const CompleteOnboardingScreen = () => {
         />
         <View style={{marginTop: 'auto'}}>
           <PrimaryButton
-            style={{height: 42, width: '100%'}}
             caption={translate(`onboarding_complete_next`)}
             captionColor={fontColors.light}
             onPress={() => onboardingInstance.send(OnboardingMachineEvents.NEXT)}

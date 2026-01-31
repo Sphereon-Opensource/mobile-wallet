@@ -137,6 +137,7 @@
   "onboarding_pid_security_model_mobile_operator": "Mobilfunkbetreiber eSIM",
   "onboarding_pid_security_model_eid_presentation": "eID-Karte während der Präsentation verwenden",
   "onboarding_pid_security_model_select": "Auswählen",
+  "onboarding_data_stored_locally_info": "Ihre Daten werden nur lokal auf Ihrem Telefon gespeichert und niemals ohne Ihre Zustimmung weitergegeben.",
   "authentication_pin_code_title": "Gib deinen PIN-Code ein",
   "authentication_pin_code_subtitle": "Zur Bestätigung bitte deinen PIN-Code eingeben",
   "qr_scanner_marker_title": "QR-Code scannen",
@@ -321,6 +322,7 @@
     "create_wallet": {
       "title": "Wallet erstellen",
       "description": "Erstellen Sie ein Konto mit Ihrem Namen, Ihrer E-Mail-Adresse und Ihrem Wohnsitzland.",
+      "description_select_language": "Wählen Sie Ihre bevorzugte Sprache, erstellen Sie ein Konto mit Ihrem Namen und Ihrer E-Mail-Adresse.",
       "accessibility": {
         "button_hint": "Wallet-Erstellung starten"
       }
@@ -379,6 +381,9 @@
           "invalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
         }
       }
+    },
+    "select_language": {
+      "title": "Sprache auswählen"
     },
     "enter_country": {
       "title": "Ihr Wohnsitzland",
