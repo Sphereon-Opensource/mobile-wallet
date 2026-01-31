@@ -1,0 +1,28 @@
+diff --git a/ios/musap-react-native/MusapModuleBridge.m b/ios/musap-react-native/MusapModuleBridge.m
+index 5a2ef340c60b0b2f23d86dc9d1ddbe8ddd32c36b..93f153b49d915befe9133731b9f776ff26156036 100644
+--- a/ios/musap-react-native/MusapModuleBridge.m
++++ b/ios/musap-react-native/MusapModuleBridge.m
+@@ -7,7 +7,7 @@
+ 
+ #import <React/RCTBridgeModule.h>
+ 
+-@interface RCT_EXTERN_MODULE(MusapModule, NSObject)
++@interface RCT_EXTERN_REMAP_MODULE(MusapModule, MusapReactModule, NSObject)
+ 
+ RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(listActiveSscds)
+ 
+diff --git a/ios/musap-react-native/MusapModuleBridge.swift b/ios/musap-react-native/MusapModuleBridge.swift
+index a0c76d72dbefdb1467300ac0f811517d7cbc655b..82c4e780aab2d50ec618e358efab60745d8ad52a 100644
+--- a/ios/musap-react-native/MusapModuleBridge.swift
++++ b/ios/musap-react-native/MusapModuleBridge.swift
+@@ -13,8 +13,8 @@ let logger = Logger(subsystem: "com.sphereon.musaprn", category: "debugging")
+ // To log: xcrun simctl spawn booted log stream --level debug --style compact > /tmp/log.txt
+ 
+ 
+-@objc(MusapModule)
+-class MusapModule: NSObject {
++@objc(MusapReactModule)
++class MusapReactModule: NSObject {
+     
+     @objc
+     static func requiresMainQueueSetup() -> Bool {

@@ -144,7 +144,12 @@ source 'https://cdn.cocoapods.org'
           # Define FOLLY_CFG_NO_COROUTINES to skip coroutine support
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_MOBILE=1'
           config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+
+          # Disable sized deallocation to fix folly/lang/New.h compilation with Xcode 16
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(inherited)']
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-fno-sized-deallocation'
 
           # Disable C++ modules entirely - use textual includes instead
           # This is the most reliable fix for glog namespace issues

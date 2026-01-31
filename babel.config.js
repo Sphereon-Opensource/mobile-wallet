@@ -18,9 +18,7 @@ module.exports = function (api) {
         {
           alias: {
             'react-native-sqlite-storage': 'react-native-nitro-sqlite',
-            // 'react-native-quick-crypto': '@sphereon/react-native-quick-crypto',
-            // crypto: '@sphereon/react-native-quick-crypto',
-            crypto: 'react-native-crypto',
+            crypto: 'react-native-quick-crypto',
             stream: 'readable-stream',
             buffer: '@craftzdog/react-native-buffer',
             'node:events': 'events',

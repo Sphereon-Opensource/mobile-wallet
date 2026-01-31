@@ -37,6 +37,11 @@ const patchEntries = [
     patchFile: '@veramo-data-store-npm-4.2.0-bb461c197b.patch',
     packageDir: path.join(nodeModules, '@veramo', 'data-store'),
   },
+  {
+    name: '@sphereon/did-auth-siop',
+    patchFile: '@sphereon-did-auth-siop-npm-0.20.1-592a249255.patch',
+    packageDir: path.join(nodeModules, '@sphereon', 'did-auth-siop'),
+  },
 ]
 
 // String-replacement patches for partially-applied packages

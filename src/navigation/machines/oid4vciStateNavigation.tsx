@@ -1,6 +1,6 @@
 import {getIssuerName} from '@sphereon/oid4vci-common';
 import React, {Context, createContext, JSX} from 'react';
-import {Linking} from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import {URL} from 'react-native-url-polyfill';
 import {SimpleEventsOf} from 'xstate';
 import Debug, {Debugger} from 'debug';
@@ -270,8 +270,17 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
       type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST,
       data: url,
     });
-    await Linking.openURL(url);
-    debug('onOpenAuthorizationUrl after openUrl: ', url);
+    const callbackScheme = 'com.sphereon.ssi.wallet'
+    const result = await WebBrowser.openAuthSessionAsync(url, `${callbackScheme}://oid4vci-callback`)
+    debug('onOpenAuthorizationUrl auth session result: ', JSON.stringify(result))
+    if (result.type === 'success' && result.url) {
+      oid4vciMachine.send({
+        type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
+        data: result.url,
+      })
+    } else if (result.type === 'cancel') {
+      debug('User cancelled the authorization session')
+    }
   };
 
   const confirmBrowserOpen = store.getState().user.activeUser?.preferences?.confirmBrowserOpen ?? true;
