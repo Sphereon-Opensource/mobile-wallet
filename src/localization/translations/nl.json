@@ -196,6 +196,7 @@
   "credential_delete_message": "Weet je zeker dat je de credential wilt verwijderen: {{credentialName}}?",
   "credential_deleted_success_toast": "Credential succesvol verwijderd",
   "credential_deleted_failed_toast": "Kan de credential niet verwijderen",
+  "credential_delete_wallet_identity_message": "De wallet-identiteitscredential kan niet worden verwijderd omdat het de primaire identiteitscredential in uw wallet is.",
   "contact_add_new_contact_detected_title": "Nieuw contact gedetecteerd",
   "contact_add_new_contact_detected_subtitle": "We hebben opgemerkt dat de andere partij in dit credential-uitwisselingsproces nog niet in je contacten staat. Je moet een naam voor dit nieuwe contact opgeven om het uitwisselingsproces te voltooien.",
   "contact_name_label": "Naam contact",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_description": "Vraag om bevestiging voordat de browser wordt geopend",
   "settings_show_claim_values_by_default_label": "Claimwaarden standaard tonen",
   "settings_show_claim_values_by_default_description": "Claimwaarden weergeven zonder dat een tik nodig is",
-  "onboarding_machine_activate_esim_error_title": "eSim-activering mislukt"
+  "onboarding_machine_activate_esim_error_title": "eSim-activering mislukt",
+  "account_first_name_label": "Voornaam",
+  "account_last_name_label": "Achternaam",
+  "account_email_label": "E-mail",
+  "account_save_label": "Opslaan",
+  "account_edit_label": "Bewerken"
 }

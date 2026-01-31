@@ -29,6 +29,25 @@ import {getCredentialIssuerContact, getCredentialSubjectContact, showToast} from
 
 export const logger = Loggers.DEFAULT.get('sphereon:store');
 
+const WALLET_IDENTITY_CLAIM_LABELS: Record<string, string> = {
+  firstName: 'account_first_name_label',
+  lastName: 'account_last_name_label',
+  emailAddress: 'account_email_label',
+};
+
+const localizeWalletIdentityProperties = (summary: CredentialSummary): CredentialSummary => {
+  if (summary.title !== 'SphereonWalletIdentityCredential') {
+    return summary;
+  }
+  return {
+    ...summary,
+    properties: summary.properties.map(row => {
+      const translationKey = WALLET_IDENTITY_CLAIM_LABELS[row.label];
+      return translationKey ? {...row, label: translate(translationKey)} : row;
+    }),
+  };
+};
+
 export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<void> => {
     dispatch({type: CREDENTIALS_LOADING});
@@ -54,7 +73,7 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
               branding: credentialBranding?.localeBranding,
               issuer: getCredentialIssuerContact(uniform),
               subject: getCredentialSubjectContact(uniform),
-            });
+            }).then(localizeWalletIdentityProperties);
           }),
         );
         console.log('summaries', credentialSummaries);
@@ -88,7 +107,7 @@ export const storeVerifiableCredential = (vc: VerifiableCredential): ThunkAction
           branding: credentialBranding?.[0]?.localeBranding,
           issuer: getCredentialIssuerContact(mappedVc),
           subject: getCredentialSubjectContact(mappedVc),
-        });
+        }).then(localizeWalletIdentityProperties);
       })
       .then((summary: CredentialSummary): void => {
         dispatch({
@@ -122,7 +141,7 @@ export const dispatchVerifiableCredential = (
           branding: credentialBranding?.[0]?.localeBranding,
           issuer,
           subject: getCredentialSubjectContact(mappedVc),
-        });
+        }).then(localizeWalletIdentityProperties);
       })
       .then((summary: CredentialSummary): void => {
         dispatch({
@@ -183,13 +202,15 @@ export const createVerifiableCredential = (args: ICreateVerifiableCredentialArgs
             credentialRole: CredentialRole.HOLDER,
             issuer: getCredentialIssuerContact(vc),
             subject: getCredentialSubjectContact(vc),
-          }).then((summary: CredentialSummary) =>
-            // TODO fix mismatch in types
-            dispatch({
-              type: CREATE_CREDENTIAL_SUCCESS,
-              payload: summary,
-            }),
-          ),
+          })
+            .then(localizeWalletIdentityProperties)
+            .then((summary: CredentialSummary) =>
+              // TODO fix mismatch in types
+              dispatch({
+                type: CREATE_CREDENTIAL_SUCCESS,
+                payload: summary,
+              }),
+            ),
         );
       })
       .catch(() => dispatch({type: CREATE_CREDENTIAL_FAILED}));

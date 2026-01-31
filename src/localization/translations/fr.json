@@ -192,6 +192,7 @@
   "credential_delete_message": "Voulez-vous vraiment supprimer le justificatif : {{credentialName}} ?",
   "credential_deleted_success_toast": "Justificatif supprimé",
   "credential_deleted_failed_toast": "Impossible de supprimer le justificatif",
+  "credential_delete_wallet_identity_message": "L'identifiant d'identité du portefeuille ne peut pas être supprimé car il s'agit de l'identifiant principal de votre portefeuille.",
   "contact_add_new_contact_detected_title": "Nouveau contact détecté",
   "contact_add_new_contact_detected_subtitle": "Nous avons constaté que l’autre partie de cet échange de justificatifs n’est pas encore dans vos contacts. Vous devez indiquer un nom pour ce nouveau contact afin de finaliser l’échange.",
   "contact_name_label": "Nom du contact",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_label": "Confirmer avant d'ouvrir le navigateur",
   "settings_confirm_browser_open_description": "Demander une confirmation avant d'ouvrir le navigateur",
   "settings_show_claim_values_by_default_label": "Afficher les valeurs par défaut",
-  "settings_show_claim_values_by_default_description": "Afficher les valeurs sans avoir à appuyer pour les révéler"
+  "settings_show_claim_values_by_default_description": "Afficher les valeurs sans avoir à appuyer pour les révéler",
+  "account_first_name_label": "Prénom",
+  "account_last_name_label": "Nom de famille",
+  "account_email_label": "E-mail",
+  "account_save_label": "Enregistrer",
+  "account_edit_label": "Modifier"
 }

@@ -192,6 +192,7 @@
   "credential_delete_message": "Haluatko varmasti poistaa todistuksen: {{credentialName}}?",
   "credential_deleted_success_toast": "Todistus poistettu",
   "credential_deleted_failed_toast": "Todistusta ei voitu poistaa",
+  "credential_delete_wallet_identity_message": "Lompakon identiteettitodistusta ei voi poistaa, koska se on lompakon ensisijainen identiteettitodistus.",
   "contact_add_new_contact_detected_title": "Uusi yhteystieto havaittu",
   "contact_add_new_contact_detected_subtitle": "Toinen osapuoli tässä todistusvaihdossa ei ole vielä yhteystiedoissasi. Anna nimi tälle uudelle yhteystiedolle vaihdon viimeistelemiseksi.",
   "contact_name_label": "Yhteystiedon nimi",
@@ -598,5 +599,10 @@
   "credential_details_open_link_warning_title": "Avaa ulkoinen linkki?",
   "credential_details_open_link_warning_description": "Tämän linkin avaaminen voi aiheuttaa tietosuojariskin, jos URL on yksilöllinen tälle todistukselle. Ulkopuolinen osapuoli voi tunnistaa sinut.",
   "credential_details_open_link_warning_proceed": "Avaa linkki",
-  "credential_details_open_link_warning_cancel": "Peruuta"
+  "credential_details_open_link_warning_cancel": "Peruuta",
+  "account_first_name_label": "Etunimi",
+  "account_last_name_label": "Sukunimi",
+  "account_email_label": "Sähköposti",
+  "account_save_label": "Tallenna",
+  "account_edit_label": "Muokkaa"
 }

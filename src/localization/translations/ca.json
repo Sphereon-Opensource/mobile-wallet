@@ -191,7 +191,8 @@
   "credential_delete_title": "Eliminar credencial",
   "credential_delete_message": "Segur que vols eliminar la credencial: {{credentialName}}?",
   "credential_deleted_success_toast": "Credencial eliminada",
-  "credential_deleted_failed_toast": "No s’ha pogut eliminar la credencial",
+  "credential_deleted_failed_toast": "No s'ha pogut eliminar la credencial",
+  "credential_delete_wallet_identity_message": "La credencial d'identitat de la cartera no es pot eliminar ja que és la credencial d'identitat principal de la vostra cartera.",
   "contact_add_new_contact_detected_title": "Nou contacte detectat",
   "contact_add_new_contact_detected_subtitle": "Hem detectat que l’altra part en aquest intercanvi de credencials encara no és als teus contactes. Introdueix un nom per a aquest nou contacte per completar l’intercanvi.",
   "contact_name_label": "Nom del contacte",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_label": "Confirmar abans d'obrir el navegador",
   "settings_confirm_browser_open_description": "Demana confirmació abans d'obrir el navegador",
   "settings_show_claim_values_by_default_label": "Mostrar els valors per defecte",
-  "settings_show_claim_values_by_default_description": "Mostra els valors sense necessitat de tocar per revelar-los"
+  "settings_show_claim_values_by_default_description": "Mostra els valors sense necessitat de tocar per revelar-los",
+  "account_first_name_label": "Nom",
+  "account_last_name_label": "Cognom",
+  "account_email_label": "Correu electrònic",
+  "account_save_label": "Desar",
+  "account_edit_label": "Editar"
 }

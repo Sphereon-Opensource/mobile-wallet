@@ -69,7 +69,10 @@
       },
       "row_description": "已接收凭证",
       "detail_title": "新凭证已添加到您的钱包",
-      "description": ["您现在可以使用您的", "卡进行官方共享了。"]
+      "description": [
+        "您现在可以使用您的",
+        "卡进行官方共享了。"
+      ]
     },
     "VC issue decline": {
       "info_list_title": "已拒绝的信息",
@@ -79,7 +82,10 @@
       },
       "row_description": "已拒绝接收凭证",
       "detail_title": "凭证未添加到您的钱包",
-      "description": ["您已拒绝使用", "卡进行官方共享。"]
+      "description": [
+        "您已拒绝使用",
+        "卡进行官方共享。"
+      ]
     },
     "section_titles": {
       "status": "状态",
@@ -105,17 +111,14 @@
   "credentials_view_item_expires_on": "到期日",
   "swipe_delete_button_caption": "删除",
   "credential_offer_accepted_toast": "凭证已成功存储",
-
   "settings_dropdown_item_text": "设置",
   "settings_dropdown_item_accessibility_hint": "导航到设置页面",
   "settings_title": "设置",
   "account_title": "账户",
-
   "settings_general_section_label": "通用",
   "settings_privacy_controls_section_label": "隐私控制",
   "settings_feedback_controls_section_label": "隐私控制",
   "settings_logout_label": "退出登录",
-
   "account_personal_section_label": "个人",
   "account_general_section_label": "通用",
   "account_personal_information_label": "个人信息",
@@ -123,17 +126,14 @@
   "account_biometric_login_label": "生物识别认证",
   "account_pid_section_label": "PID",
   "account_delete_wallet_label": "删除钱包",
-
   "age_derived_claims_title": "年龄衍生声明",
   "age_derived_claims_screen_title": "年龄衍生声明",
   "age_dervived_claims_screen_description": "年龄衍生声明用于在不透露您确切年龄的情况下向其他方证明您的年龄。",
-
   "biometrics_title": "是否启用生物识别认证？",
   "biometrics_subtitle": "使用面部或指纹进行生物识别登录和认证，更快捷地访问您的账户。",
   "biometrics_description": "Sphereon不会收集您的生物识别信息，仅在本地用于验证目的",
   "biometrics_enable_text": "立即启用",
   "biometrics_disallow": "稍后再说",
-
   "onboarding_pid_security_model_title": "您想使用哪种PID安全模型？",
   "onboarding_pid_security_model_subtitle": "请注意，这是一个测试/开发选项。设置后无法更改，除非重新初始化钱包。",
   "onboarding_pid_security_model_secure_element": "手机安全元件",
@@ -142,7 +142,6 @@
   "onboarding_pid_security_model_eid_presentation": "出示时使用eID卡",
   "onboarding_pid_security_model_select": "选择",
   "onboarding_data_stored_locally_info": "您的数据仅存储在您的手机本地，未经您的同意绝不会被共享。",
-
   "authentication_pin_code_title": "输入您的PIN码",
   "authentication_pin_code_subtitle": "请输入您的PIN码以确认",
   "qr_scanner_marker_title": "扫描二维码",
@@ -197,6 +196,7 @@
   "credential_delete_message": "您确定要删除凭证：{{credentialName}}？",
   "credential_deleted_success_toast": "凭证已成功删除",
   "credential_deleted_failed_toast": "无法删除凭证",
+  "credential_delete_wallet_identity_message": "钱包身份凭证无法删除，因为它是您钱包中的主要身份凭证。",
   "contact_add_new_contact_detected_title": "检测到新联系人",
   "contact_add_new_contact_detected_subtitle": "我们注意到此次凭证交换过程中的对方尚不在您的联系人中。您需要为此新联系人提供一个名称以完成交换。",
   "contact_name_label": "联系人姓名",
@@ -209,7 +209,7 @@
   "contact_deleted_failed_toast": "无法删除联系人",
   "contact_add_success_toast": "联系人已成功创建",
   "contact_update_success_toast": "联系人已成功更新",
-  "contact_add_no_consent_toast": "若不同意，您将无法继续凭证交换流程，需使用\u201c拒绝\u201d按钮。",
+  "contact_add_no_consent_toast": "若不同意，您将无法继续凭证交换流程，需使用“拒绝”按钮。",
   "contact_add_cancel_title": "您确定要拒绝吗？",
   "contact_add_cancel_message": "在凭证交换过程中遇到新方时，添加联系人是必须的。请注意，如果您确认，整个凭证交换过程将被中止。",
   "onboarding_welcome_header": "欢迎",
@@ -236,26 +236,19 @@
   "terms_of_service_decline_action_caption": "退出应用",
   "terms_of_service_title": "服务条款",
   "terms_of_service_subtitle": "本文件最后更新于2023年1月5日。",
-
   "pid_security_model_warning": "EID卡仅在出示时加载",
-
   "import_data_auth_title": "输入您的Sphereon PIN",
   "import_data_auth_next": "继续",
-
   "import_data_auth_biometrics_title": "使用生物识别进行认证",
   "import_data_auth_failure_title": "生物识别认证失败，我们无法识别您",
   "import_data_auth_failure_description": "您目前无法继续。完成此任务的唯一方法是从头开始。关闭应用并重新打开以重新开始初始化。",
-
   "import_data_auth_step_title": "输入您的Sphereon PIN",
   "import_data_consent_button_accept": "是的，这是我",
   "import_data_consent_button_decline": "不是所有信息都正确",
   "import_data_loader_step_title": "请稍候",
   "import_data_loader_step_subtitle": "正在获取您的个人信息。",
-
   "import_data_final_step_title": "您的信息已导入。全部正确吗？",
-
   "import_data_setup_complete_title": "设置完成",
-
   "incorrect_data_title": "您的某些信息不正确？",
   "incorrect_data_description": "如果您的个人信息不正确，可能会导致问题。因此请不要添加此数据。",
   "incorrect_data_bullet_content_heading": "您可以做什么",
@@ -264,7 +257,6 @@
   "incorrect_data_dont_add_info": "不要添加此信息",
   "incorrect_data_after_bullet_heading": "如果不是您的信息",
   "incorrect_data_after_bullet_content": "如果该信息不是您的，请不要将其添加到您的钱包中。",
-
   "onboarding_esim_enter_details_title": "输入eSim信息",
   "onboarding_esim_enter_details_description": "请提供您的电话号码和配对码",
   "onboarding_esim_enter_details_msisdn_label": "电话号码（MSISDN）",
@@ -273,7 +265,6 @@
   "onboarding_esim_enter_details_coupling_code_placeholder": "输入配对码",
   "onboarding_esim_enter_details_continue": "继续",
   "onboarding_esim_enter_details_back": "返回",
-
   "onboarding_machine_activate_esim_error_title": "eSim激活失败",
   "onboarding_esim_error_couple_rp_failed": "eSim激活的RP配对步骤失败",
   "onboarding_esim_error_bindkey_failed": "eSim激活的密钥绑定步骤失败",
@@ -281,13 +272,10 @@
   "onboarding_esim_error_check_sscd_failed": "eSim激活的SSCD检查步骤失败",
   "onboarding_esim_error_enable_sscd_failed": "eSim激活的启用SSCD步骤失败",
   "onboarding_esim_error_cleanup_keys_failed": "eSim激活的清理密钥步骤失败",
-
   "import_data_title": "导入个人数据",
-
   "onboarding_complete_title": "全部完成！",
   "onboarding_complete_description": "您已准备好接收和共享身份详情、凭证等。",
   "onboarding_complete_next": "开始探索我的钱包",
-
   "scan_card_step_subtitle": "将卡片贴在手机背面并按开始读取。",
   "scan_card_step_title": "扫描以导入您的数据",
   "personal_data_title": "输入个人数据",
@@ -545,7 +533,7 @@
   "emergency_send_button_caption": "立即触发！",
   "emergency_abort_button_caption": "取消警报",
   "emergency_title": "发送紧急警报",
-  "emergency_subtitle": "您的求助信号将在 {{emergencyAlertDelay}} 秒后发送，或者您可以点击\u201c立即触发\u201d按钮立即发送。",
+  "emergency_subtitle": "您的求助信号将在 {{emergencyAlertDelay}} 秒后发送，或者您可以点击“立即触发”按钮立即发送。",
   "siopV2_machine_identifier_error_title": "获取标识符",
   "siopV2_machine_create_config_error_title": "创建siopV2配置",
   "siopV2_machine_get_request_error_title": "获取siopV2请求",
@@ -595,18 +583,14 @@
   "new_contact_add_new_contact_contact_details_contacts_label": "联系方式",
   "new_contact_add_new_contact_low_level_trust_title": "您确定要继续吗？",
   "new_contact_add_new_contact_low_level_trust_description": "您将与一个信任级别较低的方进行互动。",
-
   "present_qr_code_screen_header_title": "出示二维码",
   "present_qr_code_screen_subtitle": "向相关方展示二维码，以便他们可以扫描您的二维码。",
   "present_qr_code_dropdown_item_text": "出示二维码",
   "present_qr_code_dropdown_item_accessibility_hint": "导航到向相关方展示二维码的页面。",
-
   "lock_dropdown_item_text": "锁定",
   "lock_dropdown_item_accessibility_hint": "锁定钱包并返回锁定屏幕",
-
   "settings_language_section_label": "语言",
   "settings_language_system_default": "系统默认",
-
   "settings_privacy_security_section_label": "隐私与安全",
   "settings_warn_on_external_link_label": "打开外部链接时发出警告",
   "settings_warn_on_external_link_description": "打开凭证中的外部链接时显示警告",
@@ -615,5 +599,10 @@
   "settings_confirm_browser_open_label": "打开浏览器前确认",
   "settings_confirm_browser_open_description": "打开浏览器前要求确认",
   "settings_show_claim_values_by_default_label": "默认显示声明值",
-  "settings_show_claim_values_by_default_description": "无需点击即可直接显示声明值"
+  "settings_show_claim_values_by_default_description": "无需点击即可直接显示声明值",
+  "account_first_name_label": "名",
+  "account_last_name_label": "姓",
+  "account_email_label": "电子邮件",
+  "account_save_label": "保存",
+  "account_edit_label": "ç¼–è¾‘"
 }

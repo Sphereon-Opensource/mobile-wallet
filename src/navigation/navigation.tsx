@@ -192,6 +192,14 @@ const MainStackNavigator = (): JSX.Element => {
           <Stack.Screen name={MainRoutesEnum.SETTINGS} component={SettingsScreen} />
           <Stack.Screen name={MainRoutesEnum.ACCOUNT} component={AccountScreen} />
           <Stack.Screen name={MainRoutesEnum.AGE_DERIVED_CLAIMS} component={AgeDerivedClaimsScreen} />
+          <Stack.Screen
+            name={ScreenRoutesEnum.LOCK}
+            component={SSILockScreen}
+            options={{
+              headerTitle: translate('authentication_pin_code_title'),
+              header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} headerSubTitle={translate('authentication_pin_code_subtitle')} />,
+            }}
+          />
         </Stack.Navigator>
       </ChatProvider>
     </AssistantProvider>

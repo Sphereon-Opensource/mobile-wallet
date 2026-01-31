@@ -192,6 +192,7 @@
   "credential_delete_message": "¿Seguro que quieres eliminar la credencial: {{credentialName}}?",
   "credential_deleted_success_toast": "Credencial eliminada",
   "credential_deleted_failed_toast": "No se pudo eliminar la credencial",
+  "credential_delete_wallet_identity_message": "La credencial de identidad de la billetera no se puede eliminar ya que es la credencial de identidad principal de su billetera.",
   "contact_add_new_contact_detected_title": "Nuevo contacto detectado",
   "contact_add_new_contact_detected_subtitle": "Hemos detectado que la otra parte en este intercambio de credenciales aún no está en tus contactos. Debes proporcionar un nombre para este nuevo contacto para completar el intercambio.",
   "contact_name_label": "Nombre del contacto",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_label": "Confirmar antes de abrir el navegador",
   "settings_confirm_browser_open_description": "Pedir confirmación antes de abrir el navegador",
   "settings_show_claim_values_by_default_label": "Mostrar valores por defecto",
-  "settings_show_claim_values_by_default_description": "Mostrar los valores sin necesidad de tocar para revelarlos"
+  "settings_show_claim_values_by_default_description": "Mostrar los valores sin necesidad de tocar para revelarlos",
+  "account_first_name_label": "Nombre",
+  "account_last_name_label": "Apellido",
+  "account_email_label": "Correo electrónico",
+  "account_save_label": "Guardar",
+  "account_edit_label": "Editar"
 }

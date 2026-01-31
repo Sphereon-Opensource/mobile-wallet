@@ -69,7 +69,10 @@
       },
       "row_description": "Credential received",
       "detail_title": "New credential added to your wallet",
-      "description": ["You can finally use your", "card for official sharing purposes."]
+      "description": [
+        "You can finally use your",
+        "card for official sharing purposes."
+      ]
     },
     "VC issue decline": {
       "info_list_title": "Declined information",
@@ -79,7 +82,10 @@
       },
       "row_description": "Declined receiving credential",
       "detail_title": "Credential not added to your wallet",
-      "description": ["You have declined to use the", "card for official sharing purposes."]
+      "description": [
+        "You have declined to use the",
+        "card for official sharing purposes."
+      ]
     },
     "section_titles": {
       "status": "Status",
@@ -105,17 +111,14 @@
   "credentials_view_item_expires_on": "Expires on",
   "swipe_delete_button_caption": "Delete",
   "credential_offer_accepted_toast": "Credential successfully stored",
-
   "settings_dropdown_item_text": "Settings",
   "settings_dropdown_item_accessibility_hint": "Navigate to the settings screen",
   "settings_title": "Settings",
   "account_title": "Account",
-
   "settings_general_section_label": "General",
   "settings_privacy_controls_section_label": "Privacy Controls",
   "settings_feedback_controls_section_label": "Privacy Controls",
   "settings_logout_label": "Sign out",
-
   "account_personal_section_label": "Personal",
   "account_general_section_label": "General",
   "account_personal_information_label": "Personal information",
@@ -123,17 +126,14 @@
   "account_biometric_login_label": "Biometric authentication",
   "account_pid_section_label": "PID",
   "account_delete_wallet_label": "Delete wallet",
-
   "age_derived_claims_title": "Age derived claims",
   "age_derived_claims_screen_title": "Age derived claims",
   "age_dervived_claims_screen_description": "The age derived claims are there to proof your age to an other party without giving them your exact age to them.",
-
   "biometrics_title": "Do you want to enable Biometric authentication?",
   "biometrics_subtitle": "Use biometric login and authentication with your face or fingerprint for faster and easier access to your account.",
   "biometrics_description": "Your biometric information won’t be collected by Sphereon and will be used locally for verification purposes only",
   "biometrics_enable_text": "Enable now",
   "biometrics_disallow": "Maybe later",
-
   "onboarding_pid_security_model_title": "What PID security model would you use?",
   "onboarding_pid_security_model_subtitle": "Please note that this is a test/development option. You can not change it afterwards, without instantiating a new wallet.",
   "onboarding_pid_security_model_secure_element": "Secure element on phone",
@@ -142,7 +142,6 @@
   "onboarding_pid_security_model_eid_presentation": "Use eID card during presentation",
   "onboarding_pid_security_model_select": "Select",
   "onboarding_data_stored_locally_info": "Your data is only stored locally on your phone and is never shared without your consent.",
-
   "authentication_pin_code_title": "Enter your pin code",
   "authentication_pin_code_subtitle": "To confirm, please enter your pin code",
   "qr_scanner_marker_title": "Scan QR code",
@@ -197,6 +196,7 @@
   "credential_delete_message": "Are you sure you want to delete the credential: {{credentialName}}?",
   "credential_deleted_success_toast": "Credential successfully deleted",
   "credential_deleted_failed_toast": "Unable to delete the credential",
+  "credential_delete_wallet_identity_message": "The wallet identity credential cannot be deleted as it is the primary identity credential in your wallet.",
   "contact_add_new_contact_detected_title": "New contact detected",
   "contact_add_new_contact_detected_subtitle": "We have noticed that the other party in this credential exchange process is not yet in your contacts. You need to provide a name for this new contact in order to complete the exchange.",
   "contact_name_label": "Contact Name",
@@ -236,26 +236,19 @@
   "terms_of_service_decline_action_caption": "Exit app",
   "terms_of_service_title": "Terms of service",
   "terms_of_service_subtitle": "This document was last updated on January 5, 2023.",
-
   "pid_security_model_warning": "EID can will only loaded during presentation",
-
   "import_data_auth_title": "Enter your Sphereon PIN ",
   "import_data_auth_next": "Continue",
-
   "import_data_auth_biometrics_title": "Athenticate with Biometrics",
   "import_data_auth_failure_title": "Biometric authentication has failed, we didn't recognize you",
   "import_data_auth_failure_description": "You can’t continue at this point. The only way to finish the task you were doing, is by starting from the beginning. Close the app and reopen to restart the onboarding.",
-
   "import_data_auth_step_title": "Enter your sphereon pin",
   "import_data_consent_button_accept": "Yes, that's me",
   "import_data_consent_button_decline": "Not everything is correct",
   "import_data_loader_step_title": "One moment",
   "import_data_loader_step_subtitle": "Getting your personal information.",
-
   "import_data_final_step_title": "Your information is imported. Is it all correct?",
-
   "import_data_setup_complete_title": "Setup complete",
-
   "incorrect_data_title": "Are some of your details incorrect?",
   "incorrect_data_description": "If your personal information is incorrect, it can cause problems. Therefore do not add this data.",
   "incorrect_data_bullet_content_heading": "What can you do",
@@ -264,7 +257,6 @@
   "incorrect_data_dont_add_info": "Don't add this information",
   "incorrect_data_after_bullet_heading": "If it's not yours",
   "incorrect_data_after_bullet_content": "If the information is not your’s, don’t add it to your wallet.",
-
   "onboarding_esim_enter_details_title": "Enter eSim information",
   "onboarding_esim_enter_details_description": "Please provide your phone number and coupling code",
   "onboarding_esim_enter_details_msisdn_label": "Phone Number (MSISDN)",
@@ -273,7 +265,6 @@
   "onboarding_esim_enter_details_coupling_code_placeholder": "Enter coupling code",
   "onboarding_esim_enter_details_continue": "Continue",
   "onboarding_esim_enter_details_back": "Back",
-
   "onboarding_machine_activate_esim_error_title": "eSim activation failed",
   "onboarding_esim_error_couple_rp_failed": "The RP coupling step of the eSim activation failed",
   "onboarding_esim_error_bindkey_failed": "The bind-key step of the eSim activation failed",
@@ -281,13 +272,10 @@
   "onboarding_esim_error_check_sscd_failed": "The check-sscd step of the eSim activation failed",
   "onboarding_esim_error_enable_sscd_failed": "The enable-sscd step of the eSim activation failed",
   "onboarding_esim_error_cleanup_keys_failed": "The cleanup-keys step of the eSim activation failed",
-
   "import_data_title": "Import personal data",
-
   "onboarding_complete_title": "All done!",
   "onboarding_complete_description": "You are ready to receive and share identity details, credentials and more. ",
   "onboarding_complete_next": "Start exploring my Wallet",
-
   "scan_card_step_subtitle": "Hold your card to the back of the phone and press start reading.",
   "scan_card_step_title": "Scan to import your data",
   "personal_data_title": "Enter personal data",
@@ -595,18 +583,14 @@
   "new_contact_add_new_contact_contact_details_contacts_label": "Contacts",
   "new_contact_add_new_contact_low_level_trust_title": "Are you sure you want to continue?",
   "new_contact_add_new_contact_low_level_trust_description": "You are going to interact with a party that has a low level of trust.",
-
   "present_qr_code_screen_header_title": "Present QR code",
   "present_qr_code_screen_subtitle": "Show the QR code to the party of interest, so they can scan your QR code.",
   "present_qr_code_dropdown_item_text": "Present QR code",
   "present_qr_code_dropdown_item_accessibility_hint": "Navigate to a screen that shows the QR code to the party of interest.",
-
   "lock_dropdown_item_text": "Lock",
   "lock_dropdown_item_accessibility_hint": "Lock the wallet and return to the lock screen",
-
   "settings_language_section_label": "Language",
   "settings_language_system_default": "System default",
-
   "settings_privacy_security_section_label": "Privacy & Security",
   "settings_warn_on_external_link_label": "Warn when opening external links",
   "settings_warn_on_external_link_description": "Show a warning when opening external links from credentials",
@@ -615,5 +599,10 @@
   "settings_confirm_browser_open_label": "Confirm before opening browser",
   "settings_confirm_browser_open_description": "Ask for confirmation before opening the browser",
   "settings_show_claim_values_by_default_label": "Show claim values by default",
-  "settings_show_claim_values_by_default_description": "Display claim values without requiring a tap to reveal"
+  "settings_show_claim_values_by_default_description": "Display claim values without requiring a tap to reveal",
+  "account_first_name_label": "First name",
+  "account_last_name_label": "Last name",
+  "account_email_label": "Email",
+  "account_save_label": "Save",
+  "account_edit_label": "Edit"
 }

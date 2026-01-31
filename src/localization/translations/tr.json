@@ -192,6 +192,7 @@
   "credential_delete_message": "Kimlik bilgisi {{credentialName}} gerçekten silinsin mi?",
   "credential_deleted_success_toast": "Kimlik bilgisi silindi",
   "credential_deleted_failed_toast": "Kimlik bilgisi silinemedi",
+  "credential_delete_wallet_identity_message": "Cüzdan kimlik bilgisi, cüzdanınızdaki birincil kimlik bilgisi olduğu için silinemez.",
   "contact_add_new_contact_detected_title": "Yeni kişi algılandı",
   "contact_add_new_contact_detected_subtitle": "Bu kimlik bilgisi alışverişindeki diğer taraf henüz kişilerinizde değil. Alışverişi tamamlamak için bu yeni kişi için bir ad girmeniz gerekir.",
   "contact_name_label": "Kişi adı",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_label": "Tarayıcıyı açmadan önce onayla",
   "settings_confirm_browser_open_description": "Tarayıcıyı açmadan önce onay iste",
   "settings_show_claim_values_by_default_label": "Değerleri varsayılan olarak göster",
-  "settings_show_claim_values_by_default_description": "Değerleri ortaya çıkarmak için dokunmaya gerek kalmadan göster"
+  "settings_show_claim_values_by_default_description": "Değerleri ortaya çıkarmak için dokunmaya gerek kalmadan göster",
+  "account_first_name_label": "Ad",
+  "account_last_name_label": "Soyad",
+  "account_email_label": "E-posta",
+  "account_save_label": "Kaydet",
+  "account_edit_label": "DÃ¼zenle"
 }

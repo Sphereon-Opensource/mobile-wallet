@@ -205,6 +205,15 @@ export const AgeDerivedClaimsContainer = styled.View`
   width: 100%;
 `;
 
+export const PersonalInfoLabel = styled(SSITextH5LightStyled)`
+  color: #fbfbfbcc;
+  margin-bottom: 2px;
+`;
+
+export const PersonalInfoValue = styled(SSITextH3SemiBoldStyled)`
+  color: white;
+`;
+
 export const AgeDerivedClaimsScreenDescription = styled.Text`
   color: #fbfbfbcc;
   font-size: 16px;

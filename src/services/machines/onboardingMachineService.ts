@@ -22,6 +22,25 @@ import {getOrCreatePrimaryIdentifier} from '../identityService';
 import {getFirstKeyWithRelation} from '@sphereon/ssi-sdk-ext.did-utils';
 import {storeVerifiableCredential} from '../credentialService';
 import {Platform} from 'react-native';
+import {SupportedDidMethodEnum} from '../../types';
+import {v4 as uuidv4} from 'uuid';
+import {deleteVerifiableCredential, getVerifiableCredentialsFromStorage} from '../credentialService';
+import {updateUserInfo} from '../../store/actions/user.actions';
+import {getVerifiableCredentials} from '../../store/actions/credential.actions';
+import {getContacts} from '../../store/actions/contact.actions';
+import {CredentialPayload as CredentialPayloadType} from '@veramo/core';
+
+const DEFAULT_CREDENTIAL_DATA = {
+  didMethod: SupportedDidMethodEnum.DID_JWK,
+  didOptions: {type: 'Secp256r1'},
+  proofFormat: 'jwt' as const,
+  credential: {
+    vct: 'SphereonWalletIdentityCredential',
+    id: `urn:uuid:${uuidv4()}`,
+    issuanceDate: new Date(),
+    credentialSubject: {},
+  } as Partial<CredentialPayloadType>,
+};
 
 export const retrievePIDCredentials = async (context: Pick<OnboardingMachineContext, 'funkeProvider'>): Promise<Array<MappedCredential>> => {
   const {funkeProvider} = context;
@@ -156,7 +175,7 @@ export const setupWallet = async (
   return setup[2];
 };
 
-const createSelfIssuedCredential = async (
+export const createSelfIssuedCredential = async (
   context: Pick<OnboardingMachineContext, 'emailAddress' | 'name' | 'credentialData'>,
 ): Promise<DigitalCredential> => {
   const {emailAddress, name, credentialData} = context;
@@ -205,6 +224,43 @@ const createSelfIssuedCredential = async (
     vc: verifiableCredential.credential,
     kmsKeyRef: key.kid,
   });
+};
+
+export const reissueWalletIdentityCredential = async (args: {
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+}): Promise<void> => {
+  const activeUser = store.getState().user.activeUser!;
+
+  // Find and delete old wallet identity credential
+  const creds = await getVerifiableCredentialsFromStorage();
+  const walletCred = creds.find(c => activeUser.identifiers.some(id => id.did === c.digitalCredential.issuerCorrelationId));
+  if (walletCred?.digitalCredential?.hash) {
+    await deleteVerifiableCredential({hash: walletCred.digitalCredential.hash});
+  }
+
+  // Create new credential with updated data
+  const newCred = await createSelfIssuedCredential({
+    emailAddress: args.emailAddress,
+    name: `${args.firstName} ${args.lastName}`.trim(),
+    credentialData: DEFAULT_CREDENTIAL_DATA,
+  });
+
+  // Add branding
+  await agent.ibAddCredentialBranding({
+    vcHash: newCred.hash,
+    issuerCorrelationId: newCred.issuerCorrelationId,
+    localeBranding: [SphereonWalletIdentityBranding],
+  });
+
+  // Update user record
+  const updatedUser = {...activeUser, ...args};
+  await store.dispatch<any>(updateUserInfo(updatedUser));
+
+  // Refresh contacts (rebuilds user contact with updated displayName) then credentials
+  await store.dispatch<any>(getContacts());
+  await store.dispatch<any>(getVerifiableCredentials());
 };
 
 const storeUser = async (

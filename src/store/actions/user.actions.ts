@@ -116,6 +116,20 @@ export const setViewPreference = (
   };
 };
 
+export const updateUserInfo = (user: IUser): ThunkAction<Promise<IUser>, RootState, unknown, Action> => {
+  return async (dispatch: ThunkDispatch<RootState, unknown, Action>): Promise<IUser> => {
+    return userServiceUpdateUser(user)
+      .then((updated: IUser) => {
+        dispatch({type: UPDATE_USER_SUCCESS, payload: updated});
+        return updated;
+      })
+      .catch((error: Error) => {
+        dispatch({type: UPDATE_USER_FAILED});
+        return Promise.reject(error);
+      });
+  };
+};
+
 export const login = (userId: string): ThunkAction<Promise<void>, RootState, unknown, Action> => {
   return async (dispatch: ThunkDispatch<RootState, unknown, Action>, getState: CombinedState<any>) => {
     dispatch({type: USERS_LOADING});

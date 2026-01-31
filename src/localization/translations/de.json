@@ -192,6 +192,7 @@
   "credential_delete_message": "Bist du sicher, dass du den Nachweis löschen möchtest: {{credentialName}}?",
   "credential_deleted_success_toast": "Nachweis erfolgreich gelöscht",
   "credential_deleted_failed_toast": "Nachweis konnte nicht gelöscht werden",
+  "credential_delete_wallet_identity_message": "Die Wallet-Identitätsberechtigung kann nicht gelöscht werden, da sie die primäre Identitätsberechtigung in Ihrer Wallet ist.",
   "contact_add_new_contact_detected_title": "Neuer Kontakt erkannt",
   "contact_add_new_contact_detected_subtitle": "Wir haben festgestellt, dass die andere Partei in diesem Nachweisaustauschprozess noch nicht in deinen Kontakten ist. Du musst einen Namen für diesen neuen Kontakt angeben, um den Austausch abzuschließen.",
   "contact_name_label": "Kontaktname",
@@ -598,5 +599,10 @@
   "credential_details_open_link_warning_title": "Externen Link öffnen?",
   "credential_details_open_link_warning_description": "Das Öffnen dieses Links könnte ein Datenschutzrisiko darstellen, wenn die URL für diese Anmeldeinformation eindeutig ist. Die externe Partei könnte Sie identifizieren.",
   "credential_details_open_link_warning_proceed": "Link öffnen",
-  "credential_details_open_link_warning_cancel": "Abbrechen"
+  "credential_details_open_link_warning_cancel": "Abbrechen",
+  "account_first_name_label": "Vorname",
+  "account_last_name_label": "Nachname",
+  "account_email_label": "E-Mail",
+  "account_save_label": "Speichern",
+  "account_edit_label": "Bearbeiten"
 }

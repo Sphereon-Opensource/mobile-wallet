@@ -11,17 +11,18 @@ import CredentialCardStackView from '../../components/views/CredentialCardStackV
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {translate} from '../../localization/Localization';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {CreditOverviewStackParamsList, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
+import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 
 type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
   verifiableCredentials: Array<CredentialSummary>;
+  activeUser: IUser | undefined;
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
   setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
 const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
-  const {setViewPreference, verifiableCredentials, deleteVerifiableCredential, getVerifiableCredentials, navigation} = props;
+  const {setViewPreference, verifiableCredentials, activeUser, deleteVerifiableCredential, getVerifiableCredentials, navigation} = props;
   const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
@@ -53,12 +54,11 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
         caption: translate('action_confirm_label'),
         onPress: async () => {
           deleteVerifiableCredential(credentialHash);
-          navigation.getParent()?.goBack();
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => navigation.getParent()?.goBack(),
+        onPress: async () => {},
       },
     });
   };
@@ -70,7 +70,24 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
         accessibilityLabel="Credentials"
         credentials={verifiableCredentials}
         onPress={onItemPress}
-        onSwipe={async credential => onDelete(credential.hash, credential.branding?.alias ?? credential.title)}
+        onSwipe={async credential => {
+          const isWalletIdentity =
+            activeUser?.identifiers?.some(
+              (identifier: IUserIdentifier) => credential.issuer.name === identifier.did && credential.title === 'SphereonWalletIdentityCredential',
+            ) ?? false;
+          if (isWalletIdentity) {
+            navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+              title: translate('credential_delete_title'),
+              details: translate('credential_delete_wallet_identity_message'),
+              primaryButton: {
+                caption: translate('action_cancel_label'),
+                onPress: async () => {},
+              },
+            });
+          } else {
+            await onDelete(credential.hash, credential.branding?.alias ?? credential.title);
+          }
+        }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
     </Container>
@@ -80,6 +97,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
 const mapStateToProps = (state: RootState) => {
   return {
     verifiableCredentials: state.credential.verifiableCredentials,
+    activeUser: state.user.activeUser,
   };
 };
 

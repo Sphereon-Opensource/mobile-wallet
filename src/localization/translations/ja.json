@@ -192,6 +192,7 @@
   "credential_delete_message": "資格 {{credentialName}} を本当に削除しますか？",
   "credential_deleted_success_toast": "資格を削除しました",
   "credential_deleted_failed_toast": "資格を削除できませんでした",
+  "credential_delete_wallet_identity_message": "ウォレットIDクレデンシャルは、ウォレットの主要なIDクレデンシャルであるため削除できません。",
   "contact_add_new_contact_detected_title": "新しい連絡先を検出しました",
   "contact_add_new_contact_detected_subtitle": "この資格交換プロセスの相手はまだ連絡先にありません。交換を完了するには新しい連絡先の名前を入力する必要があります。",
   "contact_name_label": "連絡先名",
@@ -598,5 +599,10 @@
   "settings_confirm_browser_open_label": "ブラウザを開く前に確認する",
   "settings_confirm_browser_open_description": "ブラウザを開く前に確認を求めます",
   "settings_show_claim_values_by_default_label": "デフォルトで値を表示する",
-  "settings_show_claim_values_by_default_description": "タップせずに値を表示します"
+  "settings_show_claim_values_by_default_description": "タップせずに値を表示します",
+  "account_first_name_label": "名",
+  "account_last_name_label": "姓",
+  "account_email_label": "メールアドレス",
+  "account_save_label": "保存",
+  "account_edit_label": "ç·¨é›†"
 }

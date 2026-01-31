@@ -9,6 +9,8 @@ import {
   MenuItemRow,
   MenuItemText,
   MoreContainer,
+  PersonalInfoLabel,
+  PersonalInfoValue,
   ProviderCardRow,
   ProviderDescription,
   ProviderMiniCardImage,
@@ -24,7 +26,7 @@ import AusweisIcon from '../../../components/assets/icons/AusweisIcon';
 import {SSITextH3LightStyled, SSITextH4LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {ImportInformationSummary} from '../../Onboarding/ImportDataConsentScreen/components/ImportInformationSummary';
 import {AusweisRequestedInfoItem} from '../../Onboarding/ImportDataConsentScreen/constants';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import SSIProfileIcon from '../../../components/assets/icons/SSIProfileIcon';
 import {NavigationItem} from '../SettingsScreen';
 import AgeIcon from '../../../components/assets/icons/AgeIcon';
@@ -33,10 +35,14 @@ import {AgeDerivedClaimsPreview} from '../AgeDerivedClaimsScreen';
 import {useDeleteWallet} from '../../../hooks/use-delete-wallet';
 import {getVerifiableCredentialsFromStorage} from '../../../services/credentialService';
 import {RegulationType} from '@sphereon/ssi-sdk.data-store-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
 import {convertFromPIDPayload} from '../../Onboarding/ImportDataConsentScreen/util';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import SSITextInputControlledField from '../../../components/fields/SSITextInputControlledField';
+import {PrimaryButton, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
+import {reissueWalletIdentityCredential} from '../../../services/machines/onboardingMachineService';
+import {authenticate} from '../../../services/authenticationService';
 
 const AccountScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -44,6 +50,45 @@ const AccountScreen = () => {
   const deleteWallet = useDeleteWallet();
   const [pidInfo, setPidInfo] = useState<Array<AusweisRequestedInfoItem>>([]);
   const [pid, setPid] = useState<UniqueDigitalCredential | undefined>();
+  const [editing, setEditing] = useState(false);
+  const [firstName, setFirstName] = useState(activeUser?.firstName ?? '');
+  const [lastName, setLastName] = useState(activeUser?.lastName ?? '');
+  const [emailAddress, setEmailAddress] = useState(activeUser?.emailAddress ?? '');
+  const [saving, setSaving] = useState(false);
+
+  const isDirty = useMemo(
+    () => firstName !== (activeUser?.firstName ?? '') || lastName !== (activeUser?.lastName ?? '') || emailAddress !== (activeUser?.emailAddress ?? ''),
+    [firstName, lastName, emailAddress, activeUser],
+  );
+
+  const handleEdit = () => {
+    setFirstName(activeUser?.firstName ?? '');
+    setLastName(activeUser?.lastName ?? '');
+    setEmailAddress(activeUser?.emailAddress ?? '');
+    setEditing(true);
+  };
+
+  const handleCancel = () => {
+    setFirstName(activeUser?.firstName ?? '');
+    setLastName(activeUser?.lastName ?? '');
+    setEmailAddress(activeUser?.emailAddress ?? '');
+    setEditing(false);
+  };
+
+  const handleSave = async () => {
+    await authenticate(async () => {
+      navigation.goBack();
+      setSaving(true);
+      try {
+        await reissueWalletIdentityCredential({firstName, lastName, emailAddress});
+        setEditing(false);
+      } catch (e) {
+        console.error('Failed to save account info:', e);
+      } finally {
+        setSaving(false);
+      }
+    });
+  };
 
   useEffect(() => {
     getVerifiableCredentialsFromStorage({regulationTypes: [RegulationType.PID], parentsOnly: true}).then(pid => {
@@ -66,14 +111,60 @@ const AccountScreen = () => {
               <AccountType>{translate('account_personal_section_label')}</AccountType>
             </AccountUserInfoContainer>
             <SettingsSection style={{paddingTop: 0, paddingBottom: 0}}></SettingsSection>
-            <SectionTitle>{translate('account_general_section_label')}</SectionTitle>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingRight: 24}}>
+              <SectionTitle>{translate('account_personal_information_label')}</SectionTitle>
+              {!editing && (
+                <PersonalInfoLabel onPress={handleEdit} style={{color: '#7B61FF'}}>
+                  {translate('account_edit_label')}
+                </PersonalInfoLabel>
+              )}
+            </View>
             <Divider />
-            <SettingsSection>
-              <MenuItemRow>
-                <SSIPersonIcon color="white" />
-                <MenuItemText>{translate('account_personal_information_label')}</MenuItemText>
-              </MenuItemRow>
-            </SettingsSection>
+            {editing ? (
+              <SettingsSection style={{gap: 12}}>
+                <SSITextInputControlledField
+                  label={translate('account_first_name_label')}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  editable={!saving}
+                />
+                <SSITextInputControlledField
+                  label={translate('account_last_name_label')}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  editable={!saving}
+                />
+                <SSITextInputControlledField
+                  label={translate('account_email_label')}
+                  value={emailAddress}
+                  onChangeText={setEmailAddress}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  editable={!saving}
+                />
+                <View style={{gap: 12, marginTop: 8}}>
+                  {isDirty && (
+                    <PrimaryButton caption={saving ? '...' : translate('account_save_label')} onPress={handleSave} disabled={saving} />
+                  )}
+                  <SecondaryButton caption={translate('action_cancel_label')} onPress={handleCancel} disabled={saving} />
+                </View>
+              </SettingsSection>
+            ) : (
+              <SettingsSection style={{gap: 12}}>
+                <View>
+                  <PersonalInfoLabel>{translate('account_first_name_label')}</PersonalInfoLabel>
+                  <PersonalInfoValue>{activeUser?.firstName || '—'}</PersonalInfoValue>
+                </View>
+                <View>
+                  <PersonalInfoLabel>{translate('account_last_name_label')}</PersonalInfoLabel>
+                  <PersonalInfoValue>{activeUser?.lastName || '—'}</PersonalInfoValue>
+                </View>
+                <View>
+                  <PersonalInfoLabel>{translate('account_email_label')}</PersonalInfoLabel>
+                  <PersonalInfoValue>{activeUser?.emailAddress || '—'}</PersonalInfoValue>
+                </View>
+              </SettingsSection>
+            )}
             {pidInfo.length > 0 && (
               <>
                 <SectionTitle>{translate('account_pid_section_label')}</SectionTitle>

@@ -1,11 +1,11 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {BarcodeScanningResult, Camera} from 'expo-camera';
+import {BarcodeScanningResult, Camera, CameraView} from 'expo-camera';
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Platform, StatusBar, Text} from 'react-native';
+import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
 import SSIQRCustomMarker from '../../components/qrCodes/SSIQRCustomMarker';
 import {translate} from '../../localization/Localization';
 import {onQRScanned} from '../../services/qrService';
-import {SSIBasicContainerStyled, SSIQRReaderScreenScannerStyled as QRScanner} from '../../styles/components';
+import {SSIBasicContainerStyled} from '../../styles/components';
 import {PlatformsEnum, ScreenRoutesEnum, StackParamList} from '../../types';
 import {Chat} from '../../components/chat/Chat';
 
@@ -52,13 +52,17 @@ const SSIQRReaderScreen: FC<Props> = (props: Props): JSX.Element => {
   return (
     <SSIBasicContainerStyled>
       {!scanned && (
-        <QRScanner
-          onBarcodeScanned={onBarcodeScanned}
-          barcodeScannerSettings={{
-            barcodeTypes: ['qr'],
-          }}>
+        <View style={StyleSheet.absoluteFill}>
+          <CameraView
+            mute
+            onBarcodeScanned={onBarcodeScanned}
+            barcodeScannerSettings={{
+              barcodeTypes: ['qr'],
+            }}
+            style={StyleSheet.absoluteFill}
+          />
           <SSIQRCustomMarker title={translate('qr_scanner_marker_title')} subtitle={translate('qr_scanner_marker_subtitle')} />
-        </QRScanner>
+        </View>
       )}
 
       <Chat screenContext="you are in the qr scanner screen. User can point the camera at a qr code provided by an issuer to scan it." />

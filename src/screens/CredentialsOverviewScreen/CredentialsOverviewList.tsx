@@ -2,13 +2,13 @@ import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {backgroundColors, borderColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, {FC, ReactElement, useCallback, useState} from 'react';
-import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
+import React, {FC, ReactElement, useCallback, useRef, useState} from 'react';
+import {FlatList, ListRenderItemInfo, RefreshControl, View} from 'react-native';
+import {Swipeable} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
-import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
+import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
@@ -28,6 +28,7 @@ type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreferenc
 const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
   const {setViewPreference, navigation, verifiableCredentials, activeUser, getVerifiableCredentials, deleteVerifiableCredential} = props;
   const [refreshing, setRefreshing] = useState(false);
+  const swipeableRefs = useRef<Map<string, Swipeable | null>>(new Map());
 
   useFocusEffect(
     useCallback(() => {
@@ -40,6 +41,19 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     setRefreshing(false);
   };
 
+  const isWalletIdentityCredential = (credential: CredentialSummary): boolean =>
+    activeUser?.identifiers?.some(
+      (identifier: IUserIdentifier) => credential.issuer.name === identifier.did && credential.title === 'SphereonWalletIdentityCredential',
+    ) ?? false;
+
+  const closeAllSwipeables = (exceptHash?: string): void => {
+    swipeableRefs.current.forEach((ref, hash) => {
+      if (hash !== exceptHash) {
+        ref?.close();
+      }
+    });
+  };
+
   const onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
     navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_delete_title'),
@@ -48,14 +62,28 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
         caption: translate('action_confirm_label'),
         onPress: async () => {
           deleteVerifiableCredential(credentialHash);
-          navigation.getParent()?.goBack();
         },
       },
       secondaryButton: {
         caption: translate('action_cancel_label'),
-        onPress: async () => navigation.getParent()?.goBack(),
+        onPress: async () => {},
       },
     });
+  };
+
+  const onDeleteProtected = async (credential: CredentialSummary): Promise<void> => {
+    if (isWalletIdentityCredential(credential)) {
+      navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+        title: translate('credential_delete_title'),
+        details: translate('credential_delete_wallet_identity_message'),
+        primaryButton: {
+          caption: translate('action_cancel_label'),
+          onPress: async () => {},
+        },
+      });
+    } else {
+      await onDelete(credential.hash, credential.branding?.alias ?? credential.title);
+    }
   };
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
@@ -68,87 +96,80 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     );
   };
 
-  const renderItem = (itemInfo: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
+  const renderItem = ({item, index}: ListRenderItemInfo<CredentialSummary>): JSX.Element => {
     const credentialItem = (
       <SSICredentialViewItem
-        hash={itemInfo.item.hash}
-        id={itemInfo.item.id}
-        branding={itemInfo.item.branding}
-        title={itemInfo.item.branding?.alias ?? itemInfo.item.title}
-        issuer={itemInfo.item.issuer}
-        issueDate={itemInfo.item.issueDate}
-        expirationDate={itemInfo.item.expirationDate}
-        credentialStatus={itemInfo.item.credentialStatus}
+        hash={item.hash}
+        id={item.id}
+        branding={item.branding}
+        title={item.branding?.alias ?? item.title}
+        issuer={item.issuer}
+        issueDate={item.issueDate}
+        expirationDate={item.expirationDate}
+        credentialStatus={item.credentialStatus}
         properties={[]}
-        credentialRole={itemInfo.item.credentialRole}
+        credentialRole={item.credentialRole}
       />
     );
 
     const backgroundStyle = {
-      backgroundColor: itemInfo.index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
+      backgroundColor: index % 2 === 0 ? backgroundColors.secondaryDark : backgroundColors.primaryDark,
     };
     const style = {
       ...backgroundStyle,
-      ...(itemInfo.index === verifiableCredentials.length - 1 &&
-        itemInfo.index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
+      ...(index === verifiableCredentials.length - 1 &&
+        index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     const accessibility = {
-      accessibilityLabel: `${itemInfo.item.branding?.alias ?? itemInfo.item.title}. Issued by: ${
-        itemInfo.item.issuer.alias ?? itemInfo.item.issuer.name
-      }, on: ${toLocalDateString(itemInfo.item.issueDate)}. Expires on: ${toLocalDateString(itemInfo.item.expirationDate)}. Status: ${
-        itemInfo.item.credentialStatus
-      }`,
+      accessibilityLabel: `${item.branding?.alias ?? item.title}. Issued by: ${
+        item.issuer.alias ?? item.issuer.name
+      }, on: ${toLocalDateString(item.issueDate)}. Expires on: ${toLocalDateString(item.expirationDate)}. Status: ${item.credentialStatus}`,
       accessibilityHint: 'Go to credential details',
     };
 
-    return activeUser.identifiers.some(
-      (identifier: IUserIdentifier) => itemInfo.item.issuer.name === identifier.did && itemInfo.item.title === 'SphereonWalletIdentityCredential',
-    ) ? (
-      <ItemContainer style={style} onPress={() => onItemPress(itemInfo.item)} accessible {...accessibility}>
-        {credentialItem}
-      </ItemContainer>
-    ) : (
+    return (
       <View
         accessible
         {...accessibility}
         accessibilityActions={[{name: 'delete', label: 'delete credential'}, {name: 'activate'}]}
         onAccessibilityAction={event => {
-          {
-            switch (event.nativeEvent.actionName) {
-              case 'delete':
-                void onDelete(itemInfo.item.hash, itemInfo.item.title);
-                break;
-              case 'activate':
-                void onItemPress(itemInfo.item);
-                break;
-            }
+          switch (event.nativeEvent.actionName) {
+            case 'delete':
+              void onDeleteProtected(item);
+              break;
+            case 'activate':
+              void onItemPress(item);
+              break;
           }
         }}>
-        <View importantForAccessibility="no-hide-descendants">
-          <SSISwipeRowViewItem
-            style={style}
-            hiddenStyle={backgroundStyle}
-            viewItem={credentialItem}
-            onPress={() => onItemPress(itemInfo.item)}
-            onDelete={() => onDelete(itemInfo.item.hash, itemInfo.item.branding?.alias ?? itemInfo.item.title)}
-          />
-        </View>
+        <Swipeable
+          ref={ref => swipeableRefs.current.set(item.hash, ref)}
+          renderRightActions={() => (
+            <SSISwipeDeleteButton
+              onPress={() => {
+                swipeableRefs.current.get(item.hash)?.close();
+                onDeleteProtected(item);
+              }}
+            />
+          )}
+          onSwipeableWillOpen={() => closeAllSwipeables(item.hash)}>
+          <ItemContainer style={style} onPress={() => onItemPress(item)}>
+            <View importantForAccessibility="no-hide-descendants">{credentialItem}</View>
+          </ItemContainer>
+        </Swipeable>
       </View>
     );
   };
 
   return (
-    <SwipeListView
+    <FlatList
       accessibilityRole="list"
       accessibilityLabel="Credentials"
       style={{backgroundColor: backgroundColors.primaryDark, borderTopColor: '#404D7A', borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0}}
       data={verifiableCredentials}
-      keyExtractor={(itemInfo: CredentialSummary) => itemInfo.hash}
+      keyExtractor={(item: CredentialSummary) => item.hash}
       renderItem={renderItem}
-      closeOnRowOpen
-      closeOnRowBeginSwipe
-      useFlatList
       initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
       removeClippedSubviews
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

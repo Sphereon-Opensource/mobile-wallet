@@ -192,6 +192,7 @@
   "credential_delete_message": "Är du säker på att du vill ta bort intyget: {{credentialName}}?",
   "credential_deleted_success_toast": "Intyg borttaget",
   "credential_deleted_failed_toast": "Kan inte ta bort intyget",
+  "credential_delete_wallet_identity_message": "Plånbokens identitetsuppgift kan inte raderas eftersom den är den primära identitetsuppgiften i din plånbok.",
   "contact_add_new_contact_detected_title": "Ny kontakt upptäckt",
   "contact_add_new_contact_detected_subtitle": "Vi märkte att motparten i detta intygsutbyte ännu inte finns i dina kontakter. Du måste ange ett namn för den nya kontakten för att slutföra utbytet.",
   "contact_name_label": "Kontaktnamn",
@@ -598,5 +599,10 @@
   "credential_details_open_link_warning_title": "Öppna extern länk?",
   "credential_details_open_link_warning_description": "Att öppna denna länk kan innebära en integritetsrisk om URL:en är unik för denna legitimation. Den externa parten kan eventuellt identifiera dig.",
   "credential_details_open_link_warning_proceed": "Öppna länk",
-  "credential_details_open_link_warning_cancel": "Avbryt"
+  "credential_details_open_link_warning_cancel": "Avbryt",
+  "account_first_name_label": "Förnamn",
+  "account_last_name_label": "Efternamn",
+  "account_email_label": "E-post",
+  "account_save_label": "Spara",
+  "account_edit_label": "Redigera"
 }
