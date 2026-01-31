@@ -272,7 +272,9 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
       data: url,
     });
     const callbackScheme = 'com.sphereon.ssi.wallet'
+    IntentHandler.getInstance().setAuthSessionActive(true);
     const result = await WebBrowser.openAuthSessionAsync(url, `${callbackScheme}://oid4vci-callback`)
+    IntentHandler.getInstance().setAuthSessionActive(false);
     debug('onOpenAuthorizationUrl auth session result: ', JSON.stringify(result))
     if (result.type === 'success' && result.url) {
       oid4vciMachine.send({

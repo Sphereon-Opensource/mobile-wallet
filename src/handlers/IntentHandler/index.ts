@@ -25,12 +25,21 @@ class IntentHandler {
   private shareListener: ShareListener;
   private _initialUrl?: string;
   private _enabled = false;
+  private _authSessionActive = false;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   public isEnabled(): boolean {
     return this._enabled;
+  }
+
+  public setAuthSessionActive(active: boolean): void {
+    this._authSessionActive = active;
+  }
+
+  public isAuthSessionActive(): boolean {
+    return this._authSessionActive;
   }
 
   public enable = async (): Promise<void> => {
@@ -127,7 +136,15 @@ class IntentHandler {
     if (event.url) {
       debug(`Deeplink for running app: ${event.url}`);
       this._initialUrl = event.url;
-      WebBrowser.dismissAuthSession()
+      if (this._authSessionActive) {
+        debug('Dismissing active auth session due to incoming deep link');
+        this._authSessionActive = false;
+        try {
+          WebBrowser.dismissAuthSession();
+        } catch (error) {
+          debug(`Failed to dismiss auth session: ${error}`);
+        }
+      }
     } else {
       debug(`No deeplink for running app. Event: ${JSON.stringify(event)}`);
     }
