@@ -107,6 +107,7 @@
   "credential_details_open_link_warning_cancel": "Cancel",
   "credential_details_show_values": "Show values",
   "credential_details_hide_values": "Hide values",
+  "credential_details_card_information": "Card information",
   "credential_details_values_redacted": "Values are redacted",
   "credentials_view_item_expires_on": "Expires on",
   "swipe_delete_button_caption": "Delete",

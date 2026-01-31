@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Emès per",
   "credential_details_show_values": "Mostra els valors",
   "credential_details_hide_values": "Amaga els valors",
+  "credential_details_card_information": "Informació de la targeta",
   "credential_details_values_redacted": "Els valors estan ocults",
   "credentials_view_item_expires_on": "Caduca el",
   "swipe_delete_button_caption": "Eliminar",

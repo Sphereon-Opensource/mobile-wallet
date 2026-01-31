@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Utfärdad av",
   "credential_details_show_values": "Visa värden",
   "credential_details_hide_values": "Dölj värden",
+  "credential_details_card_information": "Kortinformation",
   "credential_details_values_redacted": "Värden är dolda",
   "credentials_view_item_expires_on": "Går ut",
   "swipe_delete_button_caption": "Ta bort",

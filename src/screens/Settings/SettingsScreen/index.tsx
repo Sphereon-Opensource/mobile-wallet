@@ -98,7 +98,7 @@ const SettingsScreen = () => {
                 text={
                   <View style={{flex: 1}}>
                     <UserName>{activeUser?.firstName + ' ' + activeUser?.lastName}</UserName>
-                    <SSITextH5LightStyled>Personal</SSITextH5LightStyled>
+                    <SSITextH5LightStyled>{translate('account_personal_section_label')}</SSITextH5LightStyled>
                   </View>
                 }
               />

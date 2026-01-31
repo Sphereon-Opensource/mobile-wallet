@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Düzenleyen",
   "credential_details_show_values": "Değerleri göster",
   "credential_details_hide_values": "Değerleri gizle",
+  "credential_details_card_information": "Kart bilgileri",
   "credential_details_values_redacted": "Değerler gizlendi",
   "credentials_view_item_expires_on": "Son kullanma tarihi",
   "swipe_delete_button_caption": "Sil",

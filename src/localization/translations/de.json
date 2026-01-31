@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Ausgestellt von",
   "credential_details_show_values": "Werte anzeigen",
   "credential_details_hide_values": "Werte ausblenden",
+  "credential_details_card_information": "Karteninformationen",
   "credential_details_values_redacted": "Werte sind ausgeblendet",
   "credentials_view_item_expires_on": "Läuft ab am",
   "swipe_delete_button_caption": "Löschen",

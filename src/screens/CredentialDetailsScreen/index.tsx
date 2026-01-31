@@ -226,7 +226,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             borderBottomWidth: 1,
             borderBottomColor: '#404D7A',
           }}>
-          <SSITextH3LightStyled accessibilityRole="header">Card information</SSITextH3LightStyled>
+          <SSITextH3LightStyled accessibilityRole="header">{translate('credential_details_card_information')}</SSITextH3LightStyled>
           <Pressable
             onPress={() => setValuesVisible(v => !v)}
             accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}

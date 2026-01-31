@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Myöntäjä",
   "credential_details_show_values": "Näytä arvot",
   "credential_details_hide_values": "Piilota arvot",
+  "credential_details_card_information": "Kortin tiedot",
   "credential_details_values_redacted": "Arvot on piilotettu",
   "credentials_view_item_expires_on": "Vanhenee",
   "swipe_delete_button_caption": "Poista",

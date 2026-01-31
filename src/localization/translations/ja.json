@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "発行者",
   "credential_details_show_values": "値を表示",
   "credential_details_hide_values": "値を非表示",
+  "credential_details_card_information": "カード情報",
   "credential_details_values_redacted": "値は非表示です",
   "credentials_view_item_expires_on": "有効期限",
   "swipe_delete_button_caption": "削除",

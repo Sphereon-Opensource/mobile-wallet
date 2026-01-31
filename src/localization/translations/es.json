@@ -103,6 +103,7 @@
   "credential_details_view_issued_by": "Emitido por",
   "credential_details_show_values": "Mostrar valores",
   "credential_details_hide_values": "Ocultar valores",
+  "credential_details_card_information": "Información de la tarjeta",
   "credential_details_values_redacted": "Los valores están ocultos",
   "credentials_view_item_expires_on": "Expira el",
   "swipe_delete_button_caption": "Eliminar",

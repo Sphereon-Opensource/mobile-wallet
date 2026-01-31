@@ -107,6 +107,7 @@
   "credential_details_open_link_warning_cancel": "Annuleren",
   "credential_details_show_values": "Waarden tonen",
   "credential_details_hide_values": "Waarden verbergen",
+  "credential_details_card_information": "Kaartinformatie",
   "credential_details_values_redacted": "Waarden zijn verborgen",
   "credentials_view_item_expires_on": "Verloopt op",
   "swipe_delete_button_caption": "Verwijderen",

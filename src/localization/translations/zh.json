@@ -107,6 +107,7 @@
   "credential_details_open_link_warning_cancel": "取消",
   "credential_details_show_values": "显示值",
   "credential_details_hide_values": "隐藏值",
+  "credential_details_card_information": "卡片信息",
   "credential_details_values_redacted": "值已隐去",
   "credentials_view_item_expires_on": "到期日",
   "swipe_delete_button_caption": "删除",
