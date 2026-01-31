@@ -4898,7 +4898,7 @@ __metadata:
     "@scure/base": "npm:^1.1.7"
     "@sd-jwt/sd-jwt-vc": "patch:@sd-jwt/sd-jwt-vc@npm%3A0.15.1#~/patches/@sd-jwt-sd-jwt-vc-npm-0.15.1-49083b7f21.patch"
     "@sd-jwt/types": "npm:^0.7.2"
-    "@sphereon/did-auth-siop": "patch:@sphereon/did-auth-siop@npm%3A0.20.1#~/patches/@sphereon-did-auth-siop-npm-0.20.1-592a249255.patch"
+    "@sphereon/did-auth-siop": "npm:0.20.1"
     "@sphereon/did-auth-siop-adapter": "npm:0.20.1"
     "@sphereon/did-provider-oyd": "npm:0.37.0"
     "@sphereon/kmp-mdoc-core": "npm:0.2.0-SNAPSHOT.27"
