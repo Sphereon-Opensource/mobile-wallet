@@ -2609,6 +2609,7 @@ SPEC REPOS:
     - MMKV
     - MMKVCore
     - React-Codegen
+    - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
     - ZXingObjC
@@ -3000,6 +3001,6 @@ SPEC CHECKSUMS:
   YubiKit: 390e7733942f9518f9b3f5890c60914f7b8d74c8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: b73998a66aea09007c621792e190feaeabfffd09
+PODFILE CHECKSUM: 08e308ecf46961b05241eee3e9e15ed62508ba6d
 
 COCOAPODS: 1.15.2

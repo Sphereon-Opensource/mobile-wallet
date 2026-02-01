@@ -142,14 +142,29 @@ source 'https://cdn.cocoapods.org'
 
           # Define FOLLY_NO_CONFIG to skip folly-config.h which isn't generated
           # Define FOLLY_CFG_NO_COROUTINES to skip coroutine support
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_NO_CONFIG=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_MOBILE=1'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+          defs = config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)']
+          %w[FOLLY_NO_CONFIG=1 FOLLY_MOBILE=1 FOLLY_CFG_NO_COROUTINES=1].each do |d|
+            defs << d unless defs.include?(d)
+          end
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
 
           # Disable sized deallocation to fix folly/lang/New.h compilation with Xcode 16
-          config.build_settings['OTHER_CPLUSPLUSFLAGS'] ||= ['$(inherited)']
-          config.build_settings['OTHER_CPLUSPLUSFLAGS'] << '-fno-sized-deallocation'
+          cxxflags = config.build_settings['OTHER_CPLUSPLUSFLAGS'] || '$(inherited)'
+          cxxflags = cxxflags.is_a?(Array) ? cxxflags : cxxflags.split(' ')
+          cxxflags = cxxflags.reject { |f| f.include?('-DNDEBUG') }
+          cxxflags << '-fno-sized-deallocation' unless cxxflags.include?('-fno-sized-deallocation')
+          config.build_settings['OTHER_CPLUSPLUSFLAGS'] = cxxflags
+
+          # Remove -DNDEBUG from OTHER_CFLAGS to prevent 'NDEBUG macro redefined' error
+          # (Xcode already defines NDEBUG for Release via built-in settings)
+          if config.name == 'Release'
+            cflags = config.build_settings['OTHER_CFLAGS']
+            if cflags
+              cflags = cflags.is_a?(Array) ? cflags : cflags.split(' ')
+              cflags = cflags.reject { |f| f == '-DNDEBUG' }
+              config.build_settings['OTHER_CFLAGS'] = cflags
+            end
+          end
 
           # Disable C++ modules entirely - use textual includes instead
           # This is the most reliable fix for glog namespace issues
@@ -183,6 +198,23 @@ source 'https://cdn.cocoapods.org'
       expo_patch_react_imports!(installer)
     rescue => e
       Pod::UI.warn e
+    end
+
+    # Remove all NDEBUG definitions from xcconfig files to fix 'NDEBUG macro redefined' build error.
+    # The compiler already defines NDEBUG for Release builds via Xcode's built-in settings.
+    # RNReanimated's GCC_PREPROCESSOR_DEFINITIONS[config=Release] adds a duplicate NDEBUG=1,
+    # and OTHER_C*FLAGS may also add -DNDEBUG, causing redefinition errors.
+    Dir.glob(File.join(installer.sandbox.root, 'Target Support Files', '**', '*.xcconfig')).each do |xcconfig_path|
+      content = File.read(xcconfig_path)
+      modified = content
+      # Remove -DNDEBUG from OTHER_CFLAGS / OTHER_CPLUSPLUSFLAGS
+      modified = modified.gsub(/ -DNDEBUG(?!=)/, '')
+      # Remove NDEBUG=1 from GCC_PREPROCESSOR_DEFINITIONS lines
+      modified = modified.gsub(/ NDEBUG=1/, '')
+      if modified != content
+        File.write(xcconfig_path, modified)
+        Pod::UI.puts "Removed NDEBUG definitions from #{File.basename(xcconfig_path)}"
+      end
     end
   end
 end
