@@ -1,0 +1,14 @@
+D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\deps\serde-de6ab088c0c5903e.d: C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\build\serde-850067089080dfc7\out/private.rs
+
+D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\deps\libserde-de6ab088c0c5903e.rlib: C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\build\serde-850067089080dfc7\out/private.rs
+
+D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\deps\libserde-de6ab088c0c5903e.rmeta: C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\build\serde-850067089080dfc7\out/private.rs
+
+C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs:
+C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs:
+C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs:
+C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs:
+C:\Users\nklom\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs:
+D:\git\mobile-wallet\matcher-build\target\wasm32-unknown-unknown\release\build\serde-850067089080dfc7\out/private.rs:
+
+# env-dep:OUT_DIR=D:\\git\\mobile-wallet\\matcher-build\\target\\wasm32-unknown-unknown\\release\\build\\serde-850067089080dfc7\\out

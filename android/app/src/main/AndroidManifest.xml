@@ -125,6 +125,21 @@
       <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/nfc_tech_filter"/>
     </activity>
 
+    <!-- DC API Activity (W3C Digital Credentials via Credential Manager) -->
+    <activity
+      android:name=".dcapi.DCApiActivity"
+      android:exported="true"
+      android:launchMode="standard"
+      android:theme="@style/AppTheme"
+      android:screenOrientation="portrait"
+      tools:ignore="LockedOrientationActivity">
+      <intent-filter>
+        <action android:name="androidx.identitycredentials.action.GET_CREDENTIALS"/>
+        <action android:name="androidx.credentials.registry.provider.action.GET_CREDENTIAL"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
   </application>
 </manifest>

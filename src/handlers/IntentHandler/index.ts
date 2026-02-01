@@ -1,7 +1,7 @@
 import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
 import {VerifiableCredential} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
-import {EmitterSubscription, Linking} from 'react-native';
+import {EmitterSubscription, Linking, NativeModules, Platform} from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import ShareMenu, {ShareData, ShareListener} from 'react-native-share-menu';
 import {APP_ID} from '../../@config/constants';

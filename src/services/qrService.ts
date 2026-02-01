@@ -3,6 +3,7 @@ import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
 import {ConnectionType, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store-types';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
+import {Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
@@ -31,10 +32,24 @@ export const onQRScanned = async (args: IReadQrArgs): Promise<void> => {
   console.log(`args.qrData`, JSON.stringify(args.qrData));
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
-    .catch((error: Error) => showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message}));
+    .catch((error: Error) => {
+      if (error.message === 'FIDO_HANDOFF') {
+        return; // Handed off to OS, not an error
+      }
+      showToast(ToastTypeEnum.TOAST_ERROR, {message: error.message});
+    });
 };
 
 export const parseQr = async (qrData: string): Promise<IQrData> => {
+  // FIDO:/... QR codes are CTAP2 hybrid transport codes shown by browsers for cross-device DC API / WebAuthn.
+  // Hand them off to the OS so Android's FIDO handler can establish the hybrid connection,
+  // which then triggers Credential Manager on this device.
+  if (qrData.startsWith('FIDO:/')) {
+    debug(`Detected FIDO hybrid transport QR, handing off to OS`);
+    await Linking.openURL(qrData);
+    throw new Error('FIDO_HANDOFF');
+  }
+
   try {
     const parsedJson = JSON.parse(qrData);
     if (parsedJson && typeof parsedJson === 'object') {

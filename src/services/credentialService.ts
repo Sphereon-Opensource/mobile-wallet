@@ -94,6 +94,9 @@ export const deleteVerifiableCredential = async (args: IDeleteVerifiableCredenti
           diagnosticData: args,
         }),
       );
+      // Re-register credentials with Android Credential Manager for DC API
+      import('./dcApiCredentialSync').then(({syncDCApiCredentials}) => void syncDCApiCredentials()).catch(() => {});
+
       return deletionResult;
     });
 };

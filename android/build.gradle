@@ -30,6 +30,8 @@ allprojects {
     google()
     mavenCentral()
     maven { url 'https://www.jitpack.io' }
+    // AndroidX snapshot repo for DC API registry libraries (1.0.0-SNAPSHOT)
+    maven { url 'https://androidx.dev/snapshots/builds/14144115/artifacts/repository' }
   }
 }
 

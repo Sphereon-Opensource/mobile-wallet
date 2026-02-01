@@ -171,6 +171,12 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           const intentHandler = IntentHandler.getInstance();
           await intentHandler.enable();
 
+          // Register credentials with Android Credential Manager for DC API (agent is ready at this point)
+          import('../../services/dcApiCredentialSync').then(({syncDCApiCredentials}) => void syncDCApiCredentials()).catch(() => {});
+
+          // Subscribe to DC API requests from Android Credential Manager
+          import('../../handlers/DCApiHandler').then(({startDCApiHandler}) => startDCApiHandler()).catch(() => {});
+
           if (intentHandler.hasDeepLink()) {
             intentHandler.openDeepLinkIfExistsAndAppUnlocked();
           }

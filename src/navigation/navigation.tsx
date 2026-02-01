@@ -28,6 +28,7 @@ import ContactActivityScreen from '../screens/ContactActivityScreen';
 import ContactIdentitiesScreen from '../screens/ContactIdentitiesScreen';
 import CredentialActivityScreen from '../screens/CredentialActivityScreen';
 import CredentialCatalogScreen from '../screens/CredentialCatalogScreen';
+import DCApiConsentScreen from '../screens/DCApiConsentScreen';
 import CredentialDetailsScreen from '../screens/CredentialDetailsScreen';
 import CredentialOverviewShareScreen from '../screens/CredentialOverviewShareScreen';
 import CredentialsOverviewScreen from '../screens/CredentialsOverviewScreen';
@@ -192,6 +193,14 @@ const MainStackNavigator = (): JSX.Element => {
           <Stack.Screen name={MainRoutesEnum.SETTINGS} component={SettingsScreen} />
           <Stack.Screen name={MainRoutesEnum.ACCOUNT} component={AccountScreen} />
           <Stack.Screen name={MainRoutesEnum.AGE_DERIVED_CLAIMS} component={AgeDerivedClaimsScreen} />
+          <Stack.Screen
+            name={MainRoutesEnum.DC_API_CONSENT}
+            component={DCApiConsentScreen}
+            options={{
+              headerShown: false,
+              animation: 'fade',
+            }}
+          />
           <Stack.Screen
             name={ScreenRoutesEnum.LOCK}
             component={SSILockScreen}

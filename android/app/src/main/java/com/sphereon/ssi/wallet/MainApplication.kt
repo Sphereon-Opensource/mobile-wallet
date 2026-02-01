@@ -14,6 +14,7 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.sphereon.musap.MusapBridgeAndroid
 import com.sphereon.musap.MusapPackage
+import com.sphereon.ssi.wallet.dcapi.DCApiPackage
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 import id.animo.ausweissdk.AusweisSdkUtils
@@ -31,6 +32,11 @@ class MainApplication : Application(), ReactApplication {
                         packages.add(MusapPackage())
                     } catch (e: Exception) {
                         Log.e("MWALL", "Failed to add MusapPackage", e)
+                    }
+                    try {
+                        packages.add(DCApiPackage())
+                    } catch (e: Exception) {
+                        Log.e("MWALL", "Failed to add DCApiPackage", e)
                     }
             return packages
           }

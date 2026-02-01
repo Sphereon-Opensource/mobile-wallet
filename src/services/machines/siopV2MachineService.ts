@@ -21,6 +21,7 @@ import {
   System,
 } from '@sphereon/ssi-types';
 import {Linking} from 'react-native';
+import {sendDCApiResponse, sendDCApiError} from '../dcApiService';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {DcqlPresentation, DcqlQuery} from 'dcql';
@@ -170,7 +171,7 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
 };
 
 export const sendResponse = async (
-  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact'>,
+  context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact' | 'dcApiMode' | 'dcApiOrigin'>,
 ): Promise<Response> => {
   const {didAuthConfig, authorizationRequestData, selectedCredentials, contact} = context;
 
@@ -258,10 +259,16 @@ export const sendResponse = async (
     return Promise.reject(Error('Credentials do not match required query request'));
   }
 
+  // In DC API mode, the audience uses the origin: prefix per OID4VP DC API spec §A.3
+  const audience = context.dcApiMode && context.dcApiOrigin ? `origin:${context.dcApiOrigin}` : domain;
+  if (context.dcApiMode) {
+    logger.info(`DC API mode active. Audience: ${audience}, origin: ${context.dcApiOrigin}`);
+  }
+
   // Build presentation context for format-aware VP creation
   const presentationContext: PresentationBuilderContext = {
     nonce: request.requestObject?.getPayload()?.nonce ?? session.nonce,
-    audience: domain,
+    audience,
     agent: agent,
     clockSkew: CLOCK_SKEW,
   };
@@ -307,6 +314,56 @@ export const sendResponse = async (
   }
 
   const dcqlPresentation = DcqlPresentation.parse(presentation);
+
+  // In DC API mode, return the VP response via the native bridge instead of HTTP
+  if (context.dcApiMode) {
+    const responseJson = JSON.stringify({vp_token: dcqlPresentation});
+    logger.info(`DC API mode: sending response via native bridge (${responseJson.length} chars)`);
+    logger.debug(`DC API response (first 300 chars): ${responseJson.substring(0, 300)}`);
+    sendDCApiResponse(responseJson);
+
+    // Log activity for each credential (same as normal flow below)
+    for (const credential of selectedCredentials) {
+      const credentialsBranding: Array<ICredentialBranding> = await agent.ibGetCredentialBranding({filter: [{vcHash: credential.hash}]});
+      const uniform = JSON.parse(credential.digitalCredential.uniformDocument) as VerifiableCredential;
+      const issuer: Party | undefined = getCredentialIssuerContact(uniform as VerifiableCredential);
+      const credentialSummary = await toCredentialSummary({
+        verifiableCredential: uniform as VerifiableCredential,
+        hash: credential.hash,
+        credentialRole: credential.digitalCredential.credentialRole,
+        branding: credentialsBranding[0]?.localeBranding,
+        issuer,
+        subject: getCredentialSubjectContact(uniform as VerifiableCredential),
+      });
+
+      store.dispatch<any>(
+        storeActivityLogging({
+          level: LogLevel.INFO,
+          system: System.OID4VP,
+          subSystemType: SubSystem.OID4VP_OP,
+          initiatorType: InitiatorType.SYSTEM,
+          description: 'Credential shared via DC API',
+          actionType: ActionType.READ,
+          actionSubType: DefaultActionSubType.VC_SHARE,
+          correlationId: didAuthConfig.sessionId,
+          // @ts-ignore
+          credentialType: credential.digitalCredential.documentFormat,
+          credentialHash: credential.hash,
+          originalCredential: JSON.stringify(credential.digitalCredential),
+          data: {
+            credential: credentialSummary,
+          },
+          // @ts-ignore
+          partyCorrelationType: contact?.identities[0].identifier.type,
+          partyCorrelationId: contact?.identities[0].identifier.correlationId,
+          partyAlias: contact?.contact.displayName,
+        }),
+      );
+    }
+
+    // Return a synthetic Response for the machine to handle
+    return new Response(null, {status: 200}) as unknown as Response;
+  }
 
   const response = await session.sendAuthorizationResponse({
     responseSignerOpts: identifier,

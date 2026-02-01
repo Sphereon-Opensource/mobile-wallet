@@ -45,6 +45,8 @@ export type SiopV2MachineContext = {
   oauth_authorization_server?: AuthorizationServerMetadata;
   openid_credential_issuer?: CredentialIssuerMetadata;
   openid_credential_verifier?: ClientMetadataOpts;
+  dcApiMode?: boolean;
+  dcApiOrigin?: string;
   error?: ErrorDetails;
 };
 
@@ -106,6 +108,8 @@ export type CreateSiopV2MachineOpts = {
   url: string | URL;
   machineId?: string;
   trustAnchors?: Array<string>;
+  dcApiMode?: boolean;
+  dcApiOrigin?: string;
 };
 
 export type SiopV2MachineInstanceOpts = {

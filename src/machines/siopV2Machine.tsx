@@ -129,6 +129,7 @@ const createSiopV2Machine = (opts: CreateSiopV2MachineOpts): SiopV2StateMachine 
     hasContactConsent: true,
     contactAlias: '',
     selectedCredentials: [],
+    ...(opts?.dcApiMode ? {dcApiMode: true, dcApiOrigin: opts.dcApiOrigin} : {}),
   };
 
   return createMachine<SiopV2MachineContext, SiopV2MachineEventTypes>(

@@ -68,6 +68,7 @@ export type StackParamList = {
   ACCOUNT: Record<string, never>;
   AGE_DERIVED_CLAIMS: IAgeDerivedClaimsProps;
   NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
+  [MainRoutesEnum.DC_API_CONSENT]: IDCApiConsentProps;
 };
 
 export type Document = 'terms' | 'privacy';
@@ -75,6 +76,13 @@ export type Document = 'terms' | 'privacy';
 export type IAgeDerivedClaimsProps = {
   claims: Record<number, boolean>;
 };
+
+export interface IDCApiConsentProps {
+  credential: CredentialSummary;
+  origin?: string;
+  onComplete: (authenticated: boolean) => void;
+  skipBiometric?: boolean;
+}
 
 export type IActivityDetailsProps = {
   activity?: Activity;
@@ -374,6 +382,7 @@ export enum MainRoutesEnum {
   SETTINGS = 'SETTINGS',
   ACCOUNT = 'ACCOUNT',
   AGE_DERIVED_CLAIMS = 'AGE_DERIVED_CLAIMS',
+  DC_API_CONSENT = 'DCApiConsent',
 }
 
 export enum NavigationBarRoutesEnum {

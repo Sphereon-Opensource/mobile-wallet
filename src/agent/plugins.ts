@@ -62,6 +62,9 @@ export const oid4vciHolder = new OID4VCIHolder({
     const {credential, vcHash} = args;
     store.dispatch<any>(dispatchVerifiableCredential(vcHash, credential));
 
+    // Re-register credentials with Android Credential Manager for DC API
+    import('../services/dcApiCredentialSync').then(({syncDCApiCredentials}) => void syncDCApiCredentials()).catch(() => {});
+
     // FIXME temp solution to have activity for oid4vci-holder, we should add this to the plugin later
     const contact = store
       .getState()

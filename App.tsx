@@ -90,6 +90,7 @@ export default function App() {
 
         const actions = bindActionCreators({getUsers}, store.dispatch);
         actions.getUsers();
+
       } catch (e) {
         console.warn(e);
       } finally {
