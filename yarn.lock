@@ -2472,10 +2472,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/is-prop-valid@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@emotion/is-prop-valid@npm:1.4.0"
+  dependencies:
+    "@emotion/memoize": "npm:^0.9.0"
+  checksum: 10c0/5f857814ec7d8c7e727727346dfb001af6b1fb31d621a3ce9c3edf944a484d8b0d619546c30899ae3ade2f317c76390ba4394449728e9bf628312defc2c41ac3
+  languageName: node
+  linkType: hard
+
 "@emotion/memoize@npm:^0.8.1":
   version: 0.8.1
   resolution: "@emotion/memoize@npm:0.8.1"
   checksum: 10c0/dffed372fc3b9fa2ba411e76af22b6bb686fb0cb07694fdfaa6dd2baeb0d5e4968c1a7caa472bfcf06a5997d5e7c7d16b90e993f9a6ffae79a2c3dbdc76dfe78
+  languageName: node
+  linkType: hard
+
+"@emotion/memoize@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "@emotion/memoize@npm:0.9.0"
+  checksum: 10c0/13f474a9201c7f88b543e6ea42f55c04fb2fdc05e6c5a3108aced2f7e7aa7eda7794c56bba02985a46d8aaa914fcdde238727a98341a96e2aec750d372dadd15
+  languageName: node
+  linkType: hard
+
+"@emotion/unitless@npm:0.10.0":
+  version: 0.10.0
+  resolution: "@emotion/unitless@npm:0.10.0"
+  checksum: 10c0/150943192727b7650eb9a6851a98034ddb58a8b6958b37546080f794696141c3760966ac695ab9af97efe10178690987aee4791f9f0ad1ff76783cdca83c1d49
   languageName: node
   linkType: hard
 
@@ -5280,9 +5303,9 @@ __metadata:
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.37.1-next.5"
     "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.37.1-next.5"
     "@sphereon/ssi-types": "npm:0.37.1-next.5"
-    "@sphereon/ui-components.core": "npm:0.3.1-next.28"
-    "@sphereon/ui-components.credential-branding": "npm:0.3.1-next.28"
-    "@sphereon/ui-components.ssi-react-native": "npm:0.3.1-next.28"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.183"
+    "@sphereon/ui-components.credential-branding": "npm:0.4.1-next.183"
+    "@sphereon/ui-components.ssi-react-native": "npm:0.4.1-next.183"
     "@testing-library/jest-native": "npm:^5.4.3"
     "@testing-library/react-native": "npm:^12.3.1"
     "@tsconfig/react-native": "npm:^2.0.2"
@@ -6267,53 +6290,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.core@npm:0.3.1-next.28":
-  version: 0.3.1-next.28
-  resolution: "@sphereon/ui-components.core@npm:0.3.1-next.28"
+"@sphereon/ui-components.core@npm:0.4.1-next.183":
+  version: 0.4.1-next.183
+  resolution: "@sphereon/ui-components.core@npm:0.4.1-next.183"
   dependencies:
     i18n-js: "npm:^3.8.0"
     lodash.memoize: "npm:^4.1.2"
     styled-components: "npm:^6.1.12"
   peerDependencies:
-    react: ">= 18"
-  checksum: 10c0/54a9f4e7d832cbdfa5c6f8550de25f55a78f7817a9b3406d6a713c45b55f0ac61cab0dcb6305e28dc225d7e1dca547c7cadbe4ca41d96c4b7cd9970294b0cd7f
+    react: ">= 18.2"
+  checksum: 10c0/a8d1dc1437655b111f78b0a016156ba9aa1722f5813037a1de1fd81b85304c67e75c69dc088f78c6899e340b4b5c06dc46a5cb45732da64597daa33fcafc247a
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.credential-branding@npm:0.3.1-next.28":
-  version: 0.3.1-next.28
-  resolution: "@sphereon/ui-components.credential-branding@npm:0.3.1-next.28"
+"@sphereon/ui-components.credential-branding@npm:0.4.1-next.183":
+  version: 0.4.1-next.183
+  resolution: "@sphereon/ui-components.credential-branding@npm:0.4.1-next.183"
   dependencies:
-    "@sphereon/ssi-sdk.core": "npm:0.30.2-next.273"
-    "@sphereon/ssi-sdk.data-store": "npm:0.30.2-next.273"
-    "@sphereon/ssi-types": "npm:0.30.2-next.273"
-    "@sphereon/ui-components.core": "npm:0.3.1-next.28+d3106ac"
+    "@sphereon/ssi-sdk.core": "npm:0.37.0"
+    "@sphereon/ssi-sdk.data-store-types": "npm:0.37.0"
+    "@sphereon/ssi-types": "npm:0.37.0"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.183+a3ea620"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     i18n-js: "npm:^3.8.0"
     uuid: "npm:^9.0.1"
   peerDependencies:
-    react: ">= 18"
-  checksum: 10c0/77d353765f2eda0cacbd6abd7408d859f97e8ad609beb0399244ca0eebba412a7dc21fdf1f33fcc7a29fe490ec31ac7db820ab3d2c662ac69b4e93c2adf5ede0
+    react: ">= 18.2"
+  checksum: 10c0/bd8706723042f7e5c37131c498a221e56928398e391be9c43d8ecc66ff2aa3d54fd7d7f58f571e7d82f8989b563f313ed14d9db8aad00a967933a63bad88529d
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.ssi-react-native@npm:0.3.1-next.28":
-  version: 0.3.1-next.28
-  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.3.1-next.28"
+"@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.183":
+  version: 0.4.1-next.183
+  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.183"
   dependencies:
-    "@react-native-community/blur": "npm:^4.4.0"
-    "@react-native-masked-view/masked-view": "npm:^0.3.1"
-    "@sphereon/ui-components.core": "npm:0.3.1-next.28+d3106ac"
+    "@react-native-masked-view/masked-view": "npm:^0.3.2"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.183+a3ea620"
+    expo-blur: "npm:^15.0.8"
     expo-linear-gradient: "npm:~13.0.2"
     react-native-fast-image: "npm:^8.6.3"
     react-native-size-matters: "npm:^0.4.2"
     react-native-svg: "npm:15.2.0"
-    styled-components: "npm:^6.1.12"
+    styled-components: "npm:^6.1.15"
   peerDependencies:
-    react: ">= 18"
+    react: ">= 18.2"
     react-native: ~0.74.3
-  checksum: 10c0/dd6d58d21b8184b6812a04b9f452688546fa9978fc083e9742451b465327a537ae5f5787aac9ae7cb71b9532f074a9b670ab32970d5332b6c2df71fa9383881b
+  checksum: 10c0/ac071d45721ea76b1c39208ad76dff1a224fffba1f86822f8249f94abc73ee03e13a94f190eb039617918a0dd14381d6838d322de232ca1478053b605b2c2cbd
   languageName: node
   linkType: hard
 
@@ -7300,6 +7323,13 @@ __metadata:
   version: 4.2.5
   resolution: "@types/stylis@npm:4.2.5"
   checksum: 10c0/23f5b35a3a04f6bb31a29d404fa1bc8e0035fcaff2356b4047743a057e0c37b2eba7efe14d57dd2b95b398cea3bac294d9c6cd93ed307d8c0b7f5d282224b469
+  languageName: node
+  linkType: hard
+
+"@types/stylis@npm:4.2.7":
+  version: 4.2.7
+  resolution: "@types/stylis@npm:4.2.7"
+  checksum: 10c0/01a9679addb3f63951a9c09729564e2205581f2db40875a28b25cc461efc52ba17a711cc50cdb5e7d3a67c5f2cd60580e078c8a69b8df7b67699d89060d2a977
   languageName: node
   linkType: hard
 
@@ -10174,6 +10204,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csstype@npm:3.2.3":
+  version: 3.2.3
+  resolution: "csstype@npm:3.2.3"
+  checksum: 10c0/cd29c51e70fa822f1cecd8641a1445bed7063697469d35633b516e60fe8c1bde04b08f6c5b6022136bb669b64c63d4173af54864510fbb4ee23281801841a3ce
+  languageName: node
+  linkType: hard
+
 "d64@npm:^1.0.0":
   version: 1.0.0
   resolution: "d64@npm:1.0.0"
@@ -11548,6 +11585,17 @@ __metadata:
     react-native-web:
       optional: true
   checksum: 10c0/83c70c92bab08e068e9fe2d4023c8dabc086de3d090c759842ab25701490bc639ee63557a453fe1948fccf32c768c9a4d4a52851aa90b73b948b1a99ca158882
+  languageName: node
+  linkType: hard
+
+"expo-blur@npm:^15.0.8":
+  version: 15.0.8
+  resolution: "expo-blur@npm:15.0.8"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/d71f3330928e5fa3be3f8e1ee69736669b4cdbcc2c9f44ac8f552a0279dbcc03cccddf8aed1454d86a00d56b53f855aaec574d0e53898166a22b367586ba1544
   languageName: node
   linkType: hard
 
@@ -19861,10 +19909,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"styled-components@npm:^6.1.15":
+  version: 6.3.8
+  resolution: "styled-components@npm:6.3.8"
+  dependencies:
+    "@emotion/is-prop-valid": "npm:1.4.0"
+    "@emotion/unitless": "npm:0.10.0"
+    "@types/stylis": "npm:4.2.7"
+    css-to-react-native: "npm:3.2.0"
+    csstype: "npm:3.2.3"
+    postcss: "npm:8.4.49"
+    shallowequal: "npm:1.1.0"
+    stylis: "npm:4.3.6"
+    tslib: "npm:2.8.1"
+  peerDependencies:
+    react: ">= 16.8.0"
+    react-dom: ">= 16.8.0"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/04cebfaee316e356919b85eac6b5a6319454f45c473cc2162173eedab062c9625ce726c96d78a255d4a2ece6f9316d45e5f3cf8976d278da64082cad3172a918
+  languageName: node
+  linkType: hard
+
 "stylis@npm:4.3.2":
   version: 4.3.2
   resolution: "stylis@npm:4.3.2"
   checksum: 10c0/0410e1404cbeee3388a9e17587875211ce2f014c8379af0d1e24ca55878867c9f1ccc7b0ce9a156ca53f5d6e301391a82b0645522a604674a378b3189a4a1994
+  languageName: node
+  linkType: hard
+
+"stylis@npm:4.3.6":
+  version: 4.3.6
+  resolution: "stylis@npm:4.3.6"
+  checksum: 10c0/e736d484983a34f7c65d362c67dc79b7bce388054b261c2b7b23d02eaaf280617033f65d44b1ea341854f4331a5074b885668ac8741f98c13a6cfd6443ae85d0
   languageName: node
   linkType: hard
 
@@ -20332,17 +20410,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.8.1, tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.5.0, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 10c0/69ae09c49eea644bc5ebe1bca4fa4cc2c82b7b3e02f43b84bd891504edf66dbc6b2ec0eef31a957042de2269139e4acff911e6d186a258fb14069cd7f6febce2
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.5.0, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
-  version: 2.8.1
-  resolution: "tslib@npm:2.8.1"
-  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
   languageName: node
   linkType: hard
 
