@@ -153,6 +153,7 @@
   "action_confirm_label": "确认",
   "action_continue_label": "继续",
   "action_cancel_label": "取消",
+  "action_close_label": "关闭",
   "action_decline_label": "拒绝",
   "action_abort_label": "中止",
   "action_accept_label": "接受",

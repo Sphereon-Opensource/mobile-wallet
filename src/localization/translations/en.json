@@ -153,6 +153,7 @@
   "action_confirm_label": "Confirm",
   "action_continue_label": "Continue",
   "action_cancel_label": "Cancel",
+  "action_close_label": "Close",
   "action_decline_label": "Decline",
   "action_abort_label": "Abort",
   "action_accept_label": "Accept",
