@@ -193,7 +193,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               left: 0,
               right: 0,
               alignItems: 'center',
-              zIndex: 1,
+              zIndex: -1,
             }}
             pointerEvents="box-none">
             <Pressable onPress={() => setValuesVisible(v => !v)} style={{width: 80, height: 80}}>
@@ -203,7 +203,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
           <FlatList
             accessibilityRole="list"
             accessibilityLabel={`${credential.title} details`}
-            style={{flex: 1, zIndex: 2}}
+            style={{flex: 1}}
             data={credential.properties}
             renderItem={renderItem}
             keyExtractor={(item: CredentialDetailsRow) => item.id}

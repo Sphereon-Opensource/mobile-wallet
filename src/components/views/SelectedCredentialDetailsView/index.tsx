@@ -64,14 +64,14 @@ const SelectedCredentialDetailsView: FC<IProps> = (props: IProps): JSX.Element =
             left: 0,
             right: 0,
             alignItems: 'center',
-            zIndex: 1,
+            zIndex: -1,
           }}
           pointerEvents="box-none">
           <Pressable onPress={onToggleVisibility}>
             {valuesVisible ? <SSIEyeIcon size={60} color="#353D5E" /> : <SSIEyeOffIcon size={60} color="#353D5E" />}
           </Pressable>
         </View>
-        <View style={{zIndex: 2}} pointerEvents="box-none">
+        <View pointerEvents="box-none">
           {props.credentialProperties.map((property, idx) =>
             property.imageSize ? <SSIImageField key={idx} item={property} valuesVisible={valuesVisible} onToggleVisibility={onToggleVisibility} /> : <SSITextField key={idx} item={property} valuesVisible={valuesVisible} onToggleVisibility={onToggleVisibility} />,
           )}
