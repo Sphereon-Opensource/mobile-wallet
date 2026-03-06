@@ -394,19 +394,41 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
 
   const signingMode = credentialsToAccept.find(cred => !!cred.credential_subject_issuance);
 
+  let credentialSummary;
+  try {
+    credentialSummary = await toNonPersistedCredentialSummary({
+      verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
+      credentialRole: CredentialRole.HOLDER,
+      branding: localeBranding,
+      issuer: contact,
+      subject: getCredentialSubjectContact(credentialsToAccept[0].uniformVerifiableCredential),
+    });
+  } catch (error) {
+    debug(`Failed to create credential summary for review: ${error}`);
+    console.error('Failed to create credential summary for review', error);
+    navigation.navigate(MainRoutesEnum.OID4VCI, {
+      screen: ScreenRoutesEnum.ERROR,
+      params: {
+        image: PopupImagesEnum.WARNING,
+        title: translate('oid4vci_machine_retrieve_credentials_error_title'),
+        details: error instanceof Error ? error.message : translate('error_details_generic_title'),
+        primaryButton: {
+          caption: translate('action_ok_label'),
+          onPress: async () => oid4vciMachine.send(OID4VCIMachineEvents.DECLINE),
+        },
+        onBack,
+      },
+    });
+    return;
+  }
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.CREDENTIAL_DETAILS,
     params: {
       headerTitle: translate(signingMode ? 'credential_sign_title' : 'credential_offer_title'),
       rawCredential: credentialsToAccept[0].rawVerifiableCredential,
       hideLinks: true,
-      credential: await toNonPersistedCredentialSummary({
-        verifiableCredential: credentialsToAccept[0].uniformVerifiableCredential,
-        credentialRole: CredentialRole.HOLDER,
-        branding: localeBranding,
-        issuer: contact,
-        subject: getCredentialSubjectContact(credentialsToAccept[0].uniformVerifiableCredential),
-      }),
+      credential: credentialSummary,
       primaryAction: {
         caption: translate(signingMode ? 'action_sign_label' : 'action_accept_label'),
         onPress: onNext,
