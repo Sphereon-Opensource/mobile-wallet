@@ -73,6 +73,14 @@ export default function App() {
             global.crypto = global.window.crypto;
           }
         }
+
+        // @FIXME SSISDK-7: On Android, BouncyCastle conflicts with the TLS provider, causing all
+        // subsequent HTTPS requests to fail. Making an early fetch forces proper TLS initialization.
+        // Fire-and-forget: we don't need the result, just the TLS handshake side-effect.
+        if (Platform.OS === PlatformsEnum.ANDROID) {
+          fetch('https://sphereon.com/content/themes/sphereon/assets/favicons/site.webmanifest').catch(() => {});
+        }
+
         await addLinkListeners(linkHandlers, agentContext);
 
         await IntentHandler.getInstance().enable();

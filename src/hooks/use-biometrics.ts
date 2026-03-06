@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import * as Auth from 'expo-local-authentication';
-import {useCallback, useContext, useEffect, useMemo, useState} from 'react';
-import {AppState, NativeEventSubscription} from 'react-native';
+import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
+import {AppState, AppStateStatus, NativeEventSubscription} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {OnboardingContext} from '../navigation/machines/onboardingStateNavigation';
 import {setBiometrics} from '../store/actions/user.actions';
@@ -67,14 +67,16 @@ type AuthEffectCallback = ((success: boolean) => void) | ((success: boolean) => 
 export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
   const navigation = useNavigation();
   const biometricsEnabled = useBiometricsEnabledContext();
-  const [hasPrompted, setHasPrompted] = useState(false);
+  const appStateRef = useRef<AppStateStatus>(AppState.currentState);
+  const isPromptingRef = useRef(false);
 
   const {prompt} = useBiometrics();
 
   const handleAuthentication = useCallback(() => {
-    if (biometricsEnabled) {
-      setHasPrompted(true);
+    if (biometricsEnabled && !isPromptingRef.current) {
+      isPromptingRef.current = true;
       prompt().then((result: boolean) => {
+        isPromptingRef.current = false;
         void effect(result);
       });
     }
@@ -92,11 +94,11 @@ export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
   }, [navigation, handleAuthentication]);
 
   useEffect(() => {
-    const handleAppStateChange = (nextAppState: string) => {
-      if (nextAppState === 'active') {
-        setHasPrompted(false);
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (appStateRef.current === 'background' && nextAppState === 'active') {
         handleAuthentication();
       }
+      appStateRef.current = nextAppState;
     };
 
     const subscription: NativeEventSubscription = AppState.addEventListener('change', handleAppStateChange);
@@ -105,12 +107,6 @@ export const useAuthFocusEffect = (effect: AuthEffectCallback) => {
       subscription?.remove();
     };
   }, [handleAuthentication]);
-
-  useEffect(() => {
-    if (biometricsEnabled && !hasPrompted) {
-      handleAuthentication();
-    }
-  }, [biometricsEnabled, hasPrompted, handleAuthentication]);
 
   return {
     prompt,

@@ -185,60 +185,6 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
     <Container style={{paddingTop: 24}}>
       <StatusBar />
       <ContentContainer>
-        <CardContainer>
-          <View
-            accessible
-            accessibilityLabel={`${credential.title}. Issued by: ${credential.issuer.alias}, on: ${toLocalDateString(
-              credential.issueDate,
-            )}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`}>
-            <View importantForAccessibility="no-hide-descendants">
-              <CredentialCardSheen>
-                <SSICredentialCardView
-                  header={{
-                    credentialTitle: credential.branding?.alias ?? credential.title,
-                    credentialSubtitle: credential.branding?.description,
-                    logo: credentialCardLogo,
-                  }}
-                  body={{
-                    issuerName: issuer ?? credential.issuer.name,
-                  }}
-                  footer={{
-                    credentialStatus: getCredentialStatus(credential),
-                    expirationDate: credential.expirationDate,
-                  }}
-                  display={{
-                    backgroundColor: credential.branding?.background?.color,
-                    backgroundImage: credential.branding?.background?.image,
-                    textColor: credential.branding?.text?.color,
-                  }}
-                />
-              </CredentialCardSheen>
-            </View>
-          </View>
-        </CardContainer>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 24,
-            paddingHorizontal: 24,
-            borderBottomWidth: 1,
-            borderBottomColor: '#404D7A',
-          }}>
-          <SSITextH3LightStyled accessibilityRole="header">{translate('credential_details_card_information')}</SSITextH3LightStyled>
-          <Pressable
-            onPress={() => setValuesVisible(v => !v)}
-            accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
-            accessibilityRole="button"
-            hitSlop={8}
-            style={{flexDirection: 'row', alignItems: 'center', gap: 8, padding: 4}}>
-            <SSITextH3LightStyled style={{color: '#5D6990', fontSize: 13, fontWeight: '400'}}>
-              {valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
-            </SSITextH3LightStyled>
-            {valuesVisible ? <SSIEyeIcon size={20} /> : <SSIEyeOffIcon size={20} />}
-          </Pressable>
-        </View>
         <View style={{flex: 1, position: 'relative', backgroundColor: backgroundColors.secondaryDark}}>
           <View
             style={{
@@ -247,33 +193,81 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
               left: 0,
               right: 0,
               alignItems: 'center',
-              zIndex: 0,
-            }}
-            pointerEvents="none">
-            {valuesVisible ? <SSIEyeIcon size={80} color="#2A3048" /> : <SSIEyeOffIcon size={80} color="#2A3048" />}
-          </View>
-          <View
-            style={{
-              position: 'absolute',
-              top: '15%',
-              left: 0,
-              right: 0,
-              alignItems: 'center',
-              zIndex: 2,
+              zIndex: 1,
             }}
             pointerEvents="box-none">
-            <Pressable onPress={() => setValuesVisible(v => !v)} hitSlop={24} style={{width: 80, height: 80}} />
+            <Pressable onPress={() => setValuesVisible(v => !v)} style={{width: 80, height: 80}}>
+              {valuesVisible ? <SSIEyeIcon size={80} color="#2A3048" /> : <SSIEyeOffIcon size={80} color="#2A3048" />}
+            </Pressable>
           </View>
           <FlatList
             accessibilityRole="list"
             accessibilityLabel={`${credential.title} details`}
-            style={{flex: 1, zIndex: 1}}
+            style={{flex: 1, zIndex: 2}}
             data={credential.properties}
             renderItem={renderItem}
             keyExtractor={(item: CredentialDetailsRow) => item.id}
             initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
             removeClippedSubviews
             contentContainerStyle={{flexGrow: 1}}
+            ListHeaderComponent={
+              <View style={{backgroundColor: backgroundColors.primaryDark}}>
+                <CardContainer>
+                  <View
+                    accessible
+                    accessibilityLabel={`${credential.title}. Issued by: ${credential.issuer.alias}, on: ${toLocalDateString(
+                      credential.issueDate,
+                    )}. Expires on: ${toLocalDateString(credential.expirationDate)}. Status: ${credential.credentialStatus}`}>
+                    <View importantForAccessibility="no-hide-descendants">
+                      <CredentialCardSheen>
+                        <SSICredentialCardView
+                          header={{
+                            credentialTitle: credential.branding?.alias ?? credential.title,
+                            credentialSubtitle: credential.branding?.description,
+                            logo: credentialCardLogo,
+                          }}
+                          body={{
+                            issuerName: issuer ?? credential.issuer.name,
+                          }}
+                          footer={{
+                            credentialStatus: getCredentialStatus(credential),
+                            expirationDate: credential.expirationDate,
+                          }}
+                          display={{
+                            backgroundColor: credential.branding?.background?.color,
+                            backgroundImage: credential.branding?.background?.image,
+                            textColor: credential.branding?.text?.color,
+                          }}
+                        />
+                      </CredentialCardSheen>
+                    </View>
+                  </View>
+                </CardContainer>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginTop: 24,
+                    paddingHorizontal: 24,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#404D7A',
+                  }}>
+                  <SSITextH3LightStyled accessibilityRole="header">{translate('credential_details_card_information')}</SSITextH3LightStyled>
+                  <Pressable
+                    onPress={() => setValuesVisible(v => !v)}
+                    accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+                    accessibilityRole="button"
+                    hitSlop={8}
+                    style={{flexDirection: 'row', alignItems: 'center', gap: 8, padding: 4}}>
+                    <SSITextH3LightStyled style={{color: '#5D6990', fontSize: 13, fontWeight: '400'}}>
+                      {valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
+                    </SSITextH3LightStyled>
+                    {valuesVisible ? <SSIEyeIcon size={20} /> : <SSIEyeOffIcon size={20} />}
+                  </Pressable>
+                </View>
+              </View>
+            }
             ListFooterComponentStyle={{flex: 1, justifyContent: 'flex-end'}}
             ListFooterComponent={renderFooter}
           />
