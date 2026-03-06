@@ -1,8 +1,8 @@
 import {backgroundColors, calculateAspectRatio, fontColors} from '@sphereon/ui-components.core';
+import {Image} from 'expo-image';
 import React, {FC, useState} from 'react';
 import {Dimensions, Modal, Pressable, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
 
 import {
   SSIImageFieldContainerStyled as Container,
@@ -44,14 +44,14 @@ const SSIImageField: FC<IProps> = (props: IProps): JSX.Element => {
               height: 150,
             }}>
             <View style={{borderRadius: 4}}>
-              <FastImage
+              <Image
                 source={{uri: item.value}}
                 style={{
                   aspectRatio,
                   height: 130,
                   borderRadius: 4,
                 }}
-                resizeMode="contain"
+                contentFit="contain"
               />
               {!valuesVisible && (
                 <View
@@ -92,10 +92,10 @@ const SSIImageField: FC<IProps> = (props: IProps): JSX.Element => {
             <Text style={{color: fontColors.light, fontSize: 18, fontWeight: '600', lineHeight: 20}}>✕</Text>
           </Pressable>
           <Pressable style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} onPress={() => setModalVisible(false)}>
-            <FastImage
+            <Image
               source={{uri: item.value}}
               style={{width: finalWidth, height: finalHeight, borderRadius: 8}}
-              resizeMode="contain"
+              contentFit="contain"
             />
           </Pressable>
         </View>

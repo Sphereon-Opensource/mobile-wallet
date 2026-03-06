@@ -5303,9 +5303,9 @@ __metadata:
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.37.1"
     "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.37.1"
     "@sphereon/ssi-types": "npm:0.37.1"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.183"
-    "@sphereon/ui-components.credential-branding": "npm:0.4.1-next.183"
-    "@sphereon/ui-components.ssi-react-native": "npm:0.4.1-next.183"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.187"
+    "@sphereon/ui-components.credential-branding": "npm:0.4.1-next.187"
+    "@sphereon/ui-components.ssi-react-native": "npm:0.4.1-next.187"
     "@testing-library/jest-native": "npm:^5.4.3"
     "@testing-library/react-native": "npm:^12.3.1"
     "@tsconfig/react-native": "npm:^2.0.2"
@@ -5362,6 +5362,7 @@ __metadata:
     expo-clipboard: "npm:~7.1.5"
     expo-file-system: "npm:~18.1.11"
     expo-fs: "npm:^0.2.2"
+    expo-image: "npm:~2.4.1"
     expo-linear-gradient: "npm:~14.1.5"
     expo-local-authentication: "npm:~16.0.5"
     expo-localization: "npm:~16.1.6"
@@ -5393,7 +5394,6 @@ __metadata:
     react-native-audio-recorder-player: "npm:^3.6.12"
     react-native-crypto: "npm:^2.2.0"
     react-native-dotenv: "npm:^3.4.11"
-    react-native-fast-image: "npm:^8.6.3"
     react-native-fingerprint-scanner: "git+https://github.com/hieuvp/react-native-fingerprint-scanner.git"
     react-native-fs: "npm:^2.20.0"
     react-native-gesture-handler: "npm:~2.24.0"
@@ -6290,53 +6290,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.core@npm:0.4.1-next.183":
-  version: 0.4.1-next.183
-  resolution: "@sphereon/ui-components.core@npm:0.4.1-next.183"
+"@sphereon/ui-components.core@npm:0.4.1-next.187":
+  version: 0.4.1-next.187
+  resolution: "@sphereon/ui-components.core@npm:0.4.1-next.187"
   dependencies:
     i18n-js: "npm:^3.8.0"
     lodash.memoize: "npm:^4.1.2"
     styled-components: "npm:^6.1.12"
   peerDependencies:
     react: ">= 18.2"
-  checksum: 10c0/a8d1dc1437655b111f78b0a016156ba9aa1722f5813037a1de1fd81b85304c67e75c69dc088f78c6899e340b4b5c06dc46a5cb45732da64597daa33fcafc247a
+  checksum: 10c0/f4cbf752ee4fae5c9d41f4d75b1e510e946293ebeb43450a7211fc9e5e536d14339614513ff40d2110032283c6273fda1f29ac7f5e8bceecca7f134786caa68c
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.credential-branding@npm:0.4.1-next.183":
-  version: 0.4.1-next.183
-  resolution: "@sphereon/ui-components.credential-branding@npm:0.4.1-next.183"
+"@sphereon/ui-components.credential-branding@npm:0.4.1-next.187":
+  version: 0.4.1-next.187
+  resolution: "@sphereon/ui-components.credential-branding@npm:0.4.1-next.187"
   dependencies:
     "@sphereon/ssi-sdk.core": "npm:0.37.0"
     "@sphereon/ssi-sdk.data-store-types": "npm:0.37.0"
     "@sphereon/ssi-types": "npm:0.37.0"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.183+a3ea620"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.187+94f7bf8"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     i18n-js: "npm:^3.8.0"
     uuid: "npm:^9.0.1"
   peerDependencies:
     react: ">= 18.2"
-  checksum: 10c0/bd8706723042f7e5c37131c498a221e56928398e391be9c43d8ecc66ff2aa3d54fd7d7f58f571e7d82f8989b563f313ed14d9db8aad00a967933a63bad88529d
+  checksum: 10c0/7823c7b9415d8bf1c0876baa09f1c8d51eb3e4fb1f22d7ada86f68fc208867c572d781439fae66b2bda6296ff5da560d72cb3c74989b9fd92a6488512739b4e9
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.183":
-  version: 0.4.1-next.183
-  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.183"
+"@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.187":
+  version: 0.4.1-next.187
+  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.187"
   dependencies:
     "@react-native-masked-view/masked-view": "npm:^0.3.2"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.183+a3ea620"
+    "@sphereon/ui-components.core": "npm:0.4.1-next.187+94f7bf8"
     expo-blur: "npm:^15.0.8"
+    expo-image: "npm:~2.0.6"
     expo-linear-gradient: "npm:~13.0.2"
-    react-native-fast-image: "npm:^8.6.3"
     react-native-size-matters: "npm:^0.4.2"
     react-native-svg: "npm:15.2.0"
     styled-components: "npm:^6.1.15"
   peerDependencies:
     react: ">= 18.2"
     react-native: ~0.74.3
-  checksum: 10c0/ac071d45721ea76b1c39208ad76dff1a224fffba1f86822f8249f94abc73ee03e13a94f190eb039617918a0dd14381d6838d322de232ca1478053b605b2c2cbd
+  checksum: 10c0/0b39ed8599321727368bf9c1eda95d7e339b970afc7b3dfb363ce5174f399fdd69520bcda115f3f9fefc9f23a2dde7fa27285426413ee236c43000a8c826e756
   languageName: node
   linkType: hard
 
@@ -11691,6 +11691,36 @@ __metadata:
     expo-file-system: "npm:^9.2.0"
     path: "npm:^0.12.7"
   checksum: 10c0/4ed05f3cfa734af1628f95566f4aee24ebbb1b0fc72aea21c3a06c1b13a6cc97e060ac9802c6e5d3986cad1ad1d39d55336d93a8e07265c7f983d3d8ee74315c
+  languageName: node
+  linkType: hard
+
+"expo-image@npm:~2.0.6":
+  version: 2.0.7
+  resolution: "expo-image@npm:2.0.7"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10c0/b817b733e1bbf2bc04a227f7e8b95603a50824f9c9eaa9ea5ebc32e9232514283a81c37e7fc3fd313e4f9f7a362ef40ade3c74d3bbe905e5784647c104411ede
+  languageName: node
+  linkType: hard
+
+"expo-image@npm:~2.4.1":
+  version: 2.4.1
+  resolution: "expo-image@npm:2.4.1"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10c0/ea702e6c84a6067ca13397d7b32f50fd009d136463c5dcb44bec91c960a372cb8a49d3ec016e2b372b7867a342c487b56cbeaccfcbddefdfca5df45d8758ecbe
   languageName: node
   linkType: hard
 
@@ -17618,16 +17648,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/6373cc1b447eae31689a9b62e38b15621e9273626e2324700c4c3eb58c02ce489236a4b9e3e0dc1187e062defd8316195c5b1213facd718706b79b92127a05a3
-  languageName: node
-  linkType: hard
-
-"react-native-fast-image@npm:^8.6.3":
-  version: 8.6.3
-  resolution: "react-native-fast-image@npm:8.6.3"
-  peerDependencies:
-    react: ^17 || ^18
-    react-native: ">=0.60.0"
-  checksum: 10c0/4ebeae53ffeadf1e7e5e133c1cfda81f9efe978f9ece10c732a0338149fe9104681bfdabc8427dad7c934b02bfcbd0e205bb6ca43e2844abc6054630ebe34454
   languageName: node
   linkType: hard
 
