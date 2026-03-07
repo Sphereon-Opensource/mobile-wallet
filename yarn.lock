@@ -5303,9 +5303,9 @@ __metadata:
     "@sphereon/ssi-sdk.siopv2-oid4vp-op-auth": "npm:0.37.1"
     "@sphereon/ssi-sdk.xstate-machine-persistence": "npm:0.37.1"
     "@sphereon/ssi-types": "npm:0.37.1"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.187"
-    "@sphereon/ui-components.credential-branding": "npm:0.4.1-next.187"
-    "@sphereon/ui-components.ssi-react-native": "npm:0.4.1-next.187"
+    "@sphereon/ui-components.core": "npm:0.5.0"
+    "@sphereon/ui-components.credential-branding": "npm:0.5.0"
+    "@sphereon/ui-components.ssi-react-native": "npm:0.5.0"
     "@testing-library/jest-native": "npm:^5.4.3"
     "@testing-library/react-native": "npm:^12.3.1"
     "@tsconfig/react-native": "npm:^2.0.2"
@@ -6290,43 +6290,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.core@npm:0.4.1-next.187":
-  version: 0.4.1-next.187
-  resolution: "@sphereon/ui-components.core@npm:0.4.1-next.187"
+"@sphereon/ui-components.core@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@sphereon/ui-components.core@npm:0.5.0"
   dependencies:
     i18n-js: "npm:^3.8.0"
     lodash.memoize: "npm:^4.1.2"
     styled-components: "npm:^6.1.12"
   peerDependencies:
     react: ">= 18.2"
-  checksum: 10c0/f4cbf752ee4fae5c9d41f4d75b1e510e946293ebeb43450a7211fc9e5e536d14339614513ff40d2110032283c6273fda1f29ac7f5e8bceecca7f134786caa68c
+  checksum: 10c0/923036571c0e4de2a1432534036d8559aec6d91d8a42848daa5ca4a7f42f2d996055decf1bad60ecbda34827551aafce8c355299a368d1c895678c893c89718c
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.credential-branding@npm:0.4.1-next.187":
-  version: 0.4.1-next.187
-  resolution: "@sphereon/ui-components.credential-branding@npm:0.4.1-next.187"
+"@sphereon/ui-components.credential-branding@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@sphereon/ui-components.credential-branding@npm:0.5.0"
   dependencies:
     "@sphereon/ssi-sdk.core": "npm:0.37.0"
     "@sphereon/ssi-sdk.data-store-types": "npm:0.37.0"
     "@sphereon/ssi-types": "npm:0.37.0"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.187+94f7bf8"
+    "@sphereon/ui-components.core": "npm:0.5.0"
     "@veramo/core": "npm:4.2.0"
     "@veramo/utils": "npm:4.2.0"
     i18n-js: "npm:^3.8.0"
     uuid: "npm:^9.0.1"
   peerDependencies:
     react: ">= 18.2"
-  checksum: 10c0/7823c7b9415d8bf1c0876baa09f1c8d51eb3e4fb1f22d7ada86f68fc208867c572d781439fae66b2bda6296ff5da560d72cb3c74989b9fd92a6488512739b4e9
+  checksum: 10c0/19598a3bb2fd35d734e3ac63776d4325f705c5521eb3efc2729e0acacb6b2a059b55a399069e622aa2ca3b0846d925b2c0fc4c3ccb4e37af88ec78847e4bb172
   languageName: node
   linkType: hard
 
-"@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.187":
-  version: 0.4.1-next.187
-  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.4.1-next.187"
+"@sphereon/ui-components.ssi-react-native@npm:0.5.0":
+  version: 0.5.0
+  resolution: "@sphereon/ui-components.ssi-react-native@npm:0.5.0"
   dependencies:
     "@react-native-masked-view/masked-view": "npm:^0.3.2"
-    "@sphereon/ui-components.core": "npm:0.4.1-next.187+94f7bf8"
+    "@sphereon/ui-components.core": "npm:0.5.0"
     expo-blur: "npm:^15.0.8"
     expo-image: "npm:~2.0.6"
     expo-linear-gradient: "npm:~13.0.2"
@@ -6336,7 +6336,7 @@ __metadata:
   peerDependencies:
     react: ">= 18.2"
     react-native: ~0.74.3
-  checksum: 10c0/0b39ed8599321727368bf9c1eda95d7e339b970afc7b3dfb363ce5174f399fdd69520bcda115f3f9fefc9f23a2dde7fa27285426413ee236c43000a8c826e756
+  checksum: 10c0/b50b2bd80200078968971c477f71bc8e91e9438c73f181e7a2c682fe7281449f573c842895f2dff0baa306108b36a0e40504d39bd3c29fb90ad7be0a96272361
   languageName: node
   linkType: hard
 
