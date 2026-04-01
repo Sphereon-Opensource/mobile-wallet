@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Text} from 'react-native';
 import {useBackHandler} from '@react-native-community/hooks';
 import {VERIFICATION_CODE_MAX_RETRIES} from '../../@config/constants';
 import SSIPinCode from '../../components/pinCodes/SSIPinCode';
@@ -16,7 +17,7 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.VERIFICATIO
 
 const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
-  const {pinLength, credentialName, onVerification, onBack} = props.route.params;
+  const {pinLength, inputMode, description, credentialName, onVerification, onBack} = props.route.params;
 
   useBackHandler((): boolean => {
     if (onBack) {
@@ -55,12 +56,15 @@ const SSIVerificationCodeScreen: FC<Props> = (props: Props): JSX.Element => {
         <SSIPinCode
           maxRetries={VERIFICATION_CODE_MAX_RETRIES}
           length={pinLength}
+          inputMode={inputMode}
+          autoFocus
           accessibilityLabel={translate('verification_code_accessibility_label')}
           accessibilityHint={translate('verification_code_accessibility_hint')}
           onMaxRetriesExceeded={onMaxRetriesExceeded}
           onVerification={onVerification}
           errorMessage={translate('verification_code_invalid_code_message')}
         />
+        {description && <Text style={{textAlign: 'center', marginTop: 16, paddingHorizontal: 24, fontSize: 14, color: '#FBFBFB'}}>{description}</Text>}
       </PinCodeContainer>
     </Container>
   );

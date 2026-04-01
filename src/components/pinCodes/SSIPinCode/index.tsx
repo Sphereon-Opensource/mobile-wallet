@@ -16,6 +16,7 @@ const {v4: uuidv4} = require('uuid');
 
 interface IProps {
   length?: number;
+  inputMode?: 'numeric' | 'text';
   maxRetries?: number;
   secureCode?: boolean;
   accessibilityLabel?: string;
@@ -135,7 +136,8 @@ class SSIPinCode extends PureComponent<IProps, IState> {
           }
           return;
         default: {
-          if (!ONLY_ALLOW_NUMBERS_REGEX.test(key)) {
+          const isValid = this.props.inputMode === 'text' ? /^[a-zA-Z0-9]$/.test(key) : ONLY_ALLOW_NUMBERS_REGEX.test(key);
+          if (!isValid) {
             return;
           }
 
@@ -182,9 +184,10 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     };
 
     const segments = [];
+    const segmentMargin = length > 6 ? 10 : 12;
     for (let i = 0; i < length; i++) {
       segments.push(
-        <View key={uuidv4()} style={{marginRight: i === length - 1 ? 0 : 12}}>
+        <View key={uuidv4()} style={{marginRight: i === length - 1 ? 0 : segmentMargin}}>
           <SSIPinCodeSegment
             value={secureCode ? (pin.length === i + 1 ? pin.charAt(i) : i >= pin.length ? '' : '*') : pin.charAt(i)}
             isCurrent={pin.length === i}
@@ -198,7 +201,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     return (
       <TouchableOpacity activeOpacity={1} onPress={this.setInputFocus}>
         <Container>
-          <SegmentsContainer style={{left: shakeAnimation}}>{segments}</SegmentsContainer>
+          <SegmentsContainer style={{left: shakeAnimation, ...(length > 6 && {transform: [{scale: 0.8}]})}}>{segments}</SegmentsContainer>
           {errorMessage && showErrorMessage && <ErrorMessageText>{errorMessage}</ErrorMessageText>}
           {maxRetries && retry > 0 && <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${maxRetries - retry}`}</AttemptsLeftText>}
           <TextInput
@@ -208,7 +211,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
             accessibilityLabel={accessibilityLabel}
             accessibilityHint={accessibilityHint}
             accessibilityRole={'text'}
-            keyboardType={'number-pad'}
+            keyboardType={this.props.inputMode === 'text' ? 'default' : 'number-pad'}
             autoFocus={this.props.autoFocus}
             caretHidden
             maxLength={length}

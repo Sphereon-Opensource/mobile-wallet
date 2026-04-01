@@ -241,21 +241,28 @@ const navigateSelectCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
 
 const navigatePINVerification = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
   const {navigation, state, oid4vciMachine, onBack} = args;
-  const {selectedCredentials} = state.context;
-  navigation.navigate(MainRoutesEnum.OID4VCI, {
-    screen: ScreenRoutesEnum.VERIFICATION_CODE,
-    params: {
-      credentialName: selectedCredentials[0],
-      credentialTypes: [],
-      onVerification: async (pin: string): Promise<void> => {
-        oid4vciMachine.send({
-          type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
-          data: pin,
-        });
+  const {selectedCredentials, requestData} = state.context;
+  const txCode = requestData?.credentialOffer?.txCode;
+  // Small delay to let React Navigation settle when transitioning directly from reviewContact via always-transitions
+  setTimeout(() => {
+    navigation.navigate(MainRoutesEnum.OID4VCI, {
+      screen: ScreenRoutesEnum.VERIFICATION_CODE,
+      params: {
+        pinLength: txCode?.length,
+        inputMode: txCode?.input_mode,
+        description: txCode?.description,
+        credentialName: selectedCredentials[0],
+        credentialTypes: [],
+        onVerification: async (pin: string): Promise<void> => {
+          oid4vciMachine.send({
+            type: OID4VCIMachineEvents.SET_VERIFICATION_CODE,
+            data: pin,
+          });
+        },
+        onBack,
       },
-      onBack,
-    },
-  });
+    });
+  }, 100);
 };
 
 const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
