@@ -1,0 +1,19 @@
+{
+  "alias": "Mobile Driver's License",
+  "description": "mDL",
+  "locale": "en",
+  "text": {
+    "color": "#FFFFFF"
+  },
+  "background": {
+    "color": "#1B2838"
+  },
+  "logo": {
+    "uri": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIzIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSIzNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjMiIG9wYWNpdHk9IjAuNiIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjgiIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9IjAuOCIvPjxsaW5lIHgxPSI2MCIgeTE9IjI0IiB4Mj0iNjAiIHkyPSI1MiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNSIgb3BhY2l0eT0iMC43Ii8+PGxpbmUgeDE9IjYwIiB5MT0iNjgiIHgyPSI2MCIgeTI9Ijk2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMi41IiBvcGFjaXR5PSIwLjciLz48bGluZSB4MT0iMjQiIHkxPSI2MCIgeDI9IjUyIiB5Mj0iNjAiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSIyLjUiIG9wYWNpdHk9IjAuNyIvPjxsaW5lIHgxPSI2OCIgeTE9IjYwIiB4Mj0iOTYiIHkyPSI2MCIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIuNSIgb3BhY2l0eT0iMC43Ii8+PHRleHQgeD0iNjAiIHk9IjExNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNGRkZGRkYiIG9wYWNpdHk9IjAuNSI+bURMPC90ZXh0Pjwvc3ZnPg==",
+    "alt": "Mobile Driver's License",
+    "dimensions": {
+      "width": 120,
+      "height": 120
+    }
+  }
+}

@@ -7,6 +7,7 @@ import {Action} from 'redux';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import agent from '../../agent';
 import {translate} from '../../localization/Localization';
+import MobileDriversLicenseBranding from '../../@config/branding/MobileDriversLicenseBranding.json';
 import {
   createVerifiableCredential as createCredential,
   deleteVerifiableCredential as deleteCredential,
@@ -35,14 +36,41 @@ const WALLET_IDENTITY_CLAIM_LABELS: Record<string, string> = {
   emailAddress: 'account_email_label',
 };
 
-const localizeWalletIdentityProperties = (summary: CredentialSummary): CredentialSummary => {
-  if (summary.title !== 'SphereonWalletIdentityCredential') {
-    return summary;
+const MDL_CLAIM_LABELS: Record<string, string> = {
+  family_name: 'mdl_claim_family_name',
+  given_name: 'mdl_claim_given_name',
+  birth_date: 'mdl_claim_birth_date',
+  portrait: 'mdl_claim_portrait',
+  issue_date: 'mdl_claim_issue_date',
+  expiry_date: 'mdl_claim_expiry_date',
+  issuing_authority: 'mdl_claim_issuing_authority',
+  issuing_country: 'mdl_claim_issuing_country',
+  document_number: 'mdl_claim_document_number',
+  document_name: 'mdl_claim_document_name',
+  driving_privileges: 'mdl_claim_driving_privileges',
+  un_distinguishing_sign: 'mdl_claim_un_distinguishing_sign',
+  age_over_18: 'mdl_claim_age_over_18',
+  age_over_21: 'mdl_claim_age_over_21',
+  nationality: 'mdl_claim_nationality',
+  resident_city: 'mdl_claim_resident_city',
+  resident_address: 'mdl_claim_resident_address',
+  resident_postal_code: 'mdl_claim_resident_postal_code',
+  resident_country: 'mdl_claim_resident_country',
+  signature_usual_mark: 'mdl_claim_signature',
+};
+
+const localizeCredentialProperties = (summary: CredentialSummary): CredentialSummary => {
+  let labelMap: Record<string, string> | undefined;
+  if (summary.title === 'SphereonWalletIdentityCredential') {
+    labelMap = WALLET_IDENTITY_CLAIM_LABELS;
+  } else if (summary.title === 'org.iso.18013.5.1.mDL' || summary.title === 'MDL') {
+    labelMap = MDL_CLAIM_LABELS;
   }
+  if (!labelMap) return summary;
   return {
     ...summary,
     properties: summary.properties.map(row => {
-      const translationKey = WALLET_IDENTITY_CLAIM_LABELS[row.label];
+      const translationKey = labelMap![row.label];
       return translationKey ? {...row, label: translate(translationKey)} : row;
     }),
   };
@@ -66,14 +94,25 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
             const uniform = JSON.parse(uniqueVC.digitalCredential.uniformDocument) as VerifiableCredential;
             console.log(JSON.stringify(uniform));
             console.log(`Pre to summary with\r\n:${JSON.stringify(uniform, null, 2)}`);
+            // Apply default mDL branding when issuer provides no visual branding
+            let branding = credentialBranding?.localeBranding;
+            const hasVisualBranding = branding?.some((b: any) => b.logo?.uri || b.background?.image?.uri || b.background?.color);
+            if (!hasVisualBranding && uniform.type?.includes('org.iso.18013.5.1.mDL')) {
+              const mdlBranding = {...MobileDriversLicenseBranding, ...(branding?.[0] ?? {})} as any;
+              // Ensure mDL visual properties are applied even if issuer provided partial branding
+              if (!mdlBranding.logo?.uri) mdlBranding.logo = MobileDriversLicenseBranding.logo;
+              if (!mdlBranding.background?.color && !mdlBranding.background?.image) mdlBranding.background = MobileDriversLicenseBranding.background;
+              if (!mdlBranding.text?.color) mdlBranding.text = MobileDriversLicenseBranding.text;
+              branding = [mdlBranding];
+            }
             return toCredentialSummary({
               verifiableCredential: uniform,
               hash: uniqueVC.hash,
               credentialRole: uniqueVC.digitalCredential.credentialRole,
-              branding: credentialBranding?.localeBranding,
+              branding,
               issuer: getCredentialIssuerContact(uniform),
               subject: getCredentialSubjectContact(uniform),
-            }).then(localizeWalletIdentityProperties);
+            }).then(localizeCredentialProperties);
           }),
         );
         console.log('summaries', credentialSummaries);

@@ -1,4 +1,5 @@
 import {getIssuerName} from '@sphereon/oid4vci-common';
+import MobileDriversLicenseBranding from '../../@config/branding/MobileDriversLicenseBranding.json';
 import React, {Context, createContext, JSX} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import {URL} from 'react-native-url-polyfill';
@@ -341,6 +342,16 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
         localeBranding.push(...branding)
       }
     }
+  }
+  // Apply default mDL branding when issuer provides no visual branding
+  const hasVisualBranding = localeBranding.some(b => b.logo?.uri || b.background?.image?.uri || b.background?.color);
+  if (!hasVisualBranding && (configId === 'org.iso.18013.5.1.mDL' || types.includes('org.iso.18013.5.1.mDL'))) {
+    const mdlBranding = {...MobileDriversLicenseBranding, ...(localeBranding[0] ?? {})} as IBasicCredentialLocaleBranding;
+    if (!mdlBranding.logo?.uri) (mdlBranding as any).logo = MobileDriversLicenseBranding.logo;
+    if (!mdlBranding.background?.color && !(mdlBranding.background as any)?.image) (mdlBranding as any).background = MobileDriversLicenseBranding.background;
+    if (!mdlBranding.text?.color) (mdlBranding as any).text = MobileDriversLicenseBranding.text;
+    localeBranding.length = 0;
+    localeBranding.push(mdlBranding);
   }
 
   const onDecline = async (): Promise<void> => {
