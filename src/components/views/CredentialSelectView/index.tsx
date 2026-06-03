@@ -58,18 +58,29 @@ function filterClaimsByRequestedPaths(
       source = (source as Record<string, unknown>)[seg]
     }
 
+    // mdoc fallback: the uniform credentialSubject is flattened (the ISO namespace is dropped), so a DCQL
+    // path like ["org.iso.18013.5.1", "given_name"] won't resolve. Fall back to the element name (last segment).
+    let outSegments = segments
+    if (source === undefined && segments.length > 1) {
+      const element = segments[segments.length - 1]
+      if (subject != null && typeof subject === 'object' && Object.prototype.hasOwnProperty.call(subject, element)) {
+        source = (subject as Record<string, unknown>)[element]
+        outSegments = [element]
+      }
+    }
+
     if (source === undefined) continue
 
     // Set the value in the result, creating intermediate objects as needed
     let target: Record<string, unknown> = result
-    for (let i = 0; i < segments.length - 1; i++) {
-      const seg = segments[i]
+    for (let i = 0; i < outSegments.length - 1; i++) {
+      const seg = outSegments[i]
       if (!target[seg] || typeof target[seg] !== 'object') {
         target[seg] = {}
       }
       target = target[seg] as Record<string, unknown>
     }
-    target[segments[segments.length - 1]] = source
+    target[outSegments[outSegments.length - 1]] = source
   }
 
   return result

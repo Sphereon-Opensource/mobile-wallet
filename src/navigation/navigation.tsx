@@ -60,6 +60,8 @@ import QRPresentationScreen from '../screens/QRPresentationScreen';
 import AccountScreen from '../screens/Settings/AccountScreen';
 import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedClaimsScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
+import TrustAnchorAddScreen from '../screens/TrustAnchorAddScreen';
+import TrustAnchorsOverviewScreen from '../screens/TrustAnchorsOverviewScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
@@ -193,6 +195,24 @@ const MainStackNavigator = (): JSX.Element => {
           <Stack.Screen name={MainRoutesEnum.SETTINGS} component={SettingsScreen} />
           <Stack.Screen name={MainRoutesEnum.ACCOUNT} component={AccountScreen} />
           <Stack.Screen name={MainRoutesEnum.AGE_DERIVED_CLAIMS} component={AgeDerivedClaimsScreen} />
+          <Stack.Screen
+            name={ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW}
+            component={TrustAnchorsOverviewScreen}
+            options={{
+              headerShown: true,
+              headerTitle: translate('trust_anchor_overview_title'),
+              header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
+            }}
+          />
+          <Stack.Screen
+            name={ScreenRoutesEnum.TRUST_ANCHOR_ADD}
+            component={TrustAnchorAddScreen}
+            options={{
+              headerShown: true,
+              headerTitle: translate('trust_anchor_add_title'),
+              header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
+            }}
+          />
           <Stack.Screen
             name={MainRoutesEnum.DC_API_CONSENT}
             component={DCApiConsentScreen}
@@ -473,6 +493,8 @@ const ContactsStack = (): JSX.Element => {
           };
         }}
       />
+      <Stack.Screen name={ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW} component={TrustAnchorsOverviewScreen} />
+      <Stack.Screen name={ScreenRoutesEnum.TRUST_ANCHOR_ADD} component={TrustAnchorAddScreen} />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}

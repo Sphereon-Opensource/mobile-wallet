@@ -21,7 +21,7 @@ import ChevronIcon from '../../../components/assets/icons/ChevronIcon';
 import React, {useCallback, useState} from 'react';
 import {ScrollView, Switch, TouchableOpacity, View} from 'react-native';
 import SSIProfileIcon from '../../../components/assets/icons/SSIProfileIcon';
-import {ButtonIconsEnum, MainRoutesEnum, RootState} from '../../../types';
+import {ButtonIconsEnum, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../../types';
 import {useDispatch, useSelector} from 'react-redux';
 import {SSITextH5LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import SSIPersonIcon from '../../../components/assets/icons/SSIPersonIcon';
@@ -167,6 +167,16 @@ const SettingsScreen = () => {
                 description={translate('settings_show_claim_values_by_default_description')}
                 value={preferences?.showClaimValuesByDefault ?? false}
                 onValueChange={v => onTogglePreference('showClaimValuesByDefault', v)}
+              />
+            </SettingsSection>
+
+            <SectionTitle>{translate('settings_trust_section_label')}</SectionTitle>
+            <Divider />
+            <SettingsSection>
+              <NavigationItem
+                onPress={() => navigation.navigate(ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW)}
+                left={<SSIProfileIcon />}
+                text={translate('settings_trust_anchors_label')}
               />
             </SettingsSection>
           </Content>

@@ -50,6 +50,7 @@ import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEn
 import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederationParties} from '../../utils';
 import store from '../../store';
+import {getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
@@ -517,6 +518,10 @@ const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
   debug('Stopping oid4vci machine...');
   oid4vciMachine.stop();
   debug('Stopped oid4vci machine');
+
+  // Refresh the credentials store from storage so the newly issued credential shows immediately
+  // (with full branding/localization) instead of only after a manual pull-to-refresh.
+  store.dispatch<any>(getVerifiableCredentials());
 
   navigation.navigate(NavigationBarRoutesEnum.CREDENTIALS, {
     screen: ScreenRoutesEnum.CREDENTIALS_OVERVIEW,

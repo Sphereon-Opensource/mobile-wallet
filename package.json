@@ -34,6 +34,7 @@
     "@ethersproject/shims": "^5.7.0",
     "@openai/realtime-api-beta": "patch:@openai/realtime-api-beta@https%3A//github.com/openai/openai-realtime-api-beta.git%23commit=a5cb94824f625423858ebacb9f769226ca98945f#~/patches/@openai-realtime-api-beta-https-689b3a705f.patch",
     "@pakenfit/react-native-pin-input": "^1.4.0",
+    "@peculiar/x509": "^1.12.3",
     "@react-native-community/blur": "^4.4.0",
     "@react-native-community/hooks": "^3.0.0",
     "@react-native-masked-view/masked-view": "0.3.2",
@@ -117,6 +118,7 @@
     "expo-build-properties": "~0.14.8",
     "expo-camera": "~16.1.11",
     "expo-clipboard": "~7.1.5",
+    "expo-document-picker": "~13.1.6",
     "expo-file-system": "~18.1.11",
     "expo-fs": "^0.2.2",
     "expo-image": "~2.4.1",
@@ -253,6 +255,7 @@
     "react-test-renderer": "18.2.0",
     "rn-nodeify": "patch:rn-nodeify@npm%3A10.3.0#~/patches/rn-nodeify-npm-10.3.0-dd87063015.patch",
     "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
     "webpack": "^5.76.1",
     "xmlhttprequest": "^1.8.0"

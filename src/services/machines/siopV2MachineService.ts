@@ -3,6 +3,7 @@ import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon
 import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {
   CorrelationIdentifierType,
+  CredentialDocumentFormat,
   DidAuthConfig,
   ICredentialBranding,
   IdentityOrigin,
@@ -13,10 +14,12 @@ import {
   ActionType,
   CredentialMapper,
   CredentialRole,
+  decodeMdocIssuerSigned,
   DefaultActionSubType,
   InitiatorType,
   Loggers,
   LogLevel,
+  MdocOid4vpIssuerSigned,
   SubSystem,
   System,
 } from '@sphereon/ssi-types';
@@ -170,6 +173,40 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
   }
 };
 
+type DcqlMdocClaim = {path: Array<string | number | null>; intent_to_retain?: boolean};
+
+/**
+ * Build a minimal ISO 18013-5 mdoc presentation definition from a DCQL credential query.
+ *
+ * OID4VP 1.0 is DCQL-only (no Presentation Exchange), but the mdoc holder-present primitive
+ * (matchDocumentsAndDescriptors / createDeviceResponse) still drives selective disclosure from a
+ * presentation definition. So we translate the DCQL claims query (`[namespace, element]` paths)
+ * into an mdoc input descriptor with `$['namespace']['element']` field paths.
+ */
+const buildMdocPresentationDefinitionFromDcql = (credentialQuery: {id?: string; meta?: {doctype_value?: string}; claims?: Array<DcqlMdocClaim>}): object => {
+  const doctype = credentialQuery?.meta?.doctype_value;
+  const claims: Array<DcqlMdocClaim> = credentialQuery?.claims ?? [];
+  const fields = claims
+    .filter((claim) => Array.isArray(claim.path) && claim.path.length >= 2 && typeof claim.path[0] === 'string' && typeof claim.path[1] === 'string')
+    .map((claim) => ({
+      path: [`$['${claim.path[0]}']['${claim.path[1]}']`],
+      intent_to_retain: claim.intent_to_retain ?? false,
+    }));
+  return {
+    id: credentialQuery?.id ?? doctype ?? uuidv4(),
+    input_descriptors: [
+      {
+        id: doctype ?? credentialQuery?.id,
+        format: {mso_mdoc: {alg: ['ES256']}},
+        constraints: {
+          limit_disclosure: 'required',
+          fields,
+        },
+      },
+    ],
+  };
+};
+
 export const sendResponse = async (
   context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'authorizationRequestData' | 'selectedCredentials' | 'contact' | 'dcApiMode' | 'dcApiOrigin'>,
 ): Promise<Response> => {
@@ -303,9 +340,32 @@ export const sendResponse = async (
       };
 
       try {
-        const vp = await createVerifiablePresentationForFormat(vc, identifier, perCredentialContext);
-        logger.debug(`VP for '${key}': ${typeof vp === 'string' ? vp.substring(0, 120) + '...' : JSON.stringify(vp).substring(0, 120) + '...'}`);
-        presentation[key] = vp as any;
+        const isMdoc = typeof vc === 'object' && 'digitalCredential' in vc && vc.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC;
+        if (isMdoc) {
+          // OID4VP 1.0 mdoc: build a device-signed DeviceResponse, driven by the DCQL claims query (no Presentation Exchange).
+          // NOTE: the underlying kmp-mdoc-core still emits the draft OID4VPHandover (clientIdHash/responseUriHash/mdoc_generated_nonce),
+          // not the OID4VP 1.0 `OpenID4VPHandover`. Device auth may therefore not verify at a strict 1.0 verifier until kmp-mdoc-core is updated.
+          if (!request.responseURI) {
+            throw Error('Missing response_uri for mdoc presentation');
+          }
+          const mdocPresentationDefinition = buildMdocPresentationDefinitionFromDcql(credentialQuery as any);
+          const decodedMdoc = decodeMdocIssuerSigned(vc.originalVerifiableCredential as MdocOid4vpIssuerSigned);
+          const mdocResult = await agent.mdocOid4vpHolderPresent({
+            mdocs: [decodedMdoc],
+            presentationDefinition: mdocPresentationDefinition as any,
+            mdocHolderNonce: uuidv4(),
+            authorizationRequestNonce: presentationContext.nonce,
+            responseUri: request.responseURI,
+            clientId: domain,
+          });
+          // OID4VP 1.0 DCQL: the mdoc vp_token entry is an array of base64url DeviceResponse(s).
+          presentation[key] = [mdocResult.vp_token] as any;
+          logger.debug(`mdoc VP for '${key}': ${mdocResult.vp_token.substring(0, 120)}...`);
+        } else {
+          const vp = await createVerifiablePresentationForFormat(vc, identifier, perCredentialContext);
+          logger.debug(`VP for '${key}': ${typeof vp === 'string' ? vp.substring(0, 120) + '...' : JSON.stringify(vp).substring(0, 120) + '...'}`);
+          presentation[key] = vp as any;
+        }
       } catch (error) {
         logger.error(`Failed to create VP for credential ${key}:`, error);
         throw error;

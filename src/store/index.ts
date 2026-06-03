@@ -6,6 +6,7 @@ import credentialReducer from './reducers/credential.reducer';
 import userReducer from './reducers/user.reducer';
 import dpopReducer from './reducers/dpop.reducer';
 import loggingReducer from './reducers/logging.reducer';
+import trustAnchorReducer from './reducers/trustAnchor.reducer';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
   contact: contactReducer,
   dpop: dpopReducer,
   logging: loggingReducer,
+  trustAnchor: trustAnchorReducer,
 });
 
 const store = configureStore({

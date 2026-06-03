@@ -68,6 +68,8 @@ export type StackParamList = {
   ACCOUNT: Record<string, never>;
   AGE_DERIVED_CLAIMS: IAgeDerivedClaimsProps;
   NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
+  TrustAnchorsOverview: Record<string, never>;
+  TrustAnchorAdd: Record<string, never>;
   [MainRoutesEnum.DC_API_CONSENT]: IDCApiConsentProps;
 };
 
@@ -420,6 +422,8 @@ export enum ScreenRoutesEnum {
   CREDENTIAL_CATALOG = 'CredentialCatalog',
   NEW_CONTACT_ADD = 'NewContactAdd',
   ENTER_ESIM_DETAILS = 'EnterESimDetails',
+  TRUST_ANCHORS_OVERVIEW = 'TrustAnchorsOverview',
+  TRUST_ANCHOR_ADD = 'TrustAnchorAdd',
 }
 
 export interface ISiopV2PProps {

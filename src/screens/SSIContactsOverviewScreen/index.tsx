@@ -1,11 +1,12 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Party} from '@sphereon/ssi-sdk.data-store-types';
 import React, {PureComponent} from 'react';
-import {ListRenderItemInfo, RefreshControl, View} from 'react-native';
+import {ListRenderItemInfo, RefreshControl, TouchableOpacity, View} from 'react-native';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {connect} from 'react-redux';
 
 import {backgroundColors, borderColors} from '@sphereon/ui-components.core';
+import {SSITextH5LightStyled} from '@sphereon/ui-components.ssi-react-native';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSIContactViewItem from '../../components/views/SSIContactViewItem';
 import SSISwipeRowViewItem from '../../components/views/SSISwipeRowViewItem';
@@ -121,6 +122,9 @@ class SSIContactsOverviewScreen extends PureComponent<IProps, IState> {
   render(): JSX.Element {
     return (
       <Container accessibilityRole="list" accessibilityLabel="Contacts">
+        <TouchableOpacity onPress={() => this.props.navigation.navigate(ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW, {})}>
+          <SSITextH5LightStyled>{translate('contacts_manage_trust_anchors_label')}</SSITextH5LightStyled>
+        </TouchableOpacity>
         <SwipeListView
           data={this.props.contacts}
           keyExtractor={(itemInfo: Party) => itemInfo.id}

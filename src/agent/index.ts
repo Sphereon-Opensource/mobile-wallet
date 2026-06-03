@@ -15,6 +15,7 @@ import {getResolver as webDIDResolver} from 'web-did-resolver';
 import {DID_PREFIX} from '../@config/constants';
 import {DEFAULT_DB_CONNECTION} from '../services/databaseService';
 import {IRequiredContext, SupportedDidMethodEnum, TAgentTypes} from '../types';
+import {refreshFromStorage as refreshTrustAnchors} from './trustAnchorRegistry';
 import {createAgentPlugins, sphereonKeyManager} from './plugins';
 import DefaultCallbacks = com.sphereon.crypto.DefaultCallbacks;
 import {DefaultOydCmsmCallbacks} from '@sphereon/did-provider-oyd';
@@ -50,3 +51,7 @@ export default agent;
 export const agentContext: IRequiredContext = {...agent.context, agent};
 
 DefaultCallbacks.setCoseCryptoDefault(new CoseCryptoService(agentContext as any));
+
+// Load user-added trust anchors once the DB connection (and its migrations) are ready.
+// Providers read lazily, so built-in anchors already work before this resolves.
+void Promise.resolve(DEFAULT_DB_CONNECTION).then(() => refreshTrustAnchors());
