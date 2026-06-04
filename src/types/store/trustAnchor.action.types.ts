@@ -1,4 +1,4 @@
-import {ITrustAnchor} from './trustAnchor.types';
+import {ITrustAnchor, ITrustAnchorContactLink} from './trustAnchor.types';
 
 export const TRUST_ANCHORS_LOADING = '[TRUST_ANCHOR] TRUST_ANCHORS_LOADING';
 export type TRUST_ANCHORS_LOADING = typeof TRUST_ANCHORS_LOADING;
@@ -14,6 +14,12 @@ export const DELETE_TRUST_ANCHOR_SUCCESS = '[TRUST_ANCHOR] DELETE_TRUST_ANCHOR_S
 export type DELETE_TRUST_ANCHOR_SUCCESS = typeof DELETE_TRUST_ANCHOR_SUCCESS;
 export const DELETE_TRUST_ANCHOR_FAILED = '[TRUST_ANCHOR] DELETE_TRUST_ANCHOR_FAILED';
 export type DELETE_TRUST_ANCHOR_FAILED = typeof DELETE_TRUST_ANCHOR_FAILED;
+export const GET_TRUST_ANCHOR_LINKS_SUCCESS = '[TRUST_ANCHOR] GET_TRUST_ANCHOR_LINKS_SUCCESS';
+export type GET_TRUST_ANCHOR_LINKS_SUCCESS = typeof GET_TRUST_ANCHOR_LINKS_SUCCESS;
+export const GET_TRUST_ANCHOR_LINKS_FAILED = '[TRUST_ANCHOR] GET_TRUST_ANCHOR_LINKS_FAILED';
+export type GET_TRUST_ANCHOR_LINKS_FAILED = typeof GET_TRUST_ANCHOR_LINKS_FAILED;
+export const RECORD_TRUST_ANCHOR_LINK_SUCCESS = '[TRUST_ANCHOR] RECORD_TRUST_ANCHOR_LINK_SUCCESS';
+export type RECORD_TRUST_ANCHOR_LINK_SUCCESS = typeof RECORD_TRUST_ANCHOR_LINK_SUCCESS;
 
 interface ITrustAnchorsLoading {
   type: TRUST_ANCHORS_LOADING;
@@ -39,6 +45,17 @@ interface IDeleteTrustAnchorSuccessAction {
 interface IDeleteTrustAnchorFailedAction {
   type: DELETE_TRUST_ANCHOR_FAILED;
 }
+interface IGetTrustAnchorLinksSuccessAction {
+  type: GET_TRUST_ANCHOR_LINKS_SUCCESS;
+  payload: Array<ITrustAnchorContactLink>;
+}
+interface IGetTrustAnchorLinksFailedAction {
+  type: GET_TRUST_ANCHOR_LINKS_FAILED;
+}
+interface IRecordTrustAnchorLinkSuccessAction {
+  type: RECORD_TRUST_ANCHOR_LINK_SUCCESS;
+  payload: ITrustAnchorContactLink;
+}
 
 export type TrustAnchorActionTypes =
   | ITrustAnchorsLoading
@@ -47,4 +64,7 @@ export type TrustAnchorActionTypes =
   | ICreateTrustAnchorSuccessAction
   | ICreateTrustAnchorFailedAction
   | IDeleteTrustAnchorSuccessAction
-  | IDeleteTrustAnchorFailedAction;
+  | IDeleteTrustAnchorFailedAction
+  | IGetTrustAnchorLinksSuccessAction
+  | IGetTrustAnchorLinksFailedAction
+  | IRecordTrustAnchorLinkSuccessAction;

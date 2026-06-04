@@ -11,6 +11,11 @@ import {
 } from '../../../styles/components';
 import SSIPinCodeSegment from '../SSIPinCodeSegment';
 import {backgroundColors, statusColors} from '@sphereon/ui-components.core';
+import {PrimaryButton} from '@sphereon/ui-components.ssi-react-native';
+
+// Fixed character boxes are only legible up to this many; above it (or when the issuer does not
+// announce a tx_code length at all) we render a single free-form input field instead.
+const MAX_SEGMENTED_LENGTH = 6;
 
 const {v4: uuidv4} = require('uuid');
 
@@ -28,7 +33,9 @@ interface IProps {
 }
 
 interface IState {
-  length: number;
+  // undefined = length not announced by the issuer (free-form input, unknown length).
+  length: number | undefined;
+  freeInput: boolean;
   maxRetries: number | undefined;
   pin: string;
   retry: number;
@@ -42,7 +49,9 @@ interface IState {
 class SSIPinCode extends PureComponent<IProps, IState> {
   state: IState = {
     inputRef: null,
-    length: this.props.length || 4,
+    length: this.props.length,
+    // Use a single free-form input when the length is unknown or too long for legible boxes.
+    freeInput: this.props.length === undefined || this.props.length < 1 || this.props.length > MAX_SEGMENTED_LENGTH,
     maxRetries: this.props.maxRetries,
     pin: '',
     retry: 0,
@@ -124,8 +133,19 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     }
   };
 
+  // Free-form input (unknown or long tx_code): filter to the allowed character set, cap at the
+  // known length when the issuer announced one, and submit via the explicit confirm button.
+  onChangeFreeInput = (text: string): void => {
+    const allowed = this.props.inputMode === 'text' ? text.replace(/[^a-zA-Z0-9]/g, '') : text.replace(/[^0-9]/g, '');
+    const capped = this.state.length !== undefined ? allowed.slice(0, this.state.length) : allowed;
+    this.setState({pin: capped, showErrorMessage: false});
+  };
+
   onKeyPressInput = async ({nativeEvent: {key}}: {nativeEvent: {key: string}}): Promise<void> => {
     const {length, pin} = this.state;
+    if (length === undefined) {
+      return;
+    }
     if (pin.length < length) {
       switch (key) {
         case 'Backspace':
@@ -160,7 +180,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
   onSubmitEditing = async (event: {nativeEvent: {text: string}}): Promise<void> => {
     const {length} = this.state;
 
-    if (event.nativeEvent.text.length >= length) {
+    if (length !== undefined && event.nativeEvent.text.length >= length) {
       this.submit(event.nativeEvent.text);
     } else {
       this.failureAnimation();
@@ -172,9 +192,63 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     this.setState({inputRef: input});
   };
 
+  renderFreeInput() {
+    const {accessibilityLabel, accessibilityHint, errorMessage} = this.props;
+    const {pin, length, shakeAnimation, secureCode, maxRetries, retry, showErrorMessage} = this.state;
+    // With a known (long) length require an exact match; with an unknown length accept any non-empty code.
+    const canSubmit = length !== undefined ? pin.length === length : pin.length > 0;
+    return (
+      <Container>
+        <Animated.View style={{left: shakeAnimation, width: '100%', alignItems: 'center'}}>
+          <TextInput
+            ref={this.onRef}
+            style={{
+              minWidth: 220,
+              borderWidth: 1,
+              borderColor: '#FBFBFB',
+              borderRadius: 8,
+              color: '#FBFBFB',
+              fontSize: 20,
+              textAlign: 'center',
+              letterSpacing: 4,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+            }}
+            accessible
+            accessibilityLabel={accessibilityLabel}
+            accessibilityHint={accessibilityHint}
+            accessibilityRole={'text'}
+            keyboardType={this.props.inputMode === 'text' ? 'default' : 'number-pad'}
+            autoFocus={this.props.autoFocus}
+            secureTextEntry={secureCode}
+            {...(length !== undefined && {maxLength: length})}
+            value={pin}
+            onChangeText={this.onChangeFreeInput}
+            onSubmitEditing={() => canSubmit && this.submit(pin)}
+          />
+        </Animated.View>
+        {errorMessage && showErrorMessage && <ErrorMessageText>{errorMessage}</ErrorMessageText>}
+        {maxRetries && retry > 0 && <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${maxRetries - retry}`}</AttemptsLeftText>}
+        <View style={{marginTop: 24, width: 220, alignSelf: 'center'}}>
+          <PrimaryButton
+            caption={translate('action_confirm_label')}
+            disabled={!canSubmit}
+            style={{width: '100%'}}
+            onPress={async () => canSubmit && this.submit(pin)}
+          />
+        </View>
+      </Container>
+    );
+  }
+
   render() {
+    if (this.state.freeInput) {
+      return this.renderFreeInput();
+    }
+
     const {accessibilityLabel, accessibilityHint, errorMessage} = this.props;
     const {pin, length, shakeAnimation, colorShiftAnimation, secureCode, maxRetries, retry, showErrorMessage} = this.state;
+    const count = length ?? 0;
 
     const colorShiftAnimationStyle = {
       backgroundColor: colorShiftAnimation.interpolate({
@@ -184,10 +258,9 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     };
 
     const segments = [];
-    const segmentMargin = length > 6 ? 10 : 12;
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < count; i++) {
       segments.push(
-        <View key={uuidv4()} style={{marginRight: i === length - 1 ? 0 : segmentMargin}}>
+        <View key={uuidv4()} style={{marginRight: i === count - 1 ? 0 : 12}}>
           <SSIPinCodeSegment
             value={secureCode ? (pin.length === i + 1 ? pin.charAt(i) : i >= pin.length ? '' : '*') : pin.charAt(i)}
             isCurrent={pin.length === i}
@@ -201,7 +274,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
     return (
       <TouchableOpacity activeOpacity={1} onPress={this.setInputFocus}>
         <Container>
-          <SegmentsContainer style={{left: shakeAnimation, ...(length > 6 && {transform: [{scale: 0.8}]})}}>{segments}</SegmentsContainer>
+          <SegmentsContainer style={{left: shakeAnimation}}>{segments}</SegmentsContainer>
           {errorMessage && showErrorMessage && <ErrorMessageText>{errorMessage}</ErrorMessageText>}
           {maxRetries && retry > 0 && <AttemptsLeftText>{`${translate('pin_code_attempts_left_message')} ${maxRetries - retry}`}</AttemptsLeftText>}
           <TextInput
@@ -214,7 +287,7 @@ class SSIPinCode extends PureComponent<IProps, IState> {
             keyboardType={this.props.inputMode === 'text' ? 'default' : 'number-pad'}
             autoFocus={this.props.autoFocus}
             caretHidden
-            maxLength={length}
+            maxLength={count}
             onKeyPress={this.onKeyPressInput}
             value={pin}
             onSubmitEditing={this.onSubmitEditing}

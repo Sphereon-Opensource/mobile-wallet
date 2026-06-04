@@ -12,6 +12,7 @@ import {ICredentialSelection, ICredentialTypeSelection} from '../credential';
 import {OnboardingMachineInterpreter} from '../machines/onboarding';
 import {SiopV2MachineInterpreter} from '../machines/siopV2';
 import {DcqlQuery} from 'dcql';
+import {ITrustAnchor} from '../store/trustAnchor.types';
 
 export type ParamsList = Record<string, object | undefined>;
 export type Navigate<T extends ParamsList> = NavigationHelpers<T, any>['navigate'];
@@ -70,6 +71,7 @@ export type StackParamList = {
   NewContactAdd: INewContactAddProps & Partial<IHasOnBackProps>;
   TrustAnchorsOverview: Record<string, never>;
   TrustAnchorAdd: Record<string, never>;
+  TrustAnchorDetails: ITrustAnchorDetailsProps;
   [MainRoutesEnum.DC_API_CONSENT]: IDCApiConsentProps;
 };
 
@@ -424,8 +426,13 @@ export enum ScreenRoutesEnum {
   ENTER_ESIM_DETAILS = 'EnterESimDetails',
   TRUST_ANCHORS_OVERVIEW = 'TrustAnchorsOverview',
   TRUST_ANCHOR_ADD = 'TrustAnchorAdd',
+  TRUST_ANCHOR_DETAILS = 'TrustAnchorDetails',
 }
 
 export interface ISiopV2PProps {
   customSiopV2Instance?: SiopV2MachineInterpreter;
+}
+
+export interface ITrustAnchorDetailsProps {
+  trustAnchor: ITrustAnchor;
 }

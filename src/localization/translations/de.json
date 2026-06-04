@@ -652,5 +652,9 @@
   "trust_anchor_expired_label": "expired",
   "trust_anchor_remove_label": "Remove",
   "trust_anchor_remove_message": "Möchten Sie diesen Vertrauensanker wirklich entfernen: {{label}}?",
-  "trust_anchor_add_success_toast": "Trust anchor added"
+  "trust_anchor_add_success_toast": "Trust anchor added",
+  "trust_anchor_details_title": "Trust anchor",
+  "trust_anchor_linked_contacts_label": "Trusted contacts",
+  "trust_anchor_linked_contacts_empty": "No contacts have been verified against this trust anchor yet.",
+  "trust_anchor_contact_section_label": "Trust anchor"
 }

@@ -175,7 +175,6 @@ const SettingsScreen = () => {
             <SettingsSection>
               <NavigationItem
                 onPress={() => navigation.navigate(ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW)}
-                left={<SSIProfileIcon />}
                 text={translate('settings_trust_anchors_label')}
               />
             </SettingsSection>
@@ -198,7 +197,7 @@ const SettingsScreen = () => {
 };
 
 export type NavigationItemProps = {
-  left: React.ReactNode;
+  left?: React.ReactNode;
   text: React.ReactNode;
   onPress?: () => void;
 };

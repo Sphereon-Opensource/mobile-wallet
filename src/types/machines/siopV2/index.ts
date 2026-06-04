@@ -23,6 +23,8 @@ export type SiopV2AuthorizationRequestData = {
   clientIdScheme?: string;
   clientId?: string;
   entityId?: string;
+  // x5c chain (base64 DER, leaf-first) from the request-object JWS header, when present.
+  x5c?: Array<string>;
   // presentationDefinitions?: PresentationDefinitionWithLocation[];
   dcqlQuery: DcqlQuery
 };

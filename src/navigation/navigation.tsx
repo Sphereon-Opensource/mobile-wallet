@@ -62,6 +62,7 @@ import {default as AgeDerivedClaimsScreen} from '../screens/Settings/AgeDerivedC
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import TrustAnchorAddScreen from '../screens/TrustAnchorAddScreen';
 import TrustAnchorsOverviewScreen from '../screens/TrustAnchorsOverviewScreen';
+import TrustAnchorDetailScreen from '../screens/TrustAnchorDetailScreen';
 import SSIContactAddScreen from '../screens/SSIContactAddScreen';
 import SSIContactDetailsScreen from '../screens/SSIContactDetailsScreen';
 import SSIContactsOverviewScreen from '../screens/SSIContactsOverviewScreen';
@@ -210,6 +211,15 @@ const MainStackNavigator = (): JSX.Element => {
             options={{
               headerShown: true,
               headerTitle: translate('trust_anchor_add_title'),
+              header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
+            }}
+          />
+          <Stack.Screen
+            name={ScreenRoutesEnum.TRUST_ANCHOR_DETAILS}
+            component={TrustAnchorDetailScreen}
+            options={{
+              headerShown: true,
+              headerTitle: translate('trust_anchor_details_title'),
               header: (props: NativeStackHeaderProps) => <SSIHeaderBar {...props} />,
             }}
           />
@@ -495,6 +505,7 @@ const ContactsStack = (): JSX.Element => {
       />
       <Stack.Screen name={ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW} component={TrustAnchorsOverviewScreen} />
       <Stack.Screen name={ScreenRoutesEnum.TRUST_ANCHOR_ADD} component={TrustAnchorAddScreen} />
+      <Stack.Screen name={ScreenRoutesEnum.TRUST_ANCHOR_DETAILS} component={TrustAnchorDetailScreen} />
       <Stack.Screen
         name={ScreenRoutesEnum.ERROR}
         component={SSIErrorScreen}

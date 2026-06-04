@@ -3,8 +3,9 @@ import {DataSource} from 'typeorm';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../../@config/constants';
 import {TrustAnchorEntity, TrustAnchorMode} from '../../entities/TrustAnchorEntity';
+import {TrustAnchorContactLinkEntity} from '../../entities/TrustAnchorContactLinkEntity';
 import {DEFAULT_DB_CONNECTION} from '../databaseService';
-import {IAddTrustAnchorArgs, ITrustAnchor} from '../../types/store/trustAnchor.types';
+import {IAddTrustAnchorArgs, IRecordTrustAnchorLinkArgs, ITrustAnchor, ITrustAnchorContactLink} from '../../types/store/trustAnchor.types';
 import {parseCertificate} from './certificateParser';
 
 const debug: Debugger = Debug(`${APP_ID}:trustAnchorService`);
@@ -24,9 +25,23 @@ const toViewModel = (entity: TrustAnchorEntity): ITrustAnchor => ({
   createdAt: entity.createdAt?.toISOString() ?? new Date().toISOString(),
 });
 
+const linkToViewModel = (entity: TrustAnchorContactLinkEntity): ITrustAnchorContactLink => ({
+  id: entity.id,
+  trustAnchorId: entity.trustAnchorId,
+  contactId: entity.contactId,
+  matchedType: entity.matchedType,
+  matchedValue: entity.matchedValue,
+  createdAt: entity.createdAt?.toISOString() ?? new Date().toISOString(),
+});
+
 const getRepo = async () => {
   const ds: DataSource = await DEFAULT_DB_CONNECTION;
   return ds.getRepository(TrustAnchorEntity);
+};
+
+const getLinkRepo = async () => {
+  const ds: DataSource = await DEFAULT_DB_CONNECTION;
+  return ds.getRepository(TrustAnchorContactLinkEntity);
 };
 
 export const getTrustAnchors = async (): Promise<Array<ITrustAnchor>> => {
@@ -72,6 +87,9 @@ export const addTrustAnchor = async (args: IAddTrustAnchorArgs): Promise<ITrustA
 
 export const removeTrustAnchor = async (id: string): Promise<string> => {
   debug(`removeTrustAnchor(${id})...`);
+  // Remove the contact links first so a trust anchor deletion is never blocked and leaves no orphans.
+  const linkRepo = await getLinkRepo();
+  await linkRepo.delete({trustAnchorId: id});
   const repo = await getRepo();
   await repo.delete({id});
   return id;
@@ -84,4 +102,44 @@ export const getX5cAnchorPems = async (): Promise<{ca: Array<string>; blind: Arr
     ca: rows.filter(r => r.trustMode === 'ca').map(r => r.value),
     blind: rows.filter(r => r.trustMode === 'blind').map(r => r.value),
   };
+};
+
+/** All recorded contact <-> trust-anchor links, newest first. */
+export const getTrustAnchorLinks = async (): Promise<Array<ITrustAnchorContactLink>> => {
+  const linkRepo = await getLinkRepo();
+  const rows = await linkRepo.find({order: {createdAt: 'DESC'}});
+  return rows.map(linkToViewModel);
+};
+
+/**
+ * Record a link between a contact and a trust anchor. Idempotent: an existing link for the same
+ * (trustAnchorId, contactId) is returned (with matchedValue refreshed) rather than duplicated.
+ */
+export const recordTrustAnchorLink = async (args: IRecordTrustAnchorLinkArgs): Promise<ITrustAnchorContactLink> => {
+  const {trustAnchorId, contactId, matchedType, matchedValue} = args;
+  const linkRepo = await getLinkRepo();
+  const existing = await linkRepo.findOne({where: {trustAnchorId, contactId}});
+  if (existing) {
+    if (matchedValue !== undefined && existing.matchedValue !== matchedValue) {
+      existing.matchedValue = matchedValue;
+      await linkRepo.save(existing);
+    }
+    return linkToViewModel(existing);
+  }
+  const entity = new TrustAnchorContactLinkEntity();
+  entity.id = uuidv4();
+  entity.trustAnchorId = trustAnchorId;
+  entity.contactId = contactId;
+  entity.matchedType = matchedType;
+  entity.matchedValue = matchedValue;
+  const saved = await linkRepo.save(entity);
+  debug(`recordTrustAnchorLink(anchor=${trustAnchorId}, contact=${contactId}) succeeded - id=${saved.id}`);
+  return linkToViewModel(saved);
+};
+
+/** Remove all links for a contact (call when a contact is deleted to avoid orphan rows). */
+export const deleteTrustAnchorLinksForContact = async (contactId: string): Promise<string> => {
+  const linkRepo = await getLinkRepo();
+  await linkRepo.delete({contactId});
+  return contactId;
 };

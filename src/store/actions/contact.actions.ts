@@ -20,6 +20,7 @@ import {
   removeContact,
   updateContact as editContact,
 } from '../../services/contactService';
+import {deleteTrustAnchorLinksForContact} from '../../services/trustAnchor/trustAnchorService';
 import {IUser, IUserIdentifier, RootState, ToastTypeEnum} from '../../types';
 import {
   ADD_IDENTITY_FAILED,
@@ -143,6 +144,8 @@ export const deleteContact = (contactId: string): ThunkAction<Promise<void>, Roo
       .then((isDeleted: boolean): void => {
         if (isDeleted) {
           dispatch({type: DELETE_CONTACT_SUCCESS, payload: contactId});
+          // Best-effort: drop any trust-anchor links that referenced this contact so no orphans remain.
+          void deleteTrustAnchorLinksForContact(contactId);
           showToast(ToastTypeEnum.TOAST_SUCCESS, {message: translate('contact_deleted_success_toast'), showBadge: false});
         } else {
           dispatch({type: DELETE_CONTACT_FAILED});

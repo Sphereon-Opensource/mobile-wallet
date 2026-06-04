@@ -52,6 +52,9 @@ import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederatio
 import store from '../../store';
 import {getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {recordTrustAnchorLinksForVerification} from '../../store/actions/trustAnchor.actions';
+import {extractIssuerX5cFromCredential} from '../../services/trustAnchor/trustAnchorMatcher';
+import {extractIssuerX5cFromMdoc} from '../../services/trustAnchor/mdocX5c';
 import {computeEntryHash} from '@veramo/utils';
 import {VerifiableCredential} from '@veramo/core';
 import {UniqueDigitalCredential} from '@sphereon/ssi-sdk.credential-store';
@@ -280,16 +283,16 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
       type: OID4VCIMachineEvents.INVOKED_AUTHORIZATION_CODE_REQUEST,
       data: url,
     });
-    const callbackScheme = 'com.sphereon.ssi.wallet'
+    const callbackScheme = 'com.sphereon.ssi.wallet';
     IntentHandler.getInstance().setAuthSessionActive(true);
-    const result = await WebBrowser.openAuthSessionAsync(url, `${callbackScheme}://oid4vci-callback`)
+    const result = await WebBrowser.openAuthSessionAsync(url, `${callbackScheme}://oid4vci-callback`);
     IntentHandler.getInstance().setAuthSessionActive(false);
-    debug('onOpenAuthorizationUrl auth session result: ', JSON.stringify(result))
+    debug('onOpenAuthorizationUrl auth session result: ', JSON.stringify(result));
     if (result.type === 'success' && result.url) {
       oid4vciMachine.send({
         type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
         data: result.url,
-      })
+      });
     } else if (result.type === 'dismiss') {
       // On iOS, universal links cause the IntentHandler to receive the callback and dismiss the auth session.
       // The deep link URL (with the authorization code) is stored in IntentHandler and won't reach us via
@@ -297,16 +300,16 @@ const navigateAuthorizationCodeURL = async (args: OID4VCIMachineNavigationArgs):
       const intentHandler = IntentHandler.getInstance();
       const deepLinkUrl = intentHandler.consumeDeepLink();
       if (deepLinkUrl && deepLinkUrl.includes('oid4vci-callback')) {
-        debug('Auth session dismissed but deep link contains authorization code, forwarding to machine')
+        debug('Auth session dismissed but deep link contains authorization code, forwarding to machine');
         oid4vciMachine.send({
           type: OID4VCIMachineEvents.PROVIDE_AUTHORIZATION_CODE_RESPONSE,
           data: deepLinkUrl,
-        })
+        });
       } else {
-        debug('Auth session dismissed without authorization code')
+        debug('Auth session dismissed without authorization code');
       }
     } else if (result.type === 'cancel') {
-      debug('User cancelled the authorization session')
+      debug('User cancelled the authorization session');
     }
   };
 
@@ -330,17 +333,17 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   const {credentialsToAccept, contact, credentialBranding} = state.context;
   // The selectedCredential from context is the configurationId, whilst we store the branding by type. We need to map
   const configId = state.context.selectedCredentials[0];
-  const types = credentialsToAccept
-    .find(ac => ac.correlationId === configId || ac.credentialToAccept.id === configId || ac.types.includes(configId))
-    ?.types?.filter(type => type != 'VerifiableCredential') ?? [];
+  const types =
+    credentialsToAccept
+      .find(ac => ac.correlationId === configId || ac.credentialToAccept.id === configId || ac.types.includes(configId))
+      ?.types?.filter(type => type != 'VerifiableCredential') ?? [];
 
-
-  const localeBranding: Array<IBasicCredentialLocaleBranding> = credentialBranding?.[configId] ?? []
-  if (localeBranding.length === 0 ) {
+  const localeBranding: Array<IBasicCredentialLocaleBranding> = credentialBranding?.[configId] ?? [];
+  if (localeBranding.length === 0) {
     for (const type of types) {
-      const branding = credentialBranding?.[type] ?? []
+      const branding = credentialBranding?.[type] ?? [];
       if (branding.length > 0) {
-        localeBranding.push(...branding)
+        localeBranding.push(...branding);
       }
     }
   }
@@ -349,7 +352,8 @@ const navigateReviewCredentials = async (args: OID4VCIMachineNavigationArgs): Pr
   if (!hasVisualBranding && (configId === 'org.iso.18013.5.1.mDL' || types.includes('org.iso.18013.5.1.mDL'))) {
     const mdlBranding = {...MobileDriversLicenseBranding, ...(localeBranding[0] ?? {})} as IBasicCredentialLocaleBranding;
     if (!mdlBranding.logo?.uri) (mdlBranding as any).logo = MobileDriversLicenseBranding.logo;
-    if (!mdlBranding.background?.color && !(mdlBranding.background as any)?.image) (mdlBranding as any).background = MobileDriversLicenseBranding.background;
+    if (!mdlBranding.background?.color && !(mdlBranding.background as any)?.image)
+      (mdlBranding as any).background = MobileDriversLicenseBranding.background;
     if (!mdlBranding.text?.color) (mdlBranding as any).text = MobileDriversLicenseBranding.text;
     localeBranding.length = 0;
     localeBranding.push(mdlBranding);
@@ -470,7 +474,6 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
     return Promise.reject(Error('Missing authorization request data in context'));
   }
 
-
   const onSelect = async (selectedCredentials: Array<UniqueDigitalCredential>): Promise<void> => {
     firstPartyMachine.send({
       type: FirstPartyMachineEvents.SET_SELECTED_CREDENTIALS,
@@ -513,7 +516,23 @@ const navigateSelectCredentialsToPresent = async (args: FirstPartyMachineNavigat
 };
 
 const navigateFinal = async (args: OID4VCIMachineNavigationArgs): Promise<void> => {
-  const {navigation, oid4vciMachine} = args;
+  const {navigation, oid4vciMachine, state} = args;
+
+  // Best-effort: link the issuer contact to any stored trust anchor the issued credential's x5c chain
+  // (or issuer did) resolves to. Fire-and-forget — linking must never delay or break issuance.
+  const {contact, credentialsToAccept} = state.context;
+  if (contact?.id && credentialsToAccept?.length) {
+    const accepted = credentialsToAccept[0];
+    // JWT/SD-JWT carry x5c in the JWS header; mso_mdoc carries it in the issuerAuth COSE_Sign1 header.
+    const x5cChain = extractIssuerX5cFromCredential(accepted.rawVerifiableCredential) ?? extractIssuerX5cFromMdoc(accepted.rawVerifiableCredential);
+    const uniform = accepted.uniformVerifiableCredential as VerifiableCredential | undefined;
+    const issuer = uniform?.issuer;
+    const issuerId = typeof issuer === 'string' ? issuer : issuer?.id;
+    const did = issuerId?.startsWith('did:') ? issuerId : undefined;
+    if (x5cChain || did) {
+      store.dispatch<any>(recordTrustAnchorLinksForVerification({contactId: contact.id, x5cChain, did}));
+    }
+  }
 
   debug('Stopping oid4vci machine...');
   oid4vciMachine.stop();

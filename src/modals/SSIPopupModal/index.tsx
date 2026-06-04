@@ -15,7 +15,15 @@ const SSIPopupModal: FC<Props> = (props: Props): JSX.Element => {
   const {onClose, image, title, titleBadge, details, extraDetails, detailsPopup, primaryButton, secondaryButton, input} = props.route.params;
   const [showExtraDetails, setShowExtraDetails] = React.useState(false);
 
-  const dismiss = async () => props.navigation.goBack();
+  // Only dismiss if this modal is still the focused (top) route. If the button's onPress already
+  // navigated away (e.g. a state machine advanced the flow and navigated to a route *below* this
+  // modal, which pops the modal), an unguarded goBack() would pop the screen underneath instead —
+  // briefly revealing it (e.g. the QR scanner remounting its camera) before the next screen mounts.
+  const dismiss = async () => {
+    if (props.navigation.isFocused()) {
+      props.navigation.goBack();
+    }
+  };
 
   const wrapWithDismiss = (button: typeof primaryButton) =>
     button

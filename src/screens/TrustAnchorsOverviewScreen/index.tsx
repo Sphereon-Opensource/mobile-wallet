@@ -71,7 +71,7 @@ const TrustAnchorsOverviewScreen = (): JSX.Element => {
         style={backgroundStyle}
         hiddenStyle={backgroundStyle}
         viewItem={rowContent}
-        onPress={async () => {}}
+        onPress={async () => navigation.navigate(ScreenRoutesEnum.TRUST_ANCHOR_DETAILS, {trustAnchor: item})}
         onDelete={async () => confirmDelete(item)}
       />
     );

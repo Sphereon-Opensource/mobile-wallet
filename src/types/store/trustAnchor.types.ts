@@ -15,9 +15,26 @@ export interface ITrustAnchor {
   createdAt: string;
 }
 
+export interface ITrustAnchorContactLink {
+  id: string;
+  trustAnchorId: string;
+  contactId: string;
+  matchedType: TrustAnchorType;
+  matchedValue?: string;
+  createdAt: string;
+}
+
+export interface IRecordTrustAnchorLinkArgs {
+  trustAnchorId: string;
+  contactId: string;
+  matchedType: TrustAnchorType;
+  matchedValue?: string;
+}
+
 export interface ITrustAnchorState {
   loading: boolean;
   trustAnchors: Array<ITrustAnchor>;
+  links: Array<ITrustAnchorContactLink>;
 }
 
 export interface IAddTrustAnchorArgs {

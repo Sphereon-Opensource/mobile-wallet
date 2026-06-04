@@ -1,6 +1,6 @@
 import {ClientMetadataOpts, VerifiedAuthorizationRequest} from '@sphereon/did-auth-siop';
 import {isOID4VCIssuerIdentifier, ManagedIdentifierOptsOrResult} from '@sphereon/ssi-sdk-ext.identifier-resolution';
-import {encodeJoseBlob} from '@sphereon/ssi-sdk.core';
+import {decodeJoseBlob, encodeJoseBlob} from '@sphereon/ssi-sdk.core';
 import {
   CorrelationIdentifierType,
   CredentialDocumentFormat,
@@ -37,6 +37,7 @@ import {siopGetRequest} from '../../providers/authentication/SIOPv2Provider';
 import store from '../../store';
 import {addIdentity} from '../../store/actions/contact.actions';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
+import {recordTrustAnchorLinksForVerification} from '../../store/actions/trustAnchor.actions';
 import {SiopV2AuthorizationRequestData, SiopV2MachineContext} from '../../types/machines/siopV2';
 import {getCredentialIssuerContact, getCredentialSubjectContact, translateCorrelationIdToName} from '../../utils';
 import {getContacts} from '../contactService';
@@ -64,6 +65,21 @@ export const createConfig = async (
   };
 };
 
+/** Pull the x5c chain (base64 DER, leaf-first) from the request-object JWS header, if present. */
+const extractRequestObjectX5c = async (request: VerifiedAuthorizationRequest): Promise<Array<string> | undefined> => {
+  try {
+    const jwt: string | undefined = await request.authorizationRequest.requestObjectJwt();
+    if (typeof jwt !== 'string' || !jwt.includes('.')) {
+      return undefined;
+    }
+    const header = decodeJoseBlob(jwt.split('.')[0]) as {x5c?: Array<string>} | undefined;
+    return Array.isArray(header?.x5c) && header!.x5c!.length > 0 ? header!.x5c : undefined;
+  } catch (error) {
+    logger.debug(`Could not extract x5c from request object: ${error}`);
+    return undefined;
+  }
+};
+
 export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAuthConfig' | 'url'>): Promise<SiopV2AuthorizationRequestData> => {
   const {didAuthConfig} = context;
 
@@ -86,8 +102,8 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
   const correlationIdName = uri
     ? translateCorrelationIdToName(uri.hostname)
     : verifiedAuthorizationRequest.issuer
-      ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
-      : name;
+    ? translateCorrelationIdToName(verifiedAuthorizationRequest.issuer.split('://')[1])
+    : name;
   const correlationId: string | undefined = uri?.hostname ?? correlationIdName;
 
   if (!correlationId) {
@@ -97,6 +113,7 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
   const clientIdScheme: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id_scheme');
   const clientId: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('client_id');
   const entityId: string | undefined = verifiedAuthorizationRequest.authorizationRequest.getMergedProperty<string>('entity_id');
+  const x5c: Array<string> | undefined = await extractRequestObjectX5c(verifiedAuthorizationRequest);
 
   return {
     issuer: verifiedAuthorizationRequest.issuer,
@@ -107,6 +124,7 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     clientIdScheme,
     clientId,
     entityId,
+    x5c,
     dcqlQuery: verifiedAuthorizationRequest.dcqlQuery,
     // presentationDefinitions:
     //   (await verifiedAuthorizationRequest.authorizationRequest.containsResponseType('vp_token')) ||
@@ -169,6 +187,15 @@ export const addContactIdentity = async (context: Pick<SiopV2MachineContext, 'co
         correlationId,
       },
     };
+    // Best-effort: link this verifier to any stored trust anchor its x5c chain or did resolves to.
+    // Fire-and-forget — linking must never delay or break the presentation flow.
+    void store.dispatch<any>(
+      recordTrustAnchorLinksForVerification({
+        contactId: contact.id,
+        x5cChain: authorizationRequestData.x5c,
+        did: correlationId.startsWith('did:') ? correlationId : undefined,
+      }),
+    );
     return store.dispatch<any>(addIdentity({contactId: contact.id, identity}));
   }
 };
@@ -183,12 +210,16 @@ type DcqlMdocClaim = {path: Array<string | number | null>; intent_to_retain?: bo
  * presentation definition. So we translate the DCQL claims query (`[namespace, element]` paths)
  * into an mdoc input descriptor with `$['namespace']['element']` field paths.
  */
-const buildMdocPresentationDefinitionFromDcql = (credentialQuery: {id?: string; meta?: {doctype_value?: string}; claims?: Array<DcqlMdocClaim>}): object => {
+const buildMdocPresentationDefinitionFromDcql = (credentialQuery: {
+  id?: string;
+  meta?: {doctype_value?: string};
+  claims?: Array<DcqlMdocClaim>;
+}): object => {
   const doctype = credentialQuery?.meta?.doctype_value;
   const claims: Array<DcqlMdocClaim> = credentialQuery?.claims ?? [];
   const fields = claims
-    .filter((claim) => Array.isArray(claim.path) && claim.path.length >= 2 && typeof claim.path[0] === 'string' && typeof claim.path[1] === 'string')
-    .map((claim) => ({
+    .filter(claim => Array.isArray(claim.path) && claim.path.length >= 2 && typeof claim.path[0] === 'string' && typeof claim.path[1] === 'string')
+    .map(claim => ({
       path: [`$['${claim.path[0]}']['${claim.path[1]}']`],
       intent_to_retain: claim.intent_to_retain ?? false,
     }));
@@ -228,8 +259,7 @@ export const sendResponse = async (
   // Get session and request
   const session = await agent.siopGetOPSession({sessionId: didAuthConfig.sessionId});
   const request = await session.getAuthorizationRequest();
-  const domain =
-    ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ?? request.issuer ?? 'https://self-issued.me/v2';
+  const domain = ((await request.authorizationRequest.getMergedProperty('client_id')) as string) ?? request.issuer ?? 'https://self-issued.me/v2';
 
   logger.debug(`NONCE: ${session.nonce}, domain: ${domain}`);
 
@@ -288,7 +318,7 @@ export const sendResponse = async (
     }
   }
 
-  const dcqlCredentialsWithCredentials = new Map(credentials.map((vc) => [convertToDcqlCredentials(vc), vc]));
+  const dcqlCredentialsWithCredentials = new Map(credentials.map(vc => [convertToDcqlCredentials(vc), vc]));
 
   const queryResult = DcqlQuery.query(request.dcqlQuery, Array.from(dcqlCredentialsWithCredentials.keys()));
 
@@ -316,7 +346,7 @@ export const sendResponse = async (
 
   for (const [key, value] of Object.entries(queryResult.credential_matches)) {
     if (value.success) {
-      const matchedCredentials = value.valid_credentials.map((cred) => uniqueCredentials[cred.input_credential_index]);
+      const matchedCredentials = value.valid_credentials.map(cred => uniqueCredentials[cred.input_credential_index]);
       const vc = matchedCredentials[0];
 
       if (!vc) {
@@ -324,23 +354,30 @@ export const sendResponse = async (
       }
 
       // Look up the credential query to extract DCQL claims for selective disclosure
-      const credentialQuery = request.dcqlQuery.credentials.find((c) => c.id === key);
+      const credentialQuery = request.dcqlQuery.credentials.find(c => c.id === key);
       const validCredential = value.valid_credentials[0];
       const validClaimIndexes = validCredential?.claims?.valid_claim_sets?.[0]?.valid_claim_indexes;
-      logger.debug(`DCQL credential query '${key}': claims=${JSON.stringify(credentialQuery?.claims)}, validClaimIndexes=${JSON.stringify(validClaimIndexes)}`);
+      logger.debug(
+        `DCQL credential query '${key}': claims=${JSON.stringify(credentialQuery?.claims)}, validClaimIndexes=${JSON.stringify(validClaimIndexes)}`,
+      );
 
       const perCredentialContext: PresentationBuilderContext = {
         ...presentationContext,
         ...(credentialQuery?.claims
           ? {
-              dcqlClaims: credentialQuery.claims as Array<{path: Array<string | number | null>; id?: string; values?: Array<string | number | boolean>}>,
+              dcqlClaims: credentialQuery.claims as Array<{
+                path: Array<string | number | null>;
+                id?: string;
+                values?: Array<string | number | boolean>;
+              }>,
               ...(validClaimIndexes ? {dcqlValidClaimIndexes: [...validClaimIndexes]} : {}),
             }
           : {}),
       };
 
       try {
-        const isMdoc = typeof vc === 'object' && 'digitalCredential' in vc && vc.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC;
+        const isMdoc =
+          typeof vc === 'object' && 'digitalCredential' in vc && vc.digitalCredential.documentFormat === CredentialDocumentFormat.MSO_MDOC;
         if (isMdoc) {
           // OID4VP 1.0 mdoc: build a device-signed DeviceResponse, driven by the DCQL claims query (no Presentation Exchange).
           // NOTE: the underlying kmp-mdoc-core still emits the draft OID4VPHandover (clientIdHash/responseUriHash/mdoc_generated_nonce),
@@ -545,6 +582,5 @@ export const getFederationTrust = async (
   };
 };
 
-const getMetadataField = <T>(metadata: unknown, field: string): T | undefined => metadata && typeof metadata === 'object' && field in metadata
-  ? (metadata as Record<string, unknown>)[field] as T
-  : undefined;
+const getMetadataField = <T>(metadata: unknown, field: string): T | undefined =>
+  metadata && typeof metadata === 'object' && field in metadata ? ((metadata as Record<string, unknown>)[field] as T) : undefined;
