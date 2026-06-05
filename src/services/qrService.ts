@@ -3,7 +3,7 @@ import {emitLinkHandlerURLEvent} from '@sphereon/ssi-sdk.core';
 import {ConnectionType, DidAuthConfig, NonPersistedConnection} from '@sphereon/ssi-sdk.data-store-types';
 import {IIdentifier} from '@veramo/core';
 import Debug, {Debugger} from 'debug';
-import {Linking} from 'react-native';
+import {Alert, Linking} from 'react-native';
 import {URL} from 'react-native-url-polyfill';
 import {v4 as uuidv4} from 'uuid';
 import {APP_ID} from '../@config/constants';
@@ -28,8 +28,31 @@ import {getOrCreatePrimaryIdentifier} from './identityService';
 
 const debug: Debugger = Debug(`${APP_ID}:qrService`);
 
+/**
+ * Trust anchors (x509 CA certificates) are security-critical: adding one makes the wallet trust
+ * everything that chains to it. They must only be added through the deliberate Settings > Trust Anchors
+ * flow, never as a side effect of a casual scan. If a PEM certificate is scanned via the general-purpose
+ * QR reader, refuse to act on it and point the user to the explicit flow instead. Uses the same PEM
+ * detection as the certificate parser (a 'BEGIN CERTIFICATE' marker).
+ */
+const looksLikePemCertificate = (qrData: string): boolean => qrData.includes('BEGIN CERTIFICATE');
+
+const showTrustAnchorScanWarning = (navigation: IReadQrArgs['navigation']): void => {
+  Alert.alert(translate('qr_scanner_trust_anchor_warning_title'), translate('qr_scanner_trust_anchor_warning_message'), [
+    {text: translate('action_cancel_label'), style: 'cancel'},
+    {
+      text: translate('qr_scanner_trust_anchor_warning_action'),
+      onPress: () => navigation.navigate(ScreenRoutesEnum.TRUST_ANCHORS_OVERVIEW),
+    },
+  ]);
+};
+
 export const onQRScanned = async (args: IReadQrArgs): Promise<void> => {
   console.log(`args.qrData`, JSON.stringify(args.qrData));
+  if (looksLikePemCertificate(args.qrData)) {
+    showTrustAnchorScanWarning(args.navigation);
+    return;
+  }
   parseQr(args.qrData)
     .then((qrData: IQrData) => processQr({qrData, navigation: args.navigation}))
     .catch((error: Error) => {
