@@ -9,10 +9,18 @@ const COLORS: Record<WalletCredentialStatus, string> = {
   [WalletCredentialStatus.SUSPENDED]: '#FFA726',
   [WalletCredentialStatus.REVOKED]: '#C81E1E',
   [WalletCredentialStatus.EXPIRED]: '#FF9900',
+  // Untrusted status list (bad signature / untrusted x5c). A dark/intense caution yellow so it reads as a
+  // solid warning badge with white text (a light yellow would be illegible). Recoverable, not permanent.
+  [WalletCredentialStatus.UNTRUSTED]: '#D4A017',
 };
 
-// Revoked/expired render as a solid badge (white content) to stand out; valid/suspended stay subtle.
-const SOLID_STATES = new Set<WalletCredentialStatus>([WalletCredentialStatus.REVOKED, WalletCredentialStatus.EXPIRED]);
+// Revoked/expired/untrusted render as a solid badge (white content) to stand out as warnings; valid and
+// suspended stay subtle/outlined.
+const SOLID_STATES = new Set<WalletCredentialStatus>([
+  WalletCredentialStatus.REVOKED,
+  WalletCredentialStatus.EXPIRED,
+  WalletCredentialStatus.UNTRUSTED,
+]);
 
 const Row = styled(View)`
   flex-direction: row;
@@ -107,8 +115,9 @@ export const CredentialStatusBadge: FC<Props> = ({result, isChecking, onVerify})
   const solid = SOLID_STATES.has(result.status);
   const contentColor = solid ? '#FFFFFF' : color;
   const hasStatusList = !!result.statusListInfo;
-  // Revocation is permanent — re-verifying is meaningless, so only offer it for non-revoked states.
-  const canVerify = hasStatusList && result.status !== WalletCredentialStatus.REVOKED;
+  // Revoked/expired are permanent — re-verifying is meaningless. Offer it only for the reversible states
+  // (valid refresh, suspended, untrusted), where a re-check can legitimately change the outcome.
+  const canVerify = hasStatusList && result.status !== WalletCredentialStatus.REVOKED && result.status !== WalletCredentialStatus.EXPIRED;
 
   return (
     <View>

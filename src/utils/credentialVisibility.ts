@@ -29,7 +29,10 @@ export const filterVisibleCredentials = <T>(credentials: Array<T>, opts: {showRe
  * reflects revocation). Used to colour the list/card status label correctly.
  */
 export const toDisplayCredentialStatus = (c: any): CredentialStatus => {
-  if (c?.verifiedState === CredentialStateType.REVOKED) return CredentialStatus.REVOKED;
-  if (c?.verifiedState === CredentialStateType.EXPIRED) return CredentialStatus.EXPIRED;
+  const state = verifiedStateOf(c);
+  if (state === CredentialStateType.REVOKED) return CredentialStatus.REVOKED;
+  if (state === CredentialStateType.EXPIRED) return CredentialStatus.EXPIRED;
+  if (state === CredentialStateType.SUSPENDED) return CredentialStatus.SUSPENDED;
+  if (state === CredentialStateType.UNTRUSTED) return CredentialStatus.UNTRUSTED;
   return c?.credentialStatus;
 };

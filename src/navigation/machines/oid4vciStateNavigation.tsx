@@ -49,6 +49,7 @@ import {APP_ID} from '../../@config/constants';
 import {MainRoutesEnum, NavigationBarRoutesEnum, PopupImagesEnum, ScreenRoutesEnum} from '../../types';
 import {toCredentialSummary, toNonPersistedCredentialSummary} from '@sphereon/ui-components.credential-branding';
 import {getCredentialIssuerContact, getCredentialSubjectContact, lookupFederationParties} from '../../utils';
+import {isStatusListError, isUntrustedIssuerError} from '../../utils/oid4vciError';
 import store from '../../store';
 import {getVerifiableCredentials} from '../../store/actions/credential.actions';
 import {storeActivityLogging} from '../../store/actions/logging.actions';
@@ -555,17 +556,37 @@ const navigateError = async (args: OID4VCIMachineNavigationArgs): Promise<void> 
     return Promise.reject(Error('Missing error in context'));
   }
 
+  // The SDK only surfaces a generic "Invalid SD-JWT VC" message for two very different trust failures:
+  // (1) the credential's own issuer certificate chain is not trusted, and (2) the credential's status-list
+  // token is signed by an untrusted issuer. Detect each and present a clear, actionable message, keeping the
+  // raw technical detail behind "view extra details". Status list is checked first (it also contains the
+  // cert-chain phrase).
+  const statusListError = isStatusListError(error);
+  const untrustedIssuer = isUntrustedIssuerError(error);
+  const title = statusListError
+    ? translate('oid4vci_status_list_error_title')
+    : untrustedIssuer
+    ? translate('oid4vci_untrusted_issuer_error_title')
+    : error.title;
+  const details = statusListError
+    ? translate('oid4vci_status_list_error_message')
+    : untrustedIssuer
+    ? translate('oid4vci_untrusted_issuer_error_message')
+    : error.message;
+  const detailsTitle = statusListError || untrustedIssuer ? translate('oid4vci_untrusted_issuer_error_details_title') : error.detailsTitle;
+  const detailsMessage = error.detailsMessage;
+
   navigation.navigate(MainRoutesEnum.OID4VCI, {
     screen: ScreenRoutesEnum.ERROR,
     params: {
       image: PopupImagesEnum.WARNING,
-      title: error.title,
-      details: error.message,
-      ...(error.detailsMessage && {
+      title,
+      details,
+      ...(detailsMessage && {
         detailsPopup: {
           buttonCaption: translate('action_view_extra_details'),
-          title: error.detailsTitle,
-          details: error.detailsMessage,
+          title: detailsTitle,
+          details: detailsMessage,
         },
       }),
       primaryButton: {

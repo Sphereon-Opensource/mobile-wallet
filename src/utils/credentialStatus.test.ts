@@ -120,4 +120,15 @@ describe('mapToWalletStatus', () => {
       WalletCredentialStatus.EXPIRED,
     );
   });
+  it('signature/trust could not be verified -> INVALID (no signal honored)', () => {
+    expect(mapToWalletStatus({checkResult: 'UNTRUSTED', expirationDate: future, persistedState: CredentialStateType.VERIFIED})).toBe(
+      WalletCredentialStatus.UNTRUSTED,
+    );
+  });
+  it('INVALID does not override a permanent persisted REVOKED', () => {
+    expect(mapToWalletStatus({checkResult: 'UNTRUSTED', persistedState: CredentialStateType.REVOKED})).toBe(WalletCredentialStatus.REVOKED);
+  });
+  it('INVALID takes precedence over expiry (status trust is the surfaced concern)', () => {
+    expect(mapToWalletStatus({checkResult: 'UNTRUSTED', expirationDate: past})).toBe(WalletCredentialStatus.UNTRUSTED);
+  });
 });

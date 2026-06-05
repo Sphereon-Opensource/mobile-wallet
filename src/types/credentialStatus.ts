@@ -6,6 +6,10 @@ export enum WalletCredentialStatus {
   SUSPENDED = 'SUSPENDED',
   REVOKED = 'REVOKED',
   EXPIRED = 'EXPIRED',
+  // The status list could not be cryptographically verified (bad signature, or an x5c chain that does
+  // not validate against the wallet's trust anchors). The status is therefore UNTRUSTED: no signal from
+  // the list (valid/revoked/suspended) is honored. Distinct from a transient fetch/parse failure.
+  UNTRUSTED = 'UNTRUSTED',
 }
 
 export type StatusListMechanism = 'oauth' | 'bitstring' | 'statuslist2021';

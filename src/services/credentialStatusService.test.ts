@@ -24,8 +24,8 @@ jest.mock('../utils/ToastUtils', () => ({showToast: (...a: any[]) => mockShowToa
 
 jest.mock('../localization/Localization', () => ({translate: (k: string) => k}));
 
-const mockCheckStatusListIndex = jest.fn();
-jest.mock('./statusListCheck', () => ({checkStatusListIndex: (...a: any[]) => mockCheckStatusListIndex(...a)}));
+const mockCheckStatusListVerified = jest.fn();
+jest.mock('./statusListCheck', () => ({checkStatusListVerified: (...a: any[]) => mockCheckStatusListVerified(...a)}));
 
 import {evaluateCredentialStatus} from './credentialStatusService';
 
@@ -45,7 +45,7 @@ beforeEach(() => jest.clearAllMocks());
 
 describe('evaluateCredentialStatus', () => {
   it('valid->revoked persists REVOKED, logs activity, toasts once', async () => {
-    mockCheckStatusListIndex.mockResolvedValue(1);
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 1});
     const res = await evaluateCredentialStatus(baseCredential());
     expect(res.status).toBe(WalletCredentialStatus.REVOKED);
     expect(mockCrsUpdateCredentialState).toHaveBeenCalledWith(expect.objectContaining({hash: 'h1', verifiedState: CredentialStateType.REVOKED}));
@@ -54,23 +54,46 @@ describe('evaluateCredentialStatus', () => {
   });
 
   it('valid->suspended persists SUSPENDED, logs + toasts', async () => {
-    mockCheckStatusListIndex.mockResolvedValue(2);
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 2});
     const res = await evaluateCredentialStatus(baseCredential());
     expect(res.status).toBe(WalletCredentialStatus.SUSPENDED);
     expect(mockCrsUpdateCredentialState).toHaveBeenCalledWith(expect.objectContaining({verifiedState: CredentialStateType.SUSPENDED}));
     expect(mockShowToast).toHaveBeenCalledTimes(1);
   });
 
+  it('untrusted/unverifiable status list -> UNTRUSTED, no signal honored', async () => {
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'untrusted', reason: 'certificate chain not trusted'});
+    const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.VERIFIED}));
+    expect(res.status).toBe(WalletCredentialStatus.UNTRUSTED);
+  });
+
+  it('recovery: untrusted -> valid persists VERIFIED, logs activity + success toast', async () => {
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 0});
+    const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.UNTRUSTED}));
+    expect(res.status).toBe(WalletCredentialStatus.VALID);
+    expect(mockCrsUpdateCredentialState).toHaveBeenCalledWith(expect.objectContaining({verifiedState: CredentialStateType.VERIFIED}));
+    expect(mockStoreActivityLogging).toHaveBeenCalledTimes(1);
+    expect(mockShowToast).toHaveBeenCalledTimes(1);
+  });
+
+  it('no recovery activity for a credential that was already valid', async () => {
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 0});
+    const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.VERIFIED}));
+    expect(res.status).toBe(WalletCredentialStatus.VALID);
+    expect(mockStoreActivityLogging).not.toHaveBeenCalled();
+    expect(mockShowToast).not.toHaveBeenCalled();
+  });
+
   it('already REVOKED short-circuits, no network, no re-notify', async () => {
     const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.REVOKED}));
     expect(res.status).toBe(WalletCredentialStatus.REVOKED);
-    expect(mockCheckStatusListIndex).not.toHaveBeenCalled();
+    expect(mockCheckStatusListVerified).not.toHaveBeenCalled();
     expect(mockShowToast).not.toHaveBeenCalled();
     expect(mockCrsUpdateCredentialState).not.toHaveBeenCalled();
   });
 
   it('check failure keeps last state, no toast, still stamps last-checked', async () => {
-    mockCheckStatusListIndex.mockRejectedValue(new Error('offline'));
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'error', reason: 'offline'});
     const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.VERIFIED}));
     expect(res.status).toBe(WalletCredentialStatus.VALID);
     expect(mockShowToast).not.toHaveBeenCalled();
@@ -78,7 +101,7 @@ describe('evaluateCredentialStatus', () => {
   });
 
   it('unchanged VERIFIED state does not re-notify', async () => {
-    mockCheckStatusListIndex.mockResolvedValue(0);
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 0});
     const res = await evaluateCredentialStatus(baseCredential({verifiedState: CredentialStateType.VERIFIED}));
     expect(res.status).toBe(WalletCredentialStatus.VALID);
     expect(mockShowToast).not.toHaveBeenCalled();
@@ -86,7 +109,7 @@ describe('evaluateCredentialStatus', () => {
   });
 
   it('returns statusListInfo for tap-to-expand', async () => {
-    mockCheckStatusListIndex.mockResolvedValue(0);
+    mockCheckStatusListVerified.mockResolvedValue({kind: 'status', value: 0});
     const res = await evaluateCredentialStatus(baseCredential());
     expect(res.statusListInfo).toEqual({type: 'oauth', uri: 'https://sl', index: 5});
   });

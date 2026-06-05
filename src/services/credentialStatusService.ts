@@ -7,7 +7,7 @@ import {ToastTypeEnum} from '../types';
 import {CredentialStatusResult, StatusListInfo, WalletCredentialStatus} from '../types/credentialStatus';
 import {extractStatusListInfo, mapToWalletStatus} from '../utils/credentialStatus';
 import {showToast} from '../utils/ToastUtils';
-import {checkStatusListIndex} from './statusListCheck';
+import {checkStatusListVerified} from './statusListCheck';
 import store from '../store';
 import {storeActivityLogging} from '../store/actions/logging.actions';
 
@@ -21,6 +21,7 @@ const NOTIFY_STATES = new Set<WalletCredentialStatus>([
   WalletCredentialStatus.REVOKED,
   WalletCredentialStatus.EXPIRED,
   WalletCredentialStatus.SUSPENDED,
+  WalletCredentialStatus.UNTRUSTED,
 ]);
 
 const toCredentialStateType = (s: WalletCredentialStatus): CredentialStateType | undefined => {
@@ -33,6 +34,8 @@ const toCredentialStateType = (s: WalletCredentialStatus): CredentialStateType |
       return CredentialStateType.EXPIRED;
     case WalletCredentialStatus.VALID:
       return CredentialStateType.VERIFIED;
+    case WalletCredentialStatus.UNTRUSTED:
+      return CredentialStateType.UNTRUSTED;
     default:
       return undefined;
   }
@@ -46,6 +49,8 @@ const stateTypeToWallet = (s?: CredentialStateType): WalletCredentialStatus | un
       return WalletCredentialStatus.EXPIRED;
     case CredentialStateType.SUSPENDED:
       return WalletCredentialStatus.SUSPENDED;
+    case CredentialStateType.UNTRUSTED:
+      return WalletCredentialStatus.UNTRUSTED;
     default:
       return undefined;
   }
@@ -135,10 +140,20 @@ export const evaluateCredentialStatus = async (unique: UniqueDigitalCredential):
 
   const expirationDate = getExpirationDate(uniform, dc);
 
-  let checkResult: number | 'ERROR' | undefined = undefined;
+  // Verify the status-list token (signature + x5c trust) before honoring any signal. An unverifiable list
+  // maps to 'UNTRUSTED' (untrusted) rather than a trusted status; transient failures map to 'ERROR'.
+  let checkResult: number | 'ERROR' | 'UNTRUSTED' | undefined = undefined;
   if (statusListInfo) {
     try {
-      checkResult = await checkStatusListIndex(statusListInfo);
+      const outcome = await checkStatusListVerified(statusListInfo);
+      if (outcome.kind === 'status') {
+        checkResult = outcome.value;
+      } else if (outcome.kind === 'untrusted') {
+        console.warn(`Status list could not be verified for ${hash}: ${outcome.reason}`);
+        checkResult = 'UNTRUSTED';
+      } else {
+        checkResult = 'ERROR';
+      }
     } catch {
       checkResult = 'ERROR';
     }
@@ -163,14 +178,23 @@ export const evaluateCredentialStatus = async (unique: UniqueDigitalCredential):
     // best-effort persistence; do not fail the evaluation
   }
 
-  // Notify + Activity only on a genuine transition into a notify-state.
+  // Notify + Activity on a genuine transition into a notify-state.
+  const previousWallet = stateTypeToWallet(previous);
   if (transitioned && NOTIFY_STATES.has(status)) {
     const key = status.toLowerCase();
     showToast(ToastTypeEnum.TOAST_ERROR, {
       title: translate(`credential_status_toast_${key}_title`),
       message: translate(`credential_status_toast_${key}_message`),
     });
-    await ensureStatusActivity(hash, status, {fromStatus: stateTypeToWallet(previous) ?? WalletCredentialStatus.VALID, statusListInfo});
+    await ensureStatusActivity(hash, status, {fromStatus: previousWallet ?? WalletCredentialStatus.VALID, statusListInfo});
+  } else if (transitioned && status === WalletCredentialStatus.VALID && previousWallet && NOTIFY_STATES.has(previousWallet)) {
+    // Recovery: a previously problematic credential (e.g. untrusted after a trust anchor was added) is
+    // valid again. Log the symmetric activity (e.g. untrusted → valid) + a positive notification.
+    showToast(ToastTypeEnum.TOAST_SUCCESS, {
+      title: translate('credential_status_toast_valid_title'),
+      message: translate('credential_status_toast_valid_message'),
+    });
+    await ensureStatusActivity(hash, WalletCredentialStatus.VALID, {fromStatus: previousWallet, statusListInfo});
   }
 
   return {status, statusListInfo, checkedAt: now};

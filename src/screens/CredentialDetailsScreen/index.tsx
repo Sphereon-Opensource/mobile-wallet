@@ -246,6 +246,10 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                                 ? CredentialStatus.REVOKED
                                 : statusResult.status === WalletCredentialStatus.EXPIRED
                                 ? CredentialStatus.EXPIRED
+                                : statusResult.status === WalletCredentialStatus.SUSPENDED
+                                ? CredentialStatus.SUSPENDED
+                                : statusResult.status === WalletCredentialStatus.UNTRUSTED
+                                ? CredentialStatus.UNTRUSTED
                                 : getCredentialStatus(credential),
                             expirationDate: credential.expirationDate,
                           }}

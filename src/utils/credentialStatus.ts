@@ -75,6 +75,8 @@ export const initialWalletStatus = (verifiedState?: CredentialStateType): Wallet
       return WalletCredentialStatus.SUSPENDED;
     case CredentialStateType.EXPIRED:
       return WalletCredentialStatus.EXPIRED;
+    case CredentialStateType.UNTRUSTED:
+      return WalletCredentialStatus.UNTRUSTED;
     default:
       return WalletCredentialStatus.VALID;
   }
@@ -88,6 +90,8 @@ const persistedToWallet = (s?: CredentialStateType): WalletCredentialStatus => {
       return WalletCredentialStatus.SUSPENDED;
     case CredentialStateType.EXPIRED:
       return WalletCredentialStatus.EXPIRED;
+    case CredentialStateType.UNTRUSTED:
+      return WalletCredentialStatus.UNTRUSTED;
     default:
       return WalletCredentialStatus.VALID;
   }
@@ -103,16 +107,22 @@ const expiryOverlay = (base: WalletCredentialStatus, expirationDate?: Date): Wal
 /**
  * Maps a status-list check result + expiry + persisted state to the wallet status.
  * checkResult: 0 Valid, 1 Invalid/Revoked, 2 Suspended; undefined = no status list;
- * 'ERROR' = fetch/parse failed (keep last persisted state, no downgrade).
+ * 'ERROR' = fetch/parse failed (keep last persisted state, no downgrade);
+ * 'UNTRUSTED' = the status list could not be cryptographically verified (bad signature / untrusted x5c).
+ *   Signature validation is security-critical, so this surfaces a distinct INVALID state and NO signal
+ *   from the list is honored — except a permanent persisted REVOKED, which is never overridden.
  */
 export const mapToWalletStatus = (args: {
-  checkResult: number | 'ERROR' | undefined;
+  checkResult: number | 'ERROR' | 'UNTRUSTED' | undefined;
   expirationDate?: Date;
   persistedState?: CredentialStateType;
 }): WalletCredentialStatus => {
   const {checkResult, expirationDate, persistedState} = args;
   if (persistedState === CredentialStateType.REVOKED) {
     return WalletCredentialStatus.REVOKED;
+  }
+  if (checkResult === 'UNTRUSTED') {
+    return WalletCredentialStatus.UNTRUSTED;
   }
   if (checkResult === 'ERROR') {
     return expiryOverlay(persistedToWallet(persistedState), expirationDate);

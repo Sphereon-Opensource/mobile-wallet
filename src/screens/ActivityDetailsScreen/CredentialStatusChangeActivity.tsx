@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageAttributes, toLocalDateTimeString} from '@sphereon/ui-components.core';
+import {CredentialStatus, ImageAttributes, toLocalDateTimeString} from '@sphereon/ui-components.core';
 import {CredentialSummary, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import React, {useEffect, useState} from 'react';
@@ -25,7 +25,18 @@ const STATUS_BOX: Record<string, BoxColors> = {
   REVOKED: {bg: '#C81E1E2A', title: '#F3B5B5', desc: '#E59A9A'},
   EXPIRED: {bg: '#FF99002A', title: '#FFD79A', desc: '#F0C488'},
   SUSPENDED: {bg: '#FFA7262A', title: '#FFD9A8', desc: '#F0C488'},
+  UNTRUSTED: {bg: '#D4A0172A', title: '#EAD7A0', desc: '#DCC78F'},
   VALID: {bg: '#00C2492A', title: '#BAE3CB', desc: '#A8D3BB'},
+};
+
+// The card represents the outcome of THIS status-change event, so it reflects the activity's "to" status
+// (e.g. an untrusted -> valid recovery shows a valid card), not a possibly-stale stored snapshot.
+const STATUS_DISPLAY: Record<string, CredentialStatus> = {
+  REVOKED: CredentialStatus.REVOKED,
+  EXPIRED: CredentialStatus.EXPIRED,
+  SUSPENDED: CredentialStatus.SUSPENDED,
+  UNTRUSTED: CredentialStatus.UNTRUSTED,
+  VALID: CredentialStatus.VALID,
 };
 
 const CARD_WIDTH = 330;
@@ -105,7 +116,7 @@ const CredentialStatusChangeActivity = ({activity}: Props) => {
                 logo: getCredentialCardLogo(credential),
               }}
               body={{issuerName: credential.issuer.alias ?? credential.issuer.name}}
-              footer={{credentialStatus: toDisplayCredentialStatus(credential), expirationDate: credential.expirationDate}}
+              footer={{credentialStatus: STATUS_DISPLAY[status] ?? toDisplayCredentialStatus(credential), expirationDate: credential.expirationDate}}
               display={{
                 backgroundColor: credential.branding?.background?.color,
                 backgroundImage: credential.branding?.background?.image,

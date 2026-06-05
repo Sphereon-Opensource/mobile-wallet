@@ -21,13 +21,15 @@ export const CredentialViewImage = ({
   const CARD_ASPECT_RATIO = 3 / 2;
   const backgroundURI = branding?.background?.image?.uri;
   const backgroundColor = branding?.background?.color ?? credentialCardColors.default;
-  // Full-width status ribbon for revoked/expired — the mini-card is too small for a centered tab.
-  const ribbonColor =
-    credentialStatus === CredentialStatus.REVOKED
-      ? statusColors.revoked
-      : credentialStatus === CredentialStatus.EXPIRED
-      ? statusColors.expired
-      : undefined;
+  // Full-width status ribbon for revoked/expired/suspended/untrusted — the mini-card is too small for a
+  // centered tab.
+  const RIBBON_STATES: ReadonlyArray<CredentialStatus> = [
+    CredentialStatus.REVOKED,
+    CredentialStatus.EXPIRED,
+    CredentialStatus.SUSPENDED,
+    CredentialStatus.UNTRUSTED,
+  ];
+  const ribbonColor = credentialStatus && RIBBON_STATES.includes(credentialStatus) ? statusColors[credentialStatus] : undefined;
 
   return (
     <ImageContainer>
