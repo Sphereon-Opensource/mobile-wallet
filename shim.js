@@ -5,7 +5,21 @@ import {p256} from '@noble/curves/p256';
 import {p384} from '@noble/curves/p384';
 import {p521} from '@noble/curves/p521';
 
+// react-native-quick-base64@2.2.2's fromByteArray()/toByteArray() delegate to the native
+// global.base64FromArrayBuffer / global.base64ToArrayBuffer (installed by its JSI module).
+// react-native-quick-crypto@1.1.5's install() (written for quick-base64 v3, which we can't use on
+// the Old Architecture) OVERWRITES those globals with JS wrappers that call fromByteArray() ->
+// infinite recursion (RangeError: Maximum call stack size exceeded) on any Buffer.toString('base64').
+// Capture the native implementations and restore them after install() to break the cycle.
+const __nativeBase64FromArrayBuffer = global.base64FromArrayBuffer;
+const __nativeBase64ToArrayBuffer = global.base64ToArrayBuffer;
 installCrypto();
+if (typeof __nativeBase64FromArrayBuffer === 'function') {
+  global.base64FromArrayBuffer = __nativeBase64FromArrayBuffer;
+}
+if (typeof __nativeBase64ToArrayBuffer === 'function') {
+  global.base64ToArrayBuffer = __nativeBase64ToArrayBuffer;
+}
 
 // Polyfill subtle.verify for ECDSA on Android
 // react-native-quick-crypto passes P1363 (raw r||s) signatures directly to OpenSSL,

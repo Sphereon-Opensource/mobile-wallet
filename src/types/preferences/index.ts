@@ -14,4 +14,6 @@ export interface IUserPreferences {
   warnOnLowTrust: boolean;
   confirmBrowserOpen: boolean;
   showClaimValuesByDefault: boolean;
+  showRevokedCredentials: boolean;
+  showExpiredCredentials: boolean;
 }

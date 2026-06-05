@@ -177,6 +177,17 @@ export const login = (userId: string): ThunkAction<Promise<void>, RootState, unk
           // Subscribe to DC API requests from Android Credential Manager
           import('../../handlers/DCApiHandler').then(({startDCApiHandler}) => startDCApiHandler()).catch(() => {});
 
+          // Background: re-evaluate credential status lists (revocation/suspension/expiry) without blocking login.
+          // Persists newly detected transitions, then refreshes the summaries so the overview reflects them.
+          import('../../services/credentialStatusService')
+            .then(async ({evaluateAllCredentialStatuses}) => {
+              const {getVerifiableCredentialsFromStorage} = await import('../../services/credentialService');
+              const stored = await getVerifiableCredentialsFromStorage();
+              await evaluateAllCredentialStatuses(stored);
+              await dispatch(getVerifiableCredentials());
+            })
+            .catch(() => {});
+
           if (intentHandler.hasDeepLink()) {
             intentHandler.openDeepLinkIfExistsAndAppUnlocked();
           }

@@ -1,31 +1,37 @@
-import {useFocusEffect} from '@react-navigation/native';
-import React, {useMemo} from 'react';
-import {Image, View} from 'react-native';
-import {connect} from 'react-redux';
-import {createTopBarNavigator} from '../../components/navigators/TopBarNavigator';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useMemo, useState} from 'react';
+import {View} from 'react-native';
+import {connect, useDispatch} from 'react-redux';
+import CredentialStatusFilterChips from '../../components/views/CredentialStatusFilterChips';
+import CredentialViewToggle from '../../components/views/CredentialViewToggle';
+import {setViewPreference, updatePreferences} from '../../store/actions/user.actions';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {SSIBasicContainerStyled as Container, SSIStatusBarDarkModeStyled as StatusBar} from '../../styles/components';
-import {CreditOverviewStackParamsList, IUser, NavigationBarRoutesEnum, RootState} from '../../types';
+import {IUser, NavigationBarRoutesEnum, RootState} from '../../types';
 import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import CredentialsOverviewCardList from './CredentialsOverviewCardList';
 import CredentialsOverviewList from './CredentialsOverviewList';
-import {CredentialsOverviewImages} from './constants';
 import {Chat} from '../../components/chat/Chat';
 import RootNavigation from '../../navigation/rootNavigation';
 import {useChat} from '../../providers/chat/chatProvider';
 
-const CredentialViewTypeNav = createTopBarNavigator<CreditOverviewStackParamsList>();
-
-const renderLabel = (label: 'card' | 'list') => () => {
-  const source = CredentialsOverviewImages[label];
-  return <Image source={source} />;
-};
-
 type Props = {activeUser: IUser};
 
 const CredentialsOverviewScreen = ({activeUser}: Props) => {
-  const viewPreference = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const {closeModal} = useChat();
+
+  const storedView = activeUser.preferences.views[ConfigurableViewKey.CREDENTIAL_OVERVIEW];
+  const [view, setView] = useState<ViewPreference>(storedView ?? ViewPreference.CARD);
+  const showRevoked = activeUser.preferences?.showRevokedCredentials ?? false;
+  const showExpired = activeUser.preferences?.showExpiredCredentials ?? false;
+
+  const onChangeView = (next: ViewPreference): void => {
+    setView(next);
+    dispatch<any>(setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, next));
+  };
+
   const tools = useMemo(
     () => [
       {
@@ -40,36 +46,39 @@ const CredentialsOverviewScreen = ({activeUser}: Props) => {
         },
       },
     ],
-    [], // Only re-create if dependencies change (none in this case)
+    [],
   );
 
   const {announce} = useAccessibility();
   useFocusEffect(() => announce({message: 'Credential overview screen'}));
+
   return (
     <Container style={{paddingTop: 24}}>
       <StatusBar />
-      <CredentialViewTypeNav.Navigator
-        initialRouteName={viewPreference}
-        tapBarProps={{
-          containerStyle: {
-            width: 74,
-            alignSelf: 'flex-end',
-            height: 32,
-            paddingVertical: 0,
-            borderBottomWidth: 0,
-            marginBottom: 16,
-            marginHorizontal: 24,
-          },
-          indicatorStyle: {top: 0, zIndex: -1},
-          labels: {
-            [ViewPreference.CARD]: {render: renderLabel('card'), accessibilityLabel: 'Card view'},
-            [ViewPreference.LIST]: {render: renderLabel('list'), accessibilityLabel: 'List view'},
-          },
-          renderIndicator: <View style={{height: '100%', backgroundColor: 'white', opacity: 0.1, borderRadius: 4}} />,
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 24,
+          marginBottom: 16,
+          minHeight: 36,
         }}>
-        <CredentialViewTypeNav.Screen name={ViewPreference.LIST} component={CredentialsOverviewList} options={{swipeEnabled: false}} />
-        <CredentialViewTypeNav.Screen name={ViewPreference.CARD} component={CredentialsOverviewCardList} options={{swipeEnabled: false}} />
-      </CredentialViewTypeNav.Navigator>
+        <CredentialStatusFilterChips
+          showRevoked={showRevoked}
+          showExpired={showExpired}
+          onToggleRevoked={() => dispatch<any>(updatePreferences({showRevokedCredentials: !showRevoked}))}
+          onToggleExpired={() => dispatch<any>(updatePreferences({showExpiredCredentials: !showExpired}))}
+        />
+        <CredentialViewToggle value={view} onChange={onChangeView} />
+      </View>
+      <View style={{flex: 1}}>
+        {view === ViewPreference.LIST ? (
+          <CredentialsOverviewList {...({navigation} as any)} />
+        ) : (
+          <CredentialsOverviewCardList {...({navigation} as any)} />
+        )}
+      </View>
       <Chat
         screenContext={JSON.stringify({
           screen: 'Credentials Overview Screen',

@@ -5,6 +5,7 @@ import agent from '../../../agent';
 import {Pressable} from 'react-native';
 import {SSICredentialMiniCardView} from '@sphereon/ui-components.ssi-react-native';
 import {selectAppLocaleBranding} from '@sphereon/ui-components.credential-branding';
+import {toDisplayCredentialStatus} from '../../../utils/credentialVisibility';
 
 type PressableCredentialMiniCardProps = {
   onPress: () => void;
@@ -45,6 +46,7 @@ export const PressableCredentialMiniCard = (props: PressableCredentialMiniCardPr
         backgroundImage={localeBranding?.background?.image}
         logo={localeBranding?.logo}
         logoColor={localeBranding?.text?.color}
+        credentialStatus={toDisplayCredentialStatus({verifiedState: credential.digitalCredential?.verifiedState})}
       />
     </Pressable>
   );

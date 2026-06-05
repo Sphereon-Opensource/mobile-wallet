@@ -1,34 +1,33 @@
-import {useFocusEffect} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NavigationProp} from '@react-navigation/native';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, {FC, ReactElement, useCallback, useState} from 'react';
+import React, {FC, ReactElement, useMemo, useState} from 'react';
 import {RefreshControl} from 'react-native';
 import {connect} from 'react-redux';
+import {filterVisibleCredentials} from '../../utils/credentialVisibility';
 import {getVerifiableCredential} from '../../services/credentialService';
-import {setViewPreference} from '../../store/actions/user.actions';
-import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
 import CredentialCardStackView from '../../components/views/CredentialCardStackView';
 import {SSIBasicContainerStyled as Container} from '../../styles/components';
 import {translate} from '../../localization/Localization';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
+import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 
-type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.CARD> & {
+type Props = {
+  navigation: NavigationProp<any>;
   verifiableCredentials: Array<CredentialSummary>;
   activeUser: IUser | undefined;
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
-  setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
 const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
-  const {setViewPreference, verifiableCredentials, activeUser, deleteVerifiableCredential, getVerifiableCredentials, navigation} = props;
+  const {verifiableCredentials, activeUser, deleteVerifiableCredential, getVerifiableCredentials, navigation} = props;
   const [refreshing, setRefreshing] = useState(false);
 
-  useFocusEffect(
-    useCallback((): void => {
-      setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.CARD);
-    }, []),
+  const showRevoked = activeUser?.preferences?.showRevokedCredentials ?? false;
+  const showExpired = activeUser?.preferences?.showExpiredCredentials ?? false;
+  const visibleCredentials = useMemo(
+    () => filterVisibleCredentials(verifiableCredentials, {showRevoked, showExpired}),
+    [verifiableCredentials, showRevoked, showExpired],
   );
 
   const onRefresh = (): void => {
@@ -38,7 +37,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
     getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then(uniqueDigitalCredential =>
-      navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+      navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
         uniqueDigitalCredential,
         credential,
@@ -68,7 +67,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
       <CredentialCardStackView
         accessibilityRole="list"
         accessibilityLabel="Credentials"
-        credentials={verifiableCredentials}
+        credentials={visibleCredentials}
         onPress={onItemPress}
         onSwipe={async credential => {
           const isWalletIdentity =
@@ -76,7 +75,7 @@ const CredentialsOverviewCardList: FC<Props> = (props: Props): ReactElement => {
               (identifier: IUserIdentifier) => credential.issuer.name === identifier.did && credential.title === 'SphereonWalletIdentityCredential',
             ) ?? false;
           if (isWalletIdentity) {
-            navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+            navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
               title: translate('credential_delete_title'),
               details: translate('credential_delete_wallet_identity_message'),
               primaryButton: {
@@ -105,7 +104,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
     deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash)),
-    setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => dispatch(setViewPreference(viewKey, preference)),
   };
 };
 

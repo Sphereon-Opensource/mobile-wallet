@@ -14,7 +14,7 @@ import {
   SSITextH4LightStyled as SubTitleText,
   ActivitiesOverviewScreenEmptyStateTitleTextStyled as TitleText,
 } from '../../styles/components';
-import {Activity} from '../../types';
+import {ACTIVITY_VC_STATUS_CHANGED, Activity} from '../../types';
 import {toActivityEventRow} from '../../utils/activity';
 import ActivitiesImage from '../assets/images/ActivitiesImage';
 import {Props as SearchInputProps} from '../fields/OnboardingSearchField';
@@ -69,6 +69,19 @@ const searchFilter = (searchTerm: string) => (activity: Activity) => {
         ...Object.keys(activity.info),
       ];
       break;
+    case ACTIVITY_VC_STATUS_CHANGED:
+      searchTokens = [
+        activity.at.toString(),
+        activity.action,
+        activity.status,
+        ...(activity.credential?.branding?.alias ? [activity.credential.branding.alias] : []),
+        ...(activity.credential?.title ? [activity.credential.title] : []),
+      ];
+      break;
+  }
+  // An empty search must never hide an activity (a missing case above would otherwise filter it out).
+  if (searchTerm.length === 0) {
+    return true;
   }
   return searchTokens.some(token => token.toString().toLowerCase().includes(searchTerm));
 };

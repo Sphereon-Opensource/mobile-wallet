@@ -1,13 +1,13 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
 import ActivityList from '../../components/activity/ActivityList';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {useAppSelector} from '../../hooks/useStore';
 import {translate} from '../../localization/Localization';
 import {getActivityLogging} from '../../store/actions/logging.actions';
-import {Activity, ScreenRoutesEnum, StackParamList} from '../../types';
+import {ACTIVITY_VC_STATUS_CHANGED, Activity, ScreenRoutesEnum, StackParamList} from '../../types';
 import {serializeActivity} from '../../utils/activity';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
 
@@ -20,6 +20,7 @@ const ActivityFeedScreen = ({navigation}: Props) => {
   const {activityLogging} = useAppSelector(({logging: {activityLogging}}) => ({
     activityLogging,
   }));
+  const credentials = useAppSelector(state => state.credential.verifiableCredentials);
   const loading = useAppSelector(state => state.logging.loading);
   const activities = useMemo(
     () =>
@@ -33,10 +34,23 @@ const ActivityFeedScreen = ({navigation}: Props) => {
             ),
         )
         .map(event => serializeActivity(event))
-        .filter((activity): activity is Activity => Boolean(activity)),
-    [activityLogging],
+        .filter((activity): activity is Activity => Boolean(activity))
+        // Resolve the credential (for its name/branding) for status-change activities by hash.
+        .map(activity => {
+          if (activity.action === ACTIVITY_VC_STATUS_CHANGED && !activity.credential) {
+            const c = credentials.find((vc: any) => vc.hash === activity.credentialHash);
+            return c ? {...activity, credential: c} : activity;
+          }
+          return activity;
+        }),
+    [activityLogging, credentials],
   );
-  useFocusEffect(() => announce({message: 'Activity feed screen'}));
+  useFocusEffect(
+    useCallback(() => {
+      getActivityLog();
+      announce({message: 'Activity feed screen'});
+    }, []),
+  );
 
   return (
     <ActivityList

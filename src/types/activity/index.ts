@@ -18,11 +18,15 @@ export enum ActivityActionResult {
   DECLINE = 'DECLINE',
 }
 
+export const ACTIVITY_VC_STATUS_CHANGED = 'VC status changed';
+
 export type ActivityShareType = DefaultActionSubType.VC_SHARE | DefaultActionSubType.VC_SHARE_DECLINE;
 
 export type ActivityIssueType = DefaultActionSubType.VC_ISSUE | DefaultActionSubType.VC_ISSUE_DECLINE;
 
-export type ActivityType = ActivityShareType | ActivityIssueType;
+export type ActivityStatusChangeType = typeof ACTIVITY_VC_STATUS_CHANGED;
+
+export type ActivityType = ActivityShareType | ActivityIssueType | ActivityStatusChangeType;
 
 export type BaseActivity = {
   id: string;
@@ -50,8 +54,18 @@ export type IContactCredentialsShareActivity<T extends ActivityShareType> = Base
   credentialType?: CredentialType;
 };
 
+export type IStatusChangeActivity = BaseActivity & {
+  action: ActivityStatusChangeType;
+  credentialHash: string;
+  status: string;
+  fromStatus?: string;
+  statusListInfo?: {type: string; uri: string; index: number};
+  credential?: CredentialSummary;
+};
+
 export type Activity =
   | IContactCredentialsShareActivity<DefaultActionSubType.VC_SHARE>
   | IContactCredentialsShareActivity<DefaultActionSubType.VC_SHARE_DECLINE>
   | ICredentialIssuedActivity<DefaultActionSubType.VC_ISSUE>
-  | ICredentialIssuedActivity<DefaultActionSubType.VC_ISSUE_DECLINE>;
+  | ICredentialIssuedActivity<DefaultActionSubType.VC_ISSUE_DECLINE>
+  | IStatusChangeActivity;

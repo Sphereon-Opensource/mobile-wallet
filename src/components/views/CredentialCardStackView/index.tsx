@@ -4,7 +4,8 @@ import {Animated, ScrollViewProps, View} from 'react-native';
 import {Easing} from 'react-native-reanimated';
 import {Swipeable, Gesture, GestureDetector, TapGesture} from 'react-native-gesture-handler';
 import {toLocalDateString} from '@sphereon/ui-components.core';
-import {CredentialSummary, getCredentialStatus} from '@sphereon/ui-components.credential-branding';
+import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
+import {toDisplayCredentialStatus} from '../../../utils/credentialVisibility';
 import {SSICredentialCardView} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialCardSheen} from '../CredentialCardSheen';
 import {getCardElementArgs} from '../../../types';
@@ -142,7 +143,9 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
           }}
           {...accessibility}>
           <Swipeable
-            ref={ref => {swipeableRefs[index] = ref}}
+            ref={ref => {
+              swipeableRefs[index] = ref;
+            }}
             {...(onSwipe && {
               renderRightActions: () => <View style={{width: CARD_SWIPE_ACTION_WIDTH}} />,
               onSwipeableRightWillOpen: () => onRightSwipe(credential, index),
@@ -190,7 +193,7 @@ export const CredentialCardStackView: FC<Props> = (props: Props): ReactElement =
                     issuerName: credential.issuer.alias ?? credential.issuer.name,
                   }}
                   footer={{
-                    credentialStatus: getCredentialStatus(credential),
+                    credentialStatus: toDisplayCredentialStatus(credential),
                     expirationDate: credential.expirationDate,
                   }}
                   display={{

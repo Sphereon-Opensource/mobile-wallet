@@ -1,39 +1,39 @@
-import {useFocusEffect} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NavigationProp} from '@react-navigation/native';
 import {backgroundColors, borderColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, {FC, ReactElement, useCallback, useRef, useState} from 'react';
+import React, {FC, ReactElement, useMemo, useRef, useState} from 'react';
 import {FlatList, ListRenderItemInfo, RefreshControl, View} from 'react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
+import {filterVisibleCredentials, toDisplayCredentialStatus} from '../../utils/credentialVisibility';
 import {OVERVIEW_INITIAL_NUMBER_TO_RENDER} from '../../@config/constants';
 import SSICredentialViewItem from '../../components/views/SSICredentialViewItem';
 import SSISwipeDeleteButton from '../../components/buttons/SSISwipeDeleteButton';
 import {translate} from '../../localization/Localization';
 import {getVerifiableCredential} from '../../services/credentialService';
 import {deleteVerifiableCredential, getVerifiableCredentials} from '../../store/actions/credential.actions';
-import {setViewPreference} from '../../store/actions/user.actions';
 import {SSIRippleContainerStyled as ItemContainer} from '../../styles/components';
-import {CreditOverviewStackParamsList, IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
-import {ConfigurableViewKey, ViewPreference} from '../../types/preferences';
+import {IUser, IUserIdentifier, MainRoutesEnum, RootState, ScreenRoutesEnum} from '../../types';
 
-type Props = NativeStackScreenProps<CreditOverviewStackParamsList, ViewPreference.LIST> & {
+type Props = {
+  navigation: NavigationProp<any>;
   verifiableCredentials: Array<CredentialSummary>;
   activeUser: IUser;
   getVerifiableCredentials: () => void;
   deleteVerifiableCredential: (credentialHash: string) => void;
-  setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => void;
 };
 
 const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
-  const {setViewPreference, navigation, verifiableCredentials, activeUser, getVerifiableCredentials, deleteVerifiableCredential} = props;
+  const {navigation, verifiableCredentials, activeUser, getVerifiableCredentials, deleteVerifiableCredential} = props;
   const [refreshing, setRefreshing] = useState(false);
   const swipeableRefs = useRef<Map<string, Swipeable | null>>(new Map());
 
-  useFocusEffect(
-    useCallback(() => {
-      setViewPreference(ConfigurableViewKey.CREDENTIAL_OVERVIEW, ViewPreference.LIST);
-    }, []),
+  const showRevoked = activeUser?.preferences?.showRevokedCredentials ?? false;
+  const showExpired = activeUser?.preferences?.showExpiredCredentials ?? false;
+
+  const visibleCredentials = useMemo(
+    () => filterVisibleCredentials(verifiableCredentials, {showRevoked, showExpired}),
+    [verifiableCredentials, showRevoked, showExpired],
   );
 
   const onRefresh = (): void => {
@@ -55,7 +55,7 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
   };
 
   const onDelete = async (credentialHash: string, credentialName: string): Promise<void> => {
-    navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+    navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
       title: translate('credential_delete_title'),
       details: translate('credential_delete_message', {credentialName}),
       primaryButton: {
@@ -73,7 +73,7 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
 
   const onDeleteProtected = async (credential: CredentialSummary): Promise<void> => {
     if (isWalletIdentityCredential(credential)) {
-      navigation.getParent()?.navigate(MainRoutesEnum.POPUP_MODAL, {
+      navigation.navigate(MainRoutesEnum.POPUP_MODAL, {
         title: translate('credential_delete_title'),
         details: translate('credential_delete_wallet_identity_message'),
         primaryButton: {
@@ -88,7 +88,7 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
 
   const onItemPress = async (credential: CredentialSummary): Promise<void> => {
     getVerifiableCredential({credentialRole: credential.credentialRole, hash: credential.hash}).then(uniqueDigitalCredential =>
-      navigation.getParent()?.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
+      navigation.navigate(ScreenRoutesEnum.CREDENTIAL_DETAILS, {
         rawCredential: uniqueDigitalCredential.originalVerifiableCredential, // TODO remove rawCredential
         uniqueDigitalCredential,
         credential,
@@ -106,7 +106,7 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
         issuer={item.issuer}
         issueDate={item.issueDate}
         expirationDate={item.expirationDate}
-        credentialStatus={item.credentialStatus}
+        credentialStatus={toDisplayCredentialStatus(item)}
         properties={[]}
         credentialRole={item.credentialRole}
       />
@@ -117,14 +117,13 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     };
     const style = {
       ...backgroundStyle,
-      ...(index === verifiableCredentials.length - 1 &&
-        index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
+      ...(index === visibleCredentials.length - 1 && index % 2 !== 0 && {borderBottomWidth: 1, borderBottomColor: borderColors.dark}),
     };
 
     const accessibility = {
-      accessibilityLabel: `${item.branding?.alias ?? item.title}. Issued by: ${
-        item.issuer.alias ?? item.issuer.name
-      }, on: ${toLocalDateString(item.issueDate)}. Expires on: ${toLocalDateString(item.expirationDate)}. Status: ${item.credentialStatus}`,
+      accessibilityLabel: `${item.branding?.alias ?? item.title}. Issued by: ${item.issuer.alias ?? item.issuer.name}, on: ${toLocalDateString(
+        item.issueDate,
+      )}. Expires on: ${toLocalDateString(item.expirationDate)}. Status: ${item.credentialStatus}`,
       accessibilityHint: 'Go to credential details',
     };
 
@@ -144,7 +143,9 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
           }
         }}>
         <Swipeable
-          ref={ref => swipeableRefs.current.set(item.hash, ref)}
+          ref={ref => {
+            swipeableRefs.current.set(item.hash, ref);
+          }}
           renderRightActions={() => (
             <SSISwipeDeleteButton
               onPress={() => {
@@ -166,8 +167,8 @@ const CredentialsOverviewList: FC<Props> = (props: Props): ReactElement => {
     <FlatList
       accessibilityRole="list"
       accessibilityLabel="Credentials"
-      style={{backgroundColor: backgroundColors.primaryDark, borderTopColor: '#404D7A', borderTopWidth: verifiableCredentials.length > 0 ? 1 : 0}}
-      data={verifiableCredentials}
+      style={{backgroundColor: backgroundColors.primaryDark, borderTopColor: '#404D7A', borderTopWidth: visibleCredentials.length > 0 ? 1 : 0}}
+      data={visibleCredentials}
       keyExtractor={(item: CredentialSummary) => item.hash}
       renderItem={renderItem}
       initialNumToRender={OVERVIEW_INITIAL_NUMBER_TO_RENDER}
@@ -182,7 +183,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     getVerifiableCredentials: () => dispatch(getVerifiableCredentials()),
     deleteVerifiableCredential: (credentialHash: string) => dispatch(deleteVerifiableCredential(credentialHash)),
-    setViewPreference: (viewKey: ConfigurableViewKey, preference: ViewPreference) => dispatch(setViewPreference(viewKey, preference)),
   };
 };
 

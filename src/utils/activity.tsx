@@ -10,6 +10,7 @@ import ShareFailureIcon from '../components/assets/icons/ShareFailureIcon';
 import ShareSuccessIcon, {IProps} from '../components/assets/icons/ShareSuccessIcon';
 import {translate} from '../localization/Localization';
 import {
+  ACTIVITY_VC_STATUS_CHANGED,
   Activity,
   ActivityActionResult,
   ActivityIssueType,
@@ -17,6 +18,7 @@ import {
   ActivityType,
   IContactCredentialsShareActivity,
   ICredentialIssuedActivity,
+  IStatusChangeActivity,
 } from '../types';
 import {parseAndValidateJson} from './json';
 import {isDiagnosticData} from './validate';
@@ -56,6 +58,16 @@ export const getActivityStatusText = (activity: Activity): StatusProps => {
           translate(`activity.${DefaultActionSubType.VC_ISSUE_DECLINE}.description`)[0],
           activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
           translate(`activity.${DefaultActionSubType.VC_ISSUE_DECLINE}.description`)[1],
+        ].join(' '),
+        icon: actionResultIconMap[activity.action].detail,
+      };
+    case ACTIVITY_VC_STATUS_CHANGED:
+      return {
+        title: translate(`activity.${ACTIVITY_VC_STATUS_CHANGED}.detail_title`),
+        description: [
+          translate(`activity.${ACTIVITY_VC_STATUS_CHANGED}.description`)[0],
+          activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
+          translate(`activity.${ACTIVITY_VC_STATUS_CHANGED}.description`)[1],
         ].join(' '),
         icon: actionResultIconMap[activity.action].detail,
       };
@@ -103,6 +115,7 @@ const actionResultIconMap: Record<ActivityType, Icons> = {
   [DefaultActionSubType.VC_SHARE_DECLINE]: icons('#D745001F', ShareFailureIcon),
   [DefaultActionSubType.VC_ISSUE]: icons('#00C24933', IssueSuccessIcon),
   [DefaultActionSubType.VC_ISSUE_DECLINE]: icons('#D745001F', IssueFailureIcon),
+  [ACTIVITY_VC_STATUS_CHANGED]: icons('#E086001F', IssueFailureIcon),
 };
 
 export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' | 'onPress'> & {id: string} => {
@@ -132,6 +145,13 @@ export const toActivityEventRow = (activity: Activity): Omit<RowProps, 'index' |
       return {
         id: activity.id,
         title: activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
+        ...common,
+      };
+    case ACTIVITY_VC_STATUS_CHANGED:
+      return {
+        id: activity.id,
+        title: activity.credential?.branding?.alias ?? activity.credential?.title ?? translate('activity.unknown.credential'),
+        subtitle: translate(`credential_status_badge_${activity.status.toLowerCase()}`),
         ...common,
       };
   }
@@ -165,6 +185,19 @@ const issueActivitySerializer = <T extends ActivityIssueType>(event: ActivityLog
   info: parseAndValidateJson(event.diagnosticData ?? '{}', isDiagnosticData) ?? {},
 });
 
+const statusChangeActivitySerializer = (event: ActivityLoggingEvent): IStatusChangeActivity => ({
+  id: event.id,
+  action: ACTIVITY_VC_STATUS_CHANGED,
+  at: event.timestamp,
+  result: ActivityActionResult.SUCCESS,
+  contactAlias: event.partyAlias ?? '',
+  credentialHash: (event as any).credentialHash ?? event.data?.credentialHash ?? '',
+  status: event.data?.status ?? '',
+  fromStatus: event.data?.fromStatus,
+  statusListInfo: event.data?.statusListInfo,
+  credential: event.data?.credential,
+});
+
 export const serializeActivity = (event: ActivityLoggingEvent): Activity | undefined => {
   switch (event.actionSubType) {
     case DefaultActionSubType.VC_SHARE:
@@ -173,6 +206,8 @@ export const serializeActivity = (event: ActivityLoggingEvent): Activity | undef
     case DefaultActionSubType.VC_ISSUE:
     case DefaultActionSubType.VC_ISSUE_DECLINE:
       return issueActivitySerializer(event);
+    case ACTIVITY_VC_STATUS_CHANGED:
+      return statusChangeActivitySerializer(event);
     default:
       console.error(translate('activity.unknown.type'), event);
       return undefined;

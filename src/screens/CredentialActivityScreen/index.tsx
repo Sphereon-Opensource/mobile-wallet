@@ -1,9 +1,10 @@
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DefaultActionSubType} from '@sphereon/ssi-types';
+import {ACTIVITY_VC_STATUS_CHANGED} from '../../types';
 import {backgroundColors} from '@sphereon/ui-components.core';
 import {CredentialSummary} from '@sphereon/ui-components.credential-branding';
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import ActivityList from '../../components/activity/ActivityList';
@@ -15,6 +16,7 @@ import {getActivityLogging} from '../../store/actions/logging.actions';
 import {Container} from '../../styles/components/screens/SSIContactDetailsScreen';
 import {Activity, ScreenRoutesEnum, StackParamList} from '../../types';
 import {serializeActivity} from '../../utils/activity';
+import {toDisplayCredentialStatus} from '../../utils/credentialVisibility';
 
 type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIAL_ACTIVITY>;
 
@@ -29,6 +31,8 @@ const filterForCredential = (credential?: CredentialSummary) => (activity: Activ
     case DefaultActionSubType.VC_SHARE:
     case DefaultActionSubType.VC_SHARE_DECLINE:
       return activity.shared.some(s => s.credential?.hash === credential.hash);
+    case ACTIVITY_VC_STATUS_CHANGED:
+      return activity.credentialHash === credential.hash;
     default:
       return false;
   }
@@ -56,17 +60,24 @@ const CredentialActivityScreen = ({route, navigation}: Props) => {
         )
         .map(event => serializeActivity(event))
         .filter((activity): activity is Activity => Boolean(activity))
-        .filter(filterForCredential(credential)),
+        .filter(filterForCredential(credential))
+        // Attach the (known) credential so status-change rows/details can show its name + card.
+        .map(activity => (activity.action === ACTIVITY_VC_STATUS_CHANGED && !activity.credential ? {...activity, credential} : activity)),
     [activityLogging, credential],
   );
 
-  useFocusEffect(() => announce({message: `Activity feed for ${credential?.branding?.alias ?? credential?.title}`, delay: 1000}));
+  useFocusEffect(
+    useCallback(() => {
+      getActivityLog();
+      announce({message: `Activity feed for ${credential?.branding?.alias ?? credential?.title}`, delay: 1000});
+    }, []),
+  );
 
   return (
     <Container style={{backgroundColor: backgroundColors.primaryDark}}>
       {credential?.branding && (
         <View style={{marginHorizontal: 'auto', marginBottom: 24}}>
-          <CredentialViewImage branding={credential.branding} />
+          <CredentialViewImage branding={credential.branding} credentialStatus={toDisplayCredentialStatus(credential)} />
         </View>
       )}
       <ActivityList

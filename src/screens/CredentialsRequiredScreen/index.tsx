@@ -12,6 +12,9 @@ import agent from '../../agent';
 import SSIButtonsContainer from '../../components/containers/SSIButtonsContainer';
 import SSICredentialRequiredViewItem from '../../components/views/SSICredentialRequiredViewItem';
 import {translate} from '../../localization/Localization';
+import {warnIfRevokedOrExpired} from '../../utils/presentationWarning';
+import {filterVisibleCredentials} from '../../utils/credentialVisibility';
+import {useUserPreference} from '../../hooks/useUserPreference';
 import {getVerifiableCredentialsFromStorage} from '../../services/credentialService';
 import {generateDigest, getCredentialIssuerContact} from '../../utils';
 import {
@@ -31,6 +34,8 @@ type Props = NativeStackScreenProps<StackParamList, ScreenRoutesEnum.CREDENTIALS
 const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const {navigation} = props;
   const {presentationDefinition, format, subjectSyntaxTypesSupported, onSelect, isSendDisabled, onDecline, onBack} = props.route.params;
+  const showRevoked = useUserPreference('showRevokedCredentials') ?? false;
+  const showExpired = useUserPreference('showExpiredCredentials') ?? false;
   const [allUniqueCredentials, setAllUniqueCredentials] = useState<Array<UniqueDigitalCredential> | null>(null);
   const [allOriginalCredentials, setAllOriginalCredentials] = useState<Array<OriginalVerifiableCredential>>([]);
   const [userSelectedCredentials, setUserSelectedCredentials] = useState(new Map<string, Array<UniqueDigitalCredential>>());
@@ -53,7 +58,8 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   useEffect(() => {
     getVerifiableCredentialsFromStorage().then((uniqueVCs: Array<UniqueDigitalCredential>) => {
       // We need to go to a wrapped VC first to get an actual original Verifiable Credential in JWT format, as they are stored with a special Proof value in Veramo
-      setAllUniqueCredentials(uniqueVCs);
+      // Hide revoked/expired credentials from selection unless the user enabled them in settings.
+      setAllUniqueCredentials(filterVisibleCredentials(uniqueVCs, {showRevoked, showExpired}));
       console.log(`unique creds length:` + uniqueVCs.length);
     });
     setMatchingDescriptors(
@@ -126,8 +132,10 @@ const CredentialsRequiredScreen: FC<Props> = (props: Props): JSX.Element => {
   const onSend = async (): Promise<void> => {
     const {onSend} = props.route.params;
     const selectedVCs: Array<UniqueDigitalCredential> = getSelectedCredentials();
-    const credentials = selectedVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!);
-    await onSend(credentials);
+    const proceed = (): Promise<void> => onSend(selectedVCs.map((uniqueVC: UniqueDigitalCredential) => uniqueVC.originalVerifiableCredential!));
+    if (!warnIfRevokedOrExpired(selectedVCs, proceed)) {
+      await proceed();
+    }
   };
 
   const getSelectedCredentials = (): Array<UniqueDigitalCredential> => {

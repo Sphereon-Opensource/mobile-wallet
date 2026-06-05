@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {TouchableOpacity, ViewStyle} from 'react-native';
+import {CredentialStatus} from '@sphereon/ui-components.core';
 import {SSICredentialMiniCardView} from '@sphereon/ui-components.ssi-react-native';
 import SSICheckbox from '../../fields/SSICheckbox';
 import {
@@ -21,11 +22,12 @@ export interface Props {
   onPress: () => Promise<void>;
   issuer?: string;
   cardDisplay?: CredentialMiniCardDisplay;
+  credentialStatus?: CredentialStatus;
   style?: ViewStyle;
 }
 
 const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
-  const {cardDisplay, style, title, issuer, onPress} = props;
+  const {cardDisplay, style, title, issuer, onPress, credentialStatus} = props;
 
   return (
     <Container>
@@ -38,6 +40,7 @@ const SSICredentialSelectViewItem: FC<Props> = (props: Props): JSX.Element => {
                 backgroundImage={cardDisplay?.backgroundImage}
                 logoColor={cardDisplay?.logoColor}
                 logo={cardDisplay?.logo}
+                credentialStatus={credentialStatus}
               />
             </TouchableOpacity>
             <CheckboxContainer>

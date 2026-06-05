@@ -31,6 +31,8 @@ export const createUser = async (args: BasicUser, options?: {credentialOverviewV
       warnOnLowTrust: true,
       confirmBrowserOpen: true,
       showClaimValuesByDefault: false,
+      showRevokedCredentials: false,
+      showExpiredCredentials: false,
     },
   };
 

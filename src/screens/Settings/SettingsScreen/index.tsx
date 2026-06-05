@@ -168,6 +168,18 @@ const SettingsScreen = () => {
                 value={preferences?.showClaimValuesByDefault ?? false}
                 onValueChange={v => onTogglePreference('showClaimValuesByDefault', v)}
               />
+              <SettingsToggle
+                label={translate('settings_show_revoked_credentials_label')}
+                description={translate('settings_show_revoked_credentials_description')}
+                value={preferences?.showRevokedCredentials ?? false}
+                onValueChange={v => onTogglePreference('showRevokedCredentials', v)}
+              />
+              <SettingsToggle
+                label={translate('settings_show_expired_credentials_label')}
+                description={translate('settings_show_expired_credentials_description')}
+                value={preferences?.showExpiredCredentials ?? false}
+                onValueChange={v => onTogglePreference('showExpiredCredentials', v)}
+              />
             </SettingsSection>
 
             <SectionTitle>{translate('settings_trust_section_label')}</SectionTitle>

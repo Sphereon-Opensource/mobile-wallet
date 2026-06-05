@@ -1,7 +1,7 @@
 import {useBackHandler} from '@react-native-community/hooks';
 import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ImageAttributes, backgroundColors, fontColors, toLocalDateString} from '@sphereon/ui-components.core';
+import {CredentialStatus, ImageAttributes, backgroundColors, fontColors, toLocalDateString} from '@sphereon/ui-components.core';
 import {CredentialDetailsRow, CredentialSummary, getCredentialStatus, getIssuerLogo} from '@sphereon/ui-components.credential-branding';
 import {PrimaryButton, SSICredentialCardView, SecondaryButton} from '@sphereon/ui-components.ssi-react-native';
 import {CredentialCardSheen} from '../../components/views/CredentialCardSheen';
@@ -17,7 +17,12 @@ import SSIImageField from '../../components/fields/SSIImageField';
 import SSITextField from '../../components/fields/SSITextField';
 import {useAccessibility} from '../../hooks/useAccessibility';
 import {useUserPreference} from '../../hooks/useUserPreference';
+import {useCredentialStatus} from '../../hooks/useCredentialStatus';
+import {WalletCredentialStatus, WalletCredentialSummary} from '../../types/credentialStatus';
 import {useAppSelector} from '../../hooks/useStore';
+import CredentialStatusBadge from '../../components/views/CredentialStatusBadge';
+import CredentialValuesToggle from '../../components/views/CredentialValuesToggle';
+import {filterOutStatusListRows, initialWalletStatus} from '../../utils/credentialStatus';
 import {translate} from '../../localization/Localization';
 import {
   CredentialDetailsScreenCredentialCardContainer as CardContainer,
@@ -58,6 +63,12 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
   const contacts = useAppSelector(state => state.contact.contacts);
   const contact = contacts.find(c => c.contact.displayName === issuer);
   const toggleValuesVisible = () => setValuesVisible(v => !v);
+  const statusResult = useCredentialStatus(
+    credential.hash,
+    credential.credentialRole,
+    initialWalletStatus((credential as WalletCredentialSummary).verifiedState),
+  );
+  const visibleProperties = useMemo(() => filterOutStatusListRows(credential.properties), [credential.properties]);
   const renderItem = (itemInfo: ListRenderItemInfo<CredentialDetailsRow>) => {
     if (itemInfo.item.imageSize) {
       return <SSIImageField item={itemInfo.item} index={itemInfo.index} valuesVisible={valuesVisible} onToggleVisibility={toggleValuesVisible} />;
@@ -204,7 +215,7 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
             accessibilityRole="list"
             accessibilityLabel={`${credential.title} details`}
             style={{flex: 1}}
-            data={credential.properties}
+            data={visibleProperties}
             renderItem={renderItem}
             keyExtractor={(item: CredentialDetailsRow) => item.id}
             initialNumToRender={DETAILS_INITIAL_NUMBER_TO_RENDER}
@@ -230,7 +241,12 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                             issuerName: issuer ?? credential.issuer.name,
                           }}
                           footer={{
-                            credentialStatus: getCredentialStatus(credential),
+                            credentialStatus:
+                              statusResult.status === WalletCredentialStatus.REVOKED
+                                ? CredentialStatus.REVOKED
+                                : statusResult.status === WalletCredentialStatus.EXPIRED
+                                ? CredentialStatus.EXPIRED
+                                : getCredentialStatus(credential),
                             expirationDate: credential.expirationDate,
                           }}
                           display={{
@@ -254,17 +270,17 @@ const CredentialDetailsScreen: FC<Props> = (props: Props): JSX.Element => {
                     borderBottomColor: '#404D7A',
                   }}>
                   <SSITextH3LightStyled accessibilityRole="header">{translate('credential_details_card_information')}</SSITextH3LightStyled>
-                  <Pressable
-                    onPress={() => setValuesVisible(v => !v)}
-                    accessibilityLabel={valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
-                    accessibilityRole="button"
-                    hitSlop={8}
-                    style={{flexDirection: 'row', alignItems: 'center', gap: 8, padding: 4}}>
-                    <SSITextH3LightStyled style={{color: '#5D6990', fontSize: 13, fontWeight: '400'}}>
-                      {valuesVisible ? translate('credential_details_hide_values') : translate('credential_details_show_values')}
-                    </SSITextH3LightStyled>
-                    {valuesVisible ? <SSIEyeIcon size={20} /> : <SSIEyeOffIcon size={20} />}
-                  </Pressable>
+                  <CredentialValuesToggle valuesVisible={valuesVisible} onChange={setValuesVisible} />
+                </View>
+                <View
+                  style={{
+                    paddingHorizontal: 24,
+                    paddingTop: 20,
+                    paddingBottom: 24,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#404D7A',
+                  }}>
+                  <CredentialStatusBadge result={statusResult} isChecking={statusResult.isChecking} onVerify={statusResult.refresh} />
                 </View>
               </View>
             }

@@ -112,7 +112,12 @@ export const getVerifiableCredentials = (): ThunkAction<Promise<void>, RootState
               branding,
               issuer: getCredentialIssuerContact(uniform),
               subject: getCredentialSubjectContact(uniform),
-            }).then(localizeCredentialProperties);
+            })
+              .then(localizeCredentialProperties)
+              .then(
+                (summary: CredentialSummary): CredentialSummary =>
+                  ({...summary, verifiedState: uniqueVC.digitalCredential.verifiedState} as CredentialSummary),
+              );
           }),
         );
         console.log('summaries', credentialSummaries);

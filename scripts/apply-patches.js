@@ -53,6 +53,31 @@ const stringPatches = [
     find: 'export const isCryptoKey = (key) => key instanceof CryptoKey;',
     replace: "export const isCryptoKey = (key) => typeof key === 'object';",
   },
+  {
+    // OID4VP 1.0 final OpenID4VPHandover (ISO 18013-7 §B.2.6). The published kmp-mdoc-core compiled lib
+    // emits the DRAFT handover [clientIdHash, responseUriHash, nonce]; strict OID4VP 1.0 verifiers (e.g.
+    // the IDK HAIP verifier) expect ["OpenID4VPHandover", sha256(cbor([client_id, nonce, JwkThumbprint|null,
+    // response_uri]))], and the signing SessionTranscript = [null, null, handover]. For unencrypted
+    // direct_post the JwkThumbprint element is CBOR null. kmp-mdoc-core is a compiled KMP lib with no source
+    // to rebuild, so we patch the single handover factory. CBOR bytes are hand-built (node-validated) and the
+    // sha256 + CborItem wrapping use the lib's own in-scope primitives (hash / get_cborSerializer / etc).
+    name: '@sphereon/kmp-mdoc-core (OID4VP 1.0 handover)',
+    file: path.join(nodeModules, '@sphereon', 'kmp-mdoc-core', '@sphereon', 'kmp-mdoc-core.js'),
+    find: '    return new OID4VPHandoverCbor(toCborByteString_0(clientIdToHash(clientId, mdocGeneratedNonce)), toCborByteString_0(responseUriToHash(responseUri, mdocGeneratedNonce)), toCborString(authorizationRequestNonce));',
+    replace: [
+      '    var __u8 = function (s) { var o = []; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); if (c < 128) o.push(c); else if (c < 2048) o.push(192 | (c >> 6), 128 | (c & 63)); else o.push(224 | (c >> 12), 128 | ((c >> 6) & 63), 128 | (c & 63)); } return o; };',
+      "    var __ts = function (s) { var b = __u8(s), n = b.length, h; if (n < 24) h = [96 | n]; else if (n < 256) h = [120, n]; else h = [121, (n >> 8) & 255, n & 255]; return h.concat(b); };",
+      '    var __info = [132].concat(__ts(clientId), __ts(authorizationRequestNonce), [246], __ts(responseUri));',
+      '    var __ih = hash(Int8Array.from(__info), DigestAlg_SHA256_getInstance());',
+      '    var __hb = []; for (var __i = 0; __i < __ih.length; __i++) __hb.push(__ih[__i] & 255);',
+      "    var __handover = [130].concat(__ts('OpenID4VPHandover'), [88, 32], __hb);",
+      '    var __transcript = [131, 246, 246].concat(__handover);',
+      '    var __ho = new OID4VPHandoverCbor(toCborByteString_0(__ih), toCborByteString_0(__ih), toCborString(authorizationRequestNonce));',
+      "    __ho.cborBuilder = function () { return Static_instance_6.builder(__ho).addRequired([toCborString('OpenID4VPHandover')]).addRequired([toCborByteString_0(__ih)]).end(); };",
+      '    __ho.toCbor = function () { return get_cborSerializer().decode(Int8Array.from(__transcript)); };',
+      '    return __ho;',
+    ].join('\n'),
+  },
 ]
 
 // Apply patches using `patch -p1`

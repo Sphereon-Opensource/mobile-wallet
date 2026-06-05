@@ -91,7 +91,22 @@ export const getSiopRequest = async (context: Pick<SiopV2MachineContext, 'didAut
     return Promise.reject(Error('Missing config in context'));
   }
 
-  const verifiedAuthorizationRequest: VerifiedAuthorizationRequest = await siopGetRequest(didAuthConfig);
+  let verifiedAuthorizationRequest: VerifiedAuthorizationRequest;
+  try {
+    verifiedAuthorizationRequest = await siopGetRequest(didAuthConfig);
+  } catch (error) {
+    // The op-auth request-object verifier returns `false` (surfacing as the generic
+    // "Error verifying the DID Auth Token signature") when the verifier authenticates via an x5c
+    // chain that can't be validated against a known trust anchor. Translate that into an actionable,
+    // trust-oriented message instead of a cryptic signature error.
+    const message: string = error instanceof Error ? error.message : String(error);
+    if (message.includes('verifying the DID Auth Token signature')) {
+      throw Error(
+        'Could not establish trust with this verifier: its certificate could not be validated against a known trust anchor. If you trust this party, add its trust anchor and try again.',
+      );
+    }
+    throw error;
+  }
   const name = verifiedAuthorizationRequest.registrationMetadataPayload?.client_name;
   const url =
     verifiedAuthorizationRequest.responseURI ??

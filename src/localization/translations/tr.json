@@ -69,10 +69,7 @@
       },
       "row_description": "Kimlik bilgisi alındı",
       "detail_title": "Yeni kimlik bilgisi cüzdanına eklendi",
-      "description": [
-        "Artık",
-        "kartınızı resmi paylaşım amacıyla kullanabilirsiniz."
-      ]
+      "description": ["Artık", "kartınızı resmi paylaşım amacıyla kullanabilirsiniz."]
     },
     "VC issue decline": {
       "info_list_title": "Reddedilen bilgiler",
@@ -82,10 +79,7 @@
       },
       "row_description": "Kimlik bilgisi reddedildi",
       "detail_title": "Kimlik bilgisi cüzdanınıza eklenmedi",
-      "description": [
-        "Şunu kullanmayı reddettiniz:",
-        "resmî amaçlar için kart"
-      ]
+      "description": ["Şunu kullanmayı reddettiniz:", "resmî amaçlar için kart"]
     },
     "section_titles": {
       "status": "Durum",
@@ -96,7 +90,12 @@
     "contact_link": "Hakkında",
     "credential_activities_link": "Kart etkinlikleri",
     "credential_claims_link": "Beyanlarım",
-    "support_link": "Bir sorun mu var?"
+    "support_link": "Bir sorun mu var?",
+    "VC status changed": {
+      "row_description": "Status changed",
+      "detail_title": "Credential status changed",
+      "description": ["The status of your", "credential has changed."]
+    }
   },
   "credential_details_title": "Kimlik bilgisi ayrıntıları",
   "credentials_overview_title": "Kimlik bilgileri",
@@ -656,5 +655,36 @@
   "trust_anchor_details_title": "Trust anchor",
   "trust_anchor_linked_contacts_label": "Trusted contacts",
   "trust_anchor_linked_contacts_empty": "No contacts have been verified against this trust anchor yet.",
-  "trust_anchor_contact_section_label": "Trust anchor"
+  "trust_anchor_contact_section_label": "Trust anchor",
+  "credential_status_badge_valid": "Valid",
+  "credential_status_badge_suspended": "Suspended",
+  "credential_status_badge_revoked": "Revoked",
+  "credential_status_badge_expired": "Expired",
+  "credential_status_detail_uri": "Status list URL",
+  "credential_status_detail_index": "Status list index",
+  "settings_show_revoked_credentials_label": "Show revoked credentials",
+  "settings_show_revoked_credentials_description": "Show credentials that have been revoked in the overview",
+  "settings_show_expired_credentials_label": "Show expired credentials",
+  "settings_show_expired_credentials_description": "Show credentials that have expired in the overview",
+  "credentials_overview_show_revoked": "Show revoked",
+  "credentials_overview_show_expired": "Show expired",
+  "credential_status_toast_revoked_title": "Credential revoked",
+  "credential_status_toast_revoked_message": "A credential has been revoked by its issuer",
+  "credential_status_toast_expired_title": "Credential expired",
+  "credential_status_toast_expired_message": "A credential has expired",
+  "credential_status_toast_suspended_title": "Credential suspended",
+  "credential_status_toast_suspended_message": "A credential has been suspended by its issuer",
+  "credential_status_detail_last_verified": "Last verified",
+  "credential_status_verify_now": "Verify now",
+  "credential_status_verifying": "Verifying…",
+  "credential_status_never_verified": "Not yet verified",
+  "credentials_overview_show_label": "Show:",
+  "activity_status_change_section_title": "Status",
+  "activity_status_change_statuslist_title": "Status list",
+  "activity_status_change_when_title": "When",
+  "presentation_status_warning_title": "Credential issue detected",
+  "presentation_status_warning_details_prefix": "One or more selected credentials are",
+  "presentation_status_warning_and": "and",
+  "presentation_status_warning_details_suffix": "The verifier will most likely reject this presentation. Do you want to continue anyway?",
+  "presentation_status_warning_proceed": "Continue anyway"
 }

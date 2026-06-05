@@ -30,7 +30,7 @@ const SSICredentialViewItem: FC<Props> = (props: Props): JSX.Element => {
   return (
     <Container>
       <Row>
-        <CredentialViewImage branding={branding} />
+        <CredentialViewImage branding={branding} credentialStatus={credentialStatus} />
         <DataContainer>
           <ContentTopContainer>
             <TitleCaption numberOfLines={2}>{title}</TitleCaption>
