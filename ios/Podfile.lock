@@ -18,7 +18,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - EXConstants (17.1.8):
     - ExpoModulesCore
-  - Expo (53.0.26):
+  - Expo (53.0.27):
     - DoubleConversion
     - ExpoModulesCore
     - glog
@@ -55,10 +55,19 @@ PODS:
     - ZXingObjC/PDF417
   - ExpoClipboard (7.1.5):
     - ExpoModulesCore
+  - ExpoDocumentPicker (13.1.6):
+    - ExpoModulesCore
   - ExpoFileSystem (18.1.11):
     - ExpoModulesCore
   - ExpoFont (13.3.2):
     - ExpoModulesCore
+  - ExpoImage (2.4.1):
+    - ExpoModulesCore
+    - libavif/libdav1d
+    - SDWebImage (~> 5.21.0)
+    - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageSVGCoder (~> 1.7.0)
+    - SDWebImageWebPCoder (~> 0.14.6)
   - ExpoKeepAwake (14.1.4):
     - ExpoModulesCore
   - ExpoLinearGradient (14.1.5):
@@ -96,7 +105,7 @@ PODS:
     - ExpoModulesCore
   - ExpoSplashScreen (0.30.10):
     - ExpoModulesCore
-  - ExpoWebBrowser (15.0.10):
+  - ExpoWebBrowser (15.0.11):
     - ExpoModulesCore
   - fast_float (6.1.4)
   - FBLazyVector (0.79.6)
@@ -107,6 +116,11 @@ PODS:
   - hermes-engine/Pre-built (0.79.6)
   - JWT (3.0.0-beta.12):
     - Base64 (~> 1.1.2)
+  - libavif/core (1.0.0)
+  - libavif/libdav1d (1.0.0):
+    - libavif/core
+    - libdav1d (>= 0.6.0)
+  - libdav1d (1.2.0)
   - libwebp (1.5.0):
     - libwebp/demux (= 1.5.0)
     - libwebp/mux (= 1.5.0)
@@ -124,7 +138,7 @@ PODS:
   - MMKVCore (1.3.16)
   - musap-ios (0.1.0):
     - YubiKit (~> 4.4.0)
-  - "musap-react-native (0.2.1-next.198+f853a1c0)":
+  - "musap-react-native (0.2.1-next.205+d6c836d)":
     - DoubleConversion
     - glog
     - hermes-engine
@@ -174,11 +188,13 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - QuickCrypto (1.0.8):
+  - OpenSSL-Universal (3.6.2000)
+  - QuickCrypto (1.1.5):
     - DoubleConversion
     - glog
     - hermes-engine
     - NitroModules
+    - OpenSSL-Universal (~> 3.6.2000)
     - RCT-Folly (= 2024.11.18.00)
     - RCTRequired
     - RCTTypeSafety
@@ -1556,7 +1572,7 @@ PODS:
     - React
   - react-native-get-random-values (1.11.0):
     - React-Core
-  - react-native-keyboard-controller (1.18.6):
+  - react-native-keyboard-controller (1.21.9):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1571,7 +1587,7 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
-    - react-native-keyboard-controller/common (= 1.18.6)
+    - react-native-keyboard-controller/common (= 1.21.9)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1581,7 +1597,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-keyboard-controller/common (1.18.6):
+  - react-native-keyboard-controller/common (1.21.9):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1678,7 +1694,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-pure-jwt (3.0.3):
+  - react-native-pure-jwt (3.1.0):
     - JWT (= 3.0.0-beta.12)
     - React
   - react-native-quick-base64 (2.2.2):
@@ -2134,10 +2150,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNFastImage (8.6.3):
-    - React-Core
-    - SDWebImage (~> 5.11.1)
-    - SDWebImageWebPCoder (~> 0.8.4)
   - RNFS (2.20.0):
     - React-Core
   - RNGestureHandler (2.24.0):
@@ -2456,12 +2468,17 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
-  - SDWebImageWebPCoder (0.8.5):
+  - SDWebImage (5.21.7):
+    - SDWebImage/Core (= 5.21.7)
+  - SDWebImage/Core (5.21.7)
+  - SDWebImageAVIFCoder (0.11.1):
+    - libavif/core (>= 0.11.0)
+    - SDWebImage (~> 5.10)
+  - SDWebImageSVGCoder (1.7.0):
+    - SDWebImage/Core (~> 5.6)
+  - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.10)
+    - SDWebImage/Core (~> 5.17)
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
   - YubiKit (4.4.0)
@@ -2483,8 +2500,10 @@ DEPENDENCIES:
   - ExpoBlur (from `../node_modules/expo-blur/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
   - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
+  - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoFont (from `../node_modules/expo-font/ios`)
+  - ExpoImage (from `../node_modules/expo-image/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
@@ -2582,7 +2601,6 @@ DEPENDENCIES:
   - RNAudioRecord (from `../node_modules/react-native-audio-record`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNNitroSQLite (from `../node_modules/react-native-nitro-sqlite`)
@@ -2605,14 +2623,19 @@ SPEC REPOS:
     - AppAuth
     - Base64
     - JWT
+    - libdav1d
     - libwebp
     - MMKV
     - MMKVCore
+    - OpenSSL-Universal
     - React-Codegen
+    - SDWebImageAVIFCoder
+    - SDWebImageSVGCoder
     - SDWebImageWebPCoder
     - SocketRocket
     - ZXingObjC
   trunk:
+    - libavif
     - SDWebImage
     - YubiKit
 
@@ -2639,10 +2662,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-camera/ios"
   ExpoClipboard:
     :path: "../node_modules/expo-clipboard/ios"
+  ExpoDocumentPicker:
+    :path: "../node_modules/expo-document-picker/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoFont:
     :path: "../node_modules/expo-font/ios"
+  ExpoImage:
+    :path: "../node_modules/expo-image/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLinearGradient:
@@ -2834,8 +2861,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
-  RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -2873,13 +2898,15 @@ SPEC CHECKSUMS:
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   EXAV: 28241f071fd70ea38d278d94096b61d893645946
   EXConstants: 7b84e6fc99a2bc8c589b647336b6005b419b280b
-  Expo: 355f9cd8a2a3a5ca30749607a63bfa756637d792
+  Expo: d167b9d0c951ffab935b9745d7cf65c4b4e79feb
   ExpoAsset: 7bdbbacf4e6752ae6e3cf70555cee076f6229e6e
   ExpoBlur: 688c53d5d26575cbb6c72e7fbd4caef8d8cfadf6
   ExpoCamera: fc1ab0e1c665b543a307c577df107e37cc2edc8e
   ExpoClipboard: 6b9aae54fd48a579473fb101051ad693435b9294
+  ExpoDocumentPicker: 2dbf1b971faa02d4bef242460094e390703b0f9b
   ExpoFileSystem: 9681caebda23fa1b38a12a9c68b2bade7072ce20
   ExpoFont: 091a47eeaa1b30b0b760aa1d0a2e7814e8bf6fe6
+  ExpoImage: b5d08ac8a79f798c8306b53165415c15986f9764
   ExpoKeepAwake: e8dedc115d9f6f24b153ccd2d1d8efcdfd68a527
   ExpoLinearGradient: ce334cff9859da4635c1d8eff6e291b11b04ccbb
   ExpoLocalAuthentication: 78f74d187ee51126e1a789d73fee32d6d7e60f1f
@@ -2887,20 +2914,23 @@ SPEC CHECKSUMS:
   ExpoModulesCore: 16f74d8df26d7e4b6bf7eb3d0effaf0f15df7b80
   ExpoRandom: 099ddce39b39ffb984b45118d031e8713e962a50
   ExpoSplashScreen: 6f9213be0c60f2756a2f8220c36f4b90c55e3dbd
-  ExpoWebBrowser: 88b116cd378d9609c776c0903fe4070fca461588
+  ExpoWebBrowser: 93acaae9a851370332e0c1310cbcd1437c0b4377
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 07309209b7b914451b8f822544a18e2a0a85afff
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 44bb6fe76a6eb400d3a992e2d0b21946ae999fa9
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
+  libavif: 5f8e715bea24debec477006f21ef9e95432e254d
+  libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   MMKV: 43cd10be0f925bf3fd5c2bd8bea501a328037b64
   MMKVCore: 13be45a0394861b74836875ac9ec7ee939e86b78
   musap-ios: e02c775007bce8b6ab5d6e6a98b48930b06c49e2
-  musap-react-native: 202556466931a130709ed937bdb3b8e04fb728d8
+  musap-react-native: f1c5cfd11d8b7dc55e80b3ae676217e2d0952760
   NitroModules: ce8f342b7ec187c3330e317601cdaf5a59c903ba
-  QuickCrypto: a847a782c0a91efd1386ca4d23633fbc29fb99d6
+  OpenSSL-Universal: ecee7b138fa75a74ecf00d7ffd248fb584739b9e
+  QuickCrypto: baf18d96679efc5a1173f3abd443e6afbf86cdd5
   RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
   RCTDeprecation: 9bc64754b40b86fa5e32f293ab3ea8eea2248339
   RCTRequired: ee36c1ce9a5e65a3f629c13f38a85308eb8eebda
@@ -2937,11 +2967,11 @@ SPEC CHECKSUMS:
   react-native-blur: b6750125c409d8aaa7ae1a1f21cf3632d24a9bd8
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
-  react-native-keyboard-controller: 140bd6036203cf520c811ec7ea67950a6332ff68
+  react-native-keyboard-controller: fbc545e166655288803b01daeeb1e0942ec86737
   react-native-linear-gradient-text: f197d8eac9f296453747adec87587fe3983ed920
   react-native-mmkv-storage: 5866bfa8694a45b5b7fa9d0c4791b23af0c3133e
   react-native-pager-view: 794f015a4e3b7cfb9ede97c73eae15c0d11a3fbc
-  react-native-pure-jwt: 0d332f378799316e6e7a79a7e262a246d907cdfb
+  react-native-pure-jwt: 3e0c00c301abbf6c7d88b89d0e76521567e6180b
   react-native-quick-base64: d87272898345e0fc3c3afb8e5dff335d51214f3e
   react-native-randombytes: ddf6edfd3fb9091af8c6ed1b35e57c308b5f5f2c
   react-native-safe-area-context: 00d03dc688ba86664be66f9e3f203fc7d747d899
@@ -2980,7 +3010,6 @@ SPEC CHECKSUMS:
   RNAudioRecord: 162fee3b8fb628773ec704bf0333823125be2ed7
   RNAudioRecorderPlayer: 76b1d9ea2b22bf5ece274c0ff99c341daca42dc4
   RNCMaskedView: 3e8d6bf9764b519d077986413882959eafceffbc
-  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: ccf4105b125002bd88e39d2a1f2b7e6001bcdf34
   RNNitroSQLite: d452d4a6b067494b8c726b369b10c0552b53313c
@@ -2993,13 +3022,15 @@ SPEC CHECKSUMS:
   RNShareMenu: cb9dac548c8bf147d06f0bf07296ad51ea9f5fc3
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: ee32efbed652c5151fd3f98bed13c68af285bc38
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  SDWebImage: e9fc87c1aab89a8ab1bbd74eba378c6f53be8abf
+  SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
+  SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
+  SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 09dfd541d4ddc24c6a95b3f4989d63bc38a26675
   YubiKit: 390e7733942f9518f9b3f5890c60914f7b8d74c8
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 08e308ecf46961b05241eee3e9e15ed62508ba6d
+PODFILE CHECKSUM: ab7917cd2b3dc2c6ad11057c41807cd46806a51a
 
 COCOAPODS: 1.15.2

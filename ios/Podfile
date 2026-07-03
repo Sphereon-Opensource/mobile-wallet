@@ -132,6 +132,27 @@ source 'https://cdn.cocoapods.org'
       File.delete(glog_public_modulemap)
     end
 
+    # Work around an fmt 11.0.2 bug on Xcode 26 / Apple Clang 21: fmt marks its
+    # basic_format_string constructor `consteval`, and the compiler's stricter
+    # constant-expression enforcement then rejects fmt's own internal FMT_STRING(...)
+    # calls in format-inl.h ("Call to consteval function ... is not a constant
+    # expression"). base.h defines FMT_USE_CONSTEVAL=1 unconditionally when
+    # __cpp_consteval is present (no #ifndef guard), so a -DFMT_USE_CONSTEVAL=0
+    # build flag is overridden. Patch the header to force it off right before it is
+    # consumed, falling back to runtime format-string checking. Fixed upstream in fmt 11.1.
+    fmt_base = File.join(installer.sandbox.root, 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_base)
+      contents = File.read(fmt_base)
+      marker = "#if FMT_USE_CONSTEVAL\n#  define FMT_CONSTEVAL consteval"
+      override = "#undef FMT_USE_CONSTEVAL\n#define FMT_USE_CONSTEVAL 0\n"
+      if !contents.include?(override) && contents.include?(marker)
+        contents = contents.sub(marker, override + marker)
+        File.chmod(0644, fmt_base) # fmt ships its headers read-only
+        File.write(fmt_base, contents)
+        Pod::UI.puts "Patched fmt base.h to disable consteval (Xcode 26 / Clang 21 workaround)"
+      end
+    end
+
     # Force iOS 16.0 deployment target for all pods
     # Required for C++ features like CxxStdlib
     installer.generated_projects.each do |project|

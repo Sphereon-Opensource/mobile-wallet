@@ -48,6 +48,17 @@ const patchEntries = [
 // (jose: Yarn patches package.json via direct dep but misses webcrypto.js for transitive deps)
 const stringPatches = [
   {
+    // musap-native's KeyAttribute value-initializer is `internal`, so musap-react-native
+    // (a separate module) can only see the `public init(name:cert:)` overload. Its
+    // MapperFunctions.swift calls `KeyAttribute(name:value:)`, which then fails to compile
+    // ("expected 'name:cert:'" / "cannot convert String? to SecCertificate"). Make the
+    // value-initializer public so it is accessible across the module boundary.
+    name: '@sphereon/musap-native (KeyAttribute value init)',
+    file: path.join(nodeModules, '@sphereon', 'musap-native', 'ios', 'Sources', 'internal', 'datatype', 'KeyAttribute.swift'),
+    find: '    init(name: String, value: String?) {',
+    replace: '    public init(name: String, value: String?) {',
+  },
+  {
     name: 'jose (webcrypto.js)',
     file: path.join(nodeModules, 'jose', 'dist', 'browser', 'runtime', 'webcrypto.js'),
     find: 'export const isCryptoKey = (key) => key instanceof CryptoKey;',
