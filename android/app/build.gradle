@@ -98,7 +98,7 @@ android {
         applicationId 'com.sphereon.ssi.wallet'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 900
+        versionCode 901
         versionName "0.9.0"
         manifestPlaceholders = [
             appAuthRedirectScheme: 'com.sphereon.ssi.wallet'
